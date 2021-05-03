@@ -1,0 +1,87 @@
+import {
+   Button,
+   ButtonGroup,
+   HStack,
+   Icon,
+   IconButton,
+   Stack,
+   Text,
+} from '@chakra-ui/react';
+import { Hit } from '@features/collection';
+import { useSearchResult } from '@libs/algolia';
+import React from 'react';
+import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
+import { RiSearchLine } from 'react-icons/ri';
+import { FiltersModal } from './FiltersModal';
+import { SearchInput } from './SearchInput';
+
+export function CollectionToolbar() {
+   const searchResult = useSearchResult<Hit>();
+   const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
+   return (
+      <Stack
+         justify={{ sm: 'space-between' }}
+         align={{ base: 'stretch', sm: 'center' }}
+         direction={{ base: 'column', sm: 'row' }}
+      >
+         <Text textAlign="center" color="gray.500" fontWeight="bold">
+            {searchResult.numberOfHits}
+            {searchResult.numberOfHits === 1 ? ' result' : ' results'}
+         </Text>
+         <HStack px={{ base: 4, sm: 0 }}>
+            <FiltersModal
+               isOpen={isFilterModalOpen}
+               onClose={() => setIsFilterModalOpen(false)}
+            />
+            <IconButton
+               aria-label="open search and filters modal"
+               icon={<Icon as={RiSearchLine} color="gray.500" />}
+               variant="outline"
+               size="md"
+               bg="white"
+               display={{ base: 'flex', sm: 'none' }}
+               onClick={() => setIsFilterModalOpen(true)}
+            />
+            <Button
+               variant="outline"
+               bg="white"
+               display={{ base: 'block', sm: 'none' }}
+               flex={1}
+               onClick={() => setIsFilterModalOpen(true)}
+            >
+               Filters
+            </Button>
+            <Button
+               variant="outline"
+               bg="white"
+               display={{ base: 'block', sm: 'none' }}
+               flex={1}
+               onClick={() => alert('not implemented yet')}
+            >
+               Sorting
+            </Button>
+            <SearchInput maxW={300} display={{ base: 'none', sm: 'block' }} />
+            <ButtonGroup
+               size="sm"
+               isAttached
+               bg="white"
+               display={{ base: 'none', sm: 'flex' }}
+            >
+               <IconButton
+                  aria-label="Select list view"
+                  icon={<Icon as={HiOutlineMenu} color="gray.500" />}
+                  mr="-px"
+                  variant="outline"
+                  size="md"
+               />
+               <IconButton
+                  aria-label="Select grid view"
+                  icon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
+                  variant="outline"
+                  size="md"
+               />
+            </ButtonGroup>
+         </HStack>
+      </Stack>
+   );
+}
