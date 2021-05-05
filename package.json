@@ -3,9 +3,12 @@
    "author": "Massimo",
    "license": "UNLICENSED",
    "version": "1.0.0",
+   "engines": {
+      "node": "12.x"
+   },
    "scripts": {
       "dev": "next dev",
-      "build": "next build",
+      "build": "node -v; next build",
       "start": "next start",
       "type-check": "tsc --pretty --noEmit",
       "format": "prettier --write .",
