@@ -3,9 +3,6 @@
    "author": "Massimo",
    "license": "UNLICENSED",
    "version": "1.0.0",
-   "engines": {
-      "node": "12.14.1"
-   },
    "scripts": {
       "dev": "next dev",
       "build": "node -v; next build",
