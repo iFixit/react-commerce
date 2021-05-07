@@ -22,6 +22,11 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
       };
    }
    const collection = await loadCollection(handle);
+   if (collection == null) {
+      return {
+         notFound: true,
+      };
+   }
    return {
       props: {
          collection,

@@ -2,7 +2,9 @@ import { SHOPIFY_DOMAIN, SHOPIFY_STOREFRONT_ACCESS_TOKEN } from '@config/env';
 import { StorefrontClient } from '@libs/storefrontClient';
 import { Collection } from '../types';
 
-export async function loadCollection(handle: string): Promise<Collection> {
+export async function loadCollection(
+   handle: string
+): Promise<Collection | null> {
    const client = new StorefrontClient({
       domain: SHOPIFY_DOMAIN,
       accessToken: SHOPIFY_STOREFRONT_ACCESS_TOKEN,
@@ -14,6 +16,9 @@ export async function loadCollection(handle: string): Promise<Collection> {
          handle,
       }
    );
+   if (response.data.collectionByHandle == null) {
+      return null;
+   }
    const hierarchyMetafield = response.data.collectionByHandle.metafields.edges.find(
       (edge) => edge.node.key === 'collection_hierarchy'
    );
