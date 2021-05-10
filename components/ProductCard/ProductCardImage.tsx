@@ -1,4 +1,4 @@
-import { chakra, Image } from '@chakra-ui/react';
+import { chakra, Img } from '@chakra-ui/react';
 import * as React from 'react';
 
 export interface ProductCardImageProps {
@@ -10,9 +10,10 @@ export interface ProductCardImageProps {
 export const ProductCardImage = chakra(
    ({ className, src, alt }: ProductCardImageProps) => {
       return (
-         <Image
+         <Img
             className={className}
-            boxSize="150px"
+            boxSize="160px"
+            flexShrink={0}
             objectFit="cover"
             src={src}
             alt={alt}

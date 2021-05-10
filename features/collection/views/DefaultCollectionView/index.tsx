@@ -11,6 +11,7 @@ import { CollectionPagination } from './CollectionPagination';
 import { CollectionProducts } from './CollectionProducts';
 import { CollectionSubcategories } from './CollectionSubcategories';
 import { CollectionToolbar } from './CollectionToolbar';
+import { ProductViewType } from './types';
 
 export type DefaultCollectionViewProps = {
    collection: Collection;
@@ -20,6 +21,9 @@ export function DefaultCollectionView({
    collection,
 }: DefaultCollectionViewProps) {
    const collectionHandle = collection.handle;
+   const [productViewType, setProductViewType] = React.useState(
+      ProductViewType.List
+   );
 
    const virtualFilter = React.useMemo((): Filter => {
       return {
@@ -58,7 +62,10 @@ export function DefaultCollectionView({
                   <CollectionSubcategories collection={collection} />
                )}
                <VStack mb={4} align="stretch" spacing={4}>
-                  <CollectionToolbar />
+                  <CollectionToolbar
+                     productViewType={productViewType}
+                     onProductViewTypeChange={setProductViewType}
+                  />
                   <HStack align="flex-start" spacing={{ base: 0, sm: 4 }}>
                      <Card
                         p={6}
@@ -72,7 +79,7 @@ export function DefaultCollectionView({
                         alignItems="center"
                         borderRadius={{ base: 'none', sm: 'lg' }}
                      >
-                        <CollectionProducts />
+                        <CollectionProducts viewType={productViewType} />
                         <CollectionPagination />
                      </Card>
                   </HStack>
