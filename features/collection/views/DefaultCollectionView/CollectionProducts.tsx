@@ -86,7 +86,7 @@ export function CollectionProducts({ viewType }: CollectionProductsProps) {
                      alt={hit.title}
                   />
                   <VStack align="flex-start" spacing={4}>
-                     <Heading as="h2" size="sm">
+                     <Heading as="h2" size="md">
                         {hit.title}
                      </Heading>
                      <Text noOfLines={2}>{hit.body_html_safe}</Text>
