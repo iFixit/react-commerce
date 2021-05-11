@@ -52,7 +52,7 @@ export function CollectionSubcategories({
                               }}
                            />
                         )}
-                        <Center py={4}>
+                        <Center py={4} px={4}>
                            <NextLink
                               href={`/collections/${child.handle}`}
                               passHref
