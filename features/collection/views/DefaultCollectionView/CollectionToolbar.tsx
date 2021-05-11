@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Hit } from '@features/collection';
 import { useSearchResult } from '@libs/algolia';
-import React from 'react';
+import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { FiltersModal } from './FiltersModal';

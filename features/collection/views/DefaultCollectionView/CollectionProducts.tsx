@@ -18,7 +18,7 @@ import {
 } from '@components/ProductCard';
 import { Hit } from '@features/collection';
 import { useSearchResult } from '@libs/algolia';
-import React from 'react';
+import * as React from 'react';
 import { ProductViewType } from './types';
 
 export type CollectionProductsProps = {

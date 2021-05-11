@@ -1,7 +1,7 @@
 import { Box, chakra, Flex, HStack } from '@chakra-ui/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import * as React from 'react';
 
 export type DefaultLayoutProps = {
    title: string;

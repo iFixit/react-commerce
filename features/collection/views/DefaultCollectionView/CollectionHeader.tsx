@@ -12,7 +12,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
 import { Collection } from '../../types';
 import NextLink from 'next/link';

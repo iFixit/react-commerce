@@ -1,7 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { AppProps } from 'next/app';
 import { theme } from '@ifixit/react-components';
-import React from 'react';
+import * as React from 'react';
 import Head from 'next/head';
 
 const customTheme = extendTheme(theme);

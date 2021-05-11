@@ -4,7 +4,7 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { AlgoliaProvider, Filter } from '@libs/algolia';
-import React from 'react';
+import * as React from 'react';
 import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
 import { CollectionPagination } from './CollectionPagination';
