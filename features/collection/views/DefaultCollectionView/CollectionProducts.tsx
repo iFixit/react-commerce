@@ -98,7 +98,7 @@ export function CollectionProducts({ viewType }: CollectionProductsProps) {
                         )}
                         <Text
                            color={isDiscounted ? 'red.700' : 'inherit'}
-                           fontWeight={isDiscounted ? 'bold' : 'inherit'}
+                           fontWeight="bold"
                         >
                            ${hit.price}
                         </Text>
