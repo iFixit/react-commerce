@@ -16,6 +16,7 @@
       "jsx": "preserve",
       "paths": {
          "@config/*": ["config/*"],
+         "@assets/*": ["assets/*"],
          "@libs/*": ["libs/*"],
          "@layouts/*": ["layouts/*"],
          "@features/*": ["features/*"],
@@ -23,5 +24,11 @@
       }
    },
    "exclude": ["node_modules", ".next", "out"],
-   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"]
+   "include": [
+      "next-env.d.ts",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "@types/index.d.ts"
+   ]
 }

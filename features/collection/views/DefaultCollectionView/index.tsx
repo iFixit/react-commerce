@@ -5,6 +5,7 @@ import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { AlgoliaProvider, Filter } from '@libs/algolia';
 import React from 'react';
+import { CollectionBanner } from './CollectionBanner';
 import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
 import { CollectionPagination } from './CollectionPagination';
@@ -77,6 +78,7 @@ export function DefaultCollectionView({
                      </Card>
                   </HStack>
                </VStack>
+               <CollectionBanner />
             </VStack>
          </AlgoliaProvider>
       </DefaultLayout>
