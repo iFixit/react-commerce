@@ -1,7 +1,7 @@
 import { chakra, Stack } from '@chakra-ui/react';
 import * as React from 'react';
 
-interface ProductCardProps {
+export interface ProductCardProps {
    className?: string;
 }
 

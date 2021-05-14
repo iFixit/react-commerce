@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { Collection } from '@features/collection';
 import NextLink from 'next/link';
-import React from 'react';
+import * as React from 'react';
 
 export type CollectionSubcategoriesProps = {
    collection: Collection;

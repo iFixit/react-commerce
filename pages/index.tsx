@@ -1,7 +1,7 @@
 import { Box, chakra, Flex, List, ListItem } from '@chakra-ui/react';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Link from 'next/link';
-import React from 'react';
+import * as React from 'react';
 
 export default function HomePage() {
    return (

@@ -5,7 +5,7 @@ import {
    PartsCollectionView,
 } from '@features/collection';
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import * as React from 'react';
 
 type CollectionPageProps = {
    type: 'default' | 'parts';
