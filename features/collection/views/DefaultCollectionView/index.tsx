@@ -4,13 +4,14 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { AlgoliaProvider, Filter } from '@libs/algolia';
-import React from 'react';
+import * as React from 'react';
 import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
 import { CollectionPagination } from './CollectionPagination';
 import { CollectionProducts } from './CollectionProducts';
 import { CollectionSubcategories } from './CollectionSubcategories';
 import { CollectionToolbar } from './CollectionToolbar';
+import { ProductViewType } from './types';
 
 export type DefaultCollectionViewProps = {
    collection: Collection;
@@ -20,6 +21,9 @@ export function DefaultCollectionView({
    collection,
 }: DefaultCollectionViewProps) {
    const collectionHandle = collection.handle;
+   const [productViewType, setProductViewType] = React.useState(
+      ProductViewType.List
+   );
 
    const virtualFilter = React.useMemo((): Filter => {
       return {
@@ -58,7 +62,10 @@ export function DefaultCollectionView({
                   <CollectionSubcategories collection={collection} />
                )}
                <VStack mb={4} align="stretch" spacing={4}>
-                  <CollectionToolbar />
+                  <CollectionToolbar
+                     productViewType={productViewType}
+                     onProductViewTypeChange={setProductViewType}
+                  />
                   <HStack align="flex-start" spacing={{ base: 0, sm: 4 }}>
                      <Card
                         p={6}
@@ -72,7 +79,7 @@ export function DefaultCollectionView({
                         alignItems="center"
                         borderRadius={{ base: 'none', sm: 'lg' }}
                      >
-                        <CollectionProducts />
+                        <CollectionProducts viewType={productViewType} />
                         <CollectionPagination />
                      </Card>
                   </HStack>

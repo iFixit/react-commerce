@@ -5,7 +5,7 @@ import {
    PaginationItem,
 } from '@ifixit/react-components';
 import { usePagination, useSearchResult } from '@libs/algolia';
-import React from 'react';
+import * as React from 'react';
 import {
    HiChevronDoubleLeft,
    HiChevronDoubleRight,

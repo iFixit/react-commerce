@@ -1,5 +1,5 @@
 import { chakra, VStack } from '@chakra-ui/react';
-import React from 'react';
+import * as React from 'react';
 import { RefinementList } from './RefinementList';
 
 type CollectionFiltersProps = {

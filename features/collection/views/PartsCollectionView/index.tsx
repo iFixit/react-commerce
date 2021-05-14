@@ -14,7 +14,7 @@ import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { AlgoliaProvider } from '@libs/algolia';
 import NextLink from 'next/link';
-import React from 'react';
+import * as React from 'react';
 
 export type PartsCollectionViewProps = {
    collection: Collection;

@@ -19,4 +19,5 @@ export interface Hit {
    compare_at_price?: number;
    sku: string;
    product_image: string;
+   body_html_safe?: string;
 }

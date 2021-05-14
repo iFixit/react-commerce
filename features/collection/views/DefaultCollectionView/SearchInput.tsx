@@ -5,7 +5,7 @@ import {
    InputLeftElement,
    Icon,
 } from '@chakra-ui/react';
-import React from 'react';
+import * as React from 'react';
 import { useSearch } from '@libs/algolia';
 import { RiSearchLine } from 'react-icons/ri';
 

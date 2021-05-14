@@ -7,7 +7,7 @@ import {
    ModalOverlay,
    Text,
 } from '@chakra-ui/react';
-import React from 'react';
+import * as React from 'react';
 import { CollectionFilters } from './CollectionFilters';
 import { SearchInput } from './SearchInput';
 
