@@ -1,58 +1,46 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch/lite';
 import * as React from 'react';
-import { Filter } from './types';
+import { BasicFilter } from './types';
 
-export function useAlgoliaClient(appId: string, apiKey: string): SearchClient {
-   const clientRef = React.useRef<SearchClient>();
-   if (clientRef.current == null) {
-      clientRef.current = algoliasearch(appId, apiKey);
-   }
-   return clientRef.current;
+export function mergeUnique(a: string[], b: string[]): string[] {
+   const result = a.slice();
+   b.forEach((item) => {
+      if (!result.includes(item)) {
+         result.push(item);
+      }
+   });
+   return result;
 }
 
-export function useAlgoliaIndex(
-   indexName: string,
-   client: SearchClient
-): SearchIndex {
-   const indexRef = React.useRef<SearchIndex>();
-   const mountedRef = React.useRef(false);
+export function createBasicFilter(
+   facetName: string,
+   valueId: string,
+   parentId?: string
+): BasicFilter {
+   const newFilterId = generateId(parentId, valueId);
+   const newFilter: BasicFilter = {
+      id: newFilterId,
+      type: 'basic',
+      facetId: facetName,
+      valueId,
+   };
+   return newFilter;
+}
 
-   if (indexRef.current == null) {
-      indexRef.current = client.initIndex(indexName);
-   }
+export function generateId(...args: Array<string | undefined | null>): string {
+   return args.filter((arg) => arg != null).join('//');
+}
+
+export function useDebounce<Value = any>(value: Value, delay: number): Value {
+   const [debouncedValue, setDebouncedValue] = React.useState(value);
 
    React.useEffect(() => {
-      if (mountedRef.current === false) {
-         mountedRef.current = true;
-      } else {
-         indexRef.current = client.initIndex(indexName);
-      }
-   }, [indexName, client]);
+      const handler = setTimeout(() => {
+         setDebouncedValue(value);
+      }, delay);
+      return () => {
+         clearTimeout(handler);
+      };
+   }, [value, delay]);
 
-   return indexRef.current;
-}
-
-export function getFiltersString(filters: Filter[]): string {
-   return filters.map(getFilterString).join(' AND ');
-}
-
-export function getFilterString(filter: Filter): string {
-   switch (filter.type) {
-      case 'or': {
-         return `(${filter.filters.map(getFilterString).join(' OR ')})`;
-      }
-      case 'and': {
-         return `(${filter.filters.map(getFilterString).join(' AND ')})`;
-      }
-      case 'basic': {
-         return `"${filter.facet}":"${filter.value}"`;
-      }
-      case 'numeric-comparison': {
-         return `"${filter.facet}" ${filter.operator} ${filter.value}`;
-      }
-      case 'numeric-range': {
-         return `"${filter.facet}":${filter.lowerValue} TO ${filter.higherValue}`;
-      }
-   }
+   return debouncedValue;
 }

@@ -1,5 +1,5 @@
 export * from './context';
-export * from './useSearchResult';
+export * from './useHits';
 export * from './useSearch';
 export * from './useRefinementList';
 export * from './usePagination';

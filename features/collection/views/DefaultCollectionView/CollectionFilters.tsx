@@ -44,10 +44,7 @@ export const CollectionFilters = chakra(
 );
 
 function filterFacet(facet: Facet): boolean {
-   return (
-      !FACET_BLOCKLIST.includes(facet.name) &&
-      Object.keys(facet.itemsByValue).length > 1
-   );
+   return !FACET_BLOCKLIST.includes(facet.name) && facet.values.length > 1;
 }
 
 function formatFacetName(facetName: string): string {
@@ -58,7 +55,7 @@ function formatFacetName(facetName: string): string {
    if (name.startsWith('named_tags.')) {
       name = name.replace('named_tags.', '');
    }
-   name = name.replace('_', ' ');
+   name = name.replace(/_/g, ' ');
    name = capitalize(name);
    return name;
 }
