@@ -40,7 +40,7 @@ export function CollectionSubcategories({
                      transition="all 300ms"
                   >
                      <Flex direction="column">
-                        {collection.children.length <= 10 && (
+                        {collection.children.length <= 10 && child.image && (
                            <Image
                               objectFit="cover"
                               h="180px"

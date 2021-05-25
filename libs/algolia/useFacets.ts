@@ -1,23 +1,24 @@
 import * as React from 'react';
 import { useSearchContext } from './context';
-import { FacetItemsByValue } from './types';
+import { FacetValueState } from './types';
 
-export type Facet = {
+export interface Facet {
    name: string;
-   itemsByValue: FacetItemsByValue;
-};
+   values: FacetValueState[];
+}
 
 export function useFacets(): Facet[] {
-   const { searchResult } = useSearchContext();
+   const { state } = useSearchContext();
 
    const facets = React.useMemo<Facet[]>(() => {
-      return Object.keys(searchResult.facetsByName).map((facetName) => {
+      return state.facets.allIds.map<Facet>((id) => {
+         const facet = state.facets.byId[id];
          return {
-            name: facetName,
-            itemsByValue: searchResult.facetsByName[facetName],
+            name: facet.name,
+            values: facet.valueIds.map((id) => state.facetValues.byId[id]),
          };
       });
-   }, [searchResult]);
+   }, [state.facetValues.byId, state.facets.allIds, state.facets.byId]);
 
    return facets;
 }

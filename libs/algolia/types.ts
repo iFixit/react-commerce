@@ -1,66 +1,88 @@
-import * as React from 'react';
 import { SearchIndex } from 'algoliasearch/lite';
 
+export type AlgoliaProviderProps<Hit = any> = {
+   appId: string;
+   apiKey: string;
+   indexName: string;
+   onIndexNameChange?: (indexName: string) => void;
+   initialState?: Partial<SearchState<Hit>>;
+   state?: SearchState<Hit>;
+   onChange?: (state: SearchState<Hit>) => void;
+};
+
 export type SearchContext<Hit = any> = {
-   searchParams: SearchParams;
-   searchResult: SearchResult<Hit>;
-   refine: React.Dispatch<React.SetStateAction<SearchParams>>;
+   state: SearchState<Hit>;
+   setState: React.Dispatch<React.SetStateAction<SearchState<Hit>>>;
    index: SearchIndex;
 };
 
-export type AlgoliaProviderProps = {
-   appId: string;
-   apiKey: string;
-   /**
-    * A virtual filter does not appear on the UI.
-    * It is used to enforce constraints (e.g. display only products belonging to a given collection)
-    */
-   virtualFilter?: Filter;
-   defaultIndexName: string;
-   defaultHitPerPage?: number;
-};
-
-export type SearchParams = {
-   indexName: string;
+export interface SearchState<Hit = any> {
    query: string;
-   filters: Filter[];
    page: number;
-};
-
-export type SearchResult<Hit = any> = {
-   hits: Hit[];
-   numberOfHits: number;
-   numberOfPages: number;
+   numberOfPages?: number;
+   limit?: number;
+   rawFilters?: string;
    isLoaded: boolean;
-   facetsByName: FacetsByName;
-};
+   numberOfHits?: number;
+   hits: Entity<Hit>;
+   facets: Entity<FacetState>;
+   facetValues: Entity<FacetValueState>;
+   filters: FilterEntity;
+}
+
+export interface Entity<Type = any> {
+   byId: Record<string, Type>;
+   allIds: string[];
+}
+
+export interface FilterEntity {
+   byId: Record<string, Filter>;
+   rootIds: string[];
+   allIds: string[];
+}
+
+export interface FacetState {
+   name: string;
+   valueIds: string[];
+}
+
+export interface FacetValueState {
+   id: string;
+   facetId: string;
+   value: string;
+   totalHitCount: number;
+   filteredHitCount: number;
+}
 
 export type Filter =
-   | OrFilterClause
-   | AndFilterClause
+   | ListFilter
    | BasicFilter
    | NumericComparisonFilter
    | NumericRangeFilter;
 
-export type FilterClause = OrFilterClause | AndFilterClause;
+export type ListFilter = OrFilter | AndFilter;
 
-export type OrFilterClause = {
+export type OrFilter = {
+   id: string;
    type: 'or';
-   filters: Filter[];
+   filterIds: string[];
 };
 
-export type AndFilterClause = {
+export type AndFilter = {
+   id: string;
    type: 'and';
-   filters: Filter[];
+   filterIds: string[];
 };
 
 export type BasicFilter = {
+   id: string;
    type: 'basic';
-   facet: string;
-   value: string;
+   facetId: string;
+   valueId: string;
 };
 
 export type NumericComparisonFilter = {
+   id: string;
    type: 'numeric-comparison';
    facet: string;
    operator: NumericComparisonOperator;
@@ -68,6 +90,7 @@ export type NumericComparisonFilter = {
 };
 
 export type NumericRangeFilter = {
+   id: string;
    type: 'numeric-range';
    facet: string;
    lowerValue: number;
@@ -82,13 +105,3 @@ export enum NumericComparisonOperator {
    GreaterThanOrEqual = '>=',
    GreaterThan = '>',
 }
-
-export type FacetItem = {
-   value: string;
-   total: number;
-   filtered: number;
-};
-
-export type FacetItemsByValue = Record<string, FacetItem>;
-
-export type FacetsByName = Record<string, FacetItemsByValue>;
