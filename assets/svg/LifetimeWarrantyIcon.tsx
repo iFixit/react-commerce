@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-function SvgLifetimeWarranty(props: React.SVGProps<SVGSVGElement>) {
+function SvgLifetimeWarrantyIcon(props: React.SVGProps<SVGSVGElement>) {
    return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112" {...props}>
          <path
@@ -11,4 +11,4 @@ function SvgLifetimeWarranty(props: React.SVGProps<SVGSVGElement>) {
    );
 }
 
-export default SvgLifetimeWarranty;
+export default SvgLifetimeWarrantyIcon;

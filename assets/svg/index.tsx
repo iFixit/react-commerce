@@ -1,1 +1,1 @@
-export { default as LifetimeWarranty } from './LifetimeWarranty';
+export { default as LifetimeWarrantyIcon } from './LifetimeWarrantyIcon';

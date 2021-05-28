@@ -1,4 +1,4 @@
-import { LifetimeWarranty } from '@assets/svg';
+import { LifetimeWarrantyIcon } from '@assets/svg';
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -48,7 +48,7 @@ export function CollectionBanner() {
                      <Button as="a">Learn more</Button>
                   </NextLink>
                   <Icon
-                     as={LifetimeWarranty}
+                     as={LifetimeWarrantyIcon}
                      boxSize="90px"
                      color="white"
                      display={{
@@ -59,7 +59,7 @@ export function CollectionBanner() {
                </Flex>
             </Flex>
             <Icon
-               as={LifetimeWarranty}
+               as={LifetimeWarrantyIcon}
                boxSize={{ base: '130px', md: '160px', lg: '190px' }}
                color="white"
                display={{
