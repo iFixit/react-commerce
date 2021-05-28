@@ -8,16 +8,32 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { Hit } from '@features/collection';
-import { useSearchResult } from '@libs/algolia';
-import React from 'react';
+import { useHits } from '@libs/algolia';
+import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { FiltersModal } from './FiltersModal';
 import { SearchInput } from './SearchInput';
+import { ProductViewType } from './types';
 
-export function CollectionToolbar() {
-   const searchResult = useSearchResult<Hit>();
+export type CollectionToolbarProps = {
+   productViewType: ProductViewType;
+   onProductViewTypeChange: (type: ProductViewType) => void;
+};
+export function CollectionToolbar({
+   productViewType = ProductViewType.List,
+   onProductViewTypeChange,
+}: CollectionToolbarProps) {
+   const { numberOfHits } = useHits<Hit>();
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
+   const onChangeProductViewType = React.useCallback(
+      (newViewType: ProductViewType) => {
+         if (newViewType !== productViewType) {
+            onProductViewTypeChange(newViewType);
+         }
+      },
+      [productViewType, onProductViewTypeChange]
+   );
    return (
       <Stack
          justify={{ sm: 'space-between' }}
@@ -25,8 +41,8 @@ export function CollectionToolbar() {
          direction={{ base: 'column', sm: 'row' }}
       >
          <Text textAlign="center" color="gray.500" fontWeight="bold">
-            {searchResult.numberOfHits}
-            {searchResult.numberOfHits === 1 ? ' result' : ' results'}
+            {numberOfHits}
+            {numberOfHits === 1 ? ' result' : ' results'}
          </Text>
          <HStack px={{ base: 4, sm: 0 }}>
             <FiltersModal
@@ -73,12 +89,16 @@ export function CollectionToolbar() {
                   mr="-px"
                   variant="outline"
                   size="md"
+                  isActive={productViewType === ProductViewType.List}
+                  onClick={() => onChangeProductViewType(ProductViewType.List)}
                />
                <IconButton
                   aria-label="Select grid view"
                   icon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
                   variant="outline"
                   size="md"
+                  isActive={productViewType === ProductViewType.Grid}
+                  onClick={() => onChangeProductViewType(ProductViewType.Grid)}
                />
             </ButtonGroup>
          </HStack>

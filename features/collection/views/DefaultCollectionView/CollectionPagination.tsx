@@ -1,11 +1,10 @@
-import { Hit } from '@features/collection';
 import {
    Pagination,
    PaginationButton,
    PaginationItem,
 } from '@ifixit/react-components';
-import { usePagination, useSearchResult } from '@libs/algolia';
-import React from 'react';
+import { usePagination } from '@libs/algolia';
+import * as React from 'react';
 import {
    HiChevronDoubleLeft,
    HiChevronDoubleRight,
@@ -14,14 +13,13 @@ import {
 } from 'react-icons/hi';
 
 export function CollectionPagination() {
-   const searchResult = useSearchResult<Hit>();
-   const [page, setPage] = usePagination();
-   if (searchResult.numberOfPages <= 1) {
+   const { page, setPage, numberOfPages = 0, isLoaded } = usePagination();
+   if (!isLoaded || numberOfPages <= 1) {
       return null;
    }
    return (
       <Pagination
-         numberOfPages={searchResult.numberOfPages}
+         numberOfPages={numberOfPages}
          page={page}
          onChange={setPage}
          pt={12}

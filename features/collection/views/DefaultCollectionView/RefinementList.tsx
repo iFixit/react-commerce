@@ -1,19 +1,20 @@
 import {
+   Badge,
    Checkbox,
    Divider,
+   HStack,
+   Radio,
    Stack,
    Text,
    VStack,
-   Radio,
-   Badge,
 } from '@chakra-ui/react';
+import { ListFilter, useRefinementList } from '@libs/algolia';
 import * as React from 'react';
-import { useRefinementList, FilterClause } from '@libs/algolia';
 
 export type RefinementListProps = {
    facet: string;
    title: string;
-   type?: FilterClause['type'];
+   type?: ListFilter['type'];
    multiple?: boolean;
 };
 
@@ -23,43 +24,48 @@ export function RefinementList({
    type = 'or',
    multiple = false,
 }: RefinementListProps) {
-   const { items, currentRefinements, toggle, set } = useRefinementList(facet, {
-      refinementType: type,
-   });
+   const { isLoaded, values, currentValueIds, toggle, set } = useRefinementList(
+      facet,
+      {
+         refinementType: type,
+      }
+   );
+   if (!isLoaded) {
+      return null;
+   }
    return (
       <Stack spacing={2}>
          <Text fontWeight="semibold">{title}</Text>
          <Divider />
          <VStack align="flex-start">
-            {items.map((item, index) => {
+            {values.map((valueState, index) => {
                if (multiple) {
                   return (
                      <Checkbox
                         key={index}
-                        isChecked={currentRefinements?.includes(item.value)}
-                        onChange={() => toggle(item.value)}
+                        isChecked={currentValueIds.includes(valueState.id)}
+                        onChange={() => toggle(valueState.id)}
                      >
-                        <Text fontSize="sm">
-                           {item.value}
+                        <HStack>
+                           <Text fontSize="sm">{valueState.value}</Text>
                            <Badge>
-                              {item.applicableCount}/{item.totalCount}
+                              {valueState.filteredHitCount}/
+                              {valueState.totalHitCount}
                            </Badge>
-                        </Text>
+                        </HStack>
                      </Checkbox>
                   );
                }
                return (
                   <Radio
                      key={index}
-                     value={item.value}
-                     isChecked={currentRefinements.includes(item.value)}
-                     onChange={() => set(item.value)}
+                     value={valueState.value}
+                     isChecked={currentValueIds.includes(valueState.id)}
+                     onChange={() => set(valueState.id)}
                   >
                      <Text fontSize="sm">
-                        {item.value}
-                        <Badge>
-                           {item.applicableCount}/{item.totalCount}
-                        </Badge>
+                        {valueState.value}
+                        <Badge>{valueState.filteredHitCount}</Badge>
                      </Text>
                   </Radio>
                );

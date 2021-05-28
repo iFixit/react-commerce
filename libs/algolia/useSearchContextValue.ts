@@ -1,147 +1,109 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-import { SearchIndex } from 'algoliasearch/lite';
 import * as React from 'react';
-import {
-   AlgoliaProviderProps,
-   FacetItemsByValue,
-   FacetsByName,
-   Filter,
-   SearchContext,
-   SearchParams,
-   SearchResult,
-} from './types';
-import { getFiltersString, useAlgoliaClient, useAlgoliaIndex } from './utils';
+import { search } from './search';
+import { AlgoliaProviderProps, SearchContext, SearchState } from './types';
+import { useAlgoliaClient } from './useAlgoliaClient';
+import { useAlgoliaIndex } from './useAlgoliaIndex';
 
-export function useSearchContextValue(
+export function useSearchContextValue<Hit = any>(
    props: AlgoliaProviderProps
 ): SearchContext {
-   const { appId, apiKey, defaultIndexName } = props;
+   const {
+      appId,
+      apiKey,
+      indexName,
+      onIndexNameChange,
+      initialState,
+      state: controlledState,
+      onChange,
+   } = props;
    const client = useAlgoliaClient(appId, apiKey);
-
-   const [searchParams, refine] = React.useState<SearchParams>({
-      indexName: defaultIndexName,
+   const [internalState, setInternalState] = React.useState<SearchState<Hit>>({
       query: '',
       page: 1,
-      filters: [],
+      isLoaded: false,
+      hits: {
+         byId: {},
+         allIds: [],
+      },
+      facets: {
+         byId: {},
+         allIds: [],
+      },
+      facetValues: {
+         byId: {},
+         allIds: [],
+      },
+      filters: {
+         byId: {},
+         rootIds: [],
+         allIds: [],
+      },
+      ...initialState,
    });
+   const state = React.useMemo(() => {
+      return controlledState || internalState;
+   }, [controlledState, internalState]);
+   const isControlled = controlledState != null;
+   const previousState = usePrevious(state);
+   const previousIndexName = usePrevious(indexName);
 
-   const index = useAlgoliaIndex(searchParams.indexName, client);
+   const index = useAlgoliaIndex(client, indexName);
 
-   const searchResult = useSearchResult(searchParams, index, props);
+   const setState = React.useCallback(
+      (updater: React.SetStateAction<SearchState<Hit>>) => {
+         if (isControlled) {
+            if (typeof updater === 'function') {
+               onChange?.(updater(state));
+            } else {
+               onChange?.(updater);
+            }
+         } else {
+            setInternalState(updater);
+         }
+      },
+      [isControlled, onChange, state]
+   );
+
+   React.useEffect(() => {
+      async function update() {
+         if (
+            index.indexName !== previousIndexName ||
+            previousState == null ||
+            shouldUpdateSearchResults(previousState, state)
+         ) {
+            const newState = await search(state, index);
+            setInternalState(newState);
+         }
+      }
+      update();
+   }, [state, previousState, index, previousIndexName]);
 
    const value: SearchContext = {
-      searchParams,
-      searchResult,
-      refine,
+      state,
+      setState,
       index,
    };
 
    return value;
 }
 
-function useSearchResult(
-   searchParams: SearchParams,
-   index: SearchIndex,
-   props: AlgoliaProviderProps
-): SearchResult {
-   const { virtualFilter, defaultHitPerPage } = props;
-   const [searchResult, setSearchResult] = React.useState<SearchResult>({
-      hits: [],
-      isLoaded: false,
-      numberOfHits: 0,
-      numberOfPages: 0,
-      facetsByName: {},
-   });
-
+function usePrevious<Value = any>(value: Value): Value | null {
+   const ref = React.useRef<Value | null>(null);
    React.useEffect(() => {
-      let filtersQuery: string | undefined;
-      let filters: Filter[] = [];
-      if (virtualFilter) {
-         filters.push(virtualFilter);
-      }
-      if (searchParams.filters.length > 0) {
-         filters = filters.concat(searchParams.filters);
-      }
-      if (filters.length > 0) {
-         filtersQuery = getFiltersString(filters);
-      }
-      index
-         .search(searchParams.query, {
-            distinct: 1,
-            filters: filtersQuery,
-            facets: ['*'],
-            facetingAfterDistinct: true,
-            page: searchParams.page - 1,
-            hitsPerPage: defaultHitPerPage,
-         })
-         .then((result) => {
-            setSearchResult((current) => {
-               const facetsByName = result.facets
-                  ? updateFacetsByName(current.facetsByName, result.facets)
-                  : current.facetsByName;
-               return {
-                  hits: result.hits,
-                  numberOfHits: result.nbHits,
-                  numberOfPages: result.nbPages,
-                  isLoaded: true,
-                  facetsByName,
-               };
-            });
-         })
-         .catch((error) => {
-            console.log('Ops, an error happened during search', error);
-         });
-   }, [searchParams, index, virtualFilter, defaultHitPerPage]);
-
-   return searchResult;
+      ref.current = value;
+   }, [value]);
+   return ref.current;
 }
 
-function updateFacetsByName(
-   currentFacetsByName: FacetsByName,
-   newFacets: Record<string, Record<string, number>>
-): FacetsByName {
-   const currentFacetNames = Object.keys(currentFacetsByName);
-   const newFacetNames = Object.keys(newFacets);
-   const facetNames = union(currentFacetNames, newFacetNames);
-   return facetNames.reduce((byName, name) => {
-      byName[name] = updateFacet(currentFacetsByName[name], newFacets[name]);
-      return byName;
-   }, {} as FacetsByName);
-}
-
-function updateFacet(
-   currentFacetItemsByValue: FacetItemsByValue = {},
-   newFacetItemCountByValue: Record<string, number> = {}
-): FacetItemsByValue {
-   const currentItemValues = Object.keys(currentFacetItemsByValue);
-   const newItemValues = Object.keys(newFacetItemCountByValue);
-   const itemValues = union(currentItemValues, newItemValues);
-   return itemValues.reduce((byItemValue, itemValue) => {
-      if (newFacetItemCountByValue[itemValue] == null) {
-         byItemValue[itemValue] = {
-            ...currentFacetItemsByValue[itemValue],
-            filtered: 0,
-         };
-      } else {
-         byItemValue[itemValue] = {
-            ...byItemValue[itemValue],
-            value: itemValue,
-            total:
-               currentFacetItemsByValue[itemValue]?.total ||
-               newFacetItemCountByValue[itemValue],
-            filtered: newFacetItemCountByValue[itemValue],
-         };
-      }
-      return byItemValue;
-   }, {} as FacetItemsByValue);
-}
-
-function union(...arrays: string[][]) {
-   const set: Record<string, null> = {};
-   for (let i = 0; i < arrays.length; i++) {
-      for (let j = 0; j < arrays[i].length; j++) {
-         set[arrays[i][j]] = null;
-      }
-   }
-   return Object.keys(set);
+function shouldUpdateSearchResults<Hit = any>(
+   previousState: SearchState<Hit>,
+   newState: SearchState<Hit>
+): boolean {
+   return (
+      previousState.query !== newState.query ||
+      previousState.page !== newState.page ||
+      previousState.limit !== newState.limit ||
+      previousState.rawFilters !== newState.rawFilters ||
+      previousState.filters !== newState.filters
+   );
 }

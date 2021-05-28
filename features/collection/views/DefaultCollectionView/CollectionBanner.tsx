@@ -1,5 +1,5 @@
-import { LifetimeWarrantyLogo } from '@assets/svg';
-import { Box, Button, Flex, HStack, Icon, Text } from '@chakra-ui/react';
+import { LifetimeWarranty } from '@assets/svg';
+import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -41,11 +41,14 @@ export function CollectionBanner() {
                   it—for as long as you own the iFixit tool.
                </Text>
                <Flex w="full" justify="space-between" align="center">
-                  <NextLink href="/" passHref>
+                  <NextLink
+                     href="https://www.ifixit.com/Info/Warranty"
+                     passHref
+                  >
                      <Button as="a">Learn more</Button>
                   </NextLink>
                   <Icon
-                     as={LifetimeWarrantyLogo}
+                     as={LifetimeWarranty}
                      boxSize="90px"
                      color="white"
                      display={{
@@ -56,7 +59,7 @@ export function CollectionBanner() {
                </Flex>
             </Flex>
             <Icon
-               as={LifetimeWarrantyLogo}
+               as={LifetimeWarranty}
                boxSize={{ base: '130px', md: '160px', lg: '190px' }}
                color="white"
                display={{
