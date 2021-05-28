@@ -36,7 +36,15 @@ export function CollectionBanner() {
                >
                   Lifetime guarantee
                </Text>
-               <Text color="white" maxW="500px" pr={4} mb={10}>
+               <Text
+                  color="white"
+                  maxW="500px"
+                  pr={4}
+                  mb={{
+                     base: 4,
+                     sm: 10,
+                  }}
+               >
                   We stand behind our tools. If something breaks, we’ll replace
                   it—for as long as you own the iFixit tool.
                </Text>
@@ -49,12 +57,16 @@ export function CollectionBanner() {
                   </NextLink>
                   <Icon
                      as={LifetimeWarrantyIcon}
-                     boxSize="90px"
+                     boxSize="120px"
                      color="white"
                      display={{
                         base: 'block',
                         sm: 'none',
                      }}
+                     bg="rgba(36, 44, 51, 0.09)"
+                     backdropFilter="auto"
+                     backdropBlur="16px"
+                     borderRadius="full"
                   />
                </Flex>
             </Flex>
@@ -66,6 +78,10 @@ export function CollectionBanner() {
                   base: 'none',
                   sm: 'block',
                }}
+               bg="rgba(36, 44, 51, 0.09)"
+               backdropFilter="auto"
+               backdropBlur="16px"
+               borderRadius="full"
             />
          </Flex>
       </Box>
