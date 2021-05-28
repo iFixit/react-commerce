@@ -1,5 +1,4 @@
 import {
-   Box,
    Button,
    Center,
    Heading,
@@ -17,7 +16,7 @@ import {
    ProductCardTitle,
 } from '@components/ProductCard';
 import { Hit } from '@features/collection';
-import { useSearchResult } from '@libs/algolia';
+import { useHits } from '@libs/algolia';
 import * as React from 'react';
 import { ProductViewType } from './types';
 
@@ -26,9 +25,9 @@ export type CollectionProductsProps = {
 };
 
 export function CollectionProducts({ viewType }: CollectionProductsProps) {
-   const searchResult = useSearchResult<Hit>();
+   const { hits } = useHits<Hit>();
 
-   if (searchResult.hits.length === 0) {
+   if (hits.length === 0) {
       return (
          <Center minH="300px">
             <Text>No results</Text>
@@ -46,7 +45,7 @@ export function CollectionProducts({ viewType }: CollectionProductsProps) {
             }}
             spacing={2}
          >
-            {searchResult.hits.map((hit) => (
+            {hits.map((hit) => (
                <ProductCard key={hit.handle}>
                   <ProductCardImage src={hit.product_image} alt={hit.title} />
                   <ProductCardBody>
@@ -69,8 +68,9 @@ export function CollectionProducts({ viewType }: CollectionProductsProps) {
    }
    return (
       <VStack spacing={2} align="stretch" width="full" px={10} py={4}>
-         {searchResult.hits.map((hit) => {
-            const isDiscounted = hit.compare_at_price > hit.price;
+         {hits.map((hit) => {
+            const isDiscounted =
+               hit.compare_at_price != null && hit.compare_at_price > hit.price;
             return (
                <HStack
                   key={hit.handle}

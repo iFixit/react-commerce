@@ -3,7 +3,7 @@ import { Card } from '@components/Card';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { AlgoliaProvider, Filter } from '@libs/algolia';
+import { AlgoliaProvider, SearchState } from '@libs/algolia';
 import * as React from 'react';
 import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
@@ -25,21 +25,20 @@ export function DefaultCollectionView({
       ProductViewType.List
    );
 
-   const virtualFilter = React.useMemo((): Filter => {
+   const initialState = React.useMemo((): Partial<SearchState<any>> => {
       return {
-         type: 'basic',
-         facet: 'collections',
-         value: collectionHandle,
+         rawFilters: `collections:${collectionHandle}`,
       };
    }, [collectionHandle]);
 
    return (
       <DefaultLayout title={`iFixit | ${collection.title}`}>
          <AlgoliaProvider
+            key={collectionHandle}
             appId={ALGOLIA_APP_ID}
             apiKey={ALGOLIA_API_KEY}
-            virtualFilter={virtualFilter}
-            defaultIndexName="shopify_ifixit_test_products"
+            initialState={initialState}
+            indexName="shopify_ifixit_test_products"
          >
             <VStack
                w={{

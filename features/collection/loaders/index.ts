@@ -63,7 +63,7 @@ async function loadCollections(
 
 function getChildrenHandles(metafieldParsedValue: any): string[] {
    if (Array.isArray(metafieldParsedValue.children)) {
-      return metafieldParsedValue.children.map((handle) =>
+      return metafieldParsedValue.children.map((handle: string) =>
          handle.toLowerCase()
       );
    }
@@ -72,7 +72,7 @@ function getChildrenHandles(metafieldParsedValue: any): string[] {
 
 function getAncestorHandles(metafieldParsedValue: any): string[] {
    if (Array.isArray(metafieldParsedValue.ancestors)) {
-      return metafieldParsedValue.ancestors.map((handle) =>
+      return metafieldParsedValue.ancestors.map((handle: string) =>
          handle.toLowerCase()
       );
    }

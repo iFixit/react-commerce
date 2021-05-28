@@ -40,7 +40,7 @@ export function CollectionSubcategories({
                      transition="all 300ms"
                   >
                      <Flex direction="column">
-                        {collection.children.length <= 10 && (
+                        {collection.children.length <= 10 && child.image && (
                            <Image
                               objectFit="cover"
                               h="180px"
@@ -52,7 +52,7 @@ export function CollectionSubcategories({
                               }}
                            />
                         )}
-                        <Center py={4}>
+                        <Center py={4} px={4}>
                            <NextLink
                               href={`/collections/${child.handle}`}
                               passHref

@@ -8,7 +8,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { Hit } from '@features/collection';
-import { useSearchResult } from '@libs/algolia';
+import { useHits } from '@libs/algolia';
 import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
@@ -24,7 +24,7 @@ export function CollectionToolbar({
    productViewType = ProductViewType.List,
    onProductViewTypeChange,
 }: CollectionToolbarProps) {
-   const searchResult = useSearchResult<Hit>();
+   const { numberOfHits } = useHits<Hit>();
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
    const onChangeProductViewType = React.useCallback(
       (newViewType: ProductViewType) => {
@@ -41,8 +41,8 @@ export function CollectionToolbar({
          direction={{ base: 'column', sm: 'row' }}
       >
          <Text textAlign="center" color="gray.500" fontWeight="bold">
-            {searchResult.numberOfHits}
-            {searchResult.numberOfHits === 1 ? ' result' : ' results'}
+            {numberOfHits}
+            {numberOfHits === 1 ? ' result' : ' results'}
          </Text>
          <HStack px={{ base: 4, sm: 0 }}>
             <FiltersModal

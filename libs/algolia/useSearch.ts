@@ -1,24 +1,24 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
+import produce from 'immer';
 import * as React from 'react';
 import { useSearchContext } from './context';
+import { useDebounce } from './utils';
 
+const DEBOUNCE_INTERVAL_MILLIS = 300;
 export function useSearch(): [
    query: string,
    search: (newSearch: string) => void
 ] {
-   const context = useSearchContext();
+   const { state, setState } = useSearchContext();
+   const [query, setQuery] = React.useState(state.query);
+   const debouncedQuery = useDebounce(query, DEBOUNCE_INTERVAL_MILLIS);
 
-   const search = React.useCallback(
-      (newSearch: string) => {
-         context.refine((current) => {
-            return {
-               ...current,
-               query: newSearch,
-            };
-         });
-      },
-      [context]
-   );
+   React.useEffect(() => {
+      setState(
+         produce((draftState) => {
+            draftState.query = debouncedQuery;
+         })
+      );
+   }, [debouncedQuery, setState]);
 
-   return [context.searchParams.query, search];
+   return [query, setQuery];
 }
