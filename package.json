@@ -31,6 +31,7 @@
       "@emotion/styled": "11.3.0",
       "@ifixit/react-components": "0.2.5",
       "algoliasearch": "4.9.1",
+      "dayjs": "1.10.5",
       "framer-motion": "4.1.11",
       "immer": "9.0.2",
       "next": "10.2.0",

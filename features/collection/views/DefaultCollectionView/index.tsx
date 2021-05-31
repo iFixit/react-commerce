@@ -9,6 +9,7 @@ import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
 import { CollectionPagination } from './CollectionPagination';
 import { CollectionProducts } from './CollectionProducts';
+import CollectionRelatedNewsStories from './CollectionRelatedNewsStories';
 import { CollectionSubcategories } from './CollectionSubcategories';
 import { CollectionToolbar } from './CollectionToolbar';
 import { ProductViewType } from './types';
@@ -83,6 +84,7 @@ export function DefaultCollectionView({
                      </Card>
                   </HStack>
                </VStack>
+               <CollectionRelatedNewsStories />
             </VStack>
          </AlgoliaProvider>
       </DefaultLayout>

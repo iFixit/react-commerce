@@ -12,7 +12,7 @@ export interface Image {
    alt?: string;
 }
 
-export interface Hit {
+export interface ProductHit {
    title: string;
    handle: string;
    price: number;
@@ -20,4 +20,24 @@ export interface Hit {
    sku: string;
    product_image: string;
    body_html_safe?: string;
+}
+
+export interface NewsStoryHit {
+   objectID: string;
+   post_title: string;
+   post_date: number;
+   images: Record<string, NewsStoryHitImage>;
+   permalink: string;
+   taxonomies: NewStoryTaxonomies;
+}
+
+export interface NewsStoryHitImage {
+   url: string;
+   width: number;
+   height: number;
+}
+
+export interface NewStoryTaxonomies {
+   category: string[];
+   language: string[];
 }

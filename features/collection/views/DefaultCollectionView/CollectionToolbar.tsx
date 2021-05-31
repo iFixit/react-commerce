@@ -7,7 +7,7 @@ import {
    Stack,
    Text,
 } from '@chakra-ui/react';
-import { Hit } from '@features/collection';
+import { ProductHit } from '@features/collection';
 import { useHits } from '@libs/algolia';
 import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
@@ -24,7 +24,7 @@ export function CollectionToolbar({
    productViewType = ProductViewType.List,
    onProductViewTypeChange,
 }: CollectionToolbarProps) {
-   const { numberOfHits } = useHits<Hit>();
+   const { numberOfHits } = useHits<ProductHit>();
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
    const onChangeProductViewType = React.useCallback(
       (newViewType: ProductViewType) => {

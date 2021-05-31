@@ -15,7 +15,7 @@ import {
    ProductCardPrice,
    ProductCardTitle,
 } from '@components/ProductCard';
-import { Hit } from '@features/collection';
+import { ProductHit } from '@features/collection';
 import { useHits } from '@libs/algolia';
 import * as React from 'react';
 import { ProductViewType } from './types';
@@ -25,7 +25,7 @@ export type CollectionProductsProps = {
 };
 
 export function CollectionProducts({ viewType }: CollectionProductsProps) {
-   const { hits } = useHits<Hit>();
+   const { hits } = useHits<ProductHit>();
 
    if (hits.length === 0) {
       return (
