@@ -66,11 +66,11 @@ export function DefaultCollectionView({
                      productViewType={productViewType}
                      onProductViewTypeChange={setProductViewType}
                   />
-                  <HStack align="flex-start" spacing={{ base: 0, sm: 4 }}>
+                  <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
                      <Card
                         p={6}
                         width="250px"
-                        display={{ base: 'none', sm: 'block' }}
+                        display={{ base: 'none', md: 'block' }}
                      >
                         <CollectionFilters />
                      </Card>

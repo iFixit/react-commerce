@@ -55,13 +55,13 @@ export function CollectionToolbar({
                variant="outline"
                size="md"
                bg="white"
-               display={{ base: 'flex', sm: 'none' }}
+               display={{ base: 'flex', md: 'none' }}
                onClick={() => setIsFilterModalOpen(true)}
             />
             <Button
                variant="outline"
                bg="white"
-               display={{ base: 'block', sm: 'none' }}
+               display={{ base: 'block', md: 'none' }}
                flex={1}
                onClick={() => setIsFilterModalOpen(true)}
             >
@@ -70,13 +70,13 @@ export function CollectionToolbar({
             <Button
                variant="outline"
                bg="white"
-               display={{ base: 'block', sm: 'none' }}
+               display={{ base: 'block', md: 'none' }}
                flex={1}
                onClick={() => alert('not implemented yet')}
             >
                Sorting
             </Button>
-            <SearchInput maxW={300} display={{ base: 'none', sm: 'block' }} />
+            <SearchInput maxW={300} display={{ base: 'none', md: 'block' }} />
             <ButtonGroup
                size="sm"
                isAttached
