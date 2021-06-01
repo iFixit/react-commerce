@@ -34,7 +34,6 @@ export default function CollectionRelatedNewsStories() {
 
 function RelatedNewsStories() {
    const { hits } = useHits<NewsStoryHit>();
-   console.log(hits);
    if (hits.length > 0) {
       return (
          <VStack
