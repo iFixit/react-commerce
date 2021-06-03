@@ -11,7 +11,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { IFIXIT_API_ORIGIN } from '@config/env';
+import { SubscriptionStatus, useSubscribeToNewsletter } from '@libs/newsletter';
 import * as React from 'react';
 import { RiCheckFill } from 'react-icons/ri';
 
@@ -19,43 +19,21 @@ export interface NewsletterSectionProps {
    className?: string;
 }
 
-enum FormState {
-   Idle = 'idle',
-   Subscribing = 'subscribing',
-   Subscribed = 'subscribed',
-}
-
-/**
- * A regex to validate email against simple mistakes
- */
-const EMAIL_VALIDATION_REGEX = /^\S+@\S+\.\S+$/;
-
 export const NewsletterSection = chakra(
    ({ className }: NewsletterSectionProps) => {
       const inputRef = React.useRef<HTMLInputElement>(null);
-      const [error, setError] = React.useState<string | undefined>();
-      const [state, setState] = React.useState(FormState.Idle);
+      const [subscription, subscribe] = useSubscribeToNewsletter();
 
-      const onSubscribe = React.useCallback(async () => {
-         if (inputRef.current) {
-            const email = inputRef.current.value;
-            if (EMAIL_VALIDATION_REGEX.test(email)) {
-               setState(FormState.Subscribing);
-               try {
-                  await subscribeToNewsletter(email);
-                  setState(FormState.Subscribed);
-                  if (error) {
-                     setError(undefined);
-                  }
-               } catch (error) {
-                  setError(error.message || 'server error');
-                  setState(FormState.Idle);
-               }
-            } else {
-               setError('Please insert a valid email');
+      const onSubscribe = React.useCallback(
+         async (event: React.FormEvent<HTMLDivElement>) => {
+            event.preventDefault();
+            if (inputRef.current) {
+               const email = inputRef.current.value;
+               subscribe(email);
             }
-         }
-      }, [error]);
+         },
+         [subscribe]
+      );
 
       return (
          <Stack
@@ -90,12 +68,7 @@ export const NewsletterSection = chakra(
             }}
          >
             <HStack spacing="8">
-               <Image
-                  boxSize="95px"
-                  // objectFit="cover"
-                  src="/images/newsletter-icon.png"
-                  alt=""
-               />
+               <Image boxSize="95px" src="/images/newsletter-icon.png" alt="" />
                <VStack align="left" spacing="1">
                   <Text fontSize="xl" fontWeight="bold">
                      Stay in the loop
@@ -104,6 +77,7 @@ export const NewsletterSection = chakra(
                </VStack>
             </HStack>
             <Stack
+               as="form"
                spacing={{
                   base: '3',
                   md: '6',
@@ -113,12 +87,13 @@ export const NewsletterSection = chakra(
                   sm: 'row',
                }}
                flex="1"
+               onSubmit={onSubscribe}
             >
-               <FormControl isInvalid={error != null}>
+               <FormControl isInvalid={subscription.error != null}>
                   <Input
                      ref={inputRef}
                      type="email"
-                     disabled={state !== FormState.Idle}
+                     disabled={subscription.status !== SubscriptionStatus.Idle}
                      placeholder="Enter your email"
                      _placeholder={{
                         color: 'brand.100',
@@ -145,15 +120,18 @@ export const NewsletterSection = chakra(
                      errorBorderColor="yellow.500"
                   />
                   <FormErrorMessage color="yellow.500" fontWeight="semibold">
-                     {error}
+                     {subscription.error}
                   </FormErrorMessage>
                </FormControl>
                <Button
-                  isLoading={state === FormState.Subscribing}
+                  type="submit"
+                  isLoading={
+                     subscription.status === SubscriptionStatus.Subscribing
+                  }
                   loadingText="Subscribing"
-                  disabled={state !== FormState.Idle}
+                  disabled={subscription.status !== SubscriptionStatus.Idle}
                   leftIcon={
-                     state === FormState.Subscribed ? (
+                     subscription.status === SubscriptionStatus.Subscribed ? (
                         <Icon as={RiCheckFill} boxSize="5" mb="-2px" />
                      ) : undefined
                   }
@@ -186,33 +164,13 @@ export const NewsletterSection = chakra(
                      md: '200px',
                      lg: 'unset',
                   }}
-                  onClick={onSubscribe}
                >
-                  {state === FormState.Idle ? 'Subscribe' : 'Subscribed!'}
+                  {subscription.status === SubscriptionStatus.Idle
+                     ? 'Subscribe'
+                     : 'Subscribed!'}
                </Button>
             </Stack>
          </Stack>
       );
    }
 );
-
-async function subscribeToNewsletter(email: string): Promise<void> {
-   const response = await fetch(
-      `${IFIXIT_API_ORIGIN}/api/2.0/cart/newsletter/subscribe`,
-      {
-         method: 'POST',
-         body: JSON.stringify({
-            email,
-         }),
-      }
-   );
-   if (response.status >= 200 && response.status < 300) {
-      const result = await response.json();
-      console.log('RESULT', result);
-   } else {
-      console.log(response);
-      const error = await response.text();
-      console.log('ERROR', error);
-      throw new Error('Error trying to subscribe to newsletter.');
-   }
-}
