@@ -1,5 +1,6 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
+import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -85,6 +86,7 @@ export function DefaultCollectionView({
                   </HStack>
                </VStack>
                <CollectionBanner />
+               <NewsletterSection />
             </VStack>
          </AlgoliaProvider>
       </DefaultLayout>

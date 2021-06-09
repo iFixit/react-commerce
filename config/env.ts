@@ -15,6 +15,11 @@ export const SHOPIFY_STOREFRONT_ACCESS_TOKEN = checkEnv(
    'NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN'
 );
 
+export const IFIXIT_API_ORIGIN = checkEnv(
+   process.env.NEXT_PUBLIC_IFIXIT_API_ORIGIN,
+   'NEXT_PUBLIC_IFIXIT_API_ORIGIN'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       throw new Error(`environment variable "${envName}" is not defined`);
