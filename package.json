@@ -12,7 +12,8 @@
       "lint": "eslint . --ext ts --ext tsx --ext js",
       "test": "jest",
       "test-all": "npm run lint && npm run type-check && npm run test",
-      "cypress:dev": "cypress open",
+      "cypress:open": "cypress open",
+      "cypress:run": "cypress run",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "husky": {
