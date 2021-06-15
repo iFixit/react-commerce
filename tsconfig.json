@@ -12,16 +12,18 @@
       "module": "esnext",
       "moduleResolution": "node",
       "resolveJsonModule": true,
-      "isolatedModules": true,
       "jsx": "preserve",
+      "isolatedModules": true,
       "paths": {
          "@config/*": ["config/*"],
          "@assets/*": ["assets/*"],
          "@libs/*": ["libs/*"],
          "@layouts/*": ["layouts/*"],
          "@features/*": ["features/*"],
-         "@components/*": ["components/*"]
-      }
+         "@components/*": ["components/*"],
+         "testUtils": ["./test/utils/testUtils"]
+      },
+      "types": ["cypress", "@testing-library/cypress"]
    },
    "exclude": ["node_modules", ".next", "out"],
    "include": [
@@ -29,6 +31,7 @@
       "**/*.ts",
       "**/*.tsx",
       "**/*.js",
-      "@types/index.d.ts"
+      "@types/index.d.ts",
+      "./test/jest-setup.ts"
    ]
 }
