@@ -1,7 +1,7 @@
 import { SearchIndex } from 'algoliasearch/lite';
 import produce from 'immer';
 import { FacetValueState, SearchState } from './types';
-import { generateId, mergeUnique } from './utils';
+import { filterListNullableItems, generateId, mergeUnique } from './utils';
 
 export async function search<Hit>(
    state: SearchState<Hit>,
@@ -81,10 +81,12 @@ export function getFiltersQuery(
          filters.push(state.rawFilters);
       }
       if (state.filters?.rootIds.length > 0) {
-         const rootQueries = state.filters.rootIds.map((id) =>
-            getFiltersQuery(state, id)
+         const rootQueries = filterListNullableItems(
+            state.filters.rootIds.map((id) => getFiltersQuery(state, id))
          );
-         filters.push(rootQueries.join(' AND '));
+         if (rootQueries.length > 0) {
+            filters.push(rootQueries.join(' AND '));
+         }
       }
       if (filters.length > 0) {
          return filters.join(' AND ');
@@ -97,25 +99,31 @@ export function getFiltersQuery(
    }
    switch (filter.type) {
       case 'or': {
-         return `(${filter.filterIds
-            .map((id) => getFiltersQuery(state, id))
-            .join(' OR ')})`;
+         if (filter.filterIds.length === 0) {
+            return undefined;
+         }
+         return `(${filterListNullableItems(
+            filter.filterIds.map((id) => getFiltersQuery(state, id))
+         ).join(' OR ')})`;
       }
       case 'and': {
-         return `(${filter.filterIds
-            .map((id) => getFiltersQuery(state, id))
-            .join(' AND ')})`;
+         if (filter.filterIds.length === 0) {
+            return undefined;
+         }
+         return `(${filterListNullableItems(
+            filter.filterIds.map((id) => getFiltersQuery(state, id))
+         ).join(' AND ')})`;
       }
       case 'basic': {
-         const facet = state.facets.byId[filter.facetId].name;
+         const facet = state.facets.byId[filter.facetName].name;
          const value = state.facetValues.byId[filter.valueId].value;
          return `"${facet}":"${value}"`;
       }
       case 'numeric-comparison': {
-         return `"${filter.facet}" ${filter.operator} ${filter.value}`;
+         return `"${filter.facetName}" ${filter.operator} ${filter.value}`;
       }
       case 'numeric-range': {
-         return `"${filter.facet}":${filter.lowerValue} TO ${filter.higherValue}`;
+         return `"${filter.facetName}":${filter.range.min} TO ${filter.range.max}`;
       }
    }
 }

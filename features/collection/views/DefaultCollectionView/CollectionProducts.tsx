@@ -16,7 +16,7 @@ import {
    ProductCardTitle,
 } from '@components/ProductCard';
 import { Hit } from '@features/collection';
-import { useHits } from '@libs/algolia';
+import { useHits } from '@lib/algolia';
 import * as React from 'react';
 import { ProductViewType } from './types';
 

@@ -1,5 +1,9 @@
 import { SearchIndex } from 'algoliasearch/lite';
 
+export type Maybe<T> = T | null;
+
+export type NullablePartial<T> = { [P in keyof T]?: T[P] | undefined | null };
+
 export type AlgoliaProviderProps<Hit = any> = {
    appId: string;
    apiKey: string;
@@ -27,19 +31,15 @@ export interface SearchState<Hit = any> {
    hits: Entity<Hit>;
    facets: Entity<FacetState>;
    facetValues: Entity<FacetValueState>;
-   filters: FilterEntity;
+   filters: Entity<Filter, { rootIds: string[] }>;
 }
 
-export interface Entity<Type = any> {
+type ObjectLiteral = { [key: string]: any };
+
+export type Entity<Type = any, Extension = ObjectLiteral> = {
    byId: Record<string, Type>;
    allIds: string[];
-}
-
-export interface FilterEntity {
-   byId: Record<string, Filter>;
-   rootIds: string[];
-   allIds: string[];
-}
+} & Extension;
 
 export interface FacetState {
    name: string;
@@ -64,38 +64,47 @@ export type ListFilter = OrFilter | AndFilter;
 
 export type OrFilter = {
    id: string;
+   parentId?: string;
    type: 'or';
    filterIds: string[];
 };
 
 export type AndFilter = {
    id: string;
+   parentId?: string;
    type: 'and';
    filterIds: string[];
 };
 
 export type BasicFilter = {
    id: string;
+   parentId?: string;
    type: 'basic';
-   facetId: string;
+   facetName: string;
    valueId: string;
 };
 
 export type NumericComparisonFilter = {
    id: string;
+   parentId?: string;
    type: 'numeric-comparison';
-   facet: string;
+   facetName: string;
    operator: NumericComparisonOperator;
    value: number;
 };
 
 export type NumericRangeFilter = {
    id: string;
+   parentId?: string;
    type: 'numeric-range';
-   facet: string;
-   lowerValue: number;
-   higherValue: number;
+   facetName: string;
+   range: Range;
 };
+
+export interface Range {
+   min: number;
+   max: number;
+}
 
 export enum NumericComparisonOperator {
    LessThan = '<',

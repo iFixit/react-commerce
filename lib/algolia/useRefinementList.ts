@@ -8,14 +8,10 @@ import produce from 'immer';
 import * as React from 'react';
 import { useSearchContext } from './context';
 import { BasicFilter, FacetValueState, ListFilter, SearchState } from './types';
-import { createBasicFilter, generateId, mergeUnique } from './utils';
+import { createBasicFilter, mergeUnique } from './utils';
 
 export type UseRefinementListOptions = {
    refinementType?: ListFilter['type'];
-   /**
-    * The id of the filter. Defaults to facetName.
-    */
-   id?: string;
 };
 
 export type UseRefinementList = {
@@ -36,15 +32,12 @@ export type RefinementListItem = {
 
 export function useRefinementList(
    facetName: string,
-   {
-      refinementType = 'or',
-      id: listFilterId = generateId('list', facetName),
-   }: UseRefinementListOptions = {}
+   { refinementType = 'or' }: UseRefinementListOptions = {}
 ): UseRefinementList {
    const { state, setState } = useSearchContext();
 
    const currentValueIds = React.useMemo<string[]>(() => {
-      const listFilter = state.filters.byId[listFilterId];
+      const listFilter = state.filters.byId[facetName];
       if (listFilter == null) {
          return [];
       }
@@ -58,7 +51,7 @@ export function useRefinementList(
       throw new Error(
          `useRefinementList: unexpected filter type "${listFilter.type}". Allowed values are "and", "or"`
       );
-   }, [listFilterId, state.filters.byId]);
+   }, [facetName, state.filters.byId]);
 
    const values = React.useMemo<FacetValueState[]>(() => {
       const facet = state.facets.byId[facetName];
@@ -69,21 +62,21 @@ export function useRefinementList(
       (valueId: string) => {
          setState(
             produce((draftState) => {
-               if (!draftState.filters.rootIds.includes(listFilterId)) {
-                  draftState.filters.rootIds.push(listFilterId);
-                  draftState.filters.allIds.push(listFilterId);
+               if (!draftState.filters.rootIds.includes(facetName)) {
+                  draftState.filters.rootIds.push(facetName);
+                  draftState.filters.allIds.push(facetName);
                }
                const newItemFilter = createBasicFilter(
                   facetName,
                   valueId,
-                  listFilterId
+                  facetName
                );
                const filterItemIds = getListFilterItemIds(
                   draftState,
-                  listFilterId
+                  facetName
                );
-               draftState.filters.byId[listFilterId] = {
-                  id: listFilterId,
+               draftState.filters.byId[facetName] = {
+                  id: facetName,
                   filterIds: mergeUnique(filterItemIds, [newItemFilter.id]),
                   type: refinementType,
                };
@@ -92,24 +85,24 @@ export function useRefinementList(
             })
          );
       },
-      [facetName, listFilterId, refinementType, setState]
+      [facetName, refinementType, setState]
    );
 
    const set = React.useCallback(
       (valueId: string) => {
          setState(
             produce((draftState) => {
-               if (!draftState.filters.rootIds.includes(listFilterId)) {
-                  draftState.filters.rootIds.push(listFilterId);
-                  draftState.filters.allIds.push(listFilterId);
+               if (!draftState.filters.rootIds.includes(facetName)) {
+                  draftState.filters.rootIds.push(facetName);
+                  draftState.filters.allIds.push(facetName);
                }
                const newItemFilter = createBasicFilter(
                   facetName,
                   valueId,
-                  listFilterId
+                  facetName
                );
-               draftState.filters.byId[listFilterId] = {
-                  id: listFilterId,
+               draftState.filters.byId[facetName] = {
+                  id: facetName,
                   filterIds: [newItemFilter.id],
                   type: refinementType,
                };
@@ -118,7 +111,7 @@ export function useRefinementList(
             })
          );
       },
-      [facetName, listFilterId, refinementType, setState]
+      [facetName, refinementType, setState]
    );
 
    const clear = React.useCallback(
@@ -126,13 +119,13 @@ export function useRefinementList(
          setState(
             produce((draftState) => {
                const listFilter = draftState.filters.byId[
-                  listFilterId
+                  facetName
                ] as ListFilter;
                if (valueId) {
                   const itemFilter = createBasicFilter(
                      facetName,
                      valueId,
-                     listFilterId
+                     facetName
                   );
                   delete draftState.filters.byId[itemFilter.id];
                   draftState.filters.allIds = draftState.filters.allIds.filter(
@@ -162,24 +155,20 @@ export function useRefinementList(
             })
          );
       },
-      [facetName, listFilterId, setState]
+      [facetName, setState]
    );
 
    const toggle = React.useCallback(
       (valueId: string) => {
-         const newItemFilter = createBasicFilter(
-            facetName,
-            valueId,
-            listFilterId
-         );
-         const filterItemIds = getListFilterItemIds(state, listFilterId);
+         const newItemFilter = createBasicFilter(facetName, valueId, facetName);
+         const filterItemIds = getListFilterItemIds(state, facetName);
          if (filterItemIds.includes(newItemFilter.id)) {
             clear(valueId);
          } else {
             add(valueId);
          }
       },
-      [add, clear, facetName, listFilterId, state]
+      [add, clear, facetName, state]
    );
 
    return {
