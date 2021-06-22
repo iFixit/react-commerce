@@ -31,7 +31,6 @@ export function useDebouncedCallback<Args extends any[]>(
 
       cleanup();
 
-      // start waiting again
       timeoutRef.current = setTimeout(execute, wait);
    };
 }

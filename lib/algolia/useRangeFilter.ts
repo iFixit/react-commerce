@@ -13,13 +13,15 @@ import {
    createNumericComparisonFilter,
    createNumericRangeFilter,
    isBoundedRange,
+   isInvalidRange,
+   isSameRange,
 } from './utils';
 
 export type SetNumericRange = React.Dispatch<
    React.SetStateAction<NullablePartial<Range>>
 >;
 
-export function useRangeInput(
+export function useRangeFilter(
    name: string
 ): [NullablePartial<Range>, SetNumericRange] {
    const { state, setState } = useSearchContext();
@@ -37,6 +39,12 @@ export function useRangeInput(
                const draftRange = getRange(filter);
                const newRange =
                   typeof updater === 'function' ? updater(draftRange) : updater;
+               if (
+                  isInvalidRange(newRange) ||
+                  isSameRange(newRange, draftRange)
+               ) {
+                  return;
+               }
                let newFilter:
                   | NumericComparisonFilter
                   | NumericRangeFilter

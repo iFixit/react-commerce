@@ -105,6 +105,10 @@ export function isSameRange(
    return a.min === b.min && a.max === b.max;
 }
 
+export function isInvalidRange(range: NullablePartial<Range>): boolean {
+   return range.min != null && range.max != null && range.min > range.max;
+}
+
 export function clearFilter(
    state: SearchState,
    filtersIds?: string[]
