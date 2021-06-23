@@ -72,12 +72,7 @@ export function CollectionProducts({ viewType }: CollectionProductsProps) {
             const isDiscounted =
                hit.compare_at_price != null && hit.compare_at_price > hit.price;
             return (
-               <HStack
-                  key={hit.handle}
-                  justify="space-between"
-                  spacing={4}
-                  py={4}
-               >
+               <HStack key={hit.handle} spacing={4} py={4}>
                   <Img
                      boxSize="160px"
                      flexShrink={0}
