@@ -34,3 +34,11 @@ export function useDebouncedCallback<Args extends any[]>(
       timeoutRef.current = setTimeout(execute, wait);
    };
 }
+
+export function useDerivedState<T = any>(compute: (value: T | undefined) => T) {
+   const stateRef = React.useRef<T>();
+
+   stateRef.current = compute(stateRef.current);
+
+   return stateRef.current;
+}

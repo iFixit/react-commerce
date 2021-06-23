@@ -3,9 +3,9 @@ import { Facet, FacetValueState, useFacets } from '@lib/algolia';
 import { capitalize } from '@lib/utils';
 import React from 'react';
 import { ClearButton } from './ClearButton';
+import { FilterList } from './FilterList';
 import { FilterSection, FilterSectionTitle } from './FilterSection';
-import { RangeInput } from './RangeInput';
-import { RefinementList } from './RefinementList';
+import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
 
 interface CollectionFiltersProps {
    className?: string;
@@ -39,22 +39,30 @@ export const CollectionFilters = chakra(
                      <FilterSection key={facet.name}>
                         <FilterSectionTitle>{name}</FilterSectionTitle>
                         <Divider />
-                        <RefinementList
-                           name={facet.name}
-                           multiple
-                           sortItems={sortByPriceRange}
-                           renderItem={(item, index, list) => {
-                              const [min, max] = parseRange(item.value);
-                              if (index === 0) {
-                                 return `Under $${max}`;
-                              }
-                              if (index === list.length - 1) {
-                                 return `$${min} +`;
-                              }
-                              return `$${min} - $${max}`;
-                           }}
-                        />
-                        <RangeInput name="price" />
+                        <RangeFilter>
+                           <RangeFilterList
+                              facetName={facet.name}
+                              multiple
+                              sortItems={sortByPriceRange}
+                              renderItem={(item, index, list) => {
+                                 const [min, max] = parseRange(item.value);
+                                 if (index === 0) {
+                                    return `Under $${max}`;
+                                 }
+                                 if (index === list.length - 1) {
+                                    return `$${min} +`;
+                                 }
+                                 return `$${min} - $${max}`;
+                              }}
+                           />
+                           <RangeFilterInput
+                              facetName="price"
+                              minFieldPrefix="$"
+                              minFieldPlaceholder="Min"
+                              maxFieldPrefix="$"
+                              maxFieldPlaceholder="Max"
+                           />
+                        </RangeFilter>
                         <ClearButton onlyFacetNames={['price', 'price_range']}>
                            clear
                         </ClearButton>
@@ -65,9 +73,9 @@ export const CollectionFilters = chakra(
                   <FilterSection key={facet.name}>
                      <FilterSectionTitle>{name}</FilterSectionTitle>
                      <Divider />
-                     <RefinementList
+                     <FilterList
                         key={facet.name}
-                        name={facet.name}
+                        facetName={facet.name}
                         multiple
                      />
                      <ClearButton onlyFacetNames={facet.name}>

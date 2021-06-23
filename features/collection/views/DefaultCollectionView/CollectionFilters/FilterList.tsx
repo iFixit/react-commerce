@@ -1,9 +1,14 @@
 import { Checkbox, Radio, Text, VStack } from '@chakra-ui/react';
-import { FacetValueState, ListFilter, useRefinementList } from '@lib/algolia';
+import {
+   FacetValueState,
+   ListFilter,
+   useFacetFilterList,
+   useFacetValues,
+} from '@lib/algolia';
 import * as React from 'react';
 
-export type RefinementListProps = {
-   name: string;
+export type FilterListProps = {
+   facetName: string;
    type?: ListFilter['type'];
    multiple?: boolean;
    sortItems?(a: FacetValueState, b: FacetValueState): number;
@@ -14,19 +19,17 @@ export type RefinementListProps = {
    ): React.ReactNode;
 };
 
-export function RefinementList({
-   name,
+export function FilterList({
+   facetName,
    type = 'or',
    multiple = false,
    renderItem,
    sortItems = defaultSortItems,
-}: RefinementListProps) {
-   const { isLoaded, values, currentValueIds, toggle, set } = useRefinementList(
-      name,
-      {
-         refinementType: type,
-      }
-   );
+}: FilterListProps) {
+   const { isLoaded, values } = useFacetValues(facetName);
+   const { selectedValueIds, toggle, set } = useFacetFilterList(facetName, {
+      filterType: type,
+   });
 
    if (!isLoaded) {
       return null;
@@ -41,7 +44,7 @@ export function RefinementList({
                   return (
                      <Checkbox
                         key={index}
-                        isChecked={currentValueIds.includes(item.id)}
+                        isChecked={selectedValueIds.includes(item.id)}
                         onChange={() => toggle(item.id)}
                      >
                         <Text fontSize="sm">
@@ -56,7 +59,7 @@ export function RefinementList({
                   <Radio
                      key={index}
                      value={item.value}
-                     isChecked={currentValueIds.includes(item.id)}
+                     isChecked={selectedValueIds.includes(item.id)}
                      onChange={() => set(item.id)}
                   >
                      <Text fontSize="sm">

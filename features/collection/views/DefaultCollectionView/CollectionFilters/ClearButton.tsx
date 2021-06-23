@@ -1,6 +1,5 @@
 import { Button, Collapse } from '@chakra-ui/react';
-import { useSearchContext } from '@lib/algolia';
-import { clearFilter } from '@lib/algolia/utils';
+import { useClearFilter, useSearchContext } from '@lib/algolia';
 import * as React from 'react';
 
 export interface ClearButtonProps {
@@ -11,7 +10,8 @@ export function ClearButton({
    onlyFacetNames,
    children,
 }: React.PropsWithChildren<ClearButtonProps>) {
-   const { state, setState } = useSearchContext();
+   const { state } = useSearchContext();
+   const clear = useClearFilter();
 
    const isFiltered = React.useMemo(() => {
       if (onlyFacetNames == null) {
@@ -26,16 +26,8 @@ export function ClearButton({
    }, [state.filters.rootIds, onlyFacetNames]);
 
    const handleClear = React.useCallback(() => {
-      setState((state) => {
-         if (onlyFacetNames == null) {
-            return clearFilter(state);
-         }
-         if (typeof onlyFacetNames === 'string') {
-            return clearFilter(state, [onlyFacetNames]);
-         }
-         return clearFilter(state, onlyFacetNames);
-      });
-   }, [setState, onlyFacetNames]);
+      clear(onlyFacetNames);
+   }, [clear, onlyFacetNames]);
 
    return (
       <Collapse in={isFiltered} animateOpacity>
