@@ -3,7 +3,7 @@ import {
    PaginationButton,
    PaginationItem,
 } from '@ifixit/react-components';
-import { usePagination } from '@libs/algolia';
+import { usePagination } from '@lib/algolia';
 import * as React from 'react';
 import {
    HiChevronDoubleLeft,

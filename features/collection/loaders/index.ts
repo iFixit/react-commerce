@@ -1,5 +1,5 @@
 import { SHOPIFY_DOMAIN, SHOPIFY_STOREFRONT_ACCESS_TOKEN } from '@config/env';
-import { StorefrontClient } from '@libs/storefrontClient';
+import { StorefrontClient } from '@lib/storefrontClient';
 import { Collection } from '../types';
 
 export async function loadCollection(

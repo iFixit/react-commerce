@@ -4,7 +4,7 @@ import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { AlgoliaProvider, SearchState } from '@libs/algolia';
+import { AlgoliaProvider, SearchState } from '@lib/algolia';
 import * as React from 'react';
 import { CollectionBanner } from './CollectionBanner';
 import { CollectionFilters } from './CollectionFilters';

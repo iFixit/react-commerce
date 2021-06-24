@@ -17,7 +17,7 @@
       "paths": {
          "@config/*": ["config/*"],
          "@assets/*": ["assets/*"],
-         "@libs/*": ["libs/*"],
+         "@lib/*": ["lib/*"],
          "@layouts/*": ["layouts/*"],
          "@features/*": ["features/*"],
          "@components/*": ["components/*"],
