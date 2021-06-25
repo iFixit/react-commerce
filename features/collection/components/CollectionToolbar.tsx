@@ -14,7 +14,7 @@ import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { FiltersModal } from './FiltersModal';
 import { SearchInput } from './SearchInput';
-import { ProductViewType } from './types';
+import { ProductViewType } from './CollectionProducts';
 
 export type CollectionToolbarProps = {
    productViewType: ProductViewType;

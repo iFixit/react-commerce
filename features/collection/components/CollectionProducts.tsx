@@ -18,7 +18,11 @@ import {
 import { Hit } from '@features/collection';
 import { useHits } from '@lib/algolia';
 import * as React from 'react';
-import { ProductViewType } from './types';
+
+export enum ProductViewType {
+   Grid = 'grid',
+   List = 'list',
+}
 
 export type CollectionProductsProps = {
    viewType: ProductViewType;

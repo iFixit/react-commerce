@@ -3,17 +3,19 @@ import { Card } from '@components/Card';
 import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
+import {
+   CollectionFilters,
+   CollectionPagination,
+   CollectionProducts,
+   CollectionToolbar,
+   ProductViewType,
+} from '@features/collection/components';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { AlgoliaProvider, SearchState } from '@lib/algolia';
 import * as React from 'react';
 import { CollectionBanner } from './CollectionBanner';
-import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
-import { CollectionPagination } from './CollectionPagination';
-import { CollectionProducts } from './CollectionProducts';
 import { CollectionSubcategories } from './CollectionSubcategories';
-import { CollectionToolbar } from './CollectionToolbar';
-import { ProductViewType } from './types';
 
 export type DefaultCollectionViewProps = {
    collection: Collection;
