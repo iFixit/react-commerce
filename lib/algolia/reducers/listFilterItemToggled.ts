@@ -30,6 +30,5 @@ export function listFilterItemToggled(
       filterId: action.filterId,
       filterType: action.filterType,
       valueId: action.valueId,
-      clearFilterIds: action.clearFilterIds,
    });
 }
