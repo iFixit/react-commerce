@@ -12,6 +12,9 @@ export function useFacetValues(facetName: string): UseFacetValues {
 
    const values = React.useMemo<FacetValueState[]>(() => {
       const facet = state.facets.byId[facetName];
+      if (facet == null) {
+         return [];
+      }
       return facet.valueIds.map((id) => state.facetValues.byId[id]);
    }, [facetName, state.facetValues.byId, state.facets.byId]);
 
