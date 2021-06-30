@@ -1,28 +1,27 @@
 import { useDerivedState } from '@lib/hooks';
 import * as React from 'react';
-import { useSearchContext } from './context';
-import { NullablePartial, Range } from './types';
-import {
-   clearFilter,
-   getRangeFromFilter,
-   isSameRange,
-   setRangeFilter,
-} from './utils';
+import { useSearchDispatchContext, useSearchStateContext } from './context';
+import { NullablePartial, NumericRange, SearchActionType } from './types';
+import { getRangeFromFilter, isSameRange } from './utils';
 
 interface UpdateOptions {
    clearFacets?: string[];
 }
 
 export interface UseRangeFilter {
-   range: NullablePartial<Range>;
-   set: (newRange: NullablePartial<Range>, options?: UpdateOptions) => void;
+   range: NullablePartial<NumericRange>;
+   set: (
+      newRange: NullablePartial<NumericRange>,
+      options?: UpdateOptions
+   ) => void;
 }
 
 export function useRangeFilter(facetName: string): UseRangeFilter {
-   const { state, setState } = useSearchContext();
+   const state = useSearchStateContext();
+   const dispatch = useSearchDispatchContext();
 
-   const range = useDerivedState<NullablePartial<Range>>((current) => {
-      const filter = state.filters.byId[facetName];
+   const range = useDerivedState<NullablePartial<NumericRange>>((current) => {
+      const filter = state.params.filters.byId[facetName];
       const newRange = getRangeFromFilter(filter);
       if (current != null && isSameRange(newRange, current)) {
          return current;
@@ -32,18 +31,27 @@ export function useRangeFilter(facetName: string): UseRangeFilter {
 
    const set = React.useCallback<UseRangeFilter['set']>(
       (newRange, options) => {
-         setState((state) => {
-            let newState = setRangeFilter(state, {
-               facetName,
+         if (options?.clearFacets) {
+            dispatch([
+               {
+                  type: SearchActionType.RangeFilterSet,
+                  filterId: facetName,
+                  range: newRange,
+               },
+               {
+                  type: SearchActionType.FiltersCleared,
+                  filterIds: options.clearFacets,
+               },
+            ]);
+         } else {
+            dispatch({
+               type: SearchActionType.RangeFilterSet,
+               filterId: facetName,
                range: newRange,
             });
-            if (options?.clearFacets) {
-               newState = clearFilter(newState, options.clearFacets);
-            }
-            return newState;
-         });
+         }
       },
-      [facetName, setState]
+      [dispatch, facetName]
    );
 
    return {

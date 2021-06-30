@@ -1,4 +1,3 @@
-import produce from 'immer';
 import * as React from 'react';
 import {
    BasicFilter,
@@ -8,8 +7,8 @@ import {
    NullablePartial,
    NumericComparisonFilter,
    NumericComparisonOperator,
+   NumericRange,
    NumericRangeFilter,
-   Range,
    SearchState,
 } from './types';
 
@@ -48,6 +47,10 @@ export function filterListNullableItems<T>(list: Maybe<T>[]): T[] {
 
 // FILTER UTILS
 
+export function isListFilter(filter: Filter): filter is ListFilter {
+   return filter.type === 'and' || filter.type === 'or';
+}
+
 export function createBasicFilter(
    facetName: string,
    valueId: string,
@@ -83,7 +86,7 @@ export function createNumericComparisonFilter(
 
 export function createNumericRangeFilter(
    facetName: string,
-   range: Range,
+   range: NumericRange,
    parentId?: string
 ): NumericRangeFilter {
    const newFilterId = generateId(parentId, facetName);
@@ -96,231 +99,31 @@ export function createNumericRangeFilter(
    };
 }
 
-export function isBoundedRange(range: NullablePartial<Range>): range is Range {
+export function isBoundedRange(
+   range: NullablePartial<NumericRange>
+): range is NumericRange {
    return range.min != null && range.max != null;
 }
 
 export function isSameRange(
-   a: NullablePartial<Range>,
-   b: NullablePartial<Range>
+   a: NullablePartial<NumericRange>,
+   b: NullablePartial<NumericRange>
 ): boolean {
    return a.min === b.min && a.max === b.max;
 }
 
-export function isInvalidRange(range: NullablePartial<Range>): boolean {
+export function isInvalidRange(range: NullablePartial<NumericRange>): boolean {
    return range.min != null && range.max != null && range.min > range.max;
 }
 
-export function clearFilter(
-   state: SearchState,
-   filtersIds?: string[]
-): SearchState {
-   return produce(state, (draft) => {
-      if (filtersIds == null) {
-         draft.filters.allIds = [];
-         draft.filters.rootIds = [];
-         draft.filters.byId = {};
-      } else {
-         filtersIds.forEach((filterId) => {
-            const filter = draft.filters.byId[filterId];
-            if (filter != null) {
-               // If it is a list filter then remove also its children
-               if (filter.type === 'and' || filter.type === 'or') {
-                  clearFilter(draft, filter.filterIds);
-               }
-               // If it has a parent that is a list filter that remove the filter reference from the parent
-               if (filter.parentId) {
-                  const parentFilter = draft.filters.byId[filter.parentId];
-                  if (
-                     parentFilter.type === 'and' ||
-                     parentFilter.type === 'or'
-                  ) {
-                     parentFilter.filterIds = parentFilter.filterIds.filter(
-                        (id) => id !== filterId
-                     );
-                  }
-               }
-               draft.filters.allIds = draft.filters.allIds.filter(
-                  (id) => id !== filterId
-               );
-               draft.filters.rootIds = draft.filters.rootIds.filter(
-                  (id) => id !== filterId
-               );
-               delete draft.filters.byId[filterId];
-            }
-         });
-      }
-   });
-}
-
-export interface AddListFilterItemInput {
-   facetName: string;
-   refinementType: ListFilter['type'];
-   valueId: string;
-}
-export function addListFilterItem(
-   state: SearchState,
-   { facetName, refinementType, valueId }: AddListFilterItemInput
-) {
-   return produce(state, (draftState) => {
-      if (!draftState.filters.rootIds.includes(facetName)) {
-         draftState.filters.rootIds.push(facetName);
-         draftState.filters.allIds.push(facetName);
-      }
-      const newItemFilter = createBasicFilter(facetName, valueId, facetName);
-      const filterItemIds = getListFilterItemIds(draftState, facetName);
-      draftState.filters.byId[facetName] = {
-         id: facetName,
-         filterIds: mergeUnique(filterItemIds, [newItemFilter.id]),
-         type: refinementType,
-      };
-      draftState.filters.byId[newItemFilter.id] = newItemFilter;
-      draftState.filters.allIds.push(newItemFilter.id);
-   });
-}
-
-function getListFilterItemIds(
+export function getListFilterItemIds(
    state: SearchState,
    listFilterId: string
 ): string[] {
-   const currentListFilter: ListFilter = state.filters.byId[
+   const currentListFilter: ListFilter = state.params.filters.byId[
       listFilterId
    ] as any;
    return currentListFilter?.filterIds || [];
-}
-
-export interface SetListFilterInput {
-   facetName: string;
-   refinementType: ListFilter['type'];
-   valueId: string;
-}
-
-export function setListFilterItem(
-   state: SearchState,
-   { facetName, refinementType, valueId }: SetListFilterInput
-) {
-   return produce(state, (draft) => {
-      if (!draft.filters.rootIds.includes(facetName)) {
-         draft.filters.rootIds.push(facetName);
-         draft.filters.allIds.push(facetName);
-      }
-      const newItemFilter = createBasicFilter(facetName, valueId, facetName);
-      draft.filters.byId[facetName] = {
-         id: facetName,
-         filterIds: [newItemFilter.id],
-         type: refinementType,
-      };
-      draft.filters.byId[newItemFilter.id] = newItemFilter;
-      draft.filters.allIds.push(newItemFilter.id);
-   });
-}
-
-interface ClearListFilterItemInput {
-   facetName: string;
-   valueId?: string;
-}
-
-export function clearListFilterItem(
-   state: SearchState,
-   { facetName, valueId }: ClearListFilterItemInput
-) {
-   return produce(state, (draftState) => {
-      const listFilter = draftState.filters.byId[facetName] as ListFilter;
-      if (valueId) {
-         const itemFilter = createBasicFilter(facetName, valueId, facetName);
-         delete draftState.filters.byId[itemFilter.id];
-         draftState.filters.allIds = draftState.filters.allIds.filter(
-            (id) => id != itemFilter.id
-         );
-         listFilter.filterIds = listFilter.filterIds.filter(
-            (id) => id !== itemFilter.id
-         );
-         if (listFilter.filterIds.length === 0) {
-            delete draftState.filters.byId[listFilter.id];
-            draftState.filters.allIds = draftState.filters.allIds.filter(
-               (id) => id !== listFilter.id
-            );
-            draftState.filters.rootIds = draftState.filters.rootIds.filter(
-               (id) => id !== listFilter.id
-            );
-         }
-      } else {
-         listFilter.filterIds.forEach((itemId) => {
-            delete draftState.filters.byId[itemId];
-            draftState.filters.allIds = draftState.filters.allIds.filter(
-               (id) => id != itemId
-            );
-         });
-         listFilter.filterIds = [];
-      }
-   });
-}
-
-export interface ToggleListFilterItemInput {
-   facetName: string;
-   valueId: string;
-   refinementType: ListFilter['type'];
-}
-
-export function toggleListFilterItem(
-   state: SearchState,
-   { facetName, valueId, refinementType }: ToggleListFilterItemInput
-) {
-   const newItemFilter = createBasicFilter(facetName, valueId, facetName);
-   const filterItemIds = getListFilterItemIds(state, facetName);
-   if (filterItemIds.includes(newItemFilter.id)) {
-      return clearListFilterItem(state, { facetName, valueId });
-   }
-   return addListFilterItem(state, { facetName, refinementType, valueId });
-}
-
-export interface SetRangeFilterInput {
-   facetName: string;
-   range: NullablePartial<Range>;
-}
-
-export function setRangeFilter(
-   state: SearchState,
-   { facetName, range }: SetRangeFilterInput
-) {
-   return produce(state, (draft) => {
-      const filter = draft.filters.byId[facetName];
-      const draftRange = getRangeFromFilter(filter);
-      if (isInvalidRange(range) || isSameRange(range, draftRange)) {
-         return;
-      }
-      let newFilter: NumericComparisonFilter | NumericRangeFilter | undefined;
-      if (isBoundedRange(range)) {
-         newFilter = createNumericRangeFilter(facetName, range);
-      } else if (range.min == null && range.max != null) {
-         newFilter = createNumericComparisonFilter(
-            facetName,
-            range.max,
-            NumericComparisonOperator.LessThanOrEqual
-         );
-      } else if (range.min != null && range.max == null) {
-         newFilter = createNumericComparisonFilter(
-            facetName,
-            range.min,
-            NumericComparisonOperator.GreaterThanOrEqual
-         );
-      } else {
-         draft.filters.allIds = draft.filters.allIds.filter(
-            (id) => id !== facetName
-         );
-         draft.filters.rootIds = draft.filters.rootIds.filter(
-            (id) => id !== facetName
-         );
-         delete draft.filters.byId[facetName];
-      }
-      if (newFilter != null) {
-         draft.filters.byId[facetName] = newFilter;
-         if (filter == null) {
-            draft.filters.allIds.push(facetName);
-            draft.filters.rootIds.push(facetName);
-         }
-      }
-   });
 }
 
 export function getRangeFromFilter(filter: Filter | undefined | null) {

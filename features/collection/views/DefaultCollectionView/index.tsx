@@ -29,20 +29,14 @@ export function DefaultCollectionView({
       ProductViewType.List
    );
 
-   const initialState = React.useMemo((): Partial<SearchState<any>> => {
-      return {
-         rawFilters: `collections:${collectionHandle}`,
-      };
-   }, [collectionHandle]);
-
    return (
       <DefaultLayout title={`iFixit | ${collection.title}`}>
          <AlgoliaProvider
             key={collectionHandle}
             appId={ALGOLIA_APP_ID}
             apiKey={ALGOLIA_API_KEY}
-            initialState={initialState}
-            indexName="shopify_ifixit_test_products"
+            initialIndexName="shopify_ifixit_test_products"
+            initialRawFilters={`collections:${collectionHandle}`}
          >
             <VStack
                w={{

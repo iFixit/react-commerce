@@ -24,7 +24,6 @@ export function CollectionToolbar({
    productViewType = ProductViewType.List,
    onProductViewTypeChange,
 }: CollectionToolbarProps) {
-   const { numberOfHits } = useHits<Hit>();
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
    const onChangeProductViewType = React.useCallback(
       (newViewType: ProductViewType) => {
@@ -40,10 +39,7 @@ export function CollectionToolbar({
          align={{ base: 'stretch', sm: 'center' }}
          direction={{ base: 'column', sm: 'row' }}
       >
-         <Text textAlign="center" color="gray.500" fontWeight="bold">
-            {numberOfHits}
-            {numberOfHits === 1 ? ' result' : ' results'}
-         </Text>
+         <NumberOfHits />
          <HStack px={{ base: 4, sm: 0 }}>
             <FiltersModal
                isOpen={isFilterModalOpen}
@@ -103,5 +99,15 @@ export function CollectionToolbar({
             </ButtonGroup>
          </HStack>
       </Stack>
+   );
+}
+
+function NumberOfHits() {
+   const { numberOfHits } = useHits<Hit>();
+   return (
+      <Text textAlign="center" color="gray.500" fontWeight="bold">
+         {numberOfHits}
+         {numberOfHits === 1 ? ' result' : ' results'}
+      </Text>
    );
 }

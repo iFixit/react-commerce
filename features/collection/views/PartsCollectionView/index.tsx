@@ -2,6 +2,7 @@ import {
    Box,
    Button,
    Center,
+   Collapse,
    Flex,
    Heading,
    HStack,
@@ -29,7 +30,7 @@ import {
    SearchInput,
 } from '@features/collection/components';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { AlgoliaProvider } from '@lib/algolia';
+import { AlgoliaProvider, useIsFiltered } from '@lib/algolia';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { IconType } from 'react-icons';
@@ -41,6 +42,7 @@ import {
    IoTabletPortraitOutline,
 } from 'react-icons/io5';
 import { RiMacbookLine } from 'react-icons/ri';
+import { CategoryInput } from './CategoryInput';
 
 export type PartsCollectionViewProps = {
    collection: Collection;
@@ -49,79 +51,77 @@ export type PartsCollectionViewProps = {
 export function PartsCollectionView(props: PartsCollectionViewProps) {
    return (
       <DefaultLayout title={`iFixit | ${props.collection.title}`}>
-         <View {...props} />
+         <AlgoliaProvider
+            appId={ALGOLIA_APP_ID}
+            apiKey={ALGOLIA_API_KEY}
+            initialIndexName="shopify_ifixit_test_products"
+            // initialRawFilters={`collections:${props.collection.handle}`}
+            initialRawFilters={`collections:iphone-3g`}
+         >
+            <View {...props} />
+         </AlgoliaProvider>
       </DefaultLayout>
    );
 }
 
-function View({ collection }: PartsCollectionViewProps) {
+const View = React.memo(({ collection }: PartsCollectionViewProps) => {
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
+
+   const isFiltered = useIsFiltered();
+
+   React.useEffect(() => {
+      console.log('isFiltered', isFiltered);
+   }, [isFiltered]);
+
    return (
-      <AlgoliaProvider
-         appId={ALGOLIA_APP_ID}
-         apiKey={ALGOLIA_API_KEY}
-         indexName="shopify_ifixit_test_products"
+      <VStack
+         w={{ base: 'full', lg: '960px', xl: '1100px' }}
+         mx="auto"
+         align="stretch"
+         py={10}
+         spacing={12}
       >
-         <VStack
-            w={{ base: 'full', lg: '960px', xl: '1100px' }}
-            mx="auto"
-            align="stretch"
-            py={10}
-            spacing={12}
+         <Box
+            backgroundImage={
+               collection.image ? `url("${collection.image.url}")` : undefined
+            }
+            backgroundSize="cover"
+            borderRadius={{
+               base: 0,
+               sm: 'xl',
+            }}
+            overflow="hidden"
          >
-            <Box
-               backgroundImage={
-                  collection.image
-                     ? `url("${collection.image.url}")`
-                     : undefined
-               }
-               backgroundSize="cover"
-               borderRadius={{
-                  base: 0,
-                  sm: 'xl',
-               }}
-               overflow="hidden"
+            <Flex
+               grow={1}
+               bgColor="blackAlpha.800"
+               align="center"
+               justify="center"
+               py={20}
             >
-               <Flex
-                  grow={1}
-                  bgColor="blackAlpha.800"
-                  align="center"
-                  justify="center"
-                  py={20}
-               >
-                  <VStack>
-                     <Heading
-                        color="white"
-                        size="xl"
-                        fontFamily="Archivo Black"
+               <VStack>
+                  <Heading color="white" size="xl" fontFamily="Archivo Black">
+                     {collection.title}
+                  </Heading>
+                  <HStack>
+                     <CategoryInput />
+                     <Select
+                        bg="white"
+                        placeholder="Choose Manufacturer"
+                        color="gray.400"
                      >
-                        {collection.title}
-                     </Heading>
-                     <HStack>
-                        <CategoryInput />
-                        <Select
-                           bg="white"
-                           placeholder="Choose Manufacturer"
-                           // fontWeight="bold"
-                           color="gray.400"
-                        >
-                           <option value="option1">Option 1</option>
-                           <option value="option2">Option 2</option>
-                           <option value="option3">Option 3</option>
-                        </Select>
-                        <SearchInput maxW={300} />
-                        {/* <InputGroup overflow="hidden">
-                           <Input placeholder="Keywords" bg="white" />
-                           <InputRightElement>
-                              <Icon as={HiOutlineSearch} color="gray.400" />
-                           </InputRightElement>
-                        </InputGroup> */}
-                     </HStack>
-                  </VStack>
-               </Flex>
-            </Box>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                     </Select>
+                     <SearchInput maxW={300} />
+                  </HStack>
+               </VStack>
+            </Flex>
+         </Box>
+         <Collapse in={isFiltered} animateOpacity>
             <VStack mb={4} align="stretch" spacing={4}>
                <CollectionToolbar
                   productViewType={productViewType}
@@ -149,6 +149,8 @@ function View({ collection }: PartsCollectionViewProps) {
                   </Card>
                </HStack>
             </VStack>
+         </Collapse>
+         {!isFiltered && (
             <SimpleGrid columns={4} spacing={6}>
                {collection.children.map((child) => {
                   return (
@@ -193,63 +195,7 @@ function View({ collection }: PartsCollectionViewProps) {
                   );
                })}
             </SimpleGrid>
-         </VStack>
-      </AlgoliaProvider>
+         )}
+      </VStack>
    );
-}
-
-interface CategoryInputProps {}
-
-function CategoryInput() {
-   return (
-      <Box>
-         <Menu>
-            <MenuButton
-               as={Button}
-               lineHeight="1em"
-               leftIcon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
-               rightIcon={<Icon as={HiChevronDown} />}
-            >
-               Choose category
-            </MenuButton>
-            <MenuList
-               display="grid"
-               gridTemplateColumns="repeat(auto-fill, minmax(180px, 1fr))"
-               gridGap="1px"
-               p="0"
-               bg="gray.200"
-               overflow="hidden"
-               minW="container.sm"
-            >
-               {Object.keys(categoryIcons).map((category) => {
-                  return (
-                     <MenuItem
-                        key={category}
-                        bg="white"
-                        py="2"
-                        icon={
-                           <Icon
-                              as={categoryIcons[category]}
-                              color="blue.500"
-                              fill="blue.500"
-                              boxSize="6"
-                           />
-                        }
-                     >
-                        {category}
-                     </MenuItem>
-                  );
-               })}
-            </MenuList>
-         </Menu>
-      </Box>
-   );
-}
-
-const categoryIcons: Record<string, IconType> = {
-   'Mac Parts': RiMacbookLine,
-   'iPhone Parts': IoPhonePortraitOutline,
-   'iPad Parts': IoTabletPortraitOutline,
-   'iPod Parts': IoIosPhonePortrait,
-   'Amazon Kindle Parts': FcKindle,
-};
+});

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSearchContext } from './context';
+import { useSearchStateContext } from './context';
 import { FacetValueState } from './types';
 
 export interface UseFacetValues {
@@ -8,7 +8,7 @@ export interface UseFacetValues {
 }
 
 export function useFacetValues(facetName: string): UseFacetValues {
-   const { state } = useSearchContext();
+   const state = useSearchStateContext();
 
    const values = React.useMemo<FacetValueState[]>(() => {
       const facet = state.facets.byId[facetName];

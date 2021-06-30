@@ -7,4 +7,5 @@ export * from './useRangeFilter';
 export * from './usePagination';
 export * from './useFacets';
 export * from './useClearFilter';
+export * from './useIsFiltered';
 export * from './types';
