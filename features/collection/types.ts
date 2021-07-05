@@ -5,7 +5,6 @@ export interface Collection {
    image?: Image;
    ancestors: Collection[];
    children: Collection[];
-   relatedNewsStories: NewsStory[];
 }
 
 export interface Image {
