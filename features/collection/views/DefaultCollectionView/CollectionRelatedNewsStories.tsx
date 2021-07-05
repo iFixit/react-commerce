@@ -6,12 +6,19 @@ import {
    LinkOverlay,
    SimpleGrid,
    Text,
+   usePrevious,
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/Card';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { NewsStoryHit } from '@features/collection';
-import { AlgoliaProvider, useHits } from '@libs/algolia';
+import {
+   ALGOLIA_API_KEY,
+   ALGOLIA_APP_ID,
+   WP_BASIC_AUTH_PASSWORD,
+   WP_BASIC_AUTH_USER,
+   WP_ORIGIN,
+} from '@config/env';
+import { NewsStory } from '@features/collection';
+import { AlgoliaProvider, useHits } from '@lib/algolia';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -33,8 +40,9 @@ export default function CollectionRelatedNewsStories() {
 }
 
 function RelatedNewsStories() {
-   const { hits } = useHits<NewsStoryHit>();
-   if (hits.length > 0) {
+   // const { hits: posts } = useHits<NewsStory>();
+   const { posts } = useRelatedNewsStories(['Right to Repair']);
+   if (posts.length > 0) {
       return (
          <VStack
             align="flex-start"
@@ -55,14 +63,14 @@ function RelatedNewsStories() {
                }}
                spacing="6"
             >
-               {hits.map((hit) => {
+               {posts.map((post) => {
                   return (
                      <StoryCard
-                        key={hit.objectID}
-                        title={hit.post_title}
-                        category={hit.taxonomies.category[0]}
-                        imageSrc={hit.images['sm']?.url}
-                        link={`https://ifixit.com${hit.permalink}`}
+                        key={post.ID}
+                        title={post.post_title}
+                        category={post.categories[0]?.name}
+                        imageSrc={post.featured_image?.md}
+                        link={post.permalink || ''}
                      />
                   );
                })}
@@ -134,4 +142,117 @@ function StoryCard({
          </Flex>
       </LinkBox>
    );
+}
+
+interface Params {
+   tags: string[];
+}
+
+interface Post {
+   ID: number;
+   post_author: string;
+   post_date: string;
+   post_date_gmt: string;
+   post_content: string;
+   post_title: string;
+   post_excerpt: string;
+   permalink?: string;
+   featured_image: PostImage;
+   categories: PostCategory[];
+}
+
+interface PostCategory {
+   term_id: number;
+   name: string;
+   slug: string;
+   term_group: number;
+   term_taxonomy_id: number;
+   taxonomy: string;
+   description: string;
+   parent: number;
+   count: number;
+   filter: string;
+   cat_ID: number;
+   category_count: number;
+   category_description: string;
+   cat_name: string;
+   category_nicename: string;
+   category_parent: number;
+}
+
+interface PostImage {
+   thumbnail: string;
+   medium: string;
+   medium_large: string;
+   large: string;
+   '1536x1536': string;
+   '2048x2048': string;
+   'post-header': string;
+   sm: string;
+   md: string;
+   lg: string;
+   'homepage-featured': string;
+   'homepage-small': string;
+   'homepage-medium': string;
+   'rp4wp-thumbnail-post': string;
+}
+
+async function fetchRelatedNewsStories(params: Params): Promise<Post[]> {
+   const base64Credentials = btoa(
+      `${WP_BASIC_AUTH_USER}:${WP_BASIC_AUTH_PASSWORD}`
+   );
+   const response = await fetch(`${WP_ORIGIN}/wp-json/wp/v2/posts/related`, {
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: {
+         Authorization: `Basic ${base64Credentials}`,
+         'Content-Type': 'application/json',
+      },
+   });
+   if (response.status >= 200 && response.status < 300) {
+      const json = await response.json();
+      return json;
+   }
+   throw new Error(`failed with status "${response.statusText}"`);
+}
+
+interface UseRelatedNewsStories {
+   posts: Post[];
+   isLoading: boolean;
+   error: null | string;
+}
+
+function useRelatedNewsStories(tags: string[]): UseRelatedNewsStories {
+   const [state, setState] = React.useState<UseRelatedNewsStories>({
+      posts: [],
+      isLoading: true,
+      error: null,
+   });
+   const previousTags = usePrevious(tags);
+
+   React.useEffect(() => {
+      const tagsHaveChanged =
+         previousTags == null ||
+         previousTags.some((prevTag) => !tags.includes(prevTag)) ||
+         tags.some((tag) => !previousTags.includes(tag));
+      if (tagsHaveChanged) {
+         fetchRelatedNewsStories({ tags })
+            .then((posts) => {
+               setState({
+                  posts,
+                  isLoading: false,
+                  error: null,
+               });
+            })
+            .catch((error) => {
+               setState((current) => ({
+                  ...current,
+                  isLoading: false,
+                  error: error.message,
+               }));
+            });
+      }
+   }, [tags, previousTags]);
+
+   return state;
 }
