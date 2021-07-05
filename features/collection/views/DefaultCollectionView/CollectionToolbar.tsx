@@ -8,7 +8,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { ProductHit } from '@features/collection';
-import { useHits } from '@libs/algolia';
+import { useHits } from '@lib/algolia';
 import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';

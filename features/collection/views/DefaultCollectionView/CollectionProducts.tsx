@@ -16,7 +16,7 @@ import {
    ProductCardTitle,
 } from '@components/ProductCard';
 import { ProductHit } from '@features/collection';
-import { useHits } from '@libs/algolia';
+import { useHits } from '@lib/algolia';
 import * as React from 'react';
 import { ProductViewType } from './types';
 
@@ -72,12 +72,7 @@ export function CollectionProducts({ viewType }: CollectionProductsProps) {
             const isDiscounted =
                hit.compare_at_price != null && hit.compare_at_price > hit.price;
             return (
-               <HStack
-                  key={hit.handle}
-                  justify="space-between"
-                  spacing={4}
-                  py={4}
-               >
+               <HStack key={hit.handle} spacing={4} py={4}>
                   <Img
                      boxSize="160px"
                      flexShrink={0}

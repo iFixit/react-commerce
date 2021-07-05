@@ -1,10 +1,12 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
+import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { AlgoliaProvider, SearchState } from '@libs/algolia';
+import { AlgoliaProvider, SearchState } from '@lib/algolia';
 import * as React from 'react';
+import { CollectionBanner } from './CollectionBanner';
 import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
 import { CollectionPagination } from './CollectionPagination';
@@ -84,6 +86,8 @@ export function DefaultCollectionView({
                      </Card>
                   </HStack>
                </VStack>
+               <CollectionBanner />
+               <NewsletterSection />
                <CollectionRelatedNewsStories />
             </VStack>
          </AlgoliaProvider>

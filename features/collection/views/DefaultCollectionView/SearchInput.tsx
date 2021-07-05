@@ -6,7 +6,7 @@ import {
    Icon,
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { useSearch } from '@libs/algolia';
+import { useSearch } from '@lib/algolia';
 import { RiSearchLine } from 'react-icons/ri';
 
 interface SearchInputProps {
