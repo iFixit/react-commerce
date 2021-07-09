@@ -57,12 +57,14 @@ export const CollectionFilters = chakra(
       const filteredFacets = React.useMemo(() => {
          return sortedFacets.filter(filterFacet);
       }, [sortedFacets]);
+      const [expandedSections, setExpandedSections] = React.useState<string[]>(
+         []
+      );
 
       return (
          <MeasuredContentProvider>
             <Sizer>
                {({ height, width }) => {
-                  // console.log({ width, height });
                   return (
                      <FilterList
                         height={height}
@@ -72,9 +74,26 @@ export const CollectionFilters = chakra(
                         itemData={filteredFacets}
                      >
                         {({ data, index, style }) => {
+                           const facet = data[index];
                            return (
                               <Box style={style}>
-                                 <ListItem data={data} index={index} />
+                                 <ListItem
+                                    facet={facet}
+                                    index={index}
+                                    isExpanded={expandedSections.includes(
+                                       facet.name
+                                    )}
+                                    onToggle={() => {
+                                       setExpandedSections((current) => {
+                                          if (current.includes(facet.name)) {
+                                             return current.filter(
+                                                (f) => f !== facet.name
+                                             );
+                                          }
+                                          return [...current, facet.name];
+                                       });
+                                    }}
+                                 />
                               </Box>
                            );
                         }}
@@ -122,22 +141,20 @@ function sortByPriceRange(a: FacetValueState, b: FacetValueState): number {
 }
 
 interface ListItemProps {
-   data: Facet[];
+   facet: Facet;
    index: number;
+   isExpanded: boolean;
+   onToggle(): void;
 }
 
-function ListItem({ data, index }: ListItemProps) {
-   const facet = React.useMemo(() => {
-      return data[index];
-   }, [data, index]);
+function ListItem({ facet, index, isExpanded, onToggle }: ListItemProps) {
    const name = formatFacetName(facet.name);
    const { ref, reset } = useMeasureContent<HTMLDivElement>(index);
-   const { isOpen, onToggle } = useDisclosure();
 
    React.useEffect(() => {
       reset();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [isOpen]);
+   }, [isExpanded]);
 
    return (
       <Stack ref={ref} spacing={2}>
@@ -155,8 +172,7 @@ function ListItem({ data, index }: ListItemProps) {
             </Box>
             <Divider />
          </Box>
-         {/* <Collapse in={isOpen} animateOpacity unmountOnExit> */}
-         {isOpen && (
+         {isExpanded && (
             <Box pb="8">
                {facet.name === 'price_range' ? (
                   <>
@@ -202,7 +218,6 @@ function ListItem({ data, index }: ListItemProps) {
                )}
             </Box>
          )}
-         {/* </Collapse> */}
       </Stack>
    );
 }
