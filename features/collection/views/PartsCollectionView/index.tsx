@@ -130,7 +130,7 @@ const SearchView = React.memo(() => {
                display={{ base: 'none', sm: 'block' }}
                position="sticky"
                top="4"
-               maxH="calc(100vh - var(--chakra-space-4) * 2)"
+               h="calc(100vh - var(--chakra-space-4) * 2)"
                overflow="scroll"
             >
                <CollectionFilters />

@@ -1,15 +1,15 @@
 import { Checkbox, Radio, Text, VStack } from '@chakra-ui/react';
 import {
    FacetValueState,
-   ListFilter,
+   ListFilter as ListFilterType,
    useFacetFilterList,
    useFacetValues,
 } from '@lib/algolia';
 import * as React from 'react';
 
-export type FilterListProps = {
+export type ListFilterProps = {
    facetName: string;
-   type?: ListFilter['type'];
+   type?: ListFilterType['type'];
    multiple?: boolean;
    sortItems?(a: FacetValueState, b: FacetValueState): number;
    renderItem?(
@@ -19,13 +19,13 @@ export type FilterListProps = {
    ): React.ReactNode;
 };
 
-export function FilterList({
+export function ListFilter({
    facetName,
    type = 'or',
    multiple = false,
    renderItem,
    sortItems = defaultSortItems,
-}: FilterListProps) {
+}: ListFilterProps) {
    const { isLoaded, values } = useFacetValues(facetName);
    const { selectedValueIds, toggle, set } = useFacetFilterList(facetName, {
       filterType: type,

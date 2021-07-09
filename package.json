@@ -39,7 +39,9 @@
       "next": "10.2.0",
       "react": "17.0.1",
       "react-dom": "17.0.1",
-      "react-icons": "4.2.0"
+      "react-icons": "4.2.0",
+      "react-virtualized-auto-sizer": "1.0.5",
+      "react-window": "1.8.6"
    },
    "devDependencies": {
       "@svgr/cli": "5.5.0",
@@ -50,6 +52,8 @@
       "@types/jest": "26.0.20",
       "@types/node": "14.14.25",
       "@types/react": "17.0.1",
+      "@types/react-virtualized-auto-sizer": "1.0.1",
+      "@types/react-window": "1.8.4",
       "@types/shopify-buy": "2.10.5",
       "@typescript-eslint/eslint-plugin": "4.14.2",
       "@typescript-eslint/parser": "4.14.2",
