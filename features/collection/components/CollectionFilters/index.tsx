@@ -1,34 +1,17 @@
-import {
-   Accordion,
-   AccordionButton,
-   AccordionIcon,
-   AccordionItem,
-   AccordionPanel,
-   Box,
-   chakra,
-   Collapse,
-   Divider,
-   Stack,
-   useDisclosure,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, chakra, Divider, HStack, Stack } from '@chakra-ui/react';
 import { Facet, FacetValueState, useFacets } from '@lib/algolia';
 import { capitalize } from '@lib/utils';
 import React from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { VariableSizeList, VariableSizeListProps } from 'react-window';
 import { ClearButton } from './ClearButton';
 import { ListFilter } from './ListFilter';
-import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
-import {
-   VariableSizeList,
-   VariableSizeListProps,
-   ListChildComponentProps,
-} from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import {
    MeasuredContentProvider,
    useMeasureContent,
    useMeasuredContentContext,
 } from './MeasuredContent';
+import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
 
 interface CollectionFiltersProps {
    className?: string;
@@ -63,7 +46,7 @@ export const CollectionFilters = chakra(
 
       return (
          <MeasuredContentProvider>
-            <Sizer>
+            <Sizer className={className}>
                {({ height, width }) => {
                   return (
                      <FilterList
@@ -159,7 +142,7 @@ function ListItem({ facet, index, isExpanded, onToggle }: ListItemProps) {
    return (
       <Stack ref={ref} spacing={2}>
          <Box>
-            <Box
+            <HStack
                as="button"
                fontWeight="semibold"
                onClick={onToggle}
@@ -169,11 +152,16 @@ function ListItem({ facet, index, isExpanded, onToggle }: ListItemProps) {
                <Box flex="1" textAlign="left">
                   {name}
                </Box>
-            </Box>
+               <Box
+                  style={{ transform: `rotate(${isExpanded ? '45' : '0'}deg)` }}
+               >
+                  +
+               </Box>
+            </HStack>
             <Divider />
          </Box>
          {isExpanded && (
-            <Box pb="8">
+            <Box pb="4">
                {facet.name === 'price_range' ? (
                   <>
                      <RangeFilter>
