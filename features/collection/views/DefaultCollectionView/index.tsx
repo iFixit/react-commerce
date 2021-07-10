@@ -68,6 +68,10 @@ export function DefaultCollectionView({
                         p={6}
                         width="250px"
                         display={{ base: 'none', sm: 'block' }}
+                        position="sticky"
+                        top="4"
+                        h="calc(100vh - var(--chakra-space-4) * 2)"
+                        overflow="scroll"
                      >
                         <CollectionFilters />
                      </Card>
