@@ -205,17 +205,25 @@ const manufacturerFacetName = 'named_tags.Device Brand';
 
 function ManufacturerSelect() {
    const { isLoaded, values } = useFacetValues(manufacturerFacetName);
-   const { selectedValueIds, set } = useFacetFilterList(manufacturerFacetName, {
-      filterType: 'or',
-   });
+   const { selectedValueIds, set, clear } = useFacetFilterList(
+      manufacturerFacetName,
+      {
+         filterType: 'or',
+      }
+   );
 
    const handleChange = React.useCallback<
       React.ChangeEventHandler<HTMLSelectElement>
    >(
       (event) => {
-         set(event.currentTarget.value);
+         const { value } = event.currentTarget;
+         if (value == null || value === '') {
+            clear();
+         } else {
+            set(event.currentTarget.value);
+         }
       },
-      [set]
+      [clear, set]
    );
 
    return (
