@@ -1,4 +1,4 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { Heading, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
@@ -11,9 +11,9 @@ import { CollectionFilters } from './CollectionFilters';
 import { CollectionHeader } from './CollectionHeader';
 import { CollectionPagination } from './CollectionPagination';
 import { CollectionProducts } from './CollectionProducts';
-import CollectionRelatedNewsStories from './CollectionRelatedNewsStories';
 import { CollectionSubcategories } from './CollectionSubcategories';
 import { CollectionToolbar } from './CollectionToolbar';
+import { NewsCard } from './NewsCard';
 import { ProductViewType } from './types';
 
 export type DefaultCollectionViewProps = {
@@ -88,7 +88,38 @@ export function DefaultCollectionView({
                </VStack>
                <CollectionBanner />
                <NewsletterSection />
-               <CollectionRelatedNewsStories />
+               {collection.relatedNews && (
+                  <VStack
+                     align="flex-start"
+                     spacing="6"
+                     px={{
+                        base: 6,
+                        sm: 0,
+                     }}
+                  >
+                     <Heading as="h2" size="lg">
+                        Related News Stories
+                     </Heading>
+                     <SimpleGrid
+                        columns={{
+                           base: 1,
+                           sm: 2,
+                           md: 3,
+                        }}
+                        spacing="6"
+                     >
+                        {collection.relatedNews.map((news) => (
+                           <NewsCard
+                              key={news.id}
+                              title={news.title}
+                              category={news.category}
+                              imageSrc={news.image?.url}
+                              link={news.permalink || ''}
+                           />
+                        ))}
+                     </SimpleGrid>
+                  </VStack>
+               )}
             </VStack>
          </AlgoliaProvider>
       </DefaultLayout>

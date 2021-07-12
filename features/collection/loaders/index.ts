@@ -1,6 +1,12 @@
-import { SHOPIFY_DOMAIN, SHOPIFY_STOREFRONT_ACCESS_TOKEN } from '@config/env';
+import {
+   SHOPIFY_DOMAIN,
+   SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+   WP_BASIC_AUTH_PASSWORD,
+   WP_BASIC_AUTH_USER,
+   WP_ORIGIN,
+} from '@config/env';
 import { StorefrontClient } from '@lib/storefrontClient';
-import { Collection } from '../types';
+import { Collection, News } from '../types';
 
 export async function loadCollection(
    handle: string
@@ -10,16 +16,15 @@ export async function loadCollection(
       accessToken: SHOPIFY_STOREFRONT_ACCESS_TOKEN,
       version: 'unstable',
    });
-   const response = await client.request<DataWithMetafields>(
-      collectionWithMetafieldsQuery,
-      {
-         handle,
-      }
-   );
-   if (response.data.collectionByHandle == null) {
+   const {
+      data: { collectionByHandle: collection },
+   } = await client.request<DataWithMetafields>(collectionWithMetafieldsQuery, {
+      handle,
+   });
+   if (collection == null) {
       return null;
    }
-   const hierarchyMetafield = response.data.collectionByHandle.metafields.edges.find(
+   const hierarchyMetafield = collection.metafields.edges.find(
       (edge) => edge.node.key === 'collection_hierarchy'
    );
    let ancestors: Collection[] = [];
@@ -31,13 +36,16 @@ export async function loadCollection(
       const ancestorsHandles = getAncestorHandles(hierarchy).reverse();
       ancestors = await loadCollections(ancestorsHandles, client);
    }
+
+   const news = await loadRelatedNews([collection.title]);
    return {
       handle,
-      title: response.data.collectionByHandle.title,
-      description: response.data.collectionByHandle.description,
-      image: response.data.collectionByHandle.image,
+      title: collection.title,
+      description: collection.description,
+      image: collection.image,
       ancestors,
       children,
+      relatedNews: news,
    };
 }
 
@@ -148,3 +156,87 @@ const collectionQuery = /* GraphQL */ `
       }
    }
 `;
+
+interface Post {
+   ID: number;
+   post_author: string;
+   post_date: string;
+   post_date_gmt: string;
+   post_content: string;
+   post_title: string;
+   post_excerpt: string;
+   permalink?: string;
+   featured_image: PostImage;
+   categories: PostCategory[];
+}
+
+interface PostCategory {
+   term_id: number;
+   name: string;
+   slug: string;
+   term_group: number;
+   term_taxonomy_id: number;
+   taxonomy: string;
+   description: string;
+   parent: number;
+   count: number;
+   filter: string;
+   cat_ID: number;
+   category_count: number;
+   category_description: string;
+   cat_name: string;
+   category_nicename: string;
+   category_parent: number;
+}
+
+interface PostImage {
+   thumbnail: string;
+   medium: string;
+   medium_large: string;
+   large: string;
+   '1536x1536': string;
+   '2048x2048': string;
+   'post-header': string;
+   sm: string;
+   md: string;
+   lg: string;
+   'homepage-featured': string;
+   'homepage-small': string;
+   'homepage-medium': string;
+   'rp4wp-thumbnail-post': string;
+}
+
+async function loadRelatedNews(tags: string[]): Promise<News[]> {
+   const base64Credentials = convertToBase64(
+      `${WP_BASIC_AUTH_USER}:${WP_BASIC_AUTH_PASSWORD}`
+   );
+   const response = await fetch(`${WP_ORIGIN}/wp-json/wp/v2/posts/related`, {
+      method: 'POST',
+      body: JSON.stringify({ tags }),
+      headers: {
+         Authorization: `Basic ${base64Credentials}`,
+         'Content-Type': 'application/json',
+      },
+   });
+   if (response.status >= 200 && response.status < 300) {
+      const rawStories: Post[] = await response.json();
+      return rawStories.map<News>((rawStory) => {
+         return {
+            id: rawStory.ID,
+            title: rawStory.post_title,
+            date: rawStory.post_date,
+            category: rawStory.categories[0]?.name,
+            image: rawStory.featured_image
+               ? { url: rawStory.featured_image.md }
+               : null,
+            permalink: rawStory.permalink || '',
+         };
+      });
+   }
+   throw new Error(`failed with status "${response.statusText}"`);
+}
+
+function convertToBase64(value: string): string {
+   const buffer = Buffer.from(value);
+   return buffer.toString('base64');
+}
