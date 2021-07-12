@@ -23,19 +23,16 @@ export const IFIXIT_API_ORIGIN = checkEnv(
    'NEXT_PUBLIC_IFIXIT_API_ORIGIN'
 );
 
-export const WP_ORIGIN = checkEnv(
-   process.env.NEXT_PUBLIC_WP_ORIGIN,
-   'NEXT_PUBLIC_WP_ORIGIN'
-);
+export const WP_ORIGIN = checkEnv(process.env.WP_ORIGIN, 'WP_ORIGIN');
 
 export const WP_BASIC_AUTH_USER = checkEnv(
-   process.env.NEXT_PUBLIC_WP_BASIC_AUTH_USER,
-   'NEXT_PUBLIC_WP_BASIC_AUTH_USER'
+   process.env.WP_BASIC_AUTH_USER,
+   'WP_BASIC_AUTH_USER'
 );
 
 export const WP_BASIC_AUTH_PASSWORD = checkEnv(
-   process.env.NEXT_PUBLIC_WP_BASIC_AUTH_PASSWORD,
-   'NEXT_PUBLIC_WP_BASIC_AUTH_PASSWORD'
+   process.env.WP_BASIC_AUTH_PASSWORD,
+   'WP_BASIC_AUTH_PASSWORD'
 );
 
 function checkEnv(env: string | null | undefined, envName: string): string {
