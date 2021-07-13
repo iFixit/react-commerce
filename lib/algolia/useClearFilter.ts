@@ -6,16 +6,16 @@ export function useClearFilter() {
    const dispatch = useSearchDispatchContext();
 
    return React.useCallback(
-      (names?: string | string[]) => {
-         if (typeof names === 'string') {
+      (ids?: string | string[]) => {
+         if (typeof ids === 'string') {
             dispatch({
                type: SearchActionType.FiltersCleared,
-               filterIds: [names],
+               filterIds: [ids],
             });
          } else {
             dispatch({
                type: SearchActionType.FiltersCleared,
-               filterIds: names,
+               filterIds: ids,
             });
          }
       },

@@ -140,7 +140,7 @@ function ListItem({ facet, index, isExpanded, onToggle }: ListItemProps) {
    }, [isExpanded]);
 
    return (
-      <Stack ref={ref} spacing={2}>
+      <Stack ref={ref} spacing="2">
          <Box>
             <HStack
                as="button"

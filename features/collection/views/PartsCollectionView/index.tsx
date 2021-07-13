@@ -12,15 +12,11 @@ import {
    SimpleGrid,
    VStack,
 } from '@chakra-ui/react';
-import { Card } from '@components/Card';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Collection } from '@features/collection';
 import {
-   CollectionFilters,
-   CollectionPagination,
-   CollectionProducts,
-   CollectionToolbar,
-   ProductViewType,
+   FilterableProductView,
+   Page,
    SearchInput,
 } from '@features/collection/components';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -47,8 +43,8 @@ export function PartsCollectionView({ collection }: PartsCollectionViewProps) {
             initialIndexName="shopify_ifixit_test_products"
             // initialRawFilters={`collections:${props.collection.handle}`}
          >
-            <CollectionPage>
-               <CollectionHero backgroundImageSource={collection.image?.url}>
+            <Page>
+               <Hero backgroundImageSource={collection.image?.url}>
                   <VStack>
                      <Heading
                         color="white"
@@ -63,8 +59,8 @@ export function PartsCollectionView({ collection }: PartsCollectionViewProps) {
                         <SearchInput maxW={300} />
                      </HStack>
                   </VStack>
-               </CollectionHero>
-               <CollectionMain
+               </Hero>
+               <Main
                   idle={
                      <CategoryGrid>
                         {collection.children.map((category) => {
@@ -77,39 +73,23 @@ export function PartsCollectionView({ collection }: PartsCollectionViewProps) {
                         })}
                      </CategoryGrid>
                   }
-                  filtered={<FilterableProductList />}
+                  filtered={<FilterableProductView />}
                />
-            </CollectionPage>
+            </Page>
          </AlgoliaProvider>
       </DefaultLayout>
    );
 }
 
-const CollectionPage = React.memo(
-   ({ children }: React.PropsWithChildren<unknown>) => {
-      return (
-         <VStack
-            w={{ base: 'full', lg: '960px', xl: '1100px' }}
-            mx="auto"
-            align="stretch"
-            py={10}
-            spacing={12}
-         >
-            {children}
-         </VStack>
-      );
-   }
-);
-
-interface CollectionHeroProps {
+interface HeroProps {
    backgroundImageSource?: string;
 }
 
-const CollectionHero = React.memo(
+const Hero = React.memo(
    ({
       children,
       backgroundImageSource: imageSrc,
-   }: React.PropsWithChildren<CollectionHeroProps>) => {
+   }: React.PropsWithChildren<HeroProps>) => {
       return (
          <Box
             backgroundImage={imageSrc ? `url("${imageSrc}")` : undefined}
@@ -134,12 +114,12 @@ const CollectionHero = React.memo(
    }
 );
 
-interface CollectionMainProps {
+interface MainProps {
    filtered: JSX.Element;
    idle: JSX.Element;
 }
 
-function CollectionMain({ filtered, idle }: CollectionMainProps) {
+function Main({ filtered, idle }: MainProps) {
    const isFiltered = useIsFiltered();
    return (
       <>
@@ -150,40 +130,6 @@ function CollectionMain({ filtered, idle }: CollectionMainProps) {
       </>
    );
 }
-
-const FilterableProductList = React.memo(() => {
-   const [productViewType, setProductViewType] = React.useState(
-      ProductViewType.List
-   );
-   return (
-      <VStack mb={4} align="stretch" spacing={4}>
-         <CollectionToolbar
-            productViewType={productViewType}
-            onProductViewTypeChange={setProductViewType}
-         />
-         <HStack align="flex-start" spacing={{ base: 0, sm: 4 }}>
-            <Card
-               py="6"
-               width="250px"
-               display={{ base: 'none', sm: 'block' }}
-               position="sticky"
-               top="4"
-               h="calc(100vh - var(--chakra-space-4) * 2)"
-            >
-               <CollectionFilters />
-            </Card>
-            <Card
-               flex={1}
-               alignItems="center"
-               borderRadius={{ base: 'none', sm: 'lg' }}
-            >
-               <CollectionProducts viewType={productViewType} />
-               <CollectionPagination />
-            </Card>
-         </HStack>
-      </VStack>
-   );
-});
 
 const CategoryGrid = ({ children }: React.PropsWithChildren<unknown>) => {
    return (

@@ -45,13 +45,14 @@ export interface FacetValueState {
 
 // Filter types
 
-export type Filter =
-   | ListFilter
+export type Filter = ListFilter | AtomicFilter;
+
+export type ListFilter = OrFilter | AndFilter;
+
+export type AtomicFilter =
    | BasicFilter
    | NumericComparisonFilter
    | NumericRangeFilter;
-
-export type ListFilter = OrFilter | AndFilter;
 
 export type OrFilter = {
    id: string;
