@@ -59,7 +59,7 @@ export const CollectionFilters = chakra(
                         {({ data, index, style }) => {
                            const facet = data[index];
                            return (
-                              <Box style={style}>
+                              <Box style={style} px="6">
                                  <ListItem
                                     facet={facet}
                                     index={index}

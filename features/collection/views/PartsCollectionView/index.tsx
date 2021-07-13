@@ -38,34 +38,81 @@ export type PartsCollectionViewProps = {
    collection: Collection;
 };
 
-export function PartsCollectionView(props: PartsCollectionViewProps) {
+export function PartsCollectionView({ collection }: PartsCollectionViewProps) {
    return (
-      <DefaultLayout title={`iFixit | ${props.collection.title}`}>
+      <DefaultLayout title={`iFixit | ${collection.title}`}>
          <AlgoliaProvider
             appId={ALGOLIA_APP_ID}
             apiKey={ALGOLIA_API_KEY}
             initialIndexName="shopify_ifixit_test_products"
             // initialRawFilters={`collections:${props.collection.handle}`}
          >
-            <View {...props} />
+            <CollectionPage>
+               <CollectionHero backgroundImageSource={collection.image?.url}>
+                  <VStack>
+                     <Heading
+                        color="white"
+                        size="xl"
+                        fontFamily="Archivo Black"
+                     >
+                        {collection.title}
+                     </Heading>
+                     <HStack>
+                        <CategoryInput />
+                        <ManufacturerSelect />
+                        <SearchInput maxW={300} />
+                     </HStack>
+                  </VStack>
+               </CollectionHero>
+               <CollectionMain
+                  idle={
+                     <CategoryGrid>
+                        {collection.children.map((category) => {
+                           return (
+                              <CategoryCard
+                                 key={category.handle}
+                                 category={category}
+                              />
+                           );
+                        })}
+                     </CategoryGrid>
+                  }
+                  filtered={<FilterableProductList />}
+               />
+            </CollectionPage>
          </AlgoliaProvider>
       </DefaultLayout>
    );
 }
 
-const View = React.memo(({ collection }: PartsCollectionViewProps) => {
-   return (
-      <VStack
-         w={{ base: 'full', lg: '960px', xl: '1100px' }}
-         mx="auto"
-         align="stretch"
-         py={10}
-         spacing={12}
-      >
+const CollectionPage = React.memo(
+   ({ children }: React.PropsWithChildren<unknown>) => {
+      return (
+         <VStack
+            w={{ base: 'full', lg: '960px', xl: '1100px' }}
+            mx="auto"
+            align="stretch"
+            py={10}
+            spacing={12}
+         >
+            {children}
+         </VStack>
+      );
+   }
+);
+
+interface CollectionHeroProps {
+   backgroundImageSource?: string;
+}
+
+const CollectionHero = React.memo(
+   ({
+      children,
+      backgroundImageSource: imageSrc,
+   }: React.PropsWithChildren<CollectionHeroProps>) => {
+      return (
          <Box
-            backgroundImage={
-               collection.image ? `url("${collection.image.url}")` : undefined
-            }
+            backgroundImage={imageSrc ? `url("${imageSrc}")` : undefined}
             backgroundSize="cover"
             borderRadius={{
                base: 0,
@@ -78,42 +125,33 @@ const View = React.memo(({ collection }: PartsCollectionViewProps) => {
                bgColor="blackAlpha.800"
                align="center"
                justify="center"
-               py={20}
+               py="20"
             >
-               <VStack>
-                  <Heading color="white" size="xl" fontFamily="Archivo Black">
-                     {collection.title}
-                  </Heading>
-                  <HStack>
-                     <CategoryInput />
-                     <ManufacturerSelect />
-                     <SearchInput maxW={300} />
-                  </HStack>
-               </VStack>
+               {children}
             </Flex>
          </Box>
-         <ContentView collection={collection} />
-      </VStack>
-   );
-});
+      );
+   }
+);
 
-interface ContentViewProps {
-   collection: Collection;
+interface CollectionMainProps {
+   filtered: JSX.Element;
+   idle: JSX.Element;
 }
 
-function ContentView({ collection }: ContentViewProps) {
+function CollectionMain({ filtered, idle }: CollectionMainProps) {
    const isFiltered = useIsFiltered();
    return (
       <>
          <Collapse in={isFiltered} animateOpacity>
-            <SearchView />
+            {filtered}
          </Collapse>
-         {!isFiltered && <CategoryView categories={collection.children} />}
+         {!isFiltered && idle}
       </>
    );
 }
 
-const SearchView = React.memo(() => {
+const FilterableProductList = React.memo(() => {
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
@@ -125,13 +163,12 @@ const SearchView = React.memo(() => {
          />
          <HStack align="flex-start" spacing={{ base: 0, sm: 4 }}>
             <Card
-               p={6}
+               py="6"
                width="250px"
                display={{ base: 'none', sm: 'block' }}
                position="sticky"
                top="4"
                h="calc(100vh - var(--chakra-space-4) * 2)"
-               overflow="scroll"
             >
                <CollectionFilters />
             </Card>
@@ -148,56 +185,55 @@ const SearchView = React.memo(() => {
    );
 });
 
-interface CategoryViewProps {
-   categories: Collection[];
-}
-
-const CategoryView = React.memo(({ categories }: CategoryViewProps) => {
+const CategoryGrid = ({ children }: React.PropsWithChildren<unknown>) => {
    return (
       <SimpleGrid columns={4} spacing={6}>
-         {categories.map((category) => {
-            return (
-               <LinkBox
-                  key={category.handle}
-                  bg="white"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  boxShadow="sm"
-                  _hover={{
-                     boxShadow: 'md',
-                  }}
-                  transition="all 300ms"
-               >
-                  <Flex direction="column">
-                     {category.image && (
-                        <Image
-                           objectFit="cover"
-                           h="180px"
-                           src={category.image.url}
-                           alt={category.image.alt}
-                           display={{
-                              base: 'none',
-                              md: 'block',
-                           }}
-                        />
-                     )}
-                     <Center py={4}>
-                        <NextLink
-                           href={`/collections/${category.handle}`}
-                           passHref
-                        >
-                           <LinkOverlay>
-                              <Heading as="h2" size="sm">
-                                 {category.title}
-                              </Heading>
-                           </LinkOverlay>
-                        </NextLink>
-                     </Center>
-                  </Flex>
-               </LinkBox>
-            );
-         })}
+         {children}
       </SimpleGrid>
+   );
+};
+
+interface CategoryCardProps {
+   category: Collection;
+}
+
+const CategoryCard = React.memo(({ category }: CategoryCardProps) => {
+   return (
+      <LinkBox
+         key={category.handle}
+         bg="white"
+         borderRadius="lg"
+         overflow="hidden"
+         boxShadow="sm"
+         _hover={{
+            boxShadow: 'md',
+         }}
+         transition="all 300ms"
+      >
+         <Flex direction="column">
+            {category.image && (
+               <Image
+                  objectFit="cover"
+                  h="180px"
+                  src={category.image.url}
+                  alt={category.image.alt}
+                  display={{
+                     base: 'none',
+                     md: 'block',
+                  }}
+               />
+            )}
+            <Center py={4}>
+               <NextLink href={`/collections/${category.handle}`} passHref>
+                  <LinkOverlay>
+                     <Heading as="h2" size="sm">
+                        {category.title}
+                     </Heading>
+                  </LinkOverlay>
+               </NextLink>
+            </Center>
+         </Flex>
+      </LinkBox>
    );
 });
 

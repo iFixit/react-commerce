@@ -1,4 +1,5 @@
 import {
+   Box,
    Button,
    Modal,
    ModalBody,
@@ -26,7 +27,9 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
                <Text fontSize="2xl" my={4}>
                   Filters
                </Text>
-               <CollectionFilters />
+               <Box minH="300px">
+                  <CollectionFilters />
+               </Box>
             </ModalBody>
             <ModalFooter flexDirection="column" alignItems="stretch">
                <Button colorScheme="blue" onClick={onClose}>

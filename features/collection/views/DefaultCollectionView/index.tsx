@@ -11,7 +11,7 @@ import {
    ProductViewType,
 } from '@features/collection/components';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { AlgoliaProvider, SearchState } from '@lib/algolia';
+import { AlgoliaProvider } from '@lib/algolia';
 import * as React from 'react';
 import { CollectionBanner } from './CollectionBanner';
 import { CollectionHeader } from './CollectionHeader';
@@ -63,15 +63,14 @@ export function DefaultCollectionView({
                      productViewType={productViewType}
                      onProductViewTypeChange={setProductViewType}
                   />
-                  <HStack align="flex-start" spacing={{ base: 0, sm: 4 }}>
+                  <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
                      <Card
-                        p={6}
+                        py="6"
                         width="250px"
-                        display={{ base: 'none', sm: 'block' }}
+                        display={{ base: 'none', md: 'block' }}
                         position="sticky"
                         top="4"
                         h="calc(100vh - var(--chakra-space-4) * 2)"
-                        overflow="scroll"
                      >
                         <CollectionFilters />
                      </Card>
