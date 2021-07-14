@@ -20,6 +20,7 @@ import {
    CollectionToolbar,
    ProductViewType,
 } from '@features/collection/components';
+import { formatFacetName } from '@features/collection/utils';
 import {
    AtomicFilter,
    useAtomicFilters,
@@ -41,17 +42,19 @@ export const FilterableProductView = React.memo(() => {
          />
          <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
             <FilterCard>
-               <AppliedFilterSection />
                <CollectionFilters />
             </FilterCard>
-            <Card
-               flex={1}
-               alignItems="center"
-               borderRadius={{ base: 'none', sm: 'lg' }}
-            >
-               <CollectionProducts viewType={productViewType} />
-               <CollectionPagination />
-            </Card>
+            <VStack align="stretch" flex={1}>
+               <AppliedFilterSection />
+               <Card
+                  flex={1}
+                  alignItems="center"
+                  borderRadius={{ base: 'none', sm: 'lg' }}
+               >
+                  <CollectionProducts viewType={productViewType} />
+                  <CollectionPagination />
+               </Card>
+            </VStack>
          </HStack>
       </VStack>
    );
@@ -66,6 +69,7 @@ const FilterCard = ({ children }: React.PropsWithChildren<unknown>) => {
          position="sticky"
          top="4"
          h="calc(100vh - var(--chakra-space-4) * 2)"
+         flexShrink={0}
       >
          {children}
       </Card>
@@ -79,25 +83,26 @@ const AppliedFilterSection = () => {
       clear();
    }, [clear]);
    return (
-      <Collapse in={atomicFilters.length > 0} animateOpacity>
-         <VStack align="flex-start" px="6" spacing="4">
-            <Flex justify="space-between" w="full">
-               <Box fontWeight="semibold">Applied filters</Box>
-               <Button variant="link" onClick={clearAllFilters}>
-                  Clear all
+      <Collapse in={atomicFilters.length > 0} animateOpacity unmountOnExit>
+         <Wrap w="full" align="center">
+            {atomicFilters.map((filter) => {
+               return (
+                  <WrapItem key={filter.id}>
+                     <FilterTag filter={filter} />
+                  </WrapItem>
+               );
+            })}
+            <WrapItem>
+               <Button
+                  variant="link"
+                  size="sm"
+                  colorScheme="brand"
+                  onClick={clearAllFilters}
+               >
+                  Clear All
                </Button>
-            </Flex>
-            <Wrap w="full">
-               {atomicFilters.map((filter) => {
-                  return (
-                     <WrapItem key={filter.id}>
-                        <FilterTag filter={filter} />
-                     </WrapItem>
-                  );
-               })}
-            </Wrap>
-            <Divider />
-         </VStack>
+            </WrapItem>
+         </Wrap>
       </Collapse>
    );
 };
@@ -112,9 +117,10 @@ const FilterTag = ({ filter }: FilterTagProps) => {
    const valuesById = state.facetValues.byId;
 
    const value = React.useMemo(() => {
+      const facetName = formatFacetName(filter.facetName);
       switch (filter.type) {
          case 'basic': {
-            return valuesById[filter.valueId].value;
+            return `${facetName}: ${valuesById[filter.valueId].value}`;
          }
          case 'numeric-comparison': {
             return `${filter.operator} ${filter.value}`;
@@ -132,7 +138,7 @@ const FilterTag = ({ filter }: FilterTagProps) => {
    }, [clear, filter.id]);
 
    return (
-      <Tag size="sm" borderRadius="full" variant="subtle" colorScheme="gray">
+      <Tag size="md" variant="outline" colorScheme="brand">
          <TagLabel>{value}</TagLabel>
          <TagCloseButton onClick={clearFilter} />
       </Tag>

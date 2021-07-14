@@ -1,6 +1,6 @@
 import { Box, chakra, Divider, HStack, Stack } from '@chakra-ui/react';
+import { formatFacetName } from '@features/collection/utils';
 import { Facet, FacetValueState, useFacets } from '@lib/algolia';
-import { capitalize } from '@lib/utils';
 import React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList, VariableSizeListProps } from 'react-window';
@@ -97,19 +97,6 @@ function FilterList(props: Omit<VariableSizeListProps, 'itemSize'>) {
 
 function filterFacet(facet: Facet): boolean {
    return !FACET_BLOCKLIST.includes(facet.name) && facet.values.length > 1;
-}
-
-function formatFacetName(facetName: string): string {
-   let name = facetName;
-   if (name.startsWith('options.')) {
-      name = name.replace('options.', '');
-   }
-   if (name.startsWith('named_tags.')) {
-      name = name.replace('named_tags.', '');
-   }
-   name = name.replace(/_/g, ' ');
-   name = capitalize(name);
-   return name;
 }
 
 function parseRange(value: string): [number, number] {
