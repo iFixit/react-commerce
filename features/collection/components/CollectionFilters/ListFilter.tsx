@@ -31,45 +31,49 @@ export function ListFilter({
       filterType: type,
    });
 
+   const filteredValues = React.useMemo(() => {
+      return values
+         .slice()
+         .filter((item) => item.filteredHitCount > 0)
+         .sort(sortItems);
+   }, [sortItems, values]);
+
    if (!isLoaded) {
       return null;
    }
    return (
       <VStack align="flex-start">
-         {values
-            .slice()
-            .sort(sortItems)
-            .map((item, index) => {
-               if (multiple) {
-                  return (
-                     <Checkbox
-                        key={index}
-                        isChecked={selectedValueIds.includes(item.id)}
-                        onChange={() => toggle(item.id)}
-                     >
-                        <Text fontSize="sm">
-                           {renderItem
-                              ? renderItem(item, index, values)
-                              : item.value}
-                        </Text>
-                     </Checkbox>
-                  );
-               }
+         {filteredValues.map((item, index) => {
+            if (multiple) {
                return (
-                  <Radio
+                  <Checkbox
                      key={index}
-                     value={item.value}
                      isChecked={selectedValueIds.includes(item.id)}
-                     onChange={() => set(item.id)}
+                     onChange={() => toggle(item.id)}
                   >
                      <Text fontSize="sm">
                         {renderItem
                            ? renderItem(item, index, values)
-                           : item.value}
+                           : item.value + ` (${item.filteredHitCount})`}
                      </Text>
-                  </Radio>
+                  </Checkbox>
                );
-            })}
+            }
+            return (
+               <Radio
+                  key={index}
+                  value={item.value}
+                  isChecked={selectedValueIds.includes(item.id)}
+                  onChange={() => set(item.id)}
+               >
+                  <Text fontSize="sm">
+                     {renderItem
+                        ? renderItem(item, index, values)
+                        : item.value + ` (${item.filteredHitCount})`}
+                  </Text>
+               </Radio>
+            );
+         })}
       </VStack>
    );
 }

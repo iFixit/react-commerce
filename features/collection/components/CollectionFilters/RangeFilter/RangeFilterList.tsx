@@ -35,7 +35,10 @@ export function RangeFilterList({
    useRegisterFacet(facetName);
 
    const items = React.useMemo(() => {
-      return values.slice().sort(sortItems);
+      return values
+         .slice()
+         .filter((value) => value.filteredHitCount > 0)
+         .sort(sortItems);
    }, [sortItems, values]);
 
    if (!isLoaded) {

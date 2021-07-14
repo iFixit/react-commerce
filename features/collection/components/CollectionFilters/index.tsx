@@ -96,7 +96,11 @@ function FilterList(props: Omit<VariableSizeListProps, 'itemSize'>) {
 }
 
 function filterFacet(facet: Facet): boolean {
-   return !FACET_BLOCKLIST.includes(facet.name) && facet.values.length > 1;
+   return (
+      !FACET_BLOCKLIST.includes(facet.name) &&
+      facet.values.length > 1 &&
+      facet.values.some((value) => value.filteredHitCount > 0)
+   );
 }
 
 function parseRange(value: string): [number, number] {
