@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
-import { Collection } from '../../types';
+import { Collection } from '../types';
 import NextLink from 'next/link';
 
 export type CollectionHeaderProps = {

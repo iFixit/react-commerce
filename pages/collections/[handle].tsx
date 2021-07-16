@@ -1,8 +1,9 @@
 import { VStack } from '@chakra-ui/react';
 import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { Collection, loadCollection } from '@features/collection';
 import {
+   Collection,
+   loadCollection,
    FilterableProductView,
    Hero,
    HeroBackgroundImage,
@@ -13,10 +14,10 @@ import {
    HeroImage,
    HeroTitle,
    Page,
-} from '@features/collection/components';
-import { CollectionBanner } from '@features/collection/views/DefaultCollectionView/CollectionBanner';
-import { CollectionSubcategories } from '@features/collection/views/DefaultCollectionView/CollectionSubcategories';
-import { DefaultLayout } from '@layouts/DefaultLayout';
+} from '@features/collection';
+import { CollectionBanner } from '@features/collection/components/CollectionBanner';
+import { CollectionSubcategories } from '@features/collection/components/CollectionSubcategories';
+import { SiteLayout } from '@components/layouts/SiteLayout';
 import { AlgoliaProvider } from '@lib/algolia';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
@@ -34,7 +35,7 @@ export default function CollectionPage({
    const hasDescription =
       collection.description != null && collection.description.length > 0;
    return (
-      <DefaultLayout title={`iFixit | ${collection.title}`}>
+      <SiteLayout title={`iFixit | ${collection.title}`}>
          <AlgoliaProvider
             key={collectionHandle}
             appId={ALGOLIA_APP_ID}
@@ -88,7 +89,7 @@ export default function CollectionPage({
                <NewsletterSection />
             </Page>
          </AlgoliaProvider>
-      </DefaultLayout>
+      </SiteLayout>
    );
 }
 
