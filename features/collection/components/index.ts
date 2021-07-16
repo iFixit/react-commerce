@@ -6,3 +6,4 @@ export * from './SearchInput';
 export * from './FiltersModal';
 export * from './FilterableProductView';
 export * from './Page';
+export * from './Hero';
