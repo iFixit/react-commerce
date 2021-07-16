@@ -7,6 +7,8 @@ import {
    Hero,
    HeroBackgroundImage,
    HeroBreadcrumb,
+   HeroBreadcrumbItem,
+   HeroBreadcrumbLink,
    HeroDescription,
    HeroImage,
    HeroTitle,
@@ -43,7 +45,19 @@ export default function CollectionPage({
             <Page>
                <Hero>
                   <VStack flex={1} align="flex-start">
-                     <HeroBreadcrumb collection={collection} />
+                     <HeroBreadcrumb>
+                        {collection.ancestors.map((ancestor) => (
+                           <HeroBreadcrumbLink
+                              key={ancestor.handle}
+                              href={`/collections/${ancestor.handle}`}
+                           >
+                              {ancestor.title}
+                           </HeroBreadcrumbLink>
+                        ))}
+                        <HeroBreadcrumbItem>
+                           {collection.title}
+                        </HeroBreadcrumbItem>
+                     </HeroBreadcrumb>
                      {!hasDescription && collection.image != null ? (
                         <HeroBackgroundImage src={collection.image.url}>
                            <HeroTitle color="white">

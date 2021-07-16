@@ -2,6 +2,7 @@ import {
    Box,
    Breadcrumb,
    BreadcrumbItem,
+   BreadcrumbItemProps,
    BreadcrumbLink,
    Button,
    chakra,
@@ -158,35 +159,46 @@ export const HeroBackgroundImage = chakra(
    }
 );
 
-export type HeroBreadcrumbProps = {
-   className?: string;
-   collection: Collection;
+export type HeroBreadcrumbProps = React.PropsWithChildren<unknown>;
+
+export const HeroBreadcrumb = ({ children }: HeroBreadcrumbProps) => {
+   return (
+      <Breadcrumb
+         spacing={2}
+         px={{ base: 6, sm: 0 }}
+         separator={<Icon as={HiChevronRight} color="gray.300" />}
+      >
+         {children}
+      </Breadcrumb>
+   );
 };
 
-export const HeroBreadcrumb = chakra(
-   ({ className, collection }: HeroBreadcrumbProps) => {
-      return (
-         <Breadcrumb
-            className={className}
-            spacing={2}
-            px={{ base: 6, sm: 0 }}
-            separator={<Icon as={HiChevronRight} color="gray.300" />}
-         >
-            {collection.ancestors.map((ancestor, index) => {
-               return (
-                  <BreadcrumbItem key={index}>
-                     <NextLink href={`/collections/${ancestor.handle}`}>
-                        <BreadcrumbLink color="gray">
-                           {ancestor.title}
-                        </BreadcrumbLink>
-                     </NextLink>
-                  </BreadcrumbItem>
-               );
-            })}
-            <BreadcrumbItem isCurrentPage>
-               <Text color="black">{collection.title}</Text>
-            </BreadcrumbItem>
-         </Breadcrumb>
-      );
+export type HeroBreadcrumbLinkProps = React.PropsWithChildren<
+   BreadcrumbItemProps & {
+      href: string;
    }
-);
+>;
+
+export const HeroBreadcrumbLink = ({
+   href,
+   children,
+   ...otherProps
+}: HeroBreadcrumbLinkProps) => {
+   return (
+      <BreadcrumbItem {...otherProps}>
+         <NextLink href={href}>
+            <BreadcrumbLink color="gray">{children}</BreadcrumbLink>
+         </NextLink>
+      </BreadcrumbItem>
+   );
+};
+
+export type HeroBreadcrumbItemProps = React.PropsWithChildren<unknown>;
+
+export const HeroBreadcrumbItem = ({ children }: HeroBreadcrumbItemProps) => {
+   return (
+      <BreadcrumbItem isCurrentPage>
+         <Text color="black">{children}</Text>
+      </BreadcrumbItem>
+   );
+};
