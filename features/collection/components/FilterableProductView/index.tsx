@@ -123,10 +123,10 @@ const FilterTag = ({ filter }: FilterTagProps) => {
             return `${facetName}: ${valuesById[filter.valueId].value}`;
          }
          case 'numeric-comparison': {
-            return `${filter.operator} ${filter.value}`;
+            return `${facetName}: ${filter.operator} ${filter.value}`;
          }
          case 'numeric-range': {
-            return `${filter.range.min} - ${filter.range.max}`;
+            return `${facetName}: ${filter.range.min} - ${filter.range.max}`;
          }
          default:
             return assertNever(filter);

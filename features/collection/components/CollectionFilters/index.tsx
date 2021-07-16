@@ -200,19 +200,3 @@ function ListItem({ facet, index, isExpanded, onToggle }: ListItemProps) {
       </Stack>
    );
 }
-
-interface WindowSize {
-   width: number;
-   height: number;
-}
-
-function useWindowSize() {
-   const [size, setSize] = React.useState<WindowSize>({ width: 0, height: 0 });
-   React.useEffect(() => {
-      setSize({
-         width: window.innerWidth,
-         height: window.innerHeight,
-      });
-   }, []);
-   return size;
-}
