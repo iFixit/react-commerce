@@ -135,10 +135,6 @@ export const HeroBackgroundImage = chakra(
             w="full"
             backgroundImage={`url("${src}")`}
             backgroundSize="cover"
-            m={{
-               base: 0,
-               sm: 4,
-            }}
             borderRadius={{
                base: 0,
                sm: 'xl',
