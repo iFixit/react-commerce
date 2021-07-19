@@ -63,7 +63,8 @@ export interface UseMeasureContentResult<T> {
 }
 
 export function useMeasureContent<T extends HTMLElement>(
-   index: number
+   index: number,
+   deps: React.DependencyList = []
 ): UseMeasureContentResult<T> {
    const ref = React.useRef<T | null>(null);
    const { setSize } = useMeasuredContentContext();
@@ -72,7 +73,8 @@ export function useMeasureContent<T extends HTMLElement>(
       if (ref.current != null) {
          setSize(index, ref.current.getBoundingClientRect().height);
       }
-   }, [index, setSize]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [index, setSize, ...deps]);
 
    const reset = React.useCallback(() => {
       if (ref.current != null) {

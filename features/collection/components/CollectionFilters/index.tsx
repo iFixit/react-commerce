@@ -3,7 +3,11 @@ import { formatFacetName } from '@features/collection/utils';
 import { Facet, FacetValueState, useFacets } from '@lib/algolia';
 import React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeList, VariableSizeListProps } from 'react-window';
+import {
+   VariableSizeList,
+   VariableSizeListProps,
+   areEqual,
+} from 'react-window';
 import { ClearButton } from './ClearButton';
 import { ListFilter } from './ListFilter';
 import {
@@ -12,6 +16,7 @@ import {
    useMeasuredContentContext,
 } from './MeasuredContent';
 import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
+import memoize from 'memoize-one';
 
 interface CollectionFiltersProps {
    className?: string;
@@ -40,8 +45,20 @@ export const CollectionFilters = chakra(
       const filteredFacets = React.useMemo(() => {
          return sortedFacets.filter(filterFacet);
       }, [sortedFacets]);
-      const [expandedSections, setExpandedSections] = React.useState<string[]>(
-         []
+      const [expandedFacets, setExpandedFacets] = React.useState<string[]>([]);
+      const toggleFacet = React.useCallback((name: string) => {
+         setExpandedFacets((current) => {
+            if (current.includes(name)) {
+               return current.filter((f) => f !== name);
+            }
+            return [...current, name];
+         });
+      }, []);
+
+      const itemData = createItemData(
+         filteredFacets,
+         expandedFacets,
+         toggleFacet
       );
 
       return (
@@ -54,32 +71,9 @@ export const CollectionFilters = chakra(
                         itemCount={filteredFacets.length}
                         estimatedItemSize={40}
                         width={width}
-                        itemData={filteredFacets}
+                        itemData={itemData}
                      >
-                        {({ data, index, style }) => {
-                           const facet = data[index];
-                           return (
-                              <Box style={style} px="6">
-                                 <ListItem
-                                    facet={facet}
-                                    index={index}
-                                    isExpanded={expandedSections.includes(
-                                       facet.name
-                                    )}
-                                    onToggle={() => {
-                                       setExpandedSections((current) => {
-                                          if (current.includes(facet.name)) {
-                                             return current.filter(
-                                                (f) => f !== facet.name
-                                             );
-                                          }
-                                          return [...current, facet.name];
-                                       });
-                                    }}
-                                 />
-                              </Box>
-                           );
-                        }}
+                        {FilterRow}
                      </FilterList>
                   );
                }}
@@ -89,11 +83,55 @@ export const CollectionFilters = chakra(
    }
 );
 
+const createItemData = memoize(
+   (
+      facets: Facet[],
+      expandedFacets: string[],
+      toggleFacet: (name: string) => void
+   ): ListItemData => ({
+      facets,
+      expandedFacets,
+      toggleFacet,
+   })
+);
+
 function FilterList(props: Omit<VariableSizeListProps, 'itemSize'>) {
    const { listRef, getSize } = useMeasuredContentContext();
 
    return <VariableSizeList ref={listRef} {...props} itemSize={getSize} />;
 }
+
+interface ListItemData {
+   facets: Facet[];
+   expandedFacets: string[];
+   toggleFacet(name: string): void;
+}
+
+interface FilterRowProps {
+   data: ListItemData;
+   index: number;
+   style: any;
+}
+
+const FilterRow = React.memo(({ data, index, style }: FilterRowProps) => {
+   const { facets, expandedFacets, toggleFacet } = data;
+   const facet = facets[index];
+
+   const onToggle = React.useCallback(() => {
+      toggleFacet(facet.name);
+   }, [facet.name, toggleFacet]);
+
+   return (
+      <Box style={style} px="6">
+         <ListItem
+            facet={facet}
+            index={index}
+            isExpanded={expandedFacets.includes(facet.name)}
+            onToggle={onToggle}
+         />
+      </Box>
+   );
+}, areEqual);
 
 function filterFacet(facet: Facet): boolean {
    return (
@@ -123,12 +161,14 @@ interface ListItemProps {
 
 function ListItem({ facet, index, isExpanded, onToggle }: ListItemProps) {
    const name = formatFacetName(facet.name);
-   const { ref, reset } = useMeasureContent<HTMLDivElement>(index);
+   const { ref, reset } = useMeasureContent<HTMLDivElement>(index, [
+      isExpanded,
+   ]);
 
-   React.useEffect(() => {
-      reset();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [isExpanded]);
+   // React.useEffect(() => {
+   //    reset();
+   //    // eslint-disable-next-line react-hooks/exhaustive-deps
+   // }, [isExpanded]);
 
    return (
       <Stack ref={ref} spacing="2">
