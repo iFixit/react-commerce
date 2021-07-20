@@ -32,7 +32,9 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
          <HStack>
             <InputGroup size="sm">
                {minFieldPrefix && (
-                  <InputLeftElement>{minFieldPrefix}</InputLeftElement>
+                  <InputLeftElement zIndex="0">
+                     {minFieldPrefix}
+                  </InputLeftElement>
                )}
                <Input
                   ref={minRef}
@@ -45,7 +47,9 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
             </InputGroup>
             <InputGroup size="sm">
                {maxFieldPrefix && (
-                  <InputLeftElement>{maxFieldPrefix}</InputLeftElement>
+                  <InputLeftElement zIndex="0">
+                     {maxFieldPrefix}
+                  </InputLeftElement>
                )}
                <Input
                   ref={maxRef}

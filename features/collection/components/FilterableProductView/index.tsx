@@ -14,7 +14,7 @@ import {
    CollectionFilters,
    CollectionPagination,
    CollectionProducts,
-   CollectionToolbar,
+   Toolbar,
    ProductViewType,
 } from '@features/collection/components';
 import { formatFacetName } from '@features/collection/utils';
@@ -33,7 +33,7 @@ export const FilterableProductView = React.memo(() => {
    );
    return (
       <VStack align="stretch" mb="4" spacing="4">
-         <CollectionToolbar
+         <Toolbar
             productViewType={productViewType}
             onProductViewTypeChange={setProductViewType}
          />

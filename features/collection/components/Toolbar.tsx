@@ -4,8 +4,10 @@ import {
    HStack,
    Icon,
    IconButton,
+   IconButtonProps,
    Stack,
    Text,
+   VStack,
 } from '@chakra-ui/react';
 import { Hit } from '@features/collection';
 import { useHits } from '@lib/algolia';
@@ -16,14 +18,15 @@ import { FiltersModal } from './FiltersModal';
 import { SearchInput } from './SearchInput';
 import { ProductViewType } from './CollectionProducts';
 
-export type CollectionToolbarProps = {
+export type ToolbarProps = {
    productViewType: ProductViewType;
    onProductViewTypeChange: (type: ProductViewType) => void;
 };
-export function CollectionToolbar({
+
+export function Toolbar({
    productViewType = ProductViewType.List,
    onProductViewTypeChange,
-}: CollectionToolbarProps) {
+}: ToolbarProps) {
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
    const onChangeProductViewType = React.useCallback(
       (newViewType: ProductViewType) => {
@@ -45,7 +48,7 @@ export function CollectionToolbar({
                isOpen={isFilterModalOpen}
                onClose={() => setIsFilterModalOpen(false)}
             />
-            <IconButton
+            {/* <IconButton
                aria-label="open search and filters modal"
                icon={<Icon as={RiSearchLine} color="gray.500" />}
                variant="outline"
@@ -53,56 +56,54 @@ export function CollectionToolbar({
                bg="white"
                display={{ base: 'flex', md: 'none' }}
                onClick={() => setIsFilterModalOpen(true)}
-            />
-            <Button
-               variant="outline"
-               bg="white"
-               display={{ base: 'block', md: 'none' }}
-               flex={1}
-               onClick={() => setIsFilterModalOpen(true)}
-            >
-               Filters
-            </Button>
-            <Button
-               variant="outline"
-               bg="white"
-               display={{ base: 'block', md: 'none' }}
-               flex={1}
-               onClick={() => alert('not implemented yet')}
-            >
-               Sorting
-            </Button>
-            <SearchInput maxW={300} display={{ base: 'none', md: 'block' }} />
-            <ButtonGroup
-               size="sm"
-               isAttached
-               bg="white"
-               display={{ base: 'none', md: 'flex' }}
-            >
-               <IconButton
+            /> */}
+            <VStack w="full" align="stretch" spacing={{ base: 2, md: 0 }}>
+               <HStack>
+                  <Button
+                     variant="outline"
+                     bg="white"
+                     display={{ base: 'block', md: 'none' }}
+                     flex={1}
+                     onClick={() => setIsFilterModalOpen(true)}
+                  >
+                     Filters
+                  </Button>
+                  <Button
+                     variant="outline"
+                     bg="white"
+                     display={{ base: 'block', md: 'none' }}
+                     flex={1}
+                     onClick={() => alert('not implemented yet')}
+                  >
+                     Sorting
+                  </Button>
+               </HStack>
+               <SearchInput
+                  maxW={{
+                     md: 300,
+                  }}
+                  // w={{ base: 'full' }}
+                  //  display={{ base: 'none', md: 'block' }}
+               />
+            </VStack>
+            <ProductViewSwitch>
+               <ProductViewListButton
                   aria-label="Select list view"
-                  icon={<Icon as={HiOutlineMenu} color="gray.500" />}
-                  mr="-px"
-                  variant="outline"
-                  size="md"
                   isActive={productViewType === ProductViewType.List}
                   onClick={() => onChangeProductViewType(ProductViewType.List)}
                />
-               <IconButton
+               <ProductViewGridButton
                   aria-label="Select grid view"
-                  icon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
-                  variant="outline"
-                  size="md"
                   isActive={productViewType === ProductViewType.Grid}
                   onClick={() => onChangeProductViewType(ProductViewType.Grid)}
                />
-            </ButtonGroup>
+            </ProductViewSwitch>
          </HStack>
       </Stack>
    );
 }
 
-function NumberOfHits() {
+export function NumberOfHits() {
    const { numberOfHits } = useHits<Hit>();
    return (
       <Text textAlign="center" color="gray.500" fontWeight="bold">
@@ -111,3 +112,42 @@ function NumberOfHits() {
       </Text>
    );
 }
+
+type ProductViewSwitchProps = React.PropsWithChildren<unknown>;
+
+export const ProductViewSwitch = ({ children }: ProductViewSwitchProps) => {
+   return (
+      <ButtonGroup
+         size="sm"
+         isAttached
+         bg="white"
+         display={{ base: 'none', md: 'flex' }}
+      >
+         {children}
+      </ButtonGroup>
+   );
+};
+
+export const ProductViewListButton = (props: IconButtonProps) => {
+   return (
+      <IconButton
+         icon={<Icon as={HiOutlineMenu} color="gray.500" />}
+         mr="-px"
+         variant="outline"
+         size="md"
+         {...props}
+      />
+   );
+};
+
+export const ProductViewGridButton = (props: IconButtonProps) => {
+   return (
+      <IconButton
+         icon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
+         mr="-px"
+         variant="outline"
+         size="md"
+         {...props}
+      />
+   );
+};
