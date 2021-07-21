@@ -8,6 +8,7 @@ import {
    ModalOverlay,
 } from '@chakra-ui/react';
 import * as React from 'react';
+import { AppliedFilters } from './AppliedFilters';
 import { CollectionFilters } from './CollectionFilters';
 
 type FiltersModalProps = {
@@ -21,6 +22,7 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
          <ModalOverlay />
          <ModalContent>
             <ModalBody pt={6}>
+               <AppliedFilters />
                <Box h="320px" mx="-6">
                   <CollectionFilters />
                </Box>
