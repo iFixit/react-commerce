@@ -4,8 +4,8 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
    Collection,
    loadCollection,
-   FilterableProductView,
-   Hero,
+   FilterableProductSection,
+   HeroSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
    HeroBreadcrumbItem,
@@ -16,7 +16,7 @@ import {
    Page,
 } from '@features/collection';
 import { CollectionBanner } from '@features/collection/components/CollectionBanner';
-import { CollectionSubcategories } from '@features/collection/components/CollectionSubcategories';
+import { SubcategoriesSection } from '@features/collection/components/SubcategoriesSection';
 import { SiteLayout } from '@components/layouts/SiteLayout';
 import { AlgoliaProvider } from '@lib/algolia';
 import { GetServerSideProps } from 'next';
@@ -44,7 +44,7 @@ export default function CollectionPage({
             initialRawFilters={`collections:${collectionHandle}`}
          >
             <Page>
-               <Hero>
+               <HeroSection>
                   <VStack flex={1} align="flex-start">
                      {collection.ancestors.length > 0 && (
                         <HeroBreadcrumb>
@@ -82,11 +82,11 @@ export default function CollectionPage({
                         alt={collection.image.alt}
                      />
                   )}
-               </Hero>
+               </HeroSection>
                {collection.children.length > 0 && (
-                  <CollectionSubcategories collection={collection} />
+                  <SubcategoriesSection collection={collection} />
                )}
-               <FilterableProductView />
+               <FilterableProductSection />
                <CollectionBanner />
                <NewsletterSection />
             </Page>

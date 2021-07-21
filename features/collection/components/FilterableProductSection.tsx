@@ -35,7 +35,7 @@ import {
 import { assertNever } from '@lib/utils';
 import * as React from 'react';
 
-export const FilterableProductView = React.memo(() => {
+export const FilterableProductSection = React.memo(() => {
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );

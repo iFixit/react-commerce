@@ -69,7 +69,7 @@ export function useMeasureContent<T extends HTMLElement>(
    const ref = React.useRef<T | null>(null);
    const { setSize } = useMeasuredContentContext();
 
-   React.useLayoutEffect(() => {
+   React.useEffect(() => {
       if (ref.current != null) {
          setSize(index, ref.current.getBoundingClientRect().height);
       }

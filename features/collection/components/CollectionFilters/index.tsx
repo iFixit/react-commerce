@@ -96,7 +96,7 @@ function itemKey(index: number, data: ListItemData): string {
 const FilterList = (props: Omit<VariableSizeListProps, 'itemSize'>) => {
    const { listRef, getSize } = useMeasuredContentContext();
 
-   return <VariableSizeList ref={listRef} {...props} itemSize={getSize} />;
+   return <VariableSizeList {...props} ref={listRef} itemSize={getSize} />;
 };
 
 function filterFacet(facet: Facet): boolean {

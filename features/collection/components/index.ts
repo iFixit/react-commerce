@@ -4,6 +4,6 @@ export * from './CollectionProducts';
 export * from './Toolbar';
 export * from './SearchInput';
 export * from './FiltersModal';
-export * from './FilterableProductView';
+export * from './FilterableProductSection';
 export * from './Page';
-export * from './Hero';
+export * from './HeroSection';

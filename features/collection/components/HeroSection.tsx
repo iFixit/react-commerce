@@ -18,9 +18,8 @@ import {
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
-import { Collection } from '../types';
 
-export const Hero = chakra(
+export const HeroSection = chakra(
    ({
       children,
       className,
