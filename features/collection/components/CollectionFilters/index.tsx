@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import { Facet, useFacets } from '@lib/algolia';
 import memoize from 'memoize-one';
 import React from 'react';
@@ -93,11 +93,11 @@ function itemKey(index: number, data: ListItemData): string {
    return item.name;
 }
 
-function FilterList(props: Omit<VariableSizeListProps, 'itemSize'>) {
+const FilterList = (props: Omit<VariableSizeListProps, 'itemSize'>) => {
    const { listRef, getSize } = useMeasuredContentContext();
 
    return <VariableSizeList ref={listRef} {...props} itemSize={getSize} />;
-}
+};
 
 function filterFacet(facet: Facet): boolean {
    return (

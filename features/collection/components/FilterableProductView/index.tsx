@@ -16,6 +16,14 @@ import {
    CollectionProducts,
    Toolbar,
    ProductViewType,
+   NumberOfHits,
+   FiltersModal,
+   OpenFiltersButton,
+   SortBySelect,
+   SearchInput,
+   ProductViewSwitch,
+   ProductViewListButton,
+   ProductViewGridButton,
 } from '@features/collection/components';
 import { formatFacetName } from '@features/collection/utils';
 import {
@@ -31,11 +39,49 @@ export const FilterableProductView = React.memo(() => {
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
+   const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
+
    return (
       <VStack align="stretch" mb="4" spacing="4">
          <Toolbar
-            productViewType={productViewType}
-            onProductViewTypeChange={setProductViewType}
+            leftContent={<NumberOfHits />}
+            rightContent={
+               <HStack px={{ base: 4, sm: 0 }}>
+                  <FiltersModal
+                     isOpen={isFilterModalOpen}
+                     onClose={() => setIsFilterModalOpen(false)}
+                  />
+                  <VStack w="full" align="stretch" spacing={{ base: 2, md: 0 }}>
+                     <HStack>
+                        <OpenFiltersButton
+                           onClick={() => setIsFilterModalOpen(true)}
+                        >
+                           Filters
+                        </OpenFiltersButton>
+                        <SortBySelect
+                           defaultValue="manual"
+                           placeholder="Select collection sort by"
+                        >
+                           <option value="manual">Featured</option>
+                           <option value="best-selling">Most popular</option>
+                        </SortBySelect>
+                     </HStack>
+                     <SearchInput maxW={{ md: 300 }} />
+                  </VStack>
+                  <ProductViewSwitch>
+                     <ProductViewListButton
+                        aria-label="Select list view"
+                        isActive={productViewType === ProductViewType.List}
+                        onClick={() => setProductViewType(ProductViewType.List)}
+                     />
+                     <ProductViewGridButton
+                        aria-label="Select grid view"
+                        isActive={productViewType === ProductViewType.Grid}
+                        onClick={() => setProductViewType(ProductViewType.Grid)}
+                     />
+                  </ProductViewSwitch>
+               </HStack>
+            }
          />
          <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
             <FilterCard>
