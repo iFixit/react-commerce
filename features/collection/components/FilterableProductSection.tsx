@@ -105,7 +105,6 @@ export const FilterableProductSection = React.memo(() => {
                         })}
                      </ProductGrid>
                   )}
-                  {}
                   <CollectionPagination />
                </Card>
             </VStack>

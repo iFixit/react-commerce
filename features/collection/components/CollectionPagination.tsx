@@ -1,3 +1,4 @@
+import { useBreakpointValue } from '@chakra-ui/react';
 import {
    Pagination,
    PaginationButton,
@@ -13,6 +14,7 @@ import {
 } from 'react-icons/hi';
 
 export function CollectionPagination() {
+   const visibleNumberOfPages = useBreakpointValue({ base: 3, sm: 5, lg: 7 });
    const { page, setPage, numberOfPages = 0, isLoaded } = usePagination();
    if (!isLoaded || numberOfPages <= 1) {
       return null;
@@ -24,6 +26,7 @@ export function CollectionPagination() {
          onChange={setPage}
          pt={12}
          pb={8}
+         visibleNumberOfPages={visibleNumberOfPages}
       >
          {(pagination) => (
             <>
