@@ -1,24 +1,33 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
+import { useHits } from '@lib/algolia';
+import * as React from 'react';
+import { Hit } from '../types';
+import { AppliedFilters } from './AppliedFilters';
+import { CollectionFilters } from './CollectionFilters';
+import { CollectionPagination } from './CollectionPagination';
+import { FiltersModal } from './FiltersModal';
+import { ProductGrid, ProductGridItem } from './ProductGrid';
+import { ProductList, ProductListItem } from './ProductList';
+import { ProductsEmptyState } from './ProductsEmptyState';
+import { SearchInput } from './SearchInput';
 import {
-   CollectionFilters,
-   CollectionPagination,
-   CollectionProducts,
-   FiltersModal,
    NumberOfHits,
    OpenFiltersButton,
    ProductViewGridButton,
    ProductViewListButton,
    ProductViewSwitch,
-   ProductViewType,
-   SearchInput,
    SortBySelect,
    Toolbar,
-} from '@features/collection/components';
-import * as React from 'react';
-import { AppliedFilters } from './AppliedFilters';
+} from './Toolbar';
+
+export enum ProductViewType {
+   Grid = 'grid',
+   List = 'list',
+}
 
 export const FilterableProductSection = React.memo(() => {
+   const { hits } = useHits<Hit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
@@ -77,7 +86,26 @@ export const FilterableProductSection = React.memo(() => {
                   alignItems="center"
                   borderRadius={{ base: 'none', sm: 'lg' }}
                >
-                  <CollectionProducts viewType={productViewType} />
+                  {hits.length === 0 ? (
+                     <ProductsEmptyState />
+                  ) : productViewType === ProductViewType.List ? (
+                     <ProductList>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductListItem key={hit.handle} product={hit} />
+                           );
+                        })}
+                     </ProductList>
+                  ) : (
+                     <ProductGrid>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductGridItem key={hit.handle} product={hit} />
+                           );
+                        })}
+                     </ProductGrid>
+                  )}
+                  {}
                   <CollectionPagination />
                </Card>
             </VStack>
