@@ -4,6 +4,7 @@ import {
    Tag,
    TagCloseButton,
    TagLabel,
+   useBreakpointValue,
    Wrap,
    WrapItem,
 } from '@chakra-ui/react';
@@ -23,6 +24,8 @@ export const AppliedFilters = () => {
    const clearAllFilters = React.useCallback(() => {
       clear();
    }, [clear]);
+   const buttonSize = useBreakpointValue({ base: 'lg', md: 'sm' });
+
    return (
       <Collapse in={atomicFilters.length > 0} animateOpacity unmountOnExit>
          <Wrap w="full" align="center">
@@ -36,7 +39,7 @@ export const AppliedFilters = () => {
             <WrapItem>
                <Button
                   variant="link"
-                  size="sm"
+                  size={buttonSize}
                   colorScheme="brand"
                   onClick={clearAllFilters}
                >
@@ -56,6 +59,7 @@ const FilterTag = ({ filter }: FilterTagProps) => {
    const state = useSearchStateContext();
    const clear = useClearFilter();
    const valuesById = state.facetValues.byId;
+   const tagSize = useBreakpointValue({ base: 'lg', md: 'md' });
 
    const value = React.useMemo(() => {
       const facetName = formatFacetName(filter.facetName);
@@ -79,8 +83,8 @@ const FilterTag = ({ filter }: FilterTagProps) => {
    }, [clear, filter.id]);
 
    return (
-      <Tag size="md" variant="outline" colorScheme="brand">
-         <TagLabel>{value}</TagLabel>
+      <Tag size={tagSize} variant="outline" colorScheme="brand">
+         <TagLabel maxW="260px">{value}</TagLabel>
          <TagCloseButton onClick={clearFilter} />
       </Tag>
    );
