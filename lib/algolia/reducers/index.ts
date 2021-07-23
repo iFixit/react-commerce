@@ -32,6 +32,7 @@ export function getInitialState({
             rootIds: [],
             allIds: [],
          },
+         limit: 24,
       },
       isLoaded: false,
       hits: {
