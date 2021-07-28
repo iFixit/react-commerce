@@ -11,7 +11,17 @@ export const ProductCardTitle = chakra(
       className,
    }: React.PropsWithChildren<ProductCardTitleProps>) => {
       return (
-         <Heading className={className} as="h2" size="sm" textAlign="center">
+         <Heading
+            className={className}
+            as="h2"
+            fontSize={{
+               base: 'xs',
+               sm: 'sm',
+               md: 'md',
+               lg: 'md',
+            }}
+            textAlign="center"
+         >
             {children}
          </Heading>
       );

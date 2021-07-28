@@ -1,4 +1,4 @@
-import { Button, SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import {
    ProductCard,
    ProductCardBody,
@@ -16,8 +16,8 @@ export function ProductGrid({ children }: ProductGridProps) {
       <SimpleGrid
          w="100%"
          columns={{
-            base: 1,
-            md: 2,
+            base: 2,
+            sm: 2,
             lg: 3,
          }}
          spacing={2}
@@ -38,15 +38,6 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
          <ProductCardBody>
             <ProductCardTitle>{product.title}</ProductCardTitle>
             <ProductCardPrice price={product.price} />
-            <Button
-               colorScheme="brand"
-               display={{
-                  base: 'block',
-                  sm: 'none',
-               }}
-            >
-               Buy now
-            </Button>
          </ProductCardBody>
       </ProductCard>
    );

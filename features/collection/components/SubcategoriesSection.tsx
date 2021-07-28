@@ -1,10 +1,11 @@
 import {
+   AspectRatio,
    Box,
    Button,
    Collapse,
    Flex,
    Heading,
-   Image,
+   Img,
    LinkBox,
    LinkOverlay,
    SimpleGrid,
@@ -130,12 +131,18 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
       >
          <Flex h="full" direction="row" align="center">
             {category.image && (
-               <Image
-                  objectFit="cover"
-                  h="54px"
-                  src={category.image.url}
-                  alt={category.image.alt}
-               />
+               <AspectRatio
+                  flexBasis="80px"
+                  ratio={4 / 3}
+                  flexShrink={0}
+                  flexGrow={0}
+               >
+                  <Img
+                     objectFit="cover"
+                     src={category.image.url}
+                     alt={category.image.alt}
+                  />
+               </AspectRatio>
             )}
             <NextLink href={`/collections/${category.handle}`} passHref>
                <LinkOverlay

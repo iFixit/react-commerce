@@ -1,4 +1,5 @@
 import {
+   AspectRatio,
    Box,
    Breadcrumb,
    BreadcrumbItem,
@@ -11,8 +12,8 @@ import {
    Heading,
    HStack,
    Icon,
-   Image,
    ImageProps,
+   Img,
    Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -92,6 +93,7 @@ export function HeroDescription({
          </Collapse>
          <Button
             variant="link"
+            color="gray.800"
             size="sm"
             onClick={onToggle}
             mt="1"
@@ -109,17 +111,17 @@ export function HeroDescription({
 
 export const HeroImage = chakra((props: ImageProps) => {
    return (
-      <Image
+      <AspectRatio
          flex={1}
-         boxSize="274px"
-         objectFit="cover"
-         borderRadius="lg"
+         maxW="450px"
+         ratio={4 / 3}
          display={{
             base: 'none',
             md: 'block',
          }}
-         {...props}
-      />
+      >
+         <Img boxShadow="base" objectFit="cover" borderRadius="lg" {...props} />
+      </AspectRatio>
    );
 });
 
