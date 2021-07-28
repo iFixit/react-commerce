@@ -3,16 +3,18 @@ import produce from 'immer';
 import { FacetValueState, SearchState } from './types';
 import { filterListNullableItems, generateId, mergeUnique } from './utils';
 
+interface SearchParameters {}
+
 export async function search<Hit>(
    state: SearchState<Hit>,
    index: SearchIndex
 ): Promise<SearchState<Hit>> {
-   const response = await index.search(state.query, {
+   const response = await index.search(state.params.query, {
       distinct: 1,
       filters: getFiltersQuery(state),
       facets: ['*'],
-      page: state.page - 1,
-      hitsPerPage: state.limit,
+      page: state.params.page - 1,
+      hitsPerPage: state.params.limit,
    });
    const responseFacets = response.facets || {};
    const newFacetNames = Object.keys(responseFacets);
@@ -71,18 +73,22 @@ export async function search<Hit>(
    });
 }
 
+export function useFiltersQueryString(state: SearchState) {
+   return getFiltersQuery(state);
+}
+
 export function getFiltersQuery(
    state: SearchState,
    filterId?: string
 ): string | undefined {
    if (filterId == null) {
       const filters: string[] = [];
-      if (state.rawFilters != null && state.rawFilters !== '') {
-         filters.push(state.rawFilters);
+      if (state.params.rawFilters != null && state.params.rawFilters !== '') {
+         filters.push(state.params.rawFilters);
       }
-      if (state.filters?.rootIds.length > 0) {
+      if (state.params.filters?.rootIds.length > 0) {
          const rootQueries = filterListNullableItems(
-            state.filters.rootIds.map((id) => getFiltersQuery(state, id))
+            state.params.filters.rootIds.map((id) => getFiltersQuery(state, id))
          );
          if (rootQueries.length > 0) {
             filters.push(rootQueries.join(' AND '));
@@ -93,7 +99,7 @@ export function getFiltersQuery(
       }
       return undefined;
    }
-   const filter = state.filters.byId[filterId];
+   const filter = state.params.filters.byId[filterId];
    if (filter == null) {
       throw new Error(`filter "${filterId}" not found`);
    }

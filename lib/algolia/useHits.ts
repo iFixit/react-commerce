@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSearchContext } from './context';
+import { useSearchStateContext } from './context';
 
 interface UseHits<Hit = any> {
    isLoaded: boolean;
@@ -8,7 +8,7 @@ interface UseHits<Hit = any> {
 }
 
 export function useHits<Hit = any>(): UseHits<Hit> {
-   const { state } = useSearchContext<Hit>();
+   const state = useSearchStateContext<Hit>();
    const result = React.useMemo<UseHits>(() => {
       return {
          isLoaded: state.isLoaded,

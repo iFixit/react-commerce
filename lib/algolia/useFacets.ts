@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSearchContext } from './context';
+import { useSearchStateContext } from './context';
 import { FacetValueState } from './types';
 
 export interface Facet {
@@ -8,7 +8,7 @@ export interface Facet {
 }
 
 export function useFacets(): Facet[] {
-   const { state } = useSearchContext();
+   const state = useSearchStateContext();
 
    const facets = React.useMemo<Facet[]>(() => {
       return state.facets.allIds.map<Facet>((id) => {

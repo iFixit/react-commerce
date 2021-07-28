@@ -8,7 +8,6 @@ export async function loadCollection(
    const client = new StorefrontClient({
       domain: SHOPIFY_DOMAIN,
       accessToken: SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-      version: 'unstable',
    });
    const response = await client.request<DataWithMetafields>(
       collectionWithMetafieldsQuery,
@@ -143,7 +142,7 @@ const collectionQuery = /* GraphQL */ `
          title
          image {
             alt: altText
-            url: transformedSrc
+            url: transformedSrc(maxHeight: 108)
          }
       }
    }
