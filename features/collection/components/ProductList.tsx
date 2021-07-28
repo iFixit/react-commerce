@@ -1,12 +1,7 @@
-import {
-   AspectRatio,
-   Heading,
-   HStack,
-   Img,
-   Text,
-   VStack,
-} from '@chakra-ui/react';
+import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { Hit } from '@features/collection';
+import { placeholderImageUrl, shopifyImageLoader } from '@lib/utils';
+import Image from 'next/image';
 import * as React from 'react';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
@@ -38,23 +33,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
       product.compare_at_price > product.price;
    return (
       <HStack key={product.handle} spacing={4} py="4" alignItems="flex-start">
-         <AspectRatio
-            w={{
-               base: '100px',
-               sm: '140px',
-               md: '100px',
-               lg: '160px',
-            }}
-            ratio={4 / 3}
-            flexGrow={1}
-            flexShrink={0}
-         >
-            <Img
-               objectFit="cover"
-               src={product.product_image}
-               alt={product.title}
-            />
-         </AspectRatio>
+         <Image
+            width={300}
+            height={225}
+            src={product.product_image || placeholderImageUrl}
+            alt={product.title}
+            loader={shopifyImageLoader}
+         />
          <VStack
             align="flex-start"
             spacing={{

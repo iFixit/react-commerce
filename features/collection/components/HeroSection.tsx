@@ -12,10 +12,10 @@ import {
    Heading,
    HStack,
    Icon,
-   ImageProps,
-   Img,
    Text,
 } from '@chakra-ui/react';
+import { shopifyImageLoader } from '@lib/utils';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
@@ -109,9 +109,15 @@ export function HeroDescription({
    );
 }
 
-export const HeroImage = chakra((props: ImageProps) => {
+export interface HeroImageProps {
+   className?: string;
+   src: string;
+   alt?: string;
+}
+export const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
    return (
       <AspectRatio
+         className={className}
          flex={1}
          maxW="450px"
          ratio={4 / 3}
@@ -119,8 +125,18 @@ export const HeroImage = chakra((props: ImageProps) => {
             base: 'none',
             md: 'block',
          }}
+         borderRadius="lg"
+         overflow="hidden"
+         boxShadow="base"
       >
-         <Img boxShadow="base" objectFit="cover" borderRadius="lg" {...props} />
+         <Image
+            layout="fill"
+            src={src}
+            blurDataURL={src}
+            placeholder="blur"
+            alt={alt}
+            loader={shopifyImageLoader}
+         />
       </AspectRatio>
    );
 });
@@ -183,7 +199,7 @@ export const HeroBreadcrumbLink = ({
 }: HeroBreadcrumbLinkProps) => {
    return (
       <BreadcrumbItem {...otherProps}>
-         <NextLink href={href}>
+         <NextLink href={href} passHref>
             <BreadcrumbLink color="gray">{children}</BreadcrumbLink>
          </NextLink>
       </BreadcrumbItem>

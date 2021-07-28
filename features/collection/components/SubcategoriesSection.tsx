@@ -3,6 +3,7 @@ import {
    Box,
    Button,
    Collapse,
+   Divider,
    Flex,
    Heading,
    Img,
@@ -16,6 +17,8 @@ import {
 import { Collection } from '@features/collection';
 import NextLink from 'next/link';
 import * as React from 'react';
+import Image from 'next/image';
+import { shopifyImageLoader } from '@lib/utils';
 
 export type CollectionSubcategoriesProps = {
    collection: Collection;
@@ -129,21 +132,25 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
          }}
          transition="all 300ms"
       >
-         <Flex h="full" direction="row" align="center">
+         <Flex h="full" direction="row" align="center" justifyContent="center">
             {category.image && (
-               <AspectRatio
+               <Flex
+                  align="center"
+                  p="1"
                   flexBasis="80px"
-                  ratio={4 / 3}
-                  flexShrink={0}
                   flexGrow={0}
+                  flexShrink={0}
                >
-                  <Img
-                     objectFit="cover"
+                  <Image
+                     width={80}
+                     height={60}
                      src={category.image.url}
                      alt={category.image.alt}
+                     loader={shopifyImageLoader}
                   />
-               </AspectRatio>
+               </Flex>
             )}
+            <Divider orientation="vertical" />
             <NextLink href={`/collections/${category.handle}`} passHref>
                <LinkOverlay
                   px="3"
@@ -153,10 +160,8 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   display="flex"
                   alignItems="center"
                   flexGrow={1}
-                  borderLeftWidth="1px"
-                  borderLeftColor="blueGray.200"
                >
-                  <Heading as="h2" size="sm">
+                  <Heading as="h2" fontSize="sm">
                      {category.title}
                   </Heading>
                </LinkOverlay>
