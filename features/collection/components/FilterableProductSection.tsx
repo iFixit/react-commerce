@@ -1,7 +1,7 @@
 import { CollectionEmptyStateIllustration } from '@assets/svg';
 import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
-import { useHits } from '@lib/algolia';
+import { useAtomicFilters, useHits, useSearch } from '@lib/algolia';
 import * as React from 'react';
 import { Hit } from '../types';
 import { AppliedFilters } from './AppliedFilters';
@@ -27,12 +27,50 @@ export enum ProductViewType {
    List = 'list',
 }
 
+export enum CollectionState {
+   Loading = 'loading',
+   Empty = 'empty',
+   Idle = 'idle',
+   Filtered = 'filtered',
+   NoResults = 'no-results',
+}
+
+function useCollectionState(): CollectionState {
+   const { hits, isLoaded } = useHits<Hit>();
+   const [query] = useSearch();
+   const atomicFilters = useAtomicFilters();
+   if (!isLoaded) {
+      return CollectionState.Loading;
+   }
+   const isFiltered = atomicFilters.length > 0 || query.length > 0;
+   console.log('isFiltered', isFiltered, atomicFilters, query.length);
+   if (hits.length === 0) {
+      if (isFiltered) {
+         return CollectionState.NoResults;
+      }
+      return CollectionState.Empty;
+   }
+   if (isFiltered) {
+      return CollectionState.Filtered;
+   }
+   return CollectionState.Idle;
+}
+
 export const FilterableProductSection = React.memo(() => {
    const { hits, isLoaded } = useHits<Hit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
+   const collectionState = useCollectionState();
+
+   React.useEffect(() => {
+      console.log(collectionState);
+   }, [collectionState]);
+
+   if (collectionState === CollectionState.Empty) {
+      return <CollectionEmptyState />;
+   }
 
    return (
       <VStack align="stretch" mb="4" spacing="4">
@@ -76,50 +114,40 @@ export const FilterableProductSection = React.memo(() => {
                </HStack>
             }
          />
-         {isLoaded && hits.length === 0 ? (
-            <EmptyState />
-         ) : (
-            <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
-               <FilterCard>
-                  <CollectionFilters />
-               </FilterCard>
-               <VStack align="stretch" flex={1}>
-                  <AppliedFilters />
-                  <Card
-                     flex={1}
-                     alignItems="center"
-                     borderRadius={{ base: 'none', sm: 'lg' }}
-                  >
-                     {hits.length === 0 ? (
-                        <ProductsEmptyState />
-                     ) : productViewType === ProductViewType.List ? (
-                        <ProductList>
-                           {hits.map((hit) => {
-                              return (
-                                 <ProductListItem
-                                    key={hit.handle}
-                                    product={hit}
-                                 />
-                              );
-                           })}
-                        </ProductList>
-                     ) : (
-                        <ProductGrid>
-                           {hits.map((hit) => {
-                              return (
-                                 <ProductGridItem
-                                    key={hit.handle}
-                                    product={hit}
-                                 />
-                              );
-                           })}
-                        </ProductGrid>
-                     )}
-                     <CollectionPagination />
-                  </Card>
-               </VStack>
-            </HStack>
-         )}
+         <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
+            <FilterCard>
+               <CollectionFilters />
+            </FilterCard>
+            <VStack align="stretch" flex={1}>
+               <AppliedFilters />
+               <Card
+                  flex={1}
+                  alignItems="center"
+                  borderRadius={{ base: 'none', sm: 'lg' }}
+               >
+                  {collectionState === CollectionState.NoResults ? (
+                     <ProductsEmptyState />
+                  ) : productViewType === ProductViewType.List ? (
+                     <ProductList>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductListItem key={hit.handle} product={hit} />
+                           );
+                        })}
+                     </ProductList>
+                  ) : (
+                     <ProductGrid>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductGridItem key={hit.handle} product={hit} />
+                           );
+                        })}
+                     </ProductGrid>
+                  )}
+                  <CollectionPagination />
+               </Card>
+            </VStack>
+         </HStack>
       </VStack>
    );
 });
@@ -140,13 +168,21 @@ const FilterCard = ({ children }: React.PropsWithChildren<unknown>) => {
    );
 };
 
-const EmptyState = () => {
+const CollectionEmptyState = () => {
    return (
-      <Card p="4">
+      <Card pt="16" pb="20">
          <VStack>
-            <Icon as={CollectionEmptyStateIllustration} boxSize="300px" />
-            <Text color="gray.500" fontSize="2xl">
+            <Icon
+               as={CollectionEmptyStateIllustration}
+               boxSize="200px"
+               opacity="0.8"
+            />
+            <Text fontSize="lg" fontWeight="bold">
                Empty collection
+            </Text>
+            <Text maxW="500px" color="gray.500" textAlign="center">
+               This collection does not have products. Try to navigate to
+               subcategories to find what you are looking for.
             </Text>
          </VStack>
       </Card>
