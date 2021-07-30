@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Img, ImgProps } from '@chakra-ui/react';
 import { getResizedImage } from '@lib/utils';
 import * as React from 'react';
@@ -27,7 +28,15 @@ export const ShopifyImage = ({ src, width, ...otherProps }: ImgProps) => {
    const srcSet = React.useMemo(() => {
       return getSrcSet(src, defaultImageSizes);
    }, [src]);
-   return <Img src={src} srcSet={srcSet} {...otherProps} />;
+   return (
+      <Img
+         src={src}
+         srcSet={srcSet}
+         // @ts-ignore
+         objectFit="contain !important"
+         {...otherProps}
+      />
+   );
 };
 
 function getSrcSet(
