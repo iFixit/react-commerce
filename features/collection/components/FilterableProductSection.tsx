@@ -1,4 +1,5 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { CollectionEmptyStateIllustration } from '@assets/svg';
+import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import { useHits } from '@lib/algolia';
 import * as React from 'react';
@@ -27,7 +28,7 @@ export enum ProductViewType {
 }
 
 export const FilterableProductSection = React.memo(() => {
-   const { hits } = useHits<Hit>();
+   const { hits, isLoaded } = useHits<Hit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
@@ -75,40 +76,50 @@ export const FilterableProductSection = React.memo(() => {
                </HStack>
             }
          />
-         <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
-            <FilterCard>
-               <CollectionFilters />
-            </FilterCard>
-            <VStack align="stretch" flex={1}>
-               <AppliedFilters />
-               <Card
-                  flex={1}
-                  alignItems="center"
-                  borderRadius={{ base: 'none', sm: 'lg' }}
-               >
-                  {hits.length === 0 ? (
-                     <ProductsEmptyState />
-                  ) : productViewType === ProductViewType.List ? (
-                     <ProductList>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductListItem key={hit.handle} product={hit} />
-                           );
-                        })}
-                     </ProductList>
-                  ) : (
-                     <ProductGrid>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductGridItem key={hit.handle} product={hit} />
-                           );
-                        })}
-                     </ProductGrid>
-                  )}
-                  <CollectionPagination />
-               </Card>
-            </VStack>
-         </HStack>
+         {isLoaded && hits.length === 0 ? (
+            <EmptyState />
+         ) : (
+            <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
+               <FilterCard>
+                  <CollectionFilters />
+               </FilterCard>
+               <VStack align="stretch" flex={1}>
+                  <AppliedFilters />
+                  <Card
+                     flex={1}
+                     alignItems="center"
+                     borderRadius={{ base: 'none', sm: 'lg' }}
+                  >
+                     {hits.length === 0 ? (
+                        <ProductsEmptyState />
+                     ) : productViewType === ProductViewType.List ? (
+                        <ProductList>
+                           {hits.map((hit) => {
+                              return (
+                                 <ProductListItem
+                                    key={hit.handle}
+                                    product={hit}
+                                 />
+                              );
+                           })}
+                        </ProductList>
+                     ) : (
+                        <ProductGrid>
+                           {hits.map((hit) => {
+                              return (
+                                 <ProductGridItem
+                                    key={hit.handle}
+                                    product={hit}
+                                 />
+                              );
+                           })}
+                        </ProductGrid>
+                     )}
+                     <CollectionPagination />
+                  </Card>
+               </VStack>
+            </HStack>
+         )}
       </VStack>
    );
 });
@@ -125,6 +136,19 @@ const FilterCard = ({ children }: React.PropsWithChildren<unknown>) => {
          flexShrink={0}
       >
          {children}
+      </Card>
+   );
+};
+
+const EmptyState = () => {
+   return (
+      <Card p="4">
+         <VStack>
+            <Icon as={CollectionEmptyStateIllustration} boxSize="300px" />
+            <Text color="gray.500" fontSize="2xl">
+               Empty collection
+            </Text>
+         </VStack>
       </Card>
    );
 };
