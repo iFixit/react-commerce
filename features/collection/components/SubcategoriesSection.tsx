@@ -133,7 +133,6 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
             {category.image && (
                <Flex
                   align="center"
-                  p="1"
                   flexBasis="80px"
                   flexGrow={0}
                   flexShrink={0}
