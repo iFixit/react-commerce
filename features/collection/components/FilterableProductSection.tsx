@@ -43,12 +43,19 @@ export const FilterableProductSection = React.memo(() => {
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
    const collectionState = useCollectionState();
 
+   const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
+
    if (collectionState === CollectionState.Empty) {
       return <CollectionEmptyState />;
    }
 
    return (
-      <VStack align="stretch" mb="4" spacing="4">
+      <VStack
+         align="stretch"
+         mb="4"
+         spacing="4"
+         ref={productsContainerScrollRef}
+      >
          <Toolbar
             leftContent={<NumberOfHits />}
             rightContent={
@@ -161,6 +168,21 @@ function useCollectionState(): CollectionState {
       return CollectionState.Filtered;
    }
    return CollectionState.Idle;
+}
+
+function useScrollIntoViewEffect(deps: React.DependencyList) {
+   const ref = React.useRef<HTMLDivElement>(null);
+   React.useEffect(() => {
+      if (ref.current) {
+         if (ref.current.getBoundingClientRect().top < 0) {
+            ref.current.scrollIntoView({
+               behavior: 'smooth',
+            });
+         }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, deps);
+   return ref;
 }
 
 const FilterCard = ({
