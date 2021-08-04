@@ -2,9 +2,9 @@ import {
    Box,
    Button,
    Collapse,
+   Divider,
    Flex,
    Heading,
-   Image,
    LinkBox,
    LinkOverlay,
    SimpleGrid,
@@ -12,6 +12,7 @@ import {
    useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
+import { ShopifyImage } from '@components/ShopifyImage';
 import { Collection } from '@features/collection';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -128,15 +129,23 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
          }}
          transition="all 300ms"
       >
-         <Flex h="full" direction="row" align="center">
+         <Flex h="full" direction="row" align="center" justifyContent="center">
             {category.image && (
-               <Image
-                  objectFit="cover"
-                  h="54px"
-                  src={category.image.url}
-                  alt={category.image.alt}
-               />
+               <Flex
+                  align="center"
+                  p="1"
+                  flexBasis="80px"
+                  flexGrow={0}
+                  flexShrink={0}
+               >
+                  <ShopifyImage
+                     src={category.image.url}
+                     alt={category.image.alt}
+                     sizes="80px"
+                  />
+               </Flex>
             )}
+            <Divider orientation="vertical" />
             <NextLink href={`/collections/${category.handle}`} passHref>
                <LinkOverlay
                   px="3"
@@ -146,10 +155,8 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   display="flex"
                   alignItems="center"
                   flexGrow={1}
-                  borderLeftWidth="1px"
-                  borderLeftColor="blueGray.200"
                >
-                  <Heading as="h2" size="sm">
+                  <Heading as="h2" fontSize="sm">
                      {category.title}
                   </Heading>
                </LinkOverlay>

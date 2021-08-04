@@ -28,7 +28,7 @@ export const AppliedFilters = () => {
 
    return (
       <Collapse in={atomicFilters.length > 0} animateOpacity unmountOnExit>
-         <Wrap w="full" align="center">
+         <Wrap w="full" align="center" px={{ base: 4, sm: 0 }}>
             {atomicFilters.map((filter) => {
                return (
                   <WrapItem key={filter.id}>

@@ -1,4 +1,5 @@
 import {
+   AspectRatio,
    Box,
    Breadcrumb,
    BreadcrumbItem,
@@ -11,10 +12,9 @@ import {
    Heading,
    HStack,
    Icon,
-   Image,
-   ImageProps,
    Text,
 } from '@chakra-ui/react';
+import { ShopifyImage } from '@components/ShopifyImage';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
@@ -92,6 +92,7 @@ export function HeroDescription({
          </Collapse>
          <Button
             variant="link"
+            color="gray.800"
             size="sm"
             onClick={onToggle}
             mt="1"
@@ -107,19 +108,28 @@ export function HeroDescription({
    );
 }
 
-export const HeroImage = chakra((props: ImageProps) => {
+export interface HeroImageProps {
+   className?: string;
+   src: string;
+   alt?: string;
+}
+export const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
    return (
-      <Image
+      <AspectRatio
+         className={className}
          flex={1}
-         boxSize="274px"
-         objectFit="cover"
-         borderRadius="lg"
+         maxW="450px"
+         ratio={4 / 3}
          display={{
             base: 'none',
             md: 'block',
          }}
-         {...props}
-      />
+         borderRadius="lg"
+         overflow="hidden"
+         boxShadow="base"
+      >
+         <ShopifyImage src={src} alt={alt} sizes="400px" />
+      </AspectRatio>
    );
 });
 
@@ -181,7 +191,7 @@ export const HeroBreadcrumbLink = ({
 }: HeroBreadcrumbLinkProps) => {
    return (
       <BreadcrumbItem {...otherProps}>
-         <NextLink href={href}>
+         <NextLink href={href} passHref>
             <BreadcrumbLink color="gray">{children}</BreadcrumbLink>
          </NextLink>
       </BreadcrumbItem>

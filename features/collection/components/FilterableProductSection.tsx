@@ -1,4 +1,4 @@
-import { Box, HStack, VStack } from '@chakra-ui/react';
+import { HStack, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import { useHits } from '@lib/algolia';
 import * as React from 'react';
@@ -80,9 +80,7 @@ export const FilterableProductSection = React.memo(() => {
                <CollectionFilters />
             </FilterCard>
             <VStack align="stretch" flex={1}>
-               <Box px={{ base: 4, sm: 0 }}>
-                  <AppliedFilters />
-               </Box>
+               <AppliedFilters />
                <Card
                   flex={1}
                   alignItems="center"

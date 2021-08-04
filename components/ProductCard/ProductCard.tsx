@@ -10,12 +10,9 @@ export const ProductCard = chakra(
       return (
          <Stack
             className={className}
-            direction={{
-               base: 'row',
-               sm: 'column',
-            }}
+            direction="column"
             spacing={5}
-            align="center"
+            align="stretch"
             p={4}
          >
             {children}
