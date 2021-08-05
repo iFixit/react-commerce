@@ -1,11 +1,12 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { CollectionEmptyStateIllustration } from '@assets/svg';
+import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
-import { useHits } from '@lib/algolia';
+import { useAtomicFilters, useHits, useSearch } from '@lib/algolia';
 import * as React from 'react';
 import { Hit } from '../types';
 import { AppliedFilters } from './AppliedFilters';
-import { CollectionFilters } from './CollectionFilters';
 import { CollectionPagination } from './CollectionPagination';
+import { FilterList } from './FilterList';
 import { FiltersModal } from './FiltersModal';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
@@ -26,12 +27,25 @@ export enum ProductViewType {
    List = 'list',
 }
 
+export enum CollectionState {
+   Loading = 'loading',
+   Empty = 'empty',
+   Idle = 'idle',
+   Filtered = 'filtered',
+   NoResults = 'no-results',
+}
+
 export const FilterableProductSection = React.memo(() => {
    const { hits } = useHits<Hit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
+   const collectionState = useCollectionState();
+
+   if (collectionState === CollectionState.Empty) {
+      return <CollectionEmptyState />;
+   }
 
    return (
       <VStack align="stretch" mb="4" spacing="4">
@@ -76,8 +90,16 @@ export const FilterableProductSection = React.memo(() => {
             }
          />
          <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
-            <FilterCard>
-               <CollectionFilters />
+            <FilterCard isLoading={collectionState === CollectionState.Loading}>
+               {collectionState === CollectionState.Loading ? (
+                  <VStack align="stretch" px="4">
+                     <Skeleton height="30px" />
+                     <Skeleton height="30px" />
+                     <Skeleton height="30px" />
+                  </VStack>
+               ) : (
+                  <FilterList />
+               )}
             </FilterCard>
             <VStack align="stretch" flex={1}>
                <AppliedFilters />
@@ -86,7 +108,13 @@ export const FilterableProductSection = React.memo(() => {
                   alignItems="center"
                   borderRadius={{ base: 'none', sm: 'lg' }}
                >
-                  {hits.length === 0 ? (
+                  {collectionState === CollectionState.Loading ? (
+                     <VStack w="full" align="stretch" p="4">
+                        <SkeletonListItem />
+                        <SkeletonListItem />
+                        <SkeletonListItem />
+                     </VStack>
+                  ) : collectionState === CollectionState.NoResults ? (
                      <ProductsEmptyState />
                   ) : productViewType === ProductViewType.List ? (
                      <ProductList>
@@ -105,7 +133,9 @@ export const FilterableProductSection = React.memo(() => {
                         })}
                      </ProductGrid>
                   )}
-                  <CollectionPagination />
+                  {[CollectionState.Idle, CollectionState.Filtered].includes(
+                     collectionState
+                  ) && <CollectionPagination />}
                </Card>
             </VStack>
          </HStack>
@@ -113,7 +143,30 @@ export const FilterableProductSection = React.memo(() => {
    );
 });
 
-const FilterCard = ({ children }: React.PropsWithChildren<unknown>) => {
+function useCollectionState(): CollectionState {
+   const { hits, isLoaded } = useHits<Hit>();
+   const [query] = useSearch();
+   const atomicFilters = useAtomicFilters();
+   if (!isLoaded) {
+      return CollectionState.Loading;
+   }
+   const isFiltered = atomicFilters.length > 0 || query.length > 0;
+   if (hits.length === 0) {
+      if (isFiltered) {
+         return CollectionState.NoResults;
+      }
+      return CollectionState.Empty;
+   }
+   if (isFiltered) {
+      return CollectionState.Filtered;
+   }
+   return CollectionState.Idle;
+}
+
+const FilterCard = ({
+   children,
+   isLoading,
+}: React.PropsWithChildren<{ isLoading: boolean }>) => {
    return (
       <Card
          py="6"
@@ -121,10 +174,49 @@ const FilterCard = ({ children }: React.PropsWithChildren<unknown>) => {
          display={{ base: 'none', md: 'block' }}
          position="sticky"
          top="4"
-         h="calc(100vh - var(--chakra-space-4) * 2)"
+         h={isLoading ? undefined : 'calc(100vh - var(--chakra-space-4) * 2)'}
          flexShrink={0}
       >
          {children}
       </Card>
+   );
+};
+
+const CollectionEmptyState = () => {
+   return (
+      <Card pt="16" pb="20">
+         <VStack>
+            <Icon
+               as={CollectionEmptyStateIllustration}
+               boxSize="200px"
+               opacity="0.8"
+            />
+            <Text fontSize="lg" fontWeight="bold">
+               Empty collection
+            </Text>
+            <Text maxW="500px" color="gray.500" textAlign="center">
+               This collection does not have products. Try to navigate to
+               subcategories to find what you are looking for.
+            </Text>
+         </VStack>
+      </Card>
+   );
+};
+
+const SkeletonListItem = () => {
+   return (
+      <HStack align="flex-start">
+         <Skeleton
+            flexGrow={0}
+            height="120px"
+            width="160px"
+            border="1px solid green"
+         />
+         <VStack flexGrow={1} align="stretch">
+            <Skeleton height="20px" />
+            <Skeleton height="20px" />
+            <Skeleton height="20px" />
+         </VStack>
+      </HStack>
    );
 };

@@ -9,6 +9,7 @@ import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
 
 export interface ListItemData {
    facets: Facet[];
+   showAllFacetValues: boolean;
    expandedFacets: string[];
    toggleFacet(name: string): void;
 }
@@ -21,7 +22,7 @@ export interface FilterRowProps {
 
 export const FilterRow = React.memo(
    ({ data, index, style }: FilterRowProps) => {
-      const { facets, expandedFacets, toggleFacet } = data;
+      const { facets, showAllFacetValues, expandedFacets, toggleFacet } = data;
       const facet = facets[index];
       const isExpanded = expandedFacets.includes(facet.name);
       const filteredValuesCount = facet.values.filter(
@@ -109,6 +110,7 @@ export const FilterRow = React.memo(
                               key={facet.name}
                               facetName={facet.name}
                               multiple
+                              showAllValues={showAllFacetValues}
                            />
                         </>
                      )}
