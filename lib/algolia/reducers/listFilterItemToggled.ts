@@ -9,23 +9,24 @@ import { listFilterItemAdded } from './listFilterItemAdded';
 import { listFilterItemCleared } from './listFilterItemCleared';
 
 export function listFilterItemToggled(
-   draftState: Draft<SearchState>,
+   draft: Draft<SearchState>,
    action: ListFilterItemToggledAction
 ) {
+   draft.params.page = 1;
    const newItemFilter = createBasicFilter(
       action.filterId,
       action.valueId,
       action.filterId
    );
-   const filterItemIds = getListFilterItemIds(draftState, action.filterId);
+   const filterItemIds = getListFilterItemIds(draft, action.filterId);
    if (filterItemIds.includes(newItemFilter.id)) {
-      return listFilterItemCleared(draftState, {
+      return listFilterItemCleared(draft, {
          type: SearchActionType.ListFilterItemCleared,
          filterId: action.filterId,
          valueId: action.valueId,
       });
    }
-   return listFilterItemAdded(draftState, {
+   return listFilterItemAdded(draft, {
       type: SearchActionType.ListFilterItemAdded,
       filterId: action.filterId,
       filterType: action.filterType,

@@ -16,10 +16,11 @@ import {
 } from '../utils';
 
 export function rangeFilterSet(
-   draftState: Draft<SearchState>,
+   draft: Draft<SearchState>,
    action: RangeFilterSetAction
 ) {
-   const filter = draftState.params.filters.byId[action.filterId];
+   draft.params.page = 1;
+   const filter = draft.params.filters.byId[action.filterId];
    const draftRange = getRangeFromFilter(filter);
    if (isInvalidRange(action.range) || isSameRange(action.range, draftRange)) {
       return;
@@ -40,19 +41,19 @@ export function rangeFilterSet(
          NumericComparisonOperator.GreaterThanOrEqual
       );
    } else {
-      draftState.params.filters.allIds = draftState.params.filters.allIds.filter(
+      draft.params.filters.allIds = draft.params.filters.allIds.filter(
          (id) => id !== action.filterId
       );
-      draftState.params.filters.rootIds = draftState.params.filters.rootIds.filter(
+      draft.params.filters.rootIds = draft.params.filters.rootIds.filter(
          (id) => id !== action.filterId
       );
-      delete draftState.params.filters.byId[action.filterId];
+      delete draft.params.filters.byId[action.filterId];
    }
    if (newFilter != null) {
-      draftState.params.filters.byId[action.filterId] = newFilter;
+      draft.params.filters.byId[action.filterId] = newFilter;
       if (filter == null) {
-         draftState.params.filters.allIds.push(action.filterId);
-         draftState.params.filters.rootIds.push(action.filterId);
+         draft.params.filters.allIds.push(action.filterId);
+         draft.params.filters.rootIds.push(action.filterId);
       }
    }
 }

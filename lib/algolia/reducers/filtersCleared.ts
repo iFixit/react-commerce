@@ -14,6 +14,7 @@ function clearFilters(draft: Draft<SearchState>, filtersIds?: string[]) {
       draft.params.filters.rootIds = [];
       draft.params.filters.byId = {};
    } else {
+      draft.params.page = 1;
       filtersIds.forEach((filterId) => {
          const filter = draft.params.filters.byId[filterId];
          if (filter != null) {
