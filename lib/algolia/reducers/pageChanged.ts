@@ -2,8 +2,9 @@ import { Draft } from 'immer';
 import { PageChangedAction, SearchState } from '../types';
 
 export function pageChanged(
-   draftState: Draft<SearchState>,
+   draft: Draft<SearchState>,
    action: PageChangedAction
 ) {
-   draftState.params.page = action.page;
+   draft.isSearching = true;
+   draft.params.page = action.page;
 }

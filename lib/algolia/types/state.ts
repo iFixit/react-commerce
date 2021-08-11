@@ -8,6 +8,7 @@ export interface SearchState<Hit = any> {
    params: SearchParams;
    numberOfPages?: number;
    isLoaded: boolean;
+   isSearching: boolean;
    numberOfHits?: number;
    hits: Entity<Hit>;
    facets: Entity<FacetState>;

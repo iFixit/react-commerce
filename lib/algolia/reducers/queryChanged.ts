@@ -7,4 +7,5 @@ export function queryChanged(
 ) {
    draft.params.query = action.query;
    draft.params.page = 1;
+   draft.isSearching = true;
 }

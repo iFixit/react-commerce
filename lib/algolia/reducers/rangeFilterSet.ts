@@ -19,6 +19,7 @@ export function rangeFilterSet(
    draft: Draft<SearchState>,
    action: RangeFilterSetAction
 ) {
+   draft.isSearching = true;
    draft.params.page = 1;
    const filter = draft.params.filters.byId[action.filterId];
    const draftRange = getRangeFromFilter(filter);

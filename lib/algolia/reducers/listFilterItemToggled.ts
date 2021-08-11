@@ -12,6 +12,7 @@ export function listFilterItemToggled(
    draft: Draft<SearchState>,
    action: ListFilterItemToggledAction
 ) {
+   draft.isSearching = true;
    draft.params.page = 1;
    const newItemFilter = createBasicFilter(
       action.filterId,
