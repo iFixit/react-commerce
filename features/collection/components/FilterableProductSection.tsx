@@ -173,12 +173,10 @@ function useCollectionState(): CollectionState {
 function useScrollIntoViewEffect(deps: React.DependencyList) {
    const ref = React.useRef<HTMLDivElement>(null);
    React.useEffect(() => {
-      if (ref.current) {
-         if (ref.current.getBoundingClientRect().top < 0) {
-            ref.current.scrollIntoView({
-               behavior: 'smooth',
-            });
-         }
+      if (ref.current && ref.current.getBoundingClientRect().top < 0) {
+         ref.current.scrollIntoView({
+            behavior: 'smooth',
+         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, deps);
