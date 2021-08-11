@@ -3,15 +3,16 @@ import { ListFilterAllItemsClearedAction, SearchState } from '../types';
 import { isListFilter } from '../utils';
 
 export function listFilterAllItemsCleared(
-   draftState: Draft<SearchState>,
+   draft: Draft<SearchState>,
    action: ListFilterAllItemsClearedAction
 ) {
-   const filter = draftState.params.filters.byId[action.filterId];
+   const filter = draft.params.filters.byId[action.filterId];
 
    if (isListFilter(filter)) {
+      draft.params.page = 1;
       filter.filterIds.forEach((itemId) => {
-         delete draftState.params.filters.byId[itemId];
-         draftState.params.filters.allIds = draftState.params.filters.allIds.filter(
+         delete draft.params.filters.byId[itemId];
+         draft.params.filters.allIds = draft.params.filters.allIds.filter(
             (id) => id != itemId
          );
       });

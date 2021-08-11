@@ -22,15 +22,11 @@ import { AlgoliaProvider } from '@lib/algolia';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
-type CollectionPageProps = {
-   type: 'default' | 'parts';
+interface CollectionPageProps {
    collection: Collection;
-};
+}
 
-export default function CollectionPage({
-   collection,
-   type,
-}: CollectionPageProps) {
+export default function CollectionPage({ collection }: CollectionPageProps) {
    const collectionHandle = collection.handle;
    const hasDescription =
       collection.description != null && collection.description.length > 0;

@@ -15,6 +15,15 @@ export function useSearch(): [
    const debouncedQuery = useDebounce(query, DEBOUNCE_INTERVAL_MILLIS);
 
    React.useEffect(() => {
+      setQuery((current) => {
+         if (current !== state.params.query) {
+            return state.params.query;
+         }
+         return current;
+      });
+   }, [state.params.query]);
+
+   React.useEffect(() => {
       dispatch({
          type: SearchActionType.QueryChanged,
          query: debouncedQuery,

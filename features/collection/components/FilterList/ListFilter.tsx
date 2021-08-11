@@ -11,6 +11,7 @@ export type ListFilterProps = {
    facetName: string;
    type?: ListFilterType['type'];
    multiple?: boolean;
+   showAllValues?: boolean;
    sortItems?(a: FacetValueState, b: FacetValueState): number;
    renderItem?(
       item: FacetValueState,
@@ -23,6 +24,7 @@ export function ListFilter({
    facetName,
    type = 'or',
    multiple = false,
+   showAllValues = false,
    renderItem,
    sortItems = defaultSortItems,
 }: ListFilterProps) {
@@ -38,12 +40,18 @@ export function ListFilter({
          .sort(sortItems);
    }, [sortItems, values]);
 
+   const displayedValues = React.useMemo(() => {
+      const items = showAllValues ? values.slice() : filteredValues.slice();
+      items.sort(sortItems);
+      return items;
+   }, [filteredValues, showAllValues, sortItems, values]);
+
    if (!isLoaded) {
       return null;
    }
    return (
       <VStack align="flex-start">
-         {filteredValues.map((item, index) => {
+         {displayedValues.map((item, index) => {
             if (multiple) {
                return (
                   <Checkbox

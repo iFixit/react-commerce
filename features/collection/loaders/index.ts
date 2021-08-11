@@ -142,7 +142,7 @@ const collectionQuery = /* GraphQL */ `
          title
          image {
             alt: altText
-            url: transformedSrc(maxHeight: 108)
+            url: transformedSrc
          }
       }
    }

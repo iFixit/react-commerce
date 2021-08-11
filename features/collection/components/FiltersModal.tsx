@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
-import { CollectionFilters } from './CollectionFilters';
+import { FilterList } from './FilterList';
 
 type FiltersModalProps = {
    isOpen: boolean;
@@ -24,7 +24,7 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
             <ModalBody pt={6}>
                <AppliedFilters />
                <Box h="320px" mx="-6">
-                  <CollectionFilters />
+                  <FilterList />
                </Box>
             </ModalBody>
             <ModalFooter flexDirection="column" alignItems="stretch">
