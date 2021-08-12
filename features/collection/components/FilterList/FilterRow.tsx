@@ -17,32 +17,69 @@ export interface ListItemData {
 export interface FilterRowProps {
    data: ListItemData;
    index: number;
-   style: any;
+   style: React.CSSProperties;
 }
 
-export const FilterRow = React.memo(
-   ({ data, index, style }: FilterRowProps) => {
-      const { facets, showAllFacetValues, expandedFacets, toggleFacet } = data;
-      const facet = facets[index];
-      const isExpanded = expandedFacets.includes(facet.name);
-      const filteredValuesCount = facet.values.filter(
-         (val) => val.filteredHitCount > 0
-      ).length;
-      const { ref } = useMeasureContent<HTMLDivElement>(index, [
-         isExpanded,
-         filteredValuesCount,
-      ]);
-      const name = formatFacetName(facet.name);
+export const FilterRow = React.memo(function FilterRow({
+   data,
+   index,
+   style,
+}: FilterRowProps) {
+   const { facets, showAllFacetValues, expandedFacets, toggleFacet } = data;
+   const facet = facets[index];
+   const isExpanded = expandedFacets.includes(facet.name);
+   const filteredValuesCount = facet.values.filter(
+      (val) => val.filteredHitCount > 0
+   ).length;
+   const { ref } = useMeasureContent<HTMLDivElement>(index, [
+      isExpanded,
+      filteredValuesCount,
+   ]);
+   const name = formatFacetName(facet.name);
 
-      const onToggle = React.useCallback(() => {
-         toggleFacet(facet.name);
-      }, [facet.name, toggleFacet]);
+   const onToggle = React.useCallback(() => {
+      toggleFacet(facet.name);
+   }, [facet.name, toggleFacet]);
 
+   // const { top, left, ...otherStyle } = style;
+
+   return (
+      <Row
+         ref={ref}
+         name={name}
+         isExpanded={isExpanded}
+         facet={facet}
+         showAllFacetValues={showAllFacetValues}
+         style={style}
+         onToggle={onToggle}
+      />
+   );
+},
+areEqual);
+
+interface RowProps {
+   name: string;
+   isExpanded: boolean;
+   facet: Facet;
+   showAllFacetValues: boolean;
+   style: React.CSSProperties;
+   onToggle(): void;
+}
+
+const Row = React.memo(
+   React.forwardRef<any, RowProps>(function Row(
+      { name, facet, isExpanded, showAllFacetValues, style, onToggle },
+      ref
+   ) {
+      // const { top, left, ...otherStyle } = style;
       return (
          <Box
             style={style}
+            // style={otherStyle}
             overflow="hidden"
             px="6"
+            // transform={`translate3d(${style.left}px, ${style.top}px, 0)`}
+            // transition="transform 0.5s"
             transition="top 300ms ease-in-out"
          >
             <Box ref={ref}>
@@ -128,8 +165,7 @@ export const FilterRow = React.memo(
             </Box>
          </Box>
       );
-   },
-   areEqual
+   })
 );
 
 const slide = keyframes`

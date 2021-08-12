@@ -17,14 +17,19 @@ type FiltersModalProps = {
 };
 
 export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
+   const [canRenderList, setCanRenderList] = React.useState(false);
+   const handleAnimationComplete = React.useCallback(() => {
+      setCanRenderList((current) => !current);
+   }, []);
+
    return (
       <Modal size="lg" isOpen={isOpen} onClose={onClose}>
          <ModalOverlay />
-         <ModalContent>
+         <ModalContent onAnimationComplete={handleAnimationComplete}>
             <ModalBody pt={6}>
                <AppliedFilters />
-               <Box h="320px" mx="-6">
-                  <FilterList />
+               <Box h="320px" mx="-6" overflow="hidden">
+                  {canRenderList && <FilterList />}
                </Box>
             </ModalBody>
             <ModalFooter flexDirection="column" alignItems="stretch">

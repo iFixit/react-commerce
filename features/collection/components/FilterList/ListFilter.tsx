@@ -1,4 +1,4 @@
-import { Checkbox, Radio, Text, VStack } from '@chakra-ui/react';
+import { Radio, Text, VStack } from '@chakra-ui/react';
 import {
    FacetValueState,
    ListFilter as ListFilterType,
@@ -6,6 +6,7 @@ import {
    useFacetValues,
 } from '@lib/algolia';
 import * as React from 'react';
+import { FilterCheckbox } from './FilterCheckbox';
 
 export type ListFilterProps = {
    facetName: string;
@@ -46,6 +47,13 @@ export function ListFilter({
       return items;
    }, [filteredValues, showAllValues, sortItems, values]);
 
+   const handleChange = React.useCallback(
+      (name: string) => {
+         toggle(name);
+      },
+      [toggle]
+   );
+
    if (!isLoaded) {
       return null;
    }
@@ -54,17 +62,14 @@ export function ListFilter({
          {displayedValues.map((item, index) => {
             if (multiple) {
                return (
-                  <Checkbox
-                     key={index}
+                  <FilterCheckbox
+                     key={item.id}
+                     name={item.id}
                      isChecked={selectedValueIds.includes(item.id)}
-                     onChange={() => toggle(item.id)}
+                     onChange={handleChange}
                   >
-                     <Text fontSize="sm">
-                        {renderItem
-                           ? renderItem(item, index, values)
-                           : item.value + ` (${item.filteredHitCount})`}
-                     </Text>
-                  </Checkbox>
+                     {renderItem ? renderItem(item, index, values) : item.value}
+                  </FilterCheckbox>
                );
             }
             return (
@@ -75,9 +80,7 @@ export function ListFilter({
                   onChange={() => set(item.id)}
                >
                   <Text fontSize="sm">
-                     {renderItem
-                        ? renderItem(item, index, values)
-                        : item.value + ` (${item.filteredHitCount})`}
+                     {renderItem ? renderItem(item, index, values) : item.value}
                   </Text>
                </Radio>
             );

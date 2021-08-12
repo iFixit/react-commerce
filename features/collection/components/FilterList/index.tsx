@@ -42,7 +42,9 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const displayedFacets = React.useMemo(() => {
       return refinedFacets.length > 0 ? refinedFacets : usefulFacets;
    }, [usefulFacets, refinedFacets]);
-   const [expandedFacets, setExpandedFacets] = React.useState<string[]>([]);
+   const [expandedFacets, setExpandedFacets] = React.useState<string[]>(
+      displayedFacets.map((f) => f.name)
+   );
    const toggleFacet = React.useCallback((name: string) => {
       setExpandedFacets((current) => {
          if (current.includes(name)) {
@@ -64,8 +66,11 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
       <MeasuredContentProvider>
          <Sizer className={className}>
             {({ height, width }) => {
+               const count = Math.ceil(height / 40);
+               // console.log('height', height, count);
                return (
                   <VirtualFilterList
+                     // overscanCount={count}
                      height={height}
                      itemCount={displayedFacets.length}
                      itemKey={itemKey}
