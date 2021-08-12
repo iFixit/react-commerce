@@ -70,7 +70,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                // console.log('height', height, count);
                return (
                   <VirtualFilterList
-                     // overscanCount={count}
+                     overscanCount={count * 2}
                      height={height}
                      itemCount={displayedFacets.length}
                      itemKey={itemKey}
