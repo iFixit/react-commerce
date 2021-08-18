@@ -6,6 +6,7 @@ export function listFilterItemSet(
    draft: Draft<SearchState>,
    action: ListFilterItemSetAction
 ) {
+   draft.isSearching = true;
    draft.params.page = 1;
    if (!draft.params.filters.rootIds.includes(action.filterId)) {
       draft.params.filters.rootIds.push(action.filterId);

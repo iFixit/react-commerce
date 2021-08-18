@@ -46,6 +46,7 @@ export const FilterableProductSection = React.memo(() => {
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
    if (collectionState === CollectionState.Empty) {
+      console.log('EMPTY!!');
       return <CollectionEmptyState />;
    }
 
@@ -151,7 +152,7 @@ export const FilterableProductSection = React.memo(() => {
 });
 
 function useCollectionState(): CollectionState {
-   const { hits, isLoaded } = useHits<Hit>();
+   const { hits, isLoaded, isSearching } = useHits<Hit>();
    const [query] = useSearch();
    const atomicFilters = useAtomicFilters();
    if (!isLoaded) {
@@ -159,7 +160,7 @@ function useCollectionState(): CollectionState {
    }
    const isFiltered = atomicFilters.length > 0 || query.length > 0;
    if (hits.length === 0) {
-      if (isFiltered) {
+      if (isFiltered || isSearching) {
          return CollectionState.NoResults;
       }
       return CollectionState.Empty;
