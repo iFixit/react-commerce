@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getInitialState, reducer } from './reducers';
-import { useFiltersQueryString } from './search';
+import { useFiltersQueryString } from './useFiltersQueryString';
 import { SearchAction, SearchActionType, SearchState } from './types';
 import { useAlgoliaClient } from './useAlgoliaClient';
 import { useAlgoliaIndex } from './useAlgoliaIndex';

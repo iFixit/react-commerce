@@ -8,6 +8,7 @@ export function listFilterItemCleared(
 ) {
    const filter = draft.params.filters.byId[action.filterId];
    if (isListFilter(filter)) {
+      draft.isSearching = true;
       draft.params.page = 1;
       const itemFilter = createBasicFilter(
          action.filterId,

@@ -13,6 +13,7 @@ export function searchResultUpdated(
    const responseFacets = action.data.facets || {};
    const newFacetNames = Object.keys(responseFacets);
    draftState.isLoaded = true;
+   draftState.isSearching = false;
    draftState.numberOfPages = action.data.nbPages;
    draftState.numberOfHits = action.data.nbHits;
    draftState.hits.allIds = [];

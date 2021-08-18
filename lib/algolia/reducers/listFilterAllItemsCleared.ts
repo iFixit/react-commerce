@@ -9,6 +9,7 @@ export function listFilterAllItemsCleared(
    const filter = draft.params.filters.byId[action.filterId];
 
    if (isListFilter(filter)) {
+      draft.isSearching = true;
       draft.params.page = 1;
       filter.filterIds.forEach((itemId) => {
          delete draft.params.filters.byId[itemId];
