@@ -151,7 +151,7 @@ const Row = React.memo(
                   },
                },
                [`&.${RowAnimation.VerticalSlide}`]: {
-                  animation: 'vertical-slide 300ms ease-in-out',
+                  animation: 'vertical-slide 250ms ease-in-out',
                },
                // [`&.${RowAnimation.HorizontalSlide}`]: {
                //    animationName: 'horizontal-slide',
@@ -251,7 +251,7 @@ const Row = React.memo(
                         left="0"
                         w="full"
                         h="0"
-                        animation="slidedown 300ms ease-in-out"
+                        animation="slidedown 250ms ease-in-out"
                      />
                   </Box>
                )}

@@ -30,7 +30,7 @@ const Sizer = chakra(AutoSizer);
 
 export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
-   const { facets, areRefined } = useFilteredFacets();
+   const { facets, areRefined, isSearching } = useFilteredFacets();
    const [state, send] = useMachine(
       createVirtualAccordionMachine<Facet>({
          items: facets,
@@ -92,7 +92,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
             send({
                type: 'TOGGLE_ITEM_ANIMATION_END',
             });
-         }, 300);
+         }, 250);
          return () => {
             clearTimeout(timeoutId);
          };
@@ -111,7 +111,6 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
 
    React.useEffect(() => {
       if (!isEqual(state.context.items, facets)) {
-         console.log('items changed!');
          send({
             type: 'ITEMS_CHANGED',
             items: facets,
@@ -119,10 +118,6 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
          });
       }
    }, [areRefined, facets, send, state.context.items]);
-
-   // React.useEffect(() => {
-   //    console.log({ state });
-   // }, [state]);
 
    const data = React.useMemo<ItemData>(() => {
       return [state, send];
@@ -141,7 +136,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
             return (
                <>
                   <Box
-                     // opacity={state.value === 'itemsAnimation' ? 0.0 : 1}
+                     opacity={isSearching ? 0.0 : 1}
                      transition="opacity 100ms"
                   >
                      <VariableSizeList
@@ -157,7 +152,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                         {FilterRow}
                      </VariableSizeList>
                   </Box>
-                  {/* {state.value === 'itemsAnimation' && (
+                  {isSearching && (
                      <Box
                         position="absolute"
                         display="block"
@@ -167,7 +162,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                      >
                         <Spinner color="brand.400" />
                      </Box>
-                  )} */}
+                  )}
                </>
             );
          }}
@@ -182,7 +177,7 @@ function itemKey(index: number, data: ItemData): string {
 }
 
 function useFilteredFacets() {
-   const facets = useFacets();
+   const { facets, isSearching } = useFacets();
    const sortedFacets = React.useMemo(() => {
       return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
    }, [facets]);
@@ -195,7 +190,11 @@ function useFilteredFacets() {
    const displayedFacets = React.useMemo(() => {
       return refinedFacets.length > 0 ? refinedFacets : usefulFacets;
    }, [usefulFacets, refinedFacets]);
-   return { facets: displayedFacets, areRefined: refinedFacets.length > 0 };
+   return {
+      facets: displayedFacets,
+      areRefined: refinedFacets.length > 0,
+      isSearching,
+   };
 }
 
 function filterUselessFacet(facet: Facet): boolean {
