@@ -60,6 +60,7 @@ export function useMeasuredContentContext() {
 export interface UseMeasureContentResult<T> {
    ref: React.MutableRefObject<T | null>;
    reset(): void;
+   getSize(index: number): number;
 }
 
 export function useMeasureContent<T extends HTMLElement>(
@@ -67,7 +68,7 @@ export function useMeasureContent<T extends HTMLElement>(
    deps: React.DependencyList = []
 ): UseMeasureContentResult<T> {
    const ref = React.useRef<T | null>(null);
-   const { setSize } = useMeasuredContentContext();
+   const { setSize, getSize } = useMeasuredContentContext();
 
    React.useEffect(() => {
       if (ref.current != null) {
@@ -85,5 +86,6 @@ export function useMeasureContent<T extends HTMLElement>(
    return {
       ref,
       reset,
+      getSize,
    };
 }
