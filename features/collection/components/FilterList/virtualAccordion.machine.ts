@@ -1,3 +1,4 @@
+// The statechart can be visualized here: https://stately.ai/viz?id=1a78f924-f329-4b6c-af20-c0952399409b
 import { createMachine, StateMachine } from '@xstate/fsm';
 
 export interface VirtualAccordionContext<Item = any> {
@@ -19,13 +20,6 @@ export type VirtualAccordionEvent<Item = any> =
 export type VirtualAccordionState<Item = any> =
    | {
         value: 'idle';
-        context: VirtualAccordionContext<Item> & {
-           toggledItemId: undefined;
-           toggledItemDelta: undefined;
-        };
-     }
-   | {
-        value: 'itemsAnimation';
         context: VirtualAccordionContext<Item> & {
            toggledItemId: undefined;
            toggledItemDelta: undefined;
@@ -75,7 +69,6 @@ export const createVirtualAccordionMachine = <Item = any>(
                   actions: ['toggleItem'],
                },
                ITEMS_CHANGED: {
-                  target: 'itemsAnimation',
                   actions: ['setItems'],
                },
                ITEM_SIZE_UPDATED: {
@@ -102,16 +95,6 @@ export const createVirtualAccordionMachine = <Item = any>(
          toggleItemAnimation: {
             on: {
                TOGGLE_ITEM_ANIMATION_END: {
-                  target: 'idle',
-               },
-               ITEM_SIZE_UPDATED: {
-                  actions: ['setItemSize'],
-               },
-            },
-         },
-         itemsAnimation: {
-            on: {
-               ITEMS_ANIMATION_END: {
                   target: 'idle',
                },
                ITEM_SIZE_UPDATED: {

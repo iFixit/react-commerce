@@ -10,6 +10,8 @@ import {
    VirtualAccordionSend,
 } from './virtualAccordion.machine';
 
+export const TOGGLE_ANIMATION_DURATION_MS = 250;
+
 export type ItemData = [
    VirtualAccordionMachineState<Facet>,
    VirtualAccordionSend<Facet>
@@ -40,12 +42,6 @@ export const FilterRow = React.memo(function FilterRow({
       );
    }, [state.context.items, state.context.toggledItemId]);
 
-   const isMountedRef = React.useRef(false);
-
-   React.useEffect(() => {
-      isMountedRef.current = true;
-   }, []);
-
    React.useEffect(() => {
       if (rowRef.current) {
          send({
@@ -58,23 +54,15 @@ export const FilterRow = React.memo(function FilterRow({
 
    const name = formatFacetName(facet.name);
 
-   const animation = React.useMemo<RowAnimation | undefined>(() => {
-      if (state.value === 'toggleItemAnimation' && index > toggledIndex) {
-         return RowAnimation.VerticalSlide;
-      }
-      if (state.value === 'itemsAnimation' && !isMountedRef.current) {
-         return RowAnimation.HorizontalSlide;
-      }
-      return undefined;
-   }, [index, state.value, toggledIndex]);
-
    return (
       <Row
          ref={rowRef}
          id={facet.name}
          name={name}
          isExpanded={isExpanded}
-         animation={animation}
+         shouldAnimate={
+            state.value === 'toggleItemAnimation' && index > toggledIndex
+         }
          animationOffset={state.context.toggledItemDelta || 0}
          facet={facet}
          showAllFacetValues={!state.context.areRefined}
@@ -85,16 +73,11 @@ export const FilterRow = React.memo(function FilterRow({
 },
 areEqual);
 
-enum RowAnimation {
-   VerticalSlide = 'vertical-slide-animation',
-   HorizontalSlide = 'horizontal-slide-animation',
-}
-
 interface RowProps {
    id: string;
    name: string;
    isExpanded: boolean;
-   animation?: RowAnimation;
+   shouldAnimate?: boolean;
    animationOffset: number;
    facet: Facet;
    showAllFacetValues: boolean;
@@ -109,7 +92,7 @@ const Row = React.memo(
          name,
          facet,
          isExpanded,
-         animation,
+         shouldAnimate,
          animationOffset,
          showAllFacetValues,
          style,
@@ -131,10 +114,10 @@ const Row = React.memo(
             style={style}
             overflow="hidden"
             px="6"
-            className={animation}
+            className={shouldAnimate ? 'toggle-animation' : ''}
             sx={{
                '--offset': `${animationOffset}px`,
-               '@keyframes vertical-slide': {
+               '@keyframes toggle-slide': {
                   from: {
                      transform: 'translateY(var(--offset))',
                   },
@@ -142,21 +125,9 @@ const Row = React.memo(
                      transform: 'translateY(0)',
                   },
                },
-               '@keyframes horizontal-slide': {
-                  from: {
-                     transform: 'translateX(-100%)',
-                  },
-                  to: {
-                     transform: 'translateX(0)',
-                  },
+               '&.toggle-animation': {
+                  animation: `toggle-slide ${TOGGLE_ANIMATION_DURATION_MS}ms ease-in-out`,
                },
-               [`&.${RowAnimation.VerticalSlide}`]: {
-                  animation: 'vertical-slide 250ms ease-in-out',
-               },
-               // [`&.${RowAnimation.HorizontalSlide}`]: {
-               //    animationName: 'horizontal-slide',
-               //    animationDuration: '300ms',
-               // },
             }}
          >
             <Box ref={ref}>
@@ -182,7 +153,7 @@ const Row = React.memo(
                         color="gray.500"
                         style={{
                            transform: `rotate(${isExpanded ? '45' : '0'}deg)`,
-                           transition: 'transform 300ms',
+                           transition: `transform ${TOGGLE_ANIMATION_DURATION_MS}ms`,
                         }}
                      >
                         +
@@ -251,7 +222,7 @@ const Row = React.memo(
                         left="0"
                         w="full"
                         h="0"
-                        animation="slidedown 250ms ease-in-out"
+                        animation={`slidedown ${TOGGLE_ANIMATION_DURATION_MS}ms ease-in-out`}
                      />
                   </Box>
                )}

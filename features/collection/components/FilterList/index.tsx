@@ -6,7 +6,7 @@ import produce from 'immer';
 import React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
-import { FilterRow, ItemData } from './FilterRow';
+import { FilterRow, ItemData, TOGGLE_ANIMATION_DURATION_MS } from './FilterRow';
 import { createVirtualAccordionMachine } from './virtualAccordion.machine';
 import isEqual from 'react-fast-compare';
 
@@ -92,17 +92,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
             send({
                type: 'TOGGLE_ITEM_ANIMATION_END',
             });
-         }, 250);
-         return () => {
-            clearTimeout(timeoutId);
-         };
-      }
-      if (state.value === 'itemsAnimation') {
-         const timeoutId = setTimeout(() => {
-            send({
-               type: 'ITEMS_ANIMATION_END',
-            });
-         }, 300);
+         }, TOGGLE_ANIMATION_DURATION_MS);
          return () => {
             clearTimeout(timeoutId);
          };
@@ -145,7 +135,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                         itemCount={state.context.items.length}
                         itemKey={itemKey}
                         itemSize={getSize}
-                        estimatedItemSize={40}
+                        estimatedItemSize={41}
                         width={width}
                         itemData={data}
                      >
