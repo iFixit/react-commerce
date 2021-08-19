@@ -1,6 +1,6 @@
-import produce from 'immer';
 import * as React from 'react';
-import { useSearchContext } from './context';
+import { useSearchDispatchContext, useSearchStateContext } from './context';
+import { SearchActionType } from './types';
 
 export interface UsePagination {
    page: number;
@@ -10,27 +10,27 @@ export interface UsePagination {
 }
 
 export function usePagination(): UsePagination {
-   const { state, setState } = useSearchContext();
+   const state = useSearchStateContext();
+   const dispatch = useSearchDispatchContext();
 
    const setPage = React.useCallback(
       (page: number) => {
-         setState(
-            produce((draftState) => {
-               draftState.page = page;
-            })
-         );
+         dispatch({
+            type: SearchActionType.PageChanged,
+            page,
+         });
       },
-      [setState]
+      [dispatch]
    );
 
    const pagination = React.useMemo<UsePagination>(() => {
       return {
          isLoaded: state.isLoaded,
-         page: state.page,
+         page: state.params.page,
          numberOfPages: state.numberOfPages,
          setPage,
       };
-   }, [setPage, state.isLoaded, state.numberOfPages, state.page]);
+   }, [setPage, state.isLoaded, state.numberOfPages, state.params.page]);
 
    return pagination;
 }

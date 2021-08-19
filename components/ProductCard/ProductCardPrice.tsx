@@ -9,7 +9,15 @@ export interface ProductCardPriceProps {
 export const ProductCardPrice = chakra(
    ({ className, price }: ProductCardPriceProps) => {
       return (
-         <Text className={className} textAlign="center">
+         <Text
+            className={className}
+            fontWeight="semibold"
+            fontSize={{
+               base: 'xs',
+               md: 'md',
+            }}
+            textAlign="center"
+         >
             ${price}
          </Text>
       );

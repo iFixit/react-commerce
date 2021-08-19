@@ -14,7 +14,6 @@ export async function loadCollection(
    const client = new StorefrontClient({
       domain: SHOPIFY_DOMAIN,
       accessToken: SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-      version: 'unstable',
    });
    const {
       data: { collectionByHandle: collection },

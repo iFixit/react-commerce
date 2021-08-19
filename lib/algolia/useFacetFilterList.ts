@@ -6,15 +6,8 @@
  */
 import { useDerivedState } from '@lib/hooks';
 import * as React from 'react';
-import { useSearchContext } from './context';
-import { BasicFilter, ListFilter } from './types';
-import {
-   addListFilterItem,
-   clearFilter,
-   clearListFilterItem,
-   setListFilterItem,
-   toggleListFilterItem,
-} from './utils';
+import { useSearchDispatchContext, useSearchStateContext } from './context';
+import { BasicFilter, ListFilter, SearchActionType } from './types';
 
 export interface UseFacetFilterListOptions {
    filterType?: ListFilter['type'];
@@ -36,15 +29,16 @@ export function useFacetFilterList(
    facetName: string,
    { filterType = 'or' }: UseFacetFilterListOptions = {}
 ): UseFacetFilterList {
-   const { state, setState } = useSearchContext();
+   const state = useSearchStateContext();
+   const dispatch = useSearchDispatchContext();
 
    const selectedValueIds = useDerivedState<string[]>((current) => {
       let ids: string[] = [];
-      const listFilter = state.filters.byId[facetName];
+      const listFilter = state.params.filters.byId[facetName];
       if (listFilter != null) {
          if (listFilter.type === 'and' || listFilter.type === 'or') {
             ids = listFilter.filterIds
-               .map((id) => state.filters.byId[id])
+               .map((id) => state.params.filters.byId[id])
                .map((filter: any) => {
                   return (filter as BasicFilter).valueId;
                });
@@ -66,65 +60,101 @@ export function useFacetFilterList(
 
    const add = React.useCallback<UseFacetFilterList['add']>(
       (valueId, options) => {
-         setState((state) => {
-            let newState = addListFilterItem(state, {
-               facetName,
-               refinementType: filterType,
+         if (options?.clearFacets) {
+            dispatch([
+               {
+                  type: SearchActionType.ListFilterItemAdded,
+                  filterId: facetName,
+                  filterType,
+                  valueId,
+               },
+               {
+                  type: SearchActionType.FiltersCleared,
+                  filterIds: options.clearFacets,
+               },
+            ]);
+         } else {
+            dispatch({
+               type: SearchActionType.ListFilterItemAdded,
+               filterId: facetName,
+               filterType,
                valueId,
             });
-            if (options?.clearFacets) {
-               newState = clearFilter(newState, options.clearFacets);
-            }
-            return newState;
-         });
+         }
       },
-      [facetName, filterType, setState]
+      [dispatch, facetName, filterType]
    );
 
    const set = React.useCallback<UseFacetFilterList['set']>(
       (valueId, options) => {
-         setState((state) => {
-            let newState = setListFilterItem(state, {
-               facetName,
-               refinementType: filterType,
+         if (options?.clearFacets) {
+            dispatch([
+               {
+                  type: SearchActionType.ListFilterItemSet,
+                  filterId: facetName,
+                  filterType,
+                  valueId,
+               },
+               {
+                  type: SearchActionType.FiltersCleared,
+                  filterIds: options.clearFacets,
+               },
+            ]);
+         } else {
+            dispatch({
+               type: SearchActionType.ListFilterItemSet,
+               filterId: facetName,
+               filterType,
                valueId,
             });
-            if (options?.clearFacets) {
-               newState = clearFilter(newState, options.clearFacets);
-            }
-            return newState;
-         });
+         }
       },
-      [facetName, filterType, setState]
+      [dispatch, facetName, filterType]
    );
 
    const toggle = React.useCallback<UseFacetFilterList['toggle']>(
       (valueId, options) => {
-         setState((state) => {
-            let newState = toggleListFilterItem(state, {
-               facetName,
-               refinementType: filterType,
+         if (options?.clearFacets) {
+            dispatch([
+               {
+                  type: SearchActionType.ListFilterItemToggled,
+                  filterId: facetName,
+                  filterType,
+                  valueId,
+               },
+               {
+                  type: SearchActionType.FiltersCleared,
+                  filterIds: options.clearFacets,
+               },
+            ]);
+         } else {
+            dispatch({
+               type: SearchActionType.ListFilterItemToggled,
+               filterId: facetName,
+               filterType,
                valueId,
             });
-            if (options?.clearFacets) {
-               newState = clearFilter(newState, options.clearFacets);
-            }
-            return newState;
-         });
+         }
       },
-      [facetName, filterType, setState]
+      [dispatch, facetName, filterType]
    );
 
    const clear = React.useCallback<UseFacetFilterList['clear']>(
       (valueId) => {
-         setState((state) =>
-            clearListFilterItem(state, {
-               facetName,
+         if (valueId) {
+            dispatch({
+               type: SearchActionType.ListFilterItemCleared,
+               filterId: facetName,
                valueId,
-            })
-         );
+            });
+         } else {
+            dispatch({
+               type: SearchActionType.ListFilterAllItemsCleared,
+               filterId: facetName,
+            });
+         }
       },
-      [facetName, setState]
+      [dispatch, facetName]
    );
 
    return {

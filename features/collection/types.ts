@@ -2,13 +2,13 @@ export interface Collection {
    handle: string;
    title: string;
    description?: string;
-   image?: Image;
+   image?: CollectionImage;
    ancestors: Collection[];
    children: Collection[];
    relatedNews?: News[];
 }
 
-export interface Image {
+export interface CollectionImage {
    url: string;
    alt?: string;
 }

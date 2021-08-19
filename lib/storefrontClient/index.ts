@@ -12,7 +12,7 @@ export class StorefrontClient {
    constructor(args: ClientArgs) {
       this.domain = args.domain;
       this.accessToken = args.accessToken;
-      this.version = args.version || '2021-04';
+      this.version = args.version || '2021-07';
    }
 
    async request<Data = any, Variables = any>(

@@ -1,11 +1,11 @@
 import { Box, chakra, Flex, List, ListItem } from '@chakra-ui/react';
-import { DefaultLayout } from '@layouts/DefaultLayout';
+import { SiteLayout } from '@components/layouts/SiteLayout';
 import Link from 'next/link';
 import * as React from 'react';
 
 export default function HomePage() {
    return (
-      <DefaultLayout title="iFixit">
+      <SiteLayout title="iFixit">
          <Flex p={6}>
             <Box as="nav">
                <List>
@@ -38,6 +38,6 @@ export default function HomePage() {
                </List>
             </Box>
          </Flex>
-      </DefaultLayout>
+      </SiteLayout>
    );
 }
