@@ -46,7 +46,6 @@ export const FilterableProductSection = React.memo(() => {
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
    if (collectionState === CollectionState.Empty) {
-      console.log('EMPTY!!');
       return <CollectionEmptyState />;
    }
 
