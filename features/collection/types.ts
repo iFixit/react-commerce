@@ -5,7 +5,7 @@ export interface Collection {
    image?: CollectionImage;
    ancestors: Collection[];
    children: Collection[];
-   relatedNews?: News[];
+   relatedPosts?: Post[];
 }
 
 export interface CollectionImage {
@@ -23,15 +23,15 @@ export interface ProductHit {
    body_html_safe?: string;
 }
 
-export interface News {
+export interface Post {
    id: number;
    title: string;
    date: string;
-   image: NewsImage | null;
+   image: PostImage | null;
    permalink: string;
    category: string;
 }
 
-export interface NewsImage {
+export interface PostImage {
    url: string;
 }

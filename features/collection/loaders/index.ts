@@ -1,12 +1,10 @@
 import {
+   IFIXIT_API_ORIGIN,
    SHOPIFY_DOMAIN,
    SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-   WP_BASIC_AUTH_PASSWORD,
-   WP_BASIC_AUTH_USER,
-   WP_ORIGIN,
 } from '@config/env';
 import { StorefrontClient } from '@lib/storefrontClient';
-import { Collection, News } from '../types';
+import { Collection, Post } from '../types';
 
 export async function loadCollection(
    handle: string
@@ -44,7 +42,7 @@ export async function loadCollection(
       image: collection.image,
       ancestors,
       children,
-      relatedNews: news,
+      relatedPosts: news,
    };
 }
 
@@ -156,7 +154,7 @@ const collectionQuery = /* GraphQL */ `
    }
 `;
 
-interface Post {
+interface RawPost {
    ID: number;
    post_author: string;
    post_date: string;
@@ -165,11 +163,11 @@ interface Post {
    post_title: string;
    post_excerpt: string;
    permalink?: string;
-   featured_image: PostImage;
-   categories: PostCategory[];
+   featured_image: RawPostImage;
+   categories: RawPostCategory[];
 }
 
-interface PostCategory {
+interface RawPostCategory {
    term_id: number;
    name: string;
    slug: string;
@@ -188,7 +186,7 @@ interface PostCategory {
    category_parent: number;
 }
 
-interface PostImage {
+interface RawPostImage {
    thumbnail: string;
    medium: string;
    medium_large: string;
@@ -205,21 +203,15 @@ interface PostImage {
    'rp4wp-thumbnail-post': string;
 }
 
-async function loadRelatedNews(tags: string[]): Promise<News[]> {
-   const base64Credentials = convertToBase64(
-      `${WP_BASIC_AUTH_USER}:${WP_BASIC_AUTH_PASSWORD}`
+async function loadRelatedNews(tags: string[]): Promise<Post[]> {
+   const response = await fetch(
+      `${IFIXIT_API_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
+         JSON.stringify({ tags })
+      )}`
    );
-   const response = await fetch(`${WP_ORIGIN}/wp-json/wp/v2/posts/related`, {
-      method: 'POST',
-      body: JSON.stringify({ tags }),
-      headers: {
-         Authorization: `Basic ${base64Credentials}`,
-         'Content-Type': 'application/json',
-      },
-   });
    if (response.status >= 200 && response.status < 300) {
-      const rawStories: Post[] = await response.json();
-      return rawStories.map<News>((rawStory) => {
+      const rawStories: RawPost[] = await response.json();
+      return rawStories.map<Post>((rawStory) => {
          return {
             id: rawStory.ID,
             title: rawStory.post_title,
@@ -233,9 +225,4 @@ async function loadRelatedNews(tags: string[]): Promise<News[]> {
       });
    }
    throw new Error(`failed with status "${response.statusText}"`);
-}
-
-function convertToBase64(value: string): string {
-   const buffer = Buffer.from(value);
-   return buffer.toString('base64');
 }

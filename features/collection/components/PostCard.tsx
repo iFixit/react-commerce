@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';
 
-export interface NewsCardProps {
+export interface PostCardProps {
    title: string;
    category?: string;
    imageSrc?: string;
@@ -20,14 +20,14 @@ export interface NewsCardProps {
    date?: Date | string | number;
 }
 
-export function NewsCard({
+export function PostCard({
    title,
    category,
    imageSrc,
    imageAlt,
    link,
    date,
-}: NewsCardProps) {
+}: PostCardProps) {
    return (
       <LinkBox
          bg="white"
