@@ -27,7 +27,7 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
          <ModalOverlay />
          <ModalContent onAnimationComplete={handleAnimationComplete}>
             <ModalBody pt={6}>
-               <AppliedFilters />
+               <AppliedFilters pb="2" />
                <Box h="320px" mx="-6" overflow="hidden">
                   {canRenderList && <FilterList />}
                </Box>
