@@ -3,7 +3,7 @@ import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import { useAtomicFilters, useHits, useSearch } from '@lib/algolia';
 import * as React from 'react';
-import { Hit } from '../types';
+import { ProductHit } from '../types';
 import { AppliedFilters } from './AppliedFilters';
 import { CollectionPagination } from './CollectionPagination';
 import { FilterList } from './FilterList';
@@ -36,7 +36,7 @@ export enum CollectionState {
 }
 
 export const FilterableProductSection = React.memo(() => {
-   const { hits } = useHits<Hit>();
+   const { hits } = useHits<ProductHit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
@@ -151,7 +151,7 @@ export const FilterableProductSection = React.memo(() => {
 });
 
 function useCollectionState(): CollectionState {
-   const { hits, isLoaded, isSearching } = useHits<Hit>();
+   const { hits, isLoaded, isSearching } = useHits<ProductHit>();
    const [query] = useSearch();
    const atomicFilters = useAtomicFilters();
    if (!isLoaded) {
