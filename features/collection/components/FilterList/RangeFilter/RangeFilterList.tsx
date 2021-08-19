@@ -6,6 +6,7 @@ import {
    useFacetValues,
 } from '@lib/algolia';
 import * as React from 'react';
+import { FilterCheckbox } from '../FilterCheckbox';
 import { useRangeFilterContext, useRegisterFacet } from './context';
 
 export type RangeFilterListProps = {
@@ -41,6 +42,17 @@ export function RangeFilterList({
          .sort(sortItems);
    }, [sortItems, values]);
 
+   const handleChange = React.useCallback(
+      (name: string) => {
+         const facetNames = getFacetNames();
+         const facetToBeCleared = facetNames.filter(
+            (name) => name !== facetName
+         );
+         toggle(name, { clearFacets: facetToBeCleared });
+      },
+      [facetName, getFacetNames, toggle]
+   );
+
    if (!isLoaded) {
       return null;
    }
@@ -49,23 +61,31 @@ export function RangeFilterList({
          {items.map((item, index) => {
             if (multiple) {
                return (
-                  <Checkbox
-                     key={index}
+                  <FilterCheckbox
+                     key={item.id}
+                     name={item.id}
                      isChecked={selectedValueIds.includes(item.id)}
-                     onChange={() => {
-                        const facetNames = getFacetNames();
-                        const facetToBeCleared = facetNames.filter(
-                           (name) => name !== facetName
-                        );
-                        toggle(item.id, { clearFacets: facetToBeCleared });
-                     }}
+                     onChange={handleChange}
                   >
-                     <Text fontSize="sm">
-                        {renderItem
-                           ? renderItem(item, index, values)
-                           : item.value}
-                     </Text>
-                  </Checkbox>
+                     {renderItem ? renderItem(item, index, values) : item.value}
+                  </FilterCheckbox>
+                  // <Checkbox
+                  //    key={index}
+                  //    isChecked={selectedValueIds.includes(item.id)}
+                  //    onChange={() => {
+                  //       const facetNames = getFacetNames();
+                  //       const facetToBeCleared = facetNames.filter(
+                  //          (name) => name !== facetName
+                  //       );
+                  //       toggle(item.id, { clearFacets: facetToBeCleared });
+                  //    }}
+                  // >
+                  //    <Text fontSize="sm">
+                  //       {renderItem
+                  //          ? renderItem(item, index, values)
+                  //          : item.value}
+                  //    </Text>
+                  // </Checkbox>
                );
             }
             return (

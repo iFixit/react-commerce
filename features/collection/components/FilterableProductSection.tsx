@@ -108,8 +108,8 @@ export const FilterableProductSection = React.memo(() => {
                   <FilterList />
                )}
             </FilterCard>
-            <VStack align="stretch" flex={1}>
-               <AppliedFilters />
+            <VStack align="stretch" flex={1} spacing="0">
+               <AppliedFilters pb="2" px={{ base: 4, sm: 0 }} />
                <Card
                   flex={1}
                   alignItems="center"

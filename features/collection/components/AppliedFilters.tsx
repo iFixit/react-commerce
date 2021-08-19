@@ -1,5 +1,6 @@
 import {
    Button,
+   chakra,
    Collapse,
    Tag,
    TagCloseButton,
@@ -18,7 +19,11 @@ import {
 import { assertNever } from '@lib/utils';
 import * as React from 'react';
 
-export const AppliedFilters = () => {
+interface AppliedFiltersProps {
+   className?: string;
+}
+
+export const AppliedFilters = chakra(({ className }: AppliedFiltersProps) => {
    const atomicFilters = useAtomicFilters();
    const clear = useClearFilter();
    const clearAllFilters = React.useCallback(() => {
@@ -28,7 +33,7 @@ export const AppliedFilters = () => {
 
    return (
       <Collapse in={atomicFilters.length > 0} animateOpacity unmountOnExit>
-         <Wrap w="full" align="center" px={{ base: 4, sm: 0 }}>
+         <Wrap className={className} w="full" align="center">
             {atomicFilters.map((filter) => {
                return (
                   <WrapItem key={filter.id}>
@@ -49,7 +54,7 @@ export const AppliedFilters = () => {
          </Wrap>
       </Collapse>
    );
-};
+});
 
 interface FilterTagProps {
    filter: AtomicFilter;
