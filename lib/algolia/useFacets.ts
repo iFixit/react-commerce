@@ -7,7 +7,7 @@ export interface Facet {
    values: FacetValueState[];
 }
 
-export function useFacets(): Facet[] {
+export function useFacets() {
    const state = useSearchStateContext();
 
    const facets = React.useMemo<Facet[]>(() => {
@@ -20,5 +20,5 @@ export function useFacets(): Facet[] {
       });
    }, [state.facetValues.byId, state.facets.allIds, state.facets.byId]);
 
-   return facets;
+   return { facets, isSearching: state.isSearching };
 }
