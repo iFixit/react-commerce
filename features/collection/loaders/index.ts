@@ -34,7 +34,7 @@ export async function loadCollection(
       ancestors = await loadCollections(ancestorsHandles, client);
    }
 
-   const news = await loadRelatedNews([collection.title]);
+   const news = await loadRelatedPosts([collection.title]);
    return {
       handle,
       title: collection.title,
@@ -203,7 +203,7 @@ interface RawPostImage {
    'rp4wp-thumbnail-post': string;
 }
 
-async function loadRelatedNews(tags: string[]): Promise<Post[]> {
+async function loadRelatedPosts(tags: string[]): Promise<Post[]> {
    const response = await fetch(
       `${IFIXIT_API_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
          JSON.stringify({ tags })
