@@ -24,6 +24,7 @@ const FACET_BLOCKLIST = [
    'named_tags.worksin',
    'price',
    'inventory_management',
+   'options.variant_text',
 ];
 
 const Sizer = chakra(AutoSizer);
