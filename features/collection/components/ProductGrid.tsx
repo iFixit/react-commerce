@@ -6,7 +6,7 @@ import {
    ProductCardPrice,
    ProductCardTitle,
 } from '@components/ProductCard';
-import { Hit } from '@features/collection';
+import { ProductHit } from '@features/collection';
 import * as React from 'react';
 
 export type ProductGridProps = React.PropsWithChildren<unknown>;
@@ -28,7 +28,7 @@ export function ProductGrid({ children }: ProductGridProps) {
 }
 
 export interface ProductGridItemProps {
-   product: Hit;
+   product: ProductHit;
 }
 
 export function ProductGridItem({ product }: ProductGridItemProps) {

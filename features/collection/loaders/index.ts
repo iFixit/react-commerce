@@ -1,6 +1,10 @@
-import { SHOPIFY_DOMAIN, SHOPIFY_STOREFRONT_ACCESS_TOKEN } from '@config/env';
+import {
+   IFIXIT_API_ORIGIN,
+   SHOPIFY_DOMAIN,
+   SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+} from '@config/env';
 import { StorefrontClient } from '@lib/storefrontClient';
-import { Collection } from '../types';
+import { Collection, Post } from '../types';
 
 export async function loadCollection(
    handle: string
@@ -9,16 +13,15 @@ export async function loadCollection(
       domain: SHOPIFY_DOMAIN,
       accessToken: SHOPIFY_STOREFRONT_ACCESS_TOKEN,
    });
-   const response = await client.request<DataWithMetafields>(
-      collectionWithMetafieldsQuery,
-      {
-         handle,
-      }
-   );
-   if (response.data.collectionByHandle == null) {
+   const {
+      data: { collectionByHandle: collection },
+   } = await client.request<DataWithMetafields>(collectionWithMetafieldsQuery, {
+      handle,
+   });
+   if (collection == null) {
       return null;
    }
-   const hierarchyMetafield = response.data.collectionByHandle.metafields.edges.find(
+   const hierarchyMetafield = collection.metafields.edges.find(
       (edge) => edge.node.key === 'collection_hierarchy'
    );
    let ancestors: Collection[] = [];
@@ -30,13 +33,16 @@ export async function loadCollection(
       const ancestorsHandles = getAncestorHandles(hierarchy).reverse();
       ancestors = await loadCollections(ancestorsHandles, client);
    }
+
+   const news = await loadRelatedPosts([collection.title]);
    return {
       handle,
-      title: response.data.collectionByHandle.title,
-      description: response.data.collectionByHandle.description,
-      image: response.data.collectionByHandle.image,
+      title: collection.title,
+      description: collection.description,
+      image: collection.image,
       ancestors,
       children,
+      relatedPosts: news,
    };
 }
 
@@ -147,3 +153,76 @@ const collectionQuery = /* GraphQL */ `
       }
    }
 `;
+
+interface RawPost {
+   ID: number;
+   post_author: string;
+   post_date: string;
+   post_date_gmt: string;
+   post_content: string;
+   post_title: string;
+   post_excerpt: string;
+   permalink?: string;
+   featured_image: RawPostImage;
+   categories: RawPostCategory[];
+}
+
+interface RawPostCategory {
+   term_id: number;
+   name: string;
+   slug: string;
+   term_group: number;
+   term_taxonomy_id: number;
+   taxonomy: string;
+   description: string;
+   parent: number;
+   count: number;
+   filter: string;
+   cat_ID: number;
+   category_count: number;
+   category_description: string;
+   cat_name: string;
+   category_nicename: string;
+   category_parent: number;
+}
+
+interface RawPostImage {
+   thumbnail: string;
+   medium: string;
+   medium_large: string;
+   large: string;
+   '1536x1536': string;
+   '2048x2048': string;
+   'post-header': string;
+   sm: string;
+   md: string;
+   lg: string;
+   'homepage-featured': string;
+   'homepage-small': string;
+   'homepage-medium': string;
+   'rp4wp-thumbnail-post': string;
+}
+
+async function loadRelatedPosts(tags: string[]): Promise<Post[]> {
+   const response = await fetch(
+      `${IFIXIT_API_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
+         JSON.stringify({ tags })
+      )}`
+   );
+   if (response.status >= 200 && response.status < 300) {
+      const rawStories: RawPost[] = await response.json();
+      return rawStories.map<Post>((rawStory) => {
+         return {
+            id: rawStory.ID,
+            title: rawStory.post_title,
+            date: rawStory.post_date,
+            category: rawStory.categories[0]?.name,
+            image: rawStory.featured_image
+               ? { url: rawStory.featured_image.md }
+               : null,
+            permalink: rawStory.permalink || '',
+         };
+      });
+   }
+   throw new Error(`failed with status "${response.statusText}"`);
+}
