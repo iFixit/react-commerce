@@ -20,6 +20,11 @@ export const IFIXIT_API_ORIGIN = checkEnv(
    'NEXT_PUBLIC_IFIXIT_API_ORIGIN'
 );
 
+export const STRAPI_ORIGIN = checkEnv(
+   process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
+   'NEXT_PUBLIC_STRAPI_ORIGIN'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       throw new Error(`environment variable "${envName}" is not defined`);

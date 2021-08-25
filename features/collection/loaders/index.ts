@@ -1,148 +1,117 @@
-import { SHOPIFY_DOMAIN, SHOPIFY_STOREFRONT_ACCESS_TOKEN } from '@config/env';
-import { StorefrontClient } from '@lib/storefrontClient';
-import { Collection } from '../types';
+import { STRAPI_ORIGIN } from '@config/env';
+import { Collection, CollectionImage } from '../types';
 
 export async function loadCollection(
    handle: string
 ): Promise<Collection | null> {
-   const client = new StorefrontClient({
-      domain: SHOPIFY_DOMAIN,
-      accessToken: SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+   return loadCollectionFromStrapi(handle);
+}
+
+async function loadCollectionFromStrapi(
+   handle: string
+): Promise<Collection | null> {
+   const response = await fetch(`${STRAPI_ORIGIN}/graphql`, {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         query: collectionByHandleQuery,
+         variables: {
+            where: {
+               handle,
+            },
+         },
+      }),
    });
-   const response = await client.request<DataWithMetafields>(
-      collectionWithMetafieldsQuery,
-      {
-         handle,
+   if (response.ok) {
+      const result = await response.json();
+      const collection = result.data.collections[0];
+      if (collection == null) {
+         return null;
       }
-   );
-   if (response.data.collectionByHandle == null) {
+      return {
+         handle: collection.handle,
+         title: collection.title,
+         description: collection.description,
+         filtersPreset: collection.filters,
+         image: getImageFromStrapiImage(collection.image, 'medium'),
+         ancestors: getAncestors(collection.parent),
+         children: collection.children.map((child: any) => {
+            return {
+               handle: child.handle,
+               title: child.title,
+               image: getImageFromStrapiImage(child.image, 'thumbnail'),
+            };
+         }),
+      };
+   }
+   throw new Error('Unable to fetch collection');
+}
+
+function getImageFromStrapiImage(
+   image: any | null,
+   format: 'medium' | 'small' | 'thumbnail'
+): CollectionImage | null {
+   if (image == null) {
       return null;
    }
-   const hierarchyMetafield = response.data.collectionByHandle.metafields.edges.find(
-      (edge) => edge.node.key === 'collection_hierarchy'
-   );
-   let ancestors: Collection[] = [];
-   let children: Collection[] = [];
-   if (hierarchyMetafield) {
-      const hierarchy = JSON.parse(hierarchyMetafield.node.value);
-      const childrenHandles = getChildrenHandles(hierarchy);
-      children = await loadCollections(childrenHandles, client);
-      const ancestorsHandles = getAncestorHandles(hierarchy).reverse();
-      ancestors = await loadCollections(ancestorsHandles, client);
-   }
    return {
-      handle,
-      title: response.data.collectionByHandle.title,
-      description: response.data.collectionByHandle.description,
-      image: response.data.collectionByHandle.image,
-      ancestors,
-      children,
+      url: `${STRAPI_ORIGIN}${image.formats[format].url}`,
+      alt: image.alternativeText,
    };
 }
 
-async function loadCollections(
-   handles: string[],
-   client: StorefrontClient
-): Promise<Collection[]> {
-   const responses = await Promise.all(
-      handles.map((handle) => client.request<Data>(collectionQuery, { handle }))
-   );
-   return responses
-      .filter((response) => response.data.collectionByHandle != null)
-      .map((response) => {
-         return {
-            handle: response.data.collectionByHandle.handle,
-            title: response.data.collectionByHandle.title,
-            image: response.data.collectionByHandle.image,
-            ancestors: [],
-            children: [],
-         };
-      });
-}
-
-function getChildrenHandles(metafieldParsedValue: any): string[] {
-   if (Array.isArray(metafieldParsedValue.children)) {
-      return metafieldParsedValue.children.map((handle: string) =>
-         handle.toLowerCase()
-      );
+function getAncestors(parent: null | any): Collection[] {
+   if (parent == null) {
+      return [];
    }
-   return [];
+   const ancestors: Collection[] = getAncestors(parent.parent);
+   return ancestors.concat({
+      handle: parent.handle,
+      title: parent.title,
+      ancestors: [],
+      children: [],
+   });
 }
 
-function getAncestorHandles(metafieldParsedValue: any): string[] {
-   if (Array.isArray(metafieldParsedValue.ancestors)) {
-      return metafieldParsedValue.ancestors.map((handle: string) =>
-         handle.toLowerCase()
-      );
-   }
-   return [];
-}
-
-type DataWithMetafields = {
-   data: {
-      collectionByHandle: {
-         handle: string;
-         title: string;
-         description: string;
-         image?: {
-            alt: string;
-            url: string;
-         };
-         metafields: {
-            edges: Array<{
-               node: {
-                  key: string;
-                  value: string;
-               };
-            }>;
-         };
-      };
-   };
-};
-
-const collectionWithMetafieldsQuery = /* GraphQL */ `
-   query collection($handle: String!) {
-      collectionByHandle(handle: $handle) {
+const collectionByHandleQuery = /* GraphQL */ `
+   query getCollectionByHandle($where: JSON) {
+      collections(limit: 1, where: $where) {
+         id
          handle
          title
          description
+         filters
          image {
-            alt: altText
-            url: transformedSrc
+            alternativeText
+            url
+            formats
          }
-         metafields(first: 10, namespace: "ifixit") {
-            edges {
-               node {
-                  key
-                  value
+         parent {
+            title
+            handle
+            parent {
+               title
+               handle
+               parent {
+                  title
+                  handle
+                  parent {
+                     title
+                     handle
+                  }
                }
             }
          }
-      }
-   }
-`;
-
-type Data = {
-   data: {
-      collectionByHandle: {
-         handle: string;
-         title: string;
-         image?: {
-            alt: string;
-            url: string;
-         };
-      };
-   };
-};
-
-const collectionQuery = /* GraphQL */ `
-   query collection($handle: String!) {
-      collectionByHandle(handle: $handle) {
-         handle
-         title
-         image {
-            alt: altText
-            url: transformedSrc
+         children {
+            handle
+            title
+            image {
+               alternativeText
+               url
+               formats
+            }
          }
       }
    }

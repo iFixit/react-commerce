@@ -2,7 +2,8 @@ export interface Collection {
    handle: string;
    title: string;
    description?: string;
-   image?: CollectionImage;
+   filtersPreset?: string | null;
+   image?: CollectionImage | null;
    ancestors: Collection[];
    children: Collection[];
 }

@@ -37,7 +37,11 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
             appId={ALGOLIA_APP_ID}
             apiKey={ALGOLIA_API_KEY}
             initialIndexName="shopify_ifixit_test_products"
-            initialRawFilters={`collections:${collectionHandle}`}
+            initialRawFilters={
+               collection.filtersPreset
+                  ? collection.filtersPreset
+                  : `collections:${collectionHandle}`
+            }
          >
             <Page>
                <HeroSection>
