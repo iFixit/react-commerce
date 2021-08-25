@@ -29,9 +29,6 @@ export function SiteLayout({
                      <Link href="#">
                         <chakra.a px={3}>Guides</chakra.a>
                      </Link>
-                     <Link href="#">
-                        <chakra.a px={3}>Answers</chakra.a>
-                     </Link>
                   </HStack>
                </Flex>
             </Flex>

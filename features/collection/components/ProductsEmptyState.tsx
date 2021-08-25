@@ -13,7 +13,7 @@ export function ProductsEmptyState() {
          <Text fontSize="lg" fontWeight="bold">
             No results found
          </Text>
-         <Text maxW="500px" color="gray.500" textAlign="center">
+         <Text maxW="500px" color="gray.500" textAlign="center" px="2">
             Try adjusting your search or filter to find what you&apos;re looking
             for.
          </Text>

@@ -204,7 +204,7 @@ const FilterCard = ({
 
 const CollectionEmptyState = () => {
    return (
-      <Card pt="16" pb="20">
+      <Card pt="16" pb="20" borderRadius={{ base: 'none', sm: 'lg' }}>
          <VStack>
             <Icon
                as={CollectionEmptyStateIllustration}
@@ -214,7 +214,7 @@ const CollectionEmptyState = () => {
             <Text fontSize="lg" fontWeight="bold">
                Empty collection
             </Text>
-            <Text maxW="500px" color="gray.500" textAlign="center">
+            <Text maxW="500px" color="gray.500" textAlign="center" px="2">
                This collection does not have products. Try to navigate to
                subcategories to find what you are looking for.
             </Text>
