@@ -1,4 +1,4 @@
-import { Checkbox, Radio, Text, VStack } from '@chakra-ui/react';
+import { Radio, Text, VStack } from '@chakra-ui/react';
 import {
    FacetValueState,
    ListFilter,
@@ -69,23 +69,6 @@ export function RangeFilterList({
                   >
                      {renderItem ? renderItem(item, index, values) : item.value}
                   </FilterCheckbox>
-                  // <Checkbox
-                  //    key={index}
-                  //    isChecked={selectedValueIds.includes(item.id)}
-                  //    onChange={() => {
-                  //       const facetNames = getFacetNames();
-                  //       const facetToBeCleared = facetNames.filter(
-                  //          (name) => name !== facetName
-                  //       );
-                  //       toggle(item.id, { clearFacets: facetToBeCleared });
-                  //    }}
-                  // >
-                  //    <Text fontSize="sm">
-                  //       {renderItem
-                  //          ? renderItem(item, index, values)
-                  //          : item.value}
-                  //    </Text>
-                  // </Checkbox>
                );
             }
             return (

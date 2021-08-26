@@ -24,9 +24,12 @@ const FACET_BLOCKLIST = [
    'named_tags.worksin',
    'price',
    'inventory_management',
+   'options.variant_text',
 ];
 
 const Sizer = chakra(AutoSizer);
+
+const DEFAULT_ROW_HEIGHT = 41;
 
 export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
@@ -115,7 +118,10 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
 
    const getSize = React.useCallback(
       (index: number): number => {
-         return state.context.sizeMap[state.context.items[index].name] || 41;
+         return (
+            state.context.sizeMap[state.context.items[index].name] ||
+            DEFAULT_ROW_HEIGHT
+         );
       },
       [state.context.items, state.context.sizeMap]
    );
@@ -135,7 +141,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                         itemCount={state.context.items.length}
                         itemKey={itemKey}
                         itemSize={getSize}
-                        estimatedItemSize={41}
+                        estimatedItemSize={DEFAULT_ROW_HEIGHT}
                         width={width}
                         itemData={data}
                      >
