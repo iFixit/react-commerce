@@ -6,6 +6,7 @@ export interface Collection {
    image?: CollectionImage | null;
    ancestors: Collection[];
    children: Collection[];
+   relatedPosts?: Post[];
 }
 
 export interface CollectionImage {
@@ -13,7 +14,7 @@ export interface CollectionImage {
    alt?: string;
 }
 
-export interface Hit {
+export interface ProductHit {
    title: string;
    handle: string;
    price: number;
@@ -21,4 +22,17 @@ export interface Hit {
    sku: string;
    product_image: string;
    body_html_safe?: string;
+}
+
+export interface Post {
+   id: number;
+   title: string;
+   date: string;
+   image: PostImage | null;
+   permalink: string;
+   category: string;
+}
+
+export interface PostImage {
+   url: string;
 }

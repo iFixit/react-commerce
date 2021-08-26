@@ -1,23 +1,24 @@
-import { VStack } from '@chakra-ui/react';
+import { SimpleGrid, VStack } from '@chakra-ui/react';
+import { SiteLayout } from '@components/layouts/SiteLayout';
 import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
    Collection,
-   loadCollection,
    FilterableProductSection,
-   HeroSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
    HeroBreadcrumbItem,
    HeroBreadcrumbLink,
    HeroDescription,
    HeroImage,
+   HeroSection,
    HeroTitle,
+   loadCollection,
    Page,
 } from '@features/collection';
 import { CollectionBanner } from '@features/collection/components/CollectionBanner';
+import { PostCard } from '@features/collection/components/PostCard';
 import { SubcategoriesSection } from '@features/collection/components/SubcategoriesSection';
-import { SiteLayout } from '@components/layouts/SiteLayout';
 import { AlgoliaProvider } from '@lib/algolia';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
@@ -88,6 +89,19 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                )}
                <FilterableProductSection />
                <CollectionBanner />
+               {collection.relatedPosts && collection.relatedPosts.length > 0 && (
+                  <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
+                     {collection.relatedPosts.map((post) => (
+                        <PostCard
+                           key={post.id}
+                           title={post.title}
+                           category={post.category}
+                           imageSrc={post.image?.url}
+                           link={post.permalink || ''}
+                        />
+                     ))}
+                  </SimpleGrid>
+               )}
                <NewsletterSection />
             </Page>
          </AlgoliaProvider>

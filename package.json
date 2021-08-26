@@ -39,6 +39,7 @@
       "@xstate/fsm": "1.6.1",
       "@xstate/react": "1.5.1",
       "algoliasearch": "4.9.1",
+      "dayjs": "1.10.5",
       "framer-motion": "4.1.11",
       "immer": "9.0.2",
       "next": "11.0.1",

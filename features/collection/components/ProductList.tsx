@@ -7,7 +7,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ShopifyImage } from '@components/ShopifyImage';
-import { Hit } from '@features/collection';
+import { ProductHit } from '@features/collection';
 import * as React from 'react';
 
 const placeholderImageUrl =
@@ -33,7 +33,7 @@ export function ProductList({ children }: ProductListProps) {
 }
 
 export interface ProductListItemProps {
-   product: Hit;
+   product: ProductHit;
 }
 
 export function ProductListItem({ product }: ProductListItemProps) {
