@@ -5,7 +5,9 @@ export function queryChanged(
    draft: Draft<SearchState>,
    action: QueryChangedAction
 ) {
-   draft.params.query = action.query;
-   draft.params.page = 1;
-   draft.isSearching = true;
+   if (draft.params.query != action.query) {
+      draft.params.query = action.query;
+      draft.params.page = 1;
+      draft.isSearching = true;
+   }
 }
