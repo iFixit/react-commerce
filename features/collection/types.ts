@@ -7,6 +7,7 @@ export interface Collection {
    ancestors: Collection[];
    children: Collection[];
    relatedPosts?: Post[];
+   sections: CollectionSection[];
 }
 
 export interface CollectionImage {
@@ -35,4 +36,35 @@ export interface Post {
 
 export interface PostImage {
    url: string;
+}
+
+// Sections
+
+export type CollectionSection =
+   | BannerSection
+   | RelatedPostsSection
+   | NewsletterFormSection;
+
+export interface BannerSection {
+   __typename: 'ComponentCollectionBanner';
+   id: string;
+   title: string;
+   description: string;
+   callToActionLabel: string;
+   url: string;
+}
+
+export interface RelatedPostsSection {
+   __typename: 'ComponentCollectionRelatedPosts';
+   id: string;
+   tags?: string;
+}
+
+export interface NewsletterFormSection {
+   __typename: 'ComponentCollectionNewsletterForm';
+   id: string;
+   title: string;
+   description: string;
+   callToActionLabel: string;
+   inputPlaceholder?: string;
 }

@@ -30,7 +30,16 @@ async function loadCollectionFromStrapi(
       if (collection == null) {
          return null;
       }
-      const relatedPosts = await loadRelatedPosts([collection.title]);
+      const relatedPostSection = collection.sections.find(
+         (section: any) =>
+            section.__typename === 'ComponentCollectionRelatedPosts'
+      );
+      const tags =
+         relatedPostSection?.tags?.split(',').map((tag: any) => tag.trim()) ||
+         [];
+      const relatedPosts = await loadRelatedPosts(
+         [collection.title].concat(tags)
+      );
       return {
          handle: collection.handle,
          title: collection.title,
@@ -46,6 +55,7 @@ async function loadCollectionFromStrapi(
             };
          }),
          relatedPosts,
+         sections: collection.sections,
       };
    }
    throw new Error('Unable to fetch collection');
@@ -74,6 +84,7 @@ function getAncestors(parent: null | any): Collection[] {
       title: parent.title,
       ancestors: [],
       children: [],
+      sections: [],
    });
 }
 
@@ -113,6 +124,27 @@ const collectionByHandleQuery = /* GraphQL */ `
                alternativeText
                url
                formats
+            }
+         }
+         sections {
+            __typename
+            ... on ComponentCollectionBanner {
+               id
+               title
+               description
+               callToActionLabel
+               url
+            }
+            ... on ComponentCollectionRelatedPosts {
+               id
+               tags
+            }
+            ... on ComponentCollectionNewsletterForm {
+               id
+               title
+               description
+               inputPlaceholder
+               callToActionLabel
             }
          }
       }

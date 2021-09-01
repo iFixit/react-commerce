@@ -15,11 +15,13 @@ import {
    HeroTitle,
    loadCollection,
    Page,
+   RelatedPostsSection,
 } from '@features/collection';
-import { CollectionBanner } from '@features/collection/components/CollectionBanner';
-import { PostCard } from '@features/collection/components/PostCard';
+import { BannerSection } from '@features/collection/components/sections/BannerSection';
+import { PostCard } from '@features/collection/components/sections/RelatedPostsSection/PostCard';
 import { SubcategoriesSection } from '@features/collection/components/SubcategoriesSection';
 import { AlgoliaProvider } from '@lib/algolia';
+import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
@@ -88,21 +90,42 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   <SubcategoriesSection collection={collection} />
                )}
                <FilterableProductSection />
-               <CollectionBanner />
-               {collection.relatedPosts && collection.relatedPosts.length > 0 && (
-                  <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
-                     {collection.relatedPosts.map((post) => (
-                        <PostCard
-                           key={post.id}
-                           title={post.title}
-                           category={post.category}
-                           imageSrc={post.image?.url}
-                           link={post.permalink || ''}
-                        />
-                     ))}
-                  </SimpleGrid>
-               )}
-               <NewsletterSection />
+               {collection.sections.map((section, index) => {
+                  switch (section.__typename) {
+                     case 'ComponentCollectionBanner': {
+                        return (
+                           <BannerSection
+                              key={index}
+                              title={section.title}
+                              description={section.description}
+                              callToActionLabel={section.callToActionLabel}
+                              url={section.url}
+                           />
+                        );
+                     }
+                     case 'ComponentCollectionRelatedPosts': {
+                        return (
+                           <RelatedPostsSection
+                              key={index}
+                              posts={collection.relatedPosts || []}
+                           />
+                        );
+                     }
+                     case 'ComponentCollectionNewsletterForm': {
+                        return (
+                           <NewsletterSection
+                              key={index}
+                              title={section.title}
+                              description={section.description}
+                              emailPlaceholder={section.inputPlaceholder}
+                              subscribeLabel={section.callToActionLabel}
+                           />
+                        );
+                     }
+                     default:
+                        return assertNever(section);
+                  }
+               })}
             </Page>
          </AlgoliaProvider>
       </SiteLayout>
