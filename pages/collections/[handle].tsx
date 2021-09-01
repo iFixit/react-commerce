@@ -1,4 +1,4 @@
-import { SimpleGrid, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { SiteLayout } from '@components/layouts/SiteLayout';
 import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
@@ -18,7 +18,6 @@ import {
    RelatedPostsSection,
 } from '@features/collection';
 import { BannerSection } from '@features/collection/components/sections/BannerSection';
-import { PostCard } from '@features/collection/components/sections/RelatedPostsSection/PostCard';
 import { SubcategoriesSection } from '@features/collection/components/SubcategoriesSection';
 import { AlgoliaProvider } from '@lib/algolia';
 import { assertNever } from '@lib/utils';

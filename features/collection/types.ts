@@ -41,11 +41,11 @@ export interface PostImage {
 // Sections
 
 export type CollectionSection =
-   | BannerSection
-   | RelatedPostsSection
-   | NewsletterFormSection;
+   | CollectionBannerSection
+   | CollectionRelatedPostsSection
+   | CollectionNewsletterFormSection;
 
-export interface BannerSection {
+export interface CollectionBannerSection {
    __typename: 'ComponentCollectionBanner';
    id: string;
    title: string;
@@ -54,13 +54,13 @@ export interface BannerSection {
    url: string;
 }
 
-export interface RelatedPostsSection {
+export interface CollectionRelatedPostsSection {
    __typename: 'ComponentCollectionRelatedPosts';
    id: string;
    tags?: string;
 }
 
-export interface NewsletterFormSection {
+export interface CollectionNewsletterFormSection {
    __typename: 'ComponentCollectionNewsletterForm';
    id: string;
    title: string;
