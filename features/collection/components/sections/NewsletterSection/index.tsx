@@ -11,7 +11,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { SubscriptionStatus, useSubscribeToNewsletter } from '@lib/newsletter';
+import { SubscriptionStatus, useSubscribeToNewsletter } from '@lib/api';
 import * as React from 'react';
 import { RiCheckFill } from 'react-icons/ri';
 

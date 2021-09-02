@@ -1,10 +1,10 @@
 import { VStack } from '@chakra-ui/react';
 import { SiteLayout } from '@components/layouts/SiteLayout';
-import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
+   BannerSection,
    Collection,
-   FilterableProductSection,
+   FilterableProductsSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
    HeroBreadcrumbItem,
@@ -14,11 +14,11 @@ import {
    HeroSection,
    HeroTitle,
    loadCollection,
+   NewsletterSection,
    Page,
    RelatedPostsSection,
+   SubcategoriesSection,
 } from '@features/collection';
-import { BannerSection } from '@features/collection/components/sections/BannerSection';
-import { SubcategoriesSection } from '@features/collection/components/SubcategoriesSection';
 import { AlgoliaProvider } from '@lib/algolia';
 import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
@@ -88,7 +88,7 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                {collection.children.length > 0 && (
                   <SubcategoriesSection collection={collection} />
                )}
-               <FilterableProductSection />
+               <FilterableProductsSection />
                {collection.sections.map((section, index) => {
                   switch (section.__typename) {
                      case 'ComponentCollectionBanner': {
@@ -103,12 +103,11 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                         );
                      }
                      case 'ComponentCollectionRelatedPosts': {
-                        return (
-                           <RelatedPostsSection
-                              key={index}
-                              posts={collection.relatedPosts || []}
-                           />
+                        const tags = [collection.title].concat(
+                           section.tags?.split(',').map((tag) => tag.trim()) ||
+                              []
                         );
+                        return <RelatedPostsSection key={index} tags={tags} />;
                      }
                      case 'ComponentCollectionNewsletterForm': {
                         return (

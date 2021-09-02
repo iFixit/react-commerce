@@ -42,3 +42,13 @@ export function useDerivedState<T = any>(compute: (value: T | undefined) => T) {
 
    return stateRef.current;
 }
+
+export function usePrevious<T>(value: T): T | undefined {
+   const ref = React.useRef<T>();
+
+   React.useEffect(() => {
+      ref.current = value;
+   }, [value]);
+
+   return ref.current;
+}

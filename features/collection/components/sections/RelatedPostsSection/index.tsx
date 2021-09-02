@@ -1,16 +1,24 @@
-import { SimpleGrid } from '@chakra-ui/react';
-import { Post } from '@features/collection';
+import { SimpleGrid, usePrevious } from '@chakra-ui/react';
+import { fetchPosts, Post } from '@lib/api';
 import * as React from 'react';
+import isEqual from 'react-fast-compare';
 import { PostCard } from './PostCard';
 
 export interface RelatedPostsSectionProps {
-   posts: Post[];
+   tags?: string[];
 }
 
-export function RelatedPostsSection({ posts }: RelatedPostsSectionProps) {
-   if (posts.length === 0) {
+export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
+   const { posts, isLoading, error } = usePosts(tags);
+
+   if (error) {
+      console.warn(`Failed to load related posts: ${error}`);
+   }
+
+   if (isLoading || posts.length === 0) {
       return null;
    }
+
    return (
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
          {posts.map((post) => (
@@ -24,4 +32,39 @@ export function RelatedPostsSection({ posts }: RelatedPostsSectionProps) {
          ))}
       </SimpleGrid>
    );
+}
+
+function usePosts(tags: string[]) {
+   const previousTags = usePrevious(tags);
+
+   const [state, setState] = React.useState<{
+      posts: Post[];
+      isLoading: boolean;
+      error?: string;
+   }>({
+      posts: [],
+      isLoading: true,
+   });
+
+   React.useEffect(() => {
+      if (!isEqual(tags, previousTags)) {
+         fetchPosts(tags)
+            .then((posts) => {
+               setState({
+                  posts,
+                  isLoading: false,
+                  error: undefined,
+               });
+            })
+            .catch((error) => {
+               setState((current) => ({
+                  ...current,
+                  isLoading: false,
+                  error: error.message,
+               }));
+            });
+      }
+   }, [tags, previousTags]);
+
+   return state;
 }
