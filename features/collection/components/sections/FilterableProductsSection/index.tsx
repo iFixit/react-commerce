@@ -1,4 +1,7 @@
-import { CollectionEmptyStateIllustration } from '@assets/svg';
+import {
+   CollectionEmptyStateIllustration,
+   SearchEmptyStateIllustration,
+} from '@assets/svg';
 import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import { useAtomicFilters, useHits, useSearch } from '@lib/algolia';
@@ -10,7 +13,6 @@ import { FilterList } from './FilterList';
 import { FiltersModal } from './FiltersModal';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
-import { ProductsEmptyState } from './ProductsEmptyState';
 import { SearchInput } from './SearchInput';
 import {
    NumberOfHits,
@@ -204,17 +206,17 @@ const FilterCard = ({
 
 const CollectionEmptyState = () => {
    return (
-      <Card pt="16" pb="20">
+      <Card pt="16" pb="20" borderRadius={{ base: 'none', sm: 'lg' }}>
          <VStack>
             <Icon
                as={CollectionEmptyStateIllustration}
                boxSize="200px"
                opacity="0.8"
             />
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="lg" fontWeight="bold" w="full" textAlign="center">
                Empty collection
             </Text>
-            <Text maxW="500px" color="gray.500" textAlign="center">
+            <Text maxW="500px" color="gray.500" textAlign="center" px="2">
                This collection does not have products. Try to navigate to
                subcategories to find what you are looking for.
             </Text>
@@ -222,6 +224,25 @@ const CollectionEmptyState = () => {
       </Card>
    );
 };
+
+function ProductsEmptyState() {
+   return (
+      <VStack pt="16" pb="20">
+         <Icon
+            as={SearchEmptyStateIllustration}
+            boxSize="200px"
+            opacity="0.8"
+         />
+         <Text fontSize="lg" fontWeight="bold" w="full" textAlign="center">
+            No results found
+         </Text>
+         <Text maxW="500px" color="gray.500" textAlign="center" px="2">
+            Try adjusting your search or filter to find what you&apos;re looking
+            for.
+         </Text>
+      </VStack>
+   );
+}
 
 const SkeletonListItem = () => {
    return (

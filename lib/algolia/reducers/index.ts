@@ -35,7 +35,7 @@ export function getInitialState({
          limit: 24,
       },
       isLoaded: false,
-      isSearching: true,
+      isSearching: false,
       hits: {
          byId: {},
          allIds: [],
