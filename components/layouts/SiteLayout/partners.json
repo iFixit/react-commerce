@@ -1,0 +1,38 @@
+[
+   {
+      "name": "VISA",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "MasterCard",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "AMEX",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "PayPal",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "SoFort",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "DHL",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "FedEx",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "UPS",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875573388ede7e3f1c9a0_logo-visa.png"
+   },
+   {
+      "name": "Hermes",
+      "logo": "https://uploads-ssl.webflow.com/5c9b91208becd3baee84a04b/5f9875565af2ab6da22d5134_logo-hermes.png"
+   }
+]

@@ -1,0 +1,18 @@
+[
+   [
+      { "label": "About Us", "url": "#" },
+      { "label": "Customer Support", "url": "#" },
+      { "label": "Careers", "url": "#" },
+      { "label": "Feedback", "url": "#" },
+      { "label": "API", "url": "#" },
+      { "label": "Newsletter", "url": "#" }
+   ],
+   [
+      { "label": "Press", "url": "#" },
+      { "label": "News", "url": "#" },
+      { "label": "Contribute", "url": "#" },
+      { "label": "Pro Wholesale", "url": "#" },
+      { "label": "Retail Locator", "url": "#" },
+      { "label": "For Manufacturers", "url": "#" }
+   ]
+]
