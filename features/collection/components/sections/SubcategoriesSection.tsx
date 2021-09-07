@@ -13,16 +13,26 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ShopifyImage } from '@components/ShopifyImage';
-import { Collection } from '@features/collection';
 import NextLink from 'next/link';
 import * as React from 'react';
 
 export type CollectionSubcategoriesProps = {
-   collection: Collection;
+   heading: string;
+   categories: Category[];
 };
 
+export interface Category {
+   handle: string;
+   title: string;
+   image?: {
+      url: string;
+      alt?: string;
+   } | null;
+}
+
 export function SubcategoriesSection({
-   collection,
+   heading,
+   categories,
 }: CollectionSubcategoriesProps) {
    const [shouldShowMore, setShouldShowMore] = React.useState(false);
    const visibleCategoriesCount = useBreakpointValue({
@@ -32,15 +42,12 @@ export function SubcategoriesSection({
    });
 
    const visibleCategories = React.useMemo(() => {
-      return collection.children.slice(0, visibleCategoriesCount);
-   }, [collection.children, visibleCategoriesCount]);
+      return categories.slice(0, visibleCategoriesCount);
+   }, [categories, visibleCategoriesCount]);
 
    const hiddenCategories = React.useMemo(() => {
-      return collection.children.slice(
-         visibleCategoriesCount,
-         collection.children.length
-      );
-   }, [collection.children, visibleCategoriesCount]);
+      return categories.slice(visibleCategoriesCount, categories.length);
+   }, [categories, visibleCategoriesCount]);
 
    const onToggle = React.useCallback(() => {
       setShouldShowMore((current) => !current);
@@ -56,7 +63,7 @@ export function SubcategoriesSection({
          }}
       >
          <Text fontSize="lg" fontWeight="bold">
-            Choose a model of {collection.title}
+            Choose a model of {heading}
          </Text>
          <VStack spacing="4" align="stretch">
             <SimpleGrid
@@ -114,7 +121,7 @@ export function SubcategoriesSection({
 }
 
 interface CategoryLinkProps {
-   category: Collection;
+   category: Category;
 }
 
 const CategoryLink = ({ category }: CategoryLinkProps) => {

@@ -1,0 +1,114 @@
+query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
+   collections(limit: 1, where: $whereCollection) {
+      id
+      handle
+      title
+      description
+      filters
+      image {
+         alternativeText
+         url
+         formats
+      }
+      parent {
+         title
+         handle
+         parent {
+            title
+            handle
+            parent {
+               title
+               handle
+               parent {
+                  title
+                  handle
+               }
+            }
+         }
+      }
+      children {
+         handle
+         title
+         image {
+            alternativeText
+            url
+            formats
+         }
+      }
+      sections {
+         __typename
+         ... on ComponentCollectionBanner {
+            id
+            title
+            description
+            callToActionLabel
+            url
+         }
+         ... on ComponentCollectionRelatedPosts {
+            id
+            tags
+         }
+         ... on ComponentCollectionNewsletterForm {
+            id
+            title
+            description
+            inputPlaceholder
+            callToActionLabel
+         }
+      }
+   }
+   stores {
+      code
+      name
+      url
+      currency
+   }
+   storeSettings(where: $whereStoreSettings) {
+      footer {
+         menu1 {
+            ...MenuFragment
+         }
+         menu2 {
+            ...MenuFragment
+         }
+         partners {
+            ...MenuFragment
+         }
+         bottomMenu {
+            ...MenuFragment
+         }
+      }
+      socialMediaAccounts {
+         twitter
+         facebook
+         instagram
+         youtube
+         repairOrg
+      }
+   }
+}
+
+fragment MenuFragment on Menu {
+   items {
+      __typename
+      ... on ComponentMenuLink {
+         name
+         url
+      }
+      ... on ComponentMenuCollectionLink {
+         name
+         linkedCollection {
+            handle
+         }
+      }
+      ... on ComponentMenuLinkWithImage {
+         name
+         url
+         image {
+            alternativeText
+            url
+            formats
+         }
+      }
+   }
+}

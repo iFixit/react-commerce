@@ -1,9 +1,9 @@
 import { VStack } from '@chakra-ui/react';
+import { Footer } from '@components/Footer';
 import { SiteLayout } from '@components/layouts/SiteLayout';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
    BannerSection,
-   Collection,
    FilterableProductsSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
@@ -13,27 +13,47 @@ import {
    HeroImage,
    HeroSection,
    HeroTitle,
-   loadCollection,
    NewsletterSection,
    Page,
    RelatedPostsSection,
    SubcategoriesSection,
 } from '@features/collection';
 import { AlgoliaProvider } from '@lib/algolia';
+import { CollectionPageData, fetchCollectionPageData } from '@lib/api';
 import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
 interface CollectionPageProps {
-   collection: Collection;
+   collection: CollectionPageData['collection'];
+   footer: CollectionPageData['footer'];
+   socialMediaAccounts: CollectionPageData['socialMediaAccounts'];
+   stores: CollectionPageData['stores'];
 }
 
-export default function CollectionPage({ collection }: CollectionPageProps) {
+export default function CollectionPage({
+   collection,
+   footer,
+   socialMediaAccounts,
+   stores,
+}: CollectionPageProps) {
    const collectionHandle = collection.handle;
    const hasDescription =
       collection.description != null && collection.description.length > 0;
    return (
-      <SiteLayout title={`iFixit | ${collection.title}`}>
+      <SiteLayout
+         title={`iFixit | ${collection.title}`}
+         footer={
+            <Footer
+               menu1={footer.menu1}
+               menu2={footer.menu2}
+               partners={footer.partners}
+               bottomMenu={footer.bottomMenu}
+               socialMediaAccounts={socialMediaAccounts}
+               stores={stores}
+            />
+         }
+      >
          <AlgoliaProvider
             key={collectionHandle}
             appId={ALGOLIA_APP_ID}
@@ -86,7 +106,10 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   )}
                </HeroSection>
                {collection.children.length > 0 && (
-                  <SubcategoriesSection collection={collection} />
+                  <SubcategoriesSection
+                     heading={collection.title}
+                     categories={collection.children}
+                  />
                )}
                <FilterableProductsSection />
                {collection.sections.map((section, index) => {
@@ -115,7 +138,9 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                               key={index}
                               title={section.title}
                               description={section.description}
-                              emailPlaceholder={section.inputPlaceholder}
+                              emailPlaceholder={
+                                 section.inputPlaceholder || undefined
+                              }
                               subscribeLabel={section.callToActionLabel}
                            />
                         );
@@ -139,16 +164,21 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
          notFound: true,
       };
    }
-   const collection = await loadCollection(handle);
-   if (collection == null) {
+   const data = await fetchCollectionPageData({
+      collectionHandle: handle,
+      storeCode: 'us',
+   });
+   if (data == null || data.collection == null) {
       return {
          notFound: true,
       };
    }
    return {
       props: {
-         collection,
-         type: handle === 'parts' ? 'parts' : 'default',
+         collection: data.collection,
+         footer: data.footer,
+         socialMediaAccounts: data.socialMediaAccounts,
+         stores: data.stores,
       },
    };
 };
