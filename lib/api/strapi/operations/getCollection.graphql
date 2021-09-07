@@ -1,4 +1,5 @@
 query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
+   ...LayoutProps
    collections(limit: 1, where: $whereCollection) {
       id
       handle
@@ -54,60 +55,6 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
             description
             inputPlaceholder
             callToActionLabel
-         }
-      }
-   }
-   stores {
-      code
-      name
-      url
-      currency
-   }
-   storeSettings(where: $whereStoreSettings) {
-      footer {
-         menu1 {
-            ...MenuFragment
-         }
-         menu2 {
-            ...MenuFragment
-         }
-         partners {
-            ...MenuFragment
-         }
-         bottomMenu {
-            ...MenuFragment
-         }
-      }
-      socialMediaAccounts {
-         twitter
-         facebook
-         instagram
-         youtube
-         repairOrg
-      }
-   }
-}
-
-fragment MenuFragment on Menu {
-   items {
-      __typename
-      ... on ComponentMenuLink {
-         name
-         url
-      }
-      ... on ComponentMenuCollectionLink {
-         name
-         linkedCollection {
-            handle
-         }
-      }
-      ... on ComponentMenuLinkWithImage {
-         name
-         url
-         image {
-            alternativeText
-            url
-            formats
          }
       }
    }

@@ -3036,7 +3036,164 @@ export type GetCollectionPageDataQuery = {
    >;
 };
 
-export type MenuFragmentFragment = {
+export type LayoutPropsFragment = {
+   __typename?: 'Query';
+   stores?: Maybe<
+      Array<
+         Maybe<{
+            __typename?: 'Store';
+            code: string;
+            name: string;
+            url: string;
+            currency: string;
+         }>
+      >
+   >;
+   storeSettings?: Maybe<
+      Array<
+         Maybe<{
+            __typename?: 'StoreSettings';
+            footer?: Maybe<{
+               __typename?: 'ComponentSettingsFooter';
+               menu1?: Maybe<{
+                  __typename?: 'Menu';
+                  items: Array<
+                     Maybe<
+                        | {
+                             __typename: 'ComponentMenuLink';
+                             name: string;
+                             url: string;
+                          }
+                        | {
+                             __typename: 'ComponentMenuCollectionLink';
+                             name: string;
+                             linkedCollection?: Maybe<{
+                                __typename?: 'Collection';
+                                handle: string;
+                             }>;
+                          }
+                        | {
+                             __typename: 'ComponentMenuLinkWithImage';
+                             name: string;
+                             url: string;
+                             image?: Maybe<{
+                                __typename?: 'UploadFile';
+                                alternativeText?: Maybe<string>;
+                                url: string;
+                                formats?: Maybe<any>;
+                             }>;
+                          }
+                     >
+                  >;
+               }>;
+               menu2?: Maybe<{
+                  __typename?: 'Menu';
+                  items: Array<
+                     Maybe<
+                        | {
+                             __typename: 'ComponentMenuLink';
+                             name: string;
+                             url: string;
+                          }
+                        | {
+                             __typename: 'ComponentMenuCollectionLink';
+                             name: string;
+                             linkedCollection?: Maybe<{
+                                __typename?: 'Collection';
+                                handle: string;
+                             }>;
+                          }
+                        | {
+                             __typename: 'ComponentMenuLinkWithImage';
+                             name: string;
+                             url: string;
+                             image?: Maybe<{
+                                __typename?: 'UploadFile';
+                                alternativeText?: Maybe<string>;
+                                url: string;
+                                formats?: Maybe<any>;
+                             }>;
+                          }
+                     >
+                  >;
+               }>;
+               partners?: Maybe<{
+                  __typename?: 'Menu';
+                  items: Array<
+                     Maybe<
+                        | {
+                             __typename: 'ComponentMenuLink';
+                             name: string;
+                             url: string;
+                          }
+                        | {
+                             __typename: 'ComponentMenuCollectionLink';
+                             name: string;
+                             linkedCollection?: Maybe<{
+                                __typename?: 'Collection';
+                                handle: string;
+                             }>;
+                          }
+                        | {
+                             __typename: 'ComponentMenuLinkWithImage';
+                             name: string;
+                             url: string;
+                             image?: Maybe<{
+                                __typename?: 'UploadFile';
+                                alternativeText?: Maybe<string>;
+                                url: string;
+                                formats?: Maybe<any>;
+                             }>;
+                          }
+                     >
+                  >;
+               }>;
+               bottomMenu?: Maybe<{
+                  __typename?: 'Menu';
+                  items: Array<
+                     Maybe<
+                        | {
+                             __typename: 'ComponentMenuLink';
+                             name: string;
+                             url: string;
+                          }
+                        | {
+                             __typename: 'ComponentMenuCollectionLink';
+                             name: string;
+                             linkedCollection?: Maybe<{
+                                __typename?: 'Collection';
+                                handle: string;
+                             }>;
+                          }
+                        | {
+                             __typename: 'ComponentMenuLinkWithImage';
+                             name: string;
+                             url: string;
+                             image?: Maybe<{
+                                __typename?: 'UploadFile';
+                                alternativeText?: Maybe<string>;
+                                url: string;
+                                formats?: Maybe<any>;
+                             }>;
+                          }
+                     >
+                  >;
+               }>;
+            }>;
+            socialMediaAccounts?: Maybe<{
+               __typename?: 'ComponentSettingsSocial';
+               twitter?: Maybe<string>;
+               facebook?: Maybe<string>;
+               instagram?: Maybe<string>;
+               youtube?: Maybe<string>;
+               repairOrg?: Maybe<string>;
+            }>;
+         }>
+      >
+   >;
+};
+
+export type MenuPropsFragment = {
    __typename?: 'Menu';
    items: Array<
       Maybe<
@@ -3064,8 +3221,8 @@ export type MenuFragmentFragment = {
    >;
 };
 
-export const MenuFragmentFragmentDoc = `
-    fragment MenuFragment on Menu {
+export const MenuPropsFragmentDoc = `
+    fragment MenuProps on Menu {
   items {
     __typename
     ... on ComponentMenuLink {
@@ -3090,8 +3247,42 @@ export const MenuFragmentFragmentDoc = `
   }
 }
     `;
+export const LayoutPropsFragmentDoc = `
+    fragment LayoutProps on Query {
+  stores {
+    code
+    name
+    url
+    currency
+  }
+  storeSettings(where: $whereStoreSettings) {
+    footer {
+      menu1 {
+        ...MenuProps
+      }
+      menu2 {
+        ...MenuProps
+      }
+      partners {
+        ...MenuProps
+      }
+      bottomMenu {
+        ...MenuProps
+      }
+    }
+    socialMediaAccounts {
+      twitter
+      facebook
+      instagram
+      youtube
+      repairOrg
+    }
+  }
+}
+    ${MenuPropsFragmentDoc}`;
 export const GetCollectionPageDataDocument = `
     query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
+  ...LayoutProps
   collections(limit: 1, where: $whereCollection) {
     id
     handle
@@ -3150,37 +3341,8 @@ export const GetCollectionPageDataDocument = `
       }
     }
   }
-  stores {
-    code
-    name
-    url
-    currency
-  }
-  storeSettings(where: $whereStoreSettings) {
-    footer {
-      menu1 {
-        ...MenuFragment
-      }
-      menu2 {
-        ...MenuFragment
-      }
-      partners {
-        ...MenuFragment
-      }
-      bottomMenu {
-        ...MenuFragment
-      }
-    }
-    socialMediaAccounts {
-      twitter
-      facebook
-      instagram
-      youtube
-      repairOrg
-    }
-  }
 }
-    ${MenuFragmentFragmentDoc}`;
+    ${LayoutPropsFragmentDoc}`;
 export type Requester<C = {}> = <R, V>(
    doc: string,
    vars?: V,

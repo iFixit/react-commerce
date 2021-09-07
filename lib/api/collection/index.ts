@@ -1,6 +1,7 @@
-import { STRAPI_ORIGIN } from '@config/env';
-import { assertNever, Awaited, filterNullableItems } from '@lib/utils';
+import { Awaited, filterNullableItems } from '@lib/utils';
+import { getLayoutProps } from '../layout';
 import { strapi } from '../strapi';
+import { getImageFromStrapiImage } from '../utils';
 
 interface FetchCollectionPageDataOptions {
    collectionHandle: string;
@@ -22,11 +23,8 @@ export async function fetchCollectionPageData(
    if (collection == null) {
       return null;
    }
-   const storeSettings = result.storeSettings?.[0];
-   const footer = storeSettings?.footer;
-   const socialMediaAccounts = storeSettings?.socialMediaAccounts || {};
-   const stores = filterNullableItems(result.stores);
    return {
+      ...getLayoutProps(result),
       collection: {
          handle: collection.handle,
          title: collection.title,
@@ -43,22 +41,12 @@ export async function fetchCollectionPageData(
          }),
          sections: filterNullableItems(collection.sections),
       },
-      footer: {
-         menu1: footer?.menu1 ? getMenu(footer.menu1) : undefined,
-         menu2: footer?.menu2 ? getMenu(footer.menu2) : undefined,
-         partners: footer?.partners ? getMenu(footer.partners) : undefined,
-         bottomMenu: footer?.bottomMenu
-            ? getMenu(footer.bottomMenu)
-            : undefined,
-      },
-      socialMediaAccounts,
-      stores,
    };
 }
 
-export type CollectionPageData = NonNullable<
+export type CollectionData = NonNullable<
    Awaited<ReturnType<typeof fetchCollectionPageData>>
->;
+>['collection'];
 
 type StrapiCollectionPageData = NonNullable<
    NonNullable<Awaited<ReturnType<typeof strapi['getCollectionPageData']>>>
@@ -67,29 +55,6 @@ type StrapiCollectionPageData = NonNullable<
 type StrapiCollection = NonNullable<
    NonNullable<StrapiCollectionPageData['collections']>[0]
 >;
-
-type StoreSettings = NonNullable<
-   NonNullable<StrapiCollectionPageData['storeSettings']>[0]
->;
-
-type Footer = NonNullable<StoreSettings['footer']>;
-
-type Menu = NonNullable<Footer['menu1']>;
-
-function getImageFromStrapiImage(
-   image: any | null,
-   format: 'medium' | 'small' | 'thumbnail'
-) {
-   if (image == null) {
-      return null;
-   }
-   return {
-      url: `${STRAPI_ORIGIN}${
-         image.formats[format] ? image.formats[format].url : image.url
-      }`,
-      alt: image.alternativeText,
-   };
-}
 
 interface Ancestor {
    handle: string;
@@ -105,37 +70,4 @@ function getAncestors(parent: StrapiCollection['parent']): Ancestor[] {
       handle: parent.handle,
       title: parent.title,
    });
-}
-
-function getMenu(rawMenu: Menu) {
-   return {
-      items: filterNullableItems(rawMenu.items).map((item) => {
-         switch (item.__typename) {
-            case 'ComponentMenuLink': {
-               return {
-                  name: item.name,
-                  url: item.url,
-               };
-            }
-            case 'ComponentMenuLinkWithImage': {
-               return {
-                  name: item.name,
-                  url: item.url,
-                  image:
-                     getImageFromStrapiImage(item.image, 'small') || undefined,
-               };
-            }
-            case 'ComponentMenuCollectionLink': {
-               return {
-                  name: item.name,
-                  url: item.linkedCollection
-                     ? `/collections/${item.linkedCollection.handle}`
-                     : '#',
-               };
-            }
-            default:
-               return assertNever(item);
-         }
-      }),
-   };
 }
