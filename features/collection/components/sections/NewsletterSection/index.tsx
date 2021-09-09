@@ -11,16 +11,26 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { SubscriptionStatus, useSubscribeToNewsletter } from '@lib/newsletter';
+import { SubscriptionStatus, useSubscribeToNewsletter } from '@lib/api';
 import * as React from 'react';
 import { RiCheckFill } from 'react-icons/ri';
 
 export interface NewsletterSectionProps {
    className?: string;
+   title: string;
+   description: string;
+   emailPlaceholder?: string;
+   subscribeLabel: string;
 }
 
 export const NewsletterSection = chakra(
-   ({ className }: NewsletterSectionProps) => {
+   ({
+      className,
+      title,
+      description,
+      emailPlaceholder,
+      subscribeLabel,
+   }: NewsletterSectionProps) => {
       const inputRef = React.useRef<HTMLInputElement>(null);
       const [subscription, subscribe] = useSubscribeToNewsletter();
 
@@ -71,9 +81,9 @@ export const NewsletterSection = chakra(
                <Image boxSize="95px" src="/images/newsletter-icon.png" alt="" />
                <VStack align="left" spacing="1">
                   <Text fontSize="xl" fontWeight="bold">
-                     Stay in the loop
+                     {title}
                   </Text>
-                  <Text color="brand.200">Learn something new every month</Text>
+                  <Text color="brand.200">{description}</Text>
                </VStack>
             </HStack>
             <Stack
@@ -94,7 +104,7 @@ export const NewsletterSection = chakra(
                      ref={inputRef}
                      type="email"
                      disabled={subscription.status !== SubscriptionStatus.Idle}
-                     placeholder="Enter your email"
+                     placeholder={emailPlaceholder}
                      _placeholder={{
                         color: 'brand.100',
                      }}
@@ -166,7 +176,7 @@ export const NewsletterSection = chakra(
                   }}
                >
                   {subscription.status === SubscriptionStatus.Idle
-                     ? 'Subscribe'
+                     ? subscribeLabel
                      : 'Subscribed!'}
                </Button>
             </Stack>

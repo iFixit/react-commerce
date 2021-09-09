@@ -3,9 +3,19 @@ import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import * as React from 'react';
 
-export interface CollectionBannerProps {}
+export interface BannerSectionProps {
+   title: string;
+   description: string;
+   callToActionLabel: string;
+   url: string;
+}
 
-export function CollectionBanner() {
+export function BannerSection({
+   title,
+   description,
+   callToActionLabel,
+   url,
+}: BannerSectionProps) {
    return (
       <Box
          borderRadius={{
@@ -34,7 +44,7 @@ export function CollectionBanner() {
                   color="white"
                   mb={2}
                >
-                  Lifetime guarantee
+                  {title}
                </Text>
                <Text
                   color="white"
@@ -45,15 +55,11 @@ export function CollectionBanner() {
                      sm: 10,
                   }}
                >
-                  We stand behind our tools. If something breaks, we’ll replace
-                  it—for as long as you own the iFixit tool.
+                  {description}
                </Text>
                <Flex w="full" justify="space-between" align="center">
-                  <NextLink
-                     href="https://www.ifixit.com/Info/Warranty"
-                     passHref
-                  >
-                     <Button as="a">Learn more</Button>
+                  <NextLink href={url} passHref>
+                     <Button as="a">{callToActionLabel}</Button>
                   </NextLink>
                   <Icon
                      as={LifetimeWarrantyIcon}

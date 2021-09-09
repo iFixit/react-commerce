@@ -50,60 +50,62 @@ export const HeroTitle = chakra(
    }
 );
 
+const NUMBER_OF_LINES = 4;
+const LINE_HEIGHT = 25;
+const VISIBLE_HEIGHT = NUMBER_OF_LINES * LINE_HEIGHT;
+
 export function HeroDescription({
    children,
 }: React.PropsWithChildren<unknown>) {
    const [state, setState] = React.useState({
       isOpen: false,
-      shouldTruncate: true,
+      shouldDisplayShowMore: false,
    });
 
    const onToggle = React.useCallback(() => {
       setState((current) => {
-         if (!current.isOpen) {
-            return { isOpen: true, shouldTruncate: false };
-         }
          return {
             ...current,
-            isOpen: false,
+            isOpen: !current.isOpen,
          };
       });
    }, []);
 
-   const onAnimationComplete = React.useCallback(() => {
-      setState((current) => {
-         if (!current.isOpen && !current.shouldTruncate) {
-            return { ...current, shouldTruncate: true };
+   const textRef = React.useRef<HTMLParagraphElement | null>(null);
+
+   React.useEffect(() => {
+      if (textRef.current) {
+         const height = textRef.current.getBoundingClientRect().height;
+         if (height > VISIBLE_HEIGHT) {
+            setState((current) => ({
+               ...current,
+               shouldDisplayShowMore: true,
+            }));
          }
-         return current;
-      });
+      }
    }, []);
 
    return (
       <Box px={{ base: 6, sm: 0 }}>
-         <Collapse
-            startingHeight={100}
-            in={state.isOpen}
-            onAnimationComplete={onAnimationComplete}
-         >
-            <Text noOfLines={state.shouldTruncate ? 4 : undefined}>
-               {children}
-            </Text>
+         <Collapse startingHeight={VISIBLE_HEIGHT} in={state.isOpen}>
+            <Text ref={textRef}>{children}</Text>
          </Collapse>
-         <Button
-            variant="link"
-            color="gray.800"
-            size="sm"
-            onClick={onToggle}
-            mt="1"
-            pl="2"
-            pr="2"
-            py="1"
-            ml="-8px"
-            display="block"
-         >
-            {state.isOpen ? 'Show less' : 'Show more'}
-         </Button>
+         {state.shouldDisplayShowMore && (
+            <Button
+               variant="link"
+               color="gray.800"
+               size="sm"
+               onClick={onToggle}
+               mt="1"
+               pl="2"
+               pr="2"
+               py="1"
+               ml="-8px"
+               display="block"
+            >
+               {state.isOpen ? 'Show less' : 'Show more'}
+            </Button>
+         )}
       </Box>
    );
 }

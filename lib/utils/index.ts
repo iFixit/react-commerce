@@ -12,9 +12,9 @@ export interface GetResizedImageInput {
 }
 
 export function getResizedImage({ src, width }: GetResizedImageInput) {
-   const match = src.match(/(.+)\.(jpg|png)\?(.+)/);
+   const match = src.match(/^(https:\/\/cdn.shopify.com.+)\.(jpg|png)\?(.+)/);
    if (match == null) {
-      return '';
+      return src;
    }
    const [fullSrc, baseSrc, extension, query] = match;
    return `${baseSrc}_${width}x.${extension}?${query}`;

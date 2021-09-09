@@ -134,6 +134,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                <Flex
                   align="center"
                   flexBasis="80px"
+                  h="60px"
                   flexGrow={0}
                   flexShrink={0}
                >
@@ -141,6 +142,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                      src={category.image.url}
                      alt={category.image.alt}
                      sizes="80px"
+                     h="full"
                   />
                </Flex>
             )}

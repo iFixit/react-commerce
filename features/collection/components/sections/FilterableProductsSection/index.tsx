@@ -6,7 +6,7 @@ import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import { useAtomicFilters, useHits, useSearch } from '@lib/algolia';
 import * as React from 'react';
-import { ProductHit } from '../types';
+import { ProductHit } from '../../../types';
 import { AppliedFilters } from './AppliedFilters';
 import { CollectionPagination } from './CollectionPagination';
 import { FilterList } from './FilterList';
@@ -37,7 +37,7 @@ export enum CollectionState {
    NoResults = 'no-results',
 }
 
-export const FilterableProductSection = React.memo(() => {
+export const FilterableProductsSection = React.memo(() => {
    const { hits } = useHits<ProductHit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List

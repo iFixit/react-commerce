@@ -1,10 +1,10 @@
-import { SimpleGrid, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { SiteLayout } from '@components/layouts/SiteLayout';
-import { NewsletterSection } from '@components/NewsletterSection';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
+   BannerSection,
    Collection,
-   FilterableProductSection,
+   FilterableProductsSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
    HeroBreadcrumbItem,
@@ -14,12 +14,13 @@ import {
    HeroSection,
    HeroTitle,
    loadCollection,
+   NewsletterSection,
    Page,
+   RelatedPostsSection,
+   SubcategoriesSection,
 } from '@features/collection';
-import { CollectionBanner } from '@features/collection/components/CollectionBanner';
-import { PostCard } from '@features/collection/components/PostCard';
-import { SubcategoriesSection } from '@features/collection/components/SubcategoriesSection';
 import { AlgoliaProvider } from '@lib/algolia';
+import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
@@ -38,7 +39,11 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
             appId={ALGOLIA_APP_ID}
             apiKey={ALGOLIA_API_KEY}
             initialIndexName="shopify_ifixit_test_products"
-            initialRawFilters={`collections:${collectionHandle}`}
+            initialRawFilters={
+               collection.filtersPreset
+                  ? collection.filtersPreset
+                  : `collections:${collectionHandle}`
+            }
          >
             <Page>
                <HeroSection>
@@ -83,22 +88,42 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                {collection.children.length > 0 && (
                   <SubcategoriesSection collection={collection} />
                )}
-               <FilterableProductSection />
-               <CollectionBanner />
-               {collection.relatedPosts && collection.relatedPosts.length > 0 && (
-                  <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
-                     {collection.relatedPosts.map((post) => (
-                        <PostCard
-                           key={post.id}
-                           title={post.title}
-                           category={post.category}
-                           imageSrc={post.image?.url}
-                           link={post.permalink || ''}
-                        />
-                     ))}
-                  </SimpleGrid>
-               )}
-               <NewsletterSection />
+               <FilterableProductsSection />
+               {collection.sections.map((section, index) => {
+                  switch (section.__typename) {
+                     case 'ComponentCollectionBanner': {
+                        return (
+                           <BannerSection
+                              key={index}
+                              title={section.title}
+                              description={section.description}
+                              callToActionLabel={section.callToActionLabel}
+                              url={section.url}
+                           />
+                        );
+                     }
+                     case 'ComponentCollectionRelatedPosts': {
+                        const tags = [collection.title].concat(
+                           section.tags?.split(',').map((tag) => tag.trim()) ||
+                              []
+                        );
+                        return <RelatedPostsSection key={index} tags={tags} />;
+                     }
+                     case 'ComponentCollectionNewsletterForm': {
+                        return (
+                           <NewsletterSection
+                              key={index}
+                              title={section.title}
+                              description={section.description}
+                              emailPlaceholder={section.inputPlaceholder}
+                              subscribeLabel={section.callToActionLabel}
+                           />
+                        );
+                     }
+                     default:
+                        return assertNever(section);
+                  }
+               })}
             </Page>
          </AlgoliaProvider>
       </SiteLayout>

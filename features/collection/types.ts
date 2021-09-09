@@ -2,10 +2,11 @@ export interface Collection {
    handle: string;
    title: string;
    description?: string;
-   image?: CollectionImage;
+   filtersPreset?: string | null;
+   image?: CollectionImage | null;
    ancestors: Collection[];
    children: Collection[];
-   relatedPosts?: Post[];
+   sections: CollectionSection[];
 }
 
 export interface CollectionImage {
@@ -23,15 +24,33 @@ export interface ProductHit {
    body_html_safe?: string;
 }
 
-export interface Post {
-   id: number;
+// Sections
+
+export type CollectionSection =
+   | CollectionBannerSection
+   | CollectionRelatedPostsSection
+   | CollectionNewsletterFormSection;
+
+export interface CollectionBannerSection {
+   __typename: 'ComponentCollectionBanner';
+   id: string;
    title: string;
-   date: string;
-   image: PostImage | null;
-   permalink: string;
-   category: string;
+   description: string;
+   callToActionLabel: string;
+   url: string;
 }
 
-export interface PostImage {
-   url: string;
+export interface CollectionRelatedPostsSection {
+   __typename: 'ComponentCollectionRelatedPosts';
+   id: string;
+   tags?: string;
+}
+
+export interface CollectionNewsletterFormSection {
+   __typename: 'ComponentCollectionNewsletterForm';
+   id: string;
+   title: string;
+   description: string;
+   callToActionLabel: string;
+   inputPlaceholder?: string;
 }
