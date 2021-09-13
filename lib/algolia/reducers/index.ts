@@ -13,44 +13,6 @@ import { rangeFilterSet } from './rangeFilterSet';
 import { searchResultUpdated } from './searchResultUpdated';
 import { withMultipleActions } from './utils';
 
-export interface GetInitialStateArgs {
-   indexName: string;
-   rawFilters?: string;
-}
-export function getInitialState({
-   indexName,
-   rawFilters,
-}: GetInitialStateArgs): SearchState {
-   return {
-      params: {
-         indexName,
-         rawFilters,
-         query: '',
-         page: 1,
-         filters: {
-            byId: {},
-            rootIds: [],
-            allIds: [],
-         },
-         limit: 24,
-      },
-      isLoaded: false,
-      isSearching: false,
-      hits: {
-         byId: {},
-         allIds: [],
-      },
-      facets: {
-         byId: {},
-         allIds: [],
-      },
-      facetValues: {
-         byId: {},
-         allIds: [],
-      },
-   };
-}
-
 export const reducer = withMultipleActions<SearchState, SearchAction>(
    produce((draftState, action) => {
       switch (action.type) {

@@ -17,7 +17,7 @@ import {
    RelatedPostsSection,
    SubcategoriesSection,
 } from '@features/collection';
-import { AlgoliaProvider } from '@lib/algolia';
+import { AlgoliaProvider, search, SearchState } from '@lib/algolia';
 import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
 import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
@@ -26,9 +26,15 @@ import * as React from 'react';
 interface CollectionPageProps {
    collection: CollectionData;
    layout: LayoutData;
+   initialSearchState: SearchState;
 }
 
-export default function CollectionPage({ collection }: CollectionPageProps) {
+const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
+
+export default function CollectionPage({
+   collection,
+   initialSearchState,
+}: CollectionPageProps) {
    const collectionHandle = collection.handle;
    const hasDescription =
       collection.description != null && collection.description.length > 0;
@@ -37,12 +43,8 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
          key={collectionHandle}
          appId={ALGOLIA_APP_ID}
          apiKey={ALGOLIA_API_KEY}
-         initialIndexName="shopify_ifixit_test_products"
-         initialRawFilters={
-            collection.filtersPreset
-               ? collection.filtersPreset
-               : `collections:${collectionHandle}`
-         }
+         initialIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
+         initialState={initialSearchState}
       >
          <Page>
             <HeroSection>
@@ -151,19 +153,36 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
          notFound: true,
       };
    }
-   const data = await fetchCollectionPageData({
+
+   const pageData = await fetchCollectionPageData({
       collectionHandle: handle,
       storeCode: 'us',
    });
-   if (data == null || data.collection == null) {
+
+   if (pageData == null || pageData.collection == null) {
       return {
          notFound: true,
       };
    }
+   const { collection, layout } = pageData;
+   const initialRawFilters = collection.filtersPreset
+      ? collection.filtersPreset
+      : `collections:${handle}`;
+
+   const initialSearchState = await search({
+      appId: ALGOLIA_APP_ID,
+      apiKey: ALGOLIA_API_KEY,
+      params: {
+         indexName: ALGOLIA_DEFAULT_INDEX_NAME,
+         query: '',
+         rawFilters: initialRawFilters,
+      },
+   });
    return {
       props: {
-         collection: data.collection,
-         layout: data.layout,
+         collection,
+         layout,
+         initialSearchState,
       },
    };
 };
