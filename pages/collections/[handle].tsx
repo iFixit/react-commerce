@@ -147,6 +147,12 @@ CollectionPage.getLayout = function getLayout(
 export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async (
    context
 ) => {
+   // The data is considered fresh for 10 seconds, and can be served even if stale for up to 10 minutes
+   context.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=10, stale-while-revalidate=600'
+   );
+
    const { handle } = context.params || {};
    if (typeof handle !== 'string') {
       return {
@@ -178,6 +184,7 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
          rawFilters: initialRawFilters,
       },
    });
+
    return {
       props: {
          collection,

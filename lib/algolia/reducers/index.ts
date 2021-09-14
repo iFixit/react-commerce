@@ -1,6 +1,7 @@
 import { assertNever } from '@lib/utils';
 import produce from 'immer';
 import { SearchAction, SearchActionType, SearchState } from '../types';
+import { updateSearchStateRecipe } from '../utils';
 import { filtersCleared } from './filtersCleared';
 import { listFilterAllItemsCleared } from './listFilterAllItemsCleared';
 import { listFilterItemAdded } from './listFilterItemAdded';
@@ -10,7 +11,6 @@ import { listFilterItemToggled } from './listFilterItemToggled';
 import { pageChanged } from './pageChanged';
 import { queryChanged } from './queryChanged';
 import { rangeFilterSet } from './rangeFilterSet';
-import { searchResultUpdated } from './searchResultUpdated';
 import { withMultipleActions } from './utils';
 
 export const reducer = withMultipleActions<SearchState, SearchAction>(
@@ -20,7 +20,7 @@ export const reducer = withMultipleActions<SearchState, SearchAction>(
             return queryChanged(draftState, action);
          }
          case SearchActionType.SearchResultUpdated: {
-            return searchResultUpdated(draftState, action);
+            return updateSearchStateRecipe(draftState, action.data);
          }
          case SearchActionType.FiltersCleared: {
             return filtersCleared(draftState, action);
