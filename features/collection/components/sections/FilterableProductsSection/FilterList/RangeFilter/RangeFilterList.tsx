@@ -14,12 +14,13 @@ export type RangeFilterListProps = {
    type?: ListFilter['type'];
    multiple?: boolean;
    sortItems?(a: FacetValueState, b: FacetValueState): number;
-   renderItem?(
-      item: FacetValueState,
-      index: number,
-      list: FacetValueState[]
-   ): React.ReactNode;
+   renderItem?(item: RangeItem): React.ReactNode;
 };
+
+interface RangeItem extends FacetValueState {
+   isRangeStart: boolean;
+   isRangeEnd: boolean;
+}
 
 export function RangeFilterList({
    facetName,
@@ -35,9 +36,14 @@ export function RangeFilterList({
    });
    useRegisterFacet(facetName);
 
-   const items = React.useMemo(() => {
+   const items = React.useMemo<RangeItem[]>(() => {
       return values
          .slice()
+         .map<RangeItem>((value, index) => ({
+            ...value,
+            isRangeStart: index === 0,
+            isRangeEnd: index === values.length - 1,
+         }))
          .filter((value) => value.filteredHitCount > 0)
          .sort(sortItems);
    }, [sortItems, values]);
@@ -67,7 +73,7 @@ export function RangeFilterList({
                      isChecked={selectedValueIds.includes(item.id)}
                      onChange={handleChange}
                   >
-                     {renderItem ? renderItem(item, index, values) : item.value}
+                     {renderItem ? renderItem(item) : item.value}
                   </FilterCheckbox>
                );
             }
@@ -85,7 +91,7 @@ export function RangeFilterList({
                   }}
                >
                   <Text fontSize="sm">
-                     {renderItem ? renderItem(item, index, values) : item.value}
+                     {renderItem ? renderItem(item) : item.value}
                   </Text>
                </Radio>
             );
