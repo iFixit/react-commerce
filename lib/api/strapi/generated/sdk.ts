@@ -290,7 +290,8 @@ export type CollectionInput = {
 export type CollectionSectionsDynamicZone =
    | ComponentCollectionBanner
    | ComponentCollectionRelatedPosts
-   | ComponentCollectionNewsletterForm;
+   | ComponentCollectionNewsletterForm
+   | ComponentCollectionFeaturedCollection;
 
 export type ComponentCollectionBanner = {
    __typename?: 'ComponentCollectionBanner';
@@ -306,6 +307,16 @@ export type ComponentCollectionBannerInput = {
    description: Scalars['String'];
    callToActionLabel: Scalars['String'];
    url?: Maybe<Scalars['String']>;
+};
+
+export type ComponentCollectionFeaturedCollection = {
+   __typename?: 'ComponentCollectionFeaturedCollection';
+   id: Scalars['ID'];
+   featuredCollection?: Maybe<Collection>;
+};
+
+export type ComponentCollectionFeaturedCollectionInput = {
+   featuredCollection?: Maybe<Scalars['ID']>;
 };
 
 export type ComponentCollectionNewsletterForm = {
@@ -1113,6 +1124,7 @@ export type Morph =
    | UpdateUserPayload
    | DeleteUserPayload
    | ComponentCollectionBanner
+   | ComponentCollectionFeaturedCollection
    | ComponentCollectionNewsletterForm
    | ComponentCollectionRelatedPosts
    | ComponentMenuCollectionLink
@@ -2518,6 +2530,11 @@ export type EditComponentCollectionBannerInput = {
    url?: Maybe<Scalars['String']>;
 };
 
+export type EditComponentCollectionFeaturedCollectionInput = {
+   id?: Maybe<Scalars['ID']>;
+   featuredCollection?: Maybe<Scalars['ID']>;
+};
+
 export type EditComponentCollectionNewsletterFormInput = {
    id?: Maybe<Scalars['ID']>;
    title?: Maybe<Scalars['String']>;
@@ -2875,6 +2892,22 @@ export type GetCollectionPageDataQuery = {
                        description: string;
                        inputPlaceholder?: Maybe<string>;
                        callToActionLabel: string;
+                    }
+                  | {
+                       __typename: 'ComponentCollectionFeaturedCollection';
+                       id: string;
+                       featuredCollection?: Maybe<{
+                          __typename?: 'Collection';
+                          handle: string;
+                          title: string;
+                          description: string;
+                          image?: Maybe<{
+                             __typename?: 'UploadFile';
+                             alternativeText?: Maybe<string>;
+                             url: string;
+                             formats?: Maybe<any>;
+                          }>;
+                       }>;
                     }
                >
             >;
@@ -3338,6 +3371,19 @@ export const GetCollectionPageDataDocument = `
         description
         inputPlaceholder
         callToActionLabel
+      }
+      ... on ComponentCollectionFeaturedCollection {
+        id
+        featuredCollection {
+          handle
+          title
+          description
+          image {
+            alternativeText
+            url
+            formats
+          }
+        }
       }
     }
   }

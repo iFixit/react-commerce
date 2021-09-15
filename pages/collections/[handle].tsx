@@ -1,8 +1,9 @@
-import { VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import { Layout } from '@components/Layout';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
+   FeaturedCollectionSection,
    FilterableProductsSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
@@ -120,6 +121,30 @@ export default function CollectionPage({
                            subscribeLabel={section.callToActionLabel}
                         />
                      );
+                  }
+                  case 'ComponentCollectionFeaturedCollection': {
+                     const { featuredCollection } = section;
+                     if (featuredCollection) {
+                        return (
+                           <FeaturedCollectionSection
+                              key={index}
+                              title={featuredCollection.title}
+                              description={featuredCollection.description}
+                              callToActionLabel="View more"
+                              url="#"
+                              imageSrc={
+                                 featuredCollection.image
+                                    ? `${STRAPI_ORIGIN}${featuredCollection.image.url}`
+                                    : undefined
+                              }
+                              imageAlt={
+                                 featuredCollection.image?.alternativeText ||
+                                 undefined
+                              }
+                           />
+                        );
+                     }
+                     return null;
                   }
                   default:
                      return assertNever(section);

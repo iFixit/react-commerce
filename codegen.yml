@@ -1,11 +1,29 @@
 overwrite: true
-schema: 'https://strapi.cominor.com/graphql'
-documents: 'lib/api/strapi/operations/**/*.graphql'
 generates:
    lib/api/strapi/generated/sdk.ts:
+      schema: '${NEXT_PUBLIC_STRAPI_ORIGIN}/graphql'
+      documents: 'lib/api/strapi/operations/**/*.graphql'
       plugins:
          - 'typescript'
          - 'typescript-operations'
          - 'typescript-generic-sdk'
       config:
          documentMode: 'string'
+   lib/api/shopify/generated/sdk.ts:
+      schema:
+         - ? ${SHOPIFY_ORIGIN}/api/${NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION}/graphql
+           : headers:
+                'X-Shopify-Storefront-Access-Token': ${SHOPIFY_STOREFRONT_ACCESS_TOKEN}
+      documents: 'lib/api/shopify/operations/**/*.graphql'
+      plugins:
+         - 'typescript'
+         - 'typescript-operations'
+         - 'typescript-generic-sdk'
+      config:
+         documentMode: 'string'
+         scalars:
+            DateTime: string
+            Decimal: string
+            HTML: string
+            Money: string
+            URL: string

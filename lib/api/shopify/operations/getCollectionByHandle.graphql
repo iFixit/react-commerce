@@ -1,0 +1,21 @@
+query getCollectionProducts($handle: String!, $limit: Int) {
+   collectionByHandle(handle: $handle) {
+      handle
+      products(first: $limit) {
+         edges {
+            node {
+               id
+               title
+               images(first: 1) {
+                  edges {
+                     node {
+                        altText
+                        originalSrc
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

@@ -56,6 +56,19 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
             inputPlaceholder
             callToActionLabel
          }
+         ... on ComponentCollectionFeaturedCollection {
+            id
+            featuredCollection {
+               handle
+               title
+               description
+               image {
+                  alternativeText
+                  url
+                  formats
+               }
+            }
+         }
       }
    }
 }
