@@ -121,6 +121,9 @@ export default function CollectionPage({
                         />
                      );
                   }
+                  case 'ComponentCollectionFeaturedCollection':
+                     // This section is being implemented into a separate branch
+                     return null;
                   default:
                      return assertNever(section);
                }
