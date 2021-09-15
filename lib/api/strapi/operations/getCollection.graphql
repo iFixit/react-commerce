@@ -1,0 +1,61 @@
+query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
+   ...LayoutProps
+   collections(limit: 1, where: $whereCollection) {
+      id
+      handle
+      title
+      description
+      filters
+      image {
+         alternativeText
+         url
+         formats
+      }
+      parent {
+         title
+         handle
+         parent {
+            title
+            handle
+            parent {
+               title
+               handle
+               parent {
+                  title
+                  handle
+               }
+            }
+         }
+      }
+      children {
+         handle
+         title
+         image {
+            alternativeText
+            url
+            formats
+         }
+      }
+      sections {
+         __typename
+         ... on ComponentCollectionBanner {
+            id
+            title
+            description
+            callToActionLabel
+            url
+         }
+         ... on ComponentCollectionRelatedPosts {
+            id
+            tags
+         }
+         ... on ComponentCollectionNewsletterForm {
+            id
+            title
+            description
+            inputPlaceholder
+            callToActionLabel
+         }
+      }
+   }
+}

@@ -1,0 +1,11 @@
+overwrite: true
+schema: 'https://strapi.cominor.com/graphql'
+documents: 'lib/api/strapi/operations/**/*.graphql'
+generates:
+   lib/api/strapi/generated/sdk.ts:
+      plugins:
+         - 'typescript'
+         - 'typescript-operations'
+         - 'typescript-generic-sdk'
+      config:
+         documentMode: 'string'
