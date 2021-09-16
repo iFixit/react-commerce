@@ -3,7 +3,7 @@ import { LayoutPropsFragment } from '../strapi/generated/sdk';
 import { getImageFromStrapiImage } from '../utils';
 
 type StoreSettings = NonNullable<
-   NonNullable<LayoutPropsFragment['storeSettings']>[0]
+   NonNullable<LayoutPropsFragment['currentStore']>[0]
 >;
 
 type Footer = NonNullable<StoreSettings['footer']>;
@@ -15,9 +15,9 @@ export type LayoutData = NonNullable<
 >['layout'];
 
 export function getLayoutProps(data: LayoutPropsFragment) {
-   const storeSettings = data.storeSettings?.[0];
-   const footer = storeSettings?.footer;
-   const socialMediaAccounts = storeSettings?.socialMediaAccounts || {};
+   const currentStore = data.currentStore?.[0];
+   const footer = currentStore?.footer;
+   const socialMediaAccounts = currentStore?.socialMediaAccounts || {};
    const stores = filterNullableItems(data.stores);
    return {
       layout: {

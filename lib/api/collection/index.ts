@@ -14,9 +14,7 @@ export async function fetchCollectionPageData(
    const result = await strapi.getCollectionPageData({
       whereCollection: { handle: options.collectionHandle },
       whereStoreSettings: {
-         store: {
-            code: options.storeCode,
-         },
+         code: options.storeCode,
       },
    });
    const collection = result.collections?.[0];

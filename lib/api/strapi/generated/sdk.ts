@@ -431,6 +431,18 @@ export type ComponentSettingsSocialInput = {
    repairOrg?: Maybe<Scalars['String']>;
 };
 
+export type ComponentStoreShopifySettingInput = {
+   storefrontDomain: Scalars['String'];
+   storefrontAccessToken: Scalars['String'];
+};
+
+export type ComponentStoreShopifySettings = {
+   __typename?: 'ComponentStoreShopifySettings';
+   id: Scalars['ID'];
+   storefrontDomain: Scalars['String'];
+   storefrontAccessToken: Scalars['String'];
+};
+
 export type Device = {
    __typename?: 'Device';
    id: Scalars['ID'];
@@ -1037,6 +1049,22 @@ export type Morph =
    | CreateMenuPayload
    | UpdateMenuPayload
    | DeleteMenuPayload
+   | PartCollections
+   | PartCollectionsConnection
+   | PartCollectionsAggregator
+   | PartCollectionsGroupBy
+   | PartCollectionsConnectionId
+   | PartCollectionsConnectionCreated_At
+   | PartCollectionsConnectionUpdated_At
+   | PartCollectionsConnectionDevice_Url
+   | PartCollectionsConnectionTitle
+   | PartCollectionsConnectionMeta_Description
+   | PartCollectionsConnectionDetails
+   | PartCollectionsConnectionSummary
+   | PartCollectionsConnectionPublished_At
+   | CreatePartCollectionPayload
+   | UpdatePartCollectionPayload
+   | DeletePartCollectionPayload
    | StoreSettings
    | StoreSettingsConnection
    | StoreSettingsAggregator
@@ -1064,6 +1092,9 @@ export type Morph =
    | StoreConnectionUrl
    | StoreConnectionCurrency
    | StoreConnectionStore_Settings
+   | StoreConnectionShopifySettings
+   | StoreConnectionFooter
+   | StoreConnectionSocialMediaAccounts
    | StoreConnectionPublished_At
    | CreateStorePayload
    | UpdateStorePayload
@@ -1132,7 +1163,8 @@ export type Morph =
    | ComponentMenuLink
    | ComponentSettingsFooter
    | ComponentSettingsPartner
-   | ComponentSettingsSocial;
+   | ComponentSettingsSocial
+   | ComponentStoreShopifySettings;
 
 export type Mutation = {
    __typename?: 'Mutation';
@@ -1154,6 +1186,9 @@ export type Mutation = {
    createMenu?: Maybe<CreateMenuPayload>;
    updateMenu?: Maybe<UpdateMenuPayload>;
    deleteMenu?: Maybe<DeleteMenuPayload>;
+   createPartCollection?: Maybe<CreatePartCollectionPayload>;
+   updatePartCollection?: Maybe<UpdatePartCollectionPayload>;
+   deletePartCollection?: Maybe<DeletePartCollectionPayload>;
    createStoreSetting?: Maybe<CreateStoreSettingPayload>;
    updateStoreSetting?: Maybe<UpdateStoreSettingPayload>;
    deleteStoreSetting?: Maybe<DeleteStoreSettingPayload>;
@@ -1261,6 +1296,18 @@ export type MutationUpdateMenuArgs = {
 
 export type MutationDeleteMenuArgs = {
    input?: Maybe<DeleteMenuInput>;
+};
+
+export type MutationCreatePartCollectionArgs = {
+   input?: Maybe<CreatePartCollectionInput>;
+};
+
+export type MutationUpdatePartCollectionArgs = {
+   input?: Maybe<UpdatePartCollectionInput>;
+};
+
+export type MutationDeletePartCollectionArgs = {
+   input?: Maybe<DeletePartCollectionInput>;
 };
 
 export type MutationCreateStoreSettingArgs = {
@@ -1387,6 +1434,112 @@ export type MutationEmailConfirmationArgs = {
    confirmation: Scalars['String'];
 };
 
+export type PartCollectionInput = {
+   device_url?: Maybe<Scalars['String']>;
+   title?: Maybe<Scalars['String']>;
+   meta_description?: Maybe<Scalars['String']>;
+   Details?: Maybe<Scalars['String']>;
+   summary?: Maybe<Scalars['String']>;
+   published_at?: Maybe<Scalars['DateTime']>;
+   created_by?: Maybe<Scalars['ID']>;
+   updated_by?: Maybe<Scalars['ID']>;
+};
+
+export type PartCollections = {
+   __typename?: 'PartCollections';
+   id: Scalars['ID'];
+   created_at: Scalars['DateTime'];
+   updated_at: Scalars['DateTime'];
+   device_url: Scalars['String'];
+   title?: Maybe<Scalars['String']>;
+   meta_description?: Maybe<Scalars['String']>;
+   Details?: Maybe<Scalars['String']>;
+   summary?: Maybe<Scalars['String']>;
+   published_at?: Maybe<Scalars['DateTime']>;
+};
+
+export type PartCollectionsAggregator = {
+   __typename?: 'PartCollectionsAggregator';
+   count?: Maybe<Scalars['Int']>;
+   totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type PartCollectionsConnection = {
+   __typename?: 'PartCollectionsConnection';
+   values?: Maybe<Array<Maybe<PartCollections>>>;
+   groupBy?: Maybe<PartCollectionsGroupBy>;
+   aggregate?: Maybe<PartCollectionsAggregator>;
+};
+
+export type PartCollectionsConnectionCreated_At = {
+   __typename?: 'PartCollectionsConnectionCreated_at';
+   key?: Maybe<Scalars['DateTime']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionDetails = {
+   __typename?: 'PartCollectionsConnectionDetails';
+   key?: Maybe<Scalars['String']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionDevice_Url = {
+   __typename?: 'PartCollectionsConnectionDevice_url';
+   key?: Maybe<Scalars['String']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionId = {
+   __typename?: 'PartCollectionsConnectionId';
+   key?: Maybe<Scalars['ID']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionMeta_Description = {
+   __typename?: 'PartCollectionsConnectionMeta_description';
+   key?: Maybe<Scalars['String']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionPublished_At = {
+   __typename?: 'PartCollectionsConnectionPublished_at';
+   key?: Maybe<Scalars['DateTime']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionSummary = {
+   __typename?: 'PartCollectionsConnectionSummary';
+   key?: Maybe<Scalars['String']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionTitle = {
+   __typename?: 'PartCollectionsConnectionTitle';
+   key?: Maybe<Scalars['String']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsConnectionUpdated_At = {
+   __typename?: 'PartCollectionsConnectionUpdated_at';
+   key?: Maybe<Scalars['DateTime']>;
+   connection?: Maybe<PartCollectionsConnection>;
+};
+
+export type PartCollectionsGroupBy = {
+   __typename?: 'PartCollectionsGroupBy';
+   id?: Maybe<Array<Maybe<PartCollectionsConnectionId>>>;
+   created_at?: Maybe<Array<Maybe<PartCollectionsConnectionCreated_At>>>;
+   updated_at?: Maybe<Array<Maybe<PartCollectionsConnectionUpdated_At>>>;
+   device_url?: Maybe<Array<Maybe<PartCollectionsConnectionDevice_Url>>>;
+   title?: Maybe<Array<Maybe<PartCollectionsConnectionTitle>>>;
+   meta_description?: Maybe<
+      Array<Maybe<PartCollectionsConnectionMeta_Description>>
+   >;
+   Details?: Maybe<Array<Maybe<PartCollectionsConnectionDetails>>>;
+   summary?: Maybe<Array<Maybe<PartCollectionsConnectionSummary>>>;
+   published_at?: Maybe<Array<Maybe<PartCollectionsConnectionPublished_At>>>;
+};
+
 export enum PublicationState {
    Live = 'LIVE',
    Preview = 'PREVIEW',
@@ -1412,6 +1565,9 @@ export type Query = {
    menu?: Maybe<Menu>;
    menus?: Maybe<Array<Maybe<Menu>>>;
    menusConnection?: Maybe<MenuConnection>;
+   partCollection?: Maybe<PartCollections>;
+   partCollections?: Maybe<Array<Maybe<PartCollections>>>;
+   partCollectionsConnection?: Maybe<PartCollectionsConnection>;
    storeSetting?: Maybe<StoreSettings>;
    storeSettings?: Maybe<Array<Maybe<StoreSettings>>>;
    storeSettingsConnection?: Maybe<StoreSettingsConnection>;
@@ -1562,6 +1718,26 @@ export type QueryMenusConnectionArgs = {
    locale?: Maybe<Scalars['String']>;
 };
 
+export type QueryPartCollectionArgs = {
+   id: Scalars['ID'];
+   publicationState?: Maybe<PublicationState>;
+};
+
+export type QueryPartCollectionsArgs = {
+   sort?: Maybe<Scalars['String']>;
+   limit?: Maybe<Scalars['Int']>;
+   start?: Maybe<Scalars['Int']>;
+   where?: Maybe<Scalars['JSON']>;
+   publicationState?: Maybe<PublicationState>;
+};
+
+export type QueryPartCollectionsConnectionArgs = {
+   sort?: Maybe<Scalars['String']>;
+   limit?: Maybe<Scalars['Int']>;
+   start?: Maybe<Scalars['Int']>;
+   where?: Maybe<Scalars['JSON']>;
+};
+
 export type QueryStoreSettingArgs = {
    id: Scalars['ID'];
    publicationState?: Maybe<PublicationState>;
@@ -1679,6 +1855,9 @@ export type Store = {
    url: Scalars['String'];
    currency: Scalars['String'];
    store_settings?: Maybe<StoreSettings>;
+   shopifySettings?: Maybe<ComponentStoreShopifySettings>;
+   footer?: Maybe<ComponentSettingsFooter>;
+   socialMediaAccounts?: Maybe<ComponentSettingsSocial>;
    published_at?: Maybe<Scalars['DateTime']>;
 };
 
@@ -1713,6 +1892,12 @@ export type StoreConnectionCurrency = {
    connection?: Maybe<StoreConnection>;
 };
 
+export type StoreConnectionFooter = {
+   __typename?: 'StoreConnectionFooter';
+   key?: Maybe<Scalars['ID']>;
+   connection?: Maybe<StoreConnection>;
+};
+
 export type StoreConnectionId = {
    __typename?: 'StoreConnectionId';
    key?: Maybe<Scalars['ID']>;
@@ -1728,6 +1913,18 @@ export type StoreConnectionName = {
 export type StoreConnectionPublished_At = {
    __typename?: 'StoreConnectionPublished_at';
    key?: Maybe<Scalars['DateTime']>;
+   connection?: Maybe<StoreConnection>;
+};
+
+export type StoreConnectionShopifySettings = {
+   __typename?: 'StoreConnectionShopifySettings';
+   key?: Maybe<Scalars['ID']>;
+   connection?: Maybe<StoreConnection>;
+};
+
+export type StoreConnectionSocialMediaAccounts = {
+   __typename?: 'StoreConnectionSocialMediaAccounts';
+   key?: Maybe<Scalars['ID']>;
    connection?: Maybe<StoreConnection>;
 };
 
@@ -1759,6 +1956,11 @@ export type StoreGroupBy = {
    url?: Maybe<Array<Maybe<StoreConnectionUrl>>>;
    currency?: Maybe<Array<Maybe<StoreConnectionCurrency>>>;
    store_settings?: Maybe<Array<Maybe<StoreConnectionStore_Settings>>>;
+   shopifySettings?: Maybe<Array<Maybe<StoreConnectionShopifySettings>>>;
+   footer?: Maybe<Array<Maybe<StoreConnectionFooter>>>;
+   socialMediaAccounts?: Maybe<
+      Array<Maybe<StoreConnectionSocialMediaAccounts>>
+   >;
    published_at?: Maybe<Array<Maybe<StoreConnectionPublished_At>>>;
 };
 
@@ -1768,6 +1970,9 @@ export type StoreInput = {
    url: Scalars['String'];
    currency: Scalars['String'];
    store_settings?: Maybe<Scalars['ID']>;
+   shopifySettings: ComponentStoreShopifySettingInput;
+   footer: ComponentSettingsFooterInput;
+   socialMediaAccounts: ComponentSettingsSocialInput;
    published_at?: Maybe<Scalars['DateTime']>;
    created_by?: Maybe<Scalars['ID']>;
    updated_by?: Maybe<Scalars['ID']>;
@@ -2360,6 +2565,15 @@ export type CreateMenuPayload = {
    menu?: Maybe<Menu>;
 };
 
+export type CreatePartCollectionInput = {
+   data?: Maybe<PartCollectionInput>;
+};
+
+export type CreatePartCollectionPayload = {
+   __typename?: 'createPartCollectionPayload';
+   partCollection?: Maybe<PartCollections>;
+};
+
 export type CreateRoleInput = {
    data?: Maybe<RoleInput>;
 };
@@ -2457,6 +2671,15 @@ export type DeleteMenuInput = {
 export type DeleteMenuPayload = {
    __typename?: 'deleteMenuPayload';
    menu?: Maybe<Menu>;
+};
+
+export type DeletePartCollectionInput = {
+   where?: Maybe<InputId>;
+};
+
+export type DeletePartCollectionPayload = {
+   __typename?: 'deletePartCollectionPayload';
+   partCollection?: Maybe<PartCollections>;
 };
 
 export type DeleteRoleInput = {
@@ -2591,6 +2814,12 @@ export type EditComponentSettingsSocialInput = {
    repairOrg?: Maybe<Scalars['String']>;
 };
 
+export type EditComponentStoreShopifySettingInput = {
+   id?: Maybe<Scalars['ID']>;
+   storefrontDomain?: Maybe<Scalars['String']>;
+   storefrontAccessToken?: Maybe<Scalars['String']>;
+};
+
 export type EditDeviceInput = {
    device?: Maybe<Scalars['String']>;
    part_type?: Maybe<Scalars['String']>;
@@ -2667,6 +2896,17 @@ export type EditMenuInput = {
    updated_by?: Maybe<Scalars['ID']>;
 };
 
+export type EditPartCollectionInput = {
+   device_url?: Maybe<Scalars['String']>;
+   title?: Maybe<Scalars['String']>;
+   meta_description?: Maybe<Scalars['String']>;
+   Details?: Maybe<Scalars['String']>;
+   summary?: Maybe<Scalars['String']>;
+   published_at?: Maybe<Scalars['DateTime']>;
+   created_by?: Maybe<Scalars['ID']>;
+   updated_by?: Maybe<Scalars['ID']>;
+};
+
 export type EditRoleInput = {
    name?: Maybe<Scalars['String']>;
    description?: Maybe<Scalars['String']>;
@@ -2683,6 +2923,9 @@ export type EditStoreInput = {
    url?: Maybe<Scalars['String']>;
    currency?: Maybe<Scalars['String']>;
    store_settings?: Maybe<Scalars['ID']>;
+   shopifySettings?: Maybe<EditComponentStoreShopifySettingInput>;
+   footer?: Maybe<EditComponentSettingsFooterInput>;
+   socialMediaAccounts?: Maybe<EditComponentSettingsSocialInput>;
    published_at?: Maybe<Scalars['DateTime']>;
    created_by?: Maybe<Scalars['ID']>;
    updated_by?: Maybe<Scalars['ID']>;
@@ -2771,6 +3014,16 @@ export type UpdateMenuInput = {
 export type UpdateMenuPayload = {
    __typename?: 'updateMenuPayload';
    menu?: Maybe<Menu>;
+};
+
+export type UpdatePartCollectionInput = {
+   where?: Maybe<InputId>;
+   data?: Maybe<EditPartCollectionInput>;
+};
+
+export type UpdatePartCollectionPayload = {
+   __typename?: 'updatePartCollectionPayload';
+   partCollection?: Maybe<PartCollections>;
 };
 
 export type UpdateRoleInput = {
@@ -2925,10 +3178,15 @@ export type GetCollectionPageDataQuery = {
          }>
       >
    >;
-   storeSettings?: Maybe<
+   currentStore?: Maybe<
       Array<
          Maybe<{
-            __typename?: 'StoreSettings';
+            __typename?: 'Store';
+            shopifySettings?: Maybe<{
+               __typename?: 'ComponentStoreShopifySettings';
+               storefrontDomain: string;
+               storefrontAccessToken: string;
+            }>;
             footer?: Maybe<{
                __typename?: 'ComponentSettingsFooter';
                menu1?: Maybe<{
@@ -3082,10 +3340,15 @@ export type LayoutPropsFragment = {
          }>
       >
    >;
-   storeSettings?: Maybe<
+   currentStore?: Maybe<
       Array<
          Maybe<{
-            __typename?: 'StoreSettings';
+            __typename?: 'Store';
+            shopifySettings?: Maybe<{
+               __typename?: 'ComponentStoreShopifySettings';
+               storefrontDomain: string;
+               storefrontAccessToken: string;
+            }>;
             footer?: Maybe<{
                __typename?: 'ComponentSettingsFooter';
                menu1?: Maybe<{
@@ -3288,7 +3551,11 @@ export const LayoutPropsFragmentDoc = `
     url
     currency
   }
-  storeSettings(where: $whereStoreSettings) {
+  currentStore: stores(where: $whereStoreSettings) {
+    shopifySettings {
+      storefrontDomain
+      storefrontAccessToken
+    }
     footer {
       menu1 {
         ...MenuProps
