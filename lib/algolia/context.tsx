@@ -15,6 +15,7 @@ export interface AlgoliaProviderProps<Hit = any> {
    apiKey: string;
    initialIndexName: string;
    initialRawFilters?: string;
+   productsPerPage?: number;
    initialState?: Partial<SearchState<Hit>>;
 }
 
@@ -25,11 +26,18 @@ const SearchDispatchContext = React.createContext<SearchDispatch | null>(null);
 export function AlgoliaProvider(
    props: React.PropsWithChildren<AlgoliaProviderProps>
 ) {
-   const { appId, apiKey, initialIndexName, initialRawFilters } = props;
+   const {
+      appId,
+      apiKey,
+      initialIndexName,
+      initialRawFilters,
+      productsPerPage,
+   } = props;
    const [state, dispatch] = React.useReducer(reducer, {
       ...createInitialState({
          indexName: initialIndexName,
          rawFilters: initialRawFilters,
+         limit: productsPerPage,
       }),
       ...props.initialState,
    });

@@ -1,4 +1,4 @@
-import { Box, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { Layout } from '@components/Layout';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, STRAPI_ORIGIN } from '@config/env';
 import {
@@ -18,7 +18,7 @@ import {
    RelatedPostsSection,
    SubcategoriesSection,
 } from '@features/collection';
-import { AlgoliaProvider, search, SearchState } from '@lib/algolia';
+import { search, SearchState } from '@lib/algolia';
 import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
 import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
@@ -36,122 +36,113 @@ export default function CollectionPage({
    collection,
    initialSearchState,
 }: CollectionPageProps) {
-   const collectionHandle = collection.handle;
    const hasDescription =
       collection.description != null && collection.description.length > 0;
    return (
-      <AlgoliaProvider
-         key={collectionHandle}
-         appId={ALGOLIA_APP_ID}
-         apiKey={ALGOLIA_API_KEY}
-         initialIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
-         initialState={initialSearchState}
-      >
-         <Page>
-            <HeroSection>
-               <VStack flex={1} align="flex-start">
-                  {collection.ancestors.length > 0 && (
-                     <HeroBreadcrumb>
-                        {collection.ancestors.map((ancestor) => (
-                           <HeroBreadcrumbLink
-                              key={ancestor.handle}
-                              href={`/collections/${ancestor.handle}`}
-                           >
-                              {ancestor.title}
-                           </HeroBreadcrumbLink>
-                        ))}
-                        <HeroBreadcrumbItem>
-                           {collection.title}
-                        </HeroBreadcrumbItem>
-                     </HeroBreadcrumb>
-                  )}
-                  {!hasDescription && collection.image != null ? (
-                     <HeroBackgroundImage src={collection.image.url}>
-                        <HeroTitle color="white">{collection.title}</HeroTitle>
-                     </HeroBackgroundImage>
-                  ) : (
-                     <HeroTitle>{collection.title}</HeroTitle>
-                  )}
-                  {hasDescription && (
-                     <HeroDescription>{collection.description}</HeroDescription>
-                  )}
-               </VStack>
-               {collection.image && hasDescription && (
-                  <HeroImage
-                     src={collection.image.url}
-                     alt={collection.image.alt}
-                  />
+      <Page>
+         <HeroSection>
+            <VStack flex={1} align="flex-start">
+               {collection.ancestors.length > 0 && (
+                  <HeroBreadcrumb>
+                     {collection.ancestors.map((ancestor) => (
+                        <HeroBreadcrumbLink
+                           key={ancestor.handle}
+                           href={`/collections/${ancestor.handle}`}
+                        >
+                           {ancestor.title}
+                        </HeroBreadcrumbLink>
+                     ))}
+                     <HeroBreadcrumbItem>{collection.title}</HeroBreadcrumbItem>
+                  </HeroBreadcrumb>
                )}
-            </HeroSection>
-            {collection.children.length > 0 && (
-               <SubcategoriesSection
-                  heading={collection.title}
-                  categories={collection.children}
+               {!hasDescription && collection.image != null ? (
+                  <HeroBackgroundImage src={collection.image.url}>
+                     <HeroTitle color="white">{collection.title}</HeroTitle>
+                  </HeroBackgroundImage>
+               ) : (
+                  <HeroTitle>{collection.title}</HeroTitle>
+               )}
+               {hasDescription && (
+                  <HeroDescription>{collection.description}</HeroDescription>
+               )}
+            </VStack>
+            {collection.image && hasDescription && (
+               <HeroImage
+                  src={collection.image.url}
+                  alt={collection.image.alt}
                />
             )}
-            <FilterableProductsSection />
-            {collection.sections.map((section, index) => {
-               switch (section.__typename) {
-                  case 'ComponentCollectionBanner': {
-                     return (
-                        <BannerSection
-                           key={index}
-                           title={section.title}
-                           description={section.description}
-                           callToActionLabel={section.callToActionLabel}
-                           url={section.url}
-                        />
-                     );
-                  }
-                  case 'ComponentCollectionRelatedPosts': {
-                     const tags = [collection.title].concat(
-                        section.tags?.split(',').map((tag) => tag.trim()) || []
-                     );
-                     return <RelatedPostsSection key={index} tags={tags} />;
-                  }
-                  case 'ComponentCollectionNewsletterForm': {
-                     return (
-                        <NewsletterSection
-                           key={index}
-                           title={section.title}
-                           description={section.description}
-                           emailPlaceholder={
-                              section.inputPlaceholder || undefined
-                           }
-                           subscribeLabel={section.callToActionLabel}
-                        />
-                     );
-                  }
-                  case 'ComponentCollectionFeaturedCollection': {
-                     const { featuredCollection } = section;
-                     if (featuredCollection) {
-                        return (
-                           <FeaturedCollectionSection
-                              key={index}
-                              title={featuredCollection.title}
-                              description={featuredCollection.description}
-                              callToActionLabel="View more"
-                              url="#"
-                              imageSrc={
-                                 featuredCollection.image
-                                    ? `${STRAPI_ORIGIN}${featuredCollection.image.url}`
-                                    : undefined
-                              }
-                              imageAlt={
-                                 featuredCollection.image?.alternativeText ||
-                                 undefined
-                              }
-                           />
-                        );
-                     }
-                     return null;
-                  }
-                  default:
-                     return assertNever(section);
+         </HeroSection>
+         {collection.children.length > 0 && (
+            <SubcategoriesSection
+               heading={collection.title}
+               categories={collection.children}
+            />
+         )}
+         <FilterableProductsSection
+            collectionHandle={collection.handle}
+            initialSearchState={initialSearchState}
+            algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
+         />
+         {collection.sections.map((section, index) => {
+            switch (section.__typename) {
+               case 'ComponentCollectionBanner': {
+                  return (
+                     <BannerSection
+                        key={index}
+                        title={section.title}
+                        description={section.description}
+                        callToActionLabel={section.callToActionLabel}
+                        url={section.url}
+                     />
+                  );
                }
-            })}
-         </Page>
-      </AlgoliaProvider>
+               case 'ComponentCollectionRelatedPosts': {
+                  const tags = [collection.title].concat(
+                     section.tags?.split(',').map((tag) => tag.trim()) || []
+                  );
+                  return <RelatedPostsSection key={index} tags={tags} />;
+               }
+               case 'ComponentCollectionNewsletterForm': {
+                  return (
+                     <NewsletterSection
+                        key={index}
+                        title={section.title}
+                        description={section.description}
+                        emailPlaceholder={section.inputPlaceholder || undefined}
+                        subscribeLabel={section.callToActionLabel}
+                     />
+                  );
+               }
+               case 'ComponentCollectionFeaturedCollection': {
+                  const { featuredCollection } = section;
+                  if (featuredCollection) {
+                     return (
+                        <FeaturedCollectionSection
+                           key={index}
+                           handle={featuredCollection.handle}
+                           algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
+                           title={featuredCollection.title}
+                           description={featuredCollection.description}
+                           imageSrc={
+                              featuredCollection.image
+                                 ? `${STRAPI_ORIGIN}${featuredCollection.image.url}`
+                                 : undefined
+                           }
+                           imageAlt={
+                              featuredCollection.image?.alternativeText ||
+                              undefined
+                           }
+                        />
+                     );
+                  }
+                  return null;
+               }
+               default:
+                  return assertNever(section);
+            }
+         })}
+      </Page>
    );
 }
 

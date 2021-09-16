@@ -12,7 +12,7 @@ const placeholderImageUrl =
 
 export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    return (
-      <AspectRatio flexGrow={0} flexShrink={0} w="full" ratio={4 / 3}>
+      <AspectRatio flexGrow={0} flexShrink={0} w="full" ratio={1}>
          {src == null ? (
             <Img sizes="180px" src={placeholderImageUrl} alt={alt} />
          ) : (
