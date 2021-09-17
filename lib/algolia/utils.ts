@@ -1,6 +1,8 @@
+import produce, { Draft } from 'immer';
 import * as React from 'react';
 import {
    BasicFilter,
+   FacetValueState,
    Filter,
    ListFilter,
    Maybe,
@@ -9,6 +11,7 @@ import {
    NumericComparisonOperator,
    NumericRange,
    NumericRangeFilter,
+   SearchResponse,
    SearchState,
 } from './types';
 
@@ -145,4 +148,117 @@ export function getRangeFromFilter(filter: Filter | undefined | null) {
       }
    }
    return { min: null, max: null };
+}
+
+export interface CreateInitialStateArgs {
+   indexName: string;
+   rawFilters?: string;
+}
+export function createInitialState({
+   indexName,
+   rawFilters,
+}: CreateInitialStateArgs): SearchState {
+   return {
+      params: {
+         indexName,
+         rawFilters,
+         query: '',
+         page: 1,
+         filters: {
+            byId: {},
+            rootIds: [],
+            allIds: [],
+         },
+         limit: 24,
+      },
+      isLoaded: false,
+      isSearching: false,
+      hits: {
+         byId: {},
+         allIds: [],
+      },
+      facets: {
+         byId: {},
+         allIds: [],
+      },
+      facetValues: {
+         byId: {},
+         allIds: [],
+      },
+   };
+}
+
+export interface CreateSearchStateParams {
+   indexName: string;
+   rawFilters?: string;
+}
+export function createSearchState<Hit = any>(
+   params: CreateSearchStateParams,
+   searchResponse: SearchResponse
+): SearchState<Hit> {
+   const initialState = createInitialState({
+      indexName: params.indexName,
+      rawFilters: params.rawFilters,
+   });
+   const producer = produce(updateSearchStateRecipe);
+   const state = producer(initialState, searchResponse);
+   return state;
+}
+
+export function updateSearchStateRecipe(
+   draftState: Draft<SearchState>,
+   data: SearchResponse
+) {
+   const responseFacets = data.facets || {};
+   const newFacetNames = Object.keys(responseFacets);
+   draftState.isLoaded = true;
+   draftState.isSearching = false;
+   draftState.numberOfPages = data.nbPages;
+   draftState.numberOfHits = data.nbHits;
+   draftState.hits.allIds = [];
+   data.hits.forEach((hit) => {
+      draftState.hits.byId[hit.objectID] = hit as any;
+      draftState.hits.allIds.push(hit.objectID);
+   });
+   // Update facets
+   newFacetNames.forEach((facetName) => {
+      const newValues = Object.keys(responseFacets[facetName]);
+      const newValueStates = newValues.map<FacetValueState>((value) => {
+         const id = generateId(facetName, value);
+         const count = responseFacets[facetName][value];
+         return {
+            id,
+            facetId: facetName,
+            value,
+            filteredHitCount: count,
+            totalHitCount:
+               draftState.facetValues.byId[id]?.totalHitCount || count,
+         };
+      });
+      const newValueIds = newValueStates.map((valueState) => valueState.id);
+      if (draftState.facets.byId[facetName] == null) {
+         draftState.facets.byId[facetName] = {
+            name: facetName,
+            valueIds: newValueIds,
+         };
+         draftState.facets.allIds.push(facetName);
+      } else {
+         draftState.facets.byId[facetName].valueIds = mergeUnique(
+            draftState.facets.byId[facetName].valueIds,
+            newValueIds
+         );
+      }
+      newValueStates.forEach((newValueState) => {
+         draftState.facetValues.byId[newValueState.id] = newValueState;
+         if (!draftState.facetValues.allIds.includes(newValueState.id)) {
+            draftState.facetValues.allIds.push(newValueState.id);
+         }
+      });
+   });
+   draftState.facetValues.allIds.forEach((id) => {
+      const facetValue = draftState.facetValues.byId[id];
+      if (data.facets?.[facetValue.facetId]?.[facetValue.value] == null) {
+         facetValue.filteredHitCount = 0;
+      }
+   });
 }

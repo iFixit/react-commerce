@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { getInitialState, reducer } from './reducers';
+import { reducer } from './reducers';
 import { useFiltersQueryString } from './useFiltersQueryString';
 import { SearchAction, SearchActionType, SearchState } from './types';
 import { useAlgoliaClient } from './useAlgoliaClient';
 import { useAlgoliaIndex } from './useAlgoliaIndex';
+import { createInitialState } from './utils';
 
 export interface SearchDispatch {
    (action: SearchAction | SearchAction[]): void;
@@ -26,7 +27,7 @@ export function AlgoliaProvider(
 ) {
    const { appId, apiKey, initialIndexName, initialRawFilters } = props;
    const [state, dispatch] = React.useReducer(reducer, {
-      ...getInitialState({
+      ...createInitialState({
          indexName: initialIndexName,
          rawFilters: initialRawFilters,
       }),

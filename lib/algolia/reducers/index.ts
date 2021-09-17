@@ -1,6 +1,7 @@
 import { assertNever } from '@lib/utils';
 import produce from 'immer';
 import { SearchAction, SearchActionType, SearchState } from '../types';
+import { updateSearchStateRecipe } from '../utils';
 import { filtersCleared } from './filtersCleared';
 import { listFilterAllItemsCleared } from './listFilterAllItemsCleared';
 import { listFilterItemAdded } from './listFilterItemAdded';
@@ -10,46 +11,7 @@ import { listFilterItemToggled } from './listFilterItemToggled';
 import { pageChanged } from './pageChanged';
 import { queryChanged } from './queryChanged';
 import { rangeFilterSet } from './rangeFilterSet';
-import { searchResultUpdated } from './searchResultUpdated';
 import { withMultipleActions } from './utils';
-
-export interface GetInitialStateArgs {
-   indexName: string;
-   rawFilters?: string;
-}
-export function getInitialState({
-   indexName,
-   rawFilters,
-}: GetInitialStateArgs): SearchState {
-   return {
-      params: {
-         indexName,
-         rawFilters,
-         query: '',
-         page: 1,
-         filters: {
-            byId: {},
-            rootIds: [],
-            allIds: [],
-         },
-         limit: 24,
-      },
-      isLoaded: false,
-      isSearching: false,
-      hits: {
-         byId: {},
-         allIds: [],
-      },
-      facets: {
-         byId: {},
-         allIds: [],
-      },
-      facetValues: {
-         byId: {},
-         allIds: [],
-      },
-   };
-}
 
 export const reducer = withMultipleActions<SearchState, SearchAction>(
    produce((draftState, action) => {
@@ -58,7 +20,7 @@ export const reducer = withMultipleActions<SearchState, SearchAction>(
             return queryChanged(draftState, action);
          }
          case SearchActionType.SearchResultUpdated: {
-            return searchResultUpdated(draftState, action);
+            return updateSearchStateRecipe(draftState, action.data);
          }
          case SearchActionType.FiltersCleared: {
             return filtersCleared(draftState, action);
