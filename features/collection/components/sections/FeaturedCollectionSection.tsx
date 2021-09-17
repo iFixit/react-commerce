@@ -1,5 +1,4 @@
 import {
-   AspectRatio,
    Box,
    Button,
    Center,
@@ -7,7 +6,6 @@ import {
    Heading,
    Img,
    Text,
-   useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/Card';
@@ -63,6 +61,11 @@ export function FeaturedCollectionSection({
                   sm: '300px',
                   lg: '400px',
                }}
+               maxH={{
+                  base: '240px',
+                  sm: 'unset',
+               }}
+               overflow="hidden"
             >
                {imageSrc && (
                   <Img
@@ -90,9 +93,14 @@ export function FeaturedCollectionSection({
                      spacing="4"
                   >
                      <Heading
-                        size="lg"
+                        fontSize={{
+                           base: title.length > 40 ? 'xl' : '2xl',
+                           sm: title.length > 30 ? 'lg' : '2xl',
+                           lg: title.length > 40 ? '2xl' : '3xl',
+                        }}
                         fontFamily="Archivo Black"
                         color="white"
+                        noOfLines={3}
                      >
                         {title}
                      </Heading>
@@ -135,29 +143,22 @@ function ProductList() {
    return (
       <Flex>
          {hits.map((hit) => {
-            return <ProductGridItem key={hit.handle} product={hit} />;
+            return <ProductListItem key={hit.handle} product={hit} />;
          })}
       </Flex>
    );
 }
 
-interface ProductGridItemProps {
+interface ProductListItemProps {
    product: ProductHit;
 }
 
-function ProductGridItem({ product }: ProductGridItemProps) {
+function ProductListItem({ product }: ProductListItemProps) {
    return (
       <ProductCard
          w="33%"
          flexGrow={1}
          sx={{
-            // '&:nth-of-type(n+2)': {
-            //    display: {
-            //       base: 'block',
-            //       sm: 'none',
-            //       md: 'block',
-            //    },
-            // },
             '&:nth-of-type(n+3)': {
                display: {
                   base: 'none',
