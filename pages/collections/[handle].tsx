@@ -121,8 +121,17 @@ export default function CollectionPage({
                         />
                      );
                   }
-                  default:
-                     return assertNever(section);
+                  case 'ComponentCollectionFeaturedCollection':
+                     // This section is being implemented into a separate branch
+                     return null;
+                  default: {
+                     try {
+                        return assertNever(section);
+                     } catch (error) {
+                        // Avoid breaking production when working on a new section type
+                        return null;
+                     }
+                  }
                }
             })}
          </Page>
