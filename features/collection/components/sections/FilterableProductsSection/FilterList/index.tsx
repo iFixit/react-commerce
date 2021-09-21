@@ -143,7 +143,6 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                   >
                      <VariableSizeList
                         ref={listRef}
-                        // overscanCount={2}
                         height={height}
                         itemCount={state.context.items.length}
                         itemKey={itemKey}
