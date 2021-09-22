@@ -11,6 +11,7 @@ import {
    useFilters,
    useHits,
    useSearch,
+   useUpdateQueryParams,
 } from '@lib/algolia';
 import * as React from 'react';
 import { ProductHit } from '../../../types';
@@ -77,6 +78,8 @@ const FilterableProducts = React.memo(() => {
    const collectionState = useCollectionState();
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
+
+   useUpdateQueryParams();
 
    if (collectionState === CollectionState.Empty) {
       return <CollectionEmptyState />;

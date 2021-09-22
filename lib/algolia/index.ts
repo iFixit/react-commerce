@@ -8,5 +8,6 @@ export * from './usePagination';
 export * from './useFacets';
 export * from './useClearFilter';
 export * from './useFilters';
+export * from './useUpdateQueryParams';
 export * from './search';
 export * from './types';
