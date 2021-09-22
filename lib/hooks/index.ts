@@ -35,14 +35,6 @@ export function useDebouncedCallback<Args extends any[]>(
    };
 }
 
-export function useDerivedState<T = any>(compute: (value: T | undefined) => T) {
-   const stateRef = React.useRef<T>();
-
-   stateRef.current = compute(stateRef.current);
-
-   return stateRef.current;
-}
-
 export function usePrevious<T>(value: T): T | undefined {
    const ref = React.useRef<T>();
 

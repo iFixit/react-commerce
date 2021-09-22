@@ -1,9 +1,3 @@
-export type Maybe<T> = T | null;
-
-export type NullablePartial<T> = { [P in keyof T]?: T[P] | undefined | null };
-
-// Search state
-
 export interface SearchState<Hit = any> {
    params: SearchParams;
    numberOfPages?: number;
@@ -11,8 +5,7 @@ export interface SearchState<Hit = any> {
    isSearching: boolean;
    numberOfHits?: number;
    hits: Entity<Hit>;
-   facets: Entity<FacetState>;
-   facetValues: Entity<FacetValueState>;
+   facetsByHandle: Record<string, Facet>;
 }
 
 export interface SearchParams {
@@ -21,7 +14,7 @@ export interface SearchParams {
    page: number;
    limit?: number;
    rawFilters?: string;
-   filters: Entity<Filter, { rootIds: string[] }>;
+   filtersByName: Record<string, Filter>;
 }
 
 type ObjectLiteral = { [key: string]: any };
@@ -31,79 +24,33 @@ export type Entity<Type = any, Extension = ObjectLiteral> = {
    allIds: string[];
 } & Extension;
 
-export interface FacetState {
+export interface Facet {
+   handle: string;
    name: string;
-   valueIds: string[];
+   algoliaName: string;
+   optionsByHandle: Record<string, FacetOption>;
 }
 
-export interface FacetValueState {
-   id: string;
-   facetId: string;
+export interface FacetOption {
+   handle: string;
    value: string;
    totalHitCount: number;
    filteredHitCount: number;
 }
 
-// Filter types
+export type Filter = FacetFilter | RangeFilter;
 
-export type Filter = ListFilter | AtomicFilter;
-
-export type ListFilter = OrFilter | AndFilter;
-
-export type AtomicFilter =
-   | BasicFilter
-   | NumericComparisonFilter
-   | NumericRangeFilter;
-
-export type OrFilter = {
+interface AbstractFilter {
    id: string;
-   parentId?: string;
-   type: 'or';
-   filterIds: string[];
-};
-
-export type AndFilter = {
-   id: string;
-   parentId?: string;
-   type: 'and';
-   filterIds: string[];
-};
-
-export type BasicFilter = {
-   id: string;
-   parentId?: string;
-   type: 'basic';
-   facetName: string;
-   valueId: string;
-};
-
-export type NumericComparisonFilter = {
-   id: string;
-   parentId?: string;
-   type: 'numeric-comparison';
-   facetName: string;
-   operator: NumericComparisonOperator;
-   value: number;
-};
-
-export type NumericRangeFilter = {
-   id: string;
-   parentId?: string;
-   type: 'numeric-range';
-   facetName: string;
-   range: NumericRange;
-};
-
-export interface NumericRange {
-   min: number;
-   max: number;
 }
 
-export enum NumericComparisonOperator {
-   LessThan = '<',
-   LessThanOrEqual = '<=',
-   Equal = '=',
-   NotEqual = '!=',
-   GreaterThanOrEqual = '>=',
-   GreaterThan = '>',
+export interface FacetFilter extends AbstractFilter {
+   type: 'facet';
+   selectedOptions: string[];
+}
+
+export interface RangeFilter extends AbstractFilter {
+   type: 'range';
+   min?: number;
+   max?: number;
 }

@@ -9,12 +9,12 @@ import {
    Wrap,
    WrapItem,
 } from '@chakra-ui/react';
-import { formatFacetName } from '@features/collection/utils';
 import {
-   AtomicFilter,
-   useAtomicFilters,
+   RangeFilter,
    useClearFilter,
-   useSearchStateContext,
+   useFacet,
+   useFacetFilter,
+   useFilters,
 } from '@lib/algolia';
 import { assertNever } from '@lib/utils';
 import * as React from 'react';
@@ -24,7 +24,7 @@ interface AppliedFiltersProps {
 }
 
 export const AppliedFilters = chakra(({ className }: AppliedFiltersProps) => {
-   const atomicFilters = useAtomicFilters();
+   const filters = useFilters();
    const clear = useClearFilter();
    const clearAllFilters = React.useCallback(() => {
       clear();
@@ -32,14 +32,21 @@ export const AppliedFilters = chakra(({ className }: AppliedFiltersProps) => {
    const buttonSize = useBreakpointValue({ base: 'lg', md: 'sm' });
 
    return (
-      <Collapse in={atomicFilters.length > 0} animateOpacity unmountOnExit>
+      <Collapse in={filters.length > 0} animateOpacity unmountOnExit>
          <Wrap className={className} w="full" align="center">
-            {atomicFilters.map((filter) => {
-               return (
-                  <WrapItem key={filter.id}>
-                     <FilterTag filter={filter} />
-                  </WrapItem>
-               );
+            {filters.map((filter) => {
+               switch (filter.type) {
+                  case 'facet': {
+                     return (
+                        <FacetTags key={filter.id} facetHandle={filter.id} />
+                     );
+                  }
+                  case 'range': {
+                     return <RangeTag key={filter.id} filter={filter} />;
+                  }
+                  default:
+                     return assertNever(filter);
+               }
             })}
             <WrapItem>
                <Button
@@ -56,41 +63,63 @@ export const AppliedFilters = chakra(({ className }: AppliedFiltersProps) => {
    );
 });
 
-interface FilterTagProps {
-   filter: AtomicFilter;
+interface FacetTagsProps {
+   facetHandle: string;
 }
 
-const FilterTag = ({ filter }: FilterTagProps) => {
-   const state = useSearchStateContext();
+function FacetTags({ facetHandle }: FacetTagsProps) {
+   const filter = useFacetFilter(facetHandle);
+   const facet = useFacet(facetHandle);
+
+   return (
+      <>
+         {filter.selectedOptions.map((optionHandle) => {
+            return (
+               <WrapItem key={optionHandle}>
+                  <FilterTag onClear={() => filter.clear(optionHandle)}>
+                     {facet.name}: {facet.optionsByHandle[optionHandle].value}
+                  </FilterTag>
+               </WrapItem>
+            );
+         })}
+      </>
+   );
+}
+
+interface RangeTagProps {
+   filter: RangeFilter;
+}
+
+function RangeTag({ filter }: RangeTagProps) {
+   const facet = useFacet(filter.id);
    const clear = useClearFilter();
-   const valuesById = state.facetValues.byId;
+
+   let tag: string;
+   if (filter.min == null) {
+      tag = `${facet.name} <= ${filter.max}`;
+   } else if (filter.max == null) {
+      tag = `${facet.name} >= ${filter.min}`;
+   } else {
+      tag = `${facet.name}: ${filter.min} - ${filter.max}`;
+   }
+   return (
+      <WrapItem key={filter.id}>
+         <FilterTag onClear={() => clear(filter.id)}>{tag}</FilterTag>
+      </WrapItem>
+   );
+}
+
+type FilterTagProps = React.PropsWithChildren<{
+   onClear(): void;
+}>;
+
+const FilterTag = ({ children, onClear }: FilterTagProps) => {
    const tagSize = useBreakpointValue({ base: 'lg', md: 'md' });
-
-   const value = React.useMemo(() => {
-      const facetName = formatFacetName(filter.facetName);
-      switch (filter.type) {
-         case 'basic': {
-            return `${facetName}: ${valuesById[filter.valueId].value}`;
-         }
-         case 'numeric-comparison': {
-            return `${facetName}: ${filter.operator} ${filter.value}`;
-         }
-         case 'numeric-range': {
-            return `${facetName}: ${filter.range.min} - ${filter.range.max}`;
-         }
-         default:
-            return assertNever(filter);
-      }
-   }, [filter, valuesById]);
-
-   const clearFilter = React.useCallback(() => {
-      clear(filter.id);
-   }, [clear, filter.id]);
 
    return (
       <Tag size={tagSize} variant="outline" colorScheme="brand">
-         <TagLabel maxW="260px">{value}</TagLabel>
-         <TagCloseButton onClick={clearFilter} />
+         <TagLabel maxW="260px">{children}</TagLabel>
+         <TagCloseButton onClick={onClear} />
       </Tag>
    );
 };

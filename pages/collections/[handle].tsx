@@ -22,7 +22,9 @@ import { search, SearchState } from '@lib/algolia';
 import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
 import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import * as React from 'react';
+import queryString from 'query-string';
 
 interface CollectionPageProps {
    collection: CollectionData;
@@ -38,6 +40,12 @@ export default function CollectionPage({
 }: CollectionPageProps) {
    const hasDescription =
       collection.description != null && collection.description.length > 0;
+   const router = useRouter();
+
+   React.useEffect(() => {
+      console.log('Router', router);
+   }, [router]);
+
    return (
       <Page>
          <HeroSection>

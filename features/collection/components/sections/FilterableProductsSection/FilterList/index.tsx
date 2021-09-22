@@ -34,60 +34,63 @@ const DEFAULT_ROW_HEIGHT = 41;
 export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
    const { facets, areRefined, isSearching } = useFilteredFacets();
-   const [state, send] = useMachine(
-      createVirtualAccordionMachine<Facet>({
-         items: facets,
-         areRefined,
-         sizeMap: {},
-         expandedItemsIds: [],
-         toggledItemId: undefined,
-         toggledItemDelta: undefined,
-      }),
-      {
-         actions: {
-            setItemSize: assign((ctx, event) => {
-               return produce(ctx, (draft) => {
-                  if (event.type === 'ITEM_SIZE_UPDATED') {
-                     const index = draft.items.findIndex(
-                        (i) => i.name === event.id
-                     );
-                     if (index >= 0) {
-                        if (event.id === draft.toggledItemId) {
-                           draft.toggledItemDelta =
-                              draft.sizeMap[event.id] - event.size;
-                        }
-                        draft.sizeMap[event.id] = event.size;
-                        if (listRef.current) {
-                           listRef.current.resetAfterIndex(index);
-                        }
-                     }
-                  }
-               });
-            }),
-            setItems: assign((ctx, event) => {
-               return produce(ctx, (draft) => {
-                  if (event.type === 'ITEMS_CHANGED') {
-                     draft.items = event.items;
-                  }
-               });
-            }),
-            toggleItem: assign((ctx, event) => {
-               return produce(ctx, (draft) => {
-                  if (event.type === 'TOGGLE_ITEM') {
-                     if (draft.expandedItemsIds.includes(event.id)) {
-                        draft.expandedItemsIds = draft.expandedItemsIds.filter(
-                           (id) => id !== event.id
-                        );
-                     } else {
-                        draft.expandedItemsIds.push(event.id);
-                     }
-                     draft.toggledItemId = event.id;
-                  }
-               });
-            }),
-         },
-      }
+   const machine = React.useMemo(
+      () =>
+         createVirtualAccordionMachine<Facet>({
+            items: facets,
+            areRefined,
+            sizeMap: {},
+            expandedItemsIds: [],
+            toggledItemId: undefined,
+            toggledItemDelta: undefined,
+         }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
    );
+   const [state, send] = useMachine(machine, {
+      actions: {
+         setItemSize: assign((ctx, event) => {
+            return produce(ctx, (draft) => {
+               if (event.type === 'ITEM_SIZE_UPDATED') {
+                  const index = draft.items.findIndex(
+                     (i) => i.handle === event.id
+                  );
+                  if (index >= 0) {
+                     if (event.id === draft.toggledItemId) {
+                        draft.toggledItemDelta =
+                           draft.sizeMap[event.id] - event.size;
+                     }
+                     draft.sizeMap[event.id] = event.size;
+                     if (listRef.current) {
+                        listRef.current.resetAfterIndex(index);
+                     }
+                  }
+               }
+            });
+         }),
+         setItems: assign((ctx, event) => {
+            return produce(ctx, (draft) => {
+               if (event.type === 'ITEMS_CHANGED') {
+                  draft.items = event.items;
+               }
+            });
+         }),
+         toggleItem: assign((ctx, event) => {
+            return produce(ctx, (draft) => {
+               if (event.type === 'TOGGLE_ITEM') {
+                  if (draft.expandedItemsIds.includes(event.id)) {
+                     draft.expandedItemsIds = draft.expandedItemsIds.filter(
+                        (id) => id !== event.id
+                     );
+                  } else {
+                     draft.expandedItemsIds.push(event.id);
+                  }
+                  draft.toggledItemId = event.id;
+               }
+            });
+         }),
+      },
+   });
 
    React.useEffect(() => {
       if (state.value === 'toggleItemAnimation') {
@@ -119,7 +122,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const getSize = React.useCallback(
       (index: number): number => {
          return (
-            state.context.sizeMap[state.context.items[index].name] ||
+            state.context.sizeMap[state.context.items[index].handle] ||
             DEFAULT_ROW_HEIGHT
          );
       },
@@ -178,10 +181,10 @@ function useFilteredFacets() {
       return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
    }, [facets]);
    const usefulFacets = React.useMemo(() => {
-      return sortedFacets.filter(filterUselessFacet);
+      return sortedFacets.filter(isUsefulFacet);
    }, [sortedFacets]);
    const refinedFacets = React.useMemo(() => {
-      return usefulFacets.filter(filterNoMatchesFacet);
+      return usefulFacets.filter(hasMatchingOptions);
    }, [usefulFacets]);
    const displayedFacets = React.useMemo(() => {
       return refinedFacets.length > 0 ? refinedFacets : usefulFacets;
@@ -193,10 +196,15 @@ function useFilteredFacets() {
    };
 }
 
-function filterUselessFacet(facet: Facet): boolean {
-   return !FACET_BLOCKLIST.includes(facet.name) && facet.values.length > 1;
+function isUsefulFacet(facet: Facet): boolean {
+   return (
+      !FACET_BLOCKLIST.includes(facet.algoliaName) &&
+      Object.keys(facet.optionsByHandle).length > 1
+   );
 }
 
-function filterNoMatchesFacet(facet: Facet): boolean {
-   return facet.values.some((value) => value.filteredHitCount > 0);
+function hasMatchingOptions(facet: Facet): boolean {
+   return Object.keys(facet.optionsByHandle).some(
+      (handle) => facet.optionsByHandle[handle].filteredHitCount > 0
+   );
 }

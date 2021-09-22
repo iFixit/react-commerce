@@ -1,5 +1,4 @@
 import type { SearchIndex } from 'algoliasearch';
-import { ListFilter, NullablePartial, NumericRange } from './state';
 
 type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
 
@@ -10,11 +9,11 @@ export enum SearchActionType {
    FiltersCleared = 'FILTERS_CLEARED',
    SearchResultUpdated = 'SEARCH_RESULT_UPDATED',
    PageChanged = 'PAGE_CHANGED',
-   ListFilterItemAdded = 'LIST_FILTER_ITEM_ADDED',
-   ListFilterItemSet = 'LIST_FILTER_ITEM_SET',
-   ListFilterItemToggled = 'LIST_FILTER_ITEM_TOGGLED',
-   ListFilterItemCleared = 'LIST_FILTER_ITEM_CLEARED',
-   ListFilterAllItemsCleared = 'LIST_FILTER_ALL_ITEMS_CLEARED',
+   FacetFilterOptionAdded = 'FACET_FILTER_OPTION_ADDED',
+   FacetFilterOptionSet = 'FACET_FILTER_OPTION_SET',
+   FacetFilterOptionToggled = 'FACET_FILTER_OPTION_TOGGLED',
+   FacetFilterOptionCleared = 'FACET_FILTER_OPTION_CLEARED',
+   FacetFilterAllOptionsCleared = 'FACET_FILTER_ALL_OPTIONS_CLEARED',
    RangeFilterSet = 'RANGE_FILTER_SET',
 }
 
@@ -38,42 +37,40 @@ export interface PageChangedAction {
    page: number;
 }
 
-export interface ListFilterItemAddedAction {
-   type: SearchActionType.ListFilterItemAdded;
+export interface FacetFilterOptionAddedAction {
+   type: SearchActionType.FacetFilterOptionAdded;
    filterId: string;
-   valueId: string;
-   filterType: ListFilter['type'];
+   optionHandle: string;
 }
 
-export interface ListFilterItemSetAction {
-   type: SearchActionType.ListFilterItemSet;
+export interface FacetFilterOptionSetAction {
+   type: SearchActionType.FacetFilterOptionSet;
    filterId: string;
-   valueId: string;
-   filterType: ListFilter['type'];
+   optionHandle: string;
 }
 
-export interface ListFilterItemToggledAction {
-   type: SearchActionType.ListFilterItemToggled;
+export interface FacetFilterOptionToggledAction {
+   type: SearchActionType.FacetFilterOptionToggled;
    filterId: string;
-   valueId: string;
-   filterType: ListFilter['type'];
+   optionHandle: string;
 }
 
-export interface ListFilterItemClearedAction {
-   type: SearchActionType.ListFilterItemCleared;
+export interface FacetFilterOptionClearedAction {
+   type: SearchActionType.FacetFilterOptionCleared;
    filterId: string;
-   valueId: string;
+   optionHandle: string;
 }
 
-export interface ListFilterAllItemsClearedAction {
-   type: SearchActionType.ListFilterAllItemsCleared;
+export interface FacetFilterAllOptionsClearedAction {
+   type: SearchActionType.FacetFilterAllOptionsCleared;
    filterId: string;
 }
 
 export interface RangeFilterSetAction {
    type: SearchActionType.RangeFilterSet;
    filterId: string;
-   range: NullablePartial<NumericRange>;
+   min?: number;
+   max?: number;
 }
 
 export type SearchAction =
@@ -81,9 +78,9 @@ export type SearchAction =
    | SearchResultUpdatedAction
    | FiltersClearedAction
    | PageChangedAction
-   | ListFilterItemAddedAction
-   | ListFilterItemSetAction
-   | ListFilterItemToggledAction
-   | ListFilterItemClearedAction
-   | ListFilterAllItemsClearedAction
+   | FacetFilterOptionAddedAction
+   | FacetFilterOptionSetAction
+   | FacetFilterOptionToggledAction
+   | FacetFilterOptionClearedAction
+   | FacetFilterAllOptionsClearedAction
    | RangeFilterSetAction;

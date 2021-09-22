@@ -3,11 +3,11 @@ import produce from 'immer';
 import { SearchAction, SearchActionType, SearchState } from '../types';
 import { updateSearchStateRecipe } from '../utils';
 import { filtersCleared } from './filtersCleared';
-import { listFilterAllItemsCleared } from './listFilterAllItemsCleared';
-import { listFilterItemAdded } from './listFilterItemAdded';
-import { listFilterItemCleared } from './listFilterItemCleared';
-import { listFilterItemSet } from './listFilterItemSet';
-import { listFilterItemToggled } from './listFilterItemToggled';
+import { facetFilterAllOptionsCleared } from './facetFilterAllOptionsCleared';
+import { facetFilterOptionAdded } from './facetFilterOptionAdded';
+import { facetFilterOptionCleared } from './facetFilterOptionCleared';
+import { facetFilterSet } from './facetFilterSet';
+import { facetFilterOptionToggled } from './facetFilterOptionToggled';
 import { pageChanged } from './pageChanged';
 import { queryChanged } from './queryChanged';
 import { rangeFilterSet } from './rangeFilterSet';
@@ -28,20 +28,20 @@ export const reducer = withMultipleActions<SearchState, SearchAction>(
          case SearchActionType.PageChanged: {
             return pageChanged(draftState, action);
          }
-         case SearchActionType.ListFilterItemAdded: {
-            return listFilterItemAdded(draftState, action);
+         case SearchActionType.FacetFilterOptionAdded: {
+            return facetFilterOptionAdded(draftState, action);
          }
-         case SearchActionType.ListFilterItemSet: {
-            return listFilterItemSet(draftState, action);
+         case SearchActionType.FacetFilterOptionSet: {
+            return facetFilterSet(draftState, action);
          }
-         case SearchActionType.ListFilterItemToggled: {
-            return listFilterItemToggled(draftState, action);
+         case SearchActionType.FacetFilterOptionToggled: {
+            return facetFilterOptionToggled(draftState, action);
          }
-         case SearchActionType.ListFilterItemCleared: {
-            return listFilterItemCleared(draftState, action);
+         case SearchActionType.FacetFilterOptionCleared: {
+            return facetFilterOptionCleared(draftState, action);
          }
-         case SearchActionType.ListFilterAllItemsCleared: {
-            return listFilterAllItemsCleared(draftState, action);
+         case SearchActionType.FacetFilterAllOptionsCleared: {
+            return facetFilterAllOptionsCleared(draftState, action);
          }
          case SearchActionType.RangeFilterSet: {
             return rangeFilterSet(draftState, action);

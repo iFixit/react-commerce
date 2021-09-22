@@ -1,12 +1,12 @@
 import { Radio, Text, VStack } from '@chakra-ui/react';
 import { FacetOption, useFacetFilter, useFacet } from '@lib/algolia';
 import * as React from 'react';
-import { FilterCheckbox } from '../FilterCheckbox';
-import { useRangeFilterContext, useRegisterFacet } from './context';
+import { FilterCheckbox } from './FilterCheckbox';
 
-export type RangeFilterListProps = {
+export type FacetFilterProps = {
    facetHandle: string;
    multiple?: boolean;
+   showAllValues?: boolean;
    sortItems?(a: FacetOption, b: FacetOption): number;
    renderItem?(
       item: FacetOption,
@@ -15,16 +15,15 @@ export type RangeFilterListProps = {
    ): React.ReactNode;
 };
 
-export function RangeFilterList({
+export function FacetFilter({
    facetHandle,
    multiple = false,
+   showAllValues = false,
    renderItem,
    sortItems = defaultSortItems,
-}: RangeFilterListProps) {
-   const { getFacetHandles } = useRangeFilterContext();
+}: FacetFilterProps) {
    const facet = useFacet(facetHandle);
    const { selectedOptions, toggle, set } = useFacetFilter(facetHandle);
-   useRegisterFacet(facetHandle);
 
    const facetOptions = React.useMemo(() => {
       return Object.keys(facet.optionsByHandle).map(
@@ -38,20 +37,24 @@ export function RangeFilterList({
          .sort(sortItems);
    }, [facetOptions, sortItems]);
 
+   const visibleOptions = React.useMemo(() => {
+      const options = showAllValues
+         ? facetOptions.slice()
+         : filteredOptions.slice();
+      options.sort(sortItems);
+      return options;
+   }, [facetOptions, filteredOptions, showAllValues, sortItems]);
+
    const handleChange = React.useCallback(
-      (name: string) => {
-         const facetNames = getFacetHandles();
-         const facetToBeCleared = facetNames.filter(
-            (name) => name !== facetHandle
-         );
-         toggle(name, { clearFacets: facetToBeCleared });
+      (optionHandle: string) => {
+         toggle(optionHandle);
       },
-      [facetHandle, getFacetHandles, toggle]
+      [toggle]
    );
 
    return (
       <VStack align="flex-start">
-         {filteredOptions.map((option, index) => {
+         {visibleOptions.map((option, index) => {
             if (multiple) {
                return (
                   <FilterCheckbox
@@ -71,13 +74,7 @@ export function RangeFilterList({
                   key={option.handle}
                   value={option.handle}
                   isChecked={selectedOptions.includes(option.handle)}
-                  onChange={() => {
-                     const facetNames = getFacetHandles();
-                     const facetToBeCleared = facetNames.filter(
-                        (name) => name !== facetHandle
-                     );
-                     set(option.handle, { clearFacets: facetToBeCleared });
-                  }}
+                  onChange={() => set(option.handle)}
                >
                   <Text fontSize="sm">
                      {renderItem

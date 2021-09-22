@@ -1,60 +1,37 @@
 import { Draft } from 'immer';
-import {
-   NumericComparisonFilter,
-   NumericComparisonOperator,
-   NumericRangeFilter,
-   RangeFilterSetAction,
-   SearchState,
-} from '../types';
-import {
-   createNumericComparisonFilter,
-   createNumericRangeFilter,
-   getRangeFromFilter,
-   isBoundedRange,
-   isInvalidRange,
-   isSameRange,
-} from '../utils';
+import { RangeFilterSetAction, SearchState } from '../types';
 
 export function rangeFilterSet(
    draft: Draft<SearchState>,
    action: RangeFilterSetAction
 ) {
-   draft.isSearching = true;
-   draft.params.page = 1;
-   const filter = draft.params.filters.byId[action.filterId];
-   const draftRange = getRangeFromFilter(filter);
-   if (isInvalidRange(action.range) || isSameRange(action.range, draftRange)) {
+   if (isInvalidRange(action.min, action.max)) {
       return;
    }
-   let newFilter: NumericComparisonFilter | NumericRangeFilter | undefined;
-   if (isBoundedRange(action.range)) {
-      newFilter = createNumericRangeFilter(action.filterId, action.range);
-   } else if (action.range.min == null && action.range.max != null) {
-      newFilter = createNumericComparisonFilter(
-         action.filterId,
-         action.range.max,
-         NumericComparisonOperator.LessThanOrEqual
-      );
-   } else if (action.range.min != null && action.range.max == null) {
-      newFilter = createNumericComparisonFilter(
-         action.filterId,
-         action.range.min,
-         NumericComparisonOperator.GreaterThanOrEqual
-      );
-   } else {
-      draft.params.filters.allIds = draft.params.filters.allIds.filter(
-         (id) => id !== action.filterId
-      );
-      draft.params.filters.rootIds = draft.params.filters.rootIds.filter(
-         (id) => id !== action.filterId
-      );
-      delete draft.params.filters.byId[action.filterId];
+
+   const draftFilter = draft.params.filtersByName[action.filterId];
+   if (draftFilter == null || draftFilter.type !== 'range') {
+      draft.isSearching = true;
+      draft.params.page = 1;
+      draft.params.filtersByName[action.filterId] = {
+         id: action.filterId,
+         type: 'range',
+         min: action.min,
+         max: action.max,
+      };
+   } else if (
+      draftFilter.min !== action.min ||
+      draftFilter.max !== action.max
+   ) {
+      draft.isSearching = true;
+      draft.params.page = 1;
+      draftFilter.min = action.min;
+      draftFilter.max = action.max;
    }
-   if (newFilter != null) {
-      draft.params.filters.byId[action.filterId] = newFilter;
-      if (filter == null) {
-         draft.params.filters.allIds.push(action.filterId);
-         draft.params.filters.rootIds.push(action.filterId);
-      }
-   }
+}
+
+function isInvalidRange(min?: number, max?: number): boolean {
+   return (
+      (min == null && max == null) || (min != null && max != null && min > max)
+   );
 }

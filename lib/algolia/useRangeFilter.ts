@@ -1,42 +1,38 @@
-import { useDerivedState } from '@lib/hooks';
 import * as React from 'react';
 import { useSearchDispatchContext, useSearchStateContext } from './context';
-import { NullablePartial, NumericRange, SearchActionType } from './types';
-import { getRangeFromFilter, isSameRange } from './utils';
+import { RangeFilter, SearchActionType } from './types';
 
 interface UpdateOptions {
    clearFacets?: string[];
 }
 
 export interface UseRangeFilter {
-   range: NullablePartial<NumericRange>;
+   filter: RangeFilter | null;
    set: (
-      newRange: NullablePartial<NumericRange>,
+      min?: number | null,
+      max?: number | null,
       options?: UpdateOptions
    ) => void;
 }
 
-export function useRangeFilter(facetName: string): UseRangeFilter {
+export function useRangeFilter(facetHandle: string): UseRangeFilter {
    const state = useSearchStateContext();
    const dispatch = useSearchDispatchContext();
 
-   const range = useDerivedState<NullablePartial<NumericRange>>((current) => {
-      const filter = state.params.filters.byId[facetName];
-      const newRange = getRangeFromFilter(filter);
-      if (current != null && isSameRange(newRange, current)) {
-         return current;
-      }
-      return newRange;
-   });
+   const rangeFilter = React.useMemo(() => {
+      const filter = state.params.filtersByName[facetHandle];
+      return filter && filter.type === 'range' ? filter : null;
+   }, [facetHandle, state.params.filtersByName]);
 
    const set = React.useCallback<UseRangeFilter['set']>(
-      (newRange, options) => {
+      (min, max, options) => {
          if (options?.clearFacets) {
             dispatch([
                {
                   type: SearchActionType.RangeFilterSet,
-                  filterId: facetName,
-                  range: newRange,
+                  filterId: facetHandle,
+                  min: min || undefined,
+                  max: max || undefined,
                },
                {
                   type: SearchActionType.FiltersCleared,
@@ -46,16 +42,17 @@ export function useRangeFilter(facetName: string): UseRangeFilter {
          } else {
             dispatch({
                type: SearchActionType.RangeFilterSet,
-               filterId: facetName,
-               range: newRange,
+               filterId: facetHandle,
+               min: min || undefined,
+               max: max || undefined,
             });
          }
       },
-      [dispatch, facetName]
+      [dispatch, facetHandle]
    );
 
    return {
-      range,
+      filter: rangeFilter,
       set,
    };
 }

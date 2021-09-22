@@ -1,33 +1,10 @@
+import { capitalize } from '@lib/utils';
 import produce, { Draft } from 'immer';
+import kebabCase from 'lodash/kebabCase';
+import keyBy from 'lodash/keyBy';
+import snakeCase from 'lodash/snakeCase';
 import * as React from 'react';
-import {
-   BasicFilter,
-   FacetValueState,
-   Filter,
-   ListFilter,
-   Maybe,
-   NullablePartial,
-   NumericComparisonFilter,
-   NumericComparisonOperator,
-   NumericRange,
-   NumericRangeFilter,
-   SearchResponse,
-   SearchState,
-} from './types';
-
-export function mergeUnique(a: string[], b: string[]): string[] {
-   const result = a.slice();
-   b.forEach((item) => {
-      if (!result.includes(item)) {
-         result.push(item);
-      }
-   });
-   return result;
-}
-
-export function generateId(...args: Array<string | undefined | null>): string {
-   return args.filter((arg) => arg != null).join('//');
-}
+import { Facet, FacetOption, SearchResponse, SearchState } from './types';
 
 export function useDebounce<Value = any>(value: Value, delay: number): Value {
    const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -42,112 +19,6 @@ export function useDebounce<Value = any>(value: Value, delay: number): Value {
    }, [value, delay]);
 
    return debouncedValue;
-}
-
-export function filterListNullableItems<T>(list: Maybe<T>[]): T[] {
-   return list.filter((val) => val != null) as T[];
-}
-
-// FILTER UTILS
-
-export function isListFilter(filter: Filter): filter is ListFilter {
-   return filter.type === 'and' || filter.type === 'or';
-}
-
-export function createBasicFilter(
-   facetName: string,
-   valueId: string,
-   parentId?: string
-): BasicFilter {
-   const newFilterId = generateId(parentId, valueId);
-   const newFilter: BasicFilter = {
-      id: newFilterId,
-      type: 'basic',
-      facetName,
-      valueId,
-      parentId,
-   };
-   return newFilter;
-}
-
-export function createNumericComparisonFilter(
-   facetName: string,
-   value: number,
-   operator: NumericComparisonOperator,
-   parentId?: string
-): NumericComparisonFilter {
-   const newFilterId = generateId(parentId, facetName);
-   return {
-      type: 'numeric-comparison',
-      id: newFilterId,
-      facetName,
-      operator,
-      value,
-      parentId,
-   };
-}
-
-export function createNumericRangeFilter(
-   facetName: string,
-   range: NumericRange,
-   parentId?: string
-): NumericRangeFilter {
-   const newFilterId = generateId(parentId, facetName);
-   return {
-      type: 'numeric-range',
-      id: newFilterId,
-      facetName,
-      range,
-      parentId,
-   };
-}
-
-export function isBoundedRange(
-   range: NullablePartial<NumericRange>
-): range is NumericRange {
-   return range.min != null && range.max != null;
-}
-
-export function isSameRange(
-   a: NullablePartial<NumericRange>,
-   b: NullablePartial<NumericRange>
-): boolean {
-   return a.min === b.min && a.max === b.max;
-}
-
-export function isInvalidRange(range: NullablePartial<NumericRange>): boolean {
-   return range.min != null && range.max != null && range.min > range.max;
-}
-
-export function getListFilterItemIds(
-   state: SearchState,
-   listFilterId: string
-): string[] {
-   const currentListFilter: ListFilter = state.params.filters.byId[
-      listFilterId
-   ] as any;
-   return currentListFilter?.filterIds || [];
-}
-
-export function getRangeFromFilter(filter: Filter | undefined | null) {
-   if (filter != null) {
-      if (filter.type === 'numeric-comparison') {
-         switch (filter.operator) {
-            case NumericComparisonOperator.GreaterThanOrEqual: {
-               return { min: filter.value, max: null };
-            }
-            case NumericComparisonOperator.LessThanOrEqual: {
-               return { min: null, max: filter.value };
-            }
-            default:
-               return { min: null, max: null };
-         }
-      }
-      if (filter.type === 'numeric-range') {
-         return filter.range;
-      }
-   }
-   return { min: null, max: null };
 }
 
 export interface CreateInitialStateArgs {
@@ -166,11 +37,7 @@ export function createInitialState({
          rawFilters,
          query: '',
          page: 1,
-         filters: {
-            byId: {},
-            rootIds: [],
-            allIds: [],
-         },
+         filtersByName: {},
          limit,
       },
       isLoaded: false,
@@ -179,14 +46,7 @@ export function createInitialState({
          byId: {},
          allIds: [],
       },
-      facets: {
-         byId: {},
-         allIds: [],
-      },
-      facetValues: {
-         byId: {},
-         allIds: [],
-      },
+      facetsByHandle: {},
    };
 }
 
@@ -211,8 +71,6 @@ export function updateSearchStateRecipe(
    draftState: Draft<SearchState>,
    data: SearchResponse
 ) {
-   const responseFacets = data.facets || {};
-   const newFacetNames = Object.keys(responseFacets);
    draftState.isLoaded = true;
    draftState.isSearching = false;
    draftState.numberOfPages = data.nbPages;
@@ -223,44 +81,67 @@ export function updateSearchStateRecipe(
       draftState.hits.allIds.push(hit.objectID);
    });
    // Update facets
-   newFacetNames.forEach((facetName) => {
-      const newValues = Object.keys(responseFacets[facetName]);
-      const newValueStates = newValues.map<FacetValueState>((value) => {
-         const id = generateId(facetName, value);
-         const count = responseFacets[facetName][value];
+   const responseFacets = data.facets || {};
+   const newFacetNames = Object.keys(responseFacets);
+   newFacetNames.forEach((algoliaFacetName) => {
+      const facetName = formatFacetName(algoliaFacetName);
+      const facetHandle = snakeCase(facetName);
+      const values = Object.keys(responseFacets[algoliaFacetName]);
+      const newOptions = values.map<FacetOption>((value) => {
+         const count = responseFacets[algoliaFacetName][value];
          return {
-            id,
-            facetId: facetName,
+            handle: kebabCase(value),
             value,
             filteredHitCount: count,
-            totalHitCount:
-               draftState.facetValues.byId[id]?.totalHitCount || count,
+            totalHitCount: count,
          };
       });
-      const newValueIds = newValueStates.map((valueState) => valueState.id);
-      if (draftState.facets.byId[facetName] == null) {
-         draftState.facets.byId[facetName] = {
-            name: facetName,
-            valueIds: newValueIds,
-         };
-         draftState.facets.allIds.push(facetName);
+      const newOptionsByHandle = keyBy(newOptions, 'handle');
+      const facet: Facet = {
+         algoliaName: algoliaFacetName,
+         handle: facetHandle,
+         name: facetName,
+         optionsByHandle: newOptionsByHandle,
+      };
+      if (draftState.facetsByHandle[facetHandle] == null) {
+         draftState.facetsByHandle[facetHandle] = facet;
       } else {
-         draftState.facets.byId[facetName].valueIds = mergeUnique(
-            draftState.facets.byId[facetName].valueIds,
-            newValueIds
-         );
+         const draftOptionsByHandle =
+            draftState.facetsByHandle[facetHandle].optionsByHandle;
+         newOptions.forEach((option) => {
+            if (draftOptionsByHandle[option.handle] == null) {
+               draftOptionsByHandle[option.handle] = option;
+            } else {
+               draftOptionsByHandle[option.handle].filteredHitCount =
+                  option.filteredHitCount;
+            }
+         });
+         Object.keys(draftOptionsByHandle).forEach((handle) => {
+            if (newOptionsByHandle[handle] == null) {
+               draftOptionsByHandle[handle].filteredHitCount = 0;
+            }
+         });
       }
-      newValueStates.forEach((newValueState) => {
-         draftState.facetValues.byId[newValueState.id] = newValueState;
-         if (!draftState.facetValues.allIds.includes(newValueState.id)) {
-            draftState.facetValues.allIds.push(newValueState.id);
-         }
-      });
    });
-   draftState.facetValues.allIds.forEach((id) => {
-      const facetValue = draftState.facetValues.byId[id];
-      if (data.facets?.[facetValue.facetId]?.[facetValue.value] == null) {
-         facetValue.filteredHitCount = 0;
+   Object.keys(draftState.facetsByHandle).forEach((facetHandle) => {
+      const draftFacet = draftState.facetsByHandle[facetHandle];
+      if (responseFacets[draftFacet.algoliaName] == null) {
+         Object.keys(draftFacet.optionsByHandle).forEach((optionHandle) => {
+            draftFacet.optionsByHandle[optionHandle].filteredHitCount = 0;
+         });
       }
    });
+}
+
+function formatFacetName(algoliaName: string): string {
+   let name = algoliaName;
+   if (name.startsWith('options.')) {
+      name = name.replace('options.', '');
+   }
+   if (name.startsWith('named_tags.')) {
+      name = name.replace('named_tags.', '');
+   }
+   name = name.replace(/_/g, ' ');
+   name = capitalize(name);
+   return name;
 }

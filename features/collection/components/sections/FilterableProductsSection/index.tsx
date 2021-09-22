@@ -8,7 +8,7 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
    AlgoliaProvider,
    SearchState,
-   useAtomicFilters,
+   useFilters,
    useHits,
    useSearch,
 } from '@lib/algolia';
@@ -186,11 +186,11 @@ const FilterableProducts = React.memo(() => {
 function useCollectionState(): CollectionState {
    const { hits, isLoaded, isSearching } = useHits<ProductHit>();
    const [query] = useSearch();
-   const atomicFilters = useAtomicFilters();
+   const filters = useFilters();
    if (!isLoaded) {
       return CollectionState.Loading;
    }
-   const isFiltered = atomicFilters.length > 0 || query.length > 0;
+   const isFiltered = filters.length > 0 || query.length > 0;
    if (hits.length === 0) {
       if (isFiltered || isSearching) {
          return CollectionState.NoResults;
