@@ -58,7 +58,12 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                         }
                         draft.sizeMap[event.id] = event.size;
                         if (listRef.current) {
-                           listRef.current.resetAfterIndex(index);
+                           if (draft.shouldResetSizeMap) {
+                              listRef.current.resetAfterIndex(0);
+                              draft.shouldResetSizeMap = false;
+                           } else {
+                              listRef.current.resetAfterIndex(index);
+                           }
                         }
                      }
                   }
@@ -68,6 +73,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                return produce(ctx, (draft) => {
                   if (event.type === 'ITEMS_CHANGED') {
                      draft.items = event.items;
+                     draft.shouldResetSizeMap = true;
                   }
                });
             }),

@@ -8,6 +8,7 @@ export interface VirtualAccordionContext<Item = any> {
    expandedItemsIds: string[];
    toggledItemId?: string;
    toggledItemDelta?: number;
+   shouldResetSizeMap?: boolean;
 }
 
 export type VirtualAccordionEvent<Item = any> =
