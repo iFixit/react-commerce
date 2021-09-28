@@ -30,6 +30,12 @@ export function useUpdateQueryParams() {
                break;
             }
             case 'range': {
+               if (filter.min) {
+                  searchParams[`${filter.id}_min`] = String(filter.min);
+               }
+               if (filter.max) {
+                  searchParams[`${filter.id}_max`] = String(filter.max);
+               }
                break;
             }
             default:
@@ -52,7 +58,8 @@ function queryWithoutSearchStateParams(
 ) {
    const searchStateParamsList = availableFacetHandles.concat(['q', 'p']);
    const remainingParams = Object.keys(query).filter((param) => {
-      return !searchStateParamsList.includes(param);
+      const paramId = param.replace(/(_min|_max)$/, '');
+      return !searchStateParamsList.includes(paramId);
    });
    return remainingParams.reduce((params, param) => {
       params[param] = query[param];
