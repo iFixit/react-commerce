@@ -1,8 +1,8 @@
 overwrite: true
-schema: 'https://strapi.cominor.com/graphql'
-documents: 'lib/api/strapi/operations/**/*.graphql'
 generates:
    lib/api/strapi/generated/sdk.ts:
+      schema: '${NEXT_PUBLIC_STRAPI_ORIGIN}/graphql'
+      documents: 'lib/api/strapi/operations/**/*.graphql'
       plugins:
          - 'typescript'
          - 'typescript-operations'

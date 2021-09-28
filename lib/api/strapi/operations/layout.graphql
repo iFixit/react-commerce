@@ -5,7 +5,11 @@ fragment LayoutProps on Query {
       url
       currency
    }
-   storeSettings(where: $whereStoreSettings) {
+   currentStore: stores(where: $whereStoreSettings) {
+      shopifySettings {
+         storefrontDomain
+         storefrontAccessToken
+      }
       footer {
          menu1 {
             ...MenuProps

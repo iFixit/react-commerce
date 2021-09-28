@@ -153,10 +153,12 @@ export function getRangeFromFilter(filter: Filter | undefined | null) {
 export interface CreateInitialStateArgs {
    indexName: string;
    rawFilters?: string;
+   limit?: number;
 }
 export function createInitialState({
    indexName,
    rawFilters,
+   limit = 24,
 }: CreateInitialStateArgs): SearchState {
    return {
       params: {
@@ -169,7 +171,7 @@ export function createInitialState({
             rootIds: [],
             allIds: [],
          },
-         limit: 24,
+         limit,
       },
       isLoaded: false,
       isSearching: false,

@@ -4,7 +4,14 @@ import {
 } from '@assets/svg';
 import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
-import { useAtomicFilters, useHits, useSearch } from '@lib/algolia';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import {
+   AlgoliaProvider,
+   SearchState,
+   useAtomicFilters,
+   useHits,
+   useSearch,
+} from '@lib/algolia';
 import * as React from 'react';
 import { ProductHit } from '../../../types';
 import { AppliedFilters } from './AppliedFilters';
@@ -37,7 +44,31 @@ export enum CollectionState {
    NoResults = 'no-results',
 }
 
-export const FilterableProductsSection = React.memo(() => {
+export interface FilterableProductSectionProps {
+   collectionHandle: string;
+   initialSearchState: SearchState;
+   algoliaIndexName: string;
+}
+
+export function FilterableProductsSection({
+   collectionHandle,
+   initialSearchState,
+   algoliaIndexName,
+}: FilterableProductSectionProps) {
+   return (
+      <AlgoliaProvider
+         key={collectionHandle}
+         appId={ALGOLIA_APP_ID}
+         apiKey={ALGOLIA_API_KEY}
+         initialIndexName={algoliaIndexName}
+         initialState={initialSearchState}
+      >
+         <FilterableProducts />
+      </AlgoliaProvider>
+   );
+}
+
+const FilterableProducts = React.memo(() => {
    const { hits } = useHits<ProductHit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
