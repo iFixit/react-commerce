@@ -53,7 +53,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
             return produce(ctx, (draft) => {
                if (event.type === 'ITEM_SIZE_UPDATED') {
                   const index = draft.items.findIndex(
-                     (i) => i.name === event.id
+                     (i) => i.handle === event.id
                   );
                   if (index >= 0) {
                      if (event.id === draft.toggledItemId) {
@@ -91,6 +91,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                   } else {
                      draft.expandedItemsIds.push(event.id);
                   }
+                  draft.toggledItemId = event.id;
                }
             });
          }),
