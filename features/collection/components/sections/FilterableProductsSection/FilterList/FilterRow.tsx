@@ -177,12 +177,12 @@ const Row = React.memo(
                                  facetHandle={facet.handle}
                                  multiple
                                  sortItems={sortByPriceRange}
-                                 renderItem={(item, index, list) => {
+                                 renderItem={(item) => {
                                     const [min, max] = parseRange(item.value);
-                                    if (index === 0) {
+                                    if (item.isRangeStart) {
                                        return `Under $${max}`;
                                     }
-                                    if (index === list.length - 1) {
+                                    if (item.isRangeEnd) {
                                        return `$${min} +`;
                                     }
                                     return `$${min} - $${max}`;

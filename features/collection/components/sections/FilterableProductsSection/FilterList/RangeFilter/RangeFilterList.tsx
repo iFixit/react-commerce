@@ -8,12 +8,13 @@ export type RangeFilterListProps = {
    facetHandle: string;
    multiple?: boolean;
    sortItems?(a: FacetOption, b: FacetOption): number;
-   renderItem?(
-      item: FacetOption,
-      index: number,
-      list: FacetOption[]
-   ): React.ReactNode;
+   renderItem?(item: RangeItem): React.ReactNode;
 };
+
+interface RangeItem extends FacetOption {
+   isRangeStart: boolean;
+   isRangeEnd: boolean;
+}
 
 export function RangeFilterList({
    facetHandle,
@@ -26,15 +27,30 @@ export function RangeFilterList({
    const { selectedOptions, toggle, set } = useFacetFilter(facetHandle);
    useRegisterFacet(facetHandle);
 
-   const facetOptions = React.useMemo(() => {
-      return facet.options.allIds.map((id) => facet.options.byId[id]);
+   const facetOptions = React.useMemo<RangeItem[]>(() => {
+      return facet.options.allIds.map<RangeItem>((id, index) => {
+         return {
+            ...facet.options.byId[id],
+            isRangeStart: index === 0,
+            isRangeEnd: index === facet.options.allIds.length - 1,
+         };
+      });
    }, [facet.options]);
 
    const filteredOptions = React.useMemo(() => {
-      return facetOptions
-         .filter((option) => option.filteredHitCount > 0)
-         .sort(sortItems);
-   }, [facetOptions, sortItems]);
+      return facetOptions.filter((option) => option.filteredHitCount > 0);
+   }, [facetOptions]);
+   // const items = React.useMemo<RangeItem[]>(() => {
+   //    return values
+   //       .slice()
+   //       .map<RangeItem>((value, index) => ({
+   //          ...value,
+   //          isRangeStart: index === 0,
+   //          isRangeEnd: index === values.length - 1,
+   //       }))
+   //       .filter((value) => value.filteredHitCount > 0)
+   //       .sort(sortItems);
+   // }, [facetOptions, sortItems]);
 
    const handleChange = React.useCallback(
       (name: string) => {
@@ -49,7 +65,7 @@ export function RangeFilterList({
 
    return (
       <VStack align="flex-start">
-         {filteredOptions.map((option, index) => {
+         {filteredOptions.map((option) => {
             if (multiple) {
                return (
                   <FilterCheckbox
@@ -58,9 +74,7 @@ export function RangeFilterList({
                      isChecked={selectedOptions.includes(option.handle)}
                      onChange={handleChange}
                   >
-                     {renderItem
-                        ? renderItem(option, index, facetOptions)
-                        : option.value}
+                     {renderItem ? renderItem(option) : option.value}
                   </FilterCheckbox>
                );
             }
@@ -78,9 +92,7 @@ export function RangeFilterList({
                   }}
                >
                   <Text fontSize="sm">
-                     {renderItem
-                        ? renderItem(option, index, facetOptions)
-                        : option.value}
+                     {renderItem ? renderItem(option) : option.value}
                   </Text>
                </Radio>
             );

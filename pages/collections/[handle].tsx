@@ -134,8 +134,14 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   }
                   return null;
                }
-               default:
-                  return assertNever(section);
+               default: {
+                  try {
+                     return assertNever(section);
+                  } catch (error) {
+                     // Avoid breaking production when working on a new section type
+                     return null;
+                  }
+               }
             }
          })}
       </Page>
