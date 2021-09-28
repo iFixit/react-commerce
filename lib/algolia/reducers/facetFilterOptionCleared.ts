@@ -5,7 +5,7 @@ export function facetFilterOptionCleared(
    draft: Draft<SearchState>,
    action: FacetFilterOptionClearedAction
 ) {
-   const draftFilter = draft.params.filtersByName[action.filterId];
+   const draftFilter = draft.params.filters.byId[action.filterId];
    if (
       draftFilter &&
       draftFilter.type === 'facet' &&
@@ -14,7 +14,10 @@ export function facetFilterOptionCleared(
       draft.isSearching = true;
       draft.params.page = 1;
       if (draftFilter.selectedOptions.length === 1) {
-         delete draft.params.filtersByName[action.filterId];
+         draft.params.filters.allIds = draft.params.filters.allIds.filter(
+            (id) => id !== action.filterId
+         );
+         delete draft.params.filters.byId[action.filterId];
       } else {
          draftFilter.selectedOptions = draftFilter.selectedOptions.filter(
             (option) => option !== action.optionHandle

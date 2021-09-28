@@ -73,11 +73,11 @@ function FacetTags({ facetHandle }: FacetTagsProps) {
 
    return (
       <>
-         {filter.selectedOptions.map((optionHandle) => {
+         {filter.selectedOptions.map((optionId) => {
             return (
-               <WrapItem key={optionHandle}>
-                  <FilterTag onClear={() => filter.clear(optionHandle)}>
-                     {facet.name}: {facet.optionsByHandle[optionHandle].value}
+               <WrapItem key={optionId}>
+                  <FilterTag onClear={() => filter.clear(optionId)}>
+                     {facet.name}: {facet.options.byId[optionId].value}
                   </FilterTag>
                </WrapItem>
             );

@@ -9,5 +9,6 @@ export * from './useFacets';
 export * from './useClearFilter';
 export * from './useFilters';
 export * from './useUpdateQueryParams';
-export * from './search';
+export * from './client';
 export * from './types';
+export { createSearchState } from './utils';

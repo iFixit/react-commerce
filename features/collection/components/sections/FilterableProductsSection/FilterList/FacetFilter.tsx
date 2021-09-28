@@ -26,10 +26,8 @@ export function FacetFilter({
    const { selectedOptions, toggle, set } = useFacetFilter(facetHandle);
 
    const facetOptions = React.useMemo(() => {
-      return Object.keys(facet.optionsByHandle).map(
-         (handle) => facet.optionsByHandle[handle]
-      );
-   }, [facet.optionsByHandle]);
+      return facet.options.allIds.map((id) => facet.options.byId[id]);
+   }, [facet.options]);
 
    const filteredOptions = React.useMemo(() => {
       return facetOptions

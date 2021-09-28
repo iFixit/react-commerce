@@ -1,3 +1,5 @@
+import { ObjectLiteral } from '@lib/utils';
+
 export interface SearchState<Hit = any> {
    params: SearchParams;
    numberOfPages?: number;
@@ -5,7 +7,7 @@ export interface SearchState<Hit = any> {
    isSearching: boolean;
    numberOfHits?: number;
    hits: Entity<Hit>;
-   facetsByHandle: Record<string, Facet>;
+   facets: Entity<Facet>;
 }
 
 export interface SearchParams {
@@ -13,11 +15,10 @@ export interface SearchParams {
    query: string;
    page: number;
    limit?: number;
-   rawFilters?: string;
-   filtersByName: Record<string, Filter>;
+   filters: Entity<Filter> & {
+      preset?: string;
+   };
 }
-
-type ObjectLiteral = { [key: string]: any };
 
 export type Entity<Type = any, Extension = ObjectLiteral> = {
    byId: Record<string, Type>;
@@ -28,7 +29,7 @@ export interface Facet {
    handle: string;
    name: string;
    algoliaName: string;
-   optionsByHandle: Record<string, FacetOption>;
+   options: Entity<FacetOption>;
 }
 
 export interface FacetOption {

@@ -4,7 +4,13 @@ import kebabCase from 'lodash/kebabCase';
 import keyBy from 'lodash/keyBy';
 import snakeCase from 'lodash/snakeCase';
 import * as React from 'react';
-import { Facet, FacetOption, SearchResponse, SearchState } from './types';
+import {
+   Facet,
+   FacetOption,
+   SearchParams,
+   SearchResponse,
+   SearchState,
+} from './types';
 
 export function useDebounce<Value = any>(value: Value, delay: number): Value {
    const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -21,23 +27,19 @@ export function useDebounce<Value = any>(value: Value, delay: number): Value {
    return debouncedValue;
 }
 
-export interface CreateInitialStateArgs {
-   indexName: string;
-   rawFilters?: string;
-   limit?: number;
-}
 export function createInitialState({
    indexName,
-   rawFilters,
+   filters = { byId: {}, allIds: [] },
    limit = 24,
-}: CreateInitialStateArgs): SearchState {
+   page = 1,
+   query = '',
+}: Partial<SearchParams> & { indexName: string }): SearchState {
    return {
       params: {
          indexName,
-         rawFilters,
-         query: '',
-         page: 1,
-         filtersByName: {},
+         filters,
+         query,
+         page,
          limit,
       },
       isLoaded: false,
@@ -46,24 +48,22 @@ export function createInitialState({
          byId: {},
          allIds: [],
       },
-      facetsByHandle: {},
+      facets: {
+         allIds: [],
+         byId: {},
+      },
    };
 }
 
-export interface CreateSearchStateParams {
-   indexName: string;
-   rawFilters?: string;
-}
 export function createSearchState<Hit = any>(
-   params: CreateSearchStateParams,
-   searchResponse: SearchResponse
+   params: Partial<SearchParams> & { indexName: string },
+   response?: SearchResponse
 ): SearchState<Hit> {
-   const initialState = createInitialState({
-      indexName: params.indexName,
-      rawFilters: params.rawFilters,
-   });
-   const producer = produce(updateSearchStateRecipe);
-   const state = producer(initialState, searchResponse);
+   let state = createInitialState(params);
+   if (response) {
+      const producer = produce(updateSearchStateRecipe);
+      state = producer(state, response);
+   }
    return state;
 }
 
@@ -85,7 +85,7 @@ export function updateSearchStateRecipe(
    const newFacetNames = Object.keys(responseFacets);
    newFacetNames.forEach((algoliaFacetName) => {
       const facetName = formatFacetName(algoliaFacetName);
-      const facetHandle = snakeCase(facetName);
+      const facetId = snakeCase(facetName);
       const values = Object.keys(responseFacets[algoliaFacetName]);
       const newOptions = values.map<FacetOption>((value) => {
          const count = responseFacets[algoliaFacetName][value];
@@ -99,35 +99,38 @@ export function updateSearchStateRecipe(
       const newOptionsByHandle = keyBy(newOptions, 'handle');
       const facet: Facet = {
          algoliaName: algoliaFacetName,
-         handle: facetHandle,
+         handle: facetId,
          name: facetName,
-         optionsByHandle: newOptionsByHandle,
+         options: {
+            allIds: Object.keys(newOptionsByHandle),
+            byId: newOptionsByHandle,
+         },
       };
-      if (draftState.facetsByHandle[facetHandle] == null) {
-         draftState.facetsByHandle[facetHandle] = facet;
+      if (draftState.facets.byId[facetId] == null) {
+         draftState.facets.allIds.push(facetId);
+         draftState.facets.byId[facetId] = facet;
       } else {
-         const draftOptionsByHandle =
-            draftState.facetsByHandle[facetHandle].optionsByHandle;
+         const draftOptionsById = draftState.facets.byId[facetId].options.byId;
          newOptions.forEach((option) => {
-            if (draftOptionsByHandle[option.handle] == null) {
-               draftOptionsByHandle[option.handle] = option;
+            if (draftOptionsById[option.handle] == null) {
+               draftOptionsById[option.handle] = option;
             } else {
-               draftOptionsByHandle[option.handle].filteredHitCount =
+               draftOptionsById[option.handle].filteredHitCount =
                   option.filteredHitCount;
             }
          });
-         Object.keys(draftOptionsByHandle).forEach((handle) => {
+         Object.keys(draftOptionsById).forEach((handle) => {
             if (newOptionsByHandle[handle] == null) {
-               draftOptionsByHandle[handle].filteredHitCount = 0;
+               draftOptionsById[handle].filteredHitCount = 0;
             }
          });
       }
    });
-   Object.keys(draftState.facetsByHandle).forEach((facetHandle) => {
-      const draftFacet = draftState.facetsByHandle[facetHandle];
+   draftState.facets.allIds.forEach((facetHandle) => {
+      const draftFacet = draftState.facets.byId[facetHandle];
       if (responseFacets[draftFacet.algoliaName] == null) {
-         Object.keys(draftFacet.optionsByHandle).forEach((optionHandle) => {
-            draftFacet.optionsByHandle[optionHandle].filteredHitCount = 0;
+         draftFacet.options.allIds.forEach((optionHandle) => {
+            draftFacet.options.byId[optionHandle].filteredHitCount = 0;
          });
       }
    });

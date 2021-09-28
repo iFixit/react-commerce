@@ -6,10 +6,10 @@ export function useFacets() {
    const state = useSearchStateContext();
 
    const facets = React.useMemo<Facet[]>(() => {
-      return Object.keys(state.facetsByHandle).map((facetHandle) => {
-         return state.facetsByHandle[facetHandle];
+      return state.facets.allIds.map((id) => {
+         return state.facets.byId[id];
       });
-   }, [state.facetsByHandle]);
+   }, [state.facets]);
 
    return { facets, isSearching: state.isSearching };
 }

@@ -1,6 +1,6 @@
 import { VStack } from '@chakra-ui/react';
 import { Layout } from '@components/Layout';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, STRAPI_ORIGIN } from '@config/env';
+import { STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
    FeaturedCollectionSection,
@@ -18,28 +18,21 @@ import {
    RelatedPostsSection,
    SubcategoriesSection,
 } from '@features/collection';
-import { search, SearchState } from '@lib/algolia';
 import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
 import { assertNever } from '@lib/utils';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 
 interface CollectionPageProps {
    collection: CollectionData;
    layout: LayoutData;
-   initialSearchState: SearchState;
 }
 
 const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
 
-export default function CollectionPage({
-   collection,
-   initialSearchState,
-}: CollectionPageProps) {
+export default function CollectionPage({ collection }: CollectionPageProps) {
    const hasDescription =
       collection.description != null && collection.description.length > 0;
-   const router = useRouter();
 
    return (
       <Page>
@@ -84,7 +77,7 @@ export default function CollectionPage({
          )}
          <FilterableProductsSection
             collectionHandle={collection.handle}
-            initialSearchState={initialSearchState}
+            initialSearchState={collection.searchState}
             algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
          />
          {collection.sections.map((section, index) => {
@@ -182,6 +175,8 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
    const pageData = await fetchCollectionPageData({
       collectionHandle: handle,
       storeCode: 'us',
+      algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
+      urlQuery: context.query,
    });
 
    if (pageData == null || pageData.collection == null) {
@@ -189,26 +184,11 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
          notFound: true,
       };
    }
-   const { collection, layout } = pageData;
-   const initialRawFilters = collection.filtersPreset
-      ? collection.filtersPreset
-      : `collections:${handle}`;
-
-   const initialSearchState = await search({
-      appId: ALGOLIA_APP_ID,
-      apiKey: ALGOLIA_API_KEY,
-      params: {
-         indexName: ALGOLIA_DEFAULT_INDEX_NAME,
-         query: '',
-         rawFilters: initialRawFilters,
-      },
-   });
 
    return {
       props: {
-         collection,
-         layout,
-         initialSearchState,
+         collection: pageData.collection,
+         layout: pageData.layout,
       },
    };
 };

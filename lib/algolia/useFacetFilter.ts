@@ -19,12 +19,12 @@ export function useFacetFilter(facetHandle: string): UseFacetFilter {
    const dispatch = useSearchDispatchContext();
 
    const selectedOptions = React.useMemo(() => {
-      const filter = state.params.filtersByName[facetHandle];
+      const filter = state.params.filters.byId[facetHandle];
       if (filter && filter.type === 'facet') {
          return filter.selectedOptions;
       }
       return [];
-   }, [facetHandle, state.params.filtersByName]);
+   }, [facetHandle, state.params.filters.byId]);
 
    const add = React.useCallback<UseFacetFilter['add']>(
       (optionHandle, options) => {

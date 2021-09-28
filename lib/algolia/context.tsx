@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { getAlgoliaFiltersString } from './getAlgoliaFiltersString';
 import { reducer } from './reducers';
-import { useFiltersQueryString } from './useFiltersQueryString';
 import { SearchAction, SearchActionType, SearchState } from './types';
 import { useAlgoliaClient } from './useAlgoliaClient';
 import { useAlgoliaIndex } from './useAlgoliaIndex';
@@ -14,7 +14,7 @@ export interface AlgoliaProviderProps<Hit = any> {
    appId: string;
    apiKey: string;
    initialIndexName: string;
-   initialRawFilters?: string;
+   filtersPreset?: string;
    productsPerPage?: number;
    initialState?: Partial<SearchState<Hit>>;
 }
@@ -30,20 +30,24 @@ export function AlgoliaProvider(
       appId,
       apiKey,
       initialIndexName,
-      initialRawFilters,
+      filtersPreset,
       productsPerPage,
    } = props;
    const [state, dispatch] = React.useReducer(reducer, {
       ...createInitialState({
          indexName: initialIndexName,
-         rawFilters: initialRawFilters,
+         filters: {
+            allIds: [],
+            byId: {},
+            preset: filtersPreset,
+         },
          limit: productsPerPage,
       }),
       ...props.initialState,
    });
    const client = useAlgoliaClient(appId, apiKey);
    const index = useAlgoliaIndex(client, state.params.indexName);
-   const filters = useFiltersQueryString(state);
+   const filters = getAlgoliaFiltersString(state);
 
    React.useEffect(() => {
       index

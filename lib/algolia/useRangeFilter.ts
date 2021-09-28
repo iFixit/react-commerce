@@ -20,9 +20,9 @@ export function useRangeFilter(facetHandle: string): UseRangeFilter {
    const dispatch = useSearchDispatchContext();
 
    const rangeFilter = React.useMemo(() => {
-      const filter = state.params.filtersByName[facetHandle];
+      const filter = state.params.filters.byId[facetHandle];
       return filter && filter.type === 'range' ? filter : null;
-   }, [facetHandle, state.params.filtersByName]);
+   }, [facetHandle, state.params.filters.byId]);
 
    const set = React.useCallback<UseRangeFilter['set']>(
       (min, max, options) => {

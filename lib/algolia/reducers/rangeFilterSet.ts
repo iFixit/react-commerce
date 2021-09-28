@@ -9,11 +9,14 @@ export function rangeFilterSet(
       return;
    }
 
-   const draftFilter = draft.params.filtersByName[action.filterId];
+   const draftFilter = draft.params.filters.byId[action.filterId];
    if (draftFilter == null || draftFilter.type !== 'range') {
+      if (draftFilter == null) {
+         draft.params.filters.allIds.push(action.filterId);
+      }
       draft.isSearching = true;
       draft.params.page = 1;
-      draft.params.filtersByName[action.filterId] = {
+      draft.params.filters.byId[action.filterId] = {
          id: action.filterId,
          type: 'range',
          min: action.min,

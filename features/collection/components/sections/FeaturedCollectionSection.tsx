@@ -127,7 +127,7 @@ export function FeaturedCollectionSection({
                   appId={ALGOLIA_APP_ID}
                   apiKey={ALGOLIA_API_KEY}
                   initialIndexName={algoliaIndexName}
-                  initialRawFilters={`collections:${handle}`}
+                  filtersPreset={`collections:${handle}`}
                   productsPerPage={3}
                >
                   <ProductList />

@@ -1,11 +1,23 @@
-import { Awaited, filterNullableItems } from '@lib/utils';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ProductHit } from '@features/collection';
+import {
+   AlgoliaClient,
+   createSearchState,
+   Filter,
+   SearchState,
+} from '@lib/algolia';
+import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
+import produce from 'immer';
+import { ParsedUrlQuery } from 'querystring';
 import { getLayoutProps } from '../layout';
 import { strapi } from '../strapi';
 import { getImageFromStrapiImage } from '../utils';
 
 interface FetchCollectionPageDataOptions {
    collectionHandle: string;
+   algoliaIndexName: string;
    storeCode: string;
+   urlQuery: ParsedUrlQuery;
 }
 
 export async function fetchCollectionPageData(
@@ -21,6 +33,13 @@ export async function fetchCollectionPageData(
    if (collection == null) {
       return null;
    }
+   const filtersPreset =
+      collection.filters ?? `collections:${options.collectionHandle}`;
+   const searchState = await loadCollectionSearchState({
+      indexName: options.algoliaIndexName,
+      filtersPreset,
+      query: options.urlQuery,
+   });
    return {
       ...getLayoutProps(result),
       collection: {
@@ -38,6 +57,7 @@ export async function fetchCollectionPageData(
             };
          }),
          sections: filterNullableItems(collection.sections),
+         searchState,
       },
    };
 }
@@ -67,5 +87,67 @@ function getAncestors(parent: StrapiCollection['parent']): Ancestor[] {
    return ancestors.concat({
       handle: parent.handle,
       title: parent.title,
+   });
+}
+
+interface LoadCollectionSearchStateArgs {
+   indexName: string;
+   query: ParsedUrlQuery;
+   filtersPreset: string;
+}
+
+async function loadCollectionSearchState({
+   indexName,
+   query,
+   filtersPreset,
+}: LoadCollectionSearchStateArgs): Promise<SearchState<ProductHit>> {
+   const client = new AlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+
+   const page = typeof query.p === 'string' ? parseInt(query.p, 10) : undefined;
+
+   let state = createSearchState<ProductHit>({
+      indexName,
+      query: '',
+      page: Number.isNaN(page) ? 1 : page,
+      filters: {
+         allIds: [],
+         byId: {},
+         preset: filtersPreset,
+      },
+      limit: 24,
+   });
+
+   state = await client.search<ProductHit>(state);
+   const filters = getFiltersFromUrlQuery(state, query);
+   if (filters.length > 0) {
+      state = await client.search<ProductHit>(applyFilters(state, filters));
+   }
+   return state;
+}
+
+function getFiltersFromUrlQuery(
+   state: SearchState,
+   query: ParsedUrlQuery
+): Filter[] {
+   const filterHandles = Object.keys(query).filter(
+      (paramKey) =>
+         state.facets.allIds.includes(paramKey) && query[paramKey] != null
+   );
+   return filterHandles.map<Filter>((handle) => {
+      const filterValue = query[handle]!;
+      return {
+         id: handle,
+         type: 'facet',
+         selectedOptions: Array.isArray(filterValue)
+            ? filterValue
+            : [filterValue],
+      };
+   });
+}
+
+function applyFilters(state: SearchState, filters: Filter[]): SearchState {
+   return produce(state, (draft) => {
+      draft.params.filters.allIds = filters.map((filter) => filter.id);
+      draft.params.filters.byId = keyBy(filters, 'id');
    });
 }

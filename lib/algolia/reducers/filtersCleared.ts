@@ -6,11 +6,16 @@ export function filtersCleared(
    action: FiltersClearedAction
 ) {
    draft.params.page = 1;
-   if (action.filterIds == null) {
-      draft.params.filtersByName = {};
+   const { filterIds: removedIds } = action;
+   if (removedIds == null) {
+      draft.params.filters.byId = {};
+      draft.params.filters.allIds = [];
    } else {
-      action.filterIds.forEach((filterId) => {
-         delete draft.params.filtersByName[filterId];
+      draft.params.filters.allIds = draft.params.filters.allIds.filter(
+         (id) => !removedIds.includes(id)
+      );
+      removedIds.forEach((filterId) => {
+         delete draft.params.filters.byId[filterId];
       });
    }
 }

@@ -5,5 +5,8 @@ export function facetFilterAllOptionsCleared(
    draft: Draft<SearchState>,
    action: FacetFilterAllOptionsClearedAction
 ) {
-   delete draft.params.filtersByName[action.filterId];
+   draft.params.filters.allIds = draft.params.filters.allIds.filter(
+      (id) => id !== action.filterId
+   );
+   delete draft.params.filters.byId[action.filterId];
 }

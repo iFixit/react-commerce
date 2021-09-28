@@ -7,13 +7,14 @@ export function facetFilterOptionAdded(
 ) {
    draft.isSearching = true;
    draft.params.page = 1;
-   const draftFilter = draft.params.filtersByName[action.filterId];
+   const draftFilter = draft.params.filters.byId[action.filterId];
    if (draftFilter == null || draftFilter.type !== 'facet') {
-      draft.params.filtersByName[action.filterId] = {
+      draft.params.filters.byId[action.filterId] = {
          type: 'facet',
          id: action.filterId,
          selectedOptions: [action.optionHandle],
       };
+      draft.params.filters.allIds.push(action.filterId);
    } else {
       draftFilter.selectedOptions.push(action.optionHandle);
    }

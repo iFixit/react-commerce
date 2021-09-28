@@ -1,15 +1,15 @@
 import { assertNever } from '@lib/utils';
 import { SearchState } from './types';
 
-export function useFiltersQueryString(state: SearchState) {
-   const filters = Object.keys(state.params.filtersByName).map((filterName) => {
-      const filter = state.params.filtersByName[filterName];
+export function getAlgoliaFiltersString(state: SearchState) {
+   const algoliaFilters = state.params.filters.allIds.map((filterId) => {
+      const filter = state.params.filters.byId[filterId];
       switch (filter.type) {
          case 'facet': {
-            const facet = state.facetsByHandle[filter.id];
+            const facet = state.facets.byId[filter.id];
             const algoliaName = facet.algoliaName;
             const facetQueries = filter.selectedOptions.map((optionHandle) => {
-               const algoliaValue = facet.optionsByHandle[optionHandle].value;
+               const algoliaValue = facet.options.byId[optionHandle].value;
                return `"${algoliaName}":"${algoliaValue}"`;
             });
             if (facetQueries.length === 1) {
@@ -18,7 +18,7 @@ export function useFiltersQueryString(state: SearchState) {
             return `(${facetQueries.join(' OR ')})`;
          }
          case 'range': {
-            const facet = state.facetsByHandle[filter.id];
+            const facet = state.facets.byId[filter.id];
             const algoliaName = facet.algoliaName;
             if (filter.min == null) {
                return `"${algoliaName}" <= ${filter.max}`;
@@ -32,11 +32,11 @@ export function useFiltersQueryString(state: SearchState) {
             return assertNever(filter);
       }
    });
-   if (state.params.rawFilters) {
-      filters.unshift(state.params.rawFilters);
+   if (state.params.filters.preset) {
+      algoliaFilters.unshift(state.params.filters.preset);
    }
-   if (filters.length > 0) {
-      return filters.join(' AND ');
+   if (algoliaFilters.length > 0) {
+      return algoliaFilters.join(' AND ');
    }
    return undefined;
 }

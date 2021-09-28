@@ -32,12 +32,12 @@ export const FilterRow = React.memo(function FilterRow({
    const facet = state.context.items[index];
 
    const filteredOptionsCount = React.useMemo(() => {
-      const facetOptions = Object.keys(facet.optionsByHandle).map(
-         (handle) => facet.optionsByHandle[handle]
+      const facetOptions = facet.options.allIds.map(
+         (id) => facet.options.byId[id]
       );
       return facetOptions.filter((option) => option.filteredHitCount > 0)
          .length;
-   }, [facet.optionsByHandle]);
+   }, [facet.options]);
 
    const isExpanded = state.context.expandedItemsIds.includes(facet.handle);
    const toggledIndex = React.useMemo(() => {

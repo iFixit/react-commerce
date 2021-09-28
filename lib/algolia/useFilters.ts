@@ -6,10 +6,10 @@ export function useFilters(): Filter[] {
    const searchState = useSearchStateContext();
 
    const filters = React.useMemo(() => {
-      return Object.keys(searchState.params.filtersByName).map(
-         (name) => searchState.params.filtersByName[name]
+      return searchState.params.filters.allIds.map(
+         (id) => searchState.params.filters.byId[id]
       );
-   }, [searchState.params.filtersByName]);
+   }, [searchState.params.filters]);
 
    return filters;
 }

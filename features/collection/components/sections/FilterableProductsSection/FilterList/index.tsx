@@ -199,12 +199,12 @@ function useFilteredFacets() {
 function isUsefulFacet(facet: Facet): boolean {
    return (
       !FACET_BLOCKLIST.includes(facet.algoliaName) &&
-      Object.keys(facet.optionsByHandle).length > 1
+      facet.options.allIds.length > 1
    );
 }
 
 function hasMatchingOptions(facet: Facet): boolean {
-   return Object.keys(facet.optionsByHandle).some(
-      (handle) => facet.optionsByHandle[handle].filteredHitCount > 0
+   return facet.options.allIds.some(
+      (id) => facet.options.byId[id].filteredHitCount > 0
    );
 }
