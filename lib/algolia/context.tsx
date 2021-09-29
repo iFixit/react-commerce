@@ -13,7 +13,6 @@ export interface AlgoliaProviderProps<Hit = any> {
    filtersPreset?: string;
    productsPerPage?: number;
    initialContext?: SearchContext<Hit>;
-   onContextChange?: (context: SearchContext<Hit>) => void;
 }
 
 export type SearchServiceContext<Hit = any> = StateMachine.Service<
@@ -41,7 +40,6 @@ export function AlgoliaProvider({
       },
       limit: productsPerPage,
    }),
-   onContextChange,
    children,
 }: React.PropsWithChildren<AlgoliaProviderProps>) {
    const client = useAlgoliaClient(appId, apiKey);
@@ -210,9 +208,6 @@ export function AlgoliaProvider({
                      error: error.message,
                   });
                });
-         },
-         onSearchContextChange: (ctx) => {
-            onContextChange?.(ctx);
          },
       },
    });

@@ -56,7 +56,6 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
                   const index = draft.items.findIndex(
                      (i) => i.handle === event.id
                   );
-                  console.log('item size updated', index, event.id, event.size);
                   if (index >= 0) {
                      if (event.id === draft.toggledItemId) {
                         draft.toggledItemDelta =
@@ -115,7 +114,6 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
 
    React.useEffect(() => {
       if (!isEqual(state.context.items, facets)) {
-         console.log('facets changed', facets);
          send({
             type: 'ITEMS_CHANGED',
             items: facets,
@@ -130,12 +128,6 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
 
    const getSize = React.useCallback(
       (index: number): number => {
-         console.log(
-            'getSize',
-            index,
-            state.context.items[index].handle,
-            state.context.sizeMap[state.context.items[index].handle]
-         );
          return (
             state.context.sizeMap[state.context.items[index].handle] ||
             DEFAULT_ROW_HEIGHT

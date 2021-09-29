@@ -1,11 +1,11 @@
 import { Radio, Text, VStack } from '@chakra-ui/react';
-import { FacetOption, useFacetFilter, useFacet } from '@lib/algolia';
+import { Facet, FacetOption, useFacetFilter } from '@lib/algolia';
 import * as React from 'react';
 import { FilterCheckbox } from '../FilterCheckbox';
 import { useRangeFilterContext, useRegisterFacet } from './context';
 
 export type RangeFilterListProps = {
-   facetHandle: string;
+   facet: Facet;
    multiple?: boolean;
    sortItems?(a: FacetOption, b: FacetOption): number;
    renderItem?(item: RangeItem): React.ReactNode;
@@ -17,15 +17,14 @@ interface RangeItem extends FacetOption {
 }
 
 export function RangeFilterList({
-   facetHandle,
+   facet,
    multiple = false,
    renderItem,
    sortItems = defaultSortItems,
 }: RangeFilterListProps) {
    const { getFacetHandles } = useRangeFilterContext();
-   const facet = useFacet(facetHandle);
-   const { selectedOptions, toggle, set } = useFacetFilter(facetHandle);
-   useRegisterFacet(facetHandle);
+   const { selectedOptions, toggle, set } = useFacetFilter(facet.handle);
+   useRegisterFacet(facet.handle);
 
    const facetOptions = React.useMemo<RangeItem[]>(() => {
       return facet.options.allIds
@@ -50,11 +49,11 @@ export function RangeFilterList({
       (name: string) => {
          const facetNames = getFacetHandles();
          const facetToBeCleared = facetNames.filter(
-            (name) => name !== facetHandle
+            (name) => name !== facet.handle
          );
          toggle(name, { clearFacets: facetToBeCleared });
       },
-      [facetHandle, getFacetHandles, toggle]
+      [facet.handle, getFacetHandles, toggle]
    );
 
    return (
@@ -80,7 +79,7 @@ export function RangeFilterList({
                   onChange={() => {
                      const facetNames = getFacetHandles();
                      const facetToBeCleared = facetNames.filter(
-                        (name) => name !== facetHandle
+                        (name) => name !== facet.handle
                      );
                      set(option.handle, { clearFacets: facetToBeCleared });
                   }}

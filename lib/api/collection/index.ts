@@ -39,7 +39,7 @@ export async function fetchCollectionPageData(
    const searchContext = await loadCollectionSearchContext({
       indexName: options.algoliaIndexName,
       filtersPreset,
-      query: options.urlQuery,
+      urlQuery: options.urlQuery,
    });
    return {
       ...getLayoutProps(result),
@@ -93,18 +93,20 @@ function getAncestors(parent: StrapiCollection['parent']): Ancestor[] {
 
 interface LoadCollectionSearchStateArgs {
    indexName: string;
-   query: ParsedUrlQuery;
+   urlQuery: ParsedUrlQuery;
    filtersPreset: string;
 }
 
 async function loadCollectionSearchContext({
    indexName,
-   query,
+   urlQuery,
    filtersPreset,
 }: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit>> {
    const client = new AlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
-   const page = typeof query.p === 'string' ? parseInt(query.p, 10) : undefined;
+   const query = typeof urlQuery.q === 'string' ? urlQuery.q : '';
+   const page =
+      typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : undefined;
 
    let context = createSearchContext<ProductHit>({
       indexName,
@@ -119,18 +121,22 @@ async function loadCollectionSearchContext({
    });
 
    context = await client.search<ProductHit>(context);
-   const filters = parseFiltersFromUrlQuery(context, query);
-   if (filters.length > 0) {
-      context = await client.search<ProductHit>(applyFilters(context, filters));
+   const filters = parseFiltersFromUrlQuery(context, urlQuery);
+   if (filters.length > 0 || query.length > 0) {
+      context = await client.search<ProductHit>(
+         applyFilters(context, filters, query)
+      );
    }
    return context;
 }
 
 function applyFilters(
    context: SearchContext,
-   filters: Filter[]
+   filters: Filter[],
+   query: string
 ): SearchContext {
    return produce(context, (draftContext) => {
+      draftContext.params.query = query;
       draftContext.params.filters.allIds = filters.map((filter) => filter.id);
       draftContext.params.filters.byId = keyBy(filters, 'id');
    });

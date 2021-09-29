@@ -84,11 +84,11 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
             },
          },
          search: {
-            entry: ['search', 'onSearchContextChange'],
+            entry: ['search'],
             on: {
                SEARCH_CONTEXT_UPDATE: {
                   target: 'idle',
-                  actions: ['updateSearchContext', 'onSearchContextChange'],
+                  actions: ['updateSearchContext'],
                },
                SEARCH_FAILED: {
                   target: 'error',

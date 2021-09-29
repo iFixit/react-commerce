@@ -1,10 +1,10 @@
 import { Radio, Text, VStack } from '@chakra-ui/react';
-import { FacetOption, useFacetFilter, useFacet } from '@lib/algolia';
+import { Facet, FacetOption, useFacetFilter } from '@lib/algolia';
 import * as React from 'react';
 import { FilterCheckbox } from './FilterCheckbox';
 
 export type FacetFilterProps = {
-   facetHandle: string;
+   facet: Facet;
    multiple?: boolean;
    showAllValues?: boolean;
    sortItems?(a: FacetOption, b: FacetOption): number;
@@ -16,14 +16,13 @@ export type FacetFilterProps = {
 };
 
 export function FacetFilter({
-   facetHandle,
+   facet,
    multiple = false,
    showAllValues = false,
    renderItem,
    sortItems = defaultSortItems,
 }: FacetFilterProps) {
-   const facet = useFacet(facetHandle);
-   const { selectedOptions, toggle, set } = useFacetFilter(facetHandle);
+   const { selectedOptions, toggle, set } = useFacetFilter(facet.handle);
 
    const facetOptions = React.useMemo(() => {
       return facet.options.allIds.map((id) => facet.options.byId[id]);

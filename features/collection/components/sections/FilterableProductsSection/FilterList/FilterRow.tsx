@@ -29,6 +29,7 @@ export const FilterRow = React.memo(function FilterRow({
 }: FilterRowProps) {
    const rowRef = React.useRef<HTMLElement | null>(null);
    const [state, send] = data;
+
    const facet = state.context.items[index];
 
    const filteredOptionsCount = React.useMemo(() => {
@@ -174,7 +175,7 @@ const Row = React.memo(
                         <>
                            <RangeFilter>
                               <RangeFilterList
-                                 facetHandle={facet.handle}
+                                 facet={facet}
                                  multiple
                                  sortItems={sortByPriceRange}
                                  renderItem={(item) => {
@@ -201,7 +202,7 @@ const Row = React.memo(
                         <>
                            <FacetFilter
                               key={facet.handle}
-                              facetHandle={facet.handle}
+                              facet={facet}
                               multiple
                               showAllValues={showAllFacetValues}
                            />
