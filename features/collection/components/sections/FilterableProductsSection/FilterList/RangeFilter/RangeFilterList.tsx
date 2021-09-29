@@ -28,29 +28,23 @@ export function RangeFilterList({
    useRegisterFacet(facetHandle);
 
    const facetOptions = React.useMemo<RangeItem[]>(() => {
-      return facet.options.allIds.map<RangeItem>((id, index) => {
-         return {
-            ...facet.options.byId[id],
-            isRangeStart: index === 0,
-            isRangeEnd: index === facet.options.allIds.length - 1,
-         };
-      });
-   }, [facet.options]);
+      return facet.options.allIds
+         .slice()
+         .sort((aId, bId) =>
+            sortItems(facet.options.byId[aId], facet.options.byId[bId])
+         )
+         .map<RangeItem>((id, index) => {
+            return {
+               ...facet.options.byId[id],
+               isRangeStart: index === 0,
+               isRangeEnd: index === facet.options.allIds.length - 1,
+            };
+         });
+   }, [facet.options.allIds, facet.options.byId, sortItems]);
 
    const filteredOptions = React.useMemo(() => {
       return facetOptions.filter((option) => option.filteredHitCount > 0);
    }, [facetOptions]);
-   // const items = React.useMemo<RangeItem[]>(() => {
-   //    return values
-   //       .slice()
-   //       .map<RangeItem>((value, index) => ({
-   //          ...value,
-   //          isRangeStart: index === 0,
-   //          isRangeEnd: index === values.length - 1,
-   //       }))
-   //       .filter((value) => value.filteredHitCount > 0)
-   //       .sort(sortItems);
-   // }, [facetOptions, sortItems]);
 
    const handleChange = React.useCallback(
       (name: string) => {

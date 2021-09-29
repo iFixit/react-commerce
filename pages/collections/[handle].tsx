@@ -77,7 +77,7 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
          )}
          <FilterableProductsSection
             collectionHandle={collection.handle}
-            initialSearchState={collection.searchState}
+            initialSearchContext={collection.searchContext}
             algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
          />
          {collection.sections.map((section, index) => {

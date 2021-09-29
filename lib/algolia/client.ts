@@ -3,7 +3,18 @@ import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch/lite';
 import produce from 'immer';
 import kebabCase from 'lodash/kebabCase';
 import snakeCase from 'lodash/snakeCase';
-import { Facet, FacetOption, SearchResponse, SearchState } from './types';
+import * as React from 'react';
+import { Facet, FacetOption, SearchContext, SearchResponse } from './types';
+
+export function useAlgoliaClient(appId: string, apiKey: string): AlgoliaClient {
+   const clientRef = React.useRef<AlgoliaClient>();
+
+   if (clientRef.current == null) {
+      clientRef.current = new AlgoliaClient(appId, apiKey);
+   }
+
+   return clientRef.current;
+}
 
 export class AlgoliaClient {
    private client: SearchClient;
@@ -13,30 +24,34 @@ export class AlgoliaClient {
       this.client = algoliasearch(appId, apiKey);
    }
 
-   async search<Hit = any>(state: SearchState): Promise<SearchState<Hit>> {
+   async search<Hit = any>(
+      context: SearchContext
+   ): Promise<SearchContext<Hit>> {
       if (
          this.index == null ||
-         this.index.indexName !== state.params.indexName
+         this.index.indexName !== context.params.indexName
       ) {
-         this.index = this.client.initIndex(state.params.indexName);
+         this.index = this.client.initIndex(context.params.indexName);
       }
-      const filters = AlgoliaClient.getAlgoliaFilters(state);
-      const response = await this.index.search<Hit>(state.params.query, {
+      const filters = AlgoliaClient.getAlgoliaFilters(context);
+      const response = await this.index.search<Hit>(context.params.query, {
          distinct: 1,
          filters,
          facets: ['*'],
-         page: state.params.page - 1,
-         hitsPerPage: state.params.limit,
+         page: context.params.page - 1,
+         hitsPerPage: context.params.limit,
       });
-      return AlgoliaClient.applySearchResponse(state, response);
+      return AlgoliaClient.applySearchResponse(context, response);
    }
 
-   private static getAlgoliaFilters(state: SearchState): string | undefined {
-      const algoliaFilters = state.params.filters.allIds.map((filterId) => {
-         const filter = state.params.filters.byId[filterId];
+   private static getAlgoliaFilters(
+      context: SearchContext
+   ): string | undefined {
+      const algoliaFilters = context.params.filters.allIds.map((filterId) => {
+         const filter = context.params.filters.byId[filterId];
          switch (filter.type) {
             case 'facet': {
-               const facet = state.facets.byId[filter.id];
+               const facet = context.facets.byId[filter.id];
                const algoliaName = facet.algoliaName;
                const facetQueries = filter.selectedOptions.map(
                   (optionHandle) => {
@@ -51,7 +66,7 @@ export class AlgoliaClient {
                return `(${facetQueries.join(' OR ')})`;
             }
             case 'range': {
-               const facet = state.facets.byId[filter.id];
+               const facet = context.facets.byId[filter.id];
                const algoliaName = facet.algoliaName;
                if (filter.min == null) {
                   return `"${algoliaName}" <= ${filter.max}`;
@@ -65,8 +80,8 @@ export class AlgoliaClient {
                return assertNever(filter);
          }
       });
-      if (state.params.filters.preset) {
-         algoliaFilters.unshift(state.params.filters.preset);
+      if (context.params.filters.preset) {
+         algoliaFilters.unshift(context.params.filters.preset);
       }
       if (algoliaFilters.length > 0) {
          return algoliaFilters.join(' AND ');
@@ -75,12 +90,11 @@ export class AlgoliaClient {
    }
 
    private static applySearchResponse<Hit>(
-      state: SearchState<Hit>,
+      context: SearchContext<Hit>,
       data: SearchResponse
-   ): SearchState<Hit> {
-      return produce(state, (draftState) => {
+   ): SearchContext<Hit> {
+      return produce(context, (draftState) => {
          draftState.isLoaded = true;
-         draftState.isSearching = false;
          draftState.numberOfPages = data.nbPages;
          draftState.numberOfHits = data.nbHits;
          draftState.hits.allIds = [];

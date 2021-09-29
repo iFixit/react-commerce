@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { useSearchDispatchContext, useSearchStateContext } from './context';
-import { RangeFilter, SearchActionType } from './types';
+import { SearchMachineState } from './search.machine';
+import { useSearchServiceContext } from './context';
+import { RangeFilter } from './types';
+import { useSelector } from '@lib/fsm-utils';
 
 interface UpdateOptions {
    clearFacets?: string[];
@@ -15,40 +17,41 @@ export interface UseRangeFilter {
    ) => void;
 }
 
-export function useRangeFilter(facetHandle: string): UseRangeFilter {
-   const state = useSearchStateContext();
-   const dispatch = useSearchDispatchContext();
+export function useRangeFilter(filterId: string): UseRangeFilter {
+   const service = useSearchServiceContext();
 
-   const rangeFilter = React.useMemo(() => {
-      const filter = state.params.filters.byId[facetHandle];
-      return filter && filter.type === 'range' ? filter : null;
-   }, [facetHandle, state.params.filters.byId]);
+   const rangeFilterSelector = React.useCallback(
+      (state: SearchMachineState) => {
+         const filter = state.context.params.filters.byId[filterId];
+         return filter && filter.type === 'range' ? filter : null;
+      },
+      [filterId]
+   );
+   const rangeFilter = useSelector(service, rangeFilterSelector);
 
    const set = React.useCallback<UseRangeFilter['set']>(
       (min, max, options) => {
          if (options?.clearFacets) {
-            dispatch([
-               {
-                  type: SearchActionType.RangeFilterSet,
-                  filterId: facetHandle,
-                  min: min || undefined,
-                  max: max || undefined,
-               },
-               {
-                  type: SearchActionType.FiltersCleared,
-                  filterIds: options.clearFacets,
-               },
-            ]);
+            service.send({
+               type: 'SET_RANGE_FILTER',
+               filterId: filterId,
+               min: min || undefined,
+               max: max || undefined,
+            });
+            service.send({
+               type: 'CLEAR_FILTERS',
+               filterIds: options.clearFacets,
+            });
          } else {
-            dispatch({
-               type: SearchActionType.RangeFilterSet,
-               filterId: facetHandle,
+            service.send({
+               type: 'SET_RANGE_FILTER',
+               filterId: filterId,
                min: min || undefined,
                max: max || undefined,
             });
          }
       },
-      [dispatch, facetHandle]
+      [filterId, service]
    );
 
    return {

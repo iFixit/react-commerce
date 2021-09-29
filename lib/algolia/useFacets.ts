@@ -1,15 +1,27 @@
 import * as React from 'react';
-import { useSearchStateContext } from './context';
+import { SearchMachineState } from './search.machine';
+import { useSearchServiceContext } from './context';
 import { Facet } from './types';
+import { useSelector } from '@lib/fsm-utils';
 
 export function useFacets() {
-   const state = useSearchStateContext();
+   const service = useSearchServiceContext();
+   const facetsEntity = useSelector(service, facetsEntitySelector);
+   const isSearching = useSelector(service, isSearchingSelector);
 
    const facets = React.useMemo<Facet[]>(() => {
-      return state.facets.allIds.map((id) => {
-         return state.facets.byId[id];
+      return facetsEntity.allIds.map((id) => {
+         return facetsEntity.byId[id];
       });
-   }, [state.facets]);
+   }, [facetsEntity.allIds, facetsEntity.byId]);
 
-   return { facets, isSearching: state.isSearching };
+   return { facets, isSearching };
+}
+
+function facetsEntitySelector(state: SearchMachineState) {
+   return state.context.facets;
+}
+
+function isSearchingSelector(state: SearchMachineState) {
+   return state.matches('search');
 }

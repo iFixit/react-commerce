@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useSearchDispatchContext, useSearchStateContext } from './context';
-import { SearchActionType } from './types';
+import { SearchMachineState } from './search.machine';
+import { useSearchServiceContext } from './context';
+import { useSelector } from '@lib/fsm-utils';
 
 interface UpdateOptions {
    clearFacets?: string[];
@@ -14,109 +15,107 @@ export interface UseFacetFilter {
    clear: (optionHandle?: string) => void;
 }
 
-export function useFacetFilter(facetHandle: string): UseFacetFilter {
-   const state = useSearchStateContext();
-   const dispatch = useSearchDispatchContext();
+export function useFacetFilter(filterId: string): UseFacetFilter {
+   const service = useSearchServiceContext();
 
-   const selectedOptions = React.useMemo(() => {
-      const filter = state.params.filters.byId[facetHandle];
-      if (filter && filter.type === 'facet') {
-         return filter.selectedOptions;
-      }
-      return [];
-   }, [facetHandle, state.params.filters.byId]);
+   const selectedOptionsSelector = React.useCallback(
+      (state: SearchMachineState) => {
+         const filter = state.context.params.filters.byId[filterId];
+         if (filter && filter.type === 'facet') {
+            return filter.selectedOptions;
+         }
+         return [];
+      },
+      [filterId]
+   );
+
+   const selectedOptions = useSelector(service, selectedOptionsSelector);
 
    const add = React.useCallback<UseFacetFilter['add']>(
-      (optionHandle, options) => {
+      (optionId, options) => {
          if (options?.clearFacets) {
-            dispatch([
-               {
-                  type: SearchActionType.FacetFilterOptionAdded,
-                  filterId: facetHandle,
-                  optionHandle,
-               },
-               {
-                  type: SearchActionType.FiltersCleared,
-                  filterIds: options.clearFacets,
-               },
-            ]);
+            service.send({
+               type: 'ADD_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
+            });
+            service.send({
+               type: 'CLEAR_FILTERS',
+               filterIds: options.clearFacets,
+            });
          } else {
-            dispatch({
-               type: SearchActionType.FacetFilterOptionAdded,
-               filterId: facetHandle,
-               optionHandle,
+            service.send({
+               type: 'ADD_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
             });
          }
       },
-      [dispatch, facetHandle]
+      [filterId, service]
    );
 
    const set = React.useCallback<UseFacetFilter['set']>(
-      (optionHandle, options) => {
+      (optionId, options) => {
          if (options?.clearFacets) {
-            dispatch([
-               {
-                  type: SearchActionType.FacetFilterOptionSet,
-                  filterId: facetHandle,
-                  optionHandle,
-               },
-               {
-                  type: SearchActionType.FiltersCleared,
-                  filterIds: options.clearFacets,
-               },
-            ]);
+            service.send({
+               type: 'SET_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
+            });
+            service.send({
+               type: 'CLEAR_FILTERS',
+               filterIds: options.clearFacets,
+            });
          } else {
-            dispatch({
-               type: SearchActionType.FacetFilterOptionSet,
-               filterId: facetHandle,
-               optionHandle,
+            service.send({
+               type: 'SET_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
             });
          }
       },
-      [dispatch, facetHandle]
+      [service, filterId]
    );
 
    const toggle = React.useCallback<UseFacetFilter['toggle']>(
-      (optionHandle, options) => {
+      (optionId, options) => {
          if (options?.clearFacets) {
-            dispatch([
-               {
-                  type: SearchActionType.FacetFilterOptionToggled,
-                  filterId: facetHandle,
-                  optionHandle,
-               },
-               {
-                  type: SearchActionType.FiltersCleared,
-                  filterIds: options.clearFacets,
-               },
-            ]);
+            service.send({
+               type: 'TOGGLE_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
+            });
+            service.send({
+               type: 'CLEAR_FILTERS',
+               filterIds: options.clearFacets,
+            });
          } else {
-            dispatch({
-               type: SearchActionType.FacetFilterOptionToggled,
-               filterId: facetHandle,
-               optionHandle,
+            service.send({
+               type: 'TOGGLE_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
             });
          }
       },
-      [dispatch, facetHandle]
+      [service, filterId]
    );
 
    const clear = React.useCallback<UseFacetFilter['clear']>(
-      (optionHandle) => {
-         if (optionHandle) {
-            dispatch({
-               type: SearchActionType.FacetFilterOptionCleared,
-               filterId: facetHandle,
-               optionHandle,
+      (optionId) => {
+         if (optionId) {
+            service.send({
+               type: 'CLEAR_FACET_OPTION_FILTER',
+               filterId: filterId,
+               optionId,
             });
          } else {
-            dispatch({
-               type: SearchActionType.FacetFilterAllOptionsCleared,
-               filterId: facetHandle,
+            service.send({
+               type: 'CLEAR_FILTERS',
+               filterIds: [filterId],
             });
          }
       },
-      [dispatch, facetHandle]
+      [service, filterId]
    );
 
    return {

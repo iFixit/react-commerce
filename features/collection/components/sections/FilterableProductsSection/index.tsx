@@ -7,11 +7,11 @@ import { Card } from '@components/Card';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
    AlgoliaProvider,
-   SearchState,
+   SearchContext,
    useFilters,
    useHits,
    useSearch,
-   useUpdateQueryParams,
+   useUpdateUrlQuery,
 } from '@lib/algolia';
 import * as React from 'react';
 import { ProductHit } from '../../../types';
@@ -47,13 +47,13 @@ export enum CollectionState {
 
 export interface FilterableProductSectionProps {
    collectionHandle: string;
-   initialSearchState: SearchState;
+   initialSearchContext: SearchContext;
    algoliaIndexName: string;
 }
 
 export function FilterableProductsSection({
    collectionHandle,
-   initialSearchState,
+   initialSearchContext,
    algoliaIndexName,
 }: FilterableProductSectionProps) {
    return (
@@ -62,7 +62,7 @@ export function FilterableProductsSection({
          appId={ALGOLIA_APP_ID}
          apiKey={ALGOLIA_API_KEY}
          initialIndexName={algoliaIndexName}
-         initialState={initialSearchState}
+         initialContext={initialSearchContext}
       >
          <FilterableProducts />
       </AlgoliaProvider>
@@ -79,7 +79,7 @@ const FilterableProducts = React.memo(() => {
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
-   useUpdateQueryParams();
+   useUpdateUrlQuery();
 
    if (collectionState === CollectionState.Empty) {
       return <CollectionEmptyState />;
@@ -187,7 +187,7 @@ const FilterableProducts = React.memo(() => {
 });
 
 function useCollectionState(): CollectionState {
-   const { hits, isLoaded, isSearching } = useHits<ProductHit>();
+   const { hits, isSearching, isLoaded } = useHits<ProductHit>();
    const [query] = useSearch();
    const filters = useFilters();
    if (!isLoaded) {

@@ -2,9 +2,10 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { ProductHit } from '@features/collection';
 import {
    AlgoliaClient,
-   createSearchState,
+   createSearchContext,
    Filter,
-   SearchState,
+   parseFiltersFromUrlQuery,
+   SearchContext,
 } from '@lib/algolia';
 import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
 import produce from 'immer';
@@ -35,7 +36,7 @@ export async function fetchCollectionPageData(
    }
    const filtersPreset =
       collection.filters ?? `collections:${options.collectionHandle}`;
-   const searchState = await loadCollectionSearchState({
+   const searchContext = await loadCollectionSearchContext({
       indexName: options.algoliaIndexName,
       filtersPreset,
       query: options.urlQuery,
@@ -57,7 +58,7 @@ export async function fetchCollectionPageData(
             };
          }),
          sections: filterNullableItems(collection.sections),
-         searchState,
+         searchContext,
       },
    };
 }
@@ -96,16 +97,16 @@ interface LoadCollectionSearchStateArgs {
    filtersPreset: string;
 }
 
-async function loadCollectionSearchState({
+async function loadCollectionSearchContext({
    indexName,
    query,
    filtersPreset,
-}: LoadCollectionSearchStateArgs): Promise<SearchState<ProductHit>> {
+}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit>> {
    const client = new AlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const page = typeof query.p === 'string' ? parseInt(query.p, 10) : undefined;
 
-   let state = createSearchState<ProductHit>({
+   let context = createSearchContext<ProductHit>({
       indexName,
       query: '',
       page: Number.isNaN(page) ? 1 : page,
@@ -117,37 +118,20 @@ async function loadCollectionSearchState({
       limit: 24,
    });
 
-   state = await client.search<ProductHit>(state);
-   const filters = getFiltersFromUrlQuery(state, query);
+   context = await client.search<ProductHit>(context);
+   const filters = parseFiltersFromUrlQuery(context, query);
    if (filters.length > 0) {
-      state = await client.search<ProductHit>(applyFilters(state, filters));
+      context = await client.search<ProductHit>(applyFilters(context, filters));
    }
-   return state;
+   return context;
 }
 
-function getFiltersFromUrlQuery(
-   state: SearchState,
-   query: ParsedUrlQuery
-): Filter[] {
-   const filterHandles = Object.keys(query).filter(
-      (paramKey) =>
-         state.facets.allIds.includes(paramKey) && query[paramKey] != null
-   );
-   return filterHandles.map<Filter>((handle) => {
-      const filterValue = query[handle]!;
-      return {
-         id: handle,
-         type: 'facet',
-         selectedOptions: Array.isArray(filterValue)
-            ? filterValue
-            : [filterValue],
-      };
-   });
-}
-
-function applyFilters(state: SearchState, filters: Filter[]): SearchState {
-   return produce(state, (draft) => {
-      draft.params.filters.allIds = filters.map((filter) => filter.id);
-      draft.params.filters.byId = keyBy(filters, 'id');
+function applyFilters(
+   context: SearchContext,
+   filters: Filter[]
+): SearchContext {
+   return produce(context, (draftContext) => {
+      draftContext.params.filters.allIds = filters.map((filter) => filter.id);
+      draftContext.params.filters.byId = keyBy(filters, 'id');
    });
 }

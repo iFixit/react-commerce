@@ -1,5 +1,7 @@
+import { useSelector } from '@lib/fsm-utils';
 import * as React from 'react';
-import { useSearchStateContext } from './context';
+import { useSearchServiceContext } from './context';
+import { SearchMachineState } from './search.machine';
 
 interface UseHits<Hit = any> {
    isLoaded: boolean;
@@ -9,20 +11,42 @@ interface UseHits<Hit = any> {
 }
 
 export function useHits<Hit = any>(): UseHits<Hit> {
-   const state = useSearchStateContext<Hit>();
+   const service = useSearchServiceContext<Hit>();
+   const hitsEntity = useSelector(service, hitsEntitySelector);
+   const numberOfHits = useSelector(service, numberOfHitsSelector);
+   const isSearching = useSelector(service, isSearchingSelector);
+   const isLoaded = useSelector(service, isLoadedSelector);
+
    const result = React.useMemo<UseHits>(() => {
+      const hits = hitsEntity.allIds.map((id) => hitsEntity.byId[id]);
       return {
-         isLoaded: state.isLoaded,
-         isSearching: state.isSearching,
-         numberOfHits: state.numberOfHits || state.hits.allIds.length,
-         hits: state.hits.allIds.map((id) => state.hits.byId[id]),
+         isLoaded,
+         isSearching,
+         numberOfHits,
+         hits,
       };
    }, [
-      state.hits.allIds,
-      state.hits.byId,
-      state.isLoaded,
-      state.isSearching,
-      state.numberOfHits,
+      hitsEntity.allIds,
+      hitsEntity.byId,
+      isLoaded,
+      isSearching,
+      numberOfHits,
    ]);
    return result;
+}
+
+function hitsEntitySelector<Hit = any>(state: SearchMachineState<Hit>) {
+   return state.context.hits;
+}
+
+function numberOfHitsSelector(state: SearchMachineState) {
+   return state.context.numberOfHits || 0;
+}
+
+function isSearchingSelector(state: SearchMachineState) {
+   return state.matches('search');
+}
+
+function isLoadedSelector(state: SearchMachineState) {
+   return state.context.isLoaded;
 }

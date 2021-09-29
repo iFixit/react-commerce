@@ -1,7 +1,8 @@
+import { useDebounce } from '@lib/hooks';
 import * as React from 'react';
-import { useSearchDispatchContext, useSearchStateContext } from './context';
-import { SearchActionType } from './types';
-import { useDebounce } from './utils';
+import { SearchMachineState } from './search.machine';
+import { useSearchServiceContext } from './context';
+import { useSelector } from '@lib/fsm-utils';
 
 const DEBOUNCE_INTERVAL_MILLIS = 300;
 
@@ -9,26 +10,30 @@ export function useSearch(): [
    query: string,
    search: (newSearch: string) => void
 ] {
-   const state = useSearchStateContext();
-   const dispatch = useSearchDispatchContext();
-   const [query, setQuery] = React.useState(state.params.query);
+   const service = useSearchServiceContext();
+   const contextQuery = useSelector(service, querySelector);
+   const [query, setQuery] = React.useState(contextQuery);
    const debouncedQuery = useDebounce(query, DEBOUNCE_INTERVAL_MILLIS);
 
    React.useEffect(() => {
       setQuery((current) => {
-         if (current !== state.params.query) {
-            return state.params.query;
+         if (current !== contextQuery) {
+            return contextQuery;
          }
          return current;
       });
-   }, [state.params.query]);
+   }, [contextQuery]);
 
    React.useEffect(() => {
-      dispatch({
-         type: SearchActionType.QueryChanged,
+      service.send({
+         type: 'SET_QUERY',
          query: debouncedQuery,
       });
-   }, [debouncedQuery, dispatch]);
+   }, [debouncedQuery, service]);
 
    return [query, setQuery];
+}
+
+function querySelector(state: SearchMachineState) {
+   return state.context.params.query;
 }
