@@ -1,5 +1,8 @@
 import {
    AspectRatio,
+   Badge,
+   Button,
+   Divider,
    Heading,
    HStack,
    Img,
@@ -22,10 +25,7 @@ export function ProductList({ children }: ProductListProps) {
          align="stretch"
          width="full"
          boxSizing="border-box"
-         px={{
-            base: 4,
-         }}
-         py={4}
+         divider={<Divider />}
       >
          {children}
       </VStack>
@@ -41,7 +41,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
       product.compare_at_price != null &&
       product.compare_at_price > product.price;
    return (
-      <HStack key={product.handle} spacing={4} py="4" alignItems="flex-start">
+      <HStack
+         key={product.handle}
+         spacing={4}
+         py="4"
+         alignItems="flex-start"
+         px="4"
+      >
          <AspectRatio
             flexGrow={1}
             flexShrink={0}
@@ -51,7 +57,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                md: '140px',
                lg: '180px',
             }}
-            ratio={4 / 3}
+            ratio={1}
          >
             {product.product_image == null ? (
                <Img
@@ -96,6 +102,42 @@ export function ProductListItem({ product }: ProductListItemProps) {
                {product.body_html_safe}
             </Text>
             <HStack>
+               {product.inventory_quantity > 0 ? (
+                  <>
+                     <Badge
+                        colorScheme="blue"
+                        textTransform="none"
+                        borderRadius="lg"
+                        px="2.5"
+                        py="1"
+                     >
+                        Lifetime warranty
+                     </Badge>
+                     <Badge
+                        colorScheme="blue"
+                        textTransform="none"
+                        borderRadius="lg"
+                        px="2.5"
+                        py="1"
+                     >
+                        Ship today if ordered by 5pm
+                     </Badge>
+                  </>
+               ) : (
+                  <Badge
+                     colorScheme="gray"
+                     textTransform="none"
+                     borderRadius="lg"
+                     px="2.5"
+                     py="1"
+                  >
+                     Out of stock
+                  </Badge>
+               )}
+            </HStack>
+         </VStack>
+         <VStack>
+            <VStack>
                {isDiscounted && (
                   <Text textDecoration="line-through" color="gray.400">
                      ${product.compare_at_price}
@@ -107,7 +149,16 @@ export function ProductListItem({ product }: ProductListItemProps) {
                >
                   ${product.price}
                </Text>
-            </HStack>
+            </VStack>
+            <Button colorScheme="brand">View</Button>
+            <Text color="gray.500" fontSize="14px">
+               {product.inventory_quantity > 0 &&
+               product.inventory_quantity < 10
+                  ? `
+               Only ${product.inventory_quantity} left in stock
+               `
+                  : `${product.inventory_quantity} in stock`}
+            </Text>
          </VStack>
       </HStack>
    );
