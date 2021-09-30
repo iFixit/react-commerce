@@ -579,6 +579,74 @@ export type DeviceGroupBy = {
   published_at?: Maybe<Array<Maybe<DeviceConnectionPublished_At>>>;
 };
 
+export type DeviceHandle = {
+  __typename?: 'DeviceHandle';
+  id: Scalars['ID'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  handle: Scalars['String'];
+  published_at?: Maybe<Scalars['DateTime']>;
+};
+
+export type DeviceHandleAggregator = {
+  __typename?: 'DeviceHandleAggregator';
+  count?: Maybe<Scalars['Int']>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type DeviceHandleConnection = {
+  __typename?: 'DeviceHandleConnection';
+  values?: Maybe<Array<Maybe<DeviceHandle>>>;
+  groupBy?: Maybe<DeviceHandleGroupBy>;
+  aggregate?: Maybe<DeviceHandleAggregator>;
+};
+
+export type DeviceHandleConnectionCreated_At = {
+  __typename?: 'DeviceHandleConnectionCreated_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<DeviceHandleConnection>;
+};
+
+export type DeviceHandleConnectionHandle = {
+  __typename?: 'DeviceHandleConnectionHandle';
+  key?: Maybe<Scalars['String']>;
+  connection?: Maybe<DeviceHandleConnection>;
+};
+
+export type DeviceHandleConnectionId = {
+  __typename?: 'DeviceHandleConnectionId';
+  key?: Maybe<Scalars['ID']>;
+  connection?: Maybe<DeviceHandleConnection>;
+};
+
+export type DeviceHandleConnectionPublished_At = {
+  __typename?: 'DeviceHandleConnectionPublished_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<DeviceHandleConnection>;
+};
+
+export type DeviceHandleConnectionUpdated_At = {
+  __typename?: 'DeviceHandleConnectionUpdated_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<DeviceHandleConnection>;
+};
+
+export type DeviceHandleGroupBy = {
+  __typename?: 'DeviceHandleGroupBy';
+  id?: Maybe<Array<Maybe<DeviceHandleConnectionId>>>;
+  created_at?: Maybe<Array<Maybe<DeviceHandleConnectionCreated_At>>>;
+  updated_at?: Maybe<Array<Maybe<DeviceHandleConnectionUpdated_At>>>;
+  handle?: Maybe<Array<Maybe<DeviceHandleConnectionHandle>>>;
+  published_at?: Maybe<Array<Maybe<DeviceHandleConnectionPublished_At>>>;
+};
+
+export type DeviceHandleInput = {
+  handle: Scalars['String'];
+  published_at?: Maybe<Scalars['DateTime']>;
+  created_by?: Maybe<Scalars['ID']>;
+  updated_by?: Maybe<Scalars['ID']>;
+};
+
 export type DeviceInput = {
   device: Scalars['String'];
   part_type?: Maybe<Scalars['String']>;
@@ -1011,7 +1079,7 @@ export type MenuInput = {
 
 export type MenuItemsDynamicZone = ComponentMenuLink | ComponentMenuCollectionLink | ComponentMenuLinkWithImage;
 
-export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | BottomContext | BottomContextConnection | BottomContextAggregator | BottomContextGroupBy | BottomContextConnectionId | BottomContextConnectionCreated_At | BottomContextConnectionUpdated_At | BottomContextConnectionSubheading | BottomContextConnectionDevice_Summary | BottomContextConnectionLocale | BottomContextConnectionPublished_At | CreateBottomContextPayload | UpdateBottomContextPayload | DeleteBottomContextPayload | Collection | CollectionConnection | CollectionAggregator | CollectionGroupBy | CollectionConnectionId | CollectionConnectionCreated_At | CollectionConnectionUpdated_At | CollectionConnectionHandle | CollectionConnectionTitle | CollectionConnectionDescription | CollectionConnectionImage | CollectionConnectionFilters | CollectionConnectionParent | CollectionConnectionWiki_Title_Api_Validated | CollectionConnectionLocale | CollectionConnectionPublished_At | CreateCollectionPayload | UpdateCollectionPayload | DeleteCollectionPayload | Device | DeviceConnection | DeviceAggregator | DeviceGroupBy | DeviceConnectionId | DeviceConnectionCreated_At | DeviceConnectionUpdated_At | DeviceConnectionDevice | DeviceConnectionPart_Type | DeviceConnectionMeta_Description | DeviceConnectionSubheading | DeviceConnectionSummary | DeviceConnectionCanonical_Override | DeviceConnectionFaq_Section | DeviceConnectionDevice_Summary | DeviceConnectionLocale | DeviceConnectionPublished_At | CreateDevicePayload | UpdateDevicePayload | DeleteDevicePayload | FaqSection | FaqSectionConnection | FaqSectionAggregator | FaqSectionGroupBy | FaqSectionConnectionId | FaqSectionConnectionCreated_At | FaqSectionConnectionUpdated_At | FaqSectionConnectionHeading | FaqSectionConnectionFaq1 | FaqSectionConnectionFaq2 | FaqSectionConnectionFaq3 | FaqSectionConnectionLocale | FaqSectionConnectionPublished_At | CreateFaqSectionPayload | UpdateFaqSectionPayload | DeleteFaqSectionPayload | Faq | FaqConnection | FaqAggregator | FaqGroupBy | FaqConnectionId | FaqConnectionCreated_At | FaqConnectionUpdated_At | FaqConnectionQuestion | FaqConnectionAnswer | FaqConnectionLocale | FaqConnectionPublished_At | CreateFaqPayload | UpdateFaqPayload | DeleteFaqPayload | FunFacts | FunFactsConnection | FunFactsAggregator | FunFactsGroupBy | FunFactsConnectionId | FunFactsConnectionCreated_At | FunFactsConnectionUpdated_At | FunFactsConnectionTitle | FunFactsConnectionContent | CreateFunFactPayload | UpdateFunFactPayload | DeleteFunFactPayload | Menu | MenuConnection | MenuAggregator | MenuGroupBy | MenuConnectionId | MenuConnectionCreated_At | MenuConnectionUpdated_At | MenuConnectionTitle | MenuConnectionLocale | MenuConnectionPublished_At | CreateMenuPayload | UpdateMenuPayload | DeleteMenuPayload | PartCollections | PartCollectionsConnection | PartCollectionsAggregator | PartCollectionsGroupBy | PartCollectionsConnectionId | PartCollectionsConnectionCreated_At | PartCollectionsConnectionUpdated_At | PartCollectionsConnectionDevice_Url | PartCollectionsConnectionTitle | PartCollectionsConnectionMeta_Description | PartCollectionsConnectionDetails | PartCollectionsConnectionSummary | PartCollectionsConnectionPublished_At | CreatePartCollectionPayload | UpdatePartCollectionPayload | DeletePartCollectionPayload | StoreSettings | StoreSettingsConnection | StoreSettingsAggregator | StoreSettingsGroupBy | StoreSettingsConnectionId | StoreSettingsConnectionCreated_At | StoreSettingsConnectionUpdated_At | StoreSettingsConnectionFooter | StoreSettingsConnectionSocialMediaAccounts | StoreSettingsConnectionStore | StoreSettingsConnectionLocale | StoreSettingsConnectionPublished_At | CreateStoreSettingPayload | UpdateStoreSettingPayload | DeleteStoreSettingPayload | Store | StoreConnection | StoreAggregator | StoreGroupBy | StoreConnectionId | StoreConnectionCreated_At | StoreConnectionUpdated_At | StoreConnectionCode | StoreConnectionName | StoreConnectionUrl | StoreConnectionCurrency | StoreConnectionStore_Settings | StoreConnectionShopifySettings | StoreConnectionFooter | StoreConnectionSocialMediaAccounts | StoreConnectionPublished_At | CreateStorePayload | UpdateStorePayload | DeleteStorePayload | I18NLocale | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | DeleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload | ComponentCollectionBanner | ComponentCollectionFeaturedCollection | ComponentCollectionNewsletterForm | ComponentCollectionRelatedPosts | ComponentMenuCollectionLink | ComponentMenuLinkWithImage | ComponentMenuLink | ComponentSettingsFooter | ComponentSettingsPartner | ComponentSettingsSocial | ComponentStoreShopifySettings;
+export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | BottomContext | BottomContextConnection | BottomContextAggregator | BottomContextGroupBy | BottomContextConnectionId | BottomContextConnectionCreated_At | BottomContextConnectionUpdated_At | BottomContextConnectionSubheading | BottomContextConnectionDevice_Summary | BottomContextConnectionLocale | BottomContextConnectionPublished_At | CreateBottomContextPayload | UpdateBottomContextPayload | DeleteBottomContextPayload | Collection | CollectionConnection | CollectionAggregator | CollectionGroupBy | CollectionConnectionId | CollectionConnectionCreated_At | CollectionConnectionUpdated_At | CollectionConnectionHandle | CollectionConnectionTitle | CollectionConnectionDescription | CollectionConnectionImage | CollectionConnectionFilters | CollectionConnectionParent | CollectionConnectionWiki_Title_Api_Validated | CollectionConnectionLocale | CollectionConnectionPublished_At | CreateCollectionPayload | UpdateCollectionPayload | DeleteCollectionPayload | DeviceHandle | DeviceHandleConnection | DeviceHandleAggregator | DeviceHandleGroupBy | DeviceHandleConnectionId | DeviceHandleConnectionCreated_At | DeviceHandleConnectionUpdated_At | DeviceHandleConnectionHandle | DeviceHandleConnectionPublished_At | CreateDeviceHandlePayload | UpdateDeviceHandlePayload | DeleteDeviceHandlePayload | Device | DeviceConnection | DeviceAggregator | DeviceGroupBy | DeviceConnectionId | DeviceConnectionCreated_At | DeviceConnectionUpdated_At | DeviceConnectionDevice | DeviceConnectionPart_Type | DeviceConnectionMeta_Description | DeviceConnectionSubheading | DeviceConnectionSummary | DeviceConnectionCanonical_Override | DeviceConnectionFaq_Section | DeviceConnectionDevice_Summary | DeviceConnectionLocale | DeviceConnectionPublished_At | CreateDevicePayload | UpdateDevicePayload | DeleteDevicePayload | FaqSection | FaqSectionConnection | FaqSectionAggregator | FaqSectionGroupBy | FaqSectionConnectionId | FaqSectionConnectionCreated_At | FaqSectionConnectionUpdated_At | FaqSectionConnectionHeading | FaqSectionConnectionFaq1 | FaqSectionConnectionFaq2 | FaqSectionConnectionFaq3 | FaqSectionConnectionLocale | FaqSectionConnectionPublished_At | CreateFaqSectionPayload | UpdateFaqSectionPayload | DeleteFaqSectionPayload | Faq | FaqConnection | FaqAggregator | FaqGroupBy | FaqConnectionId | FaqConnectionCreated_At | FaqConnectionUpdated_At | FaqConnectionQuestion | FaqConnectionAnswer | FaqConnectionLocale | FaqConnectionPublished_At | CreateFaqPayload | UpdateFaqPayload | DeleteFaqPayload | FunFacts | FunFactsConnection | FunFactsAggregator | FunFactsGroupBy | FunFactsConnectionId | FunFactsConnectionCreated_At | FunFactsConnectionUpdated_At | FunFactsConnectionTitle | FunFactsConnectionContent | CreateFunFactPayload | UpdateFunFactPayload | DeleteFunFactPayload | Menu | MenuConnection | MenuAggregator | MenuGroupBy | MenuConnectionId | MenuConnectionCreated_At | MenuConnectionUpdated_At | MenuConnectionTitle | MenuConnectionLocale | MenuConnectionPublished_At | CreateMenuPayload | UpdateMenuPayload | DeleteMenuPayload | PartCollections | PartCollectionsConnection | PartCollectionsAggregator | PartCollectionsGroupBy | PartCollectionsConnectionId | PartCollectionsConnectionCreated_At | PartCollectionsConnectionUpdated_At | PartCollectionsConnectionTitle | PartCollectionsConnectionMeta_Description | PartCollectionsConnectionDetails | PartCollectionsConnectionSummary | PartCollectionsConnectionDevice_Handle | PartCollectionsConnectionPublished_At | CreatePartCollectionPayload | UpdatePartCollectionPayload | DeletePartCollectionPayload | StoreSettings | StoreSettingsConnection | StoreSettingsAggregator | StoreSettingsGroupBy | StoreSettingsConnectionId | StoreSettingsConnectionCreated_At | StoreSettingsConnectionUpdated_At | StoreSettingsConnectionFooter | StoreSettingsConnectionSocialMediaAccounts | StoreSettingsConnectionStore | StoreSettingsConnectionLocale | StoreSettingsConnectionPublished_At | CreateStoreSettingPayload | UpdateStoreSettingPayload | DeleteStoreSettingPayload | Store | StoreConnection | StoreAggregator | StoreGroupBy | StoreConnectionId | StoreConnectionCreated_At | StoreConnectionUpdated_At | StoreConnectionCode | StoreConnectionName | StoreConnectionUrl | StoreConnectionCurrency | StoreConnectionStore_Settings | StoreConnectionShopifySettings | StoreConnectionFooter | StoreConnectionSocialMediaAccounts | StoreConnectionPublished_At | CreateStorePayload | UpdateStorePayload | DeleteStorePayload | I18NLocale | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | DeleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload | ComponentCollectionBanner | ComponentCollectionFeaturedCollection | ComponentCollectionNewsletterForm | ComponentCollectionRelatedPosts | ComponentMenuCollectionLink | ComponentMenuLinkWithImage | ComponentMenuLink | ComponentSettingsFooter | ComponentSettingsPartner | ComponentSettingsSocial | ComponentStoreShopifySettings;
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -1021,6 +1089,9 @@ export type Mutation = {
   createCollection?: Maybe<CreateCollectionPayload>;
   updateCollection?: Maybe<UpdateCollectionPayload>;
   deleteCollection?: Maybe<DeleteCollectionPayload>;
+  createDeviceHandle?: Maybe<CreateDeviceHandlePayload>;
+  updateDeviceHandle?: Maybe<UpdateDeviceHandlePayload>;
+  deleteDeviceHandle?: Maybe<DeleteDeviceHandlePayload>;
   createDevice?: Maybe<CreateDevicePayload>;
   updateDevice?: Maybe<UpdateDevicePayload>;
   deleteDevice?: Maybe<DeleteDevicePayload>;
@@ -1104,6 +1175,21 @@ export type MutationUpdateCollectionArgs = {
 
 export type MutationDeleteCollectionArgs = {
   input?: Maybe<DeleteCollectionInput>;
+};
+
+
+export type MutationCreateDeviceHandleArgs = {
+  input?: Maybe<CreateDeviceHandleInput>;
+};
+
+
+export type MutationUpdateDeviceHandleArgs = {
+  input?: Maybe<UpdateDeviceHandleInput>;
+};
+
+
+export type MutationDeleteDeviceHandleArgs = {
+  input?: Maybe<DeleteDeviceHandleInput>;
 };
 
 
@@ -1349,11 +1435,11 @@ export type MutationEmailConfirmationArgs = {
 };
 
 export type PartCollectionInput = {
-  device_url?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   meta_description?: Maybe<Scalars['String']>;
-  Details?: Maybe<Scalars['String']>;
+  details?: Maybe<Scalars['String']>;
   summary?: Maybe<Scalars['String']>;
+  device_handle: Scalars['String'];
   published_at?: Maybe<Scalars['DateTime']>;
   created_by?: Maybe<Scalars['ID']>;
   updated_by?: Maybe<Scalars['ID']>;
@@ -1364,11 +1450,11 @@ export type PartCollections = {
   id: Scalars['ID'];
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
-  device_url: Scalars['String'];
-  title?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   meta_description?: Maybe<Scalars['String']>;
-  Details?: Maybe<Scalars['String']>;
+  details?: Maybe<Scalars['String']>;
   summary?: Maybe<Scalars['String']>;
+  device_handle: Scalars['String'];
   published_at?: Maybe<Scalars['DateTime']>;
 };
 
@@ -1397,8 +1483,8 @@ export type PartCollectionsConnectionDetails = {
   connection?: Maybe<PartCollectionsConnection>;
 };
 
-export type PartCollectionsConnectionDevice_Url = {
-  __typename?: 'PartCollectionsConnectionDevice_url';
+export type PartCollectionsConnectionDevice_Handle = {
+  __typename?: 'PartCollectionsConnectionDevice_handle';
   key?: Maybe<Scalars['String']>;
   connection?: Maybe<PartCollectionsConnection>;
 };
@@ -1444,11 +1530,11 @@ export type PartCollectionsGroupBy = {
   id?: Maybe<Array<Maybe<PartCollectionsConnectionId>>>;
   created_at?: Maybe<Array<Maybe<PartCollectionsConnectionCreated_At>>>;
   updated_at?: Maybe<Array<Maybe<PartCollectionsConnectionUpdated_At>>>;
-  device_url?: Maybe<Array<Maybe<PartCollectionsConnectionDevice_Url>>>;
   title?: Maybe<Array<Maybe<PartCollectionsConnectionTitle>>>;
   meta_description?: Maybe<Array<Maybe<PartCollectionsConnectionMeta_Description>>>;
-  Details?: Maybe<Array<Maybe<PartCollectionsConnectionDetails>>>;
+  details?: Maybe<Array<Maybe<PartCollectionsConnectionDetails>>>;
   summary?: Maybe<Array<Maybe<PartCollectionsConnectionSummary>>>;
+  device_handle?: Maybe<Array<Maybe<PartCollectionsConnectionDevice_Handle>>>;
   published_at?: Maybe<Array<Maybe<PartCollectionsConnectionPublished_At>>>;
 };
 
@@ -1465,6 +1551,9 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections?: Maybe<Array<Maybe<Collection>>>;
   collectionsConnection?: Maybe<CollectionConnection>;
+  deviceHandle?: Maybe<DeviceHandle>;
+  deviceHandles?: Maybe<Array<Maybe<DeviceHandle>>>;
+  deviceHandlesConnection?: Maybe<DeviceHandleConnection>;
   device?: Maybe<Device>;
   devices?: Maybe<Array<Maybe<Device>>>;
   devicesConnection?: Maybe<DeviceConnection>;
@@ -1549,6 +1638,29 @@ export type QueryCollectionsConnectionArgs = {
   start?: Maybe<Scalars['Int']>;
   where?: Maybe<Scalars['JSON']>;
   locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryDeviceHandleArgs = {
+  id: Scalars['ID'];
+  publicationState?: Maybe<PublicationState>;
+};
+
+
+export type QueryDeviceHandlesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+  publicationState?: Maybe<PublicationState>;
+};
+
+
+export type QueryDeviceHandlesConnectionArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
 };
 
 
@@ -2500,6 +2612,15 @@ export type CreateCollectionPayload = {
   collection?: Maybe<Collection>;
 };
 
+export type CreateDeviceHandleInput = {
+  data?: Maybe<DeviceHandleInput>;
+};
+
+export type CreateDeviceHandlePayload = {
+  __typename?: 'createDeviceHandlePayload';
+  deviceHandle?: Maybe<DeviceHandle>;
+};
+
 export type CreateDeviceInput = {
   data?: Maybe<DeviceInput>;
 };
@@ -2606,6 +2727,15 @@ export type DeleteCollectionInput = {
 export type DeleteCollectionPayload = {
   __typename?: 'deleteCollectionPayload';
   collection?: Maybe<Collection>;
+};
+
+export type DeleteDeviceHandleInput = {
+  where?: Maybe<InputId>;
+};
+
+export type DeleteDeviceHandlePayload = {
+  __typename?: 'deleteDeviceHandlePayload';
+  deviceHandle?: Maybe<DeviceHandle>;
 };
 
 export type DeleteDeviceInput = {
@@ -2809,6 +2939,13 @@ export type EditComponentStoreShopifySettingInput = {
   storefrontAccessToken?: Maybe<Scalars['String']>;
 };
 
+export type EditDeviceHandleInput = {
+  handle?: Maybe<Scalars['String']>;
+  published_at?: Maybe<Scalars['DateTime']>;
+  created_by?: Maybe<Scalars['ID']>;
+  updated_by?: Maybe<Scalars['ID']>;
+};
+
 export type EditDeviceInput = {
   device?: Maybe<Scalars['String']>;
   part_type?: Maybe<Scalars['String']>;
@@ -2893,11 +3030,11 @@ export type EditMenuInput = {
 };
 
 export type EditPartCollectionInput = {
-  device_url?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   meta_description?: Maybe<Scalars['String']>;
-  Details?: Maybe<Scalars['String']>;
+  details?: Maybe<Scalars['String']>;
   summary?: Maybe<Scalars['String']>;
+  device_handle?: Maybe<Scalars['String']>;
   published_at?: Maybe<Scalars['DateTime']>;
   created_by?: Maybe<Scalars['ID']>;
   updated_by?: Maybe<Scalars['ID']>;
@@ -2970,6 +3107,16 @@ export type UpdateCollectionInput = {
 export type UpdateCollectionPayload = {
   __typename?: 'updateCollectionPayload';
   collection?: Maybe<Collection>;
+};
+
+export type UpdateDeviceHandleInput = {
+  where?: Maybe<InputId>;
+  data?: Maybe<EditDeviceHandleInput>;
+};
+
+export type UpdateDeviceHandlePayload = {
+  __typename?: 'updateDeviceHandlePayload';
+  deviceHandle?: Maybe<DeviceHandle>;
 };
 
 export type UpdateDeviceInput = {

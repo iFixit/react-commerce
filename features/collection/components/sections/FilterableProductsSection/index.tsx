@@ -11,8 +11,8 @@ import {
    useFilters,
    useHits,
    useSearch,
-   useUpdateUrlQuery,
 } from '@lib/algolia';
+import { useUpdateUrlQuery } from '@lib/algolia-utils';
 import * as React from 'react';
 import { ProductHit } from '../../../types';
 import { AppliedFilters } from './AppliedFilters';

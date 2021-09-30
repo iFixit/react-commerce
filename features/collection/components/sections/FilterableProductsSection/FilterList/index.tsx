@@ -1,14 +1,14 @@
 import { Box, chakra, Spinner } from '@chakra-ui/react';
-import { Facet, useFacets } from '@lib/algolia';
+import { Facet, useFacets, useIsSearching } from '@lib/algolia';
 import { assign } from '@xstate/fsm';
 import { useMachine } from '@xstate/react/fsm';
 import produce from 'immer';
 import React from 'react';
+import isEqual from 'react-fast-compare';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { FilterRow, ItemData, TOGGLE_ANIMATION_DURATION_MS } from './FilterRow';
-import { createVirtualAccordionMachine } from './virtualAccordion.machine';
-import isEqual from 'react-fast-compare';
+import { useVirtualAccordionMachine } from './virtualAccordion.machine';
 
 interface CollectionFiltersProps {
    className?: string;
@@ -33,21 +33,17 @@ const DEFAULT_ROW_HEIGHT = 41;
 
 export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
-   const { facets, areRefined, isSearching } = useFilteredFacets();
+   const { facets, areRefined } = useFilteredFacets();
+   const isSearching = useIsSearching();
 
-   const machine = React.useMemo(
-      () =>
-         createVirtualAccordionMachine<Facet>({
-            items: facets,
-            areRefined,
-            sizeMap: {},
-            expandedItemsIds: [],
-            toggledItemId: undefined,
-            toggledItemDelta: undefined,
-         }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-   );
+   const machine = useVirtualAccordionMachine({
+      items: facets,
+      areRefined,
+      sizeMap: {},
+      expandedItemsIds: [],
+      toggledItemId: undefined,
+      toggledItemDelta: undefined,
+   });
    const [state, send] = useMachine(machine, {
       actions: {
          setItemSize: assign((ctx, event) => {
@@ -183,7 +179,7 @@ function itemKey(index: number, data: ItemData): string {
 }
 
 function useFilteredFacets() {
-   const { facets, isSearching } = useFacets();
+   const facets = useFacets();
    const sortedFacets = React.useMemo(() => {
       return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
    }, [facets]);
@@ -199,7 +195,6 @@ function useFilteredFacets() {
    return {
       facets: displayedFacets,
       areRefined: refinedFacets.length > 0,
-      isSearching,
    };
 }
 

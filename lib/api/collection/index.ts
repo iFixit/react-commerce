@@ -1,12 +1,13 @@
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { ProductHit } from '@features/collection';
 import {
-   AlgoliaClient,
+   createAlgoliaClient,
    createSearchContext,
    Filter,
-   parseFiltersFromUrlQuery,
    SearchContext,
+   SearchParams,
 } from '@lib/algolia';
+import { parseSearchParams } from '@lib/algolia-utils';
 import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
 import produce from 'immer';
 import { ParsedUrlQuery } from 'querystring';
@@ -102,9 +103,8 @@ async function loadCollectionSearchContext({
    urlQuery,
    filtersPreset,
 }: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit>> {
-   const client = new AlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+   const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
-   const query = typeof urlQuery.q === 'string' ? urlQuery.q : '';
    const page =
       typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : undefined;
 
@@ -121,23 +121,23 @@ async function loadCollectionSearchContext({
    });
 
    context = await client.search<ProductHit>(context);
-   const filters = parseFiltersFromUrlQuery(context, urlQuery);
-   if (filters.length > 0 || query.length > 0) {
+   const searchParams = parseSearchParams(context, urlQuery);
+   if (
+      searchParams.filters.allIds.length > 0 ||
+      searchParams.query !== context.params.query
+   ) {
       context = await client.search<ProductHit>(
-         applyFilters(context, filters, query)
+         applySearchParams(context, searchParams)
       );
    }
    return context;
 }
 
-function applyFilters(
+function applySearchParams(
    context: SearchContext,
-   filters: Filter[],
-   query: string
+   params: SearchParams
 ): SearchContext {
    return produce(context, (draftContext) => {
-      draftContext.params.query = query;
-      draftContext.params.filters.allIds = filters.map((filter) => filter.id);
-      draftContext.params.filters.byId = keyBy(filters, 'id');
+      draftContext.params = params;
    });
 }

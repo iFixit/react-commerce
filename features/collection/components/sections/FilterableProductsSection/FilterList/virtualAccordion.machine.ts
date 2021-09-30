@@ -1,5 +1,6 @@
 // The statechart can be visualized here: https://stately.ai/viz?id=1a78f924-f329-4b6c-af20-c0952399409b
 import { createMachine, StateMachine } from '@xstate/fsm';
+import * as React from 'react';
 
 export interface VirtualAccordionContext<Item = any> {
    items: Item[];
@@ -105,3 +106,21 @@ export const createVirtualAccordionMachine = <Item = any>(
          },
       },
    });
+
+export function useVirtualAccordionMachine<Item = any>(
+   context: VirtualAccordionContext<Item>
+) {
+   const searchMachineRef = React.useRef<
+      StateMachine.Machine<
+         VirtualAccordionContext<Item>,
+         VirtualAccordionEvent<Item>,
+         VirtualAccordionState<Item>
+      >
+   >();
+
+   if (searchMachineRef.current == null) {
+      searchMachineRef.current = createVirtualAccordionMachine(context);
+   }
+
+   return searchMachineRef.current;
+}
