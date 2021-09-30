@@ -139,7 +139,7 @@ export function FeaturedCollectionSection({
 }
 
 function ProductList() {
-   const { hits } = useHits<ProductHit>();
+   const hits = useHits<ProductHit>();
    return (
       <Flex>
          {hits.map((hit) => {

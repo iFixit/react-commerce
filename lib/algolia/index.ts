@@ -1,5 +1,7 @@
 export * from './context';
 export * from './useHits';
+export * from './useHitsCount';
+export * from './useSearchState';
 export * from './useSearch';
 export * from './useFacet';
 export * from './useFacetFilter';

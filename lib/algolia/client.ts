@@ -85,7 +85,6 @@ function applySearchResponse<Hit>(
    data: SearchResponse
 ): SearchContext<Hit> {
    return produce(context, (draftState) => {
-      draftState.isLoaded = true;
       draftState.numberOfPages = data.nbPages;
       draftState.numberOfHits = data.nbHits;
       draftState.hits.allIds = [];

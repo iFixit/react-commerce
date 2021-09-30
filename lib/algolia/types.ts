@@ -3,7 +3,6 @@ import { SearchIndex } from 'algoliasearch/lite';
 
 export interface SearchContext<Hit = any> {
    params: SearchParams;
-   isLoaded: boolean;
    numberOfPages?: number;
    numberOfHits?: number;
    hits: Entity<Hit>;

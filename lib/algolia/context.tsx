@@ -1,4 +1,5 @@
 import { immerAssign, useInterpret } from '@lib/fsm-utils';
+import { useIsomorphicLayoutEffect } from '@lib/hooks';
 import { StateMachine } from '@xstate/fsm';
 import * as React from 'react';
 import { useAlgoliaClient } from './client';
@@ -212,7 +213,7 @@ export function AlgoliaProvider({
       },
    });
 
-   React.useEffect(() => {
+   useIsomorphicLayoutEffect(() => {
       searchService.send({
          type: 'INIT',
       });

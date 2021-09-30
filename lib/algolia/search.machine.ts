@@ -12,6 +12,10 @@ export type SearchState<Hit = any> =
         context: SearchContext<Hit>;
      }
    | {
+        value: 'load';
+        context: SearchContext<Hit>;
+     }
+   | {
         value: 'search';
         context: SearchContext<Hit>;
      }
@@ -42,7 +46,7 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                      },
                   },
                   {
-                     target: 'search',
+                     target: 'load',
                   },
                ],
             },
@@ -80,6 +84,19 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                SET_RANGE_FILTER: {
                   target: 'search',
                   actions: ['setRangeFilter'],
+               },
+            },
+         },
+         load: {
+            entry: ['search'],
+            on: {
+               SEARCH_CONTEXT_UPDATE: {
+                  target: 'idle',
+                  actions: ['updateSearchContext'],
+               },
+               SEARCH_FAILED: {
+                  target: 'error',
+                  actions: 'setError',
                },
             },
          },

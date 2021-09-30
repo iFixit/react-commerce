@@ -15,7 +15,6 @@ export function createSearchContext<Hit = any>({
          page,
          limit,
       },
-      isLoaded: false,
       hits: {
          byId: {},
          allIds: [],
