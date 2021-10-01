@@ -12,6 +12,7 @@ import {
 import { Rating } from '@components/Rating';
 import { ShopifyImage } from '@components/ShopifyImage';
 import { ProductHit } from '@features/collection';
+import { computeDiscountPercentage } from '@lib/commerce-utils';
 import * as React from 'react';
 
 const placeholderImageUrl =
@@ -41,6 +42,14 @@ export function ProductListItem({ product }: ProductListItemProps) {
    const isDiscounted =
       product.compare_at_price != null &&
       product.compare_at_price > product.price;
+
+   const percentage = isDiscounted
+      ? computeDiscountPercentage(
+           product.price * 100,
+           product.compare_at_price! * 100
+        )
+      : 0;
+
    return (
       <HStack
          key={product.handle}
@@ -56,7 +65,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                base: '100px',
                sm: '160px',
                md: '140px',
-               lg: '180px',
+               lg: '160px',
             }}
             ratio={1}
          >
@@ -103,8 +112,23 @@ export function ProductListItem({ product }: ProductListItemProps) {
                {product.body_html_safe}
             </Text>
             <HStack>
+               <Rating value={4} />
+               <Text>102</Text>
+            </HStack>
+            <HStack>
                {product.inventory_quantity > 0 ? (
                   <>
+                     {percentage > 0 && (
+                        <Badge
+                           colorScheme="red"
+                           textTransform="none"
+                           borderRadius="lg"
+                           px="2.5"
+                           py="1"
+                        >
+                           {percentage}% Off
+                        </Badge>
+                     )}
                      <Badge
                         colorScheme="blue"
                         textTransform="none"
@@ -132,28 +156,25 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      px="2.5"
                      py="1"
                   >
-                     Out of stock
+                     Sold out
                   </Badge>
                )}
             </HStack>
-            <HStack>
-               <Rating value={4} />
-               <Text>102</Text>
-            </HStack>
          </VStack>
-         <VStack>
-            <VStack>
+         <VStack flexShrink={0} align="flex-end">
+            <VStack align="flex-end" spacing="0">
+               <Text
+                  color={isDiscounted ? 'red.700' : 'inherit'}
+                  fontWeight="bold"
+                  fontSize="xl"
+               >
+                  ${product.price}
+               </Text>
                {isDiscounted && (
                   <Text textDecoration="line-through" color="gray.400">
                      ${product.compare_at_price}
                   </Text>
                )}
-               <Text
-                  color={isDiscounted ? 'red.700' : 'inherit'}
-                  fontWeight="bold"
-               >
-                  ${product.price}
-               </Text>
             </VStack>
             <Button colorScheme="brand">View</Button>
             <Text color="gray.500" fontSize="14px">
