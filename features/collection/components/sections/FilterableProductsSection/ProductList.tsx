@@ -1,17 +1,20 @@
 import {
    AspectRatio,
    Badge,
+   Box,
    Button,
    Divider,
    Heading,
    HStack,
    Img,
+   StackProps,
    Text,
    VStack,
 } from '@chakra-ui/react';
 import { ShopifyImage } from '@components/ShopifyImage';
 import { ProductHit } from '@features/collection';
 import * as React from 'react';
+import { FaStar } from 'react-icons/fa';
 
 const placeholderImageUrl =
    'https://via.placeholder.com/180x135?text=not+available';
@@ -44,7 +47,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
       <HStack
          key={product.handle}
          spacing={4}
-         py="4"
+         py="7"
          alignItems="flex-start"
          px="4"
       >
@@ -76,7 +79,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
          <VStack
             align="flex-start"
             spacing={{
-               base: 2,
+               base: 4,
             }}
             flexShrink={1}
             w="full"
@@ -135,6 +138,10 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   </Badge>
                )}
             </HStack>
+            <HStack>
+               <Rating value={4} />
+               <Text>102</Text>
+            </HStack>
          </VStack>
          <VStack>
             <VStack>
@@ -163,3 +170,26 @@ export function ProductListItem({ product }: ProductListItemProps) {
       </HStack>
    );
 }
+
+interface RatingProps extends StackProps {
+   value?: number;
+}
+
+export const Rating = (props: RatingProps) => {
+   const { value = 5, ...rest } = props;
+   return (
+      <HStack spacing="1" {...rest}>
+         {Array.from({ length: 5 }).map((_, i) => {
+            const fade = i + 1 > value;
+            return (
+               <Box
+                  as={FaStar}
+                  color={fade ? 'gray.300' : 'blue.500'}
+                  fontSize="larger"
+                  key={i}
+               />
+            );
+         })}
+      </HStack>
+   );
+};
