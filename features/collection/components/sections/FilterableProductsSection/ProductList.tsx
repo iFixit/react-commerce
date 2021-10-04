@@ -1,11 +1,14 @@
 import {
    AspectRatio,
    Badge,
+   Box,
    Button,
    Divider,
+   Flex,
    Heading,
    HStack,
    Img,
+   Stack,
    Text,
    VStack,
 } from '@chakra-ui/react';
@@ -51,9 +54,18 @@ export function ProductListItem({ product }: ProductListItemProps) {
       : 0;
 
    return (
-      <HStack
+      <Stack
          key={product.handle}
-         spacing={4}
+         direction={{
+            base: 'column',
+            sm: 'row',
+            md: 'column',
+            lg: 'row',
+         }}
+         spacing={{
+            base: 2,
+            sm: 4,
+         }}
          py="7"
          alignItems="flex-start"
          px="4"
@@ -102,7 +114,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                {product.title}
             </Heading>
             <Text
-               noOfLines={2}
+               noOfLines={3}
                fontSize={{
                   base: 'xs',
                   sm: 'sm',
@@ -115,77 +127,137 @@ export function ProductListItem({ product }: ProductListItemProps) {
                <Rating value={4} />
                <Text>102</Text>
             </HStack>
-            <HStack>
-               {product.inventory_quantity > 0 ? (
-                  <>
-                     {percentage > 0 && (
+            <Box>
+               <Flex
+                  wrap="wrap"
+                  mt="-1"
+                  sx={{
+                     '& > *': {
+                        mr: 1,
+                        mt: 1,
+                     },
+                  }}
+               >
+                  {product.inventory_quantity > 0 ? (
+                     <>
+                        {percentage > 0 && (
+                           <Badge
+                              colorScheme="red"
+                              textTransform="none"
+                              borderRadius="lg"
+                              px="2.5"
+                              py="1"
+                           >
+                              {percentage}% Off
+                           </Badge>
+                        )}
                         <Badge
-                           colorScheme="red"
+                           colorScheme="blue"
                            textTransform="none"
                            borderRadius="lg"
                            px="2.5"
                            py="1"
                         >
-                           {percentage}% Off
+                           Lifetime warranty
                         </Badge>
-                     )}
+                        <Badge
+                           colorScheme="blue"
+                           textTransform="none"
+                           borderRadius="lg"
+                           px="2.5"
+                           py="1"
+                        >
+                           Ship today if ordered by 5pm
+                        </Badge>
+                     </>
+                  ) : (
                      <Badge
-                        colorScheme="blue"
+                        colorScheme="gray"
                         textTransform="none"
                         borderRadius="lg"
                         px="2.5"
                         py="1"
                      >
-                        Lifetime warranty
+                        Sold out
                      </Badge>
-                     <Badge
-                        colorScheme="blue"
-                        textTransform="none"
-                        borderRadius="lg"
-                        px="2.5"
-                        py="1"
-                     >
-                        Ship today if ordered by 5pm
-                     </Badge>
-                  </>
-               ) : (
-                  <Badge
-                     colorScheme="gray"
-                     textTransform="none"
-                     borderRadius="lg"
-                     px="2.5"
-                     py="1"
-                  >
-                     Sold out
-                  </Badge>
-               )}
-            </HStack>
+                  )}
+               </Flex>
+            </Box>
          </VStack>
-         <VStack flexShrink={0} align="flex-end">
-            <VStack align="flex-end" spacing="0">
+         <VStack
+            flexShrink={0}
+            align="flex-end"
+            alignSelf={{
+               base: 'flex-end',
+               sm: 'flex-start',
+               md: 'flex-end',
+               lg: 'flex-start',
+            }}
+         >
+            <VStack
+               align="flex-end"
+               spacing="0"
+               mt={{
+                  base: 2,
+               }}
+            >
                <Text
                   color={isDiscounted ? 'red.700' : 'inherit'}
                   fontWeight="bold"
                   fontSize="xl"
+                  lineHeight="1em"
                >
                   ${product.price}
                </Text>
                {isDiscounted && (
-                  <Text textDecoration="line-through" color="gray.400">
+                  <Text
+                     lineHeight="1em"
+                     textDecoration="line-through"
+                     color="gray.400"
+                  >
                      ${product.compare_at_price}
                   </Text>
                )}
             </VStack>
-            <Button colorScheme="brand">View</Button>
-            <Text color="gray.500" fontSize="14px">
-               {product.inventory_quantity > 0 &&
-               product.inventory_quantity < 10
-                  ? `
+            <Stack
+               direction={{
+                  base: 'row-reverse',
+                  sm: 'column',
+                  md: 'row-reverse',
+                  lg: 'column',
+               }}
+               align={{
+                  base: 'center',
+                  sm: 'flex-end',
+                  md: 'center',
+                  lg: 'flex-end',
+               }}
+               spacing={{
+                  base: 3,
+                  sm: 2,
+               }}
+            >
+               <Button
+                  minW={{
+                     base: '100px',
+                     sm: '60px',
+                     md: '100px',
+                     lg: '60px',
+                  }}
+                  colorScheme="brand"
+               >
+                  View
+               </Button>
+               <Text color="gray.500" fontSize="14px">
+                  {product.inventory_quantity > 0 &&
+                  product.inventory_quantity < 10
+                     ? `
                Only ${product.inventory_quantity} left in stock
                `
-                  : `${product.inventory_quantity} in stock`}
-            </Text>
+                     : `${product.inventory_quantity} in stock`}
+               </Text>
+            </Stack>
          </VStack>
-      </HStack>
+      </Stack>
    );
 }
