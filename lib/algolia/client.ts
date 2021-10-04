@@ -49,7 +49,7 @@ function getAlgoliaFilters(context: SearchContext): string | undefined {
             const algoliaName = facet.algoliaName;
             const facetQueries = filter.selectedOptions.map((optionHandle) => {
                const algoliaValue = facet.options.byId[optionHandle].value;
-               return `"${algoliaName}":"${algoliaValue}"`;
+               return `${escapeText(algoliaName)}:${escapeText(algoliaValue)}`;
             });
             if (facetQueries.length === 1) {
                return facetQueries[0];
@@ -60,12 +60,12 @@ function getAlgoliaFilters(context: SearchContext): string | undefined {
             const facet = context.facets.byId[filter.id];
             const algoliaName = facet.algoliaName;
             if (filter.min == null) {
-               return `"${algoliaName}" <= ${filter.max}`;
+               return `${escapeText(algoliaName)} <= ${filter.max}`;
             }
             if (filter.max == null) {
-               return `"${algoliaName}" >= ${filter.min}`;
+               return `${escapeText(algoliaName)} >= ${filter.min}`;
             }
-            return `"${algoliaName}":${filter.min} TO ${filter.max}`;
+            return `${escapeText(algoliaName)}:${filter.min} TO ${filter.max}`;
          }
          default:
             return assertNever(filter);
@@ -78,6 +78,10 @@ function getAlgoliaFilters(context: SearchContext): string | undefined {
       return algoliaFilters.join(' AND ');
    }
    return undefined;
+}
+
+function escapeText(text: string) {
+   return JSON.stringify(text);
 }
 
 function applySearchResponse<Hit>(

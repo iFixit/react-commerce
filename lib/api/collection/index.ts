@@ -36,7 +36,9 @@ export async function fetchCollectionPageData(
       return null;
    }
    const filtersPreset =
-      collection.filters ?? `collections:${options.collectionHandle}`;
+      collection.filters && collection.filters.length > 0
+         ? collection.filters
+         : `collections:${options.collectionHandle}`;
    const searchContext = await loadCollectionSearchContext({
       indexName: options.algoliaIndexName,
       filtersPreset,
