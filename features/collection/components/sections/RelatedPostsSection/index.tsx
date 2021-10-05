@@ -20,7 +20,14 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    }
 
    return (
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
+      <SimpleGrid
+         columns={{ base: 1, sm: 2, md: 3 }}
+         spacing="6"
+         px={{
+            base: 6,
+            sm: 0,
+         }}
+      >
          {posts.map((post) => (
             <PostCard
                key={post.id}
