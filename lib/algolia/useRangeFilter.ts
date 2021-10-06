@@ -1,61 +1,61 @@
-import { useDerivedState } from '@lib/hooks';
 import * as React from 'react';
-import { useSearchDispatchContext, useSearchStateContext } from './context';
-import { NullablePartial, NumericRange, SearchActionType } from './types';
-import { getRangeFromFilter, isSameRange } from './utils';
+import { SearchMachineState } from './search.machine';
+import { useSearchServiceContext } from './context';
+import { RangeFilter } from './types';
+import { useSelector } from '@lib/fsm-utils';
 
 interface UpdateOptions {
    clearFacets?: string[];
 }
 
 export interface UseRangeFilter {
-   range: NullablePartial<NumericRange>;
+   filter: RangeFilter | null;
    set: (
-      newRange: NullablePartial<NumericRange>,
+      min?: number | null,
+      max?: number | null,
       options?: UpdateOptions
    ) => void;
 }
 
-export function useRangeFilter(facetName: string): UseRangeFilter {
-   const state = useSearchStateContext();
-   const dispatch = useSearchDispatchContext();
+export function useRangeFilter(filterId: string): UseRangeFilter {
+   const service = useSearchServiceContext();
 
-   const range = useDerivedState<NullablePartial<NumericRange>>((current) => {
-      const filter = state.params.filters.byId[facetName];
-      const newRange = getRangeFromFilter(filter);
-      if (current != null && isSameRange(newRange, current)) {
-         return current;
-      }
-      return newRange;
-   });
+   const rangeFilterSelector = React.useCallback(
+      (state: SearchMachineState) => {
+         const filter = state.context.params.filters.byId[filterId];
+         return filter && filter.type === 'range' ? filter : null;
+      },
+      [filterId]
+   );
+   const rangeFilter = useSelector(service, rangeFilterSelector);
 
    const set = React.useCallback<UseRangeFilter['set']>(
-      (newRange, options) => {
+      (min, max, options) => {
          if (options?.clearFacets) {
-            dispatch([
-               {
-                  type: SearchActionType.RangeFilterSet,
-                  filterId: facetName,
-                  range: newRange,
-               },
-               {
-                  type: SearchActionType.FiltersCleared,
-                  filterIds: options.clearFacets,
-               },
-            ]);
+            service.send({
+               type: 'SET_RANGE_FILTER',
+               filterId: filterId,
+               min: min || undefined,
+               max: max || undefined,
+            });
+            service.send({
+               type: 'CLEAR_FILTERS',
+               filterIds: options.clearFacets,
+            });
          } else {
-            dispatch({
-               type: SearchActionType.RangeFilterSet,
-               filterId: facetName,
-               range: newRange,
+            service.send({
+               type: 'SET_RANGE_FILTER',
+               filterId: filterId,
+               min: min || undefined,
+               max: max || undefined,
             });
          }
       },
-      [dispatch, facetName]
+      [filterId, service]
    );
 
    return {
-      range,
+      filter: rangeFilter,
       set,
    };
 }

@@ -7,11 +7,12 @@ import { Card } from '@components/Card';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
    AlgoliaProvider,
-   SearchState,
-   useAtomicFilters,
+   SearchContext,
    useHits,
-   useSearch,
+   useSearchParams,
+   useSearchState,
 } from '@lib/algolia';
+import { useUpdateUrlQuery } from '@lib/algolia-utils';
 import * as React from 'react';
 import { ProductHit } from '../../../types';
 import { AppliedFilters } from './AppliedFilters';
@@ -36,23 +37,15 @@ export enum ProductViewType {
    List = 'list',
 }
 
-export enum CollectionState {
-   Loading = 'loading',
-   Empty = 'empty',
-   Idle = 'idle',
-   Filtered = 'filtered',
-   NoResults = 'no-results',
-}
-
 export interface FilterableProductSectionProps {
    collectionHandle: string;
-   initialSearchState: SearchState;
+   initialSearchContext: SearchContext;
    algoliaIndexName: string;
 }
 
 export function FilterableProductsSection({
    collectionHandle,
-   initialSearchState,
+   initialSearchContext,
    algoliaIndexName,
 }: FilterableProductSectionProps) {
    return (
@@ -61,7 +54,7 @@ export function FilterableProductsSection({
          appId={ALGOLIA_APP_ID}
          apiKey={ALGOLIA_API_KEY}
          initialIndexName={algoliaIndexName}
-         initialState={initialSearchState}
+         initialContext={initialSearchContext}
       >
          <FilterableProducts />
       </AlgoliaProvider>
@@ -69,16 +62,27 @@ export function FilterableProductsSection({
 }
 
 const FilterableProducts = React.memo(() => {
-   const { hits } = useHits<ProductHit>();
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
-   const collectionState = useCollectionState();
+   const hits = useHits<ProductHit>();
+   const params = useSearchParams();
+   const searchState = useSearchState();
+   const isFiltered =
+      params.filters.allIds.length > 0 || params.query.length > 0;
+   const isEmptyCollection =
+      (searchState === 'idle' || searchState === 'init') &&
+      hits.length === 0 &&
+      !isFiltered;
+   const showNoResults =
+      hits.length === 0 && (isFiltered || searchState === 'search');
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
-   if (collectionState === CollectionState.Empty) {
+   useUpdateUrlQuery();
+
+   if (isEmptyCollection) {
       return <CollectionEmptyState />;
    }
 
@@ -130,8 +134,8 @@ const FilterableProducts = React.memo(() => {
             }
          />
          <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
-            <FilterCard isLoading={collectionState === CollectionState.Loading}>
-               {collectionState === CollectionState.Loading ? (
+            <FilterCard isLoading={searchState === 'load'}>
+               {searchState === 'load' ? (
                   <VStack align="stretch" px="4">
                      <Skeleton height="30px" />
                      <Skeleton height="30px" />
@@ -148,14 +152,14 @@ const FilterableProducts = React.memo(() => {
                   alignItems="center"
                   borderRadius={{ base: 'none', sm: 'lg' }}
                >
-                  {collectionState === CollectionState.Loading ? (
+                  {searchState === 'load' ? (
                      <VStack w="full" align="stretch" p="4">
                         <SkeletonListItem />
                         <SkeletonListItem />
                         <SkeletonListItem />
                      </VStack>
-                  ) : collectionState === CollectionState.NoResults ? (
-                     <ProductsEmptyState />
+                  ) : showNoResults ? (
+                     <FilteredCollectionEmptyState />
                   ) : productViewType === ProductViewType.List ? (
                      <ProductList>
                         {hits.map((hit) => {
@@ -173,35 +177,13 @@ const FilterableProducts = React.memo(() => {
                         })}
                      </ProductGrid>
                   )}
-                  {[CollectionState.Idle, CollectionState.Filtered].includes(
-                     collectionState
-                  ) && <CollectionPagination />}
+                  <CollectionPagination />
                </Card>
             </VStack>
          </HStack>
       </VStack>
    );
 });
-
-function useCollectionState(): CollectionState {
-   const { hits, isLoaded, isSearching } = useHits<ProductHit>();
-   const [query] = useSearch();
-   const atomicFilters = useAtomicFilters();
-   if (!isLoaded) {
-      return CollectionState.Loading;
-   }
-   const isFiltered = atomicFilters.length > 0 || query.length > 0;
-   if (hits.length === 0) {
-      if (isFiltered || isSearching) {
-         return CollectionState.NoResults;
-      }
-      return CollectionState.Empty;
-   }
-   if (isFiltered) {
-      return CollectionState.Filtered;
-   }
-   return CollectionState.Idle;
-}
 
 function useScrollIntoViewEffect(deps: React.DependencyList) {
    const ref = React.useRef<HTMLDivElement>(null);
@@ -256,7 +238,7 @@ const CollectionEmptyState = () => {
    );
 };
 
-function ProductsEmptyState() {
+function FilteredCollectionEmptyState() {
    return (
       <VStack pt="16" pb="20">
          <Icon

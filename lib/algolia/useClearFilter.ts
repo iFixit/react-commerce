@@ -1,24 +1,16 @@
 import * as React from 'react';
-import { useSearchDispatchContext } from './context';
-import { SearchActionType } from './types';
+import { useSearchServiceContext } from './context';
 
 export function useClearFilter() {
-   const dispatch = useSearchDispatchContext();
+   const service = useSearchServiceContext();
 
    return React.useCallback(
       (ids?: string | string[]) => {
-         if (typeof ids === 'string') {
-            dispatch({
-               type: SearchActionType.FiltersCleared,
-               filterIds: [ids],
-            });
-         } else {
-            dispatch({
-               type: SearchActionType.FiltersCleared,
-               filterIds: ids,
-            });
-         }
+         service.send({
+            type: 'CLEAR_FILTERS',
+            filterIds: typeof ids === 'string' ? [ids] : ids,
+         });
       },
-      [dispatch]
+      [service]
    );
 }

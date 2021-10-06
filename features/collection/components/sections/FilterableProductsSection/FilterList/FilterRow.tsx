@@ -1,9 +1,8 @@
 import { Box, Divider, HStack } from '@chakra-ui/react';
-import { formatFacetName } from '@features/collection/utils';
-import { Facet, FacetValueState } from '@lib/algolia';
+import { Facet, FacetOption } from '@lib/algolia';
 import React from 'react';
 import { areEqual } from 'react-window';
-import { ListFilter } from './ListFilter';
+import { FacetFilter } from './FacetFilter';
 import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
 import {
    VirtualAccordionMachineState,
@@ -30,15 +29,21 @@ export const FilterRow = React.memo(function FilterRow({
 }: FilterRowProps) {
    const rowRef = React.useRef<HTMLElement | null>(null);
    const [state, send] = data;
-   const facet = state.context.items[index];
-   const filteredValuesCount = facet.values.filter(
-      (val) => val.filteredHitCount > 0
-   ).length;
 
-   const isExpanded = state.context.expandedItemsIds.includes(facet.name);
+   const facet = state.context.items[index];
+
+   const filteredOptionsCount = React.useMemo(() => {
+      const facetOptions = facet.options.allIds.map(
+         (id) => facet.options.byId[id]
+      );
+      return facetOptions.filter((option) => option.filteredHitCount > 0)
+         .length;
+   }, [facet.options]);
+
+   const isExpanded = state.context.expandedItemsIds.includes(facet.handle);
    const toggledIndex = React.useMemo(() => {
       return state.context.items.findIndex(
-         (i) => i.name === state.context.toggledItemId
+         (i) => i.handle === state.context.toggledItemId
       );
    }, [state.context.items, state.context.toggledItemId]);
 
@@ -46,19 +51,17 @@ export const FilterRow = React.memo(function FilterRow({
       if (rowRef.current) {
          send({
             type: 'ITEM_SIZE_UPDATED',
-            id: facet.name,
+            id: facet.handle,
             size: rowRef.current.getBoundingClientRect().height,
          });
       }
-   }, [facet.name, send, isExpanded, filteredValuesCount]);
-
-   const name = formatFacetName(facet.name);
+   }, [facet.handle, send, isExpanded, filteredOptionsCount]);
 
    return (
       <Row
          ref={rowRef}
-         id={facet.name}
-         name={name}
+         id={facet.handle}
+         name={facet.name}
          isExpanded={isExpanded}
          shouldAnimate={
             state.value === 'toggleItemAnimation' && index > toggledIndex
@@ -168,11 +171,11 @@ const Row = React.memo(
                      pos="relative"
                      bg="white"
                   >
-                     {facet.name === 'price_range' ? (
+                     {facet.handle === 'price_range' ? (
                         <>
                            <RangeFilter>
                               <RangeFilterList
-                                 facetName={facet.name}
+                                 facet={facet}
                                  multiple
                                  sortItems={sortByPriceRange}
                                  renderItem={(item) => {
@@ -187,7 +190,7 @@ const Row = React.memo(
                                  }}
                               />
                               <RangeFilterInput
-                                 facetName="price"
+                                 facetHandle="price"
                                  minFieldPrefix="$"
                                  minFieldPlaceholder="Min"
                                  maxFieldPrefix="$"
@@ -197,9 +200,9 @@ const Row = React.memo(
                         </>
                      ) : (
                         <>
-                           <ListFilter
-                              key={facet.name}
-                              facetName={facet.name}
+                           <FacetFilter
+                              key={facet.handle}
+                              facet={facet}
                               multiple
                               showAllValues={showAllFacetValues}
                            />
@@ -237,7 +240,7 @@ function parseRange(value: string): [number, number] {
    return [parseFloat(min), parseFloat(max)];
 }
 
-function sortByPriceRange(a: FacetValueState, b: FacetValueState): number {
+function sortByPriceRange(a: FacetOption, b: FacetOption): number {
    const [aMin] = parseRange(a.value);
    const [bMin] = parseRange(b.value);
    return aMin - bMin;

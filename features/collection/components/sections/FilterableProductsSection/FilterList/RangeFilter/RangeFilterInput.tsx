@@ -12,7 +12,7 @@ import * as React from 'react';
 import { useRangeFilterContext, useRegisterFacet } from './context';
 
 export interface RangeFilterInputProps {
-   facetName: string;
+   facetHandle: string;
    minFieldPrefix?: React.ReactNode;
    minFieldPlaceholder?: string;
    maxFieldPrefix?: React.ReactNode;
@@ -66,23 +66,23 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
    );
 }
 
-function useRangeFilterInput({ facetName }: RangeFilterInputProps) {
-   const { getFacetNames } = useRangeFilterContext();
-   useRegisterFacet(facetName);
+function useRangeFilterInput({ facetHandle }: RangeFilterInputProps) {
+   const { getFacetHandles } = useRangeFilterContext();
+   useRegisterFacet(facetHandle);
    const minRef = React.useRef<HTMLInputElement | null>(null);
    const maxRef = React.useRef<HTMLInputElement | null>(null);
-   const { range, set } = useRangeFilter(facetName);
+   const { filter, set } = useRangeFilter(facetHandle);
    const [error, setError] = React.useState<string | null>(null);
 
    React.useEffect(() => {
       setError(null);
       if (minRef.current) {
-         minRef.current.value = range.min != null ? String(range.min) : '';
+         minRef.current.value = filter?.min != null ? String(filter.min) : '';
       }
       if (maxRef.current) {
-         maxRef.current.value = range.max != null ? String(range.max) : '';
+         maxRef.current.value = filter?.max != null ? String(filter.max) : '';
       }
-   }, [range]);
+   }, [filter]);
 
    const updateRange = useDebouncedCallback(
       (name: 'min' | 'max', text: string) => {
@@ -90,12 +90,13 @@ function useRangeFilterInput({ facetName }: RangeFilterInputProps) {
          if (Number.isNaN(value)) {
             value = null;
          }
-         const newRange = { ...range };
-         newRange[name] = value;
-         const facetToBeCleared = getFacetNames().filter(
-            (name) => name !== facetName
+         const min = name === 'min' ? value : filter?.min;
+         const max = name === 'max' ? value : filter?.max;
+
+         const facetToBeCleared = getFacetHandles().filter(
+            (name) => name !== facetHandle
          );
-         set(newRange, { clearFacets: facetToBeCleared });
+         set(min, max, { clearFacets: facetToBeCleared });
       },
       500
    );

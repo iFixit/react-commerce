@@ -1,14 +1,14 @@
 import { Box, chakra, Spinner } from '@chakra-ui/react';
-import { Facet, useFacets } from '@lib/algolia';
+import { Facet, useFacets, useIsSearching } from '@lib/algolia';
 import { assign } from '@xstate/fsm';
 import { useMachine } from '@xstate/react/fsm';
 import produce from 'immer';
 import React from 'react';
+import isEqual from 'react-fast-compare';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { FilterRow, ItemData, TOGGLE_ANIMATION_DURATION_MS } from './FilterRow';
-import { createVirtualAccordionMachine } from './virtualAccordion.machine';
-import isEqual from 'react-fast-compare';
+import { useVirtualAccordionMachine } from './virtualAccordion.machine';
 
 interface CollectionFiltersProps {
    className?: string;
@@ -33,67 +33,67 @@ const DEFAULT_ROW_HEIGHT = 41;
 
 export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
-   const { facets, areRefined, isSearching } = useFilteredFacets();
-   const [state, send] = useMachine(
-      createVirtualAccordionMachine<Facet>({
-         items: facets,
-         areRefined,
-         sizeMap: {},
-         expandedItemsIds: [],
-         toggledItemId: undefined,
-         toggledItemDelta: undefined,
-      }),
-      {
-         actions: {
-            setItemSize: assign((ctx, event) => {
-               return produce(ctx, (draft) => {
-                  if (event.type === 'ITEM_SIZE_UPDATED') {
-                     const index = draft.items.findIndex(
-                        (i) => i.name === event.id
+   const { facets, areRefined } = useFilteredFacets();
+   const isSearching = useIsSearching();
+
+   const machine = useVirtualAccordionMachine({
+      items: facets,
+      areRefined,
+      sizeMap: {},
+      expandedItemsIds: [],
+      toggledItemId: undefined,
+      toggledItemDelta: undefined,
+   });
+   const [state, send] = useMachine(machine, {
+      actions: {
+         setItemSize: assign((ctx, event) => {
+            return produce(ctx, (draft) => {
+               if (event.type === 'ITEM_SIZE_UPDATED') {
+                  const index = draft.items.findIndex(
+                     (i) => i.handle === event.id
+                  );
+                  if (index >= 0) {
+                     if (event.id === draft.toggledItemId) {
+                        draft.toggledItemDelta =
+                           draft.sizeMap[event.id] - event.size;
+                     }
+                     draft.sizeMap[event.id] = event.size;
+                     if (listRef.current) {
+                        if (draft.shouldResetSizeMap) {
+                           listRef.current.resetAfterIndex(0);
+                           draft.shouldResetSizeMap = false;
+                        } else {
+                           listRef.current.resetAfterIndex(index);
+                        }
+                     }
+                  }
+               }
+            });
+         }),
+         setItems: assign((ctx, event) => {
+            return produce(ctx, (draft) => {
+               if (event.type === 'ITEMS_CHANGED') {
+                  draft.items = event.items;
+                  draft.shouldResetSizeMap = true;
+               }
+            });
+         }),
+         toggleItem: assign((ctx, event) => {
+            return produce(ctx, (draft) => {
+               if (event.type === 'TOGGLE_ITEM') {
+                  if (draft.expandedItemsIds.includes(event.id)) {
+                     draft.expandedItemsIds = draft.expandedItemsIds.filter(
+                        (id) => id !== event.id
                      );
-                     if (index >= 0) {
-                        if (event.id === draft.toggledItemId) {
-                           draft.toggledItemDelta =
-                              draft.sizeMap[event.id] - event.size;
-                        }
-                        draft.sizeMap[event.id] = event.size;
-                        if (listRef.current) {
-                           if (draft.shouldResetSizeMap) {
-                              listRef.current.resetAfterIndex(0);
-                              draft.shouldResetSizeMap = false;
-                           } else {
-                              listRef.current.resetAfterIndex(index);
-                           }
-                        }
-                     }
+                  } else {
+                     draft.expandedItemsIds.push(event.id);
                   }
-               });
-            }),
-            setItems: assign((ctx, event) => {
-               return produce(ctx, (draft) => {
-                  if (event.type === 'ITEMS_CHANGED') {
-                     draft.items = event.items;
-                     draft.shouldResetSizeMap = true;
-                  }
-               });
-            }),
-            toggleItem: assign((ctx, event) => {
-               return produce(ctx, (draft) => {
-                  if (event.type === 'TOGGLE_ITEM') {
-                     if (draft.expandedItemsIds.includes(event.id)) {
-                        draft.expandedItemsIds = draft.expandedItemsIds.filter(
-                           (id) => id !== event.id
-                        );
-                     } else {
-                        draft.expandedItemsIds.push(event.id);
-                     }
-                     draft.toggledItemId = event.id;
-                  }
-               });
-            }),
-         },
-      }
-   );
+                  draft.toggledItemId = event.id;
+               }
+            });
+         }),
+      },
+   });
 
    React.useEffect(() => {
       if (state.value === 'toggleItemAnimation') {
@@ -125,7 +125,7 @@ export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
    const getSize = React.useCallback(
       (index: number): number => {
          return (
-            state.context.sizeMap[state.context.items[index].name] ||
+            state.context.sizeMap[state.context.items[index].handle] ||
             DEFAULT_ROW_HEIGHT
          );
       },
@@ -179,15 +179,15 @@ function itemKey(index: number, data: ItemData): string {
 }
 
 function useFilteredFacets() {
-   const { facets, isSearching } = useFacets();
+   const facets = useFacets();
    const sortedFacets = React.useMemo(() => {
       return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
    }, [facets]);
    const usefulFacets = React.useMemo(() => {
-      return sortedFacets.filter(filterUselessFacet);
+      return sortedFacets.filter(isUsefulFacet);
    }, [sortedFacets]);
    const refinedFacets = React.useMemo(() => {
-      return usefulFacets.filter(filterNoMatchesFacet);
+      return usefulFacets.filter(hasMatchingOptions);
    }, [usefulFacets]);
    const displayedFacets = React.useMemo(() => {
       return refinedFacets.length > 0 ? refinedFacets : usefulFacets;
@@ -195,14 +195,18 @@ function useFilteredFacets() {
    return {
       facets: displayedFacets,
       areRefined: refinedFacets.length > 0,
-      isSearching,
    };
 }
 
-function filterUselessFacet(facet: Facet): boolean {
-   return !FACET_BLOCKLIST.includes(facet.name) && facet.values.length > 1;
+function isUsefulFacet(facet: Facet): boolean {
+   return (
+      !FACET_BLOCKLIST.includes(facet.algoliaName) &&
+      facet.options.allIds.length > 1
+   );
 }
 
-function filterNoMatchesFacet(facet: Facet): boolean {
-   return facet.values.some((value) => value.filteredHitCount > 0);
+function hasMatchingOptions(facet: Facet): boolean {
+   return facet.options.allIds.some(
+      (id) => facet.options.byId[id].filteredHitCount > 0
+   );
 }

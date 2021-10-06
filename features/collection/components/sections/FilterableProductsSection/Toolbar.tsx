@@ -10,8 +10,7 @@ import {
    Stack,
    Text,
 } from '@chakra-ui/react';
-import { ProductHit } from '@features/collection';
-import { useHits } from '@lib/algolia';
+import { useHitsCount } from '@lib/algolia';
 import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 
@@ -34,11 +33,11 @@ export function Toolbar({ leftContent, rightContent }: ToolbarProps) {
 }
 
 export function NumberOfHits() {
-   const { numberOfHits } = useHits<ProductHit>();
+   const hitsCount = useHitsCount();
    return (
       <Text textAlign="center" color="gray.500" fontWeight="bold">
-         {numberOfHits}
-         {numberOfHits === 1 ? ' result' : ' results'}
+         {hitsCount}
+         {hitsCount === 1 ? ' result' : ' results'}
       </Text>
    );
 }

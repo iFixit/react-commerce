@@ -15,8 +15,8 @@ import {
 
 export function CollectionPagination() {
    const visibleNumberOfPages = useBreakpointValue({ base: 3, sm: 5, lg: 7 });
-   const { page, setPage, numberOfPages = 0, isLoaded } = usePagination();
-   if (!isLoaded || numberOfPages <= 1) {
+   const { page, setPage, numberOfPages = 0 } = usePagination();
+   if (numberOfPages <= 1) {
       return null;
    }
    return (

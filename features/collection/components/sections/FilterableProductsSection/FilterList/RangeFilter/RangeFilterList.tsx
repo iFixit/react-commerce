@@ -1,97 +1,91 @@
 import { Radio, Text, VStack } from '@chakra-ui/react';
-import {
-   FacetValueState,
-   ListFilter,
-   useFacetFilterList,
-   useFacetValues,
-} from '@lib/algolia';
+import { Facet, FacetOption, useFacetFilter } from '@lib/algolia';
 import * as React from 'react';
 import { FilterCheckbox } from '../FilterCheckbox';
 import { useRangeFilterContext, useRegisterFacet } from './context';
 
 export type RangeFilterListProps = {
-   facetName: string;
-   type?: ListFilter['type'];
+   facet: Facet;
    multiple?: boolean;
-   sortItems?(a: FacetValueState, b: FacetValueState): number;
+   sortItems?(a: FacetOption, b: FacetOption): number;
    renderItem?(item: RangeItem): React.ReactNode;
 };
 
-interface RangeItem extends FacetValueState {
+interface RangeItem extends FacetOption {
    isRangeStart: boolean;
    isRangeEnd: boolean;
 }
 
 export function RangeFilterList({
-   facetName,
-   type = 'or',
+   facet,
    multiple = false,
    renderItem,
    sortItems = defaultSortItems,
 }: RangeFilterListProps) {
-   const { getFacetNames } = useRangeFilterContext();
-   const { isLoaded, values } = useFacetValues(facetName);
-   const { selectedValueIds, toggle, set } = useFacetFilterList(facetName, {
-      filterType: type,
-   });
-   useRegisterFacet(facetName);
+   const { getFacetHandles } = useRangeFilterContext();
+   const { selectedOptions, toggle, set } = useFacetFilter(facet.handle);
+   useRegisterFacet(facet.handle);
 
-   const items = React.useMemo<RangeItem[]>(() => {
-      return values
+   const facetOptions = React.useMemo<RangeItem[]>(() => {
+      return facet.options.allIds
          .slice()
-         .map<RangeItem>((value, index) => ({
-            ...value,
-            isRangeStart: index === 0,
-            isRangeEnd: index === values.length - 1,
-         }))
-         .filter((value) => value.filteredHitCount > 0)
-         .sort(sortItems);
-   }, [sortItems, values]);
+         .sort((aId, bId) =>
+            sortItems(facet.options.byId[aId], facet.options.byId[bId])
+         )
+         .map<RangeItem>((id, index) => {
+            return {
+               ...facet.options.byId[id],
+               isRangeStart: index === 0,
+               isRangeEnd: index === facet.options.allIds.length - 1,
+            };
+         });
+   }, [facet.options.allIds, facet.options.byId, sortItems]);
+
+   const filteredOptions = React.useMemo(() => {
+      return facetOptions.filter((option) => option.filteredHitCount > 0);
+   }, [facetOptions]);
 
    const handleChange = React.useCallback(
       (name: string) => {
-         const facetNames = getFacetNames();
+         const facetNames = getFacetHandles();
          const facetToBeCleared = facetNames.filter(
-            (name) => name !== facetName
+            (name) => name !== facet.handle
          );
          toggle(name, { clearFacets: facetToBeCleared });
       },
-      [facetName, getFacetNames, toggle]
+      [facet.handle, getFacetHandles, toggle]
    );
 
-   if (!isLoaded) {
-      return null;
-   }
    return (
       <VStack align="flex-start">
-         {items.map((item, index) => {
+         {filteredOptions.map((option) => {
             if (multiple) {
                return (
                   <FilterCheckbox
-                     key={item.id}
-                     name={item.id}
-                     isChecked={selectedValueIds.includes(item.id)}
+                     key={option.handle}
+                     name={option.handle}
+                     isChecked={selectedOptions.includes(option.handle)}
                      onChange={handleChange}
                   >
-                     {renderItem ? renderItem(item) : item.value}
+                     {renderItem ? renderItem(option) : option.value}
                   </FilterCheckbox>
                );
             }
             return (
                <Radio
-                  key={index}
-                  value={item.value}
-                  isChecked={selectedValueIds.includes(item.id)}
+                  key={option.handle}
+                  value={option.handle}
+                  isChecked={selectedOptions.includes(option.handle)}
                   onChange={() => {
-                     const facetNames = getFacetNames();
+                     const facetNames = getFacetHandles();
                      const facetToBeCleared = facetNames.filter(
-                        (name) => name !== facetName
+                        (name) => name !== facet.handle
                      );
-                     set(item.id, { clearFacets: facetToBeCleared });
+                     set(option.handle, { clearFacets: facetToBeCleared });
                   }}
                >
                   <Text fontSize="sm">
-                     {renderItem ? renderItem(item) : item.value}
+                     {renderItem ? renderItem(option) : option.value}
                   </Text>
                </Radio>
             );
@@ -100,6 +94,6 @@ export function RangeFilterList({
    );
 }
 
-function defaultSortItems(a: FacetValueState, b: FacetValueState): number {
+function defaultSortItems(a: FacetOption, b: FacetOption): number {
    return a.value.localeCompare(b.value);
 }

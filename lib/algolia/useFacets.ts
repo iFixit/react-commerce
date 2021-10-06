@@ -1,24 +1,22 @@
+import { useSelector } from '@lib/fsm-utils';
 import * as React from 'react';
-import { useSearchStateContext } from './context';
-import { FacetValueState } from './types';
-
-export interface Facet {
-   name: string;
-   values: FacetValueState[];
-}
+import { useSearchServiceContext } from './context';
+import { SearchMachineState } from './search.machine';
+import { Facet } from './types';
 
 export function useFacets() {
-   const state = useSearchStateContext();
+   const service = useSearchServiceContext();
+   const facetsEntity = useSelector(service, facetsEntitySelector);
 
    const facets = React.useMemo<Facet[]>(() => {
-      return state.facets.allIds.map<Facet>((id) => {
-         const facet = state.facets.byId[id];
-         return {
-            name: facet.name,
-            values: facet.valueIds.map((id) => state.facetValues.byId[id]),
-         };
+      return facetsEntity.allIds.map((id) => {
+         return facetsEntity.byId[id];
       });
-   }, [state.facetValues.byId, state.facets.allIds, state.facets.byId]);
+   }, [facetsEntity.allIds, facetsEntity.byId]);
 
-   return { facets, isSearching: state.isSearching };
+   return facets;
+}
+
+function facetsEntitySelector(state: SearchMachineState) {
+   return state.context.facets;
 }

@@ -1,11 +1,25 @@
-import { Awaited, filterNullableItems } from '@lib/utils';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ProductHit } from '@features/collection';
+import {
+   createAlgoliaClient,
+   createSearchContext,
+   Filter,
+   SearchContext,
+   SearchParams,
+} from '@lib/algolia';
+import { parseSearchParams } from '@lib/algolia-utils';
+import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
+import produce from 'immer';
+import { ParsedUrlQuery } from 'querystring';
 import { getLayoutProps } from '../layout';
 import { strapi } from '../strapi';
 import { getImageFromStrapiImage } from '../utils';
 
 interface FetchCollectionPageDataOptions {
    collectionHandle: string;
+   algoliaIndexName: string;
    storeCode: string;
+   urlQuery: ParsedUrlQuery;
 }
 
 export async function fetchCollectionPageData(
@@ -21,6 +35,15 @@ export async function fetchCollectionPageData(
    if (collection == null) {
       return null;
    }
+   const filtersPreset =
+      collection.filters && collection.filters.length > 0
+         ? collection.filters
+         : `collections:${options.collectionHandle}`;
+   const searchContext = await loadCollectionSearchContext({
+      indexName: options.algoliaIndexName,
+      filtersPreset,
+      urlQuery: options.urlQuery,
+   });
    return {
       ...getLayoutProps(result),
       collection: {
@@ -38,6 +61,7 @@ export async function fetchCollectionPageData(
             };
          }),
          sections: filterNullableItems(collection.sections),
+         searchContext,
       },
    };
 }
@@ -67,5 +91,55 @@ function getAncestors(parent: StrapiCollection['parent']): Ancestor[] {
    return ancestors.concat({
       handle: parent.handle,
       title: parent.title,
+   });
+}
+
+interface LoadCollectionSearchStateArgs {
+   indexName: string;
+   urlQuery: ParsedUrlQuery;
+   filtersPreset: string;
+}
+
+async function loadCollectionSearchContext({
+   indexName,
+   urlQuery,
+   filtersPreset,
+}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit>> {
+   const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+
+   const page =
+      typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : undefined;
+
+   let context = createSearchContext<ProductHit>({
+      indexName,
+      query: '',
+      page: Number.isNaN(page) ? 1 : page,
+      filters: {
+         allIds: [],
+         byId: {},
+         preset: filtersPreset,
+      },
+      limit: 24,
+   });
+
+   context = await client.search<ProductHit>(context);
+   const searchParams = parseSearchParams(context, urlQuery);
+   if (
+      searchParams.filters.allIds.length > 0 ||
+      searchParams.query !== context.params.query
+   ) {
+      context = await client.search<ProductHit>(
+         applySearchParams(context, searchParams)
+      );
+   }
+   return context;
+}
+
+function applySearchParams(
+   context: SearchContext,
+   params: SearchParams
+): SearchContext {
+   return produce(context, (draftContext) => {
+      draftContext.params = params;
    });
 }

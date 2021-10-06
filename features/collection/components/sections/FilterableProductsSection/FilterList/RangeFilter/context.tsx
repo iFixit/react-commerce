@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 interface RangeFilterContext {
-   getFacetNames(): string[];
-   registerFacet(name: string): void;
-   unregisterFacet(name: string): void;
+   getFacetHandles(): string[];
+   registerFacet(handle: string): void;
+   unregisterFacet(handle: string): void;
 }
 
 const RangeFilterContext = React.createContext<RangeFilterContext | null>(null);
@@ -41,7 +41,7 @@ function useRangeFilter(): RangeFilterContext {
    }, []);
 
    return {
-      getFacetNames,
+      getFacetHandles: getFacetNames,
       registerFacet,
       unregisterFacet,
    };

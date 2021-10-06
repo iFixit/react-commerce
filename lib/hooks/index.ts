@@ -1,5 +1,20 @@
 import * as React from 'react';
 
+export function useDebounce<Value = any>(value: Value, delay: number): Value {
+   const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+   React.useEffect(() => {
+      const handler = setTimeout(() => {
+         setDebouncedValue(value);
+      }, delay);
+      return () => {
+         clearTimeout(handler);
+      };
+   }, [value, delay]);
+
+   return debouncedValue;
+}
+
 export function useDebouncedCallback<Args extends any[]>(
    callback: (...args: Args) => void,
    wait: number
@@ -35,14 +50,6 @@ export function useDebouncedCallback<Args extends any[]>(
    };
 }
 
-export function useDerivedState<T = any>(compute: (value: T | undefined) => T) {
-   const stateRef = React.useRef<T>();
-
-   stateRef.current = compute(stateRef.current);
-
-   return stateRef.current;
-}
-
 export function usePrevious<T>(value: T): T | undefined {
    const ref = React.useRef<T>();
 
@@ -52,3 +59,6 @@ export function usePrevious<T>(value: T): T | undefined {
 
    return ref.current;
 }
+
+export const useIsomorphicLayoutEffect =
+   typeof document !== 'undefined' ? React.useLayoutEffect : React.useEffect;

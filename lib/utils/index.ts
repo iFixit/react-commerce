@@ -1,7 +1,18 @@
 export type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
+export type ObjectLiteral = { [key: string]: any };
 
 export function capitalize(text: string): string {
    return text.slice(0, 1).toUpperCase() + text.slice(1);
+}
+
+export function keyBy<T extends ObjectLiteral>(
+   list: T[],
+   keyField: keyof T
+): Record<string, T> {
+   return list.reduce((dict, item) => {
+      dict[item[keyField]] = item;
+      return dict;
+   }, {} as Record<string, T>);
 }
 
 export function assertNever(x: never): never {

@@ -1,36 +1,44 @@
 import * as React from 'react';
-import { useSearchDispatchContext, useSearchStateContext } from './context';
-import { SearchActionType } from './types';
+import { SearchMachineState } from './search.machine';
+import { useSearchServiceContext } from './context';
+import { useSelector } from '@lib/fsm-utils';
 
 export interface UsePagination {
    page: number;
    numberOfPages?: number;
-   isLoaded: boolean;
    setPage: (page: number) => void;
 }
 
 export function usePagination(): UsePagination {
-   const state = useSearchStateContext();
-   const dispatch = useSearchDispatchContext();
+   const service = useSearchServiceContext();
+   const page = useSelector(service, pageSelector);
+   const numberOfPages = useSelector(service, numberOfPagesSelector);
 
    const setPage = React.useCallback(
       (page: number) => {
-         dispatch({
-            type: SearchActionType.PageChanged,
+         service.send({
+            type: 'SET_PAGE',
             page,
          });
       },
-      [dispatch]
+      [service]
    );
 
    const pagination = React.useMemo<UsePagination>(() => {
       return {
-         isLoaded: state.isLoaded,
-         page: state.params.page,
-         numberOfPages: state.numberOfPages,
+         page,
+         numberOfPages,
          setPage,
       };
-   }, [setPage, state.isLoaded, state.numberOfPages, state.params.page]);
+   }, [numberOfPages, page, setPage]);
 
    return pagination;
+}
+
+function pageSelector(state: SearchMachineState) {
+   return state.context.params.page;
+}
+
+function numberOfPagesSelector(state: SearchMachineState) {
+   return state.context.numberOfPages || 0;
 }
