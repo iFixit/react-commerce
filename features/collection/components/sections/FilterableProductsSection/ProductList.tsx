@@ -201,6 +201,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   spacing="0"
                   mt={{
                      base: 2,
+                     sm: 0,
+                     md: 2,
+                     lg: 0,
                   }}
                >
                   <Text
