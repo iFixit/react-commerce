@@ -301,7 +301,7 @@ function SearchErrorState() {
             opacity="0.8"
          />
          <Text fontSize="lg" fontWeight="bold" w="full" textAlign="center">
-            Ops, an error occurred!
+            Oops, an error occurred!
          </Text>
          {isFiltered ? (
             <Text maxW="500px" color="gray.500" textAlign="center" px="2">
