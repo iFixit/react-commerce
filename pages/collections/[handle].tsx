@@ -1,9 +1,10 @@
-import { VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import { Layout } from '@components/Layout';
 import { STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
    FeaturedCollectionSection,
+   FeaturedSubcollectionsSection,
    FilterableProductsSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
@@ -19,7 +20,7 @@ import {
    SubcategoriesSection,
 } from '@features/collection';
 import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
-import { assertNever } from '@lib/utils';
+import { assertNever, filterNullableItems } from '@lib/utils';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
@@ -129,6 +130,19 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                               featuredCollection.image?.alternativeText ||
                               undefined
                            }
+                        />
+                     );
+                  }
+                  return null;
+               }
+               case 'ComponentCollectionFeaturedSubcollections': {
+                  const { title, collections } = section;
+                  if (collections.length > 0) {
+                     return (
+                        <FeaturedSubcollectionsSection
+                           key={index}
+                           title={title}
+                           collections={collections}
                         />
                      );
                   }

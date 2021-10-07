@@ -60,7 +60,28 @@ export async function fetchCollectionPageData(
                image: getImageFromStrapiImage(child.image, 'thumbnail'),
             };
          }),
-         sections: filterNullableItems(collection.sections),
+         sections: filterNullableItems(collection.sections).map((section) => {
+            if (
+               section.__typename ===
+               'ComponentCollectionFeaturedSubcollections'
+            ) {
+               return {
+                  ...section,
+                  collections: filterNullableItems(section.collections).map(
+                     (collection) => {
+                        return {
+                           ...collection,
+                           image: getImageFromStrapiImage(
+                              collection.image,
+                              'thumbnail'
+                           ),
+                        };
+                     }
+                  ),
+               };
+            }
+            return section;
+         }),
          searchContext,
       },
    };
