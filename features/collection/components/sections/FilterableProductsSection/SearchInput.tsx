@@ -27,10 +27,6 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
       }
    }, [search]);
 
-   // React.useEffect(() => {
-   //    console.log('UPDATE QUERY', query);
-   // }, [query]);
-
    return React.useMemo(
       () => (
          <InputGroup className={className}>
