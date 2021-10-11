@@ -1,8 +1,10 @@
+import NextLink from 'next/link';
 import { useBreakpointValue } from '@chakra-ui/react';
 import {
    Pagination,
    PaginationButton,
    PaginationItem,
+   PaginationLink,
 } from '@ifixit/react-components';
 import { usePagination } from '@lib/algolia';
 import * as React from 'react';
@@ -23,7 +25,9 @@ export function CollectionPagination() {
       <Pagination
          numberOfPages={numberOfPages}
          page={page}
-         onChange={setPage}
+         onChange={(page) => {
+            console.log('navigate to', page);
+         }}
          pt={12}
          pb={8}
          visibleNumberOfPages={visibleNumberOfPages}
@@ -31,11 +35,16 @@ export function CollectionPagination() {
          {(pagination) => (
             <>
                <PaginationItem>
-                  <PaginationButton
-                     aria-label="Go to first page"
-                     page="first"
-                     icon={HiChevronDoubleLeft}
-                  />
+                  <NextLink href="?page=1" passHref shallow>
+                     <PaginationLink
+                        aria-label="Go to first page"
+                        page="first"
+                        icon={HiChevronDoubleLeft}
+                        // onClick={(event) => {
+                        //    event.preventDefault();
+                        // }}
+                     />
+                  </NextLink>
                </PaginationItem>
                <PaginationItem>
                   <PaginationButton
