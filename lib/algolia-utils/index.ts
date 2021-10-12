@@ -6,11 +6,10 @@ import {
    useFacets,
    useSearchParams,
 } from '@lib/algolia';
-import { useSelector } from '@lib/fsm-utils';
 import { assertNever, keyBy } from '@lib/utils';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
-import { ParsedUrlQuery } from 'querystring';
+import type { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 
 export function useUpdateUrlQuery() {

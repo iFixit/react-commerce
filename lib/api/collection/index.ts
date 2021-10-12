@@ -44,6 +44,9 @@ export async function fetchCollectionPageData(
       filtersPreset,
       urlQuery: options.urlQuery,
    });
+   if (searchContext == null) {
+      return null;
+   }
    return {
       ...getLayoutProps(result),
       collection: {
@@ -104,11 +107,15 @@ async function loadCollectionSearchContext({
    indexName,
    urlQuery,
    filtersPreset,
-}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit>> {
+}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit> | null> {
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const page =
       typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : undefined;
+
+   if (page != null && page < 1) {
+      return null;
+   }
 
    let context = createSearchContext<ProductHit>({
       indexName,
@@ -131,6 +138,9 @@ async function loadCollectionSearchContext({
       context = await client.search<ProductHit>(
          applySearchParams(context, searchParams)
       );
+   }
+   if (context.params.page > (context.numberOfPages || 0)) {
+      return null;
    }
    return context;
 }
