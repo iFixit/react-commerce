@@ -50,7 +50,12 @@ export function HeroSection({ collection }: HeroSectionProps) {
             )}
             {!hasDescription && collection.image != null ? (
                <HeroBackgroundImage src={collection.image.url}>
-                  <HeroTitle color="white">{collection.title}</HeroTitle>
+                  <HeroTitle color="white">
+                     {collection.title}
+                     {searchParams.page > 1
+                        ? ` - Page ${searchParams.page}`
+                        : ''}
+                  </HeroTitle>
                </HeroBackgroundImage>
             ) : (
                <HeroTitle>
