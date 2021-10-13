@@ -11,6 +11,7 @@ export * from './useFacets';
 export * from './useClearFilter';
 export * from './useFilters';
 export * from './useSearchParams';
+export * from './useClearSearchParams';
 export * from './useIsSearching';
 export * from './client';
 export * from './utils';

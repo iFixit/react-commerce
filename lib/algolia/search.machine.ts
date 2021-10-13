@@ -41,7 +41,7 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                INIT: [
                   {
                      target: 'idle',
-                     cond: function hasHits(ctx, event) {
+                     cond: function hasHits(ctx) {
                         return ctx.hits.allIds.length > 0;
                      },
                   },
@@ -85,6 +85,10 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                   target: 'search',
                   actions: ['setRangeFilter'],
                },
+               CLEAR_SEARCH_PARAMS: {
+                  target: 'search',
+                  actions: ['clearSearchParams'],
+               },
             },
          },
          load: {
@@ -115,8 +119,41 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
          },
          error: {
             on: {
-               RETRY: {
+               SET_QUERY: {
                   target: 'search',
+                  actions: ['setQuery'],
+               },
+               SET_PAGE: {
+                  target: 'search',
+                  actions: ['setPage'],
+               },
+               CLEAR_FILTERS: {
+                  target: 'search',
+                  actions: ['clearFilters'],
+               },
+               ADD_FACET_OPTION_FILTER: {
+                  target: 'search',
+                  actions: ['addFacetOptionFilter'],
+               },
+               SET_FACET_OPTION_FILTER: {
+                  target: 'search',
+                  actions: ['setFacetOptionFilter'],
+               },
+               TOGGLE_FACET_OPTION_FILTER: {
+                  target: 'search',
+                  actions: ['toggleFacetOptionFilter'],
+               },
+               CLEAR_FACET_OPTION_FILTER: {
+                  target: 'search',
+                  actions: ['clearFacetOptionFilter'],
+               },
+               SET_RANGE_FILTER: {
+                  target: 'search',
+                  actions: ['setRangeFilter'],
+               },
+               CLEAR_SEARCH_PARAMS: {
+                  target: 'search',
+                  actions: ['clearSearchParams'],
                },
             },
          },
