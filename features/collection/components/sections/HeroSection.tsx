@@ -74,19 +74,6 @@ export function HeroSection({ collection }: HeroSectionProps) {
    );
 }
 
-const Hero = chakra(
-   ({
-      children,
-      className,
-   }: React.PropsWithChildren<{ className?: string }>) => {
-      return (
-         <HStack className={className} align="flex-start" spacing="10">
-            {children}
-         </HStack>
-      );
-   }
-);
-
 const HeroTitle = chakra(
    ({
       children,
