@@ -139,7 +139,8 @@ async function loadCollectionSearchContext({
          applySearchParams(context, searchParams)
       );
    }
-   if (context.params.page > (context.numberOfPages || 0)) {
+   const numberOfPages = context.numberOfPages || 0;
+   if (numberOfPages > 0 && context.params.page > numberOfPages) {
       return null;
    }
    return context;
