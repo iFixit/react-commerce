@@ -149,12 +149,8 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   return null;
                }
                default: {
-                  try {
-                     return assertNever(section);
-                  } catch (error) {
-                     // Avoid breaking production when working on a new section type
-                     return null;
-                  }
+                  console.warn(`Section ${section.__typename} not implemented`);
+                  return null;
                }
             }
          })}
