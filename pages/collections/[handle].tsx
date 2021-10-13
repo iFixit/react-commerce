@@ -149,6 +149,8 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   return null;
                }
                default: {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   console.warn(`Section ${section.__typename} not implemented`);
                   return null;
                }
