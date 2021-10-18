@@ -184,6 +184,14 @@ export function AlgoliaProvider({
                }
             }
          }),
+         clearSearchParams: immerAssign((ctx, event) => {
+            if (event.type === 'CLEAR_SEARCH_PARAMS') {
+               ctx.params.query = '';
+               ctx.params.filters.allIds = [];
+               ctx.params.filters.byId = {};
+               ctx.params.page = 1;
+            }
+         }),
          updateSearchContext: immerAssign((ctx, event) => {
             if (event.type === 'SEARCH_CONTEXT_UPDATE') {
                return event.context;
@@ -192,9 +200,13 @@ export function AlgoliaProvider({
          setError: immerAssign((ctx, event) => {
             if (event.type === 'SEARCH_FAILED') {
                ctx.error = event.error;
+               ctx.hits.allIds = [];
+               ctx.hits.byId = {};
+               ctx.numberOfHits = 0;
+               ctx.numberOfPages = 0;
             }
          }),
-         search: (ctx) => {
+         search: (ctx, event) => {
             client
                .search(ctx)
                .then((newCtx) => {

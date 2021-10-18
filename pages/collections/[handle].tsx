@@ -3,6 +3,7 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
    FeaturedCollectionSection,
+   FeaturedSubcollectionsSection,
    FilterableProductsSection,
    HeroSection,
    MetaTags,
@@ -74,31 +75,22 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                         />
                      );
                   }
-                  case 'ComponentCollectionFeaturedCollection': {
-                     const { featuredCollection } = section;
-                     if (featuredCollection) {
+                  case 'ComponentCollectionFeaturedSubcollections': {
+                     const { title, collections } = section;
+                     if (collections.length > 0) {
                         return (
-                           <FeaturedCollectionSection
+                           <FeaturedSubcollectionsSection
                               key={index}
-                              handle={featuredCollection.handle}
-                              algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
-                              title={featuredCollection.title}
-                              description={featuredCollection.description}
-                              imageSrc={
-                                 featuredCollection.image
-                                    ? `${STRAPI_ORIGIN}${featuredCollection.image.url}`
-                                    : undefined
-                              }
-                              imageAlt={
-                                 featuredCollection.image?.alternativeText ||
-                                 undefined
-                              }
+                              title={title}
+                              collections={collections}
                            />
                         );
                      }
                      return null;
                   }
                   default: {
+                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                     // @ts-ignore
                      console.warn(
                         `Section ${section.__typename} not implemented`
                      );
