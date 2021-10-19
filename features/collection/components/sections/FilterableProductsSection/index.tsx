@@ -151,6 +151,7 @@ export const FilterableProductsSection = React.memo(() => {
                   flex={1}
                   alignItems="center"
                   borderRadius={{ base: 'none', sm: 'lg' }}
+                  overflow="hidden"
                >
                   {searchState === 'load' ? (
                      <VStack w="full" align="stretch" p="4">

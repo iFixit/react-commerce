@@ -20,7 +20,6 @@ export const ProductCardTitle = chakra(
                md: 'md',
                lg: 'md',
             }}
-            textAlign="center"
          >
             {children}
          </Heading>
