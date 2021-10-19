@@ -21,7 +21,15 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
 
    return (
       <VStack align="stretch" spacing="6">
-         <Heading size="lg">Related News Stories</Heading>
+         <Heading
+            size="lg"
+            px={{
+               base: 6,
+               sm: 0,
+            }}
+         >
+            Related News Stories
+         </Heading>
          <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3 }}
             spacing="6"
