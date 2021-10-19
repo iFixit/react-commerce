@@ -53,6 +53,7 @@ export async function fetchCollectionPageData(
          handle: collection.handle,
          title: collection.title,
          description: collection.description,
+         metaDescription: collection.metaDescription,
          filtersPreset: collection.filters,
          image: getImageFromStrapiImage(collection.image, 'medium'),
          ancestors: getAncestors(collection.parent),

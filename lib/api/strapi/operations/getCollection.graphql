@@ -5,6 +5,7 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
       handle
       title
       description
+      metaDescription
       filters
       image {
          alternativeText
