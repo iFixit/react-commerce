@@ -14,22 +14,21 @@ export function useSearch(): [
    const contextQuery = useSelector(service, querySelector);
    const [query, setQuery] = React.useState(contextQuery);
    const debouncedQuery = useDebounce(query, DEBOUNCE_INTERVAL_MILLIS);
+   const lastDeboucedQueryRef = React.useRef<string | null>(null);
 
    React.useEffect(() => {
-      setQuery((current) => {
-         if (current !== contextQuery) {
-            return contextQuery;
+      if (debouncedQuery !== contextQuery) {
+         if (lastDeboucedQueryRef.current === debouncedQuery) {
+            setQuery(contextQuery);
+         } else {
+            service.send({
+               type: 'SET_QUERY',
+               query: debouncedQuery,
+            });
          }
-         return current;
-      });
-   }, [contextQuery]);
-
-   React.useEffect(() => {
-      service.send({
-         type: 'SET_QUERY',
-         query: debouncedQuery,
-      });
-   }, [debouncedQuery, service]);
+      }
+      lastDeboucedQueryRef.current = debouncedQuery;
+   }, [contextQuery, debouncedQuery, service]);
 
    return [query, setQuery];
 }

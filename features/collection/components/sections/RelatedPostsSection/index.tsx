@@ -1,4 +1,4 @@
-import { SimpleGrid, usePrevious } from '@chakra-ui/react';
+import { Heading, SimpleGrid, usePrevious, VStack } from '@chakra-ui/react';
 import { fetchPosts, Post } from '@lib/api';
 import * as React from 'react';
 import isEqual from 'react-fast-compare';
@@ -20,24 +20,27 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    }
 
    return (
-      <SimpleGrid
-         columns={{ base: 1, sm: 2, md: 3 }}
-         spacing="6"
-         px={{
-            base: 6,
-            sm: 0,
-         }}
-      >
-         {posts.map((post) => (
-            <PostCard
-               key={post.id}
-               title={post.title}
-               category={post.category}
-               imageSrc={post.image?.url}
-               link={post.permalink || ''}
-            />
-         ))}
-      </SimpleGrid>
+      <VStack align="stretch" spacing="6">
+         <Heading size="lg">Related News Stories</Heading>
+         <SimpleGrid
+            columns={{ base: 1, sm: 2, md: 3 }}
+            spacing="6"
+            px={{
+               base: 6,
+               sm: 0,
+            }}
+         >
+            {posts.map((post) => (
+               <PostCard
+                  key={post.id}
+                  title={post.title}
+                  category={post.category}
+                  imageSrc={post.image?.url}
+                  link={post.permalink || ''}
+               />
+            ))}
+         </SimpleGrid>
+      </VStack>
    );
 }
 

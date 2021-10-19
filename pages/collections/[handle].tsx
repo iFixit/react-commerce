@@ -1,9 +1,10 @@
-import { VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import { Layout } from '@components/Layout';
 import { STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
    FeaturedCollectionSection,
+   FeaturedSubcollectionsSection,
    FilterableProductsSection,
    HeroBackgroundImage,
    HeroBreadcrumb,
@@ -19,7 +20,7 @@ import {
    SubcategoriesSection,
 } from '@features/collection';
 import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
-import { assertNever } from '@lib/utils';
+import { assertNever, filterNullableItems } from '@lib/utils';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
@@ -134,13 +135,24 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   }
                   return null;
                }
-               default: {
-                  try {
-                     return assertNever(section);
-                  } catch (error) {
-                     // Avoid breaking production when working on a new section type
-                     return null;
+               case 'ComponentCollectionFeaturedSubcollections': {
+                  const { title, collections } = section;
+                  if (collections.length > 0) {
+                     return (
+                        <FeaturedSubcollectionsSection
+                           key={index}
+                           title={title}
+                           collections={collections}
+                        />
+                     );
                   }
+                  return null;
+               }
+               default: {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  console.warn(`Section ${section.__typename} not implemented`);
+                  return null;
                }
             }
          })}
