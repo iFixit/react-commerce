@@ -22,6 +22,7 @@ export interface ProductHit {
    sku: string;
    product_image: string;
    body_html_safe?: string;
+   inventory_quantity: number;
 }
 
 // Sections
