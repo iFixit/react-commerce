@@ -20,6 +20,7 @@
          "@lib/*": ["lib/*"],
          "@features/*": ["features/*"],
          "@components/*": ["components/*"],
+         "@constants": ["constants"],
          "testUtils": ["./test/utils/testUtils"]
       },
       "types": ["cypress", "@testing-library/cypress"]

@@ -1,14 +1,14 @@
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { COLLECTION_PAGE_PARAM } from '@constants';
 import { ProductHit } from '@features/collection';
 import {
    createAlgoliaClient,
    createSearchContext,
-   Filter,
    SearchContext,
    SearchParams,
 } from '@lib/algolia';
 import { parseSearchParams } from '@lib/algolia-utils';
-import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
+import { Awaited, filterNullableItems } from '@lib/utils';
 import produce from 'immer';
 import { ParsedUrlQuery } from 'querystring';
 import { getLayoutProps } from '../layout';
@@ -131,8 +131,9 @@ async function loadCollectionSearchContext({
 }: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit> | null> {
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
+   const pageParam = urlQuery[COLLECTION_PAGE_PARAM];
    const page =
-      typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : undefined;
+      typeof pageParam === 'string' ? parseInt(pageParam, 10) : undefined;
 
    if (page != null && page < 1) {
       return null;
