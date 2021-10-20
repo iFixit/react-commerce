@@ -133,7 +133,6 @@ export type BottomContextInput = {
 
 export type Collection = {
   __typename?: 'Collection';
-  Subhead?: Maybe<Scalars['String']>;
   children?: Maybe<Array<Maybe<Collection>>>;
   created_at: Scalars['DateTime'];
   description: Scalars['String'];
@@ -143,13 +142,13 @@ export type Collection = {
   image?: Maybe<UploadFile>;
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<Array<Maybe<Collection>>>;
+  metaDescription?: Maybe<Scalars['String']>;
   parent?: Maybe<Collection>;
   published_at?: Maybe<Scalars['DateTime']>;
   sections: Array<Maybe<CollectionSectionsDynamicZone>>;
   tagline?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   updated_at: Scalars['DateTime'];
-  wiki_title_api_validated?: Maybe<Scalars['String']>;
 };
 
 
@@ -223,6 +222,12 @@ export type CollectionConnectionLocale = {
   key?: Maybe<Scalars['String']>;
 };
 
+export type CollectionConnectionMetaDescription = {
+  __typename?: 'CollectionConnectionMetaDescription';
+  connection?: Maybe<CollectionConnection>;
+  key?: Maybe<Scalars['String']>;
+};
+
 export type CollectionConnectionParent = {
   __typename?: 'CollectionConnectionParent';
   connection?: Maybe<CollectionConnection>;
@@ -233,12 +238,6 @@ export type CollectionConnectionPublished_At = {
   __typename?: 'CollectionConnectionPublished_at';
   connection?: Maybe<CollectionConnection>;
   key?: Maybe<Scalars['DateTime']>;
-};
-
-export type CollectionConnectionSubhead = {
-  __typename?: 'CollectionConnectionSubhead';
-  connection?: Maybe<CollectionConnection>;
-  key?: Maybe<Scalars['String']>;
 };
 
 export type CollectionConnectionTagline = {
@@ -259,15 +258,8 @@ export type CollectionConnectionUpdated_At = {
   key?: Maybe<Scalars['DateTime']>;
 };
 
-export type CollectionConnectionWiki_Title_Api_Validated = {
-  __typename?: 'CollectionConnectionWiki_title_api_validated';
-  connection?: Maybe<CollectionConnection>;
-  key?: Maybe<Scalars['String']>;
-};
-
 export type CollectionGroupBy = {
   __typename?: 'CollectionGroupBy';
-  Subhead?: Maybe<Array<Maybe<CollectionConnectionSubhead>>>;
   created_at?: Maybe<Array<Maybe<CollectionConnectionCreated_At>>>;
   description?: Maybe<Array<Maybe<CollectionConnectionDescription>>>;
   filters?: Maybe<Array<Maybe<CollectionConnectionFilters>>>;
@@ -275,16 +267,15 @@ export type CollectionGroupBy = {
   id?: Maybe<Array<Maybe<CollectionConnectionId>>>;
   image?: Maybe<Array<Maybe<CollectionConnectionImage>>>;
   locale?: Maybe<Array<Maybe<CollectionConnectionLocale>>>;
+  metaDescription?: Maybe<Array<Maybe<CollectionConnectionMetaDescription>>>;
   parent?: Maybe<Array<Maybe<CollectionConnectionParent>>>;
   published_at?: Maybe<Array<Maybe<CollectionConnectionPublished_At>>>;
   tagline?: Maybe<Array<Maybe<CollectionConnectionTagline>>>;
   title?: Maybe<Array<Maybe<CollectionConnectionTitle>>>;
   updated_at?: Maybe<Array<Maybe<CollectionConnectionUpdated_At>>>;
-  wiki_title_api_validated?: Maybe<Array<Maybe<CollectionConnectionWiki_Title_Api_Validated>>>;
 };
 
 export type CollectionInput = {
-  Subhead?: Maybe<Scalars['String']>;
   children?: Maybe<Array<Maybe<Scalars['ID']>>>;
   created_by?: Maybe<Scalars['ID']>;
   description: Scalars['String'];
@@ -293,13 +284,13 @@ export type CollectionInput = {
   image?: Maybe<Scalars['ID']>;
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  metaDescription?: Maybe<Scalars['String']>;
   parent?: Maybe<Scalars['ID']>;
   published_at?: Maybe<Scalars['DateTime']>;
   sections: Array<Scalars['CollectionSectionsDynamicZoneInput']>;
   tagline?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   updated_by?: Maybe<Scalars['ID']>;
-  wiki_title_api_validated?: Maybe<Scalars['String']>;
 };
 
 export type CollectionSectionsDynamicZone = ComponentCollectionBanner | ComponentCollectionFeaturedCollection | ComponentCollectionFeaturedSubcollections | ComponentCollectionNewsletterForm | ComponentCollectionRelatedPosts;
@@ -1117,7 +1108,7 @@ export type MenuInput = {
 
 export type MenuItemsDynamicZone = ComponentMenuCollectionLink | ComponentMenuLink | ComponentMenuLinkWithImage;
 
-export type Morph = BottomContext | BottomContextAggregator | BottomContextConnection | BottomContextConnectionCreated_At | BottomContextConnectionDevice_Summary | BottomContextConnectionId | BottomContextConnectionLocale | BottomContextConnectionPublished_At | BottomContextConnectionSubheading | BottomContextConnectionUpdated_At | BottomContextGroupBy | Collection | CollectionAggregator | CollectionConnection | CollectionConnectionCreated_At | CollectionConnectionDescription | CollectionConnectionFilters | CollectionConnectionHandle | CollectionConnectionId | CollectionConnectionImage | CollectionConnectionLocale | CollectionConnectionParent | CollectionConnectionPublished_At | CollectionConnectionSubhead | CollectionConnectionTagline | CollectionConnectionTitle | CollectionConnectionUpdated_At | CollectionConnectionWiki_Title_Api_Validated | CollectionGroupBy | ComponentCollectionBanner | ComponentCollectionFeaturedCollection | ComponentCollectionFeaturedSubcollections | ComponentCollectionNewsletterForm | ComponentCollectionRelatedPosts | ComponentMenuCollectionLink | ComponentMenuLink | ComponentMenuLinkWithImage | ComponentSettingsFooter | ComponentSettingsPartner | ComponentSettingsSocial | ComponentStoreShopifySettings | Device | DeviceAggregator | DeviceConnection | DeviceConnectionCanonical_Override | DeviceConnectionCreated_At | DeviceConnectionDevice | DeviceConnectionDevice_Summary | DeviceConnectionFaq_Section | DeviceConnectionId | DeviceConnectionLocale | DeviceConnectionMeta_Description | DeviceConnectionPart_Type | DeviceConnectionPublished_At | DeviceConnectionSubheading | DeviceConnectionSummary | DeviceConnectionUpdated_At | DeviceGroupBy | DeviceHandle | DeviceHandleAggregator | DeviceHandleConnection | DeviceHandleConnectionCreated_At | DeviceHandleConnectionHandle | DeviceHandleConnectionId | DeviceHandleConnectionPublished_At | DeviceHandleConnectionUpdated_At | DeviceHandleGroupBy | Faq | FaqAggregator | FaqConnection | FaqConnectionAnswer | FaqConnectionCreated_At | FaqConnectionId | FaqConnectionLocale | FaqConnectionPublished_At | FaqConnectionQuestion | FaqConnectionUpdated_At | FaqGroupBy | FaqSection | FaqSectionAggregator | FaqSectionConnection | FaqSectionConnectionCreated_At | FaqSectionConnectionFaq1 | FaqSectionConnectionFaq2 | FaqSectionConnectionFaq3 | FaqSectionConnectionHeading | FaqSectionConnectionId | FaqSectionConnectionLocale | FaqSectionConnectionPublished_At | FaqSectionConnectionUpdated_At | FaqSectionGroupBy | FunFacts | FunFactsAggregator | FunFactsConnection | FunFactsConnectionContent | FunFactsConnectionCreated_At | FunFactsConnectionId | FunFactsConnectionTitle | FunFactsConnectionUpdated_At | FunFactsGroupBy | I18NLocale | Menu | MenuAggregator | MenuConnection | MenuConnectionCreated_At | MenuConnectionId | MenuConnectionLocale | MenuConnectionPublished_At | MenuConnectionTitle | MenuConnectionUpdated_At | MenuGroupBy | PartCollections | PartCollectionsAggregator | PartCollectionsConnection | PartCollectionsConnectionCreated_At | PartCollectionsConnectionDetails | PartCollectionsConnectionDevice_Handle | PartCollectionsConnectionId | PartCollectionsConnectionMeta_Description | PartCollectionsConnectionPublished_At | PartCollectionsConnectionSummary | PartCollectionsConnectionTitle | PartCollectionsConnectionUpdated_At | PartCollectionsGroupBy | Store | StoreAggregator | StoreConnection | StoreConnectionCode | StoreConnectionCreated_At | StoreConnectionCurrency | StoreConnectionFooter | StoreConnectionId | StoreConnectionName | StoreConnectionPublished_At | StoreConnectionShopifySettings | StoreConnectionSocialMediaAccounts | StoreConnectionStore_Settings | StoreConnectionUpdated_At | StoreConnectionUrl | StoreGroupBy | StoreSettings | StoreSettingsAggregator | StoreSettingsConnection | StoreSettingsConnectionCreated_At | StoreSettingsConnectionFooter | StoreSettingsConnectionId | StoreSettingsConnectionLocale | StoreSettingsConnectionPublished_At | StoreSettingsConnectionSocialMediaAccounts | StoreSettingsConnectionStore | StoreSettingsConnectionUpdated_At | StoreSettingsGroupBy | UploadFile | UploadFileAggregator | UploadFileAggregatorAvg | UploadFileAggregatorMax | UploadFileAggregatorMin | UploadFileAggregatorSum | UploadFileConnection | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionCreated_At | UploadFileConnectionExt | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionHeight | UploadFileConnectionId | UploadFileConnectionMime | UploadFileConnectionName | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UploadFileConnectionSize | UploadFileConnectionUpdated_At | UploadFileConnectionUrl | UploadFileConnectionWidth | UploadFileGroupBy | UserPermissionsPasswordPayload | UsersPermissionsLoginPayload | UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleAggregator | UsersPermissionsRoleConnection | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionType | UsersPermissionsRoleGroupBy | UsersPermissionsUser | UsersPermissionsUserAggregator | UsersPermissionsUserConnection | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserGroupBy | CreateBottomContextPayload | CreateCollectionPayload | CreateDeviceHandlePayload | CreateDevicePayload | CreateFaqPayload | CreateFaqSectionPayload | CreateFunFactPayload | CreateMenuPayload | CreatePartCollectionPayload | CreateRolePayload | CreateStorePayload | CreateStoreSettingPayload | CreateUserPayload | DeleteBottomContextPayload | DeleteCollectionPayload | DeleteDeviceHandlePayload | DeleteDevicePayload | DeleteFaqPayload | DeleteFaqSectionPayload | DeleteFilePayload | DeleteFunFactPayload | DeleteMenuPayload | DeletePartCollectionPayload | DeleteRolePayload | DeleteStorePayload | DeleteStoreSettingPayload | DeleteUserPayload | UpdateBottomContextPayload | UpdateCollectionPayload | UpdateDeviceHandlePayload | UpdateDevicePayload | UpdateFaqPayload | UpdateFaqSectionPayload | UpdateFunFactPayload | UpdateMenuPayload | UpdatePartCollectionPayload | UpdateRolePayload | UpdateStorePayload | UpdateStoreSettingPayload | UpdateUserPayload;
+export type Morph = BottomContext | BottomContextAggregator | BottomContextConnection | BottomContextConnectionCreated_At | BottomContextConnectionDevice_Summary | BottomContextConnectionId | BottomContextConnectionLocale | BottomContextConnectionPublished_At | BottomContextConnectionSubheading | BottomContextConnectionUpdated_At | BottomContextGroupBy | Collection | CollectionAggregator | CollectionConnection | CollectionConnectionCreated_At | CollectionConnectionDescription | CollectionConnectionFilters | CollectionConnectionHandle | CollectionConnectionId | CollectionConnectionImage | CollectionConnectionLocale | CollectionConnectionMetaDescription | CollectionConnectionParent | CollectionConnectionPublished_At | CollectionConnectionTagline | CollectionConnectionTitle | CollectionConnectionUpdated_At | CollectionGroupBy | ComponentCollectionBanner | ComponentCollectionFeaturedCollection | ComponentCollectionFeaturedSubcollections | ComponentCollectionNewsletterForm | ComponentCollectionRelatedPosts | ComponentMenuCollectionLink | ComponentMenuLink | ComponentMenuLinkWithImage | ComponentSettingsFooter | ComponentSettingsPartner | ComponentSettingsSocial | ComponentStoreShopifySettings | Device | DeviceAggregator | DeviceConnection | DeviceConnectionCanonical_Override | DeviceConnectionCreated_At | DeviceConnectionDevice | DeviceConnectionDevice_Summary | DeviceConnectionFaq_Section | DeviceConnectionId | DeviceConnectionLocale | DeviceConnectionMeta_Description | DeviceConnectionPart_Type | DeviceConnectionPublished_At | DeviceConnectionSubheading | DeviceConnectionSummary | DeviceConnectionUpdated_At | DeviceGroupBy | DeviceHandle | DeviceHandleAggregator | DeviceHandleConnection | DeviceHandleConnectionCreated_At | DeviceHandleConnectionHandle | DeviceHandleConnectionId | DeviceHandleConnectionPublished_At | DeviceHandleConnectionUpdated_At | DeviceHandleGroupBy | Faq | FaqAggregator | FaqConnection | FaqConnectionAnswer | FaqConnectionCreated_At | FaqConnectionId | FaqConnectionLocale | FaqConnectionPublished_At | FaqConnectionQuestion | FaqConnectionUpdated_At | FaqGroupBy | FaqSection | FaqSectionAggregator | FaqSectionConnection | FaqSectionConnectionCreated_At | FaqSectionConnectionFaq1 | FaqSectionConnectionFaq2 | FaqSectionConnectionFaq3 | FaqSectionConnectionHeading | FaqSectionConnectionId | FaqSectionConnectionLocale | FaqSectionConnectionPublished_At | FaqSectionConnectionUpdated_At | FaqSectionGroupBy | FunFacts | FunFactsAggregator | FunFactsConnection | FunFactsConnectionContent | FunFactsConnectionCreated_At | FunFactsConnectionId | FunFactsConnectionTitle | FunFactsConnectionUpdated_At | FunFactsGroupBy | I18NLocale | Menu | MenuAggregator | MenuConnection | MenuConnectionCreated_At | MenuConnectionId | MenuConnectionLocale | MenuConnectionPublished_At | MenuConnectionTitle | MenuConnectionUpdated_At | MenuGroupBy | PartCollections | PartCollectionsAggregator | PartCollectionsConnection | PartCollectionsConnectionCreated_At | PartCollectionsConnectionDetails | PartCollectionsConnectionDevice_Handle | PartCollectionsConnectionId | PartCollectionsConnectionMeta_Description | PartCollectionsConnectionPublished_At | PartCollectionsConnectionSummary | PartCollectionsConnectionTitle | PartCollectionsConnectionUpdated_At | PartCollectionsGroupBy | Store | StoreAggregator | StoreConnection | StoreConnectionCode | StoreConnectionCreated_At | StoreConnectionCurrency | StoreConnectionFooter | StoreConnectionId | StoreConnectionName | StoreConnectionPublished_At | StoreConnectionShopifySettings | StoreConnectionSocialMediaAccounts | StoreConnectionStore_Settings | StoreConnectionUpdated_At | StoreConnectionUrl | StoreGroupBy | StoreSettings | StoreSettingsAggregator | StoreSettingsConnection | StoreSettingsConnectionCreated_At | StoreSettingsConnectionFooter | StoreSettingsConnectionId | StoreSettingsConnectionLocale | StoreSettingsConnectionPublished_At | StoreSettingsConnectionSocialMediaAccounts | StoreSettingsConnectionStore | StoreSettingsConnectionUpdated_At | StoreSettingsGroupBy | UploadFile | UploadFileAggregator | UploadFileAggregatorAvg | UploadFileAggregatorMax | UploadFileAggregatorMin | UploadFileAggregatorSum | UploadFileConnection | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionCreated_At | UploadFileConnectionExt | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionHeight | UploadFileConnectionId | UploadFileConnectionMime | UploadFileConnectionName | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UploadFileConnectionSize | UploadFileConnectionUpdated_At | UploadFileConnectionUrl | UploadFileConnectionWidth | UploadFileGroupBy | UserPermissionsPasswordPayload | UsersPermissionsLoginPayload | UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleAggregator | UsersPermissionsRoleConnection | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionType | UsersPermissionsRoleGroupBy | UsersPermissionsUser | UsersPermissionsUserAggregator | UsersPermissionsUserConnection | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserGroupBy | CreateBottomContextPayload | CreateCollectionPayload | CreateDeviceHandlePayload | CreateDevicePayload | CreateFaqPayload | CreateFaqSectionPayload | CreateFunFactPayload | CreateMenuPayload | CreatePartCollectionPayload | CreateRolePayload | CreateStorePayload | CreateStoreSettingPayload | CreateUserPayload | DeleteBottomContextPayload | DeleteCollectionPayload | DeleteDeviceHandlePayload | DeleteDevicePayload | DeleteFaqPayload | DeleteFaqSectionPayload | DeleteFilePayload | DeleteFunFactPayload | DeleteMenuPayload | DeletePartCollectionPayload | DeleteRolePayload | DeleteStorePayload | DeleteStoreSettingPayload | DeleteUserPayload | UpdateBottomContextPayload | UpdateCollectionPayload | UpdateDeviceHandlePayload | UpdateDevicePayload | UpdateFaqPayload | UpdateFaqSectionPayload | UpdateFunFactPayload | UpdateMenuPayload | UpdatePartCollectionPayload | UpdateRolePayload | UpdateStorePayload | UpdateStoreSettingPayload | UpdateUserPayload;
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -2886,7 +2877,6 @@ export type EditBottomContextInput = {
 };
 
 export type EditCollectionInput = {
-  Subhead?: Maybe<Scalars['String']>;
   children?: Maybe<Array<Maybe<Scalars['ID']>>>;
   created_by?: Maybe<Scalars['ID']>;
   description?: Maybe<Scalars['String']>;
@@ -2895,13 +2885,13 @@ export type EditCollectionInput = {
   image?: Maybe<Scalars['ID']>;
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  metaDescription?: Maybe<Scalars['String']>;
   parent?: Maybe<Scalars['ID']>;
   published_at?: Maybe<Scalars['DateTime']>;
   sections: Array<Scalars['CollectionSectionsDynamicZoneInput']>;
   tagline?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updated_by?: Maybe<Scalars['ID']>;
-  wiki_title_api_validated?: Maybe<Scalars['String']>;
 };
 
 export type EditComponentCollectionBannerInput = {
