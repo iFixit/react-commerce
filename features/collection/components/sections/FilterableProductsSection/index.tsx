@@ -2,9 +2,22 @@ import {
    CollectionEmptyStateIllustration,
    SearchEmptyStateIllustration,
 } from '@assets/svg';
-import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
+import {
+   Box,
+   Button,
+   HStack,
+   Icon,
+   Skeleton,
+   Text,
+   VStack,
+} from '@chakra-ui/react';
 import { Card } from '@components/Card';
-import { useHits, useSearchParams, useSearchState } from '@lib/algolia';
+import {
+   useClearSearchParams,
+   useHits,
+   useSearchParams,
+   useSearchState,
+} from '@lib/algolia';
 import { useUpdateUrlQuery } from '@lib/algolia-utils';
 import * as React from 'react';
 import { ProductHit } from '../../../types';
@@ -64,7 +77,7 @@ export const FilterableProductsSection = React.memo(() => {
          <Toolbar
             leftContent={<NumberOfHits />}
             rightContent={
-               <HStack px={{ base: 4, sm: 0 }}>
+               <HStack px={{ base: 6, sm: 0 }}>
                   <FiltersModal
                      isOpen={isFilterModalOpen}
                      onClose={() => setIsFilterModalOpen(false)}
@@ -126,26 +139,39 @@ export const FilterableProductsSection = React.memo(() => {
                         <SkeletonListItem />
                         <SkeletonListItem />
                      </VStack>
+                  ) : searchState === 'error' ? (
+                     <SearchErrorState />
                   ) : showNoResults ? (
                      <FilteredCollectionEmptyState />
                   ) : productViewType === ProductViewType.List ? (
-                     <ProductList>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductListItem key={hit.handle} product={hit} />
-                           );
-                        })}
-                     </ProductList>
+                     <>
+                        <ProductList>
+                           {hits.map((hit) => {
+                              return (
+                                 <ProductListItem
+                                    key={hit.handle}
+                                    product={hit}
+                                 />
+                              );
+                           })}
+                        </ProductList>
+                        <CollectionPagination />
+                     </>
                   ) : (
-                     <ProductGrid>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductGridItem key={hit.handle} product={hit} />
-                           );
-                        })}
-                     </ProductGrid>
+                     <>
+                        <ProductGrid>
+                           {hits.map((hit) => {
+                              return (
+                                 <ProductGridItem
+                                    key={hit.handle}
+                                    product={hit}
+                                 />
+                              );
+                           })}
+                        </ProductGrid>
+                        <CollectionPagination />
+                     </>
                   )}
-                  <CollectionPagination />
                </Card>
             </VStack>
          </HStack>
@@ -207,6 +233,7 @@ const CollectionEmptyState = () => {
 };
 
 function FilteredCollectionEmptyState() {
+   const clearSearchParams = useClearSearchParams();
    return (
       <VStack pt="16" pb="20">
          <Icon
@@ -221,8 +248,59 @@ function FilteredCollectionEmptyState() {
             Try adjusting your search or filter to find what you&apos;re looking
             for.
          </Text>
+         <Box pt="8">
+            <Button colorScheme="brand" onClick={() => clearSearchParams()}>
+               Reset filters
+            </Button>
+         </Box>
       </VStack>
    );
+}
+
+function SearchErrorState() {
+   const clearSearchParams = useClearSearchParams();
+   const searchParams = useSearchParams();
+
+   const isFiltered =
+      searchParams.query.length > 0 || searchParams.filters.allIds.length > 0;
+
+   return (
+      <VStack pt="16" pb="20">
+         <Icon
+            as={SearchEmptyStateIllustration}
+            boxSize="200px"
+            opacity="0.8"
+         />
+         <Text fontSize="lg" fontWeight="bold" w="full" textAlign="center">
+            Oops, an error occurred!
+         </Text>
+         {isFiltered ? (
+            <Text maxW="500px" color="gray.500" textAlign="center" px="2">
+               Try adjusting your search or filter to find what you&apos;re
+               looking for.
+            </Text>
+         ) : (
+            <Text maxW="500px" color="gray.500" textAlign="center" px="2">
+               Check your Internet connection and try to reload the page
+            </Text>
+         )}
+         <Box pt="8">
+            {isFiltered ? (
+               <Button colorScheme="brand" onClick={() => clearSearchParams()}>
+                  Reset filters
+               </Button>
+            ) : (
+               <Button colorScheme="brand" onClick={reloadPage}>
+                  Reload page
+               </Button>
+            )}
+         </Box>
+      </VStack>
+   );
+}
+
+function reloadPage() {
+   window.location.reload();
 }
 
 const SkeletonListItem = () => {

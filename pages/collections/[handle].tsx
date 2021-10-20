@@ -3,6 +3,7 @@ import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
    FeaturedCollectionSection,
+   FeaturedSubcollectionsSection,
    FilterableProductsSection,
    HeroSection,
    MetaTags,
@@ -98,8 +99,23 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                      }
                      return null;
                   }
+                  case 'ComponentCollectionFeaturedSubcollections': {
+                     const { title, collections } = section;
+                     if (collections.length > 0) {
+                        return (
+                           <FeaturedSubcollectionsSection
+                              key={index}
+                              title={title}
+                              collections={collections}
+                           />
+                        );
+                     }
+                     return null;
+                  }
                   default: {
                      console.warn(
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                         `Section ${section.__typename} not implemented`
                      );
                      return null;

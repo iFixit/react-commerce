@@ -70,6 +70,20 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
                }
             }
          }
+         ... on ComponentCollectionFeaturedSubcollections {
+            id
+            title
+            collections(limit: 3) {
+               handle
+               title
+               description
+               image {
+                  alternativeText
+                  url
+                  formats
+               }
+            }
+         }
       }
    }
 }
