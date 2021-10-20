@@ -161,7 +161,7 @@ async function loadCollectionSearchContext({
       );
    }
    const numberOfPages = context.numberOfPages || 0;
-   if (numberOfPages > 0 && context.params.page > numberOfPages) {
+   if (context.params.page > 1 && context.params.page > numberOfPages) {
       return null;
    }
    return context;
