@@ -3,12 +3,11 @@ import { ProductHit } from '@features/collection';
 import {
    createAlgoliaClient,
    createSearchContext,
-   Filter,
    SearchContext,
    SearchParams,
 } from '@lib/algolia';
 import { parseSearchParams } from '@lib/algolia-utils';
-import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
+import { Awaited, filterNullableItems } from '@lib/utils';
 import produce from 'immer';
 import { ParsedUrlQuery } from 'querystring';
 import { getLayoutProps } from '../layout';
