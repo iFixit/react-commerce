@@ -55,7 +55,7 @@ export async function fetchCollectionPageData(
          description: collection.description,
          metaDescription: collection.metaDescription,
          filtersPreset: collection.filters,
-         image: getImageFromStrapiImage(collection.image, 'medium'),
+         image: getImageFromStrapiImage(collection.image, 'large'),
          ancestors: getAncestors(collection.parent),
          children: filterNullableItems(collection.children).map((child) => {
             return {

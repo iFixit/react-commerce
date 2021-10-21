@@ -2,7 +2,7 @@ import { STRAPI_ORIGIN } from '@config/env';
 
 export function getImageFromStrapiImage(
    image: any | null,
-   format: 'medium' | 'small' | 'thumbnail'
+   format: 'large' | 'medium' | 'small' | 'thumbnail'
 ) {
    if (image == null) {
       return null;
@@ -12,5 +12,6 @@ export function getImageFromStrapiImage(
          image.formats[format] ? image.formats[format].url : image.url
       }`,
       alt: image.alternativeText,
+      formats: image.formats,
    };
 }

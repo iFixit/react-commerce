@@ -12,7 +12,7 @@ import {
    useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
-import { ShopifyImage } from '@components/ShopifyImage';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -145,12 +145,13 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   h="60px"
                   flexGrow={0}
                   flexShrink={0}
+                  position="relative"
                >
-                  <ShopifyImage
+                  <Image
                      src={category.image.url}
                      alt={category.image.alt}
-                     sizes="80px"
-                     h="full"
+                     objectFit="contain"
+                     layout="fill"
                   />
                </Flex>
             )}

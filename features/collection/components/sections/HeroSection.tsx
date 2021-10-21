@@ -15,9 +15,9 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { ShopifyImage } from '@components/ShopifyImage';
 import { useSearchParams } from '@lib/algolia';
 import { CollectionData } from '@lib/api';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
@@ -172,7 +172,7 @@ const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
          overflow="hidden"
          boxShadow="base"
       >
-         <ShopifyImage src={src} alt={alt} sizes="400px" />
+         <Image src={src} alt={alt} layout="fill" objectFit="contain" />
       </AspectRatio>
    );
 });
