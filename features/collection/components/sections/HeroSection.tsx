@@ -48,14 +48,11 @@ export function HeroSection({ collection }: HeroSectionProps) {
                   <HeroBreadcrumbItem>{collection.title}</HeroBreadcrumbItem>
                </HeroBreadcrumb>
             )}
-            {!hasDescription && collection.image != null ? (
+            {!hasDescription &&
+            collection.image != null &&
+            searchParams.page === 1 ? (
                <HeroBackgroundImage src={collection.image.url}>
-                  <HeroTitle color="white">
-                     {collection.title}
-                     {searchParams.page > 1
-                        ? ` - Page ${searchParams.page}`
-                        : ''}
-                  </HeroTitle>
+                  <HeroTitle color="white">{collection.title}</HeroTitle>
                </HeroBackgroundImage>
             ) : (
                <HeroTitle>
