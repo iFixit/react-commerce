@@ -61,7 +61,7 @@ export async function fetchCollectionPageData(
             return {
                handle: child.handle,
                title: child.title,
-               image: getImageFromStrapiImage(child.image, 'thumbnail'),
+               image: getImageFromStrapiImage(child.image, 'medium'),
             };
          }),
          sections: filterNullableItems(collection.sections).map((section) => {

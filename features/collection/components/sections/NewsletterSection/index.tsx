@@ -5,7 +5,6 @@ import {
    FormErrorMessage,
    HStack,
    Icon,
-   Image,
    Input,
    Stack,
    Text,
@@ -14,6 +13,8 @@ import {
 import { SubscriptionStatus, useSubscribeToNewsletter } from '@lib/api';
 import * as React from 'react';
 import { RiCheckFill } from 'react-icons/ri';
+import newsletterIcon from './newsletter-icon.png';
+import Image from 'next/image';
 
 export interface NewsletterSectionProps {
    className?: string;
@@ -78,7 +79,7 @@ export const NewsletterSection = chakra(
             }}
          >
             <HStack spacing="8">
-               <Image boxSize="95px" src="/images/newsletter-icon.png" alt="" />
+               <Image width="95px" height="95px" src={newsletterIcon} alt="" />
                <VStack align="left" spacing="1">
                   <Text fontSize="xl" fontWeight="bold">
                      {title}

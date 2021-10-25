@@ -152,6 +152,8 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                      alt={category.image.alt}
                      objectFit="contain"
                      layout="fill"
+                     sizes="20vw"
+                     priority
                   />
                </Flex>
             )}

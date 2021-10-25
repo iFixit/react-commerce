@@ -1,8 +1,10 @@
 import { STRAPI_ORIGIN } from '@config/env';
 
+export type StrapiImageFormat = 'large' | 'medium' | 'small' | 'thumbnail';
+
 export function getImageFromStrapiImage(
    image: any | null,
-   format: 'large' | 'medium' | 'small' | 'thumbnail'
+   format: StrapiImageFormat
 ) {
    if (image == null) {
       return null;
