@@ -2,6 +2,8 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import * as React from 'react';
+import backgroundImage from './lifetime-guarantee-background.jpg';
+import Image from 'next/image';
 
 export interface BannerSectionProps {
    title: string;
@@ -23,11 +25,9 @@ export function BannerSection({
             sm: '2xl',
          }}
          overflow="hidden"
-         bgImage="url('/images/lifetime-guarantee-background.jpg')"
-         bgPosition="center"
-         bgRepeat="no-repeat"
-         bgSize="cover"
+         position="relative"
       >
+         <Image src={backgroundImage} alt="" layout="fill" objectFit="cover" />
          <Flex
             p={{
                base: 10,
@@ -36,6 +36,7 @@ export function BannerSection({
             bgGradient="linear(to-r, blackAlpha.600, blackAlpha.400)"
             justify="space-between"
             align="center"
+            position="relative"
          >
             <Flex alignItems="flex-start" direction="column">
                <Text
