@@ -69,11 +69,13 @@ export function HeroSection({ collection }: HeroSectionProps) {
                         ? ` - Page ${searchParams.page}`
                         : ''}
                   </HeroTitle>
-                  {collection.tagline && collection.tagline.length > 0 && (
-                     <Text fontWeight="bold" fontSize="xl">
-                        {collection.tagline}
-                     </Text>
-                  )}
+                  {collection.tagline &&
+                     collection.tagline.length > 0 &&
+                     searchParams.page === 1 && (
+                        <Text fontWeight="bold" fontSize="xl">
+                           {collection.tagline}
+                        </Text>
+                     )}
                </>
             )}
             {hasDescription && (
