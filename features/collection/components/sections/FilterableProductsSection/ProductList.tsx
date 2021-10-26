@@ -19,6 +19,7 @@ import { ShopifyImage } from '@components/ShopifyImage';
 import { ProductHit } from '@features/collection';
 import { computeDiscountPercentage } from '@lib/commerce-utils';
 import * as React from 'react';
+import Image from 'next/image';
 
 const placeholderImageUrl =
    'https://via.placeholder.com/180x135?text=not+available';
@@ -72,7 +73,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
             alignItems="flex-start"
             px="4"
          >
-            <AspectRatio
+            <Box
                flexGrow={1}
                flexShrink={0}
                w={{
@@ -81,7 +82,6 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   md: '140px',
                   lg: '160px',
                }}
-               ratio={1}
             >
                {product.product_image == null ? (
                   <Img
@@ -90,13 +90,19 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      alt={product.title}
                   />
                ) : (
-                  <ShopifyImage
+                  // <ShopifyImage
+                  //    src={product.product_image || placeholderImageUrl}
+                  //    alt={product.title}
+                  //    sizes="180px"
+                  // />
+                  <Image
                      src={product.product_image || placeholderImageUrl}
                      alt={product.title}
-                     sizes="180px"
+                     width="180px"
+                     height="180px"
                   />
                )}
-            </AspectRatio>
+            </Box>
             <VStack
                align="flex-start"
                spacing={{
