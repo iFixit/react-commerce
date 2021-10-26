@@ -172,14 +172,7 @@ const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
          overflow="hidden"
          boxShadow="base"
       >
-         <Image
-            src={src}
-            alt={alt}
-            layout="fill"
-            objectFit="contain"
-            priority
-            sizes="50vw"
-         />
+         <Image src={src} alt={alt} layout="fill" priority sizes="50vw" />
       </AspectRatio>
    );
 });

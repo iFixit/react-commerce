@@ -1,5 +1,4 @@
 import {
-   AspectRatio,
    Badge,
    Box,
    Button,
@@ -7,7 +6,6 @@ import {
    Flex,
    Heading,
    HStack,
-   Img,
    LinkBox,
    LinkOverlay,
    Stack,
@@ -15,14 +13,11 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/Rating';
-import { ShopifyImage } from '@components/ShopifyImage';
 import { ProductHit } from '@features/collection';
 import { computeDiscountPercentage } from '@lib/commerce-utils';
-import * as React from 'react';
 import Image from 'next/image';
-
-const placeholderImageUrl =
-   'https://via.placeholder.com/180x135?text=not+available';
+import * as React from 'react';
+import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 
@@ -83,23 +78,18 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   lg: '160px',
                }}
             >
-               {product.product_image == null ? (
-                  <Img
-                     sizes="180px"
-                     src={placeholderImageUrl}
-                     alt={product.title}
-                  />
-               ) : (
-                  // <ShopifyImage
-                  //    src={product.product_image || placeholderImageUrl}
-                  //    alt={product.title}
-                  //    sizes="180px"
-                  // />
+               {product.product_image ? (
                   <Image
-                     src={product.product_image || placeholderImageUrl}
+                     src={product.product_image}
                      alt={product.title}
                      width="180px"
                      height="180px"
+                  />
+               ) : (
+                  <Image
+                     src={placeholderImageUrl}
+                     alt={product.title}
+                     sizes="180px"
                   />
                )}
             </Box>
