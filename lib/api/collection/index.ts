@@ -3,12 +3,11 @@ import { ProductHit } from '@features/collection';
 import {
    createAlgoliaClient,
    createSearchContext,
-   Filter,
    SearchContext,
    SearchParams,
 } from '@lib/algolia';
 import { parseSearchParams } from '@lib/algolia-utils';
-import { Awaited, filterNullableItems, keyBy } from '@lib/utils';
+import { Awaited, filterNullableItems } from '@lib/utils';
 import produce from 'immer';
 import { ParsedUrlQuery } from 'querystring';
 import { getLayoutProps } from '../layout';
@@ -44,6 +43,9 @@ export async function fetchCollectionPageData(
       filtersPreset,
       urlQuery: options.urlQuery,
    });
+   if (searchContext == null) {
+      return null;
+   }
    return {
       ...getLayoutProps(result),
       collection: {
@@ -125,11 +127,15 @@ async function loadCollectionSearchContext({
    indexName,
    urlQuery,
    filtersPreset,
-}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit>> {
+}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit> | null> {
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const page =
       typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : undefined;
+
+   if (page != null && page < 1) {
+      return null;
+   }
 
    let context = createSearchContext<ProductHit>({
       indexName,
@@ -152,6 +158,10 @@ async function loadCollectionSearchContext({
       context = await client.search<ProductHit>(
          applySearchParams(context, searchParams)
       );
+   }
+   const numberOfPages = context.numberOfPages || 0;
+   if (context.params.page > 1 && context.params.page > numberOfPages) {
+      return null;
    }
    return context;
 }

@@ -13,26 +13,65 @@ import {
    HStack,
    Icon,
    Text,
+   VStack,
 } from '@chakra-ui/react';
 import { ShopifyImage } from '@components/ShopifyImage';
+import { useSearchParams } from '@lib/algolia';
+import { CollectionData } from '@lib/api';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
 
-export const HeroSection = chakra(
-   ({
-      children,
-      className,
-   }: React.PropsWithChildren<{ className?: string }>) => {
-      return (
-         <HStack className={className} align="flex-start" spacing="10">
-            {children}
-         </HStack>
-      );
-   }
-);
+export interface HeroSectionProps {
+   collection: CollectionData;
+}
 
-export const HeroTitle = chakra(
+export function HeroSection({ collection }: HeroSectionProps) {
+   const searchParams = useSearchParams();
+   const hasDescription =
+      collection.description != null &&
+      collection.description.length > 0 &&
+      searchParams.page === 1;
+   return (
+      <HStack align="flex-start" spacing="10">
+         <VStack flex={1} align="flex-start">
+            {collection.ancestors.length > 0 && (
+               <HeroBreadcrumb>
+                  {collection.ancestors.map((ancestor) => (
+                     <HeroBreadcrumbLink
+                        key={ancestor.handle}
+                        href={`/collections/${ancestor.handle}`}
+                     >
+                        {ancestor.title}
+                     </HeroBreadcrumbLink>
+                  ))}
+                  <HeroBreadcrumbItem>{collection.title}</HeroBreadcrumbItem>
+               </HeroBreadcrumb>
+            )}
+            {!hasDescription &&
+            collection.image != null &&
+            searchParams.page === 1 ? (
+               <HeroBackgroundImage src={collection.image.url}>
+                  <HeroTitle color="white">{collection.title}</HeroTitle>
+               </HeroBackgroundImage>
+            ) : (
+               <HeroTitle>
+                  {collection.title}
+                  {searchParams.page > 1 ? ` - Page ${searchParams.page}` : ''}
+               </HeroTitle>
+            )}
+            {hasDescription && (
+               <HeroDescription>{collection.description}</HeroDescription>
+            )}
+         </VStack>
+         {collection.image && hasDescription && (
+            <HeroImage src={collection.image.url} alt={collection.image.alt} />
+         )}
+      </HStack>
+   );
+}
+
+const HeroTitle = chakra(
    ({
       children,
       className,
@@ -54,9 +93,7 @@ const NUMBER_OF_LINES = 4;
 const LINE_HEIGHT = 25;
 const VISIBLE_HEIGHT = NUMBER_OF_LINES * LINE_HEIGHT;
 
-export function HeroDescription({
-   children,
-}: React.PropsWithChildren<unknown>) {
+function HeroDescription({ children }: React.PropsWithChildren<unknown>) {
    const [state, setState] = React.useState({
       isOpen: false,
       shouldDisplayShowMore: false,
@@ -110,12 +147,13 @@ export function HeroDescription({
    );
 }
 
-export interface HeroImageProps {
+interface HeroImageProps {
    className?: string;
    src: string;
    alt?: string;
 }
-export const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
+
+const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
    return (
       <AspectRatio
          className={className}
@@ -135,11 +173,11 @@ export const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
    );
 });
 
-export type HeroBackgroundImageProps = React.PropsWithChildren<{
+type HeroBackgroundImageProps = React.PropsWithChildren<{
    src: string;
 }>;
 
-export const HeroBackgroundImage = chakra(
+const HeroBackgroundImage = chakra(
    ({ children, src }: HeroBackgroundImageProps) => {
       return (
          <Box
@@ -166,9 +204,9 @@ export const HeroBackgroundImage = chakra(
    }
 );
 
-export type HeroBreadcrumbProps = React.PropsWithChildren<unknown>;
+type HeroBreadcrumbProps = React.PropsWithChildren<unknown>;
 
-export const HeroBreadcrumb = ({ children }: HeroBreadcrumbProps) => {
+const HeroBreadcrumb = ({ children }: HeroBreadcrumbProps) => {
    return (
       <Breadcrumb
          spacing={2}
@@ -180,13 +218,13 @@ export const HeroBreadcrumb = ({ children }: HeroBreadcrumbProps) => {
    );
 };
 
-export type HeroBreadcrumbLinkProps = React.PropsWithChildren<
+type HeroBreadcrumbLinkProps = React.PropsWithChildren<
    BreadcrumbItemProps & {
       href: string;
    }
 >;
 
-export const HeroBreadcrumbLink = ({
+const HeroBreadcrumbLink = ({
    href,
    children,
    ...otherProps
@@ -200,9 +238,9 @@ export const HeroBreadcrumbLink = ({
    );
 };
 
-export type HeroBreadcrumbItemProps = React.PropsWithChildren<unknown>;
+type HeroBreadcrumbItemProps = React.PropsWithChildren<unknown>;
 
-export const HeroBreadcrumbItem = ({ children }: HeroBreadcrumbItemProps) => {
+const HeroBreadcrumbItem = ({ children }: HeroBreadcrumbItemProps) => {
    return (
       <BreadcrumbItem isCurrentPage>
          <Text color="black">{children}</Text>

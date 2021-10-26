@@ -12,11 +12,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/Card';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import {
-   AlgoliaProvider,
-   SearchContext,
-   useClearFilter,
    useClearSearchParams,
    useHits,
    useSearchParams,
@@ -47,31 +43,7 @@ export enum ProductViewType {
    List = 'list',
 }
 
-export interface FilterableProductSectionProps {
-   collectionHandle: string;
-   initialSearchContext: SearchContext;
-   algoliaIndexName: string;
-}
-
-export function FilterableProductsSection({
-   collectionHandle,
-   initialSearchContext,
-   algoliaIndexName,
-}: FilterableProductSectionProps) {
-   return (
-      <AlgoliaProvider
-         key={collectionHandle}
-         appId={ALGOLIA_APP_ID}
-         apiKey={ALGOLIA_API_KEY}
-         initialIndexName={algoliaIndexName}
-         initialContext={initialSearchContext}
-      >
-         <FilterableProducts />
-      </AlgoliaProvider>
-   );
-}
-
-const FilterableProducts = React.memo(() => {
+export const FilterableProductsSection = React.memo(() => {
    const [productViewType, setProductViewType] = React.useState(
       ProductViewType.List
    );
@@ -95,7 +67,6 @@ const FilterableProducts = React.memo(() => {
    if (isEmptyCollection) {
       return <CollectionEmptyState />;
    }
-
    return (
       <VStack
          align="stretch"
