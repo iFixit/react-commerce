@@ -54,8 +54,9 @@
       "react-dom": "17.0.2",
       "react-fast-compare": "3.2.0",
       "react-icons": "4.2.0",
+      "react-markdown": "7.1.0",
       "react-virtualized-auto-sizer": "1.0.5",
-      "react-window": "1.8.6"
+      "snarkdown": "2.0.0"
    },
    "devDependencies": {
       "@graphql-codegen/cli": "2.1.1",

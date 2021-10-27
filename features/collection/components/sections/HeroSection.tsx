@@ -21,6 +21,21 @@ import { CollectionData } from '@lib/api';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight } from 'react-icons/hi';
+import snarkdown from 'snarkdown';
+
+interface MarkdownProps {
+   children: string;
+   className?: string;
+}
+
+function Markdown({ children, className }: MarkdownProps) {
+   const html = React.useMemo(() => {
+      return snarkdown(children);
+   }, [children]);
+   return (
+      <div className={className} dangerouslySetInnerHTML={{ __html: html }} />
+   );
+}
 
 export interface HeroSectionProps {
    collection: CollectionData;
@@ -93,7 +108,11 @@ const NUMBER_OF_LINES = 4;
 const LINE_HEIGHT = 25;
 const VISIBLE_HEIGHT = NUMBER_OF_LINES * LINE_HEIGHT;
 
-function HeroDescription({ children }: React.PropsWithChildren<unknown>) {
+type HeroDescriptionProps = {
+   children: string;
+};
+
+function HeroDescription({ children }: HeroDescriptionProps) {
    const [state, setState] = React.useState({
       isOpen: false,
       shouldDisplayShowMore: false,
@@ -125,7 +144,20 @@ function HeroDescription({ children }: React.PropsWithChildren<unknown>) {
    return (
       <Box px={{ base: 6, sm: 0 }}>
          <Collapse startingHeight={VISIBLE_HEIGHT} in={state.isOpen}>
-            <Text ref={textRef}>{children}</Text>
+            <Box
+               sx={{
+                  a: {
+                     color: 'brand.500',
+                     transition: 'color 300ms',
+                     '&:hover': {
+                        color: 'brand.600',
+                     },
+                  },
+               }}
+               ref={textRef}
+            >
+               <Markdown>{children}</Markdown>
+            </Box>
          </Collapse>
          {state.shouldDisplayShowMore && (
             <Button
