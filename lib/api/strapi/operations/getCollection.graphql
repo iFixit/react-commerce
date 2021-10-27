@@ -4,6 +4,7 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
       id
       handle
       title
+      tagline
       description
       filters
       image {

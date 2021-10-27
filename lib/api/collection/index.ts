@@ -51,6 +51,7 @@ export async function fetchCollectionPageData(
       collection: {
          handle: collection.handle,
          title: collection.title,
+         tagline: collection.tagline,
          description: collection.description,
          filtersPreset: collection.filters,
          image: getImageFromStrapiImage(collection.image, 'medium'),
