@@ -30,7 +30,7 @@ export async function fetchCollectionPageData(
          code: options.storeCode,
       },
    });
-   const collection = result.collections?.[0];
+   const collection = result.productLists?.[0];
    if (collection == null) {
       return null;
    }
@@ -48,6 +48,9 @@ export async function fetchCollectionPageData(
    }
    return {
       ...getLayoutProps(result),
+      global: {
+         newsletterForm: result.global?.newsletterForm,
+      },
       collection: {
          handle: collection.handle,
          title: collection.title,
@@ -65,12 +68,11 @@ export async function fetchCollectionPageData(
          }),
          sections: filterNullableItems(collection.sections).map((section) => {
             if (
-               section.__typename ===
-               'ComponentCollectionFeaturedSubcollections'
+               section.__typename === 'ComponentProductListLinkedProductListSet'
             ) {
                return {
                   ...section,
-                  collections: filterNullableItems(section.collections).map(
+                  productLists: filterNullableItems(section.productLists).map(
                      (collection) => {
                         return {
                            ...collection,
@@ -94,12 +96,16 @@ export type CollectionData = NonNullable<
    Awaited<ReturnType<typeof fetchCollectionPageData>>
 >['collection'];
 
+export type ProductListGlobal = NonNullable<
+   Awaited<ReturnType<typeof fetchCollectionPageData>>
+>['global'];
+
 type StrapiCollectionPageData = NonNullable<
    NonNullable<Awaited<ReturnType<typeof strapi['getCollectionPageData']>>>
 >;
 
 type StrapiCollection = NonNullable<
-   NonNullable<StrapiCollectionPageData['collections']>[0]
+   NonNullable<StrapiCollectionPageData['productLists']>[0]
 >;
 
 interface Ancestor {

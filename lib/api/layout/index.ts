@@ -56,8 +56,8 @@ function getMenu(rawMenu: Menu) {
             case 'ComponentMenuCollectionLink': {
                return {
                   name: item.name,
-                  url: item.linkedCollection
-                     ? `/collections/${item.linkedCollection.handle}`
+                  url: item.productList
+                     ? `/collections/${item.productList.handle}`
                      : '#',
                };
             }

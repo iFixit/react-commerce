@@ -13,18 +13,28 @@ import {
    SubcategoriesSection,
 } from '@features/collection';
 import { AlgoliaProvider } from '@lib/algolia';
-import { CollectionData, fetchCollectionPageData, LayoutData } from '@lib/api';
+import {
+   CollectionData,
+   fetchCollectionPageData,
+   LayoutData,
+   ProductListGlobal,
+} from '@lib/api';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
 interface CollectionPageProps {
    collection: CollectionData;
+   global: ProductListGlobal;
    layout: LayoutData;
 }
 
 const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
 
-export default function CollectionPage({ collection }: CollectionPageProps) {
+export default function CollectionPage({
+   collection,
+   global,
+}: CollectionPageProps) {
+   const { newsletterForm } = global;
    return (
       <Page>
          <AlgoliaProvider
@@ -45,7 +55,7 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
             <FilterableProductsSection />
             {collection.sections.map((section, index) => {
                switch (section.__typename) {
-                  case 'ComponentCollectionBanner': {
+                  case 'ComponentProductListBanner': {
                      return (
                         <BannerSection
                            key={index}
@@ -56,57 +66,43 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                         />
                      );
                   }
-                  case 'ComponentCollectionRelatedPosts': {
+                  case 'ComponentProductListRelatedPosts': {
                      const tags = [collection.title].concat(
                         section.tags?.split(',').map((tag) => tag.trim()) || []
                      );
                      return <RelatedPostsSection key={index} tags={tags} />;
                   }
-                  case 'ComponentCollectionNewsletterForm': {
-                     return (
-                        <NewsletterSection
-                           key={index}
-                           title={section.title}
-                           description={section.description}
-                           emailPlaceholder={
-                              section.inputPlaceholder || undefined
-                           }
-                           subscribeLabel={section.callToActionLabel}
-                        />
-                     );
-                  }
-                  case 'ComponentCollectionFeaturedCollection': {
-                     const { featuredCollection } = section;
-                     if (featuredCollection) {
+                  case 'ComponentProductListFeaturedProductList': {
+                     const { productList } = section;
+                     if (productList) {
                         return (
                            <FeaturedCollectionSection
                               key={index}
-                              handle={featuredCollection.handle}
+                              handle={productList.handle}
                               algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
-                              title={featuredCollection.title}
-                              description={featuredCollection.description}
+                              title={productList.title}
+                              description={productList.description}
                               imageSrc={
-                                 featuredCollection.image
-                                    ? `${STRAPI_ORIGIN}${featuredCollection.image.url}`
+                                 productList.image
+                                    ? `${STRAPI_ORIGIN}${productList.image.url}`
                                     : undefined
                               }
                               imageAlt={
-                                 featuredCollection.image?.alternativeText ||
-                                 undefined
+                                 productList.image?.alternativeText || undefined
                               }
                            />
                         );
                      }
                      return null;
                   }
-                  case 'ComponentCollectionFeaturedSubcollections': {
-                     const { title, collections } = section;
-                     if (collections.length > 0) {
+                  case 'ComponentProductListLinkedProductListSet': {
+                     const { title, productLists } = section;
+                     if (productLists.length > 0) {
                         return (
                            <FeaturedSubcollectionsSection
                               key={index}
                               title={title}
-                              collections={collections}
+                              collections={productLists}
                            />
                         );
                      }
@@ -122,6 +118,16 @@ export default function CollectionPage({ collection }: CollectionPageProps) {
                   }
                }
             })}
+            {newsletterForm && (
+               <NewsletterSection
+                  title={newsletterForm.title}
+                  description={newsletterForm.subtitle}
+                  emailPlaceholder={
+                     newsletterForm.inputPlaceholder || undefined
+                  }
+                  subscribeLabel={newsletterForm.callToActionButtonTitle}
+               />
+            )}
          </AlgoliaProvider>
       </Page>
    );
@@ -173,6 +179,7 @@ export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async
    return {
       props: {
          collection: pageData.collection,
+         global: pageData.global,
          layout: pageData.layout,
       },
    };
