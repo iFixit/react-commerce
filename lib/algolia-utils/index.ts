@@ -1,4 +1,7 @@
-import { COLLECTION_PAGE_PARAM, COLLECTION_QUERY_PARAM } from '@constants';
+import {
+   COLLECTION_PAGE_PARAM,
+   COLLECTION_QUERY_PARAM,
+} from '@config/constants';
 import {
    Facet,
    Filter,

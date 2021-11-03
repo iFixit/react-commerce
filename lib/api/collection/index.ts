@@ -1,5 +1,5 @@
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { COLLECTION_PAGE_PARAM } from '@constants';
+import { COLLECTION_PAGE_PARAM } from '@config/constants';
 import { ProductHit } from '@features/collection';
 import {
    createAlgoliaClient,

@@ -1,4 +1,4 @@
-import { COLLECTION_PAGE_PARAM } from '@constants';
+import { COLLECTION_PAGE_PARAM } from '@config/constants';
 import { useSearchParams } from '@lib/algolia';
 import { CollectionData } from '@lib/api';
 import Head from 'next/head';
