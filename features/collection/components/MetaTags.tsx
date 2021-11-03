@@ -20,7 +20,7 @@ export function MetaTags({ collection }: MetaTagsProps) {
             <>
                <link
                   rel="canonical"
-                  href={`https://ifixit.com/collections/${collection.handle}${
+                  href={`https://www.ifixit.com/collections/${collection.handle}${
                      searchParams.page > 1
                         ? `?${COLLECTION_PAGE_PARAM}=${searchParams.page}`
                         : ''
