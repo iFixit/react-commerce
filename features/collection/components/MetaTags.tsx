@@ -22,7 +22,7 @@ export function MetaTags({ collection }: MetaTagsProps) {
                   rel="canonical"
                   href={`https://ifixit.com/collections/${collection.handle}${
                      searchParams.page > 1
-                        ? `${COLLECTION_PAGE_PARAM}=${searchParams.page}`
+                        ? `?${COLLECTION_PAGE_PARAM}=${searchParams.page}`
                         : ''
                   }`}
                />
