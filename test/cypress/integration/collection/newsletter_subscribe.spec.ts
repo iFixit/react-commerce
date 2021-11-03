@@ -1,7 +1,7 @@
 describe('subscribe to newsletter', () => {
    const user = cy;
    beforeEach(() => {
-      user.visit('/collections/phone');
+      user.visit('/collections/parts');
    });
 
    it('requires an email', () => {

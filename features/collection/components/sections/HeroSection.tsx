@@ -48,20 +48,35 @@ export function HeroSection({ collection }: HeroSectionProps) {
                   <HeroBreadcrumbItem>{collection.title}</HeroBreadcrumbItem>
                </HeroBreadcrumb>
             )}
-            {!hasDescription && collection.image != null ? (
+            {!hasDescription &&
+            collection.image != null &&
+            searchParams.page === 1 ? (
                <HeroBackgroundImage src={collection.image.url}>
-                  <HeroTitle color="white">
+                  <VStack>
+                     <HeroTitle color="white">{collection.title}</HeroTitle>
+                     {collection.tagline && collection.tagline.length > 0 && (
+                        <Text fontWeight="bold" fontSize="xl" color="gray.50">
+                           {collection.tagline}
+                        </Text>
+                     )}
+                  </VStack>
+               </HeroBackgroundImage>
+            ) : (
+               <>
+                  <HeroTitle>
                      {collection.title}
                      {searchParams.page > 1
                         ? ` - Page ${searchParams.page}`
                         : ''}
                   </HeroTitle>
-               </HeroBackgroundImage>
-            ) : (
-               <HeroTitle>
-                  {collection.title}
-                  {searchParams.page > 1 ? ` - Page ${searchParams.page}` : ''}
-               </HeroTitle>
+                  {collection.tagline &&
+                     collection.tagline.length > 0 &&
+                     searchParams.page === 1 && (
+                        <Text fontWeight="bold" fontSize="xl">
+                           {collection.tagline}
+                        </Text>
+                     )}
+               </>
             )}
             {hasDescription && (
                <HeroDescription>{collection.description}</HeroDescription>

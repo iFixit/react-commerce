@@ -96,7 +96,7 @@ export const FilterableProductsSection = React.memo(() => {
          <Toolbar
             leftContent={<NumberOfHits />}
             rightContent={
-               <HStack px={{ base: 4, sm: 0 }}>
+               <HStack px={{ base: 6, sm: 0 }}>
                   <FiltersModal
                      isOpen={isFilterModalOpen}
                      onClose={() => setIsFilterModalOpen(false)}
