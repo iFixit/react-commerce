@@ -1,6 +1,14 @@
 query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
    ...LayoutProps
-   collections(limit: 1, where: $whereCollection) {
+   global {
+      newsletterForm {
+         title
+         subtitle
+         inputPlaceholder
+         callToActionButtonTitle
+      }
+   }
+   productLists(limit: 1, where: $whereCollection) {
       id
       handle
       title
@@ -24,6 +32,14 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
                parent {
                   title
                   handle
+                  parent {
+                     title
+                     handle
+                     parent {
+                        title
+                        handle
+                     }
+                  }
                }
             }
          }
@@ -39,27 +55,20 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
       }
       sections {
          __typename
-         ... on ComponentCollectionBanner {
+         ... on ComponentProductListBanner {
             id
             title
             description
             callToActionLabel
             url
          }
-         ... on ComponentCollectionRelatedPosts {
+         ... on ComponentProductListRelatedPosts {
             id
             tags
          }
-         ... on ComponentCollectionNewsletterForm {
+         ... on ComponentProductListFeaturedProductList {
             id
-            title
-            description
-            inputPlaceholder
-            callToActionLabel
-         }
-         ... on ComponentCollectionFeaturedCollection {
-            id
-            featuredCollection {
+            productList {
                handle
                title
                description
@@ -70,10 +79,10 @@ query getCollectionPageData($whereCollection: JSON, $whereStoreSettings: JSON) {
                }
             }
          }
-         ... on ComponentCollectionFeaturedSubcollections {
+         ... on ComponentProductListLinkedProductListSet {
             id
             title
-            collections(limit: 3) {
+            productLists(limit: 3) {
                handle
                title
                description
