@@ -96,6 +96,7 @@ const HeroTitle = chakra(
    }: React.PropsWithChildren<{ className?: string }>) => {
       return (
          <Heading
+            as="h1"
             className={className}
             size="xl"
             fontFamily="Archivo Black"

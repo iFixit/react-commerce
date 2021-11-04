@@ -1,4 +1,8 @@
 import {
+   COLLECTION_PAGE_PARAM,
+   COLLECTION_QUERY_PARAM,
+} from '@config/constants';
+import {
    Facet,
    Filter,
    SearchContext,
@@ -67,7 +71,7 @@ function removeSearchParams(
 ): ParsedUrlQuery {
    const searchStateParamsList = facets
       .map((facet) => facet.handle)
-      .concat(['q', 'p']);
+      .concat([COLLECTION_QUERY_PARAM, COLLECTION_PAGE_PARAM]);
    const remainingParams = Object.keys(query).filter((param) => {
       const paramId = param.replace(/(_min|_max)$/, '');
       return !searchStateParamsList.includes(paramId);
@@ -81,10 +85,10 @@ function removeSearchParams(
 function createUrlQuery(params: SearchParams): ParsedUrlQuery {
    const urlQuery: ParsedUrlQuery = {};
    if (params.query.length > 0) {
-      urlQuery.q = params.query;
+      urlQuery[COLLECTION_QUERY_PARAM] = params.query;
    }
    if (params.page > 1) {
-      urlQuery.p = String(params.page);
+      urlQuery[COLLECTION_PAGE_PARAM] = String(params.page);
    }
    params.filters.allIds.forEach((id) => {
       const filter = params.filters.byId[id];
@@ -118,8 +122,10 @@ export function parseSearchParams(
          context.facets.allIds.includes(paramKey) && urlQuery[paramKey] != null
    );
    const indexName = context.params.indexName;
-   const query = typeof urlQuery.q === 'string' ? urlQuery.q : '';
-   const page = typeof urlQuery.p === 'string' ? parseInt(urlQuery.p, 10) : 1;
+   const queryParam = urlQuery[COLLECTION_QUERY_PARAM];
+   const query = typeof queryParam === 'string' ? queryParam : '';
+   const pageParam = urlQuery[COLLECTION_PAGE_PARAM];
+   const page = typeof pageParam === 'string' ? parseInt(pageParam, 10) : 1;
    const filters = filterHandles.map<Filter>((handle) => {
       const filterValue = urlQuery[handle]!;
       return {

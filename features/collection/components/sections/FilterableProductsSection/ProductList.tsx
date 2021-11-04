@@ -106,7 +106,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                w="full"
             >
                <Heading
-                  as="h2"
+                  as="h3"
                   fontSize={{
                      base: 'sm',
                      sm: 'md',

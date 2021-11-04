@@ -1,3 +1,4 @@
+import { COLLECTION_PAGE_PARAM } from '@config/constants';
 import { useSearchParams } from '@lib/algolia';
 import { CollectionData } from '@lib/api';
 import Head from 'next/head';
@@ -13,7 +14,24 @@ export function MetaTags({ collection }: MetaTagsProps) {
       searchParams.query.length > 0 || searchParams.filters.allIds.length > 0;
    return (
       <Head>
-         {isFiltered && <meta name="robots" content="noindex,nofollow" />}
+         {isFiltered ? (
+            <meta name="robots" content="noindex,nofollow" />
+         ) : (
+            <>
+               <link
+                  rel="canonical"
+                  href={`https://www.ifixit.com/collections/${collection.handle}${
+                     searchParams.page > 1
+                        ? `?${COLLECTION_PAGE_PARAM}=${searchParams.page}`
+                        : ''
+                  }`}
+               />
+               <meta
+                  name="description"
+                  content={collection.metaDescription || collection.description}
+               />
+            </>
+         )}
          <title>
             iFixit | {collection.title}
             {!isFiltered && searchParams.page > 1
