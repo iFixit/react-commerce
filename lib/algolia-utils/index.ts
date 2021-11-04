@@ -1,12 +1,17 @@
-import { COLLECTION_PAGE_PARAM, COLLECTION_QUERY_PARAM } from '@constants';
+import {
+   COLLECTION_PAGE_PARAM,
+   COLLECTION_QUERY_PARAM,
+} from '@config/constants';
 import {
    Facet,
    Filter,
    SearchContext,
    SearchParams,
    useFacets,
+   usePagination,
    useSearchParams,
 } from '@lib/algolia';
+import { usePrevious } from '@lib/hooks';
 import { assertNever, keyBy } from '@lib/utils';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
@@ -17,19 +22,47 @@ export function useUpdateUrlQuery() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const facets = useFacets();
+   const previousRouterUrlQuery = usePrevious(router.query);
+   const previousSearchParams = usePrevious(searchParams);
+   const { setPage } = usePagination();
+   const urlQueryWithoutSearchParams = removeSearchParams(router.query, facets);
+   const searchParamsUrlQuery = createUrlQuery(searchParams);
+   const routerQueryString = queryString.stringify(router.query);
+   const searchQueryString = queryString.stringify({
+      ...urlQueryWithoutSearchParams,
+      ...searchParamsUrlQuery,
+   });
 
    React.useEffect(() => {
-      const baseUrlQuery = removeSearchParams(router.query, facets);
-      const searchParamsUrlQuery = createUrlQuery(searchParams);
-      const currentQueryString = queryString.stringify(router.query);
-      const newQueryString = queryString.stringify({
-         ...baseUrlQuery,
-         ...searchParamsUrlQuery,
-      });
-      if (newQueryString !== currentQueryString) {
-         router.replace(`?${newQueryString}`, undefined, { shallow: true });
+      if (searchQueryString !== routerQueryString) {
+         if (router.query.p === previousRouterUrlQuery?.p) {
+            if (searchParams.page === previousSearchParams?.page) {
+               router.replace(`?${searchQueryString}`, undefined, {
+                  shallow: true,
+               });
+            } else {
+               router.push(`?${searchQueryString}`, undefined, {
+                  shallow: true,
+               });
+            }
+         } else {
+            const pageParam = router.query.p;
+            const page =
+               typeof pageParam === 'string' && /\d+/.test(pageParam)
+                  ? parseInt(pageParam)
+                  : 1;
+            setPage(page);
+         }
       }
-   }, [facets, router, searchParams]);
+   }, [
+      previousRouterUrlQuery?.p,
+      previousSearchParams?.page,
+      router,
+      routerQueryString,
+      searchParams.page,
+      searchQueryString,
+      setPage,
+   ]);
 }
 
 function removeSearchParams(

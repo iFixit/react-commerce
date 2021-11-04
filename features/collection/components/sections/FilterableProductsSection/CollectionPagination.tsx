@@ -115,9 +115,14 @@ export function CollectionPagination() {
 
 function useGetCollectionPageUrl() {
    const router = useRouter();
-   const { handle, ...other } = router.query;
+   const { handle, p, ...other } = router.query;
    return (page: number) => {
-      const query = queryString.stringify({ ...other, p: page });
-      return `/collections/${handle}?${query}`;
+      let query;
+      if (page > 1) {
+         query = queryString.stringify({ ...other, p: page });
+      } else {
+         query = queryString.stringify({ ...other });
+      }
+      return `/collections/${handle}${query.length > 0 ? `?${query}` : ''}`;
    };
 }

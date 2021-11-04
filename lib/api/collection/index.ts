@@ -1,5 +1,5 @@
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { COLLECTION_PAGE_PARAM } from '@constants';
+import { COLLECTION_PAGE_PARAM } from '@config/constants';
 import { ProductHit } from '@features/collection';
 import {
    createAlgoliaClient,
@@ -31,7 +31,7 @@ export async function fetchCollectionPageData(
          code: options.storeCode,
       },
    });
-   const collection = result.collections?.[0];
+   const collection = result.productLists?.[0];
    if (collection == null) {
       return null;
    }
@@ -49,9 +49,13 @@ export async function fetchCollectionPageData(
    }
    return {
       ...getLayoutProps(result),
+      global: {
+         newsletterForm: result.global?.newsletterForm,
+      },
       collection: {
          handle: collection.handle,
          title: collection.title,
+         tagline: collection.tagline,
          description: collection.description,
          metaDescription: collection.metaDescription,
          filtersPreset: collection.filters,
@@ -66,12 +70,11 @@ export async function fetchCollectionPageData(
          }),
          sections: filterNullableItems(collection.sections).map((section) => {
             if (
-               section.__typename ===
-               'ComponentCollectionFeaturedSubcollections'
+               section.__typename === 'ComponentProductListLinkedProductListSet'
             ) {
                return {
                   ...section,
-                  collections: filterNullableItems(section.collections).map(
+                  productLists: filterNullableItems(section.productLists).map(
                      (collection) => {
                         return {
                            ...collection,
@@ -95,12 +98,16 @@ export type CollectionData = NonNullable<
    Awaited<ReturnType<typeof fetchCollectionPageData>>
 >['collection'];
 
+export type ProductListGlobal = NonNullable<
+   Awaited<ReturnType<typeof fetchCollectionPageData>>
+>['global'];
+
 type StrapiCollectionPageData = NonNullable<
    NonNullable<Awaited<ReturnType<typeof strapi['getCollectionPageData']>>>
 >;
 
 type StrapiCollection = NonNullable<
-   NonNullable<StrapiCollectionPageData['collections']>[0]
+   NonNullable<StrapiCollectionPageData['productLists']>[0]
 >;
 
 interface Ancestor {
@@ -163,7 +170,7 @@ async function loadCollectionSearchContext({
       );
    }
    const numberOfPages = context.numberOfPages || 0;
-   if (numberOfPages > 0 && context.params.page > numberOfPages) {
+   if (context.params.page > 1 && context.params.page > numberOfPages) {
       return null;
    }
    return context;
