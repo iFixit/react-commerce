@@ -13,7 +13,7 @@ export const ProductCardTitle = chakra(
       return (
          <Heading
             className={className}
-            as="h2"
+            as="h3"
             fontSize={{
                base: 'xs',
                sm: 'sm',
