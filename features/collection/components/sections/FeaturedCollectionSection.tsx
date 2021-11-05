@@ -1,13 +1,4 @@
-import {
-   Box,
-   Button,
-   Center,
-   Flex,
-   Heading,
-   Img,
-   Text,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import {
    ProductCard,
@@ -19,6 +10,7 @@ import {
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { ProductHit } from '@features/collection';
 import { AlgoliaProvider, useHits } from '@lib/algolia';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -56,7 +48,7 @@ export function FeaturedCollectionSection({
             <Box
                position="relative"
                flexShrink={0}
-               maxW={{
+               w={{
                   base: 'full',
                   sm: '300px',
                   lg: '400px',
@@ -66,23 +58,26 @@ export function FeaturedCollectionSection({
                   sm: 'unset',
                }}
                overflow="hidden"
+               display="flex"
+               alignItems="center"
             >
                {imageSrc && (
-                  <Img
-                     objectFit="cover"
-                     h="full"
+                  <Image
                      src={imageSrc}
                      alt={imageAlt}
+                     objectFit="contain"
+                     layout="fill"
                   />
                )}
-               <Center
+               <Box
                   position="absolute"
                   top="0"
                   left="0"
                   right="0"
-                  h="100%"
+                  bottom="0"
                   bg="blackAlpha.700"
-               >
+               ></Box>
+               <Box w="full" position="relative" py="10">
                   <VStack
                      px={{
                         base: '5',
@@ -119,7 +114,7 @@ export function FeaturedCollectionSection({
                         </Button>
                      </NextLink>
                   </VStack>
-               </Center>
+               </Box>
             </Box>
             <Box flexGrow={1}>
                <AlgoliaProvider

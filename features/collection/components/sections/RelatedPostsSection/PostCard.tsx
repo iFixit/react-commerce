@@ -1,6 +1,6 @@
 import {
+   Box,
    Flex,
-   Image,
    LinkBox,
    LinkOverlay,
    Text,
@@ -10,6 +10,7 @@ import { Card } from '@components/Card';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';
+import Image from 'next/image';
 
 export interface PostCardProps {
    title: string;
@@ -40,12 +41,15 @@ export function PostCard({
       >
          <Flex direction="column">
             {imageSrc && (
-               <Image
-                  objectFit="cover"
-                  h="140px"
-                  src={imageSrc}
-                  alt={imageAlt}
-               />
+               <Box position="relative" h="140px">
+                  <Image
+                     src={imageSrc}
+                     alt={imageAlt}
+                     layout="fill"
+                     objectFit="cover"
+                     sizes="50vw"
+                  />
+               </Box>
             )}
             <VStack spacing="2" p="4" align="flex-start">
                {category && category.length > 0 && (
