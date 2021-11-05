@@ -1,5 +1,4 @@
 import {
-   AspectRatio,
    Badge,
    Box,
    Button,
@@ -7,7 +6,6 @@ import {
    Flex,
    Heading,
    HStack,
-   Img,
    LinkBox,
    LinkOverlay,
    Stack,
@@ -15,13 +13,11 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/Rating';
-import { ShopifyImage } from '@components/ShopifyImage';
 import { ProductHit } from '@features/collection';
 import { computeDiscountPercentage } from '@lib/commerce-utils';
+import Image from 'next/image';
 import * as React from 'react';
-
-const placeholderImageUrl =
-   'https://via.placeholder.com/180x135?text=not+available';
+import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 
@@ -72,7 +68,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
             alignItems="flex-start"
             px="4"
          >
-            <AspectRatio
+            <Box
                flexGrow={1}
                flexShrink={0}
                w={{
@@ -81,22 +77,22 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   md: '140px',
                   lg: '160px',
                }}
-               ratio={1}
             >
-               {product.product_image == null ? (
-                  <Img
-                     sizes="180px"
-                     src={placeholderImageUrl}
+               {product.product_image ? (
+                  <Image
+                     src={product.product_image}
                      alt={product.title}
+                     width="180px"
+                     height="180px"
                   />
                ) : (
-                  <ShopifyImage
-                     src={product.product_image || placeholderImageUrl}
+                  <Image
+                     src={placeholderImageUrl}
                      alt={product.title}
                      sizes="180px"
                   />
                )}
-            </AspectRatio>
+            </Box>
             <VStack
                align="flex-start"
                spacing={{

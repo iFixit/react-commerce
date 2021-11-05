@@ -1,18 +1,13 @@
 import {
-   Box,
-   Button,
-   Collapse,
    Divider,
    Flex,
    Heading,
    LinkBox,
    LinkOverlay,
    SimpleGrid,
-   Text,
-   useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
-import { ShopifyImage } from '@components/ShopifyImage';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -91,11 +86,12 @@ const CollectionLink = ({ collection }: CategoryLinkProps) => {
                   flexGrow={0}
                   flexShrink={0}
                >
-                  <ShopifyImage
+                  <Image
                      src={collection.image.url}
                      alt={collection.image.alt}
-                     sizes="80px"
-                     h="full"
+                     width="80px"
+                     height="60px"
+                     objectFit="contain"
                   />
                </Flex>
             )}
