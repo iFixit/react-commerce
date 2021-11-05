@@ -5,6 +5,8 @@ import {
 import {
    Box,
    Button,
+   Flex,
+   Heading,
    HStack,
    Icon,
    Skeleton,
@@ -68,12 +70,29 @@ export const FilterableProductsSection = React.memo(() => {
       return <CollectionEmptyState />;
    }
    return (
-      <VStack
+      <Flex
+         direction="column"
          align="stretch"
          mb="4"
-         spacing="4"
          ref={productsContainerScrollRef}
       >
+         <Heading
+            as="h2"
+            // This is heading is only for screen readers
+            position="absolute"
+            w="1px"
+            h="1px"
+            p="0"
+            m="-1px"
+            overflow="hidden"
+            sx={{
+               clip: 'rect(0,0,0,0)',
+            }}
+            whiteSpace="nowrap"
+            borderWidth="0"
+         >
+            Products
+         </Heading>
          <Toolbar
             leftContent={<NumberOfHits />}
             rightContent={
@@ -114,7 +133,7 @@ export const FilterableProductsSection = React.memo(() => {
                </HStack>
             }
          />
-         <HStack align="flex-start" spacing={{ base: 0, md: 4 }}>
+         <HStack align="flex-start" mt="4" spacing={{ base: 0, md: 4 }}>
             <FilterCard isLoading={searchState === 'load'}>
                {searchState === 'load' ? (
                   <VStack align="stretch" px="4">
@@ -132,6 +151,7 @@ export const FilterableProductsSection = React.memo(() => {
                   flex={1}
                   alignItems="center"
                   borderRadius={{ base: 'none', sm: 'lg' }}
+                  overflow="hidden"
                >
                   {searchState === 'load' ? (
                      <VStack w="full" align="stretch" p="4">
@@ -175,7 +195,7 @@ export const FilterableProductsSection = React.memo(() => {
                </Card>
             </VStack>
          </HStack>
-      </VStack>
+      </Flex>
    );
 });
 

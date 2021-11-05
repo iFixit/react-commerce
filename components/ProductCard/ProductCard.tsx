@@ -9,6 +9,8 @@ export const ProductCard = chakra(
    ({ className, children }: React.PropsWithChildren<ProductCardProps>) => {
       return (
          <Stack
+            bg="white"
+            position="relative"
             className={className}
             direction="column"
             spacing={5}

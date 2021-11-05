@@ -67,13 +67,31 @@ export function HeroSection({ collection }: HeroSectionProps) {
             collection.image != null &&
             searchParams.page === 1 ? (
                <HeroBackgroundImage src={collection.image.url}>
-                  <HeroTitle color="white">{collection.title}</HeroTitle>
+                  <VStack>
+                     <HeroTitle color="white">{collection.title}</HeroTitle>
+                     {collection.tagline && collection.tagline.length > 0 && (
+                        <Text fontWeight="bold" fontSize="xl" color="gray.50">
+                           {collection.tagline}
+                        </Text>
+                     )}
+                  </VStack>
                </HeroBackgroundImage>
             ) : (
-               <HeroTitle>
-                  {collection.title}
-                  {searchParams.page > 1 ? ` - Page ${searchParams.page}` : ''}
-               </HeroTitle>
+               <>
+                  <HeroTitle>
+                     {collection.title}
+                     {searchParams.page > 1
+                        ? ` - Page ${searchParams.page}`
+                        : ''}
+                  </HeroTitle>
+                  {collection.tagline &&
+                     collection.tagline.length > 0 &&
+                     searchParams.page === 1 && (
+                        <Text fontWeight="bold" fontSize="xl">
+                           {collection.tagline}
+                        </Text>
+                     )}
+               </>
             )}
             {hasDescription && (
                <HeroDescription>{collection.description}</HeroDescription>
@@ -93,6 +111,7 @@ const HeroTitle = chakra(
    }: React.PropsWithChildren<{ className?: string }>) => {
       return (
          <Heading
+            as="h1"
             className={className}
             size="xl"
             fontFamily="Archivo Black"
