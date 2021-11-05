@@ -16,7 +16,7 @@ export const ProductCardPrice = chakra(
                base: 'xs',
                md: 'md',
             }}
-            textAlign="center"
+            textAlign="right"
          >
             ${price}
          </Text>
