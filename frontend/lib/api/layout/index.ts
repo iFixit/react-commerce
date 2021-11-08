@@ -53,7 +53,7 @@ function getMenu(rawMenu: Menu) {
                      getImageFromStrapiImage(item.image, 'small') || undefined,
                };
             }
-            case 'ComponentMenuCollectionLink': {
+            case 'ComponentMenuProductListLink': {
                return {
                   name: item.name,
                   url: item.productList
