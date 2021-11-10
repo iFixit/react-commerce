@@ -1,0 +1,100 @@
+[
+  {
+    "id": 1,
+    "title": "US Store footer menu 1",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "About us",
+        "url": "https://www.ifixit.com/Info/index"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Customer Support",
+        "url": "https://help.ifixit.com/"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Careers",
+        "url": "https://www.ifixit.com/Info/jobs"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Feedback",
+        "url": "https://meta.ifixit.com"
+      },
+      {
+        "__component": "menu.link",
+        "name": "API",
+        "url": "https://www.ifixit.com/api/2.0/doc"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "US Store footer menu 2",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Press",
+        "url": "https://www.ifixit.com/Info/Media"
+      },
+      {
+        "__component": "menu.link",
+        "name": "News",
+        "url": "https://www.ifixit.com/Page/all-categories"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Contribute",
+        "url": "https://www.ifixit.com/Contribute"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Pro Wholesale",
+        "url": "https://pro.ifixit.com/"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Retail Locator",
+        "url": "https://www.ifixit.com/Retail"
+      },
+      {
+        "__component": "menu.link",
+        "name": "For Manufacturers",
+        "url": "https://www.ifixit.com/Page/services"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "US Store footer bottom menu",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Licensed under Creative Commons",
+        "url": "https://www.ifixit.com/Info/Licensing"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Privacy",
+        "url": "https://www.ifixit.com/Info/Privacy"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Legal",
+        "url": "https://www.ifixit.com/Info/Terms_of_Use"
+      },
+      {
+        "__component": "menu.link",
+        "name": "Accessibility",
+        "url": "https://www.ifixit.com/Info/Accessibility"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "US Store partners",
+    "items": []
+  }
+]
