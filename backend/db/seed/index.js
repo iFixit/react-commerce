@@ -1,10 +1,14 @@
+const fs = require("fs");
+const path = require("path");
 const menus = require("./data/menus.json");
 const stores = require("./data/stores.json");
+const productLists = require("./data/product-lists.json");
 const globalSettings = require("./data/global.json");
 
 const idMap = {
   menu: {},
   store: {},
+  productLists: {},
 };
 
 module.exports = async () => {
@@ -46,6 +50,25 @@ module.exports = async () => {
         strapi.log.info("Skip stores seed");
       }
 
+      // Seed product lists
+      const productListsCount = await strapi.services["product-list"].count();
+      if (productListsCount === 0) {
+        strapi.log.info("Create product lists..");
+        for (let i = 0; i < productLists.length; i++) {
+          const { image, ...data } = productLists[i];
+          const created = await strapi.services["product-list"].create(data);
+          idMap.productLists[data.id] = created.id;
+          const entry = {
+            id: created.id,
+            model: "product-list",
+            field: "image",
+          };
+          await uploadEntryImage(entry, image);
+        }
+      } else {
+        strapi.log.info("Skip product lists seed");
+      }
+
       // Seed global settings
       strapi.log.info("Create global settings..");
       await strapi.services.global.createOrUpdate(globalSettings);
@@ -58,3 +81,26 @@ module.exports = async () => {
     }
   }
 };
+
+async function uploadEntryImage(entry, image) {
+  const imagePath = path.join(
+    __dirname,
+    "data/images",
+    `${image.hash}${image.ext}`
+  );
+  const fileStat = fs.statSync(imagePath);
+  const attachment = await strapi.plugins.upload.services.upload.upload({
+    data: {
+      refId: entry.id,
+      ref: entry.model,
+      field: entry.field,
+    },
+    files: {
+      path: imagePath,
+      name: image.name,
+      type: image.mime, // mime type
+      size: fileStat.size,
+    },
+  });
+  return attachment;
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "id": 3,
+    "handle": "parts",
+    "title": "All Parts",
+    "description": "This is a description",
+    "filters": null,
+    "parent": null,
+    "tagline": null,
+    "deviceTitle": null,
+    "metafieldDescription": null,
+    "excludeFromHierarchyDisplay": false,
+    "legacyPageId": null,
+    "metaDescription": "Shop parts on iFixit.com",
+    "sections": [
+      {
+        "__component": "product-list.related-posts",
+        "tags": null
+      }
+    ],
+    "image": {
+      "id": 3,
+      "name": "c13a585b93fc0e515a1a874ad6ca0af0.jpeg",
+      "alternativeText": "",
+      "caption": "",
+      "width": 800,
+      "height": 600,
+      "hash": "c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92",
+      "ext": ".jpeg",
+      "mime": "image/jpeg",
+      "size": 18.01,
+      "url": "/uploads/c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92.jpeg",
+      "previewUrl": null,
+      "provider": "local",
+      "provider_metadata": null,
+      "created_at": "2021-11-05T10:10:25.000Z",
+      "updated_at": "2021-11-05T10:10:25.000Z"
+    }
+  }
+]
