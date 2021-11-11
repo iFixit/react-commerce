@@ -3,16 +3,17 @@ name: E2E tests
 on: [push]
 
 jobs:
-   cypress-run:
-      runs-on: ubuntu-latest
-      steps:
-         - name: Checkout
-           uses: actions/checkout@v2
-         - name: Cypress run
-           uses: cypress-io/github-action@v2
-           env:
-              NODE_ENV: test
-              CYPRESS_NODE_ENV: test
-           with:
-              build: npm run build
-              start: npm start
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        env:
+          NODE_ENV: test
+          CYPRESS_NODE_ENV: test
+        with:
+          config-file: frontend/cypress.json
+          build: npm run build
+          start: npm start
