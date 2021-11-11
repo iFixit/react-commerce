@@ -55,15 +55,20 @@ module.exports = async () => {
       if (productListsCount === 0) {
         strapi.log.info("Create product lists..");
         for (let i = 0; i < productLists.length; i++) {
-          const { image, ...data } = productLists[i];
-          const created = await strapi.services["product-list"].create(data);
+          const { image, parent, ...data } = productLists[i];
+          const created = await strapi.services["product-list"].create({
+            ...data,
+            parent: parent ? idMap.productLists[parent] : null,
+          });
           idMap.productLists[data.id] = created.id;
-          const entry = {
-            id: created.id,
-            model: "product-list",
-            field: "image",
-          };
-          await uploadEntryImage(entry, image);
+          if (image) {
+            const entry = {
+              id: created.id,
+              model: "product-list",
+              field: "image",
+            };
+            await uploadEntryImage(entry, image);
+          }
         }
       } else {
         strapi.log.info("Skip product lists seed");
