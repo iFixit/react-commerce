@@ -8,12 +8,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm run install
+      - name: Build strapi server
+        run: npm run build:backend
+      - name: Start strapi server
+        run: npm run start:backend
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: test
           CYPRESS_NODE_ENV: test
         with:
-          config-file: frontend/cypress.json
+          working-directory: frontend
+          install: false
           build: npm run build
           start: npm start
