@@ -13,7 +13,7 @@ jobs:
       - name: Build strapi server
         run: npm run build:backend
       - name: Start strapi server
-        run: npm run start:backend
+        run: npm run start:backend &
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
