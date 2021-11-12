@@ -12,7 +12,7 @@ services:
       DATABASE_USERNAME: strapi
       DATABASE_PASSWORD: strapi
     volumes:
-      - ./backend:/srv/app
+      - .:/srv/app
     ports:
       - "1337:1337"
     depends_on:

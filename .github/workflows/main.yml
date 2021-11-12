@@ -8,17 +8,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm install
-      - name: Build strapi server
-        run: npm run build:backend
       - name: Start strapi server
-        run: npm run start:backend &
+        run: cd backend && docker-compose up -d
+      - name: Install frontend dependencies
+        run: cd frontend && npm install
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
-          NODE_ENV: test
           CYPRESS_NODE_ENV: test
+          NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
         with:
           working-directory: frontend
           install: false
