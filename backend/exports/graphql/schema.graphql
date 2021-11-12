@@ -1,0 +1,1365 @@
+input FileInfoInput {
+  name: String
+  alternativeText: String
+  caption: String
+}
+
+type UsersPermissionsMe {
+  id: ID!
+  username: String!
+  email: String!
+  confirmed: Boolean
+  blocked: Boolean
+  role: UsersPermissionsMeRole
+}
+
+type UsersPermissionsMeRole {
+  id: ID!
+  name: String!
+  description: String
+  type: String
+}
+
+input UsersPermissionsRegisterInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input UsersPermissionsLoginInput {
+  identifier: String!
+  password: String!
+  provider: String = "local"
+}
+
+type UsersPermissionsLoginPayload {
+  jwt: String
+  user: UsersPermissionsMe!
+}
+
+type UserPermissionsPasswordPayload {
+  ok: Boolean!
+}
+
+type Global {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  newsletterForm: ComponentGlobalNewsletterForm
+  locale: String
+  published_at: DateTime
+  localizations(sort: String, limit: Int, start: Int, where: JSON): [Global]
+}
+
+input GlobalInput {
+  newsletterForm: ComponentGlobalNewsletterFormInput!
+  localizations: [ID]
+  locale: String
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input editGlobalInput {
+  newsletterForm: editComponentGlobalNewsletterFormInput
+  localizations: [ID]
+  locale: String
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input updateGlobalInput {
+  data: editGlobalInput
+}
+
+type updateGlobalPayload {
+  global: Global
+}
+
+type deleteGlobalPayload {
+  global: Global
+}
+
+union MenuItemsDynamicZone = ComponentMenuLinkWithImage | ComponentMenuLink | ComponentMenuProductListLink
+
+"""Input type for dynamic zone items of Menu"""
+scalar MenuItemsDynamicZoneInput
+
+type Menu {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  title: String!
+  items: [MenuItemsDynamicZone]!
+  locale: String
+  published_at: DateTime
+  localizations(sort: String, limit: Int, start: Int, where: JSON): [Menu]
+}
+
+type MenuConnection {
+  values: [Menu]
+  groupBy: MenuGroupBy
+  aggregate: MenuAggregator
+}
+
+type MenuAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type MenuGroupBy {
+  id: [MenuConnectionId]
+  created_at: [MenuConnectionCreated_at]
+  updated_at: [MenuConnectionUpdated_at]
+  title: [MenuConnectionTitle]
+  locale: [MenuConnectionLocale]
+  published_at: [MenuConnectionPublished_at]
+}
+
+type MenuConnectionId {
+  key: ID
+  connection: MenuConnection
+}
+
+type MenuConnectionCreated_at {
+  key: DateTime
+  connection: MenuConnection
+}
+
+type MenuConnectionUpdated_at {
+  key: DateTime
+  connection: MenuConnection
+}
+
+type MenuConnectionTitle {
+  key: String
+  connection: MenuConnection
+}
+
+type MenuConnectionLocale {
+  key: String
+  connection: MenuConnection
+}
+
+type MenuConnectionPublished_at {
+  key: DateTime
+  connection: MenuConnection
+}
+
+input MenuInput {
+  title: String!
+  items: [MenuItemsDynamicZoneInput!]!
+  localizations: [ID]
+  locale: String
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input editMenuInput {
+  title: String
+  items: [MenuItemsDynamicZoneInput!]!
+  localizations: [ID]
+  locale: String
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input createMenuInput {
+  data: MenuInput
+}
+
+type createMenuPayload {
+  menu: Menu
+}
+
+input updateMenuInput {
+  where: InputID
+  data: editMenuInput
+}
+
+type updateMenuPayload {
+  menu: Menu
+}
+
+input deleteMenuInput {
+  where: InputID
+}
+
+type deleteMenuPayload {
+  menu: Menu
+}
+
+union ProductListSectionsDynamicZone = ComponentProductListBanner | ComponentProductListFeaturedProductList | ComponentProductListLinkedProductListSet | ComponentProductListRelatedPosts
+
+"""Input type for dynamic zone sections of ProductList"""
+scalar ProductListSectionsDynamicZoneInput
+
+type ProductList {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  handle: String!
+  title: String!
+  description: String!
+  metaDescription: String
+  image: UploadFile
+  filters: String
+  tagline: String
+  deviceTitle: String
+  parent: ProductList
+  excludeFromHierarchyDisplay: Boolean!
+  sections: [ProductListSectionsDynamicZone]!
+  legacyPageId: Int
+  locale: String
+  published_at: DateTime
+  children(sort: String, limit: Int, start: Int, where: JSON): [ProductList]
+  localizations(sort: String, limit: Int, start: Int, where: JSON): [ProductList]
+}
+
+type ProductListConnection {
+  values: [ProductList]
+  groupBy: ProductListGroupBy
+  aggregate: ProductListAggregator
+}
+
+type ProductListAggregator {
+  count: Int
+  totalCount: Int
+  sum: ProductListAggregatorSum
+  avg: ProductListAggregatorAvg
+  min: ProductListAggregatorMin
+  max: ProductListAggregatorMax
+}
+
+type ProductListAggregatorSum {
+  legacyPageId: Float
+}
+
+type ProductListAggregatorAvg {
+  legacyPageId: Float
+}
+
+type ProductListAggregatorMin {
+  legacyPageId: Float
+}
+
+type ProductListAggregatorMax {
+  legacyPageId: Float
+}
+
+type ProductListGroupBy {
+  id: [ProductListConnectionId]
+  created_at: [ProductListConnectionCreated_at]
+  updated_at: [ProductListConnectionUpdated_at]
+  handle: [ProductListConnectionHandle]
+  title: [ProductListConnectionTitle]
+  description: [ProductListConnectionDescription]
+  metaDescription: [ProductListConnectionMetaDescription]
+  image: [ProductListConnectionImage]
+  filters: [ProductListConnectionFilters]
+  tagline: [ProductListConnectionTagline]
+  deviceTitle: [ProductListConnectionDeviceTitle]
+  parent: [ProductListConnectionParent]
+  excludeFromHierarchyDisplay: [ProductListConnectionExcludeFromHierarchyDisplay]
+  legacyPageId: [ProductListConnectionLegacyPageId]
+  locale: [ProductListConnectionLocale]
+  published_at: [ProductListConnectionPublished_at]
+}
+
+type ProductListConnectionId {
+  key: ID
+  connection: ProductListConnection
+}
+
+type ProductListConnectionCreated_at {
+  key: DateTime
+  connection: ProductListConnection
+}
+
+type ProductListConnectionUpdated_at {
+  key: DateTime
+  connection: ProductListConnection
+}
+
+type ProductListConnectionHandle {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionTitle {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionDescription {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionMetaDescription {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionImage {
+  key: ID
+  connection: ProductListConnection
+}
+
+type ProductListConnectionFilters {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionTagline {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionDeviceTitle {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionParent {
+  key: ID
+  connection: ProductListConnection
+}
+
+type ProductListConnectionExcludeFromHierarchyDisplay {
+  key: Boolean
+  connection: ProductListConnection
+}
+
+type ProductListConnectionLegacyPageId {
+  key: Int
+  connection: ProductListConnection
+}
+
+type ProductListConnectionLocale {
+  key: String
+  connection: ProductListConnection
+}
+
+type ProductListConnectionPublished_at {
+  key: DateTime
+  connection: ProductListConnection
+}
+
+input ProductListInput {
+  handle: String!
+  title: String!
+  description: String!
+  metaDescription: String
+  image: ID
+  filters: String
+  tagline: String
+  deviceTitle: String
+  children: [ID]
+  parent: ID
+  excludeFromHierarchyDisplay: Boolean
+  sections: [ProductListSectionsDynamicZoneInput!]!
+  legacyPageId: Int
+  localizations: [ID]
+  locale: String
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input editProductListInput {
+  handle: String
+  title: String
+  description: String
+  metaDescription: String
+  image: ID
+  filters: String
+  tagline: String
+  deviceTitle: String
+  children: [ID]
+  parent: ID
+  excludeFromHierarchyDisplay: Boolean
+  sections: [ProductListSectionsDynamicZoneInput!]!
+  legacyPageId: Int
+  localizations: [ID]
+  locale: String
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input createProductListInput {
+  data: ProductListInput
+}
+
+type createProductListPayload {
+  productList: ProductList
+}
+
+input updateProductListInput {
+  where: InputID
+  data: editProductListInput
+}
+
+type updateProductListPayload {
+  productList: ProductList
+}
+
+input deleteProductListInput {
+  where: InputID
+}
+
+type deleteProductListPayload {
+  productList: ProductList
+}
+
+enum ENUM_STORE_CURRENCY {
+  AUD
+  CAD
+  EUR
+  GBP
+  USD
+}
+
+type Store {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  code: String!
+  name: String!
+  url: String!
+  currency: ENUM_STORE_CURRENCY!
+  shopifySettings: ComponentStoreShopifySettings
+  footer: ComponentStoreFooter
+  socialMediaAccounts: ComponentStoreSocialMediaAccounts
+  published_at: DateTime
+}
+
+type StoreConnection {
+  values: [Store]
+  groupBy: StoreGroupBy
+  aggregate: StoreAggregator
+}
+
+type StoreAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type StoreGroupBy {
+  id: [StoreConnectionId]
+  created_at: [StoreConnectionCreated_at]
+  updated_at: [StoreConnectionUpdated_at]
+  code: [StoreConnectionCode]
+  name: [StoreConnectionName]
+  url: [StoreConnectionUrl]
+  currency: [StoreConnectionCurrency]
+  shopifySettings: [StoreConnectionShopifySettings]
+  footer: [StoreConnectionFooter]
+  socialMediaAccounts: [StoreConnectionSocialMediaAccounts]
+  published_at: [StoreConnectionPublished_at]
+}
+
+type StoreConnectionId {
+  key: ID
+  connection: StoreConnection
+}
+
+type StoreConnectionCreated_at {
+  key: DateTime
+  connection: StoreConnection
+}
+
+type StoreConnectionUpdated_at {
+  key: DateTime
+  connection: StoreConnection
+}
+
+type StoreConnectionCode {
+  key: String
+  connection: StoreConnection
+}
+
+type StoreConnectionName {
+  key: String
+  connection: StoreConnection
+}
+
+type StoreConnectionUrl {
+  key: String
+  connection: StoreConnection
+}
+
+type StoreConnectionCurrency {
+  key: String
+  connection: StoreConnection
+}
+
+type StoreConnectionShopifySettings {
+  key: ID
+  connection: StoreConnection
+}
+
+type StoreConnectionFooter {
+  key: ID
+  connection: StoreConnection
+}
+
+type StoreConnectionSocialMediaAccounts {
+  key: ID
+  connection: StoreConnection
+}
+
+type StoreConnectionPublished_at {
+  key: DateTime
+  connection: StoreConnection
+}
+
+input StoreInput {
+  code: String!
+  name: String!
+  url: String!
+  currency: ENUM_STORE_CURRENCY!
+  shopifySettings: ComponentStoreShopifySettingInput!
+  footer: ComponentStoreFooterInput!
+  socialMediaAccounts: ComponentStoreSocialMediaAccountInput!
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input editStoreInput {
+  code: String
+  name: String
+  url: String
+  currency: ENUM_STORE_CURRENCY
+  shopifySettings: editComponentStoreShopifySettingInput
+  footer: editComponentStoreFooterInput
+  socialMediaAccounts: editComponentStoreSocialMediaAccountInput
+  published_at: DateTime
+  created_by: ID
+  updated_by: ID
+}
+
+input createStoreInput {
+  data: StoreInput
+}
+
+type createStorePayload {
+  store: Store
+}
+
+input updateStoreInput {
+  where: InputID
+  data: editStoreInput
+}
+
+type updateStorePayload {
+  store: Store
+}
+
+input deleteStoreInput {
+  where: InputID
+}
+
+type deleteStorePayload {
+  store: Store
+}
+
+type I18NLocale {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: String
+  code: String
+}
+
+input LocaleInput {
+  name: String
+  code: String
+  created_by: ID
+  updated_by: ID
+}
+
+input editLocaleInput {
+  name: String
+  code: String
+  created_by: ID
+  updated_by: ID
+}
+
+type UploadFile {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: String!
+  alternativeText: String
+  caption: String
+  width: Int
+  height: Int
+  formats: JSON
+  hash: String!
+  ext: String
+  mime: String!
+  size: Float!
+  url: String!
+  previewUrl: String
+  provider: String!
+  provider_metadata: JSON
+  related(sort: String, limit: Int, start: Int, where: JSON): [Morph]
+}
+
+type UploadFileConnection {
+  values: [UploadFile]
+  groupBy: UploadFileGroupBy
+  aggregate: UploadFileAggregator
+}
+
+type UploadFileAggregator {
+  count: Int
+  totalCount: Int
+  sum: UploadFileAggregatorSum
+  avg: UploadFileAggregatorAvg
+  min: UploadFileAggregatorMin
+  max: UploadFileAggregatorMax
+}
+
+type UploadFileAggregatorSum {
+  width: Float
+  height: Float
+  size: Float
+}
+
+type UploadFileAggregatorAvg {
+  width: Float
+  height: Float
+  size: Float
+}
+
+type UploadFileAggregatorMin {
+  width: Float
+  height: Float
+  size: Float
+}
+
+type UploadFileAggregatorMax {
+  width: Float
+  height: Float
+  size: Float
+}
+
+type UploadFileGroupBy {
+  id: [UploadFileConnectionId]
+  created_at: [UploadFileConnectionCreated_at]
+  updated_at: [UploadFileConnectionUpdated_at]
+  name: [UploadFileConnectionName]
+  alternativeText: [UploadFileConnectionAlternativeText]
+  caption: [UploadFileConnectionCaption]
+  width: [UploadFileConnectionWidth]
+  height: [UploadFileConnectionHeight]
+  formats: [UploadFileConnectionFormats]
+  hash: [UploadFileConnectionHash]
+  ext: [UploadFileConnectionExt]
+  mime: [UploadFileConnectionMime]
+  size: [UploadFileConnectionSize]
+  url: [UploadFileConnectionUrl]
+  previewUrl: [UploadFileConnectionPreviewUrl]
+  provider: [UploadFileConnectionProvider]
+  provider_metadata: [UploadFileConnectionProvider_metadata]
+}
+
+type UploadFileConnectionId {
+  key: ID
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionCreated_at {
+  key: DateTime
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionUpdated_at {
+  key: DateTime
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionName {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionAlternativeText {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionCaption {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionWidth {
+  key: Int
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionHeight {
+  key: Int
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionFormats {
+  key: JSON
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionHash {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionExt {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionMime {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionSize {
+  key: Float
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionUrl {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionPreviewUrl {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionProvider {
+  key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionProvider_metadata {
+  key: JSON
+  connection: UploadFileConnection
+}
+
+input FileInput {
+  name: String!
+  alternativeText: String
+  caption: String
+  width: Int
+  height: Int
+  formats: JSON
+  hash: String!
+  ext: String
+  mime: String!
+  size: Float!
+  url: String!
+  previewUrl: String
+  provider: String!
+  provider_metadata: JSON
+  related: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+input editFileInput {
+  name: String
+  alternativeText: String
+  caption: String
+  width: Int
+  height: Int
+  formats: JSON
+  hash: String
+  ext: String
+  mime: String
+  size: Float
+  url: String
+  previewUrl: String
+  provider: String
+  provider_metadata: JSON
+  related: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+input deleteFileInput {
+  where: InputID
+}
+
+type deleteFilePayload {
+  file: UploadFile
+}
+
+type UsersPermissionsPermission {
+  id: ID!
+  type: String!
+  controller: String!
+  action: String!
+  enabled: Boolean!
+  policy: String
+  role: UsersPermissionsRole
+}
+
+type UsersPermissionsRole {
+  id: ID!
+  name: String!
+  description: String
+  type: String
+  permissions(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsPermission]
+  users(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsUser]
+}
+
+type UsersPermissionsRoleConnection {
+  values: [UsersPermissionsRole]
+  groupBy: UsersPermissionsRoleGroupBy
+  aggregate: UsersPermissionsRoleAggregator
+}
+
+type UsersPermissionsRoleAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type UsersPermissionsRoleGroupBy {
+  id: [UsersPermissionsRoleConnectionId]
+  name: [UsersPermissionsRoleConnectionName]
+  description: [UsersPermissionsRoleConnectionDescription]
+  type: [UsersPermissionsRoleConnectionType]
+}
+
+type UsersPermissionsRoleConnectionId {
+  key: ID
+  connection: UsersPermissionsRoleConnection
+}
+
+type UsersPermissionsRoleConnectionName {
+  key: String
+  connection: UsersPermissionsRoleConnection
+}
+
+type UsersPermissionsRoleConnectionDescription {
+  key: String
+  connection: UsersPermissionsRoleConnection
+}
+
+type UsersPermissionsRoleConnectionType {
+  key: String
+  connection: UsersPermissionsRoleConnection
+}
+
+input RoleInput {
+  name: String!
+  description: String
+  type: String
+  permissions: [ID]
+  users: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+input editRoleInput {
+  name: String
+  description: String
+  type: String
+  permissions: [ID]
+  users: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+input createRoleInput {
+  data: RoleInput
+}
+
+type createRolePayload {
+  role: UsersPermissionsRole
+}
+
+input updateRoleInput {
+  where: InputID
+  data: editRoleInput
+}
+
+type updateRolePayload {
+  role: UsersPermissionsRole
+}
+
+input deleteRoleInput {
+  where: InputID
+}
+
+type deleteRolePayload {
+  role: UsersPermissionsRole
+}
+
+type UsersPermissionsUser {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  username: String!
+  email: String!
+  provider: String
+  confirmed: Boolean
+  blocked: Boolean
+  role: UsersPermissionsRole
+}
+
+type UsersPermissionsUserConnection {
+  values: [UsersPermissionsUser]
+  groupBy: UsersPermissionsUserGroupBy
+  aggregate: UsersPermissionsUserAggregator
+}
+
+type UsersPermissionsUserAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type UsersPermissionsUserGroupBy {
+  id: [UsersPermissionsUserConnectionId]
+  created_at: [UsersPermissionsUserConnectionCreated_at]
+  updated_at: [UsersPermissionsUserConnectionUpdated_at]
+  username: [UsersPermissionsUserConnectionUsername]
+  email: [UsersPermissionsUserConnectionEmail]
+  provider: [UsersPermissionsUserConnectionProvider]
+  confirmed: [UsersPermissionsUserConnectionConfirmed]
+  blocked: [UsersPermissionsUserConnectionBlocked]
+  role: [UsersPermissionsUserConnectionRole]
+}
+
+type UsersPermissionsUserConnectionId {
+  key: ID
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionCreated_at {
+  key: DateTime
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionUpdated_at {
+  key: DateTime
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionUsername {
+  key: String
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionEmail {
+  key: String
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionProvider {
+  key: String
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionConfirmed {
+  key: Boolean
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionBlocked {
+  key: Boolean
+  connection: UsersPermissionsUserConnection
+}
+
+type UsersPermissionsUserConnectionRole {
+  key: ID
+  connection: UsersPermissionsUserConnection
+}
+
+input UserInput {
+  username: String!
+  email: String!
+  provider: String
+  password: String
+  resetPasswordToken: String
+  confirmationToken: String
+  confirmed: Boolean
+  blocked: Boolean
+  role: ID
+  created_by: ID
+  updated_by: ID
+}
+
+input editUserInput {
+  username: String
+  email: String
+  provider: String
+  password: String
+  resetPasswordToken: String
+  confirmationToken: String
+  confirmed: Boolean
+  blocked: Boolean
+  role: ID
+  created_by: ID
+  updated_by: ID
+}
+
+input createUserInput {
+  data: UserInput
+}
+
+type createUserPayload {
+  user: UsersPermissionsUser
+}
+
+input updateUserInput {
+  where: InputID
+  data: editUserInput
+}
+
+type updateUserPayload {
+  user: UsersPermissionsUser
+}
+
+input deleteUserInput {
+  where: InputID
+}
+
+type deleteUserPayload {
+  user: UsersPermissionsUser
+}
+
+type ComponentGlobalNewsletterForm {
+  id: ID!
+  title: String!
+  subtitle: String!
+  inputPlaceholder: String!
+  callToActionButtonTitle: String!
+}
+
+input ComponentGlobalNewsletterFormInput {
+  title: String!
+  subtitle: String!
+  inputPlaceholder: String
+  callToActionButtonTitle: String
+}
+
+input editComponentGlobalNewsletterFormInput {
+  id: ID
+  title: String
+  subtitle: String
+  inputPlaceholder: String
+  callToActionButtonTitle: String
+}
+
+type ComponentMenuLinkWithImage {
+  id: ID!
+  name: String!
+  url: String!
+  image: UploadFile
+}
+
+input ComponentMenuLinkWithImageInput {
+  name: String!
+  url: String!
+  image: ID
+}
+
+input editComponentMenuLinkWithImageInput {
+  id: ID
+  name: String
+  url: String
+  image: ID
+}
+
+type ComponentMenuLink {
+  id: ID!
+  name: String!
+  url: String!
+}
+
+input ComponentMenuLinkInput {
+  name: String!
+  url: String!
+}
+
+input editComponentMenuLinkInput {
+  id: ID
+  name: String
+  url: String
+}
+
+type ComponentMenuProductListLink {
+  id: ID!
+  name: String!
+  productList: ProductList
+}
+
+input ComponentMenuProductListLinkInput {
+  name: String!
+  productList: ID
+}
+
+input editComponentMenuProductListLinkInput {
+  id: ID
+  name: String
+  productList: ID
+}
+
+type ComponentProductListBanner {
+  id: ID!
+  title: String!
+  description: String!
+  callToActionLabel: String!
+  url: String!
+}
+
+input ComponentProductListBannerInput {
+  title: String!
+  description: String!
+  callToActionLabel: String!
+  url: String!
+}
+
+input editComponentProductListBannerInput {
+  id: ID
+  title: String
+  description: String
+  callToActionLabel: String
+  url: String
+}
+
+type ComponentProductListFeaturedProductList {
+  id: ID!
+  productList: ProductList
+}
+
+input ComponentProductListFeaturedProductListInput {
+  productList: ID
+}
+
+input editComponentProductListFeaturedProductListInput {
+  id: ID
+  productList: ID
+}
+
+type ComponentProductListLinkedProductListSet {
+  id: ID!
+  title: String!
+  productLists(sort: String, limit: Int, start: Int, where: JSON): [ProductList]
+}
+
+input ComponentProductListLinkedProductListSetInput {
+  title: String!
+  productLists: [ID]
+}
+
+input editComponentProductListLinkedProductListSetInput {
+  id: ID
+  title: String
+  productLists: [ID]
+}
+
+type ComponentProductListRelatedPosts {
+  id: ID!
+  tags: String
+}
+
+input ComponentProductListRelatedPostInput {
+  tags: String
+}
+
+input editComponentProductListRelatedPostInput {
+  id: ID
+  tags: String
+}
+
+type ComponentStoreFooter {
+  id: ID!
+  menu1: Menu
+  menu2: Menu
+  bottomMenu: Menu
+  partners: Menu
+}
+
+input ComponentStoreFooterInput {
+  menu1: ID
+  menu2: ID
+  bottomMenu: ID
+  partners: ID
+}
+
+input editComponentStoreFooterInput {
+  id: ID
+  menu1: ID
+  menu2: ID
+  bottomMenu: ID
+  partners: ID
+}
+
+type ComponentStoreShopifySettings {
+  id: ID!
+  storefrontDomain: String!
+  storefrontAccessToken: String!
+}
+
+input ComponentStoreShopifySettingInput {
+  storefrontDomain: String!
+  storefrontAccessToken: String!
+}
+
+input editComponentStoreShopifySettingInput {
+  id: ID
+  storefrontDomain: String
+  storefrontAccessToken: String
+}
+
+type ComponentStoreSocialMediaAccounts {
+  id: ID!
+  twitter: String
+  facebook: String
+  instagram: String
+  youtube: String
+  repairOrg: String
+}
+
+input ComponentStoreSocialMediaAccountInput {
+  twitter: String
+  facebook: String
+  instagram: String
+  youtube: String
+  repairOrg: String
+}
+
+input editComponentStoreSocialMediaAccountInput {
+  id: ID
+  twitter: String
+  facebook: String
+  instagram: String
+  youtube: String
+  repairOrg: String
+}
+
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Global | updateGlobalPayload | deleteGlobalPayload | Menu | MenuConnection | MenuAggregator | MenuGroupBy | MenuConnectionId | MenuConnectionCreated_at | MenuConnectionUpdated_at | MenuConnectionTitle | MenuConnectionLocale | MenuConnectionPublished_at | createMenuPayload | updateMenuPayload | deleteMenuPayload | ProductList | ProductListConnection | ProductListAggregator | ProductListAggregatorSum | ProductListAggregatorAvg | ProductListAggregatorMin | ProductListAggregatorMax | ProductListGroupBy | ProductListConnectionId | ProductListConnectionCreated_at | ProductListConnectionUpdated_at | ProductListConnectionHandle | ProductListConnectionTitle | ProductListConnectionDescription | ProductListConnectionMetaDescription | ProductListConnectionImage | ProductListConnectionFilters | ProductListConnectionTagline | ProductListConnectionDeviceTitle | ProductListConnectionParent | ProductListConnectionExcludeFromHierarchyDisplay | ProductListConnectionLegacyPageId | ProductListConnectionLocale | ProductListConnectionPublished_at | createProductListPayload | updateProductListPayload | deleteProductListPayload | Store | StoreConnection | StoreAggregator | StoreGroupBy | StoreConnectionId | StoreConnectionCreated_at | StoreConnectionUpdated_at | StoreConnectionCode | StoreConnectionName | StoreConnectionUrl | StoreConnectionCurrency | StoreConnectionShopifySettings | StoreConnectionFooter | StoreConnectionSocialMediaAccounts | StoreConnectionPublished_at | createStorePayload | updateStorePayload | deleteStorePayload | I18NLocale | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_at | UploadFileConnectionUpdated_at | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | deleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_at | UsersPermissionsUserConnectionUpdated_at | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentGlobalNewsletterForm | ComponentMenuLinkWithImage | ComponentMenuLink | ComponentMenuProductListLink | ComponentProductListBanner | ComponentProductListFeaturedProductList | ComponentProductListLinkedProductListSet | ComponentProductListRelatedPosts | ComponentStoreFooter | ComponentStoreShopifySettings | ComponentStoreSocialMediaAccounts
+
+input InputID {
+  id: ID!
+}
+
+enum PublicationState {
+  LIVE
+  PREVIEW
+}
+
+type AdminUser {
+  id: ID!
+  username: String
+  firstname: String!
+  lastname: String!
+}
+
+type Query {
+  global(publicationState: PublicationState, locale: String): Global
+  menu(id: ID!, publicationState: PublicationState): Menu
+  menus(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState, locale: String): [Menu]
+  menusConnection(sort: String, limit: Int, start: Int, where: JSON, locale: String): MenuConnection
+  productList(id: ID!, publicationState: PublicationState): ProductList
+  productLists(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState, locale: String): [ProductList]
+  productListsConnection(sort: String, limit: Int, start: Int, where: JSON, locale: String): ProductListConnection
+  store(id: ID!, publicationState: PublicationState): Store
+  stores(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Store]
+  storesConnection(sort: String, limit: Int, start: Int, where: JSON): StoreConnection
+  files(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [UploadFile]
+  filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
+  role(id: ID!, publicationState: PublicationState): UsersPermissionsRole
+
+  """
+  Retrieve all the existing roles. You can't apply filters on this query.
+  """
+  roles(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [UsersPermissionsRole]
+  rolesConnection(sort: String, limit: Int, start: Int, where: JSON): UsersPermissionsRoleConnection
+  user(id: ID!, publicationState: PublicationState): UsersPermissionsUser
+  users(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [UsersPermissionsUser]
+  usersConnection(sort: String, limit: Int, start: Int, where: JSON): UsersPermissionsUserConnection
+  me: UsersPermissionsMe
+}
+
+type Mutation {
+  updateGlobal(input: updateGlobalInput, locale: String): updateGlobalPayload
+  deleteGlobal(locale: String): deleteGlobalPayload
+  createMenu(input: createMenuInput): createMenuPayload
+  updateMenu(input: updateMenuInput): updateMenuPayload
+  deleteMenu(input: deleteMenuInput): deleteMenuPayload
+  createProductList(input: createProductListInput): createProductListPayload
+  updateProductList(input: updateProductListInput): updateProductListPayload
+  deleteProductList(input: deleteProductListInput): deleteProductListPayload
+  createStore(input: createStoreInput): createStorePayload
+  updateStore(input: updateStoreInput): updateStorePayload
+  deleteStore(input: deleteStoreInput): deleteStorePayload
+
+  """Delete one file"""
+  deleteFile(input: deleteFileInput): deleteFilePayload
+
+  """Create a new role"""
+  createRole(input: createRoleInput): createRolePayload
+
+  """Update an existing role"""
+  updateRole(input: updateRoleInput): updateRolePayload
+
+  """Delete an existing role"""
+  deleteRole(input: deleteRoleInput): deleteRolePayload
+
+  """Create a new user"""
+  createUser(input: createUserInput): createUserPayload
+
+  """Update an existing user"""
+  updateUser(input: updateUserInput): updateUserPayload
+
+  """Delete an existing user"""
+  deleteUser(input: deleteUserInput): deleteUserPayload
+  createGlobalLocalization(input: updateGlobalInput!): Global!
+  createMenuLocalization(input: updateMenuInput!): Menu!
+  createProductListLocalization(input: updateProductListInput!): ProductList!
+  upload(refId: ID, ref: String, field: String, source: String, info: FileInfoInput, file: Upload!): UploadFile!
+  multipleUpload(refId: ID, ref: String, field: String, source: String, files: [Upload]!): [UploadFile]!
+  updateFileInfo(id: ID!, info: FileInfoInput!): UploadFile!
+  login(input: UsersPermissionsLoginInput!): UsersPermissionsLoginPayload!
+  register(input: UsersPermissionsRegisterInput!): UsersPermissionsLoginPayload!
+  forgotPassword(email: String!): UserPermissionsPasswordPayload
+  resetPassword(password: String!, passwordConfirmation: String!, code: String!): UsersPermissionsLoginPayload
+  emailConfirmation(confirmation: String!): UsersPermissionsLoginPayload
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""A time string with format: HH:mm:ss.SSS"""
+scalar Time
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""The `Long` scalar type represents 52-bit integers"""
+scalar Long
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
