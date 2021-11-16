@@ -2,7 +2,7 @@ import { Layout } from '@components/Layout';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, STRAPI_ORIGIN } from '@config/env';
 import {
    BannerSection,
-   FeaturedCollectionSection,
+   FeaturedProductListSection,
    FeaturedSubcollectionsSection,
    FilterableProductsSection,
    HeroSection,
@@ -11,7 +11,7 @@ import {
    Page,
    RelatedPostsSection,
    SubcategoriesSection,
-} from '@features/collection';
+} from '@features/productList';
 import { AlgoliaProvider } from '@lib/algolia';
 import {
    CollectionData,
@@ -22,7 +22,7 @@ import {
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 
-interface CollectionPageProps {
+interface ProductListPageProps {
    collection: CollectionData;
    global: ProductListGlobal;
    layout: LayoutData;
@@ -30,10 +30,10 @@ interface CollectionPageProps {
 
 const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
 
-export default function CollectionPage({
+export default function ProductListPage({
    collection,
    global,
-}: CollectionPageProps) {
+}: ProductListPageProps) {
    const { newsletterForm } = global;
    return (
       <Page>
@@ -76,7 +76,7 @@ export default function CollectionPage({
                      const { productList } = section;
                      if (productList) {
                         return (
-                           <FeaturedCollectionSection
+                           <FeaturedProductListSection
                               key={index}
                               handle={productList.handle}
                               algoliaIndexName={ALGOLIA_DEFAULT_INDEX_NAME}
@@ -133,9 +133,9 @@ export default function CollectionPage({
    );
 }
 
-CollectionPage.getLayout = function getLayout(
+ProductListPage.getLayout = function getLayout(
    page: React.ReactElement,
-   pageProps: CollectionPageProps
+   pageProps: ProductListPageProps
 ) {
    return (
       <Layout
@@ -147,7 +147,7 @@ CollectionPage.getLayout = function getLayout(
    );
 };
 
-export const getServerSideProps: GetServerSideProps<CollectionPageProps> = async (
+export const getServerSideProps: GetServerSideProps<ProductListPageProps> = async (
    context
 ) => {
    // The data is considered fresh for 10 seconds, and can be served even if stale for up to 10 minutes

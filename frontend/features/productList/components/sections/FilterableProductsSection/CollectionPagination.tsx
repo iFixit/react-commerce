@@ -28,8 +28,8 @@ export function CollectionPagination() {
          numberOfPages={numberOfPages}
          page={page}
          onChange={setPage}
-         pt={12}
-         pb={8}
+         pt="10"
+         pb="8"
          visibleNumberOfPages={visibleNumberOfPages}
       >
          {(pagination) => (

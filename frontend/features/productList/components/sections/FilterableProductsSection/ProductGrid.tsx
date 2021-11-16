@@ -1,5 +1,4 @@
 import {
-   Box,
    HStack,
    LinkBox,
    LinkOverlay,
@@ -10,12 +9,17 @@ import {
 import {
    ProductCard,
    ProductCardBadge,
+   ProductCardBadgeList,
    ProductCardBody,
+   ProductCardDiscountBadge,
    ProductCardImage,
+   ProductCardPricing,
+   ProductCardRating,
+   ProductCardSoldOutBadge,
    ProductCardTitle,
 } from '@components/ProductCard';
 import { Rating } from '@components/Rating';
-import { ProductHit } from '@features/collection';
+import { ProductHit } from '@features/productList';
 import { computeDiscountPercentage } from '@lib/commerce-utils';
 import * as React from 'react';
 
@@ -25,6 +29,8 @@ export function ProductGrid({ children }: ProductGridProps) {
    return (
       <SimpleGrid
          bg="gray.100"
+         borderBottomColor="gray.100"
+         borderBottomWidth="1px"
          w="100%"
          columns={{
             base: 2,
@@ -54,11 +60,35 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
         )
       : 0;
 
+   const isSoldOut = product.inventory_quantity <= 0;
+
    return (
-      <LinkBox as="article" display="block">
+      <LinkBox as="article" display="block" w="full">
          <ProductCard h="full">
             <ProductCardImage src={product.product_image} alt={product.title} />
+            <ProductCardBadgeList>
+               {isSoldOut ? (
+                  <ProductCardSoldOutBadge />
+               ) : (
+                  isDiscounted && (
+                     <ProductCardDiscountBadge percentage={percentage} />
+                  )
+               )}
+            </ProductCardBadgeList>
             <ProductCardBody>
+               <LinkOverlay
+                  href={`https://ifixit.com/Store/Product/${product.sku}`}
+               >
+                  <ProductCardTitle>{product.title}</ProductCardTitle>
+               </LinkOverlay>
+               <ProductCardRating rating={4} count={102} />
+               <ProductCardPricing
+                  currency="$"
+                  price={product.price}
+                  compareAtPrice={product.compare_at_price}
+               />
+            </ProductCardBody>
+            {/* <ProductCardBody>
                <VStack align="flex-start" flexGrow={1}>
                   <LinkOverlay
                      href={`https://ifixit.com/Store/Product/${product.sku}`}
@@ -95,8 +125,8 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                      ${product.price}
                   </Text>
                </HStack>
-            </ProductCardBody>
-            <HStack position="absolute" top="-1" right="4" spacing="1">
+            </ProductCardBody> */}
+            {/* <HStack position="absolute" top="-1" right="4" spacing="1">
                {product.inventory_quantity > 0 ? (
                   <>
                      {percentage > 0 && (
@@ -110,7 +140,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                      Sold out
                   </ProductCardBadge>
                )}
-            </HStack>
+            </HStack> */}
          </ProductCard>
       </LinkBox>
    );
