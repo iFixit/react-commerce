@@ -1,8 +1,9 @@
 {
-   "name": "@ifixit/react-commerce",
-   "author": "Massimo",
+   "name": "@ifixit/commerce-frontend",
    "license": "UNLICENSED",
    "version": "1.0.0",
+   "description": "Next.js frontend for iFixit e-commerce",
+   "author": "Massimo",
    "repository": {
       "url": "https://github.com/iFixit/react-commerce"
    },
