@@ -16,6 +16,8 @@ interface SearchInputProps {
    className?: string;
 }
 
+const MAX_SEARCH_QUERY_LENGTH = 100;
+
 export const SearchInput = chakra(({ className }: SearchInputProps) => {
    const inputRef = React.useRef<HTMLInputElement>(null);
    const [query, search] = useSearch();
@@ -26,6 +28,19 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
          inputRef.current.focus();
       }
    }, [search]);
+
+   const onSearchChange = React.useCallback<
+      React.ChangeEventHandler<HTMLInputElement>
+   >(
+      (event) => {
+         let newValue = event.currentTarget.value;
+         if (newValue.length > MAX_SEARCH_QUERY_LENGTH) {
+            newValue = newValue.slice(0, MAX_SEARCH_QUERY_LENGTH);
+         }
+         search(newValue);
+      },
+      [search]
+   );
 
    return React.useMemo(
       () => (
@@ -38,7 +53,7 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
                bg="white"
                placeholder="Search"
                tabIndex={0}
-               onChange={(event) => search(event.currentTarget.value)}
+               onChange={onSearchChange}
                value={query}
             />
             <InputRightElement
