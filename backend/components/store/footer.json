@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_store_footers",
+  "info": {
+    "name": "footer",
+    "icon": "shoe-prints",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "menu1": {
+      "model": "menu"
+    },
+    "menu2": {
+      "model": "menu"
+    },
+    "bottomMenu": {
+      "model": "menu"
+    },
+    "partners": {
+      "model": "menu"
+    }
+  }
+}

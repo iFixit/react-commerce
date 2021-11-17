@@ -1,12 +1,17 @@
 # [iFixit React Commerce](https://react-commerce.vercel.app)
 
-A work in progress prototype for iFixit e-commerce functionalities.
+New iFixit e-commerce site.
 
 ## Development
 
-The development setup is a standard setup for Next.js.
+The project contains a `backend` folder with Strapi config and a `frontend` with Next.js.
+You can run the backend both using SQLite and using Postgres with docker compose. For now the recommended approach for local dev is to just use SQLite.
+
+> :warning: If you are running Strapi using docker compose, be sure to delete `backend/node_modules` first, as your OS might differ from the docker container OS, so you want the docker container to install dependencies by itself.
 
 ### Install
+
+This command will install both backend and frontend dependencies:
 
 ```sh
 npm install
@@ -14,7 +19,7 @@ npm install
 
 ### Dev server
 
-To start the dev server run:
+This command will start Strapi dev server and Next.js dev server:
 
 ```sh
 npm run dev
@@ -22,7 +27,7 @@ npm run dev
 
 ### Using SVG
 
-If you want to use an svg as a React component, add it to `assets/svg/files` and run
+If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
 
 ```sh
 npm run transform-svg
@@ -31,7 +36,7 @@ npm run transform-svg
 The script will take svg files and transform them into React components that you can import like this:
 
 ```tsx
-import { LifetimeWarrantyIcon } from '@assets/svg';
+import { LifetimeWarrantyIcon } from "@assets/svg";
 ```
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.

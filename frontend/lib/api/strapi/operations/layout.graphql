@@ -1,0 +1,60 @@
+fragment LayoutProps on Query {
+   stores {
+      code
+      name
+      url
+      currency
+   }
+   currentStore: stores(where: $whereStoreSettings) {
+      shopifySettings {
+         storefrontDomain
+         storefrontAccessToken
+      }
+      footer {
+         menu1 {
+            ...MenuProps
+         }
+         menu2 {
+            ...MenuProps
+         }
+         partners {
+            ...MenuProps
+         }
+         bottomMenu {
+            ...MenuProps
+         }
+      }
+      socialMediaAccounts {
+         twitter
+         facebook
+         instagram
+         youtube
+         repairOrg
+      }
+   }
+}
+
+fragment MenuProps on Menu {
+   items {
+      __typename
+      ... on ComponentMenuLink {
+         name
+         url
+      }
+      ... on ComponentMenuProductListLink {
+         name
+         productList {
+            handle
+         }
+      }
+      ... on ComponentMenuLinkWithImage {
+         name
+         url
+         image {
+            alternativeText
+            url
+            formats
+         }
+      }
+   }
+}
