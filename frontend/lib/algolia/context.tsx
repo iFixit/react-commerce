@@ -193,8 +193,15 @@ export function AlgoliaProvider({
                   draftFilter.max !== event.max
                ) {
                   ctx.params.page = 1;
-                  draftFilter.min = event.min;
-                  draftFilter.max = event.max;
+                  if (event.min == null && event.max == null) {
+                     ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
+                        (id) => id !== event.filterId
+                     );
+                     delete ctx.params.filters.byId[event.filterId];
+                  } else {
+                     draftFilter.min = event.min;
+                     draftFilter.max = event.max;
+                  }
                }
             }
          }),
@@ -253,9 +260,7 @@ export function AlgoliaProvider({
 }
 
 function isInvalidRange(min?: number, max?: number): boolean {
-   return (
-      (min == null && max == null) || (min != null && max != null && min > max)
-   );
+   return min != null && max != null && min > max;
 }
 
 export function useSearchServiceContext<
