@@ -56,5 +56,35 @@ fragment MenuProps on Menu {
             formats
          }
       }
+      ... on ComponentMenuSubmenu {
+         name
+         submenu {
+            items {
+               __typename
+               ... on ComponentMenuLink {
+                  name
+                  url
+               }
+               ... on ComponentMenuProductListLink {
+                  name
+                  productList {
+                     handle
+                  }
+               }
+               ... on ComponentMenuLinkWithImage {
+                  name
+                  url
+                  image {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+               ... on ComponentMenuSubmenu {
+                  name
+               }
+            }
+         }
+      }
    }
 }

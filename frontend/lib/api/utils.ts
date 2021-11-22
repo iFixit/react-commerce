@@ -5,7 +5,7 @@ export type StrapiImageFormat = 'large' | 'medium' | 'small' | 'thumbnail';
 export function getImageFromStrapiImage(
    image: any | null,
    format: StrapiImageFormat
-) {
+): Image | null {
    if (image == null) {
       return null;
    }
@@ -15,5 +15,13 @@ export function getImageFromStrapiImage(
       }`,
       alt: image.alternativeText,
       formats: image.formats,
+   };
+}
+
+export interface Image {
+   url: string;
+   alt?: string;
+   formats: {
+      url: string;
    };
 }

@@ -1,6 +1,6 @@
 import { assertNever, Awaited, filterNullableItems } from '@lib/utils';
 import { LayoutPropsFragment } from '../strapi/generated/sdk';
-import { getImageFromStrapiImage } from '../utils';
+import { getImageFromStrapiImage, Image } from '../utils';
 
 type StoreSettings = NonNullable<
    NonNullable<LayoutPropsFragment['currentStore']>[0]
@@ -8,7 +8,7 @@ type StoreSettings = NonNullable<
 
 type Footer = NonNullable<StoreSettings['footer']>;
 
-type Menu = NonNullable<Footer['menu1']>;
+type RawMenu = NonNullable<Footer['menu1']>;
 
 export type LayoutData = NonNullable<
    Awaited<ReturnType<typeof getLayoutProps>>
@@ -35,35 +35,81 @@ export function getLayoutProps(data: LayoutPropsFragment) {
    };
 }
 
-function getMenu(rawMenu: Menu) {
+export interface Menu {
+   items: MenuItem[];
+}
+
+export type MenuItem =
+   | {
+        type: 'link';
+        name: string;
+        url: string;
+     }
+   | {
+        type: 'linkWithImage';
+        name: string;
+        url: string;
+        image?: Image;
+     }
+   | {
+        type: 'productListLink';
+        name: string;
+        url: string;
+     }
+   | {
+        type: 'submenu';
+        name: string;
+        submenu: Menu;
+     };
+
+function getMenu(rawMenu: RawMenu): Menu {
    return {
-      items: filterNullableItems(rawMenu.items).map((item) => {
-         switch (item.__typename) {
-            case 'ComponentMenuLink': {
-               return {
-                  name: item.name,
-                  url: item.url,
-               };
+      items: filterNullableItems(
+         rawMenu.items.map((item): MenuItem | null => {
+            if (item == null) {
+               return null;
             }
-            case 'ComponentMenuLinkWithImage': {
-               return {
-                  name: item.name,
-                  url: item.url,
-                  image:
-                     getImageFromStrapiImage(item.image, 'small') || undefined,
-               };
+            switch (item.__typename) {
+               case 'ComponentMenuLink': {
+                  return {
+                     type: 'link',
+                     name: item.name,
+                     url: item.url,
+                  };
+               }
+               case 'ComponentMenuLinkWithImage': {
+                  return {
+                     type: 'linkWithImage',
+                     name: item.name,
+                     url: item.url,
+                     image:
+                        getImageFromStrapiImage(item.image, 'small') ||
+                        undefined,
+                  };
+               }
+               case 'ComponentMenuProductListLink': {
+                  return {
+                     type: 'productListLink',
+                     name: item.name,
+                     url: item.productList
+                        ? `/collections/${item.productList.handle}`
+                        : '#',
+                  };
+               }
+               case 'ComponentMenuSubmenu': {
+                  if (item.submenu == null) {
+                     return null;
+                  }
+                  return {
+                     type: 'submenu',
+                     name: item.name,
+                     submenu: getMenu(item.submenu),
+                  };
+               }
+               default:
+                  return assertNever(item);
             }
-            case 'ComponentMenuProductListLink': {
-               return {
-                  name: item.name,
-                  url: item.productList
-                     ? `/collections/${item.productList.handle}`
-                     : '#',
-               };
-            }
-            default:
-               return assertNever(item);
-         }
-      }),
+         })
+      ),
    };
 }
