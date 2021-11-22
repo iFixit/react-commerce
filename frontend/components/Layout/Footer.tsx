@@ -28,42 +28,25 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/react-components';
-import { Menu as MenuType } from '@lib/api';
+import { LayoutData } from '@lib/api';
 import * as React from 'react';
 
 const placeholderImageUrl =
    'https://via.placeholder.com/180x75?text=not+available';
 
 export interface FooterProps {
-   menu1?: MenuType;
-   menu2?: MenuType;
-   bottomMenu?: MenuType;
-   partners?: MenuType;
-   socialMediaAccounts: {
-      twitter?: string | null;
-      facebook?: string | null;
-      instagram?: string | null;
-      youtube?: string | null;
-      repairOrg?: string | null;
-   };
-   stores: Store[];
+   data: LayoutData['footer'];
 }
 
-interface Store {
-   code: string;
-   name: string;
-   url: string;
-   currency: string;
-}
-
-export function Footer({
-   menu1,
-   menu2,
-   partners,
-   bottomMenu,
-   socialMediaAccounts,
-   stores,
-}: FooterProps) {
+export function Footer({ data }: FooterProps) {
+   const {
+      menu1,
+      menu2,
+      partners,
+      bottomMenu,
+      socialMediaAccounts,
+      stores,
+   } = data;
    return (
       <FooterContainer>
          <SimpleGrid
