@@ -7,11 +7,13 @@ import { Header } from './Header';
 
 export interface LayoutProps {
    title: string;
+   header: LayoutData['header'];
    footer: LayoutData['footer'];
 }
 
 export function Layout({
    title,
+   header,
    footer,
    children,
 }: React.PropsWithChildren<LayoutProps>) {
@@ -22,7 +24,7 @@ export function Layout({
             <link rel="icon" href="/favicon.ico" />
          </Head>
          <Flex direction="column">
-            <Header />
+            <Header data={header} />
             {children}
             <Footer data={footer} />
          </Flex>

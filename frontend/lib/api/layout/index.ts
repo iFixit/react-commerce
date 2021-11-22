@@ -18,10 +18,14 @@ export type LayoutData = NonNullable<
 export function getLayoutProps(data: LayoutPropsFragment) {
    const currentStore = data.currentStore?.[0];
    const footer = currentStore?.footer;
+   const header = currentStore?.header;
    const socialMediaAccounts = currentStore?.socialMediaAccounts || {};
    const stores = filterNullableItems(data.stores);
    return {
       layout: {
+         header: {
+            menu: header?.menu ? getMenu(header.menu) : null,
+         },
          footer: {
             menu1: footer?.menu1 ? getMenu(footer.menu1) : null,
             menu2: footer?.menu2 ? getMenu(footer.menu2) : null,
@@ -71,6 +75,9 @@ function getMenu(rawMenu: RawMenu): Menu {
             }
             switch (item.__typename) {
                case 'ComponentMenuLink': {
+                  if (item.name === 'Repair Guides') {
+                     console.log('has description?', item);
+                  }
                   return {
                      type: 'link',
                      name: item.name,

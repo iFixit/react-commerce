@@ -10,6 +10,11 @@ fragment LayoutProps on Query {
          storefrontDomain
          storefrontAccessToken
       }
+      header {
+         menu {
+            ...MenuProps
+         }
+      }
       footer {
          menu1 {
             ...MenuProps
@@ -65,6 +70,7 @@ fragment MenuProps on Menu {
                ... on ComponentMenuLink {
                   name
                   url
+                  description
                }
                ... on ComponentMenuProductListLink {
                   name
