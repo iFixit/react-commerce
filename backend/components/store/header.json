@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_store_headers",
+  "info": {
+    "name": "header",
+    "icon": "window-maximize"
+  },
+  "options": {},
+  "attributes": {
+    "menu": {
+      "model": "menu"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { assertNever, Awaited, filterNullableItems } from '@lib/utils';
 import { LayoutPropsFragment } from '../strapi/generated/sdk';
 import { getImageFromStrapiImage, Image } from '../utils';
+import snarkdown from 'snarkdown';
 
 type StoreSettings = NonNullable<
    NonNullable<LayoutPropsFragment['currentStore']>[0]
@@ -44,6 +45,7 @@ export type MenuItem =
         type: 'link';
         name: string;
         url: string;
+        descriptionHtml?: string;
      }
    | {
         type: 'linkWithImage';
@@ -75,6 +77,9 @@ function getMenu(rawMenu: RawMenu): Menu {
                      type: 'link',
                      name: item.name,
                      url: item.url,
+                     descriptionHtml: item.description
+                        ? snarkdown(item.description)
+                        : undefined,
                   };
                }
                case 'ComponentMenuLinkWithImage': {
