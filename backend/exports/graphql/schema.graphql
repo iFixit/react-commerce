@@ -81,7 +81,7 @@ type deleteGlobalPayload {
   global: Global
 }
 
-union MenuItemsDynamicZone = ComponentMenuLinkWithImage | ComponentMenuLink | ComponentMenuProductListLink
+union MenuItemsDynamicZone = ComponentMenuLinkWithImage | ComponentMenuLink | ComponentMenuProductListLink | ComponentMenuSubmenu
 
 """Input type for dynamic zone items of Menu"""
 scalar MenuItemsDynamicZoneInput
@@ -1116,6 +1116,23 @@ input editComponentMenuProductListLinkInput {
   productList: ID
 }
 
+type ComponentMenuSubmenu {
+  id: ID!
+  name: String!
+  submenu: Menu
+}
+
+input ComponentMenuSubmenuInput {
+  name: String!
+  submenu: ID
+}
+
+input editComponentMenuSubmenuInput {
+  id: ID
+  name: String
+  submenu: ID
+}
+
 type ComponentProductListBanner {
   id: ID!
   title: String!
@@ -1250,7 +1267,7 @@ input editComponentStoreSocialMediaAccountInput {
   repairOrg: String
 }
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Global | updateGlobalPayload | deleteGlobalPayload | Menu | MenuConnection | MenuAggregator | MenuGroupBy | MenuConnectionId | MenuConnectionCreated_at | MenuConnectionUpdated_at | MenuConnectionTitle | MenuConnectionLocale | MenuConnectionPublished_at | createMenuPayload | updateMenuPayload | deleteMenuPayload | ProductList | ProductListConnection | ProductListAggregator | ProductListAggregatorSum | ProductListAggregatorAvg | ProductListAggregatorMin | ProductListAggregatorMax | ProductListGroupBy | ProductListConnectionId | ProductListConnectionCreated_at | ProductListConnectionUpdated_at | ProductListConnectionHandle | ProductListConnectionTitle | ProductListConnectionDescription | ProductListConnectionMetaDescription | ProductListConnectionImage | ProductListConnectionFilters | ProductListConnectionTagline | ProductListConnectionDeviceTitle | ProductListConnectionParent | ProductListConnectionExcludeFromHierarchyDisplay | ProductListConnectionLegacyPageId | ProductListConnectionLocale | ProductListConnectionPublished_at | createProductListPayload | updateProductListPayload | deleteProductListPayload | Store | StoreConnection | StoreAggregator | StoreGroupBy | StoreConnectionId | StoreConnectionCreated_at | StoreConnectionUpdated_at | StoreConnectionCode | StoreConnectionName | StoreConnectionUrl | StoreConnectionCurrency | StoreConnectionShopifySettings | StoreConnectionFooter | StoreConnectionSocialMediaAccounts | StoreConnectionPublished_at | createStorePayload | updateStorePayload | deleteStorePayload | I18NLocale | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_at | UploadFileConnectionUpdated_at | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | deleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_at | UsersPermissionsUserConnectionUpdated_at | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentGlobalNewsletterForm | ComponentMenuLinkWithImage | ComponentMenuLink | ComponentMenuProductListLink | ComponentProductListBanner | ComponentProductListFeaturedProductList | ComponentProductListLinkedProductListSet | ComponentProductListRelatedPosts | ComponentStoreFooter | ComponentStoreShopifySettings | ComponentStoreSocialMediaAccounts
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Global | updateGlobalPayload | deleteGlobalPayload | Menu | MenuConnection | MenuAggregator | MenuGroupBy | MenuConnectionId | MenuConnectionCreated_at | MenuConnectionUpdated_at | MenuConnectionTitle | MenuConnectionLocale | MenuConnectionPublished_at | createMenuPayload | updateMenuPayload | deleteMenuPayload | ProductList | ProductListConnection | ProductListAggregator | ProductListAggregatorSum | ProductListAggregatorAvg | ProductListAggregatorMin | ProductListAggregatorMax | ProductListGroupBy | ProductListConnectionId | ProductListConnectionCreated_at | ProductListConnectionUpdated_at | ProductListConnectionHandle | ProductListConnectionTitle | ProductListConnectionDescription | ProductListConnectionMetaDescription | ProductListConnectionImage | ProductListConnectionFilters | ProductListConnectionTagline | ProductListConnectionDeviceTitle | ProductListConnectionParent | ProductListConnectionExcludeFromHierarchyDisplay | ProductListConnectionLegacyPageId | ProductListConnectionLocale | ProductListConnectionPublished_at | createProductListPayload | updateProductListPayload | deleteProductListPayload | Store | StoreConnection | StoreAggregator | StoreGroupBy | StoreConnectionId | StoreConnectionCreated_at | StoreConnectionUpdated_at | StoreConnectionCode | StoreConnectionName | StoreConnectionUrl | StoreConnectionCurrency | StoreConnectionShopifySettings | StoreConnectionFooter | StoreConnectionSocialMediaAccounts | StoreConnectionPublished_at | createStorePayload | updateStorePayload | deleteStorePayload | I18NLocale | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_at | UploadFileConnectionUpdated_at | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | deleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_at | UsersPermissionsUserConnectionUpdated_at | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentGlobalNewsletterForm | ComponentMenuLinkWithImage | ComponentMenuLink | ComponentMenuProductListLink | ComponentMenuSubmenu | ComponentProductListBanner | ComponentProductListFeaturedProductList | ComponentProductListLinkedProductListSet | ComponentProductListRelatedPosts | ComponentStoreFooter | ComponentStoreShopifySettings | ComponentStoreSocialMediaAccounts
 
 input InputID {
   id: ID!
