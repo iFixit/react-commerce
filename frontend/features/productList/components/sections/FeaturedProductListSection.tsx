@@ -1,20 +1,35 @@
-import { Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import {
+   Box,
+   Button,
+   Flex,
+   Heading,
+   LinkBox,
+   LinkOverlay,
+   SimpleGrid,
+   Text,
+   VStack,
+} from '@chakra-ui/react';
 import { Card } from '@components/Card';
 import {
    ProductCard,
+   ProductCardBadgeList,
    ProductCardBody,
+   ProductCardDiscountBadge,
    ProductCardImage,
-   ProductCardPrice,
+   ProductCardPricing,
+   ProductCardRating,
+   ProductCardSoldOutBadge,
    ProductCardTitle,
 } from '@components/ProductCard';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { ProductHit } from '@features/collection';
+import { ProductHit } from '@features/productList';
 import { AlgoliaProvider, useHits } from '@lib/algolia';
+import { computeDiscountPercentage } from '@lib/commerce-utils';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
-export interface FeaturedCollectionSection {
+export interface FeaturedProductListSectionProps {
    handle: string;
    title: string;
    description: string;
@@ -23,14 +38,14 @@ export interface FeaturedCollectionSection {
    algoliaIndexName: string;
 }
 
-export function FeaturedCollectionSection({
+export function FeaturedProductListSection({
    handle,
    title,
    description,
    imageAlt,
    imageSrc,
    algoliaIndexName,
-}: FeaturedCollectionSection) {
+}: FeaturedProductListSectionProps) {
    return (
       <Card
          overflow="hidden"
@@ -42,7 +57,7 @@ export function FeaturedCollectionSection({
          <Flex
             direction={{
                base: 'column',
-               sm: 'row',
+               md: 'row',
             }}
          >
             <Box
@@ -50,7 +65,7 @@ export function FeaturedCollectionSection({
                flexShrink={0}
                w={{
                   base: 'full',
-                  sm: '300px',
+                  md: '300px',
                   lg: '400px',
                }}
                maxH={{
@@ -125,7 +140,7 @@ export function FeaturedCollectionSection({
                   filtersPreset={`collections:${handle}`}
                   productsPerPage={3}
                >
-                  <ProductList />
+                  <ProductGrid />
                </AlgoliaProvider>
             </Box>
          </Flex>
@@ -133,14 +148,22 @@ export function FeaturedCollectionSection({
    );
 }
 
-function ProductList() {
+function ProductGrid() {
    const hits = useHits<ProductHit>();
    return (
-      <Flex>
+      <SimpleGrid
+         bg="gray.100"
+         w="100%"
+         columns={{
+            base: 2,
+            lg: 3,
+         }}
+         spacing="1px"
+      >
          {hits.map((hit) => {
             return <ProductListItem key={hit.handle} product={hit} />;
          })}
-      </Flex>
+      </SimpleGrid>
    );
 }
 
@@ -149,24 +172,57 @@ interface ProductListItemProps {
 }
 
 function ProductListItem({ product }: ProductListItemProps) {
+   const isDiscounted =
+      product.compare_at_price != null &&
+      product.compare_at_price > product.price;
+
+   const percentage = isDiscounted
+      ? computeDiscountPercentage(
+           product.price * 100,
+           product.compare_at_price! * 100
+        )
+      : 0;
+
+   const isSoldOut = product.inventory_quantity <= 0;
+
    return (
-      <ProductCard
-         w="33%"
-         flexGrow={1}
+      <LinkBox
+         as="article"
+         display="block"
          sx={{
             '&:nth-of-type(n+3)': {
                display: {
                   base: 'none',
-                  md: 'block',
+                  lg: 'block',
                },
             },
          }}
       >
-         <ProductCardImage src={product.product_image} alt={product.title} />
-         <ProductCardBody>
-            <ProductCardTitle>{product.title}</ProductCardTitle>
-            <ProductCardPrice price={product.price} />
-         </ProductCardBody>
-      </ProductCard>
+         <ProductCard flexGrow={1} h="full">
+            <ProductCardImage src={product.product_image} alt={product.title} />
+            <ProductCardBadgeList>
+               {isSoldOut ? (
+                  <ProductCardSoldOutBadge />
+               ) : (
+                  isDiscounted && (
+                     <ProductCardDiscountBadge percentage={percentage} />
+                  )
+               )}
+            </ProductCardBadgeList>
+            <ProductCardBody>
+               <LinkOverlay
+                  href={`https://ifixit.com/Store/Product/${product.sku}`}
+               >
+                  <ProductCardTitle>{product.title}</ProductCardTitle>
+               </LinkOverlay>
+               <ProductCardRating rating={4} count={102} />
+               <ProductCardPricing
+                  currency="$"
+                  price={product.price}
+                  compareAtPrice={product.compare_at_price}
+               />
+            </ProductCardBody>
+         </ProductCard>
+      </LinkBox>
    );
 }
