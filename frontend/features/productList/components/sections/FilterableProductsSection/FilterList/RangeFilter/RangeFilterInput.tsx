@@ -17,6 +17,8 @@ export interface RangeFilterInputProps {
    minFieldPlaceholder?: string;
    maxFieldPrefix?: React.ReactNode;
    maxFieldPlaceholder?: string;
+   onError?: (error: string) => void;
+   onDismissError?: () => void;
 }
 
 export function RangeFilterInput(props: RangeFilterInputProps) {
@@ -66,7 +68,11 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
    );
 }
 
-function useRangeFilterInput({ facetHandle }: RangeFilterInputProps) {
+function useRangeFilterInput({
+   facetHandle,
+   onError,
+   onDismissError,
+}: RangeFilterInputProps) {
    const { getFacetHandles } = useRangeFilterContext();
    useRegisterFacet(facetHandle);
    const minRef = React.useRef<HTMLInputElement | null>(null);
@@ -83,6 +89,14 @@ function useRangeFilterInput({ facetHandle }: RangeFilterInputProps) {
          maxRef.current.value = filter?.max != null ? String(filter.max) : '';
       }
    }, [filter]);
+
+   React.useEffect(() => {
+      if (error) {
+         onError?.(error);
+      } else {
+         onDismissError?.();
+      }
+   }, [error, onError, onDismissError]);
 
    const updateRange = useDebouncedCallback(
       (name: 'min' | 'max', text: string) => {
