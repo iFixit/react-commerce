@@ -23,12 +23,10 @@ export function getLayoutProps(data: LayoutPropsFragment) {
    return {
       layout: {
          footer: {
-            menu1: footer?.menu1 ? getMenu(footer.menu1) : undefined,
-            menu2: footer?.menu2 ? getMenu(footer.menu2) : undefined,
-            partners: footer?.partners ? getMenu(footer.partners) : undefined,
-            bottomMenu: footer?.bottomMenu
-               ? getMenu(footer.bottomMenu)
-               : undefined,
+            menu1: footer?.menu1 ? getMenu(footer.menu1) : null,
+            menu2: footer?.menu2 ? getMenu(footer.menu2) : null,
+            partners: footer?.partners ? getMenu(footer.partners) : null,
+            bottomMenu: footer?.bottomMenu ? getMenu(footer.bottomMenu) : null,
             socialMediaAccounts,
             stores,
          },
@@ -45,13 +43,13 @@ export type MenuItem =
         type: 'link';
         name: string;
         url: string;
-        descriptionHtml?: string;
+        descriptionHtml?: string | null;
      }
    | {
         type: 'linkWithImage';
         name: string;
         url: string;
-        image?: Image;
+        image?: Image | null;
      }
    | {
         type: 'productListLink';
@@ -79,7 +77,7 @@ function getMenu(rawMenu: RawMenu): Menu {
                      url: item.url,
                      descriptionHtml: item.description
                         ? snarkdown(item.description)
-                        : undefined,
+                        : null,
                   };
                }
                case 'ComponentMenuLinkWithImage': {
