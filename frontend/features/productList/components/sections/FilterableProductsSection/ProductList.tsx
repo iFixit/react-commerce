@@ -13,7 +13,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/Rating';
-import { ProductHit } from '@features/collection';
+import { ProductHit } from '@features/productList';
 import { computeDiscountPercentage } from '@lib/commerce-utils';
 import Image from 'next/image';
 import * as React from 'react';
