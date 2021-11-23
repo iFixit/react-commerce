@@ -31,25 +31,13 @@ export function useRangeFilter(filterId: string): UseRangeFilter {
 
    const set = React.useCallback<UseRangeFilter['set']>(
       (min, max, options) => {
-         if (options?.clearFacets) {
-            service.send({
-               type: 'SET_RANGE_FILTER',
-               filterId: filterId,
-               min: min || undefined,
-               max: max || undefined,
-            });
-            service.send({
-               type: 'CLEAR_FILTERS',
-               filterIds: options.clearFacets,
-            });
-         } else {
-            service.send({
-               type: 'SET_RANGE_FILTER',
-               filterId: filterId,
-               min: min || undefined,
-               max: max || undefined,
-            });
-         }
+         service.send({
+            type: 'SET_RANGE_FILTER',
+            filterId: filterId,
+            min: min || undefined,
+            max: max || undefined,
+            clearIds: options?.clearFacets,
+         });
       },
       [filterId, service]
    );

@@ -67,15 +67,15 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                },
                ADD_FACET_OPTION_FILTER: {
                   target: 'search',
-                  actions: ['addFacetOptionFilter'],
+                  actions: ['addFacetOptionFilter', 'clearFilters'],
                },
                SET_FACET_OPTION_FILTER: {
                   target: 'search',
-                  actions: ['setFacetOptionFilter'],
+                  actions: ['setFacetOptionFilter', 'clearFilters'],
                },
                TOGGLE_FACET_OPTION_FILTER: {
                   target: 'search',
-                  actions: ['toggleFacetOptionFilter'],
+                  actions: ['toggleFacetOptionFilter', 'clearFilters'],
                },
                CLEAR_FACET_OPTION_FILTER: {
                   target: 'search',
@@ -83,7 +83,7 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                },
                SET_RANGE_FILTER: {
                   target: 'search',
-                  actions: ['setRangeFilter'],
+                  actions: ['setRangeFilter', 'clearFilters'],
                },
                CLEAR_SEARCH_PARAMS: {
                   target: 'search',
@@ -133,15 +133,15 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                },
                ADD_FACET_OPTION_FILTER: {
                   target: 'search',
-                  actions: ['addFacetOptionFilter'],
+                  actions: ['addFacetOptionFilter', 'clearFilters'],
                },
                SET_FACET_OPTION_FILTER: {
                   target: 'search',
-                  actions: ['setFacetOptionFilter'],
+                  actions: ['setFacetOptionFilter', 'clearFilters'],
                },
                TOGGLE_FACET_OPTION_FILTER: {
                   target: 'search',
-                  actions: ['toggleFacetOptionFilter'],
+                  actions: ['toggleFacetOptionFilter', 'clearFilters'],
                },
                CLEAR_FACET_OPTION_FILTER: {
                   target: 'search',
@@ -149,7 +149,7 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
                },
                SET_RANGE_FILTER: {
                   target: 'search',
-                  actions: ['setRangeFilter'],
+                  actions: ['setRangeFilter', 'clearFilters'],
                },
                CLEAR_SEARCH_PARAMS: {
                   target: 'search',
