@@ -61,11 +61,32 @@ export type SearchEvent<Hit = any> =
    | { type: 'SET_QUERY'; query: string }
    | { type: 'SET_PAGE'; page: number }
    | { type: 'CLEAR_FILTERS'; filterIds?: string[] }
-   | { type: 'ADD_FACET_OPTION_FILTER'; filterId: string; optionId: string }
-   | { type: 'SET_FACET_OPTION_FILTER'; filterId: string; optionId: string }
-   | { type: 'TOGGLE_FACET_OPTION_FILTER'; filterId: string; optionId: string }
+   | {
+        type: 'ADD_FACET_OPTION_FILTER';
+        filterId: string;
+        optionId: string;
+        clearIds?: string[];
+     }
+   | {
+        type: 'SET_FACET_OPTION_FILTER';
+        filterId: string;
+        optionId: string;
+        clearIds?: string[];
+     }
+   | {
+        type: 'TOGGLE_FACET_OPTION_FILTER';
+        filterId: string;
+        optionId: string;
+        clearIds?: string[];
+     }
    | { type: 'CLEAR_FACET_OPTION_FILTER'; filterId: string; optionId: string }
-   | { type: 'SET_RANGE_FILTER'; filterId: string; min?: number; max?: number }
+   | {
+        type: 'SET_RANGE_FILTER';
+        filterId: string;
+        min?: number;
+        max?: number;
+        clearIds?: string[];
+     }
    | { type: 'CLEAR_SEARCH_PARAMS' }
    | { type: 'SEARCH_CONTEXT_UPDATE'; context: SearchContext<Hit> }
    | { type: 'SEARCH_FAILED'; error: string }
