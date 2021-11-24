@@ -33,11 +33,7 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
       React.ChangeEventHandler<HTMLInputElement>
    >(
       (event) => {
-         let newValue = event.currentTarget.value;
-         if (newValue.length > MAX_SEARCH_QUERY_LENGTH) {
-            newValue = newValue.slice(0, MAX_SEARCH_QUERY_LENGTH);
-         }
-         search(newValue);
+         search(event.currentTarget.value);
       },
       [search]
    );
@@ -55,6 +51,7 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
                tabIndex={0}
                onChange={onSearchChange}
                value={query}
+               maxLength={MAX_SEARCH_QUERY_LENGTH}
             />
             <InputRightElement
                opacity={query.length > 0 ? 1 : 0}
