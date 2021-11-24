@@ -29,15 +29,6 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
       }
    }, [search]);
 
-   const onSearchChange = React.useCallback<
-      React.ChangeEventHandler<HTMLInputElement>
-   >(
-      (event) => {
-         search(event.currentTarget.value);
-      },
-      [search]
-   );
-
    return React.useMemo(
       () => (
          <InputGroup className={className}>
@@ -49,7 +40,7 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
                bg="white"
                placeholder="Search"
                tabIndex={0}
-               onChange={onSearchChange}
+               onChange={(event) => search(event.target.value)}
                value={query}
                maxLength={MAX_SEARCH_QUERY_LENGTH}
             />
