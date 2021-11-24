@@ -40,7 +40,7 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
                bg="white"
                placeholder="Search"
                tabIndex={0}
-               onChange={(event) => search(event.target.value)}
+               onChange={(event) => search(event.currentTarget.value)}
                value={query}
                maxLength={MAX_SEARCH_QUERY_LENGTH}
             />
