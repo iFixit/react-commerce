@@ -18,7 +18,6 @@ export const SearchBar = forwardRef<FlexProps, 'form'>((props, ref) => {
          as="form"
          method="GET"
          action="https://www.ifixit.com/Search"
-         mx="8"
          {...props}
       >
          <SearchInput />
