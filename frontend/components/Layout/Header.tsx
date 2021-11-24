@@ -1,25 +1,18 @@
-import {
-   Box,
-   BoxProps,
-   chakra,
-   Divider,
-   Flex,
-   FlexProps,
-   forwardRef,
-   HStack,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, chakra, Divider, Flex, Icon } from '@chakra-ui/react';
 import { LayoutData } from '@lib/api';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { HiArrowNarrowRight } from 'react-icons/hi';
+import { MenuBar, MenuItem, MenuLink, Submenu, SubmenuButton } from './MenuBar';
 import { Wordmark } from './Wordmark';
 
 export interface HeaderProps {
    data: LayoutData['header'];
 }
 
+const ANIMATION_DURATION = '300ms';
+
 export function Header({ data }: HeaderProps) {
-   console.log('Header data', data);
    return (
       <Flex bg="trueGray.900" color="white" height="68px">
          <Flex alignItems="center" pl={6}>
@@ -36,6 +29,7 @@ export function Header({ data }: HeaderProps) {
                            return (
                               <MenuItem
                                  key={index}
+                                 transition="background-color 300ms"
                                  _hover={{
                                     bg: 'trueGray.800',
                                     '& > *': {
@@ -43,15 +37,17 @@ export function Header({ data }: HeaderProps) {
                                     },
                                  }}
                               >
-                                 <MenuButton
+                                 <SubmenuButton
                                     align="center"
                                     px="6"
                                     cursor="pointer"
                                     tabIndex={0}
+                                    fontSize="sm"
+                                    fontWeight="bold"
                                  >
                                     <span>{item.name}</span>
-                                 </MenuButton>
-                                 <Menu
+                                 </SubmenuButton>
+                                 <Submenu
                                     position="absolute"
                                     zIndex={1000}
                                     left="0"
@@ -70,6 +66,7 @@ export function Header({ data }: HeaderProps) {
                                                 key={subIndex}
                                                 flexGrow={1}
                                                 w="222px"
+                                                transition={`background-color ${ANIMATION_DURATION}`}
                                                 _hover={{
                                                    bg: 'blue.500',
                                                    '& .divider': {
@@ -78,6 +75,12 @@ export function Header({ data }: HeaderProps) {
                                                    '& p': {
                                                       color: 'white',
                                                    },
+                                                   '& .disclosure': {
+                                                      opacity: '1',
+                                                      bg: 'blue.500',
+                                                      transform:
+                                                         'translateY(100%)',
+                                                   },
                                                 }}
                                              >
                                                 <NextLink
@@ -85,42 +88,67 @@ export function Header({ data }: HeaderProps) {
                                                    passHref
                                                 >
                                                    <MenuLink
-                                                      p="6"
                                                       flexGrow={1}
                                                       direction="column"
                                                       tabIndex={-1}
+                                                      position="relative"
                                                    >
-                                                      <Box
-                                                         as="span"
-                                                         fontWeight="bold"
+                                                      <Flex
+                                                         direction="column"
+                                                         p="6"
                                                       >
-                                                         {subitem.name}
-                                                      </Box>
-                                                      <Divider
-                                                         className="divider"
-                                                         borderBottomWidth="4px"
-                                                         borderRadius="2px"
-                                                         my="4"
-                                                         borderColor="trueGray.600"
-                                                      />
-                                                      {subitem.descriptionHtml && (
                                                          <Box
-                                                            as="p"
-                                                            fontSize="14px"
-                                                            color="trueGray.400"
-                                                            dangerouslySetInnerHTML={{
-                                                               __html:
-                                                                  subitem.descriptionHtml,
-                                                            }}
+                                                            as="span"
+                                                            fontWeight="bold"
+                                                         >
+                                                            {subitem.name}
+                                                         </Box>
+                                                         <Divider
+                                                            className="divider"
+                                                            borderBottomWidth="4px"
+                                                            borderRadius="2px"
+                                                            my="4"
+                                                            borderColor="trueGray.600"
                                                          />
-                                                      )}
+                                                         {subitem.descriptionHtml && (
+                                                            <Box
+                                                               as="p"
+                                                               fontSize="sm"
+                                                               color="trueGray.400"
+                                                               dangerouslySetInnerHTML={{
+                                                                  __html:
+                                                                     subitem.descriptionHtml,
+                                                               }}
+                                                            />
+                                                         )}
+                                                      </Flex>
+                                                      <Flex
+                                                         className="disclosure"
+                                                         position="absolute"
+                                                         height="6"
+                                                         w="full"
+                                                         bottom="0"
+                                                         transform="translateY(0)"
+                                                         transition={`background ${ANIMATION_DURATION}, transform ${ANIMATION_DURATION}`}
+                                                         bg="trueGray.800"
+                                                         opacity="0"
+                                                         justifyContent="center"
+                                                      >
+                                                         <Icon
+                                                            boxSize="6"
+                                                            transform="translateY(-50%)"
+                                                            as={
+                                                               HiArrowNarrowRight
+                                                            }
+                                                         />
+                                                      </Flex>
                                                    </MenuLink>
                                                 </NextLink>
                                              </MenuItem>
                                           );
                                        }
                                     )}
-                                 </Menu>
+                                 </Submenu>
                               </MenuItem>
                            );
                         }
@@ -135,25 +163,3 @@ export function Header({ data }: HeaderProps) {
       </Flex>
    );
 }
-
-const MenuBar = forwardRef<FlexProps, 'ul'>((props, ref) => {
-   return <Flex ref={ref} as="ul" role="menubar" {...props} />;
-});
-
-const Menu = forwardRef<FlexProps, 'ul'>((props, ref) => {
-   return <Flex ref={ref} as="ul" role="menu" {...props} />;
-});
-
-const MenuItem = forwardRef<FlexProps, 'li'>((props, ref) => {
-   return <Flex ref={ref} as="li" role="none" {...props} />;
-});
-
-const MenuButton = forwardRef<FlexProps, 'button'>((props, ref) => {
-   return (
-      <Flex ref={ref} as="ul" role="menuitem" aria-haspopup="true" {...props} />
-   );
-});
-
-const MenuLink = forwardRef<FlexProps, 'a'>((props, ref) => {
-   return <Flex ref={ref} as="a" role="menuitem" {...props} />;
-});
