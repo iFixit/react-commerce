@@ -3,7 +3,17 @@ import { theme } from '@ifixit/react-components';
 import Head from 'next/head';
 import * as React from 'react';
 
-const customTheme = extendTheme(theme);
+const customTheme = extendTheme({
+   ...theme,
+   sizes: {
+      ...theme.sizes,
+      header: '68px',
+   },
+   zIndices: {
+      ...theme.zIndices,
+      header: 2000,
+   },
+});
 
 export function AppProviders({ children }: React.PropsWithChildren<any>) {
    return (
