@@ -36,7 +36,6 @@ import {
    ProductViewGridButton,
    ProductViewListButton,
    ProductViewSwitch,
-   SortBySelect,
    Toolbar,
 } from './Toolbar';
 
@@ -108,17 +107,40 @@ export const FilterableProductsSection = React.memo(() => {
                         >
                            Filters
                         </OpenFiltersButton>
-                        <SortBySelect
-                           defaultValue="manual"
-                           placeholder="Select collection sort by"
+                        <ProductViewSwitch
+                           display={{
+                              base: 'flex',
+                              md: 'none',
+                           }}
                         >
-                           <option value="manual">Featured</option>
-                           <option value="best-selling">Most popular</option>
-                        </SortBySelect>
+                           <ProductViewListButton
+                              aria-label="Select list view"
+                              isActive={
+                                 productViewType === ProductViewType.List
+                              }
+                              onClick={() =>
+                                 setProductViewType(ProductViewType.List)
+                              }
+                           />
+                           <ProductViewGridButton
+                              aria-label="Select grid view"
+                              isActive={
+                                 productViewType === ProductViewType.Grid
+                              }
+                              onClick={() =>
+                                 setProductViewType(ProductViewType.Grid)
+                              }
+                           />
+                        </ProductViewSwitch>
                      </HStack>
                      <SearchInput maxW={{ md: 300 }} />
                   </VStack>
-                  <ProductViewSwitch>
+                  <ProductViewSwitch
+                     display={{
+                        base: 'none',
+                        md: 'flex',
+                     }}
+                  >
                      <ProductViewListButton
                         aria-label="Select list view"
                         isActive={productViewType === ProductViewType.List}
