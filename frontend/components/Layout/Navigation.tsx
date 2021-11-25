@@ -18,9 +18,13 @@ import {
    FlexProps,
    forwardRef,
    Icon,
+   IconButton,
+   IconButtonProps,
    useDisclosure,
 } from '@chakra-ui/react';
 import { LayoutData } from '@lib/api';
+import { props } from 'cypress/types/bluebird';
+import { indexOf } from 'lodash';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
@@ -177,22 +181,21 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
 );
 
 const MobileNavigation = ({ menu }: NavigationProps) => {
-   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+   const { isOpen, onClose, onToggle } = useDisclosure();
    const btnRef = React.useRef<HTMLButtonElement>(null);
 
    return (
       <>
-         <Button
+         <MobileMenuButton
             ref={btnRef}
-            colorScheme="teal"
+            aria-label="Open navigation menu"
+            isOpen={isOpen}
             onClick={onToggle}
             display={{
                base: 'block',
                lg: 'none',
             }}
-         >
-            Open
-         </Button>
+         />
          <Drawer
             isOpen={isOpen}
             placement="left"
@@ -298,6 +301,75 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
       </>
    );
 };
+
+const MobileMenuButton = forwardRef<
+   IconButtonProps & { isOpen: boolean },
+   'button'
+>(({ isOpen, ...iconButtonProps }, ref) => {
+   return (
+      <IconButton
+         ref={ref}
+         data-open={isOpen}
+         variant="ghost"
+         mr="1"
+         _hover={{
+            bg: 'trueGray.800',
+         }}
+         _active={{
+            bg: 'trueGray.800',
+         }}
+         sx={{
+            '& path': {
+               transition: 'transform 300ms',
+            },
+            '&[data-open="true"]': {
+               '& .top': {
+                  transform: 'rotate(45deg) translate(6px, -8px)',
+               },
+               '& .middle': {
+                  transform: 'translateX(-100%)',
+                  opacity: 0,
+               },
+               '& .bottom': {
+                  transform: 'rotate(-45deg) translate(-10px, 0px)',
+               },
+            },
+         }}
+         icon={
+            <Icon
+               width="24px"
+               height="24px"
+               viewBox="0 0 24 24"
+               color="#D2DADF"
+            >
+               <path
+                  className="top"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3 6C3 5.44772 3.40294 5 3.9 5H20.1C20.5971 5 21 5.44772 21 6C21 6.55228 20.5971 7 20.1 7H3.9C3.40294 7 3 6.55228 3 6Z"
+                  fill="currentColor"
+               ></path>
+               <path
+                  className="middle"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3 12C3 11.4477 3.40294 11 3.9 11H20.1C20.5971 11 21 11.4477 21 12C21 12.5523 20.5971 13 20.1 13H3.9C3.40294 13 3 12.5523 3 12Z"
+                  fill="currentColor"
+               ></path>
+               <path
+                  className="bottom"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3 18C3 17.4477 3.40294 17 3.9 17H20.1C20.5971 17 21 17.4477 21 18C21 18.5523 20.5971 19 20.1 19H3.9C3.40294 19 3 18.5523 3 18Z"
+                  fill="currentColor"
+               ></path>
+            </Icon>
+         }
+         {...iconButtonProps}
+      />
+   );
+});
+
 const MenuBar = forwardRef<FlexProps, 'ul'>((props, ref) => {
    return <Flex ref={ref} as="ul" role="menubar" {...props} />;
 });

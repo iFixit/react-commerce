@@ -42,7 +42,7 @@ export function Header({ data }: HeaderProps) {
             >
                {data.menu && <Navigation.Mobile menu={data.menu} />}
                <NextLink href="/" passHref>
-                  <Flex as="a" cursor="pointer" h="full" align="center" px="4">
+                  <Flex as="a" cursor="pointer" h="full" align="center" pr="4">
                      <Wordmark />
                   </Flex>
                </NextLink>
