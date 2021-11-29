@@ -47,9 +47,13 @@ export function assertIsRecord(
    val: any,
    message?: string
 ): asserts val is Record<string, unknown> {
-   if (val == null || typeof val !== 'object') {
+   if (!isRecord(val)) {
       throw new Error(message || 'Not a record!');
    }
+}
+
+export function isRecord(val: any): val is Record<string, unknown> {
+   return val != null && typeof val === 'object';
 }
 
 export function isError(x: any): x is Error {

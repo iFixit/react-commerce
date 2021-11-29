@@ -4,6 +4,7 @@ import {
    assertIsRecord,
    assertIsString,
    isError,
+   isRecord,
 } from '@lib/utils';
 import { current } from 'immer';
 import * as React from 'react';
@@ -12,7 +13,7 @@ export interface User {
    id: number;
    username: string;
    handle: string;
-   image: unknown;
+   thumbnail: string | null;
 }
 
 export async function fetchAuthenticatedUser(): Promise<User> {
@@ -24,16 +25,24 @@ export async function fetchAuthenticatedUser(): Promise<User> {
    });
 
    if (response.ok) {
-      const payload: unknown = await response.json();
+      const payload = await response.json();
       assertIsRecord(payload, 'unexpected api response');
       assertIsNumber(payload.userid, 'User ID is not a number');
       assertIsString(payload.username, 'User username is not a string');
       assertIsString(payload.unique_username, 'User handle is not a string');
+      let thumbnailUrl: string | null = null;
+      if (
+         isRecord(payload.image) &&
+         typeof payload.image.thumbnail === 'string'
+      ) {
+         thumbnailUrl = payload.image.thumbnail;
+      }
+
       return {
          id: payload.userid,
          username: payload.username,
          handle: payload.unique_username,
-         image: payload?.image,
+         thumbnail: thumbnailUrl,
       };
    }
 

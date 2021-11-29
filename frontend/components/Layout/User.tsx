@@ -26,7 +26,11 @@ export function UserMenu() {
          <Flex>
             <Menu>
                <MenuButton aria-label="Open user menu">
-                  <Avatar name={user.username} src={undefined} size="sm" />
+                  <Avatar
+                     name={user.username}
+                     src={user.thumbnail || undefined}
+                     size="sm"
+                  />
                </MenuButton>
                <MenuList color="black">
                   <VStack align="flex-start" px="0.8rem" py="0.4rem">
