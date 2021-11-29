@@ -19,6 +19,34 @@ export function assertNever(x: never): never {
    throw new Error('Unexpected object: ' + x);
 }
 
+export function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
+   if (val === undefined || val === null) {
+      throw new Error(`Expected 'val' to be defined, but received ${val}`);
+   }
+}
+
+export function assertIsString(
+   val: any,
+   message?: string
+): asserts val is string {
+   if (typeof val !== 'string') {
+      throw new Error(message || 'Not a string!');
+   }
+}
+
+export function assertIsNumber(
+   val: any,
+   message?: string
+): asserts val is number {
+   if (typeof val !== 'number') {
+      throw new Error(message || 'Not a number!');
+   }
+}
+
+export function isError(x: any): x is Error {
+   return x instanceof Error;
+}
+
 export interface GetResizedImageInput {
    src: string;
    width: number;

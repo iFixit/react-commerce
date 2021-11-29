@@ -6,13 +6,10 @@ import {
    AccordionPanel,
    Box,
    BoxProps,
-   Button,
    Divider,
    Drawer,
    DrawerBody,
-   DrawerCloseButton,
    DrawerContent,
-   DrawerHeader,
    DrawerOverlay,
    Flex,
    FlexProps,
@@ -23,8 +20,6 @@ import {
    useDisclosure,
 } from '@chakra-ui/react';
 import { LayoutData } from '@lib/api';
-import { props } from 'cypress/types/bluebird';
-import { indexOf } from 'lodash';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
@@ -384,7 +379,13 @@ const MenuItem = forwardRef<FlexProps, 'li'>((props, ref) => {
 
 const SubmenuButton = forwardRef<FlexProps, 'button'>((props, ref) => {
    return (
-      <Flex ref={ref} as="ul" role="menuitem" aria-haspopup="true" {...props} />
+      <Flex
+         ref={ref}
+         as="button"
+         role="menuitem"
+         aria-haspopup="true"
+         {...props}
+      />
    );
 });
 

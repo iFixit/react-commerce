@@ -1,4 +1,5 @@
 import { IFIXIT_API_ORIGIN } from '@config/env';
+import { isError } from '@lib/utils';
 import * as React from 'react';
 
 /**
@@ -39,9 +40,13 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
                error: undefined,
             }));
          } catch (error) {
+            let message: string;
+            if (isError(error)) {
+               message = error.message;
+            }
             setState(() => ({
                status: SubscriptionStatus.Idle,
-               error: error.message || 'server error',
+               error: message || 'server error',
             }));
          }
       } else {

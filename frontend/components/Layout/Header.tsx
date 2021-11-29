@@ -1,16 +1,12 @@
-import {
-   Box,
-   Divider,
-   Flex,
-   forwardRef,
-   Link,
-   LinkProps,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Icon, IconButton } from '@chakra-ui/react';
+import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { LayoutData } from '@lib/api';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { RiSearchLine } from 'react-icons/ri';
 import { Navigation } from './Navigation';
-import { SearchBar } from './SearchBar';
+import { SearchForm, SearchInput } from './SearchBar';
+import { UserMenu } from './User';
 import { Wordmark } from './Wordmark';
 
 export interface HeaderProps {
@@ -18,6 +14,15 @@ export interface HeaderProps {
 }
 
 export function Header({ data }: HeaderProps) {
+   const [isMobileSearchOpen, setIsMobileSearchOpen] = React.useState(false);
+   const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
+
+   React.useEffect(() => {
+      if (isMobileSearchOpen) {
+         mobileSearchInputRef.current?.focus();
+      }
+   }, [isMobileSearchOpen]);
+
    return (
       <>
          <Box height="header"></Box>
@@ -25,20 +30,75 @@ export function Header({ data }: HeaderProps) {
             as="header"
             bg="trueGray.900"
             color="white"
-            height="header"
             position="absolute"
             top="0"
             left="0"
             right="0"
+            height="header"
             zIndex="header"
+            overflow={{
+               base: 'hidden',
+               lg: 'visible',
+            }}
+            direction="column"
          >
             <Flex
+               height="header"
+               flexShrink="0"
+               transition={`transform ${DEFAULT_ANIMATION_DURATION_MS}ms`}
+               transform={
+                  isMobileSearchOpen ? 'translateY(0)' : 'translateY(-100%)'
+               }
+               display={{
+                  base: 'flex',
+                  md: 'none',
+               }}
+               align="center"
+               pl="7"
+               pr="4"
+            >
+               <SearchForm
+                  mr="1"
+                  display={{
+                     base: 'block',
+                     md: 'none',
+                  }}
+                  flexGrow={1}
+               >
+                  <SearchInput ref={mobileSearchInputRef} />
+               </SearchForm>
+               <Button
+                  variant="ghost"
+                  _hover={{
+                     bg: 'trueGray.800',
+                  }}
+                  _active={{
+                     bg: 'trueGray.800',
+                  }}
+                  mb="-1px"
+                  fontSize="sm"
+                  fontWeight="normal"
+                  onClick={() => setIsMobileSearchOpen(false)}
+               >
+                  Cancel
+               </Button>
+            </Flex>
+            <Flex
                alignItems="center"
+               height="header"
+               flexShrink="0"
                w="full"
                maxW={{
                   base: '1400px',
                }}
                mx="auto"
+               transition={`transform ${DEFAULT_ANIMATION_DURATION_MS}ms`}
+               transform={{
+                  base: isMobileSearchOpen
+                     ? 'translateY(0)'
+                     : 'translateY(-100%)',
+                  md: 'initial',
+               }}
             >
                {data.menu && <Navigation.Mobile menu={data.menu} />}
                <NextLink href="/" passHref>
@@ -52,42 +112,44 @@ export function Header({ data }: HeaderProps) {
                      display={{ base: 'none', lg: 'block' }}
                   />
                )}
-               <SearchBar mx="8" flexGrow={1} />
+               <SearchForm
+                  mx="8"
+                  display={{
+                     base: 'none',
+                     md: 'block',
+                  }}
+                  flexGrow={1}
+               >
+                  <SearchInput />
+               </SearchForm>
+               <Box
+                  display={{
+                     base: 'block',
+                     md: 'none',
+                  }}
+                  flexGrow={1}
+               />
                <Flex>
-                  <Flex fontSize="sm" fontWeight="normal" align="center">
-                     <NavLink href="https://www.ifixit.com/Login/register">
-                        Join
-                     </NavLink>
-                     <Divider
-                        orientation="vertical"
-                        borderColor="trueGray.700"
-                        h="6"
-                     />
-                     <NavLink href="https://www.ifixit.com/login">
-                        Log In
-                     </NavLink>
-                  </Flex>
+                  <IconButton
+                     aria-label="Search database"
+                     variant="ghost"
+                     display={{
+                        base: 'block',
+                        md: 'none',
+                     }}
+                     _hover={{
+                        bg: 'trueGray.800',
+                     }}
+                     _active={{
+                        bg: 'trueGray.800',
+                     }}
+                     icon={<Icon as={RiSearchLine} color="white" />}
+                     onClick={() => setIsMobileSearchOpen(true)}
+                  />
+                  <UserMenu />
                </Flex>
             </Flex>
          </Flex>
       </>
    );
 }
-
-export const NavLink = forwardRef<LinkProps, 'a'>((props, ref) => {
-   return (
-      <Link
-         ref={ref}
-         href="#"
-         px="4"
-         py="2"
-         h="full"
-         transition="color 300ms"
-         _hover={{
-            textDecoration: 'none',
-            color: 'brand.300',
-         }}
-         {...props}
-      />
-   );
-});
