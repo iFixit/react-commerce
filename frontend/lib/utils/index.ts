@@ -43,6 +43,15 @@ export function assertIsNumber(
    }
 }
 
+export function assertIsRecord(
+   val: any,
+   message?: string
+): asserts val is Record<string, unknown> {
+   if (val == null || typeof val !== 'object') {
+      throw new Error(message || 'Not a record!');
+   }
+}
+
 export function isError(x: any): x is Error {
    return x instanceof Error;
 }

@@ -41,6 +41,10 @@ export function Header({ data }: HeaderProps) {
                lg: 'visible',
             }}
             direction="column"
+            px={{
+               base: '0',
+               lg: '3',
+            }}
          >
             <Flex
                height="header"

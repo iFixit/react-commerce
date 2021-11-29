@@ -1,5 +1,11 @@
 import { IFIXIT_API_ORIGIN } from '@config/env';
-import { assertIsNumber, assertIsString, isError } from '@lib/utils';
+import {
+   assertIsNumber,
+   assertIsRecord,
+   assertIsString,
+   isError,
+} from '@lib/utils';
+import { current } from 'immer';
 import * as React from 'react';
 
 export interface User {
@@ -9,24 +15,24 @@ export interface User {
    image: unknown;
 }
 
-// Fetch logged user data from the API /api/2.0/user
 export async function fetchAuthenticatedUser(): Promise<User> {
    const response = await fetch(`${IFIXIT_API_ORIGIN}/api/2.0/user`, {
+      credentials: 'include',
       headers: {
          'Content-Type': 'application/json',
-         'X-Requested-With': 'XMLHttpRequest',
       },
    });
 
    if (response.ok) {
-      const payload = await response.json();
-      assertIsNumber(payload.id, 'User ID is not a number');
+      const payload: unknown = await response.json();
+      assertIsRecord(payload, 'unexpected api response');
+      assertIsNumber(payload.userid, 'User ID is not a number');
       assertIsString(payload.username, 'User username is not a string');
-      assertIsString(payload.handle, 'User handle is not a string');
+      assertIsString(payload.unique_username, 'User handle is not a string');
       return {
-         id: payload.id,
+         id: payload.userid,
          username: payload.username,
-         handle: payload.handle,
+         handle: payload.unique_username,
          image: payload?.image,
       };
    }
@@ -35,23 +41,39 @@ export async function fetchAuthenticatedUser(): Promise<User> {
 }
 
 export function useAuthenticatedUser() {
-   const [user, setUser] = React.useState<User | null>(null);
-   const [error, setError] = React.useState<string | null>(null);
+   const [state, setState] = React.useState<{
+      user: User | null;
+      error: string | null;
+      isLoading: boolean;
+   }>({
+      user: null,
+      error: null,
+      isLoading: true,
+   });
 
    React.useEffect(() => {
       fetchAuthenticatedUser()
-         .then(setUser)
-         .catch((e) => {
-            if (isError(e)) {
-               setError(e.message);
+         .then((user) => {
+            setState({
+               user,
+               error: null,
+               isLoading: false,
+            });
+         })
+         .catch((error) => {
+            let errorMessage: string;
+            if (isError(error)) {
+               errorMessage = error.message;
             } else {
-               setError('An error occurred');
+               errorMessage = 'An error occurred';
             }
+            setState((current) => ({
+               ...current,
+               error: errorMessage,
+               isLoading: false,
+            }));
          });
    }, []);
 
-   return {
-      user,
-      error,
-   };
+   return state;
 }
