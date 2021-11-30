@@ -19,13 +19,24 @@ import { useAuthenticatedUser } from '@lib/api';
 import * as React from 'react';
 
 export function UserMenu() {
-   const { user } = useAuthenticatedUser();
+   const { user, isLoading } = useAuthenticatedUser();
+
+   if (isLoading) {
+      return null;
+   }
 
    if (user) {
       return (
          <Flex>
             <Menu>
-               <MenuButton aria-label="Open user menu">
+               <MenuButton
+                  aria-label="Open user menu"
+                  borderRadius="full"
+                  _focus={{
+                     boxShadow: 'outline',
+                     outline: 'none',
+                  }}
+               >
                   <Avatar
                      name={user.username}
                      src={user.thumbnail || undefined}

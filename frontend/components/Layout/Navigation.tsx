@@ -58,6 +58,11 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                                  tabIndex={0}
                                  fontSize="sm"
                                  fontWeight="bold"
+                                 borderRadius="md"
+                                 _focus={{
+                                    boxShadow: 'outline',
+                                    outline: 'none',
+                                 }}
                               >
                                  <span>{item.name}</span>
                               </SubmenuButton>
@@ -190,6 +195,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                base: 'block',
                lg: 'none',
             }}
+            ml="1"
          />
          <Drawer
             isOpen={isOpen}
@@ -199,8 +205,9 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
             size="md"
          >
             <DrawerOverlay />
-            <DrawerContent bg="trueGray.900" pt="16">
-               <DrawerBody color="white" p="6">
+            <DrawerContent bg="trueGray.900">
+               <DrawerBody color="white" px="6" py="4">
+                  <Box h="header" />
                   <Accordion allowToggle>
                      {menu.items.map((item, index) => {
                         switch (item.type) {
@@ -319,14 +326,14 @@ const MobileMenuButton = forwardRef<
             },
             '&[data-open="true"]': {
                '& .top': {
-                  transform: 'rotate(45deg) translate(6px, -8px)',
+                  transform: 'rotate(45deg) translate(5px, -6px)',
                },
                '& .middle': {
                   transform: 'translateX(-100%)',
                   opacity: 0,
                },
                '& .bottom': {
-                  transform: 'rotate(-45deg) translate(-10px, 0px)',
+                  transform: 'rotate(-45deg) translate(-12px, -1px)',
                },
             },
          }}

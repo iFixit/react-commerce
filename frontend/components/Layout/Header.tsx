@@ -17,12 +17,6 @@ export function Header({ data }: HeaderProps) {
    const [isMobileSearchOpen, setIsMobileSearchOpen] = React.useState(false);
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
-   React.useEffect(() => {
-      if (isMobileSearchOpen) {
-         mobileSearchInputRef.current?.focus();
-      }
-   }, [isMobileSearchOpen]);
-
    return (
       <>
          <Box height="header"></Box>
@@ -41,8 +35,12 @@ export function Header({ data }: HeaderProps) {
                lg: 'visible',
             }}
             direction="column"
-            px={{
+            pl={{
                base: '0',
+               lg: '3',
+            }}
+            pr={{
+               base: '3',
                lg: '3',
             }}
          >
@@ -58,8 +56,7 @@ export function Header({ data }: HeaderProps) {
                   md: 'none',
                }}
                align="center"
-               pl="7"
-               pr="4"
+               pl="6"
             >
                <SearchForm
                   mr="1"
@@ -106,7 +103,18 @@ export function Header({ data }: HeaderProps) {
             >
                {data.menu && <Navigation.Mobile menu={data.menu} />}
                <NextLink href="/" passHref>
-                  <Flex as="a" cursor="pointer" h="full" align="center" pr="4">
+                  <Flex
+                     as="a"
+                     cursor="pointer"
+                     h="full"
+                     align="center"
+                     pr="4"
+                     borderRadius="md"
+                     _focus={{
+                        boxShadow: 'outline',
+                        outline: 'none',
+                     }}
+                  >
                      <Wordmark />
                   </Flex>
                </NextLink>
@@ -148,7 +156,10 @@ export function Header({ data }: HeaderProps) {
                         bg: 'trueGray.800',
                      }}
                      icon={<Icon as={RiSearchLine} color="white" />}
-                     onClick={() => setIsMobileSearchOpen(true)}
+                     onClick={() => {
+                        setIsMobileSearchOpen(true);
+                        mobileSearchInputRef.current?.focus();
+                     }}
                   />
                   <UserMenu />
                </Flex>
