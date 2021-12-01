@@ -1,7 +1,6 @@
 import { assertNever, Awaited, filterNullableItems } from '@lib/utils';
 import { LayoutPropsFragment } from '../strapi/generated/sdk';
 import { getImageFromStrapiImage, Image } from '../utils';
-import snarkdown from 'snarkdown';
 
 type StoreSettings = NonNullable<
    NonNullable<LayoutPropsFragment['currentStore']>[0]
@@ -75,9 +74,6 @@ function getMenu(rawMenu: RawMenu): Menu {
                      type: 'link',
                      name: item.name,
                      url: item.url,
-                     descriptionHtml: item.description
-                        ? snarkdown(item.description)
-                        : null,
                   };
                }
                case 'ComponentMenuLinkWithImage': {
@@ -100,14 +96,7 @@ function getMenu(rawMenu: RawMenu): Menu {
                   };
                }
                case 'ComponentMenuSubmenu': {
-                  if (item.submenu == null) {
-                     return null;
-                  }
-                  return {
-                     type: 'submenu',
-                     name: item.name,
-                     submenu: getMenu(item.submenu),
-                  };
+                  return null;
                }
                default:
                   return assertNever(item);

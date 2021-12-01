@@ -40,7 +40,6 @@ fragment MenuProps on Menu {
       ... on ComponentMenuLink {
          name
          url
-         description
       }
       ... on ComponentMenuProductListLink {
          name
@@ -55,36 +54,6 @@ fragment MenuProps on Menu {
             alternativeText
             url
             formats
-         }
-      }
-      ... on ComponentMenuSubmenu {
-         name
-         submenu {
-            items {
-               __typename
-               ... on ComponentMenuLink {
-                  name
-                  url
-               }
-               ... on ComponentMenuProductListLink {
-                  name
-                  productList {
-                     handle
-                  }
-               }
-               ... on ComponentMenuLinkWithImage {
-                  name
-                  url
-                  image {
-                     alternativeText
-                     url
-                     formats
-                  }
-               }
-               ... on ComponentMenuSubmenu {
-                  name
-               }
-            }
          }
       }
    }
