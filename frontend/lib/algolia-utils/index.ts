@@ -5,6 +5,7 @@ import {
 import {
    Facet,
    Filter,
+   RangeFilter,
    SearchContext,
    SearchParams,
    useFacets,
@@ -117,16 +118,35 @@ export function parseSearchParams(
    context: SearchContext,
    urlQuery: ParsedUrlQuery
 ): SearchParams {
-   const filterHandles = Object.keys(urlQuery).filter(
+   const params = Object.keys(urlQuery);
+   const facetHandles = params.filter(
       (paramKey) =>
          context.facets.allIds.includes(paramKey) && urlQuery[paramKey] != null
    );
+   const rangeHandles = params.reduce((handles, paramKey) => {
+      if (!context.facets.allIds.includes(paramKey)) {
+         let handle: string | undefined;
+         if (paramKey.endsWith('_min')) {
+            handle = paramKey.replace(/_min$/, '');
+         } else if (paramKey.endsWith('_max')) {
+            handle = paramKey.replace(/_max$/, '');
+         }
+         if (
+            handle &&
+            !handles.includes(handle) &&
+            context.facets.allIds.includes(handle)
+         ) {
+            handles.push(handle);
+         }
+      }
+      return handles;
+   }, [] as string[]);
    const indexName = context.params.indexName;
    const queryParam = urlQuery[COLLECTION_QUERY_PARAM];
    const query = typeof queryParam === 'string' ? queryParam : '';
    const pageParam = urlQuery[COLLECTION_PAGE_PARAM];
    const page = typeof pageParam === 'string' ? parseInt(pageParam, 10) : 1;
-   const filters = filterHandles.map<Filter>((handle) => {
+   const filters = facetHandles.map<Filter>((handle) => {
       const filterValue = urlQuery[handle]!;
       return {
          id: handle,
@@ -135,6 +155,33 @@ export function parseSearchParams(
             ? filterValue
             : [filterValue],
       };
+   });
+   rangeHandles.forEach((handle) => {
+      const minParam = urlQuery[`${handle}_min`];
+      const maxParam = urlQuery[`${handle}_max`];
+      let min: number | undefined;
+      let max: number | undefined;
+
+      const range: RangeFilter = {
+         id: handle,
+         type: 'range',
+      };
+
+      if (typeof minParam === 'string') {
+         min = parseInt(minParam, 10);
+         if (!Number.isNaN(min)) {
+            range.min = min;
+         }
+      }
+      if (typeof maxParam === 'string') {
+         max = parseInt(maxParam, 10);
+         if (!Number.isNaN(max)) {
+            range.max = max;
+         }
+      }
+      if (range.min != null || range.max != null) {
+         filters.push(range);
+      }
    });
 
    return {
