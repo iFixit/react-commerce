@@ -45,6 +45,7 @@ fragment MenuProps on Menu {
       ... on ComponentMenuLink {
          name
          url
+         description
       }
       ... on ComponentMenuProductListLink {
          name
