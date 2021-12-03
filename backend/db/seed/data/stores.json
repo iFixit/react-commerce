@@ -21,6 +21,9 @@
       "instagram": "https://www.instagram.com/ifixit/",
       "youtube": "https://www.youtube.com/user/iFixitYourself",
       "repairOrg": "https://www.repair.org/"
+    },
+    "header": {
+      "menu": 8
     }
   },
   {
@@ -45,6 +48,9 @@
       "instagram": "https://www.instagram.com/ifixit/",
       "youtube": "https://www.youtube.com/user/iFixitYourself",
       "repairOrg": "https://www.repair.org/"
+    },
+    "header": {
+      "menu": 8
     }
   }
 ]
