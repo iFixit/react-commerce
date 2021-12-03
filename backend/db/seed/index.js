@@ -21,7 +21,19 @@ module.exports = async () => {
       if (menuCount === 0) {
         strapi.log.info("Create menus..");
         for (let i = 0; i < menus.length; i++) {
-          const data = menus[i];
+          let data = menus[i];
+          data.items = data.items.map((item) => {
+            if (item.__component === "menu.submenu") {
+              const mappedSubmenuId = idMap.menu[item.submenu];
+              if (mappedSubmenuId == null) {
+                throw new Error(
+                  `Cannot find submenu with id ${item.submenu.id}`
+                );
+              }
+              item.submenu = mappedSubmenuId;
+            }
+            return item;
+          });
           const created = await strapi.services.menu.create(data);
           idMap.menu[data.id] = created.id;
         }
@@ -42,6 +54,9 @@ module.exports = async () => {
               menu2: idMap.menu[data.footer.menu2],
               bottomMenu: idMap.menu[data.footer.bottomMenu],
               partners: idMap.menu[data.footer.partners],
+            },
+            header: {
+              menu: idMap.menu[data.header.menu],
             },
           });
           idMap.store[data.id] = created.id;

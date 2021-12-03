@@ -1,12 +1,13 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { LayoutData } from '@lib/api';
 import Head from 'next/head';
 import * as React from 'react';
-import { Footer, FooterProps } from './Footer';
+import { Footer } from './Footer';
 import { Header } from './Header';
 
 export interface LayoutProps {
    title: string;
-   footer: FooterProps;
+   footer: LayoutData['footer'];
 }
 
 export function Layout({
@@ -23,7 +24,7 @@ export function Layout({
          <Flex direction="column">
             <Header />
             {children}
-            <Footer {...footer} />
+            <Footer data={footer} />
          </Flex>
       </Box>
    );

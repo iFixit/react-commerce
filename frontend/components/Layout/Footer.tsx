@@ -28,54 +28,25 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/react-components';
+import { LayoutData } from '@lib/api';
 import * as React from 'react';
 
 const placeholderImageUrl =
    'https://via.placeholder.com/180x75?text=not+available';
 
 export interface FooterProps {
-   menu1?: Menu;
-   menu2?: Menu;
-   bottomMenu?: Menu;
-   partners?: Menu;
-   socialMediaAccounts: {
-      twitter?: string | null;
-      facebook?: string | null;
-      instagram?: string | null;
-      youtube?: string | null;
-      repairOrg?: string | null;
-   };
-   stores: Store[];
+   data: LayoutData['footer'];
 }
 
-interface Menu {
-   items: MenuItem[];
-}
-
-interface MenuItem {
-   name: string;
-   url: string;
-   image?: {
-      url: string;
-      alt?: string;
-   };
-}
-
-interface Store {
-   code: string;
-   name: string;
-   url: string;
-   currency: string;
-}
-
-export function Footer({
-   menu1,
-   menu2,
-   partners,
-   bottomMenu,
-   socialMediaAccounts,
-   stores,
-}: FooterProps) {
+export function Footer({ data }: FooterProps) {
+   const {
+      menu1,
+      menu2,
+      partners,
+      bottomMenu,
+      socialMediaAccounts,
+      stores,
+   } = data;
    return (
       <FooterContainer>
          <SimpleGrid
@@ -94,24 +65,28 @@ export function Footer({
          >
             <FooterMenuList>
                {menu1?.items.map((item, index) => {
-                  return (
-                     <FooterMenuItem key={index}>
-                        <FooterMenuLink href={item.url}>
-                           {item.name}
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  );
+                  if (item.type === 'link') {
+                     return (
+                        <FooterMenuItem key={index}>
+                           <FooterMenuLink href={item.url}>
+                              {item.name}
+                           </FooterMenuLink>
+                        </FooterMenuItem>
+                     );
+                  }
                })}
             </FooterMenuList>
             <FooterMenuList>
                {menu2?.items.map((item, index) => {
-                  return (
-                     <FooterMenuItem key={index}>
-                        <FooterMenuLink href={item.url}>
-                           {item.name}
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  );
+                  if (item.type === 'link') {
+                     return (
+                        <FooterMenuItem key={index}>
+                           <FooterMenuLink href={item.url}>
+                              {item.name}
+                           </FooterMenuLink>
+                        </FooterMenuItem>
+                     );
+                  }
                })}
             </FooterMenuList>
             <FooterMenuList>
@@ -175,20 +150,24 @@ export function Footer({
                >
                   <SimpleGrid columns={3} spacing="4">
                      {partners.items.map((partner) => {
-                        return (
-                           <FooterPartnerLink
-                              key={partner.name}
-                              href={partner.url}
-                           >
-                              <Img
-                                 h="full"
-                                 mx="auto"
-                                 objectFit="contain"
-                                 src={partner.image?.url || placeholderImageUrl}
-                                 alt={partner.image?.alt || undefined}
-                              />
-                           </FooterPartnerLink>
-                        );
+                        if (partner.type === 'linkWithImage') {
+                           return (
+                              <FooterPartnerLink
+                                 key={partner.name}
+                                 href={partner.url}
+                              >
+                                 <Img
+                                    h="full"
+                                    mx="auto"
+                                    objectFit="contain"
+                                    src={
+                                       partner.image?.url || placeholderImageUrl
+                                    }
+                                    alt={partner.image?.alt || undefined}
+                                 />
+                              </FooterPartnerLink>
+                           );
+                        }
                      })}
                   </SimpleGrid>
                </Box>
@@ -273,21 +252,23 @@ export function Footer({
                }}
             >
                {bottomMenu?.items.map((item, index) => {
-                  return (
-                     <React.Fragment key={index}>
-                        {index !== 0 && (
-                           <Divider
-                              opacity={{
-                                 base: 1,
-                                 sm: 1,
-                              }}
-                              orientation="vertical"
-                              borderColor="trueGray.700"
-                           />
-                        )}
-                        <FooterLink href={item.url}>{item.name}</FooterLink>
-                     </React.Fragment>
-                  );
+                  if (item.type === 'link') {
+                     return (
+                        <React.Fragment key={index}>
+                           {index !== 0 && (
+                              <Divider
+                                 opacity={{
+                                    base: 1,
+                                    sm: 1,
+                                 }}
+                                 orientation="vertical"
+                                 borderColor="trueGray.700"
+                              />
+                           )}
+                           <FooterLink href={item.url}>{item.name}</FooterLink>
+                        </React.Fragment>
+                     );
+                  }
                })}
             </Stack>
          </SimpleGrid>

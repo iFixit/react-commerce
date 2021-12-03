@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "menus",
   "info": {
-    "name": "menu"
+    "name": "menu",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -34,7 +35,8 @@
       "components": [
         "menu.link-with-image",
         "menu.link",
-        "menu.product-list-link"
+        "menu.product-list-link",
+        "menu.submenu"
       ],
       "required": true
     }

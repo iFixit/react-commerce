@@ -2,7 +2,8 @@
   "collectionName": "components_menu_links",
   "info": {
     "name": "link",
-    "icon": "external-link-alt"
+    "icon": "external-link-alt",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -13,6 +14,9 @@
     "url": {
       "type": "string",
       "required": true
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }
