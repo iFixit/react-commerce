@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_global_newsletter_forms",
+  "info": {
+    "displayName": "newsletterForm",
+    "icon": "at"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "inputPlaceholder": {
+      "type": "string",
+      "required": true,
+      "default": "Enter your email"
+    },
+    "callToActionButtonTitle": {
+      "type": "string",
+      "required": true,
+      "default": "Subscribe"
+    }
+  }
+}

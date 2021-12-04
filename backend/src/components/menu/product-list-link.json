@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_menu_product_list_links",
+  "info": {
+    "displayName": "productListLink",
+    "icon": "anchor"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "productList": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product-list.product-list"
+    }
+  }
+}

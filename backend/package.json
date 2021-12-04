@@ -1,10 +1,9 @@
 {
-  "name": "@ifixit/commerce-backend",
+  "name": "backend",
   "private": true,
-  "version": "1.0.0",
-  "description": "Strapi backend for iFixit e-commerce",
+  "version": "0.1.0",
+  "description": "A Strapi application",
   "scripts": {
-    "dev": "npm run develop",
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
@@ -12,30 +11,21 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "knex": "0.21.18",
-    "pg": "8.7.1",
-    "sqlite3": "5.0.0",
-    "strapi": "3.6.8",
-    "strapi-admin": "3.6.8",
-    "strapi-connector-bookshelf": "3.6.8",
-    "strapi-plugin-content-manager": "3.6.8",
-    "strapi-plugin-content-type-builder": "3.6.8",
-    "strapi-plugin-email": "3.6.8",
-    "strapi-plugin-graphql": "3.6.8",
-    "strapi-plugin-i18n": "3.6.8",
-    "strapi-plugin-upload": "3.6.8",
-    "strapi-plugin-users-permissions": "3.6.8",
-    "strapi-utils": "3.6.8"
+    "@strapi/plugin-graphql": "^4.0.0",
+    "@strapi/plugin-i18n": "4.0.0",
+    "@strapi/plugin-users-permissions": "4.0.0",
+    "@strapi/strapi": "4.0.0",
+    "sqlite3": "5.0.2"
   },
   "author": {
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "678d1ca9-022e-4126-bd4c-6108b5fd5103"
+    "uuid": "7e3f0d4c-1c0b-43ed-bf29-1458df142314"
   },
   "engines": {
-    "node": ">=10.16.0 <=14.x.x",
-    "npm": "^6.0.0"
+    "node": ">=12.x.x <=16.x.x",
+    "npm": ">=6.0.0"
   },
   "license": "MIT"
 }

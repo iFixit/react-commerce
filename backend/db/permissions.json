@@ -1,8 +1,0 @@
-{
-  "public": {
-    "global": ["find"],
-    "menu": ["find", "findone"],
-    "store": ["find", "findone"],
-    "product-list": ["find", "findone"]
-  }
-}

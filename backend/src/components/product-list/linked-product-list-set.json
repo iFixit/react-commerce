@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_product_list_linked_product_list_sets",
+  "info": {
+    "displayName": "linkedProductListSet",
+    "icon": "sitemap"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "productLists": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-list.product-list"
+    }
+  }
+}

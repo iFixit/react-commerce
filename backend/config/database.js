@@ -1,4 +1,11 @@
-module.exports = ({ env }) => {
-  console.log("ENVIRONMENT:", env("NODE_ENV"));
-  return {};
-};
+const path = require('path');
+
+module.exports = ({ env }) => ({
+  connection: {
+    client: 'sqlite',
+    connection: {
+      filename: path.join(__dirname, '..', env('DATABASE_FILENAME', '.tmp/data.db')),
+    },
+    useNullAsDefault: true,
+  },
+});

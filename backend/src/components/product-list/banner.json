@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_product_list_banners",
+  "info": {
+    "displayName": "banner",
+    "icon": "bullhorn"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "callToActionLabel": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_product_list_featured_product_lists",
+  "info": {
+    "displayName": "FeaturedProductList",
+    "icon": "grip-horizontal"
+  },
+  "options": {},
+  "attributes": {
+    "productList": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product-list.product-list"
+    }
+  }
+}
