@@ -1,0 +1,11 @@
+{
+  "public": [
+    "api::global.global.find",
+    "api::menu.menu.findOne",
+    "api::menu.menu.find",
+    "api::store.store.findOne",
+    "api::store.store.find",
+    "api::product-list.product-list.findOne",
+    "api::product-list.product-list.find"
+  ]
+}

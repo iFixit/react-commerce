@@ -4,7 +4,8 @@
   "info": {
     "singularName": "menu",
     "pluralName": "menus",
-    "displayName": "Menu"
+    "displayName": "Menu",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -34,7 +35,8 @@
       "components": [
         "menu.link-with-image",
         "menu.link",
-        "menu.product-list-link"
+        "menu.product-list-link",
+        "menu.submenu"
       ],
       "required": true
     }

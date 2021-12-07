@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "title": "US Footer 1",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "About us",
+        "url": "https://www.ifixit.com/Info/index",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Customer Support",
+        "url": "https://help.ifixit.com/",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Careers",
+        "url": "https://www.ifixit.com/Info/jobs",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Feedback",
+        "url": "https://meta.ifixit.com",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "API",
+        "url": "https://www.ifixit.com/api/2.0/doc",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "US Footer 2",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Press",
+        "url": "https://www.ifixit.com/Info/Media",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "News",
+        "url": "https://www.ifixit.com/Page/all-categories",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Contribute",
+        "url": "https://www.ifixit.com/Contribute",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Pro Wholesale",
+        "url": "https://pro.ifixit.com/",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Retail Locator",
+        "url": "https://www.ifixit.com/Retail",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "For Manufacturers",
+        "url": "https://www.ifixit.com/Page/services",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "US Footer bottom",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Licensed under Creative Commons",
+        "url": "https://www.ifixit.com/Info/Licensing",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Privacy",
+        "url": "https://www.ifixit.com/Info/Privacy",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Legal",
+        "url": "https://www.ifixit.com/Info/Terms_of_Use",
+        "description": null
+      },
+      {
+        "__component": "menu.link",
+        "name": "Accessibility",
+        "url": "https://www.ifixit.com/Info/Accessibility",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "US Partners",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": []
+  },
+  {
+    "id": 5,
+    "title": "Repair",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Repair Guides",
+        "url": "https://www.ifixit.com/Guide",
+        "description": "Learn how to fix just about anything with our step-by-step guides."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Answers Forum",
+        "url": "https://www.ifixit.com/Answers",
+        "description": "Share solutions and get help from a friend."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Teardowns",
+        "url": "https://www.ifixit.com/Teardown",
+        "description": "Get a sneak peek inside the latest gadgets."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Blog",
+        "url": "https://www.ifixit.com/News",
+        "description": "Your destination for tech repair news."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Community",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Get Involved",
+        "url": "https://www.ifixit.com/Community",
+        "description": "Help teach people to make their stuff work again."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Right to Repair",
+        "url": "https://www.ifixit.com/Right-to-Repair",
+        "description": "Learn about the Right to Repair movement and how to be an advocate."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Repairability",
+        "url": "https://www.ifixit.com/Right-to-Repair/Repairable-Products",
+        "description": "Learn why fixable products make sense."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Our Manifesto",
+        "url": "https://www.ifixit.com/Manifesto",
+        "description": "Join the repair revolution!"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "US Store navigation",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.link",
+        "name": "Featured",
+        "url": "/store",
+        "description": "Quality parts and tools backed by our lifetime guarantee."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Tools",
+        "url": "/collections/tools",
+        "description": "Shop our wide selection of precision tools."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Parts",
+        "url": "/collections/parts",
+        "description": "Shop parts backed by our quality guarantee."
+      },
+      {
+        "__component": "menu.link",
+        "name": "Fix Kits",
+        "url": "/store/kits",
+        "description": "Fix it the easy way with our all-in-one repair kits."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "US Main",
+    "locale": "en",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "items": [
+      {
+        "__component": "menu.submenu",
+        "name": "Fix Your Stuff",
+        "submenu": 5
+      },
+      {
+        "__component": "menu.submenu",
+        "name": "Community",
+        "submenu": 6
+      },
+      {
+        "__component": "menu.submenu",
+        "name": "Store",
+        "submenu": 7
+      }
+    ]
+  }
+]
