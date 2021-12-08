@@ -18,7 +18,7 @@ const idMap = {
 
 module.exports = async (strapi) => {
   try {
-    // Seed menu
+    // Seed menus
     const menuCount = await strapi.db.query(MENU_UID).count();
     if (menuCount > 0) {
       strapi.log.info("🌱 Menus already exist, skipping");
@@ -93,7 +93,6 @@ module.exports = async (strapi) => {
             model: PRODUCT_LIST_UID,
             field: "image",
           };
-          console.log("uploadImage..", entry);
           await uploadEntryImage(entry, image);
         }
       }
@@ -112,12 +111,10 @@ module.exports = async (strapi) => {
       });
     }
   } catch (error) {
-    console.log(error);
     strapi.log.error(
       `Couldn't seed database during bootstrap: `,
       error.message
     );
-    console.log(JSON.stringify(error, null, 2));
   }
 };
 
@@ -128,7 +125,6 @@ async function uploadEntryImage(entry, image) {
     `${image.hash}${image.ext}`
   );
   const fileStat = fs.statSync(imagePath);
-  console.log("fileStat", fileStat);
   const attachment = await strapi.plugins.upload.services.upload.upload({
     data: {
       refId: entry.id,
@@ -142,6 +138,5 @@ async function uploadEntryImage(entry, image) {
       size: fileStat.size,
     },
   });
-  console.log("attachment", attachment);
   return attachment;
 }

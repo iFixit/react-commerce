@@ -4,7 +4,8 @@
   "info": {
     "singularName": "store",
     "pluralName": "stores",
-    "displayName": "Store"
+    "displayName": "Store",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -25,19 +26,19 @@
     },
     "currency": {
       "type": "enumeration",
-      "enum": [
-        "AUD",
-        "CAD",
-        "EUR",
-        "GBP",
-        "USD"
-      ],
+      "enum": ["AUD", "CAD", "EUR", "GBP", "USD"],
       "required": true
     },
     "shopifySettings": {
       "type": "component",
       "repeatable": false,
       "component": "store.shopify-settings"
+    },
+    "header": {
+      "type": "component",
+      "repeatable": false,
+      "component": "store.header",
+      "required": true
     },
     "footer": {
       "type": "component",
