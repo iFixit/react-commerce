@@ -90,7 +90,7 @@ module.exports = async (strapi) => {
         if (image) {
           const entry = {
             id: created.id,
-            model: "product-list",
+            model: PRODUCT_LIST_UID,
             field: "image",
           };
           console.log("uploadImage..", entry);
