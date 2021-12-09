@@ -1,3 +1,3 @@
 # Strapi plugin seed
 
-A quick description of seed.
+A Strapi plugin to populate the database with seed data.

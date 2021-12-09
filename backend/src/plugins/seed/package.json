@@ -1,7 +1,7 @@
 {
   "name": "seed",
   "version": "0.0.0",
-  "description": "This is the description of the plugin.",
+  "description": "A Strapi plugin to populate the database with seed data.",
   "strapi": {
     "name": "Seed",
     "description": "Populate the database with seed data.",
