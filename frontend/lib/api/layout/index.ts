@@ -4,7 +4,7 @@ import { LayoutPropsFragment } from '../strapi/generated/sdk';
 import { getImageFromStrapiImage, Image } from '../utils';
 
 type StoreSettings = NonNullable<
-   NonNullable<LayoutPropsFragment['currentStore']>[0]
+   NonNullable<LayoutPropsFragment['currentStore']>['data'][0]['attributes']
 >;
 
 type Footer = NonNullable<StoreSettings['footer']>;
@@ -44,11 +44,19 @@ export type MenuItem =
      };
 
 export function getLayoutProps(data: LayoutPropsFragment) {
-   const currentStore = data.currentStore?.[0];
-   const footer = currentStore?.footer;
-   const header = currentStore?.header;
-   const socialMediaAccounts = currentStore?.socialMediaAccounts || {};
-   const stores = filterNullableItems(data.stores);
+   const currentStore = data.currentStore?.data[0];
+   const footer = currentStore?.attributes?.footer;
+   const header = currentStore?.attributes?.header;
+   const socialMediaAccounts =
+      currentStore?.attributes?.socialMediaAccounts || {};
+   const stores = filterNullableItems(
+      data.stores?.data?.map((store) => {
+         if (store.attributes == null) {
+            return null;
+         }
+         return store.attributes;
+      })
+   );
    return {
       layout: {
          header: {
@@ -66,18 +74,19 @@ export function getLayoutProps(data: LayoutPropsFragment) {
    };
 }
 
-function getMenu(rawMenu: RawMenu): Menu {
+function getMenu(rawMenu: RawMenu): Menu | null {
+   const menuAttributes = rawMenu.data?.attributes;
+   if (menuAttributes == null) {
+      return null;
+   }
    return {
       items: filterNullableItems(
-         rawMenu.items.map((item): MenuItem | null => {
+         menuAttributes.items.map((item): MenuItem | null => {
             if (item == null) {
                return null;
             }
             switch (item.__typename) {
                case 'ComponentMenuLink': {
-                  if (item.name === 'Repair Guides') {
-                     console.log('has description?', item);
-                  }
                   return {
                      type: 'link',
                      name: item.name,
@@ -88,21 +97,23 @@ function getMenu(rawMenu: RawMenu): Menu {
                   };
                }
                case 'ComponentMenuLinkWithImage': {
+                  const imageAttributes = item.image?.data?.attributes;
                   return {
                      type: 'linkWithImage',
                      name: item.name,
                      url: item.url,
                      image:
-                        getImageFromStrapiImage(item.image, 'small') ||
-                        undefined,
+                        imageAttributes == null
+                           ? null
+                           : getImageFromStrapiImage(imageAttributes, 'small'),
                   };
                }
                case 'ComponentMenuProductListLink': {
                   return {
                      type: 'productListLink',
                      name: item.name,
-                     url: item.productList
-                        ? `/collections/${item.productList.handle}`
+                     url: item.productList?.data?.attributes
+                        ? `/collections/${item.productList.data?.attributes?.handle}`
                         : '#',
                   };
                }
@@ -110,11 +121,18 @@ function getMenu(rawMenu: RawMenu): Menu {
                   if (item.submenu == null) {
                      return null;
                   }
+                  const submenu = getMenu(item.submenu);
+                  if (submenu == null) {
+                     return null;
+                  }
                   return {
                      type: 'submenu',
                      name: item.name,
-                     submenu: getMenu(item.submenu),
+                     submenu,
                   };
+               }
+               case 'Error': {
+                  return null;
                }
                default:
                   return assertNever(item);

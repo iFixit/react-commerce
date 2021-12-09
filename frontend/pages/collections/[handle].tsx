@@ -87,9 +87,7 @@ export default function ProductListPage({
                                     ? `${STRAPI_ORIGIN}${productList.image.url}`
                                     : undefined
                               }
-                              imageAlt={
-                                 productList.image?.alternativeText || undefined
-                              }
+                              imageAlt={productList.image?.alt || undefined}
                            />
                         );
                      }
