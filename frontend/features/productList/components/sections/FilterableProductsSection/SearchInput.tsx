@@ -16,6 +16,8 @@ interface SearchInputProps {
    className?: string;
 }
 
+const MAX_SEARCH_QUERY_LENGTH = 100;
+
 export const SearchInput = chakra(({ className }: SearchInputProps) => {
    const inputRef = React.useRef<HTMLInputElement>(null);
    const [query, search] = useSearch();
@@ -40,6 +42,7 @@ export const SearchInput = chakra(({ className }: SearchInputProps) => {
                tabIndex={0}
                onChange={(event) => search(event.currentTarget.value)}
                value={query}
+               maxLength={MAX_SEARCH_QUERY_LENGTH}
             />
             <InputRightElement
                opacity={query.length > 0 ? 1 : 0}

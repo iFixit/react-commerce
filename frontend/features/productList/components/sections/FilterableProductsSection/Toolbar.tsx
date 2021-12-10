@@ -1,6 +1,7 @@
 import {
    Button,
    ButtonGroup,
+   ButtonGroupProps,
    ButtonProps,
    Icon,
    IconButton,
@@ -69,19 +70,8 @@ export const SortBySelect = (props: SelectProps) => {
    );
 };
 
-type ProductViewSwitchProps = React.PropsWithChildren<unknown>;
-
-export const ProductViewSwitch = ({ children }: ProductViewSwitchProps) => {
-   return (
-      <ButtonGroup
-         size="sm"
-         isAttached
-         bg="white"
-         display={{ base: 'none', md: 'flex' }}
-      >
-         {children}
-      </ButtonGroup>
-   );
+export const ProductViewSwitch = (props: ButtonGroupProps) => {
+   return <ButtonGroup size="sm" isAttached bg="white" {...props} />;
 };
 
 export const ProductViewListButton = (props: IconButtonProps) => {

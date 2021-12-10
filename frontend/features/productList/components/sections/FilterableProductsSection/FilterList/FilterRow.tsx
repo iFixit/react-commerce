@@ -57,6 +57,16 @@ export const FilterRow = React.memo(function FilterRow({
       }
    }, [facet.handle, send, isExpanded, filteredOptionsCount]);
 
+   const onResize = React.useCallback(() => {
+      if (rowRef.current) {
+         send({
+            type: 'ITEM_SIZE_UPDATED',
+            id: facet.handle,
+            size: rowRef.current.getBoundingClientRect().height,
+         });
+      }
+   }, [facet.handle, rowRef]);
+
    return (
       <Row
          ref={rowRef}
@@ -71,6 +81,7 @@ export const FilterRow = React.memo(function FilterRow({
          showAllFacetValues={!state.context.areRefined}
          style={style}
          send={send}
+         onResize={onResize}
       />
    );
 },
@@ -86,6 +97,7 @@ interface RowProps {
    showAllFacetValues: boolean;
    style: React.CSSProperties;
    send: VirtualAccordionSend<Facet>;
+   onResize(): void;
 }
 
 const Row = React.memo(
@@ -100,6 +112,7 @@ const Row = React.memo(
          showAllFacetValues,
          style,
          send,
+         onResize,
       },
       ref
    ) {
@@ -195,6 +208,8 @@ const Row = React.memo(
                                  minFieldPlaceholder="Min"
                                  maxFieldPrefix="$"
                                  maxFieldPlaceholder="Max"
+                                 onError={onResize}
+                                 onDismissError={onResize}
                               />
                            </RangeFilter>
                         </>
