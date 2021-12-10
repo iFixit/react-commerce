@@ -8,9 +8,9 @@ export const ALGOLIA_API_KEY = checkEnv(
    'NEXT_PUBLIC_ALGOLIA_API_KEY'
 );
 
-export const IFIXIT_API_ORIGIN = checkEnv(
-   process.env.NEXT_PUBLIC_IFIXIT_API_ORIGIN,
-   'NEXT_PUBLIC_IFIXIT_API_ORIGIN'
+export const IFIXIT_ORIGIN = checkEnv(
+   process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
+   'NEXT_PUBLIC_IFIXIT_ORIGIN'
 );
 
 export const STRAPI_ORIGIN = checkEnv(

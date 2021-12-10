@@ -1,5 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { IFIXIT_API_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { theme } from '@ifixit/react-components';
 import Head from 'next/head';
 import * as React from 'react';
@@ -26,7 +26,7 @@ export function AppProviders({ children }: React.PropsWithChildren<any>) {
             />
             <link
                rel="prefetch"
-               href={`${IFIXIT_API_ORIGIN}/api/2.0/user`}
+               href={`${IFIXIT_ORIGIN}/api/2.0/user`}
                as="fetch"
             />
          </Head>

@@ -14,7 +14,7 @@ import {
    Text,
    Avatar,
 } from '@chakra-ui/react';
-import { IFIXIT_API_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { useAuthenticatedUser } from '@lib/api';
 import * as React from 'react';
 
@@ -54,7 +54,7 @@ export function UserMenu() {
                   <MenuGroup>
                      <MenuItem
                         as="a"
-                        href={`${IFIXIT_API_ORIGIN}/User/Notifications/${user.id}/${user.username}`}
+                        href={`${IFIXIT_ORIGIN}/User/Notifications/${user.id}/${user.username}`}
                         fontSize="sm"
                      >
                         Notifications
@@ -62,14 +62,14 @@ export function UserMenu() {
                      <MenuItem
                         as="a"
                         fontSize="sm"
-                        href={`${IFIXIT_API_ORIGIN}/User/${user.id}/${user.username}`}
+                        href={`${IFIXIT_ORIGIN}/User/${user.id}/${user.username}`}
                      >
                         View Profile
                      </MenuItem>
                      <MenuItem
                         as="a"
                         fontSize="sm"
-                        href={`${IFIXIT_API_ORIGIN}/User/Orders`}
+                        href={`${IFIXIT_ORIGIN}/User/Orders`}
                      >
                         Orders
                      </MenuItem>
@@ -79,7 +79,7 @@ export function UserMenu() {
                      <MenuItem
                         as="a"
                         fontSize="sm"
-                        href={`${IFIXIT_API_ORIGIN}/Guide/logout`}
+                        href={`${IFIXIT_ORIGIN}/Guide/logout`}
                      >
                         Log Out
                      </MenuItem>
@@ -92,9 +92,9 @@ export function UserMenu() {
 
    return (
       <Flex fontSize="sm" fontWeight="normal" lineHeight="full" align="center">
-         <NavLink href={`${IFIXIT_API_ORIGIN}/Login/register`}>Join</NavLink>
+         <NavLink href={`${IFIXIT_ORIGIN}/Login/register`}>Join</NavLink>
          <Divider orientation="vertical" borderColor="trueGray.700" h="6" />
-         <NavLink href={`${IFIXIT_API_ORIGIN}/login`}>Log In</NavLink>
+         <NavLink href={`${IFIXIT_ORIGIN}/login`}>Log In</NavLink>
       </Flex>
    );
 }

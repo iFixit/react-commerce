@@ -1,4 +1,4 @@
-import { IFIXIT_API_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 
 export interface Post {
    id: number;
@@ -15,7 +15,7 @@ export interface PostImage {
 
 export async function fetchPosts(tags: string[]): Promise<Post[]> {
    const response = await fetch(
-      `${IFIXIT_API_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
+      `${IFIXIT_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
          JSON.stringify({ tags })
       )}`
    );

@@ -1,4 +1,4 @@
-import { IFIXIT_API_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 import {
    assertIsNumber,
    assertIsRecord,
@@ -6,7 +6,6 @@ import {
    isError,
    isRecord,
 } from '@lib/utils';
-import { current } from 'immer';
 import * as React from 'react';
 
 export interface User {
@@ -17,7 +16,7 @@ export interface User {
 }
 
 export async function fetchAuthenticatedUser(): Promise<User> {
-   const response = await fetch(`${IFIXIT_API_ORIGIN}/api/2.0/user`, {
+   const response = await fetch(`${IFIXIT_ORIGIN}/api/2.0/user`, {
       credentials: 'include',
       headers: {
          'Content-Type': 'application/json',
