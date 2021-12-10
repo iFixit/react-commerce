@@ -75,9 +75,6 @@ function getMenu(rawMenu: RawMenu): Menu {
             }
             switch (item.__typename) {
                case 'ComponentMenuLink': {
-                  if (item.name === 'Repair Guides') {
-                     console.log('has description?', item);
-                  }
                   return {
                      type: 'link',
                      name: item.name,
