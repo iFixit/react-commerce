@@ -1,7 +1,7 @@
 version: "3"
 services:
   strapi:
-    image: strapi/strapi
+    build: .
     environment:
       NODE_ENV: production
       SEED_DB: "true"
