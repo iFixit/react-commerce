@@ -43,7 +43,7 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                         return (
                            <MenuItem
                               key={index}
-                              transition="background-color 300ms"
+                              transition="background-color ${ANIMATION_DURATION}"
                               _hover={{
                                  bg: 'trueGray.800',
                                  '& > *': {
@@ -269,8 +269,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                                                                w: '4px',
                                                                borderRadius:
                                                                   'full',
-                                                               transition:
-                                                                  'background-color 300ms',
+                                                               transition: `background-color ${ANIMATION_DURATION}`,
                                                             }}
                                                             _hover={{
                                                                _before: {
@@ -322,7 +321,7 @@ const MobileMenuButton = forwardRef<
          }}
          sx={{
             '& path': {
-               transition: 'transform 300ms',
+               transition: `transform ${ANIMATION_DURATION}`,
             },
             '&[data-open="true"]': {
                '& .top': {

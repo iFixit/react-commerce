@@ -17,6 +17,8 @@ import { IFIXIT_ORIGIN } from '@config/env';
 import { useAuthenticatedUser } from '@lib/api';
 import * as React from 'react';
 
+const ANIMATION_DURATION = '300ms';
+
 export function UserMenu() {
    const { user } = useAuthenticatedUser();
 
@@ -82,9 +84,14 @@ export function UserMenu() {
                </MenuList>
             </Menu>
          ) : (
-            <Link borderRadius="full" href={`${IFIXIT_ORIGIN}/login`}>
+            <Link
+               borderRadius="full"
+               href={`${IFIXIT_ORIGIN}/login`}
+               display="flex"
+               alignItems="center"
+            >
                <NoUserIcon
-                  transition="color 300ms"
+                  transition={`color ${ANIMATION_DURATION}`}
                   _hover={{
                      color: 'brand.300',
                   }}
