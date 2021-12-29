@@ -140,6 +140,7 @@ ProductListPage.getLayout = function getLayout(
    return (
       <Layout
          title={`iFixit | ${pageProps.collection.title}`}
+         header={pageProps.layout.header}
          footer={pageProps.layout.footer}
       >
          {page}

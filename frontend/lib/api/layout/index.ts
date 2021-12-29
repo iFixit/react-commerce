@@ -1,4 +1,5 @@
 import { assertNever, Awaited, filterNullableItems } from '@lib/utils';
+import snarkdown from 'snarkdown';
 import { LayoutPropsFragment } from '../strapi/generated/sdk';
 import { getImageFromStrapiImage, Image } from '../utils';
 
@@ -13,25 +14,6 @@ type RawMenu = NonNullable<Footer['menu1']>;
 export type LayoutData = NonNullable<
    Awaited<ReturnType<typeof getLayoutProps>>
 >['layout'];
-
-export function getLayoutProps(data: LayoutPropsFragment) {
-   const currentStore = data.currentStore?.[0];
-   const footer = currentStore?.footer;
-   const socialMediaAccounts = currentStore?.socialMediaAccounts || {};
-   const stores = filterNullableItems(data.stores);
-   return {
-      layout: {
-         footer: {
-            menu1: footer?.menu1 ? getMenu(footer.menu1) : null,
-            menu2: footer?.menu2 ? getMenu(footer.menu2) : null,
-            partners: footer?.partners ? getMenu(footer.partners) : null,
-            bottomMenu: footer?.bottomMenu ? getMenu(footer.bottomMenu) : null,
-            socialMediaAccounts,
-            stores,
-         },
-      },
-   };
-}
 
 export interface Menu {
    items: MenuItem[];
@@ -61,6 +43,29 @@ export type MenuItem =
         submenu: Menu;
      };
 
+export function getLayoutProps(data: LayoutPropsFragment) {
+   const currentStore = data.currentStore?.[0];
+   const footer = currentStore?.footer;
+   const header = currentStore?.header;
+   const socialMediaAccounts = currentStore?.socialMediaAccounts || {};
+   const stores = filterNullableItems(data.stores);
+   return {
+      layout: {
+         header: {
+            menu: header?.menu ? getMenu(header.menu) : null,
+         },
+         footer: {
+            menu1: footer?.menu1 ? getMenu(footer.menu1) : null,
+            menu2: footer?.menu2 ? getMenu(footer.menu2) : null,
+            partners: footer?.partners ? getMenu(footer.partners) : null,
+            bottomMenu: footer?.bottomMenu ? getMenu(footer.bottomMenu) : null,
+            socialMediaAccounts,
+            stores,
+         },
+      },
+   };
+}
+
 function getMenu(rawMenu: RawMenu): Menu {
    return {
       items: filterNullableItems(
@@ -74,6 +79,9 @@ function getMenu(rawMenu: RawMenu): Menu {
                      type: 'link',
                      name: item.name,
                      url: item.url,
+                     descriptionHtml: item.description
+                        ? snarkdown(item.description)
+                        : null,
                   };
                }
                case 'ComponentMenuLinkWithImage': {
@@ -96,7 +104,14 @@ function getMenu(rawMenu: RawMenu): Menu {
                   };
                }
                case 'ComponentMenuSubmenu': {
-                  return null;
+                  if (item.submenu == null) {
+                     return null;
+                  }
+                  return {
+                     type: 'submenu',
+                     name: item.name,
+                     submenu: getMenu(item.submenu),
+                  };
                }
                default:
                   return assertNever(item);

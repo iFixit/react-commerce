@@ -1,4 +1,5 @@
-import { IFIXIT_API_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
+import { isError } from '@lib/utils';
 import * as React from 'react';
 
 /**
@@ -39,9 +40,13 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
                error: undefined,
             }));
          } catch (error) {
+            let message: string;
+            if (isError(error)) {
+               message = error.message;
+            }
             setState(() => ({
                status: SubscriptionStatus.Idle,
-               error: error.message || 'server error',
+               error: message || 'server error',
             }));
          }
       } else {
@@ -61,7 +66,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
  */
 export async function subscribeToNewsletter(email: string): Promise<void> {
    const response = await fetch(
-      `${IFIXIT_API_ORIGIN}/api/2.0/cart/newsletter/subscribe`,
+      `${IFIXIT_ORIGIN}/api/2.0/cart/newsletter/subscribe`,
       {
          method: 'POST',
          body: JSON.stringify({
