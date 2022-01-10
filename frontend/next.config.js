@@ -5,6 +5,7 @@ module.exports = {
          'cdn.shopify.com',
          'strapi.cominor.com',
          'valkyrie.cdn.ifixit.com',
+         'govinor.com',
       ],
    },
 };
