@@ -74,6 +74,7 @@ export default function ProductListPage({
                   }
                   case 'ComponentProductListFeaturedProductList': {
                      const { productList } = section;
+                     console.log(productList.image?.url);
                      if (productList) {
                         return (
                            <FeaturedProductListSection
@@ -84,7 +85,8 @@ export default function ProductListPage({
                               description={productList.description}
                               imageSrc={
                                  productList.image
-                                    ? `${STRAPI_ORIGIN}${productList.image.url}`
+                                    ? // ? `${STRAPI_ORIGIN}${productList.image.url}`
+                                      `${productList.image.url}`
                                     : undefined
                               }
                               imageAlt={productList.image?.alt || undefined}

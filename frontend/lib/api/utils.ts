@@ -11,9 +11,10 @@ export function getImageFromStrapiImage(
       return null;
    }
    const result: Image = {
-      url: `${STRAPI_ORIGIN}${
-         image.formats[format] ? image.formats[format].url : image.url
-      }`,
+      // url: `${STRAPI_ORIGIN}${
+      //    image.formats[format] ? image.formats[format].url : image.url
+      // }`,
+      url: `${image.formats[format] ? image.formats[format].url : image.url}`,
       formats: image.formats,
    };
 

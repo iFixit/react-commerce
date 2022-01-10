@@ -47,6 +47,7 @@ export function HeroSection({ collection }: HeroSectionProps) {
       collection.description != null &&
       collection.description.length > 0 &&
       searchParams.page === 1;
+   console.log('YUP', collection.image);
    return (
       <HStack align="flex-start" spacing="10">
          <VStack flex={1} align="flex-start">
