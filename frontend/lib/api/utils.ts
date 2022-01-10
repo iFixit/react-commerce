@@ -1,4 +1,3 @@
-import { STRAPI_ORIGIN } from '@config/env';
 import { UploadFile } from './strapi/generated/sdk';
 
 export type StrapiImageFormat = 'large' | 'medium' | 'small' | 'thumbnail';
@@ -11,9 +10,6 @@ export function getImageFromStrapiImage(
       return null;
    }
    const result: Image = {
-      // url: `${STRAPI_ORIGIN}${
-      //    image.formats[format] ? image.formats[format].url : image.url
-      // }`,
       url: `${image.formats[format] ? image.formats[format].url : image.url}`,
       formats: image.formats,
    };

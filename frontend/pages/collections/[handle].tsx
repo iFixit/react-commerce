@@ -74,7 +74,6 @@ export default function ProductListPage({
                   }
                   case 'ComponentProductListFeaturedProductList': {
                      const { productList } = section;
-                     console.log(productList.image?.url);
                      if (productList) {
                         return (
                            <FeaturedProductListSection
