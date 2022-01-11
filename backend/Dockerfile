@@ -12,6 +12,7 @@ COPY ./src/ ./src/
 COPY ./config/ ./config/
 COPY ./database/ ./database/
 COPY ./public/ ./public/
+COPY ./favicon.ico ./
 
 RUN npm run build
 
