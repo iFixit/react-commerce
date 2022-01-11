@@ -4,7 +4,7 @@ services:
     build: .
     environment:
       NODE_ENV: production
-      STRAPI_VERSION: 4.0.0
+      STRAPI_VERSION: 4.0.4
       SEED_DB: "true"
       DATABASE_CLIENT: postgres
       DATABASE_NAME: strapi

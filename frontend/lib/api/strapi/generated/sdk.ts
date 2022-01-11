@@ -973,6 +973,7 @@ export type StoreFiltersInput = {
   and?: Maybe<Array<Maybe<StoreFiltersInput>>>;
   code?: Maybe<StringFilterInput>;
   createdAt?: Maybe<DateTimeFilterInput>;
+  currency?: Maybe<StringFilterInput>;
   id?: Maybe<IdFilterInput>;
   name?: Maybe<StringFilterInput>;
   not?: Maybe<StoreFiltersInput>;
