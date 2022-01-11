@@ -8,6 +8,7 @@ import {
    InputGroupProps,
    InputLeftElement,
 } from '@chakra-ui/react';
+import { IFIXIT_ORIGIN } from '@config/env';
 import * as React from 'react';
 import { RiSearchLine } from 'react-icons/ri';
 
@@ -17,7 +18,7 @@ export const SearchForm = forwardRef<FlexProps, 'form'>((props, ref) => {
          ref={ref}
          as="form"
          method="GET"
-         action="https://www.ifixit.com/Search"
+         action={`${IFIXIT_ORIGIN}/Search`}
          {...props}
       />
    );

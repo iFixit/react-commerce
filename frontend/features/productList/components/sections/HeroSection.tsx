@@ -70,7 +70,12 @@ export function HeroSection({ collection }: HeroSectionProps) {
                   <VStack>
                      <HeroTitle color="white">{collection.title}</HeroTitle>
                      {collection.tagline && collection.tagline.length > 0 && (
-                        <Text fontWeight="bold" fontSize="xl" color="gray.50">
+                        <Text
+                           fontWeight="bold"
+                           fontSize="xl"
+                           color="gray.50"
+                           px={{ base: 6, sm: 0 }}
+                        >
                            {collection.tagline}
                         </Text>
                      )}
@@ -87,7 +92,11 @@ export function HeroSection({ collection }: HeroSectionProps) {
                   {collection.tagline &&
                      collection.tagline.length > 0 &&
                      searchParams.page === 1 && (
-                        <Text fontWeight="bold" fontSize="xl">
+                        <Text
+                           fontWeight="bold"
+                           fontSize="xl"
+                           px={{ base: 6, sm: 0 }}
+                        >
                            {collection.tagline}
                         </Text>
                      )}

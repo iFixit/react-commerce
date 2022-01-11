@@ -62,20 +62,34 @@ export function AlgoliaProvider({
             }
          }),
          clearFilters: immerAssign((ctx, event) => {
-            if (event.type === 'CLEAR_FILTERS') {
-               const { filterIds } = event;
-               if (filterIds == null) {
-                  ctx.params.filters.byId = {};
-                  ctx.params.filters.allIds = [];
-               } else {
-                  ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                     (id) => !filterIds.includes(id)
-                  );
-                  filterIds.forEach((id) => {
-                     delete ctx.params.filters.byId[id];
-                  });
+            let filterIds: string[] = [];
+            switch (event.type) {
+               case 'CLEAR_FILTERS': {
+                  if (event.filterIds == null) {
+                     // If no filter has been specified, then clear them all
+                     ctx.params.filters.byId = {};
+                     ctx.params.filters.allIds = [];
+                  } else {
+                     filterIds = event.filterIds;
+                  }
+                  break;
+               }
+               case 'ADD_FACET_OPTION_FILTER':
+               case 'SET_FACET_OPTION_FILTER':
+               case 'TOGGLE_FACET_OPTION_FILTER':
+               case 'SET_RANGE_FILTER': {
+                  if (event.clearIds) {
+                     filterIds = event.clearIds;
+                  }
+                  break;
                }
             }
+            ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
+               (id) => !filterIds.includes(id)
+            );
+            filterIds.forEach((id) => {
+               delete ctx.params.filters.byId[id];
+            });
          }),
          addFacetOptionFilter: immerAssign((ctx, event) => {
             if (event.type === 'ADD_FACET_OPTION_FILTER') {
@@ -179,8 +193,15 @@ export function AlgoliaProvider({
                   draftFilter.max !== event.max
                ) {
                   ctx.params.page = 1;
-                  draftFilter.min = event.min;
-                  draftFilter.max = event.max;
+                  if (event.min == null && event.max == null) {
+                     ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
+                        (id) => id !== event.filterId
+                     );
+                     delete ctx.params.filters.byId[event.filterId];
+                  } else {
+                     draftFilter.min = event.min;
+                     draftFilter.max = event.max;
+                  }
                }
             }
          }),
@@ -239,9 +260,7 @@ export function AlgoliaProvider({
 }
 
 function isInvalidRange(min?: number, max?: number): boolean {
-   return (
-      (min == null && max == null) || (min != null && max != null && min > max)
-   );
+   return min != null && max != null && min > max;
 }
 
 export function useSearchServiceContext<

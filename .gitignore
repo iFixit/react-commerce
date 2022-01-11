@@ -28,3 +28,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 tmp
+# Rush
+**/.rush/temp
