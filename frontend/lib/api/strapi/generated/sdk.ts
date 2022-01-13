@@ -1413,7 +1413,7 @@ export const MenuEntityResponsePropsFragmentDoc = `
     ${MenuPropsFragmentDoc}`;
 export const LayoutPropsFragmentDoc = `
     fragment LayoutProps on Query {
-  stores {
+  stores(pagination: {pageSize: 100}) {
     data {
       attributes {
         code
@@ -1543,7 +1543,7 @@ export const GetProductListPageDataDocument = `
             }
           }
         }
-        children {
+        children(pagination: {pageSize: 100}) {
           data {
             attributes {
               handle
