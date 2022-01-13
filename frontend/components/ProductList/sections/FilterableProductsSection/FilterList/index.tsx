@@ -10,7 +10,7 @@ import { VariableSizeList } from 'react-window';
 import { FilterRow, ItemData, TOGGLE_ANIMATION_DURATION_MS } from './FilterRow';
 import { useVirtualAccordionMachine } from './virtualAccordion.machine';
 
-interface CollectionFiltersProps {
+interface FilterListProps {
    className?: string;
 }
 
@@ -31,7 +31,7 @@ const Sizer = chakra(AutoSizer);
 
 const DEFAULT_ROW_HEIGHT = 41;
 
-export const FilterList = chakra(({ className }: CollectionFiltersProps) => {
+export const FilterList = chakra(({ className }: FilterListProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
    const { facets, areRefined } = useFilteredFacets();
    const isSearching = useIsSearching();

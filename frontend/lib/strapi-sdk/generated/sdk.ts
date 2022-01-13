@@ -2461,7 +2461,7 @@ export const GetProductListDocument = `
             }
           }
         }
-        children {
+        children(pagination: {pageSize: 100}) {
           data {
             attributes {
               handle
@@ -2578,7 +2578,7 @@ export const GetStoreDocument = `
     ${MenuEntityResponsePropsFragmentDoc}`;
 export const GetStoreListDocument = `
     query getStoreList {
-  stores {
+  stores(pagination: {pageSize: 100}) {
     data {
       attributes {
         code

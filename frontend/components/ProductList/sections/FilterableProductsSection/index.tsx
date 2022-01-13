@@ -1,5 +1,5 @@
 import {
-   CollectionEmptyStateIllustration,
+   ProductListEmptyStateIllustration,
    SearchEmptyStateIllustration,
 } from '@assets/svg';
 import {
@@ -258,7 +258,7 @@ const ProductListEmptyState = () => {
       <Card pt="16" pb="20" borderRadius={{ base: 'none', sm: 'lg' }}>
          <VStack>
             <Icon
-               as={CollectionEmptyStateIllustration}
+               as={ProductListEmptyStateIllustration}
                boxSize="200px"
                opacity="0.8"
             />

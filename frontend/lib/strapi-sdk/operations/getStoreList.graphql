@@ -1,5 +1,5 @@
 query getStoreList {
-   stores {
+   stores(pagination: { pageSize: 100 }) {
       data {
          attributes {
             code

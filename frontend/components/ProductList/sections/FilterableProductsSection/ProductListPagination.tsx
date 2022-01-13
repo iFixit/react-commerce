@@ -16,7 +16,7 @@ import {
 } from 'react-icons/hi';
 
 export function ProductListPagination() {
-   const getCollectionPageUrl = useGetCollectionPageUrl();
+   const getProductListResultsPageUrl = useGetProductListResultsPageUrl();
    const visibleNumberOfPages = useBreakpointValue({ base: 3, sm: 5, lg: 7 });
    const { page, setPage, numberOfPages = 0 } = usePagination();
 
@@ -36,7 +36,7 @@ export function ProductListPagination() {
             <>
                <PaginationItem>
                   <PaginationLink
-                     href={getCollectionPageUrl(1)}
+                     href={getProductListResultsPageUrl(1)}
                      aria-label="Go to first page"
                      page="first"
                      icon={HiChevronDoubleLeft}
@@ -51,7 +51,9 @@ export function ProductListPagination() {
                      aria-label="Go to previous page"
                      href={
                         pagination.hasPrevious
-                           ? getCollectionPageUrl(pagination.currentPage - 1)
+                           ? getProductListResultsPageUrl(
+                                pagination.currentPage - 1
+                             )
                            : undefined
                      }
                      page="previous"
@@ -71,7 +73,7 @@ export function ProductListPagination() {
                               : `go to page ${page}`
                         }
                         page={page}
-                        href={getCollectionPageUrl(page)}
+                        href={getProductListResultsPageUrl(page)}
                         onClick={(event) => {
                            event.preventDefault();
                            pagination.goto(page);
@@ -85,7 +87,9 @@ export function ProductListPagination() {
                      page="next"
                      href={
                         pagination.hasNext
-                           ? getCollectionPageUrl(pagination.currentPage + 1)
+                           ? getProductListResultsPageUrl(
+                                pagination.currentPage + 1
+                             )
                            : undefined
                      }
                      icon={HiChevronRight}
@@ -99,7 +103,9 @@ export function ProductListPagination() {
                   <PaginationLink
                      aria-label="Go to last page"
                      page="last"
-                     href={getCollectionPageUrl(pagination.numberOfPages)}
+                     href={getProductListResultsPageUrl(
+                        pagination.numberOfPages
+                     )}
                      icon={HiChevronDoubleRight}
                      onClick={(event) => {
                         event.preventDefault();
@@ -113,7 +119,7 @@ export function ProductListPagination() {
    );
 }
 
-function useGetCollectionPageUrl() {
+function useGetProductListResultsPageUrl() {
    const router = useRouter();
    const { handle, p, ...other } = router.query;
    return (page: number) => {
