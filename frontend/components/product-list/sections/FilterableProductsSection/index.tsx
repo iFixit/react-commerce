@@ -13,21 +13,22 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { Card } from '@components/Card';
+import { Card } from '@components/ui';
+import { useUpdateUrlQuery } from '@helpers/algolia-helpers';
 import {
    useClearSearchParams,
    useHits,
    useSearchParams,
    useSearchState,
 } from '@lib/algolia';
-import { useUpdateUrlQuery } from '@helpers/algolia-helpers';
+import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
-import { ProductListPagination } from './ProductListPagination';
 import { FilterList } from './FilterList';
 import { FiltersModal } from './FiltersModal';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
+import { ProductListPagination } from './ProductListPagination';
 import { SearchInput } from './SearchInput';
 import {
    NumberOfHits,
@@ -37,7 +38,6 @@ import {
    ProductViewSwitch,
    Toolbar,
 } from './Toolbar';
-import { ProductSearchHit } from '@models/product-list';
 
 export enum ProductViewType {
    Grid = 'grid',

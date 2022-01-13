@@ -1,3 +1,4 @@
+import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
 import {
    Badge,
    Box,
@@ -12,12 +13,11 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { Rating } from '@components/Rating';
+import { Rating } from '@components/ui';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
+import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import * as React from 'react';
-import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
-import { ProductSearchHit } from '@models/product-list';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 

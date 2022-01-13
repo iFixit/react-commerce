@@ -9,7 +9,6 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { Card } from '@components/Card';
 import {
    ProductCard,
    ProductCardBadgeList,
@@ -20,14 +19,15 @@ import {
    ProductCardRating,
    ProductCardSoldOutBadge,
    ProductCardTitle,
-} from '@components/ProductCard';
+} from '@components/common';
+import { Card } from '@components/ui';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { AlgoliaProvider, useHits } from '@lib/algolia';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
+import { AlgoliaProvider, useHits } from '@lib/algolia';
+import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
-import { ProductSearchHit } from '@models/product-list';
 
 export interface FeaturedProductListSectionProps {
    handle: string;

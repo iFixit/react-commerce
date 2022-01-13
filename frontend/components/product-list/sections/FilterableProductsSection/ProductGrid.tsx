@@ -9,7 +9,7 @@ import {
    ProductCardRating,
    ProductCardSoldOutBadge,
    ProductCardTitle,
-} from '@components/ProductCard';
+} from '@components/common';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';

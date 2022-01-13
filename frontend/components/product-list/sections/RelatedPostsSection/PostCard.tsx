@@ -6,7 +6,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { Card } from '@components/Card';
+import { Card } from '@components/ui';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';

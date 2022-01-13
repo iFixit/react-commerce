@@ -1,11 +1,6 @@
-import { AppProviders } from '@components/AppProviders';
-import { NextPage } from 'next';
+import { AppProviders } from '@components/common';
 import { AppProps } from 'next/app';
 import * as React from 'react';
-
-type NextPageWithLayout = NextPage & {
-   getLayout?: (page: React.ReactElement, pageProps: any) => React.ReactNode;
-};
 
 type AppPropsWithLayout = AppProps & {
    Component: NextPageWithLayout;

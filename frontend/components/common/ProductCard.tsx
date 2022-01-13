@@ -1,19 +1,19 @@
-import React from 'react';
+import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
 import {
    AspectRatio,
+   Badge,
+   BadgeProps,
    Heading,
    HeadingProps,
    HStack,
    Stack,
    StackProps,
-   VStack,
    Text,
-   BadgeProps,
-   Badge,
+   VStack,
 } from '@chakra-ui/react';
-import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
+import { Rating } from '@components/ui';
 import Image from 'next/image';
-import { Rating } from '@components/Rating';
+import React from 'react';
 
 export const ProductCard = (props: StackProps) => {
    return (

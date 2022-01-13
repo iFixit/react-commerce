@@ -1,4 +1,4 @@
-import { AppProviders } from '@components/AppProviders';
+import { AppProviders } from '@components/common';
 import { render, RenderOptions } from '@testing-library/react';
 
 const customRender = (
