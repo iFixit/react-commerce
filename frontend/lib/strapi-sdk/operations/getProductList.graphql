@@ -42,7 +42,7 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
-            children {
+            children(pagination: { pageSize: 100 }) {
                data {
                   attributes {
                      handle
