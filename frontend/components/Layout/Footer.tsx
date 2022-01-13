@@ -28,25 +28,21 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/react-components';
-import { LayoutData } from '@lib/api';
+import { MenuItemType } from '@models/menu';
+import { Store, StoreListItem } from '@models/store';
 import * as React from 'react';
 
 const placeholderImageUrl =
    'https://via.placeholder.com/180x75?text=not+available';
 
 export interface FooterProps {
-   data: LayoutData['footer'];
+   stores: StoreListItem[];
+   currentStore: Store;
 }
 
-export function Footer({ data }: FooterProps) {
-   const {
-      menu1,
-      menu2,
-      partners,
-      bottomMenu,
-      socialMediaAccounts,
-      stores,
-   } = data;
+export function Footer({ stores, currentStore }: FooterProps) {
+   const { footer, socialMediaAccounts } = currentStore;
+   const { menu1, menu2, partners, bottomMenu } = footer;
    return (
       <FooterContainer>
          <SimpleGrid
@@ -150,7 +146,7 @@ export function Footer({ data }: FooterProps) {
                >
                   <SimpleGrid columns={3} spacing="4">
                      {partners.items.map((partner) => {
-                        if (partner.type === 'linkWithImage') {
+                        if (partner.type === MenuItemType.ImageLink) {
                            return (
                               <FooterPartnerLink
                                  key={partner.name}
@@ -163,7 +159,10 @@ export function Footer({ data }: FooterProps) {
                                     src={
                                        partner.image?.url || placeholderImageUrl
                                     }
-                                    alt={partner.image?.alt || undefined}
+                                    alt={
+                                       partner.image?.alternativeText ||
+                                       undefined
+                                    }
                                  />
                               </FooterPartnerLink>
                            );

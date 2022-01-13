@@ -14,7 +14,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { useAuthenticatedUser } from '@lib/api';
+import { useAuthenticatedUser } from '@models/user';
 import * as React from 'react';
 
 const ANIMATION_DURATION = '300ms';

@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { LayoutData } from '@lib/api';
+import { Store, StoreListItem } from '@models/store';
 import Head from 'next/head';
 import * as React from 'react';
 import { Footer } from './Footer';
@@ -7,14 +7,14 @@ import { Header } from './Header';
 
 export interface LayoutProps {
    title: string;
-   header: LayoutData['header'];
-   footer: LayoutData['footer'];
+   stores: StoreListItem[];
+   currentStore: Store;
 }
 
 export function Layout({
    title,
-   header,
-   footer,
+   stores,
+   currentStore,
    children,
 }: React.PropsWithChildren<LayoutProps>) {
    return (
@@ -24,9 +24,9 @@ export function Layout({
             <link rel="icon" href="/favicon.ico" />
          </Head>
          <Flex direction="column">
-            <Header data={header} />
+            <Header menu={currentStore.header.menu} />
             {children}
-            <Footer data={footer} />
+            <Footer currentStore={currentStore} stores={stores} />
          </Flex>
       </Box>
    );

@@ -1,0 +1,14 @@
+query getGlobalSettings {
+   global {
+      data {
+         attributes {
+            newsletterForm {
+               title
+               subtitle
+               inputPlaceholder
+               callToActionButtonTitle
+            }
+         }
+      }
+   }
+}

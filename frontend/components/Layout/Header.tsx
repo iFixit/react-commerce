@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Icon, IconButton } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
-import { LayoutData } from '@lib/api';
+import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { RiSearchLine } from 'react-icons/ri';
@@ -10,10 +10,10 @@ import { UserMenu } from './User';
 import { Wordmark } from './Wordmark';
 
 export interface HeaderProps {
-   data: LayoutData['header'];
+   menu?: Menu | null;
 }
 
-export function Header({ data }: HeaderProps) {
+export function Header({ menu }: HeaderProps) {
    const [isMobileSearchOpen, setIsMobileSearchOpen] = React.useState(false);
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -101,7 +101,7 @@ export function Header({ data }: HeaderProps) {
                   md: 'initial',
                }}
             >
-               {data.menu && <Navigation.Mobile menu={data.menu} />}
+               {menu && <Navigation.Mobile menu={menu} />}
                <NextLink href="/" passHref>
                   <Flex
                      as="a"
@@ -118,9 +118,9 @@ export function Header({ data }: HeaderProps) {
                      <Wordmark />
                   </Flex>
                </NextLink>
-               {data.menu && (
+               {menu && (
                   <Navigation.Desktop
-                     menu={data.menu}
+                     menu={menu}
                      display={{ base: 'none', lg: 'block' }}
                   />
                )}

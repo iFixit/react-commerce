@@ -18,7 +18,8 @@
          "@config/*": ["config/*"],
          "@assets/*": ["assets/*"],
          "@lib/*": ["lib/*"],
-         "@features/*": ["features/*"],
+         "@helpers/*": ["helpers/*"],
+         "@models/*": ["models/*"],
          "@components/*": ["components/*"],
          "testUtils": ["./test/utils/testUtils"]
       },

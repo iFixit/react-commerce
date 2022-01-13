@@ -19,15 +19,13 @@ import {
    IconButtonProps,
    useDisclosure,
 } from '@chakra-ui/react';
-import { LayoutData } from '@lib/api';
+import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 
-type NavigationMenu = NonNullable<LayoutData['header']['menu']>;
-
 export interface NavigationProps {
-   menu: NavigationMenu;
+   menu: Menu;
 }
 
 const ANIMATION_DURATION = '300ms';
@@ -40,6 +38,9 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                {menu.items.map((item, index) => {
                   switch (item.type) {
                      case 'submenu': {
+                        if (item.submenu === null) {
+                           return null;
+                        }
                         return (
                            <MenuItem
                               key={index}
@@ -129,14 +130,14 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                                                          my="4"
                                                          borderColor="trueGray.600"
                                                       />
-                                                      {subitem.descriptionHtml && (
+                                                      {subitem.description && (
                                                          <Box
                                                             as="p"
                                                             fontSize="sm"
                                                             color="trueGray.400"
                                                             dangerouslySetInnerHTML={{
                                                                __html:
-                                                                  subitem.descriptionHtml,
+                                                                  subitem.description,
                                                             }}
                                                          />
                                                       )}
@@ -212,6 +213,9 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                      {menu.items.map((item, index) => {
                         switch (item.type) {
                            case 'submenu': {
+                              if (item.submenu === null) {
+                                 return null;
+                              }
                               return (
                                  <AccordionItem
                                     key={index}

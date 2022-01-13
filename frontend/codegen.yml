@@ -1,8 +1,8 @@
 overwrite: true
 generates:
-   lib/api/strapi/generated/sdk.ts:
+   lib/strapi-sdk/generated/sdk.ts:
       schema: http://localhost:1337/graphql
-      documents: 'lib/api/strapi/operations/**/*.graphql'
+      documents: 'lib/strapi-sdk/operations/**/*.graphql'
       plugins:
          - 'typescript'
          - 'typescript-operations'

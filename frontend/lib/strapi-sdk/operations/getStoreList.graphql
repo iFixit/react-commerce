@@ -1,0 +1,12 @@
+query getStoreList {
+   stores {
+      data {
+         attributes {
+            code
+            name
+            url
+            currency
+         }
+      }
+   }
+}
