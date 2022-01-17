@@ -38,6 +38,8 @@ export function ProductListBreadcrumb({
          flexWrap="nowrap"
          flexShrink={1}
          minW="0"
+         maxW="full"
+         overflow="hidden"
          sx={{
             '& > *': {
                display: 'flex',
