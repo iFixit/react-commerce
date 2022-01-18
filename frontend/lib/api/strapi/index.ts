@@ -22,7 +22,7 @@ const requester: Requester = async <R, V>(
       }
       throw new Error('Data not available in GraphQL response');
    }
-   throw new Error('GraphQL query failed to execute');
+   throw new Error(`GraphQL query failed to execute: ${response.statusText}`);
 };
 
 export const strapi = getSdk(requester);

@@ -1,0 +1,24 @@
+{
+  "name": "seed",
+  "version": "0.0.0",
+  "description": "A Strapi plugin to populate the database with seed data.",
+  "strapi": {
+    "name": "Seed",
+    "description": "Populate the database with seed data.",
+    "kind": "plugin"
+  },
+  "dependencies": {},
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "maintainers": [
+    {
+      "name": "A Strapi developer"
+    }
+  ],
+  "engines": {
+    "node": ">=12.x. <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

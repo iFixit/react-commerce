@@ -11,7 +11,7 @@
       "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"npm run dev:next\" \"npm run dev:codegen\"",
       "dev:next": "next dev",
       "dev:codegen": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.yml --watch",
-      "build": "npm run build:codegen && npm run build:next",
+      "build": "npm run build:next",
       "build:next": "next build",
       "build:codegen": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -r dotenv/config --config codegen.yml",
       "start": "next start",

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_menu_submenus",
+  "info": {
+    "displayName": "submenu",
+    "icon": "stream"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "submenu": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    }
+  }
+}

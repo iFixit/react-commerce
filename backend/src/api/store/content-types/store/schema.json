@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stores",
+  "info": {
+    "singularName": "store",
+    "pluralName": "stores",
+    "displayName": "Store",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "code": {
+      "type": "uid",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": ["AUD", "CAD", "EUR", "GBP", "USD"],
+      "required": true
+    },
+    "shopifySettings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "store.shopify-settings"
+    },
+    "header": {
+      "type": "component",
+      "repeatable": false,
+      "component": "store.header",
+      "required": true
+    },
+    "footer": {
+      "type": "component",
+      "repeatable": false,
+      "component": "store.footer",
+      "required": true
+    },
+    "socialMediaAccounts": {
+      "type": "component",
+      "repeatable": false,
+      "component": "store.social-media-accounts",
+      "required": true
+    }
+  }
+}

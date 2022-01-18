@@ -1,9 +1,10 @@
-version: "3"
+version: "3.8"
 services:
   strapi:
-    image: strapi/strapi
+    build: .
     environment:
       NODE_ENV: production
+      STRAPI_VERSION: 4.0.4
       SEED_DB: "true"
       DATABASE_CLIENT: postgres
       DATABASE_NAME: strapi
@@ -11,10 +12,8 @@ services:
       DATABASE_PORT: 5432
       DATABASE_USERNAME: strapi
       DATABASE_PASSWORD: strapi
-    volumes:
-      - .:/srv/app
     ports:
-      - "1337:1337"
+      - "${HOST_PORT:-1337}:1337"
     depends_on:
       - postgres
     command: "strapi start"

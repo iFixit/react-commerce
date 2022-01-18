@@ -1,0 +1,10 @@
+{
+  "locale": "en",
+  "publishedAt": "2020-01-01T00:00:00Z",
+  "newsletterForm": {
+    "title": "Stay in the loop",
+    "subtitle": "Learn something new every month!",
+    "inputPlaceholder": "Enter your email",
+    "callToActionButtonTitle": "Subscribe"
+  }
+}

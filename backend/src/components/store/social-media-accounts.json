@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_store_social_media_accounts",
+  "info": {
+    "displayName": "socialMediaAccounts",
+    "icon": "address-card"
+  },
+  "options": {},
+  "attributes": {
+    "twitter": {
+      "type": "string"
+    },
+    "facebook": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "youtube": {
+      "type": "string"
+    },
+    "repairOrg": {
+      "type": "string"
+    }
+  }
+}

@@ -1,40 +1,56 @@
 fragment LayoutProps on Query {
-   stores {
-      code
-      name
-      url
-      currency
+   stores(pagination: { pageSize: 100 }) {
+      data {
+         attributes {
+            code
+            name
+            url
+            currency
+         }
+      }
    }
-   currentStore: stores(where: $whereStoreSettings) {
-      shopifySettings {
-         storefrontDomain
-         storefrontAccessToken
-      }
-      header {
-         menu {
-            ...MenuProps
+   currentStore: stores(filters: $currentStoreFilters) {
+      data {
+         attributes {
+            shopifySettings {
+               storefrontDomain
+               storefrontAccessToken
+            }
+            header {
+               menu {
+                  ...MenuEntityResponseProps
+               }
+            }
+            footer {
+               menu1 {
+                  ...MenuEntityResponseProps
+               }
+               menu2 {
+                  ...MenuEntityResponseProps
+               }
+               partners {
+                  ...MenuEntityResponseProps
+               }
+               bottomMenu {
+                  ...MenuEntityResponseProps
+               }
+            }
+            socialMediaAccounts {
+               twitter
+               facebook
+               instagram
+               youtube
+               repairOrg
+            }
          }
       }
-      footer {
-         menu1 {
-            ...MenuProps
-         }
-         menu2 {
-            ...MenuProps
-         }
-         partners {
-            ...MenuProps
-         }
-         bottomMenu {
-            ...MenuProps
-         }
-      }
-      socialMediaAccounts {
-         twitter
-         facebook
-         instagram
-         youtube
-         repairOrg
+   }
+}
+
+fragment MenuEntityResponseProps on MenuEntityResponse {
+   data {
+      attributes {
+         ...MenuProps
       }
    }
 }
@@ -50,45 +66,65 @@ fragment MenuProps on Menu {
       ... on ComponentMenuProductListLink {
          name
          productList {
-            handle
+            data {
+               attributes {
+                  handle
+               }
+            }
          }
       }
       ... on ComponentMenuLinkWithImage {
          name
          url
          image {
-            alternativeText
-            url
-            formats
+            data {
+               attributes {
+                  alternativeText
+                  url
+                  formats
+               }
+            }
          }
       }
       ... on ComponentMenuSubmenu {
          name
          submenu {
-            items {
-               __typename
-               ... on ComponentMenuLink {
-                  name
-                  url
-                  description
-               }
-               ... on ComponentMenuProductListLink {
-                  name
-                  productList {
-                     handle
+            data {
+               attributes {
+                  items {
+                     __typename
+                     ... on ComponentMenuLink {
+                        name
+                        url
+                        description
+                     }
+                     ... on ComponentMenuProductListLink {
+                        name
+                        productList {
+                           data {
+                              attributes {
+                                 handle
+                              }
+                           }
+                        }
+                     }
+                     ... on ComponentMenuLinkWithImage {
+                        name
+                        url
+                        image {
+                           data {
+                              attributes {
+                                 alternativeText
+                                 url
+                                 formats
+                              }
+                           }
+                        }
+                     }
+                     ... on ComponentMenuSubmenu {
+                        name
+                     }
                   }
-               }
-               ... on ComponentMenuLinkWithImage {
-                  name
-                  url
-                  image {
-                     alternativeText
-                     url
-                     formats
-                  }
-               }
-               ... on ComponentMenuSubmenu {
-                  name
                }
             }
          }

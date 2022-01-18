@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_store_shopify_settings",
+  "info": {
+    "displayName": "shopifySettings",
+    "icon": "shopping-bag"
+  },
+  "options": {},
+  "attributes": {
+    "storefrontDomain": {
+      "type": "string",
+      "required": true
+    },
+    "storefrontAccessToken": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

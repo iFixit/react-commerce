@@ -25,21 +25,21 @@ interface FetchCollectionPageDataOptions {
 export async function fetchCollectionPageData(
    options: FetchCollectionPageDataOptions
 ) {
-   const result = await strapi.getCollectionPageData({
-      whereCollection: { handle: options.collectionHandle },
-      whereStoreSettings: {
-         code: options.storeCode,
+   const result = await strapi.getProductListPageData({
+      productListFilters: { handle: { eq: options.collectionHandle } },
+      currentStoreFilters: {
+         code: { eq: options.storeCode },
       },
    });
-   const collection = result.productLists?.[0];
-   if (collection == null) {
+   const productList = result.productLists?.data?.[0].attributes;
+   if (productList == null) {
       return null;
    }
    const filtersPreset =
-      collection.filters && collection.filters.length > 0
-         ? collection.filters
+      productList.filters && productList.filters.length > 0
+         ? productList.filters
          : `collections:${options.collectionHandle}`;
-   const searchContext = await loadCollectionSearchContext({
+   const searchContext = await loadProductListSearchContext({
       indexName: options.algoliaIndexName,
       filtersPreset,
       urlQuery: options.urlQuery,
@@ -47,48 +47,102 @@ export async function fetchCollectionPageData(
    if (searchContext == null) {
       return null;
    }
+   const productListImageAttributes = productList.image?.data?.attributes;
    return {
       ...getLayoutProps(result),
       global: {
-         newsletterForm: result.global?.newsletterForm,
+         newsletterForm:
+            result.global?.data?.attributes?.newsletterForm || null,
       },
       collection: {
-         handle: collection.handle,
-         title: collection.title,
-         tagline: collection.tagline,
-         description: collection.description,
-         metaDescription: collection.metaDescription,
-         filtersPreset: collection.filters,
-         image: getImageFromStrapiImage(collection.image, 'large'),
-         ancestors: getAncestors(collection.parent),
-         children: filterNullableItems(collection.children).map((child) => {
-            return {
-               handle: child.handle,
-               title: child.title,
-               image: getImageFromStrapiImage(child.image, 'medium'),
-            };
-         }),
-         sections: filterNullableItems(collection.sections).map((section) => {
-            if (
-               section.__typename === 'ComponentProductListLinkedProductListSet'
-            ) {
+         handle: productList.handle,
+         title: productList.title,
+         tagline: productList.tagline,
+         description: productList.description,
+         metaDescription: productList.metaDescription,
+         filtersPreset: productList.filters,
+         image:
+            productListImageAttributes == null
+               ? null
+               : getImageFromStrapiImage(productListImageAttributes, 'large'),
+         ancestors: getAncestors(productList.parent),
+         children: filterNullableItems(
+            productList.children?.data.map(({ attributes }) => {
+               if (attributes == null) {
+                  return null;
+               }
+               const imageAttributes = attributes.image?.data?.attributes;
                return {
-                  ...section,
-                  productLists: filterNullableItems(section.productLists).map(
-                     (collection) => {
-                        return {
-                           ...collection,
-                           image: getImageFromStrapiImage(
-                              collection.image,
-                              'thumbnail'
-                           ),
-                        };
-                     }
-                  ),
+                  handle: attributes.handle,
+                  title: attributes.title,
+                  image:
+                     imageAttributes == null
+                        ? null
+                        : getImageFromStrapiImage(imageAttributes, 'medium'),
                };
-            }
-            return section;
-         }),
+            })
+         ),
+         sections: filterNullableItems(
+            productList.sections.map((section) => {
+               if (section == null) {
+                  return null;
+               }
+               if (
+                  section.__typename ===
+                  'ComponentProductListLinkedProductListSet'
+               ) {
+                  return {
+                     ...section,
+                     productLists: filterNullableItems(
+                        section.productLists?.data.map(({ attributes }) => {
+                           if (attributes == null) {
+                              return null;
+                           }
+
+                           const imageAttributes =
+                              attributes.image?.data?.attributes;
+                           return {
+                              ...attributes,
+                              image:
+                                 imageAttributes == null
+                                    ? null
+                                    : getImageFromStrapiImage(
+                                         imageAttributes,
+                                         'thumbnail'
+                                      ),
+                           };
+                        })
+                     ),
+                  };
+               }
+               if (
+                  section.__typename ===
+                  'ComponentProductListFeaturedProductList'
+               ) {
+                  const productListAttributes =
+                     section.productList?.data?.attributes;
+                  if (productListAttributes == null) {
+                     return null;
+                  }
+                  const imageAttributes =
+                     productListAttributes?.image?.data?.attributes;
+                  return {
+                     ...section,
+                     productList: {
+                        ...productListAttributes,
+                        image:
+                           imageAttributes == null
+                              ? null
+                              : getImageFromStrapiImage(
+                                   imageAttributes,
+                                   'thumbnail'
+                                ),
+                     },
+                  };
+               }
+               return section;
+            })
+         ),
          searchContext,
       },
    };
@@ -102,12 +156,14 @@ export type ProductListGlobal = NonNullable<
    Awaited<ReturnType<typeof fetchCollectionPageData>>
 >['global'];
 
-type StrapiCollectionPageData = NonNullable<
-   NonNullable<Awaited<ReturnType<typeof strapi['getCollectionPageData']>>>
+type StrapiProductListPageData = NonNullable<
+   NonNullable<Awaited<ReturnType<typeof strapi['getProductListPageData']>>>
 >;
 
-type StrapiCollection = NonNullable<
-   NonNullable<StrapiCollectionPageData['productLists']>[0]
+type StrapiProductList = NonNullable<
+   NonNullable<
+      NonNullable<StrapiProductListPageData['productLists']>['data']
+   >[0]['attributes']
 >;
 
 interface Ancestor {
@@ -115,28 +171,29 @@ interface Ancestor {
    title: string;
 }
 
-function getAncestors(parent: StrapiCollection['parent']): Ancestor[] {
-   if (parent == null) {
+function getAncestors(parent: StrapiProductList['parent']): Ancestor[] {
+   const attributes = parent?.data?.attributes;
+   if (attributes == null) {
       return [];
    }
-   const ancestors = getAncestors(parent.parent);
+   const ancestors = getAncestors(attributes.parent);
    return ancestors.concat({
-      handle: parent.handle,
-      title: parent.title,
+      handle: attributes.handle,
+      title: attributes.title,
    });
 }
 
-interface LoadCollectionSearchStateArgs {
+interface LoadProductListSearchStateArgs {
    indexName: string;
    urlQuery: ParsedUrlQuery;
    filtersPreset: string;
 }
 
-async function loadCollectionSearchContext({
+async function loadProductListSearchContext({
    indexName,
    urlQuery,
    filtersPreset,
-}: LoadCollectionSearchStateArgs): Promise<SearchContext<ProductHit> | null> {
+}: LoadProductListSearchStateArgs): Promise<SearchContext<ProductHit> | null> {
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const pageParam = urlQuery[COLLECTION_PAGE_PARAM];

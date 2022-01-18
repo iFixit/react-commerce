@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_store_headers",
+  "info": {
+    "displayName": "header",
+    "icon": "window-maximize"
+  },
+  "options": {},
+  "attributes": {
+    "menu": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    }
+  }
+}

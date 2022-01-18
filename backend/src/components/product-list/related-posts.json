@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_product_list_related_posts",
+  "info": {
+    "displayName": "relatedPosts",
+    "icon": "newspaper"
+  },
+  "options": {},
+  "attributes": {
+    "tags": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "code": "us",
+    "name": "United States",
+    "url": "https://www.ifixit.com/Store",
+    "currency": "USD",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "shopifySettings": {
+      "storefrontDomain": "ifixit-test.myshopify.com",
+      "storefrontAccessToken": "d08db995952e88a37804b54a284e5130"
+    },
+    "footer": {
+      "menu1": 1,
+      "menu2": 2,
+      "bottomMenu": 3,
+      "partners": 4
+    },
+    "socialMediaAccounts": {
+      "twitter": "https://twitter.com/ifixit",
+      "facebook": "https://www.facebook.com/iFixit/",
+      "instagram": "https://www.instagram.com/ifixit/",
+      "youtube": "https://www.youtube.com/user/iFixitYourself",
+      "repairOrg": "https://www.repair.org/"
+    },
+    "header": {
+      "menu": 8
+    }
+  },
+  {
+    "id": 2,
+    "code": "eu",
+    "name": "Europe",
+    "url": "https://eustore.ifixit.com/",
+    "currency": "EUR",
+    "publishedAt": "2020-01-01T00:00:00Z",
+    "shopifySettings": {
+      "storefrontDomain": "ifixit-test.myshopify.com",
+      "storefrontAccessToken": "d08db995952e88a37804b54a284e5130"
+    },
+    "footer": {
+      "menu1": 1,
+      "menu2": 2,
+      "bottomMenu": 3,
+      "partners": 4
+    },
+    "socialMediaAccounts": {
+      "twitter": "https://twitter.com/ifixit",
+      "facebook": "https://www.facebook.com/iFixit/",
+      "instagram": "https://www.instagram.com/ifixit/",
+      "youtube": "https://www.youtube.com/user/iFixitYourself",
+      "repairOrg": "https://www.repair.org/"
+    },
+    "header": {
+      "menu": 8
+    }
+  }
+]

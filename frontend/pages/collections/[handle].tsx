@@ -84,12 +84,11 @@ export default function ProductListPage({
                               description={productList.description}
                               imageSrc={
                                  productList.image
-                                    ? `${STRAPI_ORIGIN}${productList.image.url}`
+                                    ? // ? `${STRAPI_ORIGIN}${productList.image.url}`
+                                      `${productList.image.url}`
                                     : undefined
                               }
-                              imageAlt={
-                                 productList.image?.alternativeText || undefined
-                              }
+                              imageAlt={productList.image?.alt || undefined}
                            />
                         );
                      }
