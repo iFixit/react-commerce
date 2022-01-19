@@ -132,7 +132,6 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
       <LinkBox
          bg="white"
          borderRadius="lg"
-         overflow="hidden"
          boxShadow="base"
          _hover={{
             boxShadow: 'md',
@@ -170,6 +169,11 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   display="flex"
                   alignItems="center"
                   flexGrow={1}
+                  outline="none"
+                  borderRadius="lg"
+                  _focus={{
+                     boxShadow: 'outline',
+                  }}
                >
                   <Heading as="h2" fontSize="sm">
                      {category.title}
