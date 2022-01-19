@@ -31,6 +31,7 @@ export interface ProductListChild {
    handle: string;
    title: string;
    image: ProductListImage | null;
+   sortPriority: number | null;
 }
 
 export interface ProductListImage {

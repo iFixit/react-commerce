@@ -54,8 +54,11 @@ export async function getProductListByHandle(
             ? null
             : getImageFromStrapiImage(productListImageAttributes, 'large'),
       ancestors: createProductListAncestors(productList.parent),
-      children: filterNullableItems(
-         productList.children?.data.map(createProductListChild)
+      // Strapi sort order is case sensitive, so we need to improve on it in memory
+      children: sortProductListChildren(
+         filterNullableItems(
+            productList.children?.data.map(createProductListChild)
+         )
       ),
       sections: filterNullableItems(
          productList.sections.map(createProductListSection)
@@ -169,7 +172,22 @@ function createProductListChild(
          imageAttributes == null
             ? null
             : getImageFromStrapiImage(imageAttributes, 'medium'),
+      sortPriority: attributes.sortPriority || null,
    };
+}
+
+function sortProductListChildren(
+   children: ProductListChild[]
+): ProductListChild[] {
+   return children.slice().sort((a, b) => {
+      const aPriority = a.sortPriority || 0;
+      const bPriority = b.sortPriority || 0;
+
+      if (aPriority === bPriority) {
+         return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+      }
+      return bPriority - aPriority;
+   });
 }
 
 type ApiProductListSection = NonNullable<ApiProductList['sections']>[0];
