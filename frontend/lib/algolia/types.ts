@@ -39,19 +39,24 @@ export interface FacetOption {
    filteredHitCount: number;
 }
 
-export type Filter = FacetFilter | RangeFilter;
+export type Filter = ListFilter | RangeFilter;
 
 interface AbstractFilter {
    id: string;
 }
 
-export interface FacetFilter extends AbstractFilter {
-   type: 'facet';
+export enum FilterType {
+   List = 'list',
+   Range = 'range',
+}
+
+export interface ListFilter extends AbstractFilter {
+   type: FilterType.List;
    selectedOptions: string[];
 }
 
 export interface RangeFilter extends AbstractFilter {
-   type: 'range';
+   type: FilterType.Range;
    min?: number;
    max?: number;
 }
