@@ -1328,6 +1328,7 @@ export type GetProductListQuery = {
          attributes?: Maybe<{
             __typename?: 'ProductList';
             handle: string;
+            deviceTitle?: Maybe<string>;
             title: string;
             tagline?: Maybe<string>;
             description: string;
@@ -2423,6 +2424,7 @@ export const GetProductListDocument = `
       id
       attributes {
         handle
+        deviceTitle
         title
         tagline
         description

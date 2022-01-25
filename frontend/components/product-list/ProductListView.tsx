@@ -17,6 +17,7 @@ import snakeCase from 'lodash/snakeCase';
 import NextLink from 'next/link';
 import { MetaTags } from './MetaTags';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
+import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
 import {
    BannerSection,
    FeaturedProductListSection,
@@ -54,45 +55,7 @@ export function ProductListView({
                   overflow="hidden"
                >
                   <ProductListBreadcrumb productList={productList} />
-                  <Flex
-                     h="full"
-                     align="stretch"
-                     borderLeftWidth={{
-                        base: '1px',
-                        md: '0',
-                     }}
-                     bg="white"
-                  >
-                     <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
-                     <SecondaryNavbarItem>
-                        <NextLink
-                           href={
-                              isRootProductList
-                                 ? `${IFIXIT_ORIGIN}/Guide`
-                                 : `${IFIXIT_ORIGIN}/Device/${snakeCase(
-                                      productList.handle
-                                   )}`
-                           }
-                           passHref
-                        >
-                           <SecondaryNavbarLink>Guides</SecondaryNavbarLink>
-                        </NextLink>
-                     </SecondaryNavbarItem>
-                     <SecondaryNavbarItem>
-                        <NextLink
-                           href={
-                              isRootProductList
-                                 ? `${IFIXIT_ORIGIN}/Answers`
-                                 : `${IFIXIT_ORIGIN}/Answers/Device/${snakeCase(
-                                      productList.handle
-                                   )}`
-                           }
-                           passHref
-                        >
-                           <SecondaryNavbarLink>Answers</SecondaryNavbarLink>
-                        </NextLink>
-                     </SecondaryNavbarItem>
-                  </Flex>
+                  <ProductListDeviceNavigation productList={productList} />
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>

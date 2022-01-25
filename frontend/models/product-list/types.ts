@@ -11,6 +11,7 @@ export interface ProductSearchHit {
 
 export interface ProductList {
    handle: string;
+   deviceTitle: string | null;
    title: string;
    tagline: string | null;
    description: string;
