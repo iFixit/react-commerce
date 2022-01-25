@@ -1,4 +1,4 @@
-import { Awaited, ObjectLiteral } from '@lib/utils';
+import { Awaited, ObjectLiteral } from '@helpers/application-helpers';
 import { SearchIndex } from 'algoliasearch/lite';
 
 export interface SearchContext<Hit = any> {

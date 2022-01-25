@@ -199,13 +199,13 @@
       {
         "__component": "menu.link",
         "name": "Tools",
-        "url": "/collections/tools",
+        "url": "/store/tools",
         "description": "Shop our wide selection of precision tools."
       },
       {
         "__component": "menu.link",
         "name": "Parts",
-        "url": "/collections/parts",
+        "url": "/store/parts",
         "description": "Shop parts backed by our quality guarantee."
       },
       {

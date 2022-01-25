@@ -1,0 +1,12 @@
+query getStoreList {
+   stores(pagination: { pageSize: 100 }) {
+      data {
+         attributes {
+            code
+            name
+            url
+            currency
+         }
+      }
+   }
+}
