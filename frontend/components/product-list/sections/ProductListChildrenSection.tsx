@@ -41,6 +41,8 @@ export function ProductListChildrenSection({
       md: 12,
    });
 
+   console.log(productListChildren);
+
    const visibleCategories = React.useMemo(() => {
       return productListChildren.slice(0, visibleCategoriesCount);
    }, [productListChildren, visibleCategoriesCount]);
@@ -79,7 +81,14 @@ export function ProductListChildrenSection({
                spacing="4"
             >
                {visibleCategories.map((child) => {
-                  return <CategoryLink key={child.handle} category={child} />;
+                  return (
+                     <ProductListPreviewLink
+                        key={child.handle}
+                        title={child.title}
+                        handle={child.handle}
+                        image={child.image}
+                     />
+                  );
                })}
             </SimpleGrid>
             {hiddenCategories.length > 0 && (
@@ -95,7 +104,12 @@ export function ProductListChildrenSection({
                   >
                      {hiddenCategories.map((child) => {
                         return (
-                           <CategoryLink key={child.handle} category={child} />
+                           <ProductListPreviewLink
+                              key={child.handle}
+                              title={child.title}
+                              handle={child.handle}
+                              image={child.image}
+                           />
                         );
                      })}
                   </SimpleGrid>
@@ -123,11 +137,20 @@ export function ProductListChildrenSection({
    );
 }
 
-interface CategoryLinkProps {
-   category: ProductListChild;
+export interface ProductListPreviewLinkProps {
+   title: string;
+   handle: string;
+   image?: {
+      url: string;
+      alt?: string;
+   } | null;
 }
 
-const CategoryLink = ({ category }: CategoryLinkProps) => {
+export const ProductListPreviewLink = ({
+   title,
+   handle,
+   image,
+}: ProductListPreviewLinkProps) => {
    return (
       <LinkBox
          bg="white"
@@ -140,7 +163,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
          transition="all 300ms"
       >
          <Flex h="full" direction="row" align="center" justifyContent="center">
-            {category.image && (
+            {image && (
                <Flex
                   align="center"
                   justify="center"
@@ -151,8 +174,8 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   position="relative"
                >
                   <Image
-                     src={category.image.url}
-                     alt={category.image.alt}
+                     src={image.url}
+                     alt={image.alt}
                      objectFit="contain"
                      layout="fill"
                      sizes="20vw"
@@ -161,7 +184,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                </Flex>
             )}
             <Divider orientation="vertical" />
-            <NextLink href={`/store/${category.handle}`} passHref>
+            <NextLink href={`/store/${handle}`} passHref>
                <LinkOverlay
                   px="3"
                   py="2"
@@ -172,7 +195,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   flexGrow={1}
                >
                   <Heading as="h2" fontSize="sm">
-                     {category.title}
+                     {title}
                   </Heading>
                </LinkOverlay>
             </NextLink>

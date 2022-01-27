@@ -21,6 +21,7 @@
          "@helpers/*": ["helpers/*"],
          "@models/*": ["models/*"],
          "@components/*": ["components/*"],
+         "@images/*": ["public/images/*"],
          "testUtils": ["./test/utils/testUtils"]
       },
       "types": ["cypress", "@testing-library/cypress"]
