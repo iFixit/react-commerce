@@ -1,14 +1,16 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { BrowseSection } from './BrowseSection';
 import { HeroSection } from './HeroSection';
+import { WorkbenchSection } from './WorkbenchSection';
 
 export interface StoreHomeViewProps {}
 
 export function StoreHomeView({}: StoreHomeViewProps) {
    return (
-      <Flex direction="column">
+      <Box>
          <HeroSection />
          <BrowseSection />
-      </Flex>
+         <WorkbenchSection />
+      </Box>
    );
 }
