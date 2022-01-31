@@ -17,7 +17,7 @@
     "start:frontend": "cd frontend && npm run start",
     "start": "cross-env FORCE_COLOR=1 npm-run-all -l -p start:*",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm run install:backend && npm run install:frontend",
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
     "install:backend": "cd backend && npm install",
     "install:frontend": "cd frontend && npm install",
     "transform-svg": "cd frontend && npm run transform-svg"
