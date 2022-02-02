@@ -13,6 +13,8 @@ export function WorkbenchSection() {
                borderColor="blue.500"
                borderWidth="1px"
                borderRadius="lg"
+               justifyContent="space-between"
+               overflow="hidden"
             >
                <VStack align="flex-start" p="7">
                   <Heading
@@ -24,7 +26,7 @@ export function WorkbenchSection() {
                      Your Workbench
                   </Heading>
                   <Text color="gray.800">
-                     Discover parts guaranteed to be compatible with youra{' '}
+                     Discover parts guaranteed to be compatible with your{' '}
                      <strong>iPhone8</strong>
                   </Text>
                   <Button colorScheme="brand">Shop now</Button>
