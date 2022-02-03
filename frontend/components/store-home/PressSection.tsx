@@ -60,9 +60,12 @@ export function PressSection({ data }: PressSectionProps) {
                   sx={{
                      '.slick-slider': {
                         '.slick-slide': {
+                           cursor: 'pointer',
                            opacity: 0.4,
+                           transition: 'opacity 500ms ease-in-out',
                         },
                         '.slick-slide.slick-current': {
+                           cursor: 'default',
                            opacity: 1,
                         },
                      },

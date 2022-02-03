@@ -8,6 +8,7 @@ import {
 import storeHomeHeroImage from '@images/store-home-hero.jpeg';
 import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
 import storeHomeContentImage1 from '@images/store-home-content-1.jpg';
+import storeHomeContentImage2 from '@images/store-home-content-2.jpg';
 import pressLogo1 from '@images/9to5.svg';
 
 function genId() {
@@ -159,7 +160,7 @@ export async function getPageByPath(path: string): Promise<Page> {
                alternativeText: '',
                formats: {},
             },
-            imagePosition: SplitImagePosition.Left,
+            imagePosition: SplitImagePosition.Right,
          },
          {
             type: PageSectionType.Press,
@@ -218,11 +219,31 @@ export async function getPageByPath(path: string): Promise<Page> {
          {
             type: PageSectionType.SplitWithImageContent,
             id: genId(),
-            title: 'Fix Kits for Every repair',
-            description:
-               "Our comprehensive kits have everything you need to replace your own battery, upgrade your RAM, swap in a SSD, or anything else you need to fix. Plus, we've got a step-by-step repair guide for every kit.",
+            title: 'The Most Comprehensive Electronics Toolkit',
+            description: `Our flagship Pro Tech Toolkit is all you need for most repairs. Armed with the data from hundreds of teardowns and thousands of repair guides, our engineers built the most effective toolkits for your practical repair needs.
+
+               We’ve engineered this toolkit from the ground up—from the custom opening tools and spudgers to the iFixit-designed aluminum driver with knurled handle and swivel top.
+               `,
             callToAction: {
-               title: 'Refresh your battery',
+               title: 'Get Your Own Pro Tech',
+               type: NavigationActionType.InternalLink,
+               url: '/store/parts',
+            },
+            image: {
+               url: storeHomeContentImage2.src,
+               alternativeText: '',
+               formats: {},
+            },
+            imagePosition: SplitImagePosition.Left,
+         },
+         {
+            type: PageSectionType.SplitWithImageContent,
+            id: genId(),
+            title: 'All the tools you need to start your repair business.',
+            description: `Everything you need to start a repair business—in one handy messenger bag. Use these tools with the free technical training and business development resources on iFixit.com and you'll have a business fixing iPhones, iPads, iPods, Android smartphones like Samsung Galaxy and Google Pixel devices, iMacs, MacBook Pros, MacBook Airs, and much, much more.
+`,
+            callToAction: {
+               title: 'Level up Your Toolbox',
                type: NavigationActionType.InternalLink,
                url: '/store/parts',
             },
