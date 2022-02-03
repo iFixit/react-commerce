@@ -1,12 +1,11 @@
 import {
    Box,
    Button,
+   chakra,
    Collapse,
    Divider,
    Flex,
    Heading,
-   LinkBox,
-   LinkOverlay,
    SimpleGrid,
    Text,
    useBreakpointValue,
@@ -129,39 +128,51 @@ interface CategoryLinkProps {
 
 const CategoryLink = ({ category }: CategoryLinkProps) => {
    return (
-      <LinkBox
-         bg="white"
-         borderRadius="lg"
-         boxShadow="base"
-         _hover={{
-            boxShadow: 'md',
-         }}
-         transition="all 300ms"
-      >
-         <Flex h="full" direction="row" align="center" justifyContent="center">
-            {category.image && (
-               <Flex
-                  align="center"
-                  justify="center"
-                  flexBasis="80px"
-                  h="60px"
-                  flexGrow={0}
-                  flexShrink={0}
-                  position="relative"
-               >
-                  <Image
-                     src={category.image.url}
-                     alt={category.image.alt}
-                     objectFit="contain"
-                     layout="fill"
-                     sizes="20vw"
-                     priority
-                  />
-               </Flex>
-            )}
-            <Divider orientation="vertical" />
-            <NextLink href={`/store/${category.handle}`} passHref>
-               <LinkOverlay
+      <NextLink href={`/store/${category.handle}`} passHref>
+         <chakra.a
+            bg="white"
+            borderRadius="lg"
+            boxShadow="base"
+            _hover={{
+               boxShadow: 'md',
+            }}
+            transition="all 300ms"
+            outline="none"
+            overflow="hidden"
+            _focus={{
+               boxShadow: 'outline',
+            }}
+         >
+            <Flex
+               h="full"
+               direction="row"
+               align="center"
+               justifyContent="center"
+            >
+               {category.image && (
+                  <>
+                     <Flex
+                        align="center"
+                        justify="center"
+                        flexBasis="80px"
+                        h="60px"
+                        flexGrow={0}
+                        flexShrink={0}
+                        position="relative"
+                     >
+                        <Image
+                           src={category.image.url}
+                           alt={category.image.alt}
+                           objectFit="cover"
+                           layout="fill"
+                           sizes="20vw"
+                           priority
+                        />
+                     </Flex>
+                     <Divider orientation="vertical" />
+                  </>
+               )}
+               <Box
                   px="3"
                   py="2"
                   boxSizing="border-box"
@@ -169,18 +180,13 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   display="flex"
                   alignItems="center"
                   flexGrow={1}
-                  outline="none"
-                  borderRadius="lg"
-                  _focus={{
-                     boxShadow: 'outline',
-                  }}
                >
                   <Heading as="h2" fontSize="sm">
                      {category.title}
                   </Heading>
-               </LinkOverlay>
-            </NextLink>
-         </Flex>
-      </LinkBox>
+               </Box>
+            </Flex>
+         </chakra.a>
+      </NextLink>
    );
 };
