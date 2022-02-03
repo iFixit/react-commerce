@@ -1,26 +1,19 @@
 import {
    AspectRatio,
    Box,
-   Breadcrumb,
-   BreadcrumbItem,
-   BreadcrumbItemProps,
-   BreadcrumbLink,
    Button,
    chakra,
    Collapse,
    Flex,
    Heading,
    HStack,
-   Icon,
    Text,
    VStack,
 } from '@chakra-ui/react';
 import { useSearchParams } from '@lib/algolia';
 import { ProductList } from '@models/product-list';
 import Image from 'next/image';
-import NextLink from 'next/link';
 import * as React from 'react';
-import { HiChevronRight } from 'react-icons/hi';
 import snarkdown from 'snarkdown';
 
 interface MarkdownProps {
@@ -50,19 +43,6 @@ export function HeroSection({ productList }: HeroSectionProps) {
    return (
       <HStack align="flex-start" spacing="10">
          <VStack flex={1} align="flex-start">
-            {productList.ancestors.length > 0 && (
-               <HeroBreadcrumb>
-                  {productList.ancestors.map((ancestor) => (
-                     <HeroBreadcrumbLink
-                        key={ancestor.handle}
-                        href={`/store/${ancestor.handle}`}
-                     >
-                        {ancestor.title}
-                     </HeroBreadcrumbLink>
-                  ))}
-                  <HeroBreadcrumbItem>{productList.title}</HeroBreadcrumbItem>
-               </HeroBreadcrumb>
-            )}
             {!hasDescription &&
             productList.image != null &&
             searchParams.page === 1 ? (
@@ -266,47 +246,3 @@ const HeroBackgroundImage = chakra(
       );
    }
 );
-
-type HeroBreadcrumbProps = React.PropsWithChildren<unknown>;
-
-const HeroBreadcrumb = ({ children }: HeroBreadcrumbProps) => {
-   return (
-      <Breadcrumb
-         spacing={2}
-         px={{ base: 6, sm: 0 }}
-         separator={<Icon as={HiChevronRight} color="gray.300" />}
-      >
-         {children}
-      </Breadcrumb>
-   );
-};
-
-type HeroBreadcrumbLinkProps = React.PropsWithChildren<
-   BreadcrumbItemProps & {
-      href: string;
-   }
->;
-
-const HeroBreadcrumbLink = ({
-   href,
-   children,
-   ...otherProps
-}: HeroBreadcrumbLinkProps) => {
-   return (
-      <BreadcrumbItem {...otherProps}>
-         <NextLink href={href} passHref>
-            <BreadcrumbLink color="gray">{children}</BreadcrumbLink>
-         </NextLink>
-      </BreadcrumbItem>
-   );
-};
-
-type HeroBreadcrumbItemProps = React.PropsWithChildren<unknown>;
-
-const HeroBreadcrumbItem = ({ children }: HeroBreadcrumbItemProps) => {
-   return (
-      <BreadcrumbItem isCurrentPage>
-         <Text color="black">{children}</Text>
-      </BreadcrumbItem>
-   );
-};

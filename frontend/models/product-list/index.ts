@@ -44,6 +44,7 @@ export async function getProductListByHandle(
    const productListImageAttributes = productList.image?.data?.attributes;
    return {
       handle: productList.handle,
+      deviceTitle: productList.deviceTitle || null,
       title: productList.title,
       tagline: productList.tagline || null,
       description: productList.description,

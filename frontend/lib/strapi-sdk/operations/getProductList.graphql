@@ -8,6 +8,7 @@ query getProductList($filters: ProductListFiltersInput) {
          id
          attributes {
             handle
+            deviceTitle
             title
             tagline
             description
