@@ -55,6 +55,7 @@
       "react-dom": "17.0.2",
       "react-fast-compare": "3.2.0",
       "react-icons": "4.2.0",
+      "react-slick": "0.28.1",
       "react-virtualized-auto-sizer": "1.0.5",
       "react-window": "1.8.6",
       "snarkdown": "2.0.0"
@@ -72,6 +73,7 @@
       "@types/jest": "26.0.20",
       "@types/node": "14.14.25",
       "@types/react": "17.0.1",
+      "@types/react-slick": "0.23.8",
       "@types/react-virtualized-auto-sizer": "1.0.1",
       "@types/react-window": "1.8.4",
       "@types/shopify-buy": "2.10.5",

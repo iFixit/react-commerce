@@ -10,6 +10,7 @@ export enum PageSectionType {
    SplitWithImageContent = 'SplitWithImageContent',
    Stats = 'Stats',
    Workbench = 'Workbench',
+   Press = 'Press',
 }
 
 export type PageSection =
@@ -17,14 +18,15 @@ export type PageSection =
    | HeroSection
    | SplitWithImageContentSection
    | StatsSection
-   | WorkbenchSection;
+   | WorkbenchSection
+   | PressSection;
 
 export interface HeroSection {
    type: PageSectionType.Hero;
    id: string;
    title: string | null;
    description: string | null;
-   callToAction: PageAction | null;
+   callToAction: NavigationAction | null;
    image: CMSImage | null;
 }
 
@@ -48,9 +50,14 @@ export interface SplitWithImageContentSection {
    id: string;
    title: string | null;
    description: string | null;
-   callToAction: PageAction | null;
+   callToAction: NavigationAction | null;
    image: CMSImage | null;
-   imagePosition: 'left' | 'right';
+   imagePosition: SplitImagePosition;
+}
+
+export enum SplitImagePosition {
+   Left = 'left',
+   Right = 'right',
 }
 
 export interface WorkbenchSection {
@@ -69,21 +76,36 @@ interface Stat {
    label: string;
 }
 
-export type PageAction = InternalLinkAction | ExternalLinkAction;
+export interface PressSection {
+   type: PageSectionType.Press;
+   id: string;
+   title: string | null;
+   description: string | null;
+   callToAction: NavigationAction | null;
+   quotes: PressQuote[];
+}
+
+interface PressQuote {
+   name: string | null;
+   logo: CMSImage | null;
+   text: string | null;
+}
+
+export type NavigationAction = InternalLinkAction | ExternalLinkAction;
 
 export interface InternalLinkAction {
-   type: PageActionType.InternalLink;
+   type: NavigationActionType.InternalLink;
    title: string;
    url: string;
 }
 
 export interface ExternalLinkAction {
-   type: PageActionType.ExternalLink;
+   type: NavigationActionType.ExternalLink;
    title: string;
    url: string;
 }
 
-export enum PageActionType {
+export enum NavigationActionType {
    InternalLink = 'InternalLink',
    ExternalLink = 'ExternalLink',
 }

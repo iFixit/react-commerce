@@ -1,8 +1,14 @@
 export * from './types';
-import { Page, PageActionType, PageSectionType } from './types';
+import {
+   Page,
+   NavigationActionType,
+   PageSectionType,
+   SplitImagePosition,
+} from './types';
 import storeHomeHeroImage from '@images/store-home-hero.jpeg';
 import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
 import storeHomeContentImage1 from '@images/store-home-content-1.jpg';
+import pressLogo1 from '@images/9to5.svg';
 
 function genId() {
    return (
@@ -22,7 +28,7 @@ export async function getPageByPath(path: string): Promise<Page> {
             title: 'For You and Your Favorite Fixers',
             description: 'Our best sale of the year with exclusive bundles.',
             callToAction: {
-               type: PageActionType.InternalLink,
+               type: NavigationActionType.InternalLink,
                title: 'Save now',
                url: '/store/parts',
             },
@@ -145,7 +151,7 @@ export async function getPageByPath(path: string): Promise<Page> {
                "Our comprehensive kits have everything you need to replace your own battery, upgrade your RAM, swap in a SSD, or anything else you need to fix. Plus, we've got a step-by-step repair guide for every kit.",
             callToAction: {
                title: 'Refresh your battery',
-               type: PageActionType.InternalLink,
+               type: NavigationActionType.InternalLink,
                url: '/store/parts',
             },
             image: {
@@ -153,7 +159,79 @@ export async function getPageByPath(path: string): Promise<Page> {
                alternativeText: '',
                formats: {},
             },
-            imagePosition: 'left',
+            imagePosition: SplitImagePosition.Left,
+         },
+         {
+            type: PageSectionType.Press,
+            id: genId(),
+            title: 'Praise from the Press',
+            description:
+               'How shall we sing the praises of the dedicated team of lunatics over at iFixit?',
+            callToAction: {
+               type: NavigationActionType.InternalLink,
+               title: 'See more',
+               url: 'https://ifixit.com/Quotes',
+            },
+            quotes: [
+               {
+                  logo: {
+                     url: pressLogo1.src,
+                     alternativeText: '',
+                     formats: {},
+                  },
+                  name: '9to5Mac',
+                  text:
+                     'iFixit is the best way to get the parts you need to fix your device.',
+               },
+               {
+                  logo: {
+                     url: pressLogo1.src,
+                     alternativeText: '',
+                     formats: {},
+                  },
+                  name: 'iMore',
+                  text:
+                     'iFixit is the best way to get the parts you need to fix your device.',
+               },
+               {
+                  logo: {
+                     url: pressLogo1.src,
+                     alternativeText: '',
+                     formats: {},
+                  },
+                  name: 'Inc.',
+                  text:
+                     'iFixit is the best way to get the parts you need to fix your device.',
+               },
+               {
+                  logo: {
+                     url: pressLogo1.src,
+                     alternativeText: '',
+                     formats: {},
+                  },
+                  name: 'MacRumors',
+                  text:
+                     'iFixit is the best way to get the parts you need to fix your device.',
+               },
+            ],
+         },
+         {
+            type: PageSectionType.SplitWithImageContent,
+            id: genId(),
+            title: 'Fix Kits for Every repair',
+            description:
+               "Our comprehensive kits have everything you need to replace your own battery, upgrade your RAM, swap in a SSD, or anything else you need to fix. Plus, we've got a step-by-step repair guide for every kit.",
+            callToAction: {
+               title: 'Refresh your battery',
+               type: NavigationActionType.InternalLink,
+               url: '/store/parts',
+            },
+            image: {
+               url: storeHomeContentImage1.src,
+               alternativeText: '',
+               formats: {},
+            },
+            imagePosition: SplitImagePosition.Right,
          },
       ],
    };

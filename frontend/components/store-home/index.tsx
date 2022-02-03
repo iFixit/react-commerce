@@ -3,6 +3,7 @@ import { assertNever } from '@helpers/application-helpers';
 import { Page, PageSectionType } from '@models/page';
 import { BrowseSection } from './BrowseSection';
 import { HeroSection } from './HeroSection';
+import { PressSection } from './PressSection';
 import { SplitWithImageContentSection } from './SplitWithImageContentSection';
 import { StatsSection } from './StatsSection';
 import { WorkbenchSection } from './WorkbenchSection';
@@ -35,6 +36,9 @@ export function StoreHomeView({ page }: StoreHomeViewProps) {
                         data={section}
                      />
                   );
+               }
+               case PageSectionType.Press: {
+                  return <PressSection key={section.id} data={section} />;
                }
                default:
                   return assertNever(section);
