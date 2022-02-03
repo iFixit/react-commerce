@@ -14,7 +14,7 @@ You can run the backend both using SQLite and using Postgres with docker compose
 This command will install both backend and frontend dependencies:
 
 ```sh
-npm install
+npm run install:all
 ```
 
 ### Dev server
