@@ -8,7 +8,7 @@ export function HeroSection() {
       <Box as="section" position="relative" w="full">
          <Box position="absolute" zIndex={-2} w="full" h="full">
             <Image
-               src={storeHomeHeroImage}
+               src={storeHomeHeroImage.src}
                alt="store hero image"
                priority
                layout="fill"

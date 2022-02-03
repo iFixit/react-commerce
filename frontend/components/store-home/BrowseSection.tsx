@@ -115,7 +115,7 @@ export function BrowseSection({}: BrowseSectionProps) {
                   <Heading
                      as="h2"
                      fontFamily="Archivo Black"
-                     size="xl"
+                     size="lg"
                      color="white"
                   >
                      What are you fixing?

@@ -56,7 +56,7 @@ function Stats({ number, helpText }: StatsProps) {
          <StatNumber color="blue.500" fontSize="3xl">
             {number}
          </StatNumber>
-         <StatHelpText>{helpText}</StatHelpText>
+         <StatHelpText m="0">{helpText}</StatHelpText>
       </Stat>
    );
 }

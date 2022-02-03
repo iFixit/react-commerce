@@ -1,5 +1,6 @@
 import { Layout } from '@components/common';
 import { StoreHomeView } from '@components/store-home';
+import { getPageByPath, Page } from '@models/page';
 import {
    getStoreByCode,
    getStoreList,
@@ -12,6 +13,7 @@ import * as React from 'react';
 interface PageProps {
    stores: StoreListItem[];
    currentStore: Store;
+   page: Page;
 }
 
 // This constant should probably be a field of the store model (editable from CMS)
@@ -27,21 +29,23 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       'public, s-maxage=10, stale-while-revalidate=600'
    );
 
-   const [stores, currentStore] = await Promise.all([
+   const [stores, currentStore, page] = await Promise.all([
       getStoreList(),
       getStoreByCode('us'),
+      getPageByPath('/store'),
    ]);
 
    return {
       props: {
          currentStore,
          stores,
+         page,
       },
    };
 };
 
-const StoreHomePage: NextPageWithLayout<PageProps> = ({}) => {
-   return <StoreHomeView />;
+const StoreHomePage: NextPageWithLayout<PageProps> = ({ page }) => {
+   return <StoreHomeView page={page} />;
 };
 
 StoreHomePage.getLayout = function getLayout(page, pageProps) {
