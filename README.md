@@ -25,7 +25,7 @@ The `frontend` directory is structured as follows:
 This command will install both backend and frontend dependencies:
 
 ```sh
-npm install
+npm run install:all
 ```
 
 ### Dev server
