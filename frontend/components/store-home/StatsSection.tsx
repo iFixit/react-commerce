@@ -5,9 +5,14 @@ import {
    StatHelpText,
    StatNumber,
 } from '@chakra-ui/react';
+import { StatsSection as SectionData } from '@models/page';
 import { PageContentWrapper } from './PageContentWrapper';
 
-export function StatsSection() {
+export interface StatsSectionProps {
+   data: SectionData;
+}
+
+export function StatsSection({ data: { stats } }: StatsSectionProps) {
    return (
       <Box
          as="section"
@@ -27,10 +32,13 @@ export function StatsSection() {
                spacing="10"
                py="10"
             >
-               <Stats number="76.834" helpText="Free manuals" />
-               <Stats number="181.097" helpText="Solutions" />
-               <Stats number="34.672" helpText="Devices" />
-               <Stats number="2M+" helpText="Product sale/Year" />
+               {stats.map((stat, index) => (
+                  <Stats
+                     key={index}
+                     number={stat.number}
+                     helpText={stat.label}
+                  />
+               ))}
             </SimpleGrid>
          </PageContentWrapper>
       </Box>

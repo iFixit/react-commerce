@@ -1,22 +1,25 @@
-import { Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, VStack } from '@chakra-ui/react';
 import {
    SplitImagePosition,
    SplitWithImageContentSection as SectionData,
 } from '@models/page';
 import Image from 'next/image';
 import { PageContentWrapper } from './PageContentWrapper';
+import { SectionDescription } from './SectionDescription';
+import { SectionHeading } from './SectionHeading';
+import NextLink from 'next/link';
 
 export interface SplitWithImageContentSectionProps {
    data: SectionData;
 }
 
 export function SplitWithImageContentSection({
-   data,
+   data: { title, description, image, imagePosition, callToAction },
 }: SplitWithImageContentSectionProps) {
-   const isImageLeft = data.imagePosition === SplitImagePosition.Left;
+   const isImageLeft = imagePosition === SplitImagePosition.Left;
    return (
       <Box as="section" position="relative" w="full">
-         {data.image && (
+         {image && (
             <Box
                w="50%"
                position="absolute"
@@ -24,7 +27,7 @@ export function SplitWithImageContentSection({
                right={isImageLeft ? undefined : '0'}
             >
                <Image
-                  src={data.image.url}
+                  src={image.url}
                   alt="store hero image"
                   priority
                   layout="fill"
@@ -42,23 +45,14 @@ export function SplitWithImageContentSection({
                   pl={isImageLeft ? '32' : undefined}
                   pr={isImageLeft ? undefined : '32'}
                >
-                  {data.title && (
-                     <Heading as="h2" fontFamily="Archivo Black" size="lg">
-                        {data.title}
-                     </Heading>
-                  )}
-                  {data.description && (
-                     <Text
-                        color="gray.600"
-                        dangerouslySetInnerHTML={{
-                           __html: data.description,
-                        }}
-                     />
-                  )}
-                  {data.callToAction && (
-                     <Button colorScheme="brand">
-                        {data.callToAction.title}
-                     </Button>
+                  {title && <SectionHeading>{title}</SectionHeading>}
+                  {description && <SectionDescription richText={description} />}
+                  {callToAction && (
+                     <NextLink href={callToAction.url} passHref prefetch>
+                        <Button as="a" colorScheme="brand">
+                           {callToAction.title}
+                        </Button>
+                     </NextLink>
                   )}
                </VStack>
             </Flex>

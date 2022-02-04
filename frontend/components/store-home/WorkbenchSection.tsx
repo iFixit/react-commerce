@@ -1,7 +1,8 @@
-import { Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
 import storeHomeWorkbenchPatternImage from '@images/store-home-workbench-pattern.png';
 import Image from 'next/image';
 import { PageContentWrapper } from './PageContentWrapper';
+import { SectionHeading } from './SectionHeading';
 
 export function WorkbenchSection() {
    return (
@@ -17,14 +18,9 @@ export function WorkbenchSection() {
                overflow="hidden"
             >
                <VStack align="flex-start" p="7">
-                  <Heading
-                     as="h2"
-                     fontFamily="Archivo Black"
-                     size="lg"
-                     color="blue.500"
-                  >
+                  <SectionHeading color="blue.500">
                      Your Workbench
-                  </Heading>
+                  </SectionHeading>
                   <Text color="gray.800">
                      Discover parts guaranteed to be compatible with your{' '}
                      <strong>iPhone8</strong>

@@ -11,6 +11,7 @@ export enum PageSectionType {
    Stats = 'Stats',
    Workbench = 'Workbench',
    Press = 'Press',
+   FeaturedProductList = 'FeaturedProductList',
 }
 
 export type PageSection =
@@ -19,7 +20,8 @@ export type PageSection =
    | SplitWithImageContentSection
    | StatsSection
    | WorkbenchSection
-   | PressSection;
+   | PressSection
+   | FeaturedProductListSection;
 
 export interface HeroSection {
    type: PageSectionType.Hero;
@@ -35,7 +37,7 @@ export interface BrowseSection {
    id: string;
    title: string | null;
    description: string | null;
-   featuredProductList: FeaturedProductList[];
+   featuredProductLists: FeaturedProductList[];
    image: CMSImage | null;
 }
 
@@ -89,6 +91,14 @@ interface PressQuote {
    name: string | null;
    logo: CMSImage | null;
    text: string | null;
+}
+
+export interface FeaturedProductListSection {
+   type: PageSectionType.FeaturedProductList;
+   id: string;
+   title: string | null;
+   description: string | null;
+   productListHandle: string | null;
 }
 
 export type NavigationAction = InternalLinkAction | ExternalLinkAction;

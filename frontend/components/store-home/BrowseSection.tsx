@@ -12,83 +12,20 @@ import {
 } from '@chakra-ui/react';
 import { ProductListPreviewLink } from '@components/product-list';
 import { IFIXIT_ORIGIN } from '@config/env';
-import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
+import { BrowseSection as SectionData } from '@models/page';
 import Image from 'next/image';
 import { RiSearchLine } from 'react-icons/ri';
 import { PageContentWrapper } from './PageContentWrapper';
+import { SectionDescription } from './SectionDescription';
+import { SectionHeading } from './SectionHeading';
 
-// To be replaced with content from CMS
-const featuredProductLists = [
-   {
-      handle: 'pc-desktop',
-      title: 'PC Desktop Parts',
-      image: null,
-   },
-   {
-      handle: 'amazon-kindle',
-      title: 'Amazon Kindle Parts',
-      image: null,
-   },
-   {
-      handle: 'vacuum',
-      title: 'Vacuum Parts',
-      image: null,
-   },
-   {
-      handle: 'smart-home-devices',
-      title: 'Smart Home Devices Parts',
-      image: null,
-   },
-   {
-      handle: 'dell-laptop',
-      title: 'Dell Laptop Parts',
-      image: null,
-   },
-   {
-      handle: 'sony-laptop',
-      title: 'Sony Laptop Parts',
-      image: null,
-   },
-   {
-      handle: 'hp-laptop',
-      title: 'HP Laptop Parts',
-      image: null,
-   },
-   {
-      handle: 'samsung-laptop',
-      title: 'Samsung Laptop Parts',
-      image: null,
-   },
-   {
-      handle: 'microsoft-surfce-parts',
-      title: 'Microsoft Surface Parts',
-      image: null,
-   },
-   {
-      handle: 'samsung-television',
-      title: 'Samsung Television Parts',
-      image: null,
-   },
-   {
-      handle: 'lumia-phone',
-      title: 'Lumia Phone Parts',
-      image: null,
-   },
-   {
-      handle: 'apple-watch',
-      title: 'Apple Watch Parts',
-      image: null,
-   },
-   {
-      handle: 'drone',
-      title: 'Drone Parts',
-      image: null,
-   },
-];
+export interface BrowseSectionProps {
+   data: SectionData;
+}
 
-export interface BrowseSectionProps {}
-
-export function BrowseSection({}: BrowseSectionProps) {
+export function BrowseSection({
+   data: { title, description, image, featuredProductLists },
+}: BrowseSectionProps) {
    return (
       <Flex as="section" direction="column" mb="16">
          <Box position="relative" w="full">
@@ -100,30 +37,35 @@ export function BrowseSection({}: BrowseSectionProps) {
                h="full"
                opacity={0.8}
             />
-            <Box position="absolute" bg="green" zIndex={-2} w="full" h="full">
-               <Image
-                  src={storeHomeSearchImage}
-                  alt="store search image"
-                  priority
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="center"
-               />
-            </Box>
+            {image && (
+               <Box
+                  position="absolute"
+                  bg="green"
+                  zIndex={-2}
+                  w="full"
+                  h="full"
+               >
+                  <Image
+                     src={image.url}
+                     alt="store search image"
+                     priority
+                     layout="fill"
+                     objectFit="cover"
+                     objectPosition="center"
+                  />
+               </Box>
+            )}
             <PageContentWrapper py="16">
                <VStack align="center">
-                  <Heading
-                     as="h2"
-                     fontFamily="Archivo Black"
-                     size="lg"
-                     color="white"
-                  >
-                     What are you fixing?
-                  </Heading>
-                  <Text color="blue.100">
-                     Search from hundreds of devices and thousands of
-                     replacement parts
-                  </Text>
+                  {title && (
+                     <SectionHeading color="white">{title}</SectionHeading>
+                  )}
+                  {description && (
+                     <SectionDescription
+                        richText={description}
+                        color="blue.100"
+                     />
+                  )}
                </VStack>
             </PageContentWrapper>
          </Box>

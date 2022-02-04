@@ -1,20 +1,31 @@
-import { Box, Button, Heading, Text, VStack } from '@chakra-ui/react';
-import storeHomeHeroImage from '@images/store-home-hero.jpeg';
+import { Box, Button, VStack } from '@chakra-ui/react';
+import { HeroSection as SectionData } from '@models/page';
 import Image from 'next/image';
+import NextLink from 'next/link';
 import { PageContentWrapper } from './PageContentWrapper';
+import { SectionDescription } from './SectionDescription';
+import { SectionHeading } from './SectionHeading';
 
-export function HeroSection() {
+export interface HeroSectionProps {
+   data: SectionData;
+}
+
+export function HeroSection({
+   data: { title, description, image, callToAction },
+}: HeroSectionProps) {
    return (
       <Box as="section" position="relative" w="full">
-         <Box position="absolute" zIndex={-2} w="full" h="full">
-            <Image
-               src={storeHomeHeroImage.src}
-               alt="store hero image"
-               priority
-               layout="fill"
-               objectFit="cover"
-            />
-         </Box>
+         {image && (
+            <Box position="absolute" zIndex={-2} w="full" h="full">
+               <Image
+                  src={image.url}
+                  alt="store hero image"
+                  priority
+                  layout="fill"
+                  objectFit="cover"
+               />
+            </Box>
+         )}
          <Box
             position="absolute"
             zIndex={-1}
@@ -24,18 +35,17 @@ export function HeroSection() {
          />
          <PageContentWrapper py="16">
             <VStack align="flex-start">
-               <Heading
-                  as="h2"
-                  fontFamily="Archivo Black"
-                  size="xl"
-                  color="white"
-               >
-                  For You and <br /> Your Favorite Fixers
-               </Heading>
-               <Text color="blue.100">
-                  Our best sale of the year with exclusive bundles.
-               </Text>
-               <Button colorScheme="brand">Save now</Button>
+               {title && <SectionHeading color="white">{title}</SectionHeading>}
+               {description && (
+                  <SectionDescription richText={description} color="blue.100" />
+               )}
+               {callToAction && (
+                  <NextLink href={callToAction.url} passHref prefetch>
+                     <Button as="a" colorScheme="brand">
+                        {callToAction.title}
+                     </Button>
+                  </NextLink>
+               )}
             </VStack>
          </PageContentWrapper>
       </Box>

@@ -50,7 +50,7 @@ export async function getPageByPath(path: string): Promise<Page> {
                alternativeText: '',
                formats: {},
             },
-            featuredProductList: [
+            featuredProductLists: [
                {
                   handle: 'pc-desktop',
                   title: 'PC Desktop Parts',
@@ -222,7 +222,7 @@ export async function getPageByPath(path: string): Promise<Page> {
             title: 'The Most Comprehensive Electronics Toolkit',
             description: `Our flagship Pro Tech Toolkit is all you need for most repairs. Armed with the data from hundreds of teardowns and thousands of repair guides, our engineers built the most effective toolkits for your practical repair needs.
 
-               We’ve engineered this toolkit from the ground up—from the custom opening tools and spudgers to the iFixit-designed aluminum driver with knurled handle and swivel top.
+               We've engineered this toolkit from the ground up—from the custom opening tools and spudgers to the iFixit-designed aluminum driver with knurled handle and swivel top.
                `,
             callToAction: {
                title: 'Get Your Own Pro Tech',
@@ -253,6 +253,13 @@ export async function getPageByPath(path: string): Promise<Page> {
                formats: {},
             },
             imagePosition: SplitImagePosition.Right,
+         },
+         {
+            type: PageSectionType.FeaturedProductList,
+            id: genId(),
+            title: 'Best Sellers',
+            description: `Not all parts or sellers are created equal. And sometimes it's hard to tell apart the good, the bad, and the inconsistent. We've spent more than a decade vetting sources and suppliers.`,
+            productListHandle: 'parts',
          },
       ],
    };
