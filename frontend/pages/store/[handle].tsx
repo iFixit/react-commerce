@@ -3,6 +3,7 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
+import { ALGOLIA_PRODUCTS_INDEX_NAME } from '@config/env';
 import { getGlobalSettings } from '@models/global-settings';
 import {
    createProductListSearchContext,
@@ -21,10 +22,6 @@ type PageProps = ProductListViewProps & {
    stores: StoreListItem[];
    currentStore: Store;
 };
-
-// This constant should probably be a field of the store model (editable from CMS)
-// so that it's configurable per-store.
-const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
@@ -61,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
    }
 
    const searchContext = await createProductListSearchContext({
-      algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
+      algoliaIndexName: ALGOLIA_PRODUCTS_INDEX_NAME,
       productListHandle: handle,
       urlQuery: context.query,
       filters: productList.filters || undefined,

@@ -98,7 +98,20 @@ export interface FeaturedProductListSection {
    id: string;
    title: string | null;
    description: string | null;
-   productListHandle: string | null;
+   products: FeaturedProduct[];
+}
+
+export interface FeaturedProduct {
+   id: string;
+   title: string;
+   handle: string;
+   sku: string;
+   rating: number;
+   ratingCount: number;
+   price: number;
+   compareAtPrice: number | null;
+   inventoryQuantity: number;
+   image: CMSImage | null;
 }
 
 export type NavigationAction = InternalLinkAction | ExternalLinkAction;

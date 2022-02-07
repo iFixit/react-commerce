@@ -1,15 +1,22 @@
 export * from './types';
 import {
-   Page,
+   ALGOLIA_API_KEY,
+   ALGOLIA_APP_ID,
+   ALGOLIA_PRODUCTS_INDEX_NAME,
+} from '@config/env';
+import pressLogo1 from '@images/9to5.svg';
+import storeHomeContentImage1 from '@images/store-home-content-1.jpg';
+import storeHomeContentImage2 from '@images/store-home-content-2.jpg';
+import storeHomeHeroImage from '@images/store-home-hero.jpeg';
+import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
+import algoliasearch from 'algoliasearch';
+import {
+   FeaturedProduct,
    NavigationActionType,
+   Page,
    PageSectionType,
    SplitImagePosition,
 } from './types';
-import storeHomeHeroImage from '@images/store-home-hero.jpeg';
-import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
-import storeHomeContentImage1 from '@images/store-home-content-1.jpg';
-import storeHomeContentImage2 from '@images/store-home-content-2.jpg';
-import pressLogo1 from '@images/9to5.svg';
 
 function genId() {
    return (
@@ -19,6 +26,7 @@ function genId() {
 }
 
 export async function getPageByPath(path: string): Promise<Page> {
+   const featuredProducts = await findFeaturedProducts('parts', 10);
    return {
       path: path,
       title: 'Store',
@@ -259,8 +267,49 @@ export async function getPageByPath(path: string): Promise<Page> {
             id: genId(),
             title: 'Best Sellers',
             description: `Not all parts or sellers are created equal. And sometimes it's hard to tell apart the good, the bad, and the inconsistent. We've spent more than a decade vetting sources and suppliers.`,
-            productListHandle: 'parts',
+            products: featuredProducts,
          },
       ],
    };
+}
+
+async function findFeaturedProducts(
+   productListHandle: string,
+   limit: number
+): Promise<FeaturedProduct[]> {
+   const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+   const index = client.initIndex(ALGOLIA_PRODUCTS_INDEX_NAME);
+   const result = await index.search<ProductSearchHit>('', {
+      filters: `collections:${productListHandle}`,
+      hitsPerPage: limit,
+   });
+   return result.hits.map((hit) => {
+      return {
+         id: hit.objectID,
+         title: hit.title,
+         sku: hit.sku,
+         handle: hit.handle,
+         rating: 4,
+         ratingCount: 102,
+         image: {
+            alternativeText: '',
+            url: hit.product_image,
+            formats: {},
+         },
+         price: hit.price,
+         compareAtPrice: hit.compare_at_price || null,
+         inventoryQuantity: hit.inventory_quantity,
+      };
+   });
+}
+
+interface ProductSearchHit {
+   title: string;
+   handle: string;
+   price: number;
+   compare_at_price?: number;
+   sku: string;
+   product_image: string;
+   body_html_safe?: string;
+   inventory_quantity: number;
 }

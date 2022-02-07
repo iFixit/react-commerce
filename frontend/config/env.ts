@@ -18,6 +18,8 @@ export const STRAPI_ORIGIN = checkEnv(
    'NEXT_PUBLIC_STRAPI_ORIGIN'
 );
 
+export const ALGOLIA_PRODUCTS_INDEX_NAME = 'shopify_ifixit_test_products';
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {

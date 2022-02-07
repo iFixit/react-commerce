@@ -3,6 +3,7 @@ import {
    AspectRatio,
    Badge,
    BadgeProps,
+   forwardRef,
    Heading,
    HeadingProps,
    HStack,
@@ -15,9 +16,10 @@ import { Rating } from '@components/ui';
 import Image from 'next/image';
 import React from 'react';
 
-export const ProductCard = (props: StackProps) => {
+export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {
    return (
       <Stack
+         ref={ref}
          bg="white"
          position="relative"
          direction="column"
@@ -27,10 +29,10 @@ export const ProductCard = (props: StackProps) => {
          {...props}
       />
    );
-};
+});
 
 export interface ProductCardImageProps {
-   src: string;
+   src?: string;
    alt?: string;
 }
 
@@ -41,6 +43,7 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
             <Image
                sizes="30vw"
                layout="fill"
+               objectFit="contain"
                src={placeholderImageUrl}
                alt={alt}
             />
