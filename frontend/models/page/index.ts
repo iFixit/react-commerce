@@ -277,6 +277,17 @@ export async function getPageByPath(path: string): Promise<Page> {
             description: `No one knows how to fix everything, but everyone knows how to fix something. Teach us what you know and make sure things work longer! The easier it is to fix something, the more people will do it.`,
             posts,
          },
+         {
+            type: PageSectionType.LifetimeWarranty,
+            id: genId(),
+            title: 'Lifetime Guarantee',
+            description: `We stand behind our tools. If something breaks, we’ll replace it—for as long as you own the iFixit tool.`,
+            callToAction: {
+               type: NavigationActionType.InternalLink,
+               title: 'Learn More',
+               url: 'https://www.ifixit.com/Info/Warranty',
+            },
+         },
       ],
    };
 }

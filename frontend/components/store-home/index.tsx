@@ -4,6 +4,7 @@ import { Page, PageSectionType } from '@models/page';
 import { BrowseSection } from './BrowseSection';
 import { FeaturedProductListSection } from './FeaturedProductListSection';
 import { HeroSection } from './HeroSection';
+import { LifetimeWarrantySection } from './LifeWarrantySection';
 import { PressSection } from './PressSection';
 import { SocialGallerySection } from './SocialGallerySection';
 import { SplitWithImageContentSection } from './SplitWithImageContentSection';
@@ -53,6 +54,11 @@ export function StoreHomeView({ page }: StoreHomeViewProps) {
                case PageSectionType.SocialGallery: {
                   return (
                      <SocialGallerySection key={section.id} data={section} />
+                  );
+               }
+               case PageSectionType.LifetimeWarranty: {
+                  return (
+                     <LifetimeWarrantySection key={section.id} data={section} />
                   );
                }
                default:

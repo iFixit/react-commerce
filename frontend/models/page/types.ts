@@ -13,6 +13,7 @@ export enum PageSectionType {
    Press = 'Press',
    FeaturedProductList = 'FeaturedProductList',
    SocialGallery = 'SocialGallery',
+   LifetimeWarranty = 'LifetimeWarranty',
 }
 
 export type PageSection =
@@ -23,7 +24,8 @@ export type PageSection =
    | WorkbenchSection
    | PressSection
    | FeaturedProductListSection
-   | SocialGallerySection;
+   | SocialGallerySection
+   | LifetimeWarrantySection;
 
 export interface HeroSection {
    type: PageSectionType.Hero;
@@ -128,6 +130,14 @@ export interface SocialPost {
    username: string;
    url: string | null;
    image: CMSImage | null;
+}
+
+export interface LifetimeWarrantySection {
+   type: PageSectionType.LifetimeWarranty;
+   id: string;
+   title: string | null;
+   description: string | null;
+   callToAction: NavigationAction | null;
 }
 
 export type NavigationAction = InternalLinkAction | ExternalLinkAction;
