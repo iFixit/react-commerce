@@ -36,7 +36,8 @@ export function SocialGallerySection({
             <Grid
                templateColumns={{
                   base: 'repeat(2, 1fr)',
-                  lg: 'repeat(5, 1fr)',
+                  sm: 'repeat(3, 1fr)',
+                  md: 'repeat(5, 1fr)',
                }}
                w="full"
                gap={5}
