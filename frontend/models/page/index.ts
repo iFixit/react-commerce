@@ -15,6 +15,7 @@ import {
    NavigationActionType,
    Page,
    PageSectionType,
+   SocialPost,
    SplitImagePosition,
 } from './types';
 
@@ -269,9 +270,89 @@ export async function getPageByPath(path: string): Promise<Page> {
             description: `Not all parts or sellers are created equal. And sometimes it's hard to tell apart the good, the bad, and the inconsistent. We've spent more than a decade vetting sources and suppliers.`,
             products: featuredProducts,
          },
+         {
+            type: PageSectionType.SocialGallery,
+            id: genId(),
+            title: 'Repair Around the World',
+            description: `No one knows how to fix everything, but everyone knows how to fix something. Teach us what you know and make sure things work longer! The easier it is to fix something, the more people will do it.`,
+            posts,
+         },
       ],
    };
 }
+
+const posts: SocialPost[] = [
+   {
+      url: 'https://twitter.com/proscriptus/status/1490388575120248836',
+      username: 'proscriptus',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FK7sgm8X0AYUjui?format=jpg&name=large',
+         formats: {},
+      },
+   },
+   {
+      url: 'https://twitter.com/xavigutierrezm/status/1487942754676187139',
+      username: 'xavigutierrezm23e23e23e23e23e23',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FKY8DAQXsAIkhAz?format=jpg&name=medium',
+         formats: {},
+      },
+   },
+   {
+      url: 'https://twitter.com/in_sympathy/status/1483847160412217346',
+      username: 'in_sympathy',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FJevHr4WQAMZmIv?format=jpg&name=large',
+         formats: {},
+      },
+   },
+   {
+      url: 'https://twitter.com/bamsemesteren/status/1483536262074089474',
+      username: 'bamsemesteren',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FJaUWqmWUAUr8c7?format=jpg&name=large',
+         formats: {},
+      },
+   },
+   {
+      url: 'https://twitter.com/in_sympathy/status/1477044686728708113',
+      username: 'in_sympathy',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FH-ETKwWQAICuHC?format=jpg&name=4096x4096',
+         formats: {},
+      },
+   },
+   {
+      url: 'https://twitter.com/ActualRaptuno/status/1477030374928699400',
+      username: 'ActualRaptuno',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FH93S0bUcAITsul?format=jpg&name=large',
+         formats: {},
+      },
+   },
+   {
+      url: 'https://twitter.com/anime_bootleg/status/1477019154708320260',
+      username: 'anime_bootleg',
+      image: {
+         alternativeText: '',
+         url:
+            'https://pbs.twimg.com/media/FH9tF3NWUAIaynn?format=jpg&name=large',
+         formats: {},
+      },
+   },
+];
 
 async function findFeaturedProducts(
    productListHandle: string,

@@ -5,6 +5,7 @@ import { BrowseSection } from './BrowseSection';
 import { FeaturedProductListSection } from './FeaturedProductListSection';
 import { HeroSection } from './HeroSection';
 import { PressSection } from './PressSection';
+import { SocialGallerySection } from './SocialGallerySection';
 import { SplitWithImageContentSection } from './SplitWithImageContentSection';
 import { StatsSection } from './StatsSection';
 import { WorkbenchSection } from './WorkbenchSection';
@@ -47,6 +48,11 @@ export function StoreHomeView({ page }: StoreHomeViewProps) {
                         key={section.id}
                         data={section}
                      />
+                  );
+               }
+               case PageSectionType.SocialGallery: {
+                  return (
+                     <SocialGallerySection key={section.id} data={section} />
                   );
                }
                default:

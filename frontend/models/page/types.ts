@@ -12,6 +12,7 @@ export enum PageSectionType {
    Workbench = 'Workbench',
    Press = 'Press',
    FeaturedProductList = 'FeaturedProductList',
+   SocialGallery = 'SocialGallery',
 }
 
 export type PageSection =
@@ -21,7 +22,8 @@ export type PageSection =
    | StatsSection
    | WorkbenchSection
    | PressSection
-   | FeaturedProductListSection;
+   | FeaturedProductListSection
+   | SocialGallerySection;
 
 export interface HeroSection {
    type: PageSectionType.Hero;
@@ -111,6 +113,20 @@ export interface FeaturedProduct {
    price: number;
    compareAtPrice: number | null;
    inventoryQuantity: number;
+   image: CMSImage | null;
+}
+
+export interface SocialGallerySection {
+   type: PageSectionType.SocialGallery;
+   id: string;
+   title: string | null;
+   description: string | null;
+   posts: SocialPost[];
+}
+
+export interface SocialPost {
+   username: string;
+   url: string | null;
    image: CMSImage | null;
 }
 
