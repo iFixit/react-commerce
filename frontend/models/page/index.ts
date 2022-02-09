@@ -15,6 +15,7 @@ import {
    NavigationActionType,
    Page,
    PageSectionType,
+   Quote,
    SocialPost,
    SplitImagePosition,
 } from './types';
@@ -148,8 +149,8 @@ export async function getPageByPath(path: string): Promise<Page> {
                   label: 'Devices',
                },
                {
-                  number: '2M+',
-                  label: 'Product sale/Year',
+                  number: '100M+',
+                  label: 'Successful repairs',
                },
             ],
          },
@@ -288,9 +289,57 @@ export async function getPageByPath(path: string): Promise<Page> {
                url: 'https://www.ifixit.com/Info/Warranty',
             },
          },
+         {
+            type: PageSectionType.Quotes,
+            id: genId(),
+            title: 'Our customers are the smartest people in the world.',
+            description: `It's fun to take stuff apart. It's interesting to see what's inside that magic iPod you carry around every day. It's gratifying to fix it with your own hands. Don't believe us? Try it! Fix your Mac yourself. Show a friend how to fix something.`,
+            quotes,
+         },
       ],
    };
 }
+
+const quotes: Quote[] = [
+   {
+      author: 'Kyle Wiens',
+      headline: 'CEO iFixit',
+      quote: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
+      avatar: null,
+   },
+   {
+      author: 'Kyle Wiens',
+      headline: 'CEO iFixit',
+      quote: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
+      avatar: null,
+   },
+   {
+      author: 'Kyle Wiens',
+      headline: 'CEO iFixit',
+      quote: `.@iFixit can help you repair (almost) anything!
+      With over 70,000 manuals and Fix Kits for TONS of devices, you can find the right tool for the job at http://ifixit.com/LTT`,
+      avatar: null,
+   },
+   {
+      author: 'John Doe',
+      headline: 'CEO Apple',
+      quote: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
+      avatar: null,
+   },
+   {
+      author: 'John Doe',
+      headline: 'CEO Apple',
+      quote: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
+      avatar: null,
+   },
+   {
+      author: 'John Doe',
+      headline: 'CEO Apple',
+      quote: `.@iFixit can help you repair (almost) anything!
+      With over 70,000 manuals and Fix Kits for TONS of devices, you can find the right tool for the job at http://ifixit.com/LTT`,
+      avatar: null,
+   },
+];
 
 const posts: SocialPost[] = [
    {

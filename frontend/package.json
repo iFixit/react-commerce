@@ -37,7 +37,7 @@
       ]
    },
    "dependencies": {
-      "@chakra-ui/react": "1.6.3",
+      "@chakra-ui/react": "1.8.3",
       "@emotion/react": "11.1.5",
       "@emotion/styled": "11.3.0",
       "@ifixit/react-components": "0.3.0",
@@ -45,7 +45,7 @@
       "@xstate/react": "1.5.1",
       "algoliasearch": "4.9.1",
       "dayjs": "1.10.5",
-      "framer-motion": "4.1.11",
+      "framer-motion": "6.2.4",
       "graphql": "15.5.3",
       "immer": "9.0.2",
       "lodash": "4.17.21",

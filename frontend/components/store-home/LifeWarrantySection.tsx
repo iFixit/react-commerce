@@ -1,12 +1,12 @@
 import backgroundImage from '@assets/images/lifetime-guarantee-background.jpg';
-import { Box, Button, Flex, Icon, VStack } from '@chakra-ui/react';
+import { LifetimeWarrantyIcon } from '@assets/svg';
+import { Box, Button, Flex, Icon } from '@chakra-ui/react';
 import { LifetimeWarrantySection as SectionData } from '@models/page';
 import Image from 'next/image';
+import NextLink from 'next/link';
 import { PageContentWrapper } from './PageContentWrapper';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
-import NextLink from 'next/link';
-import { LifetimeWarrantyIcon } from '@assets/svg';
 
 export interface LifetimeWarrantySectionProps {
    data: SectionData;
