@@ -25,7 +25,7 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
    return (
       <Modal size="lg" isOpen={isOpen} onClose={onClose}>
          <ModalOverlay />
-         <ModalContent onAnimationComplete={handleAnimationComplete}>
+         <ModalContent onAnimationEnd={handleAnimationComplete}>
             <ModalBody pt={6}>
                <AppliedFilters pb="2" />
                <Box h="320px" mx="-6" overflow="hidden">
