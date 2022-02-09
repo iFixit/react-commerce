@@ -1,15 +1,16 @@
 import {
+   Avatar,
    Box,
    BoxProps,
    Flex,
    HStack,
    IconButton,
+   StackProps,
    Text,
    VStack,
-   StackProps,
 } from '@chakra-ui/react';
 import { QuotesSection as SectionData } from '@models/page';
-import { motion, useDragControls, useMotionValue } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import * as React from 'react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { PageContentWrapper } from './PageContentWrapper';
@@ -23,47 +24,72 @@ export interface QuotesSectionProps {
 export function QuotesSection({
    data: { title, description, quotes },
 }: QuotesSectionProps) {
-   const [selectedQuote, setSelectedQuote] = React.useState(0);
+   const [currentQuote, setCurrentQuote] = React.useState(0);
+   const slidesRef = React.useRef<Array<HTMLElement>>([]);
+
+   const controls = useAnimation();
 
    const position = React.useMemo(() => {
-      return -selectedQuote * 490;
-   }, [selectedQuote]);
-   const motionX = useMotionValue(0);
+      if (slidesRef.current[currentQuote]) {
+         return -slidesRef.current[currentQuote].offsetLeft;
+      }
+      return 0;
+   }, [currentQuote]);
 
    React.useEffect(() => {
-      motionX.set(position);
-   }, [position, motionX]);
+      controls.start({
+         x: position,
+      });
+   }, [position, controls]);
 
-   const goToNextQuote = React.useCallback<
-      React.MouseEventHandler<HTMLButtonElement>
-   >((event) => {
-      setSelectedQuote((current) => (current + 1) % quotes.length);
+   const goToNextQuote = React.useCallback(() => {
+      setCurrentQuote((current) => (current + 1) % quotes.length);
    }, []);
 
-   const goToPreviousQuote = React.useCallback<
-      React.MouseEventHandler<HTMLButtonElement>
-   >((event) => {
-      setSelectedQuote((current) =>
+   const goToPreviousQuote = React.useCallback(() => {
+      setCurrentQuote((current) =>
          current > 0 ? current - 1 : quotes.length - 1
       );
    }, []);
 
+   const isDragging = React.useRef(false);
+
    return (
-      <Box as="section" w="full" py="24" bg="blue.50">
+      <Box
+         as="section"
+         w="full"
+         py={{
+            base: '16',
+            md: '24',
+         }}
+         bg="blue.50"
+      >
          <PageContentWrapper>
-            <Flex justify="space-between" align="flex-start">
-               <VStack
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="2.5"
-                  mb="10"
-               >
+            <Flex
+               direction={{
+                  base: 'column',
+                  md: 'row',
+               }}
+               justify="space-between"
+               align={{
+                  base: 'flex-end',
+                  md: 'flex-start',
+               }}
+               mb="10"
+            >
+               <VStack justify="flex-start" align="flex-start" spacing="2.5">
                   {title && <SectionHeading>{title}</SectionHeading>}
                   {description && (
                      <SectionDescription richText={description} maxW="750px" />
                   )}
                </VStack>
-               <HStack ml="10">
+               <HStack
+                  ml="10"
+                  mt={{
+                     base: '5',
+                     md: '0',
+                  }}
+               >
                   <IconButton
                      aria-label="go to previous quote"
                      variant="outline"
@@ -82,43 +108,105 @@ export function QuotesSection({
                   />
                </HStack>
             </Flex>
-            <Text>{selectedQuote}</Text>
          </PageContentWrapper>
          <Box overflow="hidden">
             <PageContentWrapper>
                <MotionHStack
-                  spacing="10"
+                  position="relative"
+                  spacing={{
+                     base: '5',
+                     md: '10',
+                  }}
                   align="flex-start"
-                  animate={{ x: position }}
+                  animate={controls}
+                  transition={{
+                     type: 'spring',
+                     stiffness: 200,
+                     damping: 20,
+                     mass: 0.5,
+                  }}
                   drag="x"
-                  dragConstraints={{ left: position, right: 0 }}
-                  dragElastic={1}
-                  // dragSnapToOrigin
+                  dragDirectionLock
+                  onDragStart={(event, info) => {
+                     isDragging.current = true;
+                  }}
                   onDragEnd={(e, { offset, velocity }) => {
-                     const pageOffset = -Math.round(offset.x / 490);
+                     console.log('drag end');
+                     e.stopPropagation();
+                     e.preventDefault();
+                     const swipe = swipePower(offset.x, velocity.x);
+                     let pageOffset = -Math.round(offset.x / 490);
 
-                     setSelectedQuote((current) => {
-                        const newPage = Math.min(
+                     if (swipe < -swipeConfidenceThreshold) {
+                        pageOffset = +1;
+                     } else if (swipe > swipeConfidenceThreshold) {
+                        pageOffset = -1;
+                     }
+
+                     setCurrentQuote((current) => {
+                        const selectedQuote = Math.min(
                            Math.max(current + pageOffset, 0),
                            quotes.length - 1
                         );
-                        console.log('CHANGE', newPage);
-                        return newPage;
+                        if (selectedQuote === current) {
+                           controls.start({
+                              x: position,
+                           });
+                        }
+                        return selectedQuote;
                      });
+                     isDragging.current = false;
                   }}
                >
                   {quotes.map((quote, index) => {
                      return (
                         <MotionBox
+                           ref={(el: any) => {
+                              if (el) {
+                                 slidesRef.current[index] = el;
+                              }
+                           }}
                            key={index}
                            bg="white"
                            p="10"
-                           width="450px"
+                           width={{ base: '85%', md: 'calc(50% - 40px)' }}
                            flexShrink={0}
+                           animate={{
+                              opacity:
+                                 index === currentQuote
+                                    ? 1
+                                    : Math.abs(currentQuote - index) === 1
+                                    ? 0.75
+                                    : 0.5,
+                           }}
+                           onClick={() => {
+                              if (!isDragging.current) {
+                                 console.log('click');
+                                 setCurrentQuote(index);
+                              }
+                           }}
                         >
-                           <Text color="gray.600" fontSize="4xl">
-                              {index}
-                           </Text>
+                           <Text
+                              color="gray.600"
+                              mb="5"
+                              dangerouslySetInnerHTML={{
+                                 __html: quote.quote,
+                              }}
+                           />
+                           <HStack>
+                              <Avatar
+                                 name={quote.author}
+                                 src={quote.avatar?.url}
+                              />
+                              <Box>
+                                 <Text color="brand.500" fontWeight="bold">
+                                    {quote.author}
+                                 </Text>
+                                 <Text color="gray.600" fontSize="sm">
+                                    {quote.headline}
+                                 </Text>
+                              </Box>
+                           </HStack>
                         </MotionBox>
                      );
                   })}
@@ -131,9 +219,11 @@ export function QuotesSection({
 
 const MotionBox = motion<BoxProps>(Box);
 
-const MotionHStack = motion<Omit<StackProps, 'onDragEnd'>>(HStack);
+const MotionHStack = motion<
+   Omit<StackProps, 'onDragStart' | 'onDragEnd' | 'transition'>
+>(HStack);
 
-const swipeConfidenceThreshold = 10000;
+const swipeConfidenceThreshold = 3000;
 const swipePower = (offset: number, velocity: number) => {
    return Math.abs(offset) * velocity;
 };

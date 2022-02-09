@@ -69,63 +69,74 @@ export function BrowseSection({
                </VStack>
             </PageContentWrapper>
          </Box>
-         <VStack spacing="4">
-            <Flex as="form" method="GET" action={`${IFIXIT_ORIGIN}/Search`}>
-               <InputGroup transform="translateY(-50%)" size="lg" w="460px">
-                  <InputLeftElement pointerEvents="none">
-                     <Icon
-                        as={RiSearchLine}
-                        color="gray.400"
-                        mr="-2"
-                        mb="-1px"
-                     />
-                  </InputLeftElement>
-                  <Input
-                     name="query"
-                     placeholder="Search.."
-                     tabIndex={0}
-                     variant="filled"
-                     bg="white"
-                     _hover={{
-                        bg: 'gray.50',
-                     }}
-                     _focus={{
-                        bg: 'white',
-                        boxShadow: 'outline',
-                     }}
-                     fontSize="sm"
-                     borderRadius="md"
-                     boxShadow="lg"
-                  />
-               </InputGroup>
-            </Flex>
-            <Text>or explore by category</Text>
-         </VStack>
-         <Box>
-            <PageContentWrapper>
-               <SimpleGrid
-                  pt="10"
-                  columns={{
-                     base: 1,
-                     sm: 2,
-                     md: 3,
-                     lg: 4,
-                  }}
-                  spacing="4"
+         <PageContentWrapper>
+            <VStack spacing="4">
+               <Flex
+                  as="form"
+                  method="GET"
+                  action={`${IFIXIT_ORIGIN}/Search`}
+                  w="full"
+                  justify="center"
                >
-                  {featuredProductLists.map((child) => {
-                     return (
-                        <ProductListPreviewLink
-                           key={child.handle}
-                           title={child.title}
-                           handle={child.handle}
-                           image={child.image}
+                  <InputGroup
+                     transform="translateY(-50%)"
+                     size="lg"
+                     w={{
+                        base: 'full',
+                        md: '460px',
+                     }}
+                  >
+                     <InputLeftElement pointerEvents="none">
+                        <Icon
+                           as={RiSearchLine}
+                           color="gray.400"
+                           mr="-2"
+                           mb="-1px"
                         />
-                     );
-                  })}
-               </SimpleGrid>
-            </PageContentWrapper>
-         </Box>
+                     </InputLeftElement>
+                     <Input
+                        name="query"
+                        placeholder="Search.."
+                        tabIndex={0}
+                        variant="filled"
+                        bg="white"
+                        _hover={{
+                           bg: 'gray.50',
+                        }}
+                        _focus={{
+                           bg: 'white',
+                           boxShadow: 'outline',
+                        }}
+                        fontSize="sm"
+                        borderRadius="md"
+                        boxShadow="lg"
+                     />
+                  </InputGroup>
+               </Flex>
+               <Text>or explore by category</Text>
+            </VStack>
+            <SimpleGrid
+               pt="10"
+               columns={{
+                  base: 1,
+                  sm: 2,
+                  md: 3,
+                  lg: 4,
+               }}
+               spacing="4"
+            >
+               {featuredProductLists.map((child) => {
+                  return (
+                     <ProductListPreviewLink
+                        key={child.handle}
+                        title={child.title}
+                        handle={child.handle}
+                        image={child.image}
+                     />
+                  );
+               })}
+            </SimpleGrid>
+         </PageContentWrapper>
       </Flex>
    );
 }

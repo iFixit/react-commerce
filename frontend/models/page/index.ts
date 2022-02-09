@@ -305,20 +305,35 @@ const quotes: Quote[] = [
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',
       quote: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
-      avatar: null,
+      avatar: {
+         url:
+            'https://pbs.twimg.com/profile_images/1102978040328466432/uSaX8_gE_400x400.png',
+         alternativeText: '',
+         formats: {},
+      },
    },
    {
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',
       quote: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
-      avatar: null,
+      avatar: {
+         url:
+            'https://pbs.twimg.com/profile_images/1102978040328466432/uSaX8_gE_400x400.png',
+         alternativeText: '',
+         formats: {},
+      },
    },
    {
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',
       quote: `.@iFixit can help you repair (almost) anything!
       With over 70,000 manuals and Fix Kits for TONS of devices, you can find the right tool for the job at http://ifixit.com/LTT`,
-      avatar: null,
+      avatar: {
+         url:
+            'https://pbs.twimg.com/profile_images/1102978040328466432/uSaX8_gE_400x400.png',
+         alternativeText: '',
+         formats: {},
+      },
    },
    {
       author: 'John Doe',

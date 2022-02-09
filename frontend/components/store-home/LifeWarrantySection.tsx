@@ -57,7 +57,7 @@ export function LifetimeWarrantySection({
                      />
                   )}
                   {callToAction && (
-                     <NextLink href={callToAction.url} passHref prefetch>
+                     <NextLink href={callToAction.url} passHref>
                         <Button as="a" mt="10">
                            {callToAction.title}
                         </Button>

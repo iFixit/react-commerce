@@ -21,9 +21,18 @@ export function SplitWithImageContentSection({
       <Box as="section" position="relative" w="full">
          {image && (
             <Box
-               w="50%"
-               position="absolute"
-               h="full"
+               w={{
+                  base: 'full',
+                  md: '50%',
+               }}
+               position={{
+                  base: 'relative',
+                  md: 'absolute',
+               }}
+               h={{
+                  base: '340px',
+                  md: 'full',
+               }}
                right={isImageLeft ? undefined : '0'}
             >
                <Image
@@ -39,16 +48,22 @@ export function SplitWithImageContentSection({
             <Flex justify={isImageLeft ? 'flex-end' : 'flex-start'}>
                <VStack
                   align="flex-start"
-                  py="36"
+                  py={{
+                     base: '10',
+                     md: '36',
+                  }}
                   spacing="7"
-                  w="50%"
-                  pl={isImageLeft ? '32' : undefined}
-                  pr={isImageLeft ? undefined : '32'}
+                  w={{
+                     base: 'full',
+                     md: '50%',
+                  }}
+                  pl={{ base: 0, md: isImageLeft ? '32' : undefined }}
+                  pr={{ base: 0, md: isImageLeft ? undefined : '32' }}
                >
                   {title && <SectionHeading>{title}</SectionHeading>}
                   {description && <SectionDescription richText={description} />}
                   {callToAction && (
-                     <NextLink href={callToAction.url} passHref prefetch>
+                     <NextLink href={callToAction.url} passHref>
                         <Button as="a" colorScheme="brand">
                            {callToAction.title}
                         </Button>

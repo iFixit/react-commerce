@@ -40,7 +40,7 @@ export function HeroSection({
                   <SectionDescription richText={description} color="blue.100" />
                )}
                {callToAction && (
-                  <NextLink href={callToAction.url} passHref prefetch>
+                  <NextLink href={callToAction.url} passHref>
                      <Button as="a" colorScheme="brand">
                         {callToAction.title}
                      </Button>
