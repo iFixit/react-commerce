@@ -29,30 +29,28 @@ export function QuotesSection({
 
    const controls = useAnimation();
 
-   const position = React.useMemo(() => {
+   const offset = React.useMemo(() => {
       if (slidesRef.current[currentQuote]) {
          return -slidesRef.current[currentQuote].offsetLeft;
       }
       return 0;
    }, [currentQuote]);
 
+   const isDragging = React.useRef(false);
+
    React.useEffect(() => {
       controls.start({
-         x: position,
+         x: offset,
       });
-   }, [position, controls]);
+   }, [offset, controls]);
 
    const goToNextQuote = React.useCallback(() => {
-      setCurrentQuote((current) => (current + 1) % quotes.length);
+      setCurrentQuote((current) => clamp(current + 1, 0, quotes.length - 1));
    }, []);
 
    const goToPreviousQuote = React.useCallback(() => {
-      setCurrentQuote((current) =>
-         current > 0 ? current - 1 : quotes.length - 1
-      );
+      setCurrentQuote((current) => clamp(current - 1, 0, quotes.length - 1));
    }, []);
-
-   const isDragging = React.useRef(false);
 
    return (
       <Box
@@ -109,7 +107,7 @@ export function QuotesSection({
                </HStack>
             </Flex>
          </PageContentWrapper>
-         <Box overflow="hidden">
+         <Box overflowX="hidden">
             <PageContentWrapper>
                <MotionHStack
                   position="relative"
@@ -127,38 +125,52 @@ export function QuotesSection({
                   }}
                   drag="x"
                   dragDirectionLock
-                  onDragStart={(event, info) => {
+                  onDragEnd={(event, panInfo) => {
                      isDragging.current = true;
-                  }}
-                  onDragEnd={(e, { offset, velocity }) => {
-                     console.log('drag end');
-                     e.stopPropagation();
-                     e.preventDefault();
-                     const swipe = swipePower(offset.x, velocity.x);
-                     let pageOffset = -Math.round(offset.x / 490);
 
-                     if (swipe < -swipeConfidenceThreshold) {
-                        pageOffset = +1;
-                     } else if (swipe > swipeConfidenceThreshold) {
-                        pageOffset = -1;
+                     const distance = Math.abs(
+                        Math.min(offset + panInfo.offset.x, 0)
+                     );
+                     let nextQuote = 0;
+                     let slide = slidesRef.current[nextQuote];
+                     let nextChangePoint =
+                        slide.offsetLeft + slide.offsetWidth / 2;
+                     while (
+                        distance > nextChangePoint &&
+                        nextQuote < slidesRef.current.length - 1
+                     ) {
+                        nextQuote++;
+                        slide = slidesRef.current[nextQuote];
+                        nextChangePoint =
+                           slide.offsetLeft + slide.offsetWidth / 2;
                      }
 
-                     setCurrentQuote((current) => {
-                        const selectedQuote = Math.min(
-                           Math.max(current + pageOffset, 0),
-                           quotes.length - 1
-                        );
-                        if (selectedQuote === current) {
-                           controls.start({
-                              x: position,
-                           });
-                        }
-                        return selectedQuote;
-                     });
-                     isDragging.current = false;
+                     const swipe = swipePower(
+                        panInfo.offset.x,
+                        panInfo.velocity.x
+                     );
+                     if (swipe < -swipeConfidenceThreshold) {
+                        nextQuote = currentQuote + 1;
+                     } else if (swipe > swipeConfidenceThreshold) {
+                        nextQuote = currentQuote - 1;
+                     }
+                     nextQuote = clamp(nextQuote, 0, quotes.length - 1);
+
+                     setTimeout(() => {
+                        isDragging.current = false;
+                     }, 50);
+
+                     if (nextQuote === currentQuote) {
+                        controls.start({
+                           x: offset,
+                        });
+                     } else {
+                        setCurrentQuote(clamp(nextQuote, 0, quotes.length - 1));
+                     }
                   }}
                >
                   {quotes.map((quote, index) => {
+                     const isCurrent = index === currentQuote;
                      return (
                         <MotionBox
                            ref={(el: any) => {
@@ -172,16 +184,22 @@ export function QuotesSection({
                            width={{ base: '85%', md: 'calc(50% - 40px)' }}
                            flexShrink={0}
                            animate={{
-                              opacity:
-                                 index === currentQuote
-                                    ? 1
-                                    : Math.abs(currentQuote - index) === 1
-                                    ? 0.75
-                                    : 0.5,
+                              opacity: isCurrent
+                                 ? 1
+                                 : Math.abs(currentQuote - index) === 1
+                                 ? 0.75
+                                 : 0.5,
                            }}
+                           whileHover={
+                              isCurrent
+                                 ? undefined
+                                 : {
+                                      opacity: 1,
+                                      cursor: 'pointer',
+                                   }
+                           }
                            onClick={() => {
                               if (!isDragging.current) {
-                                 console.log('click');
                                  setCurrentQuote(index);
                               }
                            }}
@@ -227,3 +245,7 @@ const swipeConfidenceThreshold = 3000;
 const swipePower = (offset: number, velocity: number) => {
    return Math.abs(offset) * velocity;
 };
+
+function clamp(value: number, min: number, max: number) {
+   return Math.max(Math.min(value, max), min);
+}
