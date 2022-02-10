@@ -31,6 +31,12 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       findPageByPath('store'),
    ]);
 
+   if (page == null) {
+      return {
+         notFound: true,
+      };
+   }
+
    return {
       props: {
          currentStore,
