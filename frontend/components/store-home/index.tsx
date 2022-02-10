@@ -28,7 +28,7 @@ export function StoreHomeView({ page }: StoreHomeViewProps) {
                   return <HeroSection key={section.id} data={section} />;
                }
                case PageSectionType.Workbench: {
-                  return <WorkbenchSection key={section.id} />;
+                  return <WorkbenchSection key={section.id} data={section} />;
                }
                case PageSectionType.Stats: {
                   return <StatsSection key={section.id} data={section} />;

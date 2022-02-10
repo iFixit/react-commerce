@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_page_presses",
+  "info": {
+    "displayName": "press",
+    "icon": "money-check"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "quotes": {
+      "displayName": "pressQuote",
+      "type": "component",
+      "repeatable": true,
+      "component": "page.press-quote"
+    },
+    "callToAction": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page.call-to-action"
+    }
+  }
+}

@@ -3,8 +3,13 @@ import storeHomeWorkbenchPatternImage from '@images/store-home-workbench-pattern
 import Image from 'next/image';
 import { PageContentWrapper } from './PageContentWrapper';
 import { SectionHeading } from './SectionHeading';
+import { WorkbenchSection as SectionData } from '@models/page';
 
-export function WorkbenchSection() {
+export interface WorkbenchSectionProps {
+   data: SectionData;
+}
+
+export function WorkbenchSection({ data: { title } }: WorkbenchSectionProps) {
    return (
       <Box as="section" position="relative" w="full" my="16">
          <PageContentWrapper>
@@ -19,7 +24,7 @@ export function WorkbenchSection() {
             >
                <VStack align="flex-start" p="7">
                   <SectionHeading color="blue.500">
-                     Your Workbench
+                     {title ?? 'Your workbench'}
                   </SectionHeading>
                   <Text color="gray.800">
                      Discover parts guaranteed to be compatible with your{' '}

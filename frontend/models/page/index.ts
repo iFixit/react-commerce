@@ -4,16 +4,24 @@ import {
    ALGOLIA_APP_ID,
    ALGOLIA_PRODUCTS_INDEX_NAME,
 } from '@config/env';
+import { assertNever, filterNullableItems } from '@helpers/application-helpers';
 import pressLogo1 from '@images/9to5.svg';
 import storeHomeContentImage1 from '@images/store-home-content-1.jpg';
 import storeHomeContentImage2 from '@images/store-home-content-2.jpg';
 import storeHomeHeroImage from '@images/store-home-hero.jpeg';
 import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
+import {
+   Enum_Componentpagesplitwithimage_Imageposition,
+   PublicationState,
+   strapi,
+} from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
 import {
    FeaturedProduct,
+   FeaturedProductList,
    NavigationActionType,
    Page,
+   PageSection,
    PageSectionType,
    Quote,
    SocialPost,
@@ -27,7 +35,181 @@ function genId() {
    );
 }
 
-export async function getPageByPath(path: string): Promise<Page> {
+export async function findPageByPath(path: string): Promise<Page | null> {
+   // return mockGetPageByPath(path);
+   const response = await strapi.findPage({
+      filters: {
+         path: {
+            eq: path,
+         },
+      },
+      publicationState: PublicationState.Live,
+      pagination: {
+         limit: 1,
+      },
+   });
+
+   const page = response.pages?.data?.[0]?.attributes;
+   if (page == null) {
+      return null;
+   }
+   const rawSections = filterNullableItems(page.sections);
+   const sections = rawSections.map((section, index): PageSection | null => {
+      switch (section.__typename) {
+         case 'ComponentPageHero': {
+            const image = section.image?.data?.attributes;
+            return {
+               type: PageSectionType.Hero,
+               id: `${section.__typename}-${index}`,
+               title: section.title || null,
+               description: section.description || null,
+               callToAction: section.callToAction
+                  ? {
+                       type: NavigationActionType.InternalLink,
+                       title: section.callToAction.title || '',
+                       url: section.callToAction.url || '#',
+                    }
+                  : null,
+               image: image
+                  ? {
+                       alternativeText: image.alternativeText || null,
+                       url: image.url,
+                       formats: image.formats || null,
+                    }
+                  : null,
+            };
+         }
+         case 'ComponentPageBrowse': {
+            const productLists = section.featuredProductLists?.data;
+            const image = section.image?.data?.attributes;
+            const featuredProductLists = productLists?.map<FeaturedProductList | null>(
+               (productList) => {
+                  if (productList.attributes == null) {
+                     return null;
+                  }
+                  const image = productList.attributes.image?.data?.attributes;
+                  return {
+                     handle: productList.attributes.handle,
+                     title: productList.attributes.title,
+                     image: image
+                        ? {
+                             alternativeText: image.alternativeText || null,
+                             url: image.url,
+                             formats: image.formats || null,
+                          }
+                        : null,
+                  };
+               }
+            );
+            return {
+               type: PageSectionType.Browse,
+               id: `${section.__typename}-${index}`,
+               title: section.title || null,
+               description: section.description || null,
+               featuredProductLists: filterNullableItems(featuredProductLists),
+               image: image
+                  ? {
+                       alternativeText: image.alternativeText || null,
+                       url: image.url,
+                       formats: image.formats || null,
+                    }
+                  : null,
+            };
+         }
+         case 'ComponentPageWorkbench': {
+            return {
+               type: PageSectionType.Workbench,
+               id: `${section.__typename}-${index}`,
+               title: section.title || null,
+            };
+         }
+         case 'ComponentPageStats': {
+            const stats = filterNullableItems(section.stats);
+            return {
+               type: PageSectionType.Stats,
+               id: `${section.__typename}-${index}`,
+               stats: stats.map((statItem) => {
+                  return {
+                     label: statItem.label,
+                     value: statItem.value,
+                  };
+               }),
+            };
+         }
+         case 'ComponentPageSplitWithImage': {
+            const image = section.image?.data?.attributes;
+            return {
+               type: PageSectionType.SplitWithImageContent,
+               id: `${section.__typename}-${index}`,
+               title: section.title || null,
+               description: section.description || null,
+               callToAction: section.callToAction
+                  ? {
+                       type: NavigationActionType.InternalLink,
+                       title: section.callToAction.title || '',
+                       url: section.callToAction.url || '#',
+                    }
+                  : null,
+               image: image
+                  ? {
+                       alternativeText: image.alternativeText || null,
+                       url: image.url,
+                       formats: image.formats || null,
+                    }
+                  : null,
+               imagePosition:
+                  section.imagePosition ===
+                  Enum_Componentpagesplitwithimage_Imageposition.Left
+                     ? SplitImagePosition.Left
+                     : SplitImagePosition.Right,
+            };
+         }
+         case 'ComponentPagePress': {
+            const quotes = filterNullableItems(section.quotes);
+            return {
+               type: PageSectionType.Press,
+               id: `${section.__typename}-${index}`,
+               title: section.title || null,
+               description: section.description || null,
+               callToAction: section.callToAction
+                  ? {
+                       type: NavigationActionType.InternalLink,
+                       title: section.callToAction.title || '',
+                       url: section.callToAction.url || '#',
+                    }
+                  : null,
+               quotes: quotes.map((quote) => {
+                  const image = quote.logo?.data?.attributes;
+                  return {
+                     name: quote.name || null,
+                     logo: image
+                        ? {
+                             alternativeText: image.alternativeText || null,
+                             url: image.url,
+                             formats: image.formats || null,
+                          }
+                        : null,
+                     text: quote.text || null,
+                  };
+               }),
+            };
+         }
+         case 'Error': {
+            return null;
+         }
+         default:
+            return assertNever(section);
+      }
+   });
+   return {
+      path: page.path,
+      title: page.title,
+      sections: filterNullableItems(sections),
+   };
+   // return mockGetPageByPath(path);
+}
+
+async function mockGetPageByPath(path: string): Promise<Page> {
    const featuredProducts = await findFeaturedProducts('parts', 10);
    return {
       path: path,
@@ -131,25 +313,26 @@ export async function getPageByPath(path: string): Promise<Page> {
          {
             type: PageSectionType.Workbench,
             id: genId(),
+            title: null,
          },
          {
             type: PageSectionType.Stats,
             id: genId(),
             stats: [
                {
-                  number: '76.834',
+                  value: '76.834',
                   label: 'Free manuals',
                },
                {
-                  number: '181.097',
+                  value: '181.097',
                   label: 'Solutions',
                },
                {
-                  number: '34.672',
+                  value: '34.672',
                   label: 'Devices',
                },
                {
-                  number: '100M+',
+                  value: '100M+',
                   label: 'Successful repairs',
                },
             ],

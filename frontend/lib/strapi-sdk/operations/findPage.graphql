@@ -1,0 +1,126 @@
+query findPage(
+   $filters: PageFiltersInput
+   $publicationState: PublicationState
+   $pagination: PaginationArg
+) {
+   pages(
+      filters: $filters
+      publicationState: $publicationState
+      pagination: $pagination
+   ) {
+      data {
+         id
+         attributes {
+            path
+            title
+            sections {
+               __typename
+               ... on ComponentPageHero {
+                  id
+                  title
+                  description
+                  callToAction {
+                     title
+                     url
+                  }
+                  image {
+                     data {
+                        attributes {
+                           alternativeText
+                           url
+                           formats
+                        }
+                     }
+                  }
+               }
+               ... on ComponentPageBrowse {
+                  id
+                  title
+                  description
+                  featuredProductLists {
+                     data {
+                        attributes {
+                           handle
+                           title
+                           image {
+                              data {
+                                 attributes {
+                                    alternativeText
+                                    url
+                                    formats
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+                  image {
+                     data {
+                        attributes {
+                           alternativeText
+                           url
+                           formats
+                        }
+                     }
+                  }
+               }
+               ... on ComponentPageWorkbench {
+                  id
+                  title
+               }
+               ... on ComponentPageStats {
+                  id
+                  title
+                  stats {
+                     id
+                     label
+                     value
+                  }
+               }
+               ... on ComponentPageSplitWithImage {
+                  id
+                  title
+                  description
+                  callToAction {
+                     title
+                     url
+                  }
+                  imagePosition
+                  image {
+                     data {
+                        attributes {
+                           alternativeText
+                           url
+                           formats
+                        }
+                     }
+                  }
+               }
+               ... on ComponentPagePress {
+                  id
+                  title
+                  description
+                  callToAction {
+                     title
+                     url
+                  }
+                  quotes {
+                     id
+                     name
+                     text
+                     logo {
+                        data {
+                           attributes {
+                              alternativeText
+                              url
+                              formats
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

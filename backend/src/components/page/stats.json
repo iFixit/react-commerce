@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_page_stats",
+  "info": {
+    "displayName": "stats",
+    "icon": "chart-line"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "stats": {
+      "displayName": "stat",
+      "type": "component",
+      "repeatable": true,
+      "component": "page.stat"
+    }
+  }
+}

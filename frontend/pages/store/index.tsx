@@ -1,6 +1,6 @@
 import { Layout } from '@components/common';
 import { StoreHomeView } from '@components/store-home';
-import { getPageByPath, Page } from '@models/page';
+import { findPageByPath, Page } from '@models/page';
 import {
    getStoreByCode,
    getStoreList,
@@ -16,10 +16,6 @@ interface PageProps {
    page: Page;
 }
 
-// This constant should probably be a field of the store model (editable from CMS)
-// so that it's configurable per-store.
-const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
-
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
 ) => {
@@ -32,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
    const [stores, currentStore, page] = await Promise.all([
       getStoreList(),
       getStoreByCode('us'),
-      getPageByPath('/store'),
+      findPageByPath('store'),
    ]);
 
    return {

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_page_call_to_actions",
+  "info": {
+    "displayName": "callToAction",
+    "icon": "bolt"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

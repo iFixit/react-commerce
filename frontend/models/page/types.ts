@@ -47,7 +47,7 @@ export interface BrowseSection {
    image: CMSImage | null;
 }
 
-interface FeaturedProductList {
+export interface FeaturedProductList {
    handle: string;
    title: string;
    image: CMSImage | null;
@@ -71,6 +71,7 @@ export enum SplitImagePosition {
 export interface WorkbenchSection {
    type: PageSectionType.Workbench;
    id: string;
+   title: string | null;
 }
 
 export interface StatsSection {
@@ -80,7 +81,7 @@ export interface StatsSection {
 }
 
 interface Stat {
-   number: string;
+   value: string;
    label: string;
 }
 

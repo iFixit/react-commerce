@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_page_stat_items",
+  "info": {
+    "displayName": "stat item",
+    "icon": "arrow-up"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

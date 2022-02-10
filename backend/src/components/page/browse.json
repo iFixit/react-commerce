@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_page_browses",
+  "info": {
+    "displayName": "browse",
+    "icon": "search"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "featuredProductLists": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-list.product-list"
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

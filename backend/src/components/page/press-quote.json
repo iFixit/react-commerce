@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_page_press_quotes",
+  "info": {
+    "displayName": "pressQuote",
+    "icon": "align-center"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "text": {
+      "type": "richtext"
+    },
+    "logo": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

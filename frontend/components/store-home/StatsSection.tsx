@@ -35,7 +35,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
                {stats.map((stat, index) => (
                   <Stats
                      key={index}
-                     number={stat.number}
+                     number={stat.value}
                      helpText={stat.label}
                   />
                ))}

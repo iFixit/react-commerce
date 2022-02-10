@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_page_workbenches",
+  "info": {
+    "displayName": "workbench",
+    "icon": "th-large"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}

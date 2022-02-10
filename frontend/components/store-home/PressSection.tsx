@@ -104,9 +104,10 @@ export function PressSection({
                            callToAction.type ===
                            NavigationActionType.ExternalLink
                         }
+                        display="flex"
                      >
                         {callToAction.title}
-                        <Icon as={HiChevronRight} boxSize="6" mt="-1px" />
+                        <Icon as={HiChevronRight} boxSize="6" />
                      </Link>
                   </NextLink>
                )}
