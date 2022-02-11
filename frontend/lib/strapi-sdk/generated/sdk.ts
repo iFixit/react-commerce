@@ -119,6 +119,14 @@ export type ComponentPageCallToAction = {
    url?: Maybe<Scalars['String']>;
 };
 
+export type ComponentPageFeaturedProductList = {
+   __typename?: 'ComponentPageFeaturedProductList';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   productList?: Maybe<ProductListEntityResponse>;
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentPageHero = {
    __typename?: 'ComponentPageHero';
    callToAction?: Maybe<ComponentPageCallToAction>;
@@ -377,6 +385,7 @@ export type GenericMorph =
    | ComponentMenuSubmenu
    | ComponentPageBrowse
    | ComponentPageCallToAction
+   | ComponentPageFeaturedProductList
    | ComponentPageHero
    | ComponentPagePress
    | ComponentPagePressQuote
@@ -902,6 +911,7 @@ export type PageRelationResponseCollection = {
 
 export type PageSectionsDynamicZone =
    | ComponentPageBrowse
+   | ComponentPageFeaturedProductList
    | ComponentPageHero
    | ComponentPagePress
    | ComponentPageSplitWithImage
@@ -1583,6 +1593,24 @@ export type FindPageQuery = {
                                 alternativeText?: Maybe<string>;
                                 url: string;
                                 formats?: Maybe<any>;
+                             }>;
+                          }>;
+                       }>;
+                    }
+                  | {
+                       __typename: 'ComponentPageFeaturedProductList';
+                       id: string;
+                       title?: Maybe<string>;
+                       description?: Maybe<string>;
+                       productList?: Maybe<{
+                          __typename?: 'ProductListEntityResponse';
+                          data?: Maybe<{
+                             __typename?: 'ProductListEntity';
+                             attributes?: Maybe<{
+                                __typename?: 'ProductList';
+                                title: string;
+                                handle: string;
+                                deviceTitle?: Maybe<string>;
                              }>;
                           }>;
                        }>;
@@ -2917,6 +2945,20 @@ export const FindPageDocument = `
                     url
                     formats
                   }
+                }
+              }
+            }
+          }
+          ... on ComponentPageFeaturedProductList {
+            id
+            title
+            description
+            productList {
+              data {
+                attributes {
+                  title
+                  handle
+                  deviceTitle
                 }
               }
             }

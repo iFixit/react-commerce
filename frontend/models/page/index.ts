@@ -54,43 +54,24 @@ export async function findPageByPath(path: string): Promise<Page | null> {
       return null;
    }
    const rawSections = filterNullableItems(page.sections);
-   const sections = rawSections.map((section, index): PageSection | null => {
-      switch (section.__typename) {
-         case 'ComponentPageHero': {
-            const image = section.image?.data?.attributes;
-            return {
-               type: PageSectionType.Hero,
-               id: `${section.__typename}-${index}`,
-               title: section.title || null,
-               description: section.description || null,
-               callToAction: section.callToAction
-                  ? {
-                       type: NavigationActionType.InternalLink,
-                       title: section.callToAction.title || '',
-                       url: section.callToAction.url || '#',
-                    }
-                  : null,
-               image: image
-                  ? {
-                       alternativeText: image.alternativeText || null,
-                       url: image.url,
-                       formats: image.formats || null,
-                    }
-                  : null,
-            };
-         }
-         case 'ComponentPageBrowse': {
-            const productLists = section.featuredProductLists?.data;
-            const image = section.image?.data?.attributes;
-            const featuredProductLists = productLists?.map<FeaturedProductList | null>(
-               (productList) => {
-                  if (productList.attributes == null) {
-                     return null;
-                  }
-                  const image = productList.attributes.image?.data?.attributes;
+   const sections = await Promise.all(
+      rawSections.map(
+         async (section, index): Promise<PageSection | null> => {
+            switch (section.__typename) {
+               case 'ComponentPageHero': {
+                  const image = section.image?.data?.attributes;
                   return {
-                     handle: productList.attributes.handle,
-                     title: productList.attributes.title,
+                     type: PageSectionType.Hero,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     callToAction: section.callToAction
+                        ? {
+                             type: NavigationActionType.InternalLink,
+                             title: section.callToAction.title || '',
+                             url: section.callToAction.url || '#',
+                          }
+                        : null,
                      image: image
                         ? {
                              alternativeText: image.alternativeText || null,
@@ -100,113 +81,157 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                         : null,
                   };
                }
-            );
-            return {
-               type: PageSectionType.Browse,
-               id: `${section.__typename}-${index}`,
-               title: section.title || null,
-               description: section.description || null,
-               featuredProductLists: filterNullableItems(featuredProductLists),
-               image: image
-                  ? {
-                       alternativeText: image.alternativeText || null,
-                       url: image.url,
-                       formats: image.formats || null,
-                    }
-                  : null,
-            };
-         }
-         case 'ComponentPageWorkbench': {
-            return {
-               type: PageSectionType.Workbench,
-               id: `${section.__typename}-${index}`,
-               title: section.title || null,
-            };
-         }
-         case 'ComponentPageStats': {
-            const stats = filterNullableItems(section.stats);
-            return {
-               type: PageSectionType.Stats,
-               id: `${section.__typename}-${index}`,
-               stats: stats.map((statItem) => {
+               case 'ComponentPageBrowse': {
+                  const productLists = section.featuredProductLists?.data;
+                  const image = section.image?.data?.attributes;
+                  const featuredProductLists = productLists?.map<FeaturedProductList | null>(
+                     (productList) => {
+                        if (productList.attributes == null) {
+                           return null;
+                        }
+                        const image =
+                           productList.attributes.image?.data?.attributes;
+                        return {
+                           handle: productList.attributes.handle,
+                           title: productList.attributes.title,
+                           image: image
+                              ? {
+                                   alternativeText:
+                                      image.alternativeText || null,
+                                   url: image.url,
+                                   formats: image.formats || null,
+                                }
+                              : null,
+                        };
+                     }
+                  );
                   return {
-                     label: statItem.label,
-                     value: statItem.value,
-                  };
-               }),
-            };
-         }
-         case 'ComponentPageSplitWithImage': {
-            const image = section.image?.data?.attributes;
-            return {
-               type: PageSectionType.SplitWithImageContent,
-               id: `${section.__typename}-${index}`,
-               title: section.title || null,
-               description: section.description || null,
-               callToAction: section.callToAction
-                  ? {
-                       type: NavigationActionType.InternalLink,
-                       title: section.callToAction.title || '',
-                       url: section.callToAction.url || '#',
-                    }
-                  : null,
-               image: image
-                  ? {
-                       alternativeText: image.alternativeText || null,
-                       url: image.url,
-                       formats: image.formats || null,
-                    }
-                  : null,
-               imagePosition:
-                  section.imagePosition ===
-                  Enum_Componentpagesplitwithimage_Imageposition.Left
-                     ? SplitImagePosition.Left
-                     : SplitImagePosition.Right,
-            };
-         }
-         case 'ComponentPagePress': {
-            const quotes = filterNullableItems(section.quotes);
-            return {
-               type: PageSectionType.Press,
-               id: `${section.__typename}-${index}`,
-               title: section.title || null,
-               description: section.description || null,
-               callToAction: section.callToAction
-                  ? {
-                       type: NavigationActionType.InternalLink,
-                       title: section.callToAction.title || '',
-                       url: section.callToAction.url || '#',
-                    }
-                  : null,
-               quotes: quotes.map((quote) => {
-                  const image = quote.logo?.data?.attributes;
-                  return {
-                     name: quote.name || null,
-                     logo: image
+                     type: PageSectionType.Browse,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     featuredProductLists: filterNullableItems(
+                        featuredProductLists
+                     ),
+                     image: image
                         ? {
                              alternativeText: image.alternativeText || null,
                              url: image.url,
                              formats: image.formats || null,
                           }
                         : null,
-                     text: quote.text || null,
                   };
-               }),
-            };
+               }
+               case 'ComponentPageWorkbench': {
+                  return {
+                     type: PageSectionType.Workbench,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                  };
+               }
+               case 'ComponentPageStats': {
+                  const stats = filterNullableItems(section.stats);
+                  return {
+                     type: PageSectionType.Stats,
+                     id: `${section.__typename}-${index}`,
+                     stats: stats.map((statItem) => {
+                        return {
+                           label: statItem.label,
+                           value: statItem.value,
+                        };
+                     }),
+                  };
+               }
+               case 'ComponentPageSplitWithImage': {
+                  const image = section.image?.data?.attributes;
+                  return {
+                     type: PageSectionType.SplitWithImageContent,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     callToAction: section.callToAction
+                        ? {
+                             type: NavigationActionType.InternalLink,
+                             title: section.callToAction.title || '',
+                             url: section.callToAction.url || '#',
+                          }
+                        : null,
+                     image: image
+                        ? {
+                             alternativeText: image.alternativeText || null,
+                             url: image.url,
+                             formats: image.formats || null,
+                          }
+                        : null,
+                     imagePosition:
+                        section.imagePosition ===
+                        Enum_Componentpagesplitwithimage_Imageposition.Left
+                           ? SplitImagePosition.Left
+                           : SplitImagePosition.Right,
+                  };
+               }
+               case 'ComponentPagePress': {
+                  const quotes = filterNullableItems(section.quotes);
+                  return {
+                     type: PageSectionType.Press,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     callToAction: section.callToAction
+                        ? {
+                             type: NavigationActionType.InternalLink,
+                             title: section.callToAction.title || '',
+                             url: section.callToAction.url || '#',
+                          }
+                        : null,
+                     quotes: quotes.map((quote) => {
+                        const image = quote.logo?.data?.attributes;
+                        return {
+                           name: quote.name || null,
+                           logo: image
+                              ? {
+                                   alternativeText:
+                                      image.alternativeText || null,
+                                   url: image.url,
+                                   formats: image.formats || null,
+                                }
+                              : null,
+                           text: quote.text || null,
+                        };
+                     }),
+                  };
+               }
+               case 'ComponentPageFeaturedProductList': {
+                  const productList = section.productList?.data?.attributes;
+                  let products: FeaturedProduct[] = [];
+                  if (productList != null) {
+                     products = await findFeaturedProducts(
+                        productList.handle,
+                        10
+                     );
+                  }
+                  return {
+                     type: PageSectionType.FeaturedProductList,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     products,
+                  };
+               }
+               case 'Error': {
+                  return null;
+               }
+               default:
+                  return assertNever(section);
+            }
          }
-         case 'Error': {
-            return null;
-         }
-         default:
-            return assertNever(section);
-      }
-   });
+      )
+   );
    return {
       path: page.path,
       title: page.title,
       sections: filterNullableItems(sections),
    };
-   // return mockGetPageByPath(path);
 }
 
 async function mockGetPageByPath(path: string): Promise<Page> {

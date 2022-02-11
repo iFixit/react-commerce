@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_page_featured_product_lists",
+  "info": {
+    "displayName": "featuredProductList",
+    "icon": "splotch"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "productList": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product-list.product-list"
+    }
+  }
+}

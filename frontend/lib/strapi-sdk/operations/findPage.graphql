@@ -119,6 +119,20 @@ query findPage(
                      }
                   }
                }
+               ... on ComponentPageFeaturedProductList {
+                  id
+                  title
+                  description
+                  productList {
+                     data {
+                        attributes {
+                           title
+                           handle
+                           deviceTitle
+                        }
+                     }
+                  }
+               }
             }
          }
       }
