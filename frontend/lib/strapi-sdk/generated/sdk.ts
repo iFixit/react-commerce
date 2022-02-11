@@ -167,6 +167,36 @@ export type ComponentPagePressQuoteFiltersInput = {
    text?: Maybe<StringFilterInput>;
 };
 
+export type ComponentPageSocialGallery = {
+   __typename?: 'ComponentPageSocialGallery';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   posts: Array<Maybe<ComponentPageSocialGalleryPost>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageSocialGalleryPostsArgs = {
+   filters?: Maybe<ComponentPageSocialGalleryPostFiltersInput>;
+   pagination?: Maybe<PaginationArg>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type ComponentPageSocialGalleryPost = {
+   __typename?: 'ComponentPageSocialGalleryPost';
+   author?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image: UploadFileEntityResponse;
+   url?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageSocialGalleryPostFiltersInput = {
+   and?: Maybe<Array<Maybe<ComponentPageSocialGalleryPostFiltersInput>>>;
+   author?: Maybe<StringFilterInput>;
+   not?: Maybe<ComponentPageSocialGalleryPostFiltersInput>;
+   or?: Maybe<Array<Maybe<ComponentPageSocialGalleryPostFiltersInput>>>;
+   url?: Maybe<StringFilterInput>;
+};
+
 export type ComponentPageSplitWithImage = {
    __typename?: 'ComponentPageSplitWithImage';
    callToAction?: Maybe<ComponentPageCallToAction>;
@@ -389,6 +419,8 @@ export type GenericMorph =
    | ComponentPageHero
    | ComponentPagePress
    | ComponentPagePressQuote
+   | ComponentPageSocialGallery
+   | ComponentPageSocialGalleryPost
    | ComponentPageSplitWithImage
    | ComponentPageStat
    | ComponentPageStats
@@ -914,6 +946,7 @@ export type PageSectionsDynamicZone =
    | ComponentPageFeaturedProductList
    | ComponentPageHero
    | ComponentPagePress
+   | ComponentPageSocialGallery
    | ComponentPageSplitWithImage
    | ComponentPageStats
    | ComponentPageWorkbench
@@ -1669,6 +1702,32 @@ export type FindPageQuery = {
                                 }>;
                              }>
                           >
+                       >;
+                    }
+                  | {
+                       __typename: 'ComponentPageSocialGallery';
+                       id: string;
+                       title?: Maybe<string>;
+                       description?: Maybe<string>;
+                       posts: Array<
+                          Maybe<{
+                             __typename?: 'ComponentPageSocialGalleryPost';
+                             id: string;
+                             author?: Maybe<string>;
+                             url?: Maybe<string>;
+                             image: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: Maybe<{
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: Maybe<{
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: Maybe<string>;
+                                      url: string;
+                                      formats?: Maybe<any>;
+                                   }>;
+                                }>;
+                             };
+                          }>
                        >;
                     }
                   | {
@@ -2959,6 +3018,25 @@ export const FindPageDocument = `
                   title
                   handle
                   deviceTitle
+                }
+              }
+            }
+          }
+          ... on ComponentPageSocialGallery {
+            id
+            title
+            description
+            posts {
+              id
+              author
+              url
+              image {
+                data {
+                  attributes {
+                    alternativeText
+                    url
+                    formats
+                  }
                 }
               }
             }

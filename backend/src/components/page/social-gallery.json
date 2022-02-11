@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_page_social_galleries",
+  "info": {
+    "displayName": "socialGallery",
+    "icon": "crow"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "posts": {
+      "displayName": "socialGalleryPost",
+      "type": "component",
+      "repeatable": true,
+      "component": "page.social-gallery-post",
+      "required": true
+    }
+  }
+}

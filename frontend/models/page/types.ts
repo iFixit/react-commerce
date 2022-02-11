@@ -130,7 +130,7 @@ export interface SocialGallerySection {
 }
 
 export interface SocialPost {
-   username: string;
+   username: string | null;
    url: string | null;
    image: CMSImage | null;
 }

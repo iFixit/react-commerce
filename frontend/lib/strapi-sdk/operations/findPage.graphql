@@ -133,6 +133,25 @@ query findPage(
                      }
                   }
                }
+               ... on ComponentPageSocialGallery {
+                  id
+                  title
+                  description
+                  posts {
+                     id
+                     author
+                     url
+                     image {
+                        data {
+                           attributes {
+                              alternativeText
+                              url
+                              formats
+                           }
+                        }
+                     }
+                  }
+               }
             }
          }
       }

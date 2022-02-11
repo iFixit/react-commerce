@@ -218,6 +218,32 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      products,
                   };
                }
+               case 'ComponentPageSocialGallery': {
+                  const rawPosts = filterNullableItems(section.posts);
+                  return {
+                     type: PageSectionType.SocialGallery,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     posts: rawPosts.map(
+                        (post): SocialPost => {
+                           const image = post.image?.data?.attributes;
+                           return {
+                              username: post.author || null,
+                              url: post.url || null,
+                              image: image
+                                 ? {
+                                      alternativeText:
+                                         image.alternativeText || null,
+                                      url: image.url,
+                                      formats: image.formats || null,
+                                   }
+                                 : null,
+                           };
+                        }
+                     ),
+                  };
+               }
                case 'Error': {
                   return null;
                }

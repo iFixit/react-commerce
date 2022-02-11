@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_page_social_gallery_posts",
+  "info": {
+    "displayName": "socialGalleryPost",
+    "icon": "comment"
+  },
+  "options": {},
+  "attributes": {
+    "author": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}
