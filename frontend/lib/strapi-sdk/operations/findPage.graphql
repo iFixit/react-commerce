@@ -20,10 +20,10 @@ query findPage(
                   title
                   description
                   callToAction {
-                     ...CallToActionFragment
+                     ...CallToActionFields
                   }
                   image {
-                     ...ImageFragment
+                     ...ImageFields
                   }
                }
                ... on ComponentPageBrowse {
@@ -36,13 +36,13 @@ query findPage(
                            handle
                            title
                            image {
-                              ...ImageFragment
+                              ...ImageFields
                            }
                         }
                      }
                   }
                   image {
-                     ...ImageFragment
+                     ...ImageFields
                   }
                }
                ... on ComponentPageWorkbench {
@@ -63,11 +63,11 @@ query findPage(
                   title
                   description
                   callToAction {
-                     ...CallToActionFragment
+                     ...CallToActionFields
                   }
                   imagePosition
                   image {
-                     ...ImageFragment
+                     ...ImageFields
                   }
                }
                ... on ComponentPagePress {
@@ -75,14 +75,14 @@ query findPage(
                   title
                   description
                   callToAction {
-                     ...CallToActionFragment
+                     ...CallToActionFields
                   }
                   pressQuotes {
                      id
                      name
                      text
                      logo {
-                        ...ImageFragment
+                        ...ImageFields
                      }
                   }
                }
@@ -109,7 +109,7 @@ query findPage(
                      author
                      url
                      image {
-                        ...ImageFragment
+                        ...ImageFields
                      }
                   }
                }
@@ -122,10 +122,10 @@ query findPage(
                            title
                            description
                            callToAction {
-                              ...CallToActionFragment
+                              ...CallToActionFields
                            }
                            image {
-                              ...ImageFragment
+                              ...ImageFields
                            }
                         }
                      }
@@ -141,7 +141,28 @@ query findPage(
                      author
                      headline
                      avatar {
-                        ...ImageFragment
+                        ...ImageFields
+                     }
+                  }
+               }
+               ... on ComponentPageMultipleBanners {
+                  id
+                  title
+                  banners {
+                     banner {
+                        data {
+                           attributes {
+                              template
+                              title
+                              description
+                              image {
+                                 ...ImageFields
+                              }
+                              callToAction {
+                                 ...CallToActionFields
+                              }
+                           }
+                        }
                      }
                   }
                }
@@ -151,7 +172,7 @@ query findPage(
    }
 }
 
-fragment ImageFragment on UploadFileEntityResponse {
+fragment ImageFields on UploadFileEntityResponse {
    data {
       attributes {
          alternativeText
@@ -161,7 +182,7 @@ fragment ImageFragment on UploadFileEntityResponse {
    }
 }
 
-fragment CallToActionFragment on ComponentPageCallToAction {
+fragment CallToActionFields on ComponentPageCallToAction {
    title
    url
 }

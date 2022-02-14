@@ -1,8 +1,5 @@
 import { Box, Icon, Link, Text, VStack } from '@chakra-ui/react';
-import {
-   NavigationActionType,
-   PressSection as SectionData,
-} from '@models/page';
+import { SectionActionType, PressSection as SectionData } from '@models/page';
 import Head from 'next/head';
 import Image from 'next/image';
 import NextLink from 'next/link';
@@ -101,7 +98,7 @@ export function PressSection({
                         color="brand.500"
                         fontWeight="bold"
                         isExternal={
-                           callToAction.type === NavigationActionType.Link
+                           callToAction.type === SectionActionType.Link
                         }
                         display="flex"
                      >

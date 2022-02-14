@@ -51,7 +51,8 @@
         "page.featured-product-list",
         "page.social-gallery",
         "page.banner",
-        "page.testimonials"
+        "page.testimonials",
+        "page.multiple-banners"
       ],
       "required": true
     }

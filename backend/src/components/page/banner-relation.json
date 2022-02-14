@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_page_banner_relations",
+  "info": {
+    "displayName": "bannerRelation",
+    "icon": "arrows-alt-h"
+  },
+  "options": {},
+  "attributes": {
+    "banner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::banner.banner"
+    }
+  }
+}

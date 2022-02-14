@@ -15,6 +15,7 @@ export enum PageSectionType {
    SocialGallery = 'SocialGallery',
    Banner = 'Banner',
    Testimonials = 'Testimonials',
+   MultipleBanners = 'MultipleBanners',
 }
 
 export type PageSection =
@@ -27,6 +28,7 @@ export type PageSection =
    | FeaturedProductListSection
    | SocialGallerySection
    | BannerSection
+   | MultipleBannersSection
    | TestimonialsSection;
 
 export interface HeroSection {
@@ -34,7 +36,7 @@ export interface HeroSection {
    id: string;
    title: string | null;
    description: string | null;
-   callToAction: NavigationAction | null;
+   callToAction: SectionAction | null;
    image: CMSImage | null;
 }
 
@@ -58,7 +60,7 @@ export interface SplitWithImageContentSection {
    id: string;
    title: string | null;
    description: string | null;
-   callToAction: NavigationAction | null;
+   callToAction: SectionAction | null;
    image: CMSImage | null;
    imagePosition: SplitImagePosition;
 }
@@ -90,7 +92,7 @@ export interface PressSection {
    id: string;
    title: string | null;
    description: string | null;
-   callToAction: NavigationAction | null;
+   callToAction: SectionAction | null;
    quotes: PressQuote[];
 }
 
@@ -142,10 +144,11 @@ export interface BannerSection {
    title: string | null;
    description: string | null;
    image: CMSImage | null;
-   callToAction: NavigationAction | null;
+   callToAction: SectionAction | null;
 }
 
 export enum BannerTemplate {
+   Default = 'default',
    Warranty = 'Warranty',
 }
 
@@ -164,15 +167,29 @@ export interface TestimonialQuote {
    headline: string | null;
 }
 
-export type NavigationAction = LinkAction;
+export interface MultipleBannersSection {
+   type: PageSectionType.MultipleBanners;
+   id: string;
+   title: string | null;
+   banners: Banner[];
+}
+
+export interface Banner {
+   title: string | null;
+   description: string | null;
+   image: CMSImage | null;
+   callToAction: SectionAction | null;
+}
+
+export type SectionAction = LinkAction;
 
 export interface LinkAction {
-   type: NavigationActionType.Link;
+   type: SectionActionType.Link;
    title: string;
    url: string;
 }
 
-export enum NavigationActionType {
+export enum SectionActionType {
    Link = 'Link',
 }
 

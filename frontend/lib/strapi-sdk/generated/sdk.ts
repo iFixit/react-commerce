@@ -169,6 +169,19 @@ export type ComponentPageBanner = {
    id: Scalars['ID'];
 };
 
+export type ComponentPageBannerRelation = {
+   __typename?: 'ComponentPageBannerRelation';
+   banner?: Maybe<BannerEntityResponse>;
+   id: Scalars['ID'];
+};
+
+export type ComponentPageBannerRelationFiltersInput = {
+   and?: Maybe<Array<Maybe<ComponentPageBannerRelationFiltersInput>>>;
+   banner?: Maybe<BannerFiltersInput>;
+   not?: Maybe<ComponentPageBannerRelationFiltersInput>;
+   or?: Maybe<Array<Maybe<ComponentPageBannerRelationFiltersInput>>>;
+};
+
 export type ComponentPageBrowse = {
    __typename?: 'ComponentPageBrowse';
    description?: Maybe<Scalars['String']>;
@@ -213,6 +226,19 @@ export type ComponentPageHero = {
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
    title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageMultipleBanners = {
+   __typename?: 'ComponentPageMultipleBanners';
+   banners: Array<Maybe<ComponentPageBannerRelation>>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageMultipleBannersBannersArgs = {
+   filters?: Maybe<ComponentPageBannerRelationFiltersInput>;
+   pagination?: Maybe<PaginationArg>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type ComponentPagePress = {
@@ -471,6 +497,7 @@ export type DateTimeFilterInput = {
 };
 
 export enum Enum_Banner_Template {
+   Default = 'default',
    Warranty = 'warranty',
 }
 
@@ -530,10 +557,12 @@ export type GenericMorph =
    | ComponentMenuProductListLink
    | ComponentMenuSubmenu
    | ComponentPageBanner
+   | ComponentPageBannerRelation
    | ComponentPageBrowse
    | ComponentPageCallToAction
    | ComponentPageFeaturedProductList
    | ComponentPageHero
+   | ComponentPageMultipleBanners
    | ComponentPagePress
    | ComponentPagePressQuote
    | ComponentPageSocialGallery
@@ -1091,6 +1120,7 @@ export type PageSectionsDynamicZone =
    | ComponentPageBrowse
    | ComponentPageFeaturedProductList
    | ComponentPageHero
+   | ComponentPageMultipleBanners
    | ComponentPagePress
    | ComponentPageSocialGallery
    | ComponentPageSplitWithImage
@@ -1867,6 +1897,45 @@ export type FindPageQuery = {
                        }>;
                     }
                   | {
+                       __typename: 'ComponentPageMultipleBanners';
+                       id: string;
+                       title?: Maybe<string>;
+                       banners: Array<
+                          Maybe<{
+                             __typename?: 'ComponentPageBannerRelation';
+                             banner?: Maybe<{
+                                __typename?: 'BannerEntityResponse';
+                                data?: Maybe<{
+                                   __typename?: 'BannerEntity';
+                                   attributes?: Maybe<{
+                                      __typename?: 'Banner';
+                                      template: Enum_Banner_Template;
+                                      title?: Maybe<string>;
+                                      description?: Maybe<string>;
+                                      image?: Maybe<{
+                                         __typename?: 'UploadFileEntityResponse';
+                                         data?: Maybe<{
+                                            __typename?: 'UploadFileEntity';
+                                            attributes?: Maybe<{
+                                               __typename?: 'UploadFile';
+                                               alternativeText?: Maybe<string>;
+                                               url: string;
+                                               formats?: Maybe<any>;
+                                            }>;
+                                         }>;
+                                      }>;
+                                      callToAction?: Maybe<{
+                                         __typename?: 'ComponentPageCallToAction';
+                                         title?: Maybe<string>;
+                                         url?: Maybe<string>;
+                                      }>;
+                                   }>;
+                                }>;
+                             }>;
+                          }>
+                       >;
+                    }
+                  | {
                        __typename: 'ComponentPagePress';
                        id: string;
                        title?: Maybe<string>;
@@ -2004,7 +2073,7 @@ export type FindPageQuery = {
    }>;
 };
 
-export type ImageFragmentFragment = {
+export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: Maybe<{
       __typename?: 'UploadFileEntity';
@@ -2017,7 +2086,7 @@ export type ImageFragmentFragment = {
    }>;
 };
 
-export type CallToActionFragmentFragment = {
+export type CallToActionFieldsFragment = {
    __typename?: 'ComponentPageCallToAction';
    title?: Maybe<string>;
    url?: Maybe<string>;
@@ -3042,8 +3111,8 @@ export type GetStoreListQuery = {
    }>;
 };
 
-export const ImageFragmentFragmentDoc = `
-    fragment ImageFragment on UploadFileEntityResponse {
+export const ImageFieldsFragmentDoc = `
+    fragment ImageFields on UploadFileEntityResponse {
   data {
     attributes {
       alternativeText
@@ -3053,8 +3122,8 @@ export const ImageFragmentFragmentDoc = `
   }
 }
     `;
-export const CallToActionFragmentFragmentDoc = `
-    fragment CallToActionFragment on ComponentPageCallToAction {
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
   title
   url
 }
@@ -3167,10 +3236,10 @@ export const FindPageDocument = `
             title
             description
             callToAction {
-              ...CallToActionFragment
+              ...CallToActionFields
             }
             image {
-              ...ImageFragment
+              ...ImageFields
             }
           }
           ... on ComponentPageBrowse {
@@ -3183,13 +3252,13 @@ export const FindPageDocument = `
                   handle
                   title
                   image {
-                    ...ImageFragment
+                    ...ImageFields
                   }
                 }
               }
             }
             image {
-              ...ImageFragment
+              ...ImageFields
             }
           }
           ... on ComponentPageWorkbench {
@@ -3210,11 +3279,11 @@ export const FindPageDocument = `
             title
             description
             callToAction {
-              ...CallToActionFragment
+              ...CallToActionFields
             }
             imagePosition
             image {
-              ...ImageFragment
+              ...ImageFields
             }
           }
           ... on ComponentPagePress {
@@ -3222,14 +3291,14 @@ export const FindPageDocument = `
             title
             description
             callToAction {
-              ...CallToActionFragment
+              ...CallToActionFields
             }
             pressQuotes {
               id
               name
               text
               logo {
-                ...ImageFragment
+                ...ImageFields
               }
             }
           }
@@ -3256,7 +3325,7 @@ export const FindPageDocument = `
               author
               url
               image {
-                ...ImageFragment
+                ...ImageFields
               }
             }
           }
@@ -3269,10 +3338,10 @@ export const FindPageDocument = `
                   title
                   description
                   callToAction {
-                    ...CallToActionFragment
+                    ...CallToActionFields
                   }
                   image {
-                    ...ImageFragment
+                    ...ImageFields
                   }
                 }
               }
@@ -3288,7 +3357,28 @@ export const FindPageDocument = `
               author
               headline
               avatar {
-                ...ImageFragment
+                ...ImageFields
+              }
+            }
+          }
+          ... on ComponentPageMultipleBanners {
+            id
+            title
+            banners {
+              banner {
+                data {
+                  attributes {
+                    template
+                    title
+                    description
+                    image {
+                      ...ImageFields
+                    }
+                    callToAction {
+                      ...CallToActionFields
+                    }
+                  }
+                }
               }
             }
           }
@@ -3297,8 +3387,8 @@ export const FindPageDocument = `
     }
   }
 }
-    ${CallToActionFragmentFragmentDoc}
-${ImageFragmentFragmentDoc}`;
+    ${CallToActionFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}`;
 export const GetGlobalSettingsDocument = `
     query getGlobalSettings {
   global {

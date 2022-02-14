@@ -4,7 +4,8 @@
   "info": {
     "singularName": "banner",
     "pluralName": "banners",
-    "displayName": "Banner"
+    "displayName": "Banner",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -23,9 +24,11 @@
       },
       "type": "enumeration",
       "enum": [
+        "default",
         "warranty"
       ],
-      "required": true
+      "required": true,
+      "default": "default"
     },
     "title": {
       "pluginOptions": {
@@ -44,11 +47,12 @@
       "type": "richtext"
     },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
       ],
-      "type": "media",
-      "multiple": false,
       "pluginOptions": {
         "i18n": {
           "localized": true

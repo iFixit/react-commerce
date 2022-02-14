@@ -1,15 +1,16 @@
 import { Box } from '@chakra-ui/react';
 import { assertNever } from '@helpers/application-helpers';
 import { Page, PageSectionType } from '@models/page';
+import { BannerSection } from './BannerSection';
 import { BrowseSection } from './BrowseSection';
 import { FeaturedProductListSection } from './FeaturedProductListSection';
 import { HeroSection } from './HeroSection';
-import { BannerSection } from './BannerSection';
+import { MultipleBannersSection } from './MultipleBannersSection';
 import { PressSection } from './PressSection';
-import { TestimonialsSection } from './TestimonialsSection';
 import { SocialGallerySection } from './SocialGallerySection';
 import { SplitWithImageContentSection } from './SplitWithImageContentSection';
 import { StatsSection } from './StatsSection';
+import { TestimonialsSection } from './TestimonialsSection';
 import { WorkbenchSection } from './WorkbenchSection';
 
 export interface StoreHomeViewProps {
@@ -63,6 +64,11 @@ export function StoreHomeView({ page }: StoreHomeViewProps) {
                case PageSectionType.Testimonials: {
                   return (
                      <TestimonialsSection key={section.id} data={section} />
+                  );
+               }
+               case PageSectionType.MultipleBanners: {
+                  return (
+                     <MultipleBannersSection key={section.id} data={section} />
                   );
                }
                default:

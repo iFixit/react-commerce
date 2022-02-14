@@ -15,19 +15,25 @@ import {
    Enum_Componentpagesplitwithimage_Imageposition,
    PublicationState,
    strapi,
+   ImageFieldsFragment,
+   CallToActionFieldsFragment,
+   Maybe,
 } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
 import {
    BannerTemplate,
    FeaturedProduct,
    FeaturedProductList,
-   NavigationActionType,
+   SectionActionType,
    Page,
    PageSection,
    PageSectionType,
    TestimonialQuote,
    SocialPost,
    SplitImagePosition,
+   Banner,
+   CMSImage,
+   SectionAction,
 } from './types';
 
 function genId() {
@@ -69,7 +75,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      description: section.description || null,
                      callToAction: section.callToAction
                         ? {
-                             type: NavigationActionType.Link,
+                             type: SectionActionType.Link,
                              title: section.callToAction.title || '',
                              url: section.callToAction.url || '#',
                           }
@@ -153,7 +159,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      description: section.description || null,
                      callToAction: section.callToAction
                         ? {
-                             type: NavigationActionType.Link,
+                             type: SectionActionType.Link,
                              title: section.callToAction.title || '',
                              url: section.callToAction.url || '#',
                           }
@@ -181,7 +187,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      description: section.description || null,
                      callToAction: section.callToAction
                         ? {
-                             type: NavigationActionType.Link,
+                             type: SectionActionType.Link,
                              title: section.callToAction.title || '',
                              url: section.callToAction.url || '#',
                           }
@@ -267,7 +273,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                         : null,
                      callToAction: banner.callToAction
                         ? {
-                             type: NavigationActionType.Link,
+                             type: SectionActionType.Link,
                              title: banner.callToAction.title || '',
                              url: banner.callToAction.url || '#',
                           }
@@ -299,6 +305,29 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      }),
                   };
                }
+               case 'ComponentPageMultipleBanners': {
+                  const cmsBanners = filterNullableItems(section.banners);
+                  const banners = cmsBanners.map((cmsBanner): Banner | null => {
+                     const banner = cmsBanner.banner?.data?.attributes;
+                     if (banner == null) {
+                        return null;
+                     }
+                     return {
+                        title: banner.title || null,
+                        description: banner.description || null,
+                        image: getImageFromFragment(banner.image),
+                        callToAction: getCallToActionFromFragment(
+                           banner.callToAction
+                        ),
+                     };
+                  });
+                  return {
+                     type: PageSectionType.MultipleBanners,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     banners: filterNullableItems(banners),
+                  };
+               }
                case 'Error': {
                   return null;
                }
@@ -319,9 +348,38 @@ function getBannerTemplate(cmsTemplate: Enum_Banner_Template): BannerTemplate {
    switch (cmsTemplate) {
       case Enum_Banner_Template.Warranty:
          return BannerTemplate.Warranty;
+      case Enum_Banner_Template.Default:
+         return BannerTemplate.Default;
       default:
          return assertNever(cmsTemplate);
    }
+}
+
+function getImageFromFragment(
+   fragment?: Maybe<ImageFieldsFragment>
+): CMSImage | null {
+   const image = fragment?.data?.attributes;
+   if (image == null) {
+      return null;
+   }
+   return {
+      alternativeText: image.alternativeText || null,
+      url: image.url,
+      formats: image.formats || null,
+   };
+}
+
+function getCallToActionFromFragment(
+   fragment?: Maybe<CallToActionFieldsFragment>
+): SectionAction | null {
+   if (fragment == null || fragment.title == null || fragment.url == null) {
+      return null;
+   }
+   return {
+      type: SectionActionType.Link,
+      title: fragment.title,
+      url: fragment.url,
+   };
 }
 
 async function mockGetPageByPath(path: string): Promise<Page> {
@@ -336,7 +394,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             title: 'For You and Your Favorite Fixers',
             description: 'Our best sale of the year with exclusive bundles.',
             callToAction: {
-               type: NavigationActionType.Link,
+               type: SectionActionType.Link,
                title: 'Save now',
                url: '/store/parts',
             },
@@ -460,7 +518,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
                "Our comprehensive kits have everything you need to replace your own battery, upgrade your RAM, swap in a SSD, or anything else you need to fix. Plus, we've got a step-by-step repair guide for every kit.",
             callToAction: {
                title: 'Refresh your battery',
-               type: NavigationActionType.Link,
+               type: SectionActionType.Link,
                url: '/store/parts',
             },
             image: {
@@ -477,7 +535,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             description:
                'How shall we sing the praises of the dedicated team of lunatics over at iFixit?',
             callToAction: {
-               type: NavigationActionType.Link,
+               type: SectionActionType.Link,
                title: 'See more',
                url: 'https://ifixit.com/Quotes',
             },
@@ -534,7 +592,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
                `,
             callToAction: {
                title: 'Get Your Own Pro Tech',
-               type: NavigationActionType.Link,
+               type: SectionActionType.Link,
                url: '/store/parts',
             },
             image: {
@@ -552,7 +610,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
 `,
             callToAction: {
                title: 'Level up Your Toolbox',
-               type: NavigationActionType.Link,
+               type: SectionActionType.Link,
                url: '/store/parts',
             },
             image: {
@@ -583,7 +641,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             title: 'Lifetime Guarantee',
             description: `We stand behind our tools. If something breaks, we’ll replace it—for as long as you own the iFixit tool.`,
             callToAction: {
-               type: NavigationActionType.Link,
+               type: SectionActionType.Link,
                title: 'Learn More',
                url: 'https://www.ifixit.com/Info/Warranty',
             },

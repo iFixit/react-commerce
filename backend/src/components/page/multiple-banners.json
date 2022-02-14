@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_page_multiple_banners",
+  "info": {
+    "displayName": "multipleBanners",
+    "icon": "ellipsis-h",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "banners": {
+      "displayName": "bannerRelation",
+      "type": "component",
+      "repeatable": true,
+      "component": "page.banner-relation",
+      "required": true,
+      "min": 2,
+      "max": 3
+    }
+  }
+}
