@@ -13,7 +13,7 @@ export enum PageSectionType {
    Press = 'Press',
    FeaturedProductList = 'FeaturedProductList',
    SocialGallery = 'SocialGallery',
-   LifetimeWarranty = 'LifetimeWarranty',
+   Banner = 'Banner',
    Quotes = 'Quotes',
 }
 
@@ -26,7 +26,7 @@ export type PageSection =
    | PressSection
    | FeaturedProductListSection
    | SocialGallerySection
-   | LifetimeWarrantySection
+   | BannerSection
    | QuotesSection;
 
 export interface HeroSection {
@@ -135,12 +135,18 @@ export interface SocialPost {
    image: CMSImage | null;
 }
 
-export interface LifetimeWarrantySection {
-   type: PageSectionType.LifetimeWarranty;
+export interface BannerSection {
+   type: PageSectionType.Banner;
    id: string;
+   template: BannerTemplate;
    title: string | null;
    description: string | null;
+   image: CMSImage | null;
    callToAction: NavigationAction | null;
+}
+
+export enum BannerTemplate {
+   Warranty = 'Warranty',
 }
 
 export interface QuotesSection {
@@ -158,23 +164,16 @@ export interface Quote {
    headline: string | null;
 }
 
-export type NavigationAction = InternalLinkAction | ExternalLinkAction;
+export type NavigationAction = LinkAction;
 
-export interface InternalLinkAction {
-   type: NavigationActionType.InternalLink;
-   title: string;
-   url: string;
-}
-
-export interface ExternalLinkAction {
-   type: NavigationActionType.ExternalLink;
+export interface LinkAction {
+   type: NavigationActionType.Link;
    title: string;
    url: string;
 }
 
 export enum NavigationActionType {
-   InternalLink = 'InternalLink',
-   ExternalLink = 'ExternalLink',
+   Link = 'Link',
 }
 
 export interface CMSImage {

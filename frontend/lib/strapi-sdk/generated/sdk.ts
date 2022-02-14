@@ -26,6 +26,73 @@ export type Scalars = {
    Upload: any;
 };
 
+export type Banner = {
+   __typename?: 'Banner';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   createdAt?: Maybe<Scalars['DateTime']>;
+   description?: Maybe<Scalars['String']>;
+   image?: Maybe<UploadFileEntityResponse>;
+   locale?: Maybe<Scalars['String']>;
+   localizations?: Maybe<BannerRelationResponseCollection>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   template: Enum_Banner_Template;
+   title?: Maybe<Scalars['String']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type BannerLocalizationsArgs = {
+   filters?: Maybe<BannerFiltersInput>;
+   pagination?: Maybe<PaginationArg>;
+   publicationState?: Maybe<PublicationState>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type BannerEntity = {
+   __typename?: 'BannerEntity';
+   attributes?: Maybe<Banner>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type BannerEntityResponse = {
+   __typename?: 'BannerEntityResponse';
+   data?: Maybe<BannerEntity>;
+};
+
+export type BannerEntityResponseCollection = {
+   __typename?: 'BannerEntityResponseCollection';
+   data: Array<BannerEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type BannerFiltersInput = {
+   and?: Maybe<Array<Maybe<BannerFiltersInput>>>;
+   createdAt?: Maybe<DateTimeFilterInput>;
+   description?: Maybe<StringFilterInput>;
+   id?: Maybe<IdFilterInput>;
+   locale?: Maybe<StringFilterInput>;
+   localizations?: Maybe<BannerFiltersInput>;
+   not?: Maybe<BannerFiltersInput>;
+   or?: Maybe<Array<Maybe<BannerFiltersInput>>>;
+   publishedAt?: Maybe<DateTimeFilterInput>;
+   template?: Maybe<StringFilterInput>;
+   title?: Maybe<StringFilterInput>;
+   updatedAt?: Maybe<DateTimeFilterInput>;
+};
+
+export type BannerInput = {
+   callToAction?: Maybe<ComponentPageCallToActionInput>;
+   description?: Maybe<Scalars['String']>;
+   image?: Maybe<Scalars['ID']>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   template?: Maybe<Enum_Banner_Template>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type BannerRelationResponseCollection = {
+   __typename?: 'BannerRelationResponseCollection';
+   data: Array<BannerEntity>;
+};
+
 export type BooleanFilterInput = {
    and?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
    between?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
@@ -96,6 +163,12 @@ export type ComponentMenuSubmenu = {
    submenu?: Maybe<MenuEntityResponse>;
 };
 
+export type ComponentPageBanner = {
+   __typename?: 'ComponentPageBanner';
+   banner?: Maybe<BannerEntityResponse>;
+   id: Scalars['ID'];
+};
+
 export type ComponentPageBrowse = {
    __typename?: 'ComponentPageBrowse';
    description?: Maybe<Scalars['String']>;
@@ -115,6 +188,12 @@ export type ComponentPageBrowseFeaturedProductListsArgs = {
 export type ComponentPageCallToAction = {
    __typename?: 'ComponentPageCallToAction';
    id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+   url?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageCallToActionInput = {
+   id?: Maybe<Scalars['ID']>;
    title?: Maybe<Scalars['String']>;
    url?: Maybe<Scalars['String']>;
 };
@@ -359,6 +438,10 @@ export type DateTimeFilterInput = {
    startsWith?: Maybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Banner_Template {
+   Warranty = 'warranty',
+}
+
 export enum Enum_Componentpagesplitwithimage_Imageposition {
    Left = 'Left',
    Right = 'Right',
@@ -408,11 +491,13 @@ export type FloatFilterInput = {
 };
 
 export type GenericMorph =
+   | Banner
    | ComponentGlobalNewsletterForm
    | ComponentMenuLink
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
    | ComponentMenuSubmenu
+   | ComponentPageBanner
    | ComponentPageBrowse
    | ComponentPageCallToAction
    | ComponentPageFeaturedProductList
@@ -652,6 +737,8 @@ export type MenuRelationResponseCollection = {
 
 export type Mutation = {
    __typename?: 'Mutation';
+   createBanner?: Maybe<BannerEntityResponse>;
+   createBannerLocalization?: Maybe<BannerEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
@@ -665,6 +752,7 @@ export type Mutation = {
    createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
    /** Create a new user */
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+   deleteBanner?: Maybe<BannerEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
@@ -686,6 +774,7 @@ export type Mutation = {
    removeFile?: Maybe<UploadFileEntityResponse>;
    /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
    resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+   updateBanner?: Maybe<BannerEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
@@ -698,6 +787,17 @@ export type Mutation = {
    /** Update an existing user */
    updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
    upload: UploadFileEntityResponse;
+};
+
+export type MutationCreateBannerArgs = {
+   data: BannerInput;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreateBannerLocalizationArgs = {
+   data?: Maybe<BannerInput>;
+   id?: Maybe<Scalars['ID']>;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateGlobalLocalizationArgs = {
@@ -753,6 +853,11 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
    data: UsersPermissionsUserInput;
+};
+
+export type MutationDeleteBannerArgs = {
+   id: Scalars['ID'];
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationDeleteGlobalArgs = {
@@ -821,6 +926,12 @@ export type MutationResetPasswordArgs = {
    code: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationUpdateBannerArgs = {
+   data: BannerInput;
+   id: Scalars['ID'];
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationUpdateFileInfoArgs = {
@@ -942,6 +1053,7 @@ export type PageRelationResponseCollection = {
 };
 
 export type PageSectionsDynamicZone =
+   | ComponentPageBanner
    | ComponentPageBrowse
    | ComponentPageFeaturedProductList
    | ComponentPageHero
@@ -1079,6 +1191,8 @@ export enum PublicationState {
 
 export type Query = {
    __typename?: 'Query';
+   banner?: Maybe<BannerEntityResponse>;
+   banners?: Maybe<BannerEntityResponseCollection>;
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
@@ -1097,6 +1211,19 @@ export type Query = {
    usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
    usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
    usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+export type QueryBannerArgs = {
+   id?: Maybe<Scalars['ID']>;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
+export type QueryBannersArgs = {
+   filters?: Maybe<BannerFiltersInput>;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   pagination?: Maybe<PaginationArg>;
+   publicationState?: Maybe<PublicationState>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type QueryGlobalArgs = {
@@ -1589,6 +1716,39 @@ export type FindPageQuery = {
             title: string;
             sections: Array<
                Maybe<
+                  | {
+                       __typename: 'ComponentPageBanner';
+                       id: string;
+                       banner?: Maybe<{
+                          __typename?: 'BannerEntityResponse';
+                          data?: Maybe<{
+                             __typename?: 'BannerEntity';
+                             attributes?: Maybe<{
+                                __typename?: 'Banner';
+                                template: Enum_Banner_Template;
+                                title?: Maybe<string>;
+                                description?: Maybe<string>;
+                                callToAction?: Maybe<{
+                                   __typename?: 'ComponentPageCallToAction';
+                                   title?: Maybe<string>;
+                                   url?: Maybe<string>;
+                                }>;
+                                image?: Maybe<{
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: Maybe<{
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: Maybe<{
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: Maybe<string>;
+                                         url: string;
+                                         formats?: Maybe<any>;
+                                      }>;
+                                   }>;
+                                }>;
+                             }>;
+                          }>;
+                       }>;
+                    }
                   | {
                        __typename: 'ComponentPageBrowse';
                        id: string;
@@ -3036,6 +3196,31 @@ export const FindPageDocument = `
                     alternativeText
                     url
                     formats
+                  }
+                }
+              }
+            }
+          }
+          ... on ComponentPageBanner {
+            id
+            banner {
+              data {
+                attributes {
+                  template
+                  title
+                  description
+                  callToAction {
+                    title
+                    url
+                  }
+                  image {
+                    data {
+                      attributes {
+                        alternativeText
+                        url
+                        formats
+                      }
+                    }
                   }
                 }
               }

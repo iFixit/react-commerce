@@ -49,7 +49,8 @@
         "page.split-with-image",
         "page.press",
         "page.featured-product-list",
-        "page.social-gallery"
+        "page.social-gallery",
+        "page.banner"
       ],
       "required": true
     }

@@ -1,20 +1,19 @@
-import backgroundImage from '@assets/images/lifetime-guarantee-background.jpg';
 import { LifetimeWarrantyIcon } from '@assets/svg';
 import { Box, Button, Flex, Icon } from '@chakra-ui/react';
-import { LifetimeWarrantySection as SectionData } from '@models/page';
+import { BannerSection as SectionData, BannerTemplate } from '@models/page';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { PageContentWrapper } from './PageContentWrapper';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
 
-export interface LifetimeWarrantySectionProps {
+export interface BannerSectionProps {
    data: SectionData;
 }
 
-export function LifetimeWarrantySection({
-   data: { title, description, callToAction },
-}: LifetimeWarrantySectionProps) {
+export function BannerSection({
+   data: { template, title, description, callToAction, image },
+}: BannerSectionProps) {
    return (
       <Box as="section" position="relative" w="full" py="16">
          <Box
@@ -26,21 +25,18 @@ export function LifetimeWarrantySection({
             bottom="0"
             right="0"
          />
-         <Box
-            position="absolute"
-            zIndex={-2}
-            top="0"
-            left="0"
-            bottom="0"
-            right="0"
-         >
-            <Image
-               src={backgroundImage}
-               alt=""
-               layout="fill"
-               objectFit="cover"
-            />
-         </Box>
+         {image && (
+            <Box
+               position="absolute"
+               zIndex={-2}
+               top="0"
+               left="0"
+               bottom="0"
+               right="0"
+            >
+               <Image src={image.url} alt="" layout="fill" objectFit="cover" />
+            </Box>
+         )}
          <PageContentWrapper>
             <Flex justify="space-between" align="center">
                <Box>
@@ -64,19 +60,21 @@ export function LifetimeWarrantySection({
                      </NextLink>
                   )}
                </Box>
-               <Icon
-                  as={LifetimeWarrantyIcon}
-                  boxSize={{ base: '130px', md: '110px', lg: '120px' }}
-                  color="white"
-                  display={{
-                     base: 'none',
-                     sm: 'block',
-                  }}
-                  bg="rgba(36, 44, 51, 0.09)"
-                  backdropFilter="auto"
-                  backdropBlur="16px"
-                  borderRadius="full"
-               />
+               {template === BannerTemplate.Warranty && (
+                  <Icon
+                     as={LifetimeWarrantyIcon}
+                     boxSize={{ base: '130px', md: '110px', lg: '120px' }}
+                     color="white"
+                     display={{
+                        base: 'none',
+                        sm: 'block',
+                     }}
+                     bg="rgba(36, 44, 51, 0.09)"
+                     backdropFilter="auto"
+                     backdropBlur="16px"
+                     borderRadius="full"
+                  />
+               )}
             </Flex>
          </PageContentWrapper>
       </Box>

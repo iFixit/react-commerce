@@ -11,12 +11,14 @@ import storeHomeContentImage2 from '@images/store-home-content-2.jpg';
 import storeHomeHeroImage from '@images/store-home-hero.jpeg';
 import storeHomeSearchImage from '@images/store-home-search-background.jpeg';
 import {
+   Enum_Banner_Template,
    Enum_Componentpagesplitwithimage_Imageposition,
    PublicationState,
    strapi,
 } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
 import {
+   BannerTemplate,
    FeaturedProduct,
    FeaturedProductList,
    NavigationActionType,
@@ -67,7 +69,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      description: section.description || null,
                      callToAction: section.callToAction
                         ? {
-                             type: NavigationActionType.InternalLink,
+                             type: NavigationActionType.Link,
                              title: section.callToAction.title || '',
                              url: section.callToAction.url || '#',
                           }
@@ -151,7 +153,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      description: section.description || null,
                      callToAction: section.callToAction
                         ? {
-                             type: NavigationActionType.InternalLink,
+                             type: NavigationActionType.Link,
                              title: section.callToAction.title || '',
                              url: section.callToAction.url || '#',
                           }
@@ -179,7 +181,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      description: section.description || null,
                      callToAction: section.callToAction
                         ? {
-                             type: NavigationActionType.InternalLink,
+                             type: NavigationActionType.Link,
                              title: section.callToAction.title || '',
                              url: section.callToAction.url || '#',
                           }
@@ -244,6 +246,34 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                      ),
                   };
                }
+               case 'ComponentPageBanner': {
+                  const banner = section.banner?.data?.attributes;
+                  if (banner == null) {
+                     return null;
+                  }
+                  const image = banner?.image?.data?.attributes;
+                  return {
+                     type: PageSectionType.Banner,
+                     id: `${section.__typename}-${index}`,
+                     template: getBannerTemplate(banner.template),
+                     title: banner?.title || null,
+                     description: banner.description || null,
+                     image: image
+                        ? {
+                             alternativeText: image.alternativeText || null,
+                             url: image.url,
+                             formats: image.formats || null,
+                          }
+                        : null,
+                     callToAction: banner.callToAction
+                        ? {
+                             type: NavigationActionType.Link,
+                             title: banner.callToAction.title || '',
+                             url: banner.callToAction.url || '#',
+                          }
+                        : null,
+                  };
+               }
                case 'Error': {
                   return null;
                }
@@ -260,6 +290,15 @@ export async function findPageByPath(path: string): Promise<Page | null> {
    };
 }
 
+function getBannerTemplate(cmsTemplate: Enum_Banner_Template): BannerTemplate {
+   switch (cmsTemplate) {
+      case Enum_Banner_Template.Warranty:
+         return BannerTemplate.Warranty;
+      default:
+         return assertNever(cmsTemplate);
+   }
+}
+
 async function mockGetPageByPath(path: string): Promise<Page> {
    const featuredProducts = await findFeaturedProducts('parts', 10);
    return {
@@ -272,7 +311,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             title: 'For You and Your Favorite Fixers',
             description: 'Our best sale of the year with exclusive bundles.',
             callToAction: {
-               type: NavigationActionType.InternalLink,
+               type: NavigationActionType.Link,
                title: 'Save now',
                url: '/store/parts',
             },
@@ -396,7 +435,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
                "Our comprehensive kits have everything you need to replace your own battery, upgrade your RAM, swap in a SSD, or anything else you need to fix. Plus, we've got a step-by-step repair guide for every kit.",
             callToAction: {
                title: 'Refresh your battery',
-               type: NavigationActionType.InternalLink,
+               type: NavigationActionType.Link,
                url: '/store/parts',
             },
             image: {
@@ -413,7 +452,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             description:
                'How shall we sing the praises of the dedicated team of lunatics over at iFixit?',
             callToAction: {
-               type: NavigationActionType.InternalLink,
+               type: NavigationActionType.Link,
                title: 'See more',
                url: 'https://ifixit.com/Quotes',
             },
@@ -470,7 +509,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
                `,
             callToAction: {
                title: 'Get Your Own Pro Tech',
-               type: NavigationActionType.InternalLink,
+               type: NavigationActionType.Link,
                url: '/store/parts',
             },
             image: {
@@ -488,7 +527,7 @@ async function mockGetPageByPath(path: string): Promise<Page> {
 `,
             callToAction: {
                title: 'Level up Your Toolbox',
-               type: NavigationActionType.InternalLink,
+               type: NavigationActionType.Link,
                url: '/store/parts',
             },
             image: {
@@ -513,15 +552,17 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             posts,
          },
          {
-            type: PageSectionType.LifetimeWarranty,
+            type: PageSectionType.Banner,
             id: genId(),
+            template: BannerTemplate.Warranty,
             title: 'Lifetime Guarantee',
             description: `We stand behind our tools. If something breaks, we’ll replace it—for as long as you own the iFixit tool.`,
             callToAction: {
-               type: NavigationActionType.InternalLink,
+               type: NavigationActionType.Link,
                title: 'Learn More',
                url: 'https://www.ifixit.com/Info/Warranty',
             },
+            image: null,
          },
          {
             type: PageSectionType.Quotes,

@@ -152,6 +152,31 @@ query findPage(
                      }
                   }
                }
+               ... on ComponentPageBanner {
+                  id
+                  banner {
+                     data {
+                        attributes {
+                           template
+                           title
+                           description
+                           callToAction {
+                              title
+                              url
+                           }
+                           image {
+                              data {
+                                 attributes {
+                                    alternativeText
+                                    url
+                                    formats
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
             }
          }
       }

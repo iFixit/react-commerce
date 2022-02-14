@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_page_banners",
+  "info": {
+    "displayName": "banner",
+    "icon": "audio-description"
+  },
+  "options": {},
+  "attributes": {
+    "banner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::banner.banner"
+    }
+  }
+}
