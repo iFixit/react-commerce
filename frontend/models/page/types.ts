@@ -158,7 +158,7 @@ export interface QuotesSection {
 }
 
 export interface Quote {
-   quote: string;
+   richText: string;
    author: string;
    avatar: CMSImage | null;
    headline: string | null;

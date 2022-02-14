@@ -220,11 +220,11 @@ export type ComponentPagePress = {
    callToAction?: Maybe<ComponentPageCallToAction>;
    description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
-   quotes?: Maybe<Array<Maybe<ComponentPagePressQuote>>>;
+   pressQuotes?: Maybe<Array<Maybe<ComponentPagePressQuote>>>;
    title?: Maybe<Scalars['String']>;
 };
 
-export type ComponentPagePressQuotesArgs = {
+export type ComponentPagePressPressQuotesArgs = {
    filters?: Maybe<ComponentPagePressQuoteFiltersInput>;
    pagination?: Maybe<PaginationArg>;
    sort?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -244,6 +244,38 @@ export type ComponentPagePressQuoteFiltersInput = {
    not?: Maybe<ComponentPagePressQuoteFiltersInput>;
    or?: Maybe<Array<Maybe<ComponentPagePressQuoteFiltersInput>>>;
    text?: Maybe<StringFilterInput>;
+};
+
+export type ComponentPageQuote = {
+   __typename?: 'ComponentPageQuote';
+   author: Scalars['String'];
+   avatar?: Maybe<UploadFileEntityResponse>;
+   headline?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   text: Scalars['String'];
+};
+
+export type ComponentPageQuoteFiltersInput = {
+   and?: Maybe<Array<Maybe<ComponentPageQuoteFiltersInput>>>;
+   author?: Maybe<StringFilterInput>;
+   headline?: Maybe<StringFilterInput>;
+   not?: Maybe<ComponentPageQuoteFiltersInput>;
+   or?: Maybe<Array<Maybe<ComponentPageQuoteFiltersInput>>>;
+   text?: Maybe<StringFilterInput>;
+};
+
+export type ComponentPageQuotes = {
+   __typename?: 'ComponentPageQuotes';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   quotes: Array<Maybe<ComponentPageQuote>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageQuotesQuotesArgs = {
+   filters?: Maybe<ComponentPageQuoteFiltersInput>;
+   pagination?: Maybe<PaginationArg>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type ComponentPageSocialGallery = {
@@ -504,6 +536,8 @@ export type GenericMorph =
    | ComponentPageHero
    | ComponentPagePress
    | ComponentPagePressQuote
+   | ComponentPageQuote
+   | ComponentPageQuotes
    | ComponentPageSocialGallery
    | ComponentPageSocialGalleryPost
    | ComponentPageSplitWithImage
@@ -1058,6 +1092,7 @@ export type PageSectionsDynamicZone =
    | ComponentPageFeaturedProductList
    | ComponentPageHero
    | ComponentPagePress
+   | ComponentPageQuotes
    | ComponentPageSocialGallery
    | ComponentPageSplitWithImage
    | ComponentPageStats
@@ -1841,7 +1876,7 @@ export type FindPageQuery = {
                           title?: Maybe<string>;
                           url?: Maybe<string>;
                        }>;
-                       quotes?: Maybe<
+                       pressQuotes?: Maybe<
                           Array<
                              Maybe<{
                                 __typename?: 'ComponentPagePressQuote';
@@ -1862,6 +1897,33 @@ export type FindPageQuery = {
                                 }>;
                              }>
                           >
+                       >;
+                    }
+                  | {
+                       __typename: 'ComponentPageQuotes';
+                       id: string;
+                       title?: Maybe<string>;
+                       description?: Maybe<string>;
+                       quotes: Array<
+                          Maybe<{
+                             __typename?: 'ComponentPageQuote';
+                             id: string;
+                             text: string;
+                             author: string;
+                             headline?: Maybe<string>;
+                             avatar?: Maybe<{
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: Maybe<{
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: Maybe<{
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: Maybe<string>;
+                                      url: string;
+                                      formats?: Maybe<any>;
+                                   }>;
+                                }>;
+                             }>;
+                          }>
                        >;
                     }
                   | {
@@ -1940,6 +2002,25 @@ export type FindPageQuery = {
          }>;
       }>;
    }>;
+};
+
+export type ImageFragmentFragment = {
+   __typename?: 'UploadFileEntityResponse';
+   data?: Maybe<{
+      __typename?: 'UploadFileEntity';
+      attributes?: Maybe<{
+         __typename?: 'UploadFile';
+         alternativeText?: Maybe<string>;
+         url: string;
+         formats?: Maybe<any>;
+      }>;
+   }>;
+};
+
+export type CallToActionFragmentFragment = {
+   __typename?: 'ComponentPageCallToAction';
+   title?: Maybe<string>;
+   url?: Maybe<string>;
 };
 
 export type GetGlobalSettingsQueryVariables = Exact<{ [key: string]: never }>;
@@ -2961,6 +3042,23 @@ export type GetStoreListQuery = {
    }>;
 };
 
+export const ImageFragmentFragmentDoc = `
+    fragment ImageFragment on UploadFileEntityResponse {
+  data {
+    attributes {
+      alternativeText
+      url
+      formats
+    }
+  }
+}
+    `;
+export const CallToActionFragmentFragmentDoc = `
+    fragment CallToActionFragment on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
 export const MenuPropsFragmentDoc = `
     fragment MenuProps on Menu {
   title
@@ -3069,17 +3167,10 @@ export const FindPageDocument = `
             title
             description
             callToAction {
-              title
-              url
+              ...CallToActionFragment
             }
             image {
-              data {
-                attributes {
-                  alternativeText
-                  url
-                  formats
-                }
-              }
+              ...ImageFragment
             }
           }
           ... on ComponentPageBrowse {
@@ -3092,25 +3183,13 @@ export const FindPageDocument = `
                   handle
                   title
                   image {
-                    data {
-                      attributes {
-                        alternativeText
-                        url
-                        formats
-                      }
-                    }
+                    ...ImageFragment
                   }
                 }
               }
             }
             image {
-              data {
-                attributes {
-                  alternativeText
-                  url
-                  formats
-                }
-              }
+              ...ImageFragment
             }
           }
           ... on ComponentPageWorkbench {
@@ -3131,18 +3210,11 @@ export const FindPageDocument = `
             title
             description
             callToAction {
-              title
-              url
+              ...CallToActionFragment
             }
             imagePosition
             image {
-              data {
-                attributes {
-                  alternativeText
-                  url
-                  formats
-                }
-              }
+              ...ImageFragment
             }
           }
           ... on ComponentPagePress {
@@ -3150,21 +3222,14 @@ export const FindPageDocument = `
             title
             description
             callToAction {
-              title
-              url
+              ...CallToActionFragment
             }
-            quotes {
+            pressQuotes {
               id
               name
               text
               logo {
-                data {
-                  attributes {
-                    alternativeText
-                    url
-                    formats
-                  }
-                }
+                ...ImageFragment
               }
             }
           }
@@ -3191,13 +3256,7 @@ export const FindPageDocument = `
               author
               url
               image {
-                data {
-                  attributes {
-                    alternativeText
-                    url
-                    formats
-                  }
-                }
+                ...ImageFragment
               }
             }
           }
@@ -3210,19 +3269,26 @@ export const FindPageDocument = `
                   title
                   description
                   callToAction {
-                    title
-                    url
+                    ...CallToActionFragment
                   }
                   image {
-                    data {
-                      attributes {
-                        alternativeText
-                        url
-                        formats
-                      }
-                    }
+                    ...ImageFragment
                   }
                 }
+              }
+            }
+          }
+          ... on ComponentPageQuotes {
+            id
+            title
+            description
+            quotes {
+              id
+              text
+              author
+              headline
+              avatar {
+                ...ImageFragment
               }
             }
           }
@@ -3231,7 +3297,8 @@ export const FindPageDocument = `
     }
   }
 }
-    `;
+    ${CallToActionFragmentFragmentDoc}
+${ImageFragmentFragmentDoc}`;
 export const GetGlobalSettingsDocument = `
     query getGlobalSettings {
   global {

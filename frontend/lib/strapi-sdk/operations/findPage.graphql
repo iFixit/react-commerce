@@ -20,17 +20,10 @@ query findPage(
                   title
                   description
                   callToAction {
-                     title
-                     url
+                     ...CallToActionFragment
                   }
                   image {
-                     data {
-                        attributes {
-                           alternativeText
-                           url
-                           formats
-                        }
-                     }
+                     ...ImageFragment
                   }
                }
                ... on ComponentPageBrowse {
@@ -43,25 +36,13 @@ query findPage(
                            handle
                            title
                            image {
-                              data {
-                                 attributes {
-                                    alternativeText
-                                    url
-                                    formats
-                                 }
-                              }
+                              ...ImageFragment
                            }
                         }
                      }
                   }
                   image {
-                     data {
-                        attributes {
-                           alternativeText
-                           url
-                           formats
-                        }
-                     }
+                     ...ImageFragment
                   }
                }
                ... on ComponentPageWorkbench {
@@ -82,18 +63,11 @@ query findPage(
                   title
                   description
                   callToAction {
-                     title
-                     url
+                     ...CallToActionFragment
                   }
                   imagePosition
                   image {
-                     data {
-                        attributes {
-                           alternativeText
-                           url
-                           formats
-                        }
-                     }
+                     ...ImageFragment
                   }
                }
                ... on ComponentPagePress {
@@ -101,21 +75,14 @@ query findPage(
                   title
                   description
                   callToAction {
-                     title
-                     url
+                     ...CallToActionFragment
                   }
-                  quotes {
+                  pressQuotes {
                      id
                      name
                      text
                      logo {
-                        data {
-                           attributes {
-                              alternativeText
-                              url
-                              formats
-                           }
-                        }
+                        ...ImageFragment
                      }
                   }
                }
@@ -142,13 +109,7 @@ query findPage(
                      author
                      url
                      image {
-                        data {
-                           attributes {
-                              alternativeText
-                              url
-                              formats
-                           }
-                        }
+                        ...ImageFragment
                      }
                   }
                }
@@ -161,19 +122,26 @@ query findPage(
                            title
                            description
                            callToAction {
-                              title
-                              url
+                              ...CallToActionFragment
                            }
                            image {
-                              data {
-                                 attributes {
-                                    alternativeText
-                                    url
-                                    formats
-                                 }
-                              }
+                              ...ImageFragment
                            }
                         }
+                     }
+                  }
+               }
+               ... on ComponentPageQuotes {
+                  id
+                  title
+                  description
+                  quotes {
+                     id
+                     text
+                     author
+                     headline
+                     avatar {
+                        ...ImageFragment
                      }
                   }
                }
@@ -181,4 +149,19 @@ query findPage(
          }
       }
    }
+}
+
+fragment ImageFragment on UploadFileEntityResponse {
+   data {
+      attributes {
+         alternativeText
+         url
+         formats
+      }
+   }
+}
+
+fragment CallToActionFragment on ComponentPageCallToAction {
+   title
+   url
 }

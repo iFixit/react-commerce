@@ -208,7 +208,7 @@ export function QuotesSection({
                               color="gray.600"
                               mb="5"
                               dangerouslySetInnerHTML={{
-                                 __html: quote.quote,
+                                 __html: quote.richText,
                               }}
                            />
                            <HStack>

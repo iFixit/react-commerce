@@ -173,7 +173,7 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                   };
                }
                case 'ComponentPagePress': {
-                  const quotes = filterNullableItems(section.quotes);
+                  const quotes = filterNullableItems(section.pressQuotes);
                   return {
                      type: PageSectionType.Press,
                      id: `${section.__typename}-${index}`,
@@ -272,6 +272,31 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                              url: banner.callToAction.url || '#',
                           }
                         : null,
+                  };
+               }
+               case 'ComponentPageQuotes': {
+                  const quotes = filterNullableItems(section.quotes);
+                  return {
+                     type: PageSectionType.Quotes,
+                     id: `${section.__typename}-${index}`,
+                     title: section.title || null,
+                     description: section.description || null,
+                     quotes: quotes.map((quote) => {
+                        const avatar = quote.avatar?.data?.attributes;
+                        return {
+                           richText: quote.text,
+                           author: quote.author,
+                           headline: quote.headline || null,
+                           avatar: avatar
+                              ? {
+                                   alternativeText:
+                                      avatar.alternativeText || null,
+                                   url: avatar.url,
+                                   formats: avatar.formats || null,
+                                }
+                              : null,
+                        };
+                     }),
                   };
                }
                case 'Error': {
@@ -579,7 +604,7 @@ const quotes: Quote[] = [
    {
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',
-      quote: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
+      richText: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
       avatar: {
          url:
             'https://pbs.twimg.com/profile_images/1102978040328466432/uSaX8_gE_400x400.png',
@@ -590,7 +615,7 @@ const quotes: Quote[] = [
    {
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',
-      quote: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
+      richText: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
       avatar: {
          url:
             'https://pbs.twimg.com/profile_images/1102978040328466432/uSaX8_gE_400x400.png',
@@ -601,7 +626,7 @@ const quotes: Quote[] = [
    {
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',
-      quote: `.@iFixit can help you repair (almost) anything!
+      richText: `.@iFixit can help you repair (almost) anything!
       With over 70,000 manuals and Fix Kits for TONS of devices, you can find the right tool for the job at http://ifixit.com/LTT`,
       avatar: {
          url:
@@ -613,19 +638,19 @@ const quotes: Quote[] = [
    {
       author: 'John Doe',
       headline: 'CEO Apple',
-      quote: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
+      richText: `Today i received my  @iFixit classic bundle. I was so happy when I opened the box and found a small pack of Haribo inside. Nice move @iFixitDE, who doesn’t love Haribo?`,
       avatar: null,
    },
    {
       author: 'John Doe',
       headline: 'CEO Apple',
-      quote: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
+      richText: `@iFixit has the parts, the tools, and most importantly, the guides to replace the battery yourself. They even have a nice sale going on for their tool sets! https://ifixit.com`,
       avatar: null,
    },
    {
       author: 'John Doe',
       headline: 'CEO Apple',
-      quote: `.@iFixit can help you repair (almost) anything!
+      richText: `.@iFixit can help you repair (almost) anything!
       With over 70,000 manuals and Fix Kits for TONS of devices, you can find the right tool for the job at http://ifixit.com/LTT`,
       avatar: null,
    },

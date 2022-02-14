@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_page_quotes",
+  "info": {
+    "displayName": "quotes",
+    "icon": "comments"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "quotes": {
+      "displayName": "quote",
+      "type": "component",
+      "repeatable": true,
+      "component": "page.quote",
+      "required": true,
+      "min": 3,
+      "max": 100
+    }
+  }
+}

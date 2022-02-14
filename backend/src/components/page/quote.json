@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_page_quote_items",
+  "info": {
+    "displayName": "quote",
+    "icon": "comment-alt"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "richtext",
+      "required": true
+    },
+    "author": {
+      "type": "string",
+      "required": true
+    },
+    "headline": {
+      "type": "string"
+    },
+    "avatar": {
+      "allowedTypes": ["images"],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}
