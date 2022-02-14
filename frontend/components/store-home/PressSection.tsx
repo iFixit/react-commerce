@@ -101,8 +101,7 @@ export function PressSection({
                         color="brand.500"
                         fontWeight="bold"
                         isExternal={
-                           callToAction.type ===
-                           NavigationActionType.ExternalLink
+                           callToAction.type === NavigationActionType.Link
                         }
                         display="flex"
                      >
