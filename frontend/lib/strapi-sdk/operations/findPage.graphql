@@ -131,7 +131,7 @@ query findPage(
                      }
                   }
                }
-               ... on ComponentPageQuotes {
+               ... on ComponentPageTestimonials {
                   id
                   title
                   description

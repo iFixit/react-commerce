@@ -6,7 +6,7 @@ import { FeaturedProductListSection } from './FeaturedProductListSection';
 import { HeroSection } from './HeroSection';
 import { BannerSection } from './BannerSection';
 import { PressSection } from './PressSection';
-import { QuotesSection } from './QuotesSection';
+import { TestimonialsSection } from './TestimonialsSection';
 import { SocialGallerySection } from './SocialGallerySection';
 import { SplitWithImageContentSection } from './SplitWithImageContentSection';
 import { StatsSection } from './StatsSection';
@@ -60,8 +60,10 @@ export function StoreHomeView({ page }: StoreHomeViewProps) {
                case PageSectionType.Banner: {
                   return <BannerSection key={section.id} data={section} />;
                }
-               case PageSectionType.Quotes: {
-                  return <QuotesSection key={section.id} data={section} />;
+               case PageSectionType.Testimonials: {
+                  return (
+                     <TestimonialsSection key={section.id} data={section} />
+                  );
                }
                default:
                   return assertNever(section);

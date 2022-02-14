@@ -14,7 +14,7 @@ export enum PageSectionType {
    FeaturedProductList = 'FeaturedProductList',
    SocialGallery = 'SocialGallery',
    Banner = 'Banner',
-   Quotes = 'Quotes',
+   Testimonials = 'Testimonials',
 }
 
 export type PageSection =
@@ -27,7 +27,7 @@ export type PageSection =
    | FeaturedProductListSection
    | SocialGallerySection
    | BannerSection
-   | QuotesSection;
+   | TestimonialsSection;
 
 export interface HeroSection {
    type: PageSectionType.Hero;
@@ -149,15 +149,15 @@ export enum BannerTemplate {
    Warranty = 'Warranty',
 }
 
-export interface QuotesSection {
-   type: PageSectionType.Quotes;
+export interface TestimonialsSection {
+   type: PageSectionType.Testimonials;
    id: string;
    title: string | null;
    description: string | null;
-   quotes: Quote[];
+   testimonials: TestimonialQuote[];
 }
 
-export interface Quote {
+export interface TestimonialQuote {
    richText: string;
    author: string;
    avatar: CMSImage | null;

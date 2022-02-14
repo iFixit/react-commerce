@@ -1,8 +1,9 @@
 {
-  "collectionName": "components_page_quotes",
+  "collectionName": "components_page_testimonials",
   "info": {
-    "displayName": "quotes",
-    "icon": "comments"
+    "displayName": "testimonials",
+    "icon": "comments",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -16,7 +17,7 @@
       "displayName": "quote",
       "type": "component",
       "repeatable": true,
-      "component": "page.quote",
+      "component": "page.testimonial-quote",
       "required": true,
       "min": 3,
       "max": 100

@@ -25,7 +25,7 @@ import {
    Page,
    PageSection,
    PageSectionType,
-   Quote,
+   TestimonialQuote,
    SocialPost,
    SplitImagePosition,
 } from './types';
@@ -274,14 +274,14 @@ export async function findPageByPath(path: string): Promise<Page | null> {
                         : null,
                   };
                }
-               case 'ComponentPageQuotes': {
+               case 'ComponentPageTestimonials': {
                   const quotes = filterNullableItems(section.quotes);
                   return {
-                     type: PageSectionType.Quotes,
+                     type: PageSectionType.Testimonials,
                      id: `${section.__typename}-${index}`,
                      title: section.title || null,
                      description: section.description || null,
-                     quotes: quotes.map((quote) => {
+                     testimonials: quotes.map((quote) => {
                         const avatar = quote.avatar?.data?.attributes;
                         return {
                            richText: quote.text,
@@ -590,17 +590,17 @@ async function mockGetPageByPath(path: string): Promise<Page> {
             image: null,
          },
          {
-            type: PageSectionType.Quotes,
+            type: PageSectionType.Testimonials,
             id: genId(),
             title: 'Our customers are the smartest people in the world.',
             description: `It's fun to take stuff apart. It's interesting to see what's inside that magic iPod you carry around every day. It's gratifying to fix it with your own hands. Don't believe us? Try it! Fix your Mac yourself. Show a friend how to fix something.`,
-            quotes,
+            testimonials: quotes,
          },
       ],
    };
 }
 
-const quotes: Quote[] = [
+const quotes: TestimonialQuote[] = [
    {
       author: 'Kyle Wiens',
       headline: 'CEO iFixit',

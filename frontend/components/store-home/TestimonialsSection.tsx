@@ -9,7 +9,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { QuotesSection as SectionData } from '@models/page';
+import { TestimonialsSection as SectionData } from '@models/page';
 import { motion, useAnimation } from 'framer-motion';
 import * as React from 'react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
@@ -17,13 +17,13 @@ import { PageContentWrapper } from './PageContentWrapper';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
 
-export interface QuotesSectionProps {
+export interface TestimonialsSectionProps {
    data: SectionData;
 }
 
-export function QuotesSection({
-   data: { title, description, quotes },
-}: QuotesSectionProps) {
+export function TestimonialsSection({
+   data: { title, description, testimonials },
+}: TestimonialsSectionProps) {
    const [currentQuote, setCurrentQuote] = React.useState(0);
    const slidesRef = React.useRef<Array<HTMLElement>>([]);
 
@@ -45,11 +45,15 @@ export function QuotesSection({
    }, [offset, controls]);
 
    const goToNextQuote = React.useCallback(() => {
-      setCurrentQuote((current) => clamp(current + 1, 0, quotes.length - 1));
+      setCurrentQuote((current) =>
+         clamp(current + 1, 0, testimonials.length - 1)
+      );
    }, []);
 
    const goToPreviousQuote = React.useCallback(() => {
-      setCurrentQuote((current) => clamp(current - 1, 0, quotes.length - 1));
+      setCurrentQuote((current) =>
+         clamp(current - 1, 0, testimonials.length - 1)
+      );
    }, []);
 
    return (
@@ -154,7 +158,7 @@ export function QuotesSection({
                      } else if (swipe > swipeConfidenceThreshold) {
                         nextQuote = currentQuote - 1;
                      }
-                     nextQuote = clamp(nextQuote, 0, quotes.length - 1);
+                     nextQuote = clamp(nextQuote, 0, testimonials.length - 1);
 
                      setTimeout(() => {
                         isDragging.current = false;
@@ -165,11 +169,13 @@ export function QuotesSection({
                            x: offset,
                         });
                      } else {
-                        setCurrentQuote(clamp(nextQuote, 0, quotes.length - 1));
+                        setCurrentQuote(
+                           clamp(nextQuote, 0, testimonials.length - 1)
+                        );
                      }
                   }}
                >
-                  {quotes.map((quote, index) => {
+                  {testimonials.map((quote, index) => {
                      const isCurrent = index === currentQuote;
                      return (
                         <MotionBox

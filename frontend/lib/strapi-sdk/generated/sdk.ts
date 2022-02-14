@@ -246,38 +246,6 @@ export type ComponentPagePressQuoteFiltersInput = {
    text?: Maybe<StringFilterInput>;
 };
 
-export type ComponentPageQuote = {
-   __typename?: 'ComponentPageQuote';
-   author: Scalars['String'];
-   avatar?: Maybe<UploadFileEntityResponse>;
-   headline?: Maybe<Scalars['String']>;
-   id: Scalars['ID'];
-   text: Scalars['String'];
-};
-
-export type ComponentPageQuoteFiltersInput = {
-   and?: Maybe<Array<Maybe<ComponentPageQuoteFiltersInput>>>;
-   author?: Maybe<StringFilterInput>;
-   headline?: Maybe<StringFilterInput>;
-   not?: Maybe<ComponentPageQuoteFiltersInput>;
-   or?: Maybe<Array<Maybe<ComponentPageQuoteFiltersInput>>>;
-   text?: Maybe<StringFilterInput>;
-};
-
-export type ComponentPageQuotes = {
-   __typename?: 'ComponentPageQuotes';
-   description?: Maybe<Scalars['String']>;
-   id: Scalars['ID'];
-   quotes: Array<Maybe<ComponentPageQuote>>;
-   title?: Maybe<Scalars['String']>;
-};
-
-export type ComponentPageQuotesQuotesArgs = {
-   filters?: Maybe<ComponentPageQuoteFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
 export type ComponentPageSocialGallery = {
    __typename?: 'ComponentPageSocialGallery';
    description?: Maybe<Scalars['String']>;
@@ -342,6 +310,38 @@ export type ComponentPageStats = {
 
 export type ComponentPageStatsStatsArgs = {
    filters?: Maybe<ComponentPageStatFiltersInput>;
+   pagination?: Maybe<PaginationArg>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type ComponentPageTestimonialQuote = {
+   __typename?: 'ComponentPageTestimonialQuote';
+   author: Scalars['String'];
+   avatar?: Maybe<UploadFileEntityResponse>;
+   headline?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   text: Scalars['String'];
+};
+
+export type ComponentPageTestimonialQuoteFiltersInput = {
+   and?: Maybe<Array<Maybe<ComponentPageTestimonialQuoteFiltersInput>>>;
+   author?: Maybe<StringFilterInput>;
+   headline?: Maybe<StringFilterInput>;
+   not?: Maybe<ComponentPageTestimonialQuoteFiltersInput>;
+   or?: Maybe<Array<Maybe<ComponentPageTestimonialQuoteFiltersInput>>>;
+   text?: Maybe<StringFilterInput>;
+};
+
+export type ComponentPageTestimonials = {
+   __typename?: 'ComponentPageTestimonials';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   quotes: Array<Maybe<ComponentPageTestimonialQuote>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageTestimonialsQuotesArgs = {
+   filters?: Maybe<ComponentPageTestimonialQuoteFiltersInput>;
    pagination?: Maybe<PaginationArg>;
    sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
@@ -536,13 +536,13 @@ export type GenericMorph =
    | ComponentPageHero
    | ComponentPagePress
    | ComponentPagePressQuote
-   | ComponentPageQuote
-   | ComponentPageQuotes
    | ComponentPageSocialGallery
    | ComponentPageSocialGalleryPost
    | ComponentPageSplitWithImage
    | ComponentPageStat
    | ComponentPageStats
+   | ComponentPageTestimonialQuote
+   | ComponentPageTestimonials
    | ComponentPageWorkbench
    | ComponentProductListBanner
    | ComponentProductListFeaturedProductList
@@ -1092,10 +1092,10 @@ export type PageSectionsDynamicZone =
    | ComponentPageFeaturedProductList
    | ComponentPageHero
    | ComponentPagePress
-   | ComponentPageQuotes
    | ComponentPageSocialGallery
    | ComponentPageSplitWithImage
    | ComponentPageStats
+   | ComponentPageTestimonials
    | ComponentPageWorkbench
    | Error;
 
@@ -1900,33 +1900,6 @@ export type FindPageQuery = {
                        >;
                     }
                   | {
-                       __typename: 'ComponentPageQuotes';
-                       id: string;
-                       title?: Maybe<string>;
-                       description?: Maybe<string>;
-                       quotes: Array<
-                          Maybe<{
-                             __typename?: 'ComponentPageQuote';
-                             id: string;
-                             text: string;
-                             author: string;
-                             headline?: Maybe<string>;
-                             avatar?: Maybe<{
-                                __typename?: 'UploadFileEntityResponse';
-                                data?: Maybe<{
-                                   __typename?: 'UploadFileEntity';
-                                   attributes?: Maybe<{
-                                      __typename?: 'UploadFile';
-                                      alternativeText?: Maybe<string>;
-                                      url: string;
-                                      formats?: Maybe<any>;
-                                   }>;
-                                }>;
-                             }>;
-                          }>
-                       >;
-                    }
-                  | {
                        __typename: 'ComponentPageSocialGallery';
                        id: string;
                        title?: Maybe<string>;
@@ -1989,6 +1962,33 @@ export type FindPageQuery = {
                                 value: string;
                              }>
                           >
+                       >;
+                    }
+                  | {
+                       __typename: 'ComponentPageTestimonials';
+                       id: string;
+                       title?: Maybe<string>;
+                       description?: Maybe<string>;
+                       quotes: Array<
+                          Maybe<{
+                             __typename?: 'ComponentPageTestimonialQuote';
+                             id: string;
+                             text: string;
+                             author: string;
+                             headline?: Maybe<string>;
+                             avatar?: Maybe<{
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: Maybe<{
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: Maybe<{
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: Maybe<string>;
+                                      url: string;
+                                      formats?: Maybe<any>;
+                                   }>;
+                                }>;
+                             }>;
+                          }>
                        >;
                     }
                   | {
@@ -3278,7 +3278,7 @@ export const FindPageDocument = `
               }
             }
           }
-          ... on ComponentPageQuotes {
+          ... on ComponentPageTestimonials {
             id
             title
             description

@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_page_quote_items",
+  "collectionName": "components_page_testimonial_quotes",
   "info": {
-    "displayName": "quote",
+    "displayName": "Testimonial quote",
     "icon": "comment-alt"
   },
   "options": {},
