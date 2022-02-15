@@ -5,6 +5,7 @@ import {
    PaginationLink,
 } from '@ifixit/react-components';
 import { usePagination } from '@lib/algolia';
+import { useIsMounted } from '@lib/hooks';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import * as React from 'react';
@@ -17,12 +18,20 @@ import {
 
 export function ProductListPagination() {
    const getProductListResultsPageUrl = useGetProductListResultsPageUrl();
-   const visibleNumberOfPages = useBreakpointValue({ base: 3, sm: 5, lg: 7 });
+   const responsiveVisibleNumberOfPages = useBreakpointValue({
+      base: 3,
+      sm: 5,
+      lg: 7,
+   });
+   const isMounted = useIsMounted();
+   const visibleNumberOfPages = isMounted ? responsiveVisibleNumberOfPages : 3;
+
    const { page, setPage, numberOfPages = 0 } = usePagination();
 
    if (numberOfPages <= 1) {
       return null;
    }
+
    return (
       <Pagination
          numberOfPages={numberOfPages}

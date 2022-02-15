@@ -62,3 +62,13 @@ export function usePrevious<T>(value: T): T | undefined {
 
 export const useIsomorphicLayoutEffect =
    typeof document !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
+export function useIsMounted() {
+   const [isMounted, setIsMounted] = React.useState(false);
+
+   React.useEffect(() => {
+      setIsMounted(true);
+   }, []);
+
+   return isMounted;
+}

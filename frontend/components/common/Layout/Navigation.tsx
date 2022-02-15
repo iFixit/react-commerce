@@ -19,6 +19,7 @@ import {
    IconButtonProps,
    useDisclosure,
 } from '@chakra-ui/react';
+import { useIsMounted } from '@lib/hooks';
 import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -184,6 +185,7 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
 const MobileNavigation = ({ menu }: NavigationProps) => {
    const { isOpen, onClose, onToggle } = useDisclosure();
    const btnRef = React.useRef<HTMLButtonElement>(null);
+   const isMounted = useIsMounted();
 
    return (
       <>
@@ -198,111 +200,115 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
             }}
             ml="1"
          />
-         <Drawer
-            isOpen={isOpen}
-            placement="left"
-            onClose={onClose}
-            finalFocusRef={btnRef}
-            size="md"
-         >
-            <DrawerOverlay />
-            <DrawerContent bg="trueGray.900">
-               <DrawerBody color="white" px="6" py="4">
-                  <Box h="header" />
-                  <Accordion allowToggle>
-                     {menu.items.map((item, index) => {
-                        switch (item.type) {
-                           case 'submenu': {
-                              if (item.submenu === null) {
+         {isMounted && (
+            <Drawer
+               isOpen={isOpen}
+               placement="left"
+               onClose={onClose}
+               finalFocusRef={btnRef}
+               size="md"
+            >
+               <DrawerOverlay />
+               <DrawerContent bg="trueGray.900">
+                  <DrawerBody color="white" px="6" py="4">
+                     <Box h="header" />
+                     <Accordion allowToggle>
+                        {menu.items.map((item, index) => {
+                           switch (item.type) {
+                              case 'submenu': {
+                                 if (item.submenu === null) {
+                                    return null;
+                                 }
+                                 return (
+                                    <AccordionItem
+                                       key={index}
+                                       borderTopWidth="0"
+                                       borderColor="trueGray.800"
+                                       borderBottomWidth="1px"
+                                    >
+                                       <h2>
+                                          <AccordionButton
+                                             borderRadius="md"
+                                             _expanded={{
+                                                bg: 'brand.400',
+                                             }}
+                                             fontSize="md"
+                                             fontWeight="semibold"
+                                          >
+                                             <Box flex="1" textAlign="left">
+                                                {item.name}
+                                             </Box>
+                                             <AccordionIcon />
+                                          </AccordionButton>
+                                       </h2>
+                                       <AccordionPanel pb={4}>
+                                          <Submenu direction="column">
+                                             {item.submenu.items.map(
+                                                (subitem, subIndex) => {
+                                                   if (
+                                                      subitem.type !== 'link'
+                                                   ) {
+                                                      return null;
+                                                   }
+                                                   return (
+                                                      <MenuItem
+                                                         key={subIndex}
+                                                         h="10"
+                                                         align="center"
+                                                      >
+                                                         <NextLink
+                                                            href={subitem.url}
+                                                            passHref
+                                                         >
+                                                            <MenuLink
+                                                               tabIndex={-1}
+                                                               position="relative"
+                                                               w="full"
+                                                               pl="4"
+                                                               fontSize="md"
+                                                               fontWeight="normal"
+                                                               _before={{
+                                                                  content: '""',
+                                                                  ml: '-4',
+                                                                  bg:
+                                                                     'trueGray.700',
+                                                                  position:
+                                                                     'absolute',
+                                                                  h: '100%',
+                                                                  w: '4px',
+                                                                  borderRadius:
+                                                                     'full',
+                                                                  transition: `background-color ${ANIMATION_DURATION}`,
+                                                               }}
+                                                               _hover={{
+                                                                  _before: {
+                                                                     bg:
+                                                                        'brand.400',
+                                                                  },
+                                                               }}
+                                                            >
+                                                               {subitem.name}
+                                                            </MenuLink>
+                                                         </NextLink>
+                                                      </MenuItem>
+                                                   );
+                                                }
+                                             )}
+                                          </Submenu>
+                                       </AccordionPanel>
+                                    </AccordionItem>
+                                 );
+                              }
+                              default: {
                                  return null;
                               }
-                              return (
-                                 <AccordionItem
-                                    key={index}
-                                    borderTopWidth="0"
-                                    borderColor="trueGray.800"
-                                    borderBottomWidth="1px"
-                                 >
-                                    <h2>
-                                       <AccordionButton
-                                          borderRadius="md"
-                                          _expanded={{
-                                             bg: 'brand.400',
-                                          }}
-                                          fontSize="md"
-                                          fontWeight="semibold"
-                                       >
-                                          <Box flex="1" textAlign="left">
-                                             {item.name}
-                                          </Box>
-                                          <AccordionIcon />
-                                       </AccordionButton>
-                                    </h2>
-                                    <AccordionPanel pb={4}>
-                                       <Submenu direction="column">
-                                          {item.submenu.items.map(
-                                             (subitem, subIndex) => {
-                                                if (subitem.type !== 'link') {
-                                                   return null;
-                                                }
-                                                return (
-                                                   <MenuItem
-                                                      key={subIndex}
-                                                      h="10"
-                                                      align="center"
-                                                   >
-                                                      <NextLink
-                                                         href={subitem.url}
-                                                         passHref
-                                                      >
-                                                         <MenuLink
-                                                            tabIndex={-1}
-                                                            position="relative"
-                                                            w="full"
-                                                            pl="4"
-                                                            fontSize="md"
-                                                            fontWeight="normal"
-                                                            _before={{
-                                                               content: '""',
-                                                               ml: '-4',
-                                                               bg:
-                                                                  'trueGray.700',
-                                                               position:
-                                                                  'absolute',
-                                                               h: '100%',
-                                                               w: '4px',
-                                                               borderRadius:
-                                                                  'full',
-                                                               transition: `background-color ${ANIMATION_DURATION}`,
-                                                            }}
-                                                            _hover={{
-                                                               _before: {
-                                                                  bg:
-                                                                     'brand.400',
-                                                               },
-                                                            }}
-                                                         >
-                                                            {subitem.name}
-                                                         </MenuLink>
-                                                      </NextLink>
-                                                   </MenuItem>
-                                                );
-                                             }
-                                          )}
-                                       </Submenu>
-                                    </AccordionPanel>
-                                 </AccordionItem>
-                              );
                            }
-                           default: {
-                              return null;
-                           }
-                        }
-                     })}
-                  </Accordion>
-               </DrawerBody>
-            </DrawerContent>
-         </Drawer>
+                        })}
+                     </Accordion>
+                  </DrawerBody>
+               </DrawerContent>
+            </Drawer>
+         )}
       </>
    );
 };

@@ -7,6 +7,7 @@ import {
    ModalFooter,
    ModalOverlay,
 } from '@chakra-ui/react';
+import { useIsMounted } from '@lib/hooks';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
 import { FilterList } from './FilterList';
@@ -19,13 +20,19 @@ type FiltersModalProps = {
 export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
    const [canRenderList, setCanRenderList] = React.useState(false);
    const handleAnimationComplete = React.useCallback(() => {
-      setCanRenderList((current) => !current);
-   }, []);
+      setCanRenderList(isOpen);
+   }, [isOpen]);
+
+   const isMounted = useIsMounted();
+
+   if (!isMounted) {
+      return null;
+   }
 
    return (
       <Modal size="lg" isOpen={isOpen} onClose={onClose}>
          <ModalOverlay />
-         <ModalContent onAnimationComplete={handleAnimationComplete}>
+         <ModalContent onTransitionEnd={handleAnimationComplete}>
             <ModalBody pt={6}>
                <AppliedFilters pb="2" />
                <Box h="320px" mx="-6" overflow="hidden">

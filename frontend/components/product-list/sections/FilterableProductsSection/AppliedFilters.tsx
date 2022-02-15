@@ -9,14 +9,16 @@ import {
    Wrap,
    WrapItem,
 } from '@chakra-ui/react';
+import { assertNever } from '@helpers/application-helpers';
 import {
+   Filter,
    RangeFilter,
    useClearFilter,
    useFacet,
    useFacetFilter,
    useFilters,
 } from '@lib/algolia';
-import { assertNever } from '@helpers/application-helpers';
+import { useIsMounted } from '@lib/hooks';
 import * as React from 'react';
 
 interface AppliedFiltersProps {
@@ -25,43 +27,61 @@ interface AppliedFiltersProps {
 
 export const AppliedFilters = chakra(({ className }: AppliedFiltersProps) => {
    const filters = useFilters();
+   const isMounted = useIsMounted();
+
+   if (isMounted) {
+      return (
+         <Collapse in={filters.length > 0} animateOpacity unmountOnExit>
+            <AppliedFilterList className={className} filters={filters} />
+         </Collapse>
+      );
+   }
+
+   if (filters.length > 0) {
+      return <AppliedFilterList className={className} filters={filters} />;
+   }
+
+   return null;
+});
+
+interface AppliedFilterListProps {
+   className?: string;
+   filters: Filter[];
+}
+
+function AppliedFilterList({ className, filters }: AppliedFilterListProps) {
    const clear = useClearFilter();
    const clearAllFilters = React.useCallback(() => {
       clear();
    }, [clear]);
    const buttonSize = useBreakpointValue({ base: 'lg', md: 'sm' });
-
    return (
-      <Collapse in={filters.length > 0} animateOpacity unmountOnExit>
-         <Wrap className={className} w="full" align="center">
-            {filters.map((filter) => {
-               switch (filter.type) {
-                  case 'facet': {
-                     return (
-                        <FacetTags key={filter.id} facetHandle={filter.id} />
-                     );
-                  }
-                  case 'range': {
-                     return <RangeTag key={filter.id} filter={filter} />;
-                  }
-                  default:
-                     return assertNever(filter);
+      <Wrap className={className} w="full" align="center">
+         {filters.map((filter) => {
+            switch (filter.type) {
+               case 'facet': {
+                  return <FacetTags key={filter.id} facetHandle={filter.id} />;
                }
-            })}
-            <WrapItem>
-               <Button
-                  variant="link"
-                  size={buttonSize}
-                  colorScheme="brand"
-                  onClick={clearAllFilters}
-               >
-                  Clear All
-               </Button>
-            </WrapItem>
-         </Wrap>
-      </Collapse>
+               case 'range': {
+                  return <RangeTag key={filter.id} filter={filter} />;
+               }
+               default:
+                  return assertNever(filter);
+            }
+         })}
+         <WrapItem>
+            <Button
+               variant="link"
+               size={buttonSize}
+               colorScheme="brand"
+               onClick={clearAllFilters}
+            >
+               Clear All
+            </Button>
+         </WrapItem>
+      </Wrap>
    );
-});
+}
 
 interface FacetTagsProps {
    facetHandle: string;
