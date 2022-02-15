@@ -38,6 +38,9 @@ npm run dev
 
 After running this command, Next.js will serve your app on http://localhost:3000, and Strapi will serve the CMS on http://localhost:1337/admin.
 
+> :warning: Make sure you are running on the supported Node.js version specified in `.nvmrc`. If you are using
+> NVM, you can run `nvm use` to switch to the correct version.
+
 ### Using SVG
 
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
