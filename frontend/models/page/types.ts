@@ -175,6 +175,7 @@ export interface MultipleBannersSection {
 }
 
 export interface Banner {
+   id: string;
    title: string | null;
    description: string | null;
    image: CMSImage | null;

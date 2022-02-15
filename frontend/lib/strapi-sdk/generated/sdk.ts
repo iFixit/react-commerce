@@ -1907,6 +1907,7 @@ export type FindPageQuery = {
                                 __typename?: 'BannerEntityResponse';
                                 data?: Maybe<{
                                    __typename?: 'BannerEntity';
+                                   id?: Maybe<string>;
                                    attributes?: Maybe<{
                                       __typename?: 'Banner';
                                       template: Enum_Banner_Template;
@@ -3367,6 +3368,7 @@ export const FindPageDocument = `
             banners {
               banner {
                 data {
+                  id
                   attributes {
                     template
                     title

@@ -151,6 +151,7 @@ query findPage(
                   banners {
                      banner {
                         data {
+                           id
                            attributes {
                               template
                               title
