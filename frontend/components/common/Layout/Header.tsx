@@ -1,9 +1,10 @@
-import { Box, Button, Flex, Icon, IconButton } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Icon, IconButton } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { RiSearchLine } from 'react-icons/ri';
+import { CartDrawer } from './CartDrawer';
 import { Navigation } from './Navigation';
 import { SearchForm, SearchInput } from './SearchBar';
 import { UserMenu } from './User';
@@ -29,7 +30,7 @@ export function Header({ menu }: HeaderProps) {
             left="0"
             right="0"
             height="header"
-            zIndex="header"
+            // zIndex="header"
             overflow={{
                base: 'hidden',
                lg: 'visible',
@@ -141,9 +142,15 @@ export function Header({ menu }: HeaderProps) {
                   }}
                   flexGrow={1}
                />
-               <Flex>
+               <HStack
+                  alignItems="center"
+                  spacing={{
+                     base: 4,
+                     md: 8,
+                  }}
+               >
                   <IconButton
-                     aria-label="Search database"
+                     aria-label="Search guides, parts and tools"
                      variant="ghost"
                      display={{
                         base: 'block',
@@ -155,14 +162,22 @@ export function Header({ menu }: HeaderProps) {
                      _active={{
                         bg: 'trueGray.800',
                      }}
-                     icon={<Icon as={RiSearchLine} color="white" />}
+                     icon={
+                        <Icon
+                           as={RiSearchLine}
+                           color="white"
+                           boxSize="6"
+                           mb="-1px"
+                        />
+                     }
                      onClick={() => {
                         setIsMobileSearchOpen(true);
                         mobileSearchInputRef.current?.focus();
                      }}
                   />
+                  <CartDrawer />
                   <UserMenu />
-               </Flex>
+               </HStack>
             </Flex>
          </Flex>
       </>

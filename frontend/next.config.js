@@ -12,6 +12,8 @@ module.exports = {
          'localhost',
          'cdn.shopify.com',
          'strapi.cominor.com',
+         'www.cominor.com',
+         'ifixit.com',
          'valkyrie.cdn.ifixit.com',
       ],
    },
