@@ -721,6 +721,7 @@ export type ProductList = {
    parent?: Maybe<ProductListEntityResponse>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
+   sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
    title: Scalars['String'];
    updatedAt?: Maybe<Scalars['DateTime']>;
@@ -775,6 +776,7 @@ export type ProductListFiltersInput = {
    or?: Maybe<Array<Maybe<ProductListFiltersInput>>>;
    parent?: Maybe<ProductListFiltersInput>;
    publishedAt?: Maybe<DateTimeFilterInput>;
+   sortPriority?: Maybe<IntFilterInput>;
    tagline?: Maybe<StringFilterInput>;
    title?: Maybe<StringFilterInput>;
    updatedAt?: Maybe<DateTimeFilterInput>;
@@ -793,6 +795,7 @@ export type ProductListInput = {
    parent?: Maybe<Scalars['ID']>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections?: Maybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
+   sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
    title?: Maybe<Scalars['String']>;
 };
@@ -1385,6 +1388,7 @@ export type GetProductListQuery = {
                   __typename?: 'ProductListEntity';
                   attributes?: Maybe<{
                      __typename?: 'ProductList';
+                     sortPriority?: Maybe<number>;
                      handle: string;
                      title: string;
                      image?: Maybe<{
@@ -2419,7 +2423,7 @@ export const GetGlobalSettingsDocument = `
     `;
 export const GetProductListDocument = `
     query getProductList($filters: ProductListFiltersInput) {
-  productLists(pagination: {limit: 1}, filters: $filters) {
+  productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {
     data {
       id
       attributes {
@@ -2463,9 +2467,14 @@ export const GetProductListDocument = `
             }
           }
         }
-        children(pagination: {pageSize: 100}) {
+        children(
+          publicationState: LIVE
+          pagination: {pageSize: 100}
+          sort: ["sortPriority:desc", "title:asc"]
+        ) {
           data {
             attributes {
+              sortPriority
               handle
               title
               image {

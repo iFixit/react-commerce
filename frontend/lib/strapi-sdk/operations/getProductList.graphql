@@ -1,5 +1,9 @@
 query getProductList($filters: ProductListFiltersInput) {
-   productLists(pagination: { limit: 1 }, filters: $filters) {
+   productLists(
+      pagination: { limit: 1 }
+      filters: $filters
+      publicationState: LIVE
+   ) {
       data {
          id
          attributes {
@@ -43,9 +47,14 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
-            children(pagination: { pageSize: 100 }) {
+            children(
+               publicationState: LIVE
+               pagination: { pageSize: 100 }
+               sort: ["sortPriority:desc", "title:asc"]
+            ) {
                data {
                   attributes {
+                     sortPriority
                      handle
                      title
                      image {
