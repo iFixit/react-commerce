@@ -32,7 +32,7 @@ const requester: Requester = async <R, V>(
       console.error('GraphQL query failed with errors:');
       result.errors.map((error: any) => {
          const code = error.extensions?.code || 'UNKNOWN';
-         console.log(`\t[${code}]`, error.message);
+         console.error(`\t[${code}]`, error.message);
       });
    }
    throw new Error(`GraphQL query failed to execute: ${response.statusText}`);
