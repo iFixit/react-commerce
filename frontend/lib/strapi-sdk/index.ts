@@ -29,7 +29,7 @@ const requester: Requester = async <R, V>(
       throw new Error('Data not available in GraphQL response');
    }
    if (Array.isArray(result.errors)) {
-      console.log('GraphQL query failed with errors:');
+      console.error('GraphQL query failed with errors:');
       result.errors.map((error: any) => {
          const code = error.extensions?.code || 'UNKNOWN';
          console.log(`\t[${code}]`, error.message);
