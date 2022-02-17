@@ -31,7 +31,7 @@ const Sizer = chakra(AutoSizer);
 
 const DEFAULT_ROW_HEIGHT = 41;
 
-export const FilterList = chakra(({ className }: FilterListProps) => {
+export const ProductListFilters = chakra(({ className }: FilterListProps) => {
    const listRef = React.useRef<VariableSizeList>(null);
    const { facets, areRefined } = useFilteredFacets();
    const isSearching = useIsSearching();

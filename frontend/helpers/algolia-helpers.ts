@@ -5,6 +5,7 @@ import {
 import {
    Facet,
    Filter,
+   FilterType,
    RangeFilter,
    SearchContext,
    SearchParams,
@@ -94,11 +95,11 @@ function createUrlQuery(params: SearchParams): ParsedUrlQuery {
    params.filters.allIds.forEach((id) => {
       const filter = params.filters.byId[id];
       switch (filter.type) {
-         case 'facet': {
+         case FilterType.List: {
             urlQuery[filter.id] = filter.selectedOptions;
             break;
          }
-         case 'range': {
+         case FilterType.Range: {
             if (filter.min) {
                urlQuery[`${filter.id}_min`] = String(filter.min);
             }
@@ -150,7 +151,7 @@ export function parseSearchParams(
       const filterValue = urlQuery[handle]!;
       return {
          id: handle,
-         type: 'facet',
+         type: FilterType.List,
          selectedOptions: Array.isArray(filterValue)
             ? filterValue
             : [filterValue],
@@ -164,7 +165,7 @@ export function parseSearchParams(
 
       const range: RangeFilter = {
          id: handle,
-         type: 'range',
+         type: FilterType.Range,
       };
 
       if (typeof minParam === 'string') {

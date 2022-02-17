@@ -36,7 +36,13 @@ This command will start Strapi dev server and Next.js dev server:
 npm run dev
 ```
 
-After running this command, Next.js will serve your app on http://localhost:3000, and Strapi will serve the CMS on http://localhost:1337/admin.
+### Test
+
+This command will start Cypress:
+
+```sh
+npm run cypress:open
+```
 
 ### Using SVG
 

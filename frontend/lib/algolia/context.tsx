@@ -4,7 +4,7 @@ import { StateMachine } from '@xstate/fsm';
 import * as React from 'react';
 import { useAlgoliaClient } from './client';
 import { SearchState, useSearchMachine } from './search.machine';
-import { SearchContext, SearchEvent } from './types';
+import { FilterType, SearchContext, SearchEvent } from './types';
 import { createSearchContext } from './utils';
 
 export interface AlgoliaProviderProps<Hit = any> {
@@ -95,9 +95,12 @@ export function AlgoliaProvider({
             if (event.type === 'ADD_FACET_OPTION_FILTER') {
                ctx.params.page = 1;
                const draftFilter = ctx.params.filters.byId[event.filterId];
-               if (draftFilter == null || draftFilter.type !== 'facet') {
+               if (
+                  draftFilter == null ||
+                  draftFilter.type !== FilterType.List
+               ) {
                   ctx.params.filters.byId[event.filterId] = {
-                     type: 'facet',
+                     type: FilterType.List,
                      id: event.filterId,
                      selectedOptions: [event.optionId],
                   };
@@ -115,7 +118,7 @@ export function AlgoliaProvider({
                }
                ctx.params.filters.byId[event.filterId] = {
                   id: event.filterId,
-                  type: 'facet',
+                  type: FilterType.List,
                   selectedOptions: [event.optionId],
                };
             }
@@ -124,9 +127,12 @@ export function AlgoliaProvider({
             if (event.type === 'TOGGLE_FACET_OPTION_FILTER') {
                ctx.params.page = 1;
                const draftFilter = ctx.params.filters.byId[event.filterId];
-               if (draftFilter == null || draftFilter.type !== 'facet') {
+               if (
+                  draftFilter == null ||
+                  draftFilter.type !== FilterType.List
+               ) {
                   ctx.params.filters.byId[event.filterId] = {
-                     type: 'facet',
+                     type: FilterType.List,
                      id: event.filterId,
                      selectedOptions: [event.optionId],
                   };
@@ -154,7 +160,7 @@ export function AlgoliaProvider({
                const draftFilter = ctx.params.filters.byId[event.filterId];
                if (
                   draftFilter &&
-                  draftFilter.type === 'facet' &&
+                  draftFilter.type === FilterType.List &&
                   draftFilter.selectedOptions.includes(event.optionId)
                ) {
                   ctx.params.page = 1;
@@ -177,14 +183,17 @@ export function AlgoliaProvider({
                   return;
                }
                const draftFilter = ctx.params.filters.byId[event.filterId];
-               if (draftFilter == null || draftFilter.type !== 'range') {
+               if (
+                  draftFilter == null ||
+                  draftFilter.type !== FilterType.Range
+               ) {
                   if (draftFilter == null) {
                      ctx.params.filters.allIds.push(event.filterId);
                   }
                   ctx.params.page = 1;
                   ctx.params.filters.byId[event.filterId] = {
                      id: event.filterId,
-                     type: 'range',
+                     type: FilterType.Range,
                      min: event.min,
                      max: event.max,
                   };

@@ -1,11 +1,15 @@
 import {
+   Box,
    FormControl,
    FormErrorMessage,
+   FormLabel,
+   FormLabelProps,
    HStack,
    Input,
    InputGroup,
    InputLeftElement,
 } from '@chakra-ui/react';
+import { ScreenOnlyLabel } from '@components/ui';
 import { useRangeFilter } from '@lib/algolia';
 import { useDebouncedCallback } from '@lib/hooks';
 import * as React from 'react';
@@ -13,6 +17,7 @@ import { useRangeFilterContext, useRegisterFacet } from './context';
 
 export interface RangeFilterInputProps {
    facetHandle: string;
+   facetName: string;
    minFieldPrefix?: React.ReactNode;
    minFieldPlaceholder?: string;
    maxFieldPrefix?: React.ReactNode;
@@ -29,41 +34,55 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
       maxFieldPrefix,
       maxFieldPlaceholder,
    } = props;
+   const minInputId = `${props.facetHandle}-input-min`;
+   const maxInputId = `${props.facetHandle}-input-max`;
    return (
       <FormControl isInvalid={error != null} pt="2">
          <HStack>
-            <InputGroup size="sm">
-               {minFieldPrefix && (
-                  <InputLeftElement zIndex="0">
-                     {minFieldPrefix}
-                  </InputLeftElement>
-               )}
-               <Input
-                  ref={minRef}
-                  type="number"
-                  name="min"
-                  placeholder={minFieldPlaceholder}
-                  borderRadius="md"
-                  onChange={handleChange}
-               />
-            </InputGroup>
-            <InputGroup size="sm">
-               {maxFieldPrefix && (
-                  <InputLeftElement zIndex="0">
-                     {maxFieldPrefix}
-                  </InputLeftElement>
-               )}
-               <Input
-                  ref={maxRef}
-                  type="number"
-                  name="max"
-                  placeholder={maxFieldPlaceholder}
-                  borderRadius="md"
-                  onChange={handleChange}
-               />
-            </InputGroup>
+            <Box>
+               <ScreenOnlyLabel htmlFor={minInputId}>
+                  Set min {props.facetName}
+               </ScreenOnlyLabel>
+               <InputGroup size="sm">
+                  {minFieldPrefix && (
+                     <InputLeftElement zIndex="0">
+                        {minFieldPrefix}
+                     </InputLeftElement>
+                  )}
+                  <Input
+                     ref={minRef}
+                     id={minInputId}
+                     type="number"
+                     name="min"
+                     placeholder={minFieldPlaceholder}
+                     borderRadius="md"
+                     onChange={handleChange}
+                  />
+               </InputGroup>
+            </Box>
+            <Box>
+               <ScreenOnlyLabel htmlFor={maxInputId}>
+                  Set max {props.facetName}
+               </ScreenOnlyLabel>
+               <InputGroup size="sm">
+                  {maxFieldPrefix && (
+                     <InputLeftElement zIndex="0">
+                        {maxFieldPrefix}
+                     </InputLeftElement>
+                  )}
+                  <Input
+                     ref={maxRef}
+                     id={maxInputId}
+                     type="number"
+                     name="max"
+                     placeholder={maxFieldPlaceholder}
+                     borderRadius="md"
+                     onChange={handleChange}
+                  />
+               </InputGroup>
+            </Box>
          </HStack>
-         <FormErrorMessage>{error}</FormErrorMessage>
+         <FormErrorMessage data-test="input-error">{error}</FormErrorMessage>
       </FormControl>
    );
 }

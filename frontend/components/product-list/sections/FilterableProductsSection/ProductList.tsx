@@ -51,8 +51,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
         )
       : 0;
 
+   const productHeadingId = `product-heading-${product.handle}`;
    return (
-      <LinkBox as="article">
+      <LinkBox as="article" aria-labelledby={productHeadingId}>
          <Stack
             direction={{
                base: 'column',
@@ -102,6 +103,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                w="full"
             >
                <Heading
+                  id={productHeadingId}
                   as="h3"
                   fontSize={{
                      base: 'sm',
@@ -207,6 +209,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      fontWeight="bold"
                      fontSize="xl"
                      lineHeight="1em"
+                     data-testid="product-price"
                   >
                      ${product.price}
                   </Text>
@@ -215,6 +218,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         lineHeight="1em"
                         textDecoration="line-through"
                         color="gray.400"
+                        data-testid="product-compared-at-price"
                      >
                         ${product.compare_at_price}
                      </Text>

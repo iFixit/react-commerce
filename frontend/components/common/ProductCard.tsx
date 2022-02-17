@@ -118,6 +118,7 @@ export const ProductCardPricing = ({
                lineHeight="1em"
                textDecoration="line-through"
                color="gray.400"
+               data-testid="product-price"
             >
                {currency}
                {price}

@@ -3,7 +3,7 @@ import { Facet, FacetOption, useFacetFilter } from '@lib/algolia';
 import * as React from 'react';
 import { FilterCheckbox } from './FilterCheckbox';
 
-export type FacetFilterProps = {
+export type ListFilterProps = {
    facet: Facet;
    multiple?: boolean;
    showAllValues?: boolean;
@@ -15,13 +15,13 @@ export type FacetFilterProps = {
    ): React.ReactNode;
 };
 
-export function FacetFilter({
+export function ListFilter({
    facet,
    multiple = false,
    showAllValues = false,
    renderItem,
    sortItems = defaultSortItems,
-}: FacetFilterProps) {
+}: ListFilterProps) {
    const { selectedOptions, toggle, set } = useFacetFilter(facet.handle);
 
    const facetOptions = React.useMemo(() => {
@@ -50,7 +50,7 @@ export function FacetFilter({
    );
 
    return (
-      <VStack align="flex-start">
+      <VStack align="flex-start" role="listbox">
          {visibleOptions.map((option, index) => {
             if (multiple) {
                return (
@@ -59,6 +59,7 @@ export function FacetFilter({
                      name={option.handle}
                      isChecked={selectedOptions.includes(option.handle)}
                      onChange={handleChange}
+                     role="option"
                   >
                      {renderItem
                         ? renderItem(option, index, facetOptions)
