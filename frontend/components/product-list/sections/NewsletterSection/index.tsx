@@ -18,6 +18,7 @@ import {
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@models/newsletter';
+import { ScreenOnlyLabel } from '@components/ui';
 
 export interface NewsletterSectionProps {
    className?: string;
@@ -49,8 +50,11 @@ export const NewsletterSection = chakra(
          [subscribe]
       );
 
+      const newsletterSectionTitleId = 'newsletter-section-title';
+
       return (
          <Stack
+            as="section"
             direction={{
                base: 'column',
                lg: 'row',
@@ -80,11 +84,18 @@ export const NewsletterSection = chakra(
             align={{
                lg: 'center',
             }}
+            aria-labelledby={newsletterSectionTitleId}
+            data-testid="newsletter-form"
          >
             <HStack spacing="8">
                <Image width="95px" height="95px" src={newsletterIcon} alt="" />
                <VStack align="left" spacing="1">
-                  <Text fontSize="xl" fontWeight="bold">
+                  <Text
+                     id={newsletterSectionTitleId}
+                     as="h2"
+                     fontSize="xl"
+                     fontWeight="bold"
+                  >
                      {title}
                   </Text>
                   <Text color="brand.200">{description}</Text>
@@ -104,8 +115,12 @@ export const NewsletterSection = chakra(
                onSubmit={onSubscribe}
             >
                <FormControl isInvalid={subscription.error != null}>
+                  <ScreenOnlyLabel htmlFor="newsletter-email-input">
+                     Enter your email
+                  </ScreenOnlyLabel>
                   <Input
                      ref={inputRef}
+                     id="newsletter-email-input"
                      type="email"
                      disabled={subscription.status !== SubscriptionStatus.Idle}
                      placeholder={emailPlaceholder}

@@ -4,6 +4,7 @@ import produce from 'immer';
 import kebabCase from 'lodash/kebabCase';
 import snakeCase from 'lodash/snakeCase';
 import * as React from 'react';
+import { FilterType } from '.';
 import { Facet, FacetOption, SearchContext, SearchResponse } from './types';
 
 export function useAlgoliaClient(appId: string, apiKey: string) {
@@ -44,7 +45,7 @@ function getAlgoliaFilters(context: SearchContext): string | undefined {
    const algoliaFilters = context.params.filters.allIds.map((filterId) => {
       const filter = context.params.filters.byId[filterId];
       switch (filter.type) {
-         case 'facet': {
+         case FilterType.List: {
             const facet = context.facets.byId[filter.id];
             const algoliaName = facet.algoliaName;
             const facetQueries = filter.selectedOptions.map((optionHandle) => {
@@ -56,7 +57,7 @@ function getAlgoliaFilters(context: SearchContext): string | undefined {
             }
             return `(${facetQueries.join(' OR ')})`;
          }
-         case 'range': {
+         case FilterType.Range: {
             const facet = context.facets.byId[filter.id];
             const algoliaName = facet.algoliaName;
             if (filter.min == null) {
