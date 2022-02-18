@@ -44,6 +44,9 @@ This command will start Cypress:
 npm run cypress:open
 ```
 
+> :warning: Make sure you are running on the supported Node.js version specified in `.nvmrc`. If you are using
+> NVM, you can run `nvm use` to switch to the correct version.
+
 ### Using SVG
 
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run

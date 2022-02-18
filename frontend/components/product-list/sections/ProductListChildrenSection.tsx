@@ -11,6 +11,7 @@ import {
    useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
+import { useIsMounted } from '@lib/hooks';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -34,22 +35,27 @@ export function ProductListChildrenSection({
    productListChildren,
 }: ProductListChildrenSectionProps) {
    const [shouldShowMore, setShouldShowMore] = React.useState(false);
-   const visibleCategoriesCount = useBreakpointValue({
-      base: 4,
-      sm: 6,
-      md: 12,
-   });
+   const responsiveVisibleChildrenCount = useBreakpointValue(
+      {
+         base: 4,
+         sm: 6,
+         md: 12,
+      },
+      'md'
+   );
+   const isMounted = useIsMounted();
+   const visibleChildrenCount = isMounted ? responsiveVisibleChildrenCount : 12;
 
-   const visibleCategories = React.useMemo(() => {
-      return productListChildren.slice(0, visibleCategoriesCount);
-   }, [productListChildren, visibleCategoriesCount]);
+   const visibleChildren = React.useMemo(() => {
+      return productListChildren.slice(0, visibleChildrenCount);
+   }, [productListChildren, visibleChildrenCount]);
 
-   const hiddenCategories = React.useMemo(() => {
+   const hiddenChildren = React.useMemo(() => {
       return productListChildren.slice(
-         visibleCategoriesCount,
+         visibleChildrenCount,
          productListChildren.length
       );
-   }, [productListChildren, visibleCategoriesCount]);
+   }, [productListChildren, visibleChildrenCount]);
 
    const onToggle = React.useCallback(() => {
       setShouldShowMore((current) => !current);
@@ -77,11 +83,11 @@ export function ProductListChildrenSection({
                }}
                spacing="4"
             >
-               {visibleCategories.map((child) => {
-                  return <CategoryLink key={child.handle} category={child} />;
+               {visibleChildren.map((child) => {
+                  return <ChildLink key={child.handle} child={child} />;
                })}
             </SimpleGrid>
-            {hiddenCategories.length > 0 && (
+            {isMounted && hiddenChildren.length > 0 && (
                <Collapse in={shouldShowMore}>
                   <SimpleGrid
                      columns={{
@@ -92,16 +98,14 @@ export function ProductListChildrenSection({
                      }}
                      spacing="4"
                   >
-                     {hiddenCategories.map((child) => {
-                        return (
-                           <CategoryLink key={child.handle} category={child} />
-                        );
+                     {hiddenChildren.map((child) => {
+                        return <ChildLink key={child.handle} child={child} />;
                      })}
                   </SimpleGrid>
                </Collapse>
             )}
          </VStack>
-         {hiddenCategories.length > 0 && (
+         {hiddenChildren.length > 0 && (
             <Box>
                <Button
                   variant="link"
@@ -122,13 +126,13 @@ export function ProductListChildrenSection({
    );
 }
 
-interface CategoryLinkProps {
-   category: ProductListChild;
+interface ChildLinkProps {
+   child: ProductListChild;
 }
 
-const CategoryLink = ({ category }: CategoryLinkProps) => {
+const ChildLink = ({ child }: ChildLinkProps) => {
    return (
-      <NextLink href={`/store/${category.handle}`} passHref>
+      <NextLink href={`/store/${child.handle}`} passHref>
          <chakra.a
             bg="white"
             borderRadius="lg"
@@ -149,7 +153,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                align="center"
                justifyContent="center"
             >
-               {category.image && (
+               {child.image && (
                   <>
                      <Flex
                         align="center"
@@ -161,8 +165,8 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                         position="relative"
                      >
                         <Image
-                           src={category.image.url}
-                           alt={category.image.alt}
+                           src={child.image.url}
+                           alt={child.image.alt}
                            objectFit="cover"
                            layout="fill"
                            sizes="20vw"
@@ -182,7 +186,7 @@ const CategoryLink = ({ category }: CategoryLinkProps) => {
                   flexGrow={1}
                >
                   <Heading as="h2" fontSize="sm">
-                     {category.title}
+                     {child.title}
                   </Heading>
                </Box>
             </Flex>

@@ -1,34 +1,23 @@
 import {
    AspectRatio,
    Box,
+   BoxProps,
    Button,
    chakra,
    Collapse,
    Flex,
+   forwardRef,
    Heading,
    HStack,
    Text,
    VStack,
 } from '@chakra-ui/react';
 import { useSearchParams } from '@lib/algolia';
+import { useIsMounted } from '@lib/hooks';
 import { ProductList } from '@models/product-list';
 import Image from 'next/image';
 import * as React from 'react';
 import snarkdown from 'snarkdown';
-
-interface MarkdownProps {
-   children: string;
-   className?: string;
-}
-
-function Markdown({ children, className }: MarkdownProps) {
-   const html = React.useMemo(() => {
-      return snarkdown(children);
-   }, [children]);
-   return (
-      <div className={className} dangerouslySetInnerHTML={{ __html: html }} />
-   );
-}
 
 export interface HeroSectionProps {
    productList: ProductList;
@@ -152,24 +141,25 @@ function HeroDescription({ children }: HeroDescriptionProps) {
       }
    }, []);
 
+   const isMounted = useIsMounted();
+
    return (
       <Box px={{ base: 6, sm: 0 }}>
-         <Collapse startingHeight={VISIBLE_HEIGHT} in={state.isOpen}>
-            <Box
-               sx={{
-                  a: {
-                     color: 'brand.500',
-                     transition: 'color 300ms',
-                     '&:hover': {
-                        color: 'brand.600',
-                     },
-                  },
-               }}
+         {isMounted ? (
+            <Collapse
                ref={textRef}
+               startingHeight={VISIBLE_HEIGHT}
+               in={state.isOpen}
             >
-               <Markdown>{children}</Markdown>
+               <DescriptionRichText>{children}</DescriptionRichText>
+            </Collapse>
+         ) : (
+            <Box maxH={VISIBLE_HEIGHT} overflow="hidden">
+               <DescriptionRichText ref={textRef}>
+                  {children}
+               </DescriptionRichText>
             </Box>
-         </Collapse>
+         )}
          {state.shouldDisplayShowMore && (
             <Button
                variant="link"
@@ -189,6 +179,35 @@ function HeroDescription({ children }: HeroDescriptionProps) {
       </Box>
    );
 }
+
+type DescriptionRichTextProps = Omit<BoxProps, 'children'> & {
+   children: string;
+};
+
+const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
+   ({ children, ...other }, ref) => {
+      const html = React.useMemo(() => {
+         return snarkdown(children);
+      }, [children]);
+
+      return (
+         <Box
+            sx={{
+               a: {
+                  color: 'brand.500',
+                  transition: 'color 300ms',
+                  '&:hover': {
+                     color: 'brand.600',
+                  },
+               },
+            }}
+            ref={ref}
+            dangerouslySetInnerHTML={{ __html: html }}
+            {...other}
+         />
+      );
+   }
+);
 
 interface HeroImageProps {
    className?: string;
