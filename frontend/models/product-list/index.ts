@@ -70,7 +70,7 @@ export async function getProductListByHandle(
 export interface CreateProductListSearchContextOptions {
    algoliaIndexName: string;
    urlQuery: ParsedUrlQuery;
-   productListHandle: string;
+   deviceHandle?: string | null;
    filters?: string;
 }
 
@@ -80,13 +80,11 @@ export interface CreateProductListSearchContextOptions {
 export async function createProductListSearchContext({
    algoliaIndexName,
    urlQuery,
-   productListHandle,
+   deviceHandle,
    filters,
 }: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
    const filtersPreset =
-      filters && filters.length > 0
-         ? filters
-         : `collections:${productListHandle}`;
+      filters && filters.length > 0 ? filters : `device:${deviceHandle}`;
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const pageParam = urlQuery[PRODUCT_LIST_PAGE_PARAM];

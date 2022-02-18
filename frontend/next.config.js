@@ -13,6 +13,7 @@ module.exports = {
          'cdn.shopify.com',
          'strapi.cominor.com',
          'valkyrie.cdn.ifixit.com',
+         'cart-products.cdn.ifixit.com',
       ],
    },
 };

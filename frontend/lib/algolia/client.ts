@@ -156,13 +156,7 @@ function applySearchResponse<Hit>(
 }
 
 function formatFacetName(algoliaName: string): string {
-   let name = algoliaName;
-   if (name.startsWith('options.')) {
-      name = name.replace('options.', '');
-   }
-   if (name.startsWith('named_tags.')) {
-      name = name.replace('named_tags.', '');
-   }
+   let name = algoliaName.replace(/(options\.|facet_tags\.)/gi, '');
    name = name.replace(/_/g, ' ');
    name = capitalize(name);
    return name;

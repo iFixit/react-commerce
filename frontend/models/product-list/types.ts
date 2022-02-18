@@ -1,12 +1,14 @@
 export interface ProductSearchHit {
    title: string;
    handle: string;
-   price: number;
+   price_float: number;
    compare_at_price?: number;
    sku: string;
-   product_image: string;
-   body_html_safe?: string;
-   inventory_quantity: number;
+   image_url: string;
+   short_description?: string;
+   quantity_available: number;
+   lifetime_warranty: boolean;
+   rating: number;
 }
 
 export interface ProductList {

@@ -42,11 +42,11 @@ export interface ProductListItemProps {
 export function ProductListItem({ product }: ProductListItemProps) {
    const isDiscounted =
       product.compare_at_price != null &&
-      product.compare_at_price > product.price;
+      product.compare_at_price > product.price_float;
 
    const percentage = isDiscounted
       ? computeDiscountPercentage(
-           product.price * 100,
+           product.price_float * 100,
            product.compare_at_price! * 100
         )
       : 0;
@@ -79,9 +79,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   lg: '160px',
                }}
             >
-               {product.product_image ? (
+               {product.image_url ? (
                   <Image
-                     src={product.product_image}
+                     src={product.image_url}
                      alt={product.title}
                      width="180px"
                      height="180px"
@@ -121,10 +121,10 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      lg: 'md',
                   }}
                >
-                  {product.body_html_safe}
+                  {product.short_description}
                </Text>
                <HStack>
-                  <Rating value={4} />
+                  <Rating value={product.rating} />
                   <Text>102</Text>
                </HStack>
                <Box>
@@ -138,7 +138,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         },
                      }}
                   >
-                     {product.inventory_quantity > 0 ? (
+                     {product.quantity_available > 0 ? (
                         <>
                            {percentage > 0 && (
                               <Badge
@@ -151,15 +151,17 @@ export function ProductListItem({ product }: ProductListItemProps) {
                                  {percentage}% Off
                               </Badge>
                            )}
-                           <Badge
-                              colorScheme="blue"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              Lifetime warranty
-                           </Badge>
+                           {product.lifetime_warranty && (
+                              <Badge
+                                 colorScheme="blue"
+                                 textTransform="none"
+                                 borderRadius="lg"
+                                 px="2.5"
+                                 py="1"
+                              >
+                                 Lifetime warranty
+                              </Badge>
+                           )}
                            <Badge
                               colorScheme="blue"
                               textTransform="none"
@@ -211,7 +213,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      lineHeight="1em"
                      data-testid="product-price"
                   >
-                     ${product.price}
+                     ${product.price_float}
                   </Text>
                   {isDiscounted && (
                      <Text
@@ -259,12 +261,12 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      </Button>
                   </LinkOverlay>
                   <Text color="gray.500" fontSize="14px">
-                     {product.inventory_quantity > 0 &&
-                     product.inventory_quantity < 10
+                     {product.quantity_available > 0 &&
+                     product.quantity_available < 10
                         ? `
-               Only ${product.inventory_quantity} left in stock
+               Only ${product.quantity_available} left in stock
                `
-                        : `${product.inventory_quantity} in stock`}
+                        : `${product.quantity_available} in stock`}
                   </Text>
                </Stack>
             </VStack>
