@@ -16,8 +16,6 @@ const customTheme = extendTheme({
    },
 });
 
-console.log(customTheme);
-
 export function AppProviders({ children }: React.PropsWithChildren<any>) {
    return (
       <>
