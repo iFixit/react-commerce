@@ -1,11 +1,6 @@
 import { Flex, VStack } from '@chakra-ui/react';
-import {
-   PageContentWrapper,
-   SecondaryNavbar,
-   SecondaryNavbarItem,
-   SecondaryNavbarLink,
-} from '@components/common';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
+import { PageContentWrapper, SecondaryNavbar } from '@components/common';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { AlgoliaProvider, SearchContext } from '@lib/algolia';
 import { GlobalSettings } from '@models/global-settings';
 import {
@@ -13,8 +8,6 @@ import {
    ProductListSectionType,
    ProductSearchHit,
 } from '@models/product-list';
-import snakeCase from 'lodash/snakeCase';
-import NextLink from 'next/link';
 import { MetaTags } from './MetaTags';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
 import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
