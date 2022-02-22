@@ -172,7 +172,7 @@ export function Footer({ stores, currentStore }: FooterProps) {
                </Box>
             )}
          </SimpleGrid>
-         <Divider borderColor="trueGray.700" />
+         <Divider borderColor="gray.700" />
          <SimpleGrid
             columns={{
                base: 1,
@@ -261,7 +261,7 @@ export function Footer({ stores, currentStore }: FooterProps) {
                                     sm: 1,
                                  }}
                                  orientation="vertical"
-                                 borderColor="trueGray.700"
+                                 borderColor="gray.700"
                               />
                            )}
                            <FooterLink href={item.url}>{item.name}</FooterLink>
