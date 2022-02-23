@@ -3,7 +3,7 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
-import { getGlobalSettings } from '@models/global-settings';
+import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
 import {
    createProductListSearchContext,
    getProductListByHandle,
@@ -20,6 +20,7 @@ import * as React from 'react';
 type PageProps = ProductListViewProps & {
    stores: StoreListItem[];
    currentStore: Store;
+   globalSettings: GlobalSettings;
 };
 
 // This constant should probably be a field of the store model (editable from CMS)
@@ -87,23 +88,23 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 const ProductListPage: NextPageWithLayout<PageProps> = ({
    productList,
    searchContext,
-   globalSettings,
 }) => {
    return (
       <ProductListView
          productList={productList}
          searchContext={searchContext}
-         globalSettings={globalSettings}
       />
    );
 };
 
 ProductListPage.getLayout = function getLayout(page, pageProps) {
+   pageProps.globalSettings.newsletterForm;
    return (
       <Layout
          title={`iFixit | ${pageProps.productList.title}`}
          currentStore={pageProps.currentStore}
          stores={pageProps.stores}
+         globalSettings={pageProps.globalSettings}
       >
          {page}
       </Layout>

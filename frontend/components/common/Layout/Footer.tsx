@@ -28,9 +28,11 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/react-components';
+import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
 import * as React from 'react';
+import { NewsletterForm } from './NewsletterForm';
 
 const placeholderImageUrl =
    'https://via.placeholder.com/180x75?text=not+available';
@@ -38,13 +40,21 @@ const placeholderImageUrl =
 export interface FooterProps {
    stores: StoreListItem[];
    currentStore: Store;
+   globalSettings: GlobalSettings;
 }
 
-export function Footer({ stores, currentStore }: FooterProps) {
+export function Footer({ stores, currentStore, globalSettings }: FooterProps) {
    const { footer, socialMediaAccounts } = currentStore;
    const { menu1, menu2, partners, bottomMenu } = footer;
+   const { newsletterForm } = globalSettings;
    return (
       <FooterContainer>
+         <NewsletterForm
+            title={newsletterForm.title}
+            description={newsletterForm.subtitle}
+            subscribeLabel={newsletterForm.callToActionButtonTitle}
+            emailPlaceholder={newsletterForm.inputPlaceholder}
+         />
          <SimpleGrid
             columns={{
                base: 1,
