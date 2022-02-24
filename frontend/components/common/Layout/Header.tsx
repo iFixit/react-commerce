@@ -4,7 +4,7 @@ import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { RiSearchLine } from 'react-icons/ri';
-import { CartDrawer } from './CartDrawer';
+import { CartDrawer } from './cart/CartDrawer';
 import { Navigation } from './Navigation';
 import { SearchForm, SearchInput } from './SearchBar';
 import { UserMenu } from './User';

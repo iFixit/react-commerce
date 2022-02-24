@@ -55,6 +55,7 @@
       "react-dom": "17.0.2",
       "react-fast-compare": "3.2.0",
       "react-icons": "4.2.0",
+      "react-query": "3.34.16",
       "react-virtualized-auto-sizer": "1.0.5",
       "react-window": "1.8.6",
       "snarkdown": "2.0.0"
