@@ -76,7 +76,7 @@ export async function subscribeToNewsletter(email: string): Promise<void> {
    );
    if (response.status >= 300) {
       const error = await response.text();
-      console.log('ERROR', error);
+      console.error('Subscribe to newsletter error:', error);
       throw new Error('Error trying to subscribe to newsletter.');
    }
 }

@@ -20,6 +20,7 @@ export function BannerSection({
 }: BannerSectionProps) {
    return (
       <Box
+         as="section"
          borderRadius={{
             base: 'none',
             sm: '2xl',
@@ -40,6 +41,7 @@ export function BannerSection({
          >
             <Flex alignItems="flex-start" direction="column">
                <Text
+                  as="h2"
                   fontSize="4xl"
                   fontFamily="Archivo Black"
                   color="white"

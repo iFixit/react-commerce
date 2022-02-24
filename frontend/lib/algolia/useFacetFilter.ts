@@ -2,6 +2,7 @@ import * as React from 'react';
 import { SearchMachineState } from './search.machine';
 import { useSearchServiceContext } from './context';
 import { useSelector } from '@lib/fsm-utils';
+import { FilterType } from '.';
 
 interface UpdateOptions {
    clearFacets?: string[];
@@ -21,7 +22,7 @@ export function useFacetFilter(filterId: string): UseFacetFilter {
    const selectedOptionsSelector = React.useCallback(
       (state: SearchMachineState) => {
          const filter = state.context.params.filters.byId[filterId];
-         if (filter && filter.type === 'facet') {
+         if (filter && filter.type === FilterType.List) {
             return filter.selectedOptions;
          }
          return [];

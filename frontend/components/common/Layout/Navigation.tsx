@@ -47,7 +47,7 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                               key={index}
                               transition="background-color ${ANIMATION_DURATION}"
                               _hover={{
-                                 bg: 'trueGray.800',
+                                 bg: 'gray.800',
                                  '& > *': {
                                     display: 'flex',
                                  },
@@ -75,7 +75,7 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                                  bottom="0"
                                  transform="translateY(100%)"
                                  display="none"
-                                 bg="trueGray.800"
+                                 bg="gray.800"
                               >
                                  {item.submenu.items.map(
                                     (subitem, subIndex) => {
@@ -129,13 +129,13 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                                                          borderBottomWidth="4px"
                                                          borderRadius="2px"
                                                          my="4"
-                                                         borderColor="trueGray.600"
+                                                         borderColor="gray.600"
                                                       />
                                                       {subitem.description && (
                                                          <Box
                                                             as="p"
                                                             fontSize="sm"
-                                                            color="trueGray.400"
+                                                            color="gray.400"
                                                             dangerouslySetInnerHTML={{
                                                                __html:
                                                                   subitem.description,
@@ -151,7 +151,7 @@ const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
                                                       bottom="0"
                                                       transform="translateY(0)"
                                                       transition={`background ${ANIMATION_DURATION}, transform ${ANIMATION_DURATION}`}
-                                                      bg="trueGray.800"
+                                                      bg="gray.800"
                                                       opacity="0"
                                                       justifyContent="center"
                                                    >
@@ -209,7 +209,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                size="md"
             >
                <DrawerOverlay />
-               <DrawerContent bg="trueGray.900">
+               <DrawerContent bg="gray.900">
                   <DrawerBody color="white" px="6" py="4">
                      <Box h="header" />
                      <Accordion allowToggle>
@@ -223,7 +223,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                                     <AccordionItem
                                        key={index}
                                        borderTopWidth="0"
-                                       borderColor="trueGray.800"
+                                       borderColor="gray.800"
                                        borderBottomWidth="1px"
                                     >
                                        <h2>
@@ -271,7 +271,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                                                                   content: '""',
                                                                   ml: '-4',
                                                                   bg:
-                                                                     'trueGray.700',
+                                                                     'gray.700',
                                                                   position:
                                                                      'absolute',
                                                                   h: '100%',
@@ -324,10 +324,10 @@ const MobileMenuButton = forwardRef<
          variant="ghost"
          mr="1"
          _hover={{
-            bg: 'trueGray.800',
+            bg: 'gray.800',
          }}
          _active={{
-            bg: 'trueGray.800',
+            bg: 'gray.800',
          }}
          sx={{
             '& path': {

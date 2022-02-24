@@ -2,16 +2,21 @@ import {
    Button,
    chakra,
    Collapse,
+   Icon,
+   SystemStyleObject,
    Tag,
-   TagCloseButton,
+   TagCloseButtonProps,
    TagLabel,
+   TagProps,
    useBreakpointValue,
+   useStyles,
    Wrap,
    WrapItem,
 } from '@chakra-ui/react';
 import { assertNever } from '@helpers/application-helpers';
 import {
    Filter,
+   FilterType,
    RangeFilter,
    useClearFilter,
    useFacet,
@@ -20,6 +25,7 @@ import {
 } from '@lib/algolia';
 import { useIsMounted } from '@lib/hooks';
 import * as React from 'react';
+import { HiX } from 'react-icons/hi';
 
 interface AppliedFiltersProps {
    className?: string;
@@ -56,25 +62,32 @@ function AppliedFilterList({ className, filters }: AppliedFilterListProps) {
    }, [clear]);
    const buttonSize = useBreakpointValue({ base: 'lg', md: 'sm' });
    return (
-      <Wrap className={className} w="full" align="center">
+      <Wrap
+         className={className}
+         w="full"
+         align="center"
+         data-testid="applied-filters"
+      >
          {filters.map((filter) => {
             switch (filter.type) {
-               case 'facet': {
-                  return <FacetTags key={filter.id} facetHandle={filter.id} />;
+               case FilterType.List: {
+                  return <ListTags key={filter.id} facetHandle={filter.id} />;
                }
-               case 'range': {
+               case FilterType.Range: {
                   return <RangeTag key={filter.id} filter={filter} />;
                }
                default:
                   return assertNever(filter);
             }
          })}
-         <WrapItem>
+         <WrapItem aria-labelledby="applied-filters-clear-all">
             <Button
+               id="applied-filters-clear-all"
                variant="link"
                size={buttonSize}
                colorScheme="brand"
                onClick={clearAllFilters}
+               aria-label="Clear all filters"
             >
                Clear All
             </Button>
@@ -83,21 +96,24 @@ function AppliedFilterList({ className, filters }: AppliedFilterListProps) {
    );
 }
 
-interface FacetTagsProps {
+interface ListTagsProps {
    facetHandle: string;
 }
 
-function FacetTags({ facetHandle }: FacetTagsProps) {
+function ListTags({ facetHandle }: ListTagsProps) {
    const filter = useFacetFilter(facetHandle);
    const facet = useFacet(facetHandle);
-
    return (
       <>
          {filter.selectedOptions.map((optionId) => {
+            const label = `${facet.name}: ${facet.options.byId[optionId].value}`;
             return (
                <WrapItem key={optionId}>
-                  <FilterTag onClear={() => filter.clear(optionId)}>
-                     {facet.name}: {facet.options.byId[optionId].value}
+                  <FilterTag
+                     name={label}
+                     onClear={() => filter.clear(optionId)}
+                  >
+                     {label}
                   </FilterTag>
                </WrapItem>
             );
@@ -114,32 +130,68 @@ function RangeTag({ filter }: RangeTagProps) {
    const facet = useFacet(filter.id);
    const clear = useClearFilter();
 
-   let tag: string;
+   let label: string;
    if (filter.min == null) {
-      tag = `${facet.name} <= ${filter.max}`;
+      label = `${facet.name} <= ${filter.max}`;
    } else if (filter.max == null) {
-      tag = `${facet.name} >= ${filter.min}`;
+      label = `${facet.name} >= ${filter.min}`;
    } else {
-      tag = `${facet.name}: ${filter.min} - ${filter.max}`;
+      label = `${facet.name}: ${filter.min} - ${filter.max}`;
    }
    return (
       <WrapItem key={filter.id}>
-         <FilterTag onClear={() => clear(filter.id)}>{tag}</FilterTag>
+         <FilterTag name={label} onClear={() => clear(filter.id)}>
+            {label}
+         </FilterTag>
       </WrapItem>
    );
 }
 
-type FilterTagProps = React.PropsWithChildren<{
+type FilterTagProps = TagProps & {
+   name: string;
    onClear(): void;
-}>;
+};
 
-const FilterTag = ({ children, onClear }: FilterTagProps) => {
+const FilterTag = ({
+   children,
+   onClear,
+   name,
+   ...otherProps
+}: FilterTagProps) => {
    const tagSize = useBreakpointValue({ base: 'lg', md: 'md' });
+   return (
+      <Tag size={tagSize} variant="outline" colorScheme="brand" {...otherProps}>
+         <TagLabel maxW="260px">{children}</TagLabel>
+         {/* 
+            Replacing TagCloseButton with a custom one to improve aria-label, 
+            since TagCloseButton doesn't allow to customize it 
+         */}
+         <TagRemoveButton aria-label={`Remove ${name}`} onClick={onClear} />
+      </Tag>
+   );
+};
+
+const TagRemoveButton: React.FC<TagCloseButtonProps> = (props) => {
+   const { isDisabled, children, ...rest } = props;
+
+   const styles = useStyles();
+
+   const btnStyles: SystemStyleObject = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      outline: '0',
+      ...styles.closeButton,
+   };
 
    return (
-      <Tag size={tagSize} variant="outline" colorScheme="brand">
-         <TagLabel maxW="260px">{children}</TagLabel>
-         <TagCloseButton onClick={onClear} />
-      </Tag>
+      <chakra.button
+         type="button"
+         disabled={isDisabled}
+         __css={btnStyles}
+         {...rest}
+      >
+         {children || <Icon as={HiX} verticalAlign="inherit" />}
+      </chakra.button>
    );
 };

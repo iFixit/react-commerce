@@ -24,7 +24,7 @@ import {
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
-import { FilterList } from './FilterList';
+import { ProductListFilters } from './ProductListFilters';
 import { FiltersModal } from './FiltersModal';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
@@ -38,6 +38,7 @@ import {
    ProductViewSwitch,
    Toolbar,
 } from './Toolbar';
+import { cypressWindowLog } from '@helpers/test-helpers';
 
 export enum ProductViewType {
    Grid = 'grid',
@@ -50,6 +51,9 @@ export const FilterableProductsSection = React.memo(() => {
    );
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
    const hits = useHits<ProductSearchHit>();
+
+   cypressWindowLog({ filteredProducts: hits });
+
    const params = useSearchParams();
    const searchState = useSearchState();
    const isFiltered =
@@ -70,13 +74,18 @@ export const FilterableProductsSection = React.memo(() => {
    }
    return (
       <Flex
+         as="section"
          direction="column"
          align="stretch"
          mb="4"
          ref={productsContainerScrollRef}
+         data-testid="filterable-products-section"
+         data-search-state={searchState}
+         aria-labelledby="filterable-products-section-heading"
       >
          <Heading
             as="h2"
+            id="filterable-products-section-heading"
             // This is heading is only for screen readers
             position="absolute"
             w="1px"
@@ -164,7 +173,7 @@ export const FilterableProductsSection = React.memo(() => {
                      <Skeleton height="30px" />
                   </VStack>
                ) : (
-                  <FilterList />
+                  <ProductListFilters />
                )}
             </FilterCard>
             <VStack align="stretch" flex={1} spacing="0">

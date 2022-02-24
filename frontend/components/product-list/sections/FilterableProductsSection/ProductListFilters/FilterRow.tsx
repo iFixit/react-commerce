@@ -1,8 +1,8 @@
 import { Box, Divider, HStack } from '@chakra-ui/react';
-import { Facet, FacetOption } from '@lib/algolia';
+import { Facet, FacetOption, FilterType } from '@lib/algolia';
 import React from 'react';
 import { areEqual } from 'react-window';
-import { FacetFilter } from './FacetFilter';
+import { ListFilter } from './ListFilter';
 import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
 import {
    VirtualAccordionMachineState,
@@ -125,6 +125,11 @@ const Row = React.memo(
          });
       }, [id, send]);
 
+      const filterType =
+         facet.handle === 'price_range' ? FilterType.Range : FilterType.List;
+
+      const accordionItemPanelId = `accordion-item-panel-${facet.handle}`;
+
       return (
          <Box
             style={style}
@@ -160,6 +165,13 @@ const Row = React.memo(
                      _hover={{
                         bg: 'gray.50',
                      }}
+                     aria-label={
+                        isExpanded
+                           ? `Collapse ${facet.name}`
+                           : `Expand ${facet.name}`
+                     }
+                     aria-expanded={isExpanded}
+                     aria-controls={accordionItemPanelId}
                   >
                      <Box flex="1" textAlign="left">
                         {name}
@@ -178,13 +190,16 @@ const Row = React.memo(
                </Box>
                {isExpanded && (
                   <Box
+                     id={accordionItemPanelId}
+                     data-testid={accordionItemPanelId}
                      ref={itemBodyRef}
                      pt="2"
                      pb="4"
                      pos="relative"
                      bg="white"
+                     data-test="accordion-panel"
                   >
-                     {facet.handle === 'price_range' ? (
+                     {filterType === FilterType.Range ? (
                         <>
                            <RangeFilter>
                               <RangeFilterList
@@ -204,6 +219,7 @@ const Row = React.memo(
                               />
                               <RangeFilterInput
                                  facetHandle="price"
+                                 facetName="Price"
                                  minFieldPrefix="$"
                                  minFieldPlaceholder="Min"
                                  maxFieldPrefix="$"
@@ -215,7 +231,7 @@ const Row = React.memo(
                         </>
                      ) : (
                         <>
-                           <FacetFilter
+                           <ListFilter
                               key={facet.handle}
                               facet={facet}
                               multiple
