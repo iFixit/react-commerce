@@ -22,7 +22,7 @@ export function Header({ menu }: HeaderProps) {
          <Box height="header"></Box>
          <Flex
             as="header"
-            bg="trueGray.900"
+            bg="gray.900"
             color="white"
             position="absolute"
             top="0"
@@ -71,10 +71,10 @@ export function Header({ menu }: HeaderProps) {
                <Button
                   variant="ghost"
                   _hover={{
-                     bg: 'trueGray.800',
+                     bg: 'gray.800',
                   }}
                   _active={{
-                     bg: 'trueGray.800',
+                     bg: 'gray.800',
                   }}
                   mb="-1px"
                   fontSize="sm"
@@ -150,10 +150,10 @@ export function Header({ menu }: HeaderProps) {
                         md: 'none',
                      }}
                      _hover={{
-                        bg: 'trueGray.800',
+                        bg: 'gray.800',
                      }}
                      _active={{
-                        bg: 'trueGray.800',
+                        bg: 'gray.800',
                      }}
                      icon={<Icon as={RiSearchLine} color="white" />}
                      onClick={() => {

@@ -42,10 +42,10 @@ export function UserMenu() {
                </MenuButton>
                <MenuList color="black">
                   <VStack align="flex-start" px="0.8rem" py="0.4rem">
-                     <Text color="trueGray.900" fontWeight="semibold">
+                     <Text color="gray.900" fontWeight="semibold">
                         {user.username}
                      </Text>
-                     <Text color="trueGray.700">@{user.handle}</Text>
+                     <Text color="gray.700">@{user.handle}</Text>
                   </VStack>
                   <MenuDivider />
                   <MenuGroup>
