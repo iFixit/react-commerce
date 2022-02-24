@@ -2,7 +2,6 @@ import { Flex, VStack } from '@chakra-ui/react';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { AlgoliaProvider, SearchContext } from '@lib/algolia';
-import { GlobalSettings } from '@models/global-settings';
 import {
    ProductList,
    ProductListSectionType,
@@ -16,7 +15,6 @@ import {
    FeaturedProductListSection,
    FilterableProductsSection,
    HeroSection,
-   NewsletterSection,
    ProductListChildrenSection,
    ProductListSetSection,
    RelatedPostsSection,
@@ -25,16 +23,12 @@ import {
 export interface ProductListViewProps {
    productList: ProductList;
    searchContext: SearchContext<ProductSearchHit>;
-   globalSettings: GlobalSettings;
 }
 
 export function ProductListView({
    productList,
    searchContext,
-   globalSettings,
 }: ProductListViewProps) {
-   const { newsletterForm } = globalSettings;
-   const isRootProductList = productList.ancestors.length === 0;
    return (
       <>
          <SecondaryNavbar>
@@ -142,16 +136,6 @@ export function ProductListView({
                         }
                      }
                   })}
-                  {newsletterForm && (
-                     <NewsletterSection
-                        title={newsletterForm.title}
-                        description={newsletterForm.subtitle}
-                        emailPlaceholder={
-                           newsletterForm.inputPlaceholder || undefined
-                        }
-                        subscribeLabel={newsletterForm.callToActionButtonTitle}
-                     />
-                  )}
                </AlgoliaProvider>
             </VStack>
          </PageContentWrapper>
