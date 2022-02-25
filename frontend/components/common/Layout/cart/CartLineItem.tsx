@@ -1,13 +1,21 @@
 import {
+   Alert,
+   AlertIcon,
    Box,
+   Collapse,
    Flex,
+   FormErrorMessage,
+   FormErrorMessageProps,
    HStack,
    Icon,
    IconButton,
    IconButtonProps,
+   Link,
    Text,
+   useToast,
    VStack,
 } from '@chakra-ui/react';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { APICartProduct, useRemoveLineItem } from '@lib/cart';
 import { useUpdateLineItemQuantity } from '@lib/cart/hooks';
 import { motion } from 'framer-motion';
@@ -24,8 +32,34 @@ interface CartLineItemProps {
 }
 
 export function CartLineItem({ lineItem }: CartLineItemProps) {
+   const toast = useToast();
    const removeLineItem = useRemoveLineItem();
    const updateLineItemQuantity = useUpdateLineItemQuantity();
+
+   React.useEffect(() => {
+      if (updateLineItemQuantity.isError) {
+         const id = setTimeout(() => {
+            updateLineItemQuantity.reset();
+         }, 3000);
+         return () => clearTimeout(id);
+      }
+   }, [updateLineItemQuantity.isError, updateLineItemQuantity.reset]);
+
+   React.useEffect(() => {
+      if (removeLineItem.isError) {
+         toast.closeAll();
+         toast({
+            status: 'error',
+            title: 'Unable to remove product',
+            description:
+               'Please try again. If the problem persists contact us.',
+            duration: 5000,
+            isClosable: true,
+            variant: 'subtle',
+            position: 'bottom-right',
+         });
+      }
+   }, [removeLineItem.isError]);
 
    const incrementQuantity = () => {
       updateLineItemQuantity.mutate({
@@ -47,7 +81,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       });
 
    return (
-      <Flex as="li" direction="column" w="full" p="3">
+      <Flex direction="column" w="full" p="3">
          <Flex w="full" justify="space-between" align="flex-start">
             <HStack spacing="3" align="flex-start">
                <Box
@@ -69,9 +103,15 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                <Box>
                   <VStack align="flex-start" pt="1">
                      <Flex direction="column">
-                        <Text fontWeight="bold" fontSize="sm">
+                        <Link
+                           href={`${IFIXIT_ORIGIN}/Store/Product/${lineItem.itemcode}`}
+                           isExternal
+                           fontWeight="bold"
+                           fontSize="xs"
+                           borderRadius="sm"
+                        >
                            {lineItem.name}
-                        </Text>
+                        </Link>
                         <Text color="gray.500" fontSize="xs">
                            {lineItem.itemcode}
                         </Text>
@@ -105,6 +145,21 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            onClick={incrementQuantity}
                         />
                      </HStack>
+                     <Collapse
+                        in={updateLineItemQuantity.isError}
+                        animateOpacity
+                     >
+                        <Alert
+                           status="error"
+                           bg="transparent"
+                           textColor="red.500"
+                           fontSize="sm"
+                           p="0"
+                        >
+                           <AlertIcon boxSize="4" mr="1.5" />
+                           Unable to update quantity.
+                        </Alert>
+                     </Collapse>
                   </VStack>
                </Box>
             </HStack>
@@ -127,3 +182,5 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
 }
 
 const MotionIconButton = motion<IconButtonProps>(IconButton);
+
+const MotionFormErrorMessage = motion<FormErrorMessageProps>(FormErrorMessage);
