@@ -4,7 +4,7 @@ module.exports = ({ env }) => {
   if (env("NODE_ENV") === "production") {
     return {
       connection: {
-        client: "mysql",
+        client: env("DATABASE_ENGINE", "postgres"),
         connection: {
           host: env("DATABASE_HOST", "127.0.0.1"),
           port: env.int("DATABASE_PORT", 5432),
