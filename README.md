@@ -5,7 +5,7 @@ New iFixit e-commerce site.
 ## Development
 
 The project contains a `backend` folder with Strapi config and a `frontend` with Next.js.
-You can run the backend both using SQLite and using Postgres with docker compose. For now the recommended approach for local dev is to just use SQLite.
+You can run the backend both using SQLite or using mysql with docker compose. For now the recommended approach for local dev is to just use SQLite.
 
 > :warning: If you are running Strapi using docker compose, be sure to delete `backend/node_modules` first, as your OS might differ from the docker container OS, so you want the docker container to install dependencies by itself.
 
