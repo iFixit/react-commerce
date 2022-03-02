@@ -62,3 +62,4 @@ import { LifetimeWarrantyIcon } from "@assets/svg";
 ```
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.
+
