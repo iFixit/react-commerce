@@ -13,6 +13,7 @@ services:
       DATABASE_USERNAME: "${DATABASE_USERNAME:-strapi}"
       DATABASE_PASSWORD: "${DATABASE_PASSWORD:-strapi}"
       JWT_SECRET: "${JWT_SECRET}"
+      DATABASE_SSL: 'false'
     ports:
       - "${HOST_PORT:-1337}:1337"
     depends_on:
@@ -21,6 +22,7 @@ services:
 
   db:
     image: mysql:8
+    command: mysqld --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: "${DATABASE_PASSWORD:-strapi}"
       MYSQL_DATABASE: "${DATABASE_NAME:-strapi}"
