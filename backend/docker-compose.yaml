@@ -25,6 +25,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${DATABASE_PASSWORD:-strapi}"
       MYSQL_DATABASE: "${DATABASE_NAME:-strapi}"
       MYSQL_USER: "${DATABASE_USERNAME:-strapi}"
+      MYSQL_PASSWORD: "${DATABASE_PASSWORD:-strapi}"
     volumes:
       - db_data:/var/lib/mysql/data
 
