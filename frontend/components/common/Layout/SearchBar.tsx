@@ -37,14 +37,14 @@ export const SearchInput = forwardRef<InputGroupProps, 'input'>(
                placeholder="Search"
                tabIndex={0}
                variant="filled"
-               bg="trueGray.800"
+               bg="gray.800"
                fontSize="sm"
                borderRadius="full"
                _hover={{
-                  bg: 'trueGray.700',
+                  bg: 'gray.700',
                }}
                _focus={{
-                  bg: 'trueGray.700',
+                  bg: 'gray.700',
                }}
             />
          </InputGroup>
