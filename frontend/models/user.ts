@@ -3,10 +3,9 @@ import {
    assertIsNumber,
    assertIsRecord,
    assertIsString,
-   isError,
    isRecord,
 } from '@helpers/application-helpers';
-import * as React from 'react';
+import { useQuery } from 'react-query';
 
 export interface User {
    id: number;
@@ -15,7 +14,16 @@ export interface User {
    thumbnail: string | null;
 }
 
-export async function fetchAuthenticatedUser(): Promise<User> {
+const userKeys = {
+   user: ['user'],
+};
+
+export function useAuthenticatedUser() {
+   const query = useQuery(userKeys.user, fetchAuthenticatedUser);
+   return query;
+}
+
+async function fetchAuthenticatedUser(): Promise<User> {
    const response = await fetch(`${IFIXIT_ORIGIN}/api/2.0/user`, {
       credentials: 'include',
       headers: {
@@ -46,42 +54,4 @@ export async function fetchAuthenticatedUser(): Promise<User> {
    }
 
    throw new Error(response.statusText);
-}
-
-export function useAuthenticatedUser() {
-   const [state, setState] = React.useState<{
-      user: User | null;
-      error: string | null;
-      isLoading: boolean;
-   }>({
-      user: null,
-      error: null,
-      isLoading: true,
-   });
-
-   React.useEffect(() => {
-      fetchAuthenticatedUser()
-         .then((user) => {
-            setState({
-               user,
-               error: null,
-               isLoading: false,
-            });
-         })
-         .catch((error) => {
-            let errorMessage: string;
-            if (isError(error)) {
-               errorMessage = error.message;
-            } else {
-               errorMessage = 'An error occurred';
-            }
-            setState((current) => ({
-               ...current,
-               error: errorMessage,
-               isLoading: false,
-            }));
-         });
-   }, []);
-
-   return state;
 }

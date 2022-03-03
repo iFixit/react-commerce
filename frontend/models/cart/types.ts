@@ -18,6 +18,9 @@ export interface APICart {
       total: APIPriceItem;
    };
    products: APICartProduct[];
+   miniCart: {
+      products: MiniCartProduct[];
+   };
 }
 
 interface APIPriceItem {
@@ -37,4 +40,16 @@ export interface APICartProduct {
    subPriceStr: string;
    subTotal: string;
    subTotalStr: string;
+}
+
+export interface MiniCartProduct {
+   displayName: string;
+   imageUrl: string;
+   price: number;
+   priceText: string;
+   quantity: number;
+   shortDisplayName: string;
+   sku: string;
+   url: string;
+   variantId: string;
 }

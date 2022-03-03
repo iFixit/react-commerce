@@ -16,8 +16,11 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { APICartProduct, useRemoveLineItem } from '@lib/cart';
-import { useUpdateLineItemQuantity } from '@lib/cart/hooks';
+import {
+   APICartProduct,
+   useRemoveLineItem,
+   useUpdateLineItemQuantity,
+} from '@models/cart';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import * as React from 'react';

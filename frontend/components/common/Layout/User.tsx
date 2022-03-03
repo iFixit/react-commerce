@@ -20,11 +20,11 @@ import * as React from 'react';
 const ANIMATION_DURATION = '300ms';
 
 export function UserMenu() {
-   const { user } = useAuthenticatedUser();
+   const user = useAuthenticatedUser();
 
    return (
       <Flex>
-         {user ? (
+         {user.data ? (
             <Menu>
                <MenuButton
                   aria-label="Open user menu"
@@ -35,23 +35,23 @@ export function UserMenu() {
                   }}
                >
                   <Avatar
-                     name={user.username}
-                     src={user.thumbnail || undefined}
+                     name={user.data.username}
+                     src={user.data.thumbnail || undefined}
                      size="sm"
                   />
                </MenuButton>
                <MenuList color="black">
                   <VStack align="flex-start" px="0.8rem" py="0.4rem">
                      <Text color="gray.900" fontWeight="semibold">
-                        {user.username}
+                        {user.data.username}
                      </Text>
-                     <Text color="gray.700">@{user.handle}</Text>
+                     <Text color="gray.700">@{user.data.handle}</Text>
                   </VStack>
                   <MenuDivider />
                   <MenuGroup>
                      <MenuItem
                         as="a"
-                        href={`${IFIXIT_ORIGIN}/User/Notifications/${user.id}/${user.username}`}
+                        href={`${IFIXIT_ORIGIN}/User/Notifications/${user.data.id}/${user.data.username}`}
                         fontSize="sm"
                      >
                         Notifications
@@ -59,7 +59,7 @@ export function UserMenu() {
                      <MenuItem
                         as="a"
                         fontSize="sm"
-                        href={`${IFIXIT_ORIGIN}/User/${user.id}/${user.username}`}
+                        href={`${IFIXIT_ORIGIN}/User/${user.data.id}/${user.data.username}`}
                      >
                         View Profile
                      </MenuItem>

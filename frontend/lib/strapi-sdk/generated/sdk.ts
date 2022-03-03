@@ -2072,6 +2072,11 @@ export type GetStoreQuery = {
                youtube?: Maybe<string>;
                repairOrg?: Maybe<string>;
             };
+            shopifySettings?: Maybe<{
+               __typename?: 'ComponentStoreShopifySettings';
+               storefrontDomain: string;
+               storefrontAccessToken: string;
+            }>;
          }>;
       }>;
    }>;
@@ -2581,6 +2586,10 @@ export const GetStoreDocument = `
           instagram
           youtube
           repairOrg
+        }
+        shopifySettings {
+          storefrontDomain
+          storefrontAccessToken
         }
       }
     }

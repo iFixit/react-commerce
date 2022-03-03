@@ -30,7 +30,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { useCart } from '@lib/cart';
+import { useCart, useCheckout } from '@models/cart';
 import { useIsMounted } from '@lib/hooks';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
@@ -42,6 +42,7 @@ export function CartDrawer() {
    const btnRef = React.useRef<HTMLButtonElement | null>(null);
    const isMounted = useIsMounted();
    const cart = useCart();
+   const checkout = useCheckout();
 
    return (
       <>
@@ -53,17 +54,17 @@ export function CartDrawer() {
                icon={<Icon as={FiShoppingCart} color="white" boxSize="6" />}
                onClick={onOpen}
                _hover={{
-                  bg: 'trueGray.800',
+                  bg: 'gray.800',
                }}
                _active={{
-                  bg: 'trueGray.800',
+                  bg: 'gray.800',
                }}
             />
             {cart.data && cart.data.totalNumItems > 0 && (
                <Box
                   position="absolute"
                   top="0.5"
-                  right="0"
+                  right="1px"
                   boxSize="2"
                   bg="blue.500"
                   borderRadius="full"
@@ -212,8 +213,15 @@ export function CartDrawer() {
                                  View cart
                               </Button>
                               <Button
+                                 as="a"
                                  colorScheme="blue"
-                                 disabled={cart.isError}
+                                 disabled={checkout.data == null}
+                                 href={checkout.data?.url}
+                                 isLoading={
+                                    checkout.isLoading ||
+                                    checkout.isFetching ||
+                                    checkout.isIdle
+                                 }
                               >
                                  Checkout
                               </Button>
@@ -244,25 +252,14 @@ function ListItem({ children }: React.PropsWithChildren<{}>) {
          variants={{
             in: {
                height: 'auto',
-               // scale: 1, opacity: 1
             },
             out: {
                height: 0,
-               // scale: 0,
-               // opacity: 0,
                zIndex: -1,
                overflow: 'hidden',
             },
          }}
          onAnimationComplete={() => !isPresent && safeToRemove?.()}
-         // transition
-         // transition={{
-         //    type: 'spring',
-         //    stiffness: 500,
-         //    damping: 60,
-         //    mass: 1,
-         // }}
-         // overflow="hidden"
          transition={{
             type: 'spring',
             stiffness: 500,
