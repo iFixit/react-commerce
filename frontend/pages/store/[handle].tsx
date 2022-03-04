@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
          notFound: true,
       };
    }
-   const deviceHandle = productList.deviceTitle;
+   const deviceHandle = JSON.stringify(productList.deviceTitle);
 
    const searchContext = await createProductListSearchContext({
       algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,

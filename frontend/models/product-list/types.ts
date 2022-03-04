@@ -9,6 +9,7 @@ export interface ProductSearchHit {
    quantity_available: number;
    lifetime_warranty: boolean;
    rating: number;
+   rating_count: number;
 }
 
 export interface ProductList {

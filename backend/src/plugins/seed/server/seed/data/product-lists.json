@@ -4,7 +4,7 @@
     "handle": "parts",
     "title": "All Parts",
     "description": "This is a description",
-    "filters": null,
+    "filters": "'facet_tags.Main Category': 'Parts'",
     "tagline": null,
     "deviceTitle": null,
     "metafieldDescription": null,

@@ -71,7 +71,12 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                >
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
-               <ProductCardRating rating={product.rating} count={102} />
+               {product.rating_count > 0 && (
+                  <ProductCardRating
+                     rating={product.rating}
+                     count={product.rating_count}
+                  />
+               )}
                <ProductCardPricing
                   currency="$"
                   price={product.price_float}

@@ -123,10 +123,12 @@ export function ProductListItem({ product }: ProductListItemProps) {
                >
                   {product.short_description}
                </Text>
-               <HStack>
-                  <Rating value={product.rating} />
-                  <Text>102</Text>
-               </HStack>
+               {product.rating_count > 0 && (
+                  <HStack align="flex-end">
+                     <Rating value={product.rating} />
+                     <Text lineHeight="1em">{product.rating_count}</Text>
+                  </HStack>
+               )}
                <Box>
                   <Flex
                      wrap="wrap"
