@@ -37,7 +37,7 @@ export async function getProductListByHandle(
    const result = await strapi.getProductList({
       filters: { handle: { eq: handle } },
    });
-   const productList = result.productLists?.data?.[0].attributes;
+   const productList = result.productLists?.data?.[0]?.attributes;
    if (productList == null) {
       return null;
    }
