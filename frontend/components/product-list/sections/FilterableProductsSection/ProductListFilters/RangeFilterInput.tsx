@@ -90,7 +90,6 @@ function useRangeFilterInput({
    const [error, setError] = React.useState<string | null>(null);
 
    React.useEffect(() => {
-      console.log('filter changed', filter);
       setError(null);
       if (minRef.current) {
          minRef.current.value = filter?.min != null ? String(filter.min) : '';

@@ -50,7 +50,7 @@ export function ListFilter({
             clearFacets: dependentFacets,
          });
       },
-      [toggle]
+      [toggle, dependentFacets]
    );
 
    return (
