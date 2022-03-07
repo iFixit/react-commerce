@@ -61,7 +61,6 @@ function AppliedFilterList({ className, filters }: AppliedFilterListProps) {
       clear();
    }, [clear]);
    const buttonSize = useBreakpointValue({ base: 'lg', md: 'sm' });
-   console.log('applied filters');
    return (
       <Wrap
          className={className}
@@ -70,7 +69,6 @@ function AppliedFilterList({ className, filters }: AppliedFilterListProps) {
          data-testid="applied-filters"
       >
          {filters.map((filter) => {
-            console.log(filter);
             switch (filter.type) {
                case FilterType.List: {
                   return <ListTags key={filter.id} facetHandle={filter.id} />;
@@ -131,7 +129,6 @@ interface RangeTagProps {
 function RangeTag({ filter }: RangeTagProps) {
    const facet = useFacet(filter.id);
    const clear = useClearFilter();
-   console.log(facet);
    const valueItemPrefix = facet.handle === 'price' ? '$' : '';
 
    let label: string;
