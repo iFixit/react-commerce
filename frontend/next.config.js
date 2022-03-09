@@ -14,6 +14,7 @@ module.exports = {
          'strapi.cominor.com',
          'valkyrie.cdn.ifixit.com',
          'cart-products.cdn.ifixit.com',
+         'assets.cdn.ifixit.com',
       ],
    },
 };
