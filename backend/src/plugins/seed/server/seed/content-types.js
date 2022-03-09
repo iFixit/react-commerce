@@ -24,24 +24,53 @@ module.exports = async (strapi) => {
       strapi.log.info("🌱 Menus already exist, skipping");
     } else {
       strapi.log.info("🌱 Create menus..");
+      let images;
       for (let i = 0; i < menus.length; i++) {
-        let data = menus[i];
-        data.items = data.items.map((item) => {
-          if (item.__component === "menu.submenu") {
-            const mappedSubmenuId = idMap.menu[item.submenu];
-            if (mappedSubmenuId == null) {
-              throw new Error(
-                `⚠️ Cannot find submenu with id ${item.submenu.id}`
-              );
+        let menu = menus[i];
+        images = [];
+        menu.items = menu.items.map((item) => {
+          switch (item.__component) {
+            case "menu.submenu": {
+              const mappedSubmenuId = idMap.menu[item.submenu];
+              if (mappedSubmenuId == null) {
+                throw new Error(
+                  `⚠️ Cannot find submenu with id ${item.submenu.id}`
+                );
+              }
+              item.submenu = mappedSubmenuId;
+              return item;
             }
-            item.submenu = mappedSubmenuId;
+            case "menu.link-with-image": {
+              const { image, ...itemAttributes } = item;
+              images.push(image);
+              return itemAttributes;
+            }
+            default:
+              return item;
           }
-          return item;
         });
         const created = await strapi.entityService.create(MENU_UID, {
-          data: data,
+          data: menu,
+          populate: "items",
         });
-        idMap.menu[data.id] = created.id;
+        idMap.menu[menu.id] = created.id;
+        if (images.length > 0) {
+          try {
+            await Promise.all(
+              images.map((image, index) => {
+                const entry = {
+                  id: created.items[index].id,
+                  model: "menu.link-with-image",
+                  field: "image",
+                };
+                return uploadEntryImage(entry, image);
+              })
+            );
+          } catch (error) {
+            console.log(error);
+            throw error;
+          }
+        }
       }
     }
 
@@ -119,11 +148,7 @@ module.exports = async (strapi) => {
 };
 
 async function uploadEntryImage(entry, image) {
-  const imagePath = path.join(
-    __dirname,
-    "data/images",
-    `${image.hash}${image.ext}`
-  );
+  const imagePath = path.join(__dirname, "data/images", `${image.name}`);
   const fileStat = fs.statSync(imagePath);
   const attachment = await strapi.plugins.upload.services.upload.upload({
     data: {

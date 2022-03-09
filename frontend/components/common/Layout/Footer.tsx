@@ -33,9 +33,7 @@ import { Store, StoreListItem } from '@models/store';
 import Image from 'next/image';
 import * as React from 'react';
 import { NewsletterForm } from './NewsletterForm';
-
-const placeholderImageUrl =
-   'https://via.placeholder.com/180x75?text=not+available';
+import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 
 export interface FooterProps {
    stores: StoreListItem[];
@@ -164,17 +162,23 @@ export function Footer({ stores, currentStore, globalSettings }: FooterProps) {
                                  position="relative"
                                  p="0"
                               >
-                                 <Image
-                                    layout="fill"
-                                    objectFit="contain"
-                                    src={
-                                       partner.image?.url || placeholderImageUrl
-                                    }
-                                    alt={
-                                       partner.image?.alternativeText ||
-                                       undefined
-                                    }
-                                 />
+                                 {partner.image?.url ? (
+                                    <Image
+                                       layout="fill"
+                                       objectFit="contain"
+                                       src={partner.image.url}
+                                       alt={
+                                          partner.image?.alternativeText ??
+                                          undefined
+                                       }
+                                    />
+                                 ) : (
+                                    <Image
+                                       layout="fill"
+                                       objectFit="contain"
+                                       src={noImageFixie}
+                                    />
+                                 )}
                               </FooterPartnerLink>
                            );
                         }
