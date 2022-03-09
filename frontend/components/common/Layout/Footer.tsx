@@ -1,7 +1,6 @@
 import {
    Box,
    Divider,
-   Img,
    Menu,
    MenuList,
    SimpleGrid,
@@ -31,6 +30,7 @@ import {
 import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
+import Image from 'next/image';
 import * as React from 'react';
 import { NewsletterForm } from './NewsletterForm';
 
@@ -161,10 +161,11 @@ export function Footer({ stores, currentStore, globalSettings }: FooterProps) {
                               <FooterPartnerLink
                                  key={partner.name}
                                  href={partner.url}
+                                 position="relative"
+                                 p="0"
                               >
-                                 <Img
-                                    h="full"
-                                    mx="auto"
+                                 <Image
+                                    layout="fill"
                                     objectFit="contain"
                                     src={
                                        partner.image?.url || placeholderImageUrl
