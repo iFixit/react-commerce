@@ -281,38 +281,26 @@ function PriceFilter({
    );
 }
 
-const priceRangeRegex = /[^\d]*(\d+)\s*-\s*[^\d]*(\d+)/i;
-const priceLowerboundRegex = /[^\d]*(\d+)\+/i;
-
-function parseRange(value: string): [number | null, number | null] {
-   const [, min, max] = value.match(priceRangeRegex) ?? [];
-   if (typeof min === 'string' && typeof max === 'string') {
-      return [parseFloat(min), parseFloat(max)];
-   }
-   const [, lowerbound] = value.match(priceLowerboundRegex) ?? [];
-   if (typeof lowerbound === 'string') {
-      return [parseFloat(lowerbound), null];
-   }
-   return [null, null];
-}
-
 function sortByPriceRange(a: FacetOption, b: FacetOption): number {
-   const [aMin, aMax] = parseRange(a.value);
-   const [bMin, bMax] = parseRange(b.value);
-   if (aMax == null && aMin != null) {
-      return 1;
-   }
-   if (bMax == null && bMin != null) {
-      return -1;
-   }
-   if (aMin === bMin) {
+   const aAvg = avg(a.value);
+   const bAvg = avg(b.value);
+
+   if (aAvg == null && bAvg == null) {
       return 0;
    }
-   if (aMin == null) {
+   if (aAvg == null) {
       return 1;
    }
-   if (bMin == null) {
+   if (bAvg == null) {
       return -1;
    }
-   return aMin - bMin;
+   return aAvg - bAvg;
+}
+
+function avg(x: string): number | null {
+   const nums = x.match(/\d+/g);
+   if (nums == null) {
+      return null;
+   }
+   return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
 }
