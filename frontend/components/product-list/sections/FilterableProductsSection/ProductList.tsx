@@ -54,6 +54,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
    const productHeadingId = `product-heading-${product.handle}`;
 
    const quantityAvailable = Math.max(0, product.quantity_available);
+
    return (
       <LinkBox as="article" aria-labelledby={productHeadingId}>
          <Stack
@@ -266,13 +267,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         View
                      </Button>
                   </LinkOverlay>
-                  <Text color="gray.500" fontSize="14px">
-                     {quantityAvailable > 0 && quantityAvailable < 10
-                        ? `
-               Only ${quantityAvailable} left in stock
-               `
-                        : `${quantityAvailable} in stock`}
-                  </Text>
+                  {quantityAvailable < 10 && (
+                     <Text color="gray.500" fontSize="14px">
+                        {quantityAvailable > 0
+                           ? `Only ${quantityAvailable} left in stock`
+                           : 'Out of stock'}
+                     </Text>
+                  )}
                </Stack>
             </VStack>
          </Stack>
