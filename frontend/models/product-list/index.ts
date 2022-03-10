@@ -83,7 +83,6 @@ export async function createProductListSearchContext({
    deviceHandle,
    filters,
 }: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
-   console.log('filters', filters);
    const filtersPreset =
       filters && filters.length > 0 ? filters : `device:${deviceHandle}`;
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
