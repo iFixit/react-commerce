@@ -84,9 +84,9 @@ export const ProductCardRating = ({
    ...stackProps
 }: ProductCardRatingProps) => {
    return (
-      <HStack {...stackProps}>
+      <HStack {...stackProps} align="flex-end">
          <Rating value={rating} />
-         <Text>{count}</Text>
+         <Text lineHeight="1em">{count}</Text>
       </HStack>
    );
 };

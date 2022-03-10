@@ -25,7 +25,7 @@ type PageProps = ProductListViewProps & {
 
 // This constant should probably be a field of the store model (editable from CMS)
 // so that it's configurable per-store.
-const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
+const ALGOLIA_DEFAULT_INDEX_NAME = 'product_en';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
@@ -60,10 +60,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
          notFound: true,
       };
    }
+   const deviceHandle = JSON.stringify(productList.deviceTitle);
 
    const searchContext = await createProductListSearchContext({
       algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
-      productListHandle: handle,
+      deviceHandle,
       urlQuery: context.query,
       filters: productList.filters || undefined,
    });

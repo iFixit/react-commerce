@@ -41,21 +41,21 @@ export interface ProductGridItemProps {
 export function ProductGridItem({ product }: ProductGridItemProps) {
    const isDiscounted =
       product.compare_at_price != null &&
-      product.compare_at_price > product.price;
+      product.compare_at_price > product.price_float;
 
    const percentage = isDiscounted
       ? computeDiscountPercentage(
-           product.price * 100,
+           product.price_float * 100,
            product.compare_at_price! * 100
         )
       : 0;
 
-   const isSoldOut = product.inventory_quantity <= 0;
+   const isSoldOut = product.quantity_available <= 0;
 
    return (
       <LinkBox as="article" display="block" w="full">
          <ProductCard h="full">
-            <ProductCardImage src={product.product_image} alt={product.title} />
+            <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
                {isSoldOut ? (
                   <ProductCardSoldOutBadge />
@@ -71,10 +71,15 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                >
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
-               <ProductCardRating rating={4} count={102} />
+               {product.rating_count > 0 && (
+                  <ProductCardRating
+                     rating={product.rating}
+                     count={product.rating_count}
+                  />
+               )}
                <ProductCardPricing
                   currency="$"
-                  price={product.price}
+                  price={product.price_float}
                   compareAtPrice={product.compare_at_price}
                />
             </ProductCardBody>

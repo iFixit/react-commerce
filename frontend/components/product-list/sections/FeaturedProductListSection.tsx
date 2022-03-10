@@ -174,16 +174,16 @@ interface ProductListItemProps {
 function ProductListItem({ product }: ProductListItemProps) {
    const isDiscounted =
       product.compare_at_price != null &&
-      product.compare_at_price > product.price;
+      product.compare_at_price > product.price_float;
 
    const percentage = isDiscounted
       ? computeDiscountPercentage(
-           product.price * 100,
+           product.price_float * 100,
            product.compare_at_price! * 100
         )
       : 0;
 
-   const isSoldOut = product.inventory_quantity <= 0;
+   const isSoldOut = product.quantity_available <= 0;
 
    return (
       <LinkBox
@@ -199,7 +199,7 @@ function ProductListItem({ product }: ProductListItemProps) {
          }}
       >
          <ProductCard flexGrow={1} h="full">
-            <ProductCardImage src={product.product_image} alt={product.title} />
+            <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
                {isSoldOut ? (
                   <ProductCardSoldOutBadge />
@@ -215,10 +215,10 @@ function ProductListItem({ product }: ProductListItemProps) {
                >
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
-               <ProductCardRating rating={4} count={102} />
+               <ProductCardRating rating={product.rating} count={102} />
                <ProductCardPricing
                   currency="$"
-                  price={product.price}
+                  price={product.price_float}
                   compareAtPrice={product.compare_at_price}
                />
             </ProductCardBody>

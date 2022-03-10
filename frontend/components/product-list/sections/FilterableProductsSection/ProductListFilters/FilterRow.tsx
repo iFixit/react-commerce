@@ -1,9 +1,9 @@
 import { Box, Divider, HStack } from '@chakra-ui/react';
-import { Facet, FacetOption, FilterType } from '@lib/algolia';
+import { Facet, FacetOption, FilterType, useFacet } from '@lib/algolia';
 import React from 'react';
 import { areEqual } from 'react-window';
 import { ListFilter } from './ListFilter';
-import { RangeFilter, RangeFilterInput, RangeFilterList } from './RangeFilter';
+import { RangeFilterInput } from './RangeFilterInput';
 import {
    VirtualAccordionMachineState,
    VirtualAccordionSend,
@@ -125,9 +125,6 @@ const Row = React.memo(
          });
       }, [id, send]);
 
-      const filterType =
-         facet.handle === 'price_range' ? FilterType.Range : FilterType.List;
-
       const accordionItemPanelId = `accordion-item-panel-${facet.handle}`;
 
       return (
@@ -199,46 +196,28 @@ const Row = React.memo(
                      bg="white"
                      data-test="accordion-panel"
                   >
-                     {filterType === FilterType.Range ? (
-                        <>
-                           <RangeFilter>
-                              <RangeFilterList
-                                 facet={facet}
-                                 multiple
-                                 sortItems={sortByPriceRange}
-                                 renderItem={(item) => {
-                                    const [min, max] = parseRange(item.value);
-                                    if (item.isRangeStart) {
-                                       return `Under $${max}`;
-                                    }
-                                    if (item.isRangeEnd) {
-                                       return `$${min} +`;
-                                    }
-                                    return `$${min} - $${max}`;
-                                 }}
-                              />
-                              <RangeFilterInput
-                                 facetHandle="price"
-                                 facetName="Price"
-                                 minFieldPrefix="$"
-                                 minFieldPlaceholder="Min"
-                                 maxFieldPrefix="$"
-                                 maxFieldPlaceholder="Max"
-                                 onError={onResize}
-                                 onDismissError={onResize}
-                              />
-                           </RangeFilter>
-                        </>
-                     ) : (
-                        <>
-                           <ListFilter
-                              key={facet.handle}
-                              facet={facet}
-                              multiple
-                              showAllValues={showAllFacetValues}
-                           />
-                        </>
-                     )}
+                     {(() => {
+                        switch (true) {
+                           case facet.handle === 'price_range':
+                              return (
+                                 <PriceFilter
+                                    priceRangeFacet={facet}
+                                    showAllFacetValues={showAllFacetValues}
+                                    onResize={onResize}
+                                 />
+                              );
+                           default:
+                              return (
+                                 <ListFilter
+                                    key={facet.handle}
+                                    facet={facet}
+                                    multiple
+                                    showAllValues={showAllFacetValues}
+                                 />
+                              );
+                        }
+                     })()}
+
                      <Box
                         sx={{
                            '@keyframes slidedown': {
@@ -266,13 +245,62 @@ const Row = React.memo(
    })
 );
 
-function parseRange(value: string): [number, number] {
-   const [min, max] = value.split(':');
-   return [parseFloat(min), parseFloat(max)];
+interface PriceFilterProps {
+   priceRangeFacet: Facet;
+   showAllFacetValues: boolean;
+   onResize(): void;
+}
+
+function PriceFilter({
+   priceRangeFacet,
+   showAllFacetValues,
+   onResize,
+}: PriceFilterProps) {
+   const priceFacet = useFacet('price');
+   return (
+      <>
+         <ListFilter
+            key={priceRangeFacet.handle}
+            facet={priceRangeFacet}
+            multiple
+            dependentFacets={[priceFacet.handle]}
+            showAllValues={showAllFacetValues}
+            sortItems={sortByPriceRange}
+         />
+         <RangeFilterInput
+            facet={priceFacet}
+            minFieldPrefix="$"
+            minFieldPlaceholder="Min"
+            maxFieldPrefix="$"
+            maxFieldPlaceholder="Max"
+            dependentFacets={[priceRangeFacet.handle]}
+            onError={onResize}
+            onDismissError={onResize}
+         />
+      </>
+   );
 }
 
 function sortByPriceRange(a: FacetOption, b: FacetOption): number {
-   const [aMin] = parseRange(a.value);
-   const [bMin] = parseRange(b.value);
-   return aMin - bMin;
+   const aAvg = avg(a.value);
+   const bAvg = avg(b.value);
+
+   if (aAvg == null && bAvg == null) {
+      return 0;
+   }
+   if (aAvg == null) {
+      return 1;
+   }
+   if (bAvg == null) {
+      return -1;
+   }
+   return aAvg - bAvg;
+}
+
+function avg(x: string): number | null {
+   const nums = x.match(/\d+/g);
+   if (nums == null) {
+      return null;
+   }
+   return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
 }
