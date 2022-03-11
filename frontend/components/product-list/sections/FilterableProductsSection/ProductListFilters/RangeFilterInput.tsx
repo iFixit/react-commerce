@@ -6,6 +6,7 @@ import {
    Input,
    InputGroup,
    InputLeftElement,
+   useBreakpointValue,
 } from '@chakra-ui/react';
 import { ScreenOnlyLabel } from '@components/ui';
 import { Facet, useRangeFilter } from '@lib/algolia';
@@ -27,6 +28,7 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
    const { minRef, maxRef, error, handleChange } = useRangeFilterInput(props);
    const minInputId = `${props.facet.handle}-input-min`;
    const maxInputId = `${props.facet.handle}-input-max`;
+   const inputSize = useBreakpointValue({ base: 'md', md: 'sm' }, 'md');
    return (
       <FormControl isInvalid={error != null} pt="2">
          <HStack>
@@ -34,7 +36,7 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
                <ScreenOnlyLabel htmlFor={minInputId}>
                   Set min {props.facet.name}
                </ScreenOnlyLabel>
-               <InputGroup size="sm">
+               <InputGroup size={inputSize}>
                   {props.minFieldPrefix && (
                      <InputLeftElement zIndex="0">
                         {props.minFieldPrefix}
@@ -55,7 +57,7 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
                <ScreenOnlyLabel htmlFor={maxInputId}>
                   Set max {props.facet.name}
                </ScreenOnlyLabel>
-               <InputGroup size="sm">
+               <InputGroup size={inputSize}>
                   {props.maxFieldPrefix && (
                      <InputLeftElement zIndex="0">
                         {props.maxFieldPrefix}
