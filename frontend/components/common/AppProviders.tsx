@@ -15,8 +15,12 @@ const customTheme = extendTheme({
       header: 2000,
    },
    styles: {
+      ...theme.styles,
       global: {
+         ...theme.styles?.global,
          body: {
+            // @ts-ignore
+            ...theme.styles?.global?.body,
             touchAction: 'pan-x pan-y',
          },
       },
