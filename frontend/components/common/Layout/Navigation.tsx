@@ -11,6 +11,7 @@ import {
    DrawerBody,
    DrawerContent,
    DrawerOverlay,
+   DrawerCloseButton,
    Flex,
    FlexProps,
    forwardRef,
@@ -24,6 +25,7 @@ import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
+import { Wordmark } from './Wordmark';
 
 export interface NavigationProps {
    menu: Menu;
@@ -210,8 +212,26 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
             >
                <DrawerOverlay />
                <DrawerContent bg="gray.900">
-                  <DrawerBody color="white" px="6" py="4">
-                     <Box h="header" />
+                  <DrawerBody color="white" px="6" py="8">
+                     {/* <Box h="header" /> */}
+                     <DrawerCloseButton />
+                     <NextLink href="/" passHref>
+                        <Flex
+                           as="a"
+                           cursor="pointer"
+                           // h="full"
+                           align="center"
+                           pr="4"
+                           mb="8"
+                           borderRadius="md"
+                           _focus={{
+                              boxShadow: 'outline',
+                              outline: 'none',
+                           }}
+                        >
+                           <Wordmark />
+                        </Flex>
+                     </NextLink>
                      <Accordion allowToggle>
                         {menu.items.map((item, index) => {
                            switch (item.type) {

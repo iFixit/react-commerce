@@ -10,22 +10,22 @@ import {
    MenuGroup,
    MenuItem,
    MenuList,
+   Portal,
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { useAuthenticatedUser } from '@models/user';
 import * as React from 'react';
-
-const ANIMATION_DURATION = '300ms';
 
 export function UserMenu() {
    const { user } = useAuthenticatedUser();
 
    return (
-      <Flex>
+      <Flex position="relative">
          {user ? (
-            <Menu>
+            <Menu defaultIsOpen={false}>
                <MenuButton
                   aria-label="Open user menu"
                   borderRadius="full"
@@ -35,53 +35,64 @@ export function UserMenu() {
                   }}
                >
                   <Avatar
-                     name={user.username}
+                     name={user.thumbnail == null ? user.username : undefined}
                      src={user.thumbnail || undefined}
+                     icon={
+                        <NoUserIcon
+                           transition={`color ${DEFAULT_ANIMATION_DURATION_MS}`}
+                           _hover={{
+                              color: 'brand.300',
+                           }}
+                        />
+                     }
+                     bg={user.thumbnail == null ? undefined : 'transparent'}
                      size="sm"
                   />
                </MenuButton>
-               <MenuList color="black">
-                  <VStack align="flex-start" px="0.8rem" py="0.4rem">
-                     <Text color="gray.900" fontWeight="semibold">
-                        {user.username}
-                     </Text>
-                     <Text color="gray.700">@{user.handle}</Text>
-                  </VStack>
-                  <MenuDivider />
-                  <MenuGroup>
-                     <MenuItem
-                        as="a"
-                        href={`${IFIXIT_ORIGIN}/User/Notifications/${user.id}/${user.username}`}
-                        fontSize="sm"
-                     >
-                        Notifications
-                     </MenuItem>
-                     <MenuItem
-                        as="a"
-                        fontSize="sm"
-                        href={`${IFIXIT_ORIGIN}/User/${user.id}/${user.username}`}
-                     >
-                        View Profile
-                     </MenuItem>
-                     <MenuItem
-                        as="a"
-                        fontSize="sm"
-                        href={`${IFIXIT_ORIGIN}/User/Orders`}
-                     >
-                        Orders
-                     </MenuItem>
-                  </MenuGroup>
-                  <MenuDivider />
-                  <MenuGroup>
-                     <MenuItem
-                        as="a"
-                        fontSize="sm"
-                        href={`${IFIXIT_ORIGIN}/Guide/logout`}
-                     >
-                        Log Out
-                     </MenuItem>
-                  </MenuGroup>
-               </MenuList>
+               <Portal>
+                  <MenuList color="black">
+                     <VStack align="flex-start" px="0.8rem" py="0.4rem">
+                        <Text color="gray.900" fontWeight="semibold">
+                           {user.username}
+                        </Text>
+                        <Text color="gray.700">@{user.handle}</Text>
+                     </VStack>
+                     <MenuDivider />
+                     <MenuGroup>
+                        <MenuItem
+                           as="a"
+                           href={`${IFIXIT_ORIGIN}/User/Notifications/${user.id}/${user.username}`}
+                           fontSize="sm"
+                        >
+                           Notifications
+                        </MenuItem>
+                        <MenuItem
+                           as="a"
+                           fontSize="sm"
+                           href={`${IFIXIT_ORIGIN}/User/${user.id}/${user.username}`}
+                        >
+                           View Profile
+                        </MenuItem>
+                        <MenuItem
+                           as="a"
+                           fontSize="sm"
+                           href={`${IFIXIT_ORIGIN}/User/Orders`}
+                        >
+                           Orders
+                        </MenuItem>
+                     </MenuGroup>
+                     <MenuDivider />
+                     <MenuGroup>
+                        <MenuItem
+                           as="a"
+                           fontSize="sm"
+                           href={`${IFIXIT_ORIGIN}/Guide/logout`}
+                        >
+                           Log Out
+                        </MenuItem>
+                     </MenuGroup>
+                  </MenuList>
+               </Portal>
             </Menu>
          ) : (
             <Link
@@ -91,7 +102,7 @@ export function UserMenu() {
                alignItems="center"
             >
                <NoUserIcon
-                  transition={`color ${ANIMATION_DURATION}`}
+                  transition={`color ${DEFAULT_ANIMATION_DURATION_MS}`}
                   _hover={{
                      color: 'brand.300',
                   }}
