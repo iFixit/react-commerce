@@ -1,4 +1,4 @@
-import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
+import placeholderImageUrl from '@assets/images/no-image-fixie.jpeg';
 import {
    AspectRatio,
    Badge,

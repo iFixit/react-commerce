@@ -12,57 +12,8 @@
     "legacyPageId": null,
     "metaDescription": "Shop parts on iFixit.com",
     "image": {
-      "id": 3,
-      "name": "c13a585b93fc0e515a1a874ad6ca0af0.jpeg",
-      "alternativeText": "",
-      "caption": "",
-      "width": 800,
-      "height": 600,
-      "formats": {
-        "thumbnail": {
-          "name": "thumbnail_c13a585b93fc0e515a1a874ad6ca0af0.jpeg",
-          "hash": "thumbnail_c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92",
-          "ext": ".jpeg",
-          "mime": "image/jpeg",
-          "width": 208,
-          "height": 156,
-          "size": 3.14,
-          "path": null,
-          "url": "/uploads/thumbnail_c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92.jpeg"
-        },
-        "medium": {
-          "name": "medium_c13a585b93fc0e515a1a874ad6ca0af0.jpeg",
-          "hash": "medium_c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92",
-          "ext": ".jpeg",
-          "mime": "image/jpeg",
-          "width": 750,
-          "height": 563,
-          "size": 18.68,
-          "path": null,
-          "url": "/uploads/medium_c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92.jpeg"
-        },
-        "small": {
-          "name": "small_c13a585b93fc0e515a1a874ad6ca0af0.jpeg",
-          "hash": "small_c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92",
-          "ext": ".jpeg",
-          "mime": "image/jpeg",
-          "width": 500,
-          "height": 375,
-          "size": 10.01,
-          "path": null,
-          "url": "/uploads/small_c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92.jpeg"
-        }
-      },
-      "hash": "c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92",
-      "ext": ".jpeg",
-      "mime": "image/jpeg",
-      "size": 18.01,
-      "url": "/uploads/c13a585b93fc0e515a1a874ad6ca0af0_b0665a7b92.jpeg",
-      "previewUrl": null,
-      "provider": "local",
-      "provider_metadata": null,
-      "created_at": "2021-11-05T10:10:25.000Z",
-      "updated_at": "2021-11-05T10:10:25.000Z"
+      "name": "parts-hero-image.jpeg",
+      "mime": "image/jpeg"
     },
     "parent": null,
     "sections": [
