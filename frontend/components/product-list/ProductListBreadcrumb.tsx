@@ -2,15 +2,14 @@ import {
    Breadcrumb,
    BreadcrumbItem,
    BreadcrumbLink,
-   Icon,
-   Text,
    BreadcrumbProps,
-   Box,
-   Menu,
-   MenuList,
-   MenuItem,
+   Icon,
    IconButton,
+   Menu,
    MenuButton,
+   MenuItem,
+   MenuList,
+   Text,
 } from '@chakra-ui/react';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
