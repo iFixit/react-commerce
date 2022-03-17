@@ -95,6 +95,7 @@ export function Header({ menu }: HeaderProps) {
             <NextLink href="/" passHref>
                <Flex
                   as="a"
+                  aria-label="Go to homepage"
                   cursor="pointer"
                   h="full"
                   align="center"

@@ -175,8 +175,8 @@ export function Footer({ stores, currentStore, globalSettings }: FooterProps) {
                                           objectFit="contain"
                                           src={partner.image.url}
                                           alt={
-                                             partner.image?.alternativeText ??
-                                             undefined
+                                             partner.image?.alternativeText ||
+                                             `${partner.name} logo`
                                           }
                                        />
                                     ) : (

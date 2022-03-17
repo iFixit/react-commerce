@@ -43,7 +43,7 @@ export const SecondaryNavbarLink = forwardRef<BoxProps, 'a'>((props, ref) => {
       <Box
          ref={ref}
          as="a"
-         color="gray.400"
+         color="gray.500"
          fontWeight="normal"
          h="full"
          mx="-3"

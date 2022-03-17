@@ -213,13 +213,12 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
                <DrawerOverlay />
                <DrawerContent bg="gray.900">
                   <DrawerBody color="white" px="6" py="8">
-                     {/* <Box h="header" /> */}
                      <DrawerCloseButton />
                      <NextLink href="/" passHref>
                         <Flex
                            as="a"
+                           aria-label="Go to homepage"
                            cursor="pointer"
-                           // h="full"
                            align="center"
                            pr="4"
                            mb="8"

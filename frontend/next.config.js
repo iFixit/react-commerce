@@ -16,4 +16,8 @@ module.exports = {
          'cart-products.cdn.ifixit.com',
       ],
    },
+   i18n: {
+      locales: ['en-US'],
+      defaultLocale: 'en-US',
+   },
 };
