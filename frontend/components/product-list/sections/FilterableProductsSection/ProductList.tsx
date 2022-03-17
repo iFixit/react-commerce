@@ -52,6 +52,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
       : 0;
 
    const productHeadingId = `product-heading-${product.handle}`;
+
+   const quantityAvailable = Math.max(0, product.quantity_available);
+
    return (
       <LinkBox as="article" aria-labelledby={productHeadingId}>
          <Stack
@@ -198,36 +201,38 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   lg: 'flex-start',
                }}
             >
-               <VStack
-                  align="flex-end"
-                  spacing="0"
-                  mt={{
-                     base: 2,
-                     sm: 0,
-                     md: 2,
-                     lg: 0,
-                  }}
-               >
-                  <Text
-                     color={isDiscounted ? 'red.700' : 'inherit'}
-                     fontWeight="bold"
-                     fontSize="xl"
-                     lineHeight="1em"
-                     data-testid="product-price"
+               {product.price_float != null && (
+                  <VStack
+                     align="flex-end"
+                     spacing="0"
+                     mt={{
+                        base: 2,
+                        sm: 0,
+                        md: 2,
+                        lg: 0,
+                     }}
                   >
-                     ${product.price_float}
-                  </Text>
-                  {isDiscounted && (
                      <Text
+                        color={isDiscounted ? 'red.700' : 'inherit'}
+                        fontWeight="bold"
+                        fontSize="xl"
                         lineHeight="1em"
-                        textDecoration="line-through"
-                        color="gray.400"
-                        data-testid="product-compared-at-price"
+                        data-testid="product-price"
                      >
-                        ${product.compare_at_price}
+                        ${product.price_float}
                      </Text>
-                  )}
-               </VStack>
+                     {isDiscounted && (
+                        <Text
+                           lineHeight="1em"
+                           textDecoration="line-through"
+                           color="gray.400"
+                           data-testid="product-compared-at-price"
+                        >
+                           ${product.compare_at_price}
+                        </Text>
+                     )}
+                  </VStack>
+               )}
                <Stack
                   direction={{
                      base: 'row-reverse',
@@ -262,14 +267,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         View
                      </Button>
                   </LinkOverlay>
-                  <Text color="gray.500" fontSize="14px">
-                     {product.quantity_available > 0 &&
-                     product.quantity_available < 10
-                        ? `
-               Only ${product.quantity_available} left in stock
-               `
-                        : `${product.quantity_available} in stock`}
-                  </Text>
+                  {quantityAvailable < 10 && (
+                     <Text color="gray.500" fontSize="14px">
+                        {quantityAvailable > 0
+                           ? `Only ${quantityAvailable} left in stock`
+                           : 'Out of stock'}
+                     </Text>
+                  )}
                </Stack>
             </VStack>
          </Stack>

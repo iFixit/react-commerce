@@ -14,6 +14,17 @@ const customTheme = extendTheme({
       ...theme.zIndices,
       header: 2000,
    },
+   styles: {
+      ...theme.styles,
+      global: {
+         ...theme.styles?.global,
+         body: {
+            // @ts-ignore
+            ...theme.styles?.global?.body,
+            touchAction: 'pan-x pan-y',
+         },
+      },
+   },
 });
 
 export function AppProviders({ children }: React.PropsWithChildren<any>) {
@@ -28,6 +39,10 @@ export function AppProviders({ children }: React.PropsWithChildren<any>) {
                rel="prefetch"
                href={`${IFIXIT_ORIGIN}/api/2.0/user`}
                as="fetch"
+            />
+            <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
             />
          </Head>
          <ChakraProvider theme={customTheme}>{children}</ChakraProvider>

@@ -104,7 +104,7 @@ const HeroTitle = chakra(
    }
 );
 
-const NUMBER_OF_LINES = 4;
+const NUMBER_OF_LINES = 5;
 const LINE_HEIGHT = 25;
 const VISIBLE_HEIGHT = NUMBER_OF_LINES * LINE_HEIGHT;
 

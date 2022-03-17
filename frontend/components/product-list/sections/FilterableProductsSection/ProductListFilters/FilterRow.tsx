@@ -1,5 +1,5 @@
-import { Box, Divider, HStack } from '@chakra-ui/react';
-import { Facet, FacetOption, FilterType, useFacet } from '@lib/algolia';
+import { Box, Divider, HStack, VStack } from '@chakra-ui/react';
+import { Facet, FacetOption, useFacet } from '@lib/algolia';
 import React from 'react';
 import { areEqual } from 'react-window';
 import { ListFilter } from './ListFilter';
@@ -258,7 +258,7 @@ function PriceFilter({
 }: PriceFilterProps) {
    const priceFacet = useFacet('price');
    return (
-      <>
+      <VStack align="flex-start">
          <ListFilter
             key={priceRangeFacet.handle}
             facet={priceRangeFacet}
@@ -277,7 +277,7 @@ function PriceFilter({
             onError={onResize}
             onDismissError={onResize}
          />
-      </>
+      </VStack>
    );
 }
 

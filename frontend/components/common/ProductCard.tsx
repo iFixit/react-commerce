@@ -104,6 +104,9 @@ export const ProductCardPricing = ({
    ...stackProps
 }: ProductCardPricingProps) => {
    const isDiscounted = compareAtPrice != null && compareAtPrice > price;
+   if (price == null) {
+      return null;
+   }
    return (
       <HStack
          w="full"
@@ -121,7 +124,7 @@ export const ProductCardPricing = ({
                data-testid="product-price"
             >
                {currency}
-               {price}
+               {compareAtPrice}
             </Text>
          )}
          <Text

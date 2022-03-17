@@ -180,7 +180,7 @@ export const FilterableProductsSection = React.memo(() => {
                <AppliedFilters pb="2" px={{ base: 4, sm: 0 }} />
                <Card
                   flex={1}
-                  alignItems="center"
+                  alignItems="stretch"
                   borderRadius={{ base: 'none', sm: 'lg' }}
                   overflow="hidden"
                >

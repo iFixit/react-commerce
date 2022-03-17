@@ -39,7 +39,6 @@ export function ProductListView({
                   boxSizing="border-box"
                   justify="space-between"
                   px={{ base: 3, sm: 0 }}
-                  overflow="hidden"
                >
                   <ProductListBreadcrumb productList={productList} />
                   <ProductListDeviceNavigation productList={productList} />
