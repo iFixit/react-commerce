@@ -86,6 +86,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   <Image
                      src={product.image_url}
                      alt={product.title}
+                     objectFit="contain"
                      width="180px"
                      height="180px"
                   />

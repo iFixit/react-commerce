@@ -49,7 +49,13 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    }
    return (
       <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-         <Image sizes="30vw" layout="fill" src={src} alt={alt} />
+         <Image
+            sizes="30vw"
+            layout="fill"
+            objectFit="contain"
+            src={src}
+            alt={alt}
+         />
       </AspectRatio>
    );
 };
