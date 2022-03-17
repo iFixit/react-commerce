@@ -45,8 +45,9 @@ export function ProductListPagination() {
             <>
                <PaginationItem>
                   <PaginationLink
-                     href={getProductListResultsPageUrl(1)}
+                     as="a"
                      aria-label="Go to first page"
+                     href={getProductListResultsPageUrl(1)}
                      page="first"
                      icon={HiChevronDoubleLeft}
                      onClick={(event) => {
@@ -57,13 +58,14 @@ export function ProductListPagination() {
                </PaginationItem>
                <PaginationItem>
                   <PaginationLink
+                     as="a"
                      aria-label="Go to previous page"
                      href={
                         pagination.hasPrevious
                            ? getProductListResultsPageUrl(
                                 pagination.currentPage - 1
                              )
-                           : undefined
+                           : '#'
                      }
                      page="previous"
                      icon={HiChevronLeft}
@@ -92,6 +94,7 @@ export function ProductListPagination() {
                ))}
                <PaginationItem>
                   <PaginationLink
+                     as="a"
                      aria-label="Go to next page"
                      page="next"
                      href={
@@ -99,7 +102,7 @@ export function ProductListPagination() {
                            ? getProductListResultsPageUrl(
                                 pagination.currentPage + 1
                              )
-                           : undefined
+                           : '#'
                      }
                      icon={HiChevronRight}
                      onClick={(event) => {
@@ -110,6 +113,7 @@ export function ProductListPagination() {
                </PaginationItem>
                <PaginationItem>
                   <PaginationLink
+                     as="a"
                      aria-label="Go to last page"
                      page="last"
                      href={getProductListResultsPageUrl(

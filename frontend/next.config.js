@@ -17,4 +17,8 @@ module.exports = {
          'assets.cdn.ifixit.com',
       ],
    },
+   i18n: {
+      locales: ['en-US'],
+      defaultLocale: 'en-US',
+   },
 };
