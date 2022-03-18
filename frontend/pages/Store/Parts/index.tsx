@@ -6,7 +6,7 @@ import {
 import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
 import {
    createProductListSearchContext,
-   getProductListByHandle,
+   findProductList,
 } from '@models/product-list';
 import {
    getStoreByCode,
@@ -36,13 +36,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       'public, s-maxage=10, stale-while-revalidate=600'
    );
 
-   const { handle } = context.params || {};
-   if (typeof handle !== 'string') {
-      return {
-         notFound: true,
-      };
-   }
-
    const [
       globalSettings,
       stores,
@@ -52,7 +45,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       getGlobalSettings(),
       getStoreList(),
       getStoreByCode('us'),
-      getProductListByHandle(handle),
+      findProductList({
+         handle: {
+            eq: 'Parts',
+         },
+      }),
    ]);
 
    if (productList == null) {
@@ -60,11 +57,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
          notFound: true,
       };
    }
-   const deviceHandle = JSON.stringify(productList.deviceTitle);
 
    const searchContext = await createProductListSearchContext({
       algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
-      deviceHandle,
       urlQuery: context.query,
       filters: productList.filters || undefined,
    });

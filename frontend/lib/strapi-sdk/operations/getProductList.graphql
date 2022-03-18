@@ -7,6 +7,7 @@ query getProductList($filters: ProductListFiltersInput) {
       data {
          id
          attributes {
+            type
             handle
             deviceTitle
             title
@@ -26,18 +27,24 @@ query getProductList($filters: ProductListFiltersInput) {
             parent {
                data {
                   attributes {
+                     type
                      title
                      handle
+                     deviceTitle
                      parent {
                         data {
                            attributes {
+                              type
                               title
                               handle
+                              deviceTitle
                               parent {
                                  data {
                                     attributes {
+                                       type
                                        title
                                        handle
+                                       deviceTitle
                                     }
                                  }
                               }
@@ -54,8 +61,10 @@ query getProductList($filters: ProductListFiltersInput) {
             ) {
                data {
                   attributes {
+                     type
                      sortPriority
                      handle
+                     deviceTitle
                      title
                      image {
                         data {

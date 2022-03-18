@@ -16,6 +16,17 @@
     }
   },
   "attributes": {
+    "type": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "enumeration",
+      "enum": ["parts", "tools", "marketing"],
+      "default": "parts",
+      "required": false
+    },
     "handle": {
       "pluginOptions": {
         "i18n": {
@@ -47,9 +58,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images"
-      ],
+      "allowedTypes": ["images"],
       "pluginOptions": {
         "i18n": {
           "localized": false

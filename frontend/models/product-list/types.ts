@@ -13,9 +13,9 @@ export interface ProductSearchHit {
 }
 
 export interface ProductList {
-   handle: string;
-   deviceTitle: string | null;
    title: string;
+   handle: string;
+   path: string;
    tagline: string | null;
    description: string;
    metaDescription: string | null;
@@ -27,13 +27,15 @@ export interface ProductList {
 }
 
 export interface ProductListAncestor {
-   handle: string;
    title: string;
+   handle: string;
+   path: string;
 }
 
 export interface ProductListChild {
-   handle: string;
    title: string;
+   handle: string;
+   path: string;
    image: ProductListImage | null;
    sortPriority: number | null;
 }

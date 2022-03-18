@@ -7,7 +7,12 @@ import {
    SearchParams,
 } from '@lib/algolia';
 import { parseSearchParams } from '@helpers/algolia-helpers';
-import { strapi } from '@lib/strapi-sdk';
+import {
+   ProductListFiltersInput,
+   strapi,
+   ProductList as StrapiProductList,
+   Enum_Productlist_Type,
+} from '@lib/strapi-sdk';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import produce from 'immer';
 import { ParsedUrlQuery } from 'querystring';
@@ -31,11 +36,11 @@ export type {
 /**
  * Get the product list data from the API
  */
-export async function getProductListByHandle(
-   handle: string
+export async function findProductList(
+   filters: ProductListFiltersInput
 ): Promise<ProductList | null> {
    const result = await strapi.getProductList({
-      filters: { handle: { eq: handle } },
+      filters,
    });
    const productList = result.productLists?.data?.[0]?.attributes;
    if (productList == null) {
@@ -43,9 +48,9 @@ export async function getProductListByHandle(
    }
    const productListImageAttributes = productList.image?.data?.attributes;
    return {
-      handle: productList.handle,
-      deviceTitle: productList.deviceTitle || null,
       title: productList.title,
+      handle: productList.handle,
+      path: getProductListPath(productList),
       tagline: productList.tagline || null,
       description: productList.description,
       metaDescription: productList.metaDescription || null,
@@ -67,10 +72,52 @@ export async function getProductListByHandle(
    };
 }
 
+/**
+ * Convert product list device title to a URL friendly slug
+ */
+export function getDeviceHandle(deviceTitle: string): string {
+   return deviceTitle.replace(/\s+/g, '_');
+}
+
+/**
+ * Convert URL slug to product list device title
+ */
+export function getDeviceTitle(handle: string): string {
+   return handle.replace(/_+/g, ' ');
+}
+
+/**
+ * Get product list path
+ * @param productList - Product list attributes
+ * @returns The product list absolute path
+ */
+export function getProductListPath(
+   productList: Pick<StrapiProductList, 'type' | 'handle' | 'deviceTitle'>
+): string {
+   switch (productList.type) {
+      case Enum_Productlist_Type.Tools: {
+         return `/Store/Tools/${productList.handle}`;
+      }
+      case Enum_Productlist_Type.Marketing: {
+         return `/Store/${productList.handle}`;
+      }
+      default: {
+         if (
+            productList.deviceTitle != null &&
+            productList.deviceTitle.length > 0
+         ) {
+            const deviceHandle = getDeviceHandle(productList.deviceTitle);
+            return `/Store/Parts/${deviceHandle}`;
+         }
+         return `/Store/${productList.handle}`;
+      }
+   }
+}
+
 export interface CreateProductListSearchContextOptions {
    algoliaIndexName: string;
    urlQuery: ParsedUrlQuery;
-   deviceHandle?: string | null;
+   deviceTitle?: string | null;
    filters?: string;
 }
 
@@ -80,11 +127,13 @@ export interface CreateProductListSearchContextOptions {
 export async function createProductListSearchContext({
    algoliaIndexName,
    urlQuery,
-   deviceHandle,
+   deviceTitle,
    filters,
 }: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
    const filtersPreset =
-      filters && filters.length > 0 ? filters : `device:${deviceHandle}`;
+      filters && filters.length > 0
+         ? filters
+         : `device:${JSON.stringify(deviceTitle)}`;
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const pageParam = urlQuery[PRODUCT_LIST_PAGE_PARAM];
@@ -148,9 +197,11 @@ function createProductListAncestors(
       return [];
    }
    const ancestors = createProductListAncestors(attributes.parent);
+
    return ancestors.concat({
-      handle: attributes.handle,
       title: attributes.title,
+      handle: attributes.handle,
+      path: getProductListPath(attributes),
    });
 }
 
@@ -165,8 +216,9 @@ function createProductListChild(
    }
    const imageAttributes = attributes.image?.data?.attributes;
    return {
-      handle: attributes.handle,
       title: attributes.title,
+      handle: attributes.handle,
+      path: getProductListPath(attributes),
       image:
          imageAttributes == null
             ? null

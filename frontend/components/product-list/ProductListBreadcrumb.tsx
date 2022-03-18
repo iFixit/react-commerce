@@ -57,7 +57,7 @@ export function ProductListBreadcrumb({
                   lg: 'inline-flex',
                }}
             >
-               <NextLink href={`/store/${ancestor.handle}`} passHref>
+               <NextLink href={ancestor.path} passHref>
                   <BreadcrumbLink
                      color="gray.400"
                      whiteSpace="nowrap"
@@ -90,7 +90,7 @@ export function ProductListBreadcrumb({
                      {reverseAncestorList.map((ancestor) => (
                         <NextLink
                            key={ancestor.handle}
-                           href={`/store/${ancestor.handle}`}
+                           href={ancestor.path}
                            passHref
                         >
                            <MenuItem as="a">{ancestor.title}</MenuItem>

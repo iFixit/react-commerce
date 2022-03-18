@@ -213,6 +213,12 @@ export type DateTimeFilterInput = {
    startsWith?: Maybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Productlist_Type {
+   Marketing = 'marketing',
+   Parts = 'parts',
+   Tools = 'tools',
+}
+
 export enum Enum_Store_Currency {
    Aud = 'AUD',
    Cad = 'CAD',
@@ -724,6 +730,7 @@ export type ProductList = {
    sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
    title: Scalars['String'];
+   type?: Maybe<Enum_Productlist_Type>;
    updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -779,6 +786,7 @@ export type ProductListFiltersInput = {
    sortPriority?: Maybe<IntFilterInput>;
    tagline?: Maybe<StringFilterInput>;
    title?: Maybe<StringFilterInput>;
+   type?: Maybe<StringFilterInput>;
    updatedAt?: Maybe<DateTimeFilterInput>;
 };
 
@@ -798,6 +806,7 @@ export type ProductListInput = {
    sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
    title?: Maybe<Scalars['String']>;
+   type?: Maybe<Enum_Productlist_Type>;
 };
 
 export type ProductListRelationResponseCollection = {
@@ -1330,6 +1339,7 @@ export type GetProductListQuery = {
          id?: Maybe<string>;
          attributes?: Maybe<{
             __typename?: 'ProductList';
+            type?: Maybe<Enum_Productlist_Type>;
             handle: string;
             deviceTitle?: Maybe<string>;
             title: string;
@@ -1355,24 +1365,30 @@ export type GetProductListQuery = {
                   __typename?: 'ProductListEntity';
                   attributes?: Maybe<{
                      __typename?: 'ProductList';
+                     type?: Maybe<Enum_Productlist_Type>;
                      title: string;
                      handle: string;
+                     deviceTitle?: Maybe<string>;
                      parent?: Maybe<{
                         __typename?: 'ProductListEntityResponse';
                         data?: Maybe<{
                            __typename?: 'ProductListEntity';
                            attributes?: Maybe<{
                               __typename?: 'ProductList';
+                              type?: Maybe<Enum_Productlist_Type>;
                               title: string;
                               handle: string;
+                              deviceTitle?: Maybe<string>;
                               parent?: Maybe<{
                                  __typename?: 'ProductListEntityResponse';
                                  data?: Maybe<{
                                     __typename?: 'ProductListEntity';
                                     attributes?: Maybe<{
                                        __typename?: 'ProductList';
+                                       type?: Maybe<Enum_Productlist_Type>;
                                        title: string;
                                        handle: string;
+                                       deviceTitle?: Maybe<string>;
                                     }>;
                                  }>;
                               }>;
@@ -1388,8 +1404,10 @@ export type GetProductListQuery = {
                   __typename?: 'ProductListEntity';
                   attributes?: Maybe<{
                      __typename?: 'ProductList';
+                     type?: Maybe<Enum_Productlist_Type>;
                      sortPriority?: Maybe<number>;
                      handle: string;
+                     deviceTitle?: Maybe<string>;
                      title: string;
                      image?: Maybe<{
                         __typename?: 'UploadFileEntityResponse';
@@ -2427,6 +2445,7 @@ export const GetProductListDocument = `
     data {
       id
       attributes {
+        type
         handle
         deviceTitle
         title
@@ -2446,18 +2465,24 @@ export const GetProductListDocument = `
         parent {
           data {
             attributes {
+              type
               title
               handle
+              deviceTitle
               parent {
                 data {
                   attributes {
+                    type
                     title
                     handle
+                    deviceTitle
                     parent {
                       data {
                         attributes {
+                          type
                           title
                           handle
+                          deviceTitle
                         }
                       }
                     }
@@ -2474,8 +2499,10 @@ export const GetProductListDocument = `
         ) {
           data {
             attributes {
+              type
               sortPriority
               handle
+              deviceTitle
               title
               image {
                 data {
