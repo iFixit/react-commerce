@@ -23,7 +23,10 @@ export function Header({ menu }: HeaderProps) {
          bg="gray.900"
          color="white"
          height="header"
-         overflow="hidden"
+         overflow={{
+            base: 'hidden',
+            md: 'visible',
+         }}
          direction="column"
          pl={{
             base: '0',
@@ -109,12 +112,7 @@ export function Header({ menu }: HeaderProps) {
                   <Wordmark />
                </Flex>
             </NextLink>
-            {menu && (
-               <Navigation.Desktop
-                  menu={menu}
-                  display={{ base: 'none', lg: 'block' }}
-               />
-            )}
+            {menu && <Navigation.Desktop menu={menu} />}
             <SearchForm
                mx="8"
                display={{

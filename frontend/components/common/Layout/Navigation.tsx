@@ -36,7 +36,14 @@ const ANIMATION_DURATION = '300ms';
 const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
    ({ menu, ...boxProps }, ref) => {
       return (
-         <Box ref={ref} as="nav" h="full" ml="6" {...boxProps}>
+         <Box
+            ref={ref}
+            as="nav"
+            h="full"
+            ml="6"
+            display={{ base: 'none', xl: 'block' }}
+            {...boxProps}
+         >
             <MenuBar h="full" position="relative">
                {menu.items.map((item, index) => {
                   switch (item.type) {
@@ -198,7 +205,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
             onClick={onToggle}
             display={{
                base: 'block',
-               lg: 'none',
+               xl: 'none',
             }}
             ml="1"
          />
