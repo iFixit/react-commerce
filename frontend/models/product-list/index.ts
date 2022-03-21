@@ -51,10 +51,11 @@ export async function findProductList(
       title: productList.title,
       handle: productList.handle,
       path: getProductListPath(productList),
-      tagline: productList.tagline || null,
+      deviceTitle: productList.deviceTitle ?? null,
+      tagline: productList.tagline ?? null,
       description: productList.description,
-      metaDescription: productList.metaDescription || null,
-      filters: productList.filters || null,
+      metaDescription: productList.metaDescription ?? null,
+      filters: productList.filters ?? null,
       image:
          productListImageAttributes == null
             ? null

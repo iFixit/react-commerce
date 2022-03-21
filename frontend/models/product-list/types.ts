@@ -16,6 +16,7 @@ export interface ProductList {
    title: string;
    handle: string;
    path: string;
+   deviceTitle: string | null;
    tagline: string | null;
    description: string;
    metaDescription: string | null;
