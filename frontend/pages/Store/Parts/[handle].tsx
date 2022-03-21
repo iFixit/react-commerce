@@ -3,6 +3,7 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
+import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
 import {
    createProductListSearchContext,
@@ -23,10 +24,6 @@ type PageProps = ProductListViewProps & {
    currentStore: Store;
    globalSettings: GlobalSettings;
 };
-
-// This constant should probably be a field of the store model (editable from CMS)
-// so that it's configurable per-store.
-const ALGOLIA_DEFAULT_INDEX_NAME = 'product_en';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
