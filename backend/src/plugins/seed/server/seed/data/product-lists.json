@@ -2,6 +2,7 @@
   {
     "id": 3,
     "handle": "Parts",
+    "type": "marketing",
     "title": "All Parts",
     "description": "This is a description",
     "filters": "'facet_tags.Main Category': 'Parts'",
@@ -1811,6 +1812,7 @@
     "id": 103,
     "handle": "Kits",
     "title": "Fix Kits",
+    "type": "marketing",
     "description": "You can fix it. We show you how.",
     "filters": "'facet_tags.Item Type': Kits",
     "tagline": null,
@@ -1833,6 +1835,7 @@
   {
     "id": 104,
     "handle": "Tools",
+    "type": "marketing",
     "title": "Repair Tools",
     "description": "This is a description",
     "filters": "'facet_tags.Main Category': 'Tools'",
