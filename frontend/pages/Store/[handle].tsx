@@ -98,7 +98,6 @@ const ProductListPage: NextPageWithLayout<PageProps> = ({
 };
 
 ProductListPage.getLayout = function getLayout(page, pageProps) {
-   pageProps.globalSettings.newsletterForm;
    return (
       <Layout
          title={`iFixit | ${pageProps.productList.title}`}
