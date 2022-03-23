@@ -4,14 +4,15 @@ import {
    BoxProps,
    Button,
    chakra,
-   Collapse,
    Flex,
    forwardRef,
    Heading,
    HStack,
    Text,
+   useDisclosure,
    VStack,
 } from '@chakra-ui/react';
+import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { useSearchParams } from '@lib/algolia';
 import { useIsMounted } from '@lib/hooks';
 import { ProductList } from '@models/product-list';
@@ -113,54 +114,27 @@ type HeroDescriptionProps = {
 };
 
 function HeroDescription({ children }: HeroDescriptionProps) {
-   const [state, setState] = React.useState({
-      isOpen: false,
-      shouldDisplayShowMore: false,
-   });
-
-   const onToggle = React.useCallback(() => {
-      setState((current) => {
-         return {
-            ...current,
-            isOpen: !current.isOpen,
-         };
-      });
-   }, []);
-
-   const textRef = React.useRef<HTMLParagraphElement | null>(null);
-
-   React.useEffect(() => {
-      if (textRef.current) {
-         const height = textRef.current.getBoundingClientRect().height;
-         if (height > VISIBLE_HEIGHT) {
-            setState((current) => ({
-               ...current,
-               shouldDisplayShowMore: true,
-            }));
-         }
-      }
-   }, []);
-
+   const { isOpen, onToggle } = useDisclosure();
    const isMounted = useIsMounted();
+   const textRef = React.useRef<HTMLParagraphElement | null>(null);
+   const textHeight = React.useMemo(() => {
+      if (isMounted && textRef.current) {
+         return textRef.current.clientHeight;
+      }
+      return 0;
+   }, [isMounted, textRef]);
+   const isShowMoreVisible = textHeight > VISIBLE_HEIGHT;
 
    return (
       <Box px={{ base: 6, sm: 0 }}>
-         {isMounted ? (
-            <Collapse
-               ref={textRef}
-               startingHeight={VISIBLE_HEIGHT}
-               in={state.isOpen}
-            >
-               <DescriptionRichText>{children}</DescriptionRichText>
-            </Collapse>
-         ) : (
-            <Box maxH={VISIBLE_HEIGHT} overflow="hidden">
-               <DescriptionRichText ref={textRef}>
-                  {children}
-               </DescriptionRichText>
-            </Box>
-         )}
-         {state.shouldDisplayShowMore && (
+         <Box
+            maxH={isOpen ? textHeight : VISIBLE_HEIGHT}
+            overflow="hidden"
+            transition={`all ${DEFAULT_ANIMATION_DURATION_MS}ms`}
+         >
+            <DescriptionRichText ref={textRef}>{children}</DescriptionRichText>
+         </Box>
+         {isShowMoreVisible && (
             <Button
                variant="link"
                color="gray.800"
@@ -173,7 +147,7 @@ function HeroDescription({ children }: HeroDescriptionProps) {
                ml="-8px"
                display="block"
             >
-               {state.isOpen ? 'Show less' : 'Show more'}
+               {isOpen ? 'Show less' : 'Show more'}
             </Button>
          )}
       </Box>
@@ -229,8 +203,16 @@ const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
          borderRadius="lg"
          overflow="hidden"
          boxShadow="base"
+         bg="white"
       >
-         <Image src={src} alt={alt} layout="fill" priority sizes="50vw" />
+         <Image
+            src={src}
+            alt={alt}
+            layout="fill"
+            objectFit="contain"
+            priority
+            sizes="50vw"
+         />
       </AspectRatio>
    );
 });

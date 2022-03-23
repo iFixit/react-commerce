@@ -64,7 +64,12 @@ export function PostCard({
                )}
                <NextLink href={link} passHref>
                   <LinkOverlay>
-                     <Text as="h3" fontSize="lg" fontWeight="bold">
+                     <Text
+                        as="h3"
+                        fontSize="lg"
+                        fontWeight="bold"
+                        lineHeight="shorter"
+                     >
                         {title}
                      </Text>
                   </LinkOverlay>

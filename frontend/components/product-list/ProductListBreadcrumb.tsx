@@ -59,7 +59,7 @@ export function ProductListBreadcrumb({
             >
                <NextLink href={ancestor.path} passHref>
                   <BreadcrumbLink
-                     color="gray.400"
+                     color="gray.500"
                      whiteSpace="nowrap"
                      borderRadius="sm"
                      px="1"

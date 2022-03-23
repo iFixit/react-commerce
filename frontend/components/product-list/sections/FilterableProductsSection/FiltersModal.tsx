@@ -33,7 +33,7 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
       <Modal size="lg" isOpen={isOpen} onClose={onClose}>
          <ModalOverlay />
          <ModalContent onTransitionEnd={handleAnimationComplete}>
-            <ModalBody pt={6}>
+            <ModalBody pt="2.5">
                <AppliedFilters pb="2" />
                <Box h="320px" mx="-6" overflow="hidden">
                   {canRenderList && <ProductListFilters />}

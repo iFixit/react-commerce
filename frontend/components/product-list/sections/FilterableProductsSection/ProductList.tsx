@@ -72,92 +72,114 @@ export function ProductListItem({ product }: ProductListItemProps) {
             alignItems="flex-start"
             px="4"
          >
-            <Box
-               flexGrow={1}
-               flexShrink={0}
-               w={{
-                  base: '100px',
-                  sm: '160px',
-                  md: '140px',
-                  lg: '160px',
+            <Flex
+               direction={{
+                  base: 'column',
+                  sm: 'row',
                }}
             >
-               {product.image_url ? (
-                  <Image
-                     src={product.image_url}
-                     alt={product.title}
-                     objectFit="contain"
-                     width="180px"
-                     height="180px"
-                  />
-               ) : (
-                  <Image
-                     src={placeholderImageUrl}
-                     alt={product.title}
-                     sizes="180px"
-                  />
-               )}
-            </Box>
-            <VStack
-               align="flex-start"
-               spacing={{
-                  base: 4,
-               }}
-               flexShrink={1}
-               w="full"
-            >
-               <Heading
-                  id={productHeadingId}
-                  as="h3"
-                  fontSize={{
-                     base: 'sm',
-                     sm: 'md',
-                     lg: 'lg',
+               <Box
+                  flexGrow={1}
+                  flexShrink={0}
+                  w={{
+                     base: '100px',
+                     sm: '160px',
+                     md: '140px',
+                     lg: '160px',
                   }}
                >
-                  {product.title}
-               </Heading>
-               <Text
-                  noOfLines={3}
-                  fontSize={{
-                     base: 'xs',
-                     sm: 'sm',
-                     lg: 'md',
+                  {product.image_url ? (
+                     <Image
+                        src={product.image_url}
+                        alt={product.title}
+                        objectFit="contain"
+                        width="180px"
+                        height="180px"
+                     />
+                  ) : (
+                     <Image
+                        src={placeholderImageUrl}
+                        alt={product.title}
+                        sizes="180px"
+                     />
+                  )}
+               </Box>
+               <VStack
+                  align="flex-start"
+                  spacing={{
+                     base: 4,
                   }}
+                  flexShrink={1}
+                  w="full"
                >
-                  {product.short_description}
-               </Text>
-               {product.rating_count > 0 && (
-                  <HStack align="flex-end">
-                     <Rating value={product.rating} />
-                     <Text lineHeight="1em">{product.rating_count}</Text>
-                  </HStack>
-               )}
-               <Box>
-                  <Flex
-                     wrap="wrap"
-                     mt="-1"
-                     sx={{
-                        '& > *': {
-                           mr: 1,
-                           mt: 1,
-                        },
+                  <Heading
+                     id={productHeadingId}
+                     as="h3"
+                     fontSize={{
+                        base: 'md',
+                        lg: 'lg',
                      }}
                   >
-                     {product.quantity_available > 0 ? (
-                        <>
-                           {percentage > 0 && (
-                              <Badge
-                                 colorScheme="red"
-                                 textTransform="none"
-                                 borderRadius="lg"
-                                 px="2.5"
-                                 py="1"
-                              >
-                                 {percentage}% Off
-                              </Badge>
-                           )}
-                           {product.lifetime_warranty && (
+                     {product.title}
+                  </Heading>
+                  <Text
+                     noOfLines={3}
+                     fontSize={{
+                        base: 'sm',
+                        sm: 'sm',
+                        lg: 'md',
+                     }}
+                  >
+                     {product.short_description}
+                  </Text>
+                  {product.rating_count > 0 && (
+                     <HStack align="center">
+                        <Rating value={product.rating} />
+                        <Text
+                           fontSize={{
+                              base: 'sm',
+                              lg: 'md',
+                           }}
+                        >
+                           {product.rating_count}
+                        </Text>
+                     </HStack>
+                  )}
+                  <Box>
+                     <Flex
+                        wrap="wrap"
+                        mt="-1"
+                        sx={{
+                           '& > *': {
+                              mr: 1,
+                              mt: 1,
+                           },
+                        }}
+                     >
+                        {product.quantity_available > 0 ? (
+                           <>
+                              {percentage > 0 && (
+                                 <Badge
+                                    colorScheme="red"
+                                    textTransform="none"
+                                    borderRadius="lg"
+                                    px="2.5"
+                                    py="1"
+                                 >
+                                    {percentage}% Off
+                                 </Badge>
+                              )}
+                              {product.lifetime_warranty && (
+                                 <Badge
+                                    colorScheme="blue"
+                                    textTransform="none"
+                                    borderRadius="lg"
+                                    px="2.5"
+                                    py="1"
+                                 >
+                                    Lifetime warranty
+                                 </Badge>
+                              )}
                               <Badge
                                  colorScheme="blue"
                                  textTransform="none"
@@ -165,33 +187,24 @@ export function ProductListItem({ product }: ProductListItemProps) {
                                  px="2.5"
                                  py="1"
                               >
-                                 Lifetime warranty
+                                 Ship today if ordered by 5pm
                               </Badge>
-                           )}
+                           </>
+                        ) : (
                            <Badge
-                              colorScheme="blue"
+                              colorScheme="gray"
                               textTransform="none"
                               borderRadius="lg"
                               px="2.5"
                               py="1"
                            >
-                              Ship today if ordered by 5pm
+                              Sold out
                            </Badge>
-                        </>
-                     ) : (
-                        <Badge
-                           colorScheme="gray"
-                           textTransform="none"
-                           borderRadius="lg"
-                           px="2.5"
-                           py="1"
-                        >
-                           Sold out
-                        </Badge>
-                     )}
-                  </Flex>
-               </Box>
-            </VStack>
+                        )}
+                     </Flex>
+                  </Box>
+               </VStack>
+            </Flex>
             <VStack
                flexShrink={0}
                align="flex-end"

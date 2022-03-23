@@ -63,15 +63,13 @@ export function ProductListChildrenSection({
    }, []);
 
    return (
-      <VStack
-         spacing={6}
-         align="stretch"
+      <Box
          px={{
             base: 6,
             sm: 0,
          }}
       >
-         <Text fontSize="lg" fontWeight="bold">
+         <Text fontSize="lg" fontWeight="bold" mb="4">
             Choose a model of {heading}
          </Text>
          <VStack spacing="4" align="stretch">
@@ -107,7 +105,7 @@ export function ProductListChildrenSection({
             )}
          </VStack>
          {hiddenChildren.length > 0 && (
-            <Box>
+            <Box mt="3">
                <Button
                   variant="link"
                   size="sm"
@@ -123,7 +121,7 @@ export function ProductListChildrenSection({
                </Button>
             </Box>
          )}
-      </VStack>
+      </Box>
    );
 }
 
@@ -144,6 +142,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
             transition="all 300ms"
             outline="none"
             overflow="hidden"
+            minHeight="60px"
             _focus={{
                boxShadow: 'outline',
             }}
