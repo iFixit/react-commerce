@@ -21,7 +21,7 @@ import {
    ProductCardTitle,
 } from '@components/common';
 import { Card } from '@components/ui';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { AlgoliaProvider, useHits } from '@lib/algolia';
 import { ProductListPreview, ProductSearchHit } from '@models/product-list';
@@ -214,7 +214,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay href={product.url}>
+               <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
                <ProductCardRating rating={product.rating} count={102} />
