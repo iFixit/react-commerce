@@ -92,20 +92,9 @@ export function ProductListView({
                               return (
                                  <FeaturedProductListSection
                                     key={index}
-                                    handle={productList.handle}
+                                    productList={productList}
                                     algoliaIndexName={
                                        searchContext.params.indexName
-                                    }
-                                    title={productList.title}
-                                    description={productList.description}
-                                    imageSrc={
-                                       productList.image
-                                          ? `${productList.image.url}`
-                                          : undefined
-                                    }
-                                    imageAlt={
-                                       productList.image?.alternativeText ||
-                                       undefined
                                     }
                                  />
                               );

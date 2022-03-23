@@ -252,9 +252,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      sm: 2,
                   }}
                >
-                  <LinkOverlay
-                     href={`https://ifixit.com/Store/Product/${product.sku}`}
-                  >
+                  <LinkOverlay href={product.url}>
                      <Button
                         as="div"
                         minW={{

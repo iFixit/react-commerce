@@ -31,6 +31,7 @@ export type {
    ProductSearchHit,
    ProductList,
    ProductListSection,
+   ProductListPreview,
 } from './types';
 
 /**
@@ -280,11 +281,14 @@ function createProductListSection(
             productList: {
                handle: productList.handle,
                title: productList.title,
+               deviceTitle: productList.deviceTitle ?? null,
+               path: getProductListPath(productList),
                description: productList.description,
                image:
                   image == null
                      ? null
                      : getImageFromStrapiImage(image, 'thumbnail'),
+               filters: productList.filters ?? null,
             },
          };
       }
@@ -303,11 +307,14 @@ function createProductListSection(
                   return {
                      handle: productList.handle,
                      title: productList.title,
+                     deviceTitle: productList.deviceTitle ?? null,
+                     path: getProductListPath(productList),
                      description: productList.description,
                      image:
                         image == null
                            ? null
                            : getImageFromStrapiImage(image, 'thumbnail'),
+                     filters: productList.filters ?? null,
                   };
                })
             ),
