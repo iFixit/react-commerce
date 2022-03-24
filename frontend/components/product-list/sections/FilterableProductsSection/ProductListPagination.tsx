@@ -134,7 +134,7 @@ export function ProductListPagination() {
 
 function useGetProductListResultsPageUrl() {
    const router = useRouter();
-   const { handle, p, ...other } = router.query;
+   const { p, ...other } = router.query;
    return (page: number) => {
       let query;
       if (page > 1) {
@@ -142,6 +142,6 @@ function useGetProductListResultsPageUrl() {
       } else {
          query = queryString.stringify({ ...other });
       }
-      return `/store/${handle}${query.length > 0 ? `?${query}` : ''}`;
+      return `${router.pathname}${query.length > 0 ? `?${query}` : ''}`;
    };
 }

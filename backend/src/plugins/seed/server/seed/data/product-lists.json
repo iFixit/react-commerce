@@ -1,7 +1,8 @@
 [
   {
     "id": 3,
-    "handle": "parts",
+    "handle": "Parts",
+    "type": "marketing",
     "title": "All Parts",
     "description": "This is a description",
     "filters": "'facet_tags.Main Category': 'Parts'",
@@ -1804,6 +1805,57 @@
     "image": null,
     "parent": 1825,
     "sections": [],
+    "locale": "en",
+    "publishedAt": "2021-12-07T23:08:51.397Z"
+  },
+  {
+    "id": 103,
+    "handle": "Kits",
+    "title": "Fix Kits",
+    "type": "marketing",
+    "description": "You can fix it. We show you how.",
+    "filters": "'facet_tags.Item Type': Kits",
+    "tagline": null,
+    "deviceTitle": null,
+    "metafieldDescription": null,
+    "excludeFromHierarchyDisplay": false,
+    "legacyPageId": null,
+    "metaDescription": "Shop fix kits on iFixit.com",
+    "image": null,
+    "parent": null,
+    "sections": [
+      {
+        "__component": "product-list.related-posts",
+        "tags": null
+      }
+    ],
+    "locale": "en",
+    "publishedAt": "2021-12-07T23:08:51.397Z"
+  },
+  {
+    "id": 104,
+    "handle": "Tools",
+    "type": "marketing",
+    "title": "Repair Tools",
+    "description": "This is a description",
+    "filters": "'facet_tags.Main Category': 'Tools'",
+    "tagline": null,
+    "deviceTitle": null,
+    "metafieldDescription": null,
+    "excludeFromHierarchyDisplay": false,
+    "legacyPageId": null,
+    "metaDescription": "Shop tools on iFixit.com",
+    "image": {
+      "name": "tools.jpeg",
+      "mime": "image/jpeg"
+    },
+    "parent": null,
+    "sections": [
+      {
+        "__component": "product-list.related-posts",
+        "tags": null
+      }
+    ],
     "locale": "en",
     "publishedAt": "2021-12-07T23:08:51.397Z"
   }

@@ -10,6 +10,7 @@ import {
    ProductCardSoldOutBadge,
    ProductCardTitle,
 } from '@components/common';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
@@ -66,9 +67,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay
-                  href={`https://ifixit.com/Store/Product/${product.sku}`}
-               >
+               <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
                {product.rating_count > 0 && (

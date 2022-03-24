@@ -21,29 +21,31 @@ import {
    ProductCardTitle,
 } from '@components/common';
 import { Card } from '@components/ui';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { AlgoliaProvider, useHits } from '@lib/algolia';
-import { ProductSearchHit } from '@models/product-list';
+import { ProductListPreview, ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
 export interface FeaturedProductListSectionProps {
-   handle: string;
-   title: string;
-   description: string;
-   imageSrc?: string;
-   imageAlt?: string;
+   // handle: string;
+   // title: string;
+   // description: string;
+   // imageSrc?: string;
+   // imageAlt?: string;
+   productList: ProductListPreview;
    algoliaIndexName: string;
 }
 
 export function FeaturedProductListSection({
-   handle,
-   title,
-   description,
-   imageAlt,
-   imageSrc,
+   // handle,
+   // title,
+   // description,
+   // imageAlt,
+   // imageSrc,
+   productList,
    algoliaIndexName,
 }: FeaturedProductListSectionProps) {
    return (
@@ -76,10 +78,10 @@ export function FeaturedProductListSection({
                display="flex"
                alignItems="center"
             >
-               {imageSrc && (
+               {productList.image && (
                   <Image
-                     src={imageSrc}
-                     alt={imageAlt}
+                     src={productList.image.url}
+                     alt={productList.image.alternativeText ?? ''}
                      objectFit="contain"
                      layout="fill"
                   />
@@ -104,20 +106,20 @@ export function FeaturedProductListSection({
                   >
                      <Heading
                         fontSize={{
-                           base: title.length > 40 ? 'xl' : '2xl',
-                           sm: title.length > 30 ? 'lg' : '2xl',
-                           lg: title.length > 40 ? '2xl' : '3xl',
+                           base: productList.title.length > 40 ? 'xl' : '2xl',
+                           sm: productList.title.length > 30 ? 'lg' : '2xl',
+                           lg: productList.title.length > 40 ? '2xl' : '3xl',
                         }}
                         fontFamily="Archivo Black"
                         color="white"
                         noOfLines={3}
                      >
-                        {title}
+                        {productList.title}
                      </Heading>
                      <Text color="white" noOfLines={2}>
-                        {description}
+                        {productList.description}
                      </Text>
-                     <NextLink href={`/store/${handle}`} passHref>
+                     <NextLink href={productList.path} passHref>
                         <Button
                            as="a"
                            variant="outline"
@@ -133,11 +135,13 @@ export function FeaturedProductListSection({
             </Box>
             <Box flexGrow={1}>
                <AlgoliaProvider
-                  key={handle}
+                  key={productList.handle}
                   appId={ALGOLIA_APP_ID}
                   apiKey={ALGOLIA_API_KEY}
                   initialIndexName={algoliaIndexName}
-                  filtersPreset={`collections:${handle}`}
+                  filtersPreset={
+                     productList.filters ?? `device:${productList.deviceTitle}`
+                  }
                   productsPerPage={3}
                >
                   <ProductGrid />
@@ -210,9 +214,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay
-                  href={`https://ifixit.com/Store/Product/${product.sku}`}
-               >
+               <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
                <ProductCardRating rating={product.rating} count={102} />

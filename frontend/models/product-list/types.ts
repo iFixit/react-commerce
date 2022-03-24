@@ -10,12 +10,14 @@ export interface ProductSearchHit {
    lifetime_warranty: boolean;
    rating: number;
    rating_count: number;
+   url: string;
 }
 
 export interface ProductList {
-   handle: string;
-   deviceTitle: string | null;
    title: string;
+   handle: string;
+   path: string;
+   deviceTitle: string | null;
    tagline: string | null;
    description: string;
    metaDescription: string | null;
@@ -27,13 +29,15 @@ export interface ProductList {
 }
 
 export interface ProductListAncestor {
-   handle: string;
    title: string;
+   handle: string;
+   path: string;
 }
 
 export interface ProductListChild {
-   handle: string;
    title: string;
+   handle: string;
+   path: string;
    image: ProductListImage | null;
    sortPriority: number | null;
 }
@@ -88,6 +92,9 @@ export interface ProductListProductListSetSection {
 export interface ProductListPreview {
    handle: string;
    title: string;
+   path: string;
+   deviceTitle: string | null;
    description: string;
    image: ProductListImage | null;
+   filters: string | null;
 }

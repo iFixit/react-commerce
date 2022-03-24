@@ -22,8 +22,9 @@ export type ProductListChildrenSectionProps = {
 };
 
 export interface ProductListChild {
-   handle: string;
    title: string;
+   handle: string;
+   path: string;
    image?: {
       url: string;
       alt?: string;
@@ -132,7 +133,7 @@ interface ChildLinkProps {
 
 const ChildLink = ({ child }: ChildLinkProps) => {
    return (
-      <NextLink href={`/store/${child.handle}`} passHref>
+      <NextLink href={child.path} passHref>
          <chakra.a
             bg="white"
             borderRadius="lg"
