@@ -14,6 +14,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
@@ -265,9 +266,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      sm: 2,
                   }}
                >
-                  <LinkOverlay
-                     href={`https://ifixit.com/Store/Product/${product.sku}`}
-                  >
+                  <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
                      <Button
                         as="div"
                         minW={{

@@ -1444,8 +1444,11 @@ export type GetProductListQuery = {
                              attributes?: Maybe<{
                                 __typename?: 'ProductList';
                                 handle: string;
+                                type?: Maybe<Enum_Productlist_Type>;
                                 title: string;
+                                deviceTitle?: Maybe<string>;
                                 description: string;
+                                filters?: Maybe<string>;
                                 image?: Maybe<{
                                    __typename?: 'UploadFileEntityResponse';
                                    data?: Maybe<{
@@ -1472,9 +1475,12 @@ export type GetProductListQuery = {
                              __typename?: 'ProductListEntity';
                              attributes?: Maybe<{
                                 __typename?: 'ProductList';
+                                type?: Maybe<Enum_Productlist_Type>;
                                 handle: string;
                                 title: string;
+                                deviceTitle?: Maybe<string>;
                                 description: string;
+                                filters?: Maybe<string>;
                                 image?: Maybe<{
                                    __typename?: 'UploadFileEntityResponse';
                                    data?: Maybe<{
@@ -2535,8 +2541,11 @@ export const GetProductListDocument = `
               data {
                 attributes {
                   handle
+                  type
                   title
+                  deviceTitle
                   description
+                  filters
                   image {
                     data {
                       attributes {
@@ -2556,9 +2565,12 @@ export const GetProductListDocument = `
             productLists(pagination: {limit: 3}) {
               data {
                 attributes {
+                  type
                   handle
                   title
+                  deviceTitle
                   description
+                  filters
                   image {
                     data {
                       attributes {

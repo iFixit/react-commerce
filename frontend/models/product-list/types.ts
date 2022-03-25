@@ -10,6 +10,7 @@ export interface ProductSearchHit {
    lifetime_warranty: boolean;
    rating: number;
    rating_count: number;
+   url: string;
 }
 
 export interface ProductList {
@@ -91,6 +92,9 @@ export interface ProductListProductListSetSection {
 export interface ProductListPreview {
    handle: string;
    title: string;
+   path: string;
+   deviceTitle: string | null;
    description: string;
    image: ProductListImage | null;
+   filters: string | null;
 }

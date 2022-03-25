@@ -97,8 +97,11 @@ query getProductList($filters: ProductListFiltersInput) {
                      data {
                         attributes {
                            handle
+                           type
                            title
+                           deviceTitle
                            description
+                           filters
                            image {
                               data {
                                  attributes {
@@ -118,9 +121,12 @@ query getProductList($filters: ProductListFiltersInput) {
                   productLists(pagination: { limit: 3 }) {
                      data {
                         attributes {
+                           type
                            handle
                            title
+                           deviceTitle
                            description
+                           filters
                            image {
                               data {
                                  attributes {
