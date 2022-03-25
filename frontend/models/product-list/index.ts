@@ -134,8 +134,8 @@ export async function createProductListSearchContext({
 }: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
    const filtersPreset =
       filters && filters.length > 0
-         ? filters
-         : `device:${JSON.stringify(deviceTitle)}`;
+         ? `${filters} AND public=1`
+         : `device:${JSON.stringify(deviceTitle)} AND public=1`;
    const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
    const pageParam = urlQuery[PRODUCT_LIST_PAGE_PARAM];
