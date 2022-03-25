@@ -128,7 +128,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                >
                   {product.short_description}
                </Text>
-               {product.rating_count > 0 && (
+               {(product.rating >= 4 || product.rating_count > 10) && (
                   <HStack align="flex-end">
                      <Rating value={product.rating} />
                      <Text lineHeight="1em">{product.rating_count}</Text>

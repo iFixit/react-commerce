@@ -70,7 +70,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
-               {product.rating_count > 0 && (
+               {(product.rating >= 4 || product.rating_count > 10) && (
                   <ProductCardRating
                      rating={product.rating}
                      count={product.rating_count}
