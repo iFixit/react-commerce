@@ -71,9 +71,11 @@ export function ProductListItem({ product }: ProductListItemProps) {
             }}
             py="7"
             alignItems="flex-start"
+            justify="space-between"
             px="4"
          >
-            <Flex
+            <Stack
+               spacing="4"
                direction={{
                   base: 'column',
                   sm: 'row',
@@ -205,7 +207,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      </Flex>
                   </Box>
                </VStack>
-            </Flex>
+            </Stack>
             <VStack
                flexShrink={0}
                align="flex-end"
