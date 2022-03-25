@@ -200,7 +200,7 @@ export const FilterableProductsSection = React.memo(() => {
                            {hits.map((hit) => {
                               return (
                                  <ProductListItem
-                                    key={hit.handle}
+                                    key={hit.objectID}
                                     product={hit}
                                  />
                               );

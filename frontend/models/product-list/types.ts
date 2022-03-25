@@ -1,4 +1,5 @@
 export interface ProductSearchHit {
+   objectID: string;
    title: string;
    handle: string;
    price_float: number;
