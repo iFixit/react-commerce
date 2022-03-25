@@ -169,15 +169,6 @@ export function ProductListItem({ product }: ProductListItemProps) {
                                  Lifetime warranty
                               </Badge>
                            )}
-                           <Badge
-                              colorScheme="blue"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              Ship today if ordered by 5pm
-                           </Badge>
                         </>
                      ) : (
                         <Badge
