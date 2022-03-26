@@ -135,7 +135,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   >
                      {product.short_description}
                   </Text>
-                  {product.rating_count > 0 && (
+                  {(product.rating >= 4 || product.rating_count > 10) && (
                      <HStack align="center">
                         <Rating value={product.rating} />
                         <Text
@@ -159,7 +159,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            },
                         }}
                      >
-                        {product.quantity_available > 0 ? (
+                        {product.quantity_available > 0 && (
                            <>
                               {percentage > 0 && (
                                  <Badge
@@ -183,26 +183,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                                     Lifetime warranty
                                  </Badge>
                               )}
-                              <Badge
-                                 colorScheme="blue"
-                                 textTransform="none"
-                                 borderRadius="lg"
-                                 px="2.5"
-                                 py="1"
-                              >
-                                 Ship today if ordered by 5pm
-                              </Badge>
                            </>
-                        ) : (
-                           <Badge
-                              colorScheme="gray"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              Sold out
-                           </Badge>
                         )}
                      </Flex>
                   </Box>
@@ -282,11 +263,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         View
                      </Button>
                   </LinkOverlay>
-                  {quantityAvailable < 10 && (
+                  {quantityAvailable < 10 && quantityAvailable > 0 && (
                      <Text color="gray.500" fontSize="14px">
-                        {quantityAvailable > 0
-                           ? `Only ${quantityAvailable} left in stock`
-                           : 'Out of stock'}
+                        Only {quantityAvailable} left in stock
                      </Text>
                   )}
                </Stack>

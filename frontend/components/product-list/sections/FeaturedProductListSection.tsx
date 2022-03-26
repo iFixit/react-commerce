@@ -30,21 +30,11 @@ import NextLink from 'next/link';
 import * as React from 'react';
 
 export interface FeaturedProductListSectionProps {
-   // handle: string;
-   // title: string;
-   // description: string;
-   // imageSrc?: string;
-   // imageAlt?: string;
    productList: ProductListPreview;
    algoliaIndexName: string;
 }
 
 export function FeaturedProductListSection({
-   // handle,
-   // title,
-   // description,
-   // imageAlt,
-   // imageSrc,
    productList,
    algoliaIndexName,
 }: FeaturedProductListSectionProps) {
@@ -140,7 +130,8 @@ export function FeaturedProductListSection({
                   apiKey={ALGOLIA_API_KEY}
                   initialIndexName={algoliaIndexName}
                   filtersPreset={
-                     productList.filters ?? `device:${productList.deviceTitle}`
+                     productList.filters ??
+                     `device:${productList.deviceTitle} AND public=1`
                   }
                   productsPerPage={3}
                >

@@ -7,7 +7,6 @@ import {
    ProductCardImage,
    ProductCardPricing,
    ProductCardRating,
-   ProductCardSoldOutBadge,
    ProductCardTitle,
 } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
@@ -51,26 +50,20 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
         )
       : 0;
 
-   const isSoldOut = product.quantity_available <= 0;
-
    return (
       <LinkBox as="article" display="block" w="full">
          <ProductCard h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
-               {isSoldOut ? (
-                  <ProductCardSoldOutBadge />
-               ) : (
-                  isDiscounted && (
-                     <ProductCardDiscountBadge percentage={percentage} />
-                  )
+               {isDiscounted && (
+                  <ProductCardDiscountBadge percentage={percentage} />
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
                <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
-               {product.rating_count > 0 && (
+               {(product.rating >= 4 || product.rating_count > 10) && (
                   <ProductCardRating
                      rating={product.rating}
                      count={product.rating_count}
