@@ -150,7 +150,6 @@ export const ProductListFilters = chakra(({ className }: FilterListProps) => {
                         estimatedItemSize={DEFAULT_ROW_HEIGHT}
                         width={width}
                         itemData={data}
-                        className="pippo"
                      >
                         {FilterRow}
                      </VariableSizeList>

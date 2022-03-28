@@ -1,6 +1,7 @@
-import { Box, Divider, HStack, VStack } from '@chakra-ui/react';
+import { Box, Divider, HStack, Icon, VStack } from '@chakra-ui/react';
 import { Facet, FacetOption, useFacet } from '@lib/algolia';
 import React from 'react';
+import { HiChevronDown } from 'react-icons/hi';
 import { areEqual } from 'react-window';
 import { ListFilter } from './ListFilter';
 import { RangeFilterInput } from './RangeFilterInput';
@@ -131,7 +132,7 @@ const Row = React.memo(
          <Box
             style={style}
             overflow="hidden"
-            px="6"
+            px="3"
             className={shouldAnimate ? 'toggle-animation' : ''}
             sx={{
                '--offset': `${animationOffset}px`,
@@ -150,12 +151,12 @@ const Row = React.memo(
          >
             <Box ref={ref}>
                <Box>
-                  <Divider />
                   <HStack
                      as="button"
                      fontWeight="semibold"
                      onClick={onToggle}
-                     py="2"
+                     py="3"
+                     px="1.5"
                      w="full"
                      bg="white"
                      transition="background-color 300ms"
@@ -174,14 +175,16 @@ const Row = React.memo(
                         {name}
                      </Box>
                      <Box
-                        px="2"
+                        ml="2"
                         color="gray.500"
                         style={{
-                           transform: `rotate(${isExpanded ? '45' : '0'}deg)`,
+                           transform: `rotate(${isExpanded ? '180' : '0'}deg)`,
                            transition: `transform ${TOGGLE_ANIMATION_DURATION_MS}ms`,
                         }}
+                        display="flex"
+                        alignItems="center"
                      >
-                        +
+                        <Icon as={HiChevronDown} boxSize="5" />
                      </Box>
                   </HStack>
                </Box>
@@ -192,6 +195,7 @@ const Row = React.memo(
                      ref={itemBodyRef}
                      pt="2"
                      pb="4"
+                     px="1.5"
                      pos="relative"
                      bg="white"
                      data-test="accordion-panel"
@@ -239,6 +243,7 @@ const Row = React.memo(
                      />
                   </Box>
                )}
+               <Divider />
             </Box>
          </Box>
       );

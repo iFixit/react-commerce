@@ -31,10 +31,17 @@ export function AppProviders({ children }: React.PropsWithChildren<any>) {
    return (
       <>
          <Head>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link
-               href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap"
+               rel="preconnect"
+               href="https://fonts.gstatic.com"
+               crossOrigin="true"
+            />
+            <link
+               href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lato:wght@400;700&display=swap"
                rel="stylesheet"
             />
+
             <link
                rel="prefetch"
                href={`${IFIXIT_ORIGIN}/api/2.0/user`}
