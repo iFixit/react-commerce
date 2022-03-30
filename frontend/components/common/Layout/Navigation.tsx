@@ -11,6 +11,7 @@ import {
    DrawerBody,
    DrawerContent,
    DrawerOverlay,
+   DrawerCloseButton,
    Flex,
    FlexProps,
    forwardRef,
@@ -24,6 +25,7 @@ import { Menu } from '@models/menu';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
+import { Wordmark } from './Wordmark';
 
 export interface NavigationProps {
    menu: Menu;
@@ -34,7 +36,14 @@ const ANIMATION_DURATION = '300ms';
 const DesktopNavigation = forwardRef<BoxProps & NavigationProps, 'nav'>(
    ({ menu, ...boxProps }, ref) => {
       return (
-         <Box ref={ref} as="nav" h="full" ml="6" {...boxProps}>
+         <Box
+            ref={ref}
+            as="nav"
+            h="full"
+            ml="6"
+            display={{ base: 'none', xl: 'block' }}
+            {...boxProps}
+         >
             <MenuBar h="full" position="relative">
                {menu.items.map((item, index) => {
                   switch (item.type) {
@@ -196,7 +205,7 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
             onClick={onToggle}
             display={{
                base: 'block',
-               lg: 'none',
+               xl: 'none',
             }}
             ml="1"
          />
@@ -210,8 +219,25 @@ const MobileNavigation = ({ menu }: NavigationProps) => {
             >
                <DrawerOverlay />
                <DrawerContent bg="gray.900">
-                  <DrawerBody color="white" px="6" py="4">
-                     <Box h="header" />
+                  <DrawerBody color="white" px="6" py="8">
+                     <DrawerCloseButton />
+                     <NextLink href="/" passHref>
+                        <Flex
+                           as="a"
+                           aria-label="Go to homepage"
+                           cursor="pointer"
+                           align="center"
+                           pr="4"
+                           mb="8"
+                           borderRadius="md"
+                           _focus={{
+                              boxShadow: 'outline',
+                              outline: 'none',
+                           }}
+                        >
+                           <Wordmark />
+                        </Flex>
+                     </NextLink>
                      <Accordion allowToggle>
                         {menu.items.map((item, index) => {
                            switch (item.type) {

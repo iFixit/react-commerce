@@ -180,7 +180,7 @@ export const FilterableProductsSection = React.memo(() => {
                <AppliedFilters pb="2" px={{ base: 4, sm: 0 }} />
                <Card
                   flex={1}
-                  alignItems="center"
+                  alignItems="stretch"
                   borderRadius={{ base: 'none', sm: 'lg' }}
                   overflow="hidden"
                >
@@ -195,19 +195,19 @@ export const FilterableProductsSection = React.memo(() => {
                   ) : showNoResults ? (
                      <FilteredProductListEmptyState />
                   ) : productViewType === ProductViewType.List ? (
-                     <>
+                     <Flex direction="column" align="center">
                         <ProductList>
                            {hits.map((hit) => {
                               return (
                                  <ProductListItem
-                                    key={hit.handle}
+                                    key={hit.objectID}
                                     product={hit}
                                  />
                               );
                            })}
                         </ProductList>
                         <ProductListPagination />
-                     </>
+                     </Flex>
                   ) : (
                      <>
                         <ProductGrid>
@@ -249,7 +249,7 @@ const FilterCard = ({
 }: React.PropsWithChildren<{ isLoading: boolean }>) => {
    return (
       <Card
-         py="6"
+         py="1.5"
          width="250px"
          display={{ base: 'none', md: 'block' }}
          position="sticky"

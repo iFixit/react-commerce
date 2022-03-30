@@ -22,9 +22,9 @@ const FACET_BLOCKLIST = [
    'collection_ids',
    'named_tags_names',
    'named_tags.worksin',
-   'price',
+   'facet_tags.Price',
    'inventory_management',
-   'options.variant_text',
+   'quantity_available',
 ];
 
 const Sizer = chakra(AutoSizer);

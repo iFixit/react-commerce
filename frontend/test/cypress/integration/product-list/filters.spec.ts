@@ -5,7 +5,8 @@ const TEST_MAX_PRICE = 50;
 describe('product list filters', () => {
    const user = cy;
    beforeEach(() => {
-      user.visit('/store/parts');
+      cy.intercept('/1/indexes/**').as('search');
+      user.visit('/Store/Parts');
    });
 
    function getVirtualListClickOptions(): Partial<Cypress.ClickOptions> {
@@ -31,13 +32,7 @@ describe('product list filters', () => {
    }
 
    function waitForSearchCompletion() {
-      user
-         .findByRole('region', { name: /products/i })
-         .as('section')
-         .should('have.attr', 'data-search-state', 'search');
-      return user
-         .get('@section')
-         .should('have.attr', 'data-search-state', 'idle');
+      user.wait('@search');
    }
 
    it('should help user filter', () => {
@@ -61,13 +56,19 @@ describe('product list filters', () => {
 
       waitForSearchCompletion();
 
+      user
+         .findByRole('button', { name: /collapse item type/i, expanded: true })
+         .click(getVirtualListClickOptions());
+
+      user.wait(500);
+
       // Assert that the products update according to that filter
       user
          .window()
          .its('filteredProducts')
          .each((product) => {
             cy.wrap(product)
-               .its('named_tags.Item Type')
+               .its('facet_tags.Item Type')
                .should('satisfy', function isCablesItemType(type: any) {
                   return (
                      (typeof type === 'string' &&
@@ -79,20 +80,26 @@ describe('product list filters', () => {
          });
 
       user
-         .findByRole('button', { name: /expand color$/i, expanded: false })
+         .findByRole('button', { name: /expand device$/i, expanded: false })
          .click(getVirtualListClickOptions());
 
-      user.findByTestId('accordion-item-panel-color').within(() => {
+      user.findByTestId('accordion-item-panel-device').within(() => {
          user
-            .findByRole('option', { name: /black/i })
+            .findByRole('option', { name: /^iphone$/i })
             .click(getVirtualListClickOptions());
       });
 
       user.findByTestId('applied-filters').within(() => {
-         user.findByText(/color:\s*black/i).should('exist');
+         user.findByText(/device:\s*iphone/i).should('exist');
       });
 
       waitForSearchCompletion();
+
+      user
+         .findByRole('button', { name: /collapse device$/i, expanded: true })
+         .click(getVirtualListClickOptions());
+
+      user.wait(500);
 
       user
          .findByRole('button', {
@@ -150,10 +157,10 @@ describe('product list filters', () => {
          });
       });
 
-      user.findByRole('button', { name: /remove color:\s*black/i }).click();
+      user.findByRole('button', { name: /remove device:\s*iphone/i }).click();
 
       user.findByTestId('applied-filters').within(() => {
-         user.findByText(/color:\s*black/i).should('not.exist');
+         user.findByText(/device:\s*iphone/i).should('not.exist');
       });
 
       waitForSearchCompletion();

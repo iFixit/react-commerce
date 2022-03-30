@@ -72,3 +72,44 @@ export function useIsMounted() {
 
    return isMounted;
 }
+
+interface UsePreloadImage {
+   preload(url: string): Promise<void>;
+   isLoaded: boolean;
+   isError: boolean;
+   error: any;
+}
+
+export function usePreloadImage(): UsePreloadImage {
+   const [state, setState] = React.useState<{
+      status: 'idle' | 'loading' | 'loaded' | 'error';
+      error: any;
+   }>({
+      status: 'idle',
+      error: null,
+   });
+
+   const preload = React.useCallback(async (url: string) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+         setState({
+            status: 'loaded',
+            error: null,
+         });
+      };
+      img.onerror = (err) => {
+         setState({
+            status: 'error',
+            error: err,
+         });
+      };
+   }, []);
+
+   return {
+      preload,
+      isError: state.status === 'error',
+      isLoaded: state.status === 'loaded',
+      error: state.error,
+   };
+}

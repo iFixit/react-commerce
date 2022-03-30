@@ -129,14 +129,15 @@ interface RangeTagProps {
 function RangeTag({ filter }: RangeTagProps) {
    const facet = useFacet(filter.id);
    const clear = useClearFilter();
+   const valueItemPrefix = facet.handle === 'price' ? '$' : '';
 
    let label: string;
    if (filter.min == null) {
-      label = `${facet.name} <= ${filter.max}`;
+      label = `${facet.name} <= ${valueItemPrefix}${filter.max}`;
    } else if (filter.max == null) {
-      label = `${facet.name} >= ${filter.min}`;
+      label = `${facet.name} >= ${valueItemPrefix}${filter.min}`;
    } else {
-      label = `${facet.name}: ${filter.min} - ${filter.max}`;
+      label = `${facet.name}: ${valueItemPrefix}${filter.min} - ${valueItemPrefix}${filter.max}`;
    }
    return (
       <WrapItem key={filter.id}>

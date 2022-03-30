@@ -7,6 +7,7 @@ export type ListFilterProps = {
    facet: Facet;
    multiple?: boolean;
    showAllValues?: boolean;
+   dependentFacets?: string[];
    sortItems?(a: FacetOption, b: FacetOption): number;
    renderItem?(
       item: FacetOption,
@@ -19,6 +20,7 @@ export function ListFilter({
    facet,
    multiple = false,
    showAllValues = false,
+   dependentFacets,
    renderItem,
    sortItems = defaultSortItems,
 }: ListFilterProps) {
@@ -44,9 +46,11 @@ export function ListFilter({
 
    const handleChange = React.useCallback(
       (optionHandle: string) => {
-         toggle(optionHandle);
+         toggle(optionHandle, {
+            clearFacets: dependentFacets,
+         });
       },
-      [toggle]
+      [toggle, dependentFacets]
    );
 
    return (

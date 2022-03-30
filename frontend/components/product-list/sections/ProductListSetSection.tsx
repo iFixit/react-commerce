@@ -7,23 +7,15 @@ import {
    SimpleGrid,
    VStack,
 } from '@chakra-ui/react';
+import { ProductListPreview } from '@models/product-list';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
 export type ProductListSetSectionProps = {
    title: string;
-   productLists: FeaturedProductList[];
+   productLists: ProductListPreview[];
 };
-
-interface FeaturedProductList {
-   handle: string;
-   title: string;
-   image?: {
-      url: string;
-      alt?: string;
-   } | null;
-}
 
 export function ProductListSetSection({
    title,
@@ -56,7 +48,7 @@ export function ProductListSetSection({
 }
 
 interface ProductListLinkProps {
-   productList: FeaturedProductList;
+   productList: ProductListPreview;
 }
 
 const ProductListLink = ({ productList }: ProductListLinkProps) => {
@@ -83,7 +75,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                >
                   <Image
                      src={productList.image.url}
-                     alt={productList.image.alt}
+                     alt={productList.image.alternativeText ?? ''}
                      width="80px"
                      height="60px"
                      objectFit="contain"
@@ -91,7 +83,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                </Flex>
             )}
             <Divider orientation="vertical" />
-            <NextLink href={`/store/${productList.handle}`} passHref>
+            <NextLink href={productList.path} passHref>
                <LinkOverlay
                   px="3"
                   py="2"

@@ -15,6 +15,12 @@ module.exports = {
          'www.cominor.com',
          'ifixit.com',
          'valkyrie.cdn.ifixit.com',
+         'cart-products.cdn.ifixit.com',
+         'assets.cdn.ifixit.com',
       ],
+   },
+   i18n: {
+      locales: ['en-US'],
+      defaultLocale: 'en-US',
    },
 };

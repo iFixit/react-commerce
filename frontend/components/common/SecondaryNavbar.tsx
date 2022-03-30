@@ -43,16 +43,22 @@ export const SecondaryNavbarLink = forwardRef<BoxProps, 'a'>((props, ref) => {
       <Box
          ref={ref}
          as="a"
-         color="gray.400"
+         color="gray.500"
          fontWeight="normal"
-         h="full"
+         h="calc(100% - 6px)"
+         boxSizing="border-box"
          mx="-3"
          px="3"
          display="flex"
          alignItems="center"
+         outline="none"
          transition={`all ${DEFAULT_ANIMATION_DURATION_MS}ms`}
+         borderRadius="sm"
          _hover={{
             color: 'gray.600',
+         }}
+         _focus={{
+            shadow: 'outline',
          }}
          {...props}
       />

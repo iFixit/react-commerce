@@ -22,8 +22,9 @@ export type ProductListChildrenSectionProps = {
 };
 
 export interface ProductListChild {
-   handle: string;
    title: string;
+   handle: string;
+   path: string;
    image?: {
       url: string;
       alt?: string;
@@ -62,15 +63,13 @@ export function ProductListChildrenSection({
    }, []);
 
    return (
-      <VStack
-         spacing={6}
-         align="stretch"
+      <Box
          px={{
             base: 6,
             sm: 0,
          }}
       >
-         <Text fontSize="lg" fontWeight="bold">
+         <Text fontSize="lg" fontWeight="bold" mb="4">
             Choose a model of {heading}
          </Text>
          <VStack spacing="4" align="stretch">
@@ -106,7 +105,7 @@ export function ProductListChildrenSection({
             )}
          </VStack>
          {hiddenChildren.length > 0 && (
-            <Box>
+            <Box mt="3">
                <Button
                   variant="link"
                   size="sm"
@@ -122,7 +121,7 @@ export function ProductListChildrenSection({
                </Button>
             </Box>
          )}
-      </VStack>
+      </Box>
    );
 }
 
@@ -132,7 +131,7 @@ interface ChildLinkProps {
 
 const ChildLink = ({ child }: ChildLinkProps) => {
    return (
-      <NextLink href={`/store/${child.handle}`} passHref>
+      <NextLink href={child.path} passHref>
          <chakra.a
             bg="white"
             borderRadius="lg"
@@ -143,6 +142,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
             transition="all 300ms"
             outline="none"
             overflow="hidden"
+            minHeight="60px"
             _focus={{
                boxShadow: 'outline',
             }}

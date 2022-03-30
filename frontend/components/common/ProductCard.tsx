@@ -1,4 +1,4 @@
-import placeholderImageUrl from '@assets/images/product-item-placeholder.png';
+import placeholderImageUrl from '@assets/images/no-image-fixie.jpeg';
 import {
    AspectRatio,
    Badge,
@@ -49,7 +49,13 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    }
    return (
       <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-         <Image sizes="30vw" layout="fill" src={src} alt={alt} />
+         <Image
+            sizes="30vw"
+            layout="fill"
+            objectFit="contain"
+            src={src}
+            alt={alt}
+         />
       </AspectRatio>
    );
 };
@@ -59,18 +65,7 @@ export const ProductCardBody = (props: StackProps) => {
 };
 
 export const ProductCardTitle = (props: HeadingProps) => {
-   return (
-      <Heading
-         as="h3"
-         fontSize={{
-            base: 'xs',
-            sm: 'sm',
-            md: 'md',
-            lg: 'md',
-         }}
-         {...props}
-      />
-   );
+   return <Heading as="h3" fontSize="md" {...props} />;
 };
 
 export type ProductCardRatingProps = StackProps & {
@@ -84,9 +79,9 @@ export const ProductCardRating = ({
    ...stackProps
 }: ProductCardRatingProps) => {
    return (
-      <HStack {...stackProps}>
+      <HStack {...stackProps} align="flex-end">
          <Rating value={rating} />
-         <Text>{count}</Text>
+         <Text lineHeight="1em">{count}</Text>
       </HStack>
    );
 };
@@ -104,6 +99,9 @@ export const ProductCardPricing = ({
    ...stackProps
 }: ProductCardPricingProps) => {
    const isDiscounted = compareAtPrice != null && compareAtPrice > price;
+   if (price == null) {
+      return null;
+   }
    return (
       <HStack
          w="full"
@@ -121,7 +119,7 @@ export const ProductCardPricing = ({
                data-testid="product-price"
             >
                {currency}
-               {price}
+               {compareAtPrice}
             </Text>
          )}
          <Text

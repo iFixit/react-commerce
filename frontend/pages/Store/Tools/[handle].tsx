@@ -3,10 +3,11 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
+import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
 import {
    createProductListSearchContext,
-   getProductListByHandle,
+   findProductList,
 } from '@models/product-list';
 import {
    getStoreByCode,
@@ -22,10 +23,6 @@ type PageProps = ProductListViewProps & {
    currentStore: Store;
    globalSettings: GlobalSettings;
 };
-
-// This constant should probably be a field of the store model (editable from CMS)
-// so that it's configurable per-store.
-const ALGOLIA_DEFAULT_INDEX_NAME = 'shopify_ifixit_test_products';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
@@ -52,7 +49,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       getGlobalSettings(),
       getStoreList(),
       getStoreByCode('us'),
-      getProductListByHandle(handle),
+      findProductList({
+         handle: {
+            eq: handle,
+         },
+      }),
    ]);
 
    if (productList == null) {
@@ -63,7 +64,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
    const searchContext = await createProductListSearchContext({
       algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
-      productListHandle: handle,
       urlQuery: context.query,
       filters: productList.filters || undefined,
    });
@@ -98,7 +98,6 @@ const ProductListPage: NextPageWithLayout<PageProps> = ({
 };
 
 ProductListPage.getLayout = function getLayout(page, pageProps) {
-   pageProps.globalSettings.newsletterForm;
    return (
       <Layout
          title={`iFixit | ${pageProps.productList.title}`}

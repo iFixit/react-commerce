@@ -2,51 +2,44 @@ import {
    Box,
    FormControl,
    FormErrorMessage,
-   FormLabel,
-   FormLabelProps,
    HStack,
    Input,
    InputGroup,
    InputLeftElement,
+   useBreakpointValue,
 } from '@chakra-ui/react';
 import { ScreenOnlyLabel } from '@components/ui';
-import { useRangeFilter } from '@lib/algolia';
+import { Facet, useRangeFilter } from '@lib/algolia';
 import { useDebouncedCallback } from '@lib/hooks';
 import * as React from 'react';
-import { useRangeFilterContext, useRegisterFacet } from './context';
 
 export interface RangeFilterInputProps {
-   facetHandle: string;
-   facetName: string;
+   facet: Facet;
    minFieldPrefix?: React.ReactNode;
    minFieldPlaceholder?: string;
    maxFieldPrefix?: React.ReactNode;
    maxFieldPlaceholder?: string;
+   dependentFacets?: string[];
    onError?: (error: string) => void;
    onDismissError?: () => void;
 }
 
 export function RangeFilterInput(props: RangeFilterInputProps) {
    const { minRef, maxRef, error, handleChange } = useRangeFilterInput(props);
-   const {
-      minFieldPrefix,
-      minFieldPlaceholder,
-      maxFieldPrefix,
-      maxFieldPlaceholder,
-   } = props;
-   const minInputId = `${props.facetHandle}-input-min`;
-   const maxInputId = `${props.facetHandle}-input-max`;
+   const minInputId = `${props.facet.handle}-input-min`;
+   const maxInputId = `${props.facet.handle}-input-max`;
+   const inputSize = useBreakpointValue({ base: 'md', md: 'sm' }, 'md');
    return (
       <FormControl isInvalid={error != null} pt="2">
          <HStack>
             <Box>
                <ScreenOnlyLabel htmlFor={minInputId}>
-                  Set min {props.facetName}
+                  Set min {props.facet.name}
                </ScreenOnlyLabel>
-               <InputGroup size="sm">
-                  {minFieldPrefix && (
+               <InputGroup size={inputSize}>
+                  {props.minFieldPrefix && (
                      <InputLeftElement zIndex="0">
-                        {minFieldPrefix}
+                        {props.minFieldPrefix}
                      </InputLeftElement>
                   )}
                   <Input
@@ -54,7 +47,7 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
                      id={minInputId}
                      type="number"
                      name="min"
-                     placeholder={minFieldPlaceholder}
+                     placeholder={props.minFieldPlaceholder}
                      borderRadius="md"
                      onChange={handleChange}
                   />
@@ -62,12 +55,12 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
             </Box>
             <Box>
                <ScreenOnlyLabel htmlFor={maxInputId}>
-                  Set max {props.facetName}
+                  Set max {props.facet.name}
                </ScreenOnlyLabel>
-               <InputGroup size="sm">
-                  {maxFieldPrefix && (
+               <InputGroup size={inputSize}>
+                  {props.maxFieldPrefix && (
                      <InputLeftElement zIndex="0">
-                        {maxFieldPrefix}
+                        {props.maxFieldPrefix}
                      </InputLeftElement>
                   )}
                   <Input
@@ -75,7 +68,7 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
                      id={maxInputId}
                      type="number"
                      name="max"
-                     placeholder={maxFieldPlaceholder}
+                     placeholder={props.maxFieldPlaceholder}
                      borderRadius="md"
                      onChange={handleChange}
                   />
@@ -88,15 +81,14 @@ export function RangeFilterInput(props: RangeFilterInputProps) {
 }
 
 function useRangeFilterInput({
-   facetHandle,
+   facet,
+   dependentFacets,
    onError,
    onDismissError,
 }: RangeFilterInputProps) {
-   const { getFacetHandles } = useRangeFilterContext();
-   useRegisterFacet(facetHandle);
    const minRef = React.useRef<HTMLInputElement | null>(null);
    const maxRef = React.useRef<HTMLInputElement | null>(null);
-   const { filter, set } = useRangeFilter(facetHandle);
+   const { filter, set } = useRangeFilter(facet.handle);
    const [error, setError] = React.useState<string | null>(null);
 
    React.useEffect(() => {
@@ -126,10 +118,7 @@ function useRangeFilterInput({
          const min = name === 'min' ? value : filter?.min;
          const max = name === 'max' ? value : filter?.max;
 
-         const facetToBeCleared = getFacetHandles().filter(
-            (name) => name !== facetHandle
-         );
-         set(min, max, { clearFacets: facetToBeCleared });
+         set(min, max, { clearFacets: dependentFacets });
       },
       500
    );

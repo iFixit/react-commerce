@@ -1,4 +1,5 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { useSearchParams } from '@lib/algolia';
 import { ProductList } from '@models/product-list';
 import Head from 'next/head';
@@ -16,7 +17,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    if (!isFiltered && searchParams.page > 1) {
       title += ` - Page ${searchParams.page}`;
    }
-   const canonicalUrl = `https://www.ifixit.com/store/${productList.handle}${
+   const canonicalUrl = `${IFIXIT_ORIGIN}${productList.path}${
       searchParams.page > 1
          ? `?${PRODUCT_LIST_PAGE_PARAM}=${searchParams.page}`
          : ''

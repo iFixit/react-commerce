@@ -2,15 +2,14 @@ import {
    Breadcrumb,
    BreadcrumbItem,
    BreadcrumbLink,
-   Icon,
-   Text,
    BreadcrumbProps,
-   Box,
-   Menu,
-   MenuList,
-   MenuItem,
+   Icon,
    IconButton,
+   Menu,
    MenuButton,
+   MenuItem,
+   MenuList,
+   Text,
 } from '@chakra-ui/react';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
@@ -32,7 +31,17 @@ export function ProductListBreadcrumb({
    return (
       <Breadcrumb
          spacing={1}
-         separator={<Icon as={HiChevronRight} color="gray.300" />}
+         separator={
+            <Icon
+               as={HiChevronRight}
+               display={{
+                  base: 'none',
+                  md: 'initial',
+               }}
+               color="gray.300"
+               mt="1"
+            />
+         }
          fontSize="sm"
          display="flex"
          flexWrap="nowrap"
@@ -40,6 +49,8 @@ export function ProductListBreadcrumb({
          minW="0"
          maxW="full"
          overflow="hidden"
+         pl="1"
+         ml="-2"
          sx={{
             '& > *': {
                display: 'flex',
@@ -50,13 +61,19 @@ export function ProductListBreadcrumb({
          {productList.ancestors.map((ancestor) => (
             <BreadcrumbItem
                key={ancestor.handle}
+               borderRadius="md"
                display={{
                   base: 'none',
                   lg: 'inline-flex',
                }}
             >
-               <NextLink href={`/store/${ancestor.handle}`} passHref>
-                  <BreadcrumbLink color="gray.400" whiteSpace="nowrap">
+               <NextLink href={ancestor.path} passHref>
+                  <BreadcrumbLink
+                     color="gray.500"
+                     whiteSpace="nowrap"
+                     borderRadius="sm"
+                     px="1"
+                  >
                      {ancestor.title}
                   </BreadcrumbLink>
                </NextLink>
@@ -77,12 +94,13 @@ export function ProductListBreadcrumb({
                      variant="solid"
                      bg="gray.200"
                      size="xs"
+                     ml="1"
                   />
                   <MenuList>
                      {reverseAncestorList.map((ancestor) => (
                         <NextLink
                            key={ancestor.handle}
-                           href={`/store/${ancestor.handle}`}
+                           href={ancestor.path}
                            passHref
                         >
                            <MenuItem as="a">{ancestor.title}</MenuItem>
@@ -92,7 +110,13 @@ export function ProductListBreadcrumb({
                </Menu>
             </BreadcrumbItem>
          )}
-         <BreadcrumbItem isCurrentPage>
+         <BreadcrumbItem
+            isCurrentPage
+            display={{
+               base: 'none',
+               md: 'flex',
+            }}
+         >
             <Text
                color="black"
                fontWeight="bold"

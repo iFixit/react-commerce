@@ -44,6 +44,7 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
                   title={post.title}
                   category={post.category}
                   imageSrc={post.image?.url}
+                  imageAlt=""
                   link={post.permalink || ''}
                />
             ))}
