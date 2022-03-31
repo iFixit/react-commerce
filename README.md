@@ -36,6 +36,12 @@ This command will start Strapi dev server and Next.js dev server:
 npm run dev
 ```
 
+### Working with Strapi
+
+After running the dev server, you can access the Strapi admin panel at `http://localhost:1337/admin`. To login use email `strapi@ifixit.com` and password `Password1`.
+
+The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
+
 ### Test
 
 This command will start Cypress:
