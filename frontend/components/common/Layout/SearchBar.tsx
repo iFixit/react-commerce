@@ -19,6 +19,7 @@ export const SearchForm = forwardRef<FlexProps, 'form'>((props, ref) => {
          as="form"
          method="GET"
          action={`${IFIXIT_ORIGIN}/Search`}
+         flexGrow={1}
          {...props}
       />
    );
