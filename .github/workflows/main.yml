@@ -10,8 +10,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Start strapi server
         run: cd backend && docker-compose up -d
-      - name: Install frontend dependencies
-        run: cd frontend && npm install
+      - name: Install workspaces
+        run: npm install
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:

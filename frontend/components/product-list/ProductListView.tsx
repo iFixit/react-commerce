@@ -19,6 +19,7 @@ import {
    ProductListSetSection,
    RelatedPostsSection,
 } from './sections';
+import { Button } from '@ifixit/ui';
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -56,6 +57,8 @@ export function ProductListView({
                >
                   <MetaTags productList={productList} />
                   <HeroSection productList={productList} />
+                  <p>Hello</p>
+                  <Button />
                   {productList.children.length > 0 && (
                      <ProductListChildrenSection
                         heading={productList.title}
