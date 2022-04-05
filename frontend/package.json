@@ -58,7 +58,7 @@
       "react-virtualized-auto-sizer": "1.0.5",
       "react-window": "1.8.6",
       "snarkdown": "2.0.0",
-      "@ifixit/ui": "*"
+      "@ifixit/ui": "workspace:*"
    },
    "devDependencies": {
       "@graphql-codegen/cli": "2.1.1",
