@@ -8,10 +8,10 @@
       "url": "https://github.com/iFixit/react-commerce"
    },
    "scripts": {
-      "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"npm run dev:next\" \"npm run dev:codegen\"",
+      "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"pnpm run dev:next\" \"pnpm run dev:codegen\"",
       "dev:next": "next dev",
       "dev:codegen": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.yml --watch",
-      "build": "npm run build:next",
+      "build": "pnpm run build:next",
       "build:next": "next build",
       "build:codegen": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -r dotenv/config --config codegen.yml",
       "start": "next start",
@@ -19,7 +19,7 @@
       "format": "prettier --write .",
       "lint": "eslint . --ext ts --ext tsx --ext js",
       "test": "jest",
-      "test-all": "npm run lint && npm run type-check && npm run test",
+      "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
@@ -27,13 +27,13 @@
    "husky": {
       "hooks": {
          "pre-commit": "lint-staged",
-         "pre-push": "npm run type-check"
+         "pre-push": "pnpm run type-check"
       }
    },
    "lint-staged": {
       "*.@(ts|tsx)": [
-         "npm run lint",
-         "npm run format"
+         "pnpm run lint",
+         "pnpm run format"
       ]
    },
    "dependencies": {
