@@ -6,10 +6,6 @@
   "engines": {
     "node": "14"
   },
-  "workspaces": [
-    "frontend",
-    "packages/*"
-  ],
   "scripts": {
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "wait-on http://localhost:1337/_health && cd frontend && npm run dev",
