@@ -25,7 +25,7 @@ The `frontend` directory is structured as follows:
 This command will install both backend and frontend dependencies:
 
 ```sh
-npm run install:all
+pnpm run install:all
 ```
 
 ### Dev server
@@ -33,7 +33,7 @@ npm run install:all
 This command will start Strapi dev server and Next.js dev server:
 
 ```sh
-npm run dev
+pnpm dev
 ```
 
 ### Working with Strapi
@@ -47,7 +47,7 @@ The local Strapi dev server will allow you to make changes to the schema of cont
 This command will start Cypress:
 
 ```sh
-npm run cypress:open
+pnpm run cypress:open
 ```
 
 > :warning: Make sure you are running on the supported Node.js version specified in `.nvmrc`. If you are using
@@ -58,7 +58,7 @@ npm run cypress:open
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
 
 ```sh
-npm run transform-svg
+pnpm run transform-svg
 ```
 
 The script will take svg files and transform them into React components that you can import like this:
