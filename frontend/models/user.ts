@@ -1,10 +1,5 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import {
-   assertIsNumber,
-   assertIsRecord,
-   assertIsString,
-   isRecord,
-} from '@helpers/application-helpers';
+import { invariant, isRecord } from '@helpers/application-helpers';
 import { useQuery } from 'react-query';
 
 export interface User {
@@ -33,10 +28,16 @@ async function fetchAuthenticatedUser(): Promise<User> {
 
    if (response.ok) {
       const payload = await response.json();
-      assertIsRecord(payload, 'unexpected api response');
-      assertIsNumber(payload.userid, 'User ID is not a number');
-      assertIsString(payload.username, 'User username is not a string');
-      assertIsString(payload.unique_username, 'User handle is not a string');
+      invariant(isRecord(payload), 'unexpected api response');
+      invariant(typeof payload.userid === 'number', 'User ID is not a number');
+      invariant(
+         typeof payload.username === 'string',
+         'User username is not a string'
+      );
+      invariant(
+         typeof payload.unique_username === 'string',
+         'User handle is not a string'
+      );
       let thumbnailUrl: string | null = null;
       if (
          isRecord(payload.image) &&

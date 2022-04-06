@@ -37,9 +37,8 @@ import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { CartDrawer } from './cart/CartDrawer';
-import { Navigation } from './Navigation';
 import { SearchForm, SearchInput } from './SearchBar';
-import { UserMenu } from './User';
+import { HeaderUserMenu } from './User';
 import { Wordmark } from './Wordmark';
 
 export interface HeaderProps {
@@ -163,7 +162,7 @@ export function Header({ menu }: HeaderProps) {
                   }}
                >
                   <CartDrawer />
-                  <UserMenu />
+                  <HeaderUserMenu />
                </HStack>
             </HStack>
          </HeaderBar>

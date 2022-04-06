@@ -1,125 +1,188 @@
 import {
    Avatar,
-   Flex,
+   forwardRef,
    Icon,
    IconProps,
    Link,
    Menu,
    MenuButton,
+   MenuButtonProps,
    MenuDivider,
    MenuGroup,
    MenuItem,
+   MenuItemProps,
    MenuList,
+   MenuProps,
    Portal,
+   StackProps,
    Text,
    VStack,
+   LinkProps,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { usePreloadImage } from '@lib/hooks';
-import { useAuthenticatedUser, User } from '@models/user';
+import { useAuthenticatedUser } from '@models/user';
 import * as React from 'react';
 
-export function UserMenu() {
+export function HeaderUserMenu() {
    const user = useAuthenticatedUser();
 
+   if (user.data == null) {
+      return <NoUserLink href={`${IFIXIT_ORIGIN}/login`} />;
+   }
+
    return (
-      <Flex>
-         {user.data ? (
-            <Menu>
-               <MenuButton
-                  aria-label="Open user menu"
-                  borderRadius="full"
-                  _focus={{
-                     boxShadow: 'outline',
-                     outline: 'none',
-                  }}
-               >
-                  <UserAvatar user={user.data} />
-               </MenuButton>
-               <Portal>
-                  <MenuList color="black">
-                     <VStack align="flex-start" px="0.8rem" py="0.4rem">
-                        <Text color="gray.900" fontWeight="semibold">
-                           {user.data.username}
-                        </Text>
-                        <Text color="gray.700">@{user.data.handle}</Text>
-                     </VStack>
-                     <MenuDivider />
-                     <MenuGroup>
-                        <MenuItem
-                           as="a"
-                           href={`${IFIXIT_ORIGIN}/User/Notifications/${user.data.id}/${user.data.username}`}
-                           fontSize="sm"
-                        >
-                           Notifications
-                        </MenuItem>
-                        <MenuItem
-                           as="a"
-                           fontSize="sm"
-                           href={`${IFIXIT_ORIGIN}/User/${user.data.id}/${user.data.username}`}
-                        >
-                           View Profile
-                        </MenuItem>
-                        <MenuItem
-                           as="a"
-                           fontSize="sm"
-                           href={`${IFIXIT_ORIGIN}/User/Orders`}
-                        >
-                           Orders
-                        </MenuItem>
-                     </MenuGroup>
-                     <MenuDivider />
-                     <MenuGroup>
-                        <MenuItem
-                           as="a"
-                           fontSize="sm"
-                           href={`${IFIXIT_ORIGIN}/Guide/logout`}
-                        >
-                           Log Out
-                        </MenuItem>
-                     </MenuGroup>
-                  </MenuList>
-               </Portal>
-            </Menu>
-         ) : (
-            <Link
-               borderRadius="full"
-               href={`${IFIXIT_ORIGIN}/login`}
-               display="flex"
-               alignItems="center"
-            >
-               <NoUserIcon
-                  transition={`color ${DEFAULT_ANIMATION_DURATION_MS}`}
-                  _hover={{
-                     color: 'brand.300',
-                  }}
-               />
-            </Link>
-         )}
-      </Flex>
+      <UserMenu user={user.data}>
+         <UserMenuButton aria-label="Open user menu" />
+         <Portal>
+            <MenuList>
+               <UserMenuHeading />
+               <MenuDivider />
+               <MenuGroup>
+                  <UserMenuLink
+                     href={`${IFIXIT_ORIGIN}/User/Notifications/${user.data.id}/${user.data.username}`}
+                  >
+                     Notifications
+                  </UserMenuLink>
+                  <UserMenuLink
+                     href={`${IFIXIT_ORIGIN}/User/${user.data.id}/${user.data.username}`}
+                  >
+                     View Profile
+                  </UserMenuLink>
+                  <UserMenuLink fontSize="sm">Orders</UserMenuLink>
+               </MenuGroup>
+               <MenuDivider />
+               <MenuGroup>
+                  <UserMenuLink href={`${IFIXIT_ORIGIN}/Guide/logout`}>
+                     Log Out
+                  </UserMenuLink>
+               </MenuGroup>
+            </MenuList>
+         </Portal>
+      </UserMenu>
    );
 }
 
-interface UserAvatarProps {
+type UserMenuContext = {
    user: User;
-}
+};
 
-function UserAvatar({ user }: UserAvatarProps) {
+type User = {
+   username: string;
+   handle: string;
+   thumbnail: string | null;
+};
+
+const UserMenuContext = React.createContext<UserMenuContext | null>(null);
+
+const useMenuContext = () => {
+   const context = React.useContext(UserMenuContext);
+   if (context == null) {
+      throw new Error('useMenuContext must be used within a UserMenu');
+   }
+   return context;
+};
+
+export type UserMenuProps = MenuProps & {
+   user: User;
+   fallback?: React.ReactNode;
+};
+
+export const UserMenu = ({ user, fallback, ...otherProps }: UserMenuProps) => {
+   const value = React.useMemo((): UserMenuContext => {
+      return { user };
+   }, [user]);
+
+   return (
+      <UserMenuContext.Provider value={value}>
+         <Menu {...otherProps} />
+      </UserMenuContext.Provider>
+   );
+};
+
+export const UserMenuButton = forwardRef<
+   Omit<MenuButtonProps, 'children'>,
+   'button'
+>((props, ref) => {
+   return (
+      <MenuButton
+         ref={ref}
+         borderRadius="full"
+         _focus={{
+            boxShadow: 'outline',
+            outline: 'none',
+         }}
+         {...props}
+      >
+         <UserAvatar />
+      </MenuButton>
+   );
+});
+
+export const UserMenuHeading = forwardRef<Omit<StackProps, 'children'>, 'div'>(
+   (props, ref) => {
+      const { user } = useMenuContext();
+      return (
+         <VStack
+            ref={ref}
+            align="flex-start"
+            px="0.8rem"
+            py="0.4rem"
+            {...props}
+         >
+            <Text color="gray.900" fontWeight="semibold">
+               {user?.username}
+            </Text>
+            <Text color="gray.700">@{user?.handle}</Text>
+         </VStack>
+      );
+   }
+);
+
+export const UserMenuLink = forwardRef<MenuItemProps, 'a'>((props, ref) => {
+   return <MenuItem ref={ref} as="a" fontSize="sm" {...props} />;
+});
+
+export const NoUserLink = forwardRef<Omit<LinkProps, 'children'>, 'a'>(
+   (props, ref) => {
+      return (
+         <Link
+            ref={ref}
+            borderRadius="full"
+            display="flex"
+            alignItems="center"
+            {...props}
+         >
+            <NoUserIcon
+               transition="color 300ms"
+               _hover={{
+                  color: 'brand.300',
+               }}
+            />
+         </Link>
+      );
+   }
+);
+
+function UserAvatar() {
+   const { user } = useMenuContext();
    const image = usePreloadImage();
 
    React.useEffect(() => {
-      if (user.thumbnail) {
+      if (user?.thumbnail) {
          image.preload(user.thumbnail);
       }
-   }, [user.thumbnail, image.preload]);
+   }, [user?.thumbnail, image.preload]);
 
    return (
       <Avatar
          name={
-            user.thumbnail == null || image.isLoaded ? user.username : undefined
+            user?.thumbnail == null || image.isLoaded
+               ? user?.username
+               : undefined
          }
-         src={user.thumbnail || undefined}
+         src={user?.thumbnail ?? undefined}
          icon={
             <NoUserIcon
                transition={`color ${DEFAULT_ANIMATION_DURATION_MS}`}
@@ -128,7 +191,7 @@ function UserAvatar({ user }: UserAvatarProps) {
                }}
             />
          }
-         bg={user.thumbnail == null ? undefined : 'transparent'}
+         bg={user?.thumbnail == null ? undefined : 'transparent'}
          size="sm"
       />
    );
