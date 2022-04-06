@@ -111,6 +111,7 @@ describe('product list filters', () => {
       user
          .findByLabelText(/set min price/i)
          .type(TEST_MIN_PRICE_INVALID.toString(), getVirtualListTypeOptions());
+      user.wait(500);
 
       waitForSearchCompletion();
 
@@ -126,6 +127,7 @@ describe('product list filters', () => {
             `{selectall}{backspace}${TEST_MIN_PRICE}`,
             getVirtualListTypeOptions()
          );
+      user.wait(500);
 
       waitForSearchCompletion();
 

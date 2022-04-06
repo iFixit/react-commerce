@@ -1,7 +1,6 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
-import { TestButton } from '@ifixit/ui';
 import { AlgoliaProvider, SearchContext } from '@lib/algolia';
 import {
    ProductList,
@@ -63,7 +62,6 @@ export function ProductListView({
                         productListChildren={productList.children}
                      />
                   )}
-                  <TestButton />
                   <FilterableProductsSection />
                   {productList.sections.map((section, index) => {
                      switch (section.type) {
