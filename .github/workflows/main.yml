@@ -10,8 +10,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Start strapi server
         run: cd backend && docker-compose up -d
+      - name: Install PNPM
+        run: corepack enable && corepack prepare pnpm@6.32.4
       - name: Install workspaces
-        run: npm install
+        run: pnpm install
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
@@ -20,5 +22,5 @@ jobs:
         with:
           working-directory: frontend
           install: false
-          build: npm run build
-          start: npm start
+          build: pnpm run build
+          start: pnpm start
