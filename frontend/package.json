@@ -99,6 +99,7 @@
       "lint-staged": "10.0.10",
       "next-transpile-modules": "9.0.0",
       "prettier": "2.2.1",
-      "typescript": "4.3.2"
+      "typescript": "4.3.2",
+      "@ifixit/tsconfig": "workspace:*"
    }
 }

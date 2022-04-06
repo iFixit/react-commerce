@@ -66,6 +66,7 @@ importers:
       '@graphql-codegen/typescript-generic-sdk': 2.1.3
       '@graphql-codegen/typescript-operations': 2.1.3
       '@ifixit/react-components': 0.4.0
+      '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@svgr/cli': 5.5.0
       '@testing-library/cypress': 8.0.2
@@ -147,6 +148,7 @@ importers:
       '@graphql-codegen/typescript': 2.2.0_graphql@15.5.3
       '@graphql-codegen/typescript-generic-sdk': 2.1.3_f0201549fa0e4b0451075550008a6e70
       '@graphql-codegen/typescript-operations': 2.1.3_graphql@15.5.3
+      '@ifixit/tsconfig': link:../packages/tsconfig
       '@svgr/cli': 5.5.0
       '@testing-library/cypress': 8.0.2_cypress@9.3.1
       '@testing-library/dom': 7.21.4
@@ -186,14 +188,14 @@ importers:
 
   packages/ui:
     specifiers:
+      '@ifixit/tsconfig': workspace:*
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
-      tsconfig: '*'
       typescript: 4.5.3
     devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
-      tsconfig: 7.0.0
       typescript: 4.5.3
 
 packages:
@@ -5728,14 +5730,6 @@ packages:
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
-    dev: true
-
-  /@types/strip-bom/3.0.0:
-    resolution: {integrity: sha1-FKjsOVbC6B7bdSB5CuzyHCkK69I=}
-    dev: true
-
-  /@types/strip-json-comments/0.0.30:
-    resolution: {integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==}
     dev: true
 
   /@types/testing-library__jest-dom/5.14.3:
@@ -17742,15 +17736,6 @@ packages:
       json5: 1.0.1
       minimist: 1.2.6
       strip-bom: 3.0.0
-    dev: true
-
-  /tsconfig/7.0.0:
-    resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
-    dependencies:
-      '@types/strip-bom': 3.0.0
-      '@types/strip-json-comments': 0.0.30
-      strip-bom: 3.0.0
-      strip-json-comments: 2.0.1
     dev: true
 
   /tslib/1.14.1:
