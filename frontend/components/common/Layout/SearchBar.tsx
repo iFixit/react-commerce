@@ -8,22 +8,52 @@ import {
    InputGroupProps,
    InputLeftElement,
 } from '@chakra-ui/react';
-import { IFIXIT_ORIGIN } from '@config/env';
 import * as React from 'react';
 import { RiSearchLine } from 'react-icons/ri';
+import { useAppContext } from '../AppProvider';
 
-export const SearchForm = forwardRef<FlexProps, 'form'>((props, ref) => {
-   return (
-      <Flex
-         ref={ref}
-         as="form"
-         method="GET"
-         action={`${IFIXIT_ORIGIN}/Search`}
-         flexGrow={1}
-         {...props}
-      />
-   );
-});
+export const DesktopHeaderSearchForm = forwardRef<FlexProps, 'form'>(
+   (props, ref) => {
+      const appContext = useAppContext();
+      return (
+         <Flex
+            ref={ref}
+            as="form"
+            method="GET"
+            action={`${appContext.ifixitOrigin}/Search`}
+            flexGrow={1}
+            mx="8"
+            display={{
+               base: 'none',
+               md: 'block',
+            }}
+            {...props}
+         />
+      );
+   }
+);
+
+export const MobileHeaderSearchForm = forwardRef<FlexProps, 'form'>(
+   (props, ref) => {
+      const appContext = useAppContext();
+      return (
+         <Flex
+            ref={ref}
+            as="form"
+            method="GET"
+            action={`${appContext.ifixitOrigin}/Search`}
+            flexGrow={1}
+            mr="1"
+            {...props}
+         />
+      );
+   }
+);
+
+export const HeaderSearchForm = {
+   Desktop: DesktopHeaderSearchForm,
+   Mobile: MobileHeaderSearchForm,
+};
 
 export const SearchInput = forwardRef<InputGroupProps, 'input'>(
    (props, ref) => {

@@ -5,7 +5,7 @@ import { Store, StoreListItem } from '@models/store';
 import Head from 'next/head';
 import * as React from 'react';
 import { Footer } from './Footer';
-import { Header } from './Header';
+import { LayoutHeader } from './Header';
 
 export interface LayoutProps {
    title: string;
@@ -33,7 +33,7 @@ export function Layout({
                <link rel="icon" href="/favicon.ico" />
             </Head>
             <Flex direction="column">
-               <Header menu={currentStore.header.menu} />
+               <LayoutHeader menu={currentStore.header.menu} />
                {children}
                <Footer
                   currentStore={currentStore}

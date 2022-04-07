@@ -27,6 +27,7 @@ import {
    IconButton,
    IconButtonProps,
    IconProps,
+   StackProps,
    useDisclosure,
    useMergeRefs,
 } from '@chakra-ui/react';
@@ -37,7 +38,7 @@ import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { CartDrawer } from './cart/CartDrawer';
-import { SearchForm, SearchInput } from './SearchBar';
+import { HeaderSearchForm, SearchInput } from './SearchBar';
 import { HeaderUserMenu } from './User';
 import { Wordmark } from './Wordmark';
 
@@ -45,108 +46,96 @@ export interface HeaderProps {
    menu?: Menu | null;
 }
 
-export function Header({ menu }: HeaderProps) {
+export function LayoutHeader({ menu }: HeaderProps) {
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
    return (
       <HeaderContainer>
          <HeaderHiddenBar>
-            <SearchForm mr="1">
+            <HeaderSearchForm.Mobile>
                <SearchInput ref={mobileSearchInputRef} />
-            </SearchForm>
+            </HeaderSearchForm.Mobile>
             <HeaderCloseHiddenBarButton>Cancel</HeaderCloseHiddenBarButton>
          </HeaderHiddenBar>
          <HeaderBar>
-            <HeaderNavigationToggleButton aria-label="Open navigation menu" />
-            <NextLink href="/" passHref>
-               <WordmarkLink aria-label="Go to homepage" pr="4">
-                  <Wordmark />
-               </WordmarkLink>
-            </NextLink>
-            {menu && (
-               <NavigationMenu>
-                  {menu.items.map((item, index) => {
-                     switch (item.type) {
-                        case 'submenu': {
-                           if (item.submenu === null) {
+            <HeaderPrimaryNavigation>
+               <HeaderNavigationToggleButton aria-label="Open navigation menu" />
+               <NextLink href="/" passHref>
+                  <WordmarkLink aria-label="Go to homepage" pr="4">
+                     <Wordmark />
+                  </WordmarkLink>
+               </NextLink>
+               {menu && (
+                  <NavigationMenu>
+                     {menu.items.map((item, index) => {
+                        switch (item.type) {
+                           case 'submenu': {
+                              if (item.submenu === null) {
+                                 return null;
+                              }
+                              return (
+                                 <NavigationMenuItem key={index}>
+                                    <NavigationMenuButton>
+                                       {item.name}
+                                    </NavigationMenuButton>
+                                    <NavigationSubmenu>
+                                       {item.submenu.items.map(
+                                          (subitem, subIndex) => {
+                                             if (subitem.type !== 'link') {
+                                                return null;
+                                             }
+                                             return (
+                                                <NavigationSubmenuItem
+                                                   key={subIndex}
+                                                >
+                                                   <NextLink
+                                                      href={subitem.url}
+                                                      passHref
+                                                   >
+                                                      <NavigationSubmenuLink
+                                                         disclosureIcon={
+                                                            <Icon
+                                                               boxSize="6"
+                                                               transform="translateY(-50%)"
+                                                               as={
+                                                                  HiArrowNarrowRight
+                                                               }
+                                                            />
+                                                         }
+                                                      >
+                                                         <NavigationSubmenuName>
+                                                            {subitem.name}
+                                                         </NavigationSubmenuName>
+                                                         <NavigationSubmenuDivider />
+                                                         {subitem.description && (
+                                                            <NavigationSubmenuDescription>
+                                                               {
+                                                                  subitem.description
+                                                               }
+                                                            </NavigationSubmenuDescription>
+                                                         )}
+                                                      </NavigationSubmenuLink>
+                                                   </NextLink>
+                                                </NavigationSubmenuItem>
+                                             );
+                                          }
+                                       )}
+                                    </NavigationSubmenu>
+                                 </NavigationMenuItem>
+                              );
+                           }
+                           default: {
                               return null;
                            }
-                           return (
-                              <NavigationMenuItem key={index}>
-                                 <NavigationMenuButton>
-                                    {item.name}
-                                 </NavigationMenuButton>
-                                 <NavigationSubmenu>
-                                    {item.submenu.items.map(
-                                       (subitem, subIndex) => {
-                                          if (subitem.type !== 'link') {
-                                             return null;
-                                          }
-                                          return (
-                                             <NavigationSubmenuItem
-                                                key={subIndex}
-                                             >
-                                                <NextLink
-                                                   href={subitem.url}
-                                                   passHref
-                                                >
-                                                   <NavigationSubmenuLink
-                                                      disclosureIcon={
-                                                         <Icon
-                                                            boxSize="6"
-                                                            transform="translateY(-50%)"
-                                                            as={
-                                                               HiArrowNarrowRight
-                                                            }
-                                                         />
-                                                      }
-                                                   >
-                                                      <NavigationSubmenuName>
-                                                         {subitem.name}
-                                                      </NavigationSubmenuName>
-                                                      <NavigationSubmenuDivider />
-                                                      {subitem.description && (
-                                                         <NavigationSubmenuDescription>
-                                                            {
-                                                               subitem.description
-                                                            }
-                                                         </NavigationSubmenuDescription>
-                                                      )}
-                                                   </NavigationSubmenuLink>
-                                                </NextLink>
-                                             </NavigationSubmenuItem>
-                                          );
-                                       }
-                                    )}
-                                 </NavigationSubmenu>
-                              </NavigationMenuItem>
-                           );
                         }
-                        default: {
-                           return null;
-                        }
-                     }
-                  })}
-               </NavigationMenu>
-            )}
-
-            <SearchForm
-               mx="8"
-               display={{
-                  base: 'none',
-                  md: 'block',
-               }}
-            >
+                     })}
+                  </NavigationMenu>
+               )}
+            </HeaderPrimaryNavigation>
+            <HeaderSearchForm.Desktop>
                <SearchInput />
-            </SearchForm>
-            <Box
-               display={{
-                  base: 'block',
-                  md: 'none',
-               }}
-               flexGrow={1}
-            />
-            <HStack align="center">
+            </HeaderSearchForm.Desktop>
+            <HeaderSecondaryNavigation>
                <HeaderOpenHiddenBarButton
                   aria-label="Search database"
                   icon={<HeaderNavItemIcon as={RiSearchLine} mt="3px" />}
@@ -154,17 +143,9 @@ export function Header({ menu }: HeaderProps) {
                      mobileSearchInputRef.current?.focus();
                   }}
                />
-               <HStack
-                  alignItems="center"
-                  spacing={{
-                     base: 4,
-                     md: 8,
-                  }}
-               >
-                  <CartDrawer />
-                  <HeaderUserMenu />
-               </HStack>
-            </HStack>
+               <CartDrawer />
+               <HeaderUserMenu />
+            </HeaderSecondaryNavigation>
          </HeaderBar>
          {menu && (
             <NavigationDrawer>
@@ -311,6 +292,7 @@ export const HeaderBar = forwardRef<FlexProps, 'div'>((props, ref) => {
          mx="auto"
          transition="all 300ms"
          opacity={context.hiddenBar.isOpen ? 0 : 1}
+         justify="space-between"
          transform={{
             base: context.hiddenBar.isOpen
                ? 'translateY(0)'
@@ -321,6 +303,28 @@ export const HeaderBar = forwardRef<FlexProps, 'div'>((props, ref) => {
       />
    );
 });
+
+export const HeaderPrimaryNavigation = forwardRef<FlexProps, 'div'>(
+   (props, ref) => {
+      return <Flex ref={ref} align="center" h="full" {...props} />;
+   }
+);
+
+export const HeaderSecondaryNavigation = forwardRef<StackProps, 'div'>(
+   (props, ref) => {
+      return (
+         <HStack
+            ref={ref}
+            align="center"
+            spacing={{
+               base: 4,
+               md: 8,
+            }}
+            {...props}
+         />
+      );
+   }
+);
 
 export const HeaderHiddenBar = forwardRef<FlexProps, 'div'>((props, ref) => {
    const context = useHeaderContext();
@@ -369,6 +373,7 @@ export const HeaderOpenHiddenBarButton = forwardRef<IconButtonProps, 'button'>(
          <IconButton
             ref={ref}
             variant="ghost"
+            mr="-1"
             display={{
                base: 'block',
                md: 'none',
