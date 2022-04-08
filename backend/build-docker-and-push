@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -eu
+
+GIT_SHORT_REF=$(git rev-parse --short HEAD)
+DOCKER_TAG="strapi:$GIT_SHORT_REF"
+# iFixit AWS ECR for strapi
+ECR_TAG="884681002735.dkr.ecr.us-east-1.amazonaws.com/$DOCKER_TAG"
+
+echo "Buidling docker image"
+docker build -t "$DOCKER_TAG"
+docker tag "$DOCKER_TAG" "$ECR_TAG"
+
+echo "Logging into ECR..."
+$(aws ecr get-login --no-include-email --region us-east-1)
+docker push "$ECR_TAG"
