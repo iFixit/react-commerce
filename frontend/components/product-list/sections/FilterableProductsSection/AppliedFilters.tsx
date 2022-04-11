@@ -13,7 +13,8 @@ import {
    Wrap,
    WrapItem,
 } from '@chakra-ui/react';
-import { assertNever } from '@helpers/application-helpers';
+import { assertNever } from '@ifixit/helpers';
+import { useIsMounted } from '@ifixit/ui';
 import {
    Filter,
    FilterType,
@@ -23,7 +24,6 @@ import {
    useFacetFilter,
    useFilters,
 } from '@lib/algolia';
-import { useIsMounted } from '@lib/hooks';
 import * as React from 'react';
 import { HiX } from 'react-icons/hi';
 

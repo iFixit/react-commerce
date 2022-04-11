@@ -7,8 +7,8 @@ import {
    createMachine,
    assign as xstateAssign,
 } from '@xstate/fsm';
-import { useIsomorphicLayoutEffect } from '@lib/hooks';
 import produce, { Draft } from 'immer';
+import { useIsomorphicLayoutEffect } from '@ifixit/ui';
 
 export type ImmerAssigner<TContext, TEvent extends EventObject> = (
    context: Draft<TContext>,

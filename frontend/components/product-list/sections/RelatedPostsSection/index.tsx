@@ -1,4 +1,5 @@
-import { Heading, SimpleGrid, usePrevious, VStack } from '@chakra-ui/react';
+import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
+import { usePrevious } from '@ifixit/ui';
 import { fetchPosts, Post } from '@models/posts';
 import * as React from 'react';
 import isEqual from 'react-fast-compare';

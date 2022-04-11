@@ -43,6 +43,8 @@
       "@emotion/styled": "11.6.0",
       "@ifixit/react-components": "0.4.0",
       "@ifixit/ui": "workspace:*",
+      "@ifixit/auth-sdk": "workspace:*",
+      "@ifixit/helpers": "workspace:*",
       "@xstate/fsm": "1.6.1",
       "@xstate/react": "1.5.1",
       "algoliasearch": "4.9.1",
@@ -59,7 +61,8 @@
       "react-icons": "4.2.0",
       "react-virtualized-auto-sizer": "1.0.5",
       "react-window": "1.8.6",
-      "snarkdown": "2.0.0"
+      "snarkdown": "2.0.0",
+      "react-query": "3.34.19"
    },
    "devDependencies": {
       "@babel/core": "7",

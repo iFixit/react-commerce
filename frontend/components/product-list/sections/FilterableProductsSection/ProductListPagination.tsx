@@ -4,8 +4,8 @@ import {
    PaginationItem,
    PaginationLink,
 } from '@ifixit/react-components';
+import { useIsMounted } from '@ifixit/ui';
 import { usePagination } from '@lib/algolia';
-import { useIsMounted } from '@lib/hooks';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import * as React from 'react';
