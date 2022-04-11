@@ -7,7 +7,7 @@ DOCKER_TAG="strapi:$GIT_SHORT_REF"
 # iFixit AWS ECR for strapi
 ECR_TAG="884681002735.dkr.ecr.us-east-1.amazonaws.com/$DOCKER_TAG"
 
-echo "Buidling docker image"
+echo "Building docker image"
 docker build -t "$DOCKER_TAG"
 docker tag "$DOCKER_TAG" "$ECR_TAG"
 
