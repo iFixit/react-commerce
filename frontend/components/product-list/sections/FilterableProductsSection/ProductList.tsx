@@ -94,7 +94,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   {product.image_url ? (
                      <Image
                         src={product.image_url}
-                        alt={product.title}
+                        alt={product.group_title}
                         objectFit="contain"
                         width="180px"
                         height="180px"
@@ -102,7 +102,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   ) : (
                      <Image
                         src={placeholderImageUrl}
-                        alt={product.title}
+                        alt={product.group_title}
                         sizes="180px"
                      />
                   )}
@@ -123,7 +123,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         lg: 'lg',
                      }}
                   >
-                     {product.title}
+                     {product.group_title}
                   </Heading>
                   <Text
                      noOfLines={3}
