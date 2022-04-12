@@ -1,4 +1,5 @@
 import { Box, chakra, Spinner } from '@chakra-ui/react';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { Facet, useFacets, useIsSearching } from '@lib/algolia';
 import { assign } from '@xstate/fsm';
 import { useMachine } from '@xstate/react/fsm';
@@ -179,13 +180,16 @@ function itemKey(index: number, data: ItemData): string {
 }
 
 function useFilteredFacets() {
+   const user = useAuthenticatedUser();
+   const isProUser = user.data?.discountTier != null;
    const facets = useFacets();
    const sortedFacets = React.useMemo(() => {
       return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
    }, [facets]);
    const usefulFacets = React.useMemo(() => {
-      return sortedFacets.filter(isUsefulFacet);
-   }, [sortedFacets]);
+      const facets = sortedFacets.filter(isUsefulFacet);
+      return isProUser ? facets.filter(isAvailableToProUsers) : facets;
+   }, [sortedFacets, isProUser]);
    const refinedFacets = React.useMemo(() => {
       return usefulFacets.filter(hasMatchingOptions);
    }, [usefulFacets]);
@@ -196,6 +200,10 @@ function useFilteredFacets() {
       facets: displayedFacets,
       areRefined: refinedFacets.length > 0,
    };
+}
+
+function isAvailableToProUsers(facet: Facet): boolean {
+   return facet.algoliaName !== 'price_range';
 }
 
 function isUsefulFacet(facet: Facet): boolean {

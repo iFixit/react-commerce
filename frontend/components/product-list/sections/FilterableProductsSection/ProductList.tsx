@@ -14,8 +14,9 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { IFIXIT_ORIGIN } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { useAppContext } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import * as React from 'react';
@@ -41,9 +42,22 @@ export interface ProductListItemProps {
 }
 
 export function ProductListItem({ product }: ProductListItemProps) {
+   const user = useAuthenticatedUser();
+   const appContext = useAppContext();
+
+   const proTierPrice = React.useMemo(() => {
+      const proTier = user.data?.discountTier ?? null;
+      return (proTier ? product.price_tiers?.[proTier] : null) ?? null;
+   }, [user.data?.discountTier, product.price_tiers]);
+
    const isDiscounted =
+      proTierPrice == null &&
       product.compare_at_price != null &&
       product.compare_at_price > product.price_float;
+
+   const price = proTierPrice ?? product.price_float;
+   const compareAtPrice =
+      proTierPrice == null ? product.compare_at_price : null;
 
    const percentage = isDiscounted
       ? computeDiscountPercentage(
@@ -159,6 +173,17 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            },
                         }}
                      >
+                        {product.is_pro > 0 && (
+                           <Badge
+                              colorScheme="orange"
+                              textTransform="none"
+                              borderRadius="lg"
+                              px="2.5"
+                              py="1"
+                           >
+                              PRO
+                           </Badge>
+                        )}
                         {product.quantity_available > 0 && (
                            <>
                               {percentage > 0 && (
@@ -199,7 +224,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   lg: 'flex-start',
                }}
             >
-               {product.price_float != null && (
+               {price != null && (
                   <VStack
                      align="flex-end"
                      spacing="0"
@@ -217,7 +242,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         lineHeight="1em"
                         data-testid="product-price"
                      >
-                        ${product.price_float}
+                        ${price}
                      </Text>
                      {isDiscounted && (
                         <Text
@@ -226,7 +251,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            color="gray.400"
                            data-testid="product-compared-at-price"
                         >
-                           ${product.compare_at_price}
+                           ${compareAtPrice}
                         </Text>
                      )}
                   </VStack>
@@ -249,7 +274,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      sm: 2,
                   }}
                >
-                  <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
+                  <LinkOverlay
+                     href={`${appContext.ifixitOrigin}${product.url}`}
+                  >
                      <Button
                         as="div"
                         minW={{
