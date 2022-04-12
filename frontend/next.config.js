@@ -1,4 +1,6 @@
-module.exports = {
+const withTM = require('next-transpile-modules')(['@ifixit/ui']);
+
+module.exports = withTM({
    async rewrites() {
       return [
          {
@@ -21,4 +23,4 @@ module.exports = {
       locales: ['en-US'],
       defaultLocale: 'en-US',
    },
-};
+});
