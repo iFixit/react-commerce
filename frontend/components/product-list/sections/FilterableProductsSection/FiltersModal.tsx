@@ -7,7 +7,7 @@ import {
    ModalFooter,
    ModalOverlay,
 } from '@chakra-ui/react';
-import { useIsMounted } from '@lib/hooks';
+import { useIsMounted } from '@ifixit/ui';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
 import { ProductListFilters } from './ProductListFilters';

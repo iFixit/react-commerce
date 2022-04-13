@@ -11,7 +11,7 @@ import {
    useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
-import { useIsMounted } from '@lib/hooks';
+import { useIsMounted } from '@ifixit/ui';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';

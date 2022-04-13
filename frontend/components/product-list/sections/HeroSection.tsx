@@ -13,8 +13,8 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
+import { useIsMounted } from '@ifixit/ui';
 import { useSearchParams } from '@lib/algolia';
-import { useIsMounted } from '@lib/hooks';
 import { ProductList } from '@models/product-list';
 import Image from 'next/image';
 import * as React from 'react';

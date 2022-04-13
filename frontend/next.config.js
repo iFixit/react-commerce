@@ -1,4 +1,8 @@
-const withTM = require('next-transpile-modules')(['@ifixit/ui']);
+const withTM = require('next-transpile-modules')([
+   '@ifixit/ui',
+   '@ifixit/auth-sdk',
+   '@ifixit/helpers',
+]);
 
 module.exports = withTM({
    async rewrites() {

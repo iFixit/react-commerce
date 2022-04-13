@@ -2,6 +2,9 @@ import {
    PRODUCT_LIST_PAGE_PARAM,
    PRODUCT_LIST_QUERY_PARAM,
 } from '@config/constants';
+import { keyBy } from '@helpers/application-helpers';
+import { assertNever } from '@ifixit/helpers';
+import { usePrevious } from '@ifixit/ui';
 import {
    Facet,
    Filter,
@@ -13,8 +16,6 @@ import {
    usePagination,
    useSearchParams,
 } from '@lib/algolia';
-import { usePrevious } from '@lib/hooks';
-import { assertNever, keyBy } from '@helpers/application-helpers';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import type { ParsedUrlQuery } from 'querystring';

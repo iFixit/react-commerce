@@ -1,4 +1,5 @@
-import { assertNever, capitalize, keyBy } from '@helpers/application-helpers';
+import { capitalize, keyBy } from '@helpers/application-helpers';
+import { assertNever } from '@ifixit/helpers';
 import algoliasearch, { SearchIndex } from 'algoliasearch/lite';
 import produce from 'immer';
 import kebabCase from 'lodash/kebabCase';

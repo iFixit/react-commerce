@@ -1,15 +1,10 @@
 {
-  "name": "@ifixit/ui",
+  "name": "@ifixit/helpers",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
-  "peerDependencies": {
-    "@chakra-ui/react": ">= 1.8.3 < 2"
-  },
   "devDependencies": {
-    "@types/react": "17.0.37",
-    "@types/react-dom": "17.0.11",
     "@ifixit/tsconfig": "workspace:*",
     "typescript": "4.5.3"
   }

@@ -1,8 +1,8 @@
-import { useDebounce } from '@lib/hooks';
 import * as React from 'react';
 import { SearchMachineState } from './search.machine';
 import { useSearchServiceContext } from './context';
 import { useSelector } from '@lib/fsm-utils';
+import { useDebounce } from '@ifixit/ui';
 
 const DEBOUNCE_INTERVAL_MILLIS = 300;
 
