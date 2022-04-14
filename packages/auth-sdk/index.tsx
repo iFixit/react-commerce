@@ -22,7 +22,7 @@ export function useAuthenticatedUser() {
   return query;
 }
 
-async function fetchAuthenticatedUser(apiOrigin: string): Promise<User> {
+async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
   const response = await fetch(`${apiOrigin}/api/2.0/user`, {
     credentials: "include",
     headers: {
@@ -62,5 +62,8 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User> {
     };
   }
 
+  if (response.status === 401) {
+    return null;
+  }
   throw new Error(response.statusText);
 }

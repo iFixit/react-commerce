@@ -271,7 +271,9 @@ export function HeaderUserMenu() {
                   >
                      View Profile
                   </UserMenuLink>
-                  <UserMenuLink fontSize="sm">Orders</UserMenuLink>
+                  <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
+                     Orders
+                  </UserMenuLink>
                </MenuGroup>
                <MenuDivider />
                <MenuGroup>

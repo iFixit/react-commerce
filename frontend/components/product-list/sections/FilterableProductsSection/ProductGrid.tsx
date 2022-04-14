@@ -70,7 +70,10 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
    return (
       <LinkBox as="article" display="block" w="full">
          <ProductCard h="full">
-            <ProductCardImage src={product.image_url} alt={product.title} />
+            <ProductCardImage
+               src={product.image_url}
+               alt={product.group_title}
+            />
             <ProductCardBadgeList>
                {product.is_pro > 0 && (
                   <Badge
@@ -89,7 +92,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
             </ProductCardBadgeList>
             <ProductCardBody>
                <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
-                  <ProductCardTitle>{product.title}</ProductCardTitle>
+                  <ProductCardTitle>{product.group_title}</ProductCardTitle>
                </LinkOverlay>
                {(product.rating >= 4 || product.rating_count > 10) && (
                   <ProductCardRating

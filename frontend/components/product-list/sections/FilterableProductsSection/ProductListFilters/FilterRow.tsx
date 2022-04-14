@@ -66,7 +66,7 @@ export const FilterRow = React.memo(function FilterRow({
             size: rowRef.current.getBoundingClientRect().height,
          });
       }
-   }, [facet.handle, rowRef]);
+   }, [facet.handle, rowRef, send]);
 
    return (
       <Row
