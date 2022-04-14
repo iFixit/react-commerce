@@ -71,7 +71,15 @@ export const SortBySelect = (props: SelectProps) => {
 };
 
 export const ProductViewSwitch = (props: ButtonGroupProps) => {
-   return <ButtonGroup size="sm" isAttached bg="white" {...props} />;
+   return (
+      <ButtonGroup
+         size="sm"
+         isAttached
+         bg="white"
+         borderRadius="md"
+         {...props}
+      />
+   );
 };
 
 export const ProductViewListButton = (props: IconButtonProps) => {
