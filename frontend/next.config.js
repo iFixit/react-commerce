@@ -22,7 +22,7 @@ module.exports = withTM({
          'cart-products.cdn.ifixit.com',
          'assets.cdn.ifixit.com',
          'www.cominor.com',
-         'https://guide-images.cdn.ifixit.com',
+         'guide-images.cdn.ifixit.com',
       ],
    },
    i18n: {
