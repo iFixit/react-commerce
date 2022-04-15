@@ -21,6 +21,8 @@ module.exports = withTM({
          'valkyrie.cdn.ifixit.com',
          'cart-products.cdn.ifixit.com',
          'assets.cdn.ifixit.com',
+         'www.cominor.com',
+         'https://guide-images.cdn.ifixit.com',
       ],
    },
    i18n: {

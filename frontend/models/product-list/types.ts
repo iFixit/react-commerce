@@ -47,7 +47,6 @@ export interface ProductListChild {
 export interface ProductListImage {
    alternativeText: string | null;
    url: string;
-   formats: any;
 }
 
 export enum ProductListSectionType {

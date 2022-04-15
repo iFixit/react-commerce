@@ -1,5 +1,5 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import {
    createAlgoliaClient,
    createSearchContext,
@@ -23,6 +23,7 @@ import {
    ProductListChild,
    ProductListSection,
    ProductListSectionType,
+   ProductListImage,
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 
@@ -48,6 +49,11 @@ export async function findProductList(
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
+   let deviceWiki: DeviceWiki | null = null;
+   if (productList.deviceTitle) {
+      deviceWiki = await fetchDeviceWiki(productList.deviceTitle);
+   }
+
    return {
       title: productList.title,
       handle: productList.handle,
@@ -58,20 +64,64 @@ export async function findProductList(
       metaDescription: productList.metaDescription ?? null,
       filters: productList.filters ?? null,
       image:
-         productListImageAttributes == null
-            ? null
-            : getImageFromStrapiImage(productListImageAttributes, 'large'),
+         productListImageAttributes != null
+            ? getImageFromStrapiImage(productListImageAttributes, 'large')
+            : deviceWiki
+            ? getDeviceImage(deviceWiki)
+            : null,
       ancestors: createProductListAncestors(productList.parent),
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: sortProductListChildren(
          filterNullableItems(
-            productList.children?.data.map(createProductListChild)
+            productList.children?.data.map(createProductListChild(deviceWiki))
          )
       ),
       sections: filterNullableItems(
          productList.sections.map(createProductListSection)
       ),
    };
+}
+
+type DeviceWiki = Record<string, any>;
+
+async function fetchDeviceWiki(
+   deviceTitle: string
+): Promise<DeviceWiki | null> {
+   const deviceHandle = getDeviceHandle(deviceTitle);
+   try {
+      const response = await fetch(
+         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`
+      );
+      const payload = await response.json();
+      return payload;
+   } catch (error) {
+      return null;
+   }
+}
+
+function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
+   return deviceWiki.image?.original == null
+      ? null
+      : {
+           url: deviceWiki.image.original,
+           alternativeText: null,
+        };
+}
+
+function getChildDeviceImage(
+   deviceWiki: DeviceWiki,
+   childDeviceTitle: string
+): ProductListImage | null {
+   const child = deviceWiki.children?.find(
+      (c: any) => c.title === childDeviceTitle
+   );
+   if (child?.image?.original) {
+      return {
+         url: child.image.original,
+         alternativeText: null,
+      };
+   }
+   return null;
 }
 
 /**
@@ -209,23 +259,25 @@ function createProductListAncestors(
 
 type ApiProductListChild = NonNullable<ApiProductList['children']>['data'][0];
 
-function createProductListChild(
-   apiChild: ApiProductListChild
-): ProductListChild | null {
-   const { attributes } = apiChild;
-   if (attributes == null) {
-      return null;
-   }
-   const imageAttributes = attributes.image?.data?.attributes;
-   return {
-      title: attributes.title,
-      handle: attributes.handle,
-      path: getProductListPath(attributes),
-      image:
-         imageAttributes == null
-            ? null
-            : getImageFromStrapiImage(imageAttributes, 'medium'),
-      sortPriority: attributes.sortPriority || null,
+function createProductListChild(deviceWiki: DeviceWiki | null) {
+   return (apiChild: ApiProductListChild): ProductListChild | null => {
+      const { attributes } = apiChild;
+      if (attributes == null) {
+         return null;
+      }
+      const imageAttributes = attributes.image?.data?.attributes;
+      return {
+         title: attributes.title,
+         handle: attributes.handle,
+         path: getProductListPath(attributes),
+         image:
+            imageAttributes == null
+               ? deviceWiki && attributes.deviceTitle
+                  ? getChildDeviceImage(deviceWiki, attributes.deviceTitle)
+                  : null
+               : getImageFromStrapiImage(imageAttributes, 'medium'),
+         sortPriority: attributes.sortPriority || null,
+      };
    };
 }
 
