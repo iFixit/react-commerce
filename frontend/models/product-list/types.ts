@@ -5,6 +5,7 @@ export interface ProductSearchHit {
    handle: string;
    price_float: number;
    compare_at_price?: number;
+   price_tiers?: Record<string, string>;
    sku: string;
    image_url: string;
    short_description?: string;
@@ -13,6 +14,7 @@ export interface ProductSearchHit {
    rating: number;
    rating_count: number;
    url: string;
+   is_pro: number;
 }
 
 export interface ProductList {

@@ -1,5 +1,5 @@
-import { useAppContext } from "@ifixit/ui";
 import { invariant, isRecord } from "@ifixit/helpers";
+import { useAppContext } from "@ifixit/ui";
 import { useQuery } from "react-query";
 
 type User = {
@@ -7,6 +7,7 @@ type User = {
   username: string;
   handle: string;
   thumbnail: string | null;
+  discountTier: string | null;
 };
 
 const userKeys = {
@@ -54,6 +55,10 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
       username: payload.username,
       handle: payload.unique_username,
       thumbnail: thumbnailUrl,
+      discountTier:
+        typeof payload.discount_tier === "string"
+          ? payload.discount_tier
+          : null,
     };
   }
 
