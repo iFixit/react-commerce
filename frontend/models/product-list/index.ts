@@ -93,7 +93,12 @@ async function fetchDeviceWiki(
    console.log('>>>>>>>> ifixit origin', IFIXIT_ORIGIN);
    try {
       const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`
+         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
+         {
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         }
       );
       const payload = await response.json();
       console.log('>>>>>>>> payload', payload);
