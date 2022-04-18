@@ -98,7 +98,9 @@ async function fetchDeviceWiki(
       const payload = await response.json();
       console.log('>>>>>>>> payload', payload);
       return payload;
-   } catch (error) {
+   } catch (error: any) {
+      console.log('>>>>>>> ERR MESSAGE', error.message);
+      console.log(error);
       return null;
    }
 }
