@@ -100,6 +100,7 @@ async function fetchDeviceWiki(
             },
          }
       );
+      console.log('>>>>>>>> status', response.status);
       const payload = await response.json();
       console.log('>>>>>>>> payload', payload);
       return payload;
