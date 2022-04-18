@@ -25,9 +25,10 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-is": "16.8.0",
-    "react-select": "5.2.2",
+    "react-select": "4.0.2",
     "redux": "4.1.2",
-    "sqlite3": "5.0.2"
+    "sqlite3": "5.0.2",
+    "webpack": "5.0.0"
   },
   "author": {
     "name": "A Strapi developer"
