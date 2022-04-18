@@ -65,6 +65,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       };
    }
 
+   console.log('PLIST >>>>>>>>>>>>> ', productList);
+
    const searchContext = await createProductListSearchContext({
       algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
       deviceTitle,

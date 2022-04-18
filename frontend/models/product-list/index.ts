@@ -49,6 +49,7 @@ export async function findProductList(
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
+   console.log('>>>>>>>> Fetch device wiki');
    const deviceWiki =
       productList.deviceTitle == null
          ? null
@@ -88,11 +89,14 @@ async function fetchDeviceWiki(
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
+   console.log('>>>>>>>> deviceHandle', deviceHandle);
+   console.log('>>>>>>>> ifixit origin', IFIXIT_ORIGIN);
    try {
       const response = await fetch(
          `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`
       );
       const payload = await response.json();
+      console.log('>>>>>>>> payload', payload);
       return payload;
    } catch (error) {
       return null;
