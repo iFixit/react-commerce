@@ -10,25 +10,13 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@babel/core": "7.17.8",
-    "@babel/runtime": "7.17.8",
     "@strapi/plugin-graphql": "4.0.4",
     "@graphql-tools/utils": "8.6.7",
     "@strapi/plugin-i18n": "4.0.4",
     "@strapi/plugin-users-permissions": "4.0.4",
     "@strapi/strapi": "4.0.4",
-    "immer": "9.0.6",
-    "koa": "2.13.1",
-    "lodash": "4.17.21",
     "pg": "8.7.1",
-    "qs": "6.10.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-is": "16.8.0",
-    "react-select": "4.0.2",
-    "redux": "4.1.2",
-    "sqlite3": "5.0.2",
-    "webpack": "5.0.0"
+    "sqlite3": "5.0.2"
   },
   "author": {
     "name": "A Strapi developer"

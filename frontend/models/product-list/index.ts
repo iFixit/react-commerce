@@ -49,10 +49,17 @@ export async function findProductList(
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
+   const shouldFetchDeviceWiki =
+      productList.image?.data?.attributes == null ||
+      productList.children?.data?.some(
+         (child) => child.attributes?.image?.data?.attributes == null
+      );
    const deviceWiki =
-      productList.deviceTitle == null
-         ? null
-         : await fetchDeviceWiki(productList.deviceTitle);
+      shouldFetchDeviceWiki && productList.deviceTitle != null
+         ? await fetchDeviceWiki(productList.deviceTitle)
+         : null;
+
+   console.log('wiki', deviceWiki);
 
    return {
       title: productList.title,
