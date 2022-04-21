@@ -110,13 +110,14 @@ export const createVirtualAccordionMachine = <Item = any>(
 export function useVirtualAccordionMachine<Item = any>(
    context: VirtualAccordionContext<Item>
 ) {
-   const searchMachineRef = React.useRef<
-      StateMachine.Machine<
-         VirtualAccordionContext<Item>,
-         VirtualAccordionEvent<Item>,
-         VirtualAccordionState<Item>
-      >
-   >();
+   const searchMachineRef =
+      React.useRef<
+         StateMachine.Machine<
+            VirtualAccordionContext<Item>,
+            VirtualAccordionEvent<Item>,
+            VirtualAccordionState<Item>
+         >
+      >();
 
    if (searchMachineRef.current == null) {
       searchMachineRef.current = createVirtualAccordionMachine(context);

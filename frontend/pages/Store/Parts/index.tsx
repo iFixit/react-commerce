@@ -33,21 +33,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       'public, s-maxage=10, stale-while-revalidate=600'
    );
 
-   const [
-      globalSettings,
-      stores,
-      currentStore,
-      productList,
-   ] = await Promise.all([
-      getGlobalSettings(),
-      getStoreList(),
-      getStoreByCode('us'),
-      findProductList({
-         handle: {
-            eq: 'Parts',
-         },
-      }),
-   ]);
+   const [globalSettings, stores, currentStore, productList] =
+      await Promise.all([
+         getGlobalSettings(),
+         getStoreList(),
+         getStoreByCode('us'),
+         findProductList({
+            handle: {
+               eq: 'Parts',
+            },
+         }),
+      ]);
 
    if (productList == null) {
       return {

@@ -40,21 +40,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       };
    }
 
-   const [
-      globalSettings,
-      stores,
-      currentStore,
-      productList,
-   ] = await Promise.all([
-      getGlobalSettings(),
-      getStoreList(),
-      getStoreByCode('us'),
-      findProductList({
-         handle: {
-            eq: handle,
-         },
-      }),
-   ]);
+   const [globalSettings, stores, currentStore, productList] =
+      await Promise.all([
+         getGlobalSettings(),
+         getStoreList(),
+         getStoreByCode('us'),
+         findProductList({
+            handle: {
+               eq: handle,
+            },
+         }),
+      ]);
 
    if (productList == null) {
       return {

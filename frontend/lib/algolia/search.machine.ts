@@ -161,13 +161,14 @@ export const createSearchMachine = <Hit = any>(context: SearchContext<Hit>) =>
    });
 
 export function useSearchMachine<Hit = any>(context: SearchContext<Hit>) {
-   const searchMachineRef = React.useRef<
-      StateMachine.Machine<
-         SearchContext<Hit>,
-         SearchEvent<Hit>,
-         SearchState<Hit>
-      >
-   >();
+   const searchMachineRef =
+      React.useRef<
+         StateMachine.Machine<
+            SearchContext<Hit>,
+            SearchEvent<Hit>,
+            SearchState<Hit>
+         >
+      >();
 
    if (searchMachineRef.current == null) {
       searchMachineRef.current = createSearchMachine(context);

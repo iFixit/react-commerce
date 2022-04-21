@@ -1,6 +1,6 @@
 module.exports = {
-  seed: {
-    enabled: true,
-    resolve: "./src/plugins/seed",
-  },
+   seed: {
+      enabled: true,
+      resolve: './src/plugins/seed',
+   },
 };
