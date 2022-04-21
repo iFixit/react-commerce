@@ -20,6 +20,7 @@ import { useAppContext } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import * as React from 'react';
+import { useProductSearchHitPricing } from './useProductSearchHitPricing';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 
@@ -42,29 +43,14 @@ export interface ProductListItemProps {
 }
 
 export function ProductListItem({ product }: ProductListItemProps) {
-   const user = useAuthenticatedUser();
    const appContext = useAppContext();
 
-   const proTierPrice = React.useMemo(() => {
-      const proTier = user.data?.discountTier ?? null;
-      return (proTier ? product.price_tiers?.[proTier] : null) ?? null;
-   }, [user.data?.discountTier, product.price_tiers]);
-
-   const isDiscounted =
-      proTierPrice == null &&
-      product.compare_at_price != null &&
-      product.compare_at_price > product.price_float;
-
-   const price = proTierPrice ?? product.price_float;
-   const compareAtPrice =
-      proTierPrice == null ? product.compare_at_price : null;
-
-   const percentage = isDiscounted
-      ? computeDiscountPercentage(
-           product.price_float * 100,
-           product.compare_at_price! * 100
-        )
-      : 0;
+   const {
+      price,
+      compareAtPrice,
+      isDiscounted,
+      percentage,
+   } = useProductSearchHitPricing(product);
 
    const productHeadingId = `product-heading-${product.handle}`;
 

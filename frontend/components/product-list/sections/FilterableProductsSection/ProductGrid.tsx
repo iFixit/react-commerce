@@ -14,6 +14,7 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { useAppContext } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
+import { useProductSearchHitPricing } from './useProductSearchHitPricing';
 
 export type ProductGridProps = React.PropsWithChildren<unknown>;
 
@@ -40,32 +41,14 @@ export interface ProductGridItemProps {
 }
 
 export function ProductGridItem({ product }: ProductGridItemProps) {
-   const user = useAuthenticatedUser();
    const appContext = useAppContext();
 
-   const proTierPrice = React.useMemo(() => {
-      const proTier = user.data?.discountTier ?? null;
-      if (proTier) {
-         const priceString = product.price_tiers?.[proTier];
-         return priceString == null ? null : parseFloat(priceString);
-      }
-      return null;
-   }, [user.data?.discountTier, product.price_tiers]);
-
-   const isDiscounted =
-      product.compare_at_price != null &&
-      product.compare_at_price > product.price_float;
-
-   const percentage = isDiscounted
-      ? computeDiscountPercentage(
-           product.price_float * 100,
-           product.compare_at_price! * 100
-        )
-      : 0;
-
-   const price = proTierPrice ?? product.price_float;
-   const compareAtPrice =
-      proTierPrice == null ? product.compare_at_price : undefined;
+   const {
+      price,
+      compareAtPrice,
+      isDiscounted,
+      percentage,
+   } = useProductSearchHitPricing(product);
 
    return (
       <LinkBox as="article" display="block" w="full">
