@@ -26,6 +26,8 @@ const FACET_BLOCKLIST = [
    'facet_tags.Price',
    'inventory_management',
    'quantity_available',
+   'category',
+   'facet_tags.Main Category',
 ];
 
 const Sizer = chakra(AutoSizer);
