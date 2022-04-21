@@ -22,7 +22,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "transform-svg": "cd frontend && pnpm run transform-svg",
     "cypress:open": "cd frontend && pnpm run cypress:open",
-    "cypress:run": "cd frontend && pnpm run cypress:run"
+    "cypress:run": "cd frontend && pnpm run cypress:run",
+    "lint": "cd frontend && npm run lint",
+    "format": "prettier --write .",
+    "type-check": "cd frontend && pnpm run type-check"
   },
   "keywords": [
     "ifixit",
@@ -35,6 +38,13 @@
     "cross-env": "7.0.3",
     "npm-run-all": "4.1.5",
     "wait-on": "6.0.0",
-    "prettier": "2.3.2"
+    "prettier": "2.3.2",
+    "husky": "4.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm format",
+      "pre-push": "pnpm type-check"
+    }
   }
 }

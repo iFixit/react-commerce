@@ -11,9 +11,7 @@
       "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"pnpm run dev:next\" \"pnpm run dev:codegen\"",
       "dev:next": "next dev",
       "dev:codegen": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.yml --watch",
-      "build": "pnpm run build:next",
-      "build:next": "next build",
-      "build:codegen": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -r dotenv/config --config codegen.yml",
+      "build": "next build",
       "start": "next start",
       "type-check": "tsc --pretty --noEmit",
       "format": "prettier --write .",
@@ -23,18 +21,6 @@
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
-   },
-   "husky": {
-      "hooks": {
-         "pre-commit": "lint-staged",
-         "pre-push": "pnpm run type-check"
-      }
-   },
-   "lint-staged": {
-      "*.@(ts|tsx)": [
-         "pnpm run lint",
-         "pnpm run format"
-      ]
    },
    "dependencies": {
       "@chakra-ui/react": "1.8.3",
@@ -95,11 +81,9 @@
       "eslint-plugin-react": "7.23.0",
       "eslint-plugin-react-hooks": "4.2.0",
       "graphql-tag": "^2",
-      "husky": "4.2.3",
       "identity-obj-proxy": "3.0.0",
       "jest": "26.6.3",
       "jest-watch-typeahead": "0.6.1",
-      "lint-staged": "10.0.10",
       "next-transpile-modules": "9.0.0",
       "prettier": "2.2.1",
       "typescript": "4.3.2",
