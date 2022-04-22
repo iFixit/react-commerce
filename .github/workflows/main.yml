@@ -11,7 +11,7 @@ jobs:
          - name: Start strapi server
            run: cd backend && docker-compose up -d
          - name: Install PNPM
-           run: corepack enable && corepack prepare pnpm@7.0.0-rc.6 --activate
+           run: corepack enable && corepack prepare pnpm@7.0.0-rc.5 --activate
          - name: Install workspaces
            run: pnpm install
          - name: Cypress run
