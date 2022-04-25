@@ -1,40 +1,50 @@
 {
-  "name": "@ifixit/commerce",
-  "version": "1.0.0",
-  "description": "Monorepo for iFixit e-commerce",
-  "main": "N/A",
-  "engines": {
-    "node": ">= 14.19"
-  },
-  "scripts": {
-    "install:all": "pnpm install & npm run install:backend",
-    "install:backend": "cd backend; npm install",
-    "dev:backend": "cd backend && pnpm run dev",
-    "dev:frontend": "wait-on http://localhost:1337/_health && cd frontend && npm run dev",
-    "dev": "cross-env FORCE_COLOR=1 npm-run-all -l -p dev:*",
-    "build:backend": "cd backend && pnpm run build",
-    "build:frontend": "cd frontend && pnpm run build",
-    "build": "npm run build:backend && pnpm run build:frontend",
-    "start:backend": "cd backend && pnpm run start",
-    "start:frontend": "cd frontend && pnpm run start",
-    "start": "cross-env FORCE_COLOR=1 npm-run-all -l -p start:*",
-    "strapi": "cd backend && pnpm run strapi",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "transform-svg": "cd frontend && pnpm run transform-svg",
-    "cypress:open": "cd frontend && pnpm run cypress:open",
-    "cypress:run": "cd frontend && pnpm run cypress:run"
-  },
-  "keywords": [
-    "ifixit",
-    "e-commerce",
-    "repair"
-  ],
-  "author": "macs",
-  "license": "UNLICENSED",
-  "devDependencies": {
-    "cross-env": "7.0.3",
-    "npm-run-all": "4.1.5",
-    "wait-on": "6.0.0",
-    "prettier": "2.3.2"
-  }
+   "name": "@ifixit/commerce",
+   "version": "1.0.0",
+   "description": "Monorepo for iFixit e-commerce",
+   "main": "N/A",
+   "engines": {
+      "node": ">= 14.19"
+   },
+   "scripts": {
+      "install:all": "pnpm install && npm run install:backend",
+      "install:backend": "cd backend; npm install",
+      "dev:backend": "cd backend && pnpm run dev",
+      "dev:frontend": "wait-on http://localhost:1337/_health && cd frontend && npm run dev",
+      "dev": "cross-env FORCE_COLOR=1 npm-run-all -l -p dev:*",
+      "build:backend": "cd backend && pnpm run build",
+      "build:frontend": "cd frontend && pnpm run build",
+      "build": "npm run build:backend && pnpm run build:frontend",
+      "start:backend": "cd backend && pnpm run start",
+      "start:frontend": "cd frontend && pnpm run start",
+      "start": "cross-env FORCE_COLOR=1 npm-run-all -l -p start:*",
+      "strapi": "cd backend && pnpm run strapi",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "transform-svg": "cd frontend && pnpm run transform-svg",
+      "cypress:open": "cd frontend && pnpm run cypress:open",
+      "cypress:run": "cd frontend && pnpm run cypress:run",
+      "lint": "cd frontend && npm run lint",
+      "format": "prettier --write .",
+      "type-check": "cd frontend && pnpm run type-check"
+   },
+   "keywords": [
+      "ifixit",
+      "e-commerce",
+      "repair"
+   ],
+   "author": "macs",
+   "license": "UNLICENSED",
+   "devDependencies": {
+      "cross-env": "7.0.3",
+      "npm-run-all": "4.1.5",
+      "wait-on": "6.0.0",
+      "prettier": "2.3.2",
+      "husky": "4.2.3"
+   },
+   "husky": {
+      "hooks": {
+         "pre-commit": "pnpm format",
+         "pre-push": "pnpm type-check"
+      }
+   }
 }

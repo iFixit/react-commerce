@@ -140,14 +140,16 @@ export function AlgoliaProvider({
                } else {
                   if (draftFilter.selectedOptions.includes(event.optionId)) {
                      if (draftFilter.selectedOptions.length === 1) {
-                        ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                           (id) => id !== event.filterId
-                        );
+                        ctx.params.filters.allIds =
+                           ctx.params.filters.allIds.filter(
+                              (id) => id !== event.filterId
+                           );
                         delete ctx.params.filters.byId[event.filterId];
                      } else {
-                        draftFilter.selectedOptions = draftFilter.selectedOptions.filter(
-                           (option) => option !== event.optionId
-                        );
+                        draftFilter.selectedOptions =
+                           draftFilter.selectedOptions.filter(
+                              (option) => option !== event.optionId
+                           );
                      }
                   } else {
                      draftFilter.selectedOptions.push(event.optionId);
@@ -165,14 +167,16 @@ export function AlgoliaProvider({
                ) {
                   ctx.params.page = 1;
                   if (draftFilter.selectedOptions.length === 1) {
-                     ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                        (id) => id !== event.filterId
-                     );
+                     ctx.params.filters.allIds =
+                        ctx.params.filters.allIds.filter(
+                           (id) => id !== event.filterId
+                        );
                      delete ctx.params.filters.byId[event.filterId];
                   } else {
-                     draftFilter.selectedOptions = draftFilter.selectedOptions.filter(
-                        (option) => option !== event.optionId
-                     );
+                     draftFilter.selectedOptions =
+                        draftFilter.selectedOptions.filter(
+                           (option) => option !== event.optionId
+                        );
                   }
                }
             }
@@ -203,9 +207,10 @@ export function AlgoliaProvider({
                ) {
                   ctx.params.page = 1;
                   if (event.min == null && event.max == null) {
-                     ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                        (id) => id !== event.filterId
-                     );
+                     ctx.params.filters.allIds =
+                        ctx.params.filters.allIds.filter(
+                           (id) => id !== event.filterId
+                        );
                      delete ctx.params.filters.byId[event.filterId];
                   } else {
                      draftFilter.min = event.min;

@@ -1,1 +1,1 @@
-export * from "./Wordmark";
+export * from './Wordmark';

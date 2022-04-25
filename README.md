@@ -11,14 +11,14 @@ You can run the backend both using SQLite and using Postgres with docker compose
 
 The `frontend` directory is structured as follows:
 
-- `pages`: contains the Next.js app pages (think of these like routes/controllers)
-- `models`: contains business logic (e.g. how to fetch product list from API, how to subscribe to newsletter, etc.)
-- `components`: contains the React view components
-- `helpers`: contains reusable custom app-related helper functions
-- `lib`: contains custom libraries that can stand on their own (e.g. `lib/algolia`). Think of these as packages that potentially could be used in other projects.
-- `assets`: contains assets imported from view components (e.g. svg illustrations)
-- `public`: contains the static files
-- `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
+-  `pages`: contains the Next.js app pages (think of these like routes/controllers)
+-  `models`: contains business logic (e.g. how to fetch product list from API, how to subscribe to newsletter, etc.)
+-  `components`: contains the React view components
+-  `helpers`: contains reusable custom app-related helper functions
+-  `lib`: contains custom libraries that can stand on their own (e.g. `lib/algolia`). Think of these as packages that potentially could be used in other projects.
+-  `assets`: contains assets imported from view components (e.g. svg illustrations)
+-  `public`: contains the static files
+-  `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
 
 ### Install
 
@@ -64,7 +64,7 @@ pnpm run transform-svg
 The script will take svg files and transform them into React components that you can import like this:
 
 ```tsx
-import { LifetimeWarrantyIcon } from "@assets/svg";
+import { LifetimeWarrantyIcon } from '@assets/svg';
 ```
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.

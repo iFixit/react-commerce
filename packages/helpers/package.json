@@ -1,11 +1,11 @@
 {
-  "name": "@ifixit/helpers",
-  "version": "0.0.0",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
-  "license": "MIT",
-  "devDependencies": {
-    "@ifixit/tsconfig": "workspace:*",
-    "typescript": "4.5.3"
-  }
+   "name": "@ifixit/helpers",
+   "version": "0.0.0",
+   "main": "./index.tsx",
+   "types": "./index.tsx",
+   "license": "MIT",
+   "devDependencies": {
+      "@ifixit/tsconfig": "workspace:*",
+      "typescript": "4.5.3"
+   }
 }

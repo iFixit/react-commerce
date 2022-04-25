@@ -58,9 +58,8 @@ function useService<
       actions?: StateMachine.ActionMap<TContext, TEvent>;
    }
 ) {
-   const serviceRef = React.useRef<
-      StateMachine.Service<TContext, TEvent, TState>
-   >();
+   const serviceRef =
+      React.useRef<StateMachine.Service<TContext, TEvent, TState>>();
 
    if (serviceRef.current == null) {
       serviceRef.current = interpret(
