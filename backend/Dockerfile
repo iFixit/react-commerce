@@ -1,19 +1,17 @@
-FROM strapi/base:alpine
-
-ARG STRAPI_VERSION
-RUN yarn global add @strapi/strapi@${STRAPI_VERSION}
-
-WORKDIR /srv/app
-
-COPY ./package*.json ./
-RUN npm install
-
-COPY ./src/ ./src/
-COPY ./config/ ./config/
-COPY ./database/ ./database/
-COPY ./public/ ./public/
-COPY ./favicon.ico ./
-
-RUN npm run build
-
-CMD ["npm", "start"]
+FROM node:16-alpine
+# Installing libvips for sharp compatibility
+RUN apk --update-cache add vips-dev \
+ && rm -rf /var/cache/apk/*
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+WORKDIR /opt/
+COPY ./package.json ./
+COPY ./yarn.lock ./
+ENV PATH /opt/node_modules/.bin:$PATH
+RUN yarn config set network-timeout 600000 -g
+RUN yarn install
+WORKDIR /opt/app
+COPY ./ .
+RUN NODE_ENV=production yarn build
+EXPOSE 1337
+CMD ["yarn", "start"]
