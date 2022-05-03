@@ -59,8 +59,6 @@ export async function findProductList(
          ? await fetchDeviceWiki(productList.deviceTitle)
          : null;
 
-   console.log('wiki', deviceWiki);
-
    return {
       title: productList.title,
       handle: productList.handle,
