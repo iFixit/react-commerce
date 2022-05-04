@@ -14,21 +14,15 @@ export function useProductSearchHitPricing(
 ): ProductSearchHitPricing {
    const user = useAuthenticatedUser();
 
-   const proTierPrice = React.useMemo(() => {
-      const proTier = user.data?.discountTier ?? null;
-      if (proTier) {
-         const priceString = product.price_tiers?.[proTier];
-         return priceString == null ? null : parseFloat(priceString);
-      }
-      return null;
-   }, [user.data?.discountTier, product.price_tiers]);
-
-   const isProUser = proTierPrice != null;
+   let proTierPrice: number | null = null;
+   const discountTier = user.data?.discountTier ?? null;
+   if (discountTier) {
+      const priceString = product.price_tiers?.[discountTier];
+      proTierPrice = priceString == null ? null : parseFloat(priceString);
+   }
 
    const price = proTierPrice ?? product.price_float;
-   const compareAtPrice = isProUser
-      ? product.compare_at_price ?? product.price_float
-      : product.compare_at_price;
+   const compareAtPrice = product.compare_at_price ?? product.price_float;
    const isDiscounted = compareAtPrice != null && compareAtPrice > price;
 
    const percentage = isDiscounted

@@ -14,8 +14,6 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { computeDiscountPercentage } from '@helpers/commerce-helpers';
-import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { useAppContext } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
@@ -45,12 +43,8 @@ export interface ProductListItemProps {
 export function ProductListItem({ product }: ProductListItemProps) {
    const appContext = useAppContext();
 
-   const {
-      price,
-      compareAtPrice,
-      isDiscounted,
-      percentage,
-   } = useProductSearchHitPricing(product);
+   const { price, compareAtPrice, isDiscounted, percentage } =
+      useProductSearchHitPricing(product);
 
    const productHeadingId = `product-heading-${product.handle}`;
 

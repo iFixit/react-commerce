@@ -9,8 +9,6 @@ import {
    ProductCardRating,
    ProductCardTitle,
 } from '@components/common';
-import { computeDiscountPercentage } from '@helpers/commerce-helpers';
-import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { useAppContext } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
@@ -43,12 +41,8 @@ export interface ProductGridItemProps {
 export function ProductGridItem({ product }: ProductGridItemProps) {
    const appContext = useAppContext();
 
-   const {
-      price,
-      compareAtPrice,
-      isDiscounted,
-      percentage,
-   } = useProductSearchHitPricing(product);
+   const { price, compareAtPrice, isDiscounted, percentage } =
+      useProductSearchHitPricing(product);
 
    return (
       <LinkBox as="article" display="block" w="full">
