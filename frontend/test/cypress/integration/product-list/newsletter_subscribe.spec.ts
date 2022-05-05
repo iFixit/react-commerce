@@ -5,7 +5,7 @@ describe('subscribe to newsletter', () => {
    });
 
    it('requires an email', () => {
-      user.findByTestId('newsletter-form').within(() => {
+      user.findByTestId('footer-newsletter-form').within(() => {
          user.findByText(/please insert a valid email/i).should('not.exist');
          user.findByRole('button', { name: /subscribe/i }).click();
          user.findByText(/please insert a valid email/i).should('be.visible');

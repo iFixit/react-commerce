@@ -1,6 +1,8 @@
 const withTM = require('next-transpile-modules')([
    '@ifixit/ui',
+   '@ifixit/icons',
    '@ifixit/auth-sdk',
+   '@ifixit/newsletter-sdk',
    '@ifixit/helpers',
 ]);
 

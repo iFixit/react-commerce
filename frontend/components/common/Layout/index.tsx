@@ -53,7 +53,7 @@ import NextLink from 'next/link';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
-import { Footer } from './Footer';
+import { LayoutFooter } from './Footer';
 
 export interface LayoutProps {
    title: string;
@@ -235,7 +235,7 @@ export function Layout({
                )}
             </Header>
             {children}
-            <Footer
+            <LayoutFooter
                currentStore={currentStore}
                stores={stores}
                globalSettings={globalSettings}
