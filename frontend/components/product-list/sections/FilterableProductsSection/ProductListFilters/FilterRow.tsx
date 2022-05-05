@@ -338,6 +338,6 @@ function capacityStringToBytes(x: string): number {
    if (isNaN(size)) {
       return 0;
    }
-   const unit = x.replace(/[0-9.]+/, '').trim() as keyof typeof unitToBytes;
+   const unit = (x.match(/[KMGTP]?B/)?.[0] ?? 'B') as keyof typeof unitToBytes;
    return size * (unitToBytes[unit] ?? 1);
 }
