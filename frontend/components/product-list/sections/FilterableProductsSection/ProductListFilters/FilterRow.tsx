@@ -210,6 +210,16 @@ const Row = React.memo(
                                     onResize={onResize}
                                  />
                               );
+                           case facet.handle === 'capacity':
+                              return (
+                                 <ListFilter
+                                    key={facet.handle}
+                                    facet={facet}
+                                    multiple
+                                    showAllValues={showAllFacetValues}
+                                    sortItems={compareCapacity}
+                                 />
+                              );
                            default:
                               return (
                                  <ListFilter
@@ -308,4 +318,26 @@ function avg(x: string): number | null {
       return null;
    }
    return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
+}
+
+function compareCapacity(a: FacetOption, b: FacetOption): number {
+   return capacityStringToBytes(b.value) - capacityStringToBytes(a.value);
+}
+
+const unitToBytes = {
+   'B': 1,
+   'KB': 1024,
+   'MB': 1024 * 1024,
+   'GB': 1024 * 1024 * 1024,
+   'TB': 1024 * 1024 * 1024 * 1024,
+   'PB': 1024 * 1024 * 1024 * 1024 * 1024,
+};
+
+function capacityStringToBytes(x: string): number {
+   const size = parseFloat(x);
+   if (isNaN(size)) {
+      return 0;
+   }
+   const unit = x.replace(/[0-9.]+/, '').trim() as keyof typeof unitToBytes;
+   return size * (unitToBytes[unit] ?? 1);
 }
