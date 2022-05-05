@@ -52,7 +52,7 @@ describe('product list filters', () => {
          .click(getVirtualListClickOptions());
 
       user.wait('@search');
-      user.wait(500);
+      user.wait(2000);
 
       // Assert that the products update according to that filter
       user
@@ -91,7 +91,7 @@ describe('product list filters', () => {
          .findByRole('button', { name: /collapse device$/i, expanded: true })
          .click(getVirtualListClickOptions());
 
-      user.wait(300);
+      user.wait(2000);
 
       user
          .findByRole('button', {
@@ -164,7 +164,7 @@ describe('product list filters', () => {
 
       user.findByRole('button', { name: /clear all filters/i }).click();
 
-      user.wait(300);
+      user.wait(2000);
 
       user.findByTestId('applied-filters').should('not.exist');
    });
