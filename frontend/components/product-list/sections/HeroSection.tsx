@@ -1,13 +1,10 @@
 import {
-   AspectRatio,
    Box,
    BoxProps,
    Button,
    chakra,
-   Flex,
    forwardRef,
    Heading,
-   HStack,
    Text,
    useDisclosure,
    VStack,
@@ -16,7 +13,6 @@ import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { useIsMounted } from '@ifixit/ui';
 import { useSearchParams } from '@lib/algolia';
 import { ProductList } from '@models/product-list';
-import Image from 'next/image';
 import * as React from 'react';
 import snarkdown from 'snarkdown';
 
@@ -31,58 +27,22 @@ export function HeroSection({ productList }: HeroSectionProps) {
       productList.description.length > 0 &&
       searchParams.page === 1;
    return (
-      <HStack align="flex-start" spacing="10">
-         <VStack flex={1} align="flex-start">
-            {!hasDescription &&
-            productList.image != null &&
-            searchParams.page === 1 ? (
-               <HeroBackgroundImage src={productList.image.url}>
-                  <VStack>
-                     <HeroTitle color="white">{productList.title}</HeroTitle>
-                     {productList.tagline && productList.tagline.length > 0 && (
-                        <Text
-                           fontWeight="bold"
-                           fontSize="xl"
-                           color="gray.50"
-                           px={{ base: 6, sm: 0 }}
-                        >
-                           {productList.tagline}
-                        </Text>
-                     )}
-                  </VStack>
-               </HeroBackgroundImage>
-            ) : (
-               <>
-                  <HeroTitle>
-                     {productList.title}
-                     {searchParams.page > 1
-                        ? ` - Page ${searchParams.page}`
-                        : ''}
-                  </HeroTitle>
-                  {productList.tagline &&
-                     productList.tagline.length > 0 &&
-                     searchParams.page === 1 && (
-                        <Text
-                           fontWeight="bold"
-                           fontSize="xl"
-                           px={{ base: 6, sm: 0 }}
-                        >
-                           {productList.tagline}
-                        </Text>
-                     )}
-               </>
+      <VStack flex={1} align="flex-start">
+         <HeroTitle>
+            {productList.title}
+            {searchParams.page > 1 ? ` - Page ${searchParams.page}` : ''}
+         </HeroTitle>
+         {productList.tagline &&
+            productList.tagline.length > 0 &&
+            searchParams.page === 1 && (
+               <Text fontWeight="bold" fontSize="xl" px={{ base: 6, sm: 0 }}>
+                  {productList.tagline}
+               </Text>
             )}
-            {hasDescription && (
-               <HeroDescription>{productList.description}</HeroDescription>
-            )}
-         </VStack>
-         {productList.image && hasDescription && (
-            <HeroImage
-               src={productList.image.url}
-               alt={productList.image.alternativeText || undefined}
-            />
+         {hasDescription && (
+            <HeroDescription>{productList.description}</HeroDescription>
          )}
-      </HStack>
+      </VStack>
    );
 }
 
@@ -179,71 +139,6 @@ const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
             dangerouslySetInnerHTML={{ __html: html }}
             {...other}
          />
-      );
-   }
-);
-
-interface HeroImageProps {
-   className?: string;
-   src: string;
-   alt?: string;
-}
-
-const HeroImage = chakra(({ className, src, alt }: HeroImageProps) => {
-   return (
-      <AspectRatio
-         className={className}
-         flex={1}
-         maxW="450px"
-         ratio={4 / 3}
-         display={{
-            base: 'none',
-            md: 'block',
-         }}
-         borderRadius="lg"
-         overflow="hidden"
-         boxShadow="base"
-         bg="white"
-      >
-         <Image
-            src={src}
-            alt={alt}
-            layout="fill"
-            objectFit="contain"
-            priority
-            sizes="50vw"
-         />
-      </AspectRatio>
-   );
-});
-
-type HeroBackgroundImageProps = React.PropsWithChildren<{
-   src: string;
-}>;
-
-const HeroBackgroundImage = chakra(
-   ({ children, src }: HeroBackgroundImageProps) => {
-      return (
-         <Box
-            w="full"
-            backgroundImage={`url("${src}")`}
-            backgroundSize="cover"
-            borderRadius={{
-               base: 0,
-               sm: 'xl',
-            }}
-            overflow="hidden"
-         >
-            <Flex
-               grow={1}
-               bgColor="blackAlpha.800"
-               align="center"
-               justify="center"
-               py={20}
-            >
-               {children}
-            </Flex>
-         </Box>
       );
    }
 );
