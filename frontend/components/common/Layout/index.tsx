@@ -39,6 +39,7 @@ import {
    NoUserLink,
    SearchInput,
    useAppContext,
+   useHeaderContext,
    UserMenu,
    UserMenuButton,
    UserMenuHeading,
@@ -47,9 +48,11 @@ import {
    WordmarkLink,
 } from '@ifixit/ui';
 import { GlobalSettings } from '@models/global-settings';
+import { Menu } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
@@ -179,60 +182,7 @@ export function Layout({
                      <HeaderUserMenu />
                   </HeaderSecondaryNavigation>
                </HeaderBar>
-               {menu && (
-                  <NavigationDrawer>
-                     <DrawerCloseButton />
-                     <NextLink href="/" passHref>
-                        <WordmarkLink aria-label="Go to homepage" mb="8">
-                           <Wordmark />
-                        </WordmarkLink>
-                     </NextLink>
-                     <NavigationAccordion>
-                        {menu.items.map((item, index) => {
-                           switch (item.type) {
-                              case 'submenu': {
-                                 if (item.submenu === null) {
-                                    return null;
-                                 }
-                                 return (
-                                    <NavigationAccordionItem key={index}>
-                                       <NavigationAccordionButton>
-                                          {item.name}
-                                       </NavigationAccordionButton>
-                                       <NavigationAccordionPanel>
-                                          {item.submenu.items.map(
-                                             (subitem, subIndex) => {
-                                                if (subitem.type !== 'link') {
-                                                   return null;
-                                                }
-                                                return (
-                                                   <NavigationAccordionSubItem
-                                                      key={subIndex}
-                                                   >
-                                                      <NextLink
-                                                         href={subitem.url}
-                                                         passHref
-                                                      >
-                                                         <NavigationAccordionLink>
-                                                            {subitem.name}
-                                                         </NavigationAccordionLink>
-                                                      </NextLink>
-                                                   </NavigationAccordionSubItem>
-                                                );
-                                             }
-                                          )}
-                                       </NavigationAccordionPanel>
-                                    </NavigationAccordionItem>
-                                 );
-                              }
-                              default: {
-                                 return null;
-                              }
-                           }
-                        })}
-                     </NavigationAccordion>
-                  </NavigationDrawer>
-               )}
+               {menu && <LayoutNavigationDrawer menu={menu} />}
             </Header>
             {children}
             <Footer
@@ -245,7 +195,68 @@ export function Layout({
    );
 }
 
-export function HeaderUserMenu() {
+interface LayoutNavigationDrawerProps {
+   menu: Menu;
+}
+
+function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
+   const headerContext = useHeaderContext();
+   const router = useRouter();
+
+   React.useEffect(() => {
+      headerContext.navigation.close();
+   }, [router.asPath]);
+
+   return (
+      <NavigationDrawer>
+         <DrawerCloseButton />
+         <NextLink href="/" passHref>
+            <WordmarkLink aria-label="Go to homepage" mb="8">
+               <Wordmark />
+            </WordmarkLink>
+         </NextLink>
+         <NavigationAccordion>
+            {menu.items.map((item, index) => {
+               switch (item.type) {
+                  case 'submenu': {
+                     if (item.submenu === null) {
+                        return null;
+                     }
+                     return (
+                        <NavigationAccordionItem key={index}>
+                           <NavigationAccordionButton>
+                              {item.name}
+                           </NavigationAccordionButton>
+                           <NavigationAccordionPanel>
+                              {item.submenu.items.map((subitem, subIndex) => {
+                                 if (subitem.type !== 'link') {
+                                    return null;
+                                 }
+                                 return (
+                                    <NavigationAccordionSubItem key={subIndex}>
+                                       <NextLink href={subitem.url} passHref>
+                                          <NavigationAccordionLink>
+                                             {subitem.name}
+                                          </NavigationAccordionLink>
+                                       </NextLink>
+                                    </NavigationAccordionSubItem>
+                                 );
+                              })}
+                           </NavigationAccordionPanel>
+                        </NavigationAccordionItem>
+                     );
+                  }
+                  default: {
+                     return null;
+                  }
+               }
+            })}
+         </NavigationAccordion>
+      </NavigationDrawer>
+   );
+}
+
+function HeaderUserMenu() {
    const user = useAuthenticatedUser();
    const appContext = useAppContext();
 
