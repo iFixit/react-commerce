@@ -13,7 +13,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const searchParams = useSearchParams();
    const isFiltered =
       searchParams.query.length > 0 || searchParams.filters.allIds.length > 0;
-   let title = `iFixit | ${productList.title}`;
+   let title = `${productList.title} | iFixit`;
    if (!isFiltered && searchParams.page > 1) {
       title += ` - Page ${searchParams.page}`;
    }
