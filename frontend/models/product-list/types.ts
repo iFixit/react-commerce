@@ -30,6 +30,9 @@ export interface ProductList {
    ancestors: ProductListAncestor[];
    children: ProductListChild[];
    sections: ProductListSection[];
+   algolia: {
+      apiKey: string;
+   };
 }
 
 export interface ProductListAncestor {
@@ -82,7 +85,21 @@ export interface ProductListRelatedPostsSection {
 export interface ProductListFeaturedProductListSection {
    type: ProductListSectionType.FeaturedProductList;
    id: string;
-   productList: ProductListPreview;
+   productList: FeaturedProductList;
+}
+
+export interface FeaturedProductList {
+   algolia: {
+      apiKey: string;
+      indexName: string;
+   };
+   handle: string;
+   title: string;
+   path: string;
+   deviceTitle: string | null;
+   description: string;
+   image: ProductListImage | null;
+   filters: string | null;
 }
 
 export interface ProductListProductListSetSection {

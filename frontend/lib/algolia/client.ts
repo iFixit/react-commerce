@@ -73,9 +73,6 @@ function getAlgoliaFilters(context: SearchContext): string | undefined {
             return assertNever(filter);
       }
    });
-   if (context.params.filters.preset) {
-      algoliaFilters.unshift(context.params.filters.preset);
-   }
    if (algoliaFilters.length > 0) {
       return algoliaFilters.join(' AND ');
    }

@@ -11,7 +11,6 @@ export interface AlgoliaProviderProps<Hit = any> {
    appId: string;
    apiKey: string;
    initialIndexName: string;
-   filtersPreset?: string;
    productsPerPage?: number;
    initialContext?: SearchContext<Hit>;
 }
@@ -30,14 +29,12 @@ export function AlgoliaProvider({
    appId,
    apiKey,
    initialIndexName,
-   filtersPreset,
    productsPerPage,
    initialContext = createSearchContext({
       indexName: initialIndexName,
       filters: {
          byId: {},
          allIds: [],
-         preset: filtersPreset,
       },
       limit: productsPerPage,
    }),
