@@ -13,10 +13,11 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const searchParams = useSearchParams();
    const isFiltered =
       searchParams.query.length > 0 || searchParams.filters.allIds.length > 0;
-   let title = `${productList.title} | iFixit`;
+   let title = productList.title;
    if (!isFiltered && searchParams.page > 1) {
       title += ` - Page ${searchParams.page}`;
    }
+   title += ' | iFixit';
    const canonicalUrl = `${IFIXIT_ORIGIN}${productList.path}${
       searchParams.page > 1
          ? `?${PRODUCT_LIST_PAGE_PARAM}=${searchParams.page}`
