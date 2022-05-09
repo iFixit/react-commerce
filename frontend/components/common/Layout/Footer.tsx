@@ -305,6 +305,7 @@ function NewsletterForm({
                      <Icon as={RiCheckFill} boxSize="5" mb="-2px" />
                   ) : undefined
                }
+               flexShrink={0}
                colorScheme="brand"
             >
                {subscription.status === SubscriptionStatus.Idle

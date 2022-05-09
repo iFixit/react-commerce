@@ -412,10 +412,13 @@ export const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
             xl: 8,
          }}
          align="center"
-         justifyContent="flex-end"
+         justify={{
+            base: 'center',
+            md: 'flex-end',
+         }}
          w={{
             base: 'full',
-            sm: 'auto',
+            md: 'auto',
          }}
          px={{
             base: 5,
@@ -465,7 +468,10 @@ export const FooterNewsletterForm = forwardRef<StackProps, 'form'>(
                base: 'full',
                xl: 'auto',
             }}
-            justify="flex-end"
+            justify={{
+               base: 'center',
+               md: 'flex-end',
+            }}
             align="flex-start"
             {...props}
          />
