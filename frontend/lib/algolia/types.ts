@@ -15,9 +15,7 @@ export interface SearchParams {
    query: string;
    page: number;
    limit?: number;
-   filters: Entity<Filter> & {
-      preset?: string;
-   };
+   filters: Entity<Filter>;
 }
 
 export type Entity<Type = any, Extension = ObjectLiteral> = {

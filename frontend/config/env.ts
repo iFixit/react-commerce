@@ -4,8 +4,8 @@ export const ALGOLIA_APP_ID = checkEnv(
 );
 
 export const ALGOLIA_API_KEY = checkEnv(
-   process.env.NEXT_PUBLIC_ALGOLIA_API_KEY,
-   'NEXT_PUBLIC_ALGOLIA_API_KEY'
+   process.env.ALGOLIA_API_KEY,
+   'ALGOLIA_API_KEY'
 );
 
 export const IFIXIT_ORIGIN = checkEnv(
