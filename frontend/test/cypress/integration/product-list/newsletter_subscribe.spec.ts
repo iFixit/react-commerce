@@ -7,7 +7,7 @@ describe('subscribe to newsletter', () => {
    it('requires an email', () => {
       user.findByTestId('footer-newsletter-form').within(() => {
          user.findByText(/please insert a valid email/i).should('not.exist');
-         user.findByRole('button', { name: /subscribe/i }).click();
+         user.findByRole('button', { name: /subscribe|join/i }).click();
          user.findByText(/please insert a valid email/i).should('be.visible');
       });
    });
@@ -15,7 +15,7 @@ describe('subscribe to newsletter', () => {
    it('prevents invalid email', () => {
       user.findByText(/please insert a valid email/i).should('not.exist');
       user.findByLabelText(/enter your email/i).type('test@example');
-      user.findByRole('button', { name: /subscribe/i }).click();
+      user.findByRole('button', { name: /subscribe|join/i }).click();
       user.findByText(/please insert a valid email/i).should('be.visible');
    });
 
@@ -24,7 +24,7 @@ describe('subscribe to newsletter', () => {
          statusCode: 200,
       });
       user.findByLabelText(/enter your email/i).type('test@example.com');
-      user.findByRole('button', { name: /subscribe/i }).click();
+      user.findByRole('button', { name: /subscribe|join/i }).click();
       user
          .findByRole('button', { name: /subscribed/i })
          .should('be.visible')
@@ -37,7 +37,7 @@ describe('subscribe to newsletter', () => {
          statusCode: 500,
       });
       user.findByLabelText(/enter your email/i).type('test@example.com');
-      user.findByRole('button', { name: /subscribe/i }).click();
+      user.findByRole('button', { name: /subscribe|join/i }).click();
       user
          .findByText(/error trying to subscribe to newsletter/i)
          .should('be.visible');

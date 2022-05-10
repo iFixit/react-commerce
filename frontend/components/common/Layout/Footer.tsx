@@ -284,7 +284,7 @@ function NewsletterForm({
          <FooterNewsletterForm onSubmit={onSubscribe}>
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel>
-                  Email your email
+                  Enter your email
                </FooterNewsletterEmailLabel>
                <FooterNewsletterEmailInput
                   ref={inputRef}
