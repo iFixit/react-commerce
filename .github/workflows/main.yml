@@ -22,6 +22,7 @@ jobs:
            env:
               CYPRESS_NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
            with:
               working-directory: frontend
               install: false

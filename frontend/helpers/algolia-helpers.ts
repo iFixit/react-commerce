@@ -192,7 +192,6 @@ export function parseSearchParams(
       query,
       page,
       filters: {
-         preset: context.params.filters.preset,
          byId: keyBy(filters, 'id'),
          allIds: filters.map((filter) => filter.id),
       },

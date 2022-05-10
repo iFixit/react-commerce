@@ -1,4 +1,7 @@
-import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
+import {
+   ALGOLIA_DEFAULT_INDEX_NAME,
+   PRODUCT_LIST_PAGE_PARAM,
+} from '@config/constants';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import {
    createAlgoliaClient,
@@ -26,6 +29,7 @@ import {
    ProductListImage,
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
+import algoliasearch from 'algoliasearch';
 
 export { ProductListSectionType } from './types';
 export type {
@@ -33,6 +37,7 @@ export type {
    ProductList,
    ProductListSection,
    ProductListPreview,
+   FeaturedProductList,
 } from './types';
 
 /**
@@ -59,6 +64,13 @@ export async function findProductList(
          ? await fetchDeviceWiki(productList.deviceTitle)
          : null;
 
+   const algoliaApiKey = createProductListAlgoliaKey({
+      appId: ALGOLIA_APP_ID,
+      apiKey: ALGOLIA_API_KEY,
+      productListFilters: productList.filters,
+      deviceTitle: productList.deviceTitle,
+   });
+
    return {
       title: productList.title,
       handle: productList.handle,
@@ -84,6 +96,9 @@ export async function findProductList(
       sections: filterNullableItems(
          productList.sections.map(createProductListSection)
       ),
+      algolia: {
+         apiKey: algoliaApiKey,
+      },
    };
 }
 
@@ -177,26 +192,22 @@ export function getProductListPath(
 }
 
 export interface CreateProductListSearchContextOptions {
+   appId: string;
+   apiKey: string;
    algoliaIndexName: string;
    urlQuery: ParsedUrlQuery;
-   deviceTitle?: string | null;
-   filters?: string;
 }
 
 /**
  * Create the product list search context using Algolia
  */
 export async function createProductListSearchContext({
+   appId,
+   apiKey,
    algoliaIndexName,
    urlQuery,
-   deviceTitle,
-   filters,
 }: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
-   const filtersPreset =
-      filters && filters.length > 0
-         ? `${filters} AND public=1`
-         : `device:${JSON.stringify(deviceTitle)} AND public=1`;
-   const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+   const client = createAlgoliaClient(appId, apiKey);
 
    const pageParam = urlQuery[PRODUCT_LIST_PAGE_PARAM];
    const page =
@@ -213,7 +224,6 @@ export async function createProductListSearchContext({
       filters: {
          allIds: [],
          byId: {},
-         preset: filtersPreset,
       },
       limit: 24,
    });
@@ -337,6 +347,14 @@ function createProductListSection(
             return null;
          }
          const image = productList.image?.data?.attributes;
+
+         const algoliaApiKey = createProductListAlgoliaKey({
+            appId: ALGOLIA_APP_ID,
+            apiKey: ALGOLIA_API_KEY,
+            productListFilters: productList.filters,
+            deviceTitle: productList.deviceTitle,
+         });
+
          return {
             type: ProductListSectionType.FeaturedProductList,
             id: section.id,
@@ -351,6 +369,10 @@ function createProductListSection(
                      ? null
                      : getImageFromStrapiImage(image, 'thumbnail'),
                filters: productList.filters ?? null,
+               algolia: {
+                  indexName: ALGOLIA_DEFAULT_INDEX_NAME,
+                  apiKey: algoliaApiKey,
+               },
             },
          };
       }
@@ -398,4 +420,22 @@ function applySearchParams(
    return produce(context, (draftContext) => {
       draftContext.params = params;
    });
+}
+
+function createProductListAlgoliaKey(options: {
+   appId: string;
+   apiKey: string;
+   productListFilters?: string | null;
+   deviceTitle?: string | null;
+}): string {
+   const client = algoliasearch(options.appId, options.apiKey);
+   const publicKey = client.generateSecuredApiKey(options.apiKey, {
+      filters:
+         options.productListFilters && options.productListFilters.length > 0
+            ? `${options.productListFilters} AND public=1`
+            : options.deviceTitle
+            ? `device:${JSON.stringify(options.deviceTitle)} AND public=1`
+            : 'public=1',
+   });
+   return publicKey;
 }
