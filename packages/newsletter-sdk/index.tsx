@@ -1,5 +1,5 @@
-import { IFIXIT_ORIGIN } from '@config/env';
-import { isError } from '@helpers/application-helpers';
+import { isError } from '@ifixit/helpers';
+import { useAppContext } from '@ifixit/ui';
 import * as React from 'react';
 
 /**
@@ -23,6 +23,7 @@ export interface SubscribeFn {
 }
 
 export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
+   const appContext = useAppContext();
    const [state, setState] = React.useState<Subscription>({
       status: SubscriptionStatus.Idle,
    });
@@ -34,7 +35,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             status: SubscriptionStatus.Subscribing,
          }));
          try {
-            await subscribeToNewsletter(email);
+            await subscribeToNewsletter(appContext.ifixitOrigin, email);
             setState(() => ({
                status: SubscriptionStatus.Subscribed,
                error: undefined,
@@ -64,9 +65,12 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
  * Subscribe an email to the newsletter
  * @param email The email to subscribe
  */
-export async function subscribeToNewsletter(email: string): Promise<void> {
+export async function subscribeToNewsletter(
+   apiOrigin: string,
+   email: string
+): Promise<void> {
    const response = await fetch(
-      `${IFIXIT_ORIGIN}/api/2.0/cart/newsletter/subscribe`,
+      `${apiOrigin}/api/2.0/cart/newsletter/subscribe`,
       {
          method: 'POST',
          body: JSON.stringify({

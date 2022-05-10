@@ -56,7 +56,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
-import { Footer } from './Footer';
+import { LayoutFooter } from './Footer';
 
 export interface LayoutProps {
    title: string;
@@ -185,7 +185,7 @@ export function Layout({
                {menu && <LayoutNavigationDrawer menu={menu} />}
             </Header>
             {children}
-            <Footer
+            <LayoutFooter
                currentStore={currentStore}
                stores={stores}
                globalSettings={globalSettings}

@@ -27,3 +27,7 @@ export function invariant(
    const value: string = provided ? `${prefix}: ${provided}` : prefix;
    throw new Error(value);
 }
+
+export function isError(x: any): x is Error {
+   return x instanceof Error;
+}
