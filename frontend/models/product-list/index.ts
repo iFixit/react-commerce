@@ -93,6 +93,7 @@ export async function findProductList(
             productList.children?.data.map(createProductListChild(deviceWiki))
          )
       ),
+      childrenHeading: productList.childrenHeading ?? null,
       sections: filterNullableItems(
          productList.sections.map(createProductListSection)
       ),

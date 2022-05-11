@@ -57,10 +57,7 @@ export function ProductListView({
                   <MetaTags productList={productList} />
                   <HeroSection productList={productList} />
                   {productList.children.length > 0 && (
-                     <ProductListChildrenSection
-                        heading={productList.title}
-                        productListChildren={productList.children}
-                     />
+                     <ProductListChildrenSection productList={productList} />
                   )}
                   <FilterableProductsSection />
                   {productList.sections.map((section, index) => {
