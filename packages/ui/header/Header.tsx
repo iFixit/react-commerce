@@ -43,7 +43,7 @@ export const Header = forwardRef<FlexProps, 'header'>((props, ref) => {
          <Flex
             ref={ref}
             as="header"
-            bg="gray.900"
+            bg="black"
             color="white"
             height="header"
             overflow={{
