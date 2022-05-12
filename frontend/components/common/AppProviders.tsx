@@ -1,7 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { theme } from '@ifixit/react-components';
-import { AppProvider } from '@ifixit/ui';
+import { AppProvider, theme } from '@ifixit/ui';
 import Head from 'next/head';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';

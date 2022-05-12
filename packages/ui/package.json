@@ -5,7 +5,8 @@
    "types": "./index.tsx",
    "license": "MIT",
    "peerDependencies": {
-      "@chakra-ui/react": ">= 1.8.3 < 2"
+      "@chakra-ui/react": ">= 1.8.3 < 2",
+      "@core-ds/primitives": ">2.4"
    },
    "devDependencies": {
       "@types/react": "17.0.37",
