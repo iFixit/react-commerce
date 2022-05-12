@@ -78,6 +78,7 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
+            childrenHeading
             sections {
                __typename
                ... on ComponentProductListBanner {
