@@ -17,11 +17,16 @@ import NextLink from 'next/link';
 import * as React from 'react';
 
 export type ProductListChildrenSectionProps = {
-   heading: string;
-   productListChildren: ProductListChild[];
+   productList: ProductList;
 };
 
-export interface ProductListChild {
+interface ProductList {
+   deviceTitle: string | null;
+   children: ProductListChild[];
+   childrenHeading: string | null;
+}
+
+interface ProductListChild {
    title: string;
    handle: string;
    path: string;
@@ -32,9 +37,13 @@ export interface ProductListChild {
 }
 
 export function ProductListChildrenSection({
-   heading,
-   productListChildren,
+   productList,
 }: ProductListChildrenSectionProps) {
+   const {
+      children: productListChildren,
+      deviceTitle,
+      childrenHeading,
+   } = productList;
    const [shouldShowMore, setShouldShowMore] = React.useState(false);
    const responsiveVisibleChildrenCount = useBreakpointValue(
       {
@@ -62,6 +71,13 @@ export function ProductListChildrenSection({
       setShouldShowMore((current) => !current);
    }, []);
 
+   let heading = 'Choose a model';
+   if (childrenHeading && childrenHeading.length > 0) {
+      heading = childrenHeading;
+   } else if (deviceTitle && deviceTitle.length > 0) {
+      heading = `Choose a model of ${deviceTitle}`;
+   }
+
    return (
       <Box
          px={{
@@ -70,7 +86,7 @@ export function ProductListChildrenSection({
          }}
       >
          <Text fontSize="lg" fontWeight="bold" mb="4">
-            Choose a model of {heading}
+            {heading}
          </Text>
          <VStack spacing="4" align="stretch">
             <SimpleGrid

@@ -8,6 +8,10 @@ import * as React from 'react';
 import { FilterType } from '.';
 import { Facet, FacetOption, SearchContext, SearchResponse } from './types';
 
+const FACETS_NAME_OVERRIDES: { [rawName: string]: string } = {
+   price_range: 'Price Range',
+};
+
 export function useAlgoliaClient(appId: string, apiKey: string) {
    const clientRef = React.useRef<ReturnType<typeof createAlgoliaClient>>();
 
@@ -154,8 +158,11 @@ function applySearchResponse<Hit>(
 }
 
 function formatFacetName(algoliaName: string): string {
-   let name = algoliaName.replace(/(options\.|facet_tags\.)/gi, '');
-   name = name.replace(/_/g, ' ');
-   name = capitalize(name);
-   return name;
+   if (FACETS_NAME_OVERRIDES[algoliaName] == null) {
+      let name = algoliaName.replace(/(options\.|facet_tags\.)/gi, '');
+      name = name.replace(/_/g, ' ');
+      name = capitalize(name);
+      return name;
+   }
+   return FACETS_NAME_OVERRIDES[algoliaName];
 }
