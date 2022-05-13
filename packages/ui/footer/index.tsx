@@ -42,7 +42,7 @@ export const Footer = forwardRef<FlexProps, 'footer'>(
             ref={ref}
             as="footer"
             direction="column"
-            bg="gray.900"
+            bg="black"
             color="white"
             {...otherProps}
          >
