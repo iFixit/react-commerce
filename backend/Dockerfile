@@ -9,7 +9,7 @@ COPY ./package.json ./
 COPY ./yarn.lock ./
 ENV PATH /opt/node_modules/.bin:$PATH
 RUN yarn config set network-timeout 600000 -g
-RUN yarn install
+RUN yarn install && yarn cache clean --all
 WORKDIR /opt/app
 COPY ./ .
 RUN NODE_ENV=production yarn build
