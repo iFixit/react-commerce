@@ -1,4 +1,4 @@
-import { LinkBox, LinkOverlay, SimpleGrid } from '@chakra-ui/react';
+import { Badge, LinkBox, LinkOverlay, SimpleGrid } from '@chakra-ui/react';
 import {
    ProductCard,
    ProductCardBadgeList,
@@ -9,10 +9,10 @@ import {
    ProductCardRating,
    ProductCardTitle,
 } from '@components/common';
-import { IFIXIT_ORIGIN } from '@config/env';
-import { computeDiscountPercentage } from '@helpers/commerce-helpers';
+import { useAppContext } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
+import { useProductSearchHitPricing } from './useProductSearchHitPricing';
 
 export type ProductGridProps = React.PropsWithChildren<unknown>;
 
@@ -39,29 +39,37 @@ export interface ProductGridItemProps {
 }
 
 export function ProductGridItem({ product }: ProductGridItemProps) {
-   const isDiscounted =
-      product.compare_at_price != null &&
-      product.compare_at_price > product.price_float;
+   const appContext = useAppContext();
 
-   const percentage = isDiscounted
-      ? computeDiscountPercentage(
-           product.price_float * 100,
-           product.compare_at_price! * 100
-        )
-      : 0;
+   const { price, compareAtPrice, isDiscounted, percentage } =
+      useProductSearchHitPricing(product);
 
    return (
       <LinkBox as="article" display="block" w="full">
          <ProductCard h="full">
-            <ProductCardImage src={product.image_url} alt={product.title} />
+            <ProductCardImage
+               src={product.image_url}
+               alt={product.group_title}
+            />
             <ProductCardBadgeList>
+               {product.is_pro > 0 && (
+                  <Badge
+                     colorScheme="orange"
+                     textTransform="none"
+                     borderRadius="lg"
+                     px="2.5"
+                     py="1"
+                  >
+                     PRO
+                  </Badge>
+               )}
                {isDiscounted && (
                   <ProductCardDiscountBadge percentage={percentage} />
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
-                  <ProductCardTitle>{product.title}</ProductCardTitle>
+               <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
+                  <ProductCardTitle>{product.group_title}</ProductCardTitle>
                </LinkOverlay>
                {(product.rating >= 4 || product.rating_count > 10) && (
                   <ProductCardRating
@@ -71,8 +79,8 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                )}
                <ProductCardPricing
                   currency="$"
-                  price={product.price_float}
-                  compareAtPrice={product.compare_at_price}
+                  price={price}
+                  compareAtPrice={compareAtPrice}
                />
             </ProductCardBody>
          </ProductCard>

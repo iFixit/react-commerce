@@ -11,21 +11,21 @@ You can run the backend both using SQLite and using Postgres with docker compose
 
 The `frontend` directory is structured as follows:
 
-- `pages`: contains the Next.js app pages (think of these like routes/controllers)
-- `models`: contains business logic (e.g. how to fetch product list from API, how to subscribe to newsletter, etc.)
-- `components`: contains the React view components
-- `helpers`: contains reusable custom app-related helper functions
-- `lib`: contains custom libraries that can stand on their own (e.g. `lib/algolia`). Think of these as packages that potentially could be used in other projects.
-- `assets`: contains assets imported from view components (e.g. svg illustrations)
-- `public`: contains the static files
-- `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
+-  `pages`: contains the Next.js app pages (think of these like routes/controllers)
+-  `models`: contains business logic (e.g. how to fetch product list from API, how to subscribe to newsletter, etc.)
+-  `components`: contains the React view components
+-  `helpers`: contains reusable custom app-related helper functions
+-  `lib`: contains custom libraries that can stand on their own (e.g. `lib/algolia`). Think of these as packages that potentially could be used in other projects.
+-  `assets`: contains assets imported from view components (e.g. svg illustrations)
+-  `public`: contains the static files
+-  `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
 
 ### Install
 
 This command will install both backend and frontend dependencies:
 
 ```sh
-npm run install:all
+pnpm install:all
 ```
 
 ### Dev server
@@ -33,15 +33,23 @@ npm run install:all
 This command will start Strapi dev server and Next.js dev server:
 
 ```sh
-npm run dev
+pnpm dev
 ```
+
+> :warning: Don't forget to create `.env.local` file with the required secrets (see `.env.local.example`)
+
+### Working with Strapi
+
+After running the dev server, you can access the Strapi admin panel at `http://localhost:1337/admin`. To login use email `strapi@ifixit.com` and password `Password1`.
+
+The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
 
 ### Test
 
 This command will start Cypress:
 
 ```sh
-npm run cypress:open
+pnpm run cypress:open
 ```
 
 > :warning: Make sure you are running on the supported Node.js version specified in `.nvmrc`. If you are using
@@ -52,13 +60,13 @@ npm run cypress:open
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
 
 ```sh
-npm run transform-svg
+pnpm run transform-svg
 ```
 
 The script will take svg files and transform them into React components that you can import like this:
 
 ```tsx
-import { LifetimeWarrantyIcon } from "@assets/svg";
+import { LifetimeWarrantyIcon } from '@assets/svg';
 ```
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.

@@ -1,6 +1,6 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_APP_ID } from '@config/env';
 import { AlgoliaProvider, SearchContext } from '@lib/algolia';
 import {
    ProductList,
@@ -50,17 +50,14 @@ export function ProductListView({
                <AlgoliaProvider
                   key={productList.handle}
                   appId={ALGOLIA_APP_ID}
-                  apiKey={ALGOLIA_API_KEY}
+                  apiKey={productList.algolia.apiKey}
                   initialIndexName={searchContext.params.indexName}
                   initialContext={searchContext}
                >
                   <MetaTags productList={productList} />
                   <HeroSection productList={productList} />
                   {productList.children.length > 0 && (
-                     <ProductListChildrenSection
-                        heading={productList.title}
-                        productListChildren={productList.children}
-                     />
+                     <ProductListChildrenSection productList={productList} />
                   )}
                   <FilterableProductsSection />
                   {productList.sections.map((section, index) => {
@@ -93,9 +90,6 @@ export function ProductListView({
                                  <FeaturedProductListSection
                                     key={index}
                                     productList={productList}
-                                    algoliaIndexName={
-                                       searchContext.params.indexName
-                                    }
                                  />
                               );
                            }

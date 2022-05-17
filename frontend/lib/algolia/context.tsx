@@ -1,5 +1,5 @@
+import { useIsomorphicLayoutEffect } from '@ifixit/ui';
 import { immerAssign, useInterpret } from '@lib/fsm-utils';
-import { useIsomorphicLayoutEffect } from '@lib/hooks';
 import { StateMachine } from '@xstate/fsm';
 import * as React from 'react';
 import { useAlgoliaClient } from './client';
@@ -11,7 +11,6 @@ export interface AlgoliaProviderProps<Hit = any> {
    appId: string;
    apiKey: string;
    initialIndexName: string;
-   filtersPreset?: string;
    productsPerPage?: number;
    initialContext?: SearchContext<Hit>;
 }
@@ -30,14 +29,12 @@ export function AlgoliaProvider({
    appId,
    apiKey,
    initialIndexName,
-   filtersPreset,
    productsPerPage,
    initialContext = createSearchContext({
       indexName: initialIndexName,
       filters: {
          byId: {},
          allIds: [],
-         preset: filtersPreset,
       },
       limit: productsPerPage,
    }),
@@ -140,14 +137,16 @@ export function AlgoliaProvider({
                } else {
                   if (draftFilter.selectedOptions.includes(event.optionId)) {
                      if (draftFilter.selectedOptions.length === 1) {
-                        ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                           (id) => id !== event.filterId
-                        );
+                        ctx.params.filters.allIds =
+                           ctx.params.filters.allIds.filter(
+                              (id) => id !== event.filterId
+                           );
                         delete ctx.params.filters.byId[event.filterId];
                      } else {
-                        draftFilter.selectedOptions = draftFilter.selectedOptions.filter(
-                           (option) => option !== event.optionId
-                        );
+                        draftFilter.selectedOptions =
+                           draftFilter.selectedOptions.filter(
+                              (option) => option !== event.optionId
+                           );
                      }
                   } else {
                      draftFilter.selectedOptions.push(event.optionId);
@@ -165,14 +164,16 @@ export function AlgoliaProvider({
                ) {
                   ctx.params.page = 1;
                   if (draftFilter.selectedOptions.length === 1) {
-                     ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                        (id) => id !== event.filterId
-                     );
+                     ctx.params.filters.allIds =
+                        ctx.params.filters.allIds.filter(
+                           (id) => id !== event.filterId
+                        );
                      delete ctx.params.filters.byId[event.filterId];
                   } else {
-                     draftFilter.selectedOptions = draftFilter.selectedOptions.filter(
-                        (option) => option !== event.optionId
-                     );
+                     draftFilter.selectedOptions =
+                        draftFilter.selectedOptions.filter(
+                           (option) => option !== event.optionId
+                        );
                   }
                }
             }
@@ -203,9 +204,10 @@ export function AlgoliaProvider({
                ) {
                   ctx.params.page = 1;
                   if (event.min == null && event.max == null) {
-                     ctx.params.filters.allIds = ctx.params.filters.allIds.filter(
-                        (id) => id !== event.filterId
-                     );
+                     ctx.params.filters.allIds =
+                        ctx.params.filters.allIds.filter(
+                           (id) => id !== event.filterId
+                        );
                      delete ctx.params.filters.byId[event.filterId];
                   } else {
                      draftFilter.min = event.min;

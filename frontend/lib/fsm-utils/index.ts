@@ -7,8 +7,8 @@ import {
    createMachine,
    assign as xstateAssign,
 } from '@xstate/fsm';
-import { useIsomorphicLayoutEffect } from '@lib/hooks';
 import produce, { Draft } from 'immer';
+import { useIsomorphicLayoutEffect } from '@ifixit/ui';
 
 export type ImmerAssigner<TContext, TEvent extends EventObject> = (
    context: Draft<TContext>,
@@ -58,9 +58,8 @@ function useService<
       actions?: StateMachine.ActionMap<TContext, TEvent>;
    }
 ) {
-   const serviceRef = React.useRef<
-      StateMachine.Service<TContext, TEvent, TState>
-   >();
+   const serviceRef =
+      React.useRef<StateMachine.Service<TContext, TEvent, TState>>();
 
    if (serviceRef.current == null) {
       serviceRef.current = interpret(

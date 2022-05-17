@@ -1,5 +1,8 @@
-import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import {
+   ALGOLIA_DEFAULT_INDEX_NAME,
+   PRODUCT_LIST_PAGE_PARAM,
+} from '@config/constants';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import {
    createAlgoliaClient,
    createSearchContext,
@@ -23,8 +26,10 @@ import {
    ProductListChild,
    ProductListSection,
    ProductListSectionType,
+   ProductListImage,
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
+import algoliasearch from 'algoliasearch';
 
 export { ProductListSectionType } from './types';
 export type {
@@ -32,6 +37,7 @@ export type {
    ProductList,
    ProductListSection,
    ProductListPreview,
+   FeaturedProductList,
 } from './types';
 
 /**
@@ -48,6 +54,23 @@ export async function findProductList(
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
+   const shouldFetchDeviceWiki =
+      productList.image?.data?.attributes == null ||
+      productList.children?.data?.some(
+         (child) => child.attributes?.image?.data?.attributes == null
+      );
+   const deviceWiki =
+      shouldFetchDeviceWiki && productList.deviceTitle != null
+         ? await fetchDeviceWiki(productList.deviceTitle)
+         : null;
+
+   const algoliaApiKey = createProductListAlgoliaKey({
+      appId: ALGOLIA_APP_ID,
+      apiKey: ALGOLIA_API_KEY,
+      productListFilters: productList.filters,
+      deviceTitle: productList.deviceTitle,
+   });
+
    return {
       title: productList.title,
       handle: productList.handle,
@@ -58,20 +81,73 @@ export async function findProductList(
       metaDescription: productList.metaDescription ?? null,
       filters: productList.filters ?? null,
       image:
-         productListImageAttributes == null
-            ? null
-            : getImageFromStrapiImage(productListImageAttributes, 'large'),
+         productListImageAttributes != null
+            ? getImageFromStrapiImage(productListImageAttributes, 'large')
+            : deviceWiki
+            ? getDeviceImage(deviceWiki)
+            : null,
       ancestors: createProductListAncestors(productList.parent),
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: sortProductListChildren(
          filterNullableItems(
-            productList.children?.data.map(createProductListChild)
+            productList.children?.data.map(createProductListChild(deviceWiki))
          )
       ),
+      childrenHeading: productList.childrenHeading ?? null,
       sections: filterNullableItems(
          productList.sections.map(createProductListSection)
       ),
+      algolia: {
+         apiKey: algoliaApiKey,
+      },
    };
+}
+
+type DeviceWiki = Record<string, any>;
+
+async function fetchDeviceWiki(
+   deviceTitle: string
+): Promise<DeviceWiki | null> {
+   const deviceHandle = getDeviceHandle(deviceTitle);
+   try {
+      const response = await fetch(
+         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
+         {
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         }
+      );
+      const payload = await response.json();
+      return payload;
+   } catch (error: any) {
+      return null;
+   }
+}
+
+function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
+   return deviceWiki.image?.original == null
+      ? null
+      : {
+           url: deviceWiki.image.original,
+           alternativeText: null,
+        };
+}
+
+function getChildDeviceImage(
+   deviceWiki: DeviceWiki,
+   childDeviceTitle: string
+): ProductListImage | null {
+   const child = deviceWiki.children?.find(
+      (c: any) => c.title === childDeviceTitle
+   );
+   if (child?.image?.original) {
+      return {
+         url: child.image.original,
+         alternativeText: null,
+      };
+   }
+   return null;
 }
 
 /**
@@ -117,26 +193,22 @@ export function getProductListPath(
 }
 
 export interface CreateProductListSearchContextOptions {
+   appId: string;
+   apiKey: string;
    algoliaIndexName: string;
    urlQuery: ParsedUrlQuery;
-   deviceTitle?: string | null;
-   filters?: string;
 }
 
 /**
  * Create the product list search context using Algolia
  */
 export async function createProductListSearchContext({
+   appId,
+   apiKey,
    algoliaIndexName,
    urlQuery,
-   deviceTitle,
-   filters,
 }: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
-   const filtersPreset =
-      filters && filters.length > 0
-         ? `${filters} AND public=1`
-         : `device:${JSON.stringify(deviceTitle)} AND public=1`;
-   const client = createAlgoliaClient(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+   const client = createAlgoliaClient(appId, apiKey);
 
    const pageParam = urlQuery[PRODUCT_LIST_PAGE_PARAM];
    const page =
@@ -153,7 +225,6 @@ export async function createProductListSearchContext({
       filters: {
          allIds: [],
          byId: {},
-         preset: filtersPreset,
       },
       limit: 24,
    });
@@ -209,23 +280,25 @@ function createProductListAncestors(
 
 type ApiProductListChild = NonNullable<ApiProductList['children']>['data'][0];
 
-function createProductListChild(
-   apiChild: ApiProductListChild
-): ProductListChild | null {
-   const { attributes } = apiChild;
-   if (attributes == null) {
-      return null;
-   }
-   const imageAttributes = attributes.image?.data?.attributes;
-   return {
-      title: attributes.title,
-      handle: attributes.handle,
-      path: getProductListPath(attributes),
-      image:
-         imageAttributes == null
-            ? null
-            : getImageFromStrapiImage(imageAttributes, 'medium'),
-      sortPriority: attributes.sortPriority || null,
+function createProductListChild(deviceWiki: DeviceWiki | null) {
+   return (apiChild: ApiProductListChild): ProductListChild | null => {
+      const { attributes } = apiChild;
+      if (attributes == null) {
+         return null;
+      }
+      const imageAttributes = attributes.image?.data?.attributes;
+      return {
+         title: attributes.title,
+         handle: attributes.handle,
+         path: getProductListPath(attributes),
+         image:
+            imageAttributes == null
+               ? deviceWiki && attributes.deviceTitle
+                  ? getChildDeviceImage(deviceWiki, attributes.deviceTitle)
+                  : null
+               : getImageFromStrapiImage(imageAttributes, 'medium'),
+         sortPriority: attributes.sortPriority || null,
+      };
    };
 }
 
@@ -275,6 +348,14 @@ function createProductListSection(
             return null;
          }
          const image = productList.image?.data?.attributes;
+
+         const algoliaApiKey = createProductListAlgoliaKey({
+            appId: ALGOLIA_APP_ID,
+            apiKey: ALGOLIA_API_KEY,
+            productListFilters: productList.filters,
+            deviceTitle: productList.deviceTitle,
+         });
+
          return {
             type: ProductListSectionType.FeaturedProductList,
             id: section.id,
@@ -289,6 +370,10 @@ function createProductListSection(
                      ? null
                      : getImageFromStrapiImage(image, 'thumbnail'),
                filters: productList.filters ?? null,
+               algolia: {
+                  indexName: ALGOLIA_DEFAULT_INDEX_NAME,
+                  apiKey: algoliaApiKey,
+               },
             },
          };
       }
@@ -336,4 +421,22 @@ function applySearchParams(
    return produce(context, (draftContext) => {
       draftContext.params = params;
    });
+}
+
+function createProductListAlgoliaKey(options: {
+   appId: string;
+   apiKey: string;
+   productListFilters?: string | null;
+   deviceTitle?: string | null;
+}): string {
+   const client = algoliasearch(options.appId, options.apiKey);
+   const publicKey = client.generateSecuredApiKey(options.apiKey, {
+      filters:
+         options.productListFilters && options.productListFilters.length > 0
+            ? `${options.productListFilters} AND public=1`
+            : options.deviceTitle
+            ? `device:${JSON.stringify(options.deviceTitle)} AND public=1`
+            : 'public=1',
+   });
+   return publicKey;
 }

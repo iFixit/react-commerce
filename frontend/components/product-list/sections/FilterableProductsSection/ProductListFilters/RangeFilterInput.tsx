@@ -9,8 +9,8 @@ import {
    useBreakpointValue,
 } from '@chakra-ui/react';
 import { ScreenOnlyLabel } from '@components/ui';
+import { useDebouncedCallback } from '@ifixit/ui';
 import { Facet, useRangeFilter } from '@lib/algolia';
-import { useDebouncedCallback } from '@lib/hooks';
 import * as React from 'react';
 
 export interface RangeFilterInputProps {

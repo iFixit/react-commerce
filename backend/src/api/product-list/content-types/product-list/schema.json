@@ -1,157 +1,173 @@
 {
-  "kind": "collectionType",
-  "collectionName": "product_lists",
-  "info": {
-    "singularName": "product-list",
-    "pluralName": "product-lists",
-    "displayName": "ProductList",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": true
-  },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
-  "attributes": {
-    "type": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "enumeration",
-      "enum": ["parts", "tools", "marketing"],
-      "default": "parts",
-      "required": false
-    },
-    "handle": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "uid",
-      "required": true
-    },
-    "title": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string",
-      "required": true
-    },
-    "description": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "richtext",
-      "required": true
-    },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"],
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
+   "kind": "collectionType",
+   "collectionName": "product_lists",
+   "info": {
+      "singularName": "product-list",
+      "pluralName": "product-lists",
+      "displayName": "ProductList",
+      "description": ""
+   },
+   "options": {
+      "draftAndPublish": true
+   },
+   "pluginOptions": {
+      "i18n": {
+         "localized": true
       }
-    },
-    "filters": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
+   },
+   "attributes": {
+      "type": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "enumeration",
+         "enum": ["parts", "tools", "marketing"],
+         "default": "parts",
+         "required": false
       },
-      "type": "string"
-    },
-    "tagline": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
+      "handle": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "uid",
+         "required": true
       },
-      "type": "string"
-    },
-    "metaDescription": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
+      "title": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "string",
+         "required": true
       },
-      "type": "string",
-      "maxLength": 320
-    },
-    "deviceTitle": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
+      "description": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "richtext",
+         "required": true
       },
-      "type": "string"
-    },
-    "excludeFromHierarchyDisplay": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
+      "image": {
+         "type": "media",
+         "multiple": false,
+         "required": false,
+         "allowedTypes": ["images"],
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         }
       },
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "parent": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product-list.product-list",
-      "inversedBy": "children"
-    },
-    "children": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product-list.product-list",
-      "mappedBy": "parent"
-    },
-    "legacyPageId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
+      "filters": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "string"
       },
-      "type": "integer",
-      "unique": true
-    },
-    "sections": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
+      "tagline": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "string"
       },
-      "type": "dynamiczone",
-      "components": [
-        "product-list.banner",
-        "product-list.featured-product-list",
-        "product-list.linked-product-list-set",
-        "product-list.related-posts"
-      ],
-      "required": true
-    },
-    "sortPriority": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
+      "metaDescription": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "string",
+         "maxLength": 320
       },
-      "type": "integer",
-      "default": 0
-    }
-  }
+      "deviceTitle": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "string"
+      },
+      "excludeFromHierarchyDisplay": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "boolean",
+         "default": false,
+         "required": true
+      },
+      "parent": {
+         "type": "relation",
+         "relation": "manyToOne",
+         "target": "api::product-list.product-list",
+         "inversedBy": "children"
+      },
+      "children": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::product-list.product-list",
+         "mappedBy": "parent"
+      },
+      "legacyPageId": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "integer",
+         "unique": true
+      },
+      "sections": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "dynamiczone",
+         "components": [
+            "product-list.banner",
+            "product-list.featured-product-list",
+            "product-list.linked-product-list-set",
+            "product-list.related-posts"
+         ],
+         "required": true
+      },
+      "sortPriority": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "integer",
+         "default": 0
+      },
+      "legacyDescription": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "richtext"
+      },
+      "childrenHeading": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "string"
+      }
+   }
 }

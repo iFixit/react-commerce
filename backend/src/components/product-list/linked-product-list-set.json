@@ -1,19 +1,19 @@
 {
-  "collectionName": "components_pl_linked_pl_sets",
-  "info": {
-    "displayName": "linkedProductListSet",
-    "icon": "sitemap"
-  },
-  "options": {},
-  "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
-    "productLists": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product-list.product-list"
-    }
-  }
+   "collectionName": "components_pl_linked_pl_sets",
+   "info": {
+      "displayName": "linkedProductListSet",
+      "icon": "sitemap"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string",
+         "required": true
+      },
+      "productLists": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::product-list.product-list"
+      }
+   }
 }

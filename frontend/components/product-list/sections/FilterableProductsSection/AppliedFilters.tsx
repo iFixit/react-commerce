@@ -8,12 +8,12 @@ import {
    TagCloseButtonProps,
    TagLabel,
    TagProps,
-   useBreakpointValue,
    useStyles,
    Wrap,
    WrapItem,
 } from '@chakra-ui/react';
-import { assertNever } from '@helpers/application-helpers';
+import { assertNever } from '@ifixit/helpers';
+import { useIsMounted, useSSRBreakpointValue } from '@ifixit/ui';
 import {
    Filter,
    FilterType,
@@ -23,7 +23,6 @@ import {
    useFacetFilter,
    useFilters,
 } from '@lib/algolia';
-import { useIsMounted } from '@lib/hooks';
 import * as React from 'react';
 import { HiX } from 'react-icons/hi';
 
@@ -60,7 +59,7 @@ function AppliedFilterList({ className, filters }: AppliedFilterListProps) {
    const clearAllFilters = React.useCallback(() => {
       clear();
    }, [clear]);
-   const buttonSize = useBreakpointValue({ base: 'lg', md: 'sm' });
+   const buttonSize = useSSRBreakpointValue({ base: 'lg', md: 'sm' }, 'base');
    return (
       <Wrap
          className={className}
@@ -159,7 +158,7 @@ const FilterTag = ({
    name,
    ...otherProps
 }: FilterTagProps) => {
-   const tagSize = useBreakpointValue({ base: 'lg', md: 'md' });
+   const tagSize = useSSRBreakpointValue({ base: 'lg', md: 'md' }, 'base');
    return (
       <Tag size={tagSize} variant="outline" colorScheme="brand" {...otherProps}>
          <TagLabel maxW="260px">{children}</TagLabel>

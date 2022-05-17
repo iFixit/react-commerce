@@ -1,35 +1,41 @@
-version: "3.8"
+version: '3.8'
 services:
-  strapi:
-    build: .
-    environment:
-      NODE_ENV: production
-      STRAPI_VERSION: 4.0.4
-      SEED_DB: "true"
-      DATABASE_CLIENT: postgres
-      DATABASE_NAME: strapi
-      DATABASE_HOST: postgres
-      DATABASE_PORT: 5432
-      DATABASE_USERNAME: strapi
-      DATABASE_PASSWORD: strapi
-      JWT_SECRET: "${JWT_SECRET}"
-    ports:
-      - "${HOST_PORT:-1337}:1337"
-    volumes:
-      - uploads:/srv/app/public/uploads
-    depends_on:
-      - postgres
-    command: "strapi start"
+   strapi:
+      build: .
+      environment:
+         NODE_ENV: production
+         STRAPI_VERSION: 4.1.8
+         SEED_DB: 'true'
+         DATABASE_CLIENT: postgres
+         DATABASE_NAME: strapi
+         DATABASE_HOST: postgres
+         DATABASE_PORT: 5432
+         DATABASE_USERNAME: strapi
+         DATABASE_PASSWORD: strapi
+         JWT_SECRET: '${JWT_SECRET}'
+         API_TOKEN_SALT: '${API_TOKEN_SALT}'
+      ports:
+         - '${HOST_PORT:-1337}:1337'
+      volumes:
+         - uploads:/opt/app/public/uploads
+         - ./config:/opt/app/config
+         - ./src:/opt/app/src
+         - ./package.json:/opt/package.json
+         - ./yarn.lock:/opt/yarn.lock
+         - ./.env:/opt/app/.env
+      depends_on:
+         - postgres
+      command: 'strapi start'
 
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_DB: strapi
-      POSTGRES_USER: strapi
-      POSTGRES_PASSWORD: strapi
-    volumes:
-      - db_data:/var/lib/postgresql/data
+   postgres:
+      image: postgres
+      environment:
+         POSTGRES_DB: strapi
+         POSTGRES_USER: strapi
+         POSTGRES_PASSWORD: strapi
+      volumes:
+         - db_data:/var/lib/postgresql/data
 
 volumes:
-  db_data:
-  uploads:
+   db_data:
+   uploads:

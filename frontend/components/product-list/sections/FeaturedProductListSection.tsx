@@ -21,22 +21,21 @@ import {
    ProductCardTitle,
 } from '@components/common';
 import { Card } from '@components/ui';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
+import { ALGOLIA_APP_ID } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
+import { useAppContext } from '@ifixit/ui';
 import { AlgoliaProvider, useHits } from '@lib/algolia';
-import { ProductListPreview, ProductSearchHit } from '@models/product-list';
+import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
 export interface FeaturedProductListSectionProps {
-   productList: ProductListPreview;
-   algoliaIndexName: string;
+   productList: FeaturedProductList;
 }
 
 export function FeaturedProductListSection({
    productList,
-   algoliaIndexName,
 }: FeaturedProductListSectionProps) {
    return (
       <Card
@@ -127,12 +126,8 @@ export function FeaturedProductListSection({
                <AlgoliaProvider
                   key={productList.handle}
                   appId={ALGOLIA_APP_ID}
-                  apiKey={ALGOLIA_API_KEY}
-                  initialIndexName={algoliaIndexName}
-                  filtersPreset={
-                     productList.filters ??
-                     `device:${productList.deviceTitle} AND public=1`
-                  }
+                  apiKey={productList.algolia.apiKey}
+                  initialIndexName={productList.algolia.indexName}
                   productsPerPage={3}
                >
                   <ProductGrid />
@@ -167,6 +162,7 @@ interface ProductListItemProps {
 }
 
 function ProductListItem({ product }: ProductListItemProps) {
+   const appContext = useAppContext();
    const isDiscounted =
       product.compare_at_price != null &&
       product.compare_at_price > product.price_float;
@@ -205,7 +201,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay href={`${IFIXIT_ORIGIN}${product.url}`}>
+               <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
                   <ProductCardTitle>{product.title}</ProductCardTitle>
                </LinkOverlay>
                <ProductCardRating rating={product.rating} count={102} />

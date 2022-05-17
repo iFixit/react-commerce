@@ -1,6 +1,7 @@
 const TEST_MIN_PRICE_INVALID = 100;
 const TEST_MIN_PRICE = 10;
 const TEST_MAX_PRICE = 50;
+const DEBOUNCE_MS = 500;
 
 describe('product list filters', () => {
    const user = cy;
@@ -31,18 +32,10 @@ describe('product list filters', () => {
       };
    }
 
-   function waitForSearchCompletion() {
-      user.wait('@search');
-   }
-
    it('should help user filter', () => {
       user
          .findByRole('button', { name: /expand item type/i, expanded: false })
          .click(getVirtualListClickOptions());
-
-      user
-         .findByRole('button', { name: /collapse item type/i, expanded: true })
-         .should('exist');
 
       user.findByTestId('accordion-item-panel-item_type').within(() => {
          user
@@ -54,13 +47,12 @@ describe('product list filters', () => {
          user.findByText(/item type:\s*cables/i).should('exist');
       });
 
-      waitForSearchCompletion();
-
       user
          .findByRole('button', { name: /collapse item type/i, expanded: true })
          .click(getVirtualListClickOptions());
 
-      user.wait(500);
+      user.wait('@search');
+      user.wait(2000);
 
       // Assert that the products update according to that filter
       user
@@ -93,13 +85,13 @@ describe('product list filters', () => {
          user.findByText(/device:\s*iphone/i).should('exist');
       });
 
-      waitForSearchCompletion();
+      user.wait('@search');
 
       user
          .findByRole('button', { name: /collapse device$/i, expanded: true })
          .click(getVirtualListClickOptions());
 
-      user.wait(500);
+      user.wait(2000);
 
       user
          .findByRole('button', {
@@ -112,11 +104,14 @@ describe('product list filters', () => {
          .findByLabelText(/set min price/i)
          .type(TEST_MIN_PRICE_INVALID.toString(), getVirtualListTypeOptions());
 
-      waitForSearchCompletion();
+      user.wait('@search');
+      user.wait(DEBOUNCE_MS);
 
       user
          .findByLabelText(/set max price/i)
          .type(TEST_MAX_PRICE.toString(), getVirtualListTypeOptions());
+
+      user.wait(DEBOUNCE_MS);
 
       user.findByText(/max should be higher than min/i).should('exist');
 
@@ -126,8 +121,9 @@ describe('product list filters', () => {
             `{selectall}{backspace}${TEST_MIN_PRICE}`,
             getVirtualListTypeOptions()
          );
+      user.wait(DEBOUNCE_MS);
 
-      waitForSearchCompletion();
+      user.wait('@search');
 
       user
          .findByLabelText(/set max price/i)
@@ -135,8 +131,9 @@ describe('product list filters', () => {
             `{selectall}{backspace}${TEST_MAX_PRICE}`,
             getVirtualListTypeOptions()
          );
+      user.wait(DEBOUNCE_MS);
 
-      waitForSearchCompletion();
+      user.wait('@search');
 
       user.findByTestId('applied-filters').within(() => {
          user.findByText(/price:/i).should('exist');
@@ -159,13 +156,15 @@ describe('product list filters', () => {
 
       user.findByRole('button', { name: /remove device:\s*iphone/i }).click();
 
+      user.wait('@search');
+
       user.findByTestId('applied-filters').within(() => {
          user.findByText(/device:\s*iphone/i).should('not.exist');
       });
 
-      waitForSearchCompletion();
-
       user.findByRole('button', { name: /clear all filters/i }).click();
+
+      user.wait(2000);
 
       user.findByTestId('applied-filters').should('not.exist');
    });

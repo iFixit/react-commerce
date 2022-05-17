@@ -4,6 +4,7 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
+import { ALGOLIA_APP_ID } from '@config/env';
 import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
 import {
    createProductListSearchContext,
@@ -43,21 +44,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
    const deviceTitle = getDeviceTitle(handle);
 
-   const [
-      globalSettings,
-      stores,
-      currentStore,
-      productList,
-   ] = await Promise.all([
-      getGlobalSettings(),
-      getStoreList(),
-      getStoreByCode('us'),
-      findProductList({
-         deviceTitle: {
-            eq: deviceTitle,
-         },
-      }),
-   ]);
+   const [globalSettings, stores, currentStore, productList] =
+      await Promise.all([
+         getGlobalSettings(),
+         getStoreList(),
+         getStoreByCode('us'),
+         findProductList({
+            deviceTitle: {
+               eq: deviceTitle,
+            },
+         }),
+      ]);
 
    if (productList == null) {
       return {
@@ -66,10 +63,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
    }
 
    const searchContext = await createProductListSearchContext({
+      appId: ALGOLIA_APP_ID,
+      apiKey: productList.algolia.apiKey,
       algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
-      deviceTitle,
       urlQuery: context.query,
-      filters: productList.filters || undefined,
    });
 
    if (searchContext == null) {

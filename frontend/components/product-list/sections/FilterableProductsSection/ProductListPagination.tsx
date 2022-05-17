@@ -3,11 +3,12 @@ import {
    Pagination,
    PaginationItem,
    PaginationLink,
-} from '@ifixit/react-components';
+   useIsMounted,
+} from '@ifixit/ui';
 import { usePagination } from '@lib/algolia';
-import { useIsMounted } from '@lib/hooks';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
+import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 import {
    HiChevronDoubleLeft,
@@ -132,16 +133,29 @@ export function ProductListPagination() {
    );
 }
 
+const DYNAMIC_PATH_REGEX = /[^[]+(?=\])/g;
+
 function useGetProductListResultsPageUrl() {
    const router = useRouter();
-   const { p, ...other } = router.query;
+   const dynamicSegments = router.pathname.match(DYNAMIC_PATH_REGEX);
+   const { p, ...otherParams } = router.query;
+   const params: ParsedUrlQuery = {};
+   if (dynamicSegments) {
+      Object.keys(otherParams).forEach((param) => {
+         if (!dynamicSegments.includes(param)) {
+            params[param] = otherParams[param];
+         }
+      });
+   }
    return (page: number) => {
       let query;
       if (page > 1) {
-         query = queryString.stringify({ ...other, p: page });
+         query = queryString.stringify({ ...params, p: page });
       } else {
-         query = queryString.stringify({ ...other });
+         query = queryString.stringify({ ...params });
       }
-      return `${router.pathname}${query.length > 0 ? `?${query}` : ''}`;
+      return `${router.asPath.split('?')[0]}${
+         query.length > 0 ? `?${query}` : ''
+      }`;
    };
 }

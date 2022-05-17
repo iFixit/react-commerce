@@ -1,9 +1,11 @@
 export interface ProductSearchHit {
    objectID: string;
    title: string;
+   group_title: string;
    handle: string;
    price_float: number;
    compare_at_price?: number;
+   price_tiers?: Record<string, string>;
    sku: string;
    image_url: string;
    short_description?: string;
@@ -12,6 +14,7 @@ export interface ProductSearchHit {
    rating: number;
    rating_count: number;
    url: string;
+   is_pro: number;
 }
 
 export interface ProductList {
@@ -26,7 +29,11 @@ export interface ProductList {
    image: ProductListImage | null;
    ancestors: ProductListAncestor[];
    children: ProductListChild[];
+   childrenHeading: string | null;
    sections: ProductListSection[];
+   algolia: {
+      apiKey: string;
+   };
 }
 
 export interface ProductListAncestor {
@@ -46,7 +53,6 @@ export interface ProductListChild {
 export interface ProductListImage {
    alternativeText: string | null;
    url: string;
-   formats: any;
 }
 
 export enum ProductListSectionType {
@@ -80,7 +86,21 @@ export interface ProductListRelatedPostsSection {
 export interface ProductListFeaturedProductListSection {
    type: ProductListSectionType.FeaturedProductList;
    id: string;
-   productList: ProductListPreview;
+   productList: FeaturedProductList;
+}
+
+export interface FeaturedProductList {
+   algolia: {
+      apiKey: string;
+      indexName: string;
+   };
+   handle: string;
+   title: string;
+   path: string;
+   deviceTitle: string | null;
+   description: string;
+   image: ProductListImage | null;
+   filters: string | null;
 }
 
 export interface ProductListProductListSetSection {

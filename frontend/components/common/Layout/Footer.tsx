@@ -1,40 +1,58 @@
+import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
-   Box,
-   Divider,
+   Button,
+   FormErrorMessage,
+   Icon,
    Menu,
    MenuList,
-   SimpleGrid,
-   Stack,
 } from '@chakra-ui/react';
 import {
-   CountryCode,
    FacebookLogo,
-   FlagIcon,
-   Footer as FooterContainer,
-   FooterLink,
-   FooterMenuItem,
-   FooterMenuLink,
-   FooterMenuList,
-   FooterPartnerLink,
+   Flag,
+   FlagCountryCode,
    Globe,
    InstagramLogo,
    RepairOrgLogo,
-   StoreCurrency,
-   StoreFlagBackdrop,
-   StoreMenuButton,
-   StoreMenuItem,
-   StoreName,
    TwitterLogo,
    YoutubeLogo,
-} from '@ifixit/react-components';
+} from '@ifixit/icons';
+import {
+   SubscriptionStatus,
+   useSubscribeToNewsletter,
+} from '@ifixit/newsletter-sdk';
+import {
+   Footer,
+   FooterCopyright,
+   FooterDivider,
+   FooterLegalLink,
+   FooterLegalLinkList,
+   FooterLegalSection,
+   FooterLink,
+   FooterNavigationItem,
+   FooterNavigationLink,
+   FooterNavigationList,
+   FooterNavigationSection,
+   FooterNewsletter,
+   FooterNewsletterCopy,
+   FooterNewsletterDescription,
+   FooterNewsletterEmailInput,
+   FooterNewsletterEmailLabel,
+   FooterNewsletterForm,
+   FooterNewsletterFormControl,
+   FooterNewsletterTitle,
+   FooterPartnerLink,
+   FooterPartners,
+   FooterSettings,
+   FooterSettingsSection,
+   StoreMenuButton,
+   StoreMenuItem,
+} from '@ifixit/ui';
 import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
 import Image from 'next/image';
 import * as React from 'react';
-import { NewsletterForm } from './NewsletterForm';
-import noImageFixie from '@assets/images/no-image-fixie.jpeg';
-import { PageContentWrapper } from '../PageContentWrapper';
+import { RiCheckFill } from 'react-icons/ri';
 
 export interface FooterProps {
    stores: StoreListItem[];
@@ -42,269 +60,259 @@ export interface FooterProps {
    globalSettings: GlobalSettings;
 }
 
-export function Footer({ stores, currentStore, globalSettings }: FooterProps) {
+export function LayoutFooter({
+   stores,
+   currentStore,
+   globalSettings,
+}: FooterProps) {
    const { footer, socialMediaAccounts } = currentStore;
    const { menu1, menu2, partners, bottomMenu } = footer;
    const { newsletterForm } = globalSettings;
    return (
-      <FooterContainer>
-         <NewsletterForm
-            title={newsletterForm.title}
-            description={newsletterForm.subtitle}
-            subscribeLabel={newsletterForm.callToActionButtonTitle}
-            emailPlaceholder={newsletterForm.inputPlaceholder}
-         />
-         <PageContentWrapper>
-            <SimpleGrid
-               columns={{
-                  base: 1,
-                  sm: 3,
-                  lg: 4,
-               }}
-               spacing="4"
-               px={{
-                  base: 5,
-                  sm: 0,
-               }}
-               py="10"
-               autoFlow="row"
-            >
-               <FooterMenuList>
-                  {menu1?.items.map((item, index) => {
-                     if (item.type === 'link') {
-                        return (
-                           <FooterMenuItem key={index}>
-                              <FooterMenuLink href={item.url}>
-                                 {item.name}
-                              </FooterMenuLink>
-                           </FooterMenuItem>
-                        );
-                     }
-                  })}
-               </FooterMenuList>
-               <FooterMenuList>
-                  {menu2?.items.map((item, index) => {
-                     if (item.type === 'link') {
-                        return (
-                           <FooterMenuItem key={index}>
-                              <FooterMenuLink href={item.url}>
-                                 {item.name}
-                              </FooterMenuLink>
-                           </FooterMenuItem>
-                        );
-                     }
-                  })}
-               </FooterMenuList>
-               <FooterMenuList>
-                  {socialMediaAccounts.facebook && (
-                     <FooterMenuItem>
-                        <FooterMenuLink
-                           href={socialMediaAccounts.facebook}
-                           icon={FacebookLogo}
-                        >
-                           Facebook
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  )}
-                  {socialMediaAccounts.twitter && (
-                     <FooterMenuItem>
-                        <FooterMenuLink
-                           href={socialMediaAccounts.twitter}
-                           icon={TwitterLogo}
-                        >
-                           Twitter
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  )}
-                  {socialMediaAccounts.instagram && (
-                     <FooterMenuItem>
-                        <FooterMenuLink
-                           href={socialMediaAccounts.instagram}
-                           icon={InstagramLogo}
-                        >
-                           Instagram
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  )}
-                  {socialMediaAccounts.youtube && (
-                     <FooterMenuItem>
-                        <FooterMenuLink
-                           href={socialMediaAccounts.youtube}
-                           icon={YoutubeLogo}
-                        >
-                           Youtube
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  )}
-                  {socialMediaAccounts.repairOrg && (
-                     <FooterMenuItem>
-                        <FooterMenuLink
-                           href={socialMediaAccounts.repairOrg}
-                           icon={RepairOrgLogo}
-                        >
-                           Repair.org
-                        </FooterMenuLink>
-                     </FooterMenuItem>
-                  )}
-               </FooterMenuList>
-               {partners && (
-                  <Box
-                     mt={{
-                        base: 2,
-                        sm: 6,
-                        lg: 0,
-                     }}
-                     gridColumnEnd={{
-                        sm: 'span 3',
-                        lg: 'auto',
-                     }}
-                  >
-                     <SimpleGrid columns={3} spacing="4">
-                        {partners.items.map((partner) => {
-                           if (partner.type === MenuItemType.ImageLink) {
-                              return (
-                                 <FooterPartnerLink
-                                    key={partner.name}
-                                    href={partner.url}
-                                    position="relative"
-                                    p="0"
-                                 >
-                                    {partner.image?.url ? (
-                                       <Image
-                                          layout="fill"
-                                          objectFit="contain"
-                                          src={partner.image.url}
-                                          alt={
-                                             partner.image?.alternativeText ||
-                                             `${partner.name} logo`
-                                          }
-                                       />
-                                    ) : (
-                                       <Image
-                                          layout="fill"
-                                          objectFit="contain"
-                                          src={noImageFixie}
-                                       />
-                                    )}
-                                 </FooterPartnerLink>
-                              );
-                           }
-                        })}
-                     </SimpleGrid>
-                  </Box>
+      <Footer>
+         <FooterNavigationSection>
+            <FooterNavigationList>
+               {menu1?.items.map((item, index) => {
+                  if (item.type === 'link') {
+                     return (
+                        <FooterNavigationItem key={index}>
+                           <FooterNavigationLink href={item.url}>
+                              {item.name}
+                           </FooterNavigationLink>
+                        </FooterNavigationItem>
+                     );
+                  }
+               })}
+            </FooterNavigationList>
+            <FooterNavigationList>
+               {menu2?.items.map((item, index) => {
+                  if (item.type === 'link') {
+                     return (
+                        <FooterNavigationItem key={index}>
+                           <FooterNavigationLink href={item.url}>
+                              {item.name}
+                           </FooterNavigationLink>
+                        </FooterNavigationItem>
+                     );
+                  }
+               })}
+            </FooterNavigationList>
+            <FooterNavigationList>
+               {socialMediaAccounts.facebook && (
+                  <FooterNavigationItem>
+                     <FooterNavigationLink
+                        href={socialMediaAccounts.facebook}
+                        icon={FacebookLogo}
+                     >
+                        Facebook
+                     </FooterNavigationLink>
+                  </FooterNavigationItem>
                )}
-            </SimpleGrid>
-         </PageContentWrapper>
-
-         <Divider borderColor="gray.700" />
-
-         <PageContentWrapper>
-            <SimpleGrid
-               columns={{
-                  base: 1,
-                  lg: 2,
-               }}
-               py="6"
-               px={{
-                  base: 5,
-                  sm: 0,
-               }}
-               spacing={{
-                  base: 10,
-               }}
-            >
-               <Stack
-                  direction={{
-                     base: 'row',
-                  }}
-                  spacing={{
-                     base: 2,
-                     sm: 12,
-                  }}
-                  justify={{
-                     base: 'space-between',
-                     sm: 'center',
-                     lg: 'flex-start',
-                  }}
-               >
-                  {stores.length > 0 && (
-                     <Menu isLazy lazyBehavior="keepMounted">
-                        <StoreMenuButton
-                           icon={
-                              <StoreFlagBackdrop>
-                                 <FlagIcon code={CountryCode.US} />
-                              </StoreFlagBackdrop>
-                           }
-                        >
-                           Region
-                        </StoreMenuButton>
-                        <MenuList>
-                           {stores.map((store) => {
-                              return (
-                                 <StoreMenuItem
-                                    key={store.code}
-                                    as="a"
-                                    href={store.url}
-                                 >
-                                    <FlagIcon
-                                       code={store.code.toUpperCase() as any}
-                                    />
-                                    <StoreName>{store.name}</StoreName>
-                                    <StoreCurrency>
-                                       {store.currency}
-                                    </StoreCurrency>
-                                 </StoreMenuItem>
-                              );
-                           })}
-                        </MenuList>
-                     </Menu>
-                  )}
-                  <FooterLink
-                     href="https://www.ifixit.com/Translate"
-                     icon={Globe}
-                  >
-                     Help translate
-                  </FooterLink>
-               </Stack>
-               <Stack
-                  justify={{
-                     base: 'flex-start',
-                     sm: 'center',
-                     lg: 'flex-end',
-                  }}
-                  direction={{
-                     base: 'column',
-                     sm: 'row',
-                  }}
-                  spacing={{
-                     base: 2,
-                     sm: 4,
-                  }}
-               >
-                  {bottomMenu?.items.map((item, index) => {
-                     if (item.type === 'link') {
+               {socialMediaAccounts.twitter && (
+                  <FooterNavigationItem>
+                     <FooterNavigationLink
+                        href={socialMediaAccounts.twitter}
+                        icon={TwitterLogo}
+                     >
+                        Twitter
+                     </FooterNavigationLink>
+                  </FooterNavigationItem>
+               )}
+               {socialMediaAccounts.instagram && (
+                  <FooterNavigationItem>
+                     <FooterNavigationLink
+                        href={socialMediaAccounts.instagram}
+                        icon={InstagramLogo}
+                     >
+                        Instagram
+                     </FooterNavigationLink>
+                  </FooterNavigationItem>
+               )}
+               {socialMediaAccounts.youtube && (
+                  <FooterNavigationItem>
+                     <FooterNavigationLink
+                        href={socialMediaAccounts.youtube}
+                        icon={YoutubeLogo}
+                     >
+                        Youtube
+                     </FooterNavigationLink>
+                  </FooterNavigationItem>
+               )}
+               {socialMediaAccounts.repairOrg && (
+                  <FooterNavigationItem>
+                     <FooterNavigationLink
+                        href={socialMediaAccounts.repairOrg}
+                        icon={RepairOrgLogo}
+                     >
+                        Repair.org
+                     </FooterNavigationLink>
+                  </FooterNavigationItem>
+               )}
+            </FooterNavigationList>
+            {partners && (
+               <FooterPartners>
+                  {partners.items.map((partner) => {
+                     if (partner.type === MenuItemType.ImageLink) {
                         return (
-                           <React.Fragment key={index}>
-                              {index !== 0 && (
-                                 <Divider
-                                    opacity={{
-                                       base: 1,
-                                       sm: 1,
-                                    }}
-                                    orientation="vertical"
-                                    borderColor="gray.700"
+                           <FooterPartnerLink
+                              key={partner.name}
+                              href={partner.url}
+                              position="relative"
+                              p="0"
+                           >
+                              {partner.image?.url ? (
+                                 <Image
+                                    layout="fill"
+                                    objectFit="contain"
+                                    src={partner.image.url}
+                                    alt={
+                                       partner.image?.alternativeText ||
+                                       `${partner.name} logo`
+                                    }
+                                 />
+                              ) : (
+                                 <Image
+                                    layout="fill"
+                                    objectFit="contain"
+                                    src={noImageFixie}
                                  />
                               )}
-                              <FooterLink href={item.url}>
-                                 {item.name}
-                              </FooterLink>
-                           </React.Fragment>
+                           </FooterPartnerLink>
                         );
                      }
                   })}
-               </Stack>
-            </SimpleGrid>
-         </PageContentWrapper>
-      </FooterContainer>
+               </FooterPartners>
+            )}
+         </FooterNavigationSection>
+
+         <FooterDivider />
+
+         <FooterSettingsSection>
+            <FooterSettings>
+               {stores.length > 0 && (
+                  <Menu isLazy lazyBehavior="keepMounted">
+                     <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
+                        Region
+                     </StoreMenuButton>
+                     <MenuList>
+                        {stores.map((store) => {
+                           return (
+                              <StoreMenuItem
+                                 key={store.code}
+                                 as="a"
+                                 href={store.url}
+                                 icon={
+                                    <Flag
+                                       code={store.code.toUpperCase() as any}
+                                    />
+                                 }
+                                 name={store.name}
+                                 currency={store.currency}
+                              />
+                           );
+                        })}
+                     </MenuList>
+                  </Menu>
+               )}
+               <FooterLink href="https://www.ifixit.com/Translate" icon={Globe}>
+                  Help translate
+               </FooterLink>
+            </FooterSettings>
+            <NewsletterForm
+               title={newsletterForm.title}
+               description={newsletterForm.subtitle}
+               subscribeLabel={newsletterForm.callToActionButtonTitle}
+               emailPlaceholder={newsletterForm.inputPlaceholder}
+            />
+         </FooterSettingsSection>
+
+         <FooterDivider />
+
+         <FooterLegalSection>
+            <FooterCopyright />
+            <FooterLegalLinkList>
+               {bottomMenu?.items.map((item, index) => {
+                  if (item.type === 'link') {
+                     return (
+                        <FooterLegalLink key={index} href={item.url}>
+                           {item.name}
+                        </FooterLegalLink>
+                     );
+                  }
+               })}
+            </FooterLegalLinkList>
+         </FooterLegalSection>
+      </Footer>
+   );
+}
+
+export interface NewsletterFormProps {
+   title: string;
+   description: string;
+   emailPlaceholder?: string;
+   subscribeLabel: string;
+}
+
+function NewsletterForm({
+   title,
+   description,
+   emailPlaceholder,
+   subscribeLabel,
+}: NewsletterFormProps) {
+   const inputRef = React.useRef<HTMLInputElement>(null);
+   const [subscription, subscribe] = useSubscribeToNewsletter();
+
+   const onSubscribe = React.useCallback(
+      async (event: React.FormEvent<HTMLDivElement>) => {
+         event.preventDefault();
+         if (inputRef.current) {
+            const email = inputRef.current.value;
+            subscribe(email);
+         }
+      },
+      [subscribe]
+   );
+
+   return (
+      <FooterNewsletter>
+         <FooterNewsletterCopy>
+            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
+            <FooterNewsletterDescription>
+               {description}
+            </FooterNewsletterDescription>
+         </FooterNewsletterCopy>
+         <FooterNewsletterForm onSubmit={onSubscribe}>
+            <FooterNewsletterFormControl isInvalid={subscription.error != null}>
+               <FooterNewsletterEmailLabel>
+                  Enter your email
+               </FooterNewsletterEmailLabel>
+               <FooterNewsletterEmailInput
+                  ref={inputRef}
+                  disabled={subscription.status !== SubscriptionStatus.Idle}
+                  placeholder={emailPlaceholder}
+               />
+               <FormErrorMessage>{subscription.error}</FormErrorMessage>
+            </FooterNewsletterFormControl>
+            <Button
+               type="submit"
+               isLoading={
+                  subscription.status === SubscriptionStatus.Subscribing
+               }
+               loadingText="Subscribing"
+               disabled={subscription.status !== SubscriptionStatus.Idle}
+               leftIcon={
+                  subscription.status === SubscriptionStatus.Subscribed ? (
+                     <Icon as={RiCheckFill} boxSize="5" mb="-2px" />
+                  ) : undefined
+               }
+               flexShrink={0}
+               colorScheme="brand"
+            >
+               {subscription.status === SubscriptionStatus.Idle
+                  ? subscribeLabel
+                  : 'Subscribed!'}
+            </Button>
+         </FooterNewsletterForm>
+      </FooterNewsletter>
    );
 }

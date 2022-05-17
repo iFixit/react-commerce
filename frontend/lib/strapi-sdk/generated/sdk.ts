@@ -713,6 +713,7 @@ export type PaginationArg = {
 export type ProductList = {
    __typename?: 'ProductList';
    children?: Maybe<ProductListRelationResponseCollection>;
+   childrenHeading?: Maybe<Scalars['String']>;
    createdAt?: Maybe<Scalars['DateTime']>;
    description: Scalars['String'];
    deviceTitle?: Maybe<Scalars['String']>;
@@ -720,6 +721,7 @@ export type ProductList = {
    filters?: Maybe<Scalars['String']>;
    handle: Scalars['String'];
    image?: Maybe<UploadFileEntityResponse>;
+   legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
    locale?: Maybe<Scalars['String']>;
    localizations?: Maybe<ProductListRelationResponseCollection>;
@@ -768,6 +770,7 @@ export type ProductListEntityResponseCollection = {
 export type ProductListFiltersInput = {
    and?: Maybe<Array<Maybe<ProductListFiltersInput>>>;
    children?: Maybe<ProductListFiltersInput>;
+   childrenHeading?: Maybe<StringFilterInput>;
    createdAt?: Maybe<DateTimeFilterInput>;
    description?: Maybe<StringFilterInput>;
    deviceTitle?: Maybe<StringFilterInput>;
@@ -775,6 +778,7 @@ export type ProductListFiltersInput = {
    filters?: Maybe<StringFilterInput>;
    handle?: Maybe<StringFilterInput>;
    id?: Maybe<IdFilterInput>;
+   legacyDescription?: Maybe<StringFilterInput>;
    legacyPageId?: Maybe<IntFilterInput>;
    locale?: Maybe<StringFilterInput>;
    localizations?: Maybe<ProductListFiltersInput>;
@@ -792,12 +796,14 @@ export type ProductListFiltersInput = {
 
 export type ProductListInput = {
    children?: Maybe<Array<Maybe<Scalars['ID']>>>;
+   childrenHeading?: Maybe<Scalars['String']>;
    description?: Maybe<Scalars['String']>;
    deviceTitle?: Maybe<Scalars['String']>;
    excludeFromHierarchyDisplay?: Maybe<Scalars['Boolean']>;
    filters?: Maybe<Scalars['String']>;
    handle?: Maybe<Scalars['String']>;
    image?: Maybe<Scalars['ID']>;
+   legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
    metaDescription?: Maybe<Scalars['String']>;
    parent?: Maybe<Scalars['ID']>;
@@ -1347,6 +1353,7 @@ export type GetProductListQuery = {
             description: string;
             metaDescription?: Maybe<string>;
             filters?: Maybe<string>;
+            childrenHeading?: Maybe<string>;
             image?: Maybe<{
                __typename?: 'UploadFileEntityResponse';
                data?: Maybe<{
@@ -2527,6 +2534,7 @@ export const GetProductListDocument = `
             }
           }
         }
+        childrenHeading
         sections {
           __typename
           ... on ComponentProductListBanner {

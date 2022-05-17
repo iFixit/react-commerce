@@ -3,22 +3,45 @@ name: E2E tests
 on: [push]
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Start strapi server
-        run: cd backend && docker-compose up -d
-      - name: Install frontend dependencies
-        run: cd frontend && npm install
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        env:
-          CYPRESS_NODE_ENV: test
-          NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-        with:
-          working-directory: frontend
-          install: false
-          build: npm run build
-          start: npm start
+   cypress-run:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v2
+         - name: Start strapi server
+           run: cd backend && docker-compose up -d
+           env:
+              JWT_SECRET: 'ci-secret'
+              API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
+         - name: Install PNPM
+           run: corepack enable && corepack prepare pnpm@6.32.11 --activate
+         - name: Install workspaces
+           run: pnpm install
+         - name: Cypress run
+           uses: cypress-io/github-action@v2
+           env:
+              CYPRESS_NODE_ENV: test
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+           with:
+              working-directory: frontend
+              install: false
+              build: pnpm run build
+              start: pnpm start
+         # after the test run completes
+         # store videos and any screenshots
+         # NOTE: screenshots will be generated only if E2E test failed
+         # thus we store screenshots only on failures
+         # Alternative: create and commit an empty cypress/screenshots folder
+         # to always have something to upload
+         - uses: actions/upload-artifact@v2
+           if: failure()
+           with:
+              name: cypress-screenshots
+              path: frontend/test/cypress/screenshots
+         # Test run video was always captured, so this action uses "always()" condition
+         - uses: actions/upload-artifact@v2
+           if: always()
+           with:
+              name: cypress-videos
+              path: frontend/test/cypress/videos
