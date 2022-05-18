@@ -12,7 +12,8 @@
       "@ifixit/shopify-storefront-client": "workspace:*"
    },
    "peerDependencies": {
-      "react-query": "3.x"
+      "react-query": "3.x",
+      "immer": "9.x"
    },
    "devDependencies": {
       "@types/react": "17.0.37",

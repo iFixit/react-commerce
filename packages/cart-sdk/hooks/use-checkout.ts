@@ -4,47 +4,27 @@ import { useAppContext } from '@ifixit/app';
 import { useQuery } from 'react-query';
 import { cartKeys } from '../utils';
 import { useCart } from './use-cart';
+import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 
 const LOCAL_CHECKOUT_STORAGE_KEY = 'checkout';
 
-interface UseCheckoutData {
+interface CheckoutData {
    url: string;
 }
 
 export function useCheckout() {
-   const appContext = useAppContext();
    const cart = useCart();
    const user = useAuthenticatedUser();
-   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
-   const createCheckout = useCreateCheckout({
-      isUserLoggedIn: user.data != null,
-      ssoRoute: ssoRoute,
-   });
-   const updateCheckout = useUpdateCheckout({
-      isUserLoggedIn: user.data != null,
-      ssoRoute: ssoRoute,
-   });
+   const standardCheckout = useStandardCheckout();
+   const draftOrderCheckout = useDraftOrderCheckout();
    const query = useQuery(
       cartKeys.checkoutUrl,
-      async (): Promise<UseCheckoutData | null> => {
-         const lineItems = cart.data?.miniCart.products.map((product) => {
-            return {
-               variantId: product.variantId,
-               quantity: product.quantity,
-            };
-         });
-         if (lineItems == null || lineItems.length === 0) {
-            return null;
+      async (): Promise<CheckoutData | null> => {
+         if (user.data?.is_pro) {
+            return draftOrderCheckout();
+         } else {
+            return standardCheckout();
          }
-         const localCheckout = getLocalCheckout();
-         if (localCheckout != null) {
-            const checkout = await updateCheckout(localCheckout.id, lineItems);
-            if (checkout != null) {
-               return checkout;
-            }
-         }
-         const checkout = await createCheckout(lineItems);
-         return checkout;
       },
       {
          enabled: cart.data != null && user.isSuccess,
@@ -53,19 +33,73 @@ export function useCheckout() {
    return query;
 }
 
+function useDraftOrderCheckout() {
+   const appContext = useAppContext();
+   const client = useIFixitApiClient();
+   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
+   return async (): Promise<CheckoutData | null> => {
+      const result = await client.post('cart/order/draftOrder');
+      const returnToUrl = new URL(result.invoiceUrl);
+      const ssoUrl = new URL(ssoRoute);
+      ssoUrl.searchParams.set('return_to', returnToUrl.toString());
+      return {
+         url: ssoUrl.href,
+      };
+   };
+}
+
+function useStandardCheckout() {
+   const appContext = useAppContext();
+   const cart = useCart();
+   const user = useAuthenticatedUser();
+   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
+   const isUserLoggedIn = user.data != null;
+   const createCheckout = useCreateCheckout();
+   const updateCheckout = useUpdateCheckout();
+   return async (): Promise<CheckoutData | null> => {
+      const lineItems = cart.data?.miniCart.products.map((product) => {
+         return {
+            variantId: product.variantId,
+            quantity: product.quantity,
+         };
+      });
+      if (lineItems == null || lineItems.length === 0) {
+         return null;
+      }
+      const localCheckout = getLocalCheckout();
+      let checkoutUrl: string | null = null;
+      if (localCheckout != null) {
+         const checkout = await updateCheckout(localCheckout.id, lineItems);
+         if (checkout != null) {
+            checkoutUrl = checkout.webUrl;
+         }
+      }
+      if (checkoutUrl == null) {
+         const checkout = await createCheckout(lineItems);
+         checkoutUrl = checkout.webUrl;
+      }
+      const ssoUrl = new URL(ssoRoute);
+      ssoUrl.searchParams.set('return_to', checkoutUrl);
+      return {
+         url: isUserLoggedIn ? ssoUrl.href : checkoutUrl,
+      };
+   };
+}
+
 interface LineItemInput {
    variantId: string;
    quantity: number;
 }
 
-interface UseCheckoutOptions {
-   isUserLoggedIn: boolean;
-   ssoRoute: string;
+interface CreateCheckoutPayload {
+   webUrl: string;
 }
 
-function useCreateCheckout({ isUserLoggedIn, ssoRoute }: UseCheckoutOptions) {
+function useCreateCheckout() {
    const client = useShopifyStorefrontClient();
-   return async (lineItems: LineItemInput[]): Promise<UseCheckoutData> => {
+   return async (
+      lineItems: LineItemInput[]
+   ): Promise<CreateCheckoutPayload> => {
       const response = await client.request(checkoutCreateMutation, {
          input: {
             lineItems,
@@ -79,20 +113,20 @@ function useCreateCheckout({ isUserLoggedIn, ssoRoute }: UseCheckoutOptions) {
       setLocalCheckout({
          id: checkout.id,
       });
-      const ssoUrl = new URL(ssoRoute);
-      ssoUrl.searchParams.set('return_to', checkout.webUrl);
-      return {
-         url: isUserLoggedIn ? ssoUrl.href : checkout.webUrl,
-      };
+      return checkout;
    };
 }
 
-function useUpdateCheckout({ isUserLoggedIn, ssoRoute }: UseCheckoutOptions) {
+interface UpdateCheckoutPayload {
+   webUrl: string;
+}
+
+function useUpdateCheckout() {
    const client = useShopifyStorefrontClient();
    return async (
       checkoutId: string,
       lineItems: LineItemInput[]
-   ): Promise<UseCheckoutData | null> => {
+   ): Promise<UpdateCheckoutPayload | null> => {
       const response = await client.request(checkoutLineItemReplaceMutation, {
          checkoutId,
          lineItems,
@@ -112,11 +146,7 @@ function useUpdateCheckout({ isUserLoggedIn, ssoRoute }: UseCheckoutOptions) {
          console.error(userErrors);
          throw new Error('checkout unavailable');
       }
-      const ssoUrl = new URL(ssoRoute);
-      ssoUrl.searchParams.set('return_to', checkout.webUrl);
-      return {
-         url: isUserLoggedIn ? ssoUrl.href : checkout.webUrl,
-      };
+      return checkout;
    };
 }
 

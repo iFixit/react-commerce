@@ -7,6 +7,7 @@ type User = {
    username: string;
    handle: string;
    thumbnail: string | null;
+   is_pro: boolean;
    discountTier: string | null;
 };
 
@@ -50,15 +51,17 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
          thumbnailUrl = payload.image.thumbnail;
       }
 
+      const discountTier =
+         typeof payload.discount_tier === 'string'
+            ? payload.discount_tier
+            : null;
       return {
          id: payload.userid,
          username: payload.username,
          handle: payload.unique_username,
          thumbnail: thumbnailUrl,
-         discountTier:
-            typeof payload.discount_tier === 'string'
-               ? payload.discount_tier
-               : null,
+         is_pro: discountTier != null,
+         discountTier,
       };
    }
 
