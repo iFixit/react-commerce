@@ -15,12 +15,12 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react';
-import { IFIXIT_ORIGIN } from '@config/env';
+import { useAppContext } from '@ifixit/app';
 import {
    APICartProduct,
    useRemoveLineItem,
    useUpdateLineItemQuantity,
-} from '@models/cart';
+} from '@ifixit/cart-sdk';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import * as React from 'react';
@@ -35,6 +35,7 @@ interface CartLineItemProps {
 }
 
 export function CartLineItem({ lineItem }: CartLineItemProps) {
+   const appContext = useAppContext();
    const toast = useToast();
    const removeLineItem = useRemoveLineItem();
    const updateLineItemQuantity = useUpdateLineItemQuantity();
@@ -107,7 +108,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                   <VStack align="flex-start" pt="1">
                      <Flex direction="column">
                         <Link
-                           href={`${IFIXIT_ORIGIN}/Store/Product/${lineItem.itemcode}`}
+                           href={`${appContext.ifixitOrigin}/Store/Product/${lineItem.itemcode}`}
                            isExternal
                            fontWeight="bold"
                            fontSize="xs"

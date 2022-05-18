@@ -29,15 +29,16 @@ import {
    useDisclosure,
    VStack,
 } from '@chakra-ui/react';
-import { IFIXIT_ORIGIN } from '@config/env';
-import { useCart, useCheckout } from '@models/cart';
-import { useIsMounted } from '@lib/hooks';
+import { useAppContext } from '@ifixit/app';
+import { useCart, useCheckout } from '@ifixit/cart-sdk';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
+import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
 
 export function CartDrawer() {
+   const appContext = useAppContext();
    const { isOpen, onOpen, onClose } = useDisclosure();
    const btnRef = React.useRef<HTMLButtonElement | null>(null);
    const isMounted = useIsMounted();
@@ -206,7 +207,7 @@ export function CartDrawer() {
                            <SimpleGrid columns={2} spacing="2.5" w="full">
                               <Button
                                  as="a"
-                                 href={`${IFIXIT_ORIGIN}/cart/view`}
+                                 href={`${appContext.ifixitOrigin}/cart/view`}
                                  variant="outline"
                                  onClick={onClose}
                               >

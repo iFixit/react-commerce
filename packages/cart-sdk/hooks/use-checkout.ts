@@ -1,28 +1,28 @@
-import { IFIXIT_ORIGIN } from '@config/env';
-import { useShopifyStorefrontClient } from '@lib/shopify-storefront-client';
-import { useAuthenticatedUser } from '@models/user';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
+import { useAppContext } from '@ifixit/app';
 import { useQuery } from 'react-query';
-import { useCart } from '.';
-import { cartKeys } from './utils';
+import { cartKeys } from '../utils';
+import { useCart } from './use-cart';
 
 const LOCAL_CHECKOUT_STORAGE_KEY = 'checkout';
-
-const SSO_ROUTE = `${IFIXIT_ORIGIN}/User/sso/shopify/ifixit-test?checkout=1`;
 
 interface UseCheckoutData {
    url: string;
 }
 
 export function useCheckout() {
+   const appContext = useAppContext();
    const cart = useCart();
    const user = useAuthenticatedUser();
+   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
    const createCheckout = useCreateCheckout({
       isUserLoggedIn: user.data != null,
-      ssoRoute: SSO_ROUTE,
+      ssoRoute: ssoRoute,
    });
    const updateCheckout = useUpdateCheckout({
       isUserLoggedIn: user.data != null,
-      ssoRoute: SSO_ROUTE,
+      ssoRoute: ssoRoute,
    });
    const query = useQuery(
       cartKeys.checkoutUrl,
@@ -102,7 +102,9 @@ function useUpdateCheckout({ isUserLoggedIn, ssoRoute }: UseCheckoutOptions) {
       if (userErrors.length > 0) {
          if (
             userErrors.some(
-               (userError: any) => userError.code === 'ALREADY_COMPLETED'
+               (userError: any) =>
+                  userError.code === 'ALREADY_COMPLETED' ||
+                  userError.code === 'INVALID'
             )
          ) {
             return null;
@@ -135,7 +137,7 @@ function setLocalCheckout(checkout: LocalCheckout) {
 }
 
 const checkoutCreateMutation = /* GraphQL */ `
-   mutation($input: CheckoutCreateInput!) {
+   mutation ($input: CheckoutCreateInput!) {
       checkoutCreate(input: $input) {
          checkout {
             id
@@ -151,7 +153,7 @@ const checkoutCreateMutation = /* GraphQL */ `
 `;
 
 const checkoutLineItemReplaceMutation = /* GraphQL */ `
-   mutation($checkoutId: ID!, $lineItems: [CheckoutLineItemInput!]!) {
+   mutation ($checkoutId: ID!, $lineItems: [CheckoutLineItemInput!]!) {
       checkoutLineItemsReplace(checkoutId: $checkoutId, lineItems: $lineItems) {
          checkout {
             id

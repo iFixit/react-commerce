@@ -8,9 +8,9 @@ import {
    InputGroupProps,
    InputLeftElement,
 } from '@chakra-ui/react';
+import { useAppContext } from '@ifixit/app';
 import * as React from 'react';
 import { RiSearchLine } from 'react-icons/ri';
-import { useAppContext } from '../app-provider';
 
 export const DesktopHeaderSearchForm = forwardRef<FlexProps, 'form'>(
    (props, ref) => {

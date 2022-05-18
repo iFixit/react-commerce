@@ -1,5 +1,5 @@
+import { useAppContext } from '@ifixit/app';
 import { invariant, isRecord } from '@ifixit/helpers';
-import { useAppContext } from '@ifixit/ui';
 import { useQuery } from 'react-query';
 
 type User = {

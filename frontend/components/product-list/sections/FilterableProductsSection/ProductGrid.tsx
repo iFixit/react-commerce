@@ -9,7 +9,7 @@ import {
    ProductCardRating,
    ProductCardTitle,
 } from '@components/common';
-import { useAppContext } from '@ifixit/ui';
+import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';

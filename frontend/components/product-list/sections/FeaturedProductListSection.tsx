@@ -23,7 +23,7 @@ import {
 import { Card } from '@components/ui';
 import { ALGOLIA_APP_ID } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
-import { useAppContext } from '@ifixit/ui';
+import { useAppContext } from '@ifixit/app';
 import { AlgoliaProvider, useHits } from '@lib/algolia';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';

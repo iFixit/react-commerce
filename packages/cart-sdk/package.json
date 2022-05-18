@@ -1,12 +1,15 @@
 {
-   "name": "@ifixit/newsletter-sdk",
+   "name": "@ifixit/cart-sdk",
    "version": "0.0.0",
    "main": "./index.tsx",
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
       "@ifixit/app": "workspace:*",
-      "@ifixit/helpers": "workspace:*"
+      "@ifixit/helpers": "workspace:*",
+      "@ifixit/ifixit-api-client": "workspace:*",
+      "@ifixit/auth-sdk": "workspace:*",
+      "@ifixit/shopify-storefront-client": "workspace:*"
    },
    "peerDependencies": {
       "react-query": "3.x"

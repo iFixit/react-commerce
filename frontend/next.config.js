@@ -1,9 +1,13 @@
 const withTM = require('next-transpile-modules')([
+   '@ifixit/app',
    '@ifixit/ui',
    '@ifixit/icons',
    '@ifixit/auth-sdk',
+   '@ifixit/cart-sdk',
    '@ifixit/newsletter-sdk',
    '@ifixit/helpers',
+   '@ifixit/ifixit-api-client',
+   '@ifixit/shopify-storefront-client',
 ]);
 
 module.exports = withTM({

@@ -5,7 +5,7 @@
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/ui": "workspace:*",
+      "@ifixit/app": "workspace:*",
       "@ifixit/helpers": "workspace:*"
    },
    "peerDependencies": {

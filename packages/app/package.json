@@ -1,16 +1,10 @@
 {
-   "name": "@ifixit/newsletter-sdk",
+   "name": "@ifixit/app",
    "version": "0.0.0",
    "main": "./index.tsx",
    "types": "./index.tsx",
    "license": "MIT",
-   "dependencies": {
-      "@ifixit/app": "workspace:*",
-      "@ifixit/helpers": "workspace:*"
-   },
-   "peerDependencies": {
-      "react-query": "3.x"
-   },
+   "dependencies": {},
    "devDependencies": {
       "@types/react": "17.0.37",
       "@types/react-dom": "17.0.11",
