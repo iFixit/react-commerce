@@ -26,7 +26,9 @@ import {
    Skeleton,
    Spinner,
    Text,
+   ToastPositionWithLogical,
    useDisclosure,
+   useToast,
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
@@ -44,6 +46,26 @@ export function CartDrawer() {
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
+   const toast = useToast();
+
+   const totalDiscount = cart.data?.totals.discount;
+   const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
+
+   React.useEffect(() => {
+      if (checkout.error) {
+         toast({
+            title: 'Error',
+            description: checkout.error,
+            status: 'error',
+            isClosable: true,
+            position: 'bottom-right',
+         });
+      }
+   }, [checkout.error]);
+
+   React.useEffect(() => {
+      console.log('cart', cart.data);
+   }, [cart.data]);
 
    return (
       <>
@@ -168,7 +190,9 @@ export function CartDrawer() {
                      </ScaleFade>
                   </DrawerBody>
 
-                  <Collapse in={cart.data && cart.data.totalNumItems > 0}>
+                  <Collapse
+                     in={cart.data != null && cart.data.totalNumItems > 0}
+                  >
                      <DrawerFooter borderTopWidth="1px">
                         <Box w="full">
                            <Collapse in={!cart.isError}>
@@ -187,14 +211,10 @@ export function CartDrawer() {
                                           >
                                              {cart.data.totals.total.amountStr}
                                           </Text>
-                                          {cart.data.totals
-                                             .hasPriceDiscount && (
+                                          {savedAmount > 0 && totalDiscount && (
                                              <Text color="gray.500">
                                                 You saved{' '}
-                                                {
-                                                   cart.data.totals.discount
-                                                      .amountStr
-                                                }
+                                                {totalDiscount.amountStr}
                                              </Text>
                                           )}
                                        </>
@@ -214,15 +234,10 @@ export function CartDrawer() {
                                  View cart
                               </Button>
                               <Button
-                                 as="a"
                                  colorScheme="blue"
-                                 disabled={checkout.data == null}
-                                 href={checkout.data?.url}
-                                 isLoading={
-                                    checkout.isLoading ||
-                                    checkout.isFetching ||
-                                    checkout.isIdle
-                                 }
+                                 disabled={!cart.data?.hasItemsInCart}
+                                 isLoading={checkout.isRedirecting}
+                                 onClick={checkout.redirectToCheckout}
                               >
                                  Checkout
                               </Button>

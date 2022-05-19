@@ -1,5 +1,9 @@
 export interface CartAPIResponse {
-   cart: APICart | null;
+   cart: APICart;
+}
+
+export interface Cart extends APICart {
+   hasItemsInCart: boolean;
 }
 
 export interface APICart {

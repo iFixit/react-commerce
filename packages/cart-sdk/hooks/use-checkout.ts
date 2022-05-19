@@ -1,50 +1,125 @@
-import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
+import * as React from 'react';
 import { useAppContext } from '@ifixit/app';
-import { useQuery } from 'react-query';
-import { cartKeys } from '../utils';
-import { useCart } from './use-cart';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
+import { useCart } from './use-cart';
+import { assertNever, isError } from '@ifixit/helpers';
 
 const LOCAL_CHECKOUT_STORAGE_KEY = 'checkout';
 
-interface CheckoutData {
-   url: string;
+const EMPTY_CART_MESSAGE = 'cart is empty';
+const UNKNOWN_ERROR_MESSAGE = 'unknown error';
+
+type UseCheckout = CheckoutState & {
+   redirectToCheckout: RedirectToCheckoutFn;
+   reset(): void;
+};
+
+interface CheckoutState {
+   error: string | null;
+   isRedirecting: boolean;
 }
 
-export function useCheckout() {
+interface RedirectToCheckoutFn {
+   (): Promise<void>;
+}
+
+export function useCheckout(): UseCheckout {
    const cart = useCart();
    const user = useAuthenticatedUser();
    const standardCheckout = useStandardCheckout();
    const draftOrderCheckout = useDraftOrderCheckout();
-   const query = useQuery(
-      cartKeys.checkoutUrl,
-      async (): Promise<CheckoutData | null> => {
-         if (user.data?.is_pro) {
-            return draftOrderCheckout();
+   const [state, dispatch] = React.useReducer(reducer, {
+      error: null,
+      isRedirecting: false,
+   });
+   return {
+      ...state,
+      redirectToCheckout: async () => {
+         if (cart.data == null || !cart.data.hasItemsInCart) {
+            dispatch({
+               type: ActionType.FailedCheckout,
+               error: EMPTY_CART_MESSAGE,
+            });
          } else {
-            return standardCheckout();
+            dispatch({ type: ActionType.StartCheckout });
+            let url: string;
+            try {
+               if (user.data?.is_pro) {
+                  url = await draftOrderCheckout();
+               } else {
+                  url = await standardCheckout();
+               }
+               window.location.href = url;
+            } catch (error) {
+               if (isError(error)) {
+                  dispatch({
+                     type: ActionType.FailedCheckout,
+                     error: error.message,
+                  });
+               } else {
+                  dispatch({
+                     type: ActionType.FailedCheckout,
+                     error: UNKNOWN_ERROR_MESSAGE,
+                  });
+               }
+            }
          }
       },
-      {
-         enabled: cart.data != null && user.isSuccess,
-      }
-   );
-   return query;
+      reset: () => {
+         dispatch({ type: ActionType.ResetCheckout });
+      },
+   };
+}
+
+enum ActionType {
+   StartCheckout,
+   FailedCheckout,
+   ResetCheckout,
+}
+
+type CheckoutAction =
+   | StartCheckoutAction
+   | FailedCheckoutAction
+   | ResetCheckoutAction;
+
+interface StartCheckoutAction {
+   type: ActionType.StartCheckout;
+}
+
+interface FailedCheckoutAction {
+   type: ActionType.FailedCheckout;
+   error: string;
+}
+
+interface ResetCheckoutAction {
+   type: ActionType.ResetCheckout;
+}
+
+function reducer(state: CheckoutState, action: CheckoutAction): CheckoutState {
+   switch (action.type) {
+      case ActionType.StartCheckout:
+         return { isRedirecting: true, error: null };
+      case ActionType.FailedCheckout:
+         return { isRedirecting: false, error: action.error };
+      case ActionType.ResetCheckout:
+         return { isRedirecting: false, error: null };
+      default:
+         return assertNever(action);
+   }
 }
 
 function useDraftOrderCheckout() {
    const appContext = useAppContext();
    const client = useIFixitApiClient();
    const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
-   return async (): Promise<CheckoutData | null> => {
+   return async () => {
       const result = await client.post('cart/order/draftOrder');
       const returnToUrl = new URL(result.invoiceUrl);
       const ssoUrl = new URL(ssoRoute);
       ssoUrl.searchParams.set('return_to', returnToUrl.toString());
-      return {
-         url: ssoUrl.href,
-      };
+      return ssoUrl.href;
    };
 }
 
@@ -56,7 +131,7 @@ function useStandardCheckout() {
    const isUserLoggedIn = user.data != null;
    const createCheckout = useCreateCheckout();
    const updateCheckout = useUpdateCheckout();
-   return async (): Promise<CheckoutData | null> => {
+   return async () => {
       const lineItems = cart.data?.miniCart.products.map((product) => {
          return {
             variantId: product.variantId,
@@ -64,7 +139,7 @@ function useStandardCheckout() {
          };
       });
       if (lineItems == null || lineItems.length === 0) {
-         return null;
+         throw new Error(EMPTY_CART_MESSAGE);
       }
       const localCheckout = getLocalCheckout();
       let checkoutUrl: string | null = null;
@@ -80,9 +155,7 @@ function useStandardCheckout() {
       }
       const ssoUrl = new URL(ssoRoute);
       ssoUrl.searchParams.set('return_to', checkoutUrl);
-      return {
-         url: isUserLoggedIn ? ssoUrl.href : checkoutUrl,
-      };
+      return isUserLoggedIn ? ssoUrl.href : checkoutUrl;
    };
 }
 
