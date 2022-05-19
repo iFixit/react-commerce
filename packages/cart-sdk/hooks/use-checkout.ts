@@ -109,7 +109,11 @@ function useDraftOrderCheckout() {
    const client = useIFixitApiClient();
    const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
    return async () => {
-      const result = await client.post('cart/order/draftOrder');
+      const result = await client.post('cart/order/draftOrder', {
+         headers: {
+            'X-CSRF': appContext.csrfToken,
+         },
+      });
       const returnToUrl = new URL(result.invoiceUrl);
       const ssoUrl = new URL(ssoRoute);
       ssoUrl.searchParams.set('return_to', returnToUrl.toString());

@@ -18,12 +18,19 @@ import {
 } from '@models/store';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
+import crypto from 'crypto';
+import cookie from 'cookie';
 
-type PageProps = ProductListViewProps & {
-   stores: StoreListItem[];
-   currentStore: Store;
-   globalSettings: GlobalSettings;
+type CsrfProps = {
+   csrfToken: string;
 };
+
+type PageProps = CsrfProps &
+   ProductListViewProps & {
+      stores: StoreListItem[];
+      currentStore: Store;
+      globalSettings: GlobalSettings;
+   };
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
@@ -32,6 +39,18 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context.res.setHeader(
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=600'
+   );
+
+   // context.
+   const csrfToken = crypto.randomBytes(64).toString('hex');
+   context.res.setHeader(
+      'Set-Cookie',
+      cookie.serialize('csrf', csrfToken, {
+         sameSite: 'none',
+         secure: true,
+         maxAge: 30 * 60, // 30 minutes
+         path: '/',
+      })
    );
 
    const [globalSettings, stores, currentStore, productList] =
@@ -67,6 +86,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
    return {
       props: {
+         csrfToken,
          globalSettings,
          currentStore,
          stores,

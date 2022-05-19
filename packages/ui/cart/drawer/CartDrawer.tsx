@@ -49,10 +49,6 @@ export function CartDrawer() {
    const totalDiscount = cart.data?.totals.discount;
    const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
 
-   React.useEffect(() => {
-      console.log('cart', cart.data);
-   }, [cart.data]);
-
    return (
       <>
          <Box position="relative">
