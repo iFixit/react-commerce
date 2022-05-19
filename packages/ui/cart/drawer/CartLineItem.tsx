@@ -4,8 +4,6 @@ import {
    Box,
    Collapse,
    Flex,
-   FormErrorMessage,
-   FormErrorMessageProps,
    HStack,
    Icon,
    IconButton,
@@ -176,15 +174,47 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                />
             </Box>
          </Flex>
-         <Box alignSelf="flex-end">
-            <Text color="gray.800" fontSize="sm" fontWeight="medium">
-               {lineItem.subTotalStr}
-            </Text>
-         </Box>
+         <Pricing lineItem={lineItem} />
       </Flex>
    );
 }
 
 const MotionIconButton = motion<IconButtonProps>(IconButton);
 
-const MotionFormErrorMessage = motion<FormErrorMessageProps>(FormErrorMessage);
+interface PricingProps {
+   lineItem: APICartProduct;
+}
+
+function Pricing({ lineItem }: PricingProps) {
+   const subtotal = parseFloat(lineItem.subTotal);
+   const discount = lineItem.discount ? parseFloat(lineItem.discount) : 0;
+   const comparedAt = subtotal + discount;
+   const comparedAtStr = lineItem.subTotalStr.replace(
+      lineItem.subTotal,
+      comparedAt.toFixed(2)
+   );
+
+   return (
+      <Box alignSelf="flex-end">
+         {discount > 0 ? (
+            <>
+               <Text
+                  color="gray.400"
+                  fontSize="sm"
+                  fontWeight="medium"
+                  textDecorationLine="line-through"
+               >
+                  {comparedAtStr}
+               </Text>
+               <Text color="blue.500" fontSize="sm" fontWeight="bold">
+                  {lineItem.subTotalStr}
+               </Text>
+            </>
+         ) : (
+            <Text color="gray.800" fontSize="sm" fontWeight="medium">
+               {lineItem.subTotalStr}
+            </Text>
+         )}
+      </Box>
+   );
+}

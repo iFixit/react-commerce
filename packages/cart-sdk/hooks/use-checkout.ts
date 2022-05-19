@@ -1,15 +1,13 @@
-import * as React from 'react';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { assertNever, isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
+import * as React from 'react';
+import { CartError } from '../utils';
 import { useCart } from './use-cart';
-import { assertNever, isError } from '@ifixit/helpers';
 
 const LOCAL_CHECKOUT_STORAGE_KEY = 'checkout';
-
-const EMPTY_CART_MESSAGE = 'cart is empty';
-const UNKNOWN_ERROR_MESSAGE = 'unknown error';
 
 type UseCheckout = CheckoutState & {
    redirectToCheckout: RedirectToCheckoutFn;
@@ -17,7 +15,7 @@ type UseCheckout = CheckoutState & {
 };
 
 interface CheckoutState {
-   error: string | null;
+   error: CartError | null;
    isRedirecting: boolean;
 }
 
@@ -40,7 +38,7 @@ export function useCheckout(): UseCheckout {
          if (cart.data == null || !cart.data.hasItemsInCart) {
             dispatch({
                type: ActionType.FailedCheckout,
-               error: EMPTY_CART_MESSAGE,
+               error: CartError.EmptyCart,
             });
          } else {
             dispatch({ type: ActionType.StartCheckout });
@@ -54,16 +52,12 @@ export function useCheckout(): UseCheckout {
                window.location.href = url;
             } catch (error) {
                if (isError(error)) {
-                  dispatch({
-                     type: ActionType.FailedCheckout,
-                     error: error.message,
-                  });
-               } else {
-                  dispatch({
-                     type: ActionType.FailedCheckout,
-                     error: UNKNOWN_ERROR_MESSAGE,
-                  });
+                  console.error(error.message);
                }
+               dispatch({
+                  type: ActionType.FailedCheckout,
+                  error: CartError.UnknownError,
+               });
             }
          }
       },
@@ -90,7 +84,7 @@ interface StartCheckoutAction {
 
 interface FailedCheckoutAction {
    type: ActionType.FailedCheckout;
-   error: string;
+   error: CartError;
 }
 
 interface ResetCheckoutAction {
@@ -139,7 +133,7 @@ function useStandardCheckout() {
          };
       });
       if (lineItems == null || lineItems.length === 0) {
-         throw new Error(EMPTY_CART_MESSAGE);
+         throw new Error(CartError.EmptyCart);
       }
       const localCheckout = getLocalCheckout();
       let checkoutUrl: string | null = null;

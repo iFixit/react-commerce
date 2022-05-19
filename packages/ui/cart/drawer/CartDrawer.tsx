@@ -7,6 +7,7 @@ import {
    Box,
    BoxProps,
    Button,
+   CloseButton,
    Collapse,
    Divider,
    Drawer,
@@ -26,13 +27,11 @@ import {
    Skeleton,
    Spinner,
    Text,
-   ToastPositionWithLogical,
    useDisclosure,
-   useToast,
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
-import { useCart, useCheckout } from '@ifixit/cart-sdk';
+import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -46,22 +45,9 @@ export function CartDrawer() {
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
-   const toast = useToast();
 
    const totalDiscount = cart.data?.totals.discount;
    const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
-
-   React.useEffect(() => {
-      if (checkout.error) {
-         toast({
-            title: 'Error',
-            description: checkout.error,
-            status: 'error',
-            isClosable: true,
-            position: 'bottom-right',
-         });
-      }
-   }, [checkout.error]);
 
    React.useEffect(() => {
       console.log('cart', cart.data);
@@ -193,6 +179,10 @@ export function CartDrawer() {
                   <Collapse
                      in={cart.data != null && cart.data.totalNumItems > 0}
                   >
+                     <CheckoutError
+                        error={checkout.error}
+                        onDismiss={checkout.reset}
+                     />
                      <DrawerFooter borderTopWidth="1px">
                         <Box w="full">
                            <Collapse in={!cart.isError}>
@@ -285,5 +275,51 @@ function ListItem({ children }: React.PropsWithChildren<{}>) {
       >
          {children}
       </MotionBox>
+   );
+}
+
+interface CheckoutErrorProps {
+   error: CartError | null;
+   onDismiss: () => void;
+}
+
+function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
+   let checkoutError: React.ReactNode | null = null;
+
+   switch (error) {
+      case CartError.EmptyCart:
+         checkoutError = 'Your cart is empty';
+      case CartError.UnknownError:
+         checkoutError = (
+            <>
+               Checkout unavailable. Please contact{' '}
+               <a href="mailto:support@ifixit.com">support@ifixit.com</a>
+            </>
+         );
+   }
+
+   React.useEffect(() => {
+      if (checkoutError) {
+         const id = setTimeout(onDismiss, 5000);
+         return () => clearTimeout(id);
+      }
+   }, [checkoutError, onDismiss]);
+
+   return (
+      <Collapse in={checkoutError != null}>
+         <Alert status="error">
+            <AlertIcon />
+            <Box flexGrow={1}>
+               <AlertDescription>{checkoutError}</AlertDescription>
+            </Box>
+            <CloseButton
+               alignSelf="flex-start"
+               position="relative"
+               right={-1}
+               top={-1}
+               onClick={onDismiss}
+            />
+         </Alert>
+      </Collapse>
    );
 }
