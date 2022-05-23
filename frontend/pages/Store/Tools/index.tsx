@@ -47,26 +47,23 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       cookie.serialize('csrf', csrfToken, {
          sameSite: 'none',
          secure: true,
+         domain: 'cominor.com',
          maxAge: 30 * 60, // 30 minutes
          path: '/',
       })
    );
 
-   const [
-      globalSettings,
-      stores,
-      currentStore,
-      productList,
-   ] = await Promise.all([
-      getGlobalSettings(),
-      getStoreList(),
-      getStoreByCode('us'),
-      findProductList({
-         handle: {
-            eq: 'Tools',
-         },
-      }),
-   ]);
+   const [globalSettings, stores, currentStore, productList] =
+      await Promise.all([
+         getGlobalSettings(),
+         getStoreList(),
+         getStoreByCode('us'),
+         findProductList({
+            handle: {
+               eq: 'Tools',
+            },
+         }),
+      ]);
 
    if (productList == null) {
       return {
