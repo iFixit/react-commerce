@@ -127,3 +127,34 @@ export function useSSRBreakpointValue<Value>(
    const breakpointValue = useBreakpointValue(values, defaultBreakpoint);
    return isMounted ? breakpointValue : defaultBreakpoint;
 }
+
+/**
+ * A simple hook to store user preferences in local storage.
+ * @param key localStorage key
+ * @param defaultData
+ * @returns [value, setValue] tuple where `value` is the current value and `setValue` is a function to update it.
+ */
+export function useLocalPreference<Data = any>(
+   key: string,
+   defaultData: Data
+): [Data, (data: Data) => void] {
+   const [data, setData] = React.useState(defaultData);
+
+   React.useEffect(() => {
+      const serializedData = localStorage.getItem(key);
+      if (serializedData != null) {
+         try {
+            const data = JSON.parse(serializedData);
+            setData(data as Data);
+         } catch (error) {}
+      }
+   }, []);
+
+   const setAndSave = (data: Data) => {
+      setData(data);
+      const serializedData = JSON.stringify(data);
+      localStorage.setItem(key, serializedData);
+   };
+
+   return [data, setAndSave];
+}
