@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
 import { useUpdateUrlQuery } from '@helpers/algolia-helpers';
+import { cypressWindowLog } from '@helpers/test-helpers';
+import { useLocalPreference } from '@ifixit/ui';
 import {
    useClearSearchParams,
    useHits,
@@ -24,10 +26,10 @@ import {
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
-import { ProductListFilters } from './ProductListFilters';
 import { FiltersModal } from './FiltersModal';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
+import { ProductListFilters } from './ProductListFilters';
 import { ProductListPagination } from './ProductListPagination';
 import { SearchInput } from './SearchInput';
 import {
@@ -38,15 +40,17 @@ import {
    ProductViewSwitch,
    Toolbar,
 } from './Toolbar';
-import { cypressWindowLog } from '@helpers/test-helpers';
 
 export enum ProductViewType {
    Grid = 'grid',
    List = 'list',
 }
 
+const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
+
 export const FilterableProductsSection = React.memo(() => {
-   const [productViewType, setProductViewType] = React.useState(
+   const [productViewType, setProductViewType] = useLocalPreference(
+      PRODUCT_VIEW_TYPE_STORAGE_KEY,
       ProductViewType.List
    );
    const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
