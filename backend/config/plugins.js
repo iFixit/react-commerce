@@ -3,4 +3,22 @@ module.exports = {
       enabled: true,
       resolve: './src/plugins/seed',
    },
+   upload: {
+      config: {
+         provider: 'aws-s3',
+         providerOptions: {
+            // accessKeyId: access provided by machine IAM role
+            // secretAccessKey: access provided by machine IAM role
+            region: env('AWS_REGION'),
+            params: {
+               Bucket: env('S3_BUCKET'),
+            },
+         },
+         actionOptions: {
+            upload: {},
+            uploadStream: {},
+            delete: {},
+         },
+      },
+   },
 };
