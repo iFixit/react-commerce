@@ -1,6 +1,17 @@
 module.exports = [
    'strapi::errors',
-   {
+   env('S3_BUCKET') ? securitySectionWithS3() : 'strapi::security',
+   'strapi::cors',
+   'strapi::poweredBy',
+   'strapi::logger',
+   'strapi::query',
+   'strapi::body',
+   'strapi::favicon',
+   'strapi::public',
+];
+
+function securitySectionWithS3() {
+   return {
       name: 'strapi::security',
       config: {
          contentSecurityPolicy: {
@@ -23,12 +34,5 @@ module.exports = [
             },
          },
       },
-   },
-   'strapi::cors',
-   'strapi::poweredBy',
-   'strapi::logger',
-   'strapi::query',
-   'strapi::body',
-   'strapi::favicon',
-   'strapi::public',
-];
+   };
+}

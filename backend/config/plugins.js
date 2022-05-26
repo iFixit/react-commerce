@@ -2,8 +2,11 @@ module.exports = {
    seed: {
       enabled: true,
       resolve: './src/plugins/seed',
-   },
-   upload: {
+   }
+};
+
+if (env('S3_BUCKET')) {
+   module.exports.upload = {
       config: {
          provider: 'aws-s3',
          providerOptions: {
@@ -20,5 +23,5 @@ module.exports = {
             delete: {},
          },
       },
-   },
+   };
 };
