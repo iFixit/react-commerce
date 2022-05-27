@@ -19,8 +19,12 @@ module.exports = ({ env }) => {
                },
             },
             actionOptions: {
-               upload: {},
-               uploadStream: {},
+               upload: {
+                  "CacheControl": `max-age=${86400*30}`,
+               },
+               uploadStream: {
+                  "CacheControl": `max-age=${86400*30}`,
+               },
                delete: {},
             },
          },
