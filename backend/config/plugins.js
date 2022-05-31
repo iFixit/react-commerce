@@ -5,7 +5,7 @@ module.exports = ({ env }) => {
       seed: {
          enabled: true,
          resolve: './src/plugins/seed',
-      }
+      },
    };
 
    if (env('S3_BUCKET')) {
@@ -22,10 +22,10 @@ module.exports = ({ env }) => {
             },
             actionOptions: {
                upload: {
-                  "CacheControl": `max-age=${oneYear}`,
+                  CacheControl: `max-age=${oneYear}`,
                },
                uploadStream: {
-                  "CacheControl": `max-age=${oneYear}`,
+                  CacheControl: `max-age=${oneYear}`,
                },
                delete: {},
             },
