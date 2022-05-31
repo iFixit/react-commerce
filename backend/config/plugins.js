@@ -3,7 +3,7 @@ module.exports = ({ env }) => {
       seed: {
          enabled: true,
          resolve: './src/plugins/seed',
-      }
+      },
    };
 
    if (env('S3_BUCKET')) {
