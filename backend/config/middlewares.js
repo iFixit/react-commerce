@@ -23,13 +23,17 @@ module.exports = ({ env }) => {
                      "'self'",
                      'data:',
                      'blob:',
-                     `${env("S3_BUCKET")}.s3.${env("AWS_REGION")}.amazonaws.com`,
+                     `${env('S3_BUCKET')}.s3.${env(
+                        'AWS_REGION'
+                     )}.amazonaws.com`,
                   ],
                   'media-src': [
                      "'self'",
                      'data:',
                      'blob:',
-                     `${env("S3_BUCKET")}.s3.${env("AWS_REGION")}.amazonaws.com`,
+                     `${env('S3_BUCKET')}.s3.${env(
+                        'AWS_REGION'
+                     )}.amazonaws.com`,
                   ],
                   upgradeInsecureRequests: null,
                },

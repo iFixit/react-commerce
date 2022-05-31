@@ -1875,10 +1875,10 @@
     "@strapi/utils" "4.1.8"
     sendmail "^1.6.1"
 
-"@strapi/provider-upload-aws-s3@^4.1.12":
-  version "4.1.12"
-  resolved "https://registry.yarnpkg.com/@strapi/provider-upload-aws-s3/-/provider-upload-aws-s3-4.1.12.tgz#597b3199333724c89b659805c70dbedbb2349c3d"
-  integrity sha512-xLLfp6pbl5G7RMZyXLsTkou8byvqdC/09A5VwloBfhoBzWAU/7ZdGpe18f22DaygOsbFWzKY379yKrF4mlNvfA==
+"@strapi/provider-upload-aws-s3@4.1.8":
+  version "4.1.8"
+  resolved "https://registry.yarnpkg.com/@strapi/provider-upload-aws-s3/-/provider-upload-aws-s3-4.1.8.tgz#37e8d903db206e6e7efef76196798ad6eadfa29f"
+  integrity sha512-D3RtHwHiXN5li1DXTvcaiI4weftnyO+Z7IOTBtLaOUGYA/WOm5QadtyXiOhGmQDohBkMH3MNniY2LJVl4Ou78A==
   dependencies:
     aws-sdk "2.892.0"
     lodash "4.17.21"
@@ -4999,7 +4999,7 @@ eventemitter3@^4.0.0:
 events@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
-  integrity sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ=
+  integrity sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==
 
 events@^3.2.0, events@^3.3.0:
   version "3.3.0"
@@ -6690,7 +6690,7 @@ jest-worker@^27.4.5:
 jmespath@0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
-  integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
+  integrity sha512-+kHj8HXArPfpPEKGLZ+kB5ONRTCiGQXo8RQYL0hH8t6pWXUBBK5KkkQmTNOwKK4LEsd0yTsgtjJVm4UBSZea4w==
 
 joycon@^3.0.1:
   version "3.1.1"
