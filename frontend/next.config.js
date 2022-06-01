@@ -40,7 +40,8 @@ module.exports = withTM({
          'assets.cdn.ifixit.com',
          'www.cominor.com',
          'guide-images.cdn.ifixit.com',
-      ],
+         process.env.STRAPI_IMAGE_DOMAIN,
+      ].filter((domain) => domain),
    },
    i18n: {
       locales: ['en-US'],

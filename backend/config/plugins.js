@@ -1,3 +1,5 @@
+const oneYear = 86400 * 365;
+
 module.exports = ({ env }) => {
    const exports = {
       seed: {
@@ -19,8 +21,12 @@ module.exports = ({ env }) => {
                },
             },
             actionOptions: {
-               upload: {},
-               uploadStream: {},
+               upload: {
+                  CacheControl: `max-age=${oneYear}`,
+               },
+               uploadStream: {
+                  CacheControl: `max-age=${oneYear}`,
+               },
                delete: {},
             },
          },
