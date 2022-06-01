@@ -5,6 +5,7 @@ on: [push]
 jobs:
    cypress-run:
       runs-on: ubuntu-latest
+      environment: new-algolia-hooks
       steps:
          - name: Checkout
            uses: actions/checkout@v2

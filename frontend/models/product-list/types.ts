@@ -15,6 +15,7 @@ export interface ProductSearchHit {
    rating_count: number;
    url: string;
    is_pro: number;
+   [attribute: string]: unknown;
 }
 
 export interface ProductList {
