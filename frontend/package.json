@@ -44,7 +44,7 @@
       "algoliasearch": "4.13.1",
       "dayjs": "1.10.5",
       "framer-motion": "6.2.7",
-      "graphql": "15.5.3",
+      "graphql": "15.7.2",
       "immer": "9.0.14",
       "lodash": "4.17.21",
       "lru-cache": "^7.10.1",
