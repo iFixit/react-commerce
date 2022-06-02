@@ -8,6 +8,7 @@ import {
    ModalOverlay,
 } from '@chakra-ui/react';
 import { useIsMounted } from '@ifixit/ui';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
 import { ProductListFilters } from './ProductListFilters';
@@ -15,9 +16,14 @@ import { ProductListFilters } from './ProductListFilters';
 type FiltersModalProps = {
    isOpen: boolean;
    onClose: () => void;
+   productList: ProductList;
 };
 
-export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
+export function FiltersModal({
+   isOpen,
+   onClose,
+   productList,
+}: FiltersModalProps) {
    const [canRenderList, setCanRenderList] = React.useState(false);
    const handleAnimationComplete = React.useCallback(() => {
       setCanRenderList(isOpen);
@@ -36,7 +42,9 @@ export function FiltersModal({ isOpen, onClose }: FiltersModalProps) {
             <ModalBody pt="2.5">
                <AppliedFilters pb="2" />
                <Box h="320px" mx="-6" overflow="hidden">
-                  {canRenderList && <ProductListFilters />}
+                  {canRenderList && (
+                     <ProductListFilters productList={productList} />
+                  )}
                </Box>
             </ModalBody>
             <ModalFooter flexDirection="column" alignItems="stretch">

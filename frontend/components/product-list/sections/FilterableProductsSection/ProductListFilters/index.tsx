@@ -1,6 +1,8 @@
 import { Box, chakra, Spinner } from '@chakra-ui/react';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { Facet, useFacets, useIsSearching } from '@lib/algolia';
+import { ProductList } from '@models/product-list';
+import { WikiInfoEntry } from '@models/product-list/types';
 import { assign } from '@xstate/fsm';
 import { useMachine } from '@xstate/react/fsm';
 import produce from 'immer';
@@ -13,6 +15,7 @@ import { useVirtualAccordionMachine } from './virtualAccordion.machine';
 
 interface FilterListProps {
    className?: string;
+   productList: ProductList;
 }
 
 const FACET_BLOCKLIST = [
@@ -34,9 +37,10 @@ const Sizer = chakra(AutoSizer);
 
 const DEFAULT_ROW_HEIGHT = 41;
 
-export const ProductListFilters = chakra(({ className }: FilterListProps) => {
+export const ProductListFilters = chakra((props: FilterListProps) => {
+   const { className, productList } = props;
    const listRef = React.useRef<VariableSizeList>(null);
-   const { facets, areRefined } = useFilteredFacets();
+   const { facets, areRefined } = useFilteredFacets(productList.wikiInfo);
    const isSearching = useIsSearching();
 
    const machine = useVirtualAccordionMachine({
@@ -181,17 +185,23 @@ function itemKey(index: number, data: ItemData): string {
    return item.name;
 }
 
-function useFilteredFacets() {
+function useFilteredFacets(wikiInfo: WikiInfoEntry[]) {
    const user = useAuthenticatedUser();
    const isProUser = user.data?.discountTier != null;
    const facets = useFacets();
+   const infoNames = React.useMemo(
+      () => new Set(wikiInfo.map((info) => `facet_tags.${info.name}`)),
+      [wikiInfo]
+   );
    const sortedFacets = React.useMemo(() => {
       return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
    }, [facets]);
    const usefulFacets = React.useMemo(() => {
-      const facets = sortedFacets.filter(isUsefulFacet);
+      const facets = sortedFacets
+         .filter(isUsefulFacet)
+         .filter((facet) => !infoNames.has(facet.algoliaName));
       return isProUser ? facets.filter(isAvailableToProUsers) : facets;
-   }, [sortedFacets, isProUser]);
+   }, [sortedFacets, isProUser, wikiInfo]);
    const refinedFacets = React.useMemo(() => {
       return usefulFacets.filter(hasMatchingOptions);
    }, [usefulFacets]);

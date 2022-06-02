@@ -59,7 +59,7 @@ export function ProductListView({
                   {productList.children.length > 0 && (
                      <ProductListChildrenSection productList={productList} />
                   )}
-                  <FilterableProductsSection />
+                  <FilterableProductsSection productList={productList} />
                   {productList.sections.map((section, index) => {
                      switch (section.type) {
                         case ProductListSectionType.Banner: {

@@ -23,7 +23,10 @@ import {
    useSearchParams,
    useSearchState,
 } from '@lib/algolia';
-import { ProductSearchHit } from '@models/product-list';
+import {
+   ProductList as ProductListType,
+   ProductSearchHit,
+} from '@models/product-list';
 import * as React from 'react';
 import { AppliedFilters } from './AppliedFilters';
 import { FiltersModal } from './FiltersModal';
@@ -48,7 +51,12 @@ export enum ProductViewType {
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
-export const FilterableProductsSection = React.memo(() => {
+type SectionProps = {
+   productList: ProductListType;
+};
+
+export const FilterableProductsSection = React.memo((props: SectionProps) => {
+   const { productList } = props;
    const [productViewType, setProductViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
       ProductViewType.List
@@ -112,6 +120,7 @@ export const FilterableProductsSection = React.memo(() => {
                   <FiltersModal
                      isOpen={isFilterModalOpen}
                      onClose={() => setIsFilterModalOpen(false)}
+                     productList={productList}
                   />
                   <VStack w="full" align="stretch" spacing={{ base: 2, md: 0 }}>
                      <HStack>
@@ -177,7 +186,7 @@ export const FilterableProductsSection = React.memo(() => {
                      <Skeleton height="30px" />
                   </VStack>
                ) : (
-                  <ProductListFilters />
+                  <ProductListFilters productList={productList} />
                )}
             </FilterCard>
             <VStack align="stretch" flex={1} spacing="0">
