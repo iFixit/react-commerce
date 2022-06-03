@@ -30,7 +30,11 @@ import {
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import algoliasearch from 'algoliasearch';
-import { DeviceWiki, fetchDeviceWiki, fetchMultipleDeviceImages } from '@lib/ifixit-api/devices';
+import {
+   DeviceWiki,
+   fetchDeviceWiki,
+   fetchMultipleDeviceImages,
+} from '@lib/ifixit-api/devices';
 
 export { ProductListSectionType } from './types';
 export type {
@@ -128,13 +132,14 @@ async function fillMissingImagesFromApi(
    }
    const deviceTitlesWithoutImages = childrenWithoutImages.map(
       (child) => child.deviceTitle
-   );
+   ) as string[]; // cast is safe cause we filter nulls above,
+                  // typescript just doesn't understand
    const imagesResponse = await fetchMultipleDeviceImages(
       deviceTitlesWithoutImages,
       'standard'
    );
    childrenWithoutImages.forEach((child) => {
-      const imageFromDevice = imagesResponse.images[child.deviceTitle];
+      const imageFromDevice = imagesResponse.images[child.deviceTitle as string];
       if (imageFromDevice != null) {
          child.image = {
             url: imageFromDevice,
@@ -300,7 +305,7 @@ function createProductListChild(deviceWiki: DeviceWiki | null) {
       const imageAttributes = attributes.image?.data?.attributes;
       return {
          title: attributes.title,
-         deviceTitle: attributes.deviceTitle,
+         deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
          path: getProductListPath(attributes),
          image:
