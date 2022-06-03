@@ -136,7 +136,7 @@ async function fillMissingImagesFromApi(
                   // typescript just doesn't understand
    const imagesResponse = await fetchMultipleDeviceImages(
       deviceTitlesWithoutImages,
-      'standard'
+      'thumbnail'
    );
    childrenWithoutImages.forEach((child) => {
       const imageFromDevice = imagesResponse.images[child.deviceTitle as string];
