@@ -143,7 +143,7 @@ async function fillMissingImagesFromApi(
       if (imageFromDevice != null) {
          child.image = {
             url: imageFromDevice,
-            alternativeText: null,
+            alternativeText: child.deviceTitle,
          };
       }
    });
