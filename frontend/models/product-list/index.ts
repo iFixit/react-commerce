@@ -30,6 +30,7 @@ import {
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import algoliasearch from 'algoliasearch';
+import { DeviceWiki, fetchDeviceWiki } from '@lib/ifixit-api/devices';
 
 export { ProductListSectionType } from './types';
 export type {
@@ -103,27 +104,6 @@ export async function findProductList(
    };
 }
 
-type DeviceWiki = Record<string, any>;
-
-async function fetchDeviceWiki(
-   deviceTitle: string
-): Promise<DeviceWiki | null> {
-   const deviceHandle = getDeviceHandle(deviceTitle);
-   try {
-      const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
-         {
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         }
-      );
-      const payload = await response.json();
-      return payload;
-   } catch (error: any) {
-      return null;
-   }
-}
 
 function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
    return deviceWiki.image?.original == null
