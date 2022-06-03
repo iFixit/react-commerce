@@ -22,3 +22,32 @@ export async function fetchDeviceWiki(
       return null;
    }
 }
+
+export type MultipleDeviceApiResponse = {
+   images: Record<string, string>;
+};
+
+export type GuideImageSize =
+   | 'mini'
+   | 'thumbnail'
+   | '140x105'
+   | '200x150'
+   | 'standard'
+   | '440x330'
+   | 'medium'
+   | 'large'
+   | 'huge';
+
+export function fetchMultipleDeviceImages(
+   deviceTitles: string[],
+   size: GuideImageSize
+): Promise<MultipleDeviceApiResponse> {
+   const apiUrl = new URL(`${IFIXIT_ORIGIN}/api/2.0/wikis/topic_images`);
+   apiUrl.searchParams.set('size', size);
+   deviceTitles.forEach((deviceTitle) => {
+      apiUrl.searchParams.append('t[]', deviceTitle);
+   });
+   return fetch(apiUrl.toString())
+      .then((response) => response.json())
+      .catch(() => ({ images: {} }));
+}

@@ -30,7 +30,7 @@ import {
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import algoliasearch from 'algoliasearch';
-import { DeviceWiki, fetchDeviceWiki } from '@lib/ifixit-api/devices';
+import { DeviceWiki, fetchDeviceWiki, fetchMultipleDeviceImages } from '@lib/ifixit-api/devices';
 
 export { ProductListSectionType } from './types';
 export type {
@@ -89,9 +89,13 @@ export async function findProductList(
             : null,
       ancestors: createProductListAncestors(productList.parent),
       // Strapi sort order is case sensitive, so we need to improve on it in memory
-      children: sortProductListChildren(
-         filterNullableItems(
-            productList.children?.data.map(createProductListChild(deviceWiki))
+      children: await fillMissingImagesFromApi(
+         sortProductListChildren(
+            filterNullableItems(
+               productList.children?.data.map(
+                  createProductListChild(deviceWiki)
+               )
+            )
          )
       ),
       childrenHeading: productList.childrenHeading ?? null,
@@ -104,7 +108,6 @@ export async function findProductList(
    };
 }
 
-
 function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
    return deviceWiki.image?.original == null
       ? null
@@ -112,6 +115,34 @@ function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
            url: deviceWiki.image.original,
            alternativeText: null,
         };
+}
+
+async function fillMissingImagesFromApi(
+   productListChildren: ProductListChild[]
+): Promise<ProductListChild[]> {
+   const childrenWithoutImages = productListChildren.filter(
+      (child) => child.image == null && child.deviceTitle
+   );
+   if (childrenWithoutImages.length === 0) {
+      return productListChildren;
+   }
+   const deviceTitlesWithoutImages = childrenWithoutImages.map(
+      (child) => child.deviceTitle
+   );
+   const imagesResponse = await fetchMultipleDeviceImages(
+      deviceTitlesWithoutImages,
+      'standard'
+   );
+   childrenWithoutImages.forEach((child) => {
+      const imageFromDevice = imagesResponse.images[child.deviceTitle];
+      if (imageFromDevice != null) {
+         child.image = {
+            url: imageFromDevice,
+            alternativeText: null,
+         };
+      }
+   });
+   return productListChildren;
 }
 
 function getChildDeviceImage(
@@ -269,6 +300,7 @@ function createProductListChild(deviceWiki: DeviceWiki | null) {
       const imageAttributes = attributes.image?.data?.attributes;
       return {
          title: attributes.title,
+         deviceTitle: attributes.deviceTitle,
          handle: attributes.handle,
          path: getProductListPath(attributes),
          image:

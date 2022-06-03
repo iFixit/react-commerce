@@ -44,6 +44,7 @@ export interface ProductListAncestor {
 
 export interface ProductListChild {
    title: string;
+   deviceTitle: string | null;
    handle: string;
    path: string;
    image: ProductListImage | null;
