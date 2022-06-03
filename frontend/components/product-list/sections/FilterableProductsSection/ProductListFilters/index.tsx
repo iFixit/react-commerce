@@ -189,27 +189,23 @@ function useFilteredFacets(wikiInfo: WikiInfoEntry[]) {
    const user = useAuthenticatedUser();
    const isProUser = user.data?.discountTier != null;
    const facets = useFacets();
-   const infoNames = React.useMemo(
-      () => new Set(wikiInfo.map((info) => `facet_tags.${info.name}`)),
-      [wikiInfo]
-   );
-   const sortedFacets = React.useMemo(() => {
-      return facets.slice().sort((a, b) => a.name.localeCompare(b.name));
-   }, [facets]);
-   const usefulFacets = React.useMemo(() => {
-      const facets = sortedFacets
+   const infoNames = React.useMemo(() => {
+      return new Set(wikiInfo.map((info) => `facet_tags.${info.name}`));
+   }, [wikiInfo]);
+   const [userFacets, refinedFacets] = React.useMemo(() => {
+      const usefulFacets = facets
+         .slice()
+         .sort((a, b) => a.name.localeCompare(b.name))
          .filter(isUsefulFacet)
          .filter((facet) => !infoNames.has(facet.algoliaName));
-      return isProUser ? facets.filter(isAvailableToProUsers) : facets;
-   }, [sortedFacets, isProUser, wikiInfo]);
-   const refinedFacets = React.useMemo(() => {
-      return usefulFacets.filter(hasMatchingOptions);
-   }, [usefulFacets]);
-   const displayedFacets = React.useMemo(() => {
-      return refinedFacets.length > 0 ? refinedFacets : usefulFacets;
-   }, [usefulFacets, refinedFacets]);
+      const userFacets = isProUser
+         ? usefulFacets.filter(isAvailableToProUsers)
+         : usefulFacets;
+      const refinedFacets = userFacets.filter(hasMatchingOptions);
+      return [userFacets, refinedFacets];
+   }, [facets, isProUser, infoNames]);
    return {
-      facets: displayedFacets,
+      facets: refinedFacets.length > 0 ? refinedFacets : userFacets,
       areRefined: refinedFacets.length > 0,
    };
 }
