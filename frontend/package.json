@@ -33,6 +33,7 @@
       "@ifixit/icons": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
       "@ifixit/ui": "workspace:*",
+      "@sentry/nextjs": "^7.0.0",
       "@xstate/fsm": "1.6.1",
       "@xstate/react": "1.5.1",
       "algoliasearch": "4.9.1",
