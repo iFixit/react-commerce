@@ -174,7 +174,7 @@ export function getProductListPath(
 ): string {
    switch (productList.type) {
       case Enum_Productlist_Type.Tools: {
-         return `/Store/Tools/${productList.handle}`;
+         return `/Tools/${productList.handle}`;
       }
       case Enum_Productlist_Type.Marketing: {
          return `/Store/${productList.handle}`;
@@ -185,7 +185,7 @@ export function getProductListPath(
             productList.deviceTitle.length > 0
          ) {
             const deviceHandle = getDeviceHandle(productList.deviceTitle);
-            return `/Store/Parts/${deviceHandle}`;
+            return `/Parts/${deviceHandle}`;
          }
          return `/Store/${productList.handle}`;
       }
