@@ -16,7 +16,7 @@ module.exports = ({ env }) => {
          config: {
             dsn: isProd ? SENTRY_PROD_DSN : SENTRY_DEV_DSN,
             init: {
-               tracesSampleRate: isProd ? 1.0 : 0.0,
+               sampleRate: isProd ? 1.0 : 0.0,
                initialScope: {
                   tags: {
                      'next.runtime': 'strapi',

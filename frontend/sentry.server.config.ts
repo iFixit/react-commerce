@@ -18,7 +18,7 @@ const fallbackDsn = isProd ? SENTRY_PROD_DSN : SENTRY_DEV_DSN;
 
 Sentry.init({
    dsn: SENTRY_DSN || fallbackDsn,
-   tracesSampleRate: isProd ? 1.0 : 0.0,
+   sampleRate: isProd ? 1.0 : 0.0,
    // ...
    // Note: if you want to override the automatic release value, do not set a
    // `release` value here - use the environment variable `SENTRY_RELEASE`, so
