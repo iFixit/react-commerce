@@ -34,6 +34,7 @@ import {
    DeviceWiki,
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
+   getDeviceHandle,
 } from '@lib/ifixit-api/devices';
 
 export { ProductListSectionType } from './types';
@@ -164,13 +165,6 @@ function getChildDeviceImage(
       };
    }
    return null;
-}
-
-/**
- * Convert product list device title to a URL friendly slug
- */
-export function getDeviceHandle(deviceTitle: string): string {
-   return deviceTitle.replace(/\s+/g, '_');
 }
 
 /**

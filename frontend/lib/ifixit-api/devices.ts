@@ -1,5 +1,4 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { getDeviceHandle } from '@models/product-list';
 
 export type DeviceWiki = Record<string, any>;
 
@@ -50,4 +49,11 @@ export function fetchMultipleDeviceImages(
    return fetch(apiUrl.toString())
       .then((response) => response.json())
       .catch(() => ({ images: {} }));
+}
+
+/**
+ * Convert product list device title to a URL friendly slug
+ */
+export function getDeviceHandle(deviceTitle: string): string {
+   return deviceTitle.replace(/\s+/g, '_');
 }
