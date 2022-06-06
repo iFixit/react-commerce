@@ -19,6 +19,7 @@ const sentryWebpackPluginOptions = {
    // For all available options, see:
    // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
+const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;
 
 const moduleExports = {
    env: {
@@ -61,11 +62,17 @@ const moduleExports = {
       locales: ['en-US'],
       defaultLocale: 'en-US',
    },
+   ...(!SENTRY_AUTH_TOKEN && {
+      sentry: {
+         disableServerWebpackPlugin: true,
+         disableClientWebpackPlugin: true,
+      },
+   }),
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(
    withTM(moduleExports),
-   sentryWebpackPluginOptions
+   SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );
