@@ -38,6 +38,8 @@ pnpm dev
 
 > :warning: Don't forget to create `.env.local` file with the required secrets (see `.env.local.example`)
 
+-  Use an API key from [Sentry](https://sentry.io/settings/account/api/auth-tokens/) for `SENTRY_AUTH_TOKEN`.
+
 ### Working with Strapi
 
 After running the dev server, you can access the Strapi admin panel at `http://localhost:1337/admin`. To login use email `strapi@ifixit.com` and password `Password1`.
