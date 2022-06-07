@@ -8,7 +8,7 @@ module.exports = ({ env }) => {
          resolve: './src/plugins/seed',
       },
       sentry: {
-         enabled: true,
+         enabled: !!SENTRY_DSN,
          config: {
             dsn: SENTRY_DSN,
             init: {
