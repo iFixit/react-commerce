@@ -284,7 +284,7 @@
          {
             "__component": "menu.link",
             "name": "Fix Kits",
-            "url": "/Store/Kits",
+            "url": "/Kits",
             "description": "Fix it the easy way with our all-in-one repair kits."
          }
       ]
