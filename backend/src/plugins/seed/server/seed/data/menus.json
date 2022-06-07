@@ -272,13 +272,13 @@
          {
             "__component": "menu.link",
             "name": "Tools",
-            "url": "/Store/Tools",
+            "url": "/Tools",
             "description": "Shop our wide selection of precision tools."
          },
          {
             "__component": "menu.link",
             "name": "Parts",
-            "url": "/Store/Parts",
+            "url": "/Parts",
             "description": "Shop parts backed by our quality guarantee."
          },
          {
