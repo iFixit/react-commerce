@@ -1,9 +1,5 @@
 const oneYear = 86400 * 365;
-const SENTRY_DEV_DSN =
-   'https://95ab6917c0234f80b99bb0be8e720355@o186239.ingest.sentry.io/6475315';
-const SENTRY_PROD_DSN =
-   'https://003ddade86504df5aa49247ba36031e7@o186239.ingest.sentry.io/6469069';
-const isProd = process.env.NODE_ENV === 'production';
+const SENTRY_DSN = process.env.SENTRY_DSN;
 
 module.exports = ({ env }) => {
    const exports = {
@@ -14,9 +10,9 @@ module.exports = ({ env }) => {
       sentry: {
          enabled: true,
          config: {
-            dsn: isProd ? SENTRY_PROD_DSN : SENTRY_DEV_DSN,
+            dsn: SENTRY_DSN,
             init: {
-               sampleRate: isProd ? 1.0 : 0.0,
+               sampleRate: 1.0,
                initialScope: {
                   tags: {
                      'next.runtime': 'strapi',
