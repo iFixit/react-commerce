@@ -8,7 +8,7 @@ export default function HomePage() {
          <Box as="nav">
             <List>
                <ListItem>
-                  <Link href="/Store/Parts" passHref>
+                  <Link href="/Parts" passHref>
                      <chakra.a
                         color="blue.500"
                         _hover={{
@@ -21,7 +21,7 @@ export default function HomePage() {
                   </Link>
                </ListItem>
                <ListItem>
-                  <Link href="/Store/Tools" passHref>
+                  <Link href="/Tools" passHref>
                      <chakra.a
                         color="blue.500"
                         _hover={{
