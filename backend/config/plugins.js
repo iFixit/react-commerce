@@ -1,10 +1,25 @@
 const oneYear = 86400 * 365;
+const SENTRY_DSN = process.env.SENTRY_DSN;
 
 module.exports = ({ env }) => {
    const exports = {
       seed: {
          enabled: true,
          resolve: './src/plugins/seed',
+      },
+      sentry: {
+         enabled: !!SENTRY_DSN,
+         config: {
+            dsn: SENTRY_DSN,
+            init: {
+               sampleRate: 1.0,
+               initialScope: {
+                  tags: {
+                     'next.runtime': 'strapi',
+                  },
+               },
+            },
+         },
       },
    };
 
