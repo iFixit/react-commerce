@@ -2,7 +2,7 @@ describe('product list filters', () => {
    const user = cy;
    beforeEach(() => {
       cy.intercept('/1/indexes/**').as('search');
-      user.visit('/Store/Parts');
+      user.visit('/Parts');
    });
 
    it('should help user filter', () => {

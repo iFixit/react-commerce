@@ -25,7 +25,5 @@ export function getImageFromStrapiImage(
 export interface Image {
    url: string;
    alternativeText: string | null;
-   formats: {
-      url: string;
-   };
+   formats: Record<string, { url: string }>;
 }
