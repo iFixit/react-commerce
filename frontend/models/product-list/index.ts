@@ -30,6 +30,12 @@ import {
 } from './types';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import algoliasearch from 'algoliasearch';
+import {
+   DeviceWiki,
+   fetchDeviceWiki,
+   fetchMultipleDeviceImages,
+   getDeviceHandle,
+} from '@lib/ifixit-api/devices';
 
 export { ProductListSectionType } from './types';
 export type {
@@ -88,9 +94,13 @@ export async function findProductList(
             : null,
       ancestors: createProductListAncestors(productList.parent),
       // Strapi sort order is case sensitive, so we need to improve on it in memory
-      children: sortProductListChildren(
-         filterNullableItems(
-            productList.children?.data.map(createProductListChild(deviceWiki))
+      children: await fillMissingImagesFromApi(
+         sortProductListChildren(
+            filterNullableItems(
+               productList.children?.data.map(
+                  createProductListChild(deviceWiki)
+               )
+            )
          )
       ),
       childrenHeading: productList.childrenHeading ?? null,
@@ -103,28 +113,6 @@ export async function findProductList(
    };
 }
 
-type DeviceWiki = Record<string, any>;
-
-async function fetchDeviceWiki(
-   deviceTitle: string
-): Promise<DeviceWiki | null> {
-   const deviceHandle = getDeviceHandle(deviceTitle);
-   try {
-      const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
-         {
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         }
-      );
-      const payload = await response.json();
-      return payload;
-   } catch (error: any) {
-      return null;
-   }
-}
-
 function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
    return deviceWiki.image?.original == null
       ? null
@@ -132,6 +120,35 @@ function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
            url: deviceWiki.image.original,
            alternativeText: null,
         };
+}
+
+async function fillMissingImagesFromApi(
+   productListChildren: ProductListChild[]
+): Promise<ProductListChild[]> {
+   const childrenWithoutImages = productListChildren.filter(
+      (child) => child.image == null && child.deviceTitle
+   );
+   if (childrenWithoutImages.length === 0) {
+      return productListChildren;
+   }
+   const deviceTitlesWithoutImages = childrenWithoutImages.map(
+      (child) => child.deviceTitle
+   ) as string[]; // cast is safe cause we filter nulls above,
+                  // typescript just doesn't understand
+   const imagesResponse = await fetchMultipleDeviceImages(
+      deviceTitlesWithoutImages,
+      'thumbnail'
+   );
+   childrenWithoutImages.forEach((child) => {
+      const imageFromDevice = imagesResponse.images[child.deviceTitle as string];
+      if (imageFromDevice != null) {
+         child.image = {
+            url: imageFromDevice,
+            alternativeText: child.deviceTitle,
+         };
+      }
+   });
+   return productListChildren;
 }
 
 function getChildDeviceImage(
@@ -148,13 +165,6 @@ function getChildDeviceImage(
       };
    }
    return null;
-}
-
-/**
- * Convert product list device title to a URL friendly slug
- */
-export function getDeviceHandle(deviceTitle: string): string {
-   return deviceTitle.replace(/\s+/g, '_');
 }
 
 /**
@@ -291,6 +301,7 @@ function createProductListChild(deviceWiki: DeviceWiki | null) {
       const imageAttributes = attributes.image?.data?.attributes;
       return {
          title: attributes.title,
+         deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
          path: getProductListPath(attributes),
          image:
