@@ -42,7 +42,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
       if (inputRef.current) {
          inputRef.current.focus();
       }
-   }, [searchBox.clear]);
+   }, []);
 
    return (
       <InputGroup ref={ref} {...props}>
