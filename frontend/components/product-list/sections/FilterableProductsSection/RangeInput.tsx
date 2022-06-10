@@ -35,11 +35,10 @@ export function RangeInput(props: RangeInputProps) {
 
    const refineMinValue = React.useCallback(
       (value: number | undefined) => {
-         const minAllowedValue = range.range.min ? range.range.min + 1 : 0;
          const maxAllowedValue = range.range.max
             ? range.range.max - 1
             : Infinity;
-         const clampedValue = clamp(value, minAllowedValue, maxAllowedValue);
+         const clampedValue = clamp(value, 0, maxAllowedValue);
 
          const isValidRange =
             clampedValue == null ||
@@ -58,6 +57,7 @@ export function RangeInput(props: RangeInputProps) {
 
    const refineMaxValue = React.useCallback(
       (value: number | undefined) => {
+         const minAllowedValue = range.range.min ? range.range.min + 1 : 0;
          const maxAllowedValue = range.range.max
             ? range.range.max - 1
             : Infinity;
@@ -65,7 +65,7 @@ export function RangeInput(props: RangeInputProps) {
          const isValidRange =
             clampedValue == null ||
             appliedRangeMin == null ||
-            clampedValue > appliedRangeMin;
+            (clampedValue > minAllowedValue && clampedValue > appliedRangeMin);
 
          if (isValidRange) {
             range.refine([
@@ -177,6 +177,10 @@ type UseDebouncedValueProps = {
    currentAlgoliaValue: number | undefined;
 };
 
+/**
+ * This hook manages the state of a number input. The goal is to decouple the
+ * input from the Algolia context, so that the input field feels more responsive.
+ */
 function useDebouncedValue({
    currentAlgoliaValue,
    refine,

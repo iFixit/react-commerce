@@ -31,14 +31,9 @@ export function Pagination(props: PaginationProps) {
    const visibleNumberOfPages = isMounted ? responsiveVisibleNumberOfPages : 3;
 
    const createPageUrl = (page: number) => {
-      try {
-         const fullUrl = createURL(page - 1);
-         const url = new URL(fullUrl);
-         return url.pathname + url.search;
-      } catch (error) {
-         console.error(error);
-         return '#';
-      }
+      const fullUrl = createURL(page - 1);
+      const url = new URL(fullUrl);
+      return url.pathname + url.search;
    };
 
    if (nbPages <= 1) {
