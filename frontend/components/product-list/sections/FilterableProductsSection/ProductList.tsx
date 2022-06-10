@@ -54,8 +54,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
    const showDiscountBadge = quantityAvailable > 0 && isDiscounted;
    const showLifetimeWarrantyBadge =
       quantityAvailable > 0 && product.lifetime_warranty;
+   const showOemPartnershipBadge =
+      quantityAvailable > 0 && product.oem_partnership;
    const showBadges =
-      showProBadge || showDiscountBadge || showLifetimeWarrantyBadge;
+      showProBadge ||
+      showDiscountBadge ||
+      showLifetimeWarrantyBadge ||
+      showOemPartnershipBadge;
 
    return (
       <LinkBox as="article" aria-labelledby={productHeadingId}>
@@ -179,6 +184,17 @@ export function ProductListItem({ product }: ProductListItemProps) {
                               py="1"
                            >
                               {percentage}% Off
+                           </Badge>
+                        )}
+                        {showOemPartnershipBadge && (
+                           <Badge
+                              colorScheme="green"
+                              textTransform="none"
+                              borderRadius="lg"
+                              px="2.5"
+                              py="1"
+                           >
+                              {product.oem_partnership}
                            </Badge>
                         )}
                         {showLifetimeWarrantyBadge && (

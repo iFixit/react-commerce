@@ -11,6 +11,7 @@ export interface ProductSearchHit {
    short_description?: string;
    quantity_available: number;
    lifetime_warranty: boolean;
+   oem_partnership: string | null;
    rating: number;
    rating_count: number;
    url: string;
