@@ -109,7 +109,7 @@ function FacetCard({ children }: FacetCardProps) {
          w="250px"
          boxShadow="md"
          maxH="calc(100vh - var(--chakra-space-4) * 2)"
-         overflow="scroll"
+         overflow="auto"
          display={{
             base: 'none',
             md: 'block',
