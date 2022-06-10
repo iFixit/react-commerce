@@ -189,7 +189,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                               px="2.5"
                               py="1"
                            >
-                              Lifetime warranty
+                              Lifetime Warranty
                            </Badge>
                         )}
                      </Flex>
