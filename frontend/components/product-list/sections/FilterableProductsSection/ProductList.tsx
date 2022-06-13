@@ -166,7 +166,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      >
                         {showProBadge &&
                            ProductListItemBadge({
-                              content: 'PRO',
+                              content: 'iFixit Pro',
                               colorScheme: 'orange',
                            })}
                         {showDiscountBadge &&
