@@ -16,6 +16,7 @@ import { Card } from '@components/ui';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
+import { WikiInfoEntry } from '@models/product-list/types';
 import * as React from 'react';
 import {
    useClearRefinements,
@@ -32,7 +33,12 @@ import { ProductViewType, Toolbar } from './Toolbar';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
-export function FilterableProductsSection() {
+type SectionProps = {
+   wikiInfo: WikiInfoEntry[];
+};
+
+export function FilterableProductsSection(props: SectionProps) {
+   const { wikiInfo } = props;
    const { hits } = useHits<ProductSearchHit>();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
@@ -58,11 +64,15 @@ export function FilterableProductsSection() {
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products
          </Heading>
-         <Toolbar viewType={viewType} onViewTypeChange={setViewType} />
+         <Toolbar
+            viewType={viewType}
+            onViewTypeChange={setViewType}
+            wikiInfo={wikiInfo}
+         />
          <CurrentRefinements />
          <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
             <FacetCard>
-               <FacetsAccordion />
+               <FacetsAccordion wikiInfo={wikiInfo} />
             </FacetCard>
             <Card flex={1}>
                {isEmpty ? (

@@ -14,6 +14,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { WikiInfoEntry } from '@models/product-list/types';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import {
@@ -23,15 +24,16 @@ import {
 import { RangeInput } from './RangeInput';
 import { RefinementList } from './RefinementList';
 import { useCountRefinements } from './useCountRefinements';
-import { useFacets } from './useFacets';
+import { useFilteredFacets } from './useFacets';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
    onClose: () => void;
+   wikiInfo: WikiInfoEntry[];
 };
 
-export function FacetsDrawer({ isOpen, onClose }: FacetsDrawerProps) {
-   const facets = useFacets();
+export function FacetsDrawer({ isOpen, onClose, wikiInfo }: FacetsDrawerProps) {
+   const facets = useFilteredFacets(wikiInfo);
    const [currentFacet, setCurrentFacet] = React.useState<string | null>(null);
    const countRefinements = useCountRefinements();
 
