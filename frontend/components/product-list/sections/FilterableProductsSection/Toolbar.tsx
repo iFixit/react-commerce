@@ -3,6 +3,7 @@ import {
    ButtonGroup,
    ButtonGroupProps,
    ButtonProps,
+   Flex,
    Icon,
    IconButton,
    IconButtonProps,
@@ -10,31 +11,91 @@ import {
    SelectProps,
    Stack,
    Text,
+   useDisclosure,
 } from '@chakra-ui/react';
-import { useHitsCount } from '@lib/algolia';
 import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
+import { useHits } from 'react-instantsearch-hooks-web';
+import { FacetsDrawer } from './FacetsDrawer';
+import { SearchInput } from './SearchInput';
 
-export interface ToolbarProps {
-   leftContent: React.ReactNode;
-   rightContent: React.ReactNode;
+export enum ProductViewType {
+   Grid = 'grid',
+   List = 'list',
 }
 
-export function Toolbar({ leftContent, rightContent }: ToolbarProps) {
+export type ToolbarProps = {
+   viewType: ProductViewType;
+   onViewTypeChange: (viewType: ProductViewType) => void;
+};
+
+export function Toolbar({ viewType, onViewTypeChange }: ToolbarProps) {
+   const drawer = useDisclosure({
+      defaultIsOpen: false,
+   });
    return (
-      <Stack
-         justify={{ md: 'space-between' }}
-         align={{ base: 'stretch', md: 'center' }}
-         direction={{ base: 'column', md: 'row' }}
-      >
-         {leftContent}
-         {rightContent}
-      </Stack>
+      <>
+         <FacetsDrawer isOpen={drawer.isOpen} onClose={drawer.onClose} />
+         <Stack
+            justify={{ md: 'space-between' }}
+            align={{ base: 'stretch', md: 'center' }}
+            direction={{ base: 'column', md: 'row' }}
+         >
+            <NumberOfHits />
+            <Flex
+               wrap="wrap"
+               flexGrow={1}
+               justify="flex-end"
+               px={{ base: 6, sm: 0 }}
+            >
+               <OpenFiltersButton onClick={drawer.onOpen}>
+                  Filters
+               </OpenFiltersButton>
+               <SearchInput
+                  order={{
+                     base: 3,
+                     md: 2,
+                  }}
+                  maxW={{
+                     base: 'full',
+                     md: '80',
+                  }}
+                  mt={{
+                     base: '2',
+                     md: '0',
+                  }}
+                  flexGrow={1}
+               />
+               <ProductViewSwitch
+                  ml="2"
+                  order={{
+                     base: 2,
+                     md: 3,
+                  }}
+               >
+                  <ProductViewListButton
+                     aria-label="Select list view"
+                     isActive={viewType === ProductViewType.List}
+                     onClick={() => onViewTypeChange(ProductViewType.List)}
+                  />
+                  <ProductViewGridButton
+                     aria-label="Select grid view"
+                     isActive={viewType === ProductViewType.Grid}
+                     onClick={() => onViewTypeChange(ProductViewType.Grid)}
+                  />
+               </ProductViewSwitch>
+            </Flex>
+         </Stack>
+      </>
    );
 }
 
 export function NumberOfHits() {
-   const hitsCount = useHitsCount();
+   const { results } = useHits();
+   const hitsCount = results?.nbHits;
+   if (hitsCount == null) {
+      return null;
+   }
    return (
       <Text textAlign="center" color="gray.500" fontWeight="bold">
          {hitsCount}
@@ -49,7 +110,7 @@ export const OpenFiltersButton = (props: ButtonProps) => {
          variant="outline"
          bg="white"
          display={{ base: 'block', md: 'none' }}
-         flexBasis="100px"
+         minW="50%"
          flexGrow={1}
          {...props}
       />

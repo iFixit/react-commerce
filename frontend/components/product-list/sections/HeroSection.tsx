@@ -11,9 +11,9 @@ import {
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { useIsMounted } from '@ifixit/ui';
-import { useSearchParams } from '@lib/algolia';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
+import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
 
 export interface HeroSectionProps {
@@ -21,24 +21,23 @@ export interface HeroSectionProps {
 }
 
 export function HeroSection({ productList }: HeroSectionProps) {
-   const searchParams = useSearchParams();
+   const pagination = usePagination();
+   const page = pagination.currentRefinement;
    const hasDescription =
       productList.description != null &&
       productList.description.length > 0 &&
-      searchParams.page === 1;
+      page === 1;
    return (
       <VStack flex={1} align="flex-start">
          <HeroTitle>
             {productList.title}
-            {searchParams.page > 1 ? ` - Page ${searchParams.page}` : ''}
+            {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
-         {productList.tagline &&
-            productList.tagline.length > 0 &&
-            searchParams.page === 1 && (
-               <Text fontWeight="bold" fontSize="xl" px={{ base: 6, sm: 0 }}>
-                  {productList.tagline}
-               </Text>
-            )}
+         {productList.tagline && productList.tagline.length > 0 && page === 1 && (
+            <Text fontWeight="bold" fontSize="xl" px={{ base: 6, sm: 0 }}>
+               {productList.tagline}
+            </Text>
+         )}
          {hasDescription && (
             <HeroDescription>{productList.description}</HeroDescription>
          )}

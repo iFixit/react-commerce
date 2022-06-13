@@ -1,8 +1,3 @@
-const TEST_MIN_PRICE_INVALID = 100;
-const TEST_MIN_PRICE = 10;
-const TEST_MAX_PRICE = 50;
-const DEBOUNCE_MS = 500;
-
 describe('product list filters', () => {
    const user = cy;
    beforeEach(() => {
@@ -10,163 +5,181 @@ describe('product list filters', () => {
       user.visit('/Parts');
    });
 
-   function getVirtualListClickOptions(): Partial<Cypress.ClickOptions> {
-      return {
-         // Cypress won't click the button because it detects that there's a parent
-         // element with the pointer-events: none style.
-         // Since this it's expected behavior for a virtual list while scrolling (
-         // https://github.com/bvaughn/react-window/issues/128#issuecomment-460163077 ),
-         // we need to force the click.
-         force: true,
-      };
-   }
-
-   function getVirtualListTypeOptions(): Partial<Cypress.TypeOptions> {
-      return {
-         // Cypress won't click the button because it detects that there's a parent
-         // element with the pointer-events: none style.
-         // Since this it's expected behavior for a virtual list while scrolling (
-         // https://github.com/bvaughn/react-window/issues/128#issuecomment-460163077 ),
-         // we need to force the click.
-         force: true,
-      };
-   }
-
    it('should help user filter', () => {
       user
-         .findByRole('button', { name: /expand item type/i, expanded: false })
-         .click(getVirtualListClickOptions());
-
-      user.findByTestId('accordion-item-panel-item_type').within(() => {
-         user
-            .findByRole('option', { name: /cables/i })
-            .click(getVirtualListClickOptions());
-      });
-
-      user.findByTestId('applied-filters').within(() => {
-         user.findByText(/item type:\s*cables/i).should('exist');
-      });
+         .findAllByTestId(/facet-accordion-item-.*/i)
+         .first()
+         .as('first-facet-accordion-item')
+         .next()
+         .as('second-facet-accordion-item');
 
       user
-         .findByRole('button', { name: /collapse item type/i, expanded: true })
-         .click(getVirtualListClickOptions());
+         .get('@first-facet-accordion-item')
+         .invoke('attr', 'data-facet-name')
+         .as('first-facet-name');
 
+      // Click the first facet accordion item.
+      user
+         .get('@first-facet-accordion-item')
+         .findByRole('button', { name: /expand/i, expanded: false })
+         .click();
+
+      // Click the first facet item
+      user
+         .get('@first-facet-accordion-item')
+         .findAllByRole('option')
+         .first()
+         .click()
+         .invoke('attr', 'data-value')
+         .as('first-facet-option-value');
+
+      // Wait for the search to be triggered and let the UI update.
       user.wait('@search');
       user.wait(2000);
 
-      // Assert that the products update according to that filter
-      user
-         .window()
-         .its('filteredProducts')
-         .each((product) => {
-            cy.wrap(product)
-               .its('facet_tags.Item Type')
-               .should('satisfy', function isCablesItemType(type: any) {
-                  return (
-                     (typeof type === 'string' &&
-                        type.toLowerCase() === 'cables') ||
-                     (Array.isArray(type) &&
-                        type.some((t) => t.toLowerCase() === 'cables'))
-                  );
+      user.get('@first-facet-option-value').then((refinementValue) => {
+         const lowercaseRefinementValue: string = (
+            refinementValue as any
+         ).toLowerCase();
+
+         // Check that the refinement value is in the current refinements.
+         user
+            .findAllByTestId(`current-refinement-${refinementValue}`)
+            .should('exist');
+
+         // Check that the refinement value is in the search results.
+         user.get('@first-facet-name').then((facetName) => {
+            user
+               .window()
+               .its('filteredProducts')
+               .each((product) => {
+                  cy.wrap(product)
+                     .its(facetName as any)
+                     .should(
+                        'satisfy',
+                        function isRefinedFacetValue(value: any) {
+                           return (
+                              (typeof value === 'string' &&
+                                 value.toLowerCase() ===
+                                    lowercaseRefinementValue) ||
+                              (Array.isArray(value) &&
+                                 value.some(
+                                    (t) =>
+                                       t.toLowerCase() ===
+                                       lowercaseRefinementValue
+                                 ))
+                           );
+                        }
+                     );
                });
          });
+      });
 
       user
-         .findByRole('button', { name: /expand device$/i, expanded: false })
-         .click(getVirtualListClickOptions());
+         .get('@second-facet-accordion-item')
+         .invoke('attr', 'data-facet-name')
+         .as('second-facet-name');
 
-      user.findByTestId('accordion-item-panel-device').within(() => {
+      // Click the second facet accordion item.
+      user
+         .get('@second-facet-accordion-item')
+         .findByRole('button', { name: /expand/i, expanded: false })
+         .click();
+
+      // Click the second facet item
+      user
+         .get('@second-facet-accordion-item')
+         .findAllByRole('option')
+         .first()
+         .click()
+         .invoke('attr', 'data-value')
+         .as('second-facet-option-value');
+
+      user.get('@second-facet-option-value').then((refinementValue) => {
+         // Check that the refinement value is in the current refinements.
          user
-            .findByRole('option', { name: /^iphone$/i })
-            .click(getVirtualListClickOptions());
+            .findAllByTestId(`current-refinement-${refinementValue}`)
+            .should('exist');
       });
-
-      user.findByTestId('applied-filters').within(() => {
-         user.findByText(/device:\s*iphone/i).should('exist');
-      });
-
-      user.wait('@search');
-
-      user
-         .findByRole('button', { name: /collapse device$/i, expanded: true })
-         .click(getVirtualListClickOptions());
-
-      user.wait(2000);
 
       user
          .findByRole('button', {
             name: /expand price range$/i,
             expanded: false,
          })
-         .click(getVirtualListClickOptions());
+         .click();
 
       user
          .findByLabelText(/set min price/i)
-         .type(TEST_MIN_PRICE_INVALID.toString(), getVirtualListTypeOptions());
+         .invoke('attr', 'placeholder')
+         .as('min-price-placeholder')
+         .then((placeholder) => {
+            // Type a value in the min price input
+            const minPrice = parseFloat(placeholder ?? '0') + 1;
+            user.findByLabelText(/set min price/i).type(minPrice.toString());
 
-      user.wait('@search');
-      user.wait(DEBOUNCE_MS);
+            // Verify that the min price is in the current refinements.
+            user
+               .findAllByTestId(`current-refinement-${minPrice.toString()}`)
+               .should('exist');
 
-      user
-         .findByLabelText(/set max price/i)
-         .type(TEST_MAX_PRICE.toString(), getVirtualListTypeOptions());
+            const invalidMaxPrice = minPrice - 1;
+            user
+               .findByLabelText(/set max price/i)
+               .type(invalidMaxPrice.toString());
 
-      user.wait(DEBOUNCE_MS);
+            user.findByText(/max should be higher than min/i).should('exist');
 
-      user.findByText(/max should be higher than min/i).should('exist');
+            const validMaxPrice = minPrice + 10;
+            user
+               .findByLabelText(/set max price/i)
+               .type(`{selectall}{backspace}${validMaxPrice}`);
 
-      user
-         .findByLabelText(/set min price/i)
-         .type(
-            `{selectall}{backspace}${TEST_MIN_PRICE}`,
-            getVirtualListTypeOptions()
-         );
-      user.wait(DEBOUNCE_MS);
+            // Verify that the max price is in the current refinements.
+            user
+               .findAllByTestId(
+                  `current-refinement-${validMaxPrice.toString()}`
+               )
+               .should('exist');
 
-      user.wait('@search');
+            user.wait('@search');
+            user.wait(1000);
 
-      user
-         .findByLabelText(/set max price/i)
-         .type(
-            `{selectall}{backspace}${TEST_MAX_PRICE}`,
-            getVirtualListTypeOptions()
-         );
-      user.wait(DEBOUNCE_MS);
-
-      user.wait('@search');
-
-      user.findByTestId('applied-filters').within(() => {
-         user.findByText(/price:/i).should('exist');
-      });
-
-      user.findByTestId('filterable-products-section').within(() => {
-         // Check that all articles prices are within the range
-         user.findAllByTestId('product-price').each((priceEl) => {
-            cy.wrap(priceEl)
-               .invoke('text')
-               .then((priceText) => {
-                  const valueMatch = priceText.match(/(\d+\.\d+)/);
-                  return valueMatch && valueMatch[0]
-                     ? parseFloat(valueMatch[0])
-                     : 0;
-               })
-               .should('be.within', TEST_MIN_PRICE, TEST_MAX_PRICE);
+            user.findByTestId('filterable-products-section').within(() => {
+               // Check that all articles prices are within the range
+               user.findAllByTestId('product-price').each((priceEl) => {
+                  cy.wrap(priceEl)
+                     .invoke('text')
+                     .then((priceText) => {
+                        const valueMatch = priceText.match(/(\d+\.\d+)/);
+                        return valueMatch && valueMatch[0]
+                           ? parseFloat(valueMatch[0])
+                           : 0;
+                     })
+                     .should('be.within', minPrice, validMaxPrice);
+               });
+            });
          });
-      });
 
-      user.findByRole('button', { name: /remove device:\s*iphone/i }).click();
+      user
+         .findAllByTestId(/current-refinement-/i)
+         .first()
+         .invoke('attr', 'data-testid')
+         .then((testId) => {
+            // Remove the refinement
+            user
+               .findByTestId(testId!)
+               .findByRole('button', { name: /remove/i })
+               .click();
 
-      user.wait('@search');
+            // Check that the refinement is no longer in the current refinements.
+            user.findByTestId(testId!).should('not.exist');
+         });
 
-      user.findByTestId('applied-filters').within(() => {
-         user.findByText(/device:\s*iphone/i).should('not.exist');
-      });
-
+      // Reset the filters
       user.findByRole('button', { name: /clear all filters/i }).click();
-
-      user.wait(2000);
-
-      user.findByTestId('applied-filters').should('not.exist');
+      // Check that the current refinements are empty
+      user.findByTestId(/current-refinement-/i).should('not.exist');
    });
 });
 
