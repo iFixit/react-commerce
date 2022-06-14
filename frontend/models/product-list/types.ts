@@ -18,6 +18,12 @@ export interface ProductSearchHit {
    [attribute: string]: unknown;
 }
 
+export type WikiInfoEntry = {
+   name: string;
+   value: string;
+   inheritedFrom: string | null;
+};
+
 export interface ProductList {
    title: string;
    handle: string;
@@ -35,6 +41,7 @@ export interface ProductList {
    algolia: {
       apiKey: string;
    };
+   wikiInfo: WikiInfoEntry[];
 }
 
 export interface ProductListAncestor {

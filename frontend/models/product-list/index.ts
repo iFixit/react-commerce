@@ -47,15 +47,10 @@ export async function findProductList(
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
-   const shouldFetchDeviceWiki =
-      productList.image?.data?.attributes == null ||
-      productList.children?.data?.some(
-         (child) => child.attributes?.image?.data?.attributes == null
-      );
-   const deviceWiki =
-      shouldFetchDeviceWiki && productList.deviceTitle != null
-         ? await fetchDeviceWiki(productList.deviceTitle)
-         : null;
+
+   const deviceWiki = productList.deviceTitle
+      ? await fetchDeviceWiki(productList.deviceTitle)
+      : null;
 
    const algoliaApiKey = createProductListAlgoliaKey({
       appId: ALGOLIA_APP_ID,
@@ -97,6 +92,7 @@ export async function findProductList(
       algolia: {
          apiKey: algoliaApiKey,
       },
+      wikiInfo: deviceWiki?.info || [],
    };
 }
 

@@ -12,15 +12,21 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { WikiInfoEntry } from '@models/product-list/types';
 import * as React from 'react';
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
 import { RangeInput } from './RangeInput';
 import { RefinementList } from './RefinementList';
 import { useCountRefinements } from './useCountRefinements';
-import { useFacets } from './useFacets';
+import { useFilteredFacets } from './useFacets';
 
-export function FacetsAccordion() {
-   const facets = useFacets();
+type FacetsAccordianProps = {
+   wikiInfo: WikiInfoEntry[];
+};
+
+export function FacetsAccordion(props: FacetsAccordianProps) {
+   const { wikiInfo } = props;
+   const facets = useFilteredFacets(wikiInfo);
    const countRefinements = useCountRefinements();
 
    return (
