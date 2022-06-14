@@ -20,7 +20,6 @@ import {
    useClearRefinements,
    useRefinementList,
 } from 'react-instantsearch-hooks-web';
-import { RangeInput } from './RangeInput';
 import { RefinementList } from './RefinementList';
 import { useCountRefinements } from './useCountRefinements';
 import { useFacets } from './useFacets';

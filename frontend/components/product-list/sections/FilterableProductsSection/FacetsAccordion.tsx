@@ -12,9 +12,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import * as React from 'react';
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
-import { RangeInput } from './RangeInput';
 import { RefinementList } from './RefinementList';
 import { useCountRefinements } from './useCountRefinements';
 import { useFacets } from './useFacets';
