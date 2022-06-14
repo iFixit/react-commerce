@@ -1,7 +1,7 @@
-FROM node:16-alpine
+FROM node:16-alpine3.14
 # Installing libvips for sharp compatibility
 RUN apk --update-cache add vips-dev \
- && rm -rf /var/cache/apk/*
+  && rm -rf /var/cache/apk/*
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/
