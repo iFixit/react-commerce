@@ -9,6 +9,7 @@ export type ProductSearchHitPricing = {
    isDiscounted: boolean;
    percentage: number;
 };
+
 export function useProductSearchHitPricing(
    product: ProductSearchHit
 ): ProductSearchHitPricing {

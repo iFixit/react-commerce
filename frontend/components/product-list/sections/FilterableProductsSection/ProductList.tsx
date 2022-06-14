@@ -13,6 +13,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { ThemeTypings } from '@chakra-ui/styled-system';
 import { Rating } from '@components/ui';
 import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
@@ -54,8 +55,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
    const showDiscountBadge = quantityAvailable > 0 && isDiscounted;
    const showLifetimeWarrantyBadge =
       quantityAvailable > 0 && product.lifetime_warranty;
+   const showOemPartnershipBadge =
+      quantityAvailable > 0 && product.oem_partnership;
    const showBadges =
-      showProBadge || showDiscountBadge || showLifetimeWarrantyBadge;
+      showProBadge ||
+      showDiscountBadge ||
+      showLifetimeWarrantyBadge ||
+      showOemPartnershipBadge;
 
    return (
       <LinkBox as="article" aria-labelledby={productHeadingId}>
@@ -158,40 +164,26 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            },
                         }}
                      >
-                        {showProBadge && (
-                           <Badge
-                              colorScheme="orange"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              PRO
-                           </Badge>
-                        )}
-
-                        {showDiscountBadge && (
-                           <Badge
-                              colorScheme="red"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              {percentage}% Off
-                           </Badge>
-                        )}
-                        {showLifetimeWarrantyBadge && (
-                           <Badge
-                              colorScheme="blue"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              Lifetime warranty
-                           </Badge>
-                        )}
+                        {showProBadge &&
+                           ProductListItemBadge({
+                              content: 'iFixit Pro',
+                              colorScheme: 'orange',
+                           })}
+                        {showDiscountBadge &&
+                           ProductListItemBadge({
+                              content: `${percentage}% Off`,
+                              colorScheme: 'red',
+                           })}
+                        {showOemPartnershipBadge &&
+                           ProductListItemBadge({
+                              content: product.oem_partnership!,
+                              colorScheme: 'green',
+                           })}
+                        {showLifetimeWarrantyBadge &&
+                           ProductListItemBadge({
+                              content: 'Lifetime Warranty',
+                              colorScheme: 'blue',
+                           })}
                      </Flex>
                   )}
                </Box>
@@ -279,5 +271,27 @@ export function ProductListItem({ product }: ProductListItemProps) {
             </Stack>
          </Flex>
       </LinkBox>
+   );
+}
+
+interface ProductListItemBadgeProps {
+   content: string;
+   colorScheme: ThemeTypings['colorSchemes'];
+}
+
+function ProductListItemBadge({
+   content,
+   colorScheme,
+}: ProductListItemBadgeProps) {
+   return (
+      <Badge
+         colorScheme={colorScheme}
+         textTransform="none"
+         borderRadius="lg"
+         px="2.5"
+         py="1"
+      >
+         {content}
+      </Badge>
    );
 }

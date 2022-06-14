@@ -72,7 +72,7 @@ export const HeaderBar = forwardRef<FlexProps, 'div'>((props, ref) => {
          ref={ref}
          alignItems="center"
          h="full"
-         flexShrink="0"
+         flexShrink={0}
          w="full"
          maxW={{
             base: '1400px',
@@ -120,7 +120,7 @@ export const HeaderHiddenBar = forwardRef<FlexProps, 'div'>((props, ref) => {
       <Flex
          ref={ref}
          h="full"
-         flexShrink="0"
+         flexShrink={0}
          transition="all 300ms"
          transform={
             context.hiddenBar.isOpen ? 'translateY(0)' : 'translateY(-100%)'

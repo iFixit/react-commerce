@@ -24,11 +24,17 @@ import { Card } from '@components/ui';
 import { ALGOLIA_APP_ID } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { useAppContext } from '@ifixit/app';
-import { AlgoliaProvider, useHits } from '@lib/algolia';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
+import type { SearchClient } from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch/lite';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import * as React from 'react';
+import {
+   Configure,
+   InstantSearch,
+   useHits,
+} from 'react-instantsearch-hooks-web';
 
 export interface FeaturedProductListSectionProps {
    productList: FeaturedProductList;
@@ -37,6 +43,11 @@ export interface FeaturedProductListSectionProps {
 export function FeaturedProductListSection({
    productList,
 }: FeaturedProductListSectionProps) {
+   const algoliaClientRef = React.useRef<SearchClient>();
+   algoliaClientRef.current =
+      algoliaClientRef.current ??
+      algoliasearch(ALGOLIA_APP_ID, productList.algolia.apiKey);
+
    return (
       <Card
          overflow="hidden"
@@ -123,15 +134,13 @@ export function FeaturedProductListSection({
                </Box>
             </Box>
             <Box flexGrow={1}>
-               <AlgoliaProvider
-                  key={productList.handle}
-                  appId={ALGOLIA_APP_ID}
-                  apiKey={productList.algolia.apiKey}
-                  initialIndexName={productList.algolia.indexName}
-                  productsPerPage={3}
+               <InstantSearch
+                  searchClient={algoliaClientRef.current}
+                  indexName={productList.algolia.indexName}
                >
+                  <Configure hitsPerPage={3} />
                   <ProductGrid />
-               </AlgoliaProvider>
+               </InstantSearch>
             </Box>
          </Flex>
       </Card>
@@ -139,7 +148,7 @@ export function FeaturedProductListSection({
 }
 
 function ProductGrid() {
-   const hits = useHits<ProductSearchHit>();
+   const { hits } = useHits<ProductSearchHit>();
    return (
       <SimpleGrid
          bg="gray.100"
@@ -151,7 +160,7 @@ function ProductGrid() {
          spacing="1px"
       >
          {hits.map((hit) => {
-            return <ProductListItem key={hit.handle} product={hit} />;
+            return <ProductListItem key={hit.objectID} product={hit} />;
          })}
       </SimpleGrid>
    );

@@ -14,13 +14,20 @@ import {
 } from '@models/store';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
+import crypto from 'crypto';
+import cookie from 'cookie';
 import { getServerState } from 'react-instantsearch-hooks-server';
 
-type PageProps = ProductListViewProps & {
-   stores: StoreListItem[];
-   currentStore: Store;
-   globalSettings: GlobalSettings;
+type CsrfProps = {
+   csrfToken: string;
 };
+
+type PageProps = CsrfProps &
+   ProductListViewProps & {
+      stores: StoreListItem[];
+      currentStore: Store;
+      globalSettings: GlobalSettings;
+   };
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
    context
@@ -31,24 +38,33 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       'public, s-maxage=10, stale-while-revalidate=600'
    );
 
-   const { handle } = context.params || {};
-   if (typeof handle !== 'string') {
-      return {
-         notFound: true,
-      };
-   }
+   const csrfToken = crypto.randomBytes(64).toString('hex');
+   context.res.setHeader(
+      'Set-Cookie',
+      cookie.serialize('csrf', csrfToken, {
+         sameSite: 'none',
+         secure: true,
+         domain: 'cominor.com',
+         maxAge: 30 * 60, // 30 minutes
+         path: '/',
+      })
+   );
 
-   const [globalSettings, stores, currentStore, productList] =
-      await Promise.all([
-         getGlobalSettings(),
-         getStoreList(),
-         getStoreByCode('us'),
-         findProductList({
-            handle: {
-               eq: handle,
-            },
-         }),
-      ]);
+   const [
+      globalSettings,
+      stores,
+      currentStore,
+      productList,
+   ] = await Promise.all([
+      getGlobalSettings(),
+      getStoreList(),
+      getStoreByCode('us'),
+      findProductList({
+         handle: {
+            eq: 'Tools',
+         },
+      }),
+   ]);
 
    if (productList == null) {
       return {
@@ -74,6 +90,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
    return {
       props: {
+         csrfToken,
          globalSettings,
          currentStore,
          stores,

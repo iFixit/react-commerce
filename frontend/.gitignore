@@ -35,3 +35,6 @@ yarn-error.log*
 
 test/cypress/videos
 test/cypress/screenshots
+
+# Sentry
+.sentryclirc

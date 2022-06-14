@@ -1,43 +1,36 @@
+import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { Awaited, filterNullableItems } from '@helpers/application-helpers';
+import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import {
-   ALGOLIA_DEFAULT_INDEX_NAME,
-   PRODUCT_LIST_PAGE_PARAM,
-} from '@config/constants';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
+   DeviceWiki,
+   fetchDeviceWiki,
+   fetchMultipleDeviceImages,
+   getDeviceHandle,
+} from '@lib/ifixit-api/devices';
 import {
-   createAlgoliaClient,
-   createSearchContext,
-   SearchContext,
-   SearchParams,
-} from '@lib/algolia';
-import { parseSearchParams } from '@helpers/algolia-helpers';
-import {
+   Enum_Productlist_Type,
+   ProductList as StrapiProductList,
    ProductListFiltersInput,
    strapi,
-   ProductList as StrapiProductList,
-   Enum_Productlist_Type,
 } from '@lib/strapi-sdk';
-import { Awaited, filterNullableItems } from '@helpers/application-helpers';
-import produce from 'immer';
-import { ParsedUrlQuery } from 'querystring';
+import algoliasearch from 'algoliasearch';
 import {
-   ProductSearchHit,
    ProductList,
    ProductListAncestor,
    ProductListChild,
+   ProductListImage,
    ProductListSection,
    ProductListSectionType,
-   ProductListImage,
 } from './types';
-import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
-import algoliasearch from 'algoliasearch';
 
 export { ProductListSectionType } from './types';
 export type {
-   ProductSearchHit,
-   ProductList,
-   ProductListSection,
-   ProductListPreview,
    FeaturedProductList,
+   ProductList,
+   ProductListPreview,
+   ProductListSection,
+   ProductSearchHit,
 } from './types';
 
 /**
@@ -54,15 +47,10 @@ export async function findProductList(
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
-   const shouldFetchDeviceWiki =
-      productList.image?.data?.attributes == null ||
-      productList.children?.data?.some(
-         (child) => child.attributes?.image?.data?.attributes == null
-      );
-   const deviceWiki =
-      shouldFetchDeviceWiki && productList.deviceTitle != null
-         ? await fetchDeviceWiki(productList.deviceTitle)
-         : null;
+
+   const deviceWiki = productList.deviceTitle
+      ? await fetchDeviceWiki(productList.deviceTitle)
+      : null;
 
    const algoliaApiKey = createProductListAlgoliaKey({
       appId: ALGOLIA_APP_ID,
@@ -88,9 +76,13 @@ export async function findProductList(
             : null,
       ancestors: createProductListAncestors(productList.parent),
       // Strapi sort order is case sensitive, so we need to improve on it in memory
-      children: sortProductListChildren(
-         filterNullableItems(
-            productList.children?.data.map(createProductListChild(deviceWiki))
+      children: await fillMissingImagesFromApi(
+         sortProductListChildren(
+            filterNullableItems(
+               productList.children?.data.map(
+                  createProductListChild(deviceWiki)
+               )
+            )
          )
       ),
       childrenHeading: productList.childrenHeading ?? null,
@@ -100,29 +92,8 @@ export async function findProductList(
       algolia: {
          apiKey: algoliaApiKey,
       },
+      wikiInfo: deviceWiki?.info || [],
    };
-}
-
-type DeviceWiki = Record<string, any>;
-
-async function fetchDeviceWiki(
-   deviceTitle: string
-): Promise<DeviceWiki | null> {
-   const deviceHandle = getDeviceHandle(deviceTitle);
-   try {
-      const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
-         {
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         }
-      );
-      const payload = await response.json();
-      return payload;
-   } catch (error: any) {
-      return null;
-   }
 }
 
 function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
@@ -132,6 +103,36 @@ function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
            url: deviceWiki.image.original,
            alternativeText: null,
         };
+}
+
+async function fillMissingImagesFromApi(
+   productListChildren: ProductListChild[]
+): Promise<ProductListChild[]> {
+   const childrenWithoutImages = productListChildren.filter(
+      (child) => child.image == null && child.deviceTitle
+   );
+   if (childrenWithoutImages.length === 0) {
+      return productListChildren;
+   }
+   const deviceTitlesWithoutImages = childrenWithoutImages.map(
+      (child) => child.deviceTitle
+   ) as string[]; // cast is safe cause we filter nulls above,
+   // typescript just doesn't understand
+   const imagesResponse = await fetchMultipleDeviceImages(
+      deviceTitlesWithoutImages,
+      'thumbnail'
+   );
+   childrenWithoutImages.forEach((child) => {
+      const imageFromDevice =
+         imagesResponse.images[child.deviceTitle as string];
+      if (imageFromDevice != null) {
+         child.image = {
+            url: imageFromDevice,
+            alternativeText: child.deviceTitle,
+         };
+      }
+   });
+   return productListChildren;
 }
 
 function getChildDeviceImage(
@@ -151,13 +152,6 @@ function getChildDeviceImage(
 }
 
 /**
- * Convert product list device title to a URL friendly slug
- */
-export function getDeviceHandle(deviceTitle: string): string {
-   return deviceTitle.replace(/\s+/g, '_');
-}
-
-/**
  * Convert URL slug to product list device title
  */
 export function getDeviceTitle(handle: string): string {
@@ -169,15 +163,17 @@ export function getDeviceTitle(handle: string): string {
  * @param productList - Product list attributes
  * @returns The product list absolute path
  */
-export function getProductListPath(
+function getProductListPath(
    productList: Pick<StrapiProductList, 'type' | 'handle' | 'deviceTitle'>
 ): string {
    switch (productList.type) {
       case Enum_Productlist_Type.Tools: {
-         return `/Store/Tools/${productList.handle}`;
+         return `/Tools/${productList.handle}`;
       }
       case Enum_Productlist_Type.Marketing: {
-         return `/Store/${productList.handle}`;
+         return productList.handle === 'Tools' || productList.handle === 'Parts'
+            ? `/${productList.handle}`
+            : `/Store/${productList.handle}`;
       }
       default: {
          if (
@@ -185,71 +181,11 @@ export function getProductListPath(
             productList.deviceTitle.length > 0
          ) {
             const deviceHandle = getDeviceHandle(productList.deviceTitle);
-            return `/Store/Parts/${deviceHandle}`;
+            return `/Parts/${deviceHandle}`;
          }
          return `/Store/${productList.handle}`;
       }
    }
-}
-
-export interface CreateProductListSearchContextOptions {
-   appId: string;
-   apiKey: string;
-   algoliaIndexName: string;
-   urlQuery: ParsedUrlQuery;
-}
-
-/**
- * Create the product list search context using Algolia
- */
-export async function createProductListSearchContext({
-   appId,
-   apiKey,
-   algoliaIndexName,
-   urlQuery,
-}: CreateProductListSearchContextOptions): Promise<SearchContext<ProductSearchHit> | null> {
-   const client = createAlgoliaClient(appId, apiKey);
-
-   const pageParam = urlQuery[PRODUCT_LIST_PAGE_PARAM];
-   const page =
-      typeof pageParam === 'string' ? parseInt(pageParam, 10) : undefined;
-
-   if (page != null && page < 1) {
-      return null;
-   }
-
-   let searchContext = createSearchContext<ProductSearchHit>({
-      indexName: algoliaIndexName,
-      query: '',
-      page: Number.isNaN(page) ? 1 : page,
-      filters: {
-         allIds: [],
-         byId: {},
-      },
-      limit: 24,
-   });
-
-   searchContext = await client.search<ProductSearchHit>(searchContext);
-   const searchParams = parseSearchParams(searchContext, urlQuery);
-   if (
-      searchParams.filters.allIds.length > 0 ||
-      searchParams.query !== searchContext.params.query
-   ) {
-      searchContext = await client.search<ProductSearchHit>(
-         applySearchParams(searchContext, searchParams)
-      );
-   }
-   const numberOfPages = searchContext.numberOfPages || 0;
-   if (
-      searchContext.params.page > 1 &&
-      searchContext.params.page > numberOfPages
-   ) {
-      return null;
-   }
-   if (searchContext == null) {
-      return null;
-   }
-   return searchContext;
 }
 
 type StrapiProductListPageData = NonNullable<
@@ -289,6 +225,7 @@ function createProductListChild(deviceWiki: DeviceWiki | null) {
       const imageAttributes = attributes.image?.data?.attributes;
       return {
          title: attributes.title,
+         deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
          path: getProductListPath(attributes),
          image:
@@ -412,15 +349,6 @@ function createProductListSection(
          return null;
       }
    }
-}
-
-function applySearchParams(
-   context: SearchContext,
-   params: SearchParams
-): SearchContext {
-   return produce(context, (draftContext) => {
-      draftContext.params = params;
-   });
 }
 
 function createProductListAlgoliaKey(options: {

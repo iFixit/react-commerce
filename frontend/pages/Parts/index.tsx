@@ -1,15 +1,11 @@
-import { Layout } from '@components/common';
+import { AppProviders, Layout } from '@components/common';
 import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { ALGOLIA_APP_ID } from '@config/env';
 import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
-import {
-   createProductListSearchContext,
-   findProductList,
-} from '@models/product-list';
+import { findProductList } from '@models/product-list';
 import {
    getStoreByCode,
    getStoreList,
@@ -18,6 +14,7 @@ import {
 } from '@models/store';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
+import { getServerState } from 'react-instantsearch-hooks-server';
 
 type PageProps = ProductListViewProps & {
    stores: StoreListItem[];
@@ -34,13 +31,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       'public, s-maxage=10, stale-while-revalidate=600'
    );
 
-   const { handle } = context.params || {};
-   if (typeof handle !== 'string') {
-      return {
-         notFound: true,
-      };
-   }
-
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
          getGlobalSettings(),
@@ -48,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
          getStoreByCode('us'),
          findProductList({
             handle: {
-               eq: handle,
+               eq: 'Parts',
             },
          }),
       ]);
@@ -59,18 +49,21 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       };
    }
 
-   const searchContext = await createProductListSearchContext({
-      appId: ALGOLIA_APP_ID,
-      apiKey: productList.algolia.apiKey,
-      algoliaIndexName: ALGOLIA_DEFAULT_INDEX_NAME,
-      urlQuery: context.query,
-   });
-
-   if (searchContext == null) {
-      return {
-         notFound: true,
-      };
-   }
+   const protocol = context.req.headers.referer?.split('://')[0] || 'https';
+   const url = `${protocol}://${context.req.headers.host}${context.req.url}`;
+   const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
+   const serverState = await getServerState(
+      <AppProviders>
+         <ProductListPage
+            productList={productList}
+            url={url}
+            indexName={indexName}
+            globalSettings={globalSettings}
+            stores={stores}
+            currentStore={currentStore}
+         />
+      </AppProviders>
+   );
 
    return {
       props: {
@@ -78,19 +71,25 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
          currentStore,
          stores,
          productList,
-         searchContext,
+         indexName,
+         serverState,
+         url,
       },
    };
 };
 
 const ProductListPage: NextPageWithLayout<PageProps> = ({
    productList,
-   searchContext,
+   url,
+   serverState,
+   indexName,
 }) => {
    return (
       <ProductListView
          productList={productList}
-         searchContext={searchContext}
+         indexName={indexName}
+         url={url}
+         serverState={serverState}
       />
    );
 };

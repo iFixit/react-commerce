@@ -11,11 +11,19 @@ export interface ProductSearchHit {
    short_description?: string;
    quantity_available: number;
    lifetime_warranty: boolean;
+   oem_partnership: string | null;
    rating: number;
    rating_count: number;
    url: string;
    is_pro: number;
+   [attribute: string]: unknown;
 }
+
+export type WikiInfoEntry = {
+   name: string;
+   value: string;
+   inheritedFrom: string | null;
+};
 
 export interface ProductList {
    title: string;
@@ -34,6 +42,7 @@ export interface ProductList {
    algolia: {
       apiKey: string;
    };
+   wikiInfo: WikiInfoEntry[];
 }
 
 export interface ProductListAncestor {
@@ -44,6 +53,7 @@ export interface ProductListAncestor {
 
 export interface ProductListChild {
    title: string;
+   deviceTitle: string | null;
    handle: string;
    path: string;
    image: ProductListImage | null;

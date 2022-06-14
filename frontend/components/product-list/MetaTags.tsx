@@ -1,27 +1,30 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
-import { IFIXIT_ORIGIN } from '@config/env';
-import { useSearchParams } from '@lib/algolia';
+import { useAppContext } from '@ifixit/ui';
 import { ProductList } from '@models/product-list';
 import Head from 'next/head';
 import * as React from 'react';
+import {
+   useCurrentRefinements,
+   usePagination,
+} from 'react-instantsearch-hooks-web';
 
 export interface MetaTagsProps {
    productList: ProductList;
 }
 
 export function MetaTags({ productList }: MetaTagsProps) {
-   const searchParams = useSearchParams();
-   const isFiltered =
-      searchParams.query.length > 0 || searchParams.filters.allIds.length > 0;
+   const appContext = useAppContext();
+   const currentRefinements = useCurrentRefinements();
+   const pagination = usePagination();
+   const page = pagination.currentRefinement;
+   const isFiltered = currentRefinements.items.length > 0;
    let title = productList.title;
-   if (!isFiltered && searchParams.page > 1) {
-      title += ` - Page ${searchParams.page}`;
+   if (!isFiltered && page > 1) {
+      title += ` - Page ${page}`;
    }
    title += ' | iFixit';
-   const canonicalUrl = `${IFIXIT_ORIGIN}${productList.path}${
-      searchParams.page > 1
-         ? `?${PRODUCT_LIST_PAGE_PARAM}=${searchParams.page}`
-         : ''
+   const canonicalUrl = `${appContext.ifixitOrigin}${productList.path}${
+      page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
    }`;
    const imageUrl = productList.image?.url;
    return (
