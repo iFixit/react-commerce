@@ -13,6 +13,7 @@ import {
    Text,
    useDisclosure,
 } from '@chakra-ui/react';
+import { WikiInfoEntry } from '@models/product-list/types';
 import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { useHits } from 'react-instantsearch-hooks-web';
@@ -27,15 +28,21 @@ export enum ProductViewType {
 export type ToolbarProps = {
    viewType: ProductViewType;
    onViewTypeChange: (viewType: ProductViewType) => void;
+   wikiInfo: WikiInfoEntry[];
 };
 
-export function Toolbar({ viewType, onViewTypeChange }: ToolbarProps) {
+export function Toolbar(props: ToolbarProps) {
+   const { viewType, onViewTypeChange, wikiInfo } = props;
    const drawer = useDisclosure({
       defaultIsOpen: false,
    });
    return (
       <>
-         <FacetsDrawer isOpen={drawer.isOpen} onClose={drawer.onClose} />
+         <FacetsDrawer
+            isOpen={drawer.isOpen}
+            onClose={drawer.onClose}
+            wikiInfo={wikiInfo}
+         />
          <Stack
             justify={{ md: 'space-between' }}
             align={{ base: 'stretch', md: 'center' }}
