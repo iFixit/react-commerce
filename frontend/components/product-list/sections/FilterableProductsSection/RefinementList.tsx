@@ -18,7 +18,11 @@ export type RefinementListProps = UseRefinementListProps;
 
 export function RefinementList(props: RefinementListProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
-      useRefinementList(props);
+      useRefinementList({
+         ...props,
+         sortBy:
+            props.attribute === 'price_range' ? sortByPriceRange : props.sortBy,
+      });
 
    return (
       <Box>
@@ -54,6 +58,30 @@ export function RefinementList(props: RefinementListProps) {
          )}
       </Box>
    );
+}
+
+const sortByPriceRange: RefinementListProps['sortBy'] = (a, b) => {
+   const aAvg = avg(a.escapedValue);
+   const bAvg = avg(b.escapedValue);
+
+   if (aAvg == null && bAvg == null) {
+      return 0;
+   }
+   if (aAvg == null) {
+      return 1;
+   }
+   if (bAvg == null) {
+      return -1;
+   }
+   return aAvg - bAvg;
+};
+
+function avg(x: string): number | null {
+   const nums = x.match(/\d+/g);
+   if (nums == null) {
+      return null;
+   }
+   return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
 }
 
 type RefinementListItemProps = {

@@ -15,7 +15,6 @@ import { formatFacetName } from '@helpers/algolia-helpers';
 import { WikiInfoEntry } from '@models/product-list/types';
 import * as React from 'react';
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
-import { RangeInput } from './RangeInput';
 import { RefinementList } from './RefinementList';
 import { useCountRefinements } from './useCountRefinements';
 import { useFilteredFacets } from './useFacets';
@@ -119,9 +118,6 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
                      display={isDisabled ? 'none' : 'block'}
                   >
                      <VStack align="stretch" spacing="3">
-                        {attribute === 'price_range' && (
-                           <RangeInput attribute="facet_tags.Price" />
-                        )}
                         <RefinementList
                            attribute={attribute}
                            showMore

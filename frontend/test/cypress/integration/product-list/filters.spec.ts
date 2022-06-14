@@ -103,65 +103,6 @@ describe('product list filters', () => {
       });
 
       user
-         .findByRole('button', {
-            name: /expand price range$/i,
-            expanded: false,
-         })
-         .click();
-
-      user
-         .findByLabelText(/set min price/i)
-         .invoke('attr', 'placeholder')
-         .as('min-price-placeholder')
-         .then((placeholder) => {
-            // Type a value in the min price input
-            const minPrice = parseFloat(placeholder ?? '0') + 1;
-            user.findByLabelText(/set min price/i).type(minPrice.toString());
-
-            // Verify that the min price is in the current refinements.
-            user
-               .findAllByTestId(`current-refinement-${minPrice.toString()}`)
-               .should('exist');
-
-            const invalidMaxPrice = minPrice - 1;
-            user
-               .findByLabelText(/set max price/i)
-               .type(invalidMaxPrice.toString());
-
-            user.findByText(/max should be higher than min/i).should('exist');
-
-            const validMaxPrice = minPrice + 10;
-            user
-               .findByLabelText(/set max price/i)
-               .type(`{selectall}{backspace}${validMaxPrice}`);
-
-            // Verify that the max price is in the current refinements.
-            user
-               .findAllByTestId(
-                  `current-refinement-${validMaxPrice.toString()}`
-               )
-               .should('exist');
-
-            user.wait('@search');
-            user.wait(1000);
-
-            user.findByTestId('filterable-products-section').within(() => {
-               // Check that all articles prices are within the range
-               user.findAllByTestId('product-price').each((priceEl) => {
-                  cy.wrap(priceEl)
-                     .invoke('text')
-                     .then((priceText) => {
-                        const valueMatch = priceText.match(/(\d+\.\d+)/);
-                        return valueMatch && valueMatch[0]
-                           ? parseFloat(valueMatch[0])
-                           : 0;
-                     })
-                     .should('be.within', minPrice, validMaxPrice);
-               });
-            });
-         });
-
-      user
          .findAllByTestId(/current-refinement-/i)
          .first()
          .invoke('attr', 'data-testid')
