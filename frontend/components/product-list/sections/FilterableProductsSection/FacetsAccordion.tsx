@@ -106,9 +106,6 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
                      display={isDisabled ? 'none' : 'block'}
                   >
                      <VStack align="stretch" spacing="3">
-                        {attribute === 'price_range' && (
-                           <RangeInput attribute="facet_tags.Price" />
-                        )}
                         <RefinementList
                            attribute={attribute}
                            showMore

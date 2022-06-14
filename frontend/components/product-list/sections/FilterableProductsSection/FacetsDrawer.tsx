@@ -122,11 +122,7 @@ export function FacetsDrawer({ isOpen, onClose }: FacetsDrawerProps) {
                >
                   <Box>
                      {facets.map((facet) => {
-                        const facetAttributes = [facet];
-                        if (facet === 'price_range') {
-                           facetAttributes.push('facet_tags.Price');
-                        }
-                        const refinedCount = countRefinements(facetAttributes);
+                        const refinedCount = countRefinements([facet]);
                         return (
                            <FacetListItem
                               key={facet}
@@ -292,9 +288,6 @@ function FacetPanel({ attribute, isOpen }: FacetPanelProps) {
          p="5"
       >
          <VStack align="stretch" spacing="3">
-            {attribute === 'price_range' && (
-               <RangeInput attribute="facet_tags.Price" />
-            )}
             <RefinementList
                attribute={attribute}
                showMore
