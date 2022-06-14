@@ -24,10 +24,19 @@ export function FacetsAccordion() {
    const countRefinements = useCountRefinements();
 
    return (
-      <Accordion allowMultiple data-testid="facets-accordion">
-         {facets.map((facet, index) => {
-            const isFirst = index === 0;
-            const isLast = index === facets.length - 1;
+      <Accordion
+         allowMultiple
+         data-testid="facets-accordion"
+         sx={{
+            '>:first-child': {
+               borderTop: 'none',
+            },
+            '>:last-child': {
+               borderBottom: 'none',
+            },
+         }}
+      >
+         {facets.map((facet) => {
             const facetAttributes = [facet];
             if (facet === 'price_range') {
                facetAttributes.push('facet_tags.Price');
@@ -38,8 +47,6 @@ export function FacetsAccordion() {
                   key={facet}
                   attribute={facet}
                   refinedCount={refinedCount}
-                  borderTop={isFirst ? 'none' : undefined}
-                  borderBottom={isLast ? 'none' : undefined}
                />
             );
          })}
