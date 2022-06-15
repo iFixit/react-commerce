@@ -27,7 +27,7 @@ import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
 import type { SearchClient } from 'algoliasearch/lite';
 import algoliasearch from 'algoliasearch/lite';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import NextLink from 'next/link';
 import * as React from 'react';
 import {
@@ -79,7 +79,7 @@ export function FeaturedProductListSection({
                alignItems="center"
             >
                {productList.image && (
-                  <Image
+                  <IfixitImage
                      src={productList.image.url}
                      alt={productList.image.alternativeText ?? ''}
                      objectFit="contain"

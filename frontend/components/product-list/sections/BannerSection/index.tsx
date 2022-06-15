@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import * as React from 'react';
 import backgroundImage from './lifetime-guarantee-background.jpg';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 
 export interface BannerSectionProps {
    title: string;
@@ -28,7 +28,12 @@ export function BannerSection({
          overflow="hidden"
          position="relative"
       >
-         <Image src={backgroundImage} alt="" layout="fill" objectFit="cover" />
+         <IfixitImage
+            src={backgroundImage}
+            alt=""
+            layout="fill"
+            objectFit="cover"
+         />
          <Flex
             p={{
                base: 10,
