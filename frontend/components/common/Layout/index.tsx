@@ -67,6 +67,8 @@ export interface LayoutProps {
    globalSettings: GlobalSettings;
 }
 
+export type WithLayoutProps<T> = T & LayoutProps;
+
 export function Layout({
    title,
    stores,

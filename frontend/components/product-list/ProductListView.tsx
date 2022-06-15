@@ -76,17 +76,22 @@ export function ProductListView({
                                  p: indexUiState.page,
                               };
                               routeObject.filter = indexUiState.refinementList;
-                              routeObject.range = indexUiState.range;
+                              if (indexUiState.range != null) {
+                                 routeObject.range = indexUiState.range;
+                              }
                               return routeObject;
                            },
                            routeToState(routeState: any) {
+                              const stateObject: any = {
+                                 query: routeState.q,
+                                 page: routeState.p,
+                                 refinementList: routeState.filter,
+                              };
+                              if (routeState.range != null) {
+                                 stateObject.range = routeState.range;
+                              }
                               return {
-                                 [indexName]: {
-                                    query: routeState.q,
-                                    page: routeState.p,
-                                    refinementList: routeState.filter,
-                                    range: routeState.range,
-                                 },
+                                 [indexName]: stateObject,
                               };
                            },
                         },

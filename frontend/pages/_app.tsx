@@ -9,7 +9,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
    const getLayout = Component.getLayout ?? ((page) => page);
    return (
-      <AppProviders pageProps={pageProps}>
+      <AppProviders csrfToken={pageProps.csrfToken}>
          {getLayout(<Component {...pageProps} />, pageProps)}
       </AppProviders>
    );

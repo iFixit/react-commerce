@@ -32,12 +32,12 @@ const customTheme = extendTheme({
 const queryClient = new QueryClient();
 
 export type AppProvidersProps = React.PropsWithChildren<{
-   pageProps: any;
+   csrfToken: string;
 }>;
 
-export function AppProviders({ children, pageProps }: AppProvidersProps) {
+export function AppProviders({ children, csrfToken }: AppProvidersProps) {
    return (
-      <AppProvider ifixitOrigin={IFIXIT_ORIGIN} csrfToken={pageProps.csrfToken}>
+      <AppProvider ifixitOrigin={IFIXIT_ORIGIN} csrfToken={csrfToken}>
          <QueryClientProvider client={queryClient}>
             <Head>
                <link rel="preconnect" href="https://fonts.googleapis.com" />
