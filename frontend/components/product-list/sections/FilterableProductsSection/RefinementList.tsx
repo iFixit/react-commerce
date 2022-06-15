@@ -20,8 +20,7 @@ export function RefinementList(props: RefinementListProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useRefinementList({
          ...props,
-         sortBy:
-            props.attribute === 'price_range' ? sortByPriceRange : props.sortBy,
+         sortBy: getSortBy(props),
       });
 
    return (
@@ -60,6 +59,17 @@ export function RefinementList(props: RefinementListProps) {
    );
 }
 
+const getSortBy = (props: RefinementListProps) => {
+   switch (props.attribute) {
+      case 'price_range':
+         return sortByPriceRange;
+      case 'facet_tags.Capacity':
+         return sortByCapacityHighToLow;
+      default:
+         return props.sortBy;
+   }
+};
+
 const sortByPriceRange: RefinementListProps['sortBy'] = (a, b) => {
    const aAvg = avg(a.escapedValue);
    const bAvg = avg(b.escapedValue);
@@ -82,6 +92,28 @@ function avg(x: string): number | null {
       return null;
    }
    return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
+}
+
+const sortByCapacityHighToLow: RefinementListProps['sortBy'] = (a, b) => {
+   return capacityToBytes(b.escapedValue) - capacityToBytes(a.escapedValue);
+};
+
+const unitToBytes = {
+   B: 1,
+   KB: 1024,
+   MB: 1024 ** 2,
+   GB: 1024 ** 3,
+   TB: 1024 ** 4,
+   PB: 1024 ** 5,
+};
+
+function capacityToBytes(x: string): number {
+   const size = parseFloat(x);
+   if (isNaN(size)) {
+      return 0;
+   }
+   const unit = (x.match(/[KMGTP]?B/)?.[0] ?? 'B') as keyof typeof unitToBytes;
+   return size * (unitToBytes[unit] ?? 1);
 }
 
 type RefinementListItemProps = {
