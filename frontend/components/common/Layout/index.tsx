@@ -8,8 +8,11 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
+import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
+   CartDrawer,
    Header,
    HeaderBar,
    HeaderCloseHiddenBarButton,
@@ -38,7 +41,6 @@ import {
    NavigationSubmenuName,
    NoUserLink,
    SearchInput,
-   useAppContext,
    useHeaderContext,
    UserMenu,
    UserMenuButton,
@@ -65,6 +67,8 @@ export interface LayoutProps {
    globalSettings: GlobalSettings;
 }
 
+export type WithLayoutProps<T> = T & LayoutProps;
+
 export function Layout({
    title,
    stores,
@@ -76,122 +80,135 @@ export function Layout({
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
    return (
-      <Box>
-         <Head>
-            <title>{title}</title>
-            <link rel="icon" href="/favicon.ico" />
-         </Head>
-         <Flex direction="column">
-            <Header>
-               <HeaderHiddenBar>
-                  <HeaderSearchForm.Mobile>
-                     <SearchInput ref={mobileSearchInputRef} />
-                  </HeaderSearchForm.Mobile>
-                  <HeaderCloseHiddenBarButton>
-                     Cancel
-                  </HeaderCloseHiddenBarButton>
-               </HeaderHiddenBar>
-               <HeaderBar>
-                  <HeaderPrimaryNavigation>
-                     <HeaderNavigationToggleButton aria-label="Open navigation menu" />
-                     <NextLink href="/" passHref>
-                        <WordmarkLink aria-label="Go to homepage" pr="4">
-                           <Wordmark />
-                        </WordmarkLink>
-                     </NextLink>
-                     {menu && (
-                        <NavigationMenu>
-                           {menu.items.map((item, index) => {
-                              switch (item.type) {
-                                 case 'submenu': {
-                                    if (item.submenu === null) {
+      <ShopifyStorefrontProvider
+         shopDomain={currentStore.shopify.storefrontDomain}
+         storefrontAccessToken={currentStore.shopify.storefrontAccessToken}
+         apiVersion="2020-01"
+      >
+         <Box>
+            <Head>
+               <title>{title}</title>
+               <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <Flex direction="column">
+               <Header>
+                  <HeaderHiddenBar>
+                     <HeaderSearchForm.Mobile>
+                        <SearchInput ref={mobileSearchInputRef} />
+                     </HeaderSearchForm.Mobile>
+                     <HeaderCloseHiddenBarButton>
+                        Cancel
+                     </HeaderCloseHiddenBarButton>
+                  </HeaderHiddenBar>
+                  <HeaderBar>
+                     <HeaderPrimaryNavigation>
+                        <HeaderNavigationToggleButton aria-label="Open navigation menu" />
+                        <NextLink href="/" passHref>
+                           <WordmarkLink aria-label="Go to homepage" pr="4">
+                              <Wordmark />
+                           </WordmarkLink>
+                        </NextLink>
+                        {menu && (
+                           <NavigationMenu>
+                              {menu.items.map((item, index) => {
+                                 switch (item.type) {
+                                    case 'submenu': {
+                                       if (item.submenu === null) {
+                                          return null;
+                                       }
+                                       return (
+                                          <NavigationMenuItem key={index}>
+                                             <NavigationMenuButton>
+                                                {item.name}
+                                             </NavigationMenuButton>
+                                             <NavigationSubmenu>
+                                                {item.submenu.items.map(
+                                                   (subitem, subIndex) => {
+                                                      if (
+                                                         subitem.type !== 'link'
+                                                      ) {
+                                                         return null;
+                                                      }
+                                                      return (
+                                                         <NavigationSubmenuItem
+                                                            key={subIndex}
+                                                         >
+                                                            <NextLink
+                                                               href={
+                                                                  subitem.url
+                                                               }
+                                                               passHref
+                                                            >
+                                                               <NavigationSubmenuLink
+                                                                  disclosureIcon={
+                                                                     <Icon
+                                                                        boxSize="6"
+                                                                        transform="translateY(-50%)"
+                                                                        as={
+                                                                           HiArrowNarrowRight
+                                                                        }
+                                                                     />
+                                                                  }
+                                                               >
+                                                                  <NavigationSubmenuName>
+                                                                     {
+                                                                        subitem.name
+                                                                     }
+                                                                  </NavigationSubmenuName>
+                                                                  <NavigationSubmenuDivider />
+                                                                  {subitem.description && (
+                                                                     <NavigationSubmenuDescription>
+                                                                        {
+                                                                           subitem.description
+                                                                        }
+                                                                     </NavigationSubmenuDescription>
+                                                                  )}
+                                                               </NavigationSubmenuLink>
+                                                            </NextLink>
+                                                         </NavigationSubmenuItem>
+                                                      );
+                                                   }
+                                                )}
+                                             </NavigationSubmenu>
+                                          </NavigationMenuItem>
+                                       );
+                                    }
+                                    default: {
                                        return null;
                                     }
-                                    return (
-                                       <NavigationMenuItem key={index}>
-                                          <NavigationMenuButton>
-                                             {item.name}
-                                          </NavigationMenuButton>
-                                          <NavigationSubmenu>
-                                             {item.submenu.items.map(
-                                                (subitem, subIndex) => {
-                                                   if (
-                                                      subitem.type !== 'link'
-                                                   ) {
-                                                      return null;
-                                                   }
-                                                   return (
-                                                      <NavigationSubmenuItem
-                                                         key={subIndex}
-                                                      >
-                                                         <NextLink
-                                                            href={subitem.url}
-                                                            passHref
-                                                         >
-                                                            <NavigationSubmenuLink
-                                                               disclosureIcon={
-                                                                  <Icon
-                                                                     boxSize="6"
-                                                                     transform="translateY(-50%)"
-                                                                     as={
-                                                                        HiArrowNarrowRight
-                                                                     }
-                                                                  />
-                                                               }
-                                                            >
-                                                               <NavigationSubmenuName>
-                                                                  {subitem.name}
-                                                               </NavigationSubmenuName>
-                                                               <NavigationSubmenuDivider />
-                                                               {subitem.description && (
-                                                                  <NavigationSubmenuDescription>
-                                                                     {
-                                                                        subitem.description
-                                                                     }
-                                                                  </NavigationSubmenuDescription>
-                                                               )}
-                                                            </NavigationSubmenuLink>
-                                                         </NextLink>
-                                                      </NavigationSubmenuItem>
-                                                   );
-                                                }
-                                             )}
-                                          </NavigationSubmenu>
-                                       </NavigationMenuItem>
-                                    );
                                  }
-                                 default: {
-                                    return null;
-                                 }
-                              }
-                           })}
-                        </NavigationMenu>
-                     )}
-                  </HeaderPrimaryNavigation>
-                  <HeaderSearchForm.Desktop>
-                     <SearchInput />
-                  </HeaderSearchForm.Desktop>
-                  <HeaderSecondaryNavigation>
-                     <HeaderOpenHiddenBarButton
-                        aria-label="Search database"
-                        icon={<HeaderNavItemIcon as={RiSearchLine} mt="3px" />}
-                        onClick={() => {
-                           mobileSearchInputRef.current?.focus();
-                        }}
-                     />
-                     <HeaderUserMenu />
-                  </HeaderSecondaryNavigation>
-               </HeaderBar>
-               {menu && <LayoutNavigationDrawer menu={menu} />}
-            </Header>
-            {children}
-            <LayoutFooter
-               currentStore={currentStore}
-               stores={stores}
-               globalSettings={globalSettings}
-            />
-         </Flex>
-      </Box>
+                              })}
+                           </NavigationMenu>
+                        )}
+                     </HeaderPrimaryNavigation>
+                     <HeaderSearchForm.Desktop>
+                        <SearchInput />
+                     </HeaderSearchForm.Desktop>
+                     <HeaderSecondaryNavigation>
+                        <HeaderOpenHiddenBarButton
+                           aria-label="Search database"
+                           icon={
+                              <HeaderNavItemIcon as={RiSearchLine} mt="3px" />
+                           }
+                           onClick={() => {
+                              mobileSearchInputRef.current?.focus();
+                           }}
+                        />
+                        <CartDrawer />
+                        <HeaderUserMenu />
+                     </HeaderSecondaryNavigation>
+                  </HeaderBar>
+                  {menu && <LayoutNavigationDrawer menu={menu} />}
+               </Header>
+               {children}
+               <LayoutFooter
+                  currentStore={currentStore}
+                  stores={stores}
+                  globalSettings={globalSettings}
+               />
+            </Flex>
+         </Box>
+      </ShopifyStorefrontProvider>
    );
 }
 

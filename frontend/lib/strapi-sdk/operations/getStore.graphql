@@ -28,6 +28,10 @@ query getStore($filters: StoreFiltersInput) {
                youtube
                repairOrg
             }
+            shopifySettings {
+               storefrontDomain
+               storefrontAccessToken
+            }
          }
       }
    }

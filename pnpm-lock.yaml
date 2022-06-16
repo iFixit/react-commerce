@@ -28,10 +28,14 @@ importers:
       '@graphql-codegen/typescript': 2.2.0
       '@graphql-codegen/typescript-generic-sdk': 2.1.3
       '@graphql-codegen/typescript-operations': 2.1.3
+      '@ifixit/app': workspace:*
       '@ifixit/auth-sdk': workspace:*
+      '@ifixit/cart-sdk': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/icons': workspace:*
+      '@ifixit/ifixit-api-client': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
+      '@ifixit/shopify-storefront-client': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@sentry/nextjs': ^7.0.0
@@ -41,6 +45,7 @@ importers:
       '@testing-library/jest-dom': 5.16.1
       '@testing-library/react': 12.1.2
       '@testing-library/user-event': 13.5.0
+      '@types/cookie': 0.5.1
       '@types/jest': 27.4.0
       '@types/node': 14.14.25
       '@types/react': 17.0.1
@@ -54,6 +59,7 @@ importers:
       algoliasearch: 4.13.1
       babel-jest: 26.6.3
       concurrently: 6.2.1
+      cookie: 0.5.0
       cypress: 9.3.1
       dayjs: 1.10.5
       dotenv: 10.0.0
@@ -92,15 +98,20 @@ importers:
       '@core-ds/primitives': 2.4.5
       '@emotion/react': 11.7.1_a003f5d44f346f6e89b1b61bd07839ac
       '@emotion/styled': 11.6.0_3d1b1cae8d2c82499801a9e1836cb431
+      '@ifixit/app': link:../packages/app
       '@ifixit/auth-sdk': link:../packages/auth-sdk
+      '@ifixit/cart-sdk': link:../packages/cart-sdk
       '@ifixit/helpers': link:../packages/helpers
       '@ifixit/icons': link:../packages/icons
+      '@ifixit/ifixit-api-client': link:../packages/ifixit-api-client
       '@ifixit/newsletter-sdk': link:../packages/newsletter-sdk
+      '@ifixit/shopify-storefront-client': link:../packages/shopify-storefront-client
       '@ifixit/ui': link:../packages/ui
       '@sentry/nextjs': 7.0.0_next@11.1.3+react@17.0.2
       '@xstate/fsm': 1.6.1
       '@xstate/react': 1.5.1_f169e3cfda7dafef3dc8895cf096fabe
       algoliasearch: 4.13.1
+      cookie: 0.5.0
       dayjs: 1.10.5
       framer-motion: 6.2.7_react-dom@17.0.2+react@17.0.2
       graphql: 15.5.3
@@ -131,6 +142,7 @@ importers:
       '@testing-library/jest-dom': 5.16.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.5.0_@testing-library+dom@7.21.4
+      '@types/cookie': 0.5.1
       '@types/jest': 27.4.0
       '@types/node': 14.14.25
       '@types/react': 17.0.1
@@ -157,17 +169,52 @@ importers:
       prettier: 2.2.1
       typescript: 4.3.2
 
+  packages/app:
+    specifiers:
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+
   packages/auth-sdk:
     specifiers:
+      '@ifixit/app': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/tsconfig': workspace:*
-      '@ifixit/ui': workspace:*
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       typescript: 4.5.3
     dependencies:
+      '@ifixit/app': link:../app
       '@ifixit/helpers': link:../helpers
-      '@ifixit/ui': link:../ui
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+
+  packages/cart-sdk:
+    specifiers:
+      '@ifixit/app': workspace:*
+      '@ifixit/auth-sdk': workspace:*
+      '@ifixit/helpers': workspace:*
+      '@ifixit/ifixit-api-client': workspace:*
+      '@ifixit/shopify-storefront-client': workspace:*
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+    dependencies:
+      '@ifixit/app': link:../app
+      '@ifixit/auth-sdk': link:../auth-sdk
+      '@ifixit/helpers': link:../helpers
+      '@ifixit/ifixit-api-client': link:../ifixit-api-client
+      '@ifixit/shopify-storefront-client': link:../shopify-storefront-client
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
@@ -194,17 +241,44 @@ importers:
       '@types/react-dom': 17.0.11
       typescript: 4.5.3
 
-  packages/newsletter-sdk:
+  packages/ifixit-api-client:
     specifiers:
-      '@ifixit/helpers': workspace:*
+      '@ifixit/app': workspace:*
       '@ifixit/tsconfig': workspace:*
-      '@ifixit/ui': workspace:*
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       typescript: 4.5.3
     dependencies:
+      '@ifixit/app': link:../app
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+
+  packages/newsletter-sdk:
+    specifiers:
+      '@ifixit/app': workspace:*
+      '@ifixit/helpers': workspace:*
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+    dependencies:
+      '@ifixit/app': link:../app
       '@ifixit/helpers': link:../helpers
-      '@ifixit/ui': link:../ui
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+
+  packages/shopify-storefront-client:
+    specifiers:
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      typescript: 4.5.3
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
@@ -216,10 +290,15 @@ importers:
 
   packages/ui:
     specifiers:
+      '@ifixit/app': workspace:*
+      '@ifixit/cart-sdk': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       typescript: 4.5.3
+    dependencies:
+      '@ifixit/app': link:../app
+      '@ifixit/cart-sdk': link:../cart-sdk
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
@@ -3376,6 +3455,10 @@ packages:
       '@babel/types': 7.17.0
     dev: true
 
+  /@types/cookie/0.5.1:
+    resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
+    dev: true
+
   /@types/google.maps/3.49.1:
     resolution: {integrity: sha512-Sbl5anucT7LUcUxXsRxkCozHdXIkUiY+Tyru+OVl5rot0+VIZuuulmABC7X+nF7rL7BRTAguSBSAD/e/AfIkkA==}
     dev: false
@@ -4981,6 +5064,11 @@ packages:
 
   /cookie/0.4.2:
     resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
+    engines: {node: '>= 0.6'}
+    dev: false
+
+  /cookie/0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
     dev: false
 

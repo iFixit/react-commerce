@@ -23,7 +23,7 @@ import {
 import { Card } from '@components/ui';
 import { ALGOLIA_APP_ID } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
-import { useAppContext } from '@ifixit/ui';
+import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
 import type { SearchClient } from 'algoliasearch/lite';
 import algoliasearch from 'algoliasearch/lite';

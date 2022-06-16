@@ -21,6 +21,7 @@ export interface Store {
       bottomMenu: Menu | null;
    };
    socialMediaAccounts: SocialMediaAccounts;
+   shopify: ShopifySettings;
 }
 
 export interface SocialMediaAccounts {
@@ -29,6 +30,11 @@ export interface SocialMediaAccounts {
    instagram: string | null;
    youtube: string | null;
    repairOrg: string | null;
+}
+
+export interface ShopifySettings {
+   storefrontDomain: string;
+   storefrontAccessToken: string;
 }
 
 /**
@@ -43,6 +49,9 @@ export async function getStoreByCode(code: string): Promise<Store> {
    const store = result.store?.data?.[0]?.attributes;
    if (store == null) {
       throw new Error('Store not found');
+   }
+   if (store.shopifySettings == null) {
+      throw new Error('Shopify settings not found');
    }
    return {
       header: {
@@ -60,6 +69,10 @@ export async function getStoreByCode(code: string): Promise<Store> {
          instagram: store.socialMediaAccounts.instagram || null,
          youtube: store.socialMediaAccounts.youtube || null,
          repairOrg: store.socialMediaAccounts.repairOrg || null,
+      },
+      shopify: {
+         storefrontDomain: store.shopifySettings.storefrontDomain,
+         storefrontAccessToken: store.shopifySettings.storefrontAccessToken,
       },
    };
 }

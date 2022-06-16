@@ -1,28 +1,25 @@
-import { AppProviders, Layout } from '@components/common';
+import { AppProviders, Layout, WithLayoutProps } from '@components/common';
 import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { getGlobalSettings, GlobalSettings } from '@models/global-settings';
-import { findProductList } from '@models/product-list';
+import { IFIXIT_ORIGIN } from '@config/env';
 import {
-   getStoreByCode,
-   getStoreList,
-   Store,
-   StoreListItem,
-} from '@models/store';
+   generateCSRFToken,
+   setCSRFCookie,
+   WithCSRFProps,
+} from '@ifixit/auth-sdk';
+import { getGlobalSettings } from '@models/global-settings';
+import { findProductList } from '@models/product-list';
+import { getStoreByCode, getStoreList } from '@models/store';
 import { GetServerSideProps } from 'next';
-import * as React from 'react';
 import { getServerState } from 'react-instantsearch-hooks-server';
 
-type PageProps = ProductListViewProps & {
-   stores: StoreListItem[];
-   currentStore: Store;
-   globalSettings: GlobalSettings;
-};
+type PageProps = WithLayoutProps<ProductListViewProps>;
+type AppPageProps = WithCSRFProps<PageProps>;
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async (
+export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
    // The data is considered fresh for 10 seconds, and can be served even if stale for up to 10 minutes
@@ -30,6 +27,12 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=600'
    );
+
+   const csrfToken = generateCSRFToken();
+   setCSRFCookie(context, {
+      csrfToken,
+      origin: IFIXIT_ORIGIN,
+   });
 
    const { handle } = context.params || {};
    if (typeof handle !== 'string') {
@@ -56,15 +59,18 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       };
    }
 
+   const title = `iFixit | ${productList.title}`;
+
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
    const url = `${protocol}://${context.req.headers.host}${context.req.url}`;
    const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
    const serverState = await getServerState(
-      <AppProviders>
+      <AppProviders csrfToken={csrfToken}>
          <ProductListPage
             productList={productList}
             url={url}
             indexName={indexName}
+            title={title}
             globalSettings={globalSettings}
             stores={stores}
             currentStore={currentStore}
@@ -74,9 +80,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
    return {
       props: {
+         csrfToken,
          globalSettings,
          currentStore,
          stores,
+         title,
          productList,
          indexName,
          serverState,
@@ -102,16 +110,7 @@ const ProductListPage: NextPageWithLayout<PageProps> = ({
 };
 
 ProductListPage.getLayout = function getLayout(page, pageProps) {
-   return (
-      <Layout
-         title={`iFixit | ${pageProps.productList.title}`}
-         currentStore={pageProps.currentStore}
-         stores={pageProps.stores}
-         globalSettings={pageProps.globalSettings}
-      >
-         {page}
-      </Layout>
-   );
+   return <Layout {...pageProps}>{page}</Layout>;
 };
 
 export default ProductListPage;

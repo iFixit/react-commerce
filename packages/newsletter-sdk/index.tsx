@@ -1,5 +1,5 @@
+import { useAppContext } from '@ifixit/app';
 import { isError } from '@ifixit/helpers';
-import { useAppContext } from '@ifixit/ui';
 import * as React from 'react';
 
 /**

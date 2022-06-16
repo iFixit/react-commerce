@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { ThemeTypings } from '@chakra-ui/styled-system';
 import { Rating } from '@components/ui';
-import { useAppContext } from '@ifixit/ui';
+import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
 import Image from 'next/image';
 import * as React from 'react';

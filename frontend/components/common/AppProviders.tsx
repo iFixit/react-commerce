@@ -1,6 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { AppProvider, theme } from '@ifixit/ui';
+import { AppProvider } from '@ifixit/app';
+import { theme } from '@ifixit/ui';
 import Head from 'next/head';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -30,9 +31,13 @@ const customTheme = extendTheme({
 
 const queryClient = new QueryClient();
 
-export function AppProviders({ children }: React.PropsWithChildren<any>) {
+export type AppProvidersProps = React.PropsWithChildren<{
+   csrfToken: string;
+}>;
+
+export function AppProviders({ children, csrfToken }: AppProvidersProps) {
    return (
-      <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
+      <AppProvider ifixitOrigin={IFIXIT_ORIGIN} csrfToken={csrfToken}>
          <QueryClientProvider client={queryClient}>
             <Head>
                <link rel="preconnect" href="https://fonts.googleapis.com" />

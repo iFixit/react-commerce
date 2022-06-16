@@ -1,9 +1,13 @@
 const withTM = require('next-transpile-modules')([
+   '@ifixit/app',
    '@ifixit/ui',
    '@ifixit/icons',
    '@ifixit/auth-sdk',
+   '@ifixit/cart-sdk',
    '@ifixit/newsletter-sdk',
    '@ifixit/helpers',
+   '@ifixit/ifixit-api-client',
+   '@ifixit/shopify-storefront-client',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -51,6 +55,8 @@ const moduleExports = {
          'localhost',
          'cdn.shopify.com',
          'strapi.cominor.com',
+         'www.cominor.com',
+         'ifixit.com',
          'valkyrie.cdn.ifixit.com',
          'cart-products.cdn.ifixit.com',
          'assets.cdn.ifixit.com',

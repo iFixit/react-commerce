@@ -7,7 +7,7 @@
       "currency": "USD",
       "publishedAt": "2020-01-01T00:00:00Z",
       "shopifySettings": {
-         "storefrontDomain": "ifixit-test.myshopify.com",
+         "storefrontDomain": "store.cominor.com",
          "storefrontAccessToken": "d08db995952e88a37804b54a284e5130"
       },
       "footer": {
@@ -35,7 +35,7 @@
       "currency": "EUR",
       "publishedAt": "2020-01-01T00:00:00Z",
       "shopifySettings": {
-         "storefrontDomain": "ifixit-test.myshopify.com",
+         "storefrontDomain": "store.cominor.com",
          "storefrontAccessToken": "d08db995952e88a37804b54a284e5130"
       },
       "footer": {

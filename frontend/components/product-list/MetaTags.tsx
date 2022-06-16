@@ -1,5 +1,5 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
-import { useAppContext } from '@ifixit/ui';
+import { useAppContext } from '@ifixit/app';
 import { ProductList } from '@models/product-list';
 import Head from 'next/head';
 import * as React from 'react';

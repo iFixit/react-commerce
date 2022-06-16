@@ -4,6 +4,10 @@
    "main": "./index.tsx",
    "types": "./index.tsx",
    "license": "MIT",
+   "dependencies": {
+      "@ifixit/app": "workspace:*",
+      "@ifixit/cart-sdk": "workspace:*"
+   },
    "peerDependencies": {
       "@chakra-ui/react": ">= 1.8.3 < 2",
       "@core-ds/primitives": ">2.4"

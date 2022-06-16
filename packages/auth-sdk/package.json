@@ -5,11 +5,13 @@
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/ui": "workspace:*",
+      "@ifixit/app": "workspace:*",
       "@ifixit/helpers": "workspace:*"
    },
    "peerDependencies": {
-      "react-query": "3.x"
+      "react-query": "3.x",
+      "next": "*",
+      "cookie": "0.5.0"
    },
    "devDependencies": {
       "@types/react": "17.0.37",
