@@ -1,4 +1,5 @@
 import { filterNullableItems, Awaited } from '@helpers/application-helpers';
+import { cache } from '@lib/cache';
 import { strapi } from '@lib/strapi-sdk';
 import {
    ImageLinkMenuItem,
@@ -37,12 +38,16 @@ export interface ShopifySettings {
    storefrontAccessToken: string;
 }
 
+export function getStoreByCode(code: string): Promise<Store> {
+   return cache(`store-${code}`, () => getStoreByCodeFromStrapi(code), 60 * 60);
+}
+
 /**
  * Get the store data (header menus, footer menus, etc) from the API.
  * @param {string} code The code of the store
  * @returns The store data.
  */
-export async function getStoreByCode(code: string): Promise<Store> {
+async function getStoreByCodeFromStrapi(code: string): Promise<Store> {
    const result = await strapi.getStore({
       filters: { code: { eq: code } },
    });
@@ -88,7 +93,11 @@ export interface StoreListItem {
  * Get the list of stores from the API.
  * @returns A list of store items.
  */
-export async function getStoreList(): Promise<StoreListItem[]> {
+export function getStoreList(): Promise<StoreListItem[]> {
+   return cache('storeList', getStoreListFromStrapi, 60 * 10);
+}
+
+async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
    const result = await strapi.getStoreList();
    const stores = result.stores?.data || [];
    return filterNullableItems(
