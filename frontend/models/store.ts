@@ -38,12 +38,16 @@ export interface ShopifySettings {
    storefrontAccessToken: string;
 }
 
+export function getStoreByCode(code: string): Promise<Store> {
+   return cache(`store-${code}`, () => getStoreByCodeFromStrapi(code), 60 * 60);
+}
+
 /**
  * Get the store data (header menus, footer menus, etc) from the API.
  * @param {string} code The code of the store
  * @returns The store data.
  */
-export async function getStoreByCode(code: string): Promise<Store> {
+async function getStoreByCodeFromStrapi(code: string): Promise<Store> {
    const result = await strapi.getStore({
       filters: { code: { eq: code } },
    });
