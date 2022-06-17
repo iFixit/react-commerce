@@ -1,4 +1,5 @@
 import { strapi } from '@lib/strapi-sdk';
+import { cache } from '@lib/cache';
 
 export interface GlobalSettings {
    newsletterForm: {
@@ -10,6 +11,10 @@ export interface GlobalSettings {
 }
 
 export async function getGlobalSettings(): Promise<GlobalSettings> {
+   return cache('globalSettings', getGlobalSettingsFromStrapi, 60 * 60);
+}
+
+async function getGlobalSettingsFromStrapi(): Promise<GlobalSettings> {
    const result = await strapi.getGlobalSettings();
    const newsletterForm =
       result.global?.data?.attributes?.newsletterForm || null;
