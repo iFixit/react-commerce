@@ -84,9 +84,16 @@ const moduleExports = {
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
-module.exports = withBundleAnalyzer(
-   withSentryConfig(
-      withTM(moduleExports),
-      SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
-   )
+const plugins = withSentryConfig(
+   withBundleAnalyzer(withTM(moduleExports)),
+   SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );
+
+module.exports = {
+   ...plugins,
+   webpack(config, info) {
+      config = plugins.webpack(config, info);
+      config.optimization.minimize = true;
+      return config;
+   }
+}
