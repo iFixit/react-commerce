@@ -13,8 +13,8 @@ const withTM = require('next-transpile-modules')([
 const { withSentryConfig } = require('@sentry/nextjs');
 
 const withBundleAnalyzer =
-   process.env !== 'production'
-      ? require('@next/bundle-analyzer')({ enabled: true })
+   process.env.ANALYZE === 'true'
+      ? require('@next/bundle-analyzer')()
       : (arg) => arg;
 
 const sentryWebpackPluginOptions = {
