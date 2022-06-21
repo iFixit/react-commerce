@@ -1,12 +1,15 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
 import { ALGOLIA_APP_ID } from '@config/env';
+import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { ProductList, ProductListSectionType } from '@models/product-list';
 import type { SearchClient } from 'algoliasearch/lite';
 import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import * as React from 'react';
 import {
+   Configure,
+   Index,
    InstantSearch,
    InstantSearchServerState,
    InstantSearchSSRProvider,
@@ -41,6 +44,8 @@ export function ProductListView({
    algoliaClientRef.current =
       algoliaClientRef.current ??
       algoliasearch(ALGOLIA_APP_ID, productList.algolia.apiKey);
+
+   const filters = computeProductListAlgoliaFilterPreset(productList);
 
    return (
       <>
@@ -106,14 +111,19 @@ export function ProductListView({
                         }),
                      }}
                   >
-                     <MetaTags productList={productList} />
-                     <HeroSection productList={productList} />
-                     {productList.children.length > 0 && (
-                        <ProductListChildrenSection productList={productList} />
-                     )}
-                     <FilterableProductsSection
-                        wikiInfo={productList.wikiInfo}
-                     />
+                     <Index indexName={indexName}>
+                        <Configure filters={filters} />
+                        <MetaTags productList={productList} />
+                        <HeroSection productList={productList} />
+                        {productList.children.length > 0 && (
+                           <ProductListChildrenSection
+                              productList={productList}
+                           />
+                        )}
+                        <FilterableProductsSection
+                           wikiInfo={productList.wikiInfo}
+                        />
+                     </Index>
                      {productList.sections.map((section, index) => {
                         switch (section.type) {
                            case ProductListSectionType.Banner: {
@@ -146,6 +156,7 @@ export function ProductListView({
                                     <FeaturedProductListSection
                                        key={index}
                                        productList={productList}
+                                       index={index}
                                     />
                                  );
                               }

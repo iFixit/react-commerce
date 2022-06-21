@@ -52,12 +52,10 @@ export async function findProductList(
       ? await fetchDeviceWiki(productList.deviceTitle)
       : null;
 
-   const algoliaApiKey = createProductListAlgoliaKey({
-      appId: ALGOLIA_APP_ID,
-      apiKey: ALGOLIA_API_KEY,
-      productListFilters: productList.filters,
-      deviceTitle: productList.deviceTitle,
-   });
+   const algoliaApiKey = createPublicAlgoliaKey(
+      ALGOLIA_APP_ID,
+      ALGOLIA_API_KEY
+   );
 
    return {
       title: productList.title,
@@ -286,12 +284,10 @@ function createProductListSection(
          }
          const image = productList.image?.data?.attributes;
 
-         const algoliaApiKey = createProductListAlgoliaKey({
-            appId: ALGOLIA_APP_ID,
-            apiKey: ALGOLIA_API_KEY,
-            productListFilters: productList.filters,
-            deviceTitle: productList.deviceTitle,
-         });
+         const algoliaApiKey = createPublicAlgoliaKey(
+            ALGOLIA_APP_ID,
+            ALGOLIA_API_KEY
+         );
 
          return {
             type: ProductListSectionType.FeaturedProductList,
@@ -351,20 +347,10 @@ function createProductListSection(
    }
 }
 
-function createProductListAlgoliaKey(options: {
-   appId: string;
-   apiKey: string;
-   productListFilters?: string | null;
-   deviceTitle?: string | null;
-}): string {
-   const client = algoliasearch(options.appId, options.apiKey);
-   const publicKey = client.generateSecuredApiKey(options.apiKey, {
-      filters:
-         options.productListFilters && options.productListFilters.length > 0
-            ? `${options.productListFilters} AND public=1`
-            : options.deviceTitle
-            ? `device:${JSON.stringify(options.deviceTitle)} AND public=1`
-            : 'public=1',
+function createPublicAlgoliaKey(appId: string, apiKey: string): string {
+   const client = algoliasearch(appId, apiKey);
+   const publicKey = client.generateSecuredApiKey(apiKey, {
+      filters: 'public=1',
    });
    return publicKey;
 }
