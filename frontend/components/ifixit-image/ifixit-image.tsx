@@ -22,7 +22,7 @@ function isGuideImage(src: string) {
 
 function isCartImage(src: string) {
    return src.match(
-      /^https:\/\/(cart-products\.cdn\.ifixit\.com\/|([^/]+\.(ubreakit|cominor)\.com\/cart-products))\//
+      /^https:\/\/(cart-products\.cdn\.ifixit\.com\/|([^/]+\.(ubreakit|cominor)\.com\/cart-products))/
    );
 }
 
