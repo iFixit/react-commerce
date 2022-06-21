@@ -1,17 +1,19 @@
 import Image, { ImageProps, ImageLoader } from 'next/image';
 
 export function IfixitImage(props: ImageProps) {
+   let unoptimized = props.unoptimized;
+
    if (typeof props.src === 'string') {
       if (isGuideImage(props.src)) {
-         props.loader = passThroughLoader;
+         unoptimized = true;
       } else if (isCartImage(props.src)) {
-         props.loader = passThroughLoader;
+         unoptimized = true;
       } else if (isStrapiImage(props.src)) {
-         props.loader = passThroughLoader;
+         unoptimized = true;
       }
    }
 
-   return <Image {...props} />;
+   return <Image {...props} unoptimized={unoptimized} />;
 }
 
 function isGuideImage(src: string) {
@@ -30,8 +32,4 @@ function isStrapiImage(src: string) {
    return src.match(
       /^https:\/\/ifixit-(dev-)?strapi-uploads.s3.amazonaws.com\//
    );
-}
-
-function passThroughLoader({ src }: { src: string }) {
-   return src;
 }
