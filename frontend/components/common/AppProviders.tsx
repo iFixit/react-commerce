@@ -5,6 +5,7 @@ import { theme } from '@ifixit/ui';
 import Head from 'next/head';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
 
 const customTheme = extendTheme({
    ...theme,
@@ -31,12 +32,19 @@ const customTheme = extendTheme({
 
 const queryClient = new QueryClient();
 
-export type AppProvidersProps = React.PropsWithChildren<{
-   csrfToken: string;
-}>;
+export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
 
-export function AppProviders({ children, csrfToken }: AppProvidersProps) {
-   return (
+export type AppProvidersProps = {
+   csrfToken: string;
+   algolia?: AlgoliaProps;
+};
+
+export function AppProviders({
+   children,
+   csrfToken,
+   algolia,
+}: React.PropsWithChildren<AppProvidersProps>) {
+   const markup = (
       <AppProvider ifixitOrigin={IFIXIT_ORIGIN} csrfToken={csrfToken}>
          <QueryClientProvider client={queryClient}>
             <Head>
@@ -65,4 +73,11 @@ export function AppProviders({ children, csrfToken }: AppProvidersProps) {
          </QueryClientProvider>
       </AppProvider>
    );
+
+   if (algolia) {
+      return (
+         <InstantSearchProvider {...algolia}>{markup}</InstantSearchProvider>
+      );
+   }
+   return markup;
 }

@@ -2,10 +2,6 @@ import cookie from 'cookie';
 import crypto from 'crypto';
 import type { GetServerSidePropsContext } from 'next';
 
-export type WithCSRFProps<T> = T & {
-   csrfToken: string;
-};
-
 export function generateCSRFToken(): string {
    return crypto.randomBytes(64).toString('hex');
 }

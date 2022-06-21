@@ -5,7 +5,6 @@ import {
    PaginationLink,
    useIsMounted,
 } from '@ifixit/ui';
-import * as React from 'react';
 import {
    HiChevronDoubleLeft,
    HiChevronDoubleRight,
