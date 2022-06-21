@@ -21,33 +21,24 @@ import {
    ProductCardTitle,
 } from '@components/common';
 import { Card } from '@components/ui';
-import { ALGOLIA_APP_ID } from '@config/env';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
+import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
-import type { SearchClient } from 'algoliasearch/lite';
-import algoliasearch from 'algoliasearch/lite';
 import { IfixitImage } from '@components/ifixit-image';
 import NextLink from 'next/link';
-import * as React from 'react';
-import {
-   Configure,
-   InstantSearch,
-   useHits,
-} from 'react-instantsearch-hooks-web';
+import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 
 export interface FeaturedProductListSectionProps {
    productList: FeaturedProductList;
+   index: number;
 }
 
 export function FeaturedProductListSection({
    productList,
+   index,
 }: FeaturedProductListSectionProps) {
-   const algoliaClientRef = React.useRef<SearchClient>();
-   algoliaClientRef.current =
-      algoliaClientRef.current ??
-      algoliasearch(ALGOLIA_APP_ID, productList.algolia.apiKey);
-
+   const filters = computeProductListAlgoliaFilterPreset(productList);
    return (
       <Card
          overflow="hidden"
@@ -134,13 +125,13 @@ export function FeaturedProductListSection({
                </Box>
             </Box>
             <Box flexGrow={1}>
-               <InstantSearch
-                  searchClient={algoliaClientRef.current}
+               <Index
                   indexName={productList.algolia.indexName}
+                  indexId={`feature-product-list-${index}`}
                >
-                  <Configure hitsPerPage={3} />
+                  <Configure hitsPerPage={3} filters={filters} />
                   <ProductGrid />
-               </InstantSearch>
+               </Index>
             </Box>
          </Flex>
       </Card>
