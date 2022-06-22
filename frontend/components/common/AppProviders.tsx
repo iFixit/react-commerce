@@ -45,39 +45,44 @@ export function AppProviders({
    algolia,
 }: React.PropsWithChildren<AppProvidersProps>) {
    const markup = (
+      <>
+         <Head>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link
+               rel="preconnect"
+               href="https://fonts.gstatic.com"
+               crossOrigin="true"
+            />
+            <link
+               href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lato:wght@400;700&display=swap"
+               rel="stylesheet"
+            />
+
+            <link
+               rel="prefetch"
+               href={`${IFIXIT_ORIGIN}/api/2.0/user`}
+               as="fetch"
+            />
+            <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            />
+         </Head>
+         <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
+      </>
+   );
+
+   return (
       <AppProvider ifixitOrigin={IFIXIT_ORIGIN} csrfToken={csrfToken}>
          <QueryClientProvider client={queryClient}>
-            <Head>
-               <link rel="preconnect" href="https://fonts.googleapis.com" />
-               <link
-                  rel="preconnect"
-                  href="https://fonts.gstatic.com"
-                  crossOrigin="true"
-               />
-               <link
-                  href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lato:wght@400;700&display=swap"
-                  rel="stylesheet"
-               />
-
-               <link
-                  rel="prefetch"
-                  href={`${IFIXIT_ORIGIN}/api/2.0/user`}
-                  as="fetch"
-               />
-               <meta
-                  name="viewport"
-                  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-               />
-            </Head>
-            <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
+            {algolia ? (
+               <InstantSearchProvider {...algolia}>
+                  {markup}
+               </InstantSearchProvider>
+            ) : (
+               markup
+            )}
          </QueryClientProvider>
       </AppProvider>
    );
-
-   if (algolia) {
-      return (
-         <InstantSearchProvider {...algolia}>{markup}</InstantSearchProvider>
-      );
-   }
-   return markup;
 }
