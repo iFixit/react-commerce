@@ -17,8 +17,13 @@ const userKeys = {
 
 export function useAuthenticatedUser() {
    const appContext = useAppContext();
-   const query = useQuery(userKeys.user, () =>
-      fetchAuthenticatedUser(appContext.ifixitOrigin)
+   const query = useQuery(
+      userKeys.user,
+      () => fetchAuthenticatedUser(appContext.ifixitOrigin),
+      {
+         retry: false,
+         staleTime: Infinity,
+      }
    );
    return query;
 }
