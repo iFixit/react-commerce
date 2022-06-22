@@ -75,7 +75,7 @@ export function useIsMounted() {
 }
 
 interface UsePreloadImage {
-   preload(url: string): Promise<void>;
+   preload(url: string): () => void;
    isLoaded: boolean;
    isError: boolean;
    error: any;
@@ -90,7 +90,7 @@ export function usePreloadImage(): UsePreloadImage {
       error: null,
    });
 
-   const preload = React.useCallback(async (url: string) => {
+   const preload = React.useCallback((url: string) => {
       const img = new Image();
       img.src = url;
       img.onload = () => {
@@ -105,6 +105,10 @@ export function usePreloadImage(): UsePreloadImage {
             error: err,
          });
       };
+      // Return a function that will effectively tear this down so nothing further
+      // happens. Otherwise, an unmount of this component can result in a later
+      // call of setState() to fail.
+      return () => (img.onload = img.onerror = null);
    }, []);
 
    return {
