@@ -17,7 +17,7 @@ import { ThemeTypings } from '@chakra-ui/styled-system';
 import { Rating } from '@components/ui';
 import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
 
@@ -84,7 +84,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                }}
             >
                {product.image_url ? (
-                  <Image
+                  <IfixitImage
                      src={product.image_url}
                      alt={product.group_title}
                      objectFit="contain"
@@ -92,7 +92,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      height="180px"
                   />
                ) : (
-                  <Image
+                  <IfixitImage
                      src={placeholderImageUrl}
                      alt={product.group_title}
                      sizes="180px"

@@ -10,7 +10,7 @@ import { Card } from '@components/ui';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 
 export interface PostCardProps {
    title: string;
@@ -42,7 +42,7 @@ export function PostCard({
          <Flex direction="column">
             {imageSrc && (
                <Box position="relative" h="140px">
-                  <Image
+                  <IfixitImage
                      src={imageSrc}
                      alt={imageAlt}
                      layout="fill"

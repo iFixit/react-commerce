@@ -12,7 +12,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { useIsMounted } from '@ifixit/ui';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -180,7 +180,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
                         flexShrink={0}
                         position="relative"
                      >
-                        <Image
+                        <IfixitImage
                            src={child.image.url}
                            alt={child.image.alt}
                            objectFit="cover"

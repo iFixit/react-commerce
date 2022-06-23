@@ -20,7 +20,7 @@ import {
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import * as React from 'react';
 import {
    HiOutlineMinusCircle,
@@ -94,7 +94,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                   borderRadius="lg"
                   overflow="hidden"
                >
-                  <Image
+                  <IfixitImage
                      src={lineItem.imageSrc}
                      alt=""
                      priority
