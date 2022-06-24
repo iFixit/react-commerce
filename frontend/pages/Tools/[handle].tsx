@@ -43,6 +43,17 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       };
    }
 
+   const lowercaseHandle = handle.toLowerCase();
+
+   if (lowercaseHandle !== handle) {
+      return {
+         redirect: {
+            destination: `/Tools/${lowercaseHandle}`,
+            permanent: true,
+         },
+      };
+   }
+
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
          getGlobalSettings(),
