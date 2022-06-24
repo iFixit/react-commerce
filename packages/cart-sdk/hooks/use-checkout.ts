@@ -107,7 +107,8 @@ function reducer(state: CheckoutState, action: CheckoutAction): CheckoutState {
 function useDraftOrderCheckout() {
    const appContext = useAppContext();
    const client = useIFixitApiClient();
-   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
+   const shopifyClient = useShopifyStorefrontClient();
+   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/${shopifyClient.shopDomain}?checkout=1`;
    return async () => {
       const result = await client.post('cart/order/draftOrder', {
          headers: {
@@ -125,7 +126,8 @@ function useStandardCheckout() {
    const appContext = useAppContext();
    const cart = useCart();
    const user = useAuthenticatedUser();
-   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/ifixit-test?checkout=1`;
+   const shopifyClient = useShopifyStorefrontClient();
+   const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/${shopifyClient.shopDomain}?checkout=1`;
    const isUserLoggedIn = user.data != null;
    const createCheckout = useCreateCheckout();
    const updateCheckout = useUpdateCheckout();
