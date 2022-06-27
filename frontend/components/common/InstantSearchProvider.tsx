@@ -1,4 +1,5 @@
 import { ALGOLIA_APP_ID } from '@config/env';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import * as React from 'react';
@@ -33,9 +34,11 @@ export function InstantSearchProvider({
    serverState,
    apiKey,
 }: InstantSearchProviderProps) {
-   const algoliaClientRef = React.useRef<SearchClient>();
-   algoliaClientRef.current =
-      algoliaClientRef.current ?? algoliasearch(ALGOLIA_APP_ID, apiKey);
+   const user = useAuthenticatedUser();
+   const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
+   const algoliaClient = React.useMemo(() => {
+      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
+   }, [algoliaApiKey]);
 
    // We're using this to make `InstantSearch` unmount at every re-render, since as of version 6.28.0 it breaks when
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
@@ -45,7 +48,7 @@ export function InstantSearchProvider({
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
             key={count}
-            searchClient={algoliaClientRef.current}
+            searchClient={algoliaClient}
             indexName={indexName}
             routing={{
                stateMapping: {
