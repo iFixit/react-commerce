@@ -9,6 +9,7 @@ type User = {
    thumbnail: string | null;
    is_pro: boolean;
    discountTier: string | null;
+   algoliaApiKeyProducts?: string;
 };
 
 const userKeys = {
@@ -41,6 +42,11 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
       invariant(isRecord(payload), 'unexpected api response');
       invariant(typeof payload.userid === 'number', 'User ID is not a number');
       invariant(
+         payload.algoliaApiKeyProducts === undefined ||
+            typeof payload.algoliaApiKeyProducts === 'string',
+         'algoliaApiKeyProducts should be a string or undefined'
+      );
+      invariant(
          typeof payload.username === 'string',
          'User username is not a string'
       );
@@ -66,6 +72,7 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
          handle: payload.unique_username,
          thumbnail: thumbnailUrl,
          is_pro: discountTier != null,
+         algoliaApiKeyProducts: payload.algoliaApiKeyProducts,
          discountTier,
       };
    }

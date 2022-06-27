@@ -10,12 +10,14 @@ import {
 
 type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 
+type ApiKey = string;
+
 export type AlgoliaProps = {
    url: string;
    indexName: string;
    routing?: boolean;
    serverState?: Partial<InstantSearchServerState>;
-   apiKey: string;
+   apiKey: ApiKey;
 };
 
 type RouteState = Partial<{
