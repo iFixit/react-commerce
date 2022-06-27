@@ -15,7 +15,6 @@ type ApiKey = string;
 export type AlgoliaProps = {
    url: string;
    indexName: string;
-   routing?: boolean;
    serverState?: Partial<InstantSearchServerState>;
    apiKey: ApiKey;
 };
@@ -33,7 +32,6 @@ export function InstantSearchProvider({
    indexName,
    serverState,
    apiKey,
-   routing,
 }: InstantSearchProviderProps) {
    const algoliaClientRef = React.useRef<SearchClient>();
    algoliaClientRef.current =
@@ -43,7 +41,7 @@ export function InstantSearchProvider({
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
    const count = useCountRenders();
 
-   const provider = (
+   return (
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
             key={count}
@@ -102,12 +100,6 @@ export function InstantSearchProvider({
          </InstantSearch>
       </InstantSearchSSRProvider>
    );
-   if (routing) {
-      <InstantSearchSSRProvider {...serverState}>
-         {provider}
-      </InstantSearchSSRProvider>;
-   }
-   return provider;
 }
 
 function useCountRenders() {
