@@ -27,9 +27,10 @@ export function MetaTags({ productList }: MetaTagsProps) {
       page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
    }`;
    const imageUrl = productList.image?.url;
+   const shouldNoIndex = isFiltered || pagination.nbHits < 2;
    return (
       <Head>
-         {isFiltered ? (
+         {shouldNoIndex ? (
             <meta name="robots" content="noindex,nofollow" />
          ) : (
             <>
