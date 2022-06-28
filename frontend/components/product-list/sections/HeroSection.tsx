@@ -22,7 +22,7 @@ export interface HeroSectionProps {
 
 export function HeroSection({ productList }: HeroSectionProps) {
    const pagination = usePagination();
-   const page = pagination.currentRefinement;
+   const page = pagination.currentRefinement + 1;
    const hasDescription =
       productList.description != null &&
       productList.description.length > 0 &&
