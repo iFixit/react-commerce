@@ -1,3 +1,5 @@
+import { useSafeLayoutEffect } from '@chakra-ui/react';
+import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
@@ -36,6 +38,8 @@ export function InstantSearchProvider({
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
+   const RefreshSearchResults = useSearchRefresher();
+
    const algoliaClient = React.useMemo(() => {
       return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
    }, [algoliaApiKey]);
@@ -99,6 +103,7 @@ export function InstantSearchProvider({
                }),
             }}
          >
+            <RefreshSearchResults apiKey={algoliaApiKey} />
             {children}
          </InstantSearch>
       </InstantSearchSSRProvider>
@@ -109,4 +114,32 @@ function useCountRenders() {
    const countRef = React.useRef(0);
    countRef.current++;
    return countRef.current;
+}
+
+type RefreshSearchResultsProps = {
+   apiKey: ApiKey;
+};
+
+/**
+ * Returns a component that takes in an API key and refreshes search results
+ * if the API key changes (but only refreshes once for each api key change.
+ */
+function useSearchRefresher() {
+   // Create the ref in the parent component so it can live across re-renders
+   const previousApiKeyRef = React.useRef<ApiKey|null>(null);
+
+   return function RefreshSearchResults({
+      apiKey,
+   }: RefreshSearchResultsProps): null {
+      const { refresh } = useSearchCache();
+      useSafeLayoutEffect(() => {
+         const isFirstRender = !previousApiKeyRef.current;
+         const hasApiKeyChanged = previousApiKeyRef.current !== apiKey;
+         if (hasApiKeyChanged && !isFirstRender) {
+            refresh();
+         }
+         previousApiKeyRef.current = apiKey;
+      }, [apiKey, refresh]);
+      return null;
+   };
 }
