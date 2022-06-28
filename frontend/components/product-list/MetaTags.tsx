@@ -16,7 +16,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const appContext = useAppContext();
    const currentRefinements = useCurrentRefinements();
    const pagination = usePagination();
-   const page = pagination.currentRefinement;
+   const page = pagination.currentRefinement + 1;
    const isFiltered = currentRefinements.items.length > 0;
    let title = productList.title;
    if (!isFiltered && page > 1) {
