@@ -201,7 +201,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
                   alignItems="center"
                   flexGrow={1}
                >
-                  <Heading as="h2" fontSize="sm">
+                  <Heading as="span" fontSize="sm">
                      {child.title}
                   </Heading>
                </Box>
