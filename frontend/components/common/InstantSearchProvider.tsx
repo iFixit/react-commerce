@@ -1,6 +1,8 @@
+import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
    InstantSearch,
@@ -37,11 +39,33 @@ export function InstantSearchProvider({
    algoliaClientRef.current =
       algoliaClientRef.current ?? algoliasearch(ALGOLIA_APP_ID, apiKey);
 
+   const router = useRouter();
+
+   // Currently, Algolia routing does not play well with Next.js routing, since Next.js
+   // is not aware of url changes that happens without interacting with its builtin router.
+   // To make popstate work (i.e. whenever the browser back button is pressed), we do a
+   // a full page reload as a workaround.
+   // This should be only a temporary workaround until Algolia routing is fixed.
+   useSafeLayoutEffect(() => {
+      const handleRouteChange = () => {
+         // When the back button is pressed, the popstate event is fired, and
+         // Algolia tries to re-render the page (although in a broken state).
+         // To avoid seeing this broken re-render we hide the page while we wait for
+         // the page to be reloaded.
+         window.document.body.hidden = true;
+         window.location.reload();
+      };
+      window.addEventListener('popstate', handleRouteChange);
+      return () => {
+         window.removeEventListener('popstate', handleRouteChange);
+      };
+   }, [router]);
+
    // We're using this to make `InstantSearch` unmount at every re-render, since as of version 6.28.0 it breaks when
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
    const count = useCountRenders();
 
-   const provider = (
+   return (
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
             key={count}
@@ -100,12 +124,6 @@ export function InstantSearchProvider({
          </InstantSearch>
       </InstantSearchSSRProvider>
    );
-   if (routing) {
-      <InstantSearchSSRProvider {...serverState}>
-         {provider}
-      </InstantSearchSSRProvider>;
-   }
-   return provider;
 }
 
 function useCountRenders() {
