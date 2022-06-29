@@ -34,7 +34,12 @@ export function HeroSection({ productList }: HeroSectionProps) {
             {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
          {productList.tagline && productList.tagline.length > 0 && page === 1 && (
-            <Text as="h2" fontWeight="bold" fontSize="xl" px={{ base: 6, sm: 0 }}>
+            <Text
+               as="h2"
+               fontWeight="bold"
+               fontSize="xl"
+               px={{ base: 6, sm: 0 }}
+            >
                {productList.tagline}
             </Text>
          )}

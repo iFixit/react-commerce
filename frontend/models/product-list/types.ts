@@ -1,7 +1,6 @@
 export interface ProductSearchHit {
    objectID: string;
    title: string;
-   group_title: string;
    handle: string;
    price_float: number;
    compare_at_price?: number;
