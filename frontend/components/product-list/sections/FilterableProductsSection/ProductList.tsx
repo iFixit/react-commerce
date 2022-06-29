@@ -86,7 +86,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                {product.image_url ? (
                   <IfixitImage
                      src={product.image_url}
-                     alt={product.group_title}
+                     alt={product.title}
                      objectFit="contain"
                      width="180px"
                      height="180px"
@@ -94,7 +94,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                ) : (
                   <IfixitImage
                      src={placeholderImageUrl}
-                     alt={product.group_title}
+                     alt={product.title}
                      sizes="180px"
                   />
                )}
@@ -124,7 +124,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         xl: 4,
                      }}
                   >
-                     {product.group_title}
+                     {product.title}
                   </Heading>
                   <Text
                      noOfLines={3}
