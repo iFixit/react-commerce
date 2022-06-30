@@ -15,13 +15,11 @@ import {
 
 type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 
-type ApiKey = string;
-
 export type AlgoliaProps = {
    url: string;
    indexName: string;
    serverState?: Partial<InstantSearchServerState>;
-   apiKey: ApiKey;
+   apiKey: string;
 };
 
 type RouteState = Partial<{
@@ -144,8 +142,8 @@ function useCountRenders() {
 }
 
 type RefreshSearchResultsProps = {
-   apiKey: ApiKey;
-   prevApiKey: ApiKey | undefined;
+   apiKey: string;
+   prevApiKey: string | undefined;
 };
 
 /**
