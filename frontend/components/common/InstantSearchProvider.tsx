@@ -2,6 +2,7 @@ import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { usePrevious } from '@ifixit/ui';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import * as React from 'react';
@@ -38,7 +39,7 @@ export function InstantSearchProvider({
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
-   const RefreshSearchResults = useSearchRefresher();
+   const previousApiKey = usePrevious(algoliaApiKey);
 
    const algoliaClient = React.useMemo(() => {
       return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
@@ -103,7 +104,10 @@ export function InstantSearchProvider({
                }),
             }}
          >
-            <RefreshSearchResults apiKey={algoliaApiKey} />
+            <RefreshSearchResults
+               apiKey={algoliaApiKey}
+               prevApiKey={previousApiKey}
+            />
             {children}
          </InstantSearch>
       </InstantSearchSSRProvider>
@@ -118,28 +122,24 @@ function useCountRenders() {
 
 type RefreshSearchResultsProps = {
    apiKey: ApiKey;
+   prevApiKey: ApiKey | null;
 };
 
 /**
- * Returns a component that takes in an API key and refreshes search results
- * if the API key changes (but only refreshes once for each api key change.
+ * Refreshes search results if the API key changes
+ * (but only refreshes once for each api key change).
  */
-function useSearchRefresher() {
-   // Create the ref in the parent component so it can live across re-renders
-   const previousApiKeyRef = React.useRef<ApiKey|null>(null);
-
-   return function RefreshSearchResults({
-      apiKey,
-   }: RefreshSearchResultsProps): null {
-      const { refresh } = useSearchCache();
-      useSafeLayoutEffect(() => {
-         const isFirstRender = !previousApiKeyRef.current;
-         const hasApiKeyChanged = previousApiKeyRef.current !== apiKey;
-         if (hasApiKeyChanged && !isFirstRender) {
-            refresh();
-         }
-         previousApiKeyRef.current = apiKey;
-      }, [apiKey, refresh]);
-      return null;
-   };
-}
+function RefreshSearchResults({
+   apiKey,
+   prevApiKey,
+}: RefreshSearchResultsProps): null {
+   const { refresh } = useSearchCache();
+   useSafeLayoutEffect(() => {
+      const isFirstRender = !prevApiKey;
+      const hasApiKeyChanged = prevApiKey !== apiKey;
+      if (hasApiKeyChanged && !isFirstRender) {
+         refresh();
+      }
+   }, [apiKey, prevApiKey, refresh]);
+   return null;
+};
