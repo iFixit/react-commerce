@@ -8,7 +8,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductListPreview } from '@models/product-list';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -73,7 +73,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                   flexGrow={0}
                   flexShrink={0}
                >
-                  <Image
+                  <IfixitImage
                      src={productList.image.url}
                      alt={productList.image.alternativeText ?? ''}
                      width="80px"

@@ -5,6 +5,7 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { usePrevious } from '@ifixit/ui';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
    InstantSearch,
@@ -44,6 +45,28 @@ export function InstantSearchProvider({
    const algoliaClient = React.useMemo(() => {
       return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
    }, [algoliaApiKey]);
+
+   const router = useRouter();
+
+   // Currently, Algolia routing does not play well with Next.js routing, since Next.js
+   // is not aware of url changes that happens without interacting with its builtin router.
+   // To make popstate work (i.e. whenever the browser back button is pressed), we do a
+   // a full page reload as a workaround.
+   // This should be only a temporary workaround until Algolia routing is fixed.
+   useSafeLayoutEffect(() => {
+      const handleRouteChange = () => {
+         // When the back button is pressed, the popstate event is fired, and
+         // Algolia tries to re-render the page (although in a broken state).
+         // To avoid seeing this broken re-render we hide the page while we wait for
+         // the page to be reloaded.
+         window.document.body.hidden = true;
+         window.location.reload();
+      };
+      window.addEventListener('popstate', handleRouteChange);
+      return () => {
+         window.removeEventListener('popstate', handleRouteChange);
+      };
+   }, [router]);
 
    // We're using this to make `InstantSearch` unmount at every re-render, since as of version 6.28.0 it breaks when
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.

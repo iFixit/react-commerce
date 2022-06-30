@@ -50,7 +50,7 @@ import {
 import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import * as React from 'react';
 import { RiCheckFill } from 'react-icons/ri';
 
@@ -161,7 +161,7 @@ export function LayoutFooter({
                               p="0"
                            >
                               {partner.image?.url ? (
-                                 <Image
+                                 <IfixitImage
                                     layout="fill"
                                     objectFit="contain"
                                     src={partner.image.url}
@@ -171,7 +171,7 @@ export function LayoutFooter({
                                     }
                                  />
                               ) : (
-                                 <Image
+                                 <IfixitImage
                                     layout="fill"
                                     objectFit="contain"
                                     src={noImageFixie}

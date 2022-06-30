@@ -12,7 +12,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import Image from 'next/image';
+import { IfixitImage } from '@components/ifixit-image';
 import React from 'react';
 
 export const ProductCard = (props: StackProps) => {
@@ -38,7 +38,7 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    if (src == null) {
       return (
          <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-            <Image
+            <IfixitImage
                sizes="30vw"
                layout="fill"
                src={placeholderImageUrl}
@@ -49,7 +49,7 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    }
    return (
       <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-         <Image
+         <IfixitImage
             sizes="30vw"
             layout="fill"
             objectFit="contain"

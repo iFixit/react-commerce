@@ -16,7 +16,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const appContext = useAppContext();
    const currentRefinements = useCurrentRefinements();
    const pagination = usePagination();
-   const page = pagination.currentRefinement;
+   const page = pagination.currentRefinement + 1;
    const isFiltered = currentRefinements.items.length > 0;
    let title = productList.title;
    if (!isFiltered && page > 1) {
@@ -27,9 +27,10 @@ export function MetaTags({ productList }: MetaTagsProps) {
       page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
    }`;
    const imageUrl = productList.image?.url;
+   const shouldNoIndex = isFiltered || pagination.nbHits < 2;
    return (
       <Head>
-         {isFiltered ? (
+         {shouldNoIndex ? (
             <meta name="robots" content="noindex,nofollow" />
          ) : (
             <>
