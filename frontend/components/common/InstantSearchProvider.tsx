@@ -122,7 +122,7 @@ function useCountRenders() {
 
 type RefreshSearchResultsProps = {
    apiKey: ApiKey;
-   prevApiKey: ApiKey | null;
+   prevApiKey: ApiKey | undefined;
 };
 
 /**
