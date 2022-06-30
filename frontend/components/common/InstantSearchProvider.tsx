@@ -140,6 +140,6 @@ function RefreshSearchResults({
       if (hasApiKeyChanged && !isFirstRender) {
          refresh();
       }
-   }, [apiKey, prevApiKey, refresh]);
+   }, [apiKey, prevApiKey]);
    return null;
 };
