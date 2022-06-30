@@ -14,25 +14,29 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { WikiInfoEntry } from '@models/product-list/types';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import {
    useClearRefinements,
    useRefinementList,
 } from 'react-instantsearch-hooks-web';
-import { RefinementList } from './RefinementList';
+import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { useFilteredFacets } from './useFacets';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
    onClose: () => void;
-   wikiInfo: WikiInfoEntry[];
+   productList: ProductList;
 };
 
-export function FacetsDrawer({ isOpen, onClose, wikiInfo }: FacetsDrawerProps) {
-   const facets = useFilteredFacets(wikiInfo);
+export function FacetsDrawer({
+   isOpen,
+   onClose,
+   productList,
+}: FacetsDrawerProps) {
+   const facets = useFilteredFacets(productList);
    const [currentFacet, setCurrentFacet] = React.useState<string | null>(null);
    const countRefinements = useCountRefinements();
 
@@ -139,6 +143,7 @@ export function FacetsDrawer({ isOpen, onClose, wikiInfo }: FacetsDrawerProps) {
                               key={facet}
                               attribute={facet}
                               isOpen={facet === currentFacet}
+                              productList={productList}
                            />
                         );
                      })}
@@ -272,9 +277,10 @@ function FacetListItem({
 type FacetPanelProps = {
    attribute: string;
    isOpen: boolean;
+   productList: ProductList;
 };
 
-function FacetPanel({ attribute, isOpen }: FacetPanelProps) {
+function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
    return (
       <Box
          position="absolute"
@@ -289,11 +295,7 @@ function FacetPanel({ attribute, isOpen }: FacetPanelProps) {
          p="5"
       >
          <VStack align="stretch" spacing="3">
-            <RefinementList
-               attribute={attribute}
-               showMore
-               showMoreLimit={200}
-            />
+            <FacetFilter attribute={attribute} productList={productList} />
          </VStack>
       </Box>
    );

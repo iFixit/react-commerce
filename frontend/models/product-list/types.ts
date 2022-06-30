@@ -24,11 +24,28 @@ export type WikiInfoEntry = {
    inheritedFrom: string | null;
 };
 
-export interface ProductList {
+export enum ProductListType {
+   AllParts = 'parts',
+   DeviceParts = 'device-parts',
+   DeviceItemTypeParts = 'device-item-type-parts',
+   AllTools = 'tools',
+   ToolsCategory = 'tools-category',
+   Marketing = 'marketing',
+}
+
+export type ProductList =
+   | AllPartsProductList
+   | DevicePartsProductList
+   | DeviceItemTypePartsProductList
+   | AllToolsProductList
+   | ToolsCategoryProductList
+   | MarketingProductList;
+
+export interface BaseProductList {
    title: string;
    handle: string;
-   path: string;
    deviceTitle: string | null;
+   path: string;
    tagline: string | null;
    description: string;
    metaDescription: string | null;
@@ -43,6 +60,35 @@ export interface ProductList {
    };
    wikiInfo: WikiInfoEntry[];
 }
+
+interface AllPartsProductList extends BaseProductList {
+   type: ProductListType.AllParts;
+}
+
+interface DevicePartsProductList extends BaseProductList {
+   type: ProductListType.DeviceParts;
+}
+
+interface DeviceItemTypePartsProductList extends BaseProductList {
+   type: ProductListType.DeviceItemTypeParts;
+   itemType: string;
+}
+
+interface AllToolsProductList extends BaseProductList {
+   type: ProductListType.AllTools;
+}
+
+interface ToolsCategoryProductList extends BaseProductList {
+   type: ProductListType.ToolsCategory;
+}
+
+interface MarketingProductList extends BaseProductList {
+   type: ProductListType.Marketing;
+}
+
+export type ProductListOptions = {
+   itemType?: string;
+};
 
 export interface ProductListAncestor {
    title: string;

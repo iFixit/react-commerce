@@ -1,8 +1,8 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList } from '@models/product-list';
 import Head from 'next/head';
-import * as React from 'react';
 import {
    useCurrentRefinements,
    usePagination,
@@ -18,7 +18,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
    const isFiltered = currentRefinements.items.length > 0;
-   let title = productList.title;
+   let title = getProductListTitle(productList);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }

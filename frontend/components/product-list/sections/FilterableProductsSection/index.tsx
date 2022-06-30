@@ -15,10 +15,14 @@ import {
 import { Card } from '@components/ui';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
-import { ProductSearchHit } from '@models/product-list';
-import { WikiInfoEntry } from '@models/product-list/types';
+import {
+   ProductList as TProductList,
+   ProductListType,
+   ProductSearchHit,
+} from '@models/product-list';
 import * as React from 'react';
 import {
+   Configure,
    useClearRefinements,
    useCurrentRefinements,
    useHits,
@@ -34,11 +38,10 @@ import { ProductViewType, Toolbar } from './Toolbar';
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
 type SectionProps = {
-   wikiInfo: WikiInfoEntry[];
+   productList: TProductList;
 };
 
-export function FilterableProductsSection(props: SectionProps) {
-   const { wikiInfo } = props;
+export function FilterableProductsSection({ productList }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
@@ -61,18 +64,25 @@ export function FilterableProductsSection(props: SectionProps) {
          data-testid="filterable-products-section"
          aria-labelledby="filterable-products-section-heading"
       >
+         {productList.type === ProductListType.DeviceItemTypeParts && (
+            <Configure
+               filters={`'facet_tags.Item Type': ${JSON.stringify(
+                  productList.itemType
+               )}`}
+            />
+         )}
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products
          </Heading>
          <Toolbar
             viewType={viewType}
+            productList={productList}
             onViewTypeChange={setViewType}
-            wikiInfo={wikiInfo}
          />
          <CurrentRefinements />
          <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
             <FacetCard>
-               <FacetsAccordion wikiInfo={wikiInfo} />
+               <FacetsAccordion productList={productList} />
             </FacetCard>
             <Card flex={1}>
                {isEmpty ? (

@@ -1,9 +1,9 @@
 import {
    AppProviders,
-   Layout,
-   WithProvidersProps,
-   WithLayoutProps,
    AppProvidersProps,
+   Layout,
+   WithLayoutProps,
+   WithProvidersProps,
 } from '@components/common';
 import {
    ProductListView,
@@ -41,11 +41,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({
-            handle: {
-               eq: 'Parts',
-            },
-         }),
+         findProductList({ handle: { eq: 'Parts' } }),
       ]);
 
    if (productList == null) {

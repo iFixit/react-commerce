@@ -13,7 +13,7 @@
       "publishedAt": "2022-01-18T21:11:28.491Z",
       "locale": "en",
       "sortPriority": null,
-      "type": "marketing",
+      "type": "all-parts",
       "legacyDescription": null,
       "parent": null,
       "sections": [
@@ -11893,7 +11893,7 @@
       "publishedAt": "2022-03-01T23:10:36.821Z",
       "locale": "en",
       "sortPriority": 0,
-      "type": "marketing",
+      "type": "all-tools",
       "legacyDescription": null,
       "parent": null,
       "sections": []
