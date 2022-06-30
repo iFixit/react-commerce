@@ -163,4 +163,4 @@ function RefreshSearchResults({
       }
    }, [apiKey, prevApiKey]);
    return null;
-};
+}
