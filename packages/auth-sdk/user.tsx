@@ -9,7 +9,7 @@ type User = {
    thumbnail: string | null;
    is_pro: boolean;
    discountTier: string | null;
-   algoliaApiKeyProducts?: string;
+   algoliaApiKeyProducts: string | null;
 };
 
 const userKeys = {
@@ -22,7 +22,7 @@ export function useAuthenticatedUser() {
       userKeys.user,
       () => fetchAuthenticatedUser(appContext.ifixitOrigin),
       {
-         retry: false,
+         retryOnMount: false,
          staleTime: Infinity,
       }
    );
@@ -42,7 +42,7 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
       invariant(isRecord(payload), 'unexpected api response');
       invariant(typeof payload.userid === 'number', 'User ID is not a number');
       invariant(
-         payload.algoliaApiKeyProducts === undefined ||
+         payload.algoliaApiKeyProducts === null ||
             typeof payload.algoliaApiKeyProducts === 'string',
          'algoliaApiKeyProducts should be a string or undefined'
       );
