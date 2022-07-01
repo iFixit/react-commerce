@@ -39,7 +39,9 @@ export function ProductListView({
                   px={{ base: 3, sm: 0 }}
                >
                   <ProductListBreadcrumb productList={productList} />
-                  <ProductListDeviceNavigation productList={productList} />
+                  {productList.title !== 'Repair Tools' && (
+                     <ProductListDeviceNavigation productList={productList} />
+                  )}
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>
