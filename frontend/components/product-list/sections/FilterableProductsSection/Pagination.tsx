@@ -102,6 +102,7 @@ export function Pagination(props: PaginationProps) {
                      <PaginationLink
                         as="a"
                         aria-label="Go to next page"
+                        data-testid="next-page"
                         page="next"
                         href={
                            pagination.hasNext
