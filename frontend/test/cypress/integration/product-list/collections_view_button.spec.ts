@@ -27,7 +27,7 @@ describe('collections click on product view buttons', () => {
          .get('[data-testid="list-view-products"]')
          .invoke('css', 'display')
          .should('equal', 'flex');
-   }); 
+   });
 });
 
 export {};

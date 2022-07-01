@@ -1,4 +1,4 @@
-// Assert that when a user clicks the pagination buttons, 
+// Assert that when a user clicks the pagination buttons,
 // the page scrolls back up.
 
 describe('collections tools scroll up', () => {
@@ -6,7 +6,7 @@ describe('collections tools scroll up', () => {
    beforeEach(() => {
       user.visit('/Tools');
    });
- 
+
    it('Make sure product list scrolls up after clicking next page', () => {
       user.findByTestId('collections-search-box').should('be.visible');
       user.findByTestId('next-page').click();
