@@ -70,11 +70,11 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       },
    };
 
-   const serverState = await getServerState(
-      <AppProviders {...appProps}>
-         <ProductListView productList={productList} indexName={indexName} />
-      </AppProviders>
-   );
+   // const serverState = await getServerState(
+   //    <AppProviders {...appProps}>
+   //       <ProductListView productList={productList} indexName={indexName} />
+   //    </AppProviders>
+   // );
 
    const pageProps: AppPageProps = {
       productList,
@@ -90,7 +90,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          algolia: appProps.algolia
             ? {
                  ...appProps.algolia,
-                 serverState,
               }
             : undefined,
       },
