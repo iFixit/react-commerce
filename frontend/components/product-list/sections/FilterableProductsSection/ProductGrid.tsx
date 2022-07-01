@@ -19,6 +19,7 @@ export type ProductGridProps = React.PropsWithChildren<unknown>;
 export function ProductGrid({ children }: ProductGridProps) {
    return (
       <SimpleGrid
+         data-testid="grid-view-products"
          bg="gray.100"
          borderBottomColor="gray.100"
          borderBottomWidth="1px"
