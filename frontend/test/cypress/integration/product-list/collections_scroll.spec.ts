@@ -4,6 +4,7 @@
 describe('collections tools scroll up', () => {
    const user = cy;
    beforeEach(() => {
+      cy.intercept('/1/indexes/**').as('search');
       user.visit('/Tools');
    });
 
@@ -12,6 +13,7 @@ describe('collections tools scroll up', () => {
       user.findByTestId('next-page').click();
 
       // Wait for the next page to be updated and scrolled to top.
+      user.wait('@search');
       user.wait(3000);
 
        // When it scrolls to the top, the search bar should be visible
