@@ -188,6 +188,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                },
             },
          }}
+         role="group"
       >
          <ProductCard flexGrow={1} h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
@@ -202,7 +203,9 @@ function ProductListItem({ product }: ProductListItemProps) {
             </ProductCardBadgeList>
             <ProductCardBody>
                <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
-                  <ProductCardTitle>{product.title}</ProductCardTitle>
+                  <ProductCardTitle _groupHover={{ color: 'brand.500' }}>
+                     {product.title}
+                  </ProductCardTitle>
                </LinkOverlay>
                <ProductCardRating rating={product.rating} count={102} />
                <ProductCardPricing

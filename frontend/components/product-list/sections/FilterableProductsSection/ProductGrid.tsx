@@ -45,7 +45,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
       useProductSearchHitPricing(product);
 
    return (
-      <LinkBox as="article" display="block" w="full">
+      <LinkBox as="article" display="block" w="full" role="group">
          <ProductCard h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
@@ -66,7 +66,9 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
             </ProductCardBadgeList>
             <ProductCardBody>
                <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
-                  <ProductCardTitle>{product.title}</ProductCardTitle>
+                  <ProductCardTitle _groupHover={{ color: 'brand.500' }}>
+                     {product.title}
+                  </ProductCardTitle>
                </LinkOverlay>
                {(product.rating >= 4 || product.rating_count > 10) && (
                   <ProductCardRating

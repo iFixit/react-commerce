@@ -64,7 +64,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
       showOemPartnershipBadge;
 
    return (
-      <LinkBox as="article" aria-labelledby={productHeadingId}>
+      <LinkBox as="article" aria-labelledby={productHeadingId} role="group">
          <Flex
             align="flex-start"
             py={{
@@ -123,6 +123,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         base: 2,
                         xl: 4,
                      }}
+                     _groupHover={{ color: 'brand.500' }}
                   >
                      {product.title}
                   </Heading>
