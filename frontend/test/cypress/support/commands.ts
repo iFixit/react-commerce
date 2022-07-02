@@ -1,44 +1,15 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 /// <reference path="../support/index.d.ts" />
 import '@testing-library/cypress/add-commands';
 
-Cypress.Commands.add('isWithinViewport', { prevSubject: true }, (element: any) => {
-  const windowInnerWidth = Cypress.config(`viewportWidth`);
-  const windowInnerHeight = Cypress.config(`viewportHeight`);
+Cypress.Commands.add('isWithinViewport', { prevSubject: true }, (selector: any) => {
+  cy.window().then((win) => {
+    const rightBoundOfWindow =  win.innerWidth;
+    const bottomBoundOfWindow =  win.innerHeight;
+    const bounding = selector[0].getBoundingClientRect();
 
-  const bounding = element[0].getBoundingClientRect();
-
-  const rightBoundOfWindow = windowInnerWidth;
-  const bottomBoundOfWindow = windowInnerHeight;
-
-  expect(bounding.top).to.be.at.least(0);
-  expect(bounding.left).to.be.at.least(0);
-  expect(bounding.right).to.be.lessThan(rightBoundOfWindow);
-  expect(bounding.bottom).to.be.lessThan(bottomBoundOfWindow);
-
-  return element;
+    expect(bounding.top).to.be.at.least(0);
+    expect(bounding.left).to.be.at.least(0);
+    expect(bounding.right).to.be.lessThan(rightBoundOfWindow);
+    expect(bounding.bottom).to.be.lessThan(bottomBoundOfWindow);
+  });
 })
