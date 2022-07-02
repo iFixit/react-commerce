@@ -1,10 +1,10 @@
-describe('collections click on product view buttons', () => {
+describe('collection display', () => {
    const user = cy;
    beforeEach(() => {
       user.visit('/Tools');
    });
 
-   it('Click on grid view button and check product display styling is grid', () => {
+   it('should display grid view when selected', () => {
       user.findByTestId('grid-view-button').click();
       user.findByTestId('list-view-products').should('not.exist');
 
@@ -15,7 +15,7 @@ describe('collections click on product view buttons', () => {
          .should('equal', 'grid');
    });
 
-   it('Click on grid, then list view button and check product display styling', () => {
+   it('should display list view when selected', () => {
       // First click on grid view button
       user.findByTestId('grid-view-button').click();
       // Then switch back to list view button

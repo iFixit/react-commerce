@@ -1,14 +1,14 @@
 // Assert that when a user clicks the pagination buttons,
 // the page scrolls back up.
 
-describe('collections tools scroll up', () => {
+describe('collections scroll', () => {
    const user = cy;
    beforeEach(() => {
       cy.intercept('/1/indexes/**').as('search');
       user.visit('/Tools');
    });
 
-   it('Make sure product list scrolls up after clicking next page', () => {
+   it('should scroll to the top of the page after clicking next page', () => {
       user.findByTestId('collections-search-box').should('be.visible');
       user.findByTestId('next-page').click();
 
