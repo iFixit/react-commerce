@@ -124,7 +124,7 @@ function UserAvatar() {
 
    React.useEffect(() => {
       if (user?.thumbnail) {
-         return image.preload(user.thumbnail);
+         image.preload(user.thumbnail);
       }
    }, [user?.thumbnail, image.preload]);
 
