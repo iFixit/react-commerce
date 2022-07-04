@@ -43,6 +43,10 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
          typeof payload.unique_username === 'string',
          'User handle is not a string'
       );
+      invariant(
+         payload.unique_username !== null,
+         'User handle is null'
+      );
       let thumbnailUrl: string | null = null;
       if (
          isRecord(payload.image) &&
