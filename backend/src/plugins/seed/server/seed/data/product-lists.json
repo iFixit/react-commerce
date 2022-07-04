@@ -11884,7 +11884,7 @@
       "handle": "Tools",
       "title": "Repair Tools",
       "description": "iFixit has you covered with parts, tools, and free repair guides. Repair with confidence! All of our replacement parts are tested to rigorous standards and backed by our industry-leading warranty.",
-      "filters": "'facet_tags.Main Category': 'Tools'",
+      "filters": "'facet_tags.Part or Kit Category': 'Tools', 'facet_tags.price_range Category: 'Tools'",
       "tagline": "Must-have, superior tools for DIY repair",
       "metaDescription": "Shop tools on iFixit.com",
       "deviceTitle": null,
