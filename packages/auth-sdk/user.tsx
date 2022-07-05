@@ -47,6 +47,11 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
          thumbnailUrl = payload.image.thumbnail;
       }
 
+      const unique_username =
+         typeof payload.unique_username == 'string'
+            ? payload.unique_username
+            : null;
+
       const discountTier =
          typeof payload.discount_tier === 'string'
             ? payload.discount_tier
@@ -54,7 +59,7 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
       return {
          id: payload.userid,
          username: payload.username,
-         handle: payload.unique_username,
+         handle: unique_username,
          thumbnail: thumbnailUrl,
          is_pro: discountTier != null,
          discountTier,
