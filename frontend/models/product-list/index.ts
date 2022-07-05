@@ -5,6 +5,7 @@ import {
    getProductListPath,
    getProductListTitle,
 } from '@helpers/product-list-helpers';
+import { asyncTimings } from '@helpers/performance-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { invariant } from '@ifixit/helpers';
 import {
@@ -47,23 +48,30 @@ export async function findProductList(
    filters: ProductListFiltersInput,
    options: ProductListOptions = {}
 ): Promise<ProductList | null> {
+   console.time('getProductList');
    const result = await strapi.getProductList({
       filters,
    });
+   console.timeEnd('getProductList');
    const productList = result.productLists?.data?.[0]?.attributes;
    if (productList == null) {
       return null;
    }
    const productListImageAttributes = productList.image?.data?.attributes;
 
+   console.time('fetchDeviceWiki');
    const deviceWiki = productList.deviceTitle
       ? await fetchDeviceWiki(productList.deviceTitle)
       : null;
+   console.timeEnd('fetchDeviceWiki');
 
+   console.time('createPublicAlgoliaKey');
    const algoliaApiKey = createPublicAlgoliaKey(
       ALGOLIA_APP_ID,
       ALGOLIA_API_KEY
    );
+   console.timeEnd('createPublicAlgoliaKey');
+
    const baseProductListType = getProductListType(productList.type);
    const productListType = options.itemType
       ? ProductListType.DeviceItemTypeParts
@@ -106,7 +114,9 @@ export async function findProductList(
             : null,
       ancestors,
       // Strapi sort order is case sensitive, so we need to improve on it in memory
-      children: await fillMissingImagesFromApi(
+      children: await asyncTimings(
+         'fillMissingImagesFromApi',
+         fillMissingImagesFromApi,
          sortProductListChildren(
             filterNullableItems(
                productList.children?.data.map(

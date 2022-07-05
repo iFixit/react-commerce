@@ -10,6 +10,7 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
+import { asyncTimings } from '@helpers/performance-helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -28,6 +29,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
 
+   console.time('Promise.all');
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
          getGlobalSettings(),
@@ -35,6 +37,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getStoreByCode('us'),
          findProductList({ handle: { eq: 'Parts' } }),
       ]);
+   console.timeEnd('Promise.all');
 
    if (productList == null) {
       return {
@@ -56,11 +59,15 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       },
    };
 
+   console.time('getServerState');
    const serverState = await getServerState(
       <AppProviders {...appProps}>
          <ProductListView productList={productList} indexName={indexName} />
       </AppProviders>
    );
+   console.timeEnd('getServerState');
+
+   console.timeEnd('getServerSideProps');
 
    const pageProps: AppPageProps = {
       productList,
