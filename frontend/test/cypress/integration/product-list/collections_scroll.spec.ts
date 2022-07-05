@@ -4,7 +4,7 @@
 describe('collections scroll', () => {
    const user = cy;
    beforeEach(() => {
-      cy.intercept('/1/indexes/**').as('search');
+      user.intercept('/1/indexes/**').as('search');
       user.visit('/Tools');
    });
 
