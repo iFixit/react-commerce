@@ -7,7 +7,7 @@ describe('product list filters', () => {
 
    it('should help user filter', () => {
       user
-         .findAllByTestId(/facet-accordion-item-.*/i)
+         .findAllByTestId(/collapsed-facet-accordion-item-.*/i)
          .first()
          .as('first-facet-accordion-item')
          .next()

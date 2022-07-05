@@ -10,8 +10,9 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useIsMounted } from '@ifixit/ui';
-import { ProductList } from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
@@ -23,17 +24,28 @@ export interface HeroSectionProps {
 export function HeroSection({ productList }: HeroSectionProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
+   const isItemTypeProductList =
+      productList.type === ProductListType.DeviceItemTypeParts;
    const hasDescription =
       productList.description != null &&
       productList.description.length > 0 &&
-      page === 1;
+      page === 1 &&
+      !isItemTypeProductList;
+   const hasTagline =
+      productList.tagline != null &&
+      productList.tagline.length > 0 &&
+      page === 1 &&
+      !isItemTypeProductList;
+
+   const title = getProductListTitle(productList);
+
    return (
       <VStack flex={1} align="flex-start">
          <HeroTitle>
-            {productList.title}
+            {title}
             {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
-         {productList.tagline && productList.tagline.length > 0 && page === 1 && (
+         {hasTagline && (
             <Text
                as="h2"
                fontWeight="bold"

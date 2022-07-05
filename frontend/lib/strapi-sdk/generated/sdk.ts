@@ -214,6 +214,8 @@ export type DateTimeFilterInput = {
 };
 
 export enum Enum_Productlist_Type {
+   AllParts = 'all_parts',
+   AllTools = 'all_tools',
    Marketing = 'marketing',
    Parts = 'parts',
    Tools = 'tools',
