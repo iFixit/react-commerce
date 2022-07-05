@@ -1,6 +1,7 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
+import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { usePrevious } from '@ifixit/ui';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
@@ -37,6 +38,7 @@ export function InstantSearchProvider({
    apiKey,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
+   cypressWindowLog({ userLoaded: user.isFetched });
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);
 
