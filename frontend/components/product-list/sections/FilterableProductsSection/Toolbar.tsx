@@ -82,11 +82,13 @@ export function Toolbar(props: ToolbarProps) {
                >
                   <ProductViewListButton
                      aria-label="Select list view"
+                     data-testid="list-view-button"
                      isActive={viewType === ProductViewType.List}
                      onClick={() => onViewTypeChange(ProductViewType.List)}
                   />
                   <ProductViewGridButton
                      aria-label="Select grid view"
+                     data-testid="grid-view-button"
                      isActive={viewType === ProductViewType.Grid}
                      onClick={() => onViewTypeChange(ProductViewType.Grid)}
                   />

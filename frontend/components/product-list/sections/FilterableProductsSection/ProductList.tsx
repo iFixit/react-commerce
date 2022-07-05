@@ -26,6 +26,7 @@ export type ProductListProps = React.PropsWithChildren<unknown>;
 export function ProductList({ children }: ProductListProps) {
    return (
       <VStack
+         data-testid="list-view-products"
          spacing={2}
          align="stretch"
          width="full"
