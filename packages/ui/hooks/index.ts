@@ -160,8 +160,8 @@ export function useLocalPreference<Data = any>(
 }
 
 export function useSafeSetState<T>(
-   initialState?: T | (() => T)
-): [T | undefined, React.Dispatch<React.SetStateAction<T>>] {
+   initialState: T | (() => T)
+): [T, React.Dispatch<React.SetStateAction<T>>] {
    const [state, setState] = React.useState(initialState);
 
    const mountedRef = React.useRef(false);

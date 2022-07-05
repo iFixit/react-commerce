@@ -1,5 +1,5 @@
 import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
-import { usePrevious } from '@ifixit/ui';
+import { usePrevious, useSafeSetState } from '@ifixit/ui';
 import { fetchPosts, Post } from '@models/posts';
 import * as React from 'react';
 import isEqual from 'react-fast-compare';
@@ -57,7 +57,7 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
 function usePosts(tags: string[]) {
    const previousTags = usePrevious(tags);
 
-   const [state, setState] = React.useState<{
+   const [state, setState] = useSafeSetState<{
       posts: Post[];
       isLoading: boolean;
       error?: string;
@@ -84,7 +84,7 @@ function usePosts(tags: string[]) {
                }));
             });
       }
-   }, [tags, previousTags]);
+   }, [previousTags, setState, tags]);
 
    return state;
 }

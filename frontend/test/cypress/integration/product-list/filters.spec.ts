@@ -2,10 +2,23 @@ describe('product list filters', () => {
    const user = cy;
    beforeEach(() => {
       cy.intercept('/1/indexes/**').as('search');
+      // Here we stub the user api request so we don't depend on cominor
+      cy.intercept(
+         { method: 'GET', url: '/api/2.0/user' },
+         {
+            userid: 1,
+            algoliaApiKeyProduct: null,
+            username: 'john',
+            unique_username: 'john123',
+         }
+      ).as('user-api');
       user.visit('/Parts');
    });
 
    it('should help user filter', () => {
+      user.wait('@user-api');
+      user.wait(2000);
+
       user
          .findAllByTestId(/facet-accordion-item-.*/i)
          .first()
