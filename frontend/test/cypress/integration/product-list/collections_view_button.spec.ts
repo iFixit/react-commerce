@@ -10,7 +10,7 @@ describe('collection display', () => {
 
       // Make sure the display property equals to grid
       user
-         .get('[data-testid="grid-view-products"]')
+         .getBySel('grid-view-products')
          .invoke('css', 'display')
          .should('equal', 'grid');
    });
@@ -24,7 +24,7 @@ describe('collection display', () => {
 
       // Make sure the display property equals to flex
       user
-         .get('[data-testid="list-view-products"]')
+         .getBySel('list-view-products')
          .invoke('css', 'display')
          .should('equal', 'flex');
    });

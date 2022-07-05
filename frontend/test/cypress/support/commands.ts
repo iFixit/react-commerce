@@ -13,3 +13,7 @@ Cypress.Commands.add('isWithinViewport', { prevSubject: true }, (selector: any) 
     expect(bounding.bottom).to.be.lessThan(bottomBoundOfWindow);
   });
 })
+
+Cypress.Commands.add('getBySel', (selector, ...args) => {
+  return cy.get(`[data-testid=${selector}]`, ...args)
+})

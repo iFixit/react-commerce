@@ -17,7 +17,7 @@ describe('collections scroll', () => {
       user.wait(3000);
 
        // When it scrolls to the top, the search bar should be visible
-      user.window().isWithinViewport(user.get('[data-testid=collections-search-box]'));
+      user.window().isWithinViewport(user.getBySel('collections-search-box'));
 
        // Check that url parameter contains ?p after clicking next page
       user.location().should((loc) => {
