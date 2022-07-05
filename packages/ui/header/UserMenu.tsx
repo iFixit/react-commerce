@@ -24,7 +24,7 @@ type UserMenuContext = {
 
 type User = {
    username: string;
-   handle: string;
+   handle: string | null;
    thumbnail: string | null;
 };
 
