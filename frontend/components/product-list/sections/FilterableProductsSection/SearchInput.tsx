@@ -40,6 +40,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
          </InputLeftElement>
          <Input
             ref={inputRef}
+            data-testid="collections-search-box"
             bg="white"
             placeholder="Search"
             tabIndex={0}

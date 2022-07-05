@@ -23,7 +23,7 @@
             }
          },
          "type": "enumeration",
-         "enum": ["parts", "tools", "marketing"],
+         "enum": ["all-parts", "parts", "all-tools", "tools", "marketing"],
          "default": "parts",
          "required": false
       },

@@ -26,6 +26,7 @@ export type ProductListProps = React.PropsWithChildren<unknown>;
 export function ProductList({ children }: ProductListProps) {
    return (
       <VStack
+         data-testid="list-view-products"
          spacing={2}
          align="stretch"
          width="full"
@@ -64,7 +65,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
       showOemPartnershipBadge;
 
    return (
-      <LinkBox as="article" aria-labelledby={productHeadingId}>
+      <LinkBox as="article" aria-labelledby={productHeadingId} role="group">
          <Flex
             align="flex-start"
             py={{
@@ -123,6 +124,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         base: 2,
                         xl: 4,
                      }}
+                     _groupHover={{ color: 'brand.500' }}
                   >
                      {product.title}
                   </Heading>

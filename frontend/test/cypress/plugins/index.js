@@ -17,6 +17,16 @@
  */
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
-   // `on` is used to hook into various events Cypress emits
-   // `config` is the resolved Cypress config
+   on('before:browser:launch', (browser = {}, launchOptions) => {
+      if (browser.family === 'chromium' && browser.name !== 'electron') {
+        launchOptions.args.push('--window-size=1400,1000')
+        return launchOptions
+      }
+
+      if (browser.name === 'electron') {
+         launchOptions.preferences.width = 1400
+         launchOptions.preferences.height = 1000
+        return launchOptions
+      }
+    })
 };

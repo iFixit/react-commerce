@@ -11,6 +11,7 @@ import {
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { IFIXIT_ORIGIN } from '@config/env';
+import { decodeDeviceTitle } from '@helpers/product-list-helpers';
 import { generateCSRFToken, setCSRFCookie } from '@ifixit/auth-sdk';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
@@ -37,19 +38,17 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       origin: IFIXIT_ORIGIN,
    });
 
-   const { handle } = context.params || {};
-   invariant(typeof handle === 'string', 'tools category handle is required');
+   const { deviceHandle } = context.params || {};
+   invariant(typeof deviceHandle === 'string', 'device handle is required');
+
+   const deviceTitle = decodeDeviceTitle(deviceHandle);
 
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({
-            handle: {
-               eq: handle,
-            },
-         }),
+         findProductList({ deviceTitle: { eq: deviceTitle } }),
       ]);
 
    if (productList == null) {

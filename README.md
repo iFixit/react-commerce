@@ -28,6 +28,8 @@ This command will install both backend and frontend dependencies:
 pnpm install:all
 ```
 
+> :warning: The project is based on `pnpm@6`: some dependencies still have problems with v7
+
 ### Dev server
 
 This command will start Strapi dev server and Next.js dev server:
@@ -72,3 +74,16 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 ```
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.
+
+### Troubleshooting
+
+Since [OSX 12.3](https://developer.apple.com/documentation/macos-release-notes/macos-12_3-release-notes), python(2) is no longer available by default.
+If no prebuilt image is available for some dependencies like sqlite3, it may be necessary to install python(2) to build the image locally.
+Brew has discontinued the python@2 formula, so one way to install it is via `pyenv`:
+
+```
+brew install pyenv
+pyenv install 2.7.18
+pyenv global 2.7.18
+echo 'PATH=$(pyenv root)/shims:$PATH' >> ~/.zshrc
+```

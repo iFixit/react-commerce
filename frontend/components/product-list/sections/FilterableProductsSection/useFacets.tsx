@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDynamicWidgets } from 'react-instantsearch-hooks-web';
-import { WikiInfoEntry } from '@models/product-list/types';
+import { ProductList, ProductListType } from '@models/product-list';
 
 export function useFacets() {
    const { attributesToRender } = useDynamicWidgets({
@@ -8,12 +8,12 @@ export function useFacets() {
    });
 
    return [
+      'facet_tags.Item Type',
       'facet_tags.Capacity',
       'device',
       'facet_tags.Device Brand',
       'facet_tags.Device Category',
       'facet_tags.Device Type',
-      'facet_tags.Item Type',
       'facet_tags.OS',
       'facet_tags.Part or Kit',
       'price_range',
@@ -22,19 +22,26 @@ export function useFacets() {
    // return attributesToRender;
 }
 
-export function useFilteredFacets(wikiInfo: WikiInfoEntry[]) {
+export function useFilteredFacets(productList: ProductList) {
    const facets = useFacets();
+   const isItemTypeProductList =
+      productList.type === ProductListType.DeviceItemTypeParts;
 
    const infoNames = React.useMemo(() => {
-      return new Set(wikiInfo.map((info) => `facet_tags.${info.name}`));
-   }, [wikiInfo]);
+      return new Set(
+         productList.wikiInfo.map((info) => `facet_tags.${info.name}`)
+      );
+   }, [productList.wikiInfo]);
 
    const usefulFacets = React.useMemo(() => {
-      const usefulFacets = facets
-         .slice()
-         .filter((facet) => !infoNames.has(facet));
+      const usefulFacets = facets.slice().filter((facet) => {
+         if (facet === 'facet_tags.Item Type' && isItemTypeProductList) {
+            return false;
+         }
+         return !infoNames.has(facet);
+      });
       return usefulFacets;
-   }, [facets, infoNames]);
+   }, [facets, infoNames, isItemTypeProductList]);
 
    return usefulFacets;
 }

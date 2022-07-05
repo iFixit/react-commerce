@@ -12,36 +12,53 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { WikiInfoEntry } from '@models/product-list/types';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
-import { RefinementList } from './RefinementList';
+import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { useFilteredFacets } from './useFacets';
 
 type FacetsAccordianProps = {
-   wikiInfo: WikiInfoEntry[];
+   productList: ProductList;
 };
 
-export function FacetsAccordion(props: FacetsAccordianProps) {
-   const { wikiInfo } = props;
-   const facets = useFilteredFacets(wikiInfo);
+const initialExpandedFacets = ['facet_tags.Item Type'];
+
+export function FacetsAccordion({ productList }: FacetsAccordianProps) {
+   const facets = useFilteredFacets(productList);
    const countRefinements = useCountRefinements();
+   const [indexes, setIndexes] = React.useState<number[]>(() => {
+      return initialExpandedFacets
+         .map((expandedFacet) =>
+            facets.findIndex((facet) => facet === expandedFacet)
+         )
+         .filter((index) => index >= 0);
+   });
+
+   const handleChangeIndexes = React.useCallback((indexes: number[]) => {
+      setIndexes(indexes);
+   }, []);
 
    return (
       <Accordion
          allowMultiple
+         index={indexes}
+         onChange={handleChangeIndexes}
          data-testid="facets-accordion"
          sx={{
-            '>:first-child': {
-               borderTop: 'none',
+            '> .visible': {
+               borderTopWidth: '0px',
+            },
+            '> .visible ~ .visible': {
+               borderTopWidth: '1px',
             },
             '>:last-child': {
                borderBottom: 'none',
             },
          }}
       >
-         {facets.map((facet) => {
+         {facets.map((facet, facetIndex) => {
             const facetAttributes = [facet];
             if (facet === 'price_range') {
                facetAttributes.push('facet_tags.Price');
@@ -52,6 +69,8 @@ export function FacetsAccordion(props: FacetsAccordianProps) {
                   key={facet}
                   attribute={facet}
                   refinedCount={refinedCount}
+                  productList={productList}
+                  isExpanded={indexes.includes(facetIndex)}
                />
             );
          })}
@@ -62,10 +81,12 @@ export function FacetsAccordion(props: FacetsAccordianProps) {
 type FacetAccordionItemProps = AccordionItemProps & {
    attribute: string;
    refinedCount: number;
+   productList: ProductList;
+   isExpanded: boolean;
 };
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
-   ({ attribute, refinedCount, ...props }, ref) => {
+   ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
       const { items } = useRefinementList({ attribute });
       const { hits } = useHits();
       const isProductListEmpty = hits.length === 0;
@@ -73,60 +94,53 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 
       const formattedFacetName = formatFacetName(attribute);
-
-      if (!hasApplicableRefinements && !isProductListEmpty) {
-         return null;
-      }
+      const isHidden = !hasApplicableRefinements && !isProductListEmpty;
 
       return (
          <AccordionItem
             ref={ref}
             {...props}
+            hidden={isHidden}
             isDisabled={isDisabled}
-            data-testid={`facet-accordion-item-${attribute}`}
+            data-testid={`${
+               isExpanded ? 'expanded' : 'collapsed'
+            }-facet-accordion-item-${attribute}`}
             data-facet-name={attribute}
+            className={isHidden ? 'hidden' : 'visible'}
          >
-            {({ isExpanded }) => (
-               <>
-                  <AccordionButton
-                     aria-label={
-                        isExpanded
-                           ? `Collapse ${formattedFacetName}`
-                           : `Expand ${formattedFacetName}`
-                     }
-                  >
-                     <Box flex="1" textAlign="left">
-                        {formattedFacetName}
-                     </Box>
-                     <HStack>
-                        {refinedCount > 0 && (
-                           <Text
-                              rounded="full"
-                              bg="gray.600"
-                              color="white"
-                              px="1.5"
-                              fontSize="xs"
-                           >
-                              {refinedCount}
-                           </Text>
-                        )}
-                        <AccordionIcon />
-                     </HStack>
-                  </AccordionButton>
-                  <AccordionPanel
-                     pb={4}
-                     display={isDisabled ? 'none' : 'block'}
-                  >
-                     <VStack align="stretch" spacing="3">
-                        <RefinementList
-                           attribute={attribute}
-                           showMore
-                           showMoreLimit={200}
-                        />
-                     </VStack>
-                  </AccordionPanel>
-               </>
-            )}
+            <AccordionButton
+               aria-label={
+                  isExpanded
+                     ? `Collapse ${formattedFacetName}`
+                     : `Expand ${formattedFacetName}`
+               }
+            >
+               <Box flex="1" textAlign="left" fontWeight="bold">
+                  {formattedFacetName}
+               </Box>
+               <HStack>
+                  {refinedCount > 0 && (
+                     <Text
+                        rounded="full"
+                        bg="gray.600"
+                        color="white"
+                        px="1.5"
+                        fontSize="xs"
+                     >
+                        {refinedCount}
+                     </Text>
+                  )}
+                  <AccordionIcon />
+               </HStack>
+            </AccordionButton>
+            <AccordionPanel pb={4} display={isDisabled ? 'none' : 'block'}>
+               <VStack align="stretch" spacing="3">
+                  <FacetFilter
+                     attribute={attribute}
+                     productList={productList}
+                  />
+               </VStack>
+            </AccordionPanel>
          </AccordionItem>
       );
    }

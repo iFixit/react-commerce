@@ -11,7 +11,7 @@ import {
    MenuList,
    Text,
 } from '@chakra-ui/react';
-import { ProductList } from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight, HiDotsHorizontal } from 'react-icons/hi';
@@ -24,9 +24,15 @@ export function ProductListBreadcrumb({
    productList,
    ...otherProps
 }: ProductListBreadcrumbProps) {
+   const { ancestors } = productList;
    const reverseAncestorList = React.useMemo(() => {
-      return [...productList.ancestors].reverse();
-   }, [productList.ancestors]);
+      return [...ancestors].reverse();
+   }, [ancestors]);
+
+   let currentItemTitle = productList.title;
+   if (productList.type === ProductListType.DeviceItemTypeParts) {
+      currentItemTitle = productList.itemType;
+   }
 
    return (
       <Breadcrumb
@@ -58,7 +64,7 @@ export function ProductListBreadcrumb({
          }}
          {...otherProps}
       >
-         {productList.ancestors.map((ancestor) => (
+         {ancestors.map((ancestor) => (
             <BreadcrumbItem
                key={ancestor.handle}
                borderRadius="md"
@@ -123,7 +129,7 @@ export function ProductListBreadcrumb({
                whiteSpace="nowrap"
                isTruncated
             >
-               {productList.title}
+               {currentItemTitle}
             </Text>
          </BreadcrumbItem>
       </Breadcrumb>
