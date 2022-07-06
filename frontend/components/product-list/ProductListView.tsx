@@ -6,6 +6,7 @@ import { Configure, Index } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
 import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
+import { ProductListType } from '@models/product-list';
 import {
    BannerSection,
    FeaturedProductListSection,
@@ -39,7 +40,7 @@ export function ProductListView({
                   px={{ base: 3, sm: 0 }}
                >
                   <ProductListBreadcrumb productList={productList} />
-                  {productList.title !== 'Repair Tools' && (
+                  {productList.type !== ProductListType.AllTools && (
                      <ProductListDeviceNavigation productList={productList} />
                   )}
                </Flex>
