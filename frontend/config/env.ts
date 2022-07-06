@@ -8,10 +8,14 @@ export const ALGOLIA_API_KEY = checkEnv(
    'ALGOLIA_API_KEY'
 );
 
-export const IFIXIT_ORIGIN = checkEnv(
+const NEXT_PUBLIC_IFIXIT_ORIGIN = checkEnv(
    process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
    'NEXT_PUBLIC_IFIXIT_ORIGIN'
 );
+
+export const IFIXIT_ORIGIN = shouldUseRelativeOrigin(NEXT_PUBLIC_IFIXIT_ORIGIN) ?
+   "" :
+   NEXT_PUBLIC_IFIXIT_ORIGIN;
 
 export const STRAPI_ORIGIN = checkEnv(
    process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
@@ -29,4 +33,19 @@ function checkEnv(env: string | null | undefined, envName: string): string {
       throw new Error(`environment variable "${envName}" is not defined`);
    }
    return env;
+}
+
+function shouldUseRelativeOrigin(ifixitOrigin: string): boolean {
+   if (typeof window === 'undefined') {
+      return false;
+   }
+
+   function baseDomain(url: string): string|null {
+      const parsedURl = new URL(url);
+      const host = parsedURl.host.match(/[^.]+\.[^.]+$/);
+      return host ? host[0] : "";
+   }
+
+   const currentBaseDomain = baseDomain(window.location.origin);
+   return Boolean(currentBaseDomain) && currentBaseDomain === baseDomain(ifixitOrigin);
 }
