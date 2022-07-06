@@ -13,9 +13,9 @@ const NEXT_PUBLIC_IFIXIT_ORIGIN = checkEnv(
    'NEXT_PUBLIC_IFIXIT_ORIGIN'
 );
 
-export const IFIXIT_ORIGIN = shouldUseRelativeOrigin(NEXT_PUBLIC_IFIXIT_ORIGIN) ?
-   "" :
-   NEXT_PUBLIC_IFIXIT_ORIGIN;
+export const IFIXIT_ORIGIN = shouldUseRelativeOrigin(NEXT_PUBLIC_IFIXIT_ORIGIN)
+   ? ''
+   : NEXT_PUBLIC_IFIXIT_ORIGIN;
 
 export const STRAPI_ORIGIN = checkEnv(
    process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
@@ -40,12 +40,15 @@ function shouldUseRelativeOrigin(ifixitOrigin: string): boolean {
       return false;
    }
 
-   function baseDomain(url: string): string|null {
+   function baseDomain(url: string): string | null {
       const parsedUrl = new URL(url);
       const host = parsedUrl.host.match(/[^.]+\.[^.]+$/);
-      return host ? host[0] : "";
+      return host ? host[0] : '';
    }
 
    const currentBaseDomain = baseDomain(window.location.origin);
-   return Boolean(currentBaseDomain) && currentBaseDomain === baseDomain(ifixitOrigin);
+   return (
+      Boolean(currentBaseDomain) &&
+      currentBaseDomain === baseDomain(ifixitOrigin)
+   );
 }
