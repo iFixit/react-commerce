@@ -41,8 +41,8 @@ function shouldUseRelativeOrigin(ifixitOrigin: string): boolean {
    }
 
    function baseDomain(url: string): string|null {
-      const parsedURl = new URL(url);
-      const host = parsedURl.host.match(/[^.]+\.[^.]+$/);
+      const parsedUrl = new URL(url);
+      const host = parsedUrl.host.match(/[^.]+\.[^.]+$/);
       return host ? host[0] : "";
    }
 
