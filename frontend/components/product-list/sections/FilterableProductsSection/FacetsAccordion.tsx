@@ -25,7 +25,7 @@ type FacetsAccordianProps = {
 };
 
 export function FacetsAccordion(props: FacetsAccordianProps) {
-   const wikiInfo  = props.wikiInfo;
+   const wikiInfo = props.wikiInfo;
    const title = props.title;
    const facets = useFilteredFacets(wikiInfo, title);
    const countRefinements = useCountRefinements();

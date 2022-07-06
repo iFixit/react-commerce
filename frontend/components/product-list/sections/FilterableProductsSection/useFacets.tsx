@@ -36,8 +36,8 @@ export function useFilteredFacets(wikiInfo: WikiInfoEntry[], title?: string) {
       return usefulFacets;
    }, [facets, infoNames]);
 
-   if (title !== null && title === "Tools") {
-      return facets.slice(7,10);
+   if (title !== null && title === 'Tools') {
+      return facets.slice(7, 10);
    }
 
    return usefulFacets;

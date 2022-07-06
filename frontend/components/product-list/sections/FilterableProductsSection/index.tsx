@@ -39,7 +39,7 @@ type SectionProps = {
 };
 
 export function FilterableProductsSection(props: SectionProps) {
-   const  wikiInfo  = props.wikiInfo;
+   const wikiInfo = props.wikiInfo;
    const title = props.title;
    const { hits } = useHits<ProductSearchHit>();
    const [viewType, setViewType] = useLocalPreference(
@@ -74,7 +74,7 @@ export function FilterableProductsSection(props: SectionProps) {
          <CurrentRefinements />
          <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
             <FacetCard>
-               <FacetsAccordion wikiInfo={wikiInfo} title={title}/>
+               <FacetsAccordion wikiInfo={wikiInfo} title={title} />
             </FacetCard>
             <Card flex={1}>
                {isEmpty ? (

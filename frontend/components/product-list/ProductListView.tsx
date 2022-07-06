@@ -52,7 +52,10 @@ export function ProductListView({
                   {productList.children.length > 0 && (
                      <ProductListChildrenSection productList={productList} />
                   )}
-                  <FilterableProductsSection wikiInfo={productList.wikiInfo} title={productList.handle}/>
+                  <FilterableProductsSection
+                     wikiInfo={productList.wikiInfo}
+                     title={productList.handle}
+                  />
                </Index>
                {productList.sections.map((section, index) => {
                   switch (section.type) {
