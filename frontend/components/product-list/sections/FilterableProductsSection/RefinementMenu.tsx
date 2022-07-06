@@ -6,6 +6,7 @@ import {
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
 import NextLink from 'next/link';
+import { useSortBy } from './useSortBy';
 
 export type RefinementMenuProps = UseRefinementListProps & {
    createURL: (value: string) => string;
@@ -18,7 +19,10 @@ export function RefinementMenu({
    ...otherProps
 }: RefinementMenuProps) {
    const { items, isShowingMore, toggleShowMore, canToggleShowMore } =
-      useRefinementList(otherProps);
+      useRefinementList({
+         ...otherProps,
+         sortBy: useSortBy(otherProps),
+      });
 
    return (
       <Box>

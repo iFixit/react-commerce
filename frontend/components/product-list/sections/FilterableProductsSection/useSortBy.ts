@@ -46,6 +46,12 @@ function capacityToBytes(x: string): number {
    return size * (unitToBytes[unit] ?? 1);
 }
 
+const enCollator = new Intl.Collator('en');
+
+const sortAlphabetically: UseRefinementListProps['sortBy'] = (a, b) => {
+   return enCollator.compare(a.escapedValue, b.escapedValue);
+};
+
 export function useSortBy(
    props: UseRefinementListProps
 ): UseRefinementListProps['sortBy'] {
@@ -54,6 +60,8 @@ export function useSortBy(
          return sortByPriceRange;
       case 'facet_tags.Capacity':
          return sortByCapacityHighToLow;
+      case 'facet_tags.Item Type':
+         return sortAlphabetically;
       default:
          return props.sortBy;
    }
