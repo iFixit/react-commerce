@@ -13,6 +13,7 @@ import {
    useRefinementList,
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
+import { useSortBy } from './useSortBy';
 
 export type RefinementListProps = UseRefinementListProps;
 
@@ -20,7 +21,7 @@ export function RefinementList(props: RefinementListProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useRefinementList({
          ...props,
-         sortBy: getSortBy(props),
+         sortBy: useSortBy(props),
       });
 
    return (
@@ -57,63 +58,6 @@ export function RefinementList(props: RefinementListProps) {
          )}
       </Box>
    );
-}
-
-const getSortBy = (props: RefinementListProps) => {
-   switch (props.attribute) {
-      case 'price_range':
-         return sortByPriceRange;
-      case 'facet_tags.Capacity':
-         return sortByCapacityHighToLow;
-      default:
-         return props.sortBy;
-   }
-};
-
-const sortByPriceRange: RefinementListProps['sortBy'] = (a, b) => {
-   const aAvg = avg(a.escapedValue);
-   const bAvg = avg(b.escapedValue);
-
-   if (aAvg == null && bAvg == null) {
-      return 0;
-   }
-   if (aAvg == null) {
-      return 1;
-   }
-   if (bAvg == null) {
-      return -1;
-   }
-   return aAvg - bAvg;
-};
-
-function avg(x: string): number | null {
-   const nums = x.match(/\d+/g);
-   if (nums == null) {
-      return null;
-   }
-   return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
-}
-
-const sortByCapacityHighToLow: RefinementListProps['sortBy'] = (a, b) => {
-   return capacityToBytes(b.escapedValue) - capacityToBytes(a.escapedValue);
-};
-
-const unitToBytes = {
-   B: 1,
-   KB: 1024,
-   MB: 1024 ** 2,
-   GB: 1024 ** 3,
-   TB: 1024 ** 4,
-   PB: 1024 ** 5,
-};
-
-function capacityToBytes(x: string): number {
-   const size = parseFloat(x);
-   if (isNaN(size)) {
-      return 0;
-   }
-   const unit = (x.match(/[KMGTP]?B/)?.[0] ?? 'B') as keyof typeof unitToBytes;
-   return size * (unitToBytes[unit] ?? 1);
 }
 
 type RefinementListItemProps = {
