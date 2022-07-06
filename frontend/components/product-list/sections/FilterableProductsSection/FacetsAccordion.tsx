@@ -21,11 +21,13 @@ import { useFilteredFacets } from './useFacets';
 
 type FacetsAccordianProps = {
    wikiInfo: WikiInfoEntry[];
+   title: string;
 };
 
 export function FacetsAccordion(props: FacetsAccordianProps) {
-   const { wikiInfo } = props;
-   const facets = useFilteredFacets(wikiInfo);
+   const wikiInfo  = props.wikiInfo;
+   const title = props.title;
+   const facets = useFilteredFacets(wikiInfo, title);
    const countRefinements = useCountRefinements();
 
    return (

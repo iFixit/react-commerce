@@ -22,7 +22,7 @@ export function useFacets() {
    // return attributesToRender;
 }
 
-export function useFilteredFacets(wikiInfo: WikiInfoEntry[]) {
+export function useFilteredFacets(wikiInfo: WikiInfoEntry[], title?: string) {
    const facets = useFacets();
 
    const infoNames = React.useMemo(() => {
@@ -35,6 +35,10 @@ export function useFilteredFacets(wikiInfo: WikiInfoEntry[]) {
          .filter((facet) => !infoNames.has(facet));
       return usefulFacets;
    }, [facets, infoNames]);
+
+   if (title !== null && title === "Tools") {
+      return facets.slice(7,10);
+   }
 
    return usefulFacets;
 }

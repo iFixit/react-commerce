@@ -35,10 +35,12 @@ const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
 type SectionProps = {
    wikiInfo: WikiInfoEntry[];
+   title: string;
 };
 
 export function FilterableProductsSection(props: SectionProps) {
-   const { wikiInfo } = props;
+   const  wikiInfo  = props.wikiInfo;
+   const title = props.title;
    const { hits } = useHits<ProductSearchHit>();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
@@ -72,7 +74,7 @@ export function FilterableProductsSection(props: SectionProps) {
          <CurrentRefinements />
          <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
             <FacetCard>
-               <FacetsAccordion wikiInfo={wikiInfo} />
+               <FacetsAccordion wikiInfo={wikiInfo} title={title}/>
             </FacetCard>
             <Card flex={1}>
                {isEmpty ? (
