@@ -149,7 +149,7 @@ export function RangeInput(props: RangeInputProps) {
             </Box>
          </HStack>
          {!isValidRange && (
-            <FormErrorMessage data-test="input-error">
+            <FormErrorMessage data-testid="input-error">
                max should be higher than min
             </FormErrorMessage>
          )}

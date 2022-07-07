@@ -73,7 +73,7 @@ export function ProductListChildrenSection({
          <Text fontSize="lg" fontWeight="bold" mb="4">
             {heading}
          </Text>
-         <VStack spacing="4" align="stretch">
+         <VStack data-testid="product-list-devices" spacing="4" align="stretch">
             <SimpleGrid
                columns={{
                   base: 1,
