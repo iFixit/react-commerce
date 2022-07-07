@@ -40,9 +40,7 @@ export function ProductListView({
                   px={{ base: 3, sm: 0 }}
                >
                   <ProductListBreadcrumb productList={productList} />
-                  {productList.type !== ProductListType.AllTools && (
-                     <ProductListDeviceNavigation productList={productList} />
-                  )}
+                  <ProductListDeviceNavigation productList={productList} />
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>
