@@ -10,8 +10,6 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { IFIXIT_ORIGIN } from '@config/env';
-import {setCSRFCookie } from '@ifixit/auth-sdk';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -29,11 +27,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'Cache-Control',
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
-
-   setCSRFCookie(context, {
-      csrfToken,
-      origin: IFIXIT_ORIGIN,
-   });
 
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
