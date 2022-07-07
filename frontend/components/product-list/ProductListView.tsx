@@ -6,6 +6,7 @@ import { Configure, Index } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
 import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
+import { ProductListType } from '@models/product-list';
 import {
    BannerSection,
    FeaturedProductListSection,
