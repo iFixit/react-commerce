@@ -28,9 +28,9 @@ describe('parts page devices', () => {
    });
 
    function assertVisibleFilterAndProducts() {
-      user.getByDataTestId('filterable-products-section').should('be.visible');
+      user.findByTestId('filterable-products-section').should('be.visible');
       user
-         .getByDataTestId('facets-accordion')
+         .findByTestId('facets-accordion')
          .scrollIntoView()
          .should('be.visible');
    }
@@ -38,7 +38,7 @@ describe('parts page devices', () => {
    // Makes sure there is at least 1 product available
    function assertAvailableProducts() {
       user
-         .getByDataTestId('list-view-products')
+         .findByTestId('list-view-products')
          .children('article')
          .its('length')
          .should('be.gte', 1);
@@ -51,7 +51,7 @@ describe('parts page devices', () => {
             return false;
 
          user
-            .getByDataTestId('product-list-devices')
+            .findByTestId('product-list-devices')
             .find('a')
             .first()
             .as('device')
