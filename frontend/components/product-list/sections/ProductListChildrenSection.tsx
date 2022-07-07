@@ -11,8 +11,9 @@ import {
    useBreakpointValue,
    VStack,
 } from '@chakra-ui/react';
-import { useIsMounted } from '@ifixit/ui';
 import { IfixitImage } from '@components/ifixit-image';
+import { useIsMounted } from '@ifixit/ui';
+import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
 
@@ -20,29 +21,13 @@ export type ProductListChildrenSectionProps = {
    productList: ProductList;
 };
 
-interface ProductList {
-   deviceTitle: string | null;
-   children: ProductListChild[];
-   childrenHeading: string | null;
-}
-
-interface ProductListChild {
-   title: string;
-   handle: string;
-   path: string;
-   image?: {
-      url: string;
-      alt?: string;
-   } | null;
-}
-
 export function ProductListChildrenSection({
    productList,
 }: ProductListChildrenSectionProps) {
    const {
-      children: productListChildren,
       deviceTitle,
       childrenHeading,
+      children: productListChildren,
    } = productList;
    const [shouldShowMore, setShouldShowMore] = React.useState(false);
    const responsiveVisibleChildrenCount = useBreakpointValue(
@@ -142,7 +127,7 @@ export function ProductListChildrenSection({
 }
 
 interface ChildLinkProps {
-   child: ProductListChild;
+   child: ProductList['children'][0];
 }
 
 const ChildLink = ({ child }: ChildLinkProps) => {
@@ -182,7 +167,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
                      >
                         <IfixitImage
                            src={child.image.url}
-                           alt={child.image.alt}
+                           alt={child.image.alternativeText ?? ''}
                            objectFit="cover"
                            layout="fill"
                            sizes="20vw"

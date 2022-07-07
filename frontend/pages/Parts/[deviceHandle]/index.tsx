@@ -11,9 +11,11 @@ import {
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { IFIXIT_ORIGIN } from '@config/env';
+import { decodeDeviceTitle } from '@helpers/product-list-helpers';
 import { generateCSRFToken, setCSRFCookie } from '@ifixit/auth-sdk';
+import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
-import { findProductList, getDeviceTitle } from '@models/product-list';
+import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
 import { GetServerSideProps } from 'next';
 import { getServerState } from 'react-instantsearch-hooks-server';
@@ -36,25 +38,17 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       origin: IFIXIT_ORIGIN,
    });
 
-   const { handle } = context.params || {};
-   if (typeof handle !== 'string') {
-      return {
-         notFound: true,
-      };
-   }
+   const { deviceHandle } = context.params || {};
+   invariant(typeof deviceHandle === 'string', 'device handle is required');
 
-   const deviceTitle = getDeviceTitle(handle);
+   const deviceTitle = decodeDeviceTitle(deviceHandle);
 
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({
-            deviceTitle: {
-               eq: deviceTitle,
-            },
-         }),
+         findProductList({ deviceTitle: { eq: deviceTitle } }),
       ]);
 
    if (productList == null) {

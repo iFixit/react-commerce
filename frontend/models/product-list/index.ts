@@ -1,16 +1,19 @@
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
+import {
+   getProductListPath,
+   getProductListTitle,
+} from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
+import { invariant } from '@ifixit/helpers';
 import {
    DeviceWiki,
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
-   getDeviceHandle,
 } from '@lib/ifixit-api/devices';
 import {
    Enum_Productlist_Type,
-   ProductList as StrapiProductList,
    ProductListFiltersInput,
    strapi,
 } from '@lib/strapi-sdk';
@@ -22,22 +25,27 @@ import {
    ProductListImage,
    ProductListSection,
    ProductListSectionType,
+   ProductListType,
+   ProductListOptions,
+   BaseProductList,
 } from './types';
 
-export { ProductListSectionType } from './types';
+export { ProductListSectionType, ProductListType } from './types';
 export type {
    FeaturedProductList,
    ProductList,
    ProductListPreview,
    ProductListSection,
    ProductSearchHit,
+   WikiInfoEntry,
 } from './types';
 
 /**
  * Get the product list data from the API
  */
 export async function findProductList(
-   filters: ProductListFiltersInput
+   filters: ProductListFiltersInput,
+   options: ProductListOptions = {}
 ): Promise<ProductList | null> {
    const result = await strapi.getProductList({
       filters,
@@ -56,12 +64,36 @@ export async function findProductList(
       ALGOLIA_APP_ID,
       ALGOLIA_API_KEY
    );
+   const baseProductListType = getProductListType(productList.type);
+   const productListType = options.itemType
+      ? ProductListType.DeviceItemTypeParts
+      : baseProductListType;
 
-   return {
+   const path = getProductListPath({
+      type: productListType,
+      handle: productList.handle,
+      deviceTitle: productList.deviceTitle ?? null,
+      itemType: options.itemType,
+   });
+
+   const ancestors = createProductListAncestors(productList.parent);
+   if (options.itemType) {
+      ancestors.push({
+         handle: productList.handle,
+         path: getProductListPath({
+            type: baseProductListType,
+            handle: productList.handle,
+            deviceTitle: productList.deviceTitle ?? null,
+         }),
+         title: productList.title,
+      });
+   }
+
+   const baseProductList: BaseProductList = {
       title: productList.title,
       handle: productList.handle,
-      path: getProductListPath(productList),
       deviceTitle: productList.deviceTitle ?? null,
+      path,
       tagline: productList.tagline ?? null,
       description: productList.description,
       metaDescription: productList.metaDescription ?? null,
@@ -72,13 +104,16 @@ export async function findProductList(
             : deviceWiki
             ? getDeviceImage(deviceWiki)
             : null,
-      ancestors: createProductListAncestors(productList.parent),
+      ancestors,
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: await fillMissingImagesFromApi(
          sortProductListChildren(
             filterNullableItems(
                productList.children?.data.map(
-                  createProductListChild(deviceWiki)
+                  createProductListChild({
+                     deviceWiki,
+                     itemType: options.itemType,
+                  })
                )
             )
          )
@@ -92,6 +127,39 @@ export async function findProductList(
       },
       wikiInfo: deviceWiki?.info || [],
    };
+
+   if (productListType === ProductListType.DeviceItemTypeParts) {
+      invariant(
+         options.itemType,
+         'item type is required for device item type product list'
+      );
+      return {
+         ...baseProductList,
+         type: ProductListType.DeviceItemTypeParts,
+         itemType: options.itemType,
+      };
+   }
+   return {
+      ...baseProductList,
+      type: productListType,
+   };
+}
+
+function getProductListType(
+   type?: Enum_Productlist_Type | null
+): ProductListType {
+   switch (type) {
+      case Enum_Productlist_Type.AllParts:
+         return ProductListType.AllParts;
+      case Enum_Productlist_Type.AllTools:
+         return ProductListType.AllTools;
+      case Enum_Productlist_Type.Tools:
+         return ProductListType.ToolsCategory;
+      case Enum_Productlist_Type.Marketing:
+         return ProductListType.Marketing;
+      default:
+         return ProductListType.DeviceParts;
+   }
 }
 
 function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
@@ -149,43 +217,6 @@ function getChildDeviceImage(
    return null;
 }
 
-/**
- * Convert URL slug to product list device title
- */
-export function getDeviceTitle(handle: string): string {
-   return handle.replace(/_+/g, ' ');
-}
-
-/**
- * Get product list path
- * @param productList - Product list attributes
- * @returns The product list absolute path
- */
-function getProductListPath(
-   productList: Pick<StrapiProductList, 'type' | 'handle' | 'deviceTitle'>
-): string {
-   switch (productList.type) {
-      case Enum_Productlist_Type.Tools: {
-         return `/Tools/${productList.handle}`;
-      }
-      case Enum_Productlist_Type.Marketing: {
-         return productList.handle === 'Tools' || productList.handle === 'Parts'
-            ? `/${productList.handle}`
-            : `/Store/${productList.handle}`;
-      }
-      default: {
-         if (
-            productList.deviceTitle != null &&
-            productList.deviceTitle.length > 0
-         ) {
-            const deviceHandle = getDeviceHandle(productList.deviceTitle);
-            return `/Parts/${deviceHandle}`;
-         }
-         return `/Store/${productList.handle}`;
-      }
-   }
-}
-
 type StrapiProductListPageData = NonNullable<
    NonNullable<Awaited<ReturnType<typeof strapi['getProductList']>>>
 >;
@@ -205,27 +236,56 @@ function createProductListAncestors(
    }
    const ancestors = createProductListAncestors(attributes.parent);
 
+   const type = getProductListType(attributes.type);
+
    return ancestors.concat({
-      title: attributes.title,
+      title: getProductListTitle({
+         title: attributes.title,
+         type,
+      }),
       handle: attributes.handle,
-      path: getProductListPath(attributes),
+      path: getProductListPath({
+         type,
+         handle: attributes.handle,
+         deviceTitle: attributes.deviceTitle ?? null,
+      }),
    });
 }
 
 type ApiProductListChild = NonNullable<ApiProductList['children']>['data'][0];
 
-function createProductListChild(deviceWiki: DeviceWiki | null) {
+type CreateProductListChildOptions = {
+   deviceWiki: DeviceWiki | null;
+   itemType?: string;
+};
+
+function createProductListChild({
+   deviceWiki,
+   itemType,
+}: CreateProductListChildOptions) {
    return (apiChild: ApiProductListChild): ProductListChild | null => {
       const { attributes } = apiChild;
       if (attributes == null) {
          return null;
       }
       const imageAttributes = attributes.image?.data?.attributes;
+      const type = itemType
+         ? ProductListType.DeviceItemTypeParts
+         : getProductListType(attributes.type);
       return {
-         title: attributes.title,
+         title: getProductListTitle({
+            title: attributes.title,
+            type,
+            itemType,
+         }),
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
-         path: getProductListPath(attributes),
+         path: getProductListPath({
+            type,
+            handle: attributes.handle,
+            deviceTitle: attributes.deviceTitle ?? null,
+            itemType,
+         }),
          image:
             imageAttributes == null
                ? deviceWiki && attributes.deviceTitle
@@ -296,7 +356,11 @@ function createProductListSection(
                handle: productList.handle,
                title: productList.title,
                deviceTitle: productList.deviceTitle ?? null,
-               path: getProductListPath(productList),
+               path: getProductListPath({
+                  handle: productList.handle,
+                  deviceTitle: productList.deviceTitle ?? null,
+                  type: getProductListType(productList.type),
+               }),
                description: productList.description,
                image:
                   image == null
@@ -326,7 +390,11 @@ function createProductListSection(
                      handle: productList.handle,
                      title: productList.title,
                      deviceTitle: productList.deviceTitle ?? null,
-                     path: getProductListPath(productList),
+                     path: getProductListPath({
+                        handle: productList.handle,
+                        deviceTitle: productList.deviceTitle ?? null,
+                        type: getProductListType(productList.type),
+                     }),
                      description: productList.description,
                      image:
                         image == null
