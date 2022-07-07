@@ -8,14 +8,15 @@ export function useFacets() {
    });
 
    return [
-      'facet_tags.Item Type',
       'facet_tags.Capacity',
-      'device',
       'facet_tags.Device Brand',
       'facet_tags.Device Category',
       'facet_tags.Device Type',
+      'facet_tags.Item Type',
       'facet_tags.OS',
       'facet_tags.Part or Kit',
+      'facet_tags.Tool Category',
+      'device',
       'price_range',
       'worksin',
    ];
