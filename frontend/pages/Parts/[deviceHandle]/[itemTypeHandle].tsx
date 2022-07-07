@@ -15,7 +15,7 @@ import {
    decodeDeviceItemType,
    decodeDeviceTitle,
 } from '@helpers/product-list-helpers';
-import { generateCSRFToken, setCSRFCookie } from '@ifixit/auth-sdk';
+import {setCSRFCookie } from '@ifixit/auth-sdk';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -35,7 +35,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
 
-   const csrfToken = generateCSRFToken();
    setCSRFCookie(context, {
       csrfToken,
       origin: IFIXIT_ORIGIN,
