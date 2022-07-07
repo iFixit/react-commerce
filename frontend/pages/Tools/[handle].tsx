@@ -57,7 +57,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
-      csrfToken,
       algolia: {
          indexName,
          url,
