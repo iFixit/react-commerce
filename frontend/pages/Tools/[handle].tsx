@@ -10,8 +10,6 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { IFIXIT_ORIGIN } from '@config/env';
-import { generateCSRFToken, setCSRFCookie } from '@ifixit/auth-sdk';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -30,12 +28,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'Cache-Control',
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
-
-   const csrfToken = generateCSRFToken();
-   setCSRFCookie(context, {
-      csrfToken,
-      origin: IFIXIT_ORIGIN,
-   });
 
    const { handle } = context.params || {};
    invariant(typeof handle === 'string', 'tools category handle is required');
@@ -65,7 +57,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
-      csrfToken,
       algolia: {
          indexName,
          url,
