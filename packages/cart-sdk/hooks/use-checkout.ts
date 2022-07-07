@@ -110,11 +110,7 @@ function useDraftOrderCheckout() {
    const shopifyClient = useShopifyStorefrontClient();
    const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/${shopifyClient.shopDomain}?checkout=1`;
    return async () => {
-      const result = await client.post('cart/order/draftOrder', {
-         headers: {
-            'X-CSRF': appContext.csrfToken,
-         },
-      });
+      const result = await client.post('cart/order/draftOrder');
       const returnToUrl = new URL(result.invoiceUrl);
       const ssoUrl = new URL(ssoRoute);
       ssoUrl.searchParams.set('return_to', returnToUrl.toString());

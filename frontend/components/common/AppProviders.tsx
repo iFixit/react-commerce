@@ -35,13 +35,11 @@ const queryClient = new QueryClient();
 export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
 
 export type AppProvidersProps = {
-   csrfToken: string;
    algolia?: AlgoliaProps;
 };
 
 export function AppProviders({
    children,
-   csrfToken,
    algolia,
 }: React.PropsWithChildren<AppProvidersProps>) {
    const markup = (
@@ -73,7 +71,7 @@ export function AppProviders({
    );
 
    return (
-      <AppProvider ifixitOrigin={IFIXIT_ORIGIN} csrfToken={csrfToken}>
+      <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
          <QueryClientProvider client={queryClient}>
             {algolia ? (
                <InstantSearchProvider {...algolia}>

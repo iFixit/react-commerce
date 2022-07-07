@@ -43,5 +43,18 @@ export function useFilteredFacets(productList: ProductList) {
       return usefulFacets;
    }, [facets, infoNames, isItemTypeProductList]);
 
+   if (productList.type === ProductListType.AllTools) {
+      const excludedToolsFacets = [
+         'facet_tags.Item Type',
+         'facet_tags.Capacity',
+         'device',
+         'facet_tags.Device Brand',
+         'facet_tags.Device Category',
+         'facet_tags.Device Type',
+         'facet_tags.OS',
+      ]
+      return facets.filter(facet => !excludedToolsFacets.includes(facet));
+   }
+
    return usefulFacets;
 }
