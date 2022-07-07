@@ -6,11 +6,12 @@ describe('parts page search', () => {
       user.visit('/Parts');
    });
 
-   it('should search for products', () => {
+   it('should show results when the search term exists', () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
          .type('watch');
+
       user.wait('@search');
 
       // Assert that all products in the result contains word watch
@@ -20,12 +21,14 @@ describe('parts page search', () => {
          .each((productCart) => {
             user.wrap(productCart).contains('watch', { matchCase: false });
          });
+   });
 
-      user.findByTestId('collections-search-box').should('be.visible').clear();
+   it('should show no results when search term doesn\'t exist', () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
          .type('asdasasdadasd');
+
       user.wait('@search');
 
       user.findByTestId('list-view-products').should('not.exist');
