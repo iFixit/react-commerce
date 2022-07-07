@@ -1,3 +1,5 @@
+import { constants } from 'test/cypress/support/constants';
+
 describe('parts page search', () => {
    const user = cy;
 
@@ -10,7 +12,7 @@ describe('parts page search', () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
-         .type('watch');
+         .type('iphone');
 
       user.wait('@search');
 
@@ -19,11 +21,11 @@ describe('parts page search', () => {
          .findByTestId('list-view-products')
          .children('article')
          .each((productCart) => {
-            user.wrap(productCart).contains('watch', { matchCase: false });
+            user.wrap(productCart).contains('iphone', { matchCase: false });
          });
    });
 
-   it('should show no results when search term doesn\'t exist', () => {
+   it("should show no results when search term doesn't exist", () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
@@ -32,10 +34,8 @@ describe('parts page search', () => {
       user.wait('@search');
 
       user.findByTestId('list-view-products').should('not.exist');
-      user.contains('No results found');
-      user.contains(
-         "Try adjusting your search or filter to find what you're looking for"
-      );
+      user.contains(constants.NO_SEARCH_RESULTS);
+      user.contains(constants.NO_SEARCH_RESULT_DESC);
    });
 });
 
