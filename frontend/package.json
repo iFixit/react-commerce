@@ -10,7 +10,7 @@
    "scripts": {
       "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"pnpm run dev:next\" \"pnpm run dev:codegen\"",
       "dev:next": "next dev",
-      "dev:codegen": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.yml --watch",
+      "dev:codegen": "cross-env DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.yml --watch",
       "build": "next build",
       "start": "next start",
       "type-check": "tsc --pretty --noEmit",
