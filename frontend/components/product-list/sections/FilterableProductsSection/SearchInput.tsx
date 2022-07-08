@@ -33,6 +33,8 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
       }
    }, [clear]);
 
+   console.log(props);
+
    return (
       <InputGroup ref={ref} {...props}>
          <InputLeftElement pointerEvents="none">
@@ -42,6 +44,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             ref={inputRef}
             data-testid="collections-search-box"
             bg="white"
+            placeholder={props.placeholder}
             tabIndex={0}
             onChange={(event) => refine(event.currentTarget.value)}
             defaultValue={query}
