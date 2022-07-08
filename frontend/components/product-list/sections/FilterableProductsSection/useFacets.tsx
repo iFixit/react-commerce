@@ -55,14 +55,16 @@ export function useFilteredFacets(productList: ProductList) {
    return usefulFacets;
 }
 
+// Higher number == closer to top, default is 0
 const partsFacetRanking = new Map([
-   ['facet_tags.Item Type', 1],
-   ['facet_tags.Part or Kit', 2],
+   ['facet_tags.Item Type', 2],
+   ['facet_tags.Part or Kit', 1],
 ]);
 
+// Higher number == closer to top, default is 0
 const toolsFacetRanking = new Map([
-   ['facet_tags.Tool Category', 1],
-   ['price_range', 2],
+   ['facet_tags.Tool Category', 2],
+   ['price_range', 1],
 ]);
 
 function getFacetComparator(productListType: ProductListType) {
@@ -81,15 +83,9 @@ function getFacetComparator(productListType: ProductListType) {
 
 function sortFacetsWithRanking(ranking: Map<string, number>) {
    return (a: string, b: string): number => {
-      if (ranking.get(a) && ranking.get(b)) {
-         return ranking.get(a)! - ranking.get(b)!;
-      } else if (ranking.get(a)) {
-         return -1;
-      } else if (ranking.get(b)) {
-         return 1;
-      } else {
-         return sortFacetsAlphabetically(a, b);
-      }
+      const aRank = ranking.get(a) || 0;
+      const bRank = ranking.get(b) || 0;
+      return bRank - aRank || sortFacetsAlphabetically(a, b);
    };
 }
 
