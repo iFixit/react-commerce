@@ -58,6 +58,7 @@ export function Toolbar(props: ToolbarProps) {
                   Filters
                </OpenFiltersButton>
                <SearchInput
+                  placeholder={`Search ${productList.title}`}
                   order={{
                      base: 3,
                      md: 2,

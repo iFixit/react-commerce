@@ -42,7 +42,6 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             ref={inputRef}
             data-testid="collections-search-box"
             bg="white"
-            placeholder={"Search ${productList.title}"}
             tabIndex={0}
             onChange={(event) => refine(event.currentTarget.value)}
             defaultValue={query}
