@@ -24,7 +24,7 @@ type UserMenuContext = {
 
 type User = {
    username: string;
-   handle: string;
+   handle: string | null;
    thumbnail: string | null;
 };
 
@@ -87,7 +87,7 @@ export const UserMenuHeading = forwardRef<Omit<StackProps, 'children'>, 'div'>(
             <Text color="gray.900" fontWeight="semibold">
                {user?.username}
             </Text>
-            <Text color="gray.700">@{user?.handle}</Text>
+            {user?.handle && <Text color="gray.700">@{user?.handle}</Text>}
          </VStack>
       );
    }
