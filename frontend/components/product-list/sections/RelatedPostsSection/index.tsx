@@ -47,6 +47,7 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
                   imageSrc={post.image?.url}
                   imageAlt=""
                   link={post.permalink || ''}
+                  date={post.date}
                />
             ))}
          </SimpleGrid>

@@ -61,8 +61,8 @@ export function useFilteredFacets(productList: ProductList) {
          'facet_tags.Device Category',
          'facet_tags.Device Type',
          'facet_tags.OS',
-      ]
-      return facets.filter(facet => !excludedToolsFacets.includes(facet));
+      ];
+      return facets.filter((facet) => !excludedToolsFacets.includes(facet));
    }
 
    return usefulFacets;
