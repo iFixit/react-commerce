@@ -17,13 +17,11 @@ import { formatFacetName } from '@helpers/algolia-helpers';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
-import {
-   useClearRefinements,
-   useRefinementList,
-} from 'react-instantsearch-hooks-web';
+import { useClearRefinements } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { useFilteredFacets } from './useFacets';
+import { useFilteredRefinementList } from './useFilteredRefinementList';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
@@ -190,7 +188,7 @@ type ClearFacetButtonProps = {
 };
 
 function ClearFacetButton({ attribute, isVisible }: ClearFacetButtonProps) {
-   const { items } = useRefinementList({ attribute });
+   const { items } = useFilteredRefinementList({ attribute });
    const { refine } = useClearRefinements({
       includedAttributes: [attribute],
    });
@@ -242,7 +240,7 @@ function FacetListItem({
    refinedCount,
    onSelect,
 }: FacetListItemProps) {
-   const { items } = useRefinementList({ attribute });
+   const { items } = useFilteredRefinementList({ attribute });
 
    if (items.length === 0) {
       return null;

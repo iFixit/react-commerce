@@ -9,17 +9,15 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
-import {
-   useRefinementList,
-   UseRefinementListProps,
-} from 'react-instantsearch-hooks-web';
+import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
+import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
 
 export type RefinementListProps = UseRefinementListProps;
 
 export function RefinementList(props: RefinementListProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
-      useRefinementList({
+      useFilteredRefinementList({
          ...props,
          sortBy: useSortBy(props),
       });

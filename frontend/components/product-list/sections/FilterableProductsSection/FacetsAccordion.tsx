@@ -14,10 +14,11 @@ import {
 import { formatFacetName } from '@helpers/algolia-helpers';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
-import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
+import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { useFilteredFacets } from './useFacets';
+import { useFilteredRefinementList } from './useFilteredRefinementList';
 
 type FacetsAccordianProps = {
    productList: ProductList;
@@ -87,7 +88,7 @@ type FacetAccordionItemProps = AccordionItemProps & {
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
    ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
-      const { items } = useRefinementList({ attribute });
+      const { items } = useFilteredRefinementList({ attribute });
       const { hits } = useHits();
       const isProductListEmpty = hits.length === 0;
       const hasApplicableRefinements = items.length > 0;
