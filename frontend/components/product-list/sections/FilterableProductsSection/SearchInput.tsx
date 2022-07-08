@@ -33,8 +33,6 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
       }
    }, [clear]);
 
-   console.log(props);
-
    return (
       <InputGroup ref={ref} {...props}>
          <InputLeftElement pointerEvents="none">
