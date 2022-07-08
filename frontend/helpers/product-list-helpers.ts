@@ -4,19 +4,27 @@ import { ProductList, ProductListType } from '@models/product-list';
 type ProductListAttributes = {
    filters?: string | null;
    deviceTitle?: string | null;
+   type?: ProductListType | null;
+   itemType?: string | null;
 };
 
 export function computeProductListAlgoliaFilterPreset<
    T extends ProductListAttributes
 >(productList: T): string | undefined {
-   const { filters, deviceTitle } = productList;
+   const { filters, deviceTitle, itemType, type } = productList;
+   const conditions: string[] = [];
+
+   if (type && type === ProductListType.DeviceItemTypeParts && itemType) {
+      conditions.push(`'facet_tags.Item Type': ${JSON.stringify(itemType)}`);
+   }
+
    if (filters && filters.length > 0) {
-      return filters;
+      conditions.push(filters);
+   } else if (deviceTitle && deviceTitle.length > 0) {
+      conditions.push(`device:${JSON.stringify(deviceTitle)}`);
    }
-   if (deviceTitle && deviceTitle.length > 0) {
-      return `device:${JSON.stringify(deviceTitle)}`;
-   }
-   return undefined;
+
+   return conditions.length ? conditions.join(' AND ') : undefined;
 }
 
 /**
