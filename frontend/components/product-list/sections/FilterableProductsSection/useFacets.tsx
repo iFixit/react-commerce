@@ -36,7 +36,7 @@ export function useFilteredFacets(productList: ProductList) {
    }, [productList.wikiInfo]);
 
    const sortBy = React.useMemo(() => {
-      return sortFacets(productList.type);
+      return getFacetComparator(productList.type);
    }, [productList.type]);
 
    const usefulFacets = React.useMemo(() => {
@@ -65,7 +65,7 @@ const toolsFacetRanking = new Map([
    ['price_range', 2],
 ]);
 
-function sortFacets(productListType: ProductListType) {
+function getFacetComparator(productListType: ProductListType) {
    switch (productListType) {
       case ProductListType.AllParts:
       case ProductListType.DeviceParts:
