@@ -67,13 +67,6 @@ export function FilterableProductsSection({ productList }: SectionProps) {
          data-testid="filterable-products-section"
          aria-labelledby="filterable-products-section-heading"
       >
-         {productList.type === ProductListType.DeviceItemTypeParts && (
-            <Configure
-               filters={`'facet_tags.Item Type': ${JSON.stringify(
-                  productList.itemType
-               )}`}
-            />
-         )}
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products
          </Heading>
