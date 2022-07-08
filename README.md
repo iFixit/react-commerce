@@ -38,7 +38,7 @@ This command will start Strapi dev server and Next.js dev server:
 pnpm dev
 ```
 
-> :warning: Don't forget to create `.env.local` file with the required secrets (see `.env.local.example`)
+> :warning: Don't forget to create `backend/.env` and `frontend/.env.local` files with the required secrets (see `.env.example` and `.env.local.example`)
 
 -  Use an API key from [Sentry](https://sentry.io/settings/account/api/auth-tokens/) for `SENTRY_AUTH_TOKEN`.
 

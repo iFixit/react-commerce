@@ -9,10 +9,13 @@ import {
    Heading,
    HStack,
    Icon,
+   Link,
    Text,
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
+import { IFIXIT_ORIGIN } from '@config/env';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
 import {
@@ -86,7 +89,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
             </FacetCard>
             <Card flex={1}>
                {isEmpty ? (
-                  <ProductListEmptyState />
+                  <ProductListEmptyState productList={productList} />
                ) : viewType === ProductViewType.Grid ? (
                   <>
                      <ProductGrid>
@@ -155,7 +158,11 @@ function useScrollIntoViewEffect(deps: React.DependencyList) {
    return ref;
 }
 
-const ProductListEmptyState = () => {
+type EmptyStateProps = {
+   productList: TProductList;
+};
+
+const ProductListEmptyState = ({ productList }: EmptyStateProps) => {
    const clearRefinements = useClearRefinements();
 
    const currentRefinements = useCurrentRefinements();
@@ -166,21 +173,34 @@ const ProductListEmptyState = () => {
 
    const isFiltered = hasRefinements || hasSearchQuery;
 
+   const title = getProductListTitle(productList);
+   const encodedQuery = encodeURIComponent(searchBox.query);
+
    if (isFiltered) {
       return (
-         <VStack pt="16" pb="20">
+         <VStack pt="16" pb="20" px="2" textAlign="center">
             <Icon
                as={SearchEmptyStateIllustration}
                boxSize="200px"
                opacity="0.8"
             />
-            <Text fontSize="lg" fontWeight="bold" w="full" textAlign="center">
-               No results found
+            <Text fontSize="lg" fontWeight="bold" w="full">
+               No matching products found in {title}
             </Text>
-            <Text maxW="500px" color="gray.500" textAlign="center" px="2">
+            <Text maxW="500px" color="gray.500">
                Try adjusting your search or filter to find what you&apos;re
                looking for.
             </Text>
+            <Link
+               maxW="500px"
+               color="brand.500"
+               href={`${IFIXIT_ORIGIN}/Search?query=${encodedQuery}`}
+            >
+               Search all of iFixit for&nbsp;
+               <Text as="span" fontWeight="bold">
+                  {searchBox.query}
+               </Text>
+            </Link>
             <Box pt="8">
                <Button
                   colorScheme="brand"

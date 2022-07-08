@@ -16,13 +16,15 @@ describe('collections scroll', () => {
       user.wait('@search');
       user.wait(3000);
 
-       // When it scrolls to the top, the search bar should be visible
-      user.window().isWithinViewport(user.get('[data-testid=collections-search-box]'));
+      // When it scrolls to the top, the search bar should be visible
+      user
+         .window()
+         .isWithinViewport(user.getByDataTestId('collections-search-box'));
 
-       // Check that url parameter contains ?p after clicking next page
+      // Check that url parameter contains ?p after clicking next page
       user.location().should((loc) => {
-         expect(loc.search).to.have.string('?p=')
-      })
+         expect(loc.search).to.have.string('?p=');
+      });
    });
 });
 
