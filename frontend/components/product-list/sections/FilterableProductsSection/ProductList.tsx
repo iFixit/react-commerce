@@ -129,6 +129,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      {product.title}
                   </Heading>
                   <Text
+                     data-testid="product-short-desc"
                      noOfLines={3}
                      fontSize={{
                         base: 'sm',
