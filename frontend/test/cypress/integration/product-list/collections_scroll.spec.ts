@@ -22,7 +22,7 @@ describe('collections scroll', () => {
          .isWithinViewport(user.getByDataTestId('collections-search-box'));
 
       // Check that url parameter contains ?p after clicking next page
-      user.location().should((loc) => {
+      user.location({ timeout: 2000 }).should((loc) => {
          expect(loc.search).to.have.string('?p=');
       });
    });
