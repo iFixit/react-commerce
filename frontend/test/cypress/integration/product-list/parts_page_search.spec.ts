@@ -20,8 +20,8 @@ describe('parts page search', () => {
       user
          .findByTestId('list-view-products')
          .children('article')
-         .each((productCart) => {
-            user.wrap(productCart).contains('iphone', { matchCase: false });
+         .each((productListItem) => {
+            user.wrap(productListItem).contains('iphone', { matchCase: false });
          });
    });
 
