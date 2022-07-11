@@ -19,7 +19,7 @@ describe('collections scroll', () => {
       // When it scrolls to the top, the search bar should be visible
       user
          .window()
-         .isWithinViewport(user.getByDataTestId('collections-search-box'));
+         .isWithinViewport(user.findByTestId('collections-search-box'));
 
       // Check that url parameter contains ?p after clicking next page
       user.location().should((loc) => {

@@ -3,6 +3,5 @@
 declare namespace Cypress {
    interface Chainable {
       isWithinViewport(element: any): Chainable;
-      getByDataTestId(selector: any): Chainable;
    }
 }
