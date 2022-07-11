@@ -153,6 +153,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
                direction="row"
                align="center"
                justifyContent="center"
+               minH="inherit"
             >
                {child.image && (
                   <>
