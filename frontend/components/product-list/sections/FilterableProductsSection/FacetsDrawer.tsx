@@ -37,6 +37,15 @@ export function FacetsDrawer({
    const facets = useFilteredFacets(productList);
    const [currentFacet, setCurrentFacet] = React.useState<string | null>(null);
    const countRefinements = useCountRefinements();
+   const scrollRef = React.useRef<HTMLDivElement | null>(null);
+
+   const setFacetAndScroll = React.useCallback(
+      (attribute: string | null) => {
+         scrollRef?.current?.scroll(0, 0);
+         setCurrentFacet(attribute);
+      },
+      [scrollRef, setCurrentFacet]
+   );
 
    useLockBodyScroll(isOpen);
 
@@ -111,13 +120,14 @@ export function FacetsDrawer({
                               color="gray.600"
                            />
                         }
-                        onClick={() => setCurrentFacet(null)}
+                        onClick={() => setFacetAndScroll(null)}
                      />
                   </Fade>
                   <CloseButton order={3} onClick={onClose} boxSize="10" />
                </Flex>
                <Divider borderColor="gray.300" />
                <Box
+                  ref={scrollRef}
                   flexGrow={1}
                   overflowY="scroll"
                   overflowX="hidden"
@@ -130,7 +140,7 @@ export function FacetsDrawer({
                            <FacetListItem
                               key={facet}
                               attribute={facet}
-                              onSelect={setCurrentFacet}
+                              onSelect={setFacetAndScroll}
                               refinedCount={refinedCount}
                            />
                         );
@@ -167,7 +177,7 @@ export function FacetsDrawer({
                            if (currentFacet == null) {
                               onClose();
                            } else {
-                              setCurrentFacet(null);
+                              setFacetAndScroll(null);
                            }
                         }}
                      >
