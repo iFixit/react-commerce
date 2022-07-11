@@ -5,7 +5,7 @@ describe('parts page results view', () => {
       user.visit('/Parts');
    });
 
-   it('all products have price visible', () => {
+   it('all products have a visible price', () => {
       user
          .findByTestId('list-view-products')
          .children('article')
