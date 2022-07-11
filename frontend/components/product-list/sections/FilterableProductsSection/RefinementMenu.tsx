@@ -1,12 +1,10 @@
 import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { HiSelector } from 'react-icons/hi';
-import {
-   useRefinementList,
-   UseRefinementListProps,
-} from 'react-instantsearch-hooks-web';
+import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
+import { useFilteredRefinementList } from './useFilteredRefinementList';
 
 export type RefinementMenuProps = UseRefinementListProps & {
    createURL: (value: string) => string;
@@ -18,8 +16,8 @@ export function RefinementMenu({
    activeValue,
    ...otherProps
 }: RefinementMenuProps) {
-   const { items, isShowingMore, toggleShowMore, canToggleShowMore } =
-      useRefinementList({
+   const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
+      useFilteredRefinementList({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
@@ -36,6 +34,7 @@ export function RefinementMenu({
                      isRefined={item.value === activeValue}
                      count={item.count}
                      createURL={createURL}
+                     onChange={refine}
                   />
                );
             })}
@@ -66,6 +65,7 @@ type MenuItemProps = {
    isRefined: boolean;
    count: number;
    createURL: (value: string) => string;
+   onChange: (value: string) => void;
 };
 
 const MenuItem = React.memo(function RefinementListItem({
@@ -74,6 +74,7 @@ const MenuItem = React.memo(function RefinementListItem({
    value,
    createURL,
    isRefined,
+   onChange,
 }: MenuItemProps) {
    return (
       <HStack
@@ -85,6 +86,10 @@ const MenuItem = React.memo(function RefinementListItem({
          <NextLink href={createURL(value)} passHref>
             <Text
                as="a"
+               onClick={(event) => {
+                  event.preventDefault();
+                  onChange(value);
+               }}
                _hover={{
                   textDecoration: 'underline',
                }}

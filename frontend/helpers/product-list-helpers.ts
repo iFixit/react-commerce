@@ -11,12 +11,8 @@ type ProductListAttributes = {
 export function computeProductListAlgoliaFilterPreset<
    T extends ProductListAttributes
 >(productList: T): string | undefined {
-   const { filters, deviceTitle, itemType, type } = productList;
+   const { filters, deviceTitle } = productList;
    const conditions: string[] = [];
-
-   if (type && type === ProductListType.DeviceItemTypeParts && itemType) {
-      conditions.push(`'facet_tags.Item Type': ${JSON.stringify(itemType)}`);
-   }
 
    if (filters && filters.length > 0) {
       conditions.push(filters);

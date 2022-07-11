@@ -3,6 +3,8 @@ import { ProductList, ProductListType } from '@models/product-list';
 import * as React from 'react';
 import { RefinementList } from './RefinementList';
 import { RefinementMenu } from './RefinementMenu';
+import { useInstantSearch } from 'react-instantsearch-hooks-web';
+import { uiStateToQueryString } from '@components/common/InstantSearchProvider';
 
 type FacetFilterProps = {
    attribute: string;
@@ -10,15 +12,21 @@ type FacetFilterProps = {
 };
 
 export function FacetFilter({ attribute, productList }: FacetFilterProps) {
+   const { indexUiState } = useInstantSearch();
+   const queryString = React.useMemo(
+      () => uiStateToQueryString(indexUiState),
+      [indexUiState]
+   );
    const createItemTypeURL = React.useCallback(
       (itemType: string) => {
-         return getProductListPath({
+         const path = getProductListPath({
             ...productList,
             type: ProductListType.DeviceItemTypeParts,
             itemType,
          });
+         return `${path}${queryString}`;
       },
-      [productList]
+      [productList, queryString]
    );
    switch (attribute) {
       case 'facet_tags.Item Type': {
