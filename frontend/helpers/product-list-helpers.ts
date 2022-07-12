@@ -1,5 +1,6 @@
 import { invariant } from '@ifixit/helpers';
 import { ProductList, ProductListType } from '@models/product-list';
+import { RefinementDisplayType } from '@models/product-list/types';
 
 type ProductListAttributes = {
    filters?: string | null;
@@ -116,4 +117,24 @@ export function getProductListTitle(
       }`;
    }
    return productList.title;
+}
+
+export function getRefinementDisplayType(
+   attribute: string,
+   productListType: ProductListType
+) {
+   switch (attribute) {
+      case 'facet_tags.Item Type': {
+         switch (productListType) {
+            case ProductListType.DeviceParts:
+            case ProductListType.DeviceItemTypeParts:
+               return RefinementDisplayType.SingleSelect;
+            default:
+               return RefinementDisplayType.MultiSelect;
+         }
+      }
+      default: {
+         return RefinementDisplayType.MultiSelect;
+      }
+   }
 }

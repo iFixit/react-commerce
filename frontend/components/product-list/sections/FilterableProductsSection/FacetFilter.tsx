@@ -1,10 +1,14 @@
-import { getProductListPath } from '@helpers/product-list-helpers';
+import {
+   getProductListPath,
+   getRefinementDisplayType,
+} from '@helpers/product-list-helpers';
 import { ProductList, ProductListType } from '@models/product-list';
 import * as React from 'react';
 import { RefinementList } from './RefinementList';
 import { RefinementMenu } from './RefinementMenu';
 import { useInstantSearch } from 'react-instantsearch-hooks-web';
 import { uiStateToQueryString } from '@components/common/InstantSearchProvider';
+import { RefinementDisplayType } from '@models/product-list/types';
 
 type FacetFilterProps = {
    attribute: string;
@@ -28,35 +32,26 @@ export function FacetFilter({ attribute, productList }: FacetFilterProps) {
       },
       [productList, queryString]
    );
-   switch (attribute) {
-      case 'facet_tags.Item Type': {
-         switch (productList.type) {
-            case ProductListType.DeviceParts:
-            case ProductListType.DeviceItemTypeParts:
-               return (
-                  <RefinementMenu
-                     attribute={attribute}
-                     showMore
-                     showMoreLimit={200}
-                     createURL={createItemTypeURL}
-                     activeValue={
-                        productList.type === ProductListType.DeviceItemTypeParts
-                           ? productList.itemType
-                           : undefined
-                     }
-                  />
-               );
-            default:
-               return (
-                  <RefinementList
-                     attribute={attribute}
-                     showMore
-                     showMoreLimit={200}
-                  />
-               );
-         }
-      }
-      default: {
+   const refinementDisplayType = getRefinementDisplayType(
+      attribute,
+      productList.type
+   );
+   switch (refinementDisplayType) {
+      case RefinementDisplayType.SingleSelect:
+         return (
+            <RefinementMenu
+               attribute={attribute}
+               showMore
+               showMoreLimit={200}
+               createURL={createItemTypeURL}
+               activeValue={
+                  productList.type === ProductListType.DeviceItemTypeParts
+                     ? productList.itemType
+                     : undefined
+               }
+            />
+         );
+      case RefinementDisplayType.MultiSelect:
          return (
             <RefinementList
                attribute={attribute}
@@ -64,6 +59,5 @@ export function FacetFilter({ attribute, productList }: FacetFilterProps) {
                showMoreLimit={200}
             />
          );
-      }
    }
 }

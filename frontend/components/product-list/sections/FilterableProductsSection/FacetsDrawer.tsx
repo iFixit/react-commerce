@@ -14,7 +14,9 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { ProductList } from '@models/product-list';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
+import { ProductList, ProductListType } from '@models/product-list';
+import { RefinementDisplayType } from '@models/product-list/types';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import { useClearRefinements } from 'react-instantsearch-hooks-web';
@@ -130,6 +132,7 @@ export function FacetsDrawer({
                            <FacetListItem
                               key={facet}
                               attribute={facet}
+                              productListType={productList.type}
                               onSelect={setCurrentFacet}
                               refinedCount={refinedCount}
                            />
@@ -231,18 +234,29 @@ function ClearAllButton({ isVisible }: ClearAllButtonProps) {
 
 type FacetListItemProps = {
    attribute: string;
+   productListType: ProductListType;
    refinedCount: number;
    onSelect: (attribute: string) => void;
 };
 
 function FacetListItem({
    attribute,
+   productListType,
    refinedCount,
    onSelect,
 }: FacetListItemProps) {
-   const { items } = useFilteredRefinementList({ attribute });
+   const { items, isAnyRefined } = useFilteredRefinementList({ attribute });
+   const refinementDisplayType = getRefinementDisplayType(
+      attribute,
+      productListType
+   );
 
-   if (items.length === 0) {
+   const isRefinedSingleSelect =
+      isAnyRefined &&
+      refinementDisplayType === RefinementDisplayType.SingleSelect;
+   const hasApplicableRefinements = items.length > 0 && !isRefinedSingleSelect;
+
+   if (!hasApplicableRefinements) {
       return null;
    }
 

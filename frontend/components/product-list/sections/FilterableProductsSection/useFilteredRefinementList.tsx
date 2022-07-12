@@ -14,5 +14,5 @@ export function useFilteredRefinementList(props: UseRefinementListProps) {
       ? items
       : items.filter((item) => hitsCount !== item.count);
 
-   return { ...rest, items: filteredItems };
+   return { ...rest, items: filteredItems, isAnyRefined };
 }

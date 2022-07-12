@@ -12,7 +12,9 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
+import { RefinementDisplayType } from '@models/product-list/types';
 import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
@@ -88,10 +90,18 @@ type FacetAccordionItemProps = AccordionItemProps & {
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
    ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
-      const { items } = useFilteredRefinementList({ attribute });
+      const { items, isAnyRefined } = useFilteredRefinementList({ attribute });
       const { hits } = useHits();
+      const refinementDisplayType = getRefinementDisplayType(
+         attribute,
+         productList.type
+      );
       const isProductListEmpty = hits.length === 0;
-      const hasApplicableRefinements = items.length > 0;
+      const isRefinedSingleSelect =
+         isAnyRefined &&
+         refinementDisplayType === RefinementDisplayType.SingleSelect;
+      const hasApplicableRefinements =
+         items.length > 0 && !isRefinedSingleSelect;
       const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 
       const formattedFacetName = formatFacetName(attribute);

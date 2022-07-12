@@ -33,6 +33,11 @@ export enum ProductListType {
    Marketing = 'marketing',
 }
 
+export enum RefinementDisplayType {
+   MultiSelect = 'multi-select',
+   SingleSelect = 'single-select',
+}
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
