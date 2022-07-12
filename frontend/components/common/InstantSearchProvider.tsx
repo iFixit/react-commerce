@@ -2,6 +2,8 @@ import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
+import { RouterProps } from 'instantsearch.js/es/middlewares';
+import { UiState } from 'instantsearch.js/es/types';
 import { mapValues } from 'lodash';
 import { useRouter } from 'next/router';
 import QueryString from 'qs';
@@ -17,7 +19,6 @@ type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 export type AlgoliaProps = {
    url: string;
    indexName: string;
-   routing?: boolean;
    serverState?: Partial<InstantSearchServerState>;
    apiKey: string;
 };
@@ -37,7 +38,6 @@ export function InstantSearchProvider({
    indexName,
    serverState,
    apiKey,
-   routing,
 }: InstantSearchProviderProps) {
    const algoliaClientRef = React.useRef<SearchClient>();
    algoliaClientRef.current =
@@ -69,107 +69,103 @@ export function InstantSearchProvider({
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
    const count = useCountRenders();
 
+   const routing: RouterProps<UiState, RouteState> = {
+      stateMapping: {
+         stateToRoute(uiState) {
+            const indexUiState = uiState[indexName];
+            return indexUiStateToRoute(indexUiState);
+         },
+         routeToState(routeState: RouteState) {
+            const stateObject: IndexUiState = {};
+            if (routeState.q != null) {
+               stateObject.query = routeState.q;
+            }
+            if (routeState.p != null) {
+               stateObject.page = routeState.p;
+            }
+            if (routeState.filter != null) {
+               stateObject.refinementList = routeState.filter;
+            }
+            if (routeState.range != null) {
+               stateObject.range = routeState.range;
+            }
+            return {
+               [indexName]: stateObject,
+            };
+         },
+      },
+      router: history({
+         getLocation() {
+            if (typeof window === 'undefined') {
+               return new URL(url) as unknown as Location;
+            }
+
+            return window.location;
+         },
+         createURL({ routeState, location }) {
+            let baseUrl = location.origin;
+            const pathParts = location.pathname
+               .split('/')
+               .filter((part) => part !== '');
+            const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
+            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+
+            if (partsOrTools) {
+               baseUrl += `/${partsOrTools}`;
+               if (deviceHandle) {
+                  baseUrl += `/${deviceHandle}`;
+                  const itemType = routeState.filter?.['facet_tags.Item Type'];
+                  if (itemType) {
+                     delete routeState.filter?.['facet_tags.Item Type'];
+                     baseUrl += `/${itemType}`;
+                  }
+               }
+            }
+
+            const queryString = routeToQueryString(routeState);
+
+            return `${baseUrl}${queryString}`;
+         },
+         parseURL({ qsModule, location }): any {
+            const pathParts = location.pathname
+               .split('/')
+               .filter((part) => part !== '');
+            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+
+            const {
+               q = '',
+               p,
+               filter = {},
+               range = {},
+            } = qsModule.parse(location.search.slice(1));
+
+            const decodedFilters = mapValues(filter, (filterValues) =>
+               filterValues.map((v) => decodeURIComponent(v))
+            );
+
+            if (deviceHandle && itemType) {
+               decodedFilters['facet_tags.Item Type'] =
+                  decodeURIComponent(itemType);
+            }
+
+            return {
+               q: decodeURIComponent(q),
+               p,
+               filter: decodedFilters,
+               range: mapValues(range, decodeURIComponent),
+            };
+         },
+      }),
+   };
+
    return (
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
             key={count}
             searchClient={algoliaClientRef.current}
             indexName={indexName}
-            routing={{
-               stateMapping: {
-                  stateToRoute(uiState): any {
-                     const indexUiState = uiState[indexName];
-                     return indexUiStateToRoute(indexUiState);
-                  },
-                  routeToState(routeState: RouteState) {
-                     const stateObject: IndexUiState = {};
-                     if (routeState.q != null) {
-                        stateObject.query = routeState.q;
-                     }
-                     if (routeState.p != null) {
-                        stateObject.page = routeState.p;
-                     }
-                     if (routeState.filter != null) {
-                        stateObject.refinementList = routeState.filter;
-                     }
-                     if (routeState.range != null) {
-                        stateObject.range = routeState.range;
-                     }
-                     return {
-                        [indexName]: stateObject,
-                     };
-                  },
-               },
-               router: history({
-                  getLocation() {
-                     if (typeof window === 'undefined') {
-                        return new URL(url) as unknown as Location;
-                     }
-
-                     return window.location;
-                  },
-                  createURL({ routeState, location }) {
-                     let url = location.origin;
-                     const pathParts = location.pathname
-                        .split('/')
-                        .filter((part) => part !== '');
-                     const partsOrTools =
-                        pathParts.length >= 1 ? pathParts[0] : '';
-                     const deviceHandle =
-                        pathParts.length >= 2 ? pathParts[1] : '';
-
-                     if (partsOrTools) {
-                        url += `/${partsOrTools}`;
-                        if (deviceHandle) {
-                           url += `/${deviceHandle}`;
-                           const itemType =
-                              routeState.filter?.['facet_tags.Item Type'];
-                           if (itemType?.length) {
-                              delete routeState.filter?.[
-                                 'facet_tags.Item Type'
-                              ];
-                              url += `/${itemType}`;
-                           }
-                        }
-                     }
-
-                     const queryString = routeToQueryString(routeState);
-
-                     return `${url}${queryString}`;
-                  },
-                  parseURL({ qsModule, location }): any {
-                     const pathParts = location.pathname
-                        .split('/')
-                        .filter((part) => part !== '');
-                     const deviceHandle =
-                        pathParts.length >= 2 ? pathParts[1] : '';
-                     const itemType = pathParts.length >= 3 ? pathParts[2] : '';
-
-                     const {
-                        q = '',
-                        p,
-                        filter = {},
-                        range = {},
-                     } = qsModule.parse(location.search.slice(1));
-
-                     const decodedFilters = mapValues(filter, (filterValues) =>
-                        filterValues.map((v) => decodeURIComponent(v))
-                     );
-
-                     if (deviceHandle && itemType.length) {
-                        decodedFilters['facet_tags.Item Type'] =
-                           decodeURIComponent(itemType);
-                     }
-
-                     return {
-                        q: decodeURIComponent(q),
-                        p,
-                        filter: decodedFilters,
-                        range: mapValues(range, decodeURIComponent),
-                     };
-                  },
-               }),
-            }}
+            routing={routing}
          >
             {children}
          </InstantSearch>
@@ -188,7 +184,7 @@ export function uiStateToQueryString(indexUiState: IndexUiState): string {
    return routeToQueryString(routeState);
 }
 
-function indexUiStateToRoute(indexUiState: IndexUiState): any {
+function indexUiStateToRoute(indexUiState: IndexUiState) {
    const routeState: RouteState = {};
    if (indexUiState.query) {
       routeState.q = indexUiState.query;
