@@ -116,7 +116,6 @@ export function InstantSearchProvider({
                   baseUrl += `/${deviceHandle}`;
                   const itemType = routeState.filter?.['facet_tags.Item Type'];
                   if (itemType) {
-                     delete routeState.filter?.['facet_tags.Item Type'];
                      baseUrl += `/${itemType}`;
                   }
                }
@@ -199,10 +198,18 @@ function indexUiStateToRoute(indexUiState: IndexUiState) {
 }
 
 function routeToQueryString(routeState: RouteState): string {
-   return QueryString.stringify(routeState, {
-      addQueryPrefix: true,
-      arrayFormat: 'indices',
+   const filterCopy = { ...routeState.filter };
+   const ignoreFilterKeys = ['facet_tags.Item Type'];
+   ignoreFilterKeys.forEach((key) => {
+      delete filterCopy[key];
    });
+   return QueryString.stringify(
+      { ...routeState, filter: filterCopy },
+      {
+         addQueryPrefix: true,
+         arrayFormat: 'indices',
+      }
+   );
 }
 
 function decodeParsedQuery(parsed: string | ParsedQs | string[] | ParsedQs[]) {
