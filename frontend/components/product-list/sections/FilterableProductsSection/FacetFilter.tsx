@@ -14,7 +14,7 @@ type FacetFilterProps = {
 export function FacetFilter({ attribute, productList }: FacetFilterProps) {
    const { indexUiState } = useInstantSearch();
    const queryString = React.useMemo(
-      () => uiStateToQueryString(indexUiState),
+      () => uiStateToQueryString(indexUiState, ['facet_tags.Item Type']),
       [indexUiState]
    );
    const createItemTypeURL = React.useCallback(

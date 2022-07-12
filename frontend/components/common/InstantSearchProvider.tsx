@@ -110,10 +110,12 @@ export function InstantSearchProvider({
             const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
 
+            const ignoreFilterKeys = [];
             if (partsOrTools) {
                baseUrl += `/${partsOrTools}`;
                if (deviceHandle) {
                   baseUrl += `/${deviceHandle}`;
+                  ignoreFilterKeys.push('facet_tags.Item Type');
                   const itemType = routeState.filter?.['facet_tags.Item Type'];
                   if (itemType) {
                      baseUrl += `/${itemType}`;
@@ -121,7 +123,10 @@ export function InstantSearchProvider({
                }
             }
 
-            const queryString = routeToQueryString(routeState);
+            const queryString = routeToQueryString(
+               routeState,
+               ignoreFilterKeys
+            );
 
             return `${baseUrl}${queryString}`;
          },
@@ -175,9 +180,12 @@ function useCountRenders() {
    return countRef.current;
 }
 
-export function uiStateToQueryString(indexUiState: IndexUiState): string {
+export function uiStateToQueryString(
+   indexUiState: IndexUiState,
+   ignoreFilterKeys: string[] = []
+): string {
    const routeState = indexUiStateToRoute(indexUiState);
-   return routeToQueryString(routeState);
+   return routeToQueryString(routeState, ignoreFilterKeys);
 }
 
 function indexUiStateToRoute(indexUiState: IndexUiState) {
@@ -197,9 +205,11 @@ function indexUiStateToRoute(indexUiState: IndexUiState) {
    return routeState;
 }
 
-function routeToQueryString(routeState: RouteState): string {
+function routeToQueryString(
+   routeState: RouteState,
+   ignoreFilterKeys: string[] = []
+): string {
    const filterCopy = { ...routeState.filter };
-   const ignoreFilterKeys = ['facet_tags.Item Type'];
    ignoreFilterKeys.forEach((key) => {
       delete filterCopy[key];
    });
