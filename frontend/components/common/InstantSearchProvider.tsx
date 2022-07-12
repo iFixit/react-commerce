@@ -6,7 +6,7 @@ import { RouterProps } from 'instantsearch.js/es/middlewares';
 import { UiState } from 'instantsearch.js/es/types';
 import { mapValues } from 'lodash';
 import { useRouter } from 'next/router';
-import QueryString from 'qs';
+import QueryString, { ParsedQs } from 'qs';
 import * as React from 'react';
 import {
    InstantSearch,
@@ -126,7 +126,7 @@ export function InstantSearchProvider({
 
             return `${baseUrl}${queryString}`;
          },
-         parseURL({ qsModule, location }): any {
+         parseURL({ qsModule, location }) {
             const pathParts = location.pathname
                .split('/')
                .filter((part) => part !== '');
@@ -140,20 +140,17 @@ export function InstantSearchProvider({
                range = {},
             } = qsModule.parse(location.search.slice(1));
 
-            const decodedFilters = mapValues(filter, (filterValues) =>
-               filterValues.map((v) => decodeURIComponent(v))
-            );
-
+            const decodedFilters = decodeParsedQuery(filter);
             if (deviceHandle && itemType) {
                decodedFilters['facet_tags.Item Type'] =
                   decodeURIComponent(itemType);
             }
 
             return {
-               q: decodeURIComponent(q),
-               p,
+               q: decodeURIComponent(String(q)),
+               p: Number(p),
                filter: decodedFilters,
-               range: mapValues(range, decodeURIComponent),
+               range: decodeParsedQuery(range),
             };
          },
       }),
@@ -206,4 +203,16 @@ function routeToQueryString(routeState: RouteState): string {
       addQueryPrefix: true,
       arrayFormat: 'indices',
    });
+}
+
+function decodeParsedQuery(parsed: string | ParsedQs | string[] | ParsedQs[]) {
+   return typeof parsed === 'object'
+      ? mapValues<Record<string, any>, any>(parsed, (parsedValues) => {
+           return Array.isArray(parsedValues)
+              ? parsedValues.map((v: any) =>
+                   typeof v === 'string' ? decodeURIComponent(v) : v
+                )
+              : decodeURIComponent(parsedValues);
+        })
+      : {};
 }
