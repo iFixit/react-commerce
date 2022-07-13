@@ -105,7 +105,7 @@ export function InstantSearchProvider({
                return window.location;
             },
             createURL({ routeState, location }) {
-               let baseUrl = location.origin;
+               const baseUrl = location.origin;
                const pathParts = location.pathname
                   .split('/')
                   .filter((part) => part !== '');
@@ -113,17 +113,18 @@ export function InstantSearchProvider({
                const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
 
                const ignoreFilterKeys = [];
+               let path = '';
                if (partsOrTools) {
-                  baseUrl += `/${partsOrTools}`;
+                  path += `/${partsOrTools}`;
                   if (deviceHandle) {
-                     baseUrl += `/${deviceHandle}`;
+                     path += `/${deviceHandle}`;
                      ignoreFilterKeys.push('facet_tags.Item Type');
                      const raw: string | string[] | undefined =
                         routeState.filter?.['facet_tags.Item Type'];
                      const itemType = Array.isArray(raw) ? raw[0] : raw;
                      if (itemType?.length) {
                         const decodedItemType = decodeDeviceItemType(itemType);
-                        baseUrl += `/${decodedItemType}`;
+                        path += `/${decodedItemType}`;
                      }
                   }
                }
@@ -133,7 +134,7 @@ export function InstantSearchProvider({
                   ignoreFilterKeys
                );
 
-               return `${baseUrl}${queryString}`;
+               return `${baseUrl}${path}${queryString}`;
             },
             parseURL({ qsModule, location }) {
                const pathParts = location.pathname
