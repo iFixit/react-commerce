@@ -70,7 +70,7 @@ export function Pagination(props: PaginationProps) {
                         aria-label="Go to previous page"
                         href={
                            pagination.hasPrevious
-                              ? createPageUrl(pagination.currentPage)
+                              ? createPageUrl(pagination.currentPage - 1)
                               : '#'
                         }
                         page="previous"
