@@ -33,13 +33,16 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
 
-   const { deviceHandle, itemTypeHandle } = context.params || {};
+   const { deviceHandleItemType } = context.params || {};
+   console.log(deviceHandleItemType);
+   const [deviceHandle, itemTypeHandle, ...rest] = Array.isArray(
+      deviceHandleItemType
+   )
+      ? deviceHandleItemType
+      : [];
 
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   invariant(
-      typeof itemTypeHandle === 'string',
-      'item type handle is required'
-   );
+   invariant(rest?.length === 0, 'invalid extra path components');
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -48,16 +51,11 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList(
-            {
-               deviceTitle: {
-                  eq: deviceTitle,
-               },
+         findProductList({
+            deviceTitle: {
+               eq: deviceTitle,
             },
-            {
-               itemType: decodeDeviceItemType(itemTypeHandle),
-            }
-         ),
+         }),
       ]);
 
    if (productList == null) {
