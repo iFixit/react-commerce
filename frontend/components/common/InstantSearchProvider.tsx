@@ -70,103 +70,103 @@ export function InstantSearchProvider({
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
    const count = useCountRenders();
 
-const routing: RouterProps<UiState, RouteState> = React.useMemo(
-   () => ({
-      stateMapping: {
-         stateToRoute(uiState) {
-            const indexUiState = uiState[indexName];
-            return indexUiStateToRoute(indexUiState);
+   const routing: RouterProps<UiState, RouteState> = React.useMemo(
+      () => ({
+         stateMapping: {
+            stateToRoute(uiState) {
+               const indexUiState = uiState[indexName];
+               return indexUiStateToRoute(indexUiState);
+            },
+            routeToState(routeState: RouteState) {
+               const stateObject: IndexUiState = {};
+               if (routeState.q != null) {
+                  stateObject.query = routeState.q;
+               }
+               if (routeState.p != null) {
+                  stateObject.page = routeState.p;
+               }
+               if (routeState.filter != null) {
+                  stateObject.refinementList = routeState.filter;
+               }
+               if (routeState.range != null) {
+                  stateObject.range = routeState.range;
+               }
+               return {
+                  [indexName]: stateObject,
+               };
+            },
          },
-         routeToState(routeState: RouteState) {
-            const stateObject: IndexUiState = {};
-            if (routeState.q != null) {
-               stateObject.query = routeState.q;
-            }
-            if (routeState.p != null) {
-               stateObject.page = routeState.p;
-            }
-            if (routeState.filter != null) {
-               stateObject.refinementList = routeState.filter;
-            }
-            if (routeState.range != null) {
-               stateObject.range = routeState.range;
-            }
-            return {
-               [indexName]: stateObject,
-            };
-         },
-      },
-      router: history({
-         getLocation() {
-            if (typeof window === 'undefined') {
-               return new URL(url) as unknown as Location;
-            }
+         router: history({
+            getLocation() {
+               if (typeof window === 'undefined') {
+                  return new URL(url) as unknown as Location;
+               }
 
-            return window.location;
-         },
-         createURL({ routeState, location }) {
-            let baseUrl = location.origin;
-            const pathParts = location.pathname
-               .split('/')
-               .filter((part) => part !== '');
-            const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
-            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+               return window.location;
+            },
+            createURL({ routeState, location }) {
+               let baseUrl = location.origin;
+               const pathParts = location.pathname
+                  .split('/')
+                  .filter((part) => part !== '');
+               const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
+               const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
 
-            const ignoreFilterKeys = [];
-            if (partsOrTools) {
-               baseUrl += `/${partsOrTools}`;
-               if (deviceHandle) {
-                  baseUrl += `/${deviceHandle}`;
-                  ignoreFilterKeys.push('facet_tags.Item Type');
-                  const raw: string | string[] | undefined =
-                     routeState.filter?.['facet_tags.Item Type'];
-                  const itemType = Array.isArray(raw) ? raw[0] : raw;
-                  if (itemType?.length) {
-                     const decodedItemType = decodeDeviceItemType(itemType);
-                     baseUrl += `/${decodedItemType}`;
+               const ignoreFilterKeys = [];
+               if (partsOrTools) {
+                  baseUrl += `/${partsOrTools}`;
+                  if (deviceHandle) {
+                     baseUrl += `/${deviceHandle}`;
+                     ignoreFilterKeys.push('facet_tags.Item Type');
+                     const raw: string | string[] | undefined =
+                        routeState.filter?.['facet_tags.Item Type'];
+                     const itemType = Array.isArray(raw) ? raw[0] : raw;
+                     if (itemType?.length) {
+                        const decodedItemType = decodeDeviceItemType(itemType);
+                        baseUrl += `/${decodedItemType}`;
+                     }
                   }
                }
-            }
 
-            const queryString = routeToQueryString(
-               routeState,
-               ignoreFilterKeys
-            );
+               const queryString = routeToQueryString(
+                  routeState,
+                  ignoreFilterKeys
+               );
 
-            return `${baseUrl}${queryString}`;
-         },
-         parseURL({ qsModule, location }) {
-            const pathParts = location.pathname
-               .split('/')
-               .filter((part) => part !== '');
-            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+               return `${baseUrl}${queryString}`;
+            },
+            parseURL({ qsModule, location }) {
+               const pathParts = location.pathname
+                  .split('/')
+                  .filter((part) => part !== '');
+               const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+               const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-            const {
-               q = '',
-               p,
-               filter = {},
-               range = {},
-            } = qsModule.parse(location.search.slice(1));
+               const {
+                  q = '',
+                  p,
+                  filter = {},
+                  range = {},
+               } = qsModule.parse(location.search.slice(1));
 
-            const decodedFilters = decodeParsedQuery(filter);
-            if (deviceHandle && itemType) {
-               decodedFilters['facet_tags.Item Type'] = [
-                  decodeURIComponent(itemType),
-               ];
-            }
+               const decodedFilters = decodeParsedQuery(filter);
+               if (deviceHandle && itemType) {
+                  decodedFilters['facet_tags.Item Type'] = [
+                     decodeURIComponent(itemType),
+                  ];
+               }
 
-            return {
-               q: decodeURIComponent(String(q)),
-               p: Number(p),
-               filter: decodedFilters,
-               range: decodeParsedQuery(range),
-            };
-         },
+               return {
+                  q: decodeURIComponent(String(q)),
+                  p: Number(p),
+                  filter: decodedFilters,
+                  range: decodeParsedQuery(range),
+               };
+            },
+         }),
       }),
-   }),
-   [indexName, url]
-);
+      [indexName, url]
+   );
 
    return (
       <InstantSearchSSRProvider {...serverState}>
