@@ -27,7 +27,6 @@ export type WikiInfoEntry = {
 export enum ProductListType {
    AllParts = 'parts',
    DeviceParts = 'device-parts',
-   DeviceItemTypeParts = 'device-item-type-parts',
    AllTools = 'tools',
    ToolsCategory = 'tools-category',
    Marketing = 'marketing',
@@ -41,7 +40,6 @@ export enum RefinementDisplayType {
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
-   | DeviceItemTypePartsProductList
    | AllToolsProductList
    | ToolsCategoryProductList
    | MarketingProductList;
@@ -74,11 +72,6 @@ interface DevicePartsProductList extends BaseProductList {
    type: ProductListType.DeviceParts;
 }
 
-interface DeviceItemTypePartsProductList extends BaseProductList {
-   type: ProductListType.DeviceItemTypeParts;
-   itemType: string;
-}
-
 interface AllToolsProductList extends BaseProductList {
    type: ProductListType.AllTools;
 }
@@ -90,10 +83,6 @@ interface ToolsCategoryProductList extends BaseProductList {
 interface MarketingProductList extends BaseProductList {
    type: ProductListType.Marketing;
 }
-
-export type ProductListOptions = {
-   itemType?: string;
-};
 
 export interface ProductListAncestor {
    title: string;

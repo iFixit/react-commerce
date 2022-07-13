@@ -1,19 +1,23 @@
 import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { HiSelector } from 'react-icons/hi';
-import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
+import {
+   useInstantSearch,
+   UseRefinementListProps,
+} from 'react-instantsearch-hooks-web';
 import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
+import { uiStateToQueryString } from '@components/common/InstantSearchProvider';
+import { getProductListPath } from '@helpers/product-list-helpers';
+import { ProductList } from '@models/product-list';
 
 export type RefinementMenuProps = UseRefinementListProps & {
-   createURL: (value: string) => string;
-   activeValue?: string;
+   productList: ProductList;
 };
 
 export function RefinementMenu({
-   createURL,
-   activeValue,
+   productList,
    ...otherProps
 }: RefinementMenuProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
@@ -21,6 +25,18 @@ export function RefinementMenu({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
+   const { indexUiState } = useInstantSearch();
+   const queryString = React.useMemo(
+      () => uiStateToQueryString(indexUiState, ['facet_tags.Item Type']),
+      [indexUiState]
+   );
+   const createItemTypeURL = React.useCallback(
+      (itemType: string) => {
+         const path = getProductListPath(productList, itemType);
+         return `${path}${queryString}`;
+      },
+      [productList, queryString]
+   );
 
    return (
       <Box>
@@ -31,9 +47,8 @@ export function RefinementMenu({
                      key={item.label}
                      label={item.label}
                      value={item.value}
-                     isRefined={item.value === activeValue}
                      count={item.count}
-                     createURL={createURL}
+                     createURL={createItemTypeURL}
                      onChange={refine}
                   />
                );
@@ -62,7 +77,6 @@ export function RefinementMenu({
 type MenuItemProps = {
    label: string;
    value: string;
-   isRefined: boolean;
    count: number;
    createURL: (value: string) => string;
    onChange: (value: string) => void;
@@ -73,16 +87,10 @@ const MenuItem = React.memo(function RefinementListItem({
    count,
    value,
    createURL,
-   isRefined,
    onChange,
 }: MenuItemProps) {
    return (
-      <HStack
-         key={label}
-         justify="space-between"
-         color={isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={isRefined ? 'bold' : 'inherit'}
-      >
+      <HStack key={label} justify="space-between">
          <NextLink href={createURL(value)} passHref>
             <Text
                as="a"
@@ -97,11 +105,7 @@ const MenuItem = React.memo(function RefinementListItem({
                {label}
             </Text>
          </NextLink>
-         <Text
-            size="sm"
-            fontFamily="sans-serif"
-            color={isRefined ? 'brand.500' : 'gray.500'}
-         >
+         <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
             {count}
          </Text>
       </HStack>

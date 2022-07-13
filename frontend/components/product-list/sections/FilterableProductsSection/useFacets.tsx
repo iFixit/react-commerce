@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useDynamicWidgets } from 'react-instantsearch-hooks-web';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { useDevicePartsItemType } from './useDevicePartsItemType';
 
 export function useFacets() {
    const { attributesToRender } = useDynamicWidgets({
@@ -26,8 +27,7 @@ export function useFacets() {
 
 export function useFilteredFacets(productList: ProductList) {
    const facets = useFacets();
-   const isItemTypeProductList =
-      productList.type === ProductListType.DeviceItemTypeParts;
+   const isItemTypeProductList = !!useDevicePartsItemType(productList);
 
    const infoNames = React.useMemo(() => {
       return new Set(
@@ -84,7 +84,6 @@ function getFacetComparator(productListType: ProductListType) {
    switch (productListType) {
       case ProductListType.AllParts:
       case ProductListType.DeviceParts:
-      case ProductListType.DeviceItemTypeParts:
          return sortFacetsWithRanking(partsFacetRanking);
       case ProductListType.AllTools:
       case ProductListType.ToolsCategory:

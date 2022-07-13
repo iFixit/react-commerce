@@ -196,7 +196,7 @@ export function uiStateToQueryString(
    return routeToQueryString(routeState, ignoreFilterKeys);
 }
 
-function indexUiStateToRoute(indexUiState: IndexUiState) {
+export function indexUiStateToRoute(indexUiState: IndexUiState) {
    const routeState: RouteState = {};
    if (indexUiState.query) {
       routeState.q = indexUiState.query;

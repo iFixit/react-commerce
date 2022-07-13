@@ -1,13 +1,8 @@
-import {
-   getProductListPath,
-   getRefinementDisplayType,
-} from '@helpers/product-list-helpers';
-import { ProductList, ProductListType } from '@models/product-list';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { RefinementList } from './RefinementList';
 import { RefinementMenu } from './RefinementMenu';
-import { useInstantSearch } from 'react-instantsearch-hooks-web';
-import { uiStateToQueryString } from '@components/common/InstantSearchProvider';
 import { RefinementDisplayType } from '@models/product-list/types';
 
 type FacetFilterProps = {
@@ -16,22 +11,6 @@ type FacetFilterProps = {
 };
 
 export function FacetFilter({ attribute, productList }: FacetFilterProps) {
-   const { indexUiState } = useInstantSearch();
-   const queryString = React.useMemo(
-      () => uiStateToQueryString(indexUiState, ['facet_tags.Item Type']),
-      [indexUiState]
-   );
-   const createItemTypeURL = React.useCallback(
-      (itemType: string) => {
-         const path = getProductListPath({
-            ...productList,
-            type: ProductListType.DeviceItemTypeParts,
-            itemType,
-         });
-         return `${path}${queryString}`;
-      },
-      [productList, queryString]
-   );
    const refinementDisplayType = getRefinementDisplayType(
       attribute,
       productList.type
@@ -43,12 +22,7 @@ export function FacetFilter({ attribute, productList }: FacetFilterProps) {
                attribute={attribute}
                showMore
                showMoreLimit={200}
-               createURL={createItemTypeURL}
-               activeValue={
-                  productList.type === ProductListType.DeviceItemTypeParts
-                     ? productList.itemType
-                     : undefined
-               }
+               productList={productList}
             />
          );
       case RefinementDisplayType.MultiSelect:
@@ -59,5 +33,7 @@ export function FacetFilter({ attribute, productList }: FacetFilterProps) {
                showMoreLimit={200}
             />
          );
+      default:
+         throw new Error('Unknown refinement display type');
    }
 }

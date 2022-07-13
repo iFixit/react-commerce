@@ -20,12 +20,10 @@ import { cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
 import {
    ProductList as TProductList,
-   ProductListType,
    ProductSearchHit,
 } from '@models/product-list';
 import * as React from 'react';
 import {
-   Configure,
    useClearRefinements,
    useCurrentRefinements,
    useHits,
@@ -37,6 +35,7 @@ import { Pagination } from './Pagination';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
+import { useDevicePartsItemType } from './useDevicePartsItemType';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -166,7 +165,8 @@ const ProductListEmptyState = ({ productList }: EmptyStateProps) => {
 
    const isFiltered = hasRefinements || hasSearchQuery;
 
-   const title = getProductListTitle(productList);
+   const itemType = useDevicePartsItemType(productList);
+   const title = getProductListTitle(productList, itemType);
    const encodedQuery = encodeURIComponent(searchBox.query);
 
    if (isFiltered) {

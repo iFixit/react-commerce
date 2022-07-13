@@ -55,12 +55,11 @@ export function encodeDeviceTitle(deviceTitle: string): string {
 type ProductListPathAttributes = Pick<
    ProductList,
    'type' | 'handle' | 'deviceTitle'
-> & {
-   itemType?: string;
-};
+>;
 
 export function getProductListPath(
-   productList: ProductListPathAttributes
+   productList: ProductListPathAttributes,
+   itemType?: string
 ): string {
    switch (productList.type) {
       case ProductListType.AllParts: {
@@ -72,20 +71,11 @@ export function getProductListPath(
             'device product list does not have device title'
          );
          const deviceHandle = encodeDeviceTitle(productList.deviceTitle);
+         if (itemType) {
+            const itemTypeHandle = encodeDeviceItemType(itemType);
+            return `/Parts/${deviceHandle}/${itemTypeHandle}`;
+         }
          return `/Parts/${deviceHandle}`;
-      }
-      case ProductListType.DeviceItemTypeParts: {
-         invariant(
-            productList.deviceTitle != null,
-            'device product list does not have device title'
-         );
-         invariant(
-            productList.itemType != null,
-            'device item type product list does not have item type'
-         );
-         const deviceHandle = encodeDeviceTitle(productList.deviceTitle);
-         const itemTypeHandle = encodeDeviceItemType(productList.itemType);
-         return `/Parts/${deviceHandle}/${itemTypeHandle}`;
       }
       case ProductListType.AllTools: {
          return '/Tools';
@@ -104,17 +94,15 @@ export function getProductListPath(
 
 type ProductListTitleAttributes = {
    type: ProductListType;
-   itemType?: string;
    title: string;
 };
 
 export function getProductListTitle(
-   productList: ProductListTitleAttributes
+   productList: ProductListTitleAttributes,
+   itemType?: string
 ): string {
-   if (productList.type === ProductListType.DeviceItemTypeParts) {
-      return `${productList.title.replace(/parts$/i, '').trim()} ${
-         productList.itemType
-      }`;
+   if (productList.type === ProductListType.DeviceParts && itemType) {
+      return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
    }
    return productList.title;
 }
@@ -127,7 +115,6 @@ export function getRefinementDisplayType(
       case 'facet_tags.Item Type': {
          switch (productListType) {
             case ProductListType.DeviceParts:
-            case ProductListType.DeviceItemTypeParts:
                return RefinementDisplayType.SingleSelect;
             default:
                return RefinementDisplayType.MultiSelect;

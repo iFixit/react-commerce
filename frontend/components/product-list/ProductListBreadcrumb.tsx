@@ -15,6 +15,7 @@ import { ProductList, ProductListType } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight, HiDotsHorizontal } from 'react-icons/hi';
+import { useDevicePartsItemType } from './sections/FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListBreadcrumbProps = BreadcrumbProps & {
    productList: ProductList;
@@ -28,10 +29,11 @@ export function ProductListBreadcrumb({
    const reverseAncestorList = React.useMemo(() => {
       return [...ancestors].reverse();
    }, [ancestors]);
+   const itemType = useDevicePartsItemType(productList);
 
    let currentItemTitle = productList.title;
-   if (productList.type === ProductListType.DeviceItemTypeParts) {
-      currentItemTitle = productList.itemType;
+   if (productList.type === ProductListType.DeviceParts && itemType) {
+      currentItemTitle = itemType;
    }
 
    return (

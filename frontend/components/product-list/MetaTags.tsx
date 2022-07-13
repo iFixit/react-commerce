@@ -7,6 +7,7 @@ import {
    useCurrentRefinements,
    usePagination,
 } from 'react-instantsearch-hooks-web';
+import { useDevicePartsItemType } from './sections/FilterableProductsSection/useDevicePartsItemType';
 
 export interface MetaTagsProps {
    productList: ProductList;
@@ -18,7 +19,8 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
    const isFiltered = currentRefinements.items.length > 0;
-   let title = getProductListTitle(productList);
+   const itemType = useDevicePartsItemType(productList);
+   let title = getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
