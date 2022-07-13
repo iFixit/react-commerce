@@ -1,5 +1,6 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
+import { decodeDeviceItemType } from '@helpers/product-list-helpers';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
@@ -69,7 +70,8 @@ export function InstantSearchProvider({
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
    const count = useCountRenders();
 
-   const routing: RouterProps<UiState, RouteState> = {
+const routing: RouterProps<UiState, RouteState> = React.useMemo(
+   () => ({
       stateMapping: {
          stateToRoute(uiState) {
             const indexUiState = uiState[indexName];
@@ -116,9 +118,12 @@ export function InstantSearchProvider({
                if (deviceHandle) {
                   baseUrl += `/${deviceHandle}`;
                   ignoreFilterKeys.push('facet_tags.Item Type');
-                  const itemType = routeState.filter?.['facet_tags.Item Type'];
-                  if (itemType) {
-                     baseUrl += `/${itemType}`;
+                  const raw: string | string[] | undefined =
+                     routeState.filter?.['facet_tags.Item Type'];
+                  const itemType = Array.isArray(raw) ? raw[0] : raw;
+                  if (itemType?.length) {
+                     const decodedItemType = decodeDeviceItemType(itemType);
+                     baseUrl += `/${decodedItemType}`;
                   }
                }
             }
@@ -146,8 +151,9 @@ export function InstantSearchProvider({
 
             const decodedFilters = decodeParsedQuery(filter);
             if (deviceHandle && itemType) {
-               decodedFilters['facet_tags.Item Type'] =
-                  decodeURIComponent(itemType);
+               decodedFilters['facet_tags.Item Type'] = [
+                  decodeURIComponent(itemType),
+               ];
             }
 
             return {
@@ -158,7 +164,9 @@ export function InstantSearchProvider({
             };
          },
       }),
-   };
+   }),
+   [indexName, url]
+);
 
    return (
       <InstantSearchSSRProvider {...serverState}>
