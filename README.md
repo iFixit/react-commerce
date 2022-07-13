@@ -48,10 +48,8 @@ pnpm install:all
 ### Set up configs
 
 1. Copy `backend/.env.example` to `backend/.env`
-2. Copy `frontend/.env.development` to `frontend/.env.local`
-3. Add a couple more keys to `frontend/.env.local`:
-    - `ALGOLIA_API_KEY=<key>` (Grab search-only API key from [Algolia](https://www.algolia.com/account/api-keys/all))
-    - `SENTRY_AUTH_TOKEN=<key>` (Use an API key from [Sentry](https://sentry.io/settings/account/api/auth-tokens/))
+2. Copy `frontend/.env.local.example` to `frontend/.env.local`
+3. Fill in `ALGOLIA_API_KEY` in `frontend/.env.local` (Note: `SENTRY_AUTH_TOKEN` is not needed in development)
 
 ### Dev server
 
