@@ -14,7 +14,14 @@ describe('parts page search', () => {
          .should('be.visible')
          .type('iphone');
 
+      // Wait for search result to be updated
       user.wait('@search');
+      user.wait(2000);
+
+      // Check that url parameter contains ?q after searching
+      user.location({ timeout: 2000 }).should((loc) => {
+         expect(loc.search).to.have.string('?q=iphone');
+      });
 
       // Assert that all products in the result contains word watch
       user
@@ -31,7 +38,14 @@ describe('parts page search', () => {
          .should('be.visible')
          .type('asdasasdadasd');
 
+      // Wait for search result to be updated
       user.wait('@search');
+      user.wait(2000);
+
+      // Check that url parameter contains ?q after searching
+      user.location({ timeout: 2000 }).should((loc) => {
+         expect(loc.search).to.have.string('?q=');
+      });
 
       user.findByTestId('list-view-products').should('not.exist');
       user.contains(constants.NO_SEARCH_RESULTS);
