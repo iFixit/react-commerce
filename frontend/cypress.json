@@ -5,5 +5,6 @@
    "pluginsFile": "test/cypress/plugins/index.js",
    "screenshotsFolder": "test/cypress/screenshots",
    "videosFolder": "test/cypress/videos",
+   "video": false,
    "supportFile": "test/cypress/support/index.ts"
 }
