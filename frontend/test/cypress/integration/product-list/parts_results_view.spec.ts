@@ -18,26 +18,6 @@ describe('parts page results view', () => {
    });
 
    /**
-    * In ProductListItem, we set noOfLines prop to 3
-    * to truncate the product description text. This
-    * tests each product description to be less than 4
-    * lines.
-    */
-   it('product description is truncated', () => {
-      // Counting text lines https://stackoverflow.com/questions/783899
-      user.get('[data-testid="product-short-desc"]').each((descriptionDiv) => {
-         const divHeight = descriptionDiv.outerHeight() ?? 0;
-         const lineHeigth = parseInt(descriptionDiv.css('lineHeight'));
-         const noOfLines = divHeight / lineHeigth;
-
-         expect(noOfLines).to.be.below(
-            4,
-            'Product description text is more than 3 lines!'
-         );
-      });
-   });
-
-   /**
     * TODO: Unskip when the new product page is implemented
     *
     * We can link to the old product page by setting
