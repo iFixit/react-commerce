@@ -245,7 +245,10 @@ function FacetListItem({
    refinedCount,
    onSelect,
 }: FacetListItemProps) {
-   const { items, isAnyRefined } = useFilteredRefinementList({ attribute });
+   const { items, isAnyRefined } = useFilteredRefinementList({
+      attribute,
+      limit: Infinity,
+   });
    const refinementDisplayType = getRefinementDisplayType(
       attribute,
       productListType

@@ -90,7 +90,10 @@ type FacetAccordionItemProps = AccordionItemProps & {
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
    ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
-      const { items, isAnyRefined } = useFilteredRefinementList({ attribute });
+      const { items, isAnyRefined } = useFilteredRefinementList({
+         attribute,
+         limit: Infinity,
+      });
       const { hits } = useHits();
       const refinementDisplayType = getRefinementDisplayType(
          attribute,
