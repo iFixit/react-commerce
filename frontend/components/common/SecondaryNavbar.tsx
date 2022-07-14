@@ -1,13 +1,14 @@
-import { Box, BoxProps, forwardRef } from '@chakra-ui/react';
+import { Box, BoxProps, Flex, forwardRef } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 
 export function SecondaryNavbar(props: BoxProps) {
    return (
-      <Box
+      <Flex
          bg="white"
          borderBottomWidth="thin"
          borderColor="gray.300"
          h="12"
+         alignItems="center"
          {...props}
       />
    );

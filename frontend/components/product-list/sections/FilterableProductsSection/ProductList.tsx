@@ -247,9 +247,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         sm: 2,
                      }}
                   >
-                     <LinkOverlay
-                        href={`${appContext.ifixitOrigin}${product.url}`}
-                     >
+                     <LinkOverlay href={`/Products/${product.handle}`}>
                         <Button
                            as="div"
                            minW={{

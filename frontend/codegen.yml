@@ -12,3 +12,18 @@ generates:
             - prettier --write
       config:
          documentMode: 'string'
+   lib/shopify-storefront-sdk/generated/sdk.ts:
+      schema: lib/shopify-storefront-sdk/schema.graphql
+      documents: 'lib/shopify-storefront-sdk/operations/**/*.graphql'
+      plugins:
+         - 'typescript'
+         - 'typescript-operations'
+         - 'typescript-generic-sdk'
+      hooks:
+         afterOneFileWrite:
+            - prettier --write
+      config:
+         documentMode: 'string'
+         scalars:
+            HTML: string
+            URL: string

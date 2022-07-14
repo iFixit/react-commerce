@@ -11,6 +11,7 @@
       "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"pnpm run dev:next\" \"pnpm run dev:codegen\"",
       "dev:next": "next dev",
       "dev:codegen": "cross-env DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.yml --watch",
+      "codegen:download-shopify-storefront-schema": "node ./lib/shopify-storefront-sdk/generate-schema.js",
       "build": "next build",
       "start": "next start",
       "type-check": "tsc --pretty --noEmit",
@@ -40,8 +41,8 @@
       "@sentry/nextjs": "^7.0.0",
       "@xstate/fsm": "1.6.1",
       "@xstate/react": "1.5.1",
-      "cookie": "0.5.0",
       "algoliasearch": "4.13.1",
+      "cookie": "0.5.0",
       "dayjs": "1.10.5",
       "framer-motion": "6.2.7",
       "graphql": "15.5.3",
@@ -96,12 +97,13 @@
       "eslint-plugin-react": "7.23.0",
       "eslint-plugin-react-hooks": "4.2.0",
       "graphql-tag": "^2",
+      "graphqurl": "1.0.1",
       "identity-obj-proxy": "3.0.0",
       "jest": "26.6.3",
       "jest-watch-typeahead": "0.6.1",
       "next-transpile-modules": "9.0.0",
       "prettier": "2.3.2",
-      "typescript": "4.3.2",
+      "typescript": "4.7.4",
       "webpack": "5"
    }
 }
