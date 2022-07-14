@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useDynamicWidgets } from 'react-instantsearch-hooks-web';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { useDevicePartsItemType } from './useDevicePartsItemType';
 
 export function useFacets() {
    const { attributesToRender } = useDynamicWidgets({
@@ -27,7 +26,6 @@ export function useFacets() {
 
 export function useFilteredFacets(productList: ProductList) {
    const facets = useFacets();
-   const isItemTypeProductList = !!useDevicePartsItemType(productList);
 
    const infoNames = React.useMemo(() => {
       return new Set(
@@ -43,14 +41,11 @@ export function useFilteredFacets(productList: ProductList) {
       const usefulFacets = facets
          .slice()
          .filter((facet) => {
-            if (facet === 'facet_tags.Item Type' && isItemTypeProductList) {
-               return false;
-            }
             return !infoNames.has(facet);
          })
          .sort(sortBy);
       return usefulFacets;
-   }, [facets, infoNames, isItemTypeProductList, sortBy]);
+   }, [facets, infoNames, sortBy]);
 
    if (productList.type === ProductListType.AllTools) {
       const excludedToolsFacets = [
