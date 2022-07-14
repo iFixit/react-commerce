@@ -89,8 +89,8 @@ importers:
       react-dom: 17.0.2
       react-fast-compare: 3.2.0
       react-icons: 4.2.0
-      react-instantsearch-hooks-server: 6.30.0
-      react-instantsearch-hooks-web: 6.30.0
+      react-instantsearch-hooks-server: 6.30.1
+      react-instantsearch-hooks-web: 6.30.1
       react-query: 3.34.19
       react-virtualized-auto-sizer: 1.0.5
       react-window: 1.8.6
@@ -131,8 +131,8 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-fast-compare: 3.2.0
       react-icons: 4.2.0_react@17.0.2
-      react-instantsearch-hooks-server: 6.30.0_6414a94af4ca8152be5dd238e8125fea
-      react-instantsearch-hooks-web: 6.30.0_6414a94af4ca8152be5dd238e8125fea
+      react-instantsearch-hooks-server: 6.30.1_6414a94af4ca8152be5dd238e8125fea
+      react-instantsearch-hooks-web: 6.30.1_6414a94af4ca8152be5dd238e8125fea
       react-query: 3.34.19_react-dom@17.0.2+react@17.0.2
       react-virtualized-auto-sizer: 1.0.5_react-dom@17.0.2+react@17.0.2
       react-window: 1.8.6_react-dom@17.0.2+react@17.0.2
@@ -7438,8 +7438,8 @@ packages:
       through: 2.3.8
     dev: true
 
-  /instantsearch.js/4.43.0_algoliasearch@4.13.1:
-    resolution: {integrity: sha512-KcPm3Swkw5nlQFRVY5v8JebBwJ303ZGmxSMxdAevrGJBmIXpGrcGJF5goBqNa+fUpwpCY6PsICcqQS0YMuXVag==}
+  /instantsearch.js/4.43.1_algoliasearch@4.13.1:
+    resolution: {integrity: sha512-JEaODN0MDb5atW39nWmdxCPlcaNmX7THBlhy3cAJhVG9c19Cfaw27DXRBdE9E9B7WO45YYAhyNTnGITNKBXC0w==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
     dependencies:
@@ -10191,8 +10191,8 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-instantsearch-hooks-server/6.30.0_6414a94af4ca8152be5dd238e8125fea:
-    resolution: {integrity: sha512-2Igj7HIAmwJMI27voo0Pkc/hqJD4HPLIYJneuvbylj8OngsNVAEGh1kWMVKNR8PZVL1UpMXfj5R5FjwOxKclwA==}
+  /react-instantsearch-hooks-server/6.30.1_6414a94af4ca8152be5dd238e8125fea:
+    resolution: {integrity: sha512-ZIbV70AEhwxvoK0XalZsBGqxWsh/cMBdzjWaD3jxgc/2Z1DvOYvLoD5BE+hH7t9m/3eofycKVnNc/qsbAsrlCQ==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
       react: '>= 16.8.0 < 19'
@@ -10200,14 +10200,14 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       algoliasearch: 4.13.1
-      instantsearch.js: 4.43.0_algoliasearch@4.13.1
+      instantsearch.js: 4.43.1_algoliasearch@4.13.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-instantsearch-hooks: 6.30.0_b7c6bccee043686b2080156151f2feed
+      react-instantsearch-hooks: 6.30.1_b7c6bccee043686b2080156151f2feed
     dev: false
 
-  /react-instantsearch-hooks-web/6.30.0_6414a94af4ca8152be5dd238e8125fea:
-    resolution: {integrity: sha512-MRJ7+hyEt0SxLGwM2k0xAnXecaOGrXl7X4KvWe2p1Cc3pZFXA6iA6PeYYmuwu3lpyBCfceMcDQGhgg+t7+mzdQ==}
+  /react-instantsearch-hooks-web/6.30.1_6414a94af4ca8152be5dd238e8125fea:
+    resolution: {integrity: sha512-NV+t3qbVY50GytB6zYUiRC09UPQbgL/3KfMnAQMxn5qJ4RbRCrNmDTr2miOZjqRGyVv8VzpAMO7f3G3WC6o0SQ==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
       react: '>= 16.8.0 < 19'
@@ -10215,14 +10215,14 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       algoliasearch: 4.13.1
-      instantsearch.js: 4.43.0_algoliasearch@4.13.1
+      instantsearch.js: 4.43.1_algoliasearch@4.13.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-instantsearch-hooks: 6.30.0_b7c6bccee043686b2080156151f2feed
+      react-instantsearch-hooks: 6.30.1_b7c6bccee043686b2080156151f2feed
     dev: false
 
-  /react-instantsearch-hooks/6.30.0_b7c6bccee043686b2080156151f2feed:
-    resolution: {integrity: sha512-1geA4BqBaLK0JC3EuN1hP57/XO3S2nTyCUX6XEFjNAiY6EojbzCDl0JYWfkBM/1fkCI/FLko2QjcFdOXwF0/TA==}
+  /react-instantsearch-hooks/6.30.1_b7c6bccee043686b2080156151f2feed:
+    resolution: {integrity: sha512-hKHrY+27Rv5EoIBelyqTIUnQRoJnQPvRou3bDu4zIGYh04Xk2BMXGBdSNvh8CXbgfYKZCL5YZks4Mro+FDT6dQ==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
       react: '>= 16.8.0 < 19'
@@ -10230,7 +10230,7 @@ packages:
       '@babel/runtime': 7.17.9
       algoliasearch: 4.13.1
       algoliasearch-helper: 3.10.0_algoliasearch@4.13.1
-      instantsearch.js: 4.43.0_algoliasearch@4.13.1
+      instantsearch.js: 4.43.1_algoliasearch@4.13.1
       react: 17.0.2
       use-sync-external-store: 1.1.0_react@17.0.2
     dev: false
