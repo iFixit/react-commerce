@@ -45,7 +45,18 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
       useProductSearchHitPricing(product);
 
    return (
-      <LinkBox as="article" display="block" w="full" role="group" borderWidth="thin" borderColor="gray.100">
+      <LinkBox
+         as="article"
+         display="block"
+         w="full"
+         role="group"
+         borderTop="0"
+         borderRight="1px"
+         borderLeft="0"
+         borderBottom="1px"
+         borderRightColor="gray.100"
+         borderBottomColor="gray.100"
+      >
          <ProductCard h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
