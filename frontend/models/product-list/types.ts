@@ -97,6 +97,7 @@ export interface ProductListChild {
    path: string;
    image: ProductListImage | null;
    sortPriority: number | null;
+   type: ProductListType;
 }
 
 export interface ProductListImage {

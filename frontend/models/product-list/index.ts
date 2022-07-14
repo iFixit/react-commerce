@@ -241,6 +241,7 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
             title: attributes.title,
             type,
          }),
+         type,
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
          path: getProductListPath({

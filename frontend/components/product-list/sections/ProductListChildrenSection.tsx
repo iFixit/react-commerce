@@ -12,10 +12,15 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { IfixitImage } from '@components/ifixit-image';
+import {
+   getProductListPath,
+   getProductListTitle,
+} from '@helpers/product-list-helpers';
 import { useIsMounted } from '@ifixit/ui';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
    productList: ProductList;
@@ -41,16 +46,42 @@ export function ProductListChildrenSection({
    const isMounted = useIsMounted();
    const visibleChildrenCount = isMounted ? responsiveVisibleChildrenCount : 12;
 
+   const itemType = useDevicePartsItemType(productList);
+   const augmentedChildren = React.useMemo(
+      () =>
+         productListChildren.map((child) => {
+            return {
+               ...child,
+               path: getProductListPath(
+                  {
+                     deviceTitle: child.deviceTitle,
+                     type: child.type,
+                     handle: child.handle,
+                  },
+                  itemType
+               ),
+               title: getProductListTitle(
+                  {
+                     type: child.type,
+                     title: child.title,
+                  },
+                  itemType
+               ),
+            };
+         }),
+      [itemType, productListChildren]
+   );
+
    const visibleChildren = React.useMemo(() => {
-      return productListChildren.slice(0, visibleChildrenCount);
-   }, [productListChildren, visibleChildrenCount]);
+      return augmentedChildren.slice(0, visibleChildrenCount);
+   }, [augmentedChildren, visibleChildrenCount]);
 
    const hiddenChildren = React.useMemo(() => {
-      return productListChildren.slice(
+      return augmentedChildren.slice(
          visibleChildrenCount,
-         productListChildren.length
+         augmentedChildren.length
       );
-   }, [productListChildren, visibleChildrenCount]);
+   }, [augmentedChildren, visibleChildrenCount]);
 
    const onToggle = React.useCallback(() => {
       setShouldShowMore((current) => !current);
