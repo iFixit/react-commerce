@@ -1,7 +1,6 @@
-import { indexUiStateToRoute } from '@components/common/InstantSearchProvider';
 import { ProductListType } from '@models/product-list';
 import * as React from 'react';
-import { useInstantSearch } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements } from 'react-instantsearch-hooks-web';
 
 type ProductListAttributes = {
    type?: ProductListType | null;
@@ -10,16 +9,16 @@ type ProductListAttributes = {
 export function useDevicePartsItemType<T extends ProductListAttributes>(
    productList: T
 ) {
-   const { indexUiState } = useInstantSearch();
-   const routeState = React.useMemo(
-      () => indexUiStateToRoute(indexUiState),
-      [indexUiState]
-   );
-   const raw: string | string[] | undefined =
-      routeState.filter?.['facet_tags.Item Type'];
-   const itemType = Array.isArray(raw) ? raw[0] : raw;
-   if (!itemType?.length || productList.type !== ProductListType.DeviceParts) {
+   const { items } = useCurrentRefinements();
+   const itemType = React.useMemo(() => {
+      const itemTypeRefinement = items.find(
+         (refinementItem) => refinementItem.attribute === 'facet_tags.Item Type'
+      );
+      // `Item Type` is a single select, so just use the first value if it exists.
+      return itemTypeRefinement?.refinements[0]?.value;
+   }, [items]);
+   if (!itemType || productList.type !== ProductListType.DeviceParts) {
       return undefined;
    }
-   return itemType;
+   return String(itemType);
 }
