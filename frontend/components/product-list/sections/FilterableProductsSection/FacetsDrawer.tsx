@@ -57,6 +57,7 @@ export function FacetsDrawer({
          <Flex
             position="fixed"
             top="0"
+            bottom="0"
             w="100vw"
             zIndex="100000"
             transition="all 300ms"
@@ -64,8 +65,8 @@ export function FacetsDrawer({
          >
             <Flex
                bg="white"
-               h="100vh"
-               w="96"
+               h="full"
+               w={{ base: 'full', sm: '96' }}
                position="relative"
                direction="column"
             >
@@ -119,13 +120,8 @@ export function FacetsDrawer({
                   <CloseButton order={3} onClick={onClose} boxSize="10" />
                </Flex>
                <Divider borderColor="gray.300" />
-               <Box
-                  flexGrow={1}
-                  overflowY="scroll"
-                  overflowX="hidden"
-                  position="relative"
-               >
-                  <Box>
+               <Box flexGrow={1} overflow="hidden" position="relative">
+                  <Box height="100%" overflowY="scroll">
                      {facets.map((facet) => {
                         const refinedCount = countRefinements([facet]);
                         return (
@@ -138,17 +134,17 @@ export function FacetsDrawer({
                            />
                         );
                      })}
-                     {facets.map((facet) => {
-                        return (
-                           <FacetPanel
-                              key={facet}
-                              attribute={facet}
-                              isOpen={facet === currentFacet}
-                              productList={productList}
-                           />
-                        );
-                     })}
                   </Box>
+                  {facets.map((facet) => {
+                     return (
+                        <FacetPanel
+                           key={facet}
+                           attribute={facet}
+                           isOpen={facet === currentFacet}
+                           productList={productList}
+                        />
+                     );
+                  })}
                </Box>
                <Box>
                   <Divider borderColor="gray.300" />
@@ -304,7 +300,8 @@ function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
          top="0"
          left="0"
          right="0"
-         minH="full"
+         height="100%"
+         overflowY="scroll"
          bg="white"
          shadow={isOpen ? 'lg' : 'none'}
          p="5"

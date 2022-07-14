@@ -20,6 +20,21 @@ The `frontend` directory is structured as follows:
 -  `public`: contains the static files
 -  `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
 
+### Install Prerequisites
+
+- npm v8
+- pnpm v6
+- node v16
+
+Here's one way you can get all the right versions installed and setup:
+
+1. Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. `nvm use`
+    - run this command in the project root to install compatible versions of `node` and `npm`
+3. `npm install -g pnpm@6.32.1`
+    - installs version 6 of `pnpm`
+    - :warning: The project is based on `pnpm@6`: some dependencies still have problems with v7
+  
 ### Install
 
 This command will install both backend and frontend dependencies:
@@ -28,7 +43,13 @@ This command will install both backend and frontend dependencies:
 pnpm install:all
 ```
 
-> :warning: The project is based on `pnpm@6`: some dependencies still have problems with v7
+>
+
+### Set up configs
+
+1. Copy `backend/.env.example` to `backend/.env`
+2. Copy `frontend/.env.local.example` to `frontend/.env.local`
+3. Fill in `ALGOLIA_API_KEY` in `frontend/.env.local` (Note: `SENTRY_AUTH_TOKEN` is not needed in development)
 
 ### Dev server
 
@@ -37,10 +58,6 @@ This command will start Strapi dev server and Next.js dev server:
 ```sh
 pnpm dev
 ```
-
-> :warning: Don't forget to create `backend/.env` and `frontend/.env.local` files with the required secrets (see `.env.example` and `.env.local.example`)
-
--  Use an API key from [Sentry](https://sentry.io/settings/account/api/auth-tokens/) for `SENTRY_AUTH_TOKEN`.
 
 ### Working with Strapi
 
@@ -55,9 +72,6 @@ This command will start Cypress:
 ```sh
 pnpm run cypress:open
 ```
-
-> :warning: Make sure you are running on the supported Node.js version specified in `.nvmrc`. If you are using
-> NVM, you can run `nvm use` to switch to the correct version.
 
 ### Using SVG
 

@@ -13,6 +13,7 @@ import {
    Text,
    useDisclosure,
 } from '@chakra-ui/react';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { useHits } from 'react-instantsearch-hooks-web';
@@ -58,6 +59,7 @@ export function Toolbar(props: ToolbarProps) {
                   Filters
                </OpenFiltersButton>
                <SearchInput
+                  placeholder={`Search ${getProductListTitle(productList)}`}
                   order={{
                      base: 3,
                      md: 2,
