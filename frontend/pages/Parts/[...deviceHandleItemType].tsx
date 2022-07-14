@@ -10,10 +10,7 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import {
-   decodeDeviceItemType,
-   decodeDeviceTitle,
-} from '@helpers/product-list-helpers';
+import { decodeDeviceTitle } from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -34,7 +31,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    );
 
    const { deviceHandleItemType } = context.params || {};
-   console.log(deviceHandleItemType);
    const [deviceHandle, itemTypeHandle, ...rest] = Array.isArray(
       deviceHandleItemType
    )

@@ -1,6 +1,9 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
-import { decodeDeviceItemType } from '@helpers/product-list-helpers';
+import {
+   decodeDeviceItemType,
+   encodeDeviceItemType,
+} from '@helpers/product-list-helpers';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
@@ -153,7 +156,7 @@ export function InstantSearchProvider({
                const decodedFilters = decodeParsedQuery(filter);
                if (deviceHandle && itemType) {
                   decodedFilters['facet_tags.Item Type'] = [
-                     decodeURIComponent(itemType),
+                     encodeDeviceItemType(decodeURIComponent(itemType)),
                   ];
                }
 
