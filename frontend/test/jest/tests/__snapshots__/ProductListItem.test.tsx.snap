@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders ProductListItem renders ProductListItem 1`] = `
+exports[`ProductListItem renders and matches the snapshot 1`] = `
 <DocumentFragment>
   <article
     aria-labelledby="product-heading-galaxy-s9-plus-replacement-battery"
