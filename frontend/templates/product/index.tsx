@@ -7,7 +7,6 @@ import {
    WithLayoutProps,
    WithProvidersProps,
 } from '@components/common';
-import { IFIXIT_ORIGIN } from '@config/env';
 import { PageContentWrapper } from '@ifixit/ui';
 import { getGlobalSettings } from '@models/global-settings';
 import type { Product } from '@models/product';
@@ -20,6 +19,7 @@ import { ProductSection, useSelectedVariant } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { StoriesSection } from './sections/StoriesSection';
+import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 export type ProductTemplateProps = WithProvidersProps<
    WithLayoutProps<{ product: Product }>
@@ -51,6 +51,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
             <LegacyBannerSection />
             <ReplacementGuidesSection />
             <StoriesSection />
+            <ServiceValuePropositionSection />
             <ReviewsSection
                product={product}
                selectedVariant={selectedVariant}
