@@ -20,7 +20,6 @@ export function ProductGrid({ children }: ProductGridProps) {
    return (
       <SimpleGrid
          data-testid="grid-view-products"
-         bg="gray.100"
          borderBottomColor="gray.100"
          borderBottomWidth="1px"
          columns={{
@@ -46,7 +45,18 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
       useProductSearchHitPricing(product);
 
    return (
-      <LinkBox as="article" display="block" w="full" role="group">
+      <LinkBox
+         as="article"
+         display="block"
+         w="full"
+         role="group"
+         borderTop="0"
+         borderRight="1px"
+         borderLeft="0"
+         borderBottom="1px"
+         borderRightColor="gray.100"
+         borderBottomColor="gray.100"
+      >
          <ProductCard h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
