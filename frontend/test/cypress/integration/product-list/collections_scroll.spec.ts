@@ -7,7 +7,7 @@ describe('collections scroll', () => {
       user.loadCollectionPageByPath('/Tools');
    });
 
-   it.skip('should scroll to the top of the page after clicking next page', () => {
+   it('should scroll to the top of the page after clicking next page', () => {
       user.findByTestId('collections-search-box').should('be.visible');
       user.findByTestId('next-page').click();
 

@@ -12,7 +12,11 @@ describe('parts page devices', () => {
       user.get('body').then(($body) => {
          const device = $body.find('a[href="/Parts/Mac"]');
          if (!device.is(':visible')) {
-            user.get('button').contains('Show more').click();
+            user
+               .get('button', { timeout: 10000 })
+               .contains('Show more')
+               .should('be.visible')
+               .click();
          }
          device[0].click();
       });
