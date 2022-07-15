@@ -3,6 +3,8 @@ import { ProductListItem } from '@components/product-list/sections/FilterablePro
 import * as ProductSearch from '@components/product-list/sections/FilterableProductsSection/useProductSearchHitPricing';
 import { mockProduct } from 'test/jest/__mocks__/mockProduct';
 
+jest.mock('@ifixit/app');
+
 describe('ProductListItem', () => {
    beforeEach(() => {
       // @ts-ignore
