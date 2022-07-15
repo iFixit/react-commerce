@@ -381,7 +381,7 @@ function createProductListSection(
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {
    const client = algoliasearch(appId, apiKey);
    const publicKey = client.generateSecuredApiKey(apiKey, {
-      filters: 'public=1',
+      filters: 'public=1 AND is_pro!=1',
    });
    return publicKey;
 }

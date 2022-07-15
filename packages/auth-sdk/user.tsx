@@ -9,6 +9,7 @@ type User = {
    thumbnail: string | null;
    is_pro: boolean;
    discountTier: string | null;
+   algoliaApiKeyProducts: string | null | undefined;
 };
 
 const userKeys = {
@@ -17,8 +18,13 @@ const userKeys = {
 
 export function useAuthenticatedUser() {
    const appContext = useAppContext();
-   const query = useQuery(userKeys.user, () =>
-      fetchAuthenticatedUser(appContext.ifixitOrigin)
+   const query = useQuery(
+      userKeys.user,
+      () => fetchAuthenticatedUser(appContext.ifixitOrigin),
+      {
+         retryOnMount: false,
+         staleTime: Infinity,
+      }
    );
    return query;
 }
@@ -35,6 +41,12 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
       const payload = await response.json();
       invariant(isRecord(payload), 'unexpected api response');
       invariant(typeof payload.userid === 'number', 'User ID is not a number');
+      invariant(
+         payload.algoliaApiKeyProducts === null ||
+            payload.algoliaApiKeyProducts === undefined ||
+            typeof payload.algoliaApiKeyProducts === 'string',
+         'algoliaApiKeyProducts should be a string or null'
+      );
       invariant(
          typeof payload.username === 'string',
          'User username is not a string'
@@ -62,6 +74,7 @@ async function fetchAuthenticatedUser(apiOrigin: string): Promise<User | null> {
          handle: unique_username,
          thumbnail: thumbnailUrl,
          is_pro: discountTier != null,
+         algoliaApiKeyProducts: payload.algoliaApiKeyProducts,
          discountTier,
       };
    }

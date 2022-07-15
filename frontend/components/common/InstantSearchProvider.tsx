@@ -1,9 +1,13 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
+import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
 import {
    decodeDeviceItemType,
    encodeDeviceItemType,
 } from '@helpers/product-list-helpers';
+import { cypressWindowLog } from '@helpers/test-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { usePrevious } from '@ifixit/ui';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
@@ -43,9 +47,14 @@ export function InstantSearchProvider({
    serverState,
    apiKey,
 }: InstantSearchProviderProps) {
-   const algoliaClientRef = React.useRef<SearchClient>();
-   algoliaClientRef.current =
-      algoliaClientRef.current ?? algoliasearch(ALGOLIA_APP_ID, apiKey);
+   const user = useAuthenticatedUser();
+   cypressWindowLog({ userLoaded: user.isFetched });
+   const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
+   const previousApiKey = usePrevious(algoliaApiKey);
+
+   const algoliaClient = React.useMemo(() => {
+      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
+   }, [algoliaApiKey]);
 
    const router = useRouter();
 
@@ -176,10 +185,14 @@ export function InstantSearchProvider({
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
             key={count}
-            searchClient={algoliaClientRef.current}
+            searchClient={algoliaClient}
             indexName={indexName}
             routing={routing}
          >
+            <RefreshSearchResults
+               apiKey={algoliaApiKey}
+               prevApiKey={previousApiKey}
+            />
             {children}
          </InstantSearch>
       </InstantSearchSSRProvider>
@@ -244,4 +257,28 @@ function decodeParsedQuery(parsed: string | ParsedQs | string[] | ParsedQs[]) {
               : decodeURIComponent(parsedValues);
         })
       : {};
+}
+
+type RefreshSearchResultsProps = {
+   apiKey: string;
+   prevApiKey: string | undefined;
+};
+
+/**
+ * Refreshes search results if the API key changes
+ * (but only refreshes once for each api key change).
+ */
+function RefreshSearchResults({
+   apiKey,
+   prevApiKey,
+}: RefreshSearchResultsProps): null {
+   const { refresh } = useSearchCache();
+   useSafeLayoutEffect(() => {
+      const isFirstRender = !prevApiKey;
+      const hasApiKeyChanged = prevApiKey !== apiKey;
+      if (hasApiKeyChanged && !isFirstRender) {
+         refresh();
+      }
+   }, [apiKey, prevApiKey]);
+   return null;
 }
