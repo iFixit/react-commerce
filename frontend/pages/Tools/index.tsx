@@ -56,7 +56,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       algolia: {
          indexName,
          url,
-         routing: true,
          apiKey: productList.algolia.apiKey,
       },
    };
