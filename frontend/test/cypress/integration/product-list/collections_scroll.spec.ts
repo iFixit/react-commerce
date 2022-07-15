@@ -4,8 +4,7 @@
 describe('collections scroll', () => {
    const user = cy;
    beforeEach(() => {
-      user.intercept('/1/indexes/**').as('search');
-      user.visit('/Tools');
+      user.loadCollectionPageByPath('/Tools');
    });
 
    it.skip('should scroll to the top of the page after clicking next page', () => {

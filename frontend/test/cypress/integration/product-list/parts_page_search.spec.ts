@@ -4,8 +4,7 @@ describe('parts page search', () => {
    const user = cy;
 
    beforeEach(() => {
-      user.intercept('/1/indexes/**').as('search');
-      user.visit('/Parts');
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('should show results when the search term exists', () => {

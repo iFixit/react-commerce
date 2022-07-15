@@ -2,7 +2,7 @@ describe('parts page devices', () => {
    const user = cy;
 
    beforeEach(() => {
-      user.visit('/Parts');
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('should navigate until the last device page', () => {
