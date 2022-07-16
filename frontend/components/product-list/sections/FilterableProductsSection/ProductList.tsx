@@ -143,7 +143,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      {product.short_description}
                   </Text>
                   {(product.rating >= 4 || product.rating_count > 10) && (
-                     <HStack align="center">
+                     <HStack align="center" data-testid="reviewStars">
                         <Rating value={product.rating} />
                         <Text
                            fontSize={{

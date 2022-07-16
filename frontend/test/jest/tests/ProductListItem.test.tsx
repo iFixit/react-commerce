@@ -27,7 +27,23 @@ describe('ProductListItem', () => {
          'Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.'
       );
 
+      const reviewStars = screen.getByTestId('reviewStars');
+      (expect(reviewStars) as any).toBeInTheDocument();
+
       (expect(shortDescription) as any).toBeInTheDocument();
+      (expect(asFragment()) as any).toMatchSnapshot();
+   });
+
+   it('renders without the review stars and matches the snapshot', () => {
+      // We don't render the stars if the rating <= 4 or rating_count < 10
+      mockProduct.rating = 3.5;
+      mockProduct.rating_count = 9;
+
+      // @ts-ignore
+      const { asFragment } = render(<ProductListItem product={mockProduct} />);
+
+      const reviewStars = screen.queryByText('reviewStars');
+      (expect(reviewStars) as any).not.toBeInTheDocument();
       (expect(asFragment()) as any).toMatchSnapshot();
    });
 });
