@@ -31,3 +31,13 @@ export function invariant(
 export function isError(x: any): x is Error {
    return x instanceof Error;
 }
+
+export function logAsync<T>(
+   name: string,
+   asyncFunction: () => Promise<T>
+): Promise<T> {
+   console.time(name);
+   const response = asyncFunction();
+   response.then(() => console.timeEnd(name));
+   return response;
+}
