@@ -82,118 +82,115 @@ export function InstantSearchProvider({
    // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
    const count = useCountRenders();
 
-   const routing: RouterProps<UiState, RouteState> = React.useMemo(
-      () => ({
-         stateMapping: {
-            stateToRoute(uiState) {
-               console.log('stateToRoute', uiState);
-               const indexUiState = uiState[indexName];
-               const ret =  indexUiStateToRoute(indexUiState);
-               console.log('stateToRoute ret', ret);
-               return ret;
-            },
-            routeToState(routeState: RouteState) {
-               console.log('routeToState', routeState);
-               const stateObject: IndexUiState = {};
-               if (routeState.q != null) {
-                  stateObject.query = routeState.q;
-               }
-               if (routeState.p != null) {
-                  stateObject.page = routeState.p;
-               }
-               if (routeState.filter != null) {
-                  stateObject.refinementList = routeState.filter;
-               }
-               // if (routeState.range != null) {
-               //    stateObject.range = routeState.range;
-               // }
-               const ret = {
-                  [indexName]: stateObject,
-               };
-               console.log('routeToState ret', ret);
-               return ret;
-            },
+   const routing: RouterProps<UiState, RouteState> = {
+      stateMapping: {
+         stateToRoute(uiState) {
+            console.log('stateToRoute', uiState);
+            const indexUiState = uiState[indexName];
+            const ret = indexUiStateToRoute(indexUiState);
+            console.log('stateToRoute ret', ret);
+            return ret;
          },
-         router: history({
-            getLocation() {
-               if (typeof window === 'undefined') {
-                  return new URL(url) as unknown as Location;
-               }
+         routeToState(routeState: RouteState) {
+            console.log('routeToState', routeState);
+            const stateObject: IndexUiState = {};
+            if (routeState.q != null) {
+               stateObject.query = routeState.q;
+            }
+            if (routeState.p != null) {
+               stateObject.page = routeState.p;
+            }
+            if (routeState.filter != null) {
+               stateObject.refinementList = routeState.filter;
+            }
+            // if (routeState.range != null) {
+            //    stateObject.range = routeState.range;
+            // }
+            const ret = {
+               [indexName]: stateObject,
+            };
+            console.log('routeToState ret', ret);
+            return ret;
+         },
+      },
+      router: history({
+         getLocation() {
+            if (typeof window === 'undefined') {
+               return new URL(url) as unknown as Location;
+            }
 
-               return window.location;
-            },
-            createURL({ routeState, location }) {
-               console.log('location', location);
-               console.log('routeState createUrl', routeState);
-               const baseUrl = location.origin;
-               const pathParts = location.pathname
-                  .split('/')
-                  .filter((part) => part !== '');
-               const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
-               const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            return window.location;
+         },
+         createURL({ routeState, location }) {
+            console.log('location', location);
+            console.log('routeState createUrl', routeState);
+            const baseUrl = location.origin;
+            const pathParts = location.pathname
+               .split('/')
+               .filter((part) => part !== '');
+            const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
+            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
 
-               const ignoreFilterKeys = [];
-               let path = '';
-               if (partsOrTools) {
-                  path += `/${partsOrTools}`;
-                  if (deviceHandle) {
-                     path += `/${deviceHandle}`;
-                     ignoreFilterKeys.push('facet_tags.Item Type');
-                     const raw: string | string[] | undefined =
-                        routeState.filter?.['facet_tags.Item Type'];
-                     console.log('raw', raw);
-                     const itemType = Array.isArray(raw) ? raw[0] : raw;
-                     if (itemType?.length) {
-                        const decodedItemType = decodeDeviceItemType(itemType);
-                        path += `/${decodedItemType}`;
-                     }
+            const ignoreFilterKeys = [];
+            let path = '';
+            if (partsOrTools) {
+               path += `/${partsOrTools}`;
+               if (deviceHandle) {
+                  path += `/${deviceHandle}`;
+                  ignoreFilterKeys.push('facet_tags.Item Type');
+                  const raw: string | string[] | undefined =
+                     routeState.filter?.['facet_tags.Item Type'];
+                  console.log('raw', raw);
+                  const itemType = Array.isArray(raw) ? raw[0] : raw;
+                  if (itemType?.length) {
+                     const decodedItemType = decodeDeviceItemType(itemType);
+                     path += `/${decodedItemType}`;
                   }
                }
+            }
 
-               const queryString = routeToQueryString(
-                  routeState,
-                  ignoreFilterKeys
-               );
+            const queryString = routeToQueryString(
+               routeState,
+               ignoreFilterKeys
+            );
 
-               const final = `${baseUrl}${path}${queryString}`;
-               console.log('final', final);
-               return final;
-            },
-            parseURL({ qsModule, location }) {
-               const pathParts = location.pathname
-                  .split('/')
-                  .filter((part) => part !== '');
-               const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-               const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+            const final = `${baseUrl}${path}${queryString}`;
+            console.log('final', final);
+            return final;
+         },
+         parseURL({ qsModule, location }) {
+            const pathParts = location.pathname
+               .split('/')
+               .filter((part) => part !== '');
+            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-               const {
-                  q = '',
-                  p,
-                  filter = {},
-                  // range = {},
-               } = qsModule.parse(location.search.slice(1));
+            const {
+               q = '',
+               p,
+               filter = {},
+               // range = {},
+            } = qsModule.parse(location.search.slice(1));
 
-               const decodedFilters = decodeParsedQuery(filter);
-               if (deviceHandle && itemType) {
-                  decodedFilters['facet_tags.Item Type'] = [
-                     encodeDeviceItemType(decodeURIComponent(itemType)),
-                  ];
-               }
+            const decodedFilters = decodeParsedQuery(filter);
+            if (deviceHandle && itemType) {
+               decodedFilters['facet_tags.Item Type'] = [
+                  encodeDeviceItemType(decodeURIComponent(itemType)),
+               ];
+            }
 
-               const state = {
-                  q: decodeURIComponent(String(q)),
-                  p: Number(p),
-                  filter: decodedFilters,
-                  // range: decodeParsedQuery(range),
-               };
-               console.log(state);
+            const state = {
+               q: decodeURIComponent(String(q)),
+               p: Number(p),
+               filter: decodedFilters,
+               // range: decodeParsedQuery(range),
+            };
+            console.log(state);
 
-               return state;
-            },
-         }),
+            return state;
+         },
       }),
-      [indexName, url]
-   );
+   };
 
    return (
       <InstantSearchSSRProvider {...serverState}>
