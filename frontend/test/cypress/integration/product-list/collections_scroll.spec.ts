@@ -4,11 +4,10 @@
 describe('collections scroll', () => {
    const user = cy;
    beforeEach(() => {
-      user.intercept('/1/indexes/**').as('search');
-      user.visit('/Tools');
+      user.loadCollectionPageByPath('/Tools');
    });
 
-   it.skip('should scroll to the top of the page after clicking next page', () => {
+   it('should scroll to the top of the page after clicking next page', () => {
       user.findByTestId('collections-search-box').should('be.visible');
       user.findByTestId('next-page').click();
 

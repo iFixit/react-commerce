@@ -1,7 +1,7 @@
 describe('collection display', () => {
    const user = cy;
    beforeEach(() => {
-      user.visit('/Tools');
+      user.loadCollectionPageByPath('/Tools');
    });
 
    it('should display grid view when selected', () => {

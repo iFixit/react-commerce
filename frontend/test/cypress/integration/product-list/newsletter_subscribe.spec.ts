@@ -1,19 +1,7 @@
 describe('subscribe to newsletter', () => {
    const user = cy;
    beforeEach(() => {
-      // Here we stub the user api request so we don't depend on ifixit api
-      cy.intercept(
-         { method: 'GET', url: '/api/2.0/user' },
-         {
-            userid: 1,
-            algoliaApiKeyProduct: null,
-            username: 'john',
-            unique_username: 'john123',
-         }
-      ).as('user-api');
-      user.visit('/Parts');
-      user.wait('@user-api');
-      user.window().its('userLoaded').should('be.true');
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('requires an email', () => {
