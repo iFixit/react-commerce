@@ -34,16 +34,15 @@ describe('ProductListItem', () => {
       (expect(asFragment()) as any).toMatchSnapshot();
    });
 
-   it('renders without the review stars and matches the snapshot', () => {
+   it('renders without the review stars', () => {
       // We don't render the stars if the rating <= 4 or rating_count < 10
       mockProduct.rating = 3.5;
       mockProduct.rating_count = 9;
 
       // @ts-ignore
-      const { asFragment } = render(<ProductListItem product={mockProduct} />);
+      render(<ProductListItem product={mockProduct} />);
 
-      const reviewStars = screen.queryByText('reviewStars');
+      const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).not.toBeInTheDocument();
-      (expect(asFragment()) as any).toMatchSnapshot();
    });
 });
