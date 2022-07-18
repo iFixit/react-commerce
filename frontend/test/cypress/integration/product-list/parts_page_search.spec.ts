@@ -32,7 +32,7 @@ describe('parts page search', () => {
          });
    });
 
-   it.skip("should show no results when search term doesn't exist", () => {
+   it("should show no results when search term doesn't exist", () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
