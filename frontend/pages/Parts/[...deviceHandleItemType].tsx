@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const title = `iFixit | ${productList.title}`;
 
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.req.url}`;
+   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
    const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
