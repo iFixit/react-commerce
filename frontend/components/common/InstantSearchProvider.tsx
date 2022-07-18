@@ -35,7 +35,7 @@ type RouteState = Partial<{
    q: string;
    p: number;
    filter: Record<string, any>;
-   range: Record<string, string>;
+   // range: Record<string, string>;
 }>;
 
 type IndexUiState = Record<string, any>;
@@ -86,10 +86,14 @@ export function InstantSearchProvider({
       () => ({
          stateMapping: {
             stateToRoute(uiState) {
+               console.log('stateToRoute', uiState);
                const indexUiState = uiState[indexName];
-               return indexUiStateToRoute(indexUiState);
+               const ret =  indexUiStateToRoute(indexUiState);
+               console.log('stateToRoute ret', ret);
+               return ret;
             },
             routeToState(routeState: RouteState) {
+               console.log('routeToState', routeState);
                const stateObject: IndexUiState = {};
                if (routeState.q != null) {
                   stateObject.query = routeState.q;
@@ -100,12 +104,14 @@ export function InstantSearchProvider({
                if (routeState.filter != null) {
                   stateObject.refinementList = routeState.filter;
                }
-               if (routeState.range != null) {
-                  stateObject.range = routeState.range;
-               }
-               return {
+               // if (routeState.range != null) {
+               //    stateObject.range = routeState.range;
+               // }
+               const ret = {
                   [indexName]: stateObject,
                };
+               console.log('routeToState ret', ret);
+               return ret;
             },
          },
          router: history({
@@ -117,6 +123,8 @@ export function InstantSearchProvider({
                return window.location;
             },
             createURL({ routeState, location }) {
+               console.log('location', location);
+               console.log('routeState createUrl', routeState);
                const baseUrl = location.origin;
                const pathParts = location.pathname
                   .split('/')
@@ -133,6 +141,7 @@ export function InstantSearchProvider({
                      ignoreFilterKeys.push('facet_tags.Item Type');
                      const raw: string | string[] | undefined =
                         routeState.filter?.['facet_tags.Item Type'];
+                     console.log('raw', raw);
                      const itemType = Array.isArray(raw) ? raw[0] : raw;
                      if (itemType?.length) {
                         const decodedItemType = decodeDeviceItemType(itemType);
@@ -146,7 +155,9 @@ export function InstantSearchProvider({
                   ignoreFilterKeys
                );
 
-               return `${baseUrl}${path}${queryString}`;
+               const final = `${baseUrl}${path}${queryString}`;
+               console.log('final', final);
+               return final;
             },
             parseURL({ qsModule, location }) {
                const pathParts = location.pathname
@@ -159,7 +170,7 @@ export function InstantSearchProvider({
                   q = '',
                   p,
                   filter = {},
-                  range = {},
+                  // range = {},
                } = qsModule.parse(location.search.slice(1));
 
                const decodedFilters = decodeParsedQuery(filter);
@@ -169,12 +180,15 @@ export function InstantSearchProvider({
                   ];
                }
 
-               return {
+               const state = {
                   q: decodeURIComponent(String(q)),
                   p: Number(p),
                   filter: decodedFilters,
-                  range: decodeParsedQuery(range),
+                  // range: decodeParsedQuery(range),
                };
+               console.log(state);
+
+               return state;
             },
          }),
       }),
@@ -224,9 +238,9 @@ export function indexUiStateToRoute(indexUiState: IndexUiState) {
    if (indexUiState.refinementList) {
       routeState.filter = indexUiState.refinementList;
    }
-   if (indexUiState.range != null) {
-      routeState.range = indexUiState.range;
-   }
+   // if (indexUiState.range != null) {
+   //    routeState.range = indexUiState.range;
+   // }
    return routeState;
 }
 
