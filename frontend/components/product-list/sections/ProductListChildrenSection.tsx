@@ -18,6 +18,7 @@ import {
 } from '@helpers/product-list-helpers';
 import { useIsMounted } from '@ifixit/ui';
 import { ProductList } from '@models/product-list';
+import NextLink from 'next/link';
 import * as React from 'react';
 import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
 
@@ -162,66 +163,68 @@ interface ChildLinkProps {
 
 const ChildLink = ({ child }: ChildLinkProps) => {
    return (
-      <chakra.a
-         href={child.path}
-         bg="white"
-         borderRadius="lg"
-         boxShadow="base"
-         _hover={{
-            boxShadow: 'md',
-         }}
-         transition="all 300ms"
-         outline="none"
-         overflow="hidden"
-         minHeight="60px"
-         _focus={{
-            boxShadow: 'outline',
-         }}
-      >
-         <Flex
-            h="full"
-            direction="row"
-            align="center"
-            justifyContent="center"
-            minH="inherit"
+      <NextLink href={child.path} passHref>
+         <chakra.a
+            href={child.path}
+            bg="white"
+            borderRadius="lg"
+            boxShadow="base"
+            _hover={{
+               boxShadow: 'md',
+            }}
+            transition="all 300ms"
+            outline="none"
+            overflow="hidden"
+            minHeight="60px"
+            _focus={{
+               boxShadow: 'outline',
+            }}
          >
-            {child.image && (
-               <>
-                  <Flex
-                     align="center"
-                     justify="center"
-                     flexBasis="80px"
-                     h="60px"
-                     flexGrow={0}
-                     flexShrink={0}
-                     position="relative"
-                  >
-                     <IfixitImage
-                        src={child.image.url}
-                        alt={child.image.alternativeText ?? ''}
-                        objectFit="cover"
-                        layout="fill"
-                        sizes="20vw"
-                        priority
-                     />
-                  </Flex>
-                  <Divider orientation="vertical" />
-               </>
-            )}
-            <Box
-               px="3"
-               py="2"
-               boxSizing="border-box"
+            <Flex
                h="full"
-               display="flex"
-               alignItems="center"
-               flexGrow={1}
+               direction="row"
+               align="center"
+               justifyContent="center"
+               minH="inherit"
             >
-               <Heading as="span" fontSize="sm">
-                  {child.title}
-               </Heading>
-            </Box>
-         </Flex>
-      </chakra.a>
+               {child.image && (
+                  <>
+                     <Flex
+                        align="center"
+                        justify="center"
+                        flexBasis="80px"
+                        h="60px"
+                        flexGrow={0}
+                        flexShrink={0}
+                        position="relative"
+                     >
+                        <IfixitImage
+                           src={child.image.url}
+                           alt={child.image.alternativeText ?? ''}
+                           objectFit="cover"
+                           layout="fill"
+                           sizes="20vw"
+                           priority
+                        />
+                     </Flex>
+                     <Divider orientation="vertical" />
+                  </>
+               )}
+               <Box
+                  px="3"
+                  py="2"
+                  boxSizing="border-box"
+                  h="full"
+                  display="flex"
+                  alignItems="center"
+                  flexGrow={1}
+               >
+                  <Heading as="span" fontSize="sm">
+                     {child.title}
+                  </Heading>
+               </Box>
+            </Flex>
+         </chakra.a>
+      </NextLink>
    );
 };
