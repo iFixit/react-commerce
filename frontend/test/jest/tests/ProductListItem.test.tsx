@@ -27,9 +27,6 @@ describe('ProductListItem', () => {
          'Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.'
       );
 
-      const reviewStars = screen.getByTestId('reviewStars');
-      (expect(reviewStars) as any).toBeInTheDocument();
-
       (expect(shortDescription) as any).toBeInTheDocument();
       (expect(asFragment()) as any).toMatchSnapshot();
    });
@@ -44,5 +41,31 @@ describe('ProductListItem', () => {
 
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).not.toBeInTheDocument();
+   });
+
+   it('renders with the review stars', () => {
+      // We render the stars if the rating >= 4 OR rating_count > 10
+
+      // If rating < 4; count > 10
+      mockProduct.rating = 1;
+      mockProduct.rating_count = 15;
+      // @ts-ignore
+      const {rerender} = render(<ProductListItem product={mockProduct} />);
+      const reviewStars = screen.queryByTestId('reviewStars');
+      (expect(reviewStars) as any).toBeInTheDocument();
+
+      // If rating > 4; count < 10
+      mockProduct.rating = 5;
+      mockProduct.rating_count = 5;
+      // @ts-ignore
+      rerender(<ProductListItem product={mockProduct} />);
+      (expect(reviewStars) as any).toBeInTheDocument();
+
+      // If rating > 4; count > 10
+      mockProduct.rating = 5;
+      mockProduct.rating_count = 15;
+      // @ts-ignore
+      rerender(<ProductListItem product={mockProduct} />);
+      (expect(reviewStars) as any).toBeInTheDocument();
    });
 });
