@@ -212,7 +212,9 @@ export function InstantSearchProvider({
 
 function useCountRenders() {
    const countRef = React.useRef(0);
-   countRef.current++;
+   // This caused a problem when visiting /Parts/iPhone/Cables
+   // that it would redirect to /Parts/iPhone
+   // countRef.current++;
    return countRef.current;
 }
 
