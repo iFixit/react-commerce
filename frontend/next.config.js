@@ -47,13 +47,43 @@ const moduleExports = {
       ];
    },
    async redirects() {
-      return [
+      const redirects =[
          {
             source: '/Store/Guide/:guideid',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Guide/_/:guideid`,
             permanent: true,
          },
       ];
+
+      // Do not hide /Parts and /Tools in dev
+      if (process.env.NODE_ENV == "development") {
+         return redirects;
+      }
+
+      return redirects.concat([
+         {
+            source: '/Parts',
+            has: [
+               {
+                 type: 'host',
+                 value: '^(?!www).*.*.*'
+               },
+            ],
+            destination: 'https://www.ifixit.com/Parts',
+            permanent: true,
+         },
+         {
+            source: '/Tools',
+            has: [
+               {
+                 type: 'host',
+                 value: '^(?!www).*.*.*'
+               },
+            ],
+            destination: 'https://www.ifixit.com/Tools',
+            permanent: true,
+         },
+      ]);
    },
    images: {
       domains: [
