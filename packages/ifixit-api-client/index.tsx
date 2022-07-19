@@ -46,11 +46,13 @@ export class IFixitAPIClient {
 
    async fetch(endpoint: string, init?: RequestInit) {
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
-      const response = await logAsync(`${init?.method || 'GET'}:${url}`, () =>
-         fetch(url, {
-            credentials: 'include',
-            ...init,
-         })
+      const response = await logAsync(
+         `${init?.method || 'GET'}:${truncate(url, 70)}`,
+         () =>
+            fetch(url, {
+               credentials: 'include',
+               ...init,
+            })
       );
       if (!response.ok) {
          throw new Error(response.statusText);
@@ -75,4 +77,8 @@ export function useIFixitApiClient() {
    }, [appContext.ifixitOrigin]);
 
    return client;
+}
+
+function truncate(str: string, length: number) {
+   return str.length < length ? str : str.substr(0, length - 3) + '...';
 }
