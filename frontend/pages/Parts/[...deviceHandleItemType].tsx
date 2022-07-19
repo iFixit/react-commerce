@@ -38,7 +38,11 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       : [];
 
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   invariant(rest?.length === 0, 'invalid extra path components');
+   if (rest?.length > 0) {
+      return {
+         notFound: true,
+      };
+   }
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
