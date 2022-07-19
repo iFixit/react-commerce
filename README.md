@@ -22,19 +22,19 @@ The `frontend` directory is structured as follows:
 
 ### Install Prerequisites
 
-- npm v8
-- pnpm v6
-- node v16
+-  npm v8
+-  pnpm v6
+-  node v16
 
 Here's one way you can get all the right versions installed and setup:
 
 1. Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 2. `nvm use`
-    - run this command in the project root to install compatible versions of `node` and `npm`
+   -  run this command in the project root to install compatible versions of `node` and `npm`
 3. `npm install -g pnpm@6.32.1`
-    - installs version 6 of `pnpm`
-    - :warning: The project is based on `pnpm@6`: some dependencies still have problems with v7
-  
+   -  installs version 6 of `pnpm`
+   -  :warning: The project is based on `pnpm@6`: some dependencies still have problems with v7
+
 ### Install
 
 This command will install both backend and frontend dependencies:

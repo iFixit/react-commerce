@@ -8,7 +8,7 @@ import {
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { usePrevious } from '@ifixit/ui';
-import algoliasearch, { SearchClient } from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
 import { UiState } from 'instantsearch.js/es/types';
@@ -86,14 +86,10 @@ export function InstantSearchProvider({
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
          stateToRoute(uiState) {
-            console.log('stateToRoute', uiState);
             const indexUiState = uiState[indexName];
-            const ret = indexUiStateToRoute(indexUiState);
-            console.log('stateToRoute ret', ret);
-            return ret;
+            return indexUiStateToRoute(indexUiState);
          },
          routeToState(routeState: RouteState) {
-            console.log('routeToState', routeState);
             const stateObject: IndexUiState = {};
             if (routeState.q != null) {
                stateObject.query = routeState.q;
@@ -107,11 +103,9 @@ export function InstantSearchProvider({
             // if (routeState.range != null) {
             //    stateObject.range = routeState.range;
             // }
-            const ret = {
+            return {
                [indexName]: stateObject,
             };
-            console.log('routeToState ret', ret);
-            return ret;
          },
       },
       router: history({
@@ -123,8 +117,6 @@ export function InstantSearchProvider({
             return window.location;
          },
          createURL({ routeState, location }) {
-            console.log('location', location);
-            console.log('routeState createUrl', routeState);
             const baseUrl = location.origin;
             const pathParts = location.pathname
                .split('/')
@@ -141,7 +133,6 @@ export function InstantSearchProvider({
                   ignoreFilterKeys.push('facet_tags.Item Type');
                   const raw: string | string[] | undefined =
                      routeState.filter?.['facet_tags.Item Type'];
-                  console.log('raw', raw);
                   const itemType = Array.isArray(raw) ? raw[0] : raw;
                   if (itemType?.length) {
                      const encodedItemType = encodeDeviceItemType(itemType);
@@ -155,9 +146,7 @@ export function InstantSearchProvider({
                ignoreFilterKeys
             );
 
-            const final = `${baseUrl}${path}${queryString}`;
-            console.log('final', final);
-            return final;
+            return `${baseUrl}${path}${queryString}`;
          },
          parseURL({ qsModule, location }) {
             const pathParts = location.pathname
@@ -180,15 +169,12 @@ export function InstantSearchProvider({
                ];
             }
 
-            const state = {
+            return {
                q: decodeURIComponent(String(q)),
                p: Number(p),
                filter: decodedFilters,
                // range: decodeParsedQuery(range),
             };
-            console.log(state);
-
-            return state;
          },
       }),
    };
