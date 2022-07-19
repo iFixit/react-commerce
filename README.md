@@ -25,6 +25,7 @@ The `frontend` directory is structured as follows:
 - npm v8
 - pnpm v6
 - node v16
+- yarn
 
 Here's one way you can get all the right versions installed and setup:
 
