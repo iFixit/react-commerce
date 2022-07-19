@@ -1,5 +1,5 @@
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_API_KEY, ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import {
    getProductListPath,
@@ -13,6 +13,7 @@ import {
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    Enum_Productlist_Type,
    ProductListFiltersInput,
@@ -61,7 +62,7 @@ export async function findProductList(
 
    console.time('fetchDeviceWiki');
    const deviceWiki = productList.deviceTitle
-      ? await fetchDeviceWiki(productList.deviceTitle)
+      ? await fetchDeviceWiki(createIFixitAPIClient(), productList.deviceTitle)
       : null;
    console.timeEnd('fetchDeviceWiki');
 
@@ -195,6 +196,7 @@ async function fillMissingImagesFromApi(
    ) as string[]; // cast is safe cause we filter nulls above,
    // typescript just doesn't understand
    const imagesResponse = await fetchMultipleDeviceImages(
+      createIFixitAPIClient(),
       deviceTitlesWithoutImages,
       'thumbnail'
    );
@@ -431,4 +433,10 @@ function createPublicAlgoliaKey(appId: string, apiKey: string): string {
       filters: 'public=1 AND is_pro!=1',
    });
    return publicKey;
+}
+
+function createIFixitAPIClient() {
+   return new IFixitAPIClient({
+      origin: IFIXIT_ORIGIN,
+   });
 }

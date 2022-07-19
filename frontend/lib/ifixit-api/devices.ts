@@ -1,20 +1,18 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
 export type DeviceWiki = Record<string, any>;
 
 export async function fetchDeviceWiki(
+   client: IFixitAPIClient,
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
-      const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
-         {
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         }
-      );
+      const response = await client.get(`wikis/CATEGORY/${deviceHandle}`, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
       const payload = await response.json();
       return payload;
    } catch (error: any) {
@@ -38,15 +36,17 @@ export type GuideImageSize =
    | 'huge';
 
 export function fetchMultipleDeviceImages(
+   client: IFixitAPIClient,
    deviceTitles: string[],
    size: GuideImageSize
 ): Promise<MultipleDeviceApiResponse> {
-   const apiUrl = new URL(`${IFIXIT_ORIGIN}/api/2.0/wikis/topic_images`);
-   apiUrl.searchParams.set('size', size);
+   const params = new URLSearchParams();
+   params.set('size', size);
    deviceTitles.forEach((deviceTitle) => {
-      apiUrl.searchParams.append('t[]', deviceTitle);
+      params.append('t[]', deviceTitle);
    });
-   return fetch(apiUrl.toString())
+   return client
+      .get(`wikis/topic_images?` + params.toString())
       .then((response) => response.json())
       .catch(() => ({ images: {} }));
 }
