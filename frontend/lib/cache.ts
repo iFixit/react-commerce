@@ -11,8 +11,10 @@ export function cache<T>(
       console.log(`Got '${key}' from cache`);
       return fromCache;
    }
+   const timerName = `Cache miss for '${key}'`;
+   console.time(timerName);
    const result = fetch();
-   console.log(`Storing '${key}' in cache`);
+   result.finally(() => console.timeEnd(timerName));
    cacheStore.set(key, result, { ttl: ttl * 1000 });
    return result;
 }
