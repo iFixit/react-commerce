@@ -38,6 +38,6 @@ export function logAsync<T>(
 ): Promise<T> {
    console.time(name);
    const response = asyncFunction();
-   response.then(() => console.timeEnd(name));
+   response.finally(() => console.timeEnd(name));
    return response;
 }
