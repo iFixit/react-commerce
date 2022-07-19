@@ -13,6 +13,9 @@ export async function fetchDeviceWiki(
             'Content-Type': 'application/json',
          },
       });
+      if (!response.ok) {
+         return null;
+      }
       const payload = await response.json();
       return payload;
    } catch (error: any) {
