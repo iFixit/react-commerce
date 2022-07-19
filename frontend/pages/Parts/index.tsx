@@ -28,6 +28,12 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
 
+   const isEN = !!context.req.headers.host?.match(/www\.ifixit\.com/g);
+
+   if (!isEN) {
+      context.req.headers['X-Robots-Tag'] = 'noindex, nofollow, nosnippet, noarchive, noimageindex';
+   }
+
    const [globalSettings, stores, currentStore, productList] =
       await Promise.all([
          getGlobalSettings(),
