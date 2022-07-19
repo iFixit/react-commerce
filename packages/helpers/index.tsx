@@ -41,3 +41,10 @@ export function logAsync<T>(
    response.finally(() => console.timeEnd(name));
    return response;
 }
+
+export function logSync<T>(name: string, syncFunction: () => T): T {
+   console.time(name);
+   const response = syncFunction();
+   console.timeEnd(name);
+   return response;
+}
