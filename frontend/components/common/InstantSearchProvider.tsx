@@ -13,7 +13,7 @@ import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
 import { UiState } from 'instantsearch.js/es/types';
 import { mapValues } from 'lodash';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import QueryString, { ParsedQs } from 'qs';
 import * as React from 'react';
 import {
@@ -78,9 +78,10 @@ export function InstantSearchProvider({
       };
    }, [router]);
 
-   // We're using this to make `InstantSearch` unmount at every re-render, since as of version 6.28.0 it breaks when
-   // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
-   const count = useCountRenders();
+   // We're using this to make `InstantSearch` unmount every time Next routing
+   // differs from the InstantSearch route. This causes a full refresh of
+   // InstantSearch's internal state when the user navigates via a Next link.
+   const count = useCountRouteMismatches(router, url);
 
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
@@ -210,11 +211,14 @@ export function InstantSearchProvider({
    );
 }
 
-function useCountRenders() {
+function useCountRouteMismatches(router: NextRouter, url: string) {
    const countRef = React.useRef(0);
-   // This caused a problem when visiting /Parts/iPhone/Cables
-   // that it would redirect to /Parts/iPhone
-   // countRef.current++;
+   React.useEffect(() => {
+      const urlPath = new URL(url).pathname;
+      if (router?.asPath && router.asPath !== urlPath) {
+         countRef.current++;
+      }
+   }, [router, url]);
    return countRef.current;
 }
 
