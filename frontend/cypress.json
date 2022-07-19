@@ -6,5 +6,8 @@
    "screenshotsFolder": "test/cypress/screenshots",
    "videosFolder": "test/cypress/videos",
    "video": false,
-   "supportFile": "test/cypress/support/index.ts"
+   "supportFile": "test/cypress/support/index.ts",
+   "retries": {
+      "runMode": 2
+   }
 }

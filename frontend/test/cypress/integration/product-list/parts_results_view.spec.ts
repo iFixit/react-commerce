@@ -2,7 +2,7 @@ describe('parts page results view', () => {
    const user = cy;
 
    beforeEach(() => {
-      user.visit('/Parts');
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('all products have a visible price', () => {

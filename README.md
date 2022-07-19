@@ -25,6 +25,7 @@ The `frontend` directory is structured as follows:
 -  npm v8
 -  pnpm v6
 -  node v16
+-  yarn
 
 Here's one way you can get all the right versions installed and setup:
 
@@ -45,11 +46,26 @@ pnpm install:all
 
 >
 
-### Set up configs
+### Copy the environment files to local
 
 1. Copy `backend/.env.example` to `backend/.env`
 2. Copy `frontend/.env.local.example` to `frontend/.env.local`
-3. Fill in `ALGOLIA_API_KEY` in `frontend/.env.local` (Note: `SENTRY_AUTH_TOKEN` is not needed in development)
+
+### Fill in the Algolia API Key
+
+In `frontend/.env.local` fill in `ALGOLIA_API_KEY` by either:
+
+-  Copying the `Search API Key` [from Aloglia](https://www.algolia.com/account/api-keys/all?applicationId=XQEP3AD9ZT)
+
+   -  :warning: You may need to ask for access to our Aloglia
+
+-  Or copy the dev key from cominor:
+
+```sh
+cat /etc/dozuki/algolia-keys.json | jq --raw-output .searchApiKey
+```
+
+(Note: `SENTRY_AUTH_TOKEN` is not needed in development)
 
 ### Dev server
 
@@ -59,7 +75,13 @@ This command will start Strapi dev server and Next.js dev server:
 pnpm dev
 ```
 
-### Working with Strapi
+### Working with the Frontend (Next.js)
+
+After running the dev server, you can access the site at `http://localhost:3000/Parts` or `http://localhost:3000/Tools`
+
+:warning: `http://localhost:3000/` is not yet routed and will 404.
+
+### Working with the Backend (Strapi)
 
 After running the dev server, you can access the Strapi admin panel at `http://localhost:1337/admin`. To login use email `strapi@ifixit.com` and password `Password1`.
 
