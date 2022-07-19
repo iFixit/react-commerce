@@ -32,7 +32,7 @@ describe('ProductListItem', () => {
    });
 
    it('renders without the review stars', () => {
-      // We don't render the stars if the rating <= 4 or rating_count < 10
+      // We don't render the stars if the rating <= 4 AND rating_count < 10
       mockProduct.rating = 3.5;
       mockProduct.rating_count = 9;
 
