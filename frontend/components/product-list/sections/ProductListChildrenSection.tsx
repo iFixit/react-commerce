@@ -165,7 +165,6 @@ const ChildLink = ({ child }: ChildLinkProps) => {
    return (
       <NextLink href={child.path} passHref>
          <chakra.a
-            href={child.path}
             bg="white"
             borderRadius="lg"
             boxShadow="base"
