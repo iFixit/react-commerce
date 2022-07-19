@@ -31,7 +31,10 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const isEN = !!context.req.headers.host?.match(/www\.ifixit\.com/g);
 
    if (!isEN) {
-      context.req.headers['X-Robots-Tag'] = 'noindex, nofollow, nosnippet, noarchive, noimageindex';
+      context.res.setHeader(
+         'X-Robots-Tag',
+         'noindex, nofollow, nosnippet, noarchive, noimageindex'
+      );
    }
 
    const [globalSettings, stores, currentStore, productList] =
