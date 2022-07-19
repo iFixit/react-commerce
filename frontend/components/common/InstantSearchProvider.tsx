@@ -144,8 +144,8 @@ export function InstantSearchProvider({
                   console.log('raw', raw);
                   const itemType = Array.isArray(raw) ? raw[0] : raw;
                   if (itemType?.length) {
-                     const decodedItemType = decodeDeviceItemType(itemType);
-                     path += `/${decodedItemType}`;
+                     const encodedItemType = encodeDeviceItemType(itemType);
+                     path += `/${encodedItemType}`;
                   }
                }
             }
@@ -176,7 +176,7 @@ export function InstantSearchProvider({
             const decodedFilters = decodeParsedQuery(filter);
             if (deviceHandle && itemType) {
                decodedFilters['facet_tags.Item Type'] = [
-                  encodeDeviceItemType(decodeURIComponent(itemType)),
+                  decodeDeviceItemType(decodeURIComponent(itemType)),
                ];
             }
 
