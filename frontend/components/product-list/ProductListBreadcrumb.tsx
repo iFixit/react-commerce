@@ -40,10 +40,7 @@ export function ProductListBreadcrumb({
          separator={
             <Icon
                as={HiChevronRight}
-               display={{
-                  base: 'none',
-                  md: 'initial',
-               }}
+               display="initial"
                color="gray.300"
                mt="1"
             />
@@ -116,13 +113,7 @@ export function ProductListBreadcrumb({
                </Menu>
             </BreadcrumbItem>
          )}
-         <BreadcrumbItem
-            isCurrentPage
-            display={{
-               base: 'none',
-               md: 'flex',
-            }}
-         >
+         <BreadcrumbItem isCurrentPage display="flex">
             <Text
                color="black"
                fontWeight="bold"

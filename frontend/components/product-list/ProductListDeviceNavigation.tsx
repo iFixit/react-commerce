@@ -35,7 +35,8 @@ export function ProductListDeviceNavigation({
          h="full"
          align="stretch"
          borderLeftWidth={{
-            base: '1px',
+            base: '0',
+            sm: '1px',
             md: '0',
          }}
          bg="white"
