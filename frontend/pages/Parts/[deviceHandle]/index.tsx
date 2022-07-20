@@ -64,13 +64,13 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
       },
    };
 
-   console.time('getServerState');
-   const serverState = await getServerState(
-      <AppProviders {...appProps}>
-         <ProductListView productList={productList} indexName={indexName} />
-      </AppProviders>
+   const serverState = await logAsync('getServerState', () =>
+      getServerState(
+         <AppProviders {...appProps}>
+            <ProductListView productList={productList} indexName={indexName} />
+         </AppProviders>
+      )
    );
-   console.timeEnd('getServerState');
 
    const pageProps: AppPageProps = {
       productList,
