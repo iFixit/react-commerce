@@ -5,7 +5,6 @@ import {
    getProductListPath,
    getProductListTitle,
 } from '@helpers/product-list-helpers';
-import { asyncTimings } from '@helpers/performance-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { invariant, logAsync, logSync } from '@ifixit/helpers';
 import {

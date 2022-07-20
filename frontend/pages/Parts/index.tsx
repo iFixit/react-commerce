@@ -10,7 +10,6 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { asyncTimings } from '@helpers/performance-helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';

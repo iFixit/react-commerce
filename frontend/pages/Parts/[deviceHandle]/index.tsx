@@ -12,7 +12,6 @@ import {
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { decodeDeviceTitle } from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
-import { asyncTimings } from '@helpers/performance-helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
