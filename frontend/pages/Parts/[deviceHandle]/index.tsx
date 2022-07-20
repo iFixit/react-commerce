@@ -34,15 +34,16 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
-   console.time('Promise.all');
-   const [globalSettings, stores, currentStore, productList] =
-      await Promise.all([
-         getGlobalSettings(),
-         getStoreList(),
-         getStoreByCode('us'),
-         findProductList({ deviceTitle: { eq: deviceTitle } }),
-      ]);
-   console.timeEnd('Promise.all');
+   const [globalSettings, stores, currentStore, productList] = await logAsync(
+      'Promise.all',
+      () =>
+         Promise.all([
+            getGlobalSettings(),
+            getStoreList(),
+            getStoreByCode('us'),
+            findProductList({ deviceTitle: { eq: deviceTitle } }),
+         ])
+   );
 
    if (productList == null) {
       return {
