@@ -69,7 +69,7 @@ const moduleExports = {
                  value: '^(?!www).*.*.*'
                },
             ],
-            destination: 'https://www.ifixit.com/Parts',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts`,
             permanent: true,
          },
          {
@@ -80,7 +80,7 @@ const moduleExports = {
                  value: '^(?!www).*.*.*'
                },
             ],
-            destination: 'https://www.ifixit.com/Tools',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools`,
             permanent: true,
          },
       ]);
