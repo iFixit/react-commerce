@@ -227,6 +227,31 @@ type ApiProductList = NonNullable<
    >[0]['attributes']
 >;
 
+function convertAncestorsToStrapiFormat(
+   ancestors: any
+): ApiProductList['parent'] | null {
+   const ancestor = ancestors.shift();
+   if (ancestor == null) {
+      return null;
+   }
+   if (ancestor.wikiid === 11000) {
+      ancestor['type'] = 'all_parts';
+      ancestor['title'] = 'All';
+      ancestor['handle'] = 'Parts';
+   }
+   return {
+      data: {
+         attributes: {
+            type: ancestor.type,
+            title: ancestor.title + ' Parts',
+            handle: ancestor.handle ?? '',
+            deviceTitle: ancestor.title,
+            parent: convertAncestorsToStrapiFormat(ancestors),
+         },
+      },
+   };
+}
+
 function createProductListAncestors(
    parent: ApiProductList['parent']
 ): ProductListAncestor[] {
