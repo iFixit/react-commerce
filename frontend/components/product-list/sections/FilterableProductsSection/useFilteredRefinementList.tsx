@@ -10,11 +10,11 @@ export function useFilteredRefinementList(props: UseRefinementListProps) {
    const hitsCount = results?.nbHits ?? 0;
    const isAnyRefined = items.some((item) => item.isRefined);
 
-   var filteredItems = isAnyRefined
+   let filteredItems = isAnyRefined
       ? items
       : items.filter((item) => hitsCount !== item.count);
 
-   var emptyFacetState = false;
+   let emptyFacetState = false;
 
    if (filteredItems.length == 0) {
       filteredItems = items.filter((item) => hitsCount === item.count);
