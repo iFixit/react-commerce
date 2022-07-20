@@ -42,6 +42,22 @@ export function logAsync<T>(
    return response;
 }
 
+/**
+ * Wrap a promise-returning function and logs the time it takes to resolve
+ * the promise.
+ */
+export function logAsyncWrap<Args extends any[], T>(
+   name: string,
+   asyncFunction: (...args: Args) => Promise<T>
+): (...args: Args) => Promise<T> {
+   return (...args) => {
+      console.time(name);
+      const response = asyncFunction(...args);
+      response.finally(() => console.timeEnd(name));
+      return response;
+   };
+}
+
 export function logSync<T>(name: string, syncFunction: () => T): T {
    console.time(name);
    const response = syncFunction();

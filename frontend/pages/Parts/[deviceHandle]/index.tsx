@@ -11,7 +11,7 @@ import {
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { decodeDeviceTitle } from '@helpers/product-list-helpers';
-import { invariant } from '@ifixit/helpers';
+import { invariant, logAsync, logAsyncWrap } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -21,10 +21,9 @@ import { getServerState } from 'react-instantsearch-hooks-server';
 type PageProps = WithLayoutProps<ProductListViewProps>;
 type AppPageProps = WithProvidersProps<PageProps>;
 
-export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
-   // The data is considered fresh for 10 seconds, and can be served even if stale for up to 10 minutes
    context.res.setHeader(
       'Cache-Control',
       'public, s-maxage=600, stale-while-revalidate=1200'
@@ -32,7 +31,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 
    const { deviceHandle } = context.params || {};
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   console.time('getServerSideProps');
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -74,8 +72,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    );
    console.timeEnd('getServerState');
 
-   console.timeEnd('getServerSideProps');
-
    const pageProps: AppPageProps = {
       productList,
       indexName,
@@ -100,6 +96,9 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       props: pageProps,
    };
 };
+
+export const getServerSideProps: GetServerSideProps<AppPageProps> =
+   logAsyncWrap('getServerSideProps', getServerSidePropsInternal);
 
 const ProductListPage: NextPageWithLayout<PageProps> = (pageProps) => {
    return <ProductListView {...pageProps} />;
