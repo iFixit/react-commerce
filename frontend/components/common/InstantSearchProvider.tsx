@@ -78,10 +78,10 @@ export function InstantSearchProvider({
       };
    }, [router]);
 
-   // We're using this to make `InstantSearch` unmount every time Next routing
-   // differs from the InstantSearch route. This causes a full refresh of
-   // InstantSearch's internal state when the user navigates via a Next link.
-   const count = useCountRouteMismatches(router, url);
+   // We're using this to make `InstantSearch` unmount at every re-render, since
+   // as of version 6.28.0 it breaks when it re-renders. Re-rendering though
+   // should be relatively infrequent in this component, so this should be fine.
+   const count = useCountRenders();
 
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
@@ -123,6 +123,7 @@ export function InstantSearchProvider({
                .filter((part) => part !== '');
             const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const itemTypeHandle = pathParts.length >= 3 ? pathParts[2] : '';
 
             const ignoreFilterKeys = [];
             let path = '';
@@ -137,6 +138,10 @@ export function InstantSearchProvider({
                   if (itemType?.length) {
                      const encodedItemType = encodeDeviceItemType(itemType);
                      path += `/${encodedItemType}`;
+                  } else if (count === 1 && itemTypeHandle) {
+                     // Prevents a bug when visiting /Parts/iPhone/Cables
+                     // that it would redirect to /Parts/iPhone
+                     path += `/${itemTypeHandle}`;
                   }
                }
             }
@@ -197,14 +202,9 @@ export function InstantSearchProvider({
    );
 }
 
-function useCountRouteMismatches(router: NextRouter, url: string) {
+function useCountRenders() {
    const countRef = React.useRef(0);
-   React.useEffect(() => {
-      const urlPath = new URL(url).pathname;
-      if (router?.asPath && router.asPath !== urlPath) {
-         countRef.current++;
-      }
-   }, [router, url]);
+   countRef.current++;
    return countRef.current;
 }
 
