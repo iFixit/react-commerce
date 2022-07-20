@@ -1,4 +1,3 @@
-import { useAppContext } from '@ifixit/app';
 import { invariant, isRecord } from '@ifixit/helpers';
 import { useQuery } from 'react-query';
 import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
@@ -18,11 +17,10 @@ const userKeys = {
 };
 
 export function useAuthenticatedUser() {
-   const appContext = useAppContext();
    const apiClient = useIFixitApiClient();
    const query = useQuery(
       userKeys.user,
-      () => fetchAuthenticatedUser(apiClient, appContext.ifixitOrigin),
+      () => fetchAuthenticatedUser(apiClient),
       {
          retryOnMount: false,
          staleTime: Infinity,
@@ -32,8 +30,7 @@ export function useAuthenticatedUser() {
 }
 
 async function fetchAuthenticatedUser(
-   apiClient: IFixitAPIClient,
-   apiOrigin: string
+   apiClient: IFixitAPIClient
 ): Promise<User | null> {
    const response = await apiClient.get('user', {
       credentials: 'include',
