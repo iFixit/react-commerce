@@ -47,7 +47,7 @@ export class IFixitAPIClient {
    async fetch(endpoint: string, init?: RequestInit) {
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
       const response = await logAsync(
-         `${init?.method || 'GET'}:${truncate(url, 70)}`,
+         `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
          () =>
             fetch(url, {
                credentials: 'include',
