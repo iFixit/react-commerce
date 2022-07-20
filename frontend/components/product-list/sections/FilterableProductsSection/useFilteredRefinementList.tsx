@@ -10,9 +10,17 @@ export function useFilteredRefinementList(props: UseRefinementListProps) {
    const hitsCount = results?.nbHits ?? 0;
    const isAnyRefined = items.some((item) => item.isRefined);
 
-   const filteredItems = isAnyRefined
+   var filteredItems = isAnyRefined
       ? items
       : items.filter((item) => hitsCount !== item.count);
 
-   return { ...rest, items: filteredItems };
+   var emptyFacetState = false;
+
+   if (filteredItems.length == 0) {
+      filteredItems = items.filter((item) => hitsCount === item.count);
+      if (filteredItems.length > 0) {
+         emptyFacetState = true;
+      }
+   }
+   return { ...rest, items: filteredItems, isEmptyFacetState: emptyFacetState };
 }
