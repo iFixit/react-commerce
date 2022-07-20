@@ -10,6 +10,7 @@ import {
    IconButton,
    Portal,
    Text,
+   useBreakpointValue,
    useSafeLayoutEffect,
    VStack,
 } from '@chakra-ui/react';
@@ -297,13 +298,21 @@ function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
 }
 
 function useLockBodyScroll(lock: boolean) {
+   const responsiveDisplayValue =
+      useBreakpointValue({
+         base: 'none',
+         sm: 'block',
+      }) || 'block';
    useSafeLayoutEffect(() => {
       const originalStyle = window.getComputedStyle(document.body).overflow;
+      const nextContainer = document.getElementById('__next');
       if (lock) {
          document.body.style.overflow = 'hidden';
+         nextContainer!.style.display = responsiveDisplayValue;
       }
       return () => {
+         nextContainer!.style.display = 'block';
          document.body.style.overflow = originalStyle;
       };
-   }, [lock]);
+   }, [lock, responsiveDisplayValue]);
 }
