@@ -65,10 +65,18 @@ export function logSync<T>(name: string, syncFunction: () => T): T {
    return response;
 }
 
-function time(timerName: string): () => void {
+function noOp() {}
+const prodTimer = function (timerName: string) {
+   return noOp;
+};
+
+const devTimer = (timerName: string) => {
    const t = Date.now();
    return () => {
       const taken = Date.now() - t;
       console.log(`${timerName}: ${taken}ms`);
    };
-}
+};
+
+type Timer = (name: string) => () => void;
+const time: Timer = isProduction ? prodTimer : devTimer;
