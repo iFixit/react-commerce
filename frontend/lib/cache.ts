@@ -1,4 +1,6 @@
 import LRU from 'lru-cache';
+import { logAsync } from '@ifixit/helpers';
+
 const cacheStore = new LRU({ max: 100 });
 
 export function cache<T>(
@@ -8,13 +10,9 @@ export function cache<T>(
 ): Promise<T> {
    const fromCache = cacheStore.get(key) as Promise<T> | undefined;
    if (fromCache !== undefined) {
-      console.log(`Got '${key}' from cache`);
       return fromCache;
    }
-   const timerName = `Cache miss for '${key}'`;
-   console.time(timerName);
-   const result = fetch();
-   result.finally(() => console.timeEnd(timerName));
+   const result = logAsync(`Cache miss for '${key}'`, () => fetch());
    cacheStore.set(key, result, { ttl: ttl * 1000 });
    return result;
 }
