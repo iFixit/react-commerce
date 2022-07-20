@@ -36,9 +36,9 @@ export function logAsync<T>(
    name: string,
    asyncFunction: () => Promise<T>
 ): Promise<T> {
-   console.time(name);
+   const done = time(name);
    const response = asyncFunction();
-   response.finally(() => console.timeEnd(name));
+   response.finally(done);
    return response;
 }
 
@@ -51,16 +51,24 @@ export function logAsyncWrap<Args extends any[], T>(
    asyncFunction: (...args: Args) => Promise<T>
 ): (...args: Args) => Promise<T> {
    return (...args) => {
-      console.time(name);
+      const done = time(name);
       const response = asyncFunction(...args);
-      response.finally(() => console.timeEnd(name));
+      response.finally(done);
       return response;
    };
 }
 
 export function logSync<T>(name: string, syncFunction: () => T): T {
-   console.time(name);
+   const done = time(name);
    const response = syncFunction();
-   console.timeEnd(name);
+   done();
    return response;
+}
+
+function time(timerName: string): () => void {
+   const t = Date.now();
+   return () => {
+      const taken = Date.now() - t;
+      console.log(`${timerName}: ${taken}ms`);
+   };
 }
