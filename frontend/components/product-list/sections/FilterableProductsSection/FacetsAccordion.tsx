@@ -41,21 +41,11 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
       setIndexes(indexes);
    }, []);
 
-   const { hits } = useHits();
-   const hiddenFacets = facets.map((facet) => {
-      const { items } = useFilteredRefinementList({ attribute: facet });
-      const isProductListEmpty = hits.length === 0;
-      const hasApplicableRefinements = items.length > 0;
-      const isDisabled = isProductListEmpty || !hasApplicableRefinements;
-
-      const formattedFacetName = formatFacetName(facet);
-      const isHidden = !hasApplicableRefinements && !isProductListEmpty;
-
-      return { facet, isDisabled, formattedFacetName, isHidden };
+   const facetData = facets.map((facet) => {
+      return findFacetData(facet);
    });
 
-   const allFacetsHidden = hiddenFacets.every((facet) => facet.isHidden);
-
+   const allFacetsHidden = facetData.every((facet) => facet.isHidden);
    return (
       <Accordion
          allowMultiple
@@ -80,23 +70,15 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
                facetAttributes.push('facet_tags.Price');
             }
             const refinedCount = countRefinements(facetAttributes);
-            const { items } = useFilteredRefinementList({ attribute: facet });
-            const isProductListEmpty = hits.length === 0;
-            const hasApplicableRefinements = items.length > 0;
-            const isDisabled = isProductListEmpty || !hasApplicableRefinements;
-
-            const formattedFacetName = formatFacetName(facet);
-            const isHidden = !hasApplicableRefinements && !isProductListEmpty;
             return (
                <FacetAccordionItem
                   key={facet}
                   attribute={facet}
                   refinedCount={refinedCount}
                   productList={productList}
-                  formattedFacetName={formattedFacetName}
                   isExpanded={indexes.includes(facetIndex)}
-                  isHidden={isHidden}
-                  isDisabled={isDisabled}
+                  isHidden={findFacetData(facet).isHidden}
+                  isDisabled={findFacetData(facet).isDisabled}
                   allFacetsHidden={allFacetsHidden}
                />
             );
@@ -109,7 +91,6 @@ type FacetAccordionItemProps = AccordionItemProps & {
    attribute: string;
    refinedCount: number;
    productList: ProductList;
-   formattedFacetName: string;
    isExpanded: boolean;
    isHidden: boolean;
    isDisabled: boolean;
@@ -123,7 +104,6 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
          refinedCount,
          productList,
          isExpanded,
-         formattedFacetName,
          isHidden,
          isDisabled,
          allFacetsHidden,
@@ -131,6 +111,7 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       },
       ref
    ) => {
+      const formattedFacetName = formatFacetName(attribute);
       return (
          <AccordionItem
             ref={ref}
@@ -180,3 +161,13 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       );
    }
 );
+function findFacetData(attribute: string) {
+   const { items } = useFilteredRefinementList({ attribute });
+   const { hits } = useHits();
+   const isProductListEmpty = hits.length === 0;
+   const hasApplicableRefinements = items.length > 0;
+   const isDisabled = isProductListEmpty || !hasApplicableRefinements;
+   const isHidden = !hasApplicableRefinements && !isProductListEmpty;
+
+   return { isDisabled, isHidden };
+}
