@@ -50,7 +50,7 @@ describe('ProductListItem', () => {
       mockProduct.rating = 1;
       mockProduct.rating_count = 15;
       // @ts-ignore
-      const {rerender} = render(<ProductListItem product={mockProduct} />);
+      const { rerender } = render(<ProductListItem product={mockProduct} />);
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).toBeInTheDocument();
 
