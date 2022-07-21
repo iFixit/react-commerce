@@ -1,4 +1,4 @@
-import { Flex, Hide, Show, VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { ProductList, ProductListSectionType } from '@models/product-list';
@@ -38,22 +38,29 @@ export function ProductListView({
                   justify="space-between"
                   px={{ base: 3, sm: 0 }}
                >
-                  <Show above="sm">
-                     <ProductListBreadcrumb productList={productList} />
-                  </Show>
+                  <ProductListBreadcrumb
+                     display={{
+                        base: 'none',
+                        sm: 'flex',
+                     }}
+                     productList={productList}
+                  />
                   <ProductListDeviceNavigation productList={productList} />
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>
-         <Hide above="sm">
-            <SecondaryNavbar>
-               <PageContentWrapper h="full">
-                  <Flex h="full" w="full" boxSizing="border-box" px="3">
-                     <ProductListBreadcrumb productList={productList} />
-                  </Flex>
-               </PageContentWrapper>
-            </SecondaryNavbar>
-         </Hide>
+         <SecondaryNavbar
+            display={{
+               base: 'initial',
+               sm: 'none',
+            }}
+         >
+            <PageContentWrapper h="full">
+               <Flex h="full" w="full" boxSizing="border-box" px="3">
+                  <ProductListBreadcrumb productList={productList} />
+               </Flex>
+            </PageContentWrapper>
+         </SecondaryNavbar>
          <PageContentWrapper py="10">
             <VStack align="stretch" spacing="12">
                <Index indexName={indexName}>
