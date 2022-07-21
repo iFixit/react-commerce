@@ -42,7 +42,7 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
    }, []);
 
    const facetData = facets.map((facet) => {
-      return findFacetData(facet);
+      return useFacetData(facet);
    });
 
    const allFacetsHidden = facetData.every((facet) => facet.isHidden);
@@ -77,8 +77,8 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
                   refinedCount={refinedCount}
                   productList={productList}
                   isExpanded={indexes.includes(facetIndex)}
-                  isHidden={findFacetData(facet).isHidden}
-                  isDisabled={findFacetData(facet).isDisabled}
+                  isHidden={useFacetData(facet).isHidden}
+                  isDisabled={useFacetData(facet).isDisabled}
                   allFacetsHidden={allFacetsHidden}
                />
             );
@@ -161,7 +161,7 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       );
    }
 );
-function findFacetData(attribute: string) {
+function useFacetData(attribute: string) {
    const { items } = useFilteredRefinementList({ attribute });
    const { hits } = useHits();
    const isProductListEmpty = hits.length === 0;
