@@ -37,14 +37,7 @@ export function ProductListBreadcrumb({
    return (
       <Breadcrumb
          spacing={1}
-         separator={
-            <Icon
-               as={HiChevronRight}
-               display="initial"
-               color="gray.300"
-               mt="1"
-            />
-         }
+         separator={<Icon as={HiChevronRight} color="gray.300" mt="1" />}
          fontSize="sm"
          display="flex"
          flexWrap="nowrap"
