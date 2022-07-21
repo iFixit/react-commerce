@@ -1,15 +1,14 @@
 import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { HiSelector } from 'react-icons/hi';
+import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import {
-   useInstantSearch,
+   useCurrentRefinements,
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
 import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { uiStateToQueryString } from '@components/common/InstantSearchProvider';
-import { getProductListPath } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 
 export type RefinementMenuProps = UseRefinementListProps & {
@@ -25,19 +24,6 @@ export function RefinementMenu({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
-   const { indexUiState } = useInstantSearch();
-   const queryString = React.useMemo(
-      () => uiStateToQueryString(indexUiState, ['facet_tags.Item Type']),
-      [indexUiState]
-   );
-   const createItemTypeURL = React.useCallback(
-      (itemType: string) => {
-         const path = getProductListPath(productList, itemType);
-         return `${path}${queryString}`;
-      },
-      [productList, queryString]
-   );
-
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
@@ -48,8 +34,7 @@ export function RefinementMenu({
                      label={item.label}
                      value={item.value}
                      count={item.count}
-                     createURL={createItemTypeURL}
-                     onChange={refine}
+                     refine={refine}
                   />
                );
             })}
@@ -78,25 +63,30 @@ type MenuItemProps = {
    label: string;
    value: string;
    count: number;
-   createURL: (value: string) => string;
-   onChange: (value: string) => void;
+   refine: RefinementListRenderState['refine'];
 };
 
 const MenuItem = React.memo(function RefinementListItem({
    label,
    count,
    value,
-   createURL,
-   onChange,
+   refine,
 }: MenuItemProps) {
+   const { createURL } = useCurrentRefinements();
+   const href = createURL({
+      attribute: 'facet_tags.Item Type',
+      type: 'disjunctive',
+      value,
+      label,
+   });
    return (
       <HStack key={label} justify="space-between">
-         <NextLink href={createURL(value)} passHref>
+         <NextLink href={href} passHref>
             <Text
                as="a"
                onClick={(event) => {
                   event.preventDefault();
-                  onChange(value);
+                  refine(value);
                }}
                _hover={{
                   textDecoration: 'underline',
