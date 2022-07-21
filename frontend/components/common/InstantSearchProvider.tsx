@@ -13,8 +13,7 @@ import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
 import { UiState } from 'instantsearch.js/es/types';
 import { mapValues } from 'lodash';
-import { NextRouter, useRouter } from 'next/router';
-import QueryString, { ParsedQs } from 'qs';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
    InstantSearch,
@@ -87,7 +86,20 @@ export function InstantSearchProvider({
       stateMapping: {
          stateToRoute(uiState) {
             const indexUiState = uiState[indexName];
-            return indexUiStateToRoute(indexUiState);
+            const routeState: RouteState = {};
+            if (indexUiState.query) {
+               routeState.q = indexUiState.query;
+            }
+            if (indexUiState.page) {
+               routeState.p = indexUiState.page;
+            }
+            if (indexUiState.refinementList) {
+               routeState.filter = indexUiState.refinementList;
+            }
+            // if (indexUiState.range != null) {
+            //    routeState.range = indexUiState.range;
+            // }
+            return routeState;
          },
          routeToState(routeState: RouteState) {
             const stateObject: IndexUiState = {};
@@ -116,7 +128,7 @@ export function InstantSearchProvider({
 
             return window.location;
          },
-         createURL({ routeState, location }) {
+         createURL({ qsModule, routeState, location }) {
             const baseUrl = location.origin;
             const pathParts = location.pathname
                .split('/')
@@ -125,13 +137,11 @@ export function InstantSearchProvider({
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
             const itemTypeHandle = pathParts.length >= 3 ? pathParts[2] : '';
 
-            const ignoreFilterKeys = [];
             let path = '';
             if (partsOrTools) {
                path += `/${partsOrTools}`;
                if (deviceHandle) {
                   path += `/${deviceHandle}`;
-                  ignoreFilterKeys.push('facet_tags.Item Type');
                   const raw: string | string[] | undefined =
                      routeState.filter?.['facet_tags.Item Type'];
                   const itemType = Array.isArray(raw) ? raw[0] : raw;
@@ -146,9 +156,17 @@ export function InstantSearchProvider({
                }
             }
 
-            const queryString = routeToQueryString(
-               routeState,
-               ignoreFilterKeys
+            const filterCopy = { ...routeState.filter };
+            if (partsOrTools && deviceHandle) {
+               // Item Type is the slug on device pages, not in the query.
+               delete filterCopy['facet_tags.Item Type'];
+            }
+            const queryString = qsModule.stringify(
+               { ...routeState, filter: filterCopy },
+               {
+                  addQueryPrefix: true,
+                  arrayFormat: 'indices',
+               }
             );
 
             return `${baseUrl}${path}${queryString}`;
@@ -208,49 +226,7 @@ function useCountRenders() {
    return countRef.current;
 }
 
-export function uiStateToQueryString(
-   indexUiState: IndexUiState,
-   ignoreFilterKeys: string[] = []
-): string {
-   const routeState = indexUiStateToRoute(indexUiState);
-   return routeToQueryString(routeState, ignoreFilterKeys);
-}
-
-export function indexUiStateToRoute(indexUiState: IndexUiState) {
-   const routeState: RouteState = {};
-   if (indexUiState.query) {
-      routeState.q = indexUiState.query;
-   }
-   if (indexUiState.page) {
-      routeState.p = indexUiState.page;
-   }
-   if (indexUiState.refinementList) {
-      routeState.filter = indexUiState.refinementList;
-   }
-   // if (indexUiState.range != null) {
-   //    routeState.range = indexUiState.range;
-   // }
-   return routeState;
-}
-
-function routeToQueryString(
-   routeState: RouteState,
-   ignoreFilterKeys: string[] = []
-): string {
-   const filterCopy = { ...routeState.filter };
-   ignoreFilterKeys.forEach((key) => {
-      delete filterCopy[key];
-   });
-   return QueryString.stringify(
-      { ...routeState, filter: filterCopy },
-      {
-         addQueryPrefix: true,
-         arrayFormat: 'indices',
-      }
-   );
-}
-
-function decodeParsedQuery(parsed: string | ParsedQs | string[] | ParsedQs[]) {
+function decodeParsedQuery(parsed: any) {
    return typeof parsed === 'object'
       ? mapValues<Record<string, any>, any>(parsed, (parsedValues) => {
            return Array.isArray(parsedValues)
