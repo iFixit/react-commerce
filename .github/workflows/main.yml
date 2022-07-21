@@ -20,6 +20,7 @@ jobs:
          - name: Cypress run
            uses: cypress-io/github-action@v2
            env:
+              NODE_ENV: test
               CYPRESS_NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
