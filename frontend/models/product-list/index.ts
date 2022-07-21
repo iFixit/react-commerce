@@ -248,8 +248,7 @@ function convertAncestorsToStrapiFormat(
    const ancestor = ancestors.shift();
    if (ancestor == null) {
       return null;
-   }
-   if (ancestor.wikiid === 11000) {
+   } else if (ancestor['title'] === 'Root') {
       ancestor['type'] = 'all_parts';
       ancestor['title'] = 'All';
       ancestor['handle'] = 'Parts';
