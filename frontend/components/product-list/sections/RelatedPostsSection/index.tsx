@@ -1,8 +1,8 @@
 import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import { usePrevious, useSafeSetState } from '@ifixit/ui';
 import { fetchPosts, Post } from '@models/posts';
+import isEqual from 'lodash/isEqual';
 import * as React from 'react';
-import isEqual from 'react-fast-compare';
 import { PostCard } from './PostCard';
 
 export interface RelatedPostsSectionProps {
