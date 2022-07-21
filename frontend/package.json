@@ -53,13 +53,10 @@
       "query-string": "7.0.1",
       "react": "17.0.2",
       "react-dom": "17.0.2",
-      "react-fast-compare": "3.2.0",
       "react-icons": "4.2.0",
       "react-instantsearch-hooks-server": "6.26.0",
       "react-instantsearch-hooks-web": "6.26.0",
       "react-query": "3.34.19",
-      "react-virtualized-auto-sizer": "1.0.5",
-      "react-window": "1.8.6",
       "snarkdown": "2.0.0"
    },
    "devDependencies": {
