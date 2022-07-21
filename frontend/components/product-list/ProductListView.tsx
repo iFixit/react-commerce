@@ -26,6 +26,7 @@ export function ProductListView({
    indexName,
 }: ProductListViewProps) {
    const filters = computeProductListAlgoliaFilterPreset(productList);
+   const isRootProductList = productList.ancestors.length === 0;
 
    return (
       <>
@@ -50,6 +51,7 @@ export function ProductListView({
             </PageContentWrapper>
          </SecondaryNavbar>
          <SecondaryNavbar
+            hidden={isRootProductList}
             display={{
                base: 'initial',
                sm: 'none',
