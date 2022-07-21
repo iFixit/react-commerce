@@ -25,7 +25,7 @@ export function ProductListChildrenSection({
       childrenHeading,
       children: productListChildren,
    } = productList;
-   const [showingMore, setShowingMore] = React.useState(false);
+   const [isShowingMore, setShowingMore] = React.useState(false);
 
    const gridRef = React.useRef<HTMLDivElement>(null);
    const maskMaxHeight = React.useMemo(
@@ -33,10 +33,10 @@ export function ProductListChildrenSection({
          computeMaskMaxHeight(
             60,
             16,
-            showingMore,
+            isShowingMore,
             gridRef.current?.clientHeight
          ),
-      [showingMore]
+      [isShowingMore]
    );
 
    const showMoreVisibility = React.useMemo(
@@ -101,7 +101,7 @@ export function ProductListChildrenSection({
                ml="-8px"
                display="block"
             >
-               {showingMore ? 'Show less' : 'Show more'}
+               {isShowingMore ? 'Show less' : 'Show more'}
             </Button>
          </Box>
       </Box>
@@ -182,11 +182,11 @@ const ChildLink = ({ child }: ChildLinkProps) => {
 const computeMaskMaxHeight = (
    pixelLinkHeight: number,
    pixelGap: number,
-   showingMore: boolean,
+   isShowingMore: boolean,
    maxHeight = 10000
 ) => {
    const shadowMargin = 4;
-   if (showingMore) {
+   if (isShowingMore) {
       return `${maxHeight + shadowMargin}px`;
    }
    return {
