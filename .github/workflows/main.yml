@@ -22,7 +22,6 @@ jobs:
            env:
               CYPRESS_NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-              NEXT_PUBLIC_IFIXIT_ORIGIN: https://www.ifixit.com
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
            with:
               working-directory: frontend

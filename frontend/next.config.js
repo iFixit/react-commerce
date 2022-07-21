@@ -55,8 +55,7 @@ const moduleExports = {
          },
       ];
 
-      // Do not hide /Parts and /Tools in dev
-      if (process.env.NODE_ENV == "development") {
+      if (process.env.FORCE_SUBDOMAIN_REDIRECTS !== "true") {
          return redirects;
       }
 
