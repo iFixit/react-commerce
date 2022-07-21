@@ -57,7 +57,7 @@ export function ProductListView({
          <PageContentWrapper py="10">
             <VStack align="stretch" spacing="12">
                <Index indexName={indexName}>
-                  <Configure filters={filters} hitsPerPage={18}/>
+                  <Configure filters={filters} hitsPerPage={18} />
                   <MetaTags productList={productList} />
                   <HeroSection productList={productList} />
                   {productList.children.length > 0 && (

@@ -1,0 +1,16 @@
+name: Jest tests
+
+on: [push]
+
+jobs:
+   jest:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v2
+         - name: Install PNPM
+           run: corepack enable && corepack prepare pnpm@6.32.11 --activate
+         - name: Install workspaces
+           run: pnpm install
+         - name: Run Jest tests
+           run: cd frontend; pnpm test
