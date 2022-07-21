@@ -67,7 +67,6 @@ export async function findProductList(
       (deviceWiki?.ancestors
          ? convertAncestorsToStrapiFormat(deviceWiki.ancestors)
          : null);
-   const type = productList?.type ?? deviceWiki?.namespace;
    const title =
       productList?.title ??
       (deviceWiki?.title ? deviceWiki?.title + ' Parts' : '');
@@ -84,7 +83,10 @@ export async function findProductList(
       ALGOLIA_APP_ID,
       ALGOLIA_API_KEY
    );
-   const baseProductListType = getProductListType(type);
+
+   const baseProductListType = getProductListType(
+      productList?.type ?? deviceWiki?.namespace
+   );
    const productListType = options.itemType
       ? ProductListType.DeviceItemTypeParts
       : baseProductListType;
