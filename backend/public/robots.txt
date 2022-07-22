@@ -1,3 +1,8 @@
 # To prevent search engines from seeing the site altogether, uncomment the next two lines:
 # User-Agent: *
-# Disallow: /
+Disallow: /Parts*?*filter
+Disallow: /Parts*?*q=
+Disallow: /Tools*?*filter
+Disallow: /Tools*?*q=
+Disallow: /Shop*?*filter
+Disallow: /Shop*?*q=
