@@ -1,15 +1,11 @@
 import { MATOMO_URL } from '@config/env';
-import Script from 'next/script';
+import Head from 'next/head';
 
 export function Matomo() {
    return MATOMO_URL ? (
-      <Script
-         id="matomo-analytics"
-         onError={(e) => {
-            console.error('Failed to load Matomo analytics script', e);
-         }}
-      >
-         {`
+      <Head>
+         <script key="matomo-analytics">
+            {`
             var _paq = window._paq = window._paq || [];
             /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
             _paq.push(['trackPageView']);
@@ -21,7 +17,8 @@ export function Matomo() {
                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
                g.async=true; g.src=u+'/js/tracker.php'; s.parentNode.insertBefore(g,s);
             })();
-         `}
-      </Script>
+            `}
+         </script>
+      </Head>
    ) : null;
 }
