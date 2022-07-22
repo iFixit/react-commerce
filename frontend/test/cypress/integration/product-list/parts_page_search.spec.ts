@@ -4,14 +4,14 @@ describe('parts page search', () => {
    const user = cy;
 
    beforeEach(() => {
-      user.intercept('/1/indexes/**').as('search');
-      user.visit('/Parts');
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('should show results when the search term exists', () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
+         .should('not.be.disabled')
          .type('iphone');
 
       // Wait for search result to be updated
@@ -36,11 +36,11 @@ describe('parts page search', () => {
       user
          .findByTestId('collections-search-box')
          .should('be.visible')
+         .should('not.be.disabled')
          .type('asdasasdadasd');
 
       // Wait for search result to be updated
       user.wait('@search');
-      user.wait(2000);
 
       // Check that url parameter contains ?q after searching
       user.location({ timeout: 2000 }).should((loc) => {

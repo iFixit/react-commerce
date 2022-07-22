@@ -1,5 +1,9 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
+import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
+import { cypressWindowLog } from '@helpers/test-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { usePrevious } from '@ifixit/ui';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { useRouter } from 'next/router';
@@ -15,7 +19,6 @@ type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 export type AlgoliaProps = {
    url: string;
    indexName: string;
-   routing?: boolean;
    serverState?: Partial<InstantSearchServerState>;
    apiKey: string;
 };
@@ -33,11 +36,15 @@ export function InstantSearchProvider({
    indexName,
    serverState,
    apiKey,
-   routing,
 }: InstantSearchProviderProps) {
-   const algoliaClientRef = React.useRef<SearchClient>();
-   algoliaClientRef.current =
-      algoliaClientRef.current ?? algoliasearch(ALGOLIA_APP_ID, apiKey);
+   const user = useAuthenticatedUser();
+   cypressWindowLog({ userLoaded: user.isFetched });
+   const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
+   const previousApiKey = usePrevious(algoliaApiKey);
+
+   const algoliaClient = React.useMemo(() => {
+      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
+   }, [algoliaApiKey]);
 
    const router = useRouter();
 
@@ -69,7 +76,7 @@ export function InstantSearchProvider({
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
             key={count}
-            searchClient={algoliaClientRef.current}
+            searchClient={algoliaClient}
             indexName={indexName}
             routing={{
                stateMapping: {
@@ -120,6 +127,10 @@ export function InstantSearchProvider({
                }),
             }}
          >
+            <RefreshSearchResults
+               apiKey={algoliaApiKey}
+               prevApiKey={previousApiKey}
+            />
             {children}
          </InstantSearch>
       </InstantSearchSSRProvider>
@@ -130,4 +141,28 @@ function useCountRenders() {
    const countRef = React.useRef(0);
    countRef.current++;
    return countRef.current;
+}
+
+type RefreshSearchResultsProps = {
+   apiKey: string;
+   prevApiKey: string | undefined;
+};
+
+/**
+ * Refreshes search results if the API key changes
+ * (but only refreshes once for each api key change).
+ */
+function RefreshSearchResults({
+   apiKey,
+   prevApiKey,
+}: RefreshSearchResultsProps): null {
+   const { refresh } = useSearchCache();
+   useSafeLayoutEffect(() => {
+      const isFirstRender = !prevApiKey;
+      const hasApiKeyChanged = prevApiKey !== apiKey;
+      if (hasApiKeyChanged && !isFirstRender) {
+         refresh();
+      }
+   }, [apiKey, prevApiKey]);
+   return null;
 }

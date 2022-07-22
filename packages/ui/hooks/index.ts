@@ -75,14 +75,14 @@ export function useIsMounted() {
 }
 
 interface UsePreloadImage {
-   preload(url: string): Promise<void>;
+   preload(url: string): void;
    isLoaded: boolean;
    isError: boolean;
    error: any;
 }
 
 export function usePreloadImage(): UsePreloadImage {
-   const [state, setState] = React.useState<{
+   const [state, setState] = useSafeSetState<{
       status: 'idle' | 'loading' | 'loaded' | 'error';
       error: any;
    }>({
@@ -90,7 +90,7 @@ export function usePreloadImage(): UsePreloadImage {
       error: null,
    });
 
-   const preload = React.useCallback(async (url: string) => {
+   const preload = React.useCallback((url: string) => {
       const img = new Image();
       img.src = url;
       img.onload = () => {
@@ -109,9 +109,9 @@ export function usePreloadImage(): UsePreloadImage {
 
    return {
       preload,
-      isError: state.status === 'error',
-      isLoaded: state.status === 'loaded',
-      error: state.error,
+      isError: state?.status === 'error',
+      isLoaded: state?.status === 'loaded',
+      error: state?.error,
    };
 }
 
@@ -157,4 +157,28 @@ export function useLocalPreference<Data = any>(
    };
 
    return [data, setAndSave];
+}
+
+export function useSafeSetState<T>(
+   initialState: T | (() => T)
+): [T, React.Dispatch<React.SetStateAction<T>>] {
+   const [state, setState] = React.useState(initialState);
+
+   const mountedRef = React.useRef(false);
+   React.useEffect(() => {
+      mountedRef.current = true;
+      return () => {
+         mountedRef.current = false;
+      };
+   }, []);
+   const safeSetState = React.useCallback(
+      (args) => {
+         if (mountedRef.current) {
+            return setState(args);
+         }
+      },
+      [mountedRef, setState]
+   );
+
+   return [state, safeSetState];
 }
