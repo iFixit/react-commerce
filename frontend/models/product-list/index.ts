@@ -78,9 +78,7 @@ export async function findProductList(
       ALGOLIA_API_KEY
    );
 
-   const baseProductListType = getProductListType(
-      productList?.type ?? deviceWiki?.namespace
-   );
+   const baseProductListType = getProductListType(productList?.type);
    const productListType = options.itemType
       ? ProductListType.DeviceItemTypeParts
       : baseProductListType;
