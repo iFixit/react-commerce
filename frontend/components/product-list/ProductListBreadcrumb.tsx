@@ -107,12 +107,7 @@ export function ProductListBreadcrumb({
             </BreadcrumbItem>
          )}
          <BreadcrumbItem isCurrentPage display="flex">
-            <Text
-               color="black"
-               fontWeight="bold"
-               whiteSpace="nowrap"
-               isTruncated
-            >
+            <Text color="black" fontWeight="bold" noOfLines={1}>
                {currentItemTitle}
             </Text>
          </BreadcrumbItem>
