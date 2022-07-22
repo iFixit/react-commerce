@@ -72,12 +72,6 @@ export async function findProductList(
       (deviceWiki?.title ? deviceWiki?.title + ' Parts' : '');
    const description =
       productList?.description ?? deviceWiki?.description ?? '';
-   const productListImageAttributes = productList?.image?.data?.attributes;
-   const image = productListImageAttributes
-      ? getImageFromStrapiImage(productListImageAttributes, 'large')
-      : deviceWiki
-      ? getDeviceImage(deviceWiki)
-      : null;
 
    const algoliaApiKey = createPublicAlgoliaKey(
       ALGOLIA_APP_ID,
@@ -120,7 +114,7 @@ export async function findProductList(
       description: description,
       metaDescription: productList?.metaDescription ?? null,
       filters: productList?.filters ?? null,
-      image: image,
+      image: null,
       ancestors,
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: await fillMissingImagesFromApi(
