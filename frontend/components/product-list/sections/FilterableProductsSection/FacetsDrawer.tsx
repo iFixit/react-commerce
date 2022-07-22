@@ -128,7 +128,6 @@ export function FacetsDrawer({
                            <FacetListItem
                               key={facet}
                               attribute={facet}
-                              productListType={productList.type}
                               onSelect={setCurrentFacet}
                               refinedCount={refinedCount}
                            />
@@ -142,6 +141,10 @@ export function FacetsDrawer({
                            attribute={facet}
                            isOpen={facet === currentFacet}
                            productList={productList}
+                           onClose={() => {
+                              onClose();
+                              setCurrentFacet(null);
+                           }}
                         />
                      );
                   })}
@@ -230,30 +233,20 @@ function ClearAllButton({ isVisible }: ClearAllButtonProps) {
 
 type FacetListItemProps = {
    attribute: string;
-   productListType: ProductListType;
    refinedCount: number;
    onSelect: (attribute: string) => void;
 };
 
 function FacetListItem({
    attribute,
-   productListType,
    refinedCount,
    onSelect,
 }: FacetListItemProps) {
-   const { items, isAnyRefined } = useFilteredRefinementList({
+   const { items } = useFilteredRefinementList({
       attribute,
       limit: MAX_VALUES_PER_FACET,
    });
-   const refinementDisplayType = getRefinementDisplayType(
-      attribute,
-      productListType
-   );
-
-   const isRefinedSingleSelect =
-      isAnyRefined &&
-      refinementDisplayType === RefinementDisplayType.SingleSelect;
-   const hasApplicableRefinements = items.length > 0 && !isRefinedSingleSelect;
+   const hasApplicableRefinements = items.length > 0;
 
    if (!hasApplicableRefinements) {
       return null;
@@ -289,9 +282,15 @@ type FacetPanelProps = {
    attribute: string;
    isOpen: boolean;
    productList: ProductList;
+   onClose?: () => void;
 };
 
-function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
+function FacetPanel({
+   attribute,
+   isOpen,
+   productList,
+   onClose,
+}: FacetPanelProps) {
    return (
       <Box
          position="absolute"
@@ -307,7 +306,11 @@ function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
          p="5"
       >
          <VStack align="stretch" spacing="3">
-            <FacetFilter attribute={attribute} productList={productList} />
+            <FacetFilter
+               attribute={attribute}
+               productList={productList}
+               onClose={onClose}
+            />
          </VStack>
       </Box>
    );

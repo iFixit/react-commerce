@@ -90,21 +90,13 @@ type FacetAccordionItemProps = AccordionItemProps & {
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
    ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
-      const { items, isAnyRefined } = useFilteredRefinementList({
+      const { items } = useFilteredRefinementList({
          attribute,
          limit: MAX_VALUES_PER_FACET,
       });
       const { hits } = useHits();
-      const refinementDisplayType = getRefinementDisplayType(
-         attribute,
-         productList.type
-      );
       const isProductListEmpty = hits.length === 0;
-      const isRefinedSingleSelect =
-         isAnyRefined &&
-         refinementDisplayType === RefinementDisplayType.SingleSelect;
-      const hasApplicableRefinements =
-         items.length > 0 && !isRefinedSingleSelect;
+      const hasApplicableRefinements = items.length > 0;
       const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 
       const formattedFacetName = formatFacetName(attribute);
