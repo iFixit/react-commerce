@@ -25,9 +25,10 @@ type FacetsAccordianProps = {
 };
 
 const initialExpandedFacets = ['facet_tags.Item Type'];
-let checked = 0;
+let isemptyFacetState = 0;
 
 export function FacetsAccordion({ productList }: FacetsAccordianProps) {
+   isemptyFacetState = 0;
    const facets = useFilteredFacets(productList);
    const countRefinements = useCountRefinements();
    const [indexes, setIndexes] = React.useState<number[]>(() => {
@@ -102,13 +103,12 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       let isHidden = !hasApplicableRefinements && !isProductListEmpty;
 
       if (isHidden && attribute !== 'worksin') {
-         checked += 1;
+         isemptyFacetState += 1;
       }
 
-      if (checked === length) {
+      if (isemptyFacetState === length - 1) {
          isDisabled = true;
          isHidden = false;
-         checked = 0;
       }
 
       const formattedFacetName = formatFacetName(attribute);
