@@ -11,6 +11,8 @@ jobs:
          - name: Install PNPM
            run: corepack enable && corepack prepare pnpm@6.32.11 --activate
          - name: Install workspaces
+           env:
+              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
            run: pnpm install
          - name: Run Jest tests
            run: cd frontend; pnpm test

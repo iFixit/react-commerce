@@ -7,6 +7,7 @@ import {
    Box,
    BoxProps,
    Button,
+   Circle,
    CloseButton,
    Collapse,
    Divider,
@@ -28,6 +29,7 @@ import {
    Spinner,
    Text,
    useDisclosure,
+   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
@@ -37,6 +39,8 @@ import * as React from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
 
 export function CartDrawer() {
    const appContext = useAppContext();
@@ -48,6 +52,8 @@ export function CartDrawer() {
 
    const totalDiscount = cart.data?.totals.discount;
    const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
+
+   const theme = useTheme();
 
    return (
       <>
@@ -161,9 +167,13 @@ export function CartDrawer() {
                         in={cart.data != null && cart.data.totalNumItems === 0}
                      >
                         <VStack spacing="5" p="5">
-                           <Text fontSize="4xl" lineHeight="1em">
-                              🥲
-                           </Text>
+                           <Circle size="72px" bg={theme.colors.brand[100]}>
+                              <FontAwesomeIcon
+                                 icon={faCartCircleExclamation}
+                                 size="2x"
+                                 color={theme.colors.blue.ifixit}
+                              />
+                           </Circle>
                            <Text>Your cart is empty</Text>
                            <Button colorScheme="blue" onClick={onClose}>
                               Back to shopping
