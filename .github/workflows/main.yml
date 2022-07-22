@@ -20,7 +20,7 @@ jobs:
          - name: Install workspaces
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
-           run: echo "$FONT_AWESOME_NPM_TOKEN" && pnpm install
+           run: pnpm install
          - name: Cypress run
            uses: cypress-io/github-action@v2
            env:
