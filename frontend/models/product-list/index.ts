@@ -79,7 +79,7 @@ export async function findProductList(
    );
 
    const baseProductListType = getProductListType(
-      productList?.type ?? deviceWiki?.namespace
+      productList?.type
    );
    const productListType = options.itemType
       ? ProductListType.DeviceItemTypeParts
