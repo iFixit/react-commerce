@@ -17,7 +17,10 @@ import { formatFacetName } from '@helpers/algolia-helpers';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
-import { useClearRefinements } from 'react-instantsearch-hooks-web';
+import {
+   useClearRefinements,
+   useCurrentRefinements,
+} from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
@@ -188,11 +191,14 @@ type ClearFacetButtonProps = {
 };
 
 function ClearFacetButton({ attribute, isVisible }: ClearFacetButtonProps) {
-   const { items } = useFilteredRefinementList({ attribute });
+   const { items } = useCurrentRefinements({ includedAttributes: [attribute] });
    const { refine } = useClearRefinements({
       includedAttributes: [attribute],
    });
-   const refinedCount = items.filter((item) => item.isRefined).length;
+   const refinedCount = items.reduce(
+      (sum, item) => sum + item.refinements.length,
+      0
+   );
    if (!isVisible) {
       return null;
    }
