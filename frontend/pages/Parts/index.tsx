@@ -13,13 +13,14 @@ import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
+import { logAsync, logAsyncWrap } from '@ifixit/helpers';
 import { GetServerSideProps } from 'next';
 import { getServerState } from 'react-instantsearch-hooks-server';
 
 type PageProps = WithLayoutProps<ProductListViewProps>;
 type AppPageProps = WithProvidersProps<PageProps>;
 
-export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
    // The data is considered fresh for 10 seconds, and can be served even if stale for up to 10 minutes
@@ -28,13 +29,16 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
 
-   const [globalSettings, stores, currentStore, productList] =
-      await Promise.all([
-         getGlobalSettings(),
-         getStoreList(),
-         getStoreByCode('us'),
-         findProductList({ handle: { eq: 'Parts' } }),
-      ]);
+   const [globalSettings, stores, currentStore, productList] = await logAsync(
+      'Promise.all',
+      () =>
+         Promise.all([
+            getGlobalSettings(),
+            getStoreList(),
+            getStoreByCode('us'),
+            findProductList({ handle: { eq: 'Parts' } }),
+         ])
+   );
 
    if (productList == null) {
       return {
@@ -56,10 +60,12 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       },
    };
 
-   const serverState = await getServerState(
-      <AppProviders {...appProps}>
-         <ProductListView productList={productList} indexName={indexName} />
-      </AppProviders>
+   const serverState = await logAsync('getServerState', () =>
+      getServerState(
+         <AppProviders {...appProps}>
+            <ProductListView productList={productList} indexName={indexName} />
+         </AppProviders>
+      )
    );
 
    const pageProps: AppPageProps = {
@@ -86,6 +92,9 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       props: pageProps,
    };
 };
+
+export const getServerSideProps: GetServerSideProps<AppPageProps> =
+   logAsyncWrap('getServerSideProps', getServerSidePropsInternal);
 
 const ProductListPage: NextPageWithLayout<PageProps> = (pageProps) => {
    return <ProductListView {...pageProps} />;

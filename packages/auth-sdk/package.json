@@ -6,7 +6,8 @@
    "license": "MIT",
    "dependencies": {
       "@ifixit/app": "workspace:*",
-      "@ifixit/helpers": "workspace:*"
+      "@ifixit/helpers": "workspace:*",
+      "@ifixit/ifixit-api-client": "workspace:*"
    },
    "peerDependencies": {
       "react-query": "3.x",

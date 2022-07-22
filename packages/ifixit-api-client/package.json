@@ -5,7 +5,8 @@
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/app": "workspace:*"
+      "@ifixit/app": "workspace:*",
+      "@ifixit/helpers": "workspace:*"
    },
    "devDependencies": {
       "@types/react": "17.0.37",
