@@ -14,9 +14,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { getRefinementDisplayType } from '@helpers/product-list-helpers';
-import { ProductList, ProductListType } from '@models/product-list';
-import { RefinementDisplayType } from '@models/product-list/types';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import { useClearRefinements } from 'react-instantsearch-hooks-web';

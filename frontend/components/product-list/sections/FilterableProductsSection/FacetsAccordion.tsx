@@ -12,9 +12,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
-import { RefinementDisplayType } from '@models/product-list/types';
 import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
