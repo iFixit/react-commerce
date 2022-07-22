@@ -58,8 +58,7 @@ type ProductListPathAttributes = Pick<
 >;
 
 export function getProductListPath(
-   productList: ProductListPathAttributes,
-   itemType?: string
+   productList: ProductListPathAttributes
 ): string {
    switch (productList.type) {
       case ProductListType.AllParts: {
@@ -71,10 +70,6 @@ export function getProductListPath(
             'device product list does not have device title'
          );
          const deviceHandle = encodeDeviceTitle(productList.deviceTitle);
-         if (itemType) {
-            const itemTypeHandle = encodeDeviceItemType(itemType);
-            return `/Parts/${deviceHandle}/${itemTypeHandle}`;
-         }
          return `/Parts/${deviceHandle}`;
       }
       case ProductListType.AllTools: {
