@@ -1,7 +1,11 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
-import { ProductList, ProductListSectionType } from '@models/product-list';
+import {
+   ProductList,
+   ProductListSectionType,
+   ProductListType,
+} from '@models/product-list';
 import { Configure, Index } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
@@ -27,10 +31,13 @@ export function ProductListView({
 }: ProductListViewProps) {
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const isRootProductList = productList.ancestors.length === 0;
+   const isToolPage =
+      productList.type === ProductListType.AllTools ||
+      productList.type === ProductListType.ToolsCategory;
 
    return (
       <>
-         <SecondaryNavbar>
+         <SecondaryNavbar hidden={isToolPage}>
             <PageContentWrapper h="full">
                <Flex
                   h="full"
