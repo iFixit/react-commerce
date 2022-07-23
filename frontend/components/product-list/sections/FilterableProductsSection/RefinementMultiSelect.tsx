@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
+import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
@@ -29,11 +30,8 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
                return (
                   <MultiSelectItem
                      key={item.label}
-                     label={item.label}
-                     value={item.value}
-                     isRefined={item.isRefined}
-                     count={item.count}
-                     onChange={refine}
+                     item={item}
+                     refine={refine}
                   />
                );
             })}
@@ -59,17 +57,14 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
 }
 
 type MultiSelectItemProps = {
-   label: string;
-   value: string;
-   isRefined: boolean;
-   count: number;
-   onChange: (value: string) => void;
+   item: RefinementListRenderState['items'][0];
+   refine: RefinementListRenderState['refine'];
 };
 
-const MultiSelectItem = React.memo(function MultiSelectItem(
-   props: MultiSelectItemProps
-) {
-   const { onChange, ...item } = props;
+const MultiSelectItem = React.memo(function MultiSelectItem({
+   item,
+   refine,
+}: MultiSelectItemProps) {
    const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
 
    return (
@@ -80,7 +75,7 @@ const MultiSelectItem = React.memo(function MultiSelectItem(
             isChecked={isRefined}
             onChange={() => {
                setIsRefined((current) => !current);
-               onChange(item.value);
+               refine(item.value);
             }}
             data-value={item.value}
          >

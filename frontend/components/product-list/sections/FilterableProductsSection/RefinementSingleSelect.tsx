@@ -11,7 +11,6 @@ import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList } from '@models/product-list';
-import { useDevicePartsItemType } from './useDevicePartsItemType';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -28,7 +27,6 @@ export function RefinementSingleSelect({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
-   const itemType = useDevicePartsItemType(productList);
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
@@ -36,10 +34,7 @@ export function RefinementSingleSelect({
                return (
                   <SingleSelectItem
                      key={item.label}
-                     label={item.label}
-                     value={item.value}
-                     count={item.count}
-                     isRefined={item.value === itemType}
+                     item={item}
                      attribute={otherProps.attribute}
                      refine={refine}
                      onClose={onClose}
@@ -68,20 +63,14 @@ export function RefinementSingleSelect({
 }
 
 type SingleSelectItemProps = {
-   label: string;
-   value: string;
-   count: number;
-   isRefined: boolean;
+   item: RefinementListRenderState['items'][0];
    attribute: string;
    refine: RefinementListRenderState['refine'];
    onClose?: () => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
-   label,
-   count,
-   value,
-   isRefined,
+   item,
    attribute,
    refine,
    onClose,
@@ -93,15 +82,15 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    const href = createURL({
       attribute,
       type: 'disjunctive',
-      value,
-      label,
+      value: item.value,
+      label: item.label,
    });
    return (
       <HStack
-         key={label}
+         key={item.label}
          justify="space-between"
-         color={isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={isRefined ? 'bold' : 'inherit'}
+         color={item.isRefined ? 'brand.500' : 'inherit'}
+         fontWeight={item.isRefined ? 'bold' : 'inherit'}
       >
          <NextLink href={href} passHref>
             <Text
@@ -109,18 +98,18 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
                onClick={(event) => {
                   event.preventDefault();
                   clearRefinements();
-                  refine(value);
+                  refine(item.value);
                   onClose?.();
                }}
                _hover={{
                   textDecoration: 'underline',
                }}
             >
-               {label}
+               {item.label}
             </Text>
          </NextLink>
          <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
-            {count}
+            {item.count}
          </Text>
       </HStack>
    );
