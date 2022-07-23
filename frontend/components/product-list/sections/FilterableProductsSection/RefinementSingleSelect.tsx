@@ -13,16 +13,16 @@ import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList } from '@models/product-list';
 import { useDevicePartsItemType } from './useDevicePartsItemType';
 
-export type RefinementMenuProps = UseRefinementListProps & {
+type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
    onClose?: () => void;
 };
 
-export function RefinementMenu({
+export function RefinementSingleSelect({
    productList,
    onClose,
    ...otherProps
-}: RefinementMenuProps) {
+}: RefinementSingleSelectProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...otherProps,
@@ -34,7 +34,7 @@ export function RefinementMenu({
          <VStack align="stretch" spacing="1" role="listbox">
             {items.map((item) => {
                return (
-                  <MenuItem
+                  <SingleSelectItem
                      key={item.label}
                      label={item.label}
                      value={item.value}
@@ -67,7 +67,7 @@ export function RefinementMenu({
    );
 }
 
-type MenuItemProps = {
+type SingleSelectItemProps = {
    label: string;
    value: string;
    count: number;
@@ -77,7 +77,7 @@ type MenuItemProps = {
    onClose?: () => void;
 };
 
-const MenuItem = React.memo(function RefinementListItem({
+const SingleSelectItem = React.memo(function SingleSelectItem({
    label,
    count,
    value,
@@ -85,7 +85,7 @@ const MenuItem = React.memo(function RefinementListItem({
    attribute,
    refine,
    onClose,
-}: MenuItemProps) {
+}: SingleSelectItemProps) {
    const { refine: clearRefinements } = useClearRefinements({
       includedAttributes: [attribute],
    });

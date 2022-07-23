@@ -13,9 +13,9 @@ import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
 
-export type RefinementListProps = UseRefinementListProps;
+type RefinementMultiSelectProps = UseRefinementListProps;
 
-export function RefinementList(props: RefinementListProps) {
+export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...props,
@@ -27,7 +27,7 @@ export function RefinementList(props: RefinementListProps) {
          <VStack align="stretch" spacing="1" role="listbox">
             {items.map((item) => {
                return (
-                  <RefinementListItem
+                  <MultiSelectItem
                      key={item.label}
                      label={item.label}
                      value={item.value}
@@ -58,7 +58,7 @@ export function RefinementList(props: RefinementListProps) {
    );
 }
 
-type RefinementListItemProps = {
+type MultiSelectItemProps = {
    label: string;
    value: string;
    isRefined: boolean;
@@ -66,8 +66,8 @@ type RefinementListItemProps = {
    onChange: (value: string) => void;
 };
 
-const RefinementListItem = React.memo(function RefinementListItem(
-   props: RefinementListItemProps
+const MultiSelectItem = React.memo(function MultiSelectItem(
+   props: MultiSelectItemProps
 ) {
    const { onChange, ...item } = props;
    const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
