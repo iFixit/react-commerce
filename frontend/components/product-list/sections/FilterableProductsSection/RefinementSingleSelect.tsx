@@ -11,6 +11,7 @@ import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList } from '@models/product-list';
+import { useDecoupledState } from '@ifixit/ui';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -75,39 +76,50 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    refine,
    onClose,
 }: SingleSelectItemProps) {
+   const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
    const { refine: clearRefinements } = useClearRefinements({
       includedAttributes: [attribute],
    });
    const { createURL } = useCurrentRefinements();
-   const href = createURL({
-      attribute,
-      type: 'disjunctive',
-      value: item.value,
-      label: item.label,
-   });
+   const TitleText = (
+      <Text
+         as={attribute === 'facet_tags.Item Type' ? 'a' : 'button'}
+         onClick={(event) => {
+            event.preventDefault();
+            setIsRefined((current) => !current);
+            clearRefinements();
+            refine(item.value);
+            onClose?.();
+         }}
+         _hover={{
+            textDecoration: 'underline',
+         }}
+      >
+         {item.label}
+      </Text>
+   );
    return (
       <HStack
          key={item.label}
          justify="space-between"
-         color={item.isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={item.isRefined ? 'bold' : 'inherit'}
+         color={isRefined ? 'brand.500' : 'inherit'}
+         fontWeight={isRefined ? 'bold' : 'inherit'}
       >
-         <NextLink href={href} passHref>
-            <Text
-               as="a"
-               onClick={(event) => {
-                  event.preventDefault();
-                  clearRefinements();
-                  refine(item.value);
-                  onClose?.();
-               }}
-               _hover={{
-                  textDecoration: 'underline',
-               }}
+         {attribute === 'facet_tags.Item Type' ? (
+            <NextLink
+               href={createURL({
+                  attribute,
+                  type: 'disjunctive',
+                  value: item.value,
+                  label: item.label,
+               })}
+               passHref
             >
-               {item.label}
-            </Text>
-         </NextLink>
+               {TitleText}
+            </NextLink>
+         ) : (
+            TitleText
+         )}
          <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
             {item.count}
          </Text>
