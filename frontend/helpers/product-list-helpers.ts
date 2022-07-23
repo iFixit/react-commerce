@@ -102,21 +102,20 @@ export function getProductListTitle(
    return productList.title;
 }
 
+const refinementDisplayTypeMap: Partial<
+   Record<string, Partial<Record<ProductListType, RefinementDisplayType>>>
+> = {
+   'facet_tags.Item Type': {
+      [ProductListType.DeviceParts]: RefinementDisplayType.SingleSelect,
+   },
+};
+
 export function getRefinementDisplayType(
    attribute: string,
    productListType: ProductListType
 ) {
-   switch (attribute) {
-      case 'facet_tags.Item Type': {
-         switch (productListType) {
-            case ProductListType.DeviceParts:
-               return RefinementDisplayType.SingleSelect;
-            default:
-               return RefinementDisplayType.MultiSelect;
-         }
-      }
-      default: {
-         return RefinementDisplayType.MultiSelect;
-      }
-   }
+   return (
+      refinementDisplayTypeMap[attribute]?.[productListType] ??
+      RefinementDisplayType.MultiSelect
+   );
 }
