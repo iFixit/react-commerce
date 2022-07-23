@@ -37,6 +37,7 @@ const moduleExports = {
       NEXT_PUBLIC_IFIXIT_ORIGIN: process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
       NEXT_PUBLIC_STRAPI_ORIGIN: process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
       SENTRY_DSN: process.env.SENTRY_DSN,
+      NEXT_PUBLIC_MATOMO_URL: process.env.NEXT_PUBLIC_MATOMO_URL,
    },
    async rewrites() {
       return [
