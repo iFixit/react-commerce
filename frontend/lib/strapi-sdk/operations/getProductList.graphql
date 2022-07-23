@@ -45,6 +45,36 @@ query getProductList($filters: ProductListFiltersInput) {
                                        title
                                        handle
                                        deviceTitle
+                                       parent {
+                                          data {
+                                             attributes {
+                                                type
+                                                title
+                                                handle
+                                                deviceTitle
+                                                parent {
+                                                   data {
+                                                      attributes {
+                                                         type
+                                                         title
+                                                         handle
+                                                         deviceTitle
+                                                         parent {
+                                                            data {
+                                                               attributes {
+                                                                  type
+                                                                  title
+                                                                  handle
+                                                                  deviceTitle
+                                                               }
+                                                            }
+                                                         }
+                                                      }
+                                                   }
+                                                }
+                                             }
+                                          }
+                                       }
                                     }
                                  }
                               }

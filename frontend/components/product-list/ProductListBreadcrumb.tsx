@@ -46,17 +46,7 @@ export function ProductListBreadcrumb({
    return (
       <Breadcrumb
          spacing={1}
-         separator={
-            <Icon
-               as={HiChevronRight}
-               display={{
-                  base: 'none',
-                  md: 'initial',
-               }}
-               color="gray.300"
-               mt="1"
-            />
-         }
+         separator={<Icon as={HiChevronRight} color="gray.300" mt="1" />}
          fontSize="sm"
          display="flex"
          flexWrap="nowrap"
@@ -125,19 +115,8 @@ export function ProductListBreadcrumb({
                </Menu>
             </BreadcrumbItem>
          )}
-         <BreadcrumbItem
-            isCurrentPage
-            display={{
-               base: 'none',
-               md: 'flex',
-            }}
-         >
-            <Text
-               color="black"
-               fontWeight="bold"
-               whiteSpace="nowrap"
-               isTruncated
-            >
+         <BreadcrumbItem isCurrentPage display="flex">
+            <Text color="black" fontWeight="bold" noOfLines={1}>
                {currentItemTitle}
             </Text>
          </BreadcrumbItem>

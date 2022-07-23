@@ -1398,6 +1398,45 @@ export type GetProductListQuery = {
                                        title: string;
                                        handle: string;
                                        deviceTitle?: Maybe<string>;
+                                       parent?: Maybe<{
+                                          __typename?: 'ProductListEntityResponse';
+                                          data?: Maybe<{
+                                             __typename?: 'ProductListEntity';
+                                             attributes?: Maybe<{
+                                                __typename?: 'ProductList';
+                                                type?: Maybe<Enum_Productlist_Type>;
+                                                title: string;
+                                                handle: string;
+                                                deviceTitle?: Maybe<string>;
+                                                parent?: Maybe<{
+                                                   __typename?: 'ProductListEntityResponse';
+                                                   data?: Maybe<{
+                                                      __typename?: 'ProductListEntity';
+                                                      attributes?: Maybe<{
+                                                         __typename?: 'ProductList';
+                                                         type?: Maybe<Enum_Productlist_Type>;
+                                                         title: string;
+                                                         handle: string;
+                                                         deviceTitle?: Maybe<string>;
+                                                         parent?: Maybe<{
+                                                            __typename?: 'ProductListEntityResponse';
+                                                            data?: Maybe<{
+                                                               __typename?: 'ProductListEntity';
+                                                               attributes?: Maybe<{
+                                                                  __typename?: 'ProductList';
+                                                                  type?: Maybe<Enum_Productlist_Type>;
+                                                                  title: string;
+                                                                  handle: string;
+                                                                  deviceTitle?: Maybe<string>;
+                                                               }>;
+                                                            }>;
+                                                         }>;
+                                                      }>;
+                                                   }>;
+                                                }>;
+                                             }>;
+                                          }>;
+                                       }>;
                                     }>;
                                  }>;
                               }>;
@@ -2503,6 +2542,36 @@ export const GetProductListDocument = `
                           title
                           handle
                           deviceTitle
+                          parent {
+                            data {
+                              attributes {
+                                type
+                                title
+                                handle
+                                deviceTitle
+                                parent {
+                                  data {
+                                    attributes {
+                                      type
+                                      title
+                                      handle
+                                      deviceTitle
+                                      parent {
+                                        data {
+                                          attributes {
+                                            type
+                                            title
+                                            handle
+                                            deviceTitle
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
