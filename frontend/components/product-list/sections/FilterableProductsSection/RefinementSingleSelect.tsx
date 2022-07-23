@@ -11,35 +11,31 @@ import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList } from '@models/product-list';
-import { useDevicePartsItemType } from './useDevicePartsItemType';
+import { useDecoupledState } from '@ifixit/ui';
 
-export type RefinementMenuProps = UseRefinementListProps & {
+type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
    onClose?: () => void;
 };
 
-export function RefinementMenu({
+export function RefinementSingleSelect({
    productList,
    onClose,
    ...otherProps
-}: RefinementMenuProps) {
+}: RefinementSingleSelectProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
-   const itemType = useDevicePartsItemType(productList);
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
             {items.map((item) => {
                return (
-                  <MenuItem
+                  <SingleSelectItem
                      key={item.label}
-                     label={item.label}
-                     value={item.value}
-                     count={item.count}
-                     isRefined={item.value === itemType}
+                     item={item}
                      attribute={otherProps.attribute}
                      refine={refine}
                      onClose={onClose}
@@ -67,60 +63,65 @@ export function RefinementMenu({
    );
 }
 
-type MenuItemProps = {
-   label: string;
-   value: string;
-   count: number;
-   isRefined: boolean;
+type SingleSelectItemProps = {
+   item: RefinementListRenderState['items'][0];
    attribute: string;
    refine: RefinementListRenderState['refine'];
    onClose?: () => void;
 };
 
-const MenuItem = React.memo(function RefinementListItem({
-   label,
-   count,
-   value,
-   isRefined,
+const SingleSelectItem = React.memo(function SingleSelectItem({
+   item,
    attribute,
    refine,
    onClose,
-}: MenuItemProps) {
+}: SingleSelectItemProps) {
+   const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
    const { refine: clearRefinements } = useClearRefinements({
       includedAttributes: [attribute],
    });
    const { createURL } = useCurrentRefinements();
-   const href = createURL({
-      attribute,
-      type: 'disjunctive',
-      value,
-      label,
-   });
+   const TitleText = (
+      <Text
+         as={attribute === 'facet_tags.Item Type' ? 'a' : 'button'}
+         onClick={(event) => {
+            event.preventDefault();
+            setIsRefined((current) => !current);
+            clearRefinements();
+            refine(item.value);
+            onClose?.();
+         }}
+         _hover={{
+            textDecoration: 'underline',
+         }}
+      >
+         {item.label}
+      </Text>
+   );
    return (
       <HStack
-         key={label}
+         key={item.label}
          justify="space-between"
          color={isRefined ? 'brand.500' : 'inherit'}
          fontWeight={isRefined ? 'bold' : 'inherit'}
       >
-         <NextLink href={href} passHref>
-            <Text
-               as="a"
-               onClick={(event) => {
-                  event.preventDefault();
-                  clearRefinements();
-                  refine(value);
-                  onClose?.();
-               }}
-               _hover={{
-                  textDecoration: 'underline',
-               }}
+         {attribute === 'facet_tags.Item Type' ? (
+            <NextLink
+               href={createURL({
+                  attribute,
+                  type: 'disjunctive',
+                  value: item.value,
+                  label: item.label,
+               })}
+               passHref
             >
-               {label}
-            </Text>
-         </NextLink>
+               {TitleText}
+            </NextLink>
+         ) : (
+            TitleText
+         )}
          <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
-            {count}
+            {item.count}
          </Text>
       </HStack>
    );

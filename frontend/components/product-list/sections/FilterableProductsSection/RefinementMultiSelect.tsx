@@ -9,13 +9,15 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
+import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
+import { useDecoupledState } from '@ifixit/ui';
 
-export type RefinementListProps = UseRefinementListProps;
+type RefinementMultiSelectProps = UseRefinementListProps;
 
-export function RefinementList(props: RefinementListProps) {
+export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...props,
@@ -27,13 +29,10 @@ export function RefinementList(props: RefinementListProps) {
          <VStack align="stretch" spacing="1" role="listbox">
             {items.map((item) => {
                return (
-                  <RefinementListItem
+                  <MultiSelectItem
                      key={item.label}
-                     label={item.label}
-                     value={item.value}
-                     isRefined={item.isRefined}
-                     count={item.count}
-                     onChange={refine}
+                     item={item}
+                     refine={refine}
                   />
                );
             })}
@@ -58,18 +57,15 @@ export function RefinementList(props: RefinementListProps) {
    );
 }
 
-type RefinementListItemProps = {
-   label: string;
-   value: string;
-   isRefined: boolean;
-   count: number;
-   onChange: (value: string) => void;
+type MultiSelectItemProps = {
+   item: RefinementListRenderState['items'][0];
+   refine: RefinementListRenderState['refine'];
 };
 
-const RefinementListItem = React.memo(function RefinementListItem(
-   props: RefinementListItemProps
-) {
-   const { onChange, ...item } = props;
+const MultiSelectItem = React.memo(function MultiSelectItem({
+   item,
+   refine,
+}: MultiSelectItemProps) {
    const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
 
    return (
@@ -80,7 +76,7 @@ const RefinementListItem = React.memo(function RefinementListItem(
             isChecked={isRefined}
             onChange={() => {
                setIsRefined((current) => !current);
-               onChange(item.value);
+               refine(item.value);
             }}
             data-value={item.value}
          >
@@ -92,22 +88,3 @@ const RefinementListItem = React.memo(function RefinementListItem(
       </HStack>
    );
 });
-
-/**
- * Creates a decoupled state value that is kept is sync with the provided state.
- * The purpose of this hook is to make an input field feel more responsive when the
- * state update depends on async requests.
- * @param state The state that is being decoupled
- * @returns The decoupled state
- */
-function useDecoupledState<Type = any>(
-   state: Type
-): [Type, React.Dispatch<React.SetStateAction<Type>>] {
-   const [decoupledState, setDecoupledState] = React.useState(state);
-
-   React.useEffect(() => {
-      setDecoupledState(state);
-   }, [state]);
-
-   return [decoupledState, setDecoupledState];
-}
