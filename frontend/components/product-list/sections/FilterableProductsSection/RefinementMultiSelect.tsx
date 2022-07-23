@@ -13,6 +13,7 @@ import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refine
 import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
+import { useDecoupledState } from '@ifixit/ui';
 
 type RefinementMultiSelectProps = UseRefinementListProps;
 
@@ -87,22 +88,3 @@ const MultiSelectItem = React.memo(function MultiSelectItem({
       </HStack>
    );
 });
-
-/**
- * Creates a decoupled state value that is kept is sync with the provided state.
- * The purpose of this hook is to make an input field feel more responsive when the
- * state update depends on async requests.
- * @param state The state that is being decoupled
- * @returns The decoupled state
- */
-function useDecoupledState<Type = any>(
-   state: Type
-): [Type, React.Dispatch<React.SetStateAction<Type>>] {
-   const [decoupledState, setDecoupledState] = React.useState(state);
-
-   React.useEffect(() => {
-      setDecoupledState(state);
-   }, [state]);
-
-   return [decoupledState, setDecoupledState];
-}
