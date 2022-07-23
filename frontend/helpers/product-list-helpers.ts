@@ -102,20 +102,14 @@ export function getProductListTitle(
    return productList.title;
 }
 
-const refinementDisplayTypeMap: Partial<
-   Record<string, Partial<Record<ProductListType, RefinementDisplayType>>>
-> = {
-   'facet_tags.Item Type': {
-      [ProductListType.DeviceParts]: RefinementDisplayType.SingleSelect,
-   },
-};
+const refinementDisplayTypeMap: Partial<Record<string, RefinementDisplayType>> =
+   {
+      'facet_tags.Capacity': RefinementDisplayType.MultiSelect,
+      price_range: RefinementDisplayType.MultiSelect,
+   };
 
-export function getRefinementDisplayType(
-   attribute: string,
-   productListType: ProductListType
-) {
+export function getRefinementDisplayType(attribute: string) {
    return (
-      refinementDisplayTypeMap[attribute]?.[productListType] ??
-      RefinementDisplayType.MultiSelect
+      refinementDisplayTypeMap[attribute] ?? RefinementDisplayType.SingleSelect
    );
 }

@@ -16,11 +16,7 @@ export function FacetFilter({
    productList,
    onClose,
 }: FacetFilterProps) {
-   const refinementDisplayType = getRefinementDisplayType(
-      attribute,
-      productList.type
-   );
-   switch (refinementDisplayType) {
+   switch (getRefinementDisplayType(attribute)) {
       case RefinementDisplayType.SingleSelect:
          return (
             <RefinementMenu
