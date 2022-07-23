@@ -11,10 +11,16 @@ import {
    MenuList,
    Text,
 } from '@chakra-ui/react';
+import {
+   getProductListPath,
+   getProductListTitle,
+} from '@helpers/product-list-helpers';
 import { ProductList, ProductListType } from '@models/product-list';
+import { ProductListAncestor } from '@models/product-list/types';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { HiChevronRight, HiDotsHorizontal } from 'react-icons/hi';
+import { useDevicePartsItemType } from './sections/FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListBreadcrumbProps = BreadcrumbProps & {
    productList: ProductList;
@@ -24,15 +30,18 @@ export function ProductListBreadcrumb({
    productList,
    ...otherProps
 }: ProductListBreadcrumbProps) {
-   const { ancestors } = productList;
+   let { ancestors } = productList;
+   const itemType = useDevicePartsItemType(productList);
+
+   let currentItemTitle = productList.title;
+   if (productList.type === ProductListType.DeviceParts && itemType) {
+      ancestors = appendDeviceAncestor(ancestors, productList);
+      currentItemTitle = itemType;
+   }
+
    const reverseAncestorList = React.useMemo(() => {
       return [...ancestors].reverse();
    }, [ancestors]);
-
-   let currentItemTitle = productList.title;
-   if (productList.type === ProductListType.DeviceItemTypeParts) {
-      currentItemTitle = productList.itemType;
-   }
 
    return (
       <Breadcrumb
@@ -134,4 +143,22 @@ export function ProductListBreadcrumb({
          </BreadcrumbItem>
       </Breadcrumb>
    );
+}
+
+function appendDeviceAncestor(
+   ancestors: ProductListAncestor[],
+   productList: ProductList
+) {
+   return ancestors.concat({
+      title: getProductListTitle({
+         title: productList.title,
+         type: productList.type,
+      }),
+      handle: productList.handle,
+      path: getProductListPath({
+         type: productList.type,
+         handle: productList.handle,
+         deviceTitle: productList.deviceTitle ?? null,
+      }),
+   });
 }
