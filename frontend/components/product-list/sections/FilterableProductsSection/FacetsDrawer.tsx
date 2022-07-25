@@ -10,6 +10,7 @@ import {
    IconButton,
    Portal,
    Text,
+   useBreakpointValue,
    useSafeLayoutEffect,
    VStack,
 } from '@chakra-ui/react';
@@ -17,10 +18,13 @@ import { formatFacetName } from '@helpers/algolia-helpers';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
-import { useClearRefinements } from 'react-instantsearch-hooks-web';
+import {
+   useClearRefinements,
+   useCurrentRefinements,
+} from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
-import { useFilteredFacets } from './useFacets';
+import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 
 type FacetsDrawerProps = {
@@ -139,6 +143,10 @@ export function FacetsDrawer({
                            attribute={facet}
                            isOpen={facet === currentFacet}
                            productList={productList}
+                           onClose={() => {
+                              onClose();
+                              setCurrentFacet(null);
+                           }}
                         />
                      );
                   })}
@@ -184,11 +192,14 @@ type ClearFacetButtonProps = {
 };
 
 function ClearFacetButton({ attribute, isVisible }: ClearFacetButtonProps) {
-   const { items } = useFilteredRefinementList({ attribute });
+   const { items } = useCurrentRefinements({ includedAttributes: [attribute] });
    const { refine } = useClearRefinements({
       includedAttributes: [attribute],
    });
-   const refinedCount = items.filter((item) => item.isRefined).length;
+   const refinedCount = items.reduce(
+      (sum, item) => sum + item.refinements.length,
+      0
+   );
    if (!isVisible) {
       return null;
    }
@@ -236,9 +247,13 @@ function FacetListItem({
    refinedCount,
    onSelect,
 }: FacetListItemProps) {
-   const { items } = useFilteredRefinementList({ attribute });
+   const { items } = useFilteredRefinementList({
+      attribute,
+      limit: MAX_VALUES_PER_FACET,
+   });
+   const hasApplicableRefinements = items.length > 0;
 
-   if (items.length === 0) {
+   if (!hasApplicableRefinements) {
       return null;
    }
 
@@ -272,9 +287,15 @@ type FacetPanelProps = {
    attribute: string;
    isOpen: boolean;
    productList: ProductList;
+   onClose?: () => void;
 };
 
-function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
+function FacetPanel({
+   attribute,
+   isOpen,
+   productList,
+   onClose,
+}: FacetPanelProps) {
    return (
       <Box
          position="absolute"
@@ -290,20 +311,32 @@ function FacetPanel({ attribute, isOpen, productList }: FacetPanelProps) {
          p="5"
       >
          <VStack align="stretch" spacing="3">
-            <FacetFilter attribute={attribute} productList={productList} />
+            <FacetFilter
+               attribute={attribute}
+               productList={productList}
+               onClose={onClose}
+            />
          </VStack>
       </Box>
    );
 }
 
 function useLockBodyScroll(lock: boolean) {
+   const responsiveDisplayValue =
+      useBreakpointValue({
+         base: 'none',
+         sm: 'block',
+      }) || 'block';
    useSafeLayoutEffect(() => {
       const originalStyle = window.getComputedStyle(document.body).overflow;
+      const nextContainer = document.getElementById('__next');
       if (lock) {
          document.body.style.overflow = 'hidden';
+         nextContainer!.style.display = responsiveDisplayValue;
       }
       return () => {
+         nextContainer!.style.display = 'block';
          document.body.style.overflow = originalStyle;
       };
-   }, [lock]);
+   }, [lock, responsiveDisplayValue]);
 }

@@ -16,7 +16,7 @@ export async function fetchDeviceWiki(
          }
       );
       const payload = await response.json();
-      return payload;
+      return response.ok ? payload : null;
    } catch (error: any) {
       return null;
    }

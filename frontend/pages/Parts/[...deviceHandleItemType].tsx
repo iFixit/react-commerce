@@ -37,8 +37,19 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       return redirects;
    }
 
-   const { deviceHandle } = context.params || {};
+   const { deviceHandleItemType } = context.params || {};
+   const [deviceHandle, itemTypeHandle, ...rest] = Array.isArray(
+      deviceHandleItemType
+   )
+      ? deviceHandleItemType
+      : [];
+
    invariant(typeof deviceHandle === 'string', 'device handle is required');
+   if (rest?.length > 0) {
+      return {
+         notFound: true,
+      };
+   }
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -47,7 +58,11 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({ deviceTitle: { eq: deviceTitle } }),
+         findProductList({
+            deviceTitle: {
+               eq: deviceTitle,
+            },
+         }),
       ]);
 
    if (productList == null) {
@@ -59,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const title = `iFixit | ${productList.title}`;
 
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.req.url}`;
+   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
    const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {

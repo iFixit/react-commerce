@@ -7,6 +7,7 @@ import {
    useCurrentRefinements,
    usePagination,
 } from 'react-instantsearch-hooks-web';
+import { useDevicePartsItemType } from './sections/FilterableProductsSection/useDevicePartsItemType';
 
 export interface MetaTagsProps {
    productList: ProductList;
@@ -17,15 +18,23 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const currentRefinements = useCurrentRefinements();
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
-   const isFiltered = currentRefinements.items.length > 0;
-   let title = getProductListTitle(productList);
+   const refinementAttributes = currentRefinements.items.map(
+      (item) => item.attribute
+   );
+   const isItemTypeFilter =
+      refinementAttributes.length === 1 &&
+      refinementAttributes[0] === 'facet_tags.Item Type';
+   const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
+   const itemType = useDevicePartsItemType(productList);
+   let title = getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
    title += ' | iFixit';
-   const canonicalUrl = `${appContext.ifixitOrigin}${productList.path}${
-      page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
-   }`;
+   const itemTypeHandle = itemType ? `/${itemType}` : '';
+   const canonicalUrl = `${appContext.ifixitOrigin}${
+      productList.path
+   }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
    const imageUrl = productList.image?.url;
    const shouldNoIndex = isFiltered || pagination.nbHits < 2;
    return (

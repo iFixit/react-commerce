@@ -1,5 +1,6 @@
 import { invariant } from '@ifixit/helpers';
 import { ProductList, ProductListType } from '@models/product-list';
+import { RefinementDisplayType } from '@models/product-list/types';
 
 type ProductListAttributes = {
    filters?: string | null;
@@ -11,12 +12,8 @@ type ProductListAttributes = {
 export function computeProductListAlgoliaFilterPreset<
    T extends ProductListAttributes
 >(productList: T): string | undefined {
-   const { filters, deviceTitle, itemType, type } = productList;
+   const { filters, deviceTitle } = productList;
    const conditions: string[] = [];
-
-   if (type && type === ProductListType.DeviceItemTypeParts && itemType) {
-      conditions.push(`'facet_tags.Item Type': ${JSON.stringify(itemType)}`);
-   }
 
    if (filters && filters.length > 0) {
       conditions.push(filters);
@@ -58,9 +55,7 @@ export function encodeDeviceTitle(deviceTitle: string): string {
 type ProductListPathAttributes = Pick<
    ProductList,
    'type' | 'handle' | 'deviceTitle'
-> & {
-   itemType?: string;
-};
+>;
 
 export function getProductListPath(
    productList: ProductListPathAttributes
@@ -76,19 +71,6 @@ export function getProductListPath(
          );
          const deviceHandle = encodeDeviceTitle(productList.deviceTitle);
          return `/Parts/${deviceHandle}`;
-      }
-      case ProductListType.DeviceItemTypeParts: {
-         invariant(
-            productList.deviceTitle != null,
-            'device product list does not have device title'
-         );
-         invariant(
-            productList.itemType != null,
-            'device item type product list does not have item type'
-         );
-         const deviceHandle = encodeDeviceTitle(productList.deviceTitle);
-         const itemTypeHandle = encodeDeviceItemType(productList.itemType);
-         return `/Parts/${deviceHandle}/${itemTypeHandle}`;
       }
       case ProductListType.AllTools: {
          return '/Tools';
@@ -107,17 +89,34 @@ export function getProductListPath(
 
 type ProductListTitleAttributes = {
    type: ProductListType;
-   itemType?: string;
    title: string;
 };
 
 export function getProductListTitle(
-   productList: ProductListTitleAttributes
+   productList: ProductListTitleAttributes,
+   itemType?: string
 ): string {
-   if (productList.type === ProductListType.DeviceItemTypeParts) {
-      return `${productList.title.replace(/parts$/i, '').trim()} ${
-         productList.itemType
-      }`;
+   if (productList.type === ProductListType.DeviceParts && itemType) {
+      return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
    }
    return productList.title;
+}
+
+export function getRefinementDisplayType(
+   attribute: string,
+   productListType: ProductListType
+) {
+   switch (attribute) {
+      case 'facet_tags.Item Type': {
+         switch (productListType) {
+            case ProductListType.DeviceParts:
+               return RefinementDisplayType.SingleSelect;
+            default:
+               return RefinementDisplayType.MultiSelect;
+         }
+      }
+      default: {
+         return RefinementDisplayType.MultiSelect;
+      }
+   }
 }

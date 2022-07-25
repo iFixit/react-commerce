@@ -3,9 +3,11 @@ import { useDynamicWidgets } from 'react-instantsearch-hooks-web';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
 
+export const MAX_VALUES_PER_FACET = 200;
+
 export function useFacets() {
    const { attributesToRender } = useDynamicWidgets({
-      maxValuesPerFacet: 200,
+      maxValuesPerFacet: MAX_VALUES_PER_FACET,
    });
 
    return [
@@ -26,8 +28,6 @@ export function useFacets() {
 
 export function useFilteredFacets(productList: ProductList) {
    const facets = useFacets();
-   const isItemTypeProductList =
-      productList.type === ProductListType.DeviceItemTypeParts;
 
    const infoNames = React.useMemo(() => {
       return new Set(
@@ -43,14 +43,11 @@ export function useFilteredFacets(productList: ProductList) {
       const usefulFacets = facets
          .slice()
          .filter((facet) => {
-            if (facet === 'facet_tags.Item Type' && isItemTypeProductList) {
-               return false;
-            }
             return !infoNames.has(facet);
          })
          .sort(sortBy);
       return usefulFacets;
-   }, [facets, infoNames, isItemTypeProductList, sortBy]);
+   }, [facets, infoNames, sortBy]);
 
    if (productList.type === ProductListType.AllTools) {
       const excludedToolsFacets = [
@@ -84,7 +81,6 @@ function getFacetComparator(productListType: ProductListType) {
    switch (productListType) {
       case ProductListType.AllParts:
       case ProductListType.DeviceParts:
-      case ProductListType.DeviceItemTypeParts:
          return sortFacetsWithRanking(partsFacetRanking);
       case ProductListType.AllTools:
       case ProductListType.ToolsCategory:

@@ -4,8 +4,10 @@ import {
 } from '@assets/svg';
 import {
    Box,
+   BoxProps,
    Button,
    Flex,
+   forwardRef,
    Heading,
    HStack,
    Icon,
@@ -20,12 +22,10 @@ import { cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
 import {
    ProductList as TProductList,
-   ProductListType,
    ProductSearchHit,
 } from '@models/product-list';
 import * as React from 'react';
 import {
-   Configure,
    useClearRefinements,
    useCurrentRefinements,
    useHits,
@@ -37,6 +37,7 @@ import { Pagination } from './Pagination';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
+import { useDevicePartsItemType } from './useDevicePartsItemType';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -81,34 +82,29 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                <FacetsAccordion productList={productList} />
             </FacetCard>
             <Card flex={1}>
-               {isEmpty ? (
-                  <ProductListEmptyState productList={productList} />
-               ) : viewType === ProductViewType.Grid ? (
-                  <>
-                     <ProductGrid>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductGridItem key={hit.handle} product={hit} />
-                           );
-                        })}
-                     </ProductGrid>
-                     <Pagination />
-                  </>
-               ) : (
-                  <>
-                     <ProductList>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductListItem
-                                 key={hit.objectID}
-                                 product={hit}
-                              />
-                           );
-                        })}
-                     </ProductList>
-                     <Pagination />
-                  </>
+               <ProductListEmptyState
+                  productList={productList}
+                  hidden={!isEmpty}
+               />
+               {!isEmpty && viewType === ProductViewType.Grid && (
+                  <ProductGrid>
+                     {hits.map((hit) => {
+                        return (
+                           <ProductGridItem key={hit.handle} product={hit} />
+                        );
+                     })}
+                  </ProductGrid>
                )}
+               {!isEmpty && viewType === ProductViewType.List && (
+                  <ProductList>
+                     {hits.map((hit) => {
+                        return (
+                           <ProductListItem key={hit.objectID} product={hit} />
+                        );
+                     })}
+                  </ProductList>
+               )}
+               <Pagination />
             </Card>
          </HStack>
       </Flex>
@@ -151,79 +147,100 @@ function useScrollIntoViewEffect(deps: React.DependencyList) {
    return ref;
 }
 
-type EmptyStateProps = {
+type EmptyStateProps = BoxProps & {
    productList: TProductList;
 };
 
-const ProductListEmptyState = ({ productList }: EmptyStateProps) => {
-   const clearRefinements = useClearRefinements();
+const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
+   ({ productList, ...otherProps }, ref) => {
+      const clearRefinements = useClearRefinements();
 
-   const currentRefinements = useCurrentRefinements();
-   const hasRefinements = currentRefinements.items.length > 0;
+      const currentRefinements = useCurrentRefinements();
+      const hasRefinements = currentRefinements.items.length > 0;
 
-   const searchBox = useSearchBox();
-   const hasSearchQuery = searchBox.query.length > 0;
+      const searchBox = useSearchBox();
+      const hasSearchQuery = searchBox.query.length > 0;
 
-   const isFiltered = hasRefinements || hasSearchQuery;
+      const isFiltered = hasRefinements || hasSearchQuery;
 
-   const title = getProductListTitle(productList);
-   const encodedQuery = encodeURIComponent(searchBox.query);
+      const itemType = useDevicePartsItemType(productList);
+      const title = getProductListTitle(productList, itemType);
+      const encodedQuery = encodeURIComponent(searchBox.query);
 
-   if (isFiltered) {
-      return (
-         <VStack pt="16" pb="20" px="2" textAlign="center">
-            <Icon
-               as={SearchEmptyStateIllustration}
-               boxSize="200px"
-               opacity="0.8"
-            />
-            <Text fontSize="lg" fontWeight="bold" w="full">
-               No matching products found in {title}
-            </Text>
-            <Text maxW="500px" color="gray.500">
-               Try adjusting your search or filter to find what you&apos;re
-               looking for.
-            </Text>
-            <Link
-               maxW="500px"
-               color="brand.500"
-               href={`${IFIXIT_ORIGIN}/Search?query=${encodedQuery}`}
+      if (isFiltered) {
+         return (
+            <VStack
+               ref={ref}
+               pt="16"
+               pb="20"
+               px="2"
+               textAlign="center"
+               {...otherProps}
             >
-               Search all of iFixit for&nbsp;
-               <Text as="span" fontWeight="bold">
-                  {searchBox.query}
+               <Icon
+                  as={SearchEmptyStateIllustration}
+                  boxSize="200px"
+                  opacity="0.8"
+               />
+               <Text fontSize="lg" fontWeight="bold" w="full">
+                  No matching products found in {title}
                </Text>
-            </Link>
-            <Box pt="8">
-               <Button
-                  colorScheme="brand"
-                  onClick={() => {
-                     searchBox.clear();
-                     clearRefinements.refine();
-                  }}
+               <Text maxW="500px" color="gray.500">
+                  Try adjusting your search or filter to find what you&apos;re
+                  looking for.
+               </Text>
+               <Link
+                  maxW="500px"
+                  color="brand.500"
+                  href={`${IFIXIT_ORIGIN}/Search?query=${encodedQuery}`}
                >
-                  Reset filters
-               </Button>
-            </Box>
-         </VStack>
+                  Search all of iFixit for&nbsp;
+                  <Text as="span" fontWeight="bold">
+                     {searchBox.query}
+                  </Text>
+               </Link>
+               <Box pt="8">
+                  <Button
+                     colorScheme="brand"
+                     onClick={() => {
+                        searchBox.clear();
+                        clearRefinements.refine();
+                     }}
+                  >
+                     Reset filters
+                  </Button>
+               </Box>
+            </VStack>
+         );
+      }
+      return (
+         <Card
+            ref={ref}
+            pt="16"
+            pb="20"
+            borderRadius={{ base: 'none', sm: 'lg' }}
+            {...otherProps}
+         >
+            <VStack>
+               <Icon
+                  as={ProductListEmptyStateIllustration}
+                  boxSize="200px"
+                  opacity="0.8"
+               />
+               <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  w="full"
+                  textAlign="center"
+               >
+                  Empty collection
+               </Text>
+               <Text maxW="500px" color="gray.500" textAlign="center" px="2">
+                  This collection does not have products. Try to navigate to
+                  subcategories to find what you are looking for.
+               </Text>
+            </VStack>
+         </Card>
       );
    }
-   return (
-      <Card pt="16" pb="20" borderRadius={{ base: 'none', sm: 'lg' }}>
-         <VStack>
-            <Icon
-               as={ProductListEmptyStateIllustration}
-               boxSize="200px"
-               opacity="0.8"
-            />
-            <Text fontSize="lg" fontWeight="bold" w="full" textAlign="center">
-               Empty collection
-            </Text>
-            <Text maxW="500px" color="gray.500" textAlign="center" px="2">
-               This collection does not have products. Try to navigate to
-               subcategories to find what you are looking for.
-            </Text>
-         </VStack>
-      </Card>
-   );
-};
+);

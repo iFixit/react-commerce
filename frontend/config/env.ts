@@ -22,6 +22,11 @@ export const STRAPI_ORIGIN = checkEnv(
    'NEXT_PUBLIC_STRAPI_ORIGIN'
 );
 
+export const MATOMO_URL = checkEnv(
+   process.env.NEXT_PUBLIC_MATOMO_URL,
+   'NEXT_PUBLIC_MATOMO_URL'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {
