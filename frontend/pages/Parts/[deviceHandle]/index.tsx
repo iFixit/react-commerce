@@ -11,6 +11,7 @@ import {
 } from '@components/product-list';
 import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
 import { decodeDeviceTitle } from '@helpers/product-list-helpers';
+import { getSubDomainRedirect } from '@helpers/redirect-helper';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -29,6 +30,12 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       'Cache-Control',
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
+
+   const redirects = getSubDomainRedirect(context.req, '/Parts');
+
+   if (redirects) {
+      return redirects;
+   }
 
    const { deviceHandle } = context.params || {};
    invariant(typeof deviceHandle === 'string', 'device handle is required');
