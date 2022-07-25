@@ -2,8 +2,7 @@ describe('parts page devices', () => {
    const user = cy;
 
    beforeEach(() => {
-      const host = 'www.ifixit.com';
-      user.loadCollectionPageByPath('/Parts', host);
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('should navigate until the last device page', () => {

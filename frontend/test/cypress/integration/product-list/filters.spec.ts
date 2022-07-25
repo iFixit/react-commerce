@@ -1,8 +1,7 @@
 describe('product list filters', () => {
    const user = cy;
    beforeEach(() => {
-      const host = 'www.ifixit.com';
-      user.loadCollectionPageByPath('/Parts', host);
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('should help user filter', () => {

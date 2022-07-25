@@ -2,8 +2,7 @@ describe('parts page results view', () => {
    const user = cy;
 
    beforeEach(() => {
-      const host = 'www.ifixit.com';
-      user.loadCollectionPageByPath('/Parts', host);
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('all products have a visible price', () => {

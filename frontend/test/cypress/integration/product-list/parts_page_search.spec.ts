@@ -4,8 +4,7 @@ describe('parts page search', () => {
    const user = cy;
 
    beforeEach(() => {
-      const host = 'www.ifixit.com';
-      user.loadCollectionPageByPath('/Parts', host);
+      user.loadCollectionPageByPath('/Parts');
    });
 
    it('should show results when the search term exists', () => {

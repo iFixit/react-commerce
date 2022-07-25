@@ -1,8 +1,7 @@
 describe('collection display', () => {
    const user = cy;
    beforeEach(() => {
-      const host = 'www.ifixit.com';
-      user.loadCollectionPageByPath('/Tools', host);
+      user.loadCollectionPageByPath('/Tools');
    });
 
    it('should display grid view when selected', () => {
