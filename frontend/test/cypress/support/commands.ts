@@ -18,7 +18,7 @@ Cypress.Commands.add(
    }
 );
 
-Cypress.Commands.add('loadCollectionPageByPath', (path: string) => {
+Cypress.Commands.add('loadCollectionPageByPath', (path: string, host?: string) => {
    cy.intercept('/1/indexes/**').as('search');
    // Here we stub the user api request so we don't depend on ifixit api
    cy.intercept(
@@ -30,7 +30,8 @@ Cypress.Commands.add('loadCollectionPageByPath', (path: string) => {
          unique_username: 'john123',
       }
    ).as('user-api');
-   cy.visit(path);
+   const headers: {Host: string}|{} = host ? { "Host": host } : {};
+   cy.visit({url: path, headers: headers });
    cy.wait('@user-api');
    cy.window().its('userLoaded').should('be.true');
 });

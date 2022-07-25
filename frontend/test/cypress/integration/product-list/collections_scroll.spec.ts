@@ -4,7 +4,8 @@
 describe('collections scroll', () => {
    const user = cy;
    beforeEach(() => {
-      user.loadCollectionPageByPath('/Tools');
+      const host = 'www.ifixit.com';
+      user.loadCollectionPageByPath('/Tools', host);
    });
 
    it('should scroll to the top of the page after clicking next page', () => {

@@ -3,6 +3,6 @@
 declare namespace Cypress {
    interface Chainable {
       isWithinViewport(element: any): Chainable;
-      loadCollectionPageByPath(path: string): Chainable;
+      loadCollectionPageByPath(path: string, host?: string): Chainable;
    }
 }

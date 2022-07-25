@@ -1,7 +1,8 @@
 describe('subscribe to newsletter', () => {
    const user = cy;
    beforeEach(() => {
-      user.loadCollectionPageByPath('/Parts');
+      const host = 'www.ifixit.com';
+      user.loadCollectionPageByPath('/Parts', host);
    });
 
    it('requires an email', () => {
