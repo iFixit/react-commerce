@@ -1,17 +1,16 @@
 import { IncomingMessage } from "http";
 
 export function getSubDomainRedirect(request: IncomingMessage, redirectPath: string) {
-   const wantsRedirects = process.env.FORCE_SUBDOMAIN_REDIRECTS === "true"
-   const isEN = !!request.headers.host?.match(/www\.ifixit\.com/g);
+   const regex = new RegExp(process.env.SUBDOMAIN_REDIRECT_UNLESS_REGEX || '^');
+   const host = request.headers.host;
+   const shouldRedirect =  host ? !host.match(regex) : false;
 
-   if (isEN || !wantsRedirects) {
-      return;
+   if (shouldRedirect) {
+      return {
+         redirect: {
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/${redirectPath}`,
+            permanent: true,
+         },
+       }
    }
-
-   return {
-      redirect: {
-         destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/${redirectPath}`,
-         permanent: true,
-      },
-    }
 }
