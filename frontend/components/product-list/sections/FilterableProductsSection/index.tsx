@@ -167,7 +167,8 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
       const title = getProductListTitle(productList, itemType);
       const encodedQuery = encodeURIComponent(searchBox.query);
 
-      const parentCategory = productList.ancestors.at(-1);
+      const ancestors = productList.ancestors;
+      const parentCategory = ancestors[ancestors.length - 1];
 
       if (isFiltered) {
          return (
