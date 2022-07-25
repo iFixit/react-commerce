@@ -167,6 +167,8 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
       const title = getProductListTitle(productList, itemType);
       const encodedQuery = encodeURIComponent(searchBox.query);
 
+      const parentCategory = productList.ancestors.at(-1);
+
       if (isFiltered) {
          return (
             <VStack
@@ -236,9 +238,9 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                   Empty collection
                </Text>
                <Text maxW="500px" color="gray.500" textAlign="center" px="2">
-                  This collection does not have products. Try to navigate to
-                  subcategories to find what you are looking for.
+                  This collection does not have products.
                </Text>
+               {parentCategory && <Link href={parentCategory.path}>Return to parent category</Link>}
             </VStack>
          </Card>
       );
