@@ -16,9 +16,7 @@ export function GoogleAnalytics() {
                      window.ga_debug = {trace: true};
                   }
 
-                  let createOptions = {'legacyCookieDomain': 'ifixit.com'};
-
-                  ga('create', '${GA_KEY}', 'auto', 'ifixit', createOptions);
+                  ga('create', '${GA_KEY}', 'auto', 'ifixit', {'legacyCookieDomain': 'ifixit.com'});
                   ga('ifixit.set', 'anonymizeIp', true);
 
                   // Do not lazy load.
