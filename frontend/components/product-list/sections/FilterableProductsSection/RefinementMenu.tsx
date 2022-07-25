@@ -12,6 +12,7 @@ import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList } from '@models/product-list';
 import { useDevicePartsItemType } from './useDevicePartsItemType';
+import { encodeDeviceItemType } from '@helpers/product-list-helpers';
 
 export type RefinementMenuProps = UseRefinementListProps & {
    productList: ProductList;
@@ -90,12 +91,18 @@ const MenuItem = React.memo(function RefinementListItem({
       includedAttributes: [attribute],
    });
    const { createURL } = useCurrentRefinements();
-   const href = createURL({
-      attribute,
-      type: 'disjunctive',
-      value,
-      label,
-   });
+   const url = new URL(
+      createURL({
+         attribute,
+         type: 'disjunctive',
+         value,
+         label,
+      })
+   );
+   // The url created by InstantSearch doesn't have the correct item type slug.
+   const path = url.pathname.split('/').filter((part) => part !== '');
+   const itemTypeHandle = encodeDeviceItemType(value);
+   const href = `${url.origin}/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
    return (
       <HStack
          key={label}
