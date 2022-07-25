@@ -54,10 +54,8 @@ export function ProductListItem({ product }: ProductListItemProps) {
 
    const showProBadge = product.is_pro > 0;
    const showDiscountBadge = quantityAvailable > 0 && isDiscounted;
-   const showLifetimeWarrantyBadge =
-      quantityAvailable > 0 && product.lifetime_warranty;
-   const showOemPartnershipBadge =
-      quantityAvailable > 0 && product.oem_partnership;
+   const showLifetimeWarrantyBadge = product.lifetime_warranty;
+   const showOemPartnershipBadge = product.oem_partnership;
    const showBadges =
       showProBadge ||
       showDiscountBadge ||
