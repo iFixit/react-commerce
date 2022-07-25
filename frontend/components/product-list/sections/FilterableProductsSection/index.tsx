@@ -221,6 +221,15 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
             pt="16"
             pb="20"
             borderRadius={{ base: 'none', sm: 'lg' }}
+            sx={{
+               a: {
+                  color: 'brand.500',
+                  transition: 'color 300ms',
+                  '&:hover': {
+                     color: 'brand.600',
+                  },
+               },
+            }}
             {...otherProps}
          >
             <VStack>
@@ -240,7 +249,11 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                <Text maxW="500px" color="gray.500" textAlign="center" px="2">
                   This collection does not have products.
                </Text>
-               {parentCategory && <Link href={parentCategory.path}>Return to parent category</Link>}
+               {parentCategory && (
+                  <Link href={parentCategory.path}>
+                     Return to parent category
+                  </Link>
+               )}
             </VStack>
          </Card>
       );
