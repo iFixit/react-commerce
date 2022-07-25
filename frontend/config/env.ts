@@ -27,6 +27,16 @@ export const MATOMO_URL = checkEnv(
    'NEXT_PUBLIC_MATOMO_URL'
 );
 
+export const GA_URL = checkEnv(
+   process.env.NEXT_PUBLIC_GA_URL,
+   'NEXT_PUBLIC_GA_URL'
+);
+
+export const GA_KEY = checkEnv(
+   process.env.NEXT_PUBLIC_GA_KEY,
+   'NEXT_PUBLIC_GA_KEY'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {
