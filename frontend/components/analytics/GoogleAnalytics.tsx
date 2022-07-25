@@ -17,23 +17,11 @@ export function GoogleAnalytics() {
 
                   let createOptions = {'legacyCookieDomain': 'ifixit.com'};
 
-                  // Logged in?
-                  // createOptions.userId = '<userid>';
-
                   ga('create', '${GA_KEY}', 'auto', 'ifixit', createOptions);
                   ga('ifixit.set', 'anonymizeIp', true);
 
-                  // Logged in? One of '0', '1'
-                  // ga('ifixit.set', 'dimension1', 'LOGGED_IN');
-
                   // Do not lazy load.
                   ga('ifixit.set', 'dimension2', '0');
-
-                  // Customer type? One of: 'regular', 'pro', 'wholesale'
-                  // ga('ifixit.set', 'dimension4', 'CUSTOMER_TYPE');
-
-                  // Userid? Ex: '418937'
-                  ga('ifixit.set', 'dimension5', 'USER_ID');
 
                   // Load the enhanced ecommerce plug-in.
                   ga('ifixit.require', 'ec');
