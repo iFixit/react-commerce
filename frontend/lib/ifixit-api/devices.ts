@@ -8,11 +8,14 @@ export async function fetchDeviceWiki(
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
-      const response = await client.get(`wikis/CATEGORY/${deviceHandle}`, {
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      });
+      const response = await client.get(
+         `cart/part_collections/devices/${deviceHandle}`,
+         {
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         }
+      );
       if (!response.ok) {
          return null;
       }
