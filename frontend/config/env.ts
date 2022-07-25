@@ -37,6 +37,11 @@ export const GA_KEY = checkEnv(
    'NEXT_PUBLIC_GA_KEY'
 );
 
+export const GA_DEBUG = checkEnv(
+   process.env.NEXT_PUBLIC_GA_DEBUG,
+   'NEXT_PUBLIC_GA_DEBUG'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {

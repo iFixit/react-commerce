@@ -1,4 +1,4 @@
-import { GA_URL, GA_KEY } from '@config/env';
+import { GA_URL, GA_KEY, GA_DEBUG } from '@config/env';
 import Head from 'next/head';
 
 export function GoogleAnalytics() {
@@ -12,8 +12,9 @@ export function GoogleAnalytics() {
                   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                   })(window,document,'script', '${GA_URL}','ga');
 
-                  // If not on live site:
-                  // window.ga_debug = {trace: true};
+                  if (${GA_DEBUG} === true) {
+                     window.ga_debug = {trace: true};
+                  }
 
                   let createOptions = {'legacyCookieDomain': 'ifixit.com'};
 
