@@ -47,7 +47,7 @@ const moduleExports = {
       ];
    },
    async redirects() {
-      const redirects =[
+      const redirects = [
          {
             source: '/Store/Guide/:guideid',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Guide/_/:guideid`,
@@ -55,34 +55,7 @@ const moduleExports = {
          },
       ];
 
-      if (process.env.FORCE_SUBDOMAIN_REDIRECTS !== "true") {
-         return redirects;
-      }
-
-      return redirects.concat([
-         {
-            source: '/Parts',
-            has: [
-               {
-                 type: 'host',
-                 value: '^(?!www).*.*.*'
-               },
-            ],
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts`,
-            permanent: true,
-         },
-         {
-            source: '/Tools',
-            has: [
-               {
-                 type: 'host',
-                 value: '^(?!www).*.*.*'
-               },
-            ],
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools`,
-            permanent: true,
-         },
-      ]);
+      return redirects;
    },
    images: {
       domains: [
