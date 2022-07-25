@@ -6,9 +6,11 @@ export function getSubDomainRedirect(request: IncomingMessage, redirectPath: str
    const shouldRedirect =  host ? !host.match(regex) : false;
 
    if (shouldRedirect) {
+      const url = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN || "");
+      url.pathname = redirectPath;
       return {
          redirect: {
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/${redirectPath}`,
+            destination: url,
             permanent: true,
          },
        }
