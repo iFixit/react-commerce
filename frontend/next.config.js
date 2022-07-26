@@ -76,7 +76,11 @@ const moduleExports = {
             destination: '/Parts*',
             permanent: true,
          },
-
+         {
+            source: '/tools*',
+            destination: '/Tools*',
+            permanent: true,
+         },
       ];
    },
    images: {
