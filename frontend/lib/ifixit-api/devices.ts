@@ -8,7 +8,7 @@ export async function fetchDeviceWiki(
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
       const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
+         `${IFIXIT_ORIGIN}/api/2.0/cart/part_collections/devices/${deviceHandle}`,
          {
             headers: {
                'Content-Type': 'application/json',
