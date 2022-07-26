@@ -40,6 +40,8 @@ Here's one way you can get all the right versions installed and setup:
 
 This command will install both backend and frontend dependencies:
 
+Copy `.env.local.example` to `.env.local` and fill in the values.
+
 ```sh
 pnpm install:all
 ```

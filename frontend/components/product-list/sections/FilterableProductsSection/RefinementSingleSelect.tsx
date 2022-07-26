@@ -12,6 +12,7 @@ import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList } from '@models/product-list';
 import { useDecoupledState } from '@ifixit/ui';
+import { encodeDeviceItemType } from '@helpers/product-list-helpers';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -81,6 +82,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       includedAttributes: [attribute],
    });
    const { createURL } = useCurrentRefinements();
+
    const TitleText = (
       <Text
          as={attribute === 'facet_tags.Item Type' ? 'a' : 'button'}
@@ -98,6 +100,20 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          {item.label}
       </Text>
    );
+
+   const url = new URL(
+      createURL({
+         attribute,
+         type: 'disjunctive',
+         value: item.value,
+         label: item.label,
+      })
+   );
+   // The url created by InstantSearch doesn't have the correct item type slug.
+   const path = url.pathname.split('/').filter((part) => part !== '');
+   const itemTypeHandle = encodeDeviceItemType(item.value);
+   const href = `${url.origin}/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
+
    return (
       <HStack
          key={item.label}
@@ -107,12 +123,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       >
          {attribute === 'facet_tags.Item Type' ? (
             <NextLink
-               href={createURL({
-                  attribute,
-                  type: 'disjunctive',
-                  value: item.value,
-                  label: item.label,
-               })}
+               href={href}
                passHref
             >
                {TitleText}

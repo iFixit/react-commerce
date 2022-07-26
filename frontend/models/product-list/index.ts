@@ -47,51 +47,59 @@ export async function findProductList(
    const result = await strapi.getProductList({
       filters,
    });
+
    const productList = result.productLists?.data?.[0]?.attributes;
-   if (productList == null) {
+
+   const deviceTitle =
+      productList?.deviceTitle ?? filters.deviceTitle?.eq ?? '';
+   const deviceWiki = deviceTitle ? await fetchDeviceWiki(deviceTitle) : null;
+
+   if (productList == null && deviceWiki == null) {
       return null;
    }
-   const productListImageAttributes = productList.image?.data?.attributes;
 
-   const deviceWiki = productList.deviceTitle
-      ? await fetchDeviceWiki(productList.deviceTitle)
-      : null;
+   const handle = productList?.handle ?? '';
+   const parents =
+      productList?.parent ??
+      (deviceWiki?.ancestors
+         ? convertAncestorsToStrapiFormat(deviceWiki.ancestors)
+         : null);
+   const title =
+      productList?.title ??
+      (deviceWiki?.deviceTitle ? deviceWiki?.deviceTitle + ' Parts' : '');
+   const description =
+      productList?.description ?? deviceWiki?.description ?? '';
 
    const algoliaApiKey = createPublicAlgoliaKey(
       ALGOLIA_APP_ID,
       ALGOLIA_API_KEY
    );
-   const productListType = getProductListType(productList.type);
+   const productListType = getProductListType(productList?.type);
 
    const path = getProductListPath({
       type: productListType,
-      handle: productList.handle,
-      deviceTitle: productList.deviceTitle ?? null,
+      handle: handle,
+      deviceTitle: deviceTitle,
    });
 
-   const ancestors = createProductListAncestors(productList.parent);
+   const ancestors = createProductListAncestors(parents);
 
    const baseProductList: BaseProductList = {
-      title: productList.title,
-      handle: productList.handle,
-      deviceTitle: productList.deviceTitle ?? null,
+      title: title,
+      handle: handle,
+      deviceTitle: deviceTitle,
       path,
-      tagline: productList.tagline ?? null,
-      description: productList.description,
-      metaDescription: productList.metaDescription ?? null,
-      filters: productList.filters ?? null,
-      image:
-         productListImageAttributes != null
-            ? getImageFromStrapiImage(productListImageAttributes, 'large')
-            : deviceWiki
-            ? getDeviceImage(deviceWiki)
-            : null,
+      tagline: productList?.tagline ?? null,
+      description: description,
+      metaDescription: productList?.metaDescription ?? null,
+      filters: productList?.filters ?? null,
+      image: null,
       ancestors,
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: await fillMissingImagesFromApi(
          sortProductListChildren(
             filterNullableItems(
-               productList.children?.data.map(
+               productList?.children?.data.map(
                   createProductListChild({
                      deviceWiki,
                   })
@@ -99,9 +107,9 @@ export async function findProductList(
             )
          )
       ),
-      childrenHeading: productList.childrenHeading ?? null,
+      childrenHeading: productList?.childrenHeading ?? null,
       sections: filterNullableItems(
-         productList.sections.map(createProductListSection)
+         productList?.sections.map(createProductListSection)
       ),
       algolia: {
          apiKey: algoliaApiKey,
@@ -130,15 +138,6 @@ function getProductListType(
       default:
          return ProductListType.DeviceParts;
    }
-}
-
-function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
-   return deviceWiki.image?.original == null
-      ? null
-      : {
-           url: deviceWiki.image.original,
-           alternativeText: null,
-        };
 }
 
 async function fillMissingImagesFromApi(
@@ -196,6 +195,31 @@ type ApiProductList = NonNullable<
       NonNullable<StrapiProductListPageData['productLists']>['data']
    >[0]['attributes']
 >;
+
+function convertAncestorsToStrapiFormat(
+   ancestors: any
+): ApiProductList['parent'] | null {
+   const ancestor: DeviceWiki = { title: ancestors.shift() };
+   if (ancestor['title'] == null) {
+      return null;
+   } else if (ancestor['title'] === 'Root') {
+      ancestor['type'] = 'all_parts';
+      ancestor['title'] = 'All';
+      ancestor['handle'] = 'Parts';
+   }
+
+   return {
+      data: {
+         attributes: {
+            type: ancestor.type,
+            title: ancestor.title + ' Parts',
+            handle: ancestor.handle ?? '',
+            deviceTitle: ancestor.title,
+            parent: convertAncestorsToStrapiFormat(ancestors),
+         },
+      },
+   };
+}
 
 function createProductListAncestors(
    parent: ApiProductList['parent']
