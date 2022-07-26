@@ -69,9 +69,9 @@ export function useIFixitApiClient() {
 
    const client = React.useMemo(() => {
       return new IFixitAPIClient({
-         origin: appContext.ifixitOrigin,
+         origin: appContext.relativeIfixitOrigin,
       });
-   }, [appContext.ifixitOrigin]);
+   }, [appContext.relativeIfixitOrigin]);
 
    return client;
 }

@@ -20,7 +20,7 @@ export const DesktopHeaderSearchForm = forwardRef<FlexProps, 'form'>(
             ref={ref}
             as="form"
             method="GET"
-            action={`${appContext.ifixitOrigin}/Search`}
+            action={`${appContext.absoluteIfixitOrigin}/Search`}
             flexGrow={1}
             mx="8"
             display={{
@@ -41,7 +41,7 @@ export const MobileHeaderSearchForm = forwardRef<FlexProps, 'form'>(
             ref={ref}
             as="form"
             method="GET"
-            action={`${appContext.ifixitOrigin}/Search`}
+            action={`${appContext.absoluteIfixitOrigin}/Search`}
             flexGrow={1}
             mr="1"
             {...props}

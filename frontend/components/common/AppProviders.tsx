@@ -1,5 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { IFIXIT_ORIGIN } from '@config/env';
+import { ABSOLUTE_IFIXIT_ORIGIN, RELATIVE_IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
 import { theme } from '@ifixit/ui';
 import Head from 'next/head';
@@ -58,7 +58,7 @@ export function AppProviders({
 
             <link
                rel="prefetch"
-               href={`${IFIXIT_ORIGIN}/api/2.0/user`}
+               href={`${RELATIVE_IFIXIT_ORIGIN}/api/2.0/user`}
                as="fetch"
             />
             <meta
@@ -71,7 +71,10 @@ export function AppProviders({
    );
 
    return (
-      <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
+      <AppProvider
+         relativeIfixitOrigin={RELATIVE_IFIXIT_ORIGIN}
+         absoluteIfixitOrigin={ABSOLUTE_IFIXIT_ORIGIN}
+      >
          <QueryClientProvider client={queryClient}>
             {algolia ? (
                <InstantSearchProvider {...algolia}>

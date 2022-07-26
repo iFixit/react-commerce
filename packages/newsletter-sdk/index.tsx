@@ -35,7 +35,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             status: SubscriptionStatus.Subscribing,
          }));
          try {
-            await subscribeToNewsletter(appContext.ifixitOrigin, email);
+            await subscribeToNewsletter(appContext.relativeIfixitOrigin, email);
             setState(() => ({
                status: SubscriptionStatus.Subscribed,
                error: undefined,

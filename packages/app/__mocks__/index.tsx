@@ -6,7 +6,10 @@
 const app = jest.requireActual('../index.tsx');
 
 function useAppContext() {
-   return { ifixitOrigin: 'https://www.cominor.com' };
+   return {
+      relativeIfixitOrigin: 'https://www.cominor.com',
+      absoluteIfixitOrigin: 'https://www.cominor.com',
+   };
 }
 
 app.useAppContext = useAppContext;

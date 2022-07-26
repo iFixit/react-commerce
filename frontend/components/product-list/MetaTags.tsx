@@ -32,7 +32,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    }
    title += ' | iFixit';
    const itemTypeHandle = itemType ? `/${itemType}` : '';
-   const canonicalUrl = `${appContext.ifixitOrigin}${
+   const canonicalUrl = `${appContext.absoluteIfixitOrigin}${
       productList.path
    }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
    const imageUrl = productList.image?.url;

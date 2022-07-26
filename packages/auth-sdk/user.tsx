@@ -20,7 +20,7 @@ export function useAuthenticatedUser() {
    const appContext = useAppContext();
    const query = useQuery(
       userKeys.user,
-      () => fetchAuthenticatedUser(appContext.ifixitOrigin),
+      () => fetchAuthenticatedUser(appContext.relativeIfixitOrigin),
       {
          retryOnMount: false,
          staleTime: Infinity,

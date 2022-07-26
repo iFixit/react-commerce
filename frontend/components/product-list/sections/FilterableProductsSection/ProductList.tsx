@@ -246,7 +246,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      }}
                   >
                      <LinkOverlay
-                        href={`${appContext.ifixitOrigin}${product.url}`}
+                        href={`${appContext.absoluteIfixitOrigin}${product.url}`}
                      >
                         <Button
                            as="div"

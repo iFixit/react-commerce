@@ -278,7 +278,7 @@ function HeaderUserMenu() {
    const appContext = useAppContext();
 
    if (user.data == null) {
-      return <NoUserLink href={`${appContext.ifixitOrigin}/login`} />;
+      return <NoUserLink href={`${appContext.absoluteIfixitOrigin}/login`} />;
    }
 
    return (
@@ -290,23 +290,25 @@ function HeaderUserMenu() {
                <MenuDivider />
                <MenuGroup>
                   <UserMenuLink
-                     href={`${appContext.ifixitOrigin}/User/Notifications/${user.data.id}/${user.data.username}`}
+                     href={`${appContext.absoluteIfixitOrigin}/User/Notifications/${user.data.id}/${user.data.username}`}
                   >
                      Notifications
                   </UserMenuLink>
                   <UserMenuLink
-                     href={`${appContext.ifixitOrigin}/User/${user.data.id}/${user.data.username}`}
+                     href={`${appContext.absoluteIfixitOrigin}/User/${user.data.id}/${user.data.username}`}
                   >
                      View Profile
                   </UserMenuLink>
-                  <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
+                  <UserMenuLink
+                     href={`${appContext.absoluteIfixitOrigin}/User/Orders`}
+                  >
                      Orders
                   </UserMenuLink>
                </MenuGroup>
                <MenuDivider />
                <MenuGroup>
                   <UserMenuLink
-                     href={`${appContext.ifixitOrigin}/Guide/logout`}
+                     href={`${appContext.absoluteIfixitOrigin}/Guide/logout`}
                   >
                      Log Out
                   </UserMenuLink>

@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
-import { IFIXIT_ORIGIN } from '@config/env';
+import { ABSOLUTE_IFIXIT_ORIGIN } from '@config/env';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 
@@ -15,12 +15,12 @@ export function ProductListDeviceNavigation({
    let guideUrl: string | undefined;
    let answersUrl: string | undefined;
    if (isRootProductList) {
-      guideUrl = `${IFIXIT_ORIGIN}/Guide`;
-      answersUrl = `${IFIXIT_ORIGIN}/Answers`;
+      guideUrl = `${ABSOLUTE_IFIXIT_ORIGIN}/Guide`;
+      answersUrl = `${ABSOLUTE_IFIXIT_ORIGIN}/Answers`;
    } else if (productList.deviceTitle && productList.deviceTitle.length > 0) {
       const deviceHandle = productList.deviceTitle.replace(/\s+/g, '_');
-      guideUrl = `${IFIXIT_ORIGIN}/Device/${deviceHandle}`;
-      answersUrl = `${IFIXIT_ORIGIN}/Answers/Device/${deviceHandle}`;
+      guideUrl = `${ABSOLUTE_IFIXIT_ORIGIN}/Device/${deviceHandle}`;
+      answersUrl = `${ABSOLUTE_IFIXIT_ORIGIN}/Answers/Device/${deviceHandle}`;
    }
 
    if (guideUrl == null || answersUrl == null) {

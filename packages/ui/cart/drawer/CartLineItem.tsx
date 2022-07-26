@@ -106,7 +106,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                   <VStack align="flex-start" pt="1">
                      <Flex direction="column">
                         <Link
-                           href={`${appContext.ifixitOrigin}/Store/Product/${lineItem.itemcode}`}
+                           href={`${appContext.absoluteIfixitOrigin}/Store/Product/${lineItem.itemcode}`}
                            isExternal
                            fontWeight="bold"
                            fontSize="xs"

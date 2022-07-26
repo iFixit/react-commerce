@@ -202,7 +202,9 @@ function ProductListItem({ product }: ProductListItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
+               <LinkOverlay
+                  href={`${appContext.absoluteIfixitOrigin}${product.url}`}
+               >
                   <ProductCardTitle _groupHover={{ color: 'brand.500' }}>
                      {product.title}
                   </ProductCardTitle>

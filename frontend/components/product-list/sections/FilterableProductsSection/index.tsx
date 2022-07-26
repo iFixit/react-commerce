@@ -16,7 +16,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
-import { IFIXIT_ORIGIN } from '@config/env';
+import { ABSOLUTE_IFIXIT_ORIGIN } from '@config/env';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
@@ -192,7 +192,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                <Link
                   maxW="500px"
                   color="brand.500"
-                  href={`${IFIXIT_ORIGIN}/Search?query=${encodedQuery}`}
+                  href={`${ABSOLUTE_IFIXIT_ORIGIN}/Search?query=${encodedQuery}`}
                >
                   Search all of iFixit for&nbsp;
                   <Text as="span" fontWeight="bold">

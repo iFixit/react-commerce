@@ -1,4 +1,4 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { ABSOLUTE_IFIXIT_ORIGIN, RELATIVE_IFIXIT_ORIGIN } from '@config/env';
 
 export type DeviceWiki = Record<string, any>;
 
@@ -8,7 +8,7 @@ export async function fetchDeviceWiki(
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
       const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
+         `${RELATIVE_IFIXIT_ORIGIN}/api/2.0/wikis/CATEGORY/${deviceHandle}`,
          {
             headers: {
                'Content-Type': 'application/json',
@@ -41,7 +41,9 @@ export function fetchMultipleDeviceImages(
    deviceTitles: string[],
    size: GuideImageSize
 ): Promise<MultipleDeviceApiResponse> {
-   const apiUrl = new URL(`${IFIXIT_ORIGIN}/api/2.0/wikis/topic_images`);
+   const apiUrl = new URL(
+      `${ABSOLUTE_IFIXIT_ORIGIN}/api/2.0/wikis/topic_images`
+   );
    apiUrl.searchParams.set('size', size);
    deviceTitles.forEach((deviceTitle) => {
       apiUrl.searchParams.append('t[]', deviceTitle);

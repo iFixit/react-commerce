@@ -1,19 +1,25 @@
 import * as React from 'react';
 
 export type AppContext = {
-   ifixitOrigin: string;
+   relativeIfixitOrigin: string;
+   absoluteIfixitOrigin: string;
 };
 
 const AppContext = React.createContext<AppContext | null>(null);
 
 type AppProviderProps = React.PropsWithChildren<{
-   ifixitOrigin: string;
+   relativeIfixitOrigin: string;
+   absoluteIfixitOrigin: string;
 }>;
 
-export function AppProvider({ ifixitOrigin, children }: AppProviderProps) {
+export function AppProvider({
+   relativeIfixitOrigin,
+   absoluteIfixitOrigin,
+   children,
+}: AppProviderProps) {
    const value = React.useMemo(
-      (): AppContext => ({ ifixitOrigin }),
-      [ifixitOrigin]
+      (): AppContext => ({ relativeIfixitOrigin, absoluteIfixitOrigin }),
+      [relativeIfixitOrigin, absoluteIfixitOrigin]
    );
 
    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

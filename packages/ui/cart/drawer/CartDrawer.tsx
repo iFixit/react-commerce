@@ -223,7 +223,7 @@ export function CartDrawer() {
                            <SimpleGrid columns={2} spacing="2.5" w="full">
                               <Button
                                  as="a"
-                                 href={`${appContext.ifixitOrigin}/cart/view`}
+                                 href={`${appContext.absoluteIfixitOrigin}/cart/view`}
                                  variant="outline"
                                  onClick={onClose}
                               >
