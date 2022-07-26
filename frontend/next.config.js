@@ -71,6 +71,12 @@ const moduleExports = {
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/marketing.xml`,
             permanent: true,
          },
+         {
+            source: '/parts*',
+            destination: '/Parts*',
+            permanent: true,
+         },
+
       ];
    },
    images: {
