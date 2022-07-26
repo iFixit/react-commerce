@@ -38,6 +38,8 @@ const moduleExports = {
       NEXT_PUBLIC_STRAPI_ORIGIN: process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
       SENTRY_DSN: process.env.SENTRY_DSN,
       NEXT_PUBLIC_MATOMO_URL: process.env.NEXT_PUBLIC_MATOMO_URL,
+      NEXT_PUBLIC_GA_URL: process.env.NEXT_PUBLIC_GA_URL,
+      NEXT_PUBLIC_GA_KEY: process.env.NEXT_PUBLIC_GA_KEY,
    },
    async rewrites() {
       return [
