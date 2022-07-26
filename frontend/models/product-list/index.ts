@@ -140,15 +140,6 @@ function getProductListType(
    }
 }
 
-function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
-   return deviceWiki?.image?.original == null
-      ? null
-      : {
-           url: deviceWiki.image.original,
-           alternativeText: null,
-        };
-}
-
 async function fillMissingImagesFromApi(
    productListChildren: ProductListChild[]
 ): Promise<ProductListChild[]> {
