@@ -66,7 +66,7 @@ export async function findProductList(
          : null);
    const title =
       productList?.title ??
-      (deviceWiki?.title ? deviceWiki?.title + ' Parts' : '');
+      (deviceWiki?.deviceTitle ? deviceWiki?.deviceTitle + ' Parts' : '');
    const description =
       productList?.description ?? deviceWiki?.description ?? '';
 
@@ -140,15 +140,6 @@ function getProductListType(
    }
 }
 
-function getDeviceImage(deviceWiki: DeviceWiki): ProductListImage | null {
-   return deviceWiki?.image?.original == null
-      ? null
-      : {
-           url: deviceWiki.image.original,
-           alternativeText: null,
-        };
-}
-
 async function fillMissingImagesFromApi(
    productListChildren: ProductListChild[]
 ): Promise<ProductListChild[]> {
@@ -208,14 +199,15 @@ type ApiProductList = NonNullable<
 function convertAncestorsToStrapiFormat(
    ancestors: any
 ): ApiProductList['parent'] | null {
-   const ancestor = ancestors.shift();
-   if (ancestor == null) {
+   const ancestor: DeviceWiki = { title: ancestors.shift() };
+   if (ancestor['title'] == null) {
       return null;
    } else if (ancestor['title'] === 'Root') {
       ancestor['type'] = 'all_parts';
       ancestor['title'] = 'All';
       ancestor['handle'] = 'Parts';
    }
+
    return {
       data: {
          attributes: {
