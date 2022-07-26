@@ -1,4 +1,4 @@
-import { LifetimeWarrantyIcon } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg';
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -35,8 +35,12 @@ export function BannerSection({
             objectFit="cover"
          />
          <Flex
-            p={{
-               base: 10,
+            px={{
+               base: 6,
+               md: 20,
+            }}
+            py={{
+               base: 16,
                md: 20,
             }}
             bgGradient="linear(to-r, blackAlpha.600, blackAlpha.400)"
@@ -45,6 +49,16 @@ export function BannerSection({
             position="relative"
          >
             <Flex alignItems="flex-start" direction="column">
+               <Icon
+                  as={QualityGuarantee}
+                  boxSize="140px"
+                  color="white"
+                  display={{
+                     base: 'block',
+                     sm: 'none',
+                  }}
+                  mb="10"
+               />
                <Text
                   as="h2"
                   fontSize="4xl"
@@ -69,33 +83,16 @@ export function BannerSection({
                   <NextLink href={url} passHref>
                      <Button as="a">{callToActionLabel}</Button>
                   </NextLink>
-                  <Icon
-                     as={LifetimeWarrantyIcon}
-                     boxSize="120px"
-                     color="white"
-                     display={{
-                        base: 'block',
-                        sm: 'none',
-                     }}
-                     bg="rgba(36, 44, 51, 0.09)"
-                     backdropFilter="auto"
-                     backdropBlur="16px"
-                     borderRadius="full"
-                  />
                </Flex>
             </Flex>
             <Icon
-               as={LifetimeWarrantyIcon}
+               as={QualityGuarantee}
                boxSize={{ base: '130px', md: '160px', lg: '190px' }}
                color="white"
                display={{
                   base: 'none',
                   sm: 'block',
                }}
-               bg="rgba(36, 44, 51, 0.09)"
-               backdropFilter="auto"
-               backdropBlur="16px"
-               borderRadius="full"
             />
          </Flex>
       </Box>
