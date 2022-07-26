@@ -79,7 +79,7 @@ export function getProductListPath(
          return `/Tools/${productList.handle}`;
       }
       case ProductListType.Marketing: {
-         return `/Store/${productList.handle}`;
+         return `/Shop/${productList.handle}`;
       }
       default: {
          throw new Error(`unknown product list type: ${productList.type}`);
