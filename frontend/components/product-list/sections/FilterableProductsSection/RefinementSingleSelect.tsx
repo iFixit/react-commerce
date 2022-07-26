@@ -85,6 +85,8 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
 
    const TitleText = (
       <Text
+         role="option"
+         data-value={item.value}
          as={attribute === 'facet_tags.Item Type' ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
