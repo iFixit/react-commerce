@@ -54,6 +54,21 @@ const moduleExports = {
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Guide/_/:guideid`,
             permanent: true,
          },
+         {
+            source: '/Parts/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/parts.xml`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/tools.xml`,
+            permanent: true,
+         },
+         {
+            source: '/Shop/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/marketing.xml`,
+            permanent: true,
+         },
       ];
    },
    images: {
