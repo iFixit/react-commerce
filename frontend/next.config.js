@@ -72,13 +72,13 @@ const moduleExports = {
             permanent: true,
          },
          {
-            source: '/parts*',
-            destination: '/Parts*',
+            source: '/parts/:path*',
+            destination: '/Parts/:path*',
             permanent: true,
          },
          {
-            source: '/tools*',
-            destination: '/Tools*',
+            source: '/tools/:path*',
+            destination: '/Tools/:path*',
             permanent: true,
          },
       ];
