@@ -252,7 +252,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                </Text>
                {parentCategory && (
                   <Link href={parentCategory.path}>
-                     Return to parent category
+                     Return to {parentCategory.title}
                   </Link>
                )}
             </VStack>
