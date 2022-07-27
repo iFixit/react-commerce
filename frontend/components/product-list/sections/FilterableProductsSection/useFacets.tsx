@@ -49,7 +49,7 @@ export function useFilteredFacets(productList: ProductList) {
       return usefulFacets;
    }, [facets, infoNames, sortBy]);
 
-   let isToolsPage =
+   const isToolsPage =
       productList.type === ProductListType.AllTools ||
       productList.type === ProductListType.ToolsCategory
          ? true
