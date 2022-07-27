@@ -67,9 +67,8 @@ export function ProductListView({
             </PageContentWrapper>
          </SecondaryNavbar>
          <SecondaryNavbar
-            hidden={isRootProductList}
             display={{
-               base: 'initial',
+               base: isRootProductList ? 'none' : 'initial',
                sm: 'none',
             }}
          >
