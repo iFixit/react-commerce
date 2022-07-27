@@ -55,12 +55,12 @@ const moduleExports = {
          {
             source: `/Tools/:slug(${legacyRouting.getToolRedirects()})`,
             destination: `/Tools`,
-            permanent: false,
+            permanent: true,
          },
          {
             source: `/Tools/Hakko`,
             destination: `/Tools/Microsoldering`,
-            permanent: false,
+            permanent: true,
          },
          {
             source: '/Store/Guide/:guideid',
