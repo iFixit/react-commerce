@@ -32,16 +32,16 @@ export function ProductListView({
 }: ProductListViewProps) {
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const isRootProductList = productList.ancestors.length === 0;
+   const isAllToolsPage = productList.type === ProductListType.AllTools;
    const isToolPage =
-      productList.type === ProductListType.AllTools ||
-      productList.type === ProductListType.ToolsCategory;
+      isAllToolsPage || productList.type === ProductListType.ToolsCategory;
 
    return (
       <>
          <SecondaryNavbar
             display={{
                base: isToolPage ? 'none' : 'initial',
-               sm: 'initial',
+               sm: isAllToolsPage ? 'none' : 'initial',
             }}
          >
             <PageContentWrapper h="full">
