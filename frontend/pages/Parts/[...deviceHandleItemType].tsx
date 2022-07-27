@@ -31,12 +31,14 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    );
 
    const { deviceHandleItemType } = context.params || {};
-   const [deviceHandle, ...rest] = Array.isArray(deviceHandleItemType)
+   const [deviceHandle, ...itemTypeAndRest] = Array.isArray(
+      deviceHandleItemType
+   )
       ? deviceHandleItemType
       : [];
 
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   if (rest?.length > 0) {
+   if (itemTypeAndRest?.length > 1) {
       return {
          notFound: true,
       };
