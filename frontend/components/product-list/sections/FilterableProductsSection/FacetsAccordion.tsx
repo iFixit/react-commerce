@@ -12,7 +12,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { ProductList } from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
@@ -98,7 +98,21 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 
       const formattedFacetName = formatFacetName(attribute);
-      const isHidden = !hasApplicableRefinements && !isProductListEmpty;
+      let isHidden = !hasApplicableRefinements && !isProductListEmpty;
+      let emptyProductList = isProductListEmpty && !hasApplicableRefinements;
+
+      let hideWorksin =
+         attribute === 'worksin' && emptyProductList ? true : false;
+      let hideToolsCategory =
+         productList.type === ProductListType.AllParts &&
+         attribute === 'facet_tags.Tool Category' &&
+         emptyProductList
+            ? true
+            : false;
+
+      if (hideWorksin || hideToolsCategory) {
+         isHidden = true;
+      }
 
       return (
          <AccordionItem
