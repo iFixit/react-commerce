@@ -101,10 +101,19 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       let isHidden = !hasApplicableRefinements && !isProductListEmpty;
       const emptyProductList = isProductListEmpty && !hasApplicableRefinements;
 
+      let isPartsPage =
+         productList.type === ProductListType.AllParts ? true : false;
+
+      const ancestors = productList.ancestors;
+      if (ancestors[ancestors.length - 1]) {
+         const path = ancestors[ancestors.length - 1].path;
+         isPartsPage = path.includes('/Parts') ? true : false;
+      }
+
       const hideWorksin =
          attribute === 'worksin' && emptyProductList ? true : false;
       const hideToolsCategory =
-         productList.type === ProductListType.AllParts &&
+         isPartsPage &&
          attribute === 'facet_tags.Tool Category' &&
          emptyProductList
             ? true
