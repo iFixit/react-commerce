@@ -59,7 +59,10 @@ export function ProductListView({
                      }}
                      productList={productList}
                   />
-                  <ProductListDeviceNavigation productList={productList} />
+                  <ProductListDeviceNavigation
+                     productList={productList}
+                     hidden={isToolPage}
+                  />
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>
