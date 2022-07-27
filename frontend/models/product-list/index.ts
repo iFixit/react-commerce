@@ -1,5 +1,8 @@
-import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import {
+   ALGOLIA_API_KEY,
+   ALGOLIA_APP_ID,
+   ALGOLIA_PRODUCT_INDEX_NAME,
+} from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import {
    getProductListPath,
@@ -18,6 +21,7 @@ import {
 } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
 import {
+   BaseProductList,
    ProductList,
    ProductListAncestor,
    ProductListChild,
@@ -25,7 +29,6 @@ import {
    ProductListSection,
    ProductListSectionType,
    ProductListType,
-   BaseProductList,
 } from './types';
 
 export { ProductListSectionType, ProductListType } from './types';
@@ -355,7 +358,7 @@ function createProductListSection(
                      : getImageFromStrapiImage(image, 'thumbnail'),
                filters: productList.filters ?? null,
                algolia: {
-                  indexName: ALGOLIA_DEFAULT_INDEX_NAME,
+                  indexName: ALGOLIA_PRODUCT_INDEX_NAME,
                   apiKey: algoliaApiKey,
                },
             },
