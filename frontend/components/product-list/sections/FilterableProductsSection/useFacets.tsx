@@ -51,9 +51,7 @@ export function useFilteredFacets(productList: ProductList) {
 
    const isToolsPage =
       productList.type === ProductListType.AllTools ||
-      productList.type === ProductListType.ToolsCategory
-         ? true
-         : false;
+      productList.type === ProductListType.ToolsCategory;
 
    if (isToolsPage) {
       const excludedToolsFacets = [
