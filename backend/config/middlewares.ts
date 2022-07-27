@@ -1,4 +1,4 @@
-module.exports = ({ env }) => {
+export default ({ env }) => {
    return [
       'strapi::errors',
       env('S3_BUCKET') ? securitySectionWithS3() : 'strapi::security',
@@ -7,6 +7,7 @@ module.exports = ({ env }) => {
       'strapi::logger',
       'strapi::query',
       'strapi::body',
+      // 'strapi::session',
       'strapi::favicon',
       'strapi::public',
    ];

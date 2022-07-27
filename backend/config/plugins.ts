@@ -1,8 +1,8 @@
 const oneYear = 86400 * 365;
 const SENTRY_DSN = process.env.SENTRY_DSN;
 
-module.exports = ({ env }) => {
-   const exports = {
+export default ({ env }) => {
+   const exports: any = {
       seed: {
          enabled: true,
          resolve: './src/plugins/seed',

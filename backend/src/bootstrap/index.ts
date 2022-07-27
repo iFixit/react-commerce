@@ -1,9 +1,9 @@
-const setDefaultPermissions = require('./permissions');
+import setDefaultPermissions from './permissions';
 
-module.exports = async function bootstrap({ strapi }) {
+export default async function bootstrap({ strapi }) {
    try {
       await setDefaultPermissions(strapi);
    } catch (err) {
       strapi.log.error('💥 Error during bootstrap:', err);
    }
-};
+}

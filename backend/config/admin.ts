@@ -1,4 +1,4 @@
-module.exports = ({ env }) => ({
+export default ({ env }) => ({
    auth: {
       secret: env('JWT_SECRET'),
    },
