@@ -38,7 +38,12 @@ export function ProductListView({
 
    return (
       <>
-         <SecondaryNavbar hidden={isToolPage}>
+         <SecondaryNavbar
+            display={{
+               base: isToolPage ? 'none' : 'initial',
+               sm: 'initial',
+            }}
+         >
             <PageContentWrapper h="full">
                <Flex
                   h="full"
