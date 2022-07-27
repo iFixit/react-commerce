@@ -99,11 +99,11 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
 
       const formattedFacetName = formatFacetName(attribute);
       let isHidden = !hasApplicableRefinements && !isProductListEmpty;
-      let emptyProductList = isProductListEmpty && !hasApplicableRefinements;
+      const emptyProductList = isProductListEmpty && !hasApplicableRefinements;
 
-      let hideWorksin =
+      const hideWorksin =
          attribute === 'worksin' && emptyProductList ? true : false;
-      let hideToolsCategory =
+      const hideToolsCategory =
          productList.type === ProductListType.AllParts &&
          attribute === 'facet_tags.Tool Category' &&
          emptyProductList
