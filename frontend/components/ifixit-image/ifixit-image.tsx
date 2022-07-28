@@ -1,11 +1,12 @@
-import Image, { ImageProps, ImageLoader } from 'next/image';
+import Image, { ImageProps, ImageLoader, ImageLoaderProps } from 'next/image';
 
 export function IfixitImage(props: ImageProps) {
    let unoptimized = props.unoptimized;
+   let loader;
 
    if (typeof props.src === 'string') {
       if (isGuideImage(props.src)) {
-         unoptimized = true;
+         loader = guideImageLoader;
       } else if (isCartImage(props.src)) {
          unoptimized = true;
       } else if (isStrapiImage(props.src)) {
@@ -13,7 +14,7 @@ export function IfixitImage(props: ImageProps) {
       }
    }
 
-   return <Image {...props} unoptimized={unoptimized} />;
+   return <Image {...props} unoptimized={unoptimized} loader={loader} />;
 }
 
 function isGuideImage(src: string) {
@@ -33,3 +34,37 @@ function isStrapiImage(src: string) {
       /^https:\/\/ifixit-(dev-)?strapi-uploads.s3.amazonaws.com\//
    );
 }
+
+const guideImageLoader: ImageLoader = ({
+   src,
+   width,
+   quality,
+}: ImageLoaderProps) => {
+   const baseSrc = src.replace(/\.[^/.]+$/, '');
+   const sizeName = getImageSize(width, guideImageSizeMap, 'huge');
+   return baseSrc.concat('.', sizeName);
+};
+
+type SizeMapEntry = [number, string];
+type SizeMap = Array<SizeMapEntry>;
+
+const guideImageSizeMap: SizeMap = [
+   [56, 'mini'],
+   [96, 'thumbnail'],
+   [140, '140x105'],
+   [200, '200x150'],
+   [300, 'standard'],
+   [440, '440x330'],
+   [592, 'medium'],
+   [800, 'large'],
+   [1600, 'huge'],
+];
+
+const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
+   for (const [size, sizeName] of sizeMap) {
+      if (width < size) {
+         return sizeName;
+      }
+   }
+   return defaultSize;
+};
