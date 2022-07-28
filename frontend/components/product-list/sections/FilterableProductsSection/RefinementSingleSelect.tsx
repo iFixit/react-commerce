@@ -96,9 +96,9 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          as={shouldBeLink ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
-            setIsRefined((current) => !current);
             clearRefinements();
-            refine(item.value);
+            !isRefined && refine(item.value);
+            setIsRefined((current) => !current);
             onClose?.();
          }}
          _hover={{
