@@ -1,7 +1,6 @@
-import * as React from 'react';
+import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ProductSearchHit } from '@models/product-list';
-import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 
 export type ProductSearchHitPricing = {
    price: number;
