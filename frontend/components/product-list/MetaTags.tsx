@@ -1,5 +1,8 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
-import { getProductListTitle } from '@helpers/product-list-helpers';
+import {
+   getProductListTitle,
+   encodeDeviceItemType,
+} from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList } from '@models/product-list';
 import Head from 'next/head';
@@ -25,7 +28,12 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes.length === 1 &&
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
-   const itemType = useDevicePartsItemType(productList);
+   // Use the original device item type on the server.
+   const algoliaDeviceItemType = useDevicePartsItemType(productList);
+   const itemType =
+      typeof window === 'undefined' && productList.deviceItemType
+         ? encodeDeviceItemType(productList.deviceItemType)
+         : encodeDeviceItemType(algoliaDeviceItemType ?? '');
    let title = getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
