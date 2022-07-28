@@ -46,7 +46,7 @@ export type {
  */
 export async function findProductList(
    filters: ProductListFiltersInput,
-   deviceItemType: string|null = null
+   deviceItemType: string | null = null
 ): Promise<ProductList | null> {
    const result = await strapi.getProductList({
       filters,

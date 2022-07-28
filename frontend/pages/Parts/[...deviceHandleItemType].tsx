@@ -10,7 +10,10 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
-import { decodeDeviceTitle, decodeDeviceItemType } from '@helpers/product-list-helpers';
+import {
+   decodeDeviceTitle,
+   decodeDeviceItemType,
+} from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -44,9 +47,10 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       };
    }
 
-   const itemTypeHandle = itemTypeAndRest?.length > 0
-      ? decodeDeviceItemType(itemTypeAndRest[0])
-      : null;
+   const itemTypeHandle =
+      itemTypeAndRest?.length > 0
+         ? decodeDeviceItemType(itemTypeAndRest[0])
+         : null;
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -55,11 +59,14 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({
-            deviceTitle: {
-               eq: deviceTitle,
+         findProductList(
+            {
+               deviceTitle: {
+                  eq: deviceTitle,
+               },
             },
-         }, itemTypeHandle),
+            itemTypeHandle
+         ),
       ]);
 
    if (productList == null) {
