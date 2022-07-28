@@ -42,7 +42,8 @@ const guideImageLoader: ImageLoader = ({
 }: ImageLoaderProps) => {
    const baseSrc = src.replace(/\.[^/.]+$/, '');
    const sizeName = getImageSize(width, guideImageSizeMap, 'huge');
-   return baseSrc.concat('.', sizeName);
+   // We don't use the ?width param server-side, but it gets rid of a nextjs warning
+   return baseSrc.concat('.', sizeName, `?width=${width}`);
 };
 
 const cartImageLoader: ImageLoader = ({
@@ -52,7 +53,7 @@ const cartImageLoader: ImageLoader = ({
 }: ImageLoaderProps) => {
    const baseSrc = src.replace(/\.[^/.]+$/, '');
    const sizeName = getImageSize(width, cartImageSizeMap, 'size1000');
-   return baseSrc.concat('.', sizeName);
+   return baseSrc.concat('.', sizeName, `?width=${width}`);
 };
 
 type SizeMapEntry = [number, string];
