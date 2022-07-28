@@ -8,7 +8,7 @@ export function IfixitImage(props: ImageProps) {
       if (isGuideImage(props.src)) {
          loader = guideImageLoader;
       } else if (isCartImage(props.src)) {
-         unoptimized = true;
+         loader = cartImageLoader;
       } else if (isStrapiImage(props.src)) {
          unoptimized = true;
       }
@@ -45,6 +45,16 @@ const guideImageLoader: ImageLoader = ({
    return baseSrc.concat('.', sizeName);
 };
 
+const cartImageLoader: ImageLoader = ({
+   src,
+   width,
+   quality,
+}: ImageLoaderProps) => {
+   const baseSrc = src.replace(/\.[^/.]+$/, '');
+   const sizeName = getImageSize(width, cartImageSizeMap, 'size1000');
+   return baseSrc.concat('.', sizeName);
+};
+
 type SizeMapEntry = [number, string];
 type SizeMap = Array<SizeMapEntry>;
 
@@ -58,6 +68,17 @@ const guideImageSizeMap: SizeMap = [
    [592, 'medium'],
    [800, 'large'],
    [1600, 'huge'],
+];
+
+const cartImageSizeMap: SizeMap = [
+   [41, 'mini'],
+   [70, 'thumbnail'],
+   [110, 'size110'],
+   [170, 'size170'],
+   [250, 'size250'],
+   [400, 'size400'],
+   [600, 'medium'],
+   [1000, 'size1000'],
 ];
 
 const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
