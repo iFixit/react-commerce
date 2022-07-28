@@ -62,6 +62,7 @@ export interface BaseProductList {
       apiKey: string;
    };
    wikiInfo: WikiInfoEntry[];
+   forceNoIndex: boolean;
 }
 
 interface AllPartsProductList extends BaseProductList {
