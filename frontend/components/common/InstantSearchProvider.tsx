@@ -129,7 +129,7 @@ export function InstantSearchProvider({
             return window.location;
          },
          createURL({ qsModule, routeState, location }) {
-            const baseUrl = location.origin;
+            const baseUrl = getBaseOrigin(location)
             const pathParts = location.pathname
                .split('/')
                .filter((part) => part !== '');
@@ -260,4 +260,15 @@ function RefreshSearchResults({
       }
    }, [apiKey, prevApiKey]);
    return null;
+}
+
+function getBaseOrigin(location: Location): string {
+   if (typeof window === 'undefined' && process.env.NEXT_PUBLIC_IFIXIT_ORIGIN) {
+      // On the server, use the IFIXIT_ORIGIN url
+      // This ensures that the SSR produces the correct links on Vercel
+      // (where the Host header doesn't match the page URL.)
+      const publicOrigin = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN)
+      return publicOrigin.origin
+   }
+   return location.origin
 }

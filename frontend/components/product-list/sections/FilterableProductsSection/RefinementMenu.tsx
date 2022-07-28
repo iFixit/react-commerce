@@ -102,7 +102,7 @@ const MenuItem = React.memo(function RefinementListItem({
    // The url created by InstantSearch doesn't have the correct item type slug.
    const path = url.pathname.split('/').filter((part) => part !== '');
    const itemTypeHandle = encodeDeviceItemType(value);
-   const href = `${url.origin}/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
+   const href = `/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
    return (
       <HStack
          key={label}

@@ -32,13 +32,18 @@ export function ProductListView({
 }: ProductListViewProps) {
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const isRootProductList = productList.ancestors.length === 0;
+   const isAllToolsPage = productList.type === ProductListType.AllTools;
    const isToolPage =
-      productList.type === ProductListType.AllTools ||
-      productList.type === ProductListType.ToolsCategory;
+      isAllToolsPage || productList.type === ProductListType.ToolsCategory;
 
    return (
       <>
-         <SecondaryNavbar hidden={isToolPage}>
+         <SecondaryNavbar
+            display={{
+               base: isToolPage ? 'none' : 'initial',
+               sm: isAllToolsPage ? 'none' : 'initial',
+            }}
+         >
             <PageContentWrapper h="full">
                <Flex
                   h="full"
@@ -54,14 +59,16 @@ export function ProductListView({
                      }}
                      productList={productList}
                   />
-                  <ProductListDeviceNavigation productList={productList} />
+                  <ProductListDeviceNavigation
+                     productList={productList}
+                     hidden={isToolPage}
+                  />
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>
          <SecondaryNavbar
-            hidden={isRootProductList}
             display={{
-               base: 'initial',
+               base: isRootProductList ? 'none' : 'initial',
                sm: 'none',
             }}
          >
