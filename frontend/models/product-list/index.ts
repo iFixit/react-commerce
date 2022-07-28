@@ -45,7 +45,8 @@ export type {
  * Get the product list data from the API
  */
 export async function findProductList(
-   filters: ProductListFiltersInput
+   filters: ProductListFiltersInput,
+   deviceItemType: string|null = null
 ): Promise<ProductList | null> {
    const result = await strapi.getProductList({
       filters,
@@ -91,6 +92,7 @@ export async function findProductList(
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
+      deviceItemType: deviceItemType,
       path,
       tagline: productList?.tagline ?? null,
       description: description,
