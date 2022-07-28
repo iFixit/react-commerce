@@ -12,6 +12,8 @@ import { IfixitImage } from '@components/ifixit-image';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
    productList: ProductList;
@@ -55,7 +57,17 @@ export function ProductListChildrenSection({
       heading = `Choose a model of ${deviceTitle}`;
    }
 
-   return (
+   const { items } = useCurrentRefinements();
+   const { hits } = useHits();
+   const itemType = useDevicePartsItemType(productList);
+   const isUnfilteredItemTypeWithNoHits = React.useMemo(() => {
+      const nonItemTypeRefinements = items.filter(
+         (item) => item.attribute !== 'facet_tags.Item Type'
+      );
+      return !hits.length && itemType && !nonItemTypeRefinements.length;
+   }, [items, itemType, hits]);
+
+   return isUnfilteredItemTypeWithNoHits ? null : (
       <Box
          px={{
             base: 6,
