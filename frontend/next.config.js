@@ -1,3 +1,5 @@
+const { mapPartItemTypes } = require('./legacyPartCollectionRoutes');
+
 const withTM = require('next-transpile-modules')([
    '@ifixit/app',
    '@ifixit/ui',
@@ -52,6 +54,7 @@ const moduleExports = {
    },
    async redirects() {
       return [
+         ...mapPartItemTypes(),
          {
             source: `/Tools/:slug(${legacyRouting.getToolRedirects()})`,
             destination: `/Tools`,
