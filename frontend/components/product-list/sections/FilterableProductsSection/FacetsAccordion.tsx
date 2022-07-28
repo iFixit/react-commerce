@@ -98,24 +98,21 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 
       const formattedFacetName = formatFacetName(attribute);
-      let isHidden = !hasApplicableRefinements && !isProductListEmpty;
-      const emptyProductList = isProductListEmpty && !hasApplicableRefinements;
+      const productListEmptyState =
+         isProductListEmpty && !hasApplicableRefinements;
 
-      let isPartsPage = productList.type === ProductListType.AllParts;
+      const isPartsPage =
+         productList.type === ProductListType.AllParts ||
+         productList.type === ProductListType.DeviceParts;
 
-      const ancestors = productList.ancestors;
-      if (ancestors[ancestors.length - 1]) {
-         const path = ancestors[ancestors.length - 1].path;
-         isPartsPage = path.includes('/Parts');
-      }
-
-      const hideWorksin = attribute === 'worksin' && emptyProductList;
-      const hideToolCategory =
+      const isWorksin = attribute === 'worksin' && productListEmptyState;
+      const isToolCategoryOnPartsPage =
          isPartsPage && attribute === 'facet_tags.Tool Category';
 
-      if (hideWorksin || hideToolCategory) {
-         isHidden = true;
-      }
+      const isHidden =
+         (!hasApplicableRefinements && !isProductListEmpty) ||
+         isWorksin ||
+         isToolCategoryOnPartsPage;
 
       return (
          <AccordionItem
