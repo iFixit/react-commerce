@@ -29,10 +29,11 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
    // Use the original device item type on the server.
+   const algoliaDeviceItemType = useDevicePartsItemType(productList);
    const itemType =
       typeof window === 'undefined' && productList.deviceItemType
          ? encodeDeviceItemType(productList.deviceItemType)
-         : useDevicePartsItemType(productList);
+         : algoliaDeviceItemType;
    let title = getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
