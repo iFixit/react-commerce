@@ -1,7 +1,7 @@
 import Image, { ImageProps, ImageLoader, ImageLoaderProps } from 'next/image';
 
 export function IfixitImage(props: ImageProps) {
-   let unoptimized = props.unoptimized;
+   const unoptimized = props.unoptimized;
    let loader;
 
    if (typeof props.src === 'string') {
@@ -10,7 +10,7 @@ export function IfixitImage(props: ImageProps) {
       } else if (isCartImage(props.src)) {
          loader = cartImageLoader;
       } else if (isStrapiImage(props.src)) {
-         unoptimized = true;
+         // Use default loader unless unoptimized
       }
    }
 
