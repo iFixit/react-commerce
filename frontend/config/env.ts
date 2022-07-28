@@ -38,6 +38,11 @@ export const GA_DEBUG = checkEnv(
    'NEXT_PUBLIC_GA_DEBUG'
 );
 
+export const ALGOLIA_PRODUCT_INDEX_NAME = checkEnv(
+   process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME,
+   'NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {

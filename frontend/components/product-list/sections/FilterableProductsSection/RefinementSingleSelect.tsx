@@ -116,7 +116,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       // The url created by InstantSearch doesn't have the correct item type slug.
       const path = url.pathname.split('/').filter((part) => part !== '');
       const itemTypeHandle = encodeDeviceItemType(item.value);
-      const href = `${url.origin}/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
+      const href = `/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
       RefinementTitle = (
          <NextLink href={href} passHref>
             {TitleText}

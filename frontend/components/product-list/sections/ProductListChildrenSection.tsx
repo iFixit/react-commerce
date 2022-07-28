@@ -82,7 +82,8 @@ export function ProductListChildrenSection({
                   md: 3,
                   lg: 4,
                }}
-               spacing="4"
+               spacing="3"
+               pt={1}
             >
                {productListChildren.map((child) => {
                   return <ChildLink key={child.handle} child={child} />;
