@@ -110,12 +110,10 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
       }
 
       const hideWorksin = attribute === 'worksin' && emptyProductList;
-      const hideToolsCategory =
-         isPartsPage &&
-         attribute === 'facet_tags.Tool Category' &&
-         emptyProductList;
+      const hideToolCategory =
+         isPartsPage && attribute === 'facet_tags.Tool Category';
 
-      if (hideWorksin || hideToolsCategory) {
+      if (hideWorksin || hideToolCategory) {
          isHidden = true;
       }
 
