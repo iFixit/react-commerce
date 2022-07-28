@@ -1,8 +1,8 @@
 import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
-import { RefinementList } from './RefinementList';
-import { RefinementMenu } from './RefinementMenu';
+import { RefinementMultiSelect } from './RefinementMultiSelect';
+import { RefinementSingleSelect } from './RefinementSingleSelect';
 import { RefinementDisplayType } from '@models/product-list/types';
 
 type FacetFilterProps = {
@@ -16,14 +16,10 @@ export function FacetFilter({
    productList,
    onClose,
 }: FacetFilterProps) {
-   const refinementDisplayType = getRefinementDisplayType(
-      attribute,
-      productList.type
-   );
-   switch (refinementDisplayType) {
+   switch (getRefinementDisplayType(attribute)) {
       case RefinementDisplayType.SingleSelect:
          return (
-            <RefinementMenu
+            <RefinementSingleSelect
                attribute={attribute}
                showMore
                showMoreLimit={200}
@@ -33,7 +29,7 @@ export function FacetFilter({
          );
       case RefinementDisplayType.MultiSelect:
          return (
-            <RefinementList
+            <RefinementMultiSelect
                attribute={attribute}
                showMore
                showMoreLimit={200}
