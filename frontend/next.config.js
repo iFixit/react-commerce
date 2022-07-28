@@ -11,6 +11,7 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
+const legacyRouting = require('./legacyToolCollectionRoutes.js');
 
 const withBundleAnalyzer =
    process.env.ANALYZE === 'true'
@@ -51,6 +52,16 @@ const moduleExports = {
    },
    async redirects() {
       return [
+         {
+            source: `/Tools/:slug(${legacyRouting.getToolRedirects()})`,
+            destination: `/Tools`,
+            permanent: true,
+         },
+         {
+            source: `/Tools/Hakko`,
+            destination: `/Tools/Microsoldering`,
+            permanent: true,
+         },
          {
             source: '/Store/Guide/:guideid',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Guide/_/:guideid`,
