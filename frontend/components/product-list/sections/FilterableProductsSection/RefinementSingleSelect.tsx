@@ -10,7 +10,7 @@ import {
 import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { ProductList } from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import { useDecoupledState } from '@ifixit/ui';
 import { encodeDeviceItemType } from '@helpers/product-list-helpers';
 
@@ -38,6 +38,7 @@ export function RefinementSingleSelect({
                      key={item.label}
                      item={item}
                      attribute={otherProps.attribute}
+                     productListType={productList.type}
                      refine={refine}
                      onClose={onClose}
                   />
@@ -67,6 +68,7 @@ export function RefinementSingleSelect({
 type SingleSelectItemProps = {
    item: RefinementListRenderState['items'][0];
    attribute: string;
+   productListType: ProductListType;
    refine: RefinementListRenderState['refine'];
    onClose?: () => void;
 };
@@ -74,6 +76,7 @@ type SingleSelectItemProps = {
 const SingleSelectItem = React.memo(function SingleSelectItem({
    item,
    attribute,
+   productListType,
    refine,
    onClose,
 }: SingleSelectItemProps) {
@@ -82,12 +85,15 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       includedAttributes: [attribute],
    });
    const { createURL } = useCurrentRefinements();
+   const shouldBeLink =
+      attribute === 'facet_tags.Item Type' &&
+      productListType === ProductListType.DeviceParts;
 
    const TitleText = (
       <Text
          role="option"
          data-value={item.value}
-         as={attribute === 'facet_tags.Item Type' ? 'a' : 'button'}
+         as={shouldBeLink ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
             setIsRefined((current) => !current);
@@ -104,7 +110,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    );
 
    let RefinementTitle;
-   if (attribute === 'facet_tags.Item Type') {
+   if (shouldBeLink) {
       const url = new URL(
          createURL({
             attribute,
