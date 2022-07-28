@@ -56,6 +56,7 @@ const legacyTagsWithNoItemType = [
    'DC-to-DC_Boards',
    'Filters',
    'Gaskets',
+   'iFixit_Exclusives',
    'Inspection',
    'Lasers',
    'Manuals',
