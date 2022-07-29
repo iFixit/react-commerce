@@ -5,9 +5,9 @@ export function IfixitImage(props: ImageProps) {
 
    if (typeof props.src === 'string') {
       if (isGuideImage(props.src)) {
-         loader = guideImageLoader;
+         loader = getImageLoader(guideImageSizeMap, 'huge');
       } else if (isCartImage(props.src)) {
-         loader = cartImageLoader;
+         loader = getImageLoader(cartImageSizeMap, 'large');
       }
    }
 
@@ -32,26 +32,14 @@ function isStrapiImage(src: string) {
    );
 }
 
-const guideImageLoader: ImageLoader = ({
-   src,
-   width,
-   quality,
-}: ImageLoaderProps) => {
-   const baseSrc = src.replace(/\.[^/.]+$/, '');
-   const sizeName = getImageSize(width, guideImageSizeMap, 'huge');
-   // We don't use the ?width param server-side, but it gets rid of a nextjs warning
-   return baseSrc.concat('.', sizeName, `?width=${width}`);
-};
-
-const cartImageLoader: ImageLoader = ({
-   src,
-   width,
-   quality,
-}: ImageLoaderProps) => {
-   const baseSrc = src.replace(/\.[^/.]+$/, '');
-   const sizeName = getImageSize(width, cartImageSizeMap, 'large');
-   return baseSrc.concat('.', sizeName, `?width=${width}`);
-};
+function getImageLoader(sizeMap: SizeMap, defaultSize: string): ImageLoader {
+   return ({ src, width }: ImageLoaderProps) => {
+      const baseSrc = src.replace(/\.[^/.]+$/, '');
+      const sizeName = getImageSize(width, sizeMap, defaultSize);
+      // We don't use the ?width param server-side, but it gets rid of a nextjs warning
+      return baseSrc.concat('.', sizeName, `?width=${width}`);
+   };
+}
 
 interface SizeMap {
    [index: string]: number;
