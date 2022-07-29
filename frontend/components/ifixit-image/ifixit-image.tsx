@@ -32,16 +32,19 @@ const cartImageSizeMap: SizeMap = [
 
 export function IfixitImage(props: ImageProps) {
    let loader = props.loader;
+   let unoptimized = props.unoptimized;
 
    if (typeof props.src === 'string') {
       if (isGuideImage(props.src)) {
          loader = getImageLoader(guideImageSizeMap, 'huge');
       } else if (isCartImage(props.src)) {
          loader = getImageLoader(cartImageSizeMap, 'large');
+      } else if (isStrapiImage(props.src)) {
+         unoptimized = true;
       }
    }
 
-   return <Image {...props} loader={loader} />;
+   return <Image {...props} unoptimized={unoptimized} loader={loader} />;
 }
 
 function isGuideImage(src: string) {
