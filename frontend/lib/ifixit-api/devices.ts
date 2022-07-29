@@ -7,6 +7,9 @@ export async function fetchDeviceWiki(
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
+      if(!deviceHandle) {
+         throw new Error(`deviceHandle cannot be a blank string!`);
+      }
       const response = await fetch(
          `${IFIXIT_ORIGIN}/api/2.0/cart/part_collections/devices/${deviceHandle}`,
          {
