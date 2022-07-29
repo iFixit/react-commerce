@@ -17,16 +17,15 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
    InstantSearch,
-   InstantSearchServerState,
    InstantSearchSSRProvider,
+   InstantSearchSSRProviderProps,
 } from 'react-instantsearch-hooks-web';
 
-type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
+type InstantSearchProviderProps = AlgoliaProps & InstantSearchSSRProviderProps;
 
 export type AlgoliaProps = {
    url: string;
    indexName: string;
-   serverState?: Partial<InstantSearchServerState>;
    apiKey: string;
 };
 
@@ -43,8 +42,8 @@ export function InstantSearchProvider({
    children,
    url,
    indexName,
-   serverState,
    apiKey,
+   ...serverState
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
    cypressWindowLog({ userLoaded: user.isFetched });

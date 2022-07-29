@@ -4,6 +4,7 @@ import { AppProvider } from '@ifixit/app';
 import { theme } from '@ifixit/ui';
 import Head from 'next/head';
 import * as React from 'react';
+import { InstantSearchSSRProviderProps } from 'react-instantsearch-hooks-web';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
 
@@ -34,14 +35,15 @@ const queryClient = new QueryClient();
 
 export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
 
-export type AppProvidersProps = {
+export type AppProvidersProps = InstantSearchSSRProviderProps & {
    algolia?: AlgoliaProps;
 };
 
 export function AppProviders({
    children,
    algolia,
-}: React.PropsWithChildren<AppProvidersProps>) {
+   ...serverState
+}: AppProvidersProps) {
    const markup = (
       <>
          <Head>
@@ -74,7 +76,7 @@ export function AppProviders({
       <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
          <QueryClientProvider client={queryClient}>
             {algolia ? (
-               <InstantSearchProvider {...algolia}>
+               <InstantSearchProvider {...algolia} {...serverState}>
                   {markup}
                </InstantSearchProvider>
             ) : (
