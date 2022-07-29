@@ -15,7 +15,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { ProductList } from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import * as React from 'react';
 import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import {
@@ -132,6 +132,7 @@ export function FacetsDrawer({
                               attribute={facet}
                               onSelect={setCurrentFacet}
                               refinedCount={refinedCount}
+                              productList={productList}
                            />
                         );
                      })}
@@ -240,12 +241,14 @@ type FacetListItemProps = {
    attribute: string;
    refinedCount: number;
    onSelect: (attribute: string) => void;
+   productList: ProductList;
 };
 
 function FacetListItem({
    attribute,
    refinedCount,
    onSelect,
+   productList,
 }: FacetListItemProps) {
    const { items } = useFilteredRefinementList({
       attribute,
@@ -254,6 +257,15 @@ function FacetListItem({
    const hasApplicableRefinements = items.length > 0;
 
    if (!hasApplicableRefinements) {
+      return null;
+   }
+
+   const isToolCategoryOnParts =
+      (productList.type === ProductListType.AllParts ||
+         productList.type === ProductListType.DeviceParts) &&
+      attribute === 'facet_tags.Tool Category';
+
+   if (isToolCategoryOnParts) {
       return null;
    }
 
