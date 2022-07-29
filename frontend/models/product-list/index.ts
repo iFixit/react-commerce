@@ -49,13 +49,12 @@ export async function findProductList(
 ): Promise<ProductList | null> {
    const deviceTitle = filters.deviceTitle?.eq ?? '';
 
-   const [result, deviceWiki] =
-      await Promise.all([
-         strapi.getProductList({
-            filters,
-         }),
-         fetchDeviceWiki(deviceTitle)
-      ]);
+   const [result, deviceWiki] = await Promise.all([
+      strapi.getProductList({
+         filters,
+      }),
+      fetchDeviceWiki(deviceTitle),
+   ]);
    const productList = result.productLists?.data?.[0]?.attributes;
 
    if (productList == null && deviceWiki == null) {
