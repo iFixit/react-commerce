@@ -85,7 +85,8 @@ const cartImageSizeMap: SizeMap = {
 };
 
 const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
-   for (const [sizeName, size] of Object.entries(sizeMap)) {
+   const sortedSizes = Object.entries(sizeMap).sort((a, b) => a[1] - b[1]);
+   for (const [sizeName, size] of sortedSizes) {
       if (width < size) {
          return sizeName;
       }
