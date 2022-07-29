@@ -104,6 +104,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          _hover={{
             textDecoration: 'underline',
          }}
+         align="left"
       >
          {item.label}
       </Text>
