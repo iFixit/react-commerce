@@ -46,9 +46,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
    const imageUrl = productList.image?.url;
    const shouldNoIndex =
-      isFiltered ||
-      pagination.nbHits < 2 ||
-      productList.forceNoIndex;
+      isFiltered || pagination.nbHits < 2 || productList.forceNoIndex;
    return (
       <Head>
          {shouldNoIndex ? (
