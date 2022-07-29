@@ -34,7 +34,8 @@ export function MetaTags({ productList }: MetaTagsProps) {
       typeof window === 'undefined' && productList.deviceItemType
          ? encodeDeviceItemType(productList.deviceItemType)
          : encodeDeviceItemType(algoliaDeviceItemType ?? '');
-   let title = getProductListTitle(productList, itemType);
+   let title =
+      productList.metaTitle || getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
@@ -45,9 +46,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
    const imageUrl = productList.image?.url;
    const shouldNoIndex =
-      isFiltered ||
-      pagination.nbHits < 2 ||
-      productList.forceNoIndex;
+      isFiltered || pagination.nbHits < 2 || productList.forceNoIndex;
    return (
       <Head>
          {shouldNoIndex ? (
