@@ -97,6 +97,7 @@ export async function findProductList(
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
+      metaTitle: productList?.metaTitle ?? null,
       filters: productList?.filters ?? null,
       image: null,
       ancestors,
