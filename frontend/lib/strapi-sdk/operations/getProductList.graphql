@@ -14,7 +14,6 @@ query getProductList($filters: ProductListFiltersInput) {
             tagline
             description
             metaDescription
-            metaTitle
             filters
             image {
                data {

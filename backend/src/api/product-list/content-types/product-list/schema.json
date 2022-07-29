@@ -90,15 +90,6 @@
          "type": "string",
          "maxLength": 320
       },
-      "metaTitle": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "maxLength": 130
-      },
       "deviceTitle": {
          "pluginOptions": {
             "i18n": {
