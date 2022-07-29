@@ -1,20 +1,17 @@
 import Image, { ImageProps, ImageLoader, ImageLoaderProps } from 'next/image';
 
 export function IfixitImage(props: ImageProps) {
-   const unoptimized = props.unoptimized;
-   let loader;
+   let loader = props.loader;
 
    if (typeof props.src === 'string') {
       if (isGuideImage(props.src)) {
          loader = guideImageLoader;
       } else if (isCartImage(props.src)) {
          loader = cartImageLoader;
-      } else if (isStrapiImage(props.src)) {
-         // Use default loader unless unoptimized
       }
    }
 
-   return <Image {...props} unoptimized={unoptimized} loader={loader} />;
+   return <Image {...props} loader={loader} />;
 }
 
 function isGuideImage(src: string) {
