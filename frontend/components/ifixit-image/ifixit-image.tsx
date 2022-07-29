@@ -69,7 +69,11 @@ function getImageLoader(sizeMap: SizeMap, defaultSize: string): ImageLoader {
    };
 }
 
-const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
+function getImageSize(
+   width: number,
+   sizeMap: SizeMap,
+   defaultSize: string
+): string {
    const sortedSizes = Object.entries(sizeMap).sort((a, b) => a[1] - b[1]);
    for (const [sizeName, size] of sortedSizes) {
       if (width < size) {
@@ -77,4 +81,4 @@ const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
       }
    }
    return defaultSize;
-};
+}
