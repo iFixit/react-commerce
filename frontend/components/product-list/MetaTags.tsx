@@ -34,7 +34,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
       title += ` - Page ${page}`;
    }
    title += ' | iFixit';
-   const itemTypeHandle = `/${encodeDeviceItemType(itemType ?? '')}`;
+   const itemTypeHandle = itemType ? `/${encodeDeviceItemType(itemType)}` : '';
    const canonicalUrl = `${appContext.ifixitOrigin}${
       productList.path
    }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
