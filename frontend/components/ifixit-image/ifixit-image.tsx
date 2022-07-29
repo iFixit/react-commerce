@@ -6,6 +6,7 @@ interface SizeMapEntry {
 }
 type SizeMap = Array<SizeMapEntry>;
 
+// These should be sorted in order of ascending width.
 const guideImageSizeMap: SizeMap = [
    { name: 'mini', width: 56 },
    { name: 'thumbnail', width: 96 },
