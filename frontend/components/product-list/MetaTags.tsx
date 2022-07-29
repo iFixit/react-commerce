@@ -34,7 +34,8 @@ export function MetaTags({ productList }: MetaTagsProps) {
       typeof window === 'undefined' && productList.deviceItemType
          ? encodeDeviceItemType(productList.deviceItemType)
          : encodeDeviceItemType(algoliaDeviceItemType ?? '');
-   let title = getProductListTitle(productList, itemType);
+   let title =
+      productList.metaTitle || getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
