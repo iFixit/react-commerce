@@ -1,32 +1,34 @@
 import Image, { ImageProps, ImageLoader, ImageLoaderProps } from 'next/image';
 
-interface SizeMap {
-   [index: string]: number;
+interface SizeMapEntry {
+   width: number;
+   name: string;
 }
+type SizeMap = Array<SizeMapEntry>;
 
-const guideImageSizeMap: SizeMap = {
-   mini: 56,
-   thumbnail: 96,
-   '140x105': 140,
-   '200x150': 200,
-   standard: 300,
-   '440x330': 440,
-   medium: 592,
-   large: 800,
-   huge: 1600,
-};
+const guideImageSizeMap: SizeMap = [
+   { name: 'mini', width: 56 },
+   { name: 'thumbnail', width: 96 },
+   { name: '140x105', width: 140 },
+   { name: '200x150', width: 200 },
+   { name: 'standard', width: 300 },
+   { name: '440x330', width: 440 },
+   { name: 'medium', width: 592 },
+   { name: 'large', width: 800 },
+   { name: 'huge', width: 1600 },
+];
 
-const cartImageSizeMap: SizeMap = {
-   mini: 41,
-   thumbnail: 70,
-   size110: 110,
-   size170: 170,
-   size250: 250,
-   size400: 400,
-   medium: 600,
-   size1000: 1000,
-   large: 3000,
-};
+const cartImageSizeMap: SizeMap = [
+   { name: 'mini', width: 41 },
+   { name: 'thumbnail', width: 70 },
+   { name: 'size110', width: 110 },
+   { name: 'size170', width: 170 },
+   { name: 'size250', width: 250 },
+   { name: 'size400', width: 400 },
+   { name: 'medium', width: 600 },
+   { name: 'size1000', width: 1000 },
+   { name: 'large', width: 3000 },
+];
 
 export function IfixitImage(props: ImageProps) {
    let loader = props.loader;
@@ -74,10 +76,9 @@ function getImageSize(
    sizeMap: SizeMap,
    defaultSize: string
 ): string {
-   const sortedSizes = Object.entries(sizeMap).sort((a, b) => a[1] - b[1]);
-   for (const [sizeName, size] of sortedSizes) {
-      if (width < size) {
-         return sizeName;
+   for (const size of sizeMap) {
+      if (width < size.width) {
+         return size.name;
       }
    }
    return defaultSize;
