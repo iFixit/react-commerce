@@ -81,6 +81,7 @@ const cartImageSizeMap: SizeMap = {
    size400: 400,
    medium: 600,
    size1000: 1000,
+   large: 3000,
 };
 
 const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
