@@ -2,6 +2,7 @@ import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import {
    getProductListTitle,
    encodeDeviceItemType,
+   encodeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList } from '@models/product-list';
@@ -44,10 +45,13 @@ export function MetaTags({ productList }: MetaTagsProps) {
       productList.path
    }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
    const imageUrl = productList.image?.url;
-   const shouldNoIndex =
-      isFiltered ||
-      pagination.nbHits < 2 ||
-      productList.forceNoIndex;
+   const productListExemptions =
+      noIndexExemptions[encodeDeviceTitle(productList.deviceTitle ?? '')];
+   const isNoIndexExempt = itemType
+      ? productListExemptions?.itemTypes?.includes(itemType)
+      : productListExemptions?.root;
+   const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
+   const shouldNoIndex = isFiltered || !hasResults || productList.forceNoIndex;
    return (
       <Head>
          {shouldNoIndex ? (
@@ -75,3 +79,16 @@ export function MetaTags({ productList }: MetaTagsProps) {
       </Head>
    );
 }
+
+type NoIndexExemptionsType = {
+   [handle: string]: {
+      root?: boolean;
+      itemTypes?: string[];
+   };
+};
+
+const noIndexExemptions: NoIndexExemptionsType = {
+   MacBook_Pro: {
+      itemTypes: ['Case_Components', 'Hard_Drives', 'Motherboards'],
+   },
+};
