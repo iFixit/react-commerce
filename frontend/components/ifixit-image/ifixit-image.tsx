@@ -52,38 +52,39 @@ const cartImageLoader: ImageLoader = ({
    quality,
 }: ImageLoaderProps) => {
    const baseSrc = src.replace(/\.[^/.]+$/, '');
-   const sizeName = getImageSize(width, cartImageSizeMap, 'size1000');
+   const sizeName = getImageSize(width, cartImageSizeMap, 'large');
    return baseSrc.concat('.', sizeName, `?width=${width}`);
 };
 
-type SizeMapEntry = [number, string];
-type SizeMap = Array<SizeMapEntry>;
+interface SizeMap {
+   [index: string]: number;
+}
 
-const guideImageSizeMap: SizeMap = [
-   [56, 'mini'],
-   [96, 'thumbnail'],
-   [140, '140x105'],
-   [200, '200x150'],
-   [300, 'standard'],
-   [440, '440x330'],
-   [592, 'medium'],
-   [800, 'large'],
-   [1600, 'huge'],
-];
+const guideImageSizeMap: SizeMap = {
+   mini: 56,
+   thumbnail: 96,
+   '140x105': 140,
+   '200x150': 200,
+   standard: 300,
+   '440x330': 440,
+   medium: 592,
+   large: 800,
+   huge: 1600,
+};
 
-const cartImageSizeMap: SizeMap = [
-   [41, 'mini'],
-   [70, 'thumbnail'],
-   [110, 'size110'],
-   [170, 'size170'],
-   [250, 'size250'],
-   [400, 'size400'],
-   [600, 'medium'],
-   [1000, 'size1000'],
-];
+const cartImageSizeMap: SizeMap = {
+   mini: 41,
+   thumbnail: 70,
+   size110: 110,
+   size170: 170,
+   size250: 250,
+   size400: 400,
+   medium: 600,
+   size1000: 1000,
+};
 
 const getImageSize = (width: number, sizeMap: SizeMap, defaultSize: string) => {
-   for (const [size, sizeName] of sizeMap) {
+   for (const [sizeName, size] of Object.entries(sizeMap)) {
       if (width < size) {
          return sizeName;
       }
