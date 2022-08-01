@@ -9,12 +9,18 @@ export async function fetchDeviceWiki(
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
-      invariant(deviceHandle.length > 0, "deviceHandle cannot be a blank string");
-      const response = await client.get(`cart/part_collections/devices/${deviceHandle}`, {
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      });
+      invariant(
+         deviceHandle.length > 0,
+         'deviceHandle cannot be a blank string'
+      );
+      const response = await client.get(
+         `cart/part_collections/devices/${deviceHandle}`,
+         {
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         }
+      );
       if (!response.ok) {
          return null;
       }

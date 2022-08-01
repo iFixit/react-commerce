@@ -33,19 +33,20 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
 
    const [globalSettings, stores, currentStore, productList] = await logAsync(
       'Promise.all',
-      () => Promise.all([
-         getGlobalSettings(),
-         getStoreList(),
-         getStoreByCode('us'),
-         findProductList({
-            handle: {
-               eq: handle,
-            },
-            type: {
-               eq: 'marketing',
-            },
-         }),
-      ])
+      () =>
+         Promise.all([
+            getGlobalSettings(),
+            getStoreList(),
+            getStoreByCode('us'),
+            findProductList({
+               handle: {
+                  eq: handle,
+               },
+               type: {
+                  eq: 'marketing',
+               },
+            }),
+         ])
    );
 
    if (productList == null) {

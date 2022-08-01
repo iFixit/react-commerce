@@ -55,7 +55,7 @@ export async function findProductList(
 
    const [result, deviceWiki] = await Promise.all([
       logAsync('strapi:getProductList', () =>
-         strapi.getProductList({ filters, })
+         strapi.getProductList({ filters })
       ),
       fetchDeviceWiki(createIFixitAPIClient(), deviceTitle),
    ]);
