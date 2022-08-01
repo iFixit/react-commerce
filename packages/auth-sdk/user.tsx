@@ -20,7 +20,7 @@ export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
    const query = useQuery(
       userKeys.user,
-      () => fetchAuthenticatedUser(apiClient),
+      () => fetchAuthenticatedUser(apiClient).catch(() => null),
       {
          retryOnMount: false,
          staleTime: Infinity,
@@ -39,50 +39,44 @@ async function fetchAuthenticatedUser(
       },
    });
 
-   if (response.ok) {
-      const payload = await response.json();
-      invariant(isRecord(payload), 'unexpected api response');
-      invariant(typeof payload.userid === 'number', 'User ID is not a number');
-      invariant(
-         payload.algoliaApiKeyProducts === null ||
-            payload.algoliaApiKeyProducts === undefined ||
-            typeof payload.algoliaApiKeyProducts === 'string',
-         'algoliaApiKeyProducts should be a string or null'
-      );
-      invariant(
-         typeof payload.username === 'string',
-         'User username is not a string'
-      );
-      let thumbnailUrl: string | null = null;
-      if (
-         isRecord(payload.image) &&
-         typeof payload.image.thumbnail === 'string'
-      ) {
-         thumbnailUrl = payload.image.thumbnail;
-      }
-
-      const unique_username =
-         typeof payload.unique_username == 'string'
-            ? payload.unique_username
-            : null;
-
-      const discountTier =
-         typeof payload.discount_tier === 'string'
-            ? payload.discount_tier
-            : null;
-      return {
-         id: payload.userid,
-         username: payload.username,
-         handle: unique_username,
-         thumbnail: thumbnailUrl,
-         is_pro: discountTier != null,
-         algoliaApiKeyProducts: payload.algoliaApiKeyProducts,
-         discountTier,
-      };
+   const payload = await response.json();
+   invariant(isRecord(payload), 'unexpected api response');
+   invariant(typeof payload.userid === 'number', 'User ID is not a number');
+   invariant(
+      payload.algoliaApiKeyProducts === null ||
+         payload.algoliaApiKeyProducts === undefined ||
+         typeof payload.algoliaApiKeyProducts === 'string',
+      'algoliaApiKeyProducts should be a string or null'
+   );
+   invariant(
+      typeof payload.username === 'string',
+      'User username is not a string'
+   );
+   let thumbnailUrl: string | null = null;
+   if (
+      isRecord(payload.image) &&
+      typeof payload.image.thumbnail === 'string'
+   ) {
+      thumbnailUrl = payload.image.thumbnail;
    }
 
-   if (response.status === 401) {
-      return null;
-   }
-   throw new Error(response.statusText);
+   const unique_username =
+      typeof payload.unique_username == 'string'
+         ? payload.unique_username
+         : null;
+
+   const discountTier =
+      typeof payload.discount_tier === 'string'
+         ? payload.discount_tier
+         : null;
+
+   return {
+      id: payload.userid,
+      username: payload.username,
+      handle: unique_username,
+      thumbnail: thumbnailUrl,
+      is_pro: discountTier != null,
+      algoliaApiKeyProducts: payload.algoliaApiKeyProducts,
+      discountTier,
+   };
 }
