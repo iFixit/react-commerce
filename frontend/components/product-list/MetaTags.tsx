@@ -48,7 +48,9 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const productListExemptions =
       noIndexExemptions[encodeDeviceTitle(productList.deviceTitle ?? '')];
    const isNoIndexExempt = itemType
-      ? productListExemptions?.itemTypes?.includes(encodeDeviceItemType(itemType))
+      ? productListExemptions?.itemTypes?.includes(
+           encodeDeviceItemType(itemType)
+        )
       : productListExemptions?.root;
    const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
    const shouldNoIndex = isFiltered || !hasResults || productList.forceNoIndex;
