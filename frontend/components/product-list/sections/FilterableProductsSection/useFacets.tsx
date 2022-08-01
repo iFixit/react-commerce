@@ -49,7 +49,11 @@ export function useFilteredFacets(productList: ProductList) {
       return usefulFacets;
    }, [facets, infoNames, sortBy]);
 
-   if (productList.type === ProductListType.AllTools) {
+   const isToolsPage =
+      productList.type === ProductListType.AllTools ||
+      productList.type === ProductListType.ToolsCategory;
+
+   if (isToolsPage) {
       const excludedToolsFacets = [
          'facet_tags.Item Type',
          'facet_tags.Capacity',
@@ -58,6 +62,7 @@ export function useFilteredFacets(productList: ProductList) {
          'facet_tags.Device Category',
          'facet_tags.Device Type',
          'facet_tags.OS',
+         'facet_tags.Part or Kit',
       ];
       return facets.filter((facet) => !excludedToolsFacets.includes(facet));
    }

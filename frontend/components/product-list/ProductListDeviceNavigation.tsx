@@ -1,15 +1,16 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 
-export interface ProductListDeviceNavigationProps {
+type ProductListDeviceNavigationProps = FlexProps & {
    productList: ProductList;
-}
+};
 
 export function ProductListDeviceNavigation({
    productList,
+   ...flexProps
 }: ProductListDeviceNavigationProps) {
    const isRootProductList = productList.ancestors.length === 0;
    let guideUrl: string | undefined;
@@ -37,6 +38,7 @@ export function ProductListDeviceNavigation({
             md: '0',
          }}
          bg="white"
+         {...flexProps}
       >
          <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
          <SecondaryNavbarItem>

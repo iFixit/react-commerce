@@ -182,3 +182,22 @@ export function useSafeSetState<T>(
 
    return [state, safeSetState];
 }
+
+/**
+ * Creates a decoupled state value that is kept is sync with the provided state.
+ * The purpose of this hook is to make an input field feel more responsive when the
+ * state update depends on async requests.
+ * @param state The state that is being decoupled
+ * @returns The decoupled state
+ */
+export function useDecoupledState<Type = any>(
+   state: Type
+): [Type, React.Dispatch<React.SetStateAction<Type>>] {
+   const [decoupledState, setDecoupledState] = React.useState(state);
+
+   React.useEffect(() => {
+      setDecoupledState(state);
+   }, [state]);
+
+   return [decoupledState, setDecoupledState];
+}

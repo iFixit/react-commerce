@@ -1,8 +1,6 @@
 import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
-import { usePrevious, useSafeSetState } from '@ifixit/ui';
 import { fetchPosts, Post } from '@models/posts';
-import isEqual from 'lodash/isEqual';
-import * as React from 'react';
+import { useQuery } from 'react-query';
 import { PostCard } from './PostCard';
 
 export interface RelatedPostsSectionProps {
@@ -10,13 +8,13 @@ export interface RelatedPostsSectionProps {
 }
 
 export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
-   const { posts, isLoading, error } = usePosts(tags);
+   const { data: posts, isLoading, isError, error } = usePosts(tags);
 
-   if (error) {
+   if (isError) {
       console.warn(`Failed to load related posts: ${error}`);
    }
 
-   if (isLoading || posts.length === 0) {
+   if (isLoading || !posts || posts.length === 0) {
       return null;
    }
 
@@ -55,37 +53,20 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    );
 }
 
+const computeRelatedPostsKey = (tags: string[]) => [
+   `related_posts?data=${encodeURIComponent(JSON.stringify({ tags }))}`,
+];
+
 function usePosts(tags: string[]) {
-   const previousTags = usePrevious(tags);
-
-   const [state, setState] = useSafeSetState<{
-      posts: Post[];
-      isLoading: boolean;
-      error?: string;
-   }>({
-      posts: [],
-      isLoading: true,
-   });
-
-   React.useEffect(() => {
-      if (!isEqual(tags, previousTags)) {
-         fetchPosts(tags)
-            .then((posts) => {
-               setState({
-                  posts,
-                  isLoading: false,
-                  error: undefined,
-               });
-            })
-            .catch((error) => {
-               setState((current) => ({
-                  ...current,
-                  isLoading: false,
-                  error: error.message,
-               }));
-            });
+   const query = useQuery(
+      computeRelatedPostsKey(tags),
+      async (): Promise<Post[]> => {
+         return await fetchPosts(tags);
+      },
+      {
+         retryOnMount: false,
+         staleTime: Infinity,
       }
-   }, [previousTags, setState, tags]);
-
-   return state;
+   );
+   return query;
 }

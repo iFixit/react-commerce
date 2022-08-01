@@ -1,5 +1,8 @@
-import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { ALGOLIA_API_KEY, ALGOLIA_APP_ID } from '@config/env';
+import {
+   ALGOLIA_API_KEY,
+   ALGOLIA_APP_ID,
+   ALGOLIA_PRODUCT_INDEX_NAME,
+} from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import {
    getProductListPath,
@@ -18,6 +21,7 @@ import {
 } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
 import {
+   BaseProductList,
    ProductList,
    ProductListAncestor,
    ProductListChild,
@@ -25,7 +29,6 @@ import {
    ProductListSection,
    ProductListSectionType,
    ProductListType,
-   BaseProductList,
 } from './types';
 
 export { ProductListSectionType, ProductListType } from './types';
@@ -42,17 +45,18 @@ export type {
  * Get the product list data from the API
  */
 export async function findProductList(
-   filters: ProductListFiltersInput
+   filters: ProductListFiltersInput,
+   deviceItemType: string | null = null
 ): Promise<ProductList | null> {
-   const result = await strapi.getProductList({
-      filters,
-   });
+   const deviceTitle = filters.deviceTitle?.eq ?? '';
 
+   const [result, deviceWiki] = await Promise.all([
+      strapi.getProductList({
+         filters,
+      }),
+      fetchDeviceWiki(deviceTitle),
+   ]);
    const productList = result.productLists?.data?.[0]?.attributes;
-
-   const deviceTitle =
-      productList?.deviceTitle ?? filters.deviceTitle?.eq ?? '';
-   const deviceWiki = deviceTitle ? await fetchDeviceWiki(deviceTitle) : null;
 
    if (productList == null && deviceWiki == null) {
       return null;
@@ -88,6 +92,7 @@ export async function findProductList(
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
+      deviceItemType: deviceItemType,
       path,
       tagline: productList?.tagline ?? null,
       description: description,
@@ -115,6 +120,7 @@ export async function findProductList(
          apiKey: algoliaApiKey,
       },
       wikiInfo: deviceWiki?.info || [],
+      forceNoIndex: !productList,
    };
 
    return {
@@ -355,7 +361,7 @@ function createProductListSection(
                      : getImageFromStrapiImage(image, 'thumbnail'),
                filters: productList.filters ?? null,
                algolia: {
-                  indexName: ALGOLIA_DEFAULT_INDEX_NAME,
+                  indexName: ALGOLIA_PRODUCT_INDEX_NAME,
                   apiKey: algoliaApiKey,
                },
             },

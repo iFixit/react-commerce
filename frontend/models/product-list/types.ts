@@ -48,6 +48,7 @@ export interface BaseProductList {
    title: string;
    handle: string;
    deviceTitle: string | null;
+   deviceItemType: string | null;
    path: string;
    tagline: string | null;
    description: string;
@@ -62,6 +63,7 @@ export interface BaseProductList {
       apiKey: string;
    };
    wikiInfo: WikiInfoEntry[];
+   forceNoIndex: boolean;
 }
 
 interface AllPartsProductList extends BaseProductList {

@@ -9,8 +9,11 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
-import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { decodeDeviceTitle } from '@helpers/product-list-helpers';
+import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
+import {
+   decodeDeviceTitle,
+   decodeDeviceItemType,
+} from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -31,18 +34,23 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    );
 
    const { deviceHandleItemType } = context.params || {};
-   const [deviceHandle, itemTypeHandle, ...rest] = Array.isArray(
+   const [deviceHandle, ...itemTypeAndRest] = Array.isArray(
       deviceHandleItemType
    )
       ? deviceHandleItemType
       : [];
 
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   if (rest?.length > 0) {
+   if (itemTypeAndRest?.length > 1) {
       return {
          notFound: true,
       };
    }
+
+   const itemTypeHandle =
+      itemTypeAndRest?.length > 0
+         ? decodeDeviceItemType(itemTypeAndRest[0])
+         : null;
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -51,11 +59,14 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({
-            deviceTitle: {
-               eq: deviceTitle,
+         findProductList(
+            {
+               deviceTitle: {
+                  eq: deviceTitle,
+               },
             },
-         }),
+            itemTypeHandle
+         ),
       ]);
 
    if (productList == null) {
@@ -68,7 +79,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
    const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
-   const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
+   const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
       algolia: {
