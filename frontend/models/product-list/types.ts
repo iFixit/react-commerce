@@ -27,16 +27,19 @@ export type WikiInfoEntry = {
 export enum ProductListType {
    AllParts = 'parts',
    DeviceParts = 'device-parts',
-   DeviceItemTypeParts = 'device-item-type-parts',
    AllTools = 'tools',
    ToolsCategory = 'tools-category',
    Marketing = 'marketing',
 }
 
+export enum RefinementDisplayType {
+   MultiSelect = 'multi-select',
+   SingleSelect = 'single-select',
+}
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
-   | DeviceItemTypePartsProductList
    | AllToolsProductList
    | ToolsCategoryProductList
    | MarketingProductList;
@@ -45,6 +48,7 @@ export interface BaseProductList {
    title: string;
    handle: string;
    deviceTitle: string | null;
+   deviceItemType: string | null;
    path: string;
    tagline: string | null;
    description: string;
@@ -59,6 +63,7 @@ export interface BaseProductList {
       apiKey: string;
    };
    wikiInfo: WikiInfoEntry[];
+   forceNoIndex: boolean;
 }
 
 interface AllPartsProductList extends BaseProductList {
@@ -67,11 +72,6 @@ interface AllPartsProductList extends BaseProductList {
 
 interface DevicePartsProductList extends BaseProductList {
    type: ProductListType.DeviceParts;
-}
-
-interface DeviceItemTypePartsProductList extends BaseProductList {
-   type: ProductListType.DeviceItemTypeParts;
-   itemType: string;
 }
 
 interface AllToolsProductList extends BaseProductList {
@@ -86,10 +86,6 @@ interface MarketingProductList extends BaseProductList {
    type: ProductListType.Marketing;
 }
 
-export type ProductListOptions = {
-   itemType?: string;
-};
-
 export interface ProductListAncestor {
    title: string;
    handle: string;
@@ -103,6 +99,7 @@ export interface ProductListChild {
    path: string;
    image: ProductListImage | null;
    sortPriority: number | null;
+   type: ProductListType;
 }
 
 export interface ProductListImage {

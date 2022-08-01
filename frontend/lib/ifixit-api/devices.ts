@@ -1,4 +1,5 @@
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { invariant } from '@ifixit/helpers';
 
 export type DeviceWiki = Record<string, any>;
 
@@ -8,7 +9,8 @@ export async function fetchDeviceWiki(
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
    try {
-      const response = await client.get(`wikis/CATEGORY/${deviceHandle}`, {
+      invariant(deviceHandle.length > 0, "deviceHandle cannot be a blank string");
+      const response = await client.get(`cart/part_collections/devices/${deviceHandle}`, {
          headers: {
             'Content-Type': 'application/json',
          },
@@ -17,7 +19,7 @@ export async function fetchDeviceWiki(
          return null;
       }
       const payload = await response.json();
-      return payload;
+      return response.ok ? payload : null;
    } catch (error: any) {
       return null;
    }

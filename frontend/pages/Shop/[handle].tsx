@@ -9,8 +9,7 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
-import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
-import { decodeDeviceTitle } from '@helpers/product-list-helpers';
+import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import { invariant, logAsync, logAsyncWrap } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -29,20 +28,24 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
       'public, s-maxage=600, stale-while-revalidate=1200'
    );
 
-   const { deviceHandle } = context.params || {};
-   invariant(typeof deviceHandle === 'string', 'device handle is required');
-
-   const deviceTitle = decodeDeviceTitle(deviceHandle);
+   const { handle } = context.params || {};
+   invariant(typeof handle === 'string', 'shop category handle is required');
 
    const [globalSettings, stores, currentStore, productList] = await logAsync(
       'Promise.all',
-      () =>
-         Promise.all([
-            getGlobalSettings(),
-            getStoreList(),
-            getStoreByCode('us'),
-            findProductList({ deviceTitle: { eq: deviceTitle } }),
-         ])
+      () => Promise.all([
+         getGlobalSettings(),
+         getStoreList(),
+         getStoreByCode('us'),
+         findProductList({
+            handle: {
+               eq: handle,
+            },
+            type: {
+               eq: 'marketing',
+            },
+         }),
+      ])
    );
 
    if (productList == null) {
@@ -54,8 +57,8 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    const title = `iFixit | ${productList.title}`;
 
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.req.url}`;
-   const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
+   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
+   const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
       algolia: {

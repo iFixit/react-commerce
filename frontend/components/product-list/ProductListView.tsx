@@ -1,7 +1,12 @@
 import { Flex, VStack } from '@chakra-ui/react';
+import { Matomo, GoogleAnalytics } from '@components/analytics';
 import { PageContentWrapper, SecondaryNavbar } from '@components/common';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
-import { ProductList, ProductListSectionType } from '@models/product-list';
+import {
+   ProductList,
+   ProductListSectionType,
+   ProductListType,
+} from '@models/product-list';
 import { Configure, Index } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
@@ -26,10 +31,19 @@ export function ProductListView({
    indexName,
 }: ProductListViewProps) {
    const filters = computeProductListAlgoliaFilterPreset(productList);
+   const isRootProductList = productList.ancestors.length === 0;
+   const isAllToolsPage = productList.type === ProductListType.AllTools;
+   const isToolPage =
+      isAllToolsPage || productList.type === ProductListType.ToolsCategory;
 
    return (
       <>
-         <SecondaryNavbar>
+         <SecondaryNavbar
+            display={{
+               base: isToolPage ? 'none' : 'initial',
+               sm: isAllToolsPage ? 'none' : 'initial',
+            }}
+         >
             <PageContentWrapper h="full">
                <Flex
                   h="full"
@@ -38,16 +52,39 @@ export function ProductListView({
                   justify="space-between"
                   px={{ base: 3, sm: 0 }}
                >
+                  <ProductListBreadcrumb
+                     display={{
+                        base: 'none',
+                        sm: 'flex',
+                     }}
+                     productList={productList}
+                  />
+                  <ProductListDeviceNavigation
+                     productList={productList}
+                     hidden={isToolPage}
+                  />
+               </Flex>
+            </PageContentWrapper>
+         </SecondaryNavbar>
+         <SecondaryNavbar
+            display={{
+               base: isRootProductList ? 'none' : 'initial',
+               sm: 'none',
+            }}
+         >
+            <PageContentWrapper h="full">
+               <Flex h="full" w="full" boxSizing="border-box" px="3">
                   <ProductListBreadcrumb productList={productList} />
-                  <ProductListDeviceNavigation productList={productList} />
                </Flex>
             </PageContentWrapper>
          </SecondaryNavbar>
          <PageContentWrapper py="10">
             <VStack align="stretch" spacing="12">
                <Index indexName={indexName}>
-                  <Configure filters={filters} hitsPerPage={18}/>
+                  <Configure filters={filters} hitsPerPage={18} />
                   <MetaTags productList={productList} />
+                  <Matomo />
+                  <GoogleAnalytics />
                   <HeroSection productList={productList} />
                   {productList.children.length > 0 && (
                      <ProductListChildrenSection productList={productList} />

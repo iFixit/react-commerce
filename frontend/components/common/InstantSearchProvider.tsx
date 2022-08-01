@@ -1,11 +1,18 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
+import {
+   decodeDeviceItemType,
+   encodeDeviceItemType,
+} from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { usePrevious } from '@ifixit/ui';
-import algoliasearch, { SearchClient } from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
+import { RouterProps } from 'instantsearch.js/es/middlewares';
+import { UiState } from 'instantsearch.js/es/types';
+import { mapValues } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
@@ -27,8 +34,10 @@ type RouteState = Partial<{
    q: string;
    p: number;
    filter: Record<string, any>;
-   range: Record<string, string>;
+   // range: Record<string, string>;
 }>;
+
+type IndexUiState = Record<string, any>;
 
 export function InstantSearchProvider({
    children,
@@ -68,64 +77,138 @@ export function InstantSearchProvider({
       };
    }, [router]);
 
-   // We're using this to make `InstantSearch` unmount at every re-render, since as of version 6.28.0 it breaks when
-   // it re-renders. Re-rendering though should be relatively infrequent in this component, so this should be fine.
-   const count = useCountRenders();
+   // We're using this to make `InstantSearch` unmount at every re-render, since
+   // as of version 6.28.0 it breaks when it re-renders. Re-rendering though
+   // should be relatively infrequent in this component, so this should be fine.
+   const renderCount = useCountRenders();
+
+   const routing: RouterProps<UiState, RouteState> = {
+      stateMapping: {
+         stateToRoute(uiState) {
+            const indexUiState = uiState[indexName];
+            const routeState: RouteState = {};
+            if (indexUiState.query) {
+               routeState.q = indexUiState.query;
+            }
+            if (indexUiState.page) {
+               routeState.p = indexUiState.page;
+            }
+            if (indexUiState.refinementList) {
+               routeState.filter = indexUiState.refinementList;
+            }
+            // if (indexUiState.range != null) {
+            //    routeState.range = indexUiState.range;
+            // }
+            return routeState;
+         },
+         routeToState(routeState: RouteState) {
+            const stateObject: IndexUiState = {};
+            if (routeState.q != null) {
+               stateObject.query = routeState.q;
+            }
+            if (routeState.p != null) {
+               stateObject.page = routeState.p;
+            }
+            if (routeState.filter != null) {
+               stateObject.refinementList = routeState.filter;
+            }
+            // if (routeState.range != null) {
+            //    stateObject.range = routeState.range;
+            // }
+            return {
+               [indexName]: stateObject,
+            };
+         },
+      },
+      router: history({
+         getLocation() {
+            if (typeof window === 'undefined') {
+               return new URL(url) as unknown as Location;
+            }
+
+            return window.location;
+         },
+         createURL({ qsModule, routeState, location }) {
+            const baseUrl = getBaseOrigin(location);
+            const pathParts = location.pathname
+               .split('/')
+               .filter((part) => part !== '');
+            const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
+            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const itemTypeHandle = pathParts.length >= 3 ? pathParts[2] : '';
+
+            let path = '';
+            if (partsOrTools) {
+               path += `/${partsOrTools}`;
+               if (deviceHandle) {
+                  path += `/${deviceHandle}`;
+                  const raw: string | string[] | undefined =
+                     routeState.filter?.['facet_tags.Item Type'];
+                  const itemType = Array.isArray(raw) ? raw[0] : raw;
+                  if (itemType?.length) {
+                     const encodedItemType = encodeDeviceItemType(itemType);
+                     path += `/${encodedItemType}`;
+                  } else if (renderCount === 1 && itemTypeHandle) {
+                     // Prevents a bug when visiting /Parts/iPhone/Cables
+                     // that it would redirect to /Parts/iPhone
+                     path += `/${itemTypeHandle}`;
+                  }
+               }
+            }
+
+            const filterCopy = { ...routeState.filter };
+            if (partsOrTools && deviceHandle) {
+               // Item Type is the slug on device pages, not in the query.
+               delete filterCopy['facet_tags.Item Type'];
+            }
+            const queryString = qsModule.stringify(
+               { ...routeState, filter: filterCopy },
+               {
+                  addQueryPrefix: true,
+                  arrayFormat: 'indices',
+               }
+            );
+
+            return `${baseUrl}${path}${queryString}`;
+         },
+         parseURL({ qsModule, location }) {
+            const pathParts = location.pathname
+               .split('/')
+               .filter((part) => part !== '');
+            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+
+            const {
+               q = '',
+               p,
+               filter = {},
+               // range = {},
+            } = qsModule.parse(location.search.slice(1));
+
+            const decodedFilters = decodeParsedQuery(filter);
+            if (deviceHandle && itemType) {
+               decodedFilters['facet_tags.Item Type'] = [
+                  decodeDeviceItemType(decodeURIComponent(itemType)),
+               ];
+            }
+
+            return {
+               q: decodeURIComponent(String(q)),
+               p: Number(p),
+               filter: decodedFilters,
+               // range: decodeParsedQuery(range),
+            };
+         },
+      }),
+   };
 
    return (
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
-            key={count}
+            key={renderCount}
             searchClient={algoliaClient}
             indexName={indexName}
-            routing={{
-               stateMapping: {
-                  stateToRoute(uiState): any {
-                     const indexUiState = uiState[indexName];
-                     const routeState: RouteState = {};
-                     if (indexUiState.query) {
-                        routeState.q = indexUiState.query;
-                     }
-                     if (indexUiState.page) {
-                        routeState.p = indexUiState.page;
-                     }
-                     if (indexUiState.refinementList) {
-                        routeState.filter = indexUiState.refinementList;
-                     }
-                     if (indexUiState.range != null) {
-                        routeState.range = indexUiState.range;
-                     }
-                     return routeState;
-                  },
-                  routeToState(routeState: RouteState) {
-                     const stateObject: Record<string, any> = {};
-                     if (routeState.q != null) {
-                        stateObject.query = routeState.q;
-                     }
-                     if (routeState.p != null) {
-                        stateObject.page = routeState.p;
-                     }
-                     if (routeState.filter != null) {
-                        stateObject.refinementList = routeState.filter;
-                     }
-                     if (routeState.range != null) {
-                        stateObject.range = routeState.range;
-                     }
-                     return {
-                        [indexName]: stateObject,
-                     };
-                  },
-               },
-               router: history({
-                  getLocation() {
-                     if (typeof window === 'undefined') {
-                        return new URL(url) as unknown as Location;
-                     }
-
-                     return window.location;
-                  },
-               }),
-            }}
+            routing={routing}
          >
             <RefreshSearchResults
                apiKey={algoliaApiKey}
@@ -141,6 +224,18 @@ function useCountRenders() {
    const countRef = React.useRef(0);
    countRef.current++;
    return countRef.current;
+}
+
+function decodeParsedQuery(parsed: any) {
+   return typeof parsed === 'object'
+      ? mapValues<Record<string, any>, any>(parsed, (parsedValues) => {
+           return Array.isArray(parsedValues)
+              ? parsedValues.map((v: any) =>
+                   typeof v === 'string' ? decodeURIComponent(v) : v
+                )
+              : decodeURIComponent(parsedValues);
+        })
+      : {};
 }
 
 type RefreshSearchResultsProps = {
@@ -165,4 +260,15 @@ function RefreshSearchResults({
       }
    }, [apiKey, prevApiKey]);
    return null;
+}
+
+function getBaseOrigin(location: Location): string {
+   if (typeof window === 'undefined' && process.env.NEXT_PUBLIC_IFIXIT_ORIGIN) {
+      // On the server, use the IFIXIT_ORIGIN url
+      // This ensures that the SSR produces the correct links on Vercel
+      // (where the Host header doesn't match the page URL.)
+      const publicOrigin = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
+      return publicOrigin.origin;
+   }
+   return location.origin;
 }

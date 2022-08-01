@@ -3,9 +3,11 @@ import { useDynamicWidgets } from 'react-instantsearch-hooks-web';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
 
+export const MAX_VALUES_PER_FACET = 200;
+
 export function useFacets() {
    const { attributesToRender } = useDynamicWidgets({
-      maxValuesPerFacet: 200,
+      maxValuesPerFacet: MAX_VALUES_PER_FACET,
    });
 
    return [
@@ -26,8 +28,6 @@ export function useFacets() {
 
 export function useFilteredFacets(productList: ProductList) {
    const facets = useFacets();
-   const isItemTypeProductList =
-      productList.type === ProductListType.DeviceItemTypeParts;
 
    const infoNames = React.useMemo(() => {
       return new Set(
@@ -43,16 +43,17 @@ export function useFilteredFacets(productList: ProductList) {
       const usefulFacets = facets
          .slice()
          .filter((facet) => {
-            if (facet === 'facet_tags.Item Type' && isItemTypeProductList) {
-               return false;
-            }
             return !infoNames.has(facet);
          })
          .sort(sortBy);
       return usefulFacets;
-   }, [facets, infoNames, isItemTypeProductList, sortBy]);
+   }, [facets, infoNames, sortBy]);
 
-   if (productList.type === ProductListType.AllTools) {
+   const isToolsPage =
+      productList.type === ProductListType.AllTools ||
+      productList.type === ProductListType.ToolsCategory;
+
+   if (isToolsPage) {
       const excludedToolsFacets = [
          'facet_tags.Item Type',
          'facet_tags.Capacity',
@@ -61,6 +62,7 @@ export function useFilteredFacets(productList: ProductList) {
          'facet_tags.Device Category',
          'facet_tags.Device Type',
          'facet_tags.OS',
+         'facet_tags.Part or Kit',
       ];
       return facets.filter((facet) => !excludedToolsFacets.includes(facet));
    }
@@ -84,7 +86,6 @@ function getFacetComparator(productListType: ProductListType) {
    switch (productListType) {
       case ProductListType.AllParts:
       case ProductListType.DeviceParts:
-      case ProductListType.DeviceItemTypeParts:
          return sortFacetsWithRanking(partsFacetRanking);
       case ProductListType.AllTools:
       case ProductListType.ToolsCategory:

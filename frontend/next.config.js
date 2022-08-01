@@ -1,3 +1,5 @@
+const { mapPartItemTypes } = require('./legacyPartCollectionRoutes');
+
 const withTM = require('next-transpile-modules')([
    '@ifixit/app',
    '@ifixit/ui',
@@ -11,6 +13,7 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
+const legacyRouting = require('./legacyToolCollectionRoutes.js');
 
 const withBundleAnalyzer =
    process.env.ANALYZE === 'true'
@@ -40,6 +43,9 @@ const moduleExports = {
       NEXT_PUBLIC_IFIXIT_ORIGIN: process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
       NEXT_PUBLIC_STRAPI_ORIGIN: process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
       SENTRY_DSN: process.env.SENTRY_DSN,
+      NEXT_PUBLIC_MATOMO_URL: process.env.NEXT_PUBLIC_MATOMO_URL,
+      NEXT_PUBLIC_GA_URL: process.env.NEXT_PUBLIC_GA_URL,
+      NEXT_PUBLIC_GA_KEY: process.env.NEXT_PUBLIC_GA_KEY,
    },
    async rewrites() {
       return [
@@ -51,9 +57,35 @@ const moduleExports = {
    },
    async redirects() {
       return [
+         ...mapPartItemTypes(),
+         {
+            source: `/Tools/:slug(${legacyRouting.getToolRedirects()})`,
+            destination: `/Tools`,
+            permanent: true,
+         },
+         {
+            source: `/Tools/Hakko`,
+            destination: `/Tools/Microsoldering`,
+            permanent: true,
+         },
          {
             source: '/Store/Guide/:guideid',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Guide/_/:guideid`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/parts.xml`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/tools.xml`,
+            permanent: true,
+         },
+         {
+            source: '/Shop/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/marketing.xml`,
             permanent: true,
          },
       ];
@@ -85,21 +117,9 @@ const moduleExports = {
    }),
 };
 
-function withUniversalOptimization(plugins) {
-   const configureWebpack = plugins.webpack || ((config, info) => config);
-   return {
-      ...plugins,
-      webpack(config, info) {
-         config = configureWebpack(config, info);
-         config.optimization.minimize = true;
-         return config;
-      },
-   };
-}
-
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(
-   withUniversalOptimization(withBundleAnalyzer(withTM(moduleExports))),
+   withBundleAnalyzer(withTM(moduleExports)),
    SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );
