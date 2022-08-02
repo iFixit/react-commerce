@@ -53,10 +53,7 @@ async function fetchAuthenticatedUser(
       'User username is not a string'
    );
    let thumbnailUrl: string | null = null;
-   if (
-      isRecord(payload.image) &&
-      typeof payload.image.thumbnail === 'string'
-   ) {
+   if (isRecord(payload.image) && typeof payload.image.thumbnail === 'string') {
       thumbnailUrl = payload.image.thumbnail;
    }
 
@@ -66,9 +63,7 @@ async function fetchAuthenticatedUser(
          : null;
 
    const discountTier =
-      typeof payload.discount_tier === 'string'
-         ? payload.discount_tier
-         : null;
+      typeof payload.discount_tier === 'string' ? payload.discount_tier : null;
 
    return {
       id: payload.userid,
