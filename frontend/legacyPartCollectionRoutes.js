@@ -74,7 +74,6 @@ const legacyTagsWithNoItemType = [
    'Retail_Display',
    'RJ-11_Boards',
    'SD_Card_Slots',
-   'Sensors',
    'Software',
    'Teardown_Case',
    'Textile_Repair',
