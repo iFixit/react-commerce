@@ -13,6 +13,7 @@ import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
    decodeDeviceTitle,
    decodeDeviceItemType,
+   encodeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
@@ -72,6 +73,15 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    if (productList == null) {
       return {
          notFound: true,
+      };
+   }
+
+   if (productList.deviceTitle && productList.deviceTitle !== deviceTitle) {
+      return {
+         redirect: {
+            permanent: true,
+            destination: `/Parts/${encodeDeviceTitle(productList.deviceTitle)}`,
+         },
       };
    }
 
