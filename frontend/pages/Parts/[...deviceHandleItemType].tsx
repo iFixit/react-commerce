@@ -13,6 +13,7 @@ import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
    decodeDeviceTitle,
    decodeDeviceItemType,
+   encodeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
@@ -34,23 +35,22 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    );
 
    const { deviceHandleItemType } = context.params || {};
-   const [deviceHandle, ...itemTypeAndRest] = Array.isArray(
+   const [deviceHandle, itemTypeHandle, ...rest] = Array.isArray(
       deviceHandleItemType
    )
       ? deviceHandleItemType
       : [];
 
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   if (itemTypeAndRest?.length > 1) {
+   if (rest?.length > 0) {
       return {
          notFound: true,
       };
    }
 
-   const itemTypeHandle =
-      itemTypeAndRest?.length > 0
-         ? decodeDeviceItemType(itemTypeAndRest[0])
-         : null;
+   const itemType = itemTypeHandle
+      ? decodeDeviceItemType(itemTypeHandle)
+      : null;
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -62,16 +62,27 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          findProductList(
             {
                deviceTitle: {
-                  eq: deviceTitle,
+                  eqi: deviceTitle,
                },
             },
-            itemTypeHandle
+            itemType
          ),
       ]);
 
    if (productList == null) {
       return {
          notFound: true,
+      };
+   }
+
+   if (productList.deviceTitle && productList.deviceTitle !== deviceTitle) {
+      const slug = itemTypeHandle ? `/${itemTypeHandle}` : '';
+      const canonicalDeviceTitle = encodeDeviceTitle(productList.deviceTitle);
+      return {
+         redirect: {
+            permanent: true,
+            destination: `/Parts/${canonicalDeviceTitle}${slug}`,
+         },
       };
    }
 

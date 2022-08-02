@@ -51,13 +51,13 @@ export async function findProductList(
    filters: ProductListFiltersInput,
    deviceItemType: string | null = null
 ): Promise<ProductList | null> {
-   const deviceTitle = filters.deviceTitle?.eq ?? '';
+   const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
    const [result, deviceWiki] = await Promise.all([
       logAsync('strapi:getProductList', () =>
          strapi.getProductList({ filters })
       ),
-      fetchDeviceWiki(createIFixitAPIClient(), deviceTitle),
+      fetchDeviceWiki(createIFixitAPIClient(), filterDeviceTitle),
    ]);
 
    const productList = result.productLists?.data?.[0]?.attributes;
@@ -66,6 +66,7 @@ export async function findProductList(
       return null;
    }
 
+   const deviceTitle = productList?.deviceTitle ?? filterDeviceTitle;
    const handle = productList?.handle ?? '';
    const parents =
       productList?.parent ??
@@ -100,6 +101,7 @@ export async function findProductList(
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
+      metaTitle: productList?.metaTitle ?? null,
       filters: productList?.filters ?? null,
       image: null,
       ancestors,

@@ -2,7 +2,6 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
 import { theme } from '@ifixit/ui';
-import Head from 'next/head';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
@@ -43,31 +42,7 @@ export function AppProviders({
    algolia,
 }: React.PropsWithChildren<AppProvidersProps>) {
    const markup = (
-      <>
-         <Head>
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link
-               rel="preconnect"
-               href="https://fonts.gstatic.com"
-               crossOrigin="true"
-            />
-            <link
-               href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lato:wght@400;700&display=swap"
-               rel="stylesheet"
-            />
-
-            <link
-               rel="prefetch"
-               href={`${IFIXIT_ORIGIN}/api/2.0/user`}
-               as="fetch"
-            />
-            <meta
-               name="viewport"
-               content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-            />
-         </Head>
-         <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
-      </>
+      <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
    );
 
    return (

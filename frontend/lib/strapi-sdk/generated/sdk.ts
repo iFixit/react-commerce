@@ -787,6 +787,7 @@ export type ProductList = {
    locale?: Maybe<Scalars['String']>;
    localizations?: Maybe<ProductListRelationResponseCollection>;
    metaDescription?: Maybe<Scalars['String']>;
+   metaTitle?: Maybe<Scalars['String']>;
    parent?: Maybe<ProductListEntityResponse>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
@@ -844,6 +845,7 @@ export type ProductListFiltersInput = {
    locale?: Maybe<StringFilterInput>;
    localizations?: Maybe<ProductListFiltersInput>;
    metaDescription?: Maybe<StringFilterInput>;
+   metaTitle?: Maybe<StringFilterInput>;
    not?: Maybe<ProductListFiltersInput>;
    or?: Maybe<Array<Maybe<ProductListFiltersInput>>>;
    parent?: Maybe<ProductListFiltersInput>;
@@ -867,6 +869,7 @@ export type ProductListInput = {
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
    metaDescription?: Maybe<Scalars['String']>;
+   metaTitle?: Maybe<Scalars['String']>;
    parent?: Maybe<Scalars['ID']>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections?: Maybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
@@ -1509,6 +1512,7 @@ export type GetProductListQuery = {
             tagline?: Maybe<string>;
             description: string;
             metaDescription?: Maybe<string>;
+            metaTitle?: Maybe<string>;
             filters?: Maybe<string>;
             childrenHeading?: Maybe<string>;
             image?: Maybe<{
@@ -2666,6 +2670,7 @@ export const GetProductListDocument = `
         tagline
         description
         metaDescription
+        metaTitle
         filters
         image {
           data {

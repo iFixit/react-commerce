@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getStoreByCode('us'),
          findProductList({
             handle: {
-               eq: handle,
+               eqi: handle,
             },
          }),
       ]);
@@ -47,6 +47,15 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    if (productList == null) {
       return {
          notFound: true,
+      };
+   }
+
+   if (productList.handle && productList.handle !== handle) {
+      return {
+         redirect: {
+            permanent: true,
+            destination: `/Tools/${productList.handle}`,
+         },
       };
    }
 
