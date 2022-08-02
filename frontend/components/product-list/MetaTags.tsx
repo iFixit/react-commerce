@@ -29,18 +29,13 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes.length === 1 &&
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
-   // Use the original device item type on the server.
-   const algoliaDeviceItemType = useDevicePartsItemType(productList);
-   const itemType =
-      typeof window === 'undefined' && productList.deviceItemType
-         ? encodeDeviceItemType(productList.deviceItemType)
-         : encodeDeviceItemType(algoliaDeviceItemType ?? '');
+   const itemType = useDevicePartsItemType(productList);
    let title = getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
    title += ' | iFixit';
-   const itemTypeHandle = itemType ? `/${itemType}` : '';
+   const itemTypeHandle = itemType ? `/${encodeDeviceItemType(itemType)}` : '';
    const canonicalUrl = `${appContext.ifixitOrigin}${
       productList.path
    }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
