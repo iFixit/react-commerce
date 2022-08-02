@@ -27,7 +27,6 @@ type AppPageProps = WithProvidersProps<PageProps>;
 export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
-   // The data is considered fresh for 10 minutes, and can be served even if stale for up to 20 minutes
    context.res.setHeader(
       'Cache-Control',
       'public, s-maxage=600, stale-while-revalidate=1200'
