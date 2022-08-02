@@ -37,9 +37,7 @@ export function logAsync<T>(
    asyncFunction: () => Promise<T>
 ): Promise<T> {
    const done = time(name);
-   const response = asyncFunction();
-   response.finally(done);
-   return response;
+   return asyncFunction().finally(done);
 }
 
 /**
@@ -52,9 +50,7 @@ export function logAsyncWrap<Args extends any[], T>(
 ): (...args: Args) => Promise<T> {
    return (...args) => {
       const done = time(name);
-      const response = asyncFunction(...args);
-      response.finally(done);
-      return response;
+      return asyncFunction(...args).finally(done);
    };
 }
 
