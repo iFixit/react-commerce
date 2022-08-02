@@ -35,23 +35,22 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    );
 
    const { deviceHandleItemType } = context.params || {};
-   const [deviceHandle, ...itemTypeAndRest] = Array.isArray(
+   const [deviceHandle, itemTypeHandle, ...rest] = Array.isArray(
       deviceHandleItemType
    )
       ? deviceHandleItemType
       : [];
 
    invariant(typeof deviceHandle === 'string', 'device handle is required');
-   if (itemTypeAndRest?.length > 1) {
+   if (rest?.length > 0) {
       return {
          notFound: true,
       };
    }
 
-   const itemTypeHandle =
-      itemTypeAndRest?.length > 0
-         ? decodeDeviceItemType(itemTypeAndRest[0])
-         : null;
+   const itemType = itemTypeHandle
+      ? decodeDeviceItemType(itemTypeHandle)
+      : null;
 
    const deviceTitle = decodeDeviceTitle(deviceHandle);
 
@@ -66,7 +65,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
                   eqi: deviceTitle,
                },
             },
-            itemTypeHandle
+            itemType
          ),
       ]);
 
@@ -77,10 +76,12 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    }
 
    if (productList.deviceTitle && productList.deviceTitle !== deviceTitle) {
+      const slug = itemTypeHandle ? `/${itemTypeHandle}` : '';
+      const canonicalDeviceTitle = encodeDeviceTitle(productList.deviceTitle);
       return {
          redirect: {
             permanent: true,
-            destination: `/Parts/${encodeDeviceTitle(productList.deviceTitle)}`,
+            destination: `/Parts/${canonicalDeviceTitle}${slug}`,
          },
       };
    }
