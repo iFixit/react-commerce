@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getStoreByCode('us'),
          findProductList({
             handle: {
-               eq: handle,
+               eqi: handle,
             },
             type: {
                eq: 'marketing',
@@ -50,6 +50,15 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    if (productList == null) {
       return {
          notFound: true,
+      };
+   }
+
+   if (productList.handle && productList.handle !== handle) {
+      return {
+         redirect: {
+            permanent: true,
+            destination: `/Shop/${productList.handle}`,
+         },
       };
    }
 

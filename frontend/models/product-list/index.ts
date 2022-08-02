@@ -48,13 +48,13 @@ export async function findProductList(
    filters: ProductListFiltersInput,
    deviceItemType: string | null = null
 ): Promise<ProductList | null> {
-   const deviceTitle = filters.deviceTitle?.eq ?? '';
+   const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
    const [result, deviceWiki] = await Promise.all([
       strapi.getProductList({
          filters,
       }),
-      fetchDeviceWiki(deviceTitle),
+      fetchDeviceWiki(filterDeviceTitle),
    ]);
    const productList = result.productLists?.data?.[0]?.attributes;
 
@@ -62,6 +62,7 @@ export async function findProductList(
       return null;
    }
 
+   const deviceTitle = productList?.deviceTitle ?? filterDeviceTitle;
    const handle = productList?.handle ?? '';
    const parents =
       productList?.parent ??
