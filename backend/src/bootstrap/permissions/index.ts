@@ -1,15 +1,15 @@
-const permissionsConfig = require('./config.json');
+import permissionsConfig from './config.json';
 
 const ROLE_UID = 'plugin::users-permissions.role';
 const PERMISSION_UID = 'plugin::users-permissions.permission';
 
-module.exports = async function setDefaultPermissions(strapi) {
+export default async function setDefaultPermissions(strapi) {
    const roles = Object.keys(permissionsConfig);
    for (let i = 0; i < roles.length; i++) {
       const role = roles[i];
       await setPermissionsForRole(strapi, role);
    }
-};
+}
 
 async function setPermissionsForRole(strapi, roleName) {
    strapi.log.info(`👨‍✈️ Setting permissions for role "${roleName}"`);

@@ -43,7 +43,7 @@ export function useFilteredFacets(productList: ProductList) {
       const usefulFacets = facets
          .slice()
          .filter((facet) => {
-            return !infoNames.has(facet);
+            return facet !== 'device' && !infoNames.has(facet);
          })
          .sort(sortBy);
       return usefulFacets;

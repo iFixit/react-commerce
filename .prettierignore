@@ -5,3 +5,4 @@ frontend/public
 backend/.cache
 backend/.tmp
 backend/build
+backend/dist
