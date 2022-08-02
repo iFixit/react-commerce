@@ -14,12 +14,7 @@ export async function fetchDeviceWiki(
          'deviceHandle cannot be a blank string'
       );
       const response = await client.get(
-         `cart/part_collections/devices/${deviceHandle}`,
-         {
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         }
+         `cart/part_collections/devices/${deviceHandle}`
       );
       if (!response.ok) {
          return null;
