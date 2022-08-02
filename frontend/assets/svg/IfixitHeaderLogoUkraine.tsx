@@ -24,7 +24,7 @@ function SvgIfixitHeaderLogoUkraine(props: React.SVGProps<SVGSVGElement>) {
          <g
             id="ifixit-header-logo-ukraine_svg__Layer_2"
             data-name="Layer 2"
-            transform="matrix(.52798 0 0 .40713 -11.741 -.192)"
+            transform="matrix(.52798 0 0 .40713 -10.826 -.192)"
          >
             <g
                id="ifixit-header-logo-ukraine_svg__Layer_1-2"
