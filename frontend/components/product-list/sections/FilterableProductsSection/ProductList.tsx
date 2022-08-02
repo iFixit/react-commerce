@@ -54,10 +54,8 @@ export function ProductListItem({ product }: ProductListItemProps) {
 
    const showProBadge = product.is_pro > 0;
    const showDiscountBadge = quantityAvailable > 0 && isDiscounted;
-   const showLifetimeWarrantyBadge =
-      quantityAvailable > 0 && product.lifetime_warranty;
-   const showOemPartnershipBadge =
-      quantityAvailable > 0 && product.oem_partnership;
+   const showLifetimeWarrantyBadge = product.lifetime_warranty;
+   const showOemPartnershipBadge = product.oem_partnership;
    const showBadges =
       showProBadge ||
       showDiscountBadge ||
@@ -143,7 +141,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      {product.short_description}
                   </Text>
                   {(product.rating >= 4 || product.rating_count > 10) && (
-                     <HStack align="center">
+                     <HStack align="center" data-testid="reviewStars">
                         <Rating value={product.rating} />
                         <Text
                            fontSize={{

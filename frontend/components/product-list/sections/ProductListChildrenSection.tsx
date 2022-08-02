@@ -2,20 +2,18 @@ import {
    Box,
    Button,
    chakra,
-   Collapse,
    Divider,
    Flex,
    Heading,
    SimpleGrid,
    Text,
-   useBreakpointValue,
-   VStack,
 } from '@chakra-ui/react';
 import { IfixitImage } from '@components/ifixit-image';
-import { useIsMounted } from '@ifixit/ui';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
    productList: ProductList;
@@ -29,31 +27,27 @@ export function ProductListChildrenSection({
       childrenHeading,
       children: productListChildren,
    } = productList;
-   const [shouldShowMore, setShouldShowMore] = React.useState(false);
-   const responsiveVisibleChildrenCount = useBreakpointValue(
-      {
-         base: 4,
-         sm: 6,
-         md: 12,
-      },
-      'md'
+   const [isShowingMore, setShowingMore] = React.useState(false);
+
+   const gridRef = React.useRef<HTMLDivElement>(null);
+   const maskMaxHeight = React.useMemo(
+      () =>
+         computeMaskMaxHeight(
+            60,
+            16,
+            isShowingMore,
+            gridRef.current?.clientHeight
+         ),
+      [isShowingMore]
    );
-   const isMounted = useIsMounted();
-   const visibleChildrenCount = isMounted ? responsiveVisibleChildrenCount : 12;
 
-   const visibleChildren = React.useMemo(() => {
-      return productListChildren.slice(0, visibleChildrenCount);
-   }, [productListChildren, visibleChildrenCount]);
-
-   const hiddenChildren = React.useMemo(() => {
-      return productListChildren.slice(
-         visibleChildrenCount,
-         productListChildren.length
-      );
-   }, [productListChildren, visibleChildrenCount]);
+   const showMoreVisibility = React.useMemo(
+      () => computeShowMoreVisibility(productListChildren.length),
+      [productListChildren]
+   );
 
    const onToggle = React.useCallback(() => {
-      setShouldShowMore((current) => !current);
+      setShowingMore((current) => !current);
    }, []);
 
    let heading = 'Choose a model';
@@ -63,7 +57,17 @@ export function ProductListChildrenSection({
       heading = `Choose a model of ${deviceTitle}`;
    }
 
-   return (
+   const { items } = useCurrentRefinements();
+   const { hits } = useHits();
+   const itemType = useDevicePartsItemType(productList);
+   const isUnfilteredItemTypeWithNoHits = React.useMemo(() => {
+      const nonItemTypeRefinements = items.filter(
+         (item) => item.attribute !== 'facet_tags.Item Type'
+      );
+      return !hits.length && itemType && !nonItemTypeRefinements.length;
+   }, [items, itemType, hits]);
+
+   return isUnfilteredItemTypeWithNoHits ? null : (
       <Box
          px={{
             base: 6,
@@ -73,55 +77,46 @@ export function ProductListChildrenSection({
          <Text fontSize="lg" fontWeight="bold" mb="4">
             {heading}
          </Text>
-         <VStack data-testid="product-list-devices" spacing="4" align="stretch">
+         <Box
+            mx={-1}
+            px={1}
+            pb={1}
+            maxH={maskMaxHeight}
+            overflowY="hidden"
+            transition="all 300ms"
+         >
             <SimpleGrid
+               ref={gridRef}
+               data-testid="product-list-devices"
                columns={{
                   base: 1,
                   sm: 2,
                   md: 3,
                   lg: 4,
                }}
-               spacing="4"
+               spacing="3"
+               pt={1}
             >
-               {visibleChildren.map((child) => {
+               {productListChildren.map((child) => {
                   return <ChildLink key={child.handle} child={child} />;
                })}
             </SimpleGrid>
-            {isMounted && hiddenChildren.length > 0 && (
-               <Collapse in={shouldShowMore}>
-                  <SimpleGrid
-                     columns={{
-                        base: 1,
-                        sm: 2,
-                        md: 3,
-                        lg: 4,
-                     }}
-                     spacing="4"
-                  >
-                     {hiddenChildren.map((child) => {
-                        return <ChildLink key={child.handle} child={child} />;
-                     })}
-                  </SimpleGrid>
-               </Collapse>
-            )}
-         </VStack>
-         {hiddenChildren.length > 0 && (
-            <Box mt="3">
-               <Button
-                  variant="link"
-                  size="sm"
-                  onClick={onToggle}
-                  mt="1"
-                  pl="2"
-                  pr="2"
-                  py="1"
-                  ml="-8px"
-                  display="block"
-               >
-                  {shouldShowMore ? 'Show less' : 'Show more'}
-               </Button>
-            </Box>
-         )}
+         </Box>
+         <Box mt="2" display={showMoreVisibility}>
+            <Button
+               variant="link"
+               size="sm"
+               onClick={onToggle}
+               mt="1"
+               pl="2"
+               pr="2"
+               py="1"
+               ml="-8px"
+               display="block"
+            >
+               {isShowingMore ? 'Show less' : 'Show more'}
+            </Button>
+         </Box>
       </Box>
    );
 }
@@ -143,7 +138,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
             transition="all 300ms"
             outline="none"
             overflow="hidden"
-            minHeight="60px"
+            height="60px"
             _focus={{
                boxShadow: 'outline',
             }}
@@ -196,3 +191,26 @@ const ChildLink = ({ child }: ChildLinkProps) => {
       </NextLink>
    );
 };
+
+const computeMaskMaxHeight = (
+   pixelLinkHeight: number,
+   pixelGap: number,
+   isShowingMore: boolean,
+   maxHeight = 10000
+) => {
+   const shadowMargin = 4;
+   if (isShowingMore) {
+      return `${maxHeight + shadowMargin}px`;
+   }
+   return {
+      base: `${4 * pixelLinkHeight + 3 * pixelGap + shadowMargin}px`,
+      sm: `${3 * pixelLinkHeight + 2 * pixelGap + shadowMargin}px`,
+   };
+};
+
+const computeShowMoreVisibility = (itemCount: number) => ({
+   base: itemCount > 4 ? 'block' : 'none',
+   sm: itemCount > 6 ? 'block' : 'none',
+   md: itemCount > 9 ? 'block' : 'none',
+   lg: itemCount > 12 ? 'block' : 'none',
+});

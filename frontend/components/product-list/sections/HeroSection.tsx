@@ -12,10 +12,11 @@ import {
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useIsMounted } from '@ifixit/ui';
-import { ProductList, ProductListType } from '@models/product-list';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
+import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
 
 export interface HeroSectionProps {
    productList: ProductList;
@@ -24,20 +25,19 @@ export interface HeroSectionProps {
 export function HeroSection({ productList }: HeroSectionProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
-   const isItemTypeProductList =
-      productList.type === ProductListType.DeviceItemTypeParts;
+   const itemType = useDevicePartsItemType(productList);
    const hasDescription =
       productList.description != null &&
       productList.description.length > 0 &&
       page === 1 &&
-      !isItemTypeProductList;
+      !itemType;
    const hasTagline =
       productList.tagline != null &&
       productList.tagline.length > 0 &&
       page === 1 &&
-      !isItemTypeProductList;
+      !itemType;
 
-   const title = getProductListTitle(productList);
+   const title = getProductListTitle(productList, itemType);
 
    return (
       <VStack flex={1} align="flex-start">

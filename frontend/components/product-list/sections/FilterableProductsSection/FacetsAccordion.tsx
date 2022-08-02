@@ -12,12 +12,12 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { ProductList } from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
-import { useFilteredFacets } from './useFacets';
+import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 
 type FacetsAccordianProps = {
@@ -91,25 +91,31 @@ type FacetAccordionItemProps = AccordionItemProps & {
 };
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
-   (
-      { attribute, refinedCount, productList, isExpanded, length, ...props },
-      ref
-   ) => {
-      const { items } = useFilteredRefinementList({ attribute });
+   ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
+      const { items } = useFilteredRefinementList({
+         attribute,
+         limit: MAX_VALUES_PER_FACET,
+      });
       const { hits } = useHits();
       const isProductListEmpty = hits.length === 0;
       const hasApplicableRefinements = items.length > 0;
       let isDisabled = isProductListEmpty || !hasApplicableRefinements;
-      let isHidden = !hasApplicableRefinements && !isProductListEmpty;
 
-      if (isHidden && attribute !== 'worksin') {
-         isemptyFacetState += 1;
-      }
+      const productListEmptyState =
+         isProductListEmpty && !hasApplicableRefinements;
 
-      if (isemptyFacetState === length - 1) {
-         isDisabled = true;
-         isHidden = false;
-      }
+      const isPartsPage =
+         productList.type === ProductListType.AllParts ||
+         productList.type === ProductListType.DeviceParts;
+
+      const isWorksin = attribute === 'worksin' && productListEmptyState;
+      const isToolCategoryOnPartsPage =
+         isPartsPage && attribute === 'facet_tags.Tool Category';
+
+      const isHidden =
+         (!hasApplicableRefinements && !isProductListEmpty) ||
+         isWorksin ||
+         isToolCategoryOnPartsPage;
 
       const formattedFacetName = formatFacetName(attribute);
       return (

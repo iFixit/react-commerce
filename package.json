@@ -4,10 +4,10 @@
    "description": "Monorepo for iFixit e-commerce",
    "main": "N/A",
    "engines": {
-      "node": ">= 14.19"
+      "node": ">= 16.14.2"
    },
    "scripts": {
-      "install:all": "pnpm install && npm run install:backend",
+      "install:all": "export $(cat .env.local) && pnpm install && npm run install:backend",
       "install:backend": "cd backend && yarn install",
       "dev:backend": "cd backend && pnpm run dev",
       "dev:frontend": "wait-on http://localhost:1337/_health && cd frontend && npm run dev",
@@ -36,9 +36,9 @@
    "license": "UNLICENSED",
    "devDependencies": {
       "cross-env": "7.0.3",
+      "husky": "4.2.3",
       "npm-run-all": "4.1.5",
       "prettier": "2.3.2",
-      "husky": "4.2.3",
       "wait-on": "6.0.0"
    },
    "husky": {

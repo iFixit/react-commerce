@@ -1,20 +1,18 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { ProductList, ProductListType } from '@models/product-list';
+import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 
-export interface ProductListDeviceNavigationProps {
+type ProductListDeviceNavigationProps = FlexProps & {
    productList: ProductList;
-}
+};
 
 export function ProductListDeviceNavigation({
    productList,
+   ...flexProps
 }: ProductListDeviceNavigationProps) {
    const isRootProductList = productList.ancestors.length === 0;
-   if (productList.type === ProductListType.AllTools) {
-      return null;
-   }
    let guideUrl: string | undefined;
    let answersUrl: string | undefined;
    if (isRootProductList) {
@@ -35,10 +33,12 @@ export function ProductListDeviceNavigation({
          h="full"
          align="stretch"
          borderLeftWidth={{
-            base: '1px',
+            base: '0',
+            sm: '1px',
             md: '0',
          }}
          bg="white"
+         {...flexProps}
       >
          <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
          <SecondaryNavbarItem>

@@ -9,7 +9,7 @@ import {
    ProductListView,
    ProductListViewProps,
 } from '@components/product-list';
-import { ALGOLIA_DEFAULT_INDEX_NAME } from '@config/constants';
+import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -45,8 +45,8 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const title = `iFixit | ${productList.title}`;
 
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.req.url}`;
-   const indexName = ALGOLIA_DEFAULT_INDEX_NAME;
+   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
+   const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
       algolia: {
