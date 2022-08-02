@@ -35,6 +35,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getStoreByCode('us'),
          findProductList({ handle: { eq: 'Parts' } }),
       ]);
+
    if (productList == null) {
       return {
          notFound: true,
