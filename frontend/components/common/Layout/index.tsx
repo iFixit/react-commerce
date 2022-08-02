@@ -46,7 +46,6 @@ import {
    UserMenuButton,
    UserMenuHeading,
    UserMenuLink,
-   Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
 import { GlobalSettings } from '@models/global-settings';
@@ -59,6 +58,7 @@ import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { LayoutFooter } from './Footer';
+import { IfixitHeaderLogoUkraine } from '@assets/svg';
 
 export interface LayoutProps {
    title: string;
@@ -182,7 +182,13 @@ export function Layout({
                         <HeaderNavigationToggleButton aria-label="Open navigation menu" />
                         <NextLink href="/" passHref>
                            <WordmarkLink aria-label="Go to homepage" pr="4">
-                              <Wordmark />
+                              <Icon
+                                 as={IfixitHeaderLogoUkraine}
+                                 fill="none"
+                                 w="118px"
+                                 h="36px"
+                                 verticalAlign="middle"
+                              />
                            </WordmarkLink>
                         </NextLink>
                         {menu && (
@@ -306,7 +312,13 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
          <DrawerCloseButton />
          <NextLink href="/" passHref>
             <WordmarkLink aria-label="Go to homepage" mb="8">
-               <Wordmark />
+               <Icon
+                  as={IfixitHeaderLogoUkraine}
+                  fill="none"
+                  w="118px"
+                  h="36px"
+                  verticalAlign="middle"
+               />
             </WordmarkLink>
          </NextLink>
          <NavigationAccordion>
