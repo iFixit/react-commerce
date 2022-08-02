@@ -7,6 +7,7 @@ export function isRecord(val: any): val is Record<string, unknown> {
 }
 
 const isProduction = process.env.NODE_ENV === 'production';
+const enableLogging = Boolean(process.env.NEXT_PUBLIC_LOGGING);
 const prefix = 'invariant failed';
 
 export function invariant(
@@ -62,11 +63,11 @@ export function logSync<T>(name: string, syncFunction: () => T): T {
 }
 
 function noOp() {}
-const prodTimer = function (timerName: string) {
+const silentTimer = function (timerName: string) {
    return noOp;
 };
 
-const devTimer = (timerName: string) => {
+const loggingTimer = (timerName: string) => {
    const t = Date.now();
    return () => {
       const taken = Date.now() - t;
@@ -75,4 +76,4 @@ const devTimer = (timerName: string) => {
 };
 
 type Timer = (name: string) => () => void;
-const time: Timer = isProduction ? prodTimer : devTimer;
+const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
