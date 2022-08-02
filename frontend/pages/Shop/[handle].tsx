@@ -10,7 +10,6 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
-import { encodeDeviceTitle } from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -58,7 +57,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       return {
          redirect: {
             permanent: true,
-            destination: `/Shop/${encodeDeviceTitle(productList.handle)}`,
+            destination: `/Shop/${productList.handle}`,
          },
       };
    }
