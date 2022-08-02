@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getGlobalSettings(),
          getStoreList(),
          getStoreByCode('us'),
-         findProductList({ handle: { eqi: 'Parts' } }),
+         findProductList({ handle: { eq: 'Parts' } }),
       ]);
 
    if (productList == null) {
