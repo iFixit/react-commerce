@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          getStoreByCode('us'),
          findProductList({
             handle: {
-               eq: handle,
+               eqi: handle,
             },
          }),
       ]);

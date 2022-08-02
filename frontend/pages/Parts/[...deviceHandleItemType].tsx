@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
          findProductList(
             {
                deviceTitle: {
-                  eq: deviceTitle,
+                  eqi: deviceTitle,
                },
             },
             itemTypeHandle
