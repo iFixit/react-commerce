@@ -30,7 +30,8 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
    const itemType = useDevicePartsItemType(productList);
-   let title = getProductListTitle(productList, itemType);
+   let title =
+      productList.metaTitle || getProductListTitle(productList, itemType);
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }

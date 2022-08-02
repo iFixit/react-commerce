@@ -53,6 +53,7 @@ export interface BaseProductList {
    tagline: string | null;
    description: string;
    metaDescription: string | null;
+   metaTitle: string | null;
    filters: string | null;
    image: ProductListImage | null;
    ancestors: ProductListAncestor[];

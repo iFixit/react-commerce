@@ -1512,6 +1512,7 @@ export type GetProductListQuery = {
             tagline?: Maybe<string>;
             description: string;
             metaDescription?: Maybe<string>;
+            metaTitle?: Maybe<string>;
             filters?: Maybe<string>;
             childrenHeading?: Maybe<string>;
             image?: Maybe<{
@@ -2669,6 +2670,7 @@ export const GetProductListDocument = `
         tagline
         description
         metaDescription
+        metaTitle
         filters
         image {
           data {
