@@ -40,6 +40,7 @@ export function ProductListBreadcrumb({
    }
 
    const reverseAncestorList = React.useMemo(() => {
+      throw new Error("Checking Sentry");
       return [...ancestors].reverse();
    }, [ancestors]);
 
