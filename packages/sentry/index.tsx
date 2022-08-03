@@ -10,8 +10,7 @@ export const sentryFetch: typeof fetch = async (input, init) => {
    };
    Sentry.configureScope((scope) => scope.setContext('request', context));
    return fetch(input, init).catch((error) => {
-      console.error(error);
-      console.error(context);
+      console.error(error, context);
       throw error;
    });
 };
