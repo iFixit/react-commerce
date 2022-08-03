@@ -1,4 +1,5 @@
 import { useAppContext } from '@ifixit/app';
+import { logAsync } from '@ifixit/helpers';
 import * as React from 'react';
 
 export interface ClientOptions {
@@ -44,12 +45,14 @@ export class IFixitAPIClient {
    }
 
    async fetch(endpoint: string, init?: RequestInit) {
-      const response = await fetch(
-         `${this.origin}/api/${this.version}/${endpoint}`,
-         {
-            credentials: 'include',
-            ...init,
-         }
+      const url = `${this.origin}/api/${this.version}/${endpoint}`;
+      const response = await logAsync(
+         `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
+         () =>
+            fetch(url, {
+               credentials: 'include',
+               ...init,
+            })
       );
       if (!response.ok) {
          throw new Error(response.statusText);
@@ -74,4 +77,8 @@ export function useIFixitApiClient() {
    }, [appContext.ifixitOrigin]);
 
    return client;
+}
+
+function truncate(str: string, length: number) {
+   return str.length < length ? str : str.substr(0, length - 3) + '...';
 }

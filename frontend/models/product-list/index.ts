@@ -2,6 +2,7 @@ import {
    ALGOLIA_API_KEY,
    ALGOLIA_APP_ID,
    ALGOLIA_PRODUCT_INDEX_NAME,
+   IFIXIT_ORIGIN,
 } from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import {
@@ -9,11 +10,13 @@ import {
    getProductListTitle,
 } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
+import { logAsync, logSync } from '@ifixit/helpers';
 import {
    DeviceWiki,
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    Enum_Productlist_Type,
    ProductListFiltersInput,
@@ -51,11 +54,12 @@ export async function findProductList(
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
    const [result, deviceWiki] = await Promise.all([
-      strapi.getProductList({
-         filters,
-      }),
-      fetchDeviceWiki(filterDeviceTitle),
+      logAsync('strapi:getProductList', () =>
+         strapi.getProductList({ filters })
+      ),
+      fetchDeviceWiki(createIFixitAPIClient(), filterDeviceTitle),
    ]);
+
    const productList = result.productLists?.data?.[0]?.attributes;
 
    if (productList == null && deviceWiki == null) {
@@ -75,9 +79,8 @@ export async function findProductList(
    const description =
       productList?.description ?? deviceWiki?.description ?? '';
 
-   const algoliaApiKey = createPublicAlgoliaKey(
-      ALGOLIA_APP_ID,
-      ALGOLIA_API_KEY
+   const algoliaApiKey = logSync('algolia:create key', () =>
+      createPublicAlgoliaKey(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
    );
    const productListType = getProductListType(productList?.type);
 
@@ -162,6 +165,7 @@ async function fillMissingImagesFromApi(
    ) as string[]; // cast is safe cause we filter nulls above,
    // typescript just doesn't understand
    const imagesResponse = await fetchMultipleDeviceImages(
+      createIFixitAPIClient(),
       deviceTitlesWithoutImages,
       'thumbnail'
    );
@@ -416,4 +420,10 @@ function createPublicAlgoliaKey(appId: string, apiKey: string): string {
       filters: 'public=1 AND is_pro!=1',
    });
    return publicKey;
+}
+
+function createIFixitAPIClient() {
+   return new IFixitAPIClient({
+      origin: IFIXIT_ORIGIN,
+   });
 }

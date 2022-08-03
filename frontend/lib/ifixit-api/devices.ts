@@ -1,9 +1,10 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { invariant } from '@ifixit/helpers';
 
 export type DeviceWiki = Record<string, any>;
 
 export async function fetchDeviceWiki(
+   client: IFixitAPIClient,
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
    const deviceHandle = getDeviceHandle(deviceTitle);
@@ -12,14 +13,12 @@ export async function fetchDeviceWiki(
          deviceHandle.length > 0,
          'deviceHandle cannot be a blank string'
       );
-      const response = await fetch(
-         `${IFIXIT_ORIGIN}/api/2.0/cart/part_collections/devices/${deviceHandle}`,
-         {
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         }
+      const response = await client.get(
+         `cart/part_collections/devices/${deviceHandle}`
       );
+      if (!response.ok) {
+         return null;
+      }
       const payload = await response.json();
       return response.ok ? payload : null;
    } catch (error: any) {
@@ -43,15 +42,17 @@ export type GuideImageSize =
    | 'huge';
 
 export function fetchMultipleDeviceImages(
+   client: IFixitAPIClient,
    deviceTitles: string[],
    size: GuideImageSize
 ): Promise<MultipleDeviceApiResponse> {
-   const apiUrl = new URL(`${IFIXIT_ORIGIN}/api/2.0/wikis/topic_images`);
-   apiUrl.searchParams.set('size', size);
+   const params = new URLSearchParams();
+   params.set('size', size);
    deviceTitles.forEach((deviceTitle) => {
-      apiUrl.searchParams.append('t[]', deviceTitle);
+      params.append('t[]', deviceTitle);
    });
-   return fetch(apiUrl.toString())
+   return client
+      .get(`wikis/topic_images?` + params.toString())
       .then((response) => response.json())
       .catch(() => ({ images: {} }));
 }
