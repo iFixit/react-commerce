@@ -38,6 +38,7 @@
       "@ifixit/icons": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
+      "@ifixit/sentry": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*",
       "@ifixit/ui": "workspace:*",
       "@sentry/nextjs": "^7.0.0",

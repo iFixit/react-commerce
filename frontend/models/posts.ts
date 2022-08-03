@@ -1,4 +1,5 @@
 import { IFIXIT_ORIGIN } from '@config/env';
+import { sentryFetch } from '@ifixit/sentry';
 
 export interface Post {
    id: number;
@@ -14,7 +15,7 @@ export interface PostImage {
 }
 
 export async function fetchPosts(tags: string[]): Promise<Post[]> {
-   const response = await fetch(
+   const response = await sentryFetch(
       `${IFIXIT_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
          JSON.stringify({ tags })
       )}`
