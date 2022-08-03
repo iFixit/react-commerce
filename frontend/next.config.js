@@ -33,6 +33,9 @@ const sentryWebpackPluginOptions = {
 };
 const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;
 
+console.log('Strapi API: ' + process.env.NEXT_PUBLIC_STRAPI_ORIGIN);
+console.log('iFixit API: ' + process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
+
 const moduleExports = {
    env: {
       ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
