@@ -56,13 +56,13 @@ export async function findProductList(
       }),
       fetchDeviceWiki(filterDeviceTitle),
    ]);
-   const productList = result.productLists?.data?.[0]?.attributes;
 
+   const productList = result.productLists?.data?.[0]?.attributes;
    if (productList == null && deviceWiki == null) {
       return null;
    }
 
-   const deviceTitle = productList?.deviceTitle ?? filterDeviceTitle;
+   const deviceTitle = deviceWiki?.deviceTitle ?? productList?.deviceTitle;
    const handle = productList?.handle ?? '';
    const parents =
       productList?.parent ??
