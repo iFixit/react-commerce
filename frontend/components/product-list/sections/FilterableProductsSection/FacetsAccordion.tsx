@@ -19,6 +19,8 @@ import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
+import { RefinementDisplayType } from '@models/product-list/types';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 
 type FacetsAccordianProps = {
    productList: ProductList;
@@ -114,6 +116,10 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
          isWorksin ||
          isToolCategoryOnPartsPage;
 
+      const isSingleSelectFacet =
+         getRefinementDisplayType(attribute) ===
+         RefinementDisplayType.SingleSelect;
+
       return (
          <AccordionItem
             ref={ref}
@@ -137,7 +143,10 @@ export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
                   {formattedFacetName}
                </Box>
                <HStack>
-                  {refinedCount > 0 && (
+                  {isSingleSelectFacet && refinedCount && (
+                     <Box w="2" h="2" borderRadius="full" bg="brand.500"></Box>
+                  )}
+                  {!isSingleSelectFacet && refinedCount > 0 && (
                      <Text
                         rounded="full"
                         bg="gray.600"

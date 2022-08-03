@@ -26,6 +26,8 @@ import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
+import { RefinementDisplayType } from '@models/product-list/types';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
@@ -269,6 +271,10 @@ function FacetListItem({
       return null;
    }
 
+   const isSingleSelectFacet =
+      getRefinementDisplayType(attribute) ===
+      RefinementDisplayType.SingleSelect;
+
    return (
       <Box pl="4" onClick={() => onSelect(attribute)}>
          <Flex py="4" pl="1.5" justify="space-between" align="center" pr="4">
@@ -276,7 +282,10 @@ function FacetListItem({
                {formatFacetName(attribute)}
             </Text>
             <HStack>
-               {refinedCount > 0 && (
+               {isSingleSelectFacet && refinedCount && (
+                  <Box w="2" h="2" borderRadius="full" bg="brand.500"></Box>
+               )}
+               {!isSingleSelectFacet && refinedCount > 0 && (
                   <Text
                      rounded="full"
                      bg="gray.600"
