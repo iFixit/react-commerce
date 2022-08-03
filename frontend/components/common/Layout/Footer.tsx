@@ -290,6 +290,7 @@ function NewsletterForm({
                   ref={inputRef}
                   disabled={subscription.status !== SubscriptionStatus.Idle}
                   placeholder={emailPlaceholder}
+                  hidden={subscription.status === SubscriptionStatus.Subscribed}
                />
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
@@ -308,7 +309,7 @@ function NewsletterForm({
                flexShrink={0}
                colorScheme="brand"
             >
-               {subscription.status === SubscriptionStatus.Idle
+               {subscription.status !== SubscriptionStatus.Subscribed
                   ? subscribeLabel
                   : 'Subscribed!'}
             </Button>
