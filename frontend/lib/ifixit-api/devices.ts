@@ -13,14 +13,7 @@ export async function fetchDeviceWiki(
          deviceHandle.length > 0,
          'deviceHandle cannot be a blank string'
       );
-      const response = await client.get(
-         `cart/part_collections/devices/${deviceHandle}`
-      );
-      if (!response.ok) {
-         return null;
-      }
-      const payload = await response.json();
-      return response.ok ? payload : null;
+      return await client.get(`cart/part_collections/devices/${deviceHandle}`);
    } catch (error: any) {
       return null;
    }
@@ -53,7 +46,6 @@ export function fetchMultipleDeviceImages(
    });
    return client
       .get(`wikis/topic_images?` + params.toString())
-      .then((response) => response.json())
       .catch(() => ({ images: {} }));
 }
 

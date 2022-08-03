@@ -32,9 +32,7 @@ export function useAuthenticatedUser() {
 async function fetchAuthenticatedUser(
    apiClient: IFixitAPIClient
 ): Promise<User | null> {
-   const response = await apiClient.get('user');
-
-   const payload = await response.json();
+   const payload = await apiClient.get('user');
    invariant(isRecord(payload), 'unexpected api response');
    invariant(typeof payload.userid === 'number', 'User ID is not a number');
    invariant(
