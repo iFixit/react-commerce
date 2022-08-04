@@ -81,7 +81,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
             <FacetCard>
                <FacetsAccordion productList={productList} />
             </FacetCard>
-            <Card flex={1}>
+            <Card flex={1} overflow="hidden">
                <ProductListEmptyState
                   productList={productList}
                   hidden={!isEmpty}
