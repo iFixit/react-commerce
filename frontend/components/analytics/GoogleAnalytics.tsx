@@ -27,6 +27,8 @@ export function GoogleAnalytics() {
 
                   // Enable Remarketing and Advertising Reporting Features in GA
                   ga('ifixit.require', 'displayfeatures');
+
+                  ga('ifixit.send', 'pageview');
                `,
             }}
          />
