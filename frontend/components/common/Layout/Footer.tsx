@@ -5,6 +5,7 @@ import {
    Icon,
    Menu,
    MenuList,
+   Text,
 } from '@chakra-ui/react';
 import {
    FacebookLogo,
@@ -293,6 +294,12 @@ function NewsletterForm({
                   hidden={subscription.status === SubscriptionStatus.Subscribed}
                />
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
+               {subscription.status === SubscriptionStatus.Subscribed && (
+                  <Text align="center">
+                     <Icon as={RiCheckFill} boxSize="5" mb="-5px" />
+                     Subscribed!
+                  </Text>
+               )}
             </FooterNewsletterFormControl>
             <Button
                type="submit"
@@ -301,17 +308,13 @@ function NewsletterForm({
                }
                loadingText="Subscribing"
                disabled={subscription.status !== SubscriptionStatus.Idle}
-               leftIcon={
-                  subscription.status === SubscriptionStatus.Subscribed ? (
-                     <Icon as={RiCheckFill} boxSize="5" mb="-2px" />
-                  ) : undefined
-               }
+               hidden={subscription.status === SubscriptionStatus.Subscribed}
                flexShrink={0}
                colorScheme="brand"
             >
                {subscription.status !== SubscriptionStatus.Subscribed
                   ? subscribeLabel
-                  : 'Subscribed!'}
+                  : undefined}
             </Button>
          </FooterNewsletterForm>
       </FooterNewsletter>
