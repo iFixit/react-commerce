@@ -7,10 +7,22 @@ Strapi comes with a full featured [Command Line Interface](https://docs.strapi.i
 Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-develop)
 
 ```
-npm run develop
+npm run dev
 # or
-yarn develop
+yarn dev
 ```
+
+## Develop addons plugin
+
+To develop the addons plugin, you need to run a different dev command:
+
+```sh
+npm run dev:addons
+# or
+yarn dev:addons
+```
+
+This will start the Strapi dashboard in watch mode, and will transpile the addons plugin.
 
 ### `start`
 

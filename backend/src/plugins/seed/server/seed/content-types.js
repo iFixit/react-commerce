@@ -101,34 +101,34 @@ module.exports = async (strapi) => {
       }
 
       // Seed product lists
-      const productListsCount = await strapi.db.query(PRODUCT_LIST_UID).count();
-      if (productListsCount > 0) {
-         strapi.log.info('🌱 Product lists already exist, skipping');
-      } else {
-         strapi.log.info('🌱 Create product lists..');
-         for (let i = 0; i < productLists.length; i++) {
-            const { image, parent, ...data } = productLists[i];
-            const created = await strapi.entityService.create(
-               PRODUCT_LIST_UID,
-               {
-                  data: {
-                     ...data,
-                     publishedAt: new Date().toISOString(),
-                     parent: parent ? idMap.productLists[parent] : null,
-                  },
-               }
-            );
-            idMap.productLists[data.id] = created.id;
-            if (image) {
-               const entry = {
-                  id: created.id,
-                  model: PRODUCT_LIST_UID,
-                  field: 'image',
-               };
-               await uploadEntryImage(entry, image);
-            }
-         }
-      }
+      // const productListsCount = await strapi.db.query(PRODUCT_LIST_UID).count();
+      // if (productListsCount > 0) {
+      //    strapi.log.info('🌱 Product lists already exist, skipping');
+      // } else {
+      //    strapi.log.info('🌱 Create product lists..');
+      //    for (let i = 0; i < productLists.length; i++) {
+      //       const { image, parent, ...data } = productLists[i];
+      //       const created = await strapi.entityService.create(
+      //          PRODUCT_LIST_UID,
+      //          {
+      //             data: {
+      //                ...data,
+      //                publishedAt: new Date().toISOString(),
+      //                parent: parent ? idMap.productLists[parent] : null,
+      //             },
+      //          }
+      //       );
+      //       idMap.productLists[data.id] = created.id;
+      //       if (image) {
+      //          const entry = {
+      //             id: created.id,
+      //             model: PRODUCT_LIST_UID,
+      //             field: 'image',
+      //          };
+      //          await uploadEntryImage(entry, image);
+      //       }
+      //    }
+      // }
 
       // Seed global settings
       const globalSettingsCount = await strapi.db

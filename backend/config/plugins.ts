@@ -21,6 +21,10 @@ export default ({ env }) => {
             },
          },
       },
+      addons: {
+         enabled: true,
+         resolve: './src/plugins/addons',
+      },
    };
 
    if (env('S3_BUCKET')) {
