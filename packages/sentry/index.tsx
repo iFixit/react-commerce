@@ -12,7 +12,7 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
    return fetch(resource, options)
       .then((response) => {
          if (response.status >= 400 && response.status !== 401) {
-            const msg = `\`fetch()\` HTTP error: ${response.status} ${response.statusText}`;
+            const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
             Sentry.captureException(new Error(msg), (scope) => {
                scope.setContext('request', context);
                return scope;
