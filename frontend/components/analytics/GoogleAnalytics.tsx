@@ -3,6 +3,8 @@ import * as React from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
 
+declare const ga: (command: string, hitType: string, url?: string) => void;
+
 export function GoogleAnalytics() {
    const router = useRouter();
    React.useEffect(() => {
