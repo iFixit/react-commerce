@@ -1,7 +1,25 @@
 import { GA_URL, GA_KEY, GA_DEBUG } from '@config/env';
+import * as React from 'react';
 import Script from 'next/script';
+import { useRouter } from 'next/router';
 
 export function GoogleAnalytics() {
+   const router = useRouter();
+   React.useEffect(() => {
+      const handleRouteChange = (url: string) => {
+         if (typeof ga !== 'undefined') {
+            ga('ifixit.set', 'page', url);
+            ga('ifixit.send', 'pageview');
+         }
+      };
+      router.events.on('routeChangeComplete', handleRouteChange);
+      router.events.on('hashChangeComplete', handleRouteChange);
+      return () => {
+         router.events.off('routeChangeComplete', handleRouteChange);
+         router.events.off('hashChangeComplete', handleRouteChange);
+      };
+   }, [router?.events]);
+
    return GA_URL ? (
       <>
          <Script id="google-analytics" strategy="afterInteractive">
@@ -24,6 +42,7 @@ export function GoogleAnalytics() {
                // Enable Remarketing and Advertising Reporting Features in GA
                ga('ifixit.require', 'displayfeatures');
 
+               ga('ifixit.set', 'page', window.location.pathname);
                ga('ifixit.send', 'pageview');
             `}
          </Script>
