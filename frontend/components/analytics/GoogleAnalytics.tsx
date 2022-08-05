@@ -48,7 +48,7 @@ export function GoogleAnalytics() {
                ga('ifixit.send', 'pageview');
             `}
          </Script>
-         <Script src={`${GA_URL}`} strategy="afterInteractive" />
+         <Script src={GA_URL} strategy="afterInteractive" />
       </>
    ) : null;
 }
