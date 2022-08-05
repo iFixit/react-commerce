@@ -247,6 +247,38 @@ export function LayoutFooter({
    );
 }
 
+export interface FooterNewsletterOnSubscribeProps {
+   title: string;
+   description: string;
+   isSubscribed: boolean;
+}
+
+function FooterNewsletterOnSubscribe({
+   title,
+   description,
+   isSubscribed,
+}: FooterNewsletterOnSubscribeProps) {
+   if (isSubscribed) {
+      return (
+         <FooterNewsletterCopy paddingRight={{ xl: '114.15px' }}>
+            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
+            <FooterNewsletterDescription>
+               {description}
+            </FooterNewsletterDescription>
+         </FooterNewsletterCopy>
+      );
+   } else {
+      return (
+         <FooterNewsletterCopy>
+            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
+            <FooterNewsletterDescription>
+               {description}
+            </FooterNewsletterDescription>
+         </FooterNewsletterCopy>
+      );
+   }
+}
+
 export interface NewsletterFormProps {
    title: string;
    description: string;
@@ -276,12 +308,11 @@ function NewsletterForm({
 
    return (
       <FooterNewsletter>
-         <FooterNewsletterCopy>
-            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
-            <FooterNewsletterDescription>
-               {description}
-            </FooterNewsletterDescription>
-         </FooterNewsletterCopy>
+         <FooterNewsletterOnSubscribe
+            title={title}
+            description={description}
+            isSubscribed={subscription.status === SubscriptionStatus.Subscribed}
+         />
          <FooterNewsletterForm onSubmit={onSubscribe}>
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel>
@@ -306,7 +337,6 @@ function NewsletterForm({
                isLoading={
                   subscription.status === SubscriptionStatus.Subscribing
                }
-               loadingText="Subscribing"
                disabled={subscription.status !== SubscriptionStatus.Idle}
                hidden={subscription.status === SubscriptionStatus.Subscribed}
                flexShrink={0}
