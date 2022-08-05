@@ -4,7 +4,6 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
    const context = {
       // Underscore sorts the resource first in Sentry's UI
       _resource: resource,
-      credentials: options?.credentials,
       headers: options?.headers,
       method: options?.method,
       // Parse to pretty print GraphQL queries
