@@ -42,6 +42,7 @@
       "@ifixit/shopify-storefront-client": "workspace:*",
       "@ifixit/ui": "workspace:*",
       "@sentry/nextjs": "^7.0.0",
+      "@sentry/tracing": "^7.8.1",
       "@xstate/fsm": "1.6.1",
       "@xstate/react": "1.5.1",
       "algoliasearch": "4.13.1",

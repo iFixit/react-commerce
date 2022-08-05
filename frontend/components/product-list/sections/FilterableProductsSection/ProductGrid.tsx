@@ -17,6 +17,8 @@ import { useProductSearchHitPricing } from './useProductSearchHitPricing';
 export type ProductGridProps = React.PropsWithChildren<unknown>;
 
 export function ProductGrid({ children }: ProductGridProps) {
+   const childrenCount = React.Children.count(children);
+
    return (
       <SimpleGrid
          data-testid="grid-view-products"
@@ -24,10 +26,26 @@ export function ProductGrid({ children }: ProductGridProps) {
          borderBottomWidth="1px"
          columns={{
             base: 2,
-            sm: 2,
             lg: 3,
          }}
          spacing="1px"
+         bg="gray.100"
+         _after={{
+            content: `""`,
+            bg: 'white',
+            gridRow: {
+               base: Math.ceil(childrenCount / 2),
+               lg: Math.ceil(childrenCount / 3),
+            },
+            gridColumnStart: {
+               base: (childrenCount % 2) + 1,
+               lg: (childrenCount % 3) + 1,
+            },
+            gridColumnEnd: {
+               base: 3,
+               lg: 4,
+            },
+         }}
       >
          {children}
       </SimpleGrid>
@@ -45,18 +63,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
       useProductSearchHitPricing(product);
 
    return (
-      <LinkBox
-         as="article"
-         display="block"
-         w="full"
-         role="group"
-         borderTop="0"
-         borderRight="1px"
-         borderLeft="0"
-         borderBottom="1px"
-         borderRightColor="gray.100"
-         borderBottomColor="gray.100"
-      >
+      <LinkBox as="article" display="block" w="full" role="group">
          <ProductCard h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList>
