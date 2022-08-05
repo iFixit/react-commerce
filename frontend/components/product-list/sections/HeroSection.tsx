@@ -137,7 +137,8 @@ type DescriptionRichTextProps = Omit<BoxProps, 'children'> & {
 const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
    ({ children, ...other }, ref) => {
       const html = React.useMemo(() => {
-         return snarkdown(children);
+         const preserveNewlines = children.trim().replace(/\n/g, '<br />');
+         return snarkdown(preserveNewlines);
       }, [children]);
 
       return (
