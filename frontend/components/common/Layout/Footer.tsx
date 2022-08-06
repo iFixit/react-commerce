@@ -274,6 +274,8 @@ function NewsletterForm({
       [subscribe]
    );
 
+   const subscribeDirection =
+      subscription.status !== SubscriptionStatus.Subscribed ? 'row' : 'column';
    return (
       <FooterNewsletter>
          <FooterNewsletterCopy>
@@ -282,7 +284,10 @@ function NewsletterForm({
                {description}
             </FooterNewsletterDescription>
          </FooterNewsletterCopy>
-         <FooterNewsletterForm onSubmit={onSubscribe}>
+         <FooterNewsletterForm
+            onSubmit={onSubscribe}
+            direction={{ base: subscribeDirection, xl: 'row' }}
+         >
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel>
                   Enter your email
@@ -293,28 +298,35 @@ function NewsletterForm({
                   placeholder={emailPlaceholder}
                   hidden={subscription.status === SubscriptionStatus.Subscribed}
                />
-               <FormErrorMessage>{subscription.error}</FormErrorMessage>
                {subscription.status === SubscriptionStatus.Subscribed && (
                   <Text align="center">
                      <Icon as={RiCheckFill} boxSize="5" mb="-5px" />
                      Subscribed!
                   </Text>
                )}
+               <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
             <Button
                type="submit"
+               height={
+                  subscription.status === SubscriptionStatus.Subscribed
+                     ? 0
+                     : '40px'
+               }
                isLoading={
                   subscription.status === SubscriptionStatus.Subscribing
                }
-               loadingText="Subscribing"
                disabled={subscription.status !== SubscriptionStatus.Idle}
-               hidden={subscription.status === SubscriptionStatus.Subscribed}
-               flexShrink={0}
                colorScheme="brand"
+               visibility={
+                  subscription.status === SubscriptionStatus.Subscribed
+                     ? 'hidden'
+                     : undefined
+               }
             >
                {subscription.status !== SubscriptionStatus.Subscribed
                   ? subscribeLabel
-                  : undefined}
+                  : 'Subscribe'}
             </Button>
          </FooterNewsletterForm>
       </FooterNewsletter>
