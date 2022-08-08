@@ -11,6 +11,7 @@ import {
 } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import { invariant } from '@ifixit/helpers';
+import { setSentryPageContext } from '@ifixit/sentry';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -23,6 +24,10 @@ type AppPageProps = WithProvidersProps<PageProps>;
 export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
+   const protocol = context.req.headers.referer?.split('://')[0] || 'https';
+   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
+   setSentryPageContext({ url });
+
    context.res.setHeader(
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=600'
@@ -60,8 +65,6 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 
    const title = `iFixit | ${productList.title}`;
 
-   const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
    const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {

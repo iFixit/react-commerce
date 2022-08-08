@@ -27,3 +27,11 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
          throw error;
       });
 };
+
+type PageContextProps = {
+   url: string;
+};
+
+export const setSentryPageContext = ({ url }: PageContextProps) => {
+   Sentry.setTag('resolved_url', url);
+};
