@@ -1,5 +1,6 @@
 import { useAppContext } from '@ifixit/app';
 import { isError } from '@ifixit/helpers';
+import { sentryFetch } from '@ifixit/sentry';
 import * as React from 'react';
 
 /**
@@ -69,7 +70,7 @@ export async function subscribeToNewsletter(
    apiOrigin: string,
    email: string
 ): Promise<void> {
-   const response = await fetch(
+   const response = await sentryFetch(
       `${apiOrigin}/api/2.0/cart/newsletter/subscribe`,
       {
          method: 'POST',

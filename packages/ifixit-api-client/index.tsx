@@ -1,5 +1,6 @@
 import { useAppContext } from '@ifixit/app';
 import { logAsync } from '@ifixit/helpers';
+import { sentryFetch } from '@ifixit/sentry';
 import * as React from 'react';
 
 export interface ClientOptions {
@@ -49,7 +50,7 @@ export class IFixitAPIClient {
       const response = await logAsync(
          `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
          () =>
-            fetch(url, {
+            sentryFetch(url, {
                credentials: 'include',
                ...init,
             })
