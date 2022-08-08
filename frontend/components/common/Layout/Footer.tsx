@@ -2,9 +2,11 @@ import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
    Button,
    FormErrorMessage,
+   HStack,
    Icon,
    Menu,
    MenuList,
+   position,
    Text,
 } from '@chakra-ui/react';
 import {
@@ -274,8 +276,8 @@ function NewsletterForm({
       [subscribe]
    );
 
-   const subscribeDirection =
-      subscription.status !== SubscriptionStatus.Subscribed ? 'row' : 'column';
+   const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
+
    return (
       <FooterNewsletter>
          <FooterNewsletterCopy>
