@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { useDynamicWidgets } from 'react-instantsearch-hooks-web';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
 
 export const MAX_VALUES_PER_FACET = 200;
 
 export function useFacets() {
-   const { attributesToRender } = useDynamicWidgets({
-      maxValuesPerFacet: MAX_VALUES_PER_FACET,
-   });
-
    return [
       'facet_tags.Capacity',
       'facet_tags.Device Brand',
@@ -23,7 +18,6 @@ export function useFacets() {
       'price_range',
       'worksin',
    ];
-   // return attributesToRender;
 }
 
 export function useFilteredFacets(productList: ProductList) {
