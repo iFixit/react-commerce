@@ -2,24 +2,16 @@ import { MATOMO_URL } from '@config/env';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Script from 'next/script';
-
-declare const _paq: string[][] | undefined;
+import { trackPageView } from '@ifixit/matomo';
 
 export function Matomo() {
    const router = useRouter();
    React.useEffect(() => {
-      const handleRouteChange = (url: string) => {
-         if (typeof window !== 'undefined' && _paq) {
-            _paq.push(['setCustomUrl', url]);
-            _paq.push(['setDocumentTitle', document.title]);
-            _paq.push(['trackPageView']);
-         }
-      };
-      router.events.on('routeChangeComplete', handleRouteChange);
-      router.events.on('hashChangeComplete', handleRouteChange);
+      router.events.on('routeChangeComplete', trackPageView);
+      router.events.on('hashChangeComplete', trackPageView);
       return () => {
-         router.events.off('routeChangeComplete', handleRouteChange);
-         router.events.off('hashChangeComplete', handleRouteChange);
+         router.events.off('routeChangeComplete', trackPageView);
+         router.events.off('hashChangeComplete', trackPageView);
       };
    }, [router?.events]);
 

@@ -37,6 +37,7 @@
       "@ifixit/helpers": "workspace:*",
       "@ifixit/icons": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
+      "@ifixit/matomo": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
       "@ifixit/sentry": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*",
