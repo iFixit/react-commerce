@@ -6,7 +6,7 @@ import {
    StatHelpText,
    StatNumber,
 } from '@chakra-ui/react';
-import { PageContentWrapper } from './PageContentWrapper';
+import PageContentWrapper from '../misc/PageContentWrapper';
 
 interface Stat {
    value: string;
