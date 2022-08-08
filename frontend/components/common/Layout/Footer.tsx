@@ -286,50 +286,44 @@ function NewsletterForm({
                {description}
             </FooterNewsletterDescription>
          </FooterNewsletterCopy>
-         <FooterNewsletterForm
-            onSubmit={onSubscribe}
-            direction={{ base: subscribeDirection, xl: 'row' }}
-         >
+         <FooterNewsletterForm onSubmit={onSubscribe}>
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel>
                   Enter your email
                </FooterNewsletterEmailLabel>
-               <FooterNewsletterEmailInput
-                  ref={inputRef}
-                  disabled={subscription.status !== SubscriptionStatus.Idle}
-                  placeholder={emailPlaceholder}
-                  hidden={subscription.status === SubscriptionStatus.Subscribed}
-               />
-               {subscription.status === SubscriptionStatus.Subscribed && (
-                  <Text align="center">
-                     <Icon as={RiCheckFill} boxSize="5" mb="-5px" />
-                     Subscribed!
-                  </Text>
-               )}
+               <HStack>
+                  <FooterNewsletterEmailInput
+                     ref={inputRef}
+                     disabled={subscription.status !== SubscriptionStatus.Idle}
+                     placeholder={emailPlaceholder}
+                     hidden={isSubscribed}
+                  />
+                  {isSubscribed && (
+                     <Text
+                        align="center"
+                        position={'absolute'}
+                        top="2"
+                        left="0"
+                        right="0"
+                     >
+                        <Icon as={RiCheckFill} boxSize="5" mb="-5px" mr="6px" />
+                        Subscribed!
+                     </Text>
+                  )}
+                  <Button
+                     type="submit"
+                     isLoading={
+                        subscription.status === SubscriptionStatus.Subscribing
+                     }
+                     disabled={subscription.status !== SubscriptionStatus.Idle}
+                     colorScheme="brand"
+                     visibility={isSubscribed ? 'hidden' : undefined}
+                  >
+                     Subscribe
+                  </Button>
+               </HStack>
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
-            <Button
-               type="submit"
-               height={
-                  subscription.status === SubscriptionStatus.Subscribed
-                     ? 0
-                     : '40px'
-               }
-               isLoading={
-                  subscription.status === SubscriptionStatus.Subscribing
-               }
-               disabled={subscription.status !== SubscriptionStatus.Idle}
-               colorScheme="brand"
-               visibility={
-                  subscription.status === SubscriptionStatus.Subscribed
-                     ? 'hidden'
-                     : undefined
-               }
-            >
-               {subscription.status !== SubscriptionStatus.Subscribed
-                  ? subscribeLabel
-                  : 'Subscribe'}
-            </Button>
          </FooterNewsletterForm>
       </FooterNewsletter>
    );
