@@ -319,7 +319,7 @@ function NewsletterForm({
                      colorScheme="brand"
                      visibility={isSubscribed ? 'hidden' : undefined}
                   >
-                     Subscribe
+                     {subscribeLabel}
                   </Button>
                </HStack>
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
