@@ -459,7 +459,7 @@ export const FooterNewsletterDescription = forwardRef<TextProps, 'div'>(
 export const FooterNewsletterForm = forwardRef<StackProps, 'form'>(
    (props, ref) => {
       return (
-         <Stack
+         <HStack
             ref={ref}
             as="form"
             data-testid="footer-newsletter-form"
