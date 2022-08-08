@@ -65,7 +65,8 @@ export async function findProductList(
       return null;
    }
 
-   const deviceTitle = deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
+   const deviceTitle =
+      deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
    const handle = productList?.handle ?? '';
    const parents =
       productList?.parent ??
