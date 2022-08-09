@@ -10,8 +10,8 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
-import { invariant, logAsync, logAsyncWrap } from '@ifixit/helpers';
-import { setSentryPageContext } from '@ifixit/sentry';
+import { serverSidePropsWrapper } from '@helpers/next-helpers';
+import { invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
@@ -111,8 +111,9 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    };
 };
 
-export const getServerSideProps: GetServerSideProps<AppPageProps> =
-   logAsyncWrap('getServerSideProps', getServerSidePropsInternal);
+export const getServerSideProps = serverSidePropsWrapper(
+   getServerSidePropsInternal
+);
 
 const ProductListPage: NextPageWithLayout<PageProps> = (pageProps) => {
    return <ProductListView {...pageProps} />;
