@@ -304,7 +304,7 @@ function NewsletterForm({
                         position={'absolute'}
                         top="2"
                         left="0"
-                        right="0"
+                        right="5"
                      >
                         <Icon as={RiCheckFill} boxSize="5" mb="-5px" mr="6px" />
                         Subscribed!
