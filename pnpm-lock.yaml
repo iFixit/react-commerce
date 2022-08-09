@@ -39,6 +39,7 @@ importers:
       '@ifixit/helpers': workspace:*
       '@ifixit/icons': workspace:*
       '@ifixit/ifixit-api-client': workspace:*
+      '@ifixit/matomo': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/sentry': workspace:*
       '@ifixit/shopify-storefront-client': workspace:*
@@ -117,6 +118,7 @@ importers:
       '@ifixit/helpers': link:../packages/helpers
       '@ifixit/icons': link:../packages/icons
       '@ifixit/ifixit-api-client': link:../packages/ifixit-api-client
+      '@ifixit/matomo': link:../packages/matomo
       '@ifixit/newsletter-sdk': link:../packages/newsletter-sdk
       '@ifixit/sentry': link:../packages/sentry
       '@ifixit/shopify-storefront-client': link:../packages/shopify-storefront-client
@@ -280,6 +282,14 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+
+  packages/matomo:
+    specifiers:
+      '@ifixit/tsconfig': workspace:*
+      typescript: 4.5.3
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
       typescript: 4.5.3
 
   packages/newsletter-sdk:
