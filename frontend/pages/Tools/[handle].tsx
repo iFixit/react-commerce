@@ -11,7 +11,7 @@ import {
 } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import { invariant } from '@ifixit/helpers';
-import { setSentryPageContext } from '@ifixit/sentry';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -24,10 +24,6 @@ type AppPageProps = WithProvidersProps<PageProps>;
 export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
-   const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
-   setSentryPageContext({ url });
-
    context.res.setHeader(
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=600'
@@ -70,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
    const appProps: AppProvidersProps = {
       algolia: {
          indexName,
-         url,
+         url: urlFromContext(context),
          apiKey: productList.algolia.apiKey,
       },
    };

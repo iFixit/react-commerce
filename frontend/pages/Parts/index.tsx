@@ -24,10 +24,6 @@ type AppPageProps = WithProvidersProps<PageProps>;
 const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
-   const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
-   setSentryPageContext({ url });
-
    context.res.setHeader(
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=600'
@@ -57,7 +53,7 @@ const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    const appProps: AppProvidersProps = {
       algolia: {
          indexName,
-         url,
+         url: urlFromContext(context),
          apiKey: productList.algolia.apiKey,
       },
    };
