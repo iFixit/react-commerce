@@ -313,7 +313,7 @@ function NewsletterForm({
                   <Button
                      width="50%"
                      type="submit"
-                     data-testid="submit-button"
+                     data-testid="footer-newsletter-subscribe-button"
                      isLoading={
                         subscription.status === SubscriptionStatus.Subscribing
                      }
