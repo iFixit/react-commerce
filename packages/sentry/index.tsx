@@ -31,6 +31,5 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
 };
 
 export const setSentryPageContext = (context: GetServerSidePropsContext) => {
-   Sentry.configureScope((scope) => scope.clear());
    Sentry.setTag('resolved_url', urlFromContext(context));
 };
