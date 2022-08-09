@@ -311,8 +311,9 @@ function NewsletterForm({
                      </Text>
                   )}
                   <Button
+                     width="50%"
                      type="submit"
-                     data-testid = "submit-button"
+                     data-testid="submit-button"
                      isLoading={
                         subscription.status === SubscriptionStatus.Subscribing
                      }
