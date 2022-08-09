@@ -2,7 +2,7 @@ const legacyFilterSlugs = require('./legacyFilterSlugs.json');
 
 function getToolRedirects() {
    return legacyFilterSlugs['toolLegacyRoutes']
-      .map((route) => route.replaceAll(/([\/\(\)])/g, '\\$&'))
+      .map((route) => route.replaceAll(/([/()])/g, '\\$&'))
       .join('|');
 }
 
