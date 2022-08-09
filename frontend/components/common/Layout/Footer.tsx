@@ -312,6 +312,7 @@ function NewsletterForm({
                   )}
                   <Button
                      type="submit"
+                     data-testid = "submit-button"
                      isLoading={
                         subscription.status === SubscriptionStatus.Subscribing
                      }

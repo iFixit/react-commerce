@@ -26,9 +26,7 @@ describe('subscribe to newsletter', () => {
       user.findByLabelText(/enter your email/i).type('test@example.com');
       user.findByRole('button', { name: /subscribe|join/i }).click();
       user.findByText('Subscribed!').should('be.visible');
-      user
-         .findByRole('button', { name: /subscribe/i })
-         .should('not.be.visible');
+      user.findByTestId('submit-button').should('not.be.visible')
       user.findByText(/please insert a valid email/i).should('not.exist');
    });
 
