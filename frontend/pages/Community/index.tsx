@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import ActivityDisplay, { Activity } from '../components/community/activity';
-import InfoDisplay from '../components/community/info';
-import NavigationDisplay from '../components/community/navigation';
-import GuidePage from '../components/page/guidePage';
-import { getLocale } from '../lib/site';
+import ActivityDisplay, { Activity } from '../../components/community/activity';
+import InfoDisplay from '../../components/community/info';
+import NavigationDisplay from '../../components/community/navigation';
+import GuidePage from '../../components/page/guidePage';
+import { getLocale } from '../../lib/site';
 
 export const siteTitle = 'Community';
 
