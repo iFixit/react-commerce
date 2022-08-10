@@ -15,6 +15,7 @@ import ExternalLogin from './externalLogin';
 import { ResetHeader, ResetForm } from './reset';
 import { LoginHeader, LoginForm } from './login';
 import { RegisterHeader, RegisterForm } from './register';
+import { color, space } from '@core-ds/primitives';
 
 export default function LoginModal({
    isOpen,
@@ -56,14 +57,14 @@ export default function LoginModal({
             <ModalHeader>{getProperHeader()}</ModalHeader>
             <ModalCloseButton />
             <ModalBody
-               bgColor="var(--color-gray-1)"
+               bgColor={`${color.gray[100]}`}
                padding="0"
-               borderTop="1px solid var(--color-gray-2)"
+               borderTop={`1px solid ${color.gray[200]}`}
             >
                <Stack
                   divider={
                      <StackDivider
-                        borderColor="var(--color-gray-2)"
+                        borderColor={`${color.gray[200]}`}
                         display={{ base: 'none', md: 'unset' }}
                      />
                   }
@@ -81,7 +82,7 @@ export default function LoginModal({
                   <ExternalLogin />
                </Stack>
             </ModalBody>
-            <ModalFooter padding="0" bgColor="var(--color-gray-1)" />
+            <ModalFooter padding="0" bgColor={`${color.gray[100]}`} />
          </ModalContent>
       </Modal>
    );
