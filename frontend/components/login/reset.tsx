@@ -10,16 +10,27 @@ import {
 } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { color, space, fontSize } from '@core-ds/primitives';
 
 export function ResetHeader({ goToLogin }: { goToLogin: () => void }) {
    return (
       <Flex direction="column" align="center">
-         <Heading mt="8px">Forgot Password</Heading>
-         <Flex mt="12px" align="baseline">
-            <Text m="0 4px 0 0" fontWeight="normal" fontSize="14px" color="var(--color-gray-6)">
+         <Heading mt={`${space[2]}`}>Forgot Password</Heading>
+         <Flex mt={`${space[3]}`} align="baseline">
+            <Text
+               m={`0 ${space[1]} 0 0`}
+               fontWeight="normal"
+               fontSize={`${fontSize.md}`}
+               color={`${color.gray6}`}
+            >
                Remember your password now?
             </Text>
-            <Button variant="link" fontSize="14px" color="var(--color-blue)" onClick={goToLogin}>
+            <Button
+               variant="link"
+               fontSize={`${fontSize.md}`}
+               color={`${color.blue}`}
+               onClick={goToLogin}
+            >
                Log in
             </Button>
          </Flex>
@@ -85,11 +96,11 @@ export function ResetForm() {
          </FormControl>
          <Flex justify="center">
             <Button
-               mt="32px"
-               bgColor="var(--color-blue)"
+               mt={`${space[5]}`}
+               bgColor={`${color.blue}`}
                color="white"
-               _hover={{ bgColor: 'var(--color-blue)' }}
-               _active={{ bgColor: 'var(--color-blue)' }}
+               _hover={{ bgColor: `${color.blue}` }}
+               _active={{ bgColor: `${color.blue}` }}
                type="submit"
             >
                Send me an Email
