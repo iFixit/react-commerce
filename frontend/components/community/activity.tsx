@@ -3,7 +3,14 @@ import Image from 'next/image';
 import * as React from 'react';
 import { Link } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
-import { color, fontSize, fontWeight, space, borderRadius, shadow } from '@core-ds/primitives';
+import {
+   color,
+   fontSize,
+   fontWeight,
+   space,
+   borderRadius,
+   shadow,
+} from '@core-ds/primitives';
 
 export interface Activity {
    text: string;
@@ -63,7 +70,11 @@ function ActivityCard({ data }: { data: Activity }) {
             >
                <Image src={data.user_image} alt="" width={40} height={40} />
             </Box>
-            <Flex direction="column" marginLeft={`${space[4]}`} overflow="hidden">
+            <Flex
+               direction="column"
+               marginLeft={`${space[4]}`}
+               overflow="hidden"
+            >
                <Link
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -123,7 +134,11 @@ export default function ActivityDisplay({ data }: { data: Activity[] }) {
                   padding="50px 0"
                >
                   <WarningIcon w={7} h={7} color="#e23715" />
-                  <Heading as="h3" fontSize="18px" fontWeight={`${fontWeight.normal}`}>
+                  <Heading
+                     as="h3"
+                     fontSize={`${fontSize.xl}`}
+                     fontWeight={`${fontWeight.normal}`}
+                  >
                      {"We're having trouble loading this right now."}
                   </Heading>
                </Flex>

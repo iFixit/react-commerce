@@ -77,21 +77,27 @@ export function ResetForm() {
       await fetch('https://www.ifixit.com/api/2.0/users/reset_password', {
          method: 'POST',
          body: JSON.stringify({ email: email }),
-      }).then(response => showToast(response.status));
+      }).then((response) => showToast(response.status));
    }
 
    return (
       <form
-         onSubmit={event => {
+         onSubmit={(event) => {
             event.preventDefault();
             resetPassword();
          }}
       >
          <FormControl id="email">
             <FormLabel>Email address</FormLabel>
-            <Input onChange={handleChange} type="email" placeholder="Enter email" />
+            <Input
+               onChange={handleChange}
+               type="email"
+               placeholder="Enter email"
+            />
             <FormHelperText>
-               {"You'll receive an email containing a link to log in and set a new password."}
+               {
+                  "You'll receive an email containing a link to log in and set a new password."
+               }
             </FormHelperText>
          </FormControl>
          <Flex justify="center">

@@ -122,7 +122,7 @@ export default function NavigationDisplay({
    }
 
    function listTabPanelComponents() {
-      return visibleTabs.map(tabInfo => {
+      return visibleTabs.map((tabInfo) => {
          return <TabPanel key={tabInfo.label}></TabPanel>;
       });
    }

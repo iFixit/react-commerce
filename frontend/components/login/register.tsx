@@ -72,11 +72,11 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
          headers: {
             'X-App-Id': appId,
          },
-      }).then(response =>
+      }).then((response) =>
          response
             .json()
-            .then(data => ({ status: response.status, body: data.message }))
-            .then(data => showFeedback(data.status < 400, data.body))
+            .then((data) => ({ status: response.status, body: data.message }))
+            .then((data) => showFeedback(data.status < 400, data.body))
       );
    }
 
@@ -114,7 +114,7 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
 
    return (
       <form
-         onSubmit={event => {
+         onSubmit={(event) => {
             event.preventDefault();
             register();
          }}
@@ -150,10 +150,7 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
          <FormControl mt={`${space[5]}`}>
             <FormLabel>Unique Username</FormLabel>
             <InputGroup>
-               <InputLeftElement
-                  pointerEvents="none"
-                  color={`${color.gray4}`}
-               >
+               <InputLeftElement pointerEvents="none" color={`${color.gray4}`}>
                   @
                </InputLeftElement>
                <Input
@@ -172,7 +169,10 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
                placeholder="albert@domain.com"
                type="email"
             />
-            <FormHelperText fontSize={`${fontSize.md}`} color={`${color.gray5}`}>
+            <FormHelperText
+               fontSize={`${fontSize.md}`}
+               color={`${color.gray5}`}
+            >
                {
                   "We'll use your email to send you updates on your community contributions."
                }
@@ -180,7 +180,11 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
          </FormControl>
          <FormControl mt={`${space[5]}`}>
             <FormLabel>Password</FormLabel>
-            <PasswordInput handleChange={handleChange as ChangeEventHandler<HTMLInputElement>} />
+            <PasswordInput
+               handleChange={
+                  handleChange as ChangeEventHandler<HTMLInputElement>
+               }
+            />
          </FormControl>
          <Button
             mt={`${space[6]}`}
@@ -193,7 +197,11 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
          >
             Create My Account
          </Button>
-         <Text color={`${color.gray5}`} fontSize={`${fontSize.md}`} mt={`${space[2]}`}>
+         <Text
+            color={`${color.gray5}`}
+            fontSize={`${fontSize.md}`}
+            mt={`${space[2]}`}
+         >
             By joining iFixit, you agree to our{' '}
             <Link
                href="https://www.ifixit.com/Info/Privacy"

@@ -69,11 +69,11 @@ export function LoginForm({
          headers: {
             'X-App-Id': appId,
          },
-      }).then(response =>
+      }).then((response) =>
          response
             .json()
-            .then(data => ({ status: response.status, body: data }))
-            .then(data => {
+            .then((data) => ({ status: response.status, body: data }))
+            .then((data) => {
                const response = data.body;
                const success = data.status < 400;
                if (success) {
@@ -102,14 +102,18 @@ export function LoginForm({
 
    return (
       <form
-         onSubmit={event => {
+         onSubmit={(event) => {
             event.preventDefault();
             performLogin();
          }}
       >
          <FormControl>
             <FormLabel>Email</FormLabel>
-            <Input placeholder="Enter email" name="email" onChange={handleChange} />
+            <Input
+               placeholder="Enter email"
+               name="email"
+               onChange={handleChange}
+            />
          </FormControl>
          <FormControl mt="20px">
             <Flex justify="space-between">
@@ -123,7 +127,11 @@ export function LoginForm({
                   Forgot?
                </Button>
             </Flex>
-            <PasswordInput handleChange={handleChange as ChangeEventHandler<HTMLInputElement>} />
+            <PasswordInput
+               handleChange={
+                  handleChange as ChangeEventHandler<HTMLInputElement>
+               }
+            />
          </FormControl>
          <Flex justify="center">
             <Button

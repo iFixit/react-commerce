@@ -43,7 +43,12 @@ export default function ExternalLogin() {
    }
 
    return (
-      <Flex align="center" direction="column" w={{ base: '100%', md: '50%' }} mb="72px">
+      <Flex
+         align="center"
+         direction="column"
+         w={{ base: '100%', md: '50%' }}
+         mb="72px"
+      >
          <Text mt={{ base: '0', md: `${space[8]}` }} color={`${color.gray6}`}>
             Or use one of these networks
          </Text>

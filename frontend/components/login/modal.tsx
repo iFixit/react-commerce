@@ -46,14 +46,23 @@ export default function LoginModal({
          case 'register':
             return <RegisterForm goToLogin={() => setMode('login')} />;
          default:
-            return <LoginForm goToReset={() => setMode('reset')} setUser={setUser} />;
+            return (
+               <LoginForm
+                  goToReset={() => setMode('reset')}
+                  setUser={setUser}
+               />
+            );
       }
    }
 
    return (
       <Modal isOpen={isOpen} onClose={onClose}>
          <ModalOverlay />
-         <ModalContent overflow="hidden" w={{ base: '90%', md: '700px' }} mt="90px">
+         <ModalContent
+            overflow="hidden"
+            w={{ base: '90%', md: '700px' }}
+            mt="90px"
+         >
             <ModalHeader>{getProperHeader()}</ModalHeader>
             <ModalCloseButton />
             <ModalBody

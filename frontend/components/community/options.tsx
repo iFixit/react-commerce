@@ -3,7 +3,14 @@ import { Button, Flex, Stack, Link } from '@chakra-ui/react';
 import { Box, Heading, Text } from '@chakra-ui/layout';
 import { getImage } from '../../lib/images';
 import links from '../../lib/links';
-import { space, fontSize, fontWeight, borderRadius, shadow, color } from '@core-ds/primitives';
+import {
+   space,
+   fontSize,
+   fontWeight,
+   borderRadius,
+   shadow,
+   color,
+} from '@core-ds/primitives';
 
 interface Option {
    title: string;
@@ -38,7 +45,8 @@ const optionImprove: Option = {
 
 const optionTeach: Option = {
    title: 'Teach a Repair',
-   description: 'No one knows how to fix everything, but\
+   description:
+      'No one knows how to fix everything, but\
     everyone knows how to fix something.',
    button: 'Create a Guide',
    link: links.GUIDE_NEW,

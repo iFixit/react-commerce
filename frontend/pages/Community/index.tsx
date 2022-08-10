@@ -23,14 +23,17 @@ export default function LandingPage({
 
    useEffect(() => {
       async function updatePrivileges(id?: number) {
-         await fetch('https://www.ifixit.com/api/2.0/community/getUserPrivileges/', {
-            method: 'GET',
-            headers: {
-               Authorization: 'api ' + (user as any).authToken,
-            },
-         })
-            .then(res => res.json())
-            .then(data =>
+         await fetch(
+            'https://www.ifixit.com/api/2.0/community/getUserPrivileges/',
+            {
+               method: 'GET',
+               headers: {
+                  Authorization: 'api ' + (user as any).authToken,
+               },
+            }
+         )
+            .then((res) => res.json())
+            .then((data) =>
                setPrivileges({
                   isLoggedIn: id != undefined,
                   isMod: data.isMod,
@@ -59,11 +62,13 @@ export default function LandingPage({
 
 export async function getStaticProps() {
    const activities = await fetch('https://www.ifixit.com/api/2.0/community')
-      .then(res => res.json())
-      .then(obj => obj.activity);
-   const patrolEnabled = await fetch('https://www.ifixit.com/api/2.0/community/isPatrolEnabled')
-      .then(res => res.json())
-      .then(obj => obj.patrolEnabled);
+      .then((res) => res.json())
+      .then((obj) => obj.activity);
+   const patrolEnabled = await fetch(
+      'https://www.ifixit.com/api/2.0/community/isPatrolEnabled'
+   )
+      .then((res) => res.json())
+      .then((obj) => obj.patrolEnabled);
    return {
       props: {
          activities,

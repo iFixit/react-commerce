@@ -1,6 +1,19 @@
-import { AspectRatio, Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
+import {
+   AspectRatio,
+   Button,
+   Flex,
+   Heading,
+   Link,
+   Text,
+} from '@chakra-ui/react';
 import links from '../../lib/links';
-import { color, space, borderRadius, fontSize, fontWeight } from '@core-ds/primitives';
+import {
+   color,
+   space,
+   borderRadius,
+   fontSize,
+   fontWeight,
+} from '@core-ds/primitives';
 
 export default function VideoDisplay() {
    const videoLink = 'https://www.youtube-nocookie.com/embed/O7CSWHVTUT8?rel=0';
