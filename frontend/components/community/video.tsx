@@ -1,5 +1,6 @@
 import { AspectRatio, Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
 import links from '../../lib/links';
+import { color, space, borderRadius, fontSize, fontWeight } from '@core-ds/primitives';
 
 export default function VideoDisplay() {
    const videoLink = 'https://www.youtube-nocookie.com/embed/O7CSWHVTUT8?rel=0';
@@ -7,10 +8,10 @@ export default function VideoDisplay() {
    return (
       <Flex
          overflow="hidden"
-         borderRadius="var(--border-radius-lg)"
-         bgColor="var(--color-black)"
+         borderRadius={`${borderRadius.lg}`}
+         bgColor={`${color.gray[900]}`}
          direction={{ base: 'column', md: 'row' }}
-         marginTop={{ base: 'var(--space-7)', md: 'var(--space-10)' }}
+         marginTop={{ base: `${space[7]}`, md: `${space[10]}` }}
       >
          <Flex
             direction="column"
@@ -18,16 +19,24 @@ export default function VideoDisplay() {
             align="flex-start"
             width={{ base: '100%', md: '50%' }}
             height={{ base: '50%', md: 'unset' }}
-            margin="var(--space-5) var(--space-0);"
+            margin={`${space[5]} ${space[0]}`}
             padding={{
-               base: 'var(--space-6) var(--space-8)',
-               md: 'var(--space-8) var(--space-10)',
+               base: `${space[6]} ${space[8]}`,
+               md: `${space[8]} ${space[10]}`,
             }}
          >
-            <Heading marginTop="0" fontSize="24px" color="var(--color-white)">
+            <Heading
+               margin="0"
+               fontSize={`${fontSize['3xl']}`}
+               color={`${color.white}`}
+            >
                {'Contribute to iFixit'}
             </Heading>
-            <Text fontSize="16px" color="var(--color-gray-3)" margin="var(--space-4) 0">
+            <Text
+               fontSize={`${fontSize.lg}`}
+               color={`${color.gray[300]}`}
+               margin={`${space[4]} 0`}
+            >
                {
                   'No one knows how to fix everything,\
           but everyone knows how to fix something.\
@@ -36,14 +45,28 @@ export default function VideoDisplay() {
           fix something, the more people will do it.'
                }
             </Text>
-            <Link _hover={{ textDecoration: 'none' }} href={links.NEW}>
-               <Button variant="invertOnHover">{'Start a New Page'}</Button>
-            </Link>
+            <Button
+               fontSize={`${fontSize.md}`}
+               fontWeight={`${fontWeight.normal}`}
+               borderColor={`${color.gray[700]}`}
+               onClick={() => (window.location.href = links.NEW)}
+               _hover={{
+                  color: `${color.black}`,
+                  bgColor: `${color.white}`,
+               }}
+            >
+               {'Start a New Page'}
+            </Button>
          </Flex>
-         <AspectRatio position="relative" width={{ base: '100%', md: '50%' }}>
+         <AspectRatio
+            position="relative"
+            width={{ base: '100%', md: '50%' }}
+            height={{ base: '300px', md: 'unset' }}
+         >
             <iframe
                title="How to Write a Repair Guide on iFixit.com!"
                src={videoLink}
+               frameBorder="0"
                allowFullScreen
             />
          </AspectRatio>
