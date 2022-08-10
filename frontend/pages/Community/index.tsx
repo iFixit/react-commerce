@@ -18,7 +18,6 @@ export default function LandingPage({
    const [privileges, setPrivileges] = useState({
       isLoggedIn: false,
       isMod: false,
-      canPatrol: false,
    });
    const lang = (user as any).userLang;
 
@@ -35,7 +34,6 @@ export default function LandingPage({
                setPrivileges({
                   isLoggedIn: id != undefined,
                   isMod: data.isMod,
-                  canPatrol: data.canPatrol,
                })
             );
       }

@@ -30,7 +30,7 @@ export default function NavigationDisplay({
    patrolEnabled,
 }: {
    title: string;
-   privileges: { isLoggedIn: boolean; isMod: boolean; canPatrol: boolean };
+   privileges: { isLoggedIn: boolean; isMod: boolean };
    setUser: React.Dispatch<React.SetStateAction<{}>>;
    patrolEnabled: boolean;
 }) {
@@ -80,7 +80,7 @@ export default function NavigationDisplay({
          {
             url: links.PATROL,
             label: 'Patrol',
-            showTab: patrolEnabled && privileges.canPatrol,
+            showTab: patrolEnabled,
          },
          {
             url: links.MODERATION,
