@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import PasswordInput from './password';
+import { color, fontSize, space, borderRadius } from '@core-ds/primitives';
 
 interface User {
    username: string;
@@ -27,10 +28,20 @@ export function RegisterHeader({ goToLogin }: { goToLogin: () => void }) {
       <Flex direction="column" align="center">
          <Heading mt="8px">Create Account</Heading>
          <Flex mt="12px" align="baseline">
-            <Text m="0 4px 0 0" fontWeight="normal" fontSize="14px" color="var(--color-gray-6)">
+            <Text
+               m={`0 ${space[1]} 0 0`}
+               fontWeight="normal"
+               fontSize={`${fontSize.md}`}
+               color={`${color.gray6}`}
+            >
                Been here before?
             </Text>
-            <Button variant="link" fontSize="14px" color="var(--color-blue)" onClick={goToLogin}>
+            <Button
+               variant="link"
+               fontSize={`${fontSize.md}`}
+               color={`${color.blue}`}
+               onClick={goToLogin}
+            >
                Log in
             </Button>
          </Flex>
@@ -122,12 +133,12 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
          {!isValidName() && showAlert && (
             <Text
                padding="10px"
-               mt="12px"
-               fontSize="14px"
-               color="var(--color-gray-5)"
+               mt={`${space[3]}`}
+               fontSize={`${fontSize.md}`}
+               color={`${color.gray5}`}
                border="1px solid #f5cac1"
                bgColor="#fcedea"
-               borderRadius="4px"
+               borderRadius={`${borderRadius.md}`}
             >
                {
                   'Please choose a descriptive, family friendly user name. User names\
@@ -136,10 +147,13 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
                }
             </Text>
          )}
-         <FormControl mt="24px">
+         <FormControl mt={`${space[5]}`}>
             <FormLabel>Unique Username</FormLabel>
             <InputGroup>
-               <InputLeftElement pointerEvents="none" color="var(--color-gray-4)">
+               <InputLeftElement
+                  pointerEvents="none"
+                  color={`${color.gray4}`}
+               >
                   @
                </InputLeftElement>
                <Input
@@ -150,7 +164,7 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
                />
             </InputGroup>
          </FormControl>
-         <FormControl mt="24px">
+         <FormControl mt={`${space[5]}`}>
             <FormLabel>Email</FormLabel>
             <Input
                name="email"
@@ -158,32 +172,40 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
                placeholder="albert@domain.com"
                type="email"
             />
-            <FormHelperText fontSize="14px" color="var(--color-gray-5)">
-               {"We'll use your email to send you updates on your community contributions."}
+            <FormHelperText fontSize={`${fontSize.md}`} color={`${color.gray5}`}>
+               {
+                  "We'll use your email to send you updates on your community contributions."
+               }
             </FormHelperText>
          </FormControl>
-         <FormControl mt="24px">
+         <FormControl mt={`${space[5]}`}>
             <FormLabel>Password</FormLabel>
             <PasswordInput handleChange={handleChange as ChangeEventHandler<HTMLInputElement>} />
          </FormControl>
          <Button
-            mt="32px"
-            bgColor="var(--color-blue)"
+            mt={`${space[6]}`}
+            bgColor={`${color.blue}`}
             color="white"
             disabled={!allowSubmit()}
-            _hover={{ bgColor: 'var(--color-blue)' }}
-            _active={{ bgColor: 'var(--color-blue)' }}
+            _hover={{ bgColor: `${color.blue}` }}
+            _active={{ bgColor: `${color.blue}` }}
             type="submit"
          >
             Create My Account
          </Button>
-         <Text color="var(--color-gray-5)" fontSize="14px" mt="8px">
+         <Text color={`${color.gray5}`} fontSize={`${fontSize.md}`} mt={`${space[2]}`}>
             By joining iFixit, you agree to our{' '}
-            <Link href="https://www.ifixit.com/Info/Privacy" color="var(--color-blue)">
+            <Link
+               href="https://www.ifixit.com/Info/Privacy"
+               color={`${color.blue}`}
+            >
                Privacy Policy
             </Link>{' '}
             and{' '}
-            <Link href="https://www.ifixit.com/Info/Terms_of_Use" color="var(--color-blue)">
+            <Link
+               href="https://www.ifixit.com/Info/Terms_of_Use"
+               color={`${color.blue}`}
+            >
                Terms
             </Link>
          </Text>
