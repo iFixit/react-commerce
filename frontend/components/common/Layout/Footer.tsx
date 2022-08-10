@@ -310,22 +310,26 @@ function NewsletterForm({
                         Subscribed!
                      </Text>
                   )}
-                  <Button
-                     width="50%"
-                     type="submit"
-                     data-testid="footer-newsletter-subscribe-button"
-                     isLoading={
-                        subscription.status === SubscriptionStatus.Subscribing
-                     }
-                     disabled={subscription.status !== SubscriptionStatus.Idle}
-                     colorScheme="brand"
-                     visibility={isSubscribed ? 'hidden' : undefined}
-                  >
-                     {subscribeLabel}
-                  </Button>
                </HStack>
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
+            <Button
+               width="50%"
+               type="submit"
+               data-testid="footer-newsletter-subscribe-button"
+               isLoading={
+                  subscription.status === SubscriptionStatus.Subscribing
+               }
+               disabled={subscription.status !== SubscriptionStatus.Idle}
+               colorScheme="brand"
+               visibility={isSubscribed ? 'hidden' : undefined}
+               display={{
+                  base: isSubscribed ? 'none' : undefined,
+                  xl: 'block',
+               }}
+            >
+               {subscribeLabel}
+            </Button>
          </FooterNewsletterForm>
       </FooterNewsletter>
    );
