@@ -18,7 +18,7 @@ export default function GuidePage({
             <title>{title + ' - iFixit'}</title>
          </Head>
          <Main
-            margin="var(--space-8) auto var(--space-10)"
+            margin={`${cp.space[8]} auto ${cp.space[10]}`}
             maxWidth={{ base: '90%', xl: '1000px' }}
          >
             {children}
