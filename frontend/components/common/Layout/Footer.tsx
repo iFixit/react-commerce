@@ -288,7 +288,7 @@ function NewsletterForm({
          </FooterNewsletterCopy>
          <FooterNewsletterForm onSubmit={onSubscribe}>
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
-               <FooterNewsletterEmailLabel>
+               <FooterNewsletterEmailLabel hidden={isSubscribed}>
                   Enter your email
                </FooterNewsletterEmailLabel>
                <HStack>
@@ -296,7 +296,7 @@ function NewsletterForm({
                      ref={inputRef}
                      disabled={subscription.status !== SubscriptionStatus.Idle}
                      placeholder={emailPlaceholder}
-                     hidden={isSubscribed}
+                     visibility={isSubscribed ? 'hidden' : 'visible'}
                   />
                   {isSubscribed && (
                      <Text
