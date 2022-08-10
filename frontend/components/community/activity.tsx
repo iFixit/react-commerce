@@ -3,6 +3,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { Link } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
+import { color, fontSize, fontWeight, space, borderRadius, shadow } from '@core-ds/primitives';
 
 export interface Activity {
    text: string;
@@ -17,9 +18,9 @@ export interface Activity {
 function ActivityCard({ data }: { data: Activity }) {
    return (
       <Flex
-         borderRadius="var(--border-radius-lg)"
+         borderRadius={`${borderRadius.lg}`}
          overflow="hidden"
-         boxShadow="var(--shadow-3)"
+         boxShadow={`${shadow[4]}`}
          position="relative"
          direction="column"
          _hover={{
@@ -35,11 +36,16 @@ function ActivityCard({ data }: { data: Activity }) {
                opacity: '50%',
             }}
          >
-            <Image src={data.image_url} alt="" layout="fill" objectFit="cover" />
+            <Image
+               src={data.image_url}
+               alt=""
+               layout="fill"
+               objectFit="cover"
+            />
          </Link>
          <Flex
-            padding="12px"
-            height="64px"
+            padding={`${space[3]}`}
+            height={`${space[9]}`}
             sx={{
                '&:hover a': {
                   textDecoration: 'underline',
@@ -50,14 +56,14 @@ function ActivityCard({ data }: { data: Activity }) {
                transition="0.5s"
                borderRadius="50%"
                overflow="hidden"
-               minWidth="40px"
+               minWidth={`${space[7]}`}
                _hover={{
                   opacity: '50%',
                }}
             >
                <Image src={data.user_image} alt="" width={40} height={40} />
             </Box>
-            <Flex direction="column" marginLeft="16px" overflow="hidden">
+            <Flex direction="column" marginLeft={`${space[4]}`} overflow="hidden">
                <Link
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -65,8 +71,9 @@ function ActivityCard({ data }: { data: Activity }) {
                   wordBreak="break-all"
                   href={data.user_url}
                   margin="0"
-                  fontSize={14}
-                  fontWeight="bold"
+                  color={`${color.gray[900]}`}
+                  fontSize={`${fontSize.md}`}
+                  fontWeight={`${fontWeight.bold}`}
                >
                   {data.author}
                </Link>
@@ -75,8 +82,8 @@ function ActivityCard({ data }: { data: Activity }) {
                   textOverflow="ellipsis"
                   whiteSpace="nowrap"
                   wordBreak="break-all"
-                  color="var(--color-gray-5)"
-                  fontSize={14}
+                  color={`${color.gray[500]}`}
+                  fontSize={`${fontSize.md}`}
                   margin="0"
                >
                   {data.text}
@@ -92,25 +99,31 @@ export default function ActivityDisplay({ data }: { data: Activity[] }) {
       <React.Fragment>
          <Heading
             as="h3"
-            fontSize="var(--font-size-5)"
+            fontSize={`${fontSize['3xl']}`}
+            color={`${color.gray[900]}`}
             margin={{
-               base: 'var(--space-7) 0 var(--space-5)',
-               md: 'var(--space-10) 0 var(--space-7)',
+               base: `${space[7]} 0 ${space[5]}`,
+               md: `${space[10]} 0 ${space[7]}`,
             }}
          >
             Latest Community Activity
          </Heading>
          {data ? (
-            <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={7}>
-               {data.map((activity, i) => (
-                  <ActivityCard key={i} data={activity} />
+            <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5}>
+               {data.map((activity, idx) => (
+                  <ActivityCard key={idx} data={activity} />
                ))}
             </SimpleGrid>
          ) : (
             <Center>
-               <Flex direction="column" align="center" textAlign="center" padding="50px 0">
+               <Flex
+                  direction="column"
+                  align="center"
+                  textAlign="center"
+                  padding="50px 0"
+               >
                   <WarningIcon w={7} h={7} color="#e23715" />
-                  <Heading as="h3" fontSize="18px" fontWeight="normal">
+                  <Heading as="h3" fontSize="18px" fontWeight={`${fontWeight.normal}`}>
                      {"We're having trouble loading this right now."}
                   </Heading>
                </Flex>
