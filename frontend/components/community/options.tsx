@@ -3,6 +3,7 @@ import { Button, Flex, Stack, Link } from '@chakra-ui/react';
 import { Box, Heading, Text } from '@chakra-ui/layout';
 import { getImage } from '../../lib/images';
 import links from '../../lib/links';
+import { space, fontSize, fontWeight, borderRadius, shadow, color } from '@core-ds/primitives';
 
 interface Option {
    title: string;
@@ -62,10 +63,10 @@ function OptionCard({ option }: { option: Option }) {
          align="center"
          overflow="hidden"
          minHeight="100%"
-         borderRadius="var(--border-radius-lg)"
+         borderRadius={`${borderRadius.lg}`}
          direction={{ base: 'row', md: 'column' }}
-         boxShadow={{ base: 'var(--shadow-2)', md: 'var(--shadow-3)' }}
-         padding={{ base: 'var(--space-4)', md: '0 0 var(--space-6)' }}
+         boxShadow={{ base: `${shadow[2]}`, md: `${shadow[3]}` }}
+         padding={{ base: `${space[4]}`, md: `0 0 ${space[5]}` }}
          width={{ base: '100%', md: '350px' }}
       >
          <Flex
@@ -88,27 +89,32 @@ function OptionCard({ option }: { option: Option }) {
             height="80px"
             flex="0 0 auto"
             borderRadius="50px"
-            backgroundColor="var(--color-blue)"
-            boxShadow="var(--shadow-2)"
+            backgroundColor={`${color.blue['ifixit']}`}
+            boxShadow={`${shadow[2]}`}
             objectFit="scale-down"
             margin={{
-               base: '0',
-               md: 'calc(-1 * var(--space-7)) auto var(--space-5)',
+               base: `${space[4]} ${space[4]} 0px`,
+               md: `calc(-1 * ${space[7]}) auto ${space[2]}`,
             }}
          >
             <Image src={option.icon} alt="" layout="fill" />
          </Box>
-         <Flex direction="column" align="center" padding="0 var(--space-5)" flexGrow={1}>
-            <Heading as="h3" marginTop="0" fontSize="18px">
+         <Flex
+            direction="column"
+            align="center"
+            padding={`0 ${space[4]}`}
+            flexGrow={1}
+         >
+            <Heading as="h3" marginTop="4" fontSize={`${fontSize.xl}`}>
                {option.title}
             </Heading>
             <Text
                textAlign="center"
-               fontSize="14px"
+               fontSize={`${fontSize.md}`}
                flexGrow={1}
-               padding="var(--space-2) 0"
-               color="var(--color-gray-6)"
-               margin={{ base: 0, md: '0 0 var(--space-5)' }}
+               padding={`${space[2]} 0 ${space[2]}`}
+               color={`${color.gray[600]}`}
+               margin={{ base: 0, md: `0 0 ${space[5]}` }}
             >
                {option.description}
             </Text>
@@ -119,8 +125,8 @@ function OptionCard({ option }: { option: Option }) {
             >
                <Button
                   variant="outline"
-                  padding="9px 16px 10px"
-                  fontSize="14px"
+                  fontSize={`${fontSize.md}`}
+                  fontWeight={`${fontWeight.normal}`}
                   backgroundColor="transparent"
                >
                   {option.button}
@@ -135,9 +141,9 @@ export default function OptionsDisplay({ userLang }: { userLang: string }) {
    return (
       <Stack
          direction={{ base: 'column', md: 'row' }}
-         marginTop={{ base: 'var(--space-2)', md: 'var(--space-7)' }}
+         marginTop={{ base: `${space[2]}`, md: `${space[6]}` }}
          justify="space-between"
-         spacing="20px"
+         spacing={{ base: '8px', md: '20px' }}
       >
          <OptionCard option={optionSolve} />
          <OptionCard option={optionImprove} />
