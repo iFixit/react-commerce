@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import PasswordInput from './password';
+import { color, fontSize, space } from '@core-ds/primitives';
 
 interface Login {
    email: string;
@@ -19,12 +20,22 @@ interface Login {
 export function LoginHeader({ goToRegister }: { goToRegister: () => void }) {
    return (
       <Flex direction="column" align="center">
-         <Heading mt="8px">Log In</Heading>
-         <Flex mt="12px" align="baseline">
-            <Text m="0 4px 0 0" fontWeight="normal" fontSize="14px" color="var(--color-gray-6)">
+         <Heading mt={`${space[2]}`}>Log In</Heading>
+         <Flex mt={`${space[3]}`} align="baseline">
+            <Text
+               m={`0 ${space[1]} 0 0`}
+               fontWeight="normal"
+               fontSize={`${fontSize.md}`}
+               color={`${color.gray6}`}
+            >
                New?
             </Text>
-            <Button variant="link" fontSize="14px" color="var(--color-blue)" onClick={goToRegister}>
+            <Button
+               variant="link"
+               fontSize={`${fontSize.md}`}
+               color={`${color.blue}`}
+               onClick={goToRegister}
+            >
                Create an account
             </Button>
          </Flex>
@@ -103,7 +114,12 @@ export function LoginForm({
          <FormControl mt="20px">
             <Flex justify="space-between">
                <FormLabel>Password</FormLabel>
-               <Button variant="link" fontSize="14px" color="var(--color-blue)" onClick={goToReset}>
+               <Button
+                  variant="link"
+                  fontSize={`${fontSize.md}`}
+                  color={`${color.blue}`}
+                  onClick={goToReset}
+               >
                   Forgot?
                </Button>
             </Flex>
@@ -111,13 +127,13 @@ export function LoginForm({
          </FormControl>
          <Flex justify="center">
             <Button
-               mt="32px"
-               bgColor="var(--color-blue)"
+               mt={`${space[6]}`}
+               bgColor={`${color.blue}`}
                color="white"
                type="submit"
                disabled={!allowSubmit()}
-               _hover={{ bgColor: 'var(--color-blue)' }}
-               _active={{ bgColor: 'var(--color-blue)' }}
+               _hover={{ bgColor: `${color.blue}` }}
+               _active={{ bgColor: `${color.blue}` }}
             >
                Log In
             </Button>
