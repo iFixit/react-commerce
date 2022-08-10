@@ -32,7 +32,7 @@ export function RegisterHeader({ goToLogin }: { goToLogin: () => void }) {
                m={`0 ${space[1]} 0 0`}
                fontWeight="normal"
                fontSize={`${fontSize.md}`}
-               color={`${color.gray6}`}
+               color={`${color.gray[600]}`}
             >
                Been here before?
             </Text>
@@ -135,7 +135,7 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
                padding="10px"
                mt={`${space[3]}`}
                fontSize={`${fontSize.md}`}
-               color={`${color.gray5}`}
+               color={`${color.gray[500]}`}
                border="1px solid #f5cac1"
                bgColor="#fcedea"
                borderRadius={`${borderRadius.md}`}
@@ -150,7 +150,10 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
          <FormControl mt={`${space[5]}`}>
             <FormLabel>Unique Username</FormLabel>
             <InputGroup>
-               <InputLeftElement pointerEvents="none" color={`${color.gray4}`}>
+               <InputLeftElement
+                  pointerEvents="none"
+                  color={`${color.gray[400]}`}
+               >
                   @
                </InputLeftElement>
                <Input
@@ -171,7 +174,7 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
             />
             <FormHelperText
                fontSize={`${fontSize.md}`}
-               color={`${color.gray5}`}
+               color={`${color.gray[500]}`}
             >
                {
                   "We'll use your email to send you updates on your community contributions."
@@ -198,7 +201,7 @@ export function RegisterForm({ goToLogin }: { goToLogin: () => void }) {
             Create My Account
          </Button>
          <Text
-            color={`${color.gray5}`}
+            color={`${color.gray[500]}`}
             fontSize={`${fontSize.md}`}
             mt={`${space[2]}`}
          >

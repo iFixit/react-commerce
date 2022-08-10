@@ -21,7 +21,7 @@ export function ResetHeader({ goToLogin }: { goToLogin: () => void }) {
                m={`0 ${space[1]} 0 0`}
                fontWeight="normal"
                fontSize={`${fontSize.md}`}
-               color={`${color.gray6}`}
+               color={`${color.gray[600]}`}
             >
                Remember your password now?
             </Text>

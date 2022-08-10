@@ -49,7 +49,10 @@ export default function ExternalLogin() {
          w={{ base: '100%', md: '50%' }}
          mb="72px"
       >
-         <Text mt={{ base: '0', md: `${space[8]}` }} color={`${color.gray6}`}>
+         <Text
+            mt={{ base: '0', md: `${space[8]}` }}
+            color={`${color.gray[600]}`}
+         >
             Or use one of these networks
          </Text>
          <Stack
