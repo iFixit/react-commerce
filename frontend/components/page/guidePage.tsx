@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import Head from 'next/head';
 import * as React from 'react';
-import cp from '@core-ds/primitives';
+import { space } from '@core-ds/primitives';
 
 export default function GuidePage({
    title,
@@ -18,7 +18,7 @@ export default function GuidePage({
             <title>{title + ' - iFixit'}</title>
          </Head>
          <Main
-            margin={`${cp.space[8]} auto ${cp.space[10]}`}
+            margin={`${space[8]} auto ${space[10]}`}
             maxWidth={{ base: '90%', xl: '1000px' }}
          >
             {children}

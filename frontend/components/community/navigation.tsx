@@ -15,7 +15,7 @@ import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
 import LoginModal from '../login/modal';
 import links from '../../lib/links';
-import cp from '@core-ds/primitives';
+import { color, fontWeight, fontSize, space } from '@core-ds/primitives';
 
 interface TabData {
    url: string;
@@ -101,17 +101,17 @@ export default function NavigationDisplay({
                key={index}
                minWidth="100px"
                onClick={() => router.push(url)}
-               color={`${cp.color.gray[500]}`}
-               fontWeight={`${cp.fontWeight.bold}`}
-               fontSize={`${cp.fontSize.md}`}
+               color={`${color.gray[500]}`}
+               fontWeight={`${fontWeight.bold}`}
+               fontSize={`${fontSize.md}`}
                sx={{
                   '&.active': {
-                     color: `${cp.color.blue[500]}`,
-                     borderColor: `${cp.color.blue}`,
+                     color: `${color.blue[500]}`,
+                     borderColor: `${color.blue}`,
                   },
                   '&:hover:not(.active)': {
-                     color: `${cp.color.gray[600]}`,
-                     borderColor: `${cp.color.gray[400]}`,
+                     color: `${color.gray[600]}`,
+                     borderColor: `${color.gray[400]}`,
                   },
                }}
             >
@@ -142,7 +142,7 @@ export default function NavigationDisplay({
    return (
       <React.Fragment>
          <Flex
-            mb={`${cp.space[5]}`}
+            mb={`${space[5]}`}
             align="center"
             direction={{ base: 'column', md: 'row' }}
             justify={{ base: 'center', md: 'space-between' }}
@@ -153,14 +153,14 @@ export default function NavigationDisplay({
             <ButtonGroup
                spacing={{ base: 2, md: 4 }} // {{ base: 0, xs: 4}}
                variant="outline"
-               marginTop={{ base: `${cp.space[4]}`, md: `${cp.space[2]}` }} // {{ base: 4, md: 0}}
+               marginTop={{ base: `${space[4]}`, md: `${space[2]}` }} // {{ base: 4, md: 0}}
                flexDirection={{ base: 'column', xs: 'row' }}
             >
                {onIfixit && (
                   <Button
                      onClick={() => router.push(links.USE_GUIDELINES)}
-                     fontSize={`${cp.fontSize.md}`}
-                     fontWeight={`${cp.fontWeight.normal}`}
+                     fontSize={`${fontSize.md}`}
+                     fontWeight={`${fontWeight.normal}`}
                   >
                      {'How this Works'}
                   </Button>
@@ -168,9 +168,9 @@ export default function NavigationDisplay({
                {!privileges.isLoggedIn && (
                   <Button
                      onClick={onOpen}
-                     mt={{ base: `${cp.space[2]}`, xs: '0' }}
-                     fontSize={`${cp.fontSize.md}`}
-                     fontWeight={`${cp.fontWeight.normal}`}
+                     mt={{ base: `${space[2]}`, xs: '0' }}
+                     fontSize={`${fontSize.md}`}
+                     fontWeight={`${fontWeight.normal}`}
                   >
                      {'Join the Community'}
                   </Button>
@@ -193,7 +193,7 @@ export default function NavigationDisplay({
                      top: '0',
                      height: '100%',
                      width: '5%',
-                     background: `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${cp.color.white} 100%)`,
+                     background: `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${color.white} 100%)`,
                   },
                },
             }}
