@@ -311,10 +311,11 @@ function NewsletterForm({
                      </Text>
                   )}
                </HStack>
-               <FormErrorMessage>{subscription.error}</FormErrorMessage>
+               <FormErrorMessage height={2}>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
             <Button
                width="50%"
+               bottom={subscription.error ? '2' : '0'}
                type="submit"
                data-testid="footer-newsletter-subscribe-button"
                isLoading={
