@@ -310,8 +310,8 @@ function NewsletterForm({
                         Subscribed!
                      </Text>
                   )}
-                  <FormErrorMessage>{subscription.error}</FormErrorMessage>
                </HStack>
+               <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
             <Button
                width="50%"
