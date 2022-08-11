@@ -2,11 +2,9 @@ import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
    Button,
    FormErrorMessage,
-   HStack,
    Icon,
    Menu,
    MenuList,
-   position,
    Text,
 } from '@chakra-ui/react';
 import {
