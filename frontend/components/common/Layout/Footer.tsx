@@ -288,7 +288,7 @@ function NewsletterForm({
          </FooterNewsletterCopy>
          <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
-               <FooterNewsletterEmailLabel hidden={isSubscribed}>
+               <FooterNewsletterEmailLabel>
                   Enter your email
                </FooterNewsletterEmailLabel>
                <FooterNewsletterEmailInput
@@ -300,8 +300,6 @@ function NewsletterForm({
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
             <Button
-               width="50%"
-               bottom={subscription.error ? '2' : '0'}
                type="submit"
                data-testid="footer-newsletter-subscribe-button"
                isLoading={

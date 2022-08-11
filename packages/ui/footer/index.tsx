@@ -472,7 +472,7 @@ export const FooterNewsletterForm = forwardRef<StackProps, 'form'>(
                base: 'center',
                md: 'flex-end',
             }}
-            align="center"
+            align="flex-start"
             {...props}
          />
       );
