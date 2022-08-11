@@ -37,9 +37,9 @@ export function IfixitImage(props: ImageProps) {
 
    if (typeof props.src === 'string') {
       if (isGuideImage(props.src)) {
-         loader = getImageLoader(guideImageSizeMap, 'huge');
+         loader = getImageLoader(guideImageSizeMap, 'huge', props.width);
       } else if (isCartImage(props.src)) {
-         loader = getImageLoader(cartImageSizeMap, 'large');
+         loader = getImageLoader(cartImageSizeMap, 'large', props.width);
       } else if (isStrapiImage(props.src)) {
          unoptimized = true;
       }
@@ -66,10 +66,26 @@ function isStrapiImage(src: string) {
    );
 }
 
-function getImageLoader(sizeMap: SizeMap, defaultSize: string): ImageLoader {
+function getImageLoader(
+   sizeMap: SizeMap,
+   defaultSize: string,
+   baseWidth?: number | string
+): ImageLoader {
    return ({ src, width }: ImageLoaderProps) => {
       const baseSrc = src.replace(/\.[^/.]+$/, '');
-      const sizeName = getImageSize(width, sizeMap, defaultSize);
+      let realWidth = width;
+      if (typeof baseWidth === 'string') {
+         realWidth = parseInt(baseWidth);
+      } else if (baseWidth) {
+         realWidth = baseWidth;
+      }
+      // If next wants to see the 2x image here then this accounts for that in our calculations of resolution
+      // see next's image.js getWidths() for more details
+      if (width / realWidth > 2) {
+         realWidth *= 2;
+      }
+
+      const sizeName = getImageSize(realWidth, sizeMap, defaultSize);
       // We don't use the ?width param server-side, but it gets rid of a nextjs warning
       return baseSrc.concat('.', sizeName, `?width=${width}`);
    };
