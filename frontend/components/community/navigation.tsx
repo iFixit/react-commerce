@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
-import LoginModal from '../login/modal';
 import links from '../../lib/links';
 import { color, fontWeight, fontSize, space } from '@core-ds/primitives';
 
@@ -167,7 +166,7 @@ export default function NavigationDisplay({
                )}
                {!privileges.isLoggedIn && (
                   <Button
-                     onClick={onOpen}
+                     onClick={() => router.push(links.LOGIN)}
                      mt={{ base: `${space[2]}`, xs: '0' }}
                      fontSize={`${fontSize.md}`}
                      fontWeight={`${fontWeight.normal}`}
@@ -175,11 +174,6 @@ export default function NavigationDisplay({
                      {'Join the Community'}
                   </Button>
                )}
-               <LoginModal
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  setUser={setUser}
-               />
             </ButtonGroup>
          </Flex>
          <Box

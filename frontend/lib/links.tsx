@@ -30,6 +30,7 @@ const links = {
    LICENSING: 'https://www.ifixit.com/Info/Licensing',
    PRIVACY: 'https://www.ifixit.com/Info/Privacy',
    TERMS_OF_USE: 'https://www.ifixit.com/Info/Terms_of_Use',
+   LOGIN: 'https://www.ifixit.com/login',
 };
 
 export default links;
