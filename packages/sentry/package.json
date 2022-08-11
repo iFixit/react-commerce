@@ -5,7 +5,8 @@
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
-      "@sentry/nextjs": "^7.0.0"
+      "@ifixit/helpers": "workspace:*",
+      "@sentry/nextjs": "^7.8.1"
    },
    "peerDependencies": {
       "next": "11.1.3",
