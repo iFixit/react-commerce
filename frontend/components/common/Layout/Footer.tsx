@@ -286,32 +286,18 @@ function NewsletterForm({
                {description}
             </FooterNewsletterDescription>
          </FooterNewsletterCopy>
-         <FooterNewsletterForm onSubmit={onSubscribe}>
+         <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel hidden={isSubscribed}>
                   Enter your email
                </FooterNewsletterEmailLabel>
-               <HStack>
-                  <FooterNewsletterEmailInput
-                     ref={inputRef}
-                     disabled={subscription.status !== SubscriptionStatus.Idle}
-                     placeholder={emailPlaceholder}
-                     visibility={isSubscribed ? 'hidden' : 'visible'}
-                  />
-                  {isSubscribed && (
-                     <Text
-                        align="center"
-                        position={'absolute'}
-                        top="2"
-                        left="0"
-                        right="5"
-                     >
-                        <Icon as={RiCheckFill} boxSize="5" mb="-5px" mr="6px" />
-                        Subscribed!
-                     </Text>
-                  )}
-               </HStack>
-               <FormErrorMessage height={2}>{subscription.error}</FormErrorMessage>
+               <FooterNewsletterEmailInput
+                  ref={inputRef}
+                  disabled={subscription.status !== SubscriptionStatus.Idle}
+                  placeholder={emailPlaceholder}
+                  visibility={isSubscribed ? 'hidden' : 'visible'}
+               />
+               <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
             <Button
                width="50%"
@@ -324,13 +310,29 @@ function NewsletterForm({
                disabled={subscription.status !== SubscriptionStatus.Idle}
                colorScheme="brand"
                visibility={isSubscribed ? 'hidden' : undefined}
-               display={{
-                  base: isSubscribed ? 'none' : undefined,
-                  xl: 'block',
-               }}
             >
                {subscribeLabel}
             </Button>
+            {isSubscribed && (
+               <Text
+                  align="center"
+                  position={'absolute'}
+                  top="0"
+                  left="0"
+                  right="5"
+                  bottom="0"
+                  lineHeight="10"
+               >
+                  <Icon
+                     as={RiCheckFill}
+                     boxSize="5"
+                     mb="-5px"
+                     mr="6px"
+                     ml="12px"
+                  />
+                  Subscribed!
+               </Text>
+            )}
          </FooterNewsletterForm>
       </FooterNewsletter>
    );
