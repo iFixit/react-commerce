@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/dist/client/router';
 import { Button, Flex, Stack, Link } from '@chakra-ui/react';
 import { Box, Heading, Text } from '@chakra-ui/layout';
 import { getImage } from '../../lib/images';
@@ -66,6 +67,14 @@ const optionTranslate: Option = {
 };
 
 function OptionCard({ option }: { option: Option }) {
+   const router = useRouter();
+   const openOption = () => {
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      if (isMobile) {
+         router.push(option.link);
+      }
+   };
+
    return (
       <Flex
          align="center"
@@ -76,6 +85,8 @@ function OptionCard({ option }: { option: Option }) {
          boxShadow={{ base: `${shadow[2]}`, md: `${shadow[3]}` }}
          padding={{ base: `${space[4]}`, md: `0 0 ${space[5]}` }}
          width={{ base: '100%', md: '350px' }}
+         onClick={openOption}
+         cursor={{ base: 'pointer', md: 'auto' }}
       >
          <Flex
             position="relative"
@@ -101,7 +112,7 @@ function OptionCard({ option }: { option: Option }) {
             boxShadow={`${shadow[2]}`}
             objectFit="scale-down"
             margin={{
-               base: `${space[4]} ${space[4]} 0px`,
+               base: `0 0 0`,
                md: `calc(-1 * ${space[7]}) auto ${space[2]}`,
             }}
          >
@@ -113,14 +124,21 @@ function OptionCard({ option }: { option: Option }) {
             padding={`0 ${space[4]}`}
             flexGrow={1}
          >
-            <Heading as="h3" marginTop="4" fontSize={`${fontSize.xl}`}>
+            <Heading
+               as="h3"
+               marginTop={{ base: `${space[1]}`, md: `${space[3]}` }}
+               fontSize={`${fontSize.xl}`}
+            >
                {option.title}
             </Heading>
             <Text
                textAlign="center"
                fontSize={`${fontSize.md}`}
                flexGrow={1}
-               padding={`${space[2]} 0 ${space[2]}`}
+               padding={{
+                  base: `${space[0]} 0 ${space[0]}`,
+                  md: `${space[2]} 0 ${space[2]}`,
+               }}
                color={`${color.gray[600]}`}
                margin={{ base: 0, md: `0 0 ${space[5]}` }}
             >

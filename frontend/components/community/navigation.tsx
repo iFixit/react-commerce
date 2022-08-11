@@ -146,7 +146,7 @@ export default function NavigationDisplay({
             direction={{ base: 'column', md: 'row' }}
             justify={{ base: 'center', md: 'space-between' }}
          >
-            <Heading as="h1" margin="0">
+            <Heading as="h1" margin="0" fontSize={`${fontSize['5xl']}`}>
                Community
             </Heading>
             <ButtonGroup
