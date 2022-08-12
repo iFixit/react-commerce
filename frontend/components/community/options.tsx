@@ -83,7 +83,7 @@ function OptionCard({ option }: { option: Option }) {
          borderRadius={`${borderRadius.lg}`}
          direction={{ base: 'row', md: 'column' }}
          boxShadow={{ base: `${shadow[2]}`, md: `${shadow[3]}` }}
-         padding={{ base: `${space[4]}`, md: `0 0 ${space[5]}` }}
+         padding={{ base: `${space[4]}`, md: `0 0 ${space[6]}` }}
          width={{ base: '100%', md: '350px' }}
          onClick={openOption}
          cursor={{ base: 'pointer', md: 'auto' }}
