@@ -1,3 +1,4 @@
+import { sentryFetch } from '@ifixit/sentry';
 import * as React from 'react';
 
 interface ShopifyStorefrontClientOptions {
@@ -23,7 +24,7 @@ export class ShopifyStorefrontClient {
       query: string,
       variables?: Variables
    ): Promise<Payload> {
-      const response = await fetch(
+      const response = await sentryFetch(
          `https://${this.shopDomain}/api/${this.apiVersion}/graphql.json`,
          {
             method: 'POST',

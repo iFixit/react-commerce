@@ -10,12 +10,14 @@ import {
    ProductListViewProps,
 } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
+import { serverSidePropsWrapper } from '@helpers/next-helpers';
 import {
    decodeDeviceTitle,
    decodeDeviceItemType,
    encodeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { invariant } from '@ifixit/helpers';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getGlobalSettings } from '@models/global-settings';
 import { findProductList } from '@models/product-list';
 import { getStoreByCode, getStoreList } from '@models/store';
@@ -25,7 +27,7 @@ import { getServerState } from 'react-instantsearch-hooks-server';
 type PageProps = WithLayoutProps<ProductListViewProps>;
 type AppPageProps = WithProvidersProps<PageProps>;
 
-export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+const getServerSidePropsInternal: GetServerSideProps<AppPageProps> = async (
    context
 ) => {
    context.res.setHeader(
@@ -87,14 +89,12 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 
    const title = `iFixit | ${productList.title}`;
 
-   const protocol = context.req.headers.referer?.split('://')[0] || 'https';
-   const url = `${protocol}://${context.req.headers.host}${context.resolvedUrl}`;
    const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
 
    const appProps: AppProvidersProps = {
       algolia: {
          indexName,
-         url,
+         url: urlFromContext(context),
          apiKey: productList.algolia.apiKey,
       },
    };
@@ -129,6 +129,10 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       props: pageProps,
    };
 };
+
+export const getServerSideProps = serverSidePropsWrapper(
+   getServerSidePropsInternal
+);
 
 const ProductListPage: NextPageWithLayout<PageProps> = (pageProps) => {
    return <ProductListView {...pageProps} />;

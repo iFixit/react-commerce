@@ -4,6 +4,10 @@
    "main": "./index.tsx",
    "types": "./index.tsx",
    "license": "MIT",
+   "exports": {
+      ".": "./index.tsx",
+      "./nextjs": "./nextjs.tsx"
+   },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
       "typescript": "4.5.3"

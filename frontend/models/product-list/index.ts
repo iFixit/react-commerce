@@ -61,12 +61,12 @@ export async function findProductList(
    ]);
 
    const productList = result.productLists?.data?.[0]?.attributes;
-
    if (productList == null && deviceWiki == null) {
       return null;
    }
 
-   const deviceTitle = productList?.deviceTitle ?? filterDeviceTitle;
+   const deviceTitle =
+      deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
    const handle = productList?.handle ?? '';
    const parents =
       productList?.parent ??

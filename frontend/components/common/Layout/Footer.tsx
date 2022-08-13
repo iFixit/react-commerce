@@ -5,6 +5,7 @@ import {
    Icon,
    Menu,
    MenuList,
+   Text,
 } from '@chakra-ui/react';
 import {
    FacebookLogo,
@@ -273,6 +274,8 @@ function NewsletterForm({
       [subscribe]
    );
 
+   const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
+
    return (
       <FooterNewsletter>
          <FooterNewsletterCopy>
@@ -281,7 +284,7 @@ function NewsletterForm({
                {description}
             </FooterNewsletterDescription>
          </FooterNewsletterCopy>
-         <FooterNewsletterForm onSubmit={onSubscribe}>
+         <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel>
                   Enter your email
@@ -290,28 +293,42 @@ function NewsletterForm({
                   ref={inputRef}
                   disabled={subscription.status !== SubscriptionStatus.Idle}
                   placeholder={emailPlaceholder}
+                  visibility={isSubscribed ? 'hidden' : 'visible'}
                />
                <FormErrorMessage>{subscription.error}</FormErrorMessage>
             </FooterNewsletterFormControl>
             <Button
                type="submit"
+               data-testid="footer-newsletter-subscribe-button"
                isLoading={
                   subscription.status === SubscriptionStatus.Subscribing
                }
-               loadingText="Subscribing"
                disabled={subscription.status !== SubscriptionStatus.Idle}
-               leftIcon={
-                  subscription.status === SubscriptionStatus.Subscribed ? (
-                     <Icon as={RiCheckFill} boxSize="5" mb="-2px" />
-                  ) : undefined
-               }
-               flexShrink={0}
                colorScheme="brand"
+               visibility={isSubscribed ? 'hidden' : undefined}
             >
-               {subscription.status === SubscriptionStatus.Idle
-                  ? subscribeLabel
-                  : 'Subscribed!'}
+               {subscribeLabel}
             </Button>
+            {isSubscribed && (
+               <Text
+                  align="center"
+                  position={'absolute'}
+                  top="0"
+                  left="0"
+                  right="5"
+                  bottom="0"
+                  lineHeight="10"
+               >
+                  <Icon
+                     as={RiCheckFill}
+                     boxSize="5"
+                     mb="-5px"
+                     mr="6px"
+                     ml="12px"
+                  />
+                  Subscribed!
+               </Text>
+            )}
          </FooterNewsletterForm>
       </FooterNewsletter>
    );

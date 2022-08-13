@@ -15,10 +15,6 @@ class MyDocument extends Document {
                   href={`${IFIXIT_ORIGIN}/api/2.0/user`}
                   as="fetch"
                />
-               <meta
-                  name="viewport"
-                  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-               />
             </Head>
             <body>
                <Main />
