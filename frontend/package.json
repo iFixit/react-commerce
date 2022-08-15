@@ -23,6 +23,7 @@
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {
+      "@chakra-ui/icons": "^1.0.15",
       "@chakra-ui/react": "1.8.8",
       "@chakra-ui/system": "1",
       "@core-ds/primitives": "2.4.5",
@@ -39,6 +40,7 @@
       "@ifixit/ifixit-api-client": "workspace:*",
       "@ifixit/matomo": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
+      "@ifixit/react-components": "^0.3.0",
       "@ifixit/sentry": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*",
       "@ifixit/ui": "workspace:*",
