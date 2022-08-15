@@ -31,7 +31,7 @@ const cartImageSizeMap: SizeMap = [
    { name: 'large', width: 3000 },
 ];
 
-export function IfixitImage(props: ImageProps) {
+export function IfixitImage({ alt = '', ...props }: ImageProps) {
    let loader = props.loader;
    let unoptimized = props.unoptimized;
 
@@ -45,7 +45,9 @@ export function IfixitImage(props: ImageProps) {
       }
    }
 
-   return <Image {...props} unoptimized={unoptimized} loader={loader} />;
+   return (
+      <Image {...props} alt={alt} unoptimized={unoptimized} loader={loader} />
+   );
 }
 
 function isGuideImage(src: string) {

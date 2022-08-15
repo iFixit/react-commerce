@@ -1,30 +1,27 @@
 module.exports = {
-   roots: ['<rootDir>'],
-   moduleFileExtensions: ['ts', 'tsx', 'js', 'json', 'jsx'],
-   testPathIgnorePatterns: [
-      '<rootDir>/(node_modules|.next)/',
-      '<rootDir>/test/cypress/',
-   ],
-   testEnvironment: 'jsdom',
-   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
-   transform: {
-      '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
+   moduleDirectories: ['node_modules', '<rootDir>/'],
+   moduleNameMapper: {
+      // Handle CSS imports (with CSS modules)
+      '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+      // Handle image imports
+      '\\.(gif|ttf|jpeg|eot|svg|png)$':
+         '<rootDir>/test/jest/__mocks__/fileMock.js',
+      // Handle module aliases
+      '@components(.+)': '<rootDir>/components/$1',
+      '@helpers(.+)': '<rootDir>/helpers/$1',
    },
+   setupFilesAfterEnv: ['<rootDir>/test/jest/jest-setup.ts'],
+   testPathIgnorePatterns: ['<rootDir>/(node_modules|.next|test/cypress)/'],
+   testEnvironment: 'jsdom',
+   transform: {
+      '\\.[jt]sx?$': ['babel-jest', { presets: ['next/babel'] }],
+   },
+   transformIgnorePatterns: [
+      '/node_modules/',
+      '^.+\\.module\\.(css|sass|scss)$',
+   ],
    watchPlugins: [
       'jest-watch-typeahead/filename',
       'jest-watch-typeahead/testname',
    ],
-   moduleNameMapper: {
-      '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
-      '\\.(gif|ttf|jpeg|eot|svg|png)$':
-         '<rootDir>/test/jest/__mocks__/fileMock.js',
-      '@components(.+)': '<rootDir>/components/$1',
-      '@helpers(.+)': '<rootDir>/helpers/$1',
-   },
-   moduleDirectories: [
-      'node_modules',
-      './test/utils', // a utility folder
-      __dirname, // the root directory
-   ],
-   setupFilesAfterEnv: ['<rootDir>/test/jest/jest-setup.ts'],
 };

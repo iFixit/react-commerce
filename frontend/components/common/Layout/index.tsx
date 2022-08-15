@@ -305,6 +305,7 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
 
    React.useEffect(() => {
       headerContext.navigation.close();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [router.asPath]);
 
    return (
