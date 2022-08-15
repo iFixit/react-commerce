@@ -87,7 +87,7 @@ function getImageLoader(
 
       const sizeName = getImageSize(realWidth, sizeMap, defaultSize);
       // We don't use the ?width param server-side, but it gets rid of a nextjs warning
-      return baseSrc.concat('.', sizeName, `?width=${width}`);
+      return baseSrc.concat('.', sizeName, `?width=${realWidth}`);
    };
 }
 
@@ -97,7 +97,7 @@ function getImageSize(
    defaultSize: string
 ): string {
    for (const size of sizeMap) {
-      if (width < size.width) {
+      if (width <= size.width) {
          return size.name;
       }
    }
