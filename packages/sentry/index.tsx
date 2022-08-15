@@ -1,4 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
+import { GetServerSidePropsContext } from 'next';
 
 export const sentryFetch: typeof fetch = async (resource, options) => {
    const context = {
@@ -26,4 +28,8 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
          console.error(error, context);
          throw error;
       });
+};
+
+export const setSentryPageContext = (context: GetServerSidePropsContext) => {
+   Sentry.setTag('resolved_url', urlFromContext(context));
 };

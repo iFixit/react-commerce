@@ -163,7 +163,8 @@ export function CartDrawer() {
                            </AnimatePresence>
                         </Box>
                      </ScaleFade>
-                     <ScaleFade
+                     <Collapse
+                        animateOpacity
                         in={cart.data != null && cart.data.totalNumItems === 0}
                      >
                         <VStack spacing="5" p="5">
@@ -179,7 +180,7 @@ export function CartDrawer() {
                               Back to shopping
                            </Button>
                         </VStack>
-                     </ScaleFade>
+                     </Collapse>
                   </DrawerBody>
 
                   <Collapse
