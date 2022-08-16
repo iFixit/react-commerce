@@ -58,13 +58,7 @@ export function BannerSection({
                   }}
                   mb="10"
                />
-               <Text
-                  as="h2"
-                  fontSize="4xl"
-                  fontFamily="Archivo Black"
-                  color="white"
-                  mb={2}
-               >
+               <Text as="h2" fontSize="4xl" color="white" mb={2}>
                   {title}
                </Text>
                <Text

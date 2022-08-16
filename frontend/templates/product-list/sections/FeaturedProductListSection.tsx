@@ -103,7 +103,6 @@ export function FeaturedProductListSection({
                            sm: productList.title.length > 30 ? 'lg' : '2xl',
                            lg: productList.title.length > 40 ? '2xl' : '3xl',
                         }}
-                        fontFamily="Archivo Black"
                         color="white"
                         noOfLines={3}
                      >

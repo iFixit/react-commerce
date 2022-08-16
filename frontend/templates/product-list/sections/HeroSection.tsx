@@ -72,7 +72,6 @@ const HeroTitle = chakra(
             as="h1"
             className={className}
             size="xl"
-            fontFamily="Archivo Black"
             px={{ base: 6, sm: 0 }}
          >
             {children}
