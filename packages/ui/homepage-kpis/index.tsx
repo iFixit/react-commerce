@@ -72,7 +72,7 @@ function Stats({ number, helpText }: StatsProps) {
             },
          }}
       >
-         <StatNumber color="blue.500" fontSize="3xl">
+         <StatNumber color="blue.500" fontSize="3xl" m="0">
             {number}
          </StatNumber>
          <StatHelpText m="0">{helpText}</StatHelpText>
