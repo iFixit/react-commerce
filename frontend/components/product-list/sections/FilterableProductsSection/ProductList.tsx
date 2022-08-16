@@ -53,7 +53,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
    const quantityAvailable = Math.max(0, product.quantity_available);
 
    const showProBadge = product.is_pro > 0;
-   const showDiscountBadge = quantityAvailable > 0 && isDiscounted;
+   const showDiscountBadge = isDiscounted;
    const showLifetimeWarrantyBadge = product.lifetime_warranty;
    const showOemPartnershipBadge = product.oem_partnership;
    const showBadges =
