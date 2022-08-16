@@ -81,13 +81,11 @@ function getImageLoader(
       }
       // If next wants to see the 2x image here then this accounts for that in our calculations of resolution
       // see next's image.js getWidths() for more details
-      if (width / realWidth > 2) {
-         realWidth *= 2;
-      }
+      const scaledWidth = width / realWidth > 2 ? realWidth * 2 : realWidth;
 
-      const sizeName = getImageSize(realWidth, sizeMap, defaultSize);
+      const sizeName = getImageSize(scaledWidth, sizeMap, defaultSize);
       // We don't use the ?width param server-side, but it gets rid of a nextjs warning
-      return baseSrc.concat('.', sizeName, `?width=${realWidth}`);
+      return baseSrc.concat('.', sizeName, `?width=${scaledWidth}`);
    };
 }
 
