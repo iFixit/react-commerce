@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { ProductListItem } from '@components/product-list/sections/FilterableProductsSection/ProductList';
-import * as ProductSearch from '@components/product-list/sections/FilterableProductsSection/useProductSearchHitPricing';
+import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
+import * as ProductSearch from '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing';
 import { mockProduct } from 'test/jest/__mocks__/mockProduct';
 
 jest.mock('@ifixit/app');

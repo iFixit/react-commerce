@@ -1,5 +1,4 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
-import { useSearchCache } from '@components/product-list/sections/FilterableProductsSection/useSearchCache';
 import { ALGOLIA_APP_ID } from '@config/env';
 import {
    decodeDeviceItemType,
@@ -20,6 +19,7 @@ import {
    InstantSearchServerState,
    InstantSearchSSRProvider,
 } from 'react-instantsearch-hooks-web';
+import { useSearchCache } from './useSearchCache';
 
 type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 
