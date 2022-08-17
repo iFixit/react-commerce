@@ -61,7 +61,6 @@ import { LayoutFooter } from './Footer';
 import { IfixitHeaderLogoUkraine } from '@assets/svg';
 
 export interface LayoutProps {
-   title: string;
    stores: StoreListItem[];
    currentStore: Store;
    globalSettings: GlobalSettings;
@@ -70,7 +69,6 @@ export interface LayoutProps {
 export type WithLayoutProps<T> = T & { layoutProps: LayoutProps };
 
 export function Layout({
-   title,
    stores,
    currentStore,
    globalSettings,
@@ -87,7 +85,7 @@ export function Layout({
       >
          <Box>
             <Head>
-               <title>{title}</title>
+               <title>iFixit</title>
                <link
                   rel="apple-touch-icon"
                   sizes="57x57"
