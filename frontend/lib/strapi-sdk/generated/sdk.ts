@@ -539,6 +539,8 @@ export type MenuRelationResponseCollection = {
 
 export type Mutation = {
    __typename?: 'Mutation';
+   /** Change user password. Confirm with the current password. */
+   changePassword?: Maybe<UsersPermissionsLoginPayload>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
@@ -584,6 +586,12 @@ export type Mutation = {
    /** Update an existing user */
    updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
    upload: UploadFileEntityResponse;
+};
+
+export type MutationChangePasswordArgs = {
+   currentPassword: Scalars['String'];
+   password: Scalars['String'];
+   passwordConfirmation: Scalars['String'];
 };
 
 export type MutationCreateGlobalLocalizationArgs = {

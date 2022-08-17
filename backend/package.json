@@ -4,19 +4,27 @@
    "version": "0.1.0",
    "description": "A Strapi application",
    "scripts": {
-      "dev": "strapi develop",
+      "install:all": "yarn install && yarn install:addons",
+      "install:addons": "cd src/plugins/addons && yarn install",
+      "dev": "npm run build:addons && strapi develop",
+      "dev:addons": "cross-env FORCE_COLOR=1 npm-run-all -l -p dev:addons:*",
+      "dev:addons:watch-admin": "strapi develop --watch-admin",
+      "dev:addons:ts": "cd src/plugins/addons && npm run dev",
       "start": "strapi start",
-      "build": "strapi build",
+      "build": "strapi build && npm run build:addons",
+      "build:addons": "cd src/plugins/addons && npm run build",
       "strapi": "strapi"
    },
-   "devDependencies": {},
+   "devDependencies": {
+      "npm-run-all": "4.1.5"
+   },
    "dependencies": {
-      "@strapi/strapi": "4.3.0",
-      "@strapi/plugin-users-permissions": "4.3.0",
-      "@strapi/plugin-i18n": "4.3.0",
-      "@strapi/provider-upload-aws-s3": "4.3.0",
-      "@strapi/plugin-sentry": "4.3.0",
-      "@strapi/plugin-graphql": "4.3.0",
+      "@strapi/strapi": "4.3.3",
+      "@strapi/plugin-users-permissions": "4.3.3",
+      "@strapi/plugin-i18n": "4.3.3",
+      "@strapi/provider-upload-aws-s3": "4.3.3",
+      "@strapi/plugin-sentry": "4.3.3",
+      "@strapi/plugin-graphql": "4.3.3",
       "@graphql-tools/utils": "8.6.7",
       "better-sqlite3": "7.4.6",
       "pg": "8.7.1"
