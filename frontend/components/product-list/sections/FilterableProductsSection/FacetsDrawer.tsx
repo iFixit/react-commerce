@@ -147,7 +147,6 @@ export function FacetsDrawer({
                            isOpen={facet === currentFacet}
                            productList={productList}
                            onClose={() => {
-                              onClose();
                               setCurrentFacet(null);
                            }}
                         />
