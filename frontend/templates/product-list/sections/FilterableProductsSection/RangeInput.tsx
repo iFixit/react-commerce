@@ -13,7 +13,7 @@ import { formatFacetName } from '@helpers/algolia-helpers';
 import { useDebounce } from '@ifixit/ui';
 import * as React from 'react';
 import { useRange, UseRangeProps } from 'react-instantsearch-hooks-web';
-import { useSearchCache } from './useSearchCache';
+import { useSearchCache } from '@components/common';
 
 export type RangeInputProps = UseRangeProps;
 

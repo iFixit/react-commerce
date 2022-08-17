@@ -6,7 +6,6 @@ import {
    WithLayoutProps,
    WithProvidersProps,
 } from '@components/common';
-import { ProductListView } from '@components/product-list';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
    decodeDeviceItemType,
@@ -25,6 +24,7 @@ import { getStoreByCode, getStoreList } from '@models/store';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { getServerState } from 'react-instantsearch-hooks-server';
+import { ProductListView } from './ProductListView';
 
 export type ProductListTemplateProps = WithProvidersProps<
    WithLayoutProps<{
