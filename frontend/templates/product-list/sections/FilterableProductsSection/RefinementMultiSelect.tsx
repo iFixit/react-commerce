@@ -82,7 +82,12 @@ const MultiSelectItem = React.memo(function MultiSelectItem({
          >
             {item.label}
          </Checkbox>
-         <Text size="sm" fontFamily="sans-serif" color="gray.500">
+         <Text
+            size="sm"
+            fontFamily="sans-serif"
+            color="gray.500"
+            fontWeight={isRefined ? 'bold' : 'inherit'}
+         >
             {item.count}
          </Text>
       </HStack>
