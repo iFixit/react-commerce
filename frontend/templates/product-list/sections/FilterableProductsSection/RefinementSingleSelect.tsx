@@ -6,7 +6,6 @@ import {
    RefinementListItem,
 } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import {
-   useClearRefinements,
    useCurrentRefinements,
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
@@ -14,7 +13,6 @@ import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList, ProductListType } from '@models/product-list';
-import { useDecoupledState } from '@ifixit/ui';
 import { encodeDeviceItemType } from '@helpers/product-list-helpers';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
@@ -33,15 +31,12 @@ export function RefinementSingleSelect({
          sortBy: useSortBy(otherProps),
       });
    const onClickSingleSelect = (newSelected: RefinementListItem) => {
+      refine(newSelected.value);
+
       const oldSelected: RefinementListItem | undefined = items.find(
          (item) => item.isRefined
       );
-
-      newSelected.isRefined = !newSelected.isRefined;
-      refine(newSelected.value);
-
       if (oldSelected && oldSelected !== newSelected) {
-         oldSelected.isRefined = !oldSelected?.isRefined;
          refine(oldSelected.value);
       }
    };
@@ -55,7 +50,6 @@ export function RefinementSingleSelect({
                      item={item}
                      attribute={otherProps.attribute}
                      productListType={productList.type}
-                     refine={refine}
                      onClose={onClose}
                      onClick={onClickSingleSelect}
                   />
@@ -86,7 +80,6 @@ type SingleSelectItemProps = {
    item: RefinementListRenderState['items'][0];
    attribute: string;
    productListType: ProductListType;
-   refine: RefinementListRenderState['refine'];
    onClose?: () => void;
    onClick?: (newSelected: RefinementListItem) => void;
 };
@@ -95,14 +88,9 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    item,
    attribute,
    productListType,
-   refine,
    onClose,
    onClick,
 }: SingleSelectItemProps) {
-   const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
-   const { refine: clearRefinements } = useClearRefinements({
-      includedAttributes: [attribute],
-   });
    const { createURL } = useCurrentRefinements();
    const shouldBeLink =
       attribute === 'facet_tags.Item Type' &&
@@ -154,8 +142,8 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       <HStack
          key={item.label}
          justify="space-between"
-         color={isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={isRefined ? 'bold' : 'inherit'}
+         color={item.isRefined ? 'brand.500' : 'inherit'}
+         fontWeight={item.isRefined ? 'bold' : 'inherit'}
       >
          {RefinementTitle}
          <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
