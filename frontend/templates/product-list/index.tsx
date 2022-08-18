@@ -1,9 +1,6 @@
 import {
    AppProviders,
    AppProvidersProps,
-   Layout,
-   LayoutProps,
-   WithLayoutProps,
    WithProvidersProps,
 } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
@@ -14,13 +11,17 @@ import {
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
-import { getGlobalSettings } from '@models/global-settings';
+import {
+   getLayoutServerSideProps,
+   DefaultLayout,
+   DefaultLayoutProps,
+   WithLayoutProps,
+} from '@layouts/default';
 import {
    findProductList,
    ProductList,
    ProductListType,
 } from '@models/product-list';
-import { getStoreByCode, getStoreList } from '@models/store';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { getServerState } from 'react-instantsearch-hooks-server';
@@ -41,7 +42,7 @@ export const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> =
    };
 
 ProductListTemplate.getLayout = function getLayout(page, pageProps) {
-   return <Layout {...pageProps.layoutProps}>{page}</Layout>;
+   return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
 
 export default ProductListTemplate;
@@ -60,7 +61,7 @@ export const getProductListServerSideProps = ({
       );
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
-      let layoutProps: LayoutProps;
+      let layoutProps: DefaultLayoutProps;
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
@@ -69,7 +70,7 @@ export const getProductListServerSideProps = ({
          case ProductListType.AllParts: {
             [layoutProps, productList] = await logAsync('Promise.all', () =>
                Promise.all([
-                  getLayoutProps(),
+                  getLayoutServerSideProps(),
                   findProductList({ handle: { eq: 'Parts' } }),
                ])
             );
@@ -97,7 +98,7 @@ export const getProductListServerSideProps = ({
             const deviceTitle = decodeDeviceTitle(deviceHandle);
             [layoutProps, productList] = await logAsync('Promise.all', () =>
                Promise.all([
-                  getLayoutProps(),
+                  getLayoutServerSideProps(),
                   findProductList(
                      {
                         deviceTitle: {
@@ -123,7 +124,7 @@ export const getProductListServerSideProps = ({
          case ProductListType.AllTools: {
             [layoutProps, productList] = await logAsync('Promise.all', () =>
                Promise.all([
-                  getLayoutProps(),
+                  getLayoutServerSideProps(),
                   findProductList({ handle: { eq: 'Tools' } }),
                ])
             );
@@ -138,7 +139,7 @@ export const getProductListServerSideProps = ({
 
             [layoutProps, productList] = await logAsync('Promise.all', () =>
                Promise.all([
-                  getLayoutProps(),
+                  getLayoutServerSideProps(),
                   findProductList({ handle: { eqi: handle } }),
                ])
             );
@@ -162,7 +163,7 @@ export const getProductListServerSideProps = ({
 
             [layoutProps, productList] = await logAsync('Promise.all', () =>
                Promise.all([
-                  getLayoutProps(),
+                  getLayoutServerSideProps(),
                   findProductList({
                      handle: {
                         eqi: handle,
@@ -242,19 +243,6 @@ export const getProductListServerSideProps = ({
       };
    };
 };
-
-async function getLayoutProps(): Promise<LayoutProps> {
-   const [globalSettings, stores, currentStore] = await Promise.all([
-      getGlobalSettings(),
-      getStoreList(),
-      getStoreByCode('us'),
-   ]);
-   return {
-      globalSettings,
-      currentStore,
-      stores,
-   };
-}
 
 function getDevicePathSegments(
    context: GetServerSidePropsContext<ParsedUrlQuery>
