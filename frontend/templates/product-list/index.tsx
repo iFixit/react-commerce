@@ -61,18 +61,16 @@ export const getProductListServerSideProps = ({
       );
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
-      let layoutProps: DefaultLayoutProps;
+      const layoutProps: Promise<DefaultLayoutProps> =
+         getLayoutServerSideProps();
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
 
       switch (productListType) {
          case ProductListType.AllParts: {
-            [layoutProps, productList] = await logAsync('Promise.all', () =>
-               Promise.all([
-                  getLayoutServerSideProps(),
-                  findProductList({ handle: { eq: 'Parts' } }),
-               ])
+            productList = await logAsync('findProductList', () =>
+               findProductList({ handle: { eq: 'Parts' } })
             );
             break;
          }
@@ -96,18 +94,15 @@ export const getProductListServerSideProps = ({
                : null;
 
             const deviceTitle = decodeDeviceTitle(deviceHandle);
-            [layoutProps, productList] = await logAsync('Promise.all', () =>
-               Promise.all([
-                  getLayoutServerSideProps(),
-                  findProductList(
-                     {
-                        deviceTitle: {
-                           eqi: deviceTitle,
-                        },
+            productList = await logAsync('findProductList', () =>
+               findProductList(
+                  {
+                     deviceTitle: {
+                        eqi: deviceTitle,
                      },
-                     itemType
-                  ),
-               ])
+                  },
+                  itemType
+               )
             );
 
             shouldRedirectToCanonical =
@@ -122,11 +117,8 @@ export const getProductListServerSideProps = ({
             break;
          }
          case ProductListType.AllTools: {
-            [layoutProps, productList] = await logAsync('Promise.all', () =>
-               Promise.all([
-                  getLayoutServerSideProps(),
-                  findProductList({ handle: { eq: 'Tools' } }),
-               ])
+            productList = await logAsync('findProductList', () =>
+               findProductList({ handle: { eq: 'Tools' } })
             );
             break;
          }
@@ -137,11 +129,8 @@ export const getProductListServerSideProps = ({
                'tools category handle is required'
             );
 
-            [layoutProps, productList] = await logAsync('Promise.all', () =>
-               Promise.all([
-                  getLayoutServerSideProps(),
-                  findProductList({ handle: { eqi: handle } }),
-               ])
+            productList = await logAsync('findProductList', () =>
+               findProductList({ handle: { eqi: handle } })
             );
 
             shouldRedirectToCanonical =
@@ -161,18 +150,15 @@ export const getProductListServerSideProps = ({
                'shop category handle is required'
             );
 
-            [layoutProps, productList] = await logAsync('Promise.all', () =>
-               Promise.all([
-                  getLayoutServerSideProps(),
-                  findProductList({
-                     handle: {
-                        eqi: handle,
-                     },
-                     type: {
-                        eq: 'marketing',
-                     },
-                  }),
-               ])
+            productList = await logAsync('findProductList', () =>
+               findProductList({
+                  handle: {
+                     eqi: handle,
+                  },
+                  type: {
+                     eq: 'marketing',
+                  },
+               })
             );
             shouldRedirectToCanonical =
                typeof productList?.handle === 'string' &&
@@ -226,7 +212,7 @@ export const getProductListServerSideProps = ({
       const pageProps: ProductListTemplateProps = {
          productList,
          indexName,
-         layoutProps,
+         layoutProps: await layoutProps,
          appProps: {
             ...appProps,
             algolia: appProps.algolia
