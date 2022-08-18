@@ -1,7 +1,10 @@
 import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { HiSelector } from 'react-icons/hi';
-import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
+import {
+   RefinementListRenderState,
+   RefinementListItem,
+} from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import {
    useClearRefinements,
    useCurrentRefinements,
@@ -29,6 +32,19 @@ export function RefinementSingleSelect({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
+   const onClickSingleSelect = (newSelected: RefinementListItem) => {
+      const oldSelected: RefinementListItem | undefined = items.find(
+         (item) => item.isRefined
+      );
+
+      newSelected.isRefined = !newSelected.isRefined;
+      refine(newSelected.value);
+
+      if (oldSelected && oldSelected !== newSelected) {
+         oldSelected.isRefined = !oldSelected?.isRefined;
+         refine(oldSelected.value);
+      }
+   };
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
@@ -41,6 +57,7 @@ export function RefinementSingleSelect({
                      productListType={productList.type}
                      refine={refine}
                      onClose={onClose}
+                     onClick={onClickSingleSelect}
                   />
                );
             })}
@@ -71,6 +88,7 @@ type SingleSelectItemProps = {
    productListType: ProductListType;
    refine: RefinementListRenderState['refine'];
    onClose?: () => void;
+   onClick?: (newSelected: RefinementListItem) => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
@@ -79,6 +97,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    productListType,
    refine,
    onClose,
+   onClick,
 }: SingleSelectItemProps) {
    const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
    const { refine: clearRefinements } = useClearRefinements({
@@ -96,9 +115,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          as={shouldBeLink ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
-            clearRefinements();
-            !isRefined && refine(item.value);
-            setIsRefined((current) => !current);
+            onClick && onClick(item);
             onClose?.();
          }}
          _hover={{
