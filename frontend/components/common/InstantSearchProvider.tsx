@@ -211,7 +211,6 @@ export function InstantSearchProvider({
    return (
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
-            key={renderCount}
             searchClient={algoliaClient}
             indexName={indexName}
             routing={routing}
