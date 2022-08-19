@@ -13,6 +13,7 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
    CartDrawer,
+   LayoutFooter,
    Header,
    HeaderBar,
    HeaderCloseHiddenBarButton,
@@ -57,7 +58,6 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
-import { LayoutFooter } from './Footer';
 import { IfixitHeaderLogoUkraine } from '@assets/svg';
 
 export interface LayoutProps {
