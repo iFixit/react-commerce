@@ -72,6 +72,7 @@ import {
    FooterLegalLinkList,
 } from './Legal';
 import { FooterPartners, FooterPartnerLink } from './Partners';
+import { StoreMenuButton, StoreMenuItem } from './StoreMenu';
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
@@ -115,63 +116,6 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
    }
 );
 
-
-export type StoreMenuButtonProps = MenuButtonProps & {
-   icon?: React.ReactNode;
-};
-
-export const StoreMenuButton = forwardRef<StoreMenuButtonProps, 'button'>(
-   ({ children, icon, ...otherProps }, ref) => {
-      return (
-         <MenuButton
-            ref={ref}
-            color="gray.300"
-            _hover={{ color: 'white' }}
-            {...otherProps}
-         >
-            <HStack alignItems="center">
-               <Text
-                  color="inherit"
-                  fontSize="sm"
-                  lineHeight="1em"
-                  fontWeight="semibold"
-               >
-                  {children}
-               </Text>
-               <StoreFlagBackdrop>{icon}</StoreFlagBackdrop>
-            </HStack>
-         </MenuButton>
-      );
-   }
-);
-
-const StoreFlagBackdrop = (props: BoxProps) => {
-   return <Box p="1.5" borderRadius="base" bg="gray.800" {...props} />;
-};
-
-export type StoreMenuItemProps = Omit<MenuItemProps, 'children'> & {
-   icon: React.ReactNode;
-   name: string;
-   currency: string;
-};
-
-export const StoreMenuItem = forwardRef<StoreMenuItemProps, 'div'>(
-   ({ icon, name, currency, ...otherProps }, ref) => {
-      return (
-         <MenuItem ref={ref} fontSize="sm" color="black" {...otherProps}>
-            <Flex w="full" align="center">
-               {icon}
-               <Text ref={ref} ml="3" mt="-1px" flexGrow={1}>
-                  {name}
-               </Text>
-               <Text ref={ref} ml="2" mt="-1px" color="gray.500">
-                  {currency}
-               </Text>
-            </Flex>
-         </MenuItem>
-      );
-   }
-);
 
 export const FooterDivider = forwardRef<DividerProps, 'hr'>((props, ref) => {
    return <Divider ref={ref} borderColor="gray.700" {...props} />;
