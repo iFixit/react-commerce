@@ -33,17 +33,17 @@ import {
    FooterNavigationList,
    FooterNavigationLink,
    FooterNavigationSection,
-} from './Navigation';
-import { FooterSettings, FooterSettingsSection } from './Settings';
+} from './components/Navigation';
+import { FooterSettings, FooterSettingsSection } from './components/Settings';
 import {
    FooterCopyright,
    FooterLegalLink,
    FooterLegalLinkList,
    FooterLegalSection,
-} from './Legal';
-import { FooterPartners, FooterPartnerLink } from './Partners';
-import { StoreMenuButton, StoreMenuItem } from './StoreMenu';
-import { NewsletterForm } from './Newsletter';
+} from './components/Legal';
+import { FooterPartners, FooterPartnerLink } from './components/Partners';
+import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
+import { NewsletterForm } from './components/Newsletter';
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
