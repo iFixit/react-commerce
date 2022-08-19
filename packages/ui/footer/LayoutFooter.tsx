@@ -1,15 +1,15 @@
 import {
+   Divider,
+   DividerProps,
    Flex,
    FlexProps,
    forwardRef,
    HStack,
    Icon,
-   StackProps,
-   Text,
-   DividerProps,
-   Divider,
    Menu,
    MenuList,
+   StackProps,
+   Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import PageContentWrapper from '../misc/PageContentWrapper';
@@ -29,17 +29,17 @@ import { Store, StoreListItem } from '@models/store';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
-   FooterNavigationSection,
-   FooterNavigationList,
    FooterNavigationItem,
+   FooterNavigationList,
    FooterNavigationLink,
+   FooterNavigationSection,
 } from './Navigation';
-import { FooterSettingsSection, FooterSettings } from './Settings';
+import { FooterSettings, FooterSettingsSection } from './Settings';
 import {
    FooterCopyright,
-   FooterLegalSection,
    FooterLegalLink,
    FooterLegalLinkList,
+   FooterLegalSection,
 } from './Legal';
 import { FooterPartners, FooterPartnerLink } from './Partners';
 import { StoreMenuButton, StoreMenuItem } from './StoreMenu';
