@@ -14,7 +14,6 @@ import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList, ProductListType } from '@models/product-list';
 import { encodeDeviceItemType } from '@helpers/product-list-helpers';
-import { useDecoupledState } from '@ifixit/ui';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -96,7 +95,6 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    onClose,
    onClick,
 }: SingleSelectItemProps) {
-   const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
    const { createURL } = useCurrentRefinements();
    const shouldBeLink =
       attribute === 'facet_tags.Item Type' &&
@@ -109,7 +107,6 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          as={shouldBeLink ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
-            setIsRefined((current) => !current);
             onClick && onClick(item);
             onClose?.();
          }}
@@ -149,8 +146,8 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       <HStack
          key={item.label}
          justify="space-between"
-         color={isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={isRefined ? 'bold' : 'inherit'}
+         color={item.isRefined ? 'brand.500' : 'inherit'}
+         fontWeight={item.isRefined ? 'bold' : 'inherit'}
       >
          {RefinementTitle}
          <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
