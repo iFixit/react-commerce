@@ -54,26 +54,22 @@ const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
    );
 });
 
-const FooterNewsletterCopy = forwardRef<BoxProps, 'div'>(
-   (props, ref) => {
-      return (
-         <Box
-            ref={ref}
-            textAlign={{
-               base: 'center',
-               xl: 'left',
-            }}
-            {...props}
-         />
-      );
-   }
-);
+const FooterNewsletterCopy = forwardRef<BoxProps, 'div'>((props, ref) => {
+   return (
+      <Box
+         ref={ref}
+         textAlign={{
+            base: 'center',
+            xl: 'left',
+         }}
+         {...props}
+      />
+   );
+});
 
-const FooterNewsletterTitle = forwardRef<TextProps, 'div'>(
-   (props, ref) => {
-      return <Text ref={ref} fontSize="sm" fontWeight="semibold" {...props} />;
-   }
-);
+const FooterNewsletterTitle = forwardRef<TextProps, 'div'>((props, ref) => {
+   return <Text ref={ref} fontSize="sm" fontWeight="semibold" {...props} />;
+});
 
 const FooterNewsletterDescription = forwardRef<TextProps, 'div'>(
    (props, ref) => {
@@ -81,28 +77,26 @@ const FooterNewsletterDescription = forwardRef<TextProps, 'div'>(
    }
 );
 
-const FooterNewsletterForm = forwardRef<StackProps, 'form'>(
-   (props, ref) => {
-      return (
-         <HStack
-            ref={ref}
-            as="form"
-            data-testid="footer-newsletter-form"
-            spacing="3"
-            w={{
-               base: 'full',
-               xl: 'auto',
-            }}
-            justify={{
-               base: 'center',
-               md: 'flex-end',
-            }}
-            align="flex-start"
-            {...props}
-         />
-      );
-   }
-);
+const FooterNewsletterForm = forwardRef<StackProps, 'form'>((props, ref) => {
+   return (
+      <HStack
+         ref={ref}
+         as="form"
+         data-testid="footer-newsletter-form"
+         spacing="3"
+         w={{
+            base: 'full',
+            xl: 'auto',
+         }}
+         justify={{
+            base: 'center',
+            md: 'flex-end',
+         }}
+         align="flex-start"
+         {...props}
+      />
+   );
+});
 
 const FooterNewsletterFormControl = forwardRef<FormControlProps, 'div'>(
    (props, ref) => {
