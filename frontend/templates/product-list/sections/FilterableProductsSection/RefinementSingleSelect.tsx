@@ -32,16 +32,19 @@ export function RefinementSingleSelect({
          sortBy: useSortBy(otherProps),
       });
 
-   const onClickSingleSelect = (newSelected: RefinementListItem) => {
-      refine(newSelected.value);
+   const onClickSingleSelect = React.useCallback(
+      (newSelected: RefinementListItem) => {
+         refine(newSelected.value);
 
-      const oldSelected: RefinementListItem | undefined = items.find(
-         (item) => item.isRefined
-      );
-      if (oldSelected && oldSelected !== newSelected) {
-         refine(oldSelected.value);
-      }
-   };
+         const oldSelected: RefinementListItem | undefined = items.find(
+            (item) => item.isRefined
+         );
+         if (oldSelected && oldSelected !== newSelected) {
+            refine(oldSelected.value);
+         }
+      },
+      [items, refine]
+   );
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
