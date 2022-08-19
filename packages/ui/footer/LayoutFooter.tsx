@@ -1,40 +1,15 @@
 import {
-   Box,
-   BoxProps,
    Flex,
    FlexProps,
    forwardRef,
    HStack,
    Icon,
-   List,
-   ListIcon,
-   ListItem,
-   ListItemProps,
-   ListProps,
    StackProps,
    Text,
-   SimpleGridProps,
-   SimpleGrid,
-   MenuButtonProps,
-   MenuButton,
-   MenuItemProps,
-   MenuItem,
-   Link,
-   LinkProps,
-   Stack,
    DividerProps,
    Divider,
-   TextProps,
-   FormControlProps,
-   FormLabelProps,
-   FormControl,
-   FormLabel,
-   InputProps,
-   Input,
    Menu,
    MenuList,
-   Button,
-   FormErrorMessage,
 } from '@chakra-ui/react';
 import React from 'react';
 import PageContentWrapper from '../misc/PageContentWrapper';
@@ -48,16 +23,11 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/icons';
-import {
-   SubscriptionStatus,
-   useSubscribeToNewsletter,
-} from '@ifixit/newsletter-sdk';
 import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
-import { RiCheckFill } from 'react-icons/ri';
 import {
    FooterNavigationSection,
    FooterNavigationList,
@@ -74,7 +44,6 @@ import {
 import { FooterPartners, FooterPartnerLink } from './Partners';
 import { StoreMenuButton, StoreMenuItem } from './StoreMenu';
 import { NewsletterForm } from './Newsletter';
-
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
