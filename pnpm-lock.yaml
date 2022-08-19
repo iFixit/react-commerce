@@ -358,6 +358,8 @@ importers:
     specifiers:
       '@ifixit/app': workspace:*
       '@ifixit/cart-sdk': workspace:*
+      '@ifixit/icons': workspace:*
+      '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
@@ -365,6 +367,8 @@ importers:
     dependencies:
       '@ifixit/app': link:../app
       '@ifixit/cart-sdk': link:../cart-sdk
+      '@ifixit/icons': link:../icons
+      '@ifixit/newsletter-sdk': link:../newsletter-sdk
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
