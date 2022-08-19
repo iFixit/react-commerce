@@ -1,3 +1,4 @@
+import { IfixitHeaderLogoUkraine } from '@assets/svg';
 import {
    Box,
    DrawerCloseButton,
@@ -48,32 +49,22 @@ import {
    UserMenuLink,
    WordmarkLink,
 } from '@ifixit/ui';
-import { GlobalSettings } from '@models/global-settings';
 import { Menu } from '@models/menu';
-import { Store, StoreListItem } from '@models/store';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
+import { DefaultLayoutProps } from '../types';
 import { LayoutFooter } from './Footer';
-import { IfixitHeaderLogoUkraine } from '@assets/svg';
 
-export interface LayoutProps {
-   stores: StoreListItem[];
-   currentStore: Store;
-   globalSettings: GlobalSettings;
-}
-
-export type WithLayoutProps<T> = T & { layoutProps: LayoutProps };
-
-export function Layout({
+export function DefaultLayout({
    stores,
    currentStore,
    globalSettings,
    children,
-}: React.PropsWithChildren<LayoutProps>) {
+}: React.PropsWithChildren<DefaultLayoutProps>) {
    const { menu } = currentStore.header;
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
