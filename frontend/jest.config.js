@@ -10,6 +10,7 @@ module.exports = {
       '@components(.+)': '<rootDir>/components/$1',
       '@templates(.+)': '<rootDir>/templates/$1',
       '@helpers(.+)': '<rootDir>/helpers/$1',
+      '@config(.+)': '<rootDir>/config/$1',
    },
    setupFilesAfterEnv: ['<rootDir>/test/jest/jest-setup.ts'],
    testPathIgnorePatterns: ['<rootDir>/(node_modules|.next|test/cypress)/'],
