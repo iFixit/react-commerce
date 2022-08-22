@@ -1,9 +1,16 @@
 import { Heading } from '@chakra-ui/react';
+import { WithProvidersProps } from '@components/common';
 import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
+import {
+   DefaultLayout,
+   DefaultLayoutProps,
+   getLayoutServerSideProps,
+   WithLayoutProps,
+} from '@layouts/default';
 import { GetServerSideProps } from 'next';
 
-type ProductTemplateProps = {};
+export type ProductTemplateProps = WithProvidersProps<WithLayoutProps<{}>>;
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    return (
@@ -14,7 +21,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 };
 
 ProductTemplate.getLayout = function getLayout(page, pageProps) {
-   return page;
+   return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
@@ -26,7 +33,13 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             notFound: true,
          };
       }
+      const layoutProps: Promise<DefaultLayoutProps> =
+         getLayoutServerSideProps();
+      const pageProps: ProductTemplateProps = {
+         layoutProps: await layoutProps,
+         appProps: {},
+      };
       return {
-         props: {},
+         props: pageProps,
       };
    };
