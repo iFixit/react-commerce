@@ -11,8 +11,10 @@ You can run the backend both using SQLite and using Postgres with docker compose
 
 The `frontend` directory is structured as follows:
 
--  `pages`: contains the Next.js app pages (think of these like routes/controllers)
+-  `pages`: contains the Next.js routes (usually these just export code from a template)
 -  `models`: contains business logic (e.g. how to fetch product list from API, how to subscribe to newsletter, etc.)
+-  `templates`: you can think of these as view controllers. Templates are especially useful to handle multiple routes (e.g. product list template is used by several routes, like `/Parts`, `/Tools`, `/Parts/Mac` etc.).
+-  `layouts`: contains the layouts that each page can use. Right now we only have a default layout, but in the future we might have pages that will require to use a different layout component.
 -  `components`: contains the React view components
 -  `helpers`: contains reusable custom app-related helper functions
 -  `lib`: contains custom libraries that can stand on their own (e.g. `lib/algolia`). Think of these as packages that potentially could be used in other projects.
