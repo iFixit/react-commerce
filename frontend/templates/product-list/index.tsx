@@ -55,10 +55,17 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=10, stale-while-revalidate=600'
-      );
+      if ('disableCacheGets' in context.query) {
+         context.res.setHeader(
+            'Cache-Control',
+            'no-store, no-cache, must-revalidate'
+         );
+      } else {
+         context.res.setHeader(
+            'Cache-Control',
+            'public, s-maxage=10, stale-while-revalidate=600'
+         );
+      }
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
       const layoutProps: Promise<DefaultLayoutProps> =

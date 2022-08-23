@@ -169,7 +169,13 @@ export function InstantSearchProvider({
                }
             );
 
-            return `${baseUrl}${path}${queryString}`;
+            let customQueries = '';
+            const customQueryParams = new URLSearchParams(location.search);
+            if (customQueryParams.has('disableCacheGets')) {
+               customQueries = (queryString ? '&' : '?') + 'disableCacheGets';
+            }
+
+            return `${baseUrl}${path}${queryString}${customQueries}`;
          },
          parseURL({ qsModule, location }) {
             const pathParts = location.pathname
