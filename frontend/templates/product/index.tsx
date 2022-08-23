@@ -4,18 +4,24 @@ import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
 import {
    DefaultLayout,
-   DefaultLayoutProps,
    getLayoutServerSideProps,
    WithLayoutProps,
 } from '@layouts/default';
+import { findProduct, Product } from '@models/product';
 import { GetServerSideProps } from 'next';
 
-export type ProductTemplateProps = WithProvidersProps<WithLayoutProps<{}>>;
+export type ProductTemplateProps = WithProvidersProps<
+   WithLayoutProps<{
+      product: Product;
+   }>
+>;
 
-export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
+export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
+   product,
+}) => {
    return (
       <div>
-         <Heading>Product page</Heading>
+         <Heading>{product.title}</Heading>
       </div>
    );
 };
@@ -33,11 +39,23 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             notFound: true,
          };
       }
-      const layoutProps: Promise<DefaultLayoutProps> =
-         getLayoutServerSideProps();
+      const layoutProps = await getLayoutServerSideProps();
+      const product = await findProduct(
+         {
+            shopDomain: layoutProps.currentStore.shopify.storefrontDomain,
+            accessToken: layoutProps.currentStore.shopify.storefrontAccessToken,
+         },
+         handle
+      );
+      if (product == null) {
+         return {
+            notFound: true,
+         };
+      }
       const pageProps: ProductTemplateProps = {
-         layoutProps: await layoutProps,
+         layoutProps,
          appProps: {},
+         product,
       };
       return {
          props: pageProps,
