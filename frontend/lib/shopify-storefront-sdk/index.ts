@@ -1,4 +1,5 @@
 import { getSdk, Requester } from './generated/sdk';
+import * as Sentry from '@sentry/nextjs';
 export * from './generated/sdk';
 
 export type ShopCredentials = {
@@ -42,6 +43,16 @@ export function getShopifyStorefrontSdk(shop: ShopCredentials) {
          result.errors.map((error: any) => {
             const code = error.extensions?.code || 'UNKNOWN';
             console.error(`\t[${code}]`, error.message);
+         });
+         Sentry.withScope((scope) => {
+            scope.setExtra('query', doc);
+            scope.setExtra('variables', variables);
+            scope.setExtra('errors', result.errors);
+            Sentry.captureException(
+               new Error(
+                  'Shopify Storefront SDK GraphQL query failed with errors'
+               )
+            );
          });
       }
       throw new Error(
