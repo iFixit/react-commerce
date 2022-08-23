@@ -1,5 +1,11 @@
-import { Heading } from '@chakra-ui/react';
-import { WithProvidersProps } from '@components/common';
+import { Box, Heading } from '@chakra-ui/react';
+import {
+   PageBreadcrumb,
+   PageContentWrapper,
+   SecondaryNavbar,
+   TBreadcrumbItem,
+   WithProvidersProps,
+} from '@components/common';
 import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
 import {
@@ -19,10 +25,21 @@ export type ProductTemplateProps = WithProvidersProps<
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
    product,
 }) => {
+   const items: TBreadcrumbItem[] = [
+      { label: 'Parts', url: '/Parts' },
+      { label: product.title, url: `/Products/${product.handle}` },
+   ];
    return (
-      <div>
-         <Heading>{product.title}</Heading>
-      </div>
+      <>
+         <SecondaryNavbar>
+            <PageContentWrapper>
+               <PageBreadcrumb items={items} />
+            </PageContentWrapper>
+         </SecondaryNavbar>
+         <Box>
+            <Heading>{product.title}</Heading>
+         </Box>
+      </>
    );
 };
 

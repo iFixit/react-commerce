@@ -1,6 +1,7 @@
 query findProduct($handle: String) {
    product(handle: $handle) {
       title
+      handle
       descriptionHtml
       faqs: metafield(namespace: "custom", key: "faq") {
          value

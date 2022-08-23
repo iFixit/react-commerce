@@ -6188,6 +6188,7 @@ export type FindProductQuery = {
    product?: Maybe<{
       __typename?: 'Product';
       title: string;
+      handle: string;
       descriptionHtml: string;
       faqs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       prop65WarningType?: Maybe<{ __typename?: 'Metafield'; value: string }>;
@@ -6256,6 +6257,7 @@ export const FindProductDocument = `
     query findProduct($handle: String) {
   product(handle: $handle) {
     title
+    handle
     descriptionHtml
     faqs: metafield(namespace: "custom", key: "faq") {
       value
