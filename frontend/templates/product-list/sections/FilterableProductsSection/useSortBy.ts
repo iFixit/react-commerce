@@ -63,6 +63,6 @@ export function useSortBy(
       case 'facet_tags.Item Type':
          return sortAlphabetically;
       default:
-         return props.sortBy;
+         return ["count:desc", "name:asc"];
    }
 }
