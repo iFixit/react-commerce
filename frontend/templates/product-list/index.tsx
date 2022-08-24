@@ -25,6 +25,7 @@ import {
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { getServerState } from 'react-instantsearch-hooks-server';
+import * as Sentry from '@sentry/nextjs';
 import { ProductListView } from './ProductListView';
 
 export type ProductListTemplateProps = WithProvidersProps<
@@ -235,6 +236,12 @@ function getDevicePathSegments(
 ) {
    const { deviceHandleItemType } = context.params || {};
    if (Array.isArray(deviceHandleItemType)) {
+      if (deviceHandleItemType[0] === 'data:image') {
+         Sentry.withScope((scope) => {
+            scope.setExtra('context', context);
+            Sentry.captureException(new Error('data:image device handle'));
+         });
+      }
       return deviceHandleItemType;
    }
    return [];
