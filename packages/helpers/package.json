@@ -11,5 +11,9 @@
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
       "typescript": "4.5.3"
+   },
+   "scripts": {
+      "build": "",
+      "clean": ""
    }
 }
