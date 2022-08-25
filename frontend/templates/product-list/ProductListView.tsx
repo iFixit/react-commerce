@@ -1,7 +1,8 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { Matomo, GoogleAnalytics } from '@components/analytics';
-import { PageContentWrapper, SecondaryNavbar } from '@components/common';
+import { SecondaryNavbar } from '@components/common';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
+import { PageContentWrapper } from '@ifixit/ui';
 import {
    ProductList,
    ProductListSectionType,
