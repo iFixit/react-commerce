@@ -115,6 +115,15 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.
 
+### Miscellaenous
+
+#### Update Storefront graphql schema
+
+When you need to update the Shopify storefront GraphQL schema version, follow these steps:
+
+1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
+2. Run `pnpm codegen:download-shopify-storefront-schema`
+
 ### Troubleshooting
 
 Since [OSX 12.3](https://developer.apple.com/documentation/macos-release-notes/macos-12_3-release-notes), python(2) is no longer available by default.

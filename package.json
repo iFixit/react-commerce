@@ -25,7 +25,8 @@
       "cypress:run": "cd frontend && pnpm run cypress:run",
       "lint": "cd frontend && npm run lint",
       "format": "prettier --write .",
-      "type-check": "cd frontend && pnpm run type-check"
+      "type-check": "cd frontend && pnpm run type-check",
+      "codegen:download-shopify-storefront-schema": "cd frontend && pnpm run codegen:download-shopify-storefront-schema"
    },
    "keywords": [
       "ifixit",
