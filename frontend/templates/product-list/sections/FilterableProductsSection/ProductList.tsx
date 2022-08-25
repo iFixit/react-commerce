@@ -14,10 +14,11 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ThemeTypings } from '@chakra-ui/styled-system';
+import { IfixitImage } from '@components/ifixit-image';
 import { Rating } from '@components/ui';
+import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
-import { IfixitImage } from '@components/ifixit-image';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
 
@@ -246,7 +247,11 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      }}
                   >
                      <LinkOverlay
-                        href={`${appContext.ifixitOrigin}${product.url}`}
+                        href={
+                           flags.PRODUCT_PAGE_ENABLED
+                              ? `/Products/${product.handle}`
+                              : `${appContext.ifixitOrigin}${product.url}`
+                        }
                      >
                         <Button
                            as="div"

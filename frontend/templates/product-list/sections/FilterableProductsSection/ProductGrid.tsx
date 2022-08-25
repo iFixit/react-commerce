@@ -9,6 +9,7 @@ import {
    ProductCardRating,
    ProductCardTitle,
 } from '@components/common';
+import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
@@ -83,7 +84,13 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
+               <LinkOverlay
+                  href={
+                     flags.PRODUCT_PAGE_ENABLED
+                        ? `/Products/${product.handle}`
+                        : `${appContext.ifixitOrigin}${product.url}`
+                  }
+               >
                   <ProductCardTitle _groupHover={{ color: 'brand.500' }}>
                      {product.title}
                   </ProductCardTitle>
