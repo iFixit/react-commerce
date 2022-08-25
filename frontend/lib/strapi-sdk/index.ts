@@ -1,6 +1,7 @@
 import { STRAPI_ORIGIN } from '@config/env';
 import { sentryFetch } from '@ifixit/sentry';
 import { getSdk, Requester } from './generated/sdk';
+import * as Sentry from '@sentry/nextjs';
 export * from './generated/sdk';
 
 const requester: Requester = async <R, V>(
@@ -34,6 +35,14 @@ const requester: Requester = async <R, V>(
       result.errors.map((error: any) => {
          const code = error.extensions?.code || 'UNKNOWN';
          console.error(`\t[${code}]`, error.message);
+      });
+      Sentry.withScope((scope) => {
+         scope.setExtra('query', doc);
+         scope.setExtra('variables', variables);
+         scope.setExtra('errors', result.errors);
+         Sentry.captureException(
+            new Error('Strapi SDK GraphQL query failed with errors')
+         );
       });
    }
    throw new Error(`GraphQL query failed to execute: ${response.statusText}`);

@@ -47,7 +47,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ...response.product,
       iFixitProductId,
       variants,
-      images: response.product.images.nodes.map((node) => node),
+      images: response.product.images.nodes,
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
@@ -95,11 +95,7 @@ function parseFaqs(value: string | null | undefined) {
 }
 
 function computeIFixitProductId(variantSku: string) {
-   const idSegments = variantSku.split('-');
-   if (idSegments.length > 2) {
-      return idSegments.slice(0, 2).join('-');
-   }
-   return variantSku;
+   return variantSku.split('-').slice(0, 2).join('-');
 }
 
 // Product review api
