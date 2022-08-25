@@ -42,12 +42,12 @@ export function ProductListDeviceNavigation({
       >
          <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={guideUrl} passHref>
+            <NextLink href={encodeURI(guideUrl)} passHref>
                <SecondaryNavbarLink>Guides</SecondaryNavbarLink>
             </NextLink>
          </SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={answersUrl} passHref>
+            <NextLink href={encodeURI(answersUrl)} passHref>
                <SecondaryNavbarLink>Answers</SecondaryNavbarLink>
             </NextLink>
          </SecondaryNavbarItem>
