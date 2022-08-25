@@ -137,6 +137,7 @@ function getSelectorType(option: Option): SelectorType {
    if (option.values.length === 1) {
       return SelectorType.SINGLE;
    }
+   // @TODO: The array should be filled with the options that require this kind of selector.
    if ([''].includes(option.name)) {
       return SelectorType.RADIO;
    }
