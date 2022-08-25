@@ -37,9 +37,11 @@ export function MetaTags({ productList }: MetaTagsProps) {
    }
    title += ' | iFixit';
    const itemTypeHandle = itemType ? `/${encodeDeviceItemType(itemType)}` : '';
-   const canonicalUrl = `${appContext.ifixitOrigin}${
-      productList.path
-   }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
+   const canonicalUrl = encodeURI(
+      `${appContext.ifixitOrigin}${productList.path}${itemTypeHandle}${
+         page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
+      }`
+   );
    const imageUrl = productList.image?.url;
    const productListExemptions =
       noIndexExemptions[encodeDeviceTitle(productList.deviceTitle ?? '')];
