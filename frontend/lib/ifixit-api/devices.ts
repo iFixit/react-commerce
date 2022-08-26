@@ -1,3 +1,4 @@
+import { encodeDeviceTitle } from '@helpers/product-list-helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { invariant } from '@ifixit/helpers';
 
@@ -7,7 +8,7 @@ export async function fetchDeviceWiki(
    client: IFixitAPIClient,
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
-   const deviceHandle = getDeviceHandle(deviceTitle);
+   const deviceHandle = encodeDeviceTitle(deviceTitle);
    try {
       invariant(
          deviceHandle.length > 0,
@@ -47,11 +48,4 @@ export function fetchMultipleDeviceImages(
    return client
       .get(`wikis/topic_images?` + params.toString())
       .catch(() => ({ images: {} }));
-}
-
-/**
- * Convert product list device title to a URL friendly slug
- */
-export function getDeviceHandle(deviceTitle: string): string {
-   return deviceTitle.replace(/\s+/g, '_');
 }
