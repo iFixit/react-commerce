@@ -43,6 +43,11 @@ export const ALGOLIA_PRODUCT_INDEX_NAME = checkEnv(
    'NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME'
 );
 
+export const SHOPIFY_STOREFRONT_VERSION = checkEnv(
+   process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION,
+   'NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {

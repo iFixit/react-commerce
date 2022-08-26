@@ -1,3 +1,4 @@
+import { SHOPIFY_STOREFRONT_VERSION } from '@config/env';
 import { getSdk, Requester } from './generated/sdk';
 import * as Sentry from '@sentry/nextjs';
 export * from './generated/sdk';
@@ -13,7 +14,7 @@ export function getShopifyStorefrontSdk(shop: ShopCredentials) {
       variables: V
    ): Promise<R> => {
       const response = await fetch(
-         `https://${shop.shopDomain}/api/2022-04/graphql.json`,
+         `https://${shop.shopDomain}/api/${SHOPIFY_STOREFRONT_VERSION}/graphql.json`,
          {
             method: 'POST',
             headers: {
