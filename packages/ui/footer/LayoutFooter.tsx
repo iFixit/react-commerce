@@ -12,7 +12,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import PageContentWrapper from '../misc/PageContentWrapper';
+import { PageContentWrapper } from '../misc/PageContentWrapper';
 import {
    FacebookLogo,
    Flag,

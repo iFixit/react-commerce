@@ -9,7 +9,8 @@
          "@helpers/*": ["helpers/*"],
          "@models/*": ["models/*"],
          "@components/*": ["components/*"],
-         "@templates/*": ["templates/*"]
+         "@templates/*": ["templates/*"],
+         "@layouts/*": ["layouts/*"]
       },
       "types": ["cypress", "@testing-library/cypress"]
    },

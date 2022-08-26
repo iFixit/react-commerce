@@ -1,0 +1,89 @@
+query findProduct($handle: String) {
+   product(handle: $handle) {
+      title
+      handle
+      descriptionHtml
+      faqs: metafield(namespace: "custom", key: "faq") {
+         value
+      }
+      prop65WarningType: metafield(
+         namespace: "ifixit"
+         key: "prop_65_warning_type"
+      ) {
+         value
+      }
+      prop65Chemicals: metafield(
+         namespace: "ifixit"
+         key: "prop_65_chemicals"
+      ) {
+         value
+      }
+      productVideos: metafield(namespace: "ifixit", key: "product_videos") {
+         value
+      }
+      featuredImage {
+         id
+      }
+      images(first: 20) {
+         nodes {
+            id
+            altText
+            height
+            width
+            url
+         }
+      }
+      options {
+         id
+         name
+         values
+      }
+      variants(first: 100) {
+         nodes {
+            id
+            sku
+            quantityAvailable
+            image {
+               id
+               altText
+               height
+               width
+               url
+            }
+            priceV2 {
+               amount
+               currencyCode
+            }
+            compareAtPriceV2 {
+               amount
+               currencyCode
+            }
+            selectedOptions {
+               name
+               value
+            }
+            kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
+               value
+            }
+            note: metafield(namespace: "ifixit", key: "note") {
+               value
+            }
+            disclaimer: metafield(namespace: "ifixit", key: "disclaimer") {
+               value
+            }
+            warning: metafield(namespace: "ifixit", key: "warning") {
+               value
+            }
+            specifications: metafield(
+               namespace: "ifixit"
+               key: "specifications"
+            ) {
+               value
+            }
+            warranty: metafield(namespace: "ifixit", key: "warranty") {
+               value
+            }
+         }
+      }
+   }
+}

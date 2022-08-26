@@ -1,9 +1,11 @@
 import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { HiSelector } from 'react-icons/hi';
-import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import {
-   useClearRefinements,
+   RefinementListRenderState,
+   RefinementListItem,
+} from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
+import {
    useCurrentRefinements,
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
@@ -11,7 +13,6 @@ import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList, ProductListType } from '@models/product-list';
-import { useDecoupledState } from '@ifixit/ui';
 import { encodeDeviceItemType } from '@helpers/product-list-helpers';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
@@ -29,6 +30,20 @@ export function RefinementSingleSelect({
          ...otherProps,
          sortBy: useSortBy(otherProps),
       });
+
+   const onClickSingleSelect = React.useCallback(
+      (newSelected: RefinementListItem) => {
+         refine(newSelected.value);
+
+         const oldSelected: RefinementListItem | undefined = items.find(
+            (item) => item.isRefined
+         );
+         if (oldSelected && oldSelected !== newSelected) {
+            refine(oldSelected.value);
+         }
+      },
+      [items, refine]
+   );
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
@@ -39,8 +54,8 @@ export function RefinementSingleSelect({
                      item={item}
                      attribute={otherProps.attribute}
                      productListType={productList.type}
-                     refine={refine}
                      onClose={onClose}
+                     onClick={onClickSingleSelect}
                   />
                );
             })}
@@ -69,21 +84,17 @@ type SingleSelectItemProps = {
    item: RefinementListRenderState['items'][0];
    attribute: string;
    productListType: ProductListType;
-   refine: RefinementListRenderState['refine'];
    onClose?: () => void;
+   onClick?: (newSelected: RefinementListItem) => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
    item,
    attribute,
    productListType,
-   refine,
    onClose,
+   onClick,
 }: SingleSelectItemProps) {
-   const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
-   const { refine: clearRefinements } = useClearRefinements({
-      includedAttributes: [attribute],
-   });
    const { createURL } = useCurrentRefinements();
    const shouldBeLink =
       attribute === 'facet_tags.Item Type' &&
@@ -96,9 +107,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          as={shouldBeLink ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
-            clearRefinements();
-            !isRefined && refine(item.value);
-            setIsRefined((current) => !current);
+            onClick && onClick(item);
             onClose?.();
          }}
          _hover={{
@@ -137,8 +146,8 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       <HStack
          key={item.label}
          justify="space-between"
-         color={isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={isRefined ? 'bold' : 'inherit'}
+         color={item.isRefined ? 'brand.500' : 'inherit'}
+         fontWeight={item.isRefined ? 'bold' : 'inherit'}
       >
          {RefinementTitle}
          <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>

@@ -42,14 +42,14 @@ export function encodeDeviceItemType(itemType: string): string {
  * Convert URL slug to product list device title
  */
 export function decodeDeviceTitle(handle: string): string {
-   return handle.replace(/_+/g, ' ');
+   return handle.replace(/_/g, ' ');
 }
 
 /**
  * Convert URL slug to product list device title
  */
 export function encodeDeviceTitle(deviceTitle: string): string {
-   return deviceTitle.replace(/\s+/g, '_');
+   return deviceTitle.replace(/\s/g, '_');
 }
 
 type ProductListPathAttributes = Pick<
