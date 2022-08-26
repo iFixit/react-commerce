@@ -6194,6 +6194,7 @@ export type FindProductQuery = {
       prop65WarningType?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       prop65Chemicals?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       productVideos?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      replacementGuides?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       featuredImage?: Maybe<{ __typename?: 'Image'; id?: Maybe<string> }>;
       images: {
          __typename?: 'ImageConnection';
@@ -6269,6 +6270,9 @@ export const FindProductDocument = `
       value
     }
     productVideos: metafield(namespace: "ifixit", key: "product_videos") {
+      value
+    }
+    replacementGuides: metafield(namespace: "ifixit", key: "replacement_guides") {
       value
     }
     featuredImage {

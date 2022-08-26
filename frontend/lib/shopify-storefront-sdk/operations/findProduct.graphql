@@ -21,6 +21,12 @@ query findProduct($handle: String) {
       productVideos: metafield(namespace: "ifixit", key: "product_videos") {
          value
       }
+      replacementGuides: metafield(
+         namespace: "ifixit"
+         key: "replacement_guides"
+      ) {
+         value
+      }
       featuredImage {
          id
       }
