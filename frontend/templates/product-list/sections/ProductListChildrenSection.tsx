@@ -163,7 +163,7 @@ const ChildLink = ({ child }: ChildLinkProps) => {
                      >
                         <IfixitImage
                            src={child.image.url}
-                           alt={child.image.alternativeText ?? ''}
+                           alt=""
                            objectFit="cover"
                            layout="fill"
                            sizes="20vw"

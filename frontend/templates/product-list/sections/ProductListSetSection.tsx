@@ -75,7 +75,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                >
                   <IfixitImage
                      src={productList.image.url}
-                     alt={productList.image.alternativeText ?? ''}
+                     alt=""
                      width="80px"
                      height="60px"
                      objectFit="contain"
