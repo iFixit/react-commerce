@@ -17,6 +17,7 @@ import { findProduct, Product } from '@models/product';
 import { GetServerSideProps } from 'next';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { ProductSection } from './sections/ProductSection';
+import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 
 export type ProductTemplateProps = WithProvidersProps<
    WithLayoutProps<{
@@ -46,6 +47,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                selectedVariant={selectedVariant}
                onVariantChange={setSelectedVariantId}
             />
+            <ReplacementGuidesSection product={product} />
          </Box>
       </>
    );
