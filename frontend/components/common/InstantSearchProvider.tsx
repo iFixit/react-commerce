@@ -171,8 +171,11 @@ export function InstantSearchProvider({
 
             let customQueries = '';
             const customQueryParams = new URLSearchParams(location.search);
-            if (customQueryParams.has('disableCacheGets')) {
-               customQueries = (queryString ? '&' : '?') + 'disableCacheGets';
+            if (customQueryParams.has('_vercel_no_cache')) {
+               customQueries =
+                  (queryString ? '&' : '?') +
+                  '_vercel_no_cache=' +
+                  customQueryParams.get('_vercel_no_cache');
             }
 
             return `${baseUrl}${path}${queryString}${customQueries}`;

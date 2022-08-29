@@ -55,7 +55,7 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      if ('disableCacheGets' in context.query) {
+      if (context.query._vercel_no_cache) {
          context.res.setHeader(
             'Cache-Control',
             'no-store, no-cache, must-revalidate'
