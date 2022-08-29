@@ -17,6 +17,7 @@ import {
    DefaultLayoutProps,
    WithLayoutProps,
 } from '@layouts/default';
+import { clearCache } from '@lib/cache';
 import {
    findProductList,
    ProductList,
@@ -60,6 +61,7 @@ export const getProductListServerSideProps = ({
             'Cache-Control',
             'no-store, no-cache, must-revalidate'
          );
+         clearCache();
       } else {
          context.res.setHeader(
             'Cache-Control',
