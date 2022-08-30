@@ -1,5 +1,11 @@
-import { Box, Flex, HStack, StackProps } from '@chakra-ui/react';
-import * as React from 'react';
+import {
+   Box,
+   Flex,
+   FlexProps,
+   forwardRef,
+   HStack,
+   StackProps,
+} from '@chakra-ui/react';
 import { FaStar, FaStarHalf } from 'react-icons/fa';
 
 export interface RatingProps extends StackProps {
@@ -16,18 +22,59 @@ export const Rating = (props: RatingProps) => {
    return (
       <HStack spacing="1" {...rest}>
          {stars.map((i) => {
-            const isFirstHalfFilled = halfStarsValue >= i * 2 - 1;
-            const isSecondHalfFilled = halfStarsValue >= i * 2;
-            if (isSecondHalfFilled) {
-               return (
-                  <Box key={i} as={FaStar} color="blue.500" fontSize="larger" />
-               );
+            let appearance = RatingStarAppearance.Empty;
+            if (halfStarsValue >= i * 2) {
+               appearance = RatingStarAppearance.Full;
+            } else if (halfStarsValue >= i * 2 - 1) {
+               appearance = RatingStarAppearance.Half;
             }
+            return <RatingStar key={i} appearence={appearance} />;
+         })}
+      </HStack>
+   );
+};
+
+type RatingStarProps = FlexProps & {
+   appearence: RatingStarAppearance;
+};
+
+export enum RatingStarAppearance {
+   Full = 'full',
+   Half = 'half',
+   Empty = 'empty',
+}
+
+export const RatingStar = forwardRef<RatingStarProps, 'div'>(
+   ({ appearence = RatingStarAppearance.Empty, ...otherProps }, ref) => {
+      switch (appearence) {
+         case RatingStarAppearance.Empty: {
             return (
-               <Flex key={i}>
+               <Flex
+                  ref={ref}
+                  as={FaStar}
+                  color="gray.300"
+                  fontSize="larger"
+                  {...otherProps}
+               />
+            );
+         }
+         case RatingStarAppearance.Full: {
+            return (
+               <Flex
+                  ref={ref}
+                  as={FaStar}
+                  color="blue.500"
+                  fontSize="larger"
+                  {...otherProps}
+               />
+            );
+         }
+         case RatingStarAppearance.Half: {
+            return (
+               <Flex ref={ref} {...otherProps}>
                   <Box
                      as={FaStarHalf}
-                     color={isFirstHalfFilled ? 'blue.500' : 'gray.300'}
+                     color="blue.500"
                      fontSize="larger"
                      w="19px"
                   />
@@ -41,7 +88,7 @@ export const Rating = (props: RatingProps) => {
                   />
                </Flex>
             );
-         })}
-      </HStack>
-   );
-};
+         }
+      }
+   }
+);

@@ -43,6 +43,7 @@ import {
 } from 'react-icons/fa';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
+import { ProductRating } from './ProductRating';
 
 export type ProductSectionProps = {
    product: Product;
@@ -108,6 +109,7 @@ export function ProductSection({
                   price={selectedVariant.formattedPrice}
                   compareAt={selectedVariant.formattedCompareAtPrice}
                />
+               <ProductRating product={product} />
                <ProductOptions
                   product={product}
                   selected={selectedVariant.id}
