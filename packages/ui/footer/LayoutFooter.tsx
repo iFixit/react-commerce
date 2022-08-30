@@ -1,12 +1,18 @@
-import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
-   Button,
-   FormErrorMessage,
+   Divider,
+   DividerProps,
+   Flex,
+   FlexProps,
+   forwardRef,
+   HStack,
    Icon,
    Menu,
    MenuList,
+   StackProps,
    Text,
 } from '@chakra-ui/react';
+import React from 'react';
+import { PageContentWrapper } from '../misc/PageContentWrapper';
 import {
    FacebookLogo,
    Flag,
@@ -17,43 +23,73 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/icons';
-import {
-   SubscriptionStatus,
-   useSubscribeToNewsletter,
-} from '@ifixit/newsletter-sdk';
-import {
-   Footer,
-   FooterCopyright,
-   FooterDivider,
-   FooterLegalLink,
-   FooterLegalLinkList,
-   FooterLegalSection,
-   FooterLink,
-   FooterNavigationItem,
-   FooterNavigationLink,
-   FooterNavigationList,
-   FooterNavigationSection,
-   FooterNewsletter,
-   FooterNewsletterCopy,
-   FooterNewsletterDescription,
-   FooterNewsletterEmailInput,
-   FooterNewsletterEmailLabel,
-   FooterNewsletterForm,
-   FooterNewsletterFormControl,
-   FooterNewsletterTitle,
-   FooterPartnerLink,
-   FooterPartners,
-   FooterSettings,
-   FooterSettingsSection,
-   StoreMenuButton,
-   StoreMenuItem,
-} from '@ifixit/ui';
 import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
 import { Store, StoreListItem } from '@models/store';
 import { IfixitImage } from '@components/ifixit-image';
-import * as React from 'react';
-import { RiCheckFill } from 'react-icons/ri';
+import noImageFixie from '@assets/images/no-image-fixie.jpeg';
+import {
+   FooterNavigationItem,
+   FooterNavigationList,
+   FooterNavigationLink,
+   FooterNavigationSection,
+} from './components/Navigation';
+import { FooterSettings, FooterSettingsSection } from './components/Settings';
+import {
+   FooterCopyright,
+   FooterLegalLink,
+   FooterLegalLinkList,
+   FooterLegalSection,
+} from './components/Legal';
+import { FooterPartners, FooterPartnerLink } from './components/Partners';
+import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
+import { NewsletterForm } from './components/Newsletter';
+
+export const Footer = forwardRef<FlexProps, 'footer'>(
+   ({ children, ...otherProps }, ref) => {
+      return (
+         <Flex
+            ref={ref}
+            as="footer"
+            direction="column"
+            bg="black"
+            color="white"
+            {...otherProps}
+         >
+            <PageContentWrapper>{children}</PageContentWrapper>
+         </Flex>
+      );
+   }
+);
+
+export type FooterLinkProps = StackProps & {
+   icon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+};
+
+export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
+   ({ children, icon, ...otherProps }, ref) => {
+      return (
+         <HStack
+            ref={ref}
+            as="a"
+            align="center"
+            color="gray.300"
+            transition="color 300ms"
+            _hover={{ color: 'white' }}
+            {...otherProps}
+         >
+            <Text fontSize="sm" lineHeight="1em" fontWeight="semibold">
+               {children}
+            </Text>
+            {icon && <Icon as={icon} boxSize="6" filter="opacity(0.5)" />}
+         </HStack>
+      );
+   }
+);
+
+export const FooterDivider = forwardRef<DividerProps, 'hr'>((props, ref) => {
+   return <Divider ref={ref} borderColor="gray.700" {...props} />;
+});
 
 export interface FooterProps {
    stores: StoreListItem[];
@@ -244,92 +280,5 @@ export function LayoutFooter({
             </FooterLegalLinkList>
          </FooterLegalSection>
       </Footer>
-   );
-}
-
-export interface NewsletterFormProps {
-   title: string;
-   description: string;
-   emailPlaceholder?: string;
-   subscribeLabel: string;
-}
-
-function NewsletterForm({
-   title,
-   description,
-   emailPlaceholder,
-   subscribeLabel,
-}: NewsletterFormProps) {
-   const inputRef = React.useRef<HTMLInputElement>(null);
-   const [subscription, subscribe] = useSubscribeToNewsletter();
-
-   const onSubscribe = React.useCallback(
-      async (event: React.FormEvent<HTMLDivElement>) => {
-         event.preventDefault();
-         if (inputRef.current) {
-            const email = inputRef.current.value;
-            subscribe(email);
-         }
-      },
-      [subscribe]
-   );
-
-   const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
-
-   return (
-      <FooterNewsletter>
-         <FooterNewsletterCopy>
-            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
-            <FooterNewsletterDescription>
-               {description}
-            </FooterNewsletterDescription>
-         </FooterNewsletterCopy>
-         <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
-            <FooterNewsletterFormControl isInvalid={subscription.error != null}>
-               <FooterNewsletterEmailLabel>
-                  Enter your email
-               </FooterNewsletterEmailLabel>
-               <FooterNewsletterEmailInput
-                  ref={inputRef}
-                  disabled={subscription.status !== SubscriptionStatus.Idle}
-                  placeholder={emailPlaceholder}
-                  visibility={isSubscribed ? 'hidden' : 'visible'}
-               />
-               <FormErrorMessage>{subscription.error}</FormErrorMessage>
-            </FooterNewsletterFormControl>
-            <Button
-               type="submit"
-               data-testid="footer-newsletter-subscribe-button"
-               isLoading={
-                  subscription.status === SubscriptionStatus.Subscribing
-               }
-               disabled={subscription.status !== SubscriptionStatus.Idle}
-               colorScheme="brand"
-               visibility={isSubscribed ? 'hidden' : undefined}
-            >
-               {subscribeLabel}
-            </Button>
-            {isSubscribed && (
-               <Text
-                  align="center"
-                  position={'absolute'}
-                  top="0"
-                  left="0"
-                  right="5"
-                  bottom="0"
-                  lineHeight="10"
-               >
-                  <Icon
-                     as={RiCheckFill}
-                     boxSize="5"
-                     mb="-5px"
-                     mr="6px"
-                     ml="12px"
-                  />
-                  Subscribed!
-               </Text>
-            )}
-         </FooterNewsletterForm>
-      </FooterNewsletter>
    );
 }
