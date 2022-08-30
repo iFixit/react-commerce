@@ -47,15 +47,13 @@ export function ReviewsSection({
       if (reviewsData?.groupedReviews == null) {
          return [];
       }
-      const reviewsCount = Object.keys(reviewsData.groupedReviews).reduce(
-         (list, current) => {
-            const rating = parseInt(current, 10);
-            const count = reviewsData?.groupedReviews?.[current] ?? 0;
-            list.push({ rating, count });
-            return list;
-         },
-         [] as RatingCount[]
-      );
+      const reviewsCount: RatingCount[] = Object.keys(
+         reviewsData.groupedReviews
+      ).map((current) => {
+         const rating = parseInt(current, 10);
+         const count = reviewsData?.groupedReviews?.[current] ?? 0;
+         return { rating, count };
+      });
       reviewsCount.sort((a, b) => b.rating - a.rating);
       return reviewsCount;
    }, [reviewsData?.groupedReviews]);
