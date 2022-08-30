@@ -48,9 +48,7 @@ export function FacetsDrawer({
 
    return (
       <Portal>
-         <Fade in={
-            isOpen
-         } unmountOnExit>
+         <Fade in={isOpen} unmountOnExit>
             <Box
                position="fixed"
                bg="blackAlpha.600"
