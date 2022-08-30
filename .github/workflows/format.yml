@@ -1,0 +1,44 @@
+name: Format
+
+on: [push]
+
+jobs:
+   prettier:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v2
+         - name: Install PNPM
+           run: corepack enable && corepack prepare pnpm@6.32.11 --activate
+         - name: Install workspaces
+           env:
+              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+           run: pnpm install
+         - name: Run Prettier
+           run: pnpm format
+         - name: Detect diff
+           id: detect-diff
+           run: |
+              if [ ! -z "$(git status --short)" ]; then
+                 echo "::set-output name=HAS_DIFF::true"
+              else
+                 echo "::set-output name=HAS_DIFF::false"
+              fi
+         - name: Fail if Dependabot
+           if: steps.detect-diff.outputs.HAS_DIFF == 'true' && github.actor == 'dependabot[bot]'
+           run: exit 1
+         - name: Fail in production
+           if: steps.detect-diff.outputs.HAS_DIFF == 'true' && github.ref_name == 'main'
+           run: exit 1
+         - name: Commit changes
+           if: steps.detect-diff.outputs.HAS_DIFF == 'true'
+           run: |
+              git fetch --depth=1 origin "$GITHUB_REF_NAME"
+              git stash
+              git checkout "$GITHUB_REF_NAME"
+              git stash pop
+              git config user.name "github-actions[bot]"
+              git config user.email "<41898282+github-actions[bot]@users.noreply.github.com>"
+              git add .
+              git commit -m "style: apply prettier formatting diff"
+              git push
