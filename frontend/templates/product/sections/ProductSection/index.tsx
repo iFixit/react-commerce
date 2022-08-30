@@ -32,6 +32,7 @@ import {
 import { useAppContext } from '@ifixit/app';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { PageContentWrapper } from '@ifixit/ui';
+import { useCartContext } from '@ifixit/ui/cart/drawer/hooks/useCartContext';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import {
@@ -56,6 +57,7 @@ export function ProductSection({
    onVariantChange,
 }: ProductSectionProps) {
    const appContext = useAppContext();
+   const { onOpen } = useCartContext();
 
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -72,7 +74,7 @@ export function ProductSection({
       [product.variants, onVariantChange]
    );
 
-   const addToCart = useAddToCart();
+   const addToCart = useAddToCart(() => onOpen());
 
    const handleAddToCart = React.useCallback(() => {
       if (selectedVariant.sku) {

@@ -10,7 +10,7 @@ interface AddProductVariantInput {
 /**
  * Update line item quantity.
  */
-export function useAddToCart() {
+export function useAddToCart(onSuccess?: (result: any) => void) {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
    const mutation = useMutation(
@@ -30,6 +30,9 @@ export function useAddToCart() {
          },
          onSettled: () => {
             client.invalidateQueries(cartKeys.cart);
+         },
+         onSuccess: (result, variables, context) => {
+            onSuccess?.(result);
          },
       }
    );

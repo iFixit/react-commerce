@@ -41,10 +41,11 @@ import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
+import { useCartContext } from './hooks/useCartContext';
 
 export function CartDrawer() {
    const appContext = useAppContext();
-   const { isOpen, onOpen, onClose } = useDisclosure();
+   const { isOpen, onOpen, onClose } = useCartContext();
    const btnRef = React.useRef<HTMLButtonElement | null>(null);
    const isMounted = useIsMounted();
    const cart = useCart();

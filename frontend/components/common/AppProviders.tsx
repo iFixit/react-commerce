@@ -2,6 +2,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
 import { theme } from '@ifixit/ui';
+import { CartProvider } from '@ifixit/ui/cart/drawer/hooks/useCartContext';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
@@ -47,15 +48,17 @@ export function AppProviders({
 
    return (
       <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
-         <QueryClientProvider client={queryClient}>
-            {algolia ? (
-               <InstantSearchProvider {...algolia}>
-                  {markup}
-               </InstantSearchProvider>
-            ) : (
-               markup
-            )}
-         </QueryClientProvider>
+         <CartProvider>
+            <QueryClientProvider client={queryClient}>
+               {algolia ? (
+                  <InstantSearchProvider {...algolia}>
+                     {markup}
+                  </InstantSearchProvider>
+               ) : (
+                  markup
+               )}
+            </QueryClientProvider>
+         </CartProvider>
       </AppProvider>
    );
 }
