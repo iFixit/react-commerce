@@ -19,10 +19,6 @@ export function FacetFilter({
    switch (getRefinementDisplayType(attribute)) {
       case RefinementDisplayType.SingleSelect:
          return (
-
-
-
-
             <RefinementSingleSelect
                attribute={attribute}
                showMore
