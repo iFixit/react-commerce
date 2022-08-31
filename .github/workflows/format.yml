@@ -8,6 +8,8 @@ jobs:
       steps:
          - name: Checkout
            uses: actions/checkout@v2
+           with:
+              token: ${{ secrets.ACTION_PAT }}
          - name: Install PNPM
            run: corepack enable && corepack prepare pnpm@6.32.11 --activate
          - name: Install workspaces
