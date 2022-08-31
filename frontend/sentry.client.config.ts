@@ -21,4 +21,7 @@ Sentry.init({
          'next.runtime': 'client',
       },
    },
+   ignoreErrors: [
+      'TypeError: NetworkError when attempting to fetch resource.'
+   ],
 });
