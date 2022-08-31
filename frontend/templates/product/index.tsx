@@ -19,6 +19,7 @@ import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { ProductSection } from './sections/ProductSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
+import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 export type ProductTemplateProps = WithProvidersProps<
    WithLayoutProps<{
@@ -49,6 +50,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                onVariantChange={setSelectedVariantId}
             />
             <ReplacementGuidesSection product={product} />
+            <ServiceValuePropositionSection />
             <ReviewsSection
                product={product}
                selectedVariant={selectedVariant}
