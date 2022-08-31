@@ -73,7 +73,7 @@ export function ReviewsSection({
    }
 
    return (
-      <Box bg="white" py="16" mt="16" fontSize="sm">
+      <Box bg="white" py="16" fontSize="sm">
          <PageContentWrapper>
             <Heading
                as="h2"
