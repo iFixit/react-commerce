@@ -1,18 +1,4 @@
-import {
-   Divider,
-   DividerProps,
-   Flex,
-   FlexProps,
-   forwardRef,
-   HStack,
-   Icon,
-   Menu,
-   MenuList,
-   StackProps,
-   Text,
-} from '@chakra-ui/react';
-import React from 'react';
-import { PageContentWrapper } from '../misc/PageContentWrapper';
+import { Menu, MenuList } from '@chakra-ui/react';
 import {
    FacebookLogo,
    Flag,
@@ -23,9 +9,7 @@ import {
    TwitterLogo,
    YoutubeLogo,
 } from '@ifixit/icons';
-import { GlobalSettings } from '@models/global-settings';
 import { MenuItemType } from '@models/menu';
-import { Store, StoreListItem } from '@models/store';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
@@ -44,60 +28,14 @@ import {
 import { FooterPartners, FooterPartnerLink } from './components/Partners';
 import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
 import { NewsletterForm } from './components/Newsletter';
+import {
+   Footer,
+   FooterLink,
+   FooterDivider,
+   FooterProps,
+} from './components/Shared';
 
-export const Footer = forwardRef<FlexProps, 'footer'>(
-   ({ children, ...otherProps }, ref) => {
-      return (
-         <Flex
-            ref={ref}
-            as="footer"
-            direction="column"
-            bg="black"
-            color="white"
-            {...otherProps}
-         >
-            <PageContentWrapper>{children}</PageContentWrapper>
-         </Flex>
-      );
-   }
-);
-
-export type FooterLinkProps = StackProps & {
-   icon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
-};
-
-export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
-   ({ children, icon, ...otherProps }, ref) => {
-      return (
-         <HStack
-            ref={ref}
-            as="a"
-            align="center"
-            color="gray.300"
-            transition="color 300ms"
-            _hover={{ color: 'white' }}
-            {...otherProps}
-         >
-            <Text fontSize="sm" lineHeight="1em" fontWeight="semibold">
-               {children}
-            </Text>
-            {icon && <Icon as={icon} boxSize="6" filter="opacity(0.5)" />}
-         </HStack>
-      );
-   }
-);
-
-export const FooterDivider = forwardRef<DividerProps, 'hr'>((props, ref) => {
-   return <Divider ref={ref} borderColor="gray.700" {...props} />;
-});
-
-export interface FooterProps {
-   stores: StoreListItem[];
-   currentStore: Store;
-   globalSettings: GlobalSettings;
-}
-
-export function LayoutFooter({
+export function CartFooter({
    stores,
    currentStore,
    globalSettings,
