@@ -139,6 +139,12 @@ export function GuideFooter({
                   </FooterNavigationItem>
                )}
             </FooterNavigationList>
+            <NewsletterForm
+               title={newsletterForm.title}
+               description={newsletterForm.subtitle}
+               subscribeLabel={newsletterForm.callToActionButtonTitle}
+               emailPlaceholder={newsletterForm.inputPlaceholder}
+            />
          </FooterNavigationSection>
 
          <FooterDivider />
@@ -174,12 +180,6 @@ export function GuideFooter({
                   Help translate
                </FooterLink>
             </FooterSettings>
-            <NewsletterForm
-               title={newsletterForm.title}
-               description={newsletterForm.subtitle}
-               subscribeLabel={newsletterForm.callToActionButtonTitle}
-               emailPlaceholder={newsletterForm.inputPlaceholder}
-            />
          </FooterSettingsSection>
 
          <FooterDivider />
