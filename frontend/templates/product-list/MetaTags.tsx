@@ -3,6 +3,7 @@ import {
    getProductListTitle,
    encodeDeviceItemTypeSpaces,
    encodeDeviceTitleSpaces,
+   encodeDevicePath,
 } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList } from '@models/product-list';
@@ -39,12 +40,12 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const itemTypeHandle = itemType
       ? `/${encodeDeviceItemTypeSpaces(itemType)}`
       : '';
-
-   const canonicalUrl = encodeURI(
-      `${appContext.ifixitOrigin}${productList.path}${itemTypeHandle}${
-         page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
-      }`
+   const deviceAndItemTypePath = encodeDevicePath(
+      `${productList.path}${itemTypeHandle}`
    );
+   const canonicalUrl = `${appContext.ifixitOrigin}${deviceAndItemTypePath}${
+      page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
+   }`;
    const imageUrl = productList.image?.url;
    const productListExemptions =
       noIndexExemptions[encodeDeviceTitleSpaces(productList.deviceTitle ?? '')];

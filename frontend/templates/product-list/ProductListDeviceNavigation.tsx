@@ -2,6 +2,7 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
 import {
+   encodeDevicePath,
    encodeDeviceTitleSpaces,
 } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
@@ -22,7 +23,9 @@ export function ProductListDeviceNavigation({
       guideUrl = `${IFIXIT_ORIGIN}/Guide`;
       answersUrl = `${IFIXIT_ORIGIN}/Answers`;
    } else if (productList.deviceTitle && productList.deviceTitle.length > 0) {
-      const deviceHandle = productList.deviceTitle.replace(/\s+/g, '_');
+      const deviceHandle = encodeDevicePath(
+         encodeDeviceTitleSpaces(productList.deviceTitle)
+      );
       guideUrl = `${IFIXIT_ORIGIN}/Device/${deviceHandle}`;
       answersUrl = `${IFIXIT_ORIGIN}/Answers/Device/${deviceHandle}`;
    }
@@ -45,12 +48,12 @@ export function ProductListDeviceNavigation({
       >
          <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={encodeURI(guideUrl)} passHref>
+            <NextLink href={guideUrl} passHref>
                <SecondaryNavbarLink>Guides</SecondaryNavbarLink>
             </NextLink>
          </SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={encodeURI(answersUrl)} passHref>
+            <NextLink href={answersUrl} passHref>
                <SecondaryNavbarLink>Answers</SecondaryNavbarLink>
             </NextLink>
          </SecondaryNavbarItem>
