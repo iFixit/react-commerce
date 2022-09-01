@@ -47,6 +47,7 @@ import {
    UserMenuButton,
    UserMenuHeading,
    UserMenuLink,
+   Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
 import { Menu } from '@models/menu';
