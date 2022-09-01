@@ -1,4 +1,4 @@
-import { Menu, MenuList } from '@chakra-ui/react';
+import { HStack, Menu, MenuList } from '@chakra-ui/react';
 import {
    FacebookLogo,
    Flag,
@@ -87,58 +87,6 @@ export function GuideFooter({
                   }
                })}
             </FooterNavigationList>
-            <FooterNavigationList>
-               {socialMediaAccounts.facebook && (
-                  <FooterNavigationItem>
-                     <FooterNavigationLink
-                        href={socialMediaAccounts.facebook}
-                        icon={FacebookLogo}
-                     >
-                        Facebook
-                     </FooterNavigationLink>
-                  </FooterNavigationItem>
-               )}
-               {socialMediaAccounts.twitter && (
-                  <FooterNavigationItem>
-                     <FooterNavigationLink
-                        href={socialMediaAccounts.twitter}
-                        icon={TwitterLogo}
-                     >
-                        Twitter
-                     </FooterNavigationLink>
-                  </FooterNavigationItem>
-               )}
-               {socialMediaAccounts.instagram && (
-                  <FooterNavigationItem>
-                     <FooterNavigationLink
-                        href={socialMediaAccounts.instagram}
-                        icon={InstagramLogo}
-                     >
-                        Instagram
-                     </FooterNavigationLink>
-                  </FooterNavigationItem>
-               )}
-               {socialMediaAccounts.youtube && (
-                  <FooterNavigationItem>
-                     <FooterNavigationLink
-                        href={socialMediaAccounts.youtube}
-                        icon={YoutubeLogo}
-                     >
-                        Youtube
-                     </FooterNavigationLink>
-                  </FooterNavigationItem>
-               )}
-               {socialMediaAccounts.repairOrg && (
-                  <FooterNavigationItem>
-                     <FooterNavigationLink
-                        href={socialMediaAccounts.repairOrg}
-                        icon={RepairOrgLogo}
-                     >
-                        Repair.org
-                     </FooterNavigationLink>
-                  </FooterNavigationItem>
-               )}
-            </FooterNavigationList>
             <NewsletterForm
                title={newsletterForm.title}
                description={newsletterForm.subtitle}
@@ -180,6 +128,39 @@ export function GuideFooter({
                   Help translate
                </FooterLink>
             </FooterSettings>
+
+            <HStack>
+               {socialMediaAccounts.facebook && (
+                  <FooterLink
+                     href={socialMediaAccounts.facebook}
+                     icon={FacebookLogo}
+                  />
+               )}
+               {socialMediaAccounts.twitter && (
+                  <FooterLink
+                     href={socialMediaAccounts.twitter}
+                     icon={TwitterLogo}
+                  />
+               )}
+               {socialMediaAccounts.instagram && (
+                  <FooterLink
+                     href={socialMediaAccounts.instagram}
+                     icon={InstagramLogo}
+                  />
+               )}
+               {socialMediaAccounts.youtube && (
+                  <FooterLink
+                     href={socialMediaAccounts.youtube}
+                     icon={YoutubeLogo}
+                  />
+               )}
+               {socialMediaAccounts.repairOrg && (
+                  <FooterLink
+                     href={socialMediaAccounts.repairOrg}
+                     icon={RepairOrgLogo}
+                  />
+               )}
+            </HStack>
          </FooterSettingsSection>
 
          <FooterDivider />
