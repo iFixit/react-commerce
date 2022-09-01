@@ -1,1 +1,2 @@
-export * from './LayoutFooter';
+export * from './CartFooter';
+export * from './GuideFooter';
