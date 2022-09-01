@@ -3,20 +3,13 @@ import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
 export const FooterPartners = forwardRef<BoxProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
       return (
-         <Box
-            ref={ref}
-            mt={{
-               base: 2,
-               sm: 6,
-               lg: 0,
-            }}
-            gridColumnEnd={{
-               sm: 'span 3',
-               lg: 'auto',
-            }}
-            {...otherProps}
-         >
-            <SimpleGrid columns={3} spacing="4">
+         <Box ref={ref} mt={2} p={5} align="center" {...otherProps}>
+            <SimpleGrid
+               minChildWidth="92px"
+               spacing="4"
+               // limit to three columns until large breakpoint
+               maxW={{ base: '375px', lg: '1024px' }}
+            >
                {children}
             </SimpleGrid>
          </Box>
@@ -32,7 +25,7 @@ export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
             as="a"
             bg="gray.800"
             opacity="0.5"
-            h="48px"
+            h="62px"
             p="4"
             borderRadius="md"
             cursor="pointer"
