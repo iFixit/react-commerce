@@ -87,6 +87,19 @@ export function GuideFooter({
                   }
                })}
             </FooterNavigationList>
+            <FooterNavigationList>
+               {menu3?.items.map((item, index) => {
+                  if (item.type === 'link') {
+                     return (
+                        <FooterNavigationItem key={index}>
+                           <FooterNavigationLink href={item.url}>
+                              {item.name}
+                           </FooterNavigationLink>
+                        </FooterNavigationItem>
+                     );
+                  }
+               })}
+            </FooterNavigationList>
             <NewsletterForm
                title={newsletterForm.title}
                description={newsletterForm.subtitle}
