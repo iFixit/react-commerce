@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
+import * as React from 'react';
 import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetsDrawer } from './FacetsDrawer';
@@ -36,6 +37,14 @@ export function Toolbar(props: ToolbarProps) {
    const drawer = useDisclosure({
       defaultIsOpen: false,
    });
+   const scrollRef = React.useRef<HTMLDivElement>(null);
+   const isFirstRender = React.useRef(true);
+   React.useEffect(() => {
+      if (!isFirstRender.current && !drawer.isOpen) {
+         scrollRef.current?.scrollIntoView();
+      }
+      isFirstRender.current = false;
+   }, [drawer.isOpen]);
    return (
       <>
          <FacetsDrawer
@@ -44,6 +53,7 @@ export function Toolbar(props: ToolbarProps) {
             productList={productList}
          />
          <Stack
+            ref={scrollRef}
             justify={{ md: 'space-between' }}
             align={{ base: 'stretch', md: 'center' }}
             direction={{ base: 'column', md: 'row' }}
