@@ -13,15 +13,12 @@ export const FooterLegalSection = forwardRef<StackProps, 'div'>(
       return (
          <Stack
             ref={ref}
-            direction={{
-               base: 'column-reverse',
-               md: 'row',
-            }}
+            direction="row"
             spacing={{
-               base: 5,
+               base: 1.5,
                md: 0,
             }}
-            py="6"
+            pb="6"
             px={{
                base: 5,
                sm: 0,
@@ -54,23 +51,14 @@ export const FooterLegalLinkList = forwardRef<StackProps, 'div'>(
          <Stack
             ref={ref}
             fontSize="sm"
-            direction={{
-               base: 'column',
-               md: 'row',
-            }}
+            direction="row"
             spacing={{
                base: 1.5,
                md: 0,
             }}
             {...otherProps}
          >
-            <Box
-               px="1"
-               display={{
-                  base: 'none',
-                  md: 'block',
-               }}
-            >
+            <Box px="1" display="block">
                —
             </Box>
             {children}
