@@ -34,6 +34,7 @@ import {
    FooterLink,
    FooterDivider,
    FooterProps,
+   FooterBottomLogo,
 } from './components/Shared';
 import {
    getGuideSocialMediaAccounts,
@@ -196,7 +197,7 @@ export function GuideFooter({
 
          <FooterDivider />
 
-         {partners && (
+         {partners ? (
             <FooterPartners>
                {partners.items.map((partner) => {
                   if (partner.type === MenuItemType.ImageLink) {
@@ -229,6 +230,8 @@ export function GuideFooter({
                   }
                })}
             </FooterPartners>
+         ) : (
+            <FooterBottomLogo />
          )}
 
          <FooterLegalSection>
