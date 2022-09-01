@@ -17,6 +17,7 @@ import {
    DefaultLayoutProps,
    WithLayoutProps,
 } from '@layouts/default';
+import { clearCache } from '@lib/cache';
 import {
    findProductList,
    ProductList,
@@ -55,10 +56,18 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=10, stale-while-revalidate=600'
-      );
+      if (context.query._vercel_no_cache === '1') {
+         context.res.setHeader(
+            'Cache-Control',
+            'no-store, no-cache, must-revalidate, stale-if-error=0'
+         );
+         clearCache();
+      } else {
+         context.res.setHeader(
+            'Cache-Control',
+            'public, s-maxage=10, stale-while-revalidate=600'
+         );
+      }
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
       const layoutProps: Promise<DefaultLayoutProps> =
