@@ -48,6 +48,11 @@ export const SHOPIFY_STOREFRONT_VERSION = checkEnv(
    'NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION'
 );
 
+export const STORE_CODE = checkEnv(
+   process.env.NEXT_PUBLIC_STORE_CODE,
+   'NEXT_PUBLIC_STORE_CODE'
+);
+
 function checkEnv(env: string | null | undefined, envName: string): string {
    if (env == null) {
       if (process.browser) {

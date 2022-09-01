@@ -48,6 +48,7 @@ const moduleExports = {
       NEXT_PUBLIC_MATOMO_URL: process.env.NEXT_PUBLIC_MATOMO_URL,
       NEXT_PUBLIC_GA_URL: process.env.NEXT_PUBLIC_GA_URL,
       NEXT_PUBLIC_GA_KEY: process.env.NEXT_PUBLIC_GA_KEY,
+      NEXT_PUBLIC_STORE_CODE: process.env.NEXT_PUBLIC_STORE_CODE,
    },
    async rewrites() {
       return [

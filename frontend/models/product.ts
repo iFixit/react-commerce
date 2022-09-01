@@ -1,4 +1,4 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN, STORE_CODE } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
 import { isRecord } from '@ifixit/helpers';
 import {
@@ -184,7 +184,7 @@ export async function fetchProductReviews(
    productId: string
 ): Promise<ProductReviewData | null> {
    const response = await fetch(
-      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=us`,
+      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=${STORE_CODE}`,
       {
          headers: {
             'Content-Type': 'application/json',
