@@ -56,7 +56,7 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      if (context.query._vercel_no_cache) {
+      if (context.query._vercel_no_cache === '1') {
          context.res.setHeader(
             'Cache-Control',
             'no-store, no-cache, must-revalidate, stale-if-error=0'

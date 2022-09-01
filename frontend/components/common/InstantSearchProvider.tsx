@@ -161,24 +161,21 @@ export function InstantSearchProvider({
                // Item Type is the slug on device pages, not in the query.
                delete filterCopy['facet_tags.Item Type'];
             }
+            const customQueryParams = new URLSearchParams(location.search);
             const queryString = qsModule.stringify(
-               { ...routeState, filter: filterCopy },
+               {
+                  ...routeState,
+                  filter: filterCopy,
+                  _vercel_no_cache:
+                     customQueryParams.get('_vercel_no_cache') || undefined,
+               },
                {
                   addQueryPrefix: true,
                   arrayFormat: 'indices',
                }
             );
 
-            let customQueries = '';
-            const customQueryParams = new URLSearchParams(location.search);
-            if (customQueryParams.has('_vercel_no_cache')) {
-               customQueries =
-                  (queryString ? '&' : '?') +
-                  '_vercel_no_cache=' +
-                  customQueryParams.get('_vercel_no_cache');
-            }
-
-            return `${baseUrl}${path}${queryString}${customQueries}`;
+            return `${baseUrl}${path}${queryString}`;
          },
          parseURL({ qsModule, location }) {
             const pathParts = location.pathname
