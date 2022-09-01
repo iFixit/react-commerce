@@ -62,6 +62,9 @@ export function GuideFooter({
       <Footer>
          <FooterNavigationSection>
             <FooterNavigationList>
+               <FooterNavigationListHeader>
+                  {menu1?.title}
+               </FooterNavigationListHeader>
                {menu1?.items.map((item, index) => {
                   if (item.type === 'link') {
                      return (
@@ -75,6 +78,9 @@ export function GuideFooter({
                })}
             </FooterNavigationList>
             <FooterNavigationList>
+               <FooterNavigationListHeader>
+                  {menu2?.title}
+               </FooterNavigationListHeader>
                {menu2?.items.map((item, index) => {
                   if (item.type === 'link') {
                      return (
@@ -88,6 +94,9 @@ export function GuideFooter({
                })}
             </FooterNavigationList>
             <FooterNavigationList>
+               <FooterNavigationListHeader>
+                  {menu3?.title}
+               </FooterNavigationListHeader>
                {menu3?.items.map((item, index) => {
                   if (item.type === 'link') {
                      return (
