@@ -33,8 +33,8 @@ import {
    Footer,
    FooterLink,
    FooterDivider,
-   FooterProps,
    FooterBottomLogo,
+   FooterProps,
 } from './components/Shared';
 import {
    getGuideSocialMediaAccounts,

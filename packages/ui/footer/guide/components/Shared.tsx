@@ -11,7 +11,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import { PageContentWrapper } from '../../misc/PageContentWrapper';
+import { PageContentWrapper } from '../../../misc/PageContentWrapper';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
 import { IfixitImage } from '@components/ifixit-image';
@@ -86,7 +86,7 @@ export const FooterBottomLogo = forwardRef<StackProps, 'div'>((props, ref) => {
 });
 
 export interface FooterProps {
-   stores: StoreListItem[];
-   currentStore: Store;
-   globalSettings: GlobalSettings;
+   stores?: StoreListItem[];
+   currentStore?: Store;
+   globalSettings?: GlobalSettings;
 }

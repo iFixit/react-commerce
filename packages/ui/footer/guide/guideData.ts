@@ -13,6 +13,7 @@ export const getGuideSocialMediaAccounts = () => {
 export const getGuideFooterMenus = () => {
    return {
       menu1: {
+         title: 'iFixit',
          items: [
             { type: 'link', name: 'About Us', url: baseUrl + 'index' },
             {
@@ -27,6 +28,7 @@ export const getGuideFooterMenus = () => {
          ],
       },
       menu2: {
+         title: 'Resources',
          items: [
             { type: 'link', name: 'Press', url: baseUrl + 'Info/Media' },
             {
@@ -49,6 +51,7 @@ export const getGuideFooterMenus = () => {
          ],
       },
       menu3: {
+         title: 'Legal',
          items: [
             {
                type: 'link',
@@ -59,7 +62,9 @@ export const getGuideFooterMenus = () => {
             { type: 'link', url: baseUrl + 'Info/Terms_of_Use', name: 'Terms' },
          ],
       },
+      partners: undefined,
       bottomMenu: {
+         title: 'Licensing',
          items: [
             {
                type: 'link',

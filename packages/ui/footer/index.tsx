@@ -1,2 +1,2 @@
-export * from './CartFooter';
-export * from './GuideFooter';
+export * from './cart/CartFooter';
+export * from './guide/GuideFooter';
