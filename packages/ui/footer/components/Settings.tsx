@@ -1,24 +1,24 @@
-import { forwardRef, HStack, Stack, StackProps } from '@chakra-ui/react';
+import { forwardRef, Stack, StackProps } from '@chakra-ui/react';
 
 export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
    (props, ref) => {
       return (
          <Stack
             ref={ref}
-            py={{
-               base: 6,
-               xl: 5,
+            py="5"
+            px={{
+               base: 5,
+               md: 0,
             }}
             direction={{
                base: 'column',
-               xl: 'row',
+               lg: 'row',
             }}
             spacing={{
-               base: 10,
-               xl: 0,
+               base: 3,
+               xl: 10,
             }}
             justify="space-between"
-            align="center"
             {...props}
          />
       );
@@ -27,10 +27,15 @@ export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
 
 export const FooterSettings = forwardRef<StackProps, 'div'>((props, ref) => {
    return (
-      <HStack
+      <Stack
          ref={ref}
+         direction={{
+            base: 'column',
+            sm: 'row',
+         }}
+         justify="center"
          spacing={{
-            base: 6,
+            base: 3,
             sm: 12,
          }}
          {...props}
