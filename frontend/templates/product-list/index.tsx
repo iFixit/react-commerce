@@ -59,7 +59,7 @@ export const getProductListServerSideProps = ({
       if (context.query._vercel_no_cache) {
          context.res.setHeader(
             'Cache-Control',
-            'no-store, no-cache, must-revalidate'
+            'no-store, no-cache, must-revalidate, stale-if-error=0'
          );
          clearCache();
       } else {
