@@ -34,15 +34,30 @@ import {
    FooterDivider,
    FooterProps,
 } from './components/Shared';
+import {
+   getGuideSocialMediaAccounts,
+   getGuideFooterMenus,
+   getNewsletterForm,
+} from './guideData';
 
 export function GuideFooter({
    stores,
    currentStore,
    globalSettings,
 }: FooterProps) {
-   const { footer, socialMediaAccounts } = currentStore;
-   const { menu1, menu2, partners, bottomMenu } = footer;
-   const { newsletterForm } = globalSettings;
+   // For each of these variables, we need to check if we have a currentStore (Cart page)
+   // If we don't have a currentStore, we are on a guide page and should use default values
+   const socialMediaAccounts = currentStore?.socialMediaAccounts
+      ? currentStore.socialMediaAccounts
+      : getGuideSocialMediaAccounts();
+   const footer = currentStore?.footer ? currentStore.footer : null;
+   const { menu1, menu2, menu3, partners, bottomMenu } = footer
+      ? footer
+      : getGuideFooterMenus();
+   const newsletterForm = globalSettings?.newsletterForm
+      ? globalSettings.newsletterForm
+      : getNewsletterForm();
+
    return (
       <Footer>
          <FooterNavigationSection>
