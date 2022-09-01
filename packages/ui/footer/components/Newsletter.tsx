@@ -28,26 +28,26 @@ const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
    return (
       <Stack
          ref={ref}
-         direction={{
-            base: 'column',
-            xl: 'row',
+         direction="column"
+         ml={{
+            base: 0,
+            // since the legal column is skinny, let's scoot the newsletter over
+            lg: -24,
          }}
-         spacing={{
-            base: 6,
-            xl: 8,
+         mt={{
+            base: 0,
+            sm: 10,
+            lg: 0,
          }}
-         align="center"
-         justify={{
-            base: 'center',
-            md: 'flex-end',
+         gridColumnEnd={{
+            sm: 'span 3',
+            lg: 'auto',
          }}
+         spacing={3}
+         justify="flex-start"
          w={{
             base: 'full',
             md: 'auto',
-         }}
-         px={{
-            base: 5,
-            sm: 0,
          }}
          {...props}
       />
@@ -55,25 +55,24 @@ const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
 });
 
 const FooterNewsletterCopy = forwardRef<BoxProps, 'div'>((props, ref) => {
+   return <Box ref={ref} textAlign="left" {...props} />;
+});
+
+const FooterNewsletterTitle = forwardRef<TextProps, 'div'>((props, ref) => {
    return (
-      <Box
+      <Text
          ref={ref}
-         textAlign={{
-            base: 'center',
-            xl: 'left',
-         }}
+         fontSize="md"
+         fontWeight="bold"
+         color="white"
          {...props}
       />
    );
 });
 
-const FooterNewsletterTitle = forwardRef<TextProps, 'div'>((props, ref) => {
-   return <Text ref={ref} fontSize="sm" fontWeight="semibold" {...props} />;
-});
-
 const FooterNewsletterDescription = forwardRef<TextProps, 'div'>(
    (props, ref) => {
-      return <Text ref={ref} fontSize="sm" color="gray.200" {...props} />;
+      return <Text ref={ref} fontSize="sm" color="gray.300" {...props} />;
    }
 );
 
@@ -100,21 +99,7 @@ const FooterNewsletterForm = forwardRef<StackProps, 'form'>((props, ref) => {
 
 const FooterNewsletterFormControl = forwardRef<FormControlProps, 'div'>(
    (props, ref) => {
-      return (
-         <FormControl
-            ref={ref}
-            w={{
-               base: 'full',
-               sm: 96,
-            }}
-            maxW={{
-               base: 'full',
-               sm: 96,
-               xl: 64,
-            }}
-            {...props}
-         />
-      );
+      return <FormControl ref={ref} w="full" {...props} />;
    }
 );
 
