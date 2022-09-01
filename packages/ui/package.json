@@ -10,7 +10,9 @@
    },
    "dependencies": {
       "@ifixit/app": "workspace:*",
-      "@ifixit/cart-sdk": "workspace:*"
+      "@ifixit/cart-sdk": "workspace:*",
+      "@ifixit/icons": "workspace:*",
+      "@ifixit/newsletter-sdk": "workspace:*"
    },
    "peerDependencies": {
       "@chakra-ui/react": ">= 1.8.3 < 2",

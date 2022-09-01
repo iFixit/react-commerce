@@ -5,7 +5,7 @@ export type PageContentWrapperProps = React.PropsWithChildren<{
    className?: string;
 }>;
 
-export default function PageContentWrapper(props: BoxProps) {
+export function PageContentWrapper(props: BoxProps) {
    return (
       <Box
          w={{ base: 'full', lg: '960px', xl: '1100px' }}

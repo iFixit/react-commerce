@@ -42,14 +42,14 @@ export function encodeDeviceItemTypeSpaces(itemType: string): string {
  * Convert '_' in URL slug to spaces for product list device title
  */
 export function decodeDeviceTitleSpaces(handle: string): string {
-   return handle.replace(/_+/g, ' ');
+   return handle.replace(/_/g, ' ');
 }
 
 /**
  * Convert to spaces in product list device Title to '_' for URL slug
  */
 export function encodeDeviceTitleSpaces(deviceTitle: string): string {
-   return deviceTitle.replace(/\s+/g, '_');
+   return deviceTitle.replace(/\s/g, '_');
 }
 
 /**

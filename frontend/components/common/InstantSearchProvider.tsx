@@ -162,8 +162,14 @@ export function InstantSearchProvider({
                // Item Type is the slug on device pages, not in the query.
                delete filterCopy['facet_tags.Item Type'];
             }
+            const customQueryParams = new URLSearchParams(location.search);
             const queryString = qsModule.stringify(
-               { ...routeState, filter: filterCopy },
+               {
+                  ...routeState,
+                  filter: filterCopy,
+                  _vercel_no_cache:
+                     customQueryParams.get('_vercel_no_cache') || undefined,
+               },
                {
                   addQueryPrefix: true,
                   arrayFormat: 'indices',

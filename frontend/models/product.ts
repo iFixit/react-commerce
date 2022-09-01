@@ -7,6 +7,7 @@ import {
    MoneyV2,
    CurrencyCode,
 } from '@lib/shopify-storefront-sdk';
+import { z } from 'zod';
 
 export async function findProduct(shop: ShopCredentials, handle: string) {
    const storefront = getShopifyStorefrontSdk(shop);
@@ -52,6 +53,9 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
       faqs: parseFaqs(response.product.faqs?.value),
+      replacementGuides: parseReplacementGuides(
+         response.product.replacementGuides?.value
+      ),
       reviewsData,
    };
 }
@@ -92,6 +96,52 @@ function parseFaqs(value: string | null | undefined) {
          };
       })
    );
+}
+
+type ReplacementGuideMetafieldItem = z.infer<
+   typeof ReplacementGuideMetafieldItemSchema
+>;
+
+const ReplacementGuideMetafieldItemSchema = z.object({
+   id: z.string(),
+   title: z.string(),
+   guide_url: z.string(),
+   image_url: z.string().optional().nullable(),
+   summary: z.string().optional().nullable(),
+   difficulty: z.string().optional().nullable(),
+   time_required: z.string().optional().nullable(),
+});
+
+function parseReplacementGuides(
+   value: string | null | undefined
+): ReplacementGuideMetafieldItem[] {
+   if (value == null) {
+      return [];
+   }
+   const rawJson = JSON.parse(value);
+   if (rawJson == null) {
+      return [];
+   }
+   const guides = Object.keys(rawJson).map((id) => {
+      const item = rawJson[id];
+      const result = ReplacementGuideMetafieldItemSchema.safeParse({
+         id,
+         ...item,
+      });
+      if (result.success) {
+         return result.data;
+      }
+      const errors = result.error.flatten();
+      console.error(
+         `Failed to parse replacement guide:\n ${JSON.stringify(
+            errors.fieldErrors,
+            null,
+            2
+         )}`
+      );
+      return null;
+   });
+   return filterNullableItems(guides);
 }
 
 function computeIFixitProductId(variantSku: string) {

@@ -1,13 +1,13 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import {
    PageBreadcrumb,
-   PageContentWrapper,
    SecondaryNavbar,
    TBreadcrumbItem,
    WithProvidersProps,
 } from '@components/common';
 import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
+import { PageContentWrapper } from '@ifixit/ui';
 import {
    DefaultLayout,
    getLayoutServerSideProps,
@@ -15,6 +15,11 @@ import {
 } from '@layouts/default';
 import { findProduct, Product } from '@models/product';
 import { GetServerSideProps } from 'next';
+import { useSelectedVariant } from './hooks/useSelectedVariant';
+import { ProductSection } from './sections/ProductSection';
+import { ReviewsSection } from './sections/ReviewsSection';
+import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
+import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 export type ProductTemplateProps = WithProvidersProps<
    WithLayoutProps<{
@@ -25,6 +30,8 @@ export type ProductTemplateProps = WithProvidersProps<
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
    product,
 }) => {
+   const { selectedVariant, setSelectedVariantId } =
+      useSelectedVariant(product);
    const items: TBreadcrumbItem[] = [
       { label: 'Parts', url: '/Parts' },
       { label: product.title, url: `/Products/${product.handle}` },
@@ -36,8 +43,18 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                <PageBreadcrumb items={items} />
             </PageContentWrapper>
          </SecondaryNavbar>
-         <Box>
-            <Heading>{product.title}</Heading>
+         <Box pt="10">
+            <ProductSection
+               product={product}
+               selectedVariant={selectedVariant}
+               onVariantChange={setSelectedVariantId}
+            />
+            <ReplacementGuidesSection product={product} />
+            <ServiceValuePropositionSection />
+            <ReviewsSection
+               product={product}
+               selectedVariant={selectedVariant}
+            />
          </Box>
       </>
    );
