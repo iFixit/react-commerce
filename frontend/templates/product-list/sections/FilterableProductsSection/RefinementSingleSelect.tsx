@@ -13,7 +13,7 @@ import NextLink from 'next/link';
 import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { ProductList, ProductListType } from '@models/product-list';
-import { encodeDeviceItemType } from '@helpers/product-list-helpers';
+import { encodeDeviceItemTypeSpaces } from '@helpers/product-list-helpers';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -131,7 +131,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       );
       // The url created by InstantSearch doesn't have the correct item type slug.
       const path = url.pathname.split('/').filter((part) => part !== '');
-      const itemTypeHandle = encodeDeviceItemType(item.value);
+      const itemTypeHandle = encodeDeviceItemTypeSpaces(item.value);
       const href = `/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
       RefinementTitle = (
          <NextLink href={href} passHref>

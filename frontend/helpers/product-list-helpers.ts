@@ -25,30 +25,30 @@ export function computeProductListAlgoliaFilterPreset<
 }
 
 /**
- * Convert URL slug to product list device title
+ * Convert '_' in URL slug to spaces for product list device Item Types
  */
-export function decodeDeviceItemType(itemTypeHandle: string): string {
+export function decodeDeviceItemTypeSpaces(itemTypeHandle: string): string {
    return itemTypeHandle.replace(/_+/g, ' ');
 }
 
 /**
- * Convert URL slug to product list device title
+ * Convert to spaces in product list device Item Types to '_' for URL slug
  */
-export function encodeDeviceItemType(itemType: string): string {
+export function encodeDeviceItemTypeSpaces(itemType: string): string {
    return itemType.replace(/\s+/g, '_');
 }
 
 /**
- * Convert URL slug to product list device title
+ * Convert '_' in URL slug to spaces for product list device title
  */
-export function decodeDeviceTitle(handle: string): string {
+export function decodeDeviceTitleSpaces(handle: string): string {
    return handle.replace(/_+/g, ' ');
 }
 
 /**
- * Convert URL slug to product list device title
+ * Convert to spaces in product list device Title to '_' for URL slug
  */
-export function encodeDeviceTitle(deviceTitle: string): string {
+export function encodeDeviceTitleSpaces(deviceTitle: string): string {
    return deviceTitle.replace(/\s+/g, '_');
 }
 
@@ -69,7 +69,7 @@ export function getProductListPath(
             productList.deviceTitle != null,
             'device product list does not have device title'
          );
-         const deviceHandle = encodeDeviceTitle(productList.deviceTitle);
+         const deviceHandle = encodeDeviceTitleSpaces(productList.deviceTitle);
          return `/Parts/${deviceHandle}`;
       }
       case ProductListType.AllTools: {

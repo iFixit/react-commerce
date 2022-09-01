@@ -1,8 +1,8 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import {
    getProductListTitle,
-   encodeDeviceItemType,
-   encodeDeviceTitle,
+   encodeDeviceItemTypeSpaces,
+   encodeDeviceTitleSpaces,
 } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList } from '@models/product-list';
@@ -36,7 +36,10 @@ export function MetaTags({ productList }: MetaTagsProps) {
       title += ` - Page ${page}`;
    }
    title += ' | iFixit';
-   const itemTypeHandle = itemType ? `/${encodeDeviceItemType(itemType)}` : '';
+   const itemTypeHandle = itemType
+      ? `/${encodeDeviceItemTypeSpaces(itemType)}`
+      : '';
+
    const canonicalUrl = encodeURI(
       `${appContext.ifixitOrigin}${productList.path}${itemTypeHandle}${
          page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
@@ -44,10 +47,10 @@ export function MetaTags({ productList }: MetaTagsProps) {
    );
    const imageUrl = productList.image?.url;
    const productListExemptions =
-      noIndexExemptions[encodeDeviceTitle(productList.deviceTitle ?? '')];
+      noIndexExemptions[encodeDeviceTitleSpaces(productList.deviceTitle ?? '')];
    const isNoIndexExempt = itemType
       ? productListExemptions?.itemTypes?.includes(
-           encodeDeviceItemType(itemType)
+           encodeDeviceItemTypeSpaces(itemType)
         )
       : productListExemptions?.root;
    const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);

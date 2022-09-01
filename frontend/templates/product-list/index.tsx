@@ -5,9 +5,9 @@ import {
 } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
-   decodeDeviceItemType,
-   decodeDeviceTitle,
-   encodeDeviceTitle,
+   decodeDeviceItemTypeSpaces,
+   decodeDeviceTitleSpaces,
+   encodeDeviceTitleSpaces,
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -90,10 +90,10 @@ export const getProductListServerSideProps = ({
             }
 
             const itemType = itemTypeHandle
-               ? decodeDeviceItemType(itemTypeHandle)
+               ? decodeDeviceItemTypeSpaces(itemTypeHandle)
                : null;
 
-            const deviceTitle = decodeDeviceTitle(deviceHandle);
+            const deviceTitle = decodeDeviceTitleSpaces(deviceHandle);
             productList = await logAsync('findProductList', () =>
                findProductList(
                   {
@@ -248,6 +248,6 @@ function getDeviceCanonicalPath(
       return null;
    }
    const slug = itemTypeHandle ? `/${itemTypeHandle}` : '';
-   const canonicalDeviceTitle = encodeDeviceTitle(deviceTitle);
+   const canonicalDeviceTitle = encodeDeviceTitleSpaces(deviceTitle);
    return `/Parts/${canonicalDeviceTitle}${slug}`;
 }

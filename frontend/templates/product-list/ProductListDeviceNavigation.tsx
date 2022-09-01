@@ -1,6 +1,9 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
+import {
+   encodeDeviceTitleSpaces,
+} from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 
