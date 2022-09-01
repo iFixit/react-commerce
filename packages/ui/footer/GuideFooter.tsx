@@ -1,4 +1,4 @@
-import { HStack, Menu, MenuList } from '@chakra-ui/react';
+import { HStack, Menu, MenuList, Spacer } from '@chakra-ui/react';
 import {
    FacebookLogo,
    Flag,
@@ -129,7 +129,12 @@ export function GuideFooter({
                </FooterLink>
             </FooterSettings>
 
-            <HStack>
+            <Spacer />
+
+            <HStack
+               spacing={4}
+               justify={{ base: 'space-between', sm: 'center' }}
+            >
                {socialMediaAccounts.facebook && (
                   <FooterLink
                      href={socialMediaAccounts.facebook}
