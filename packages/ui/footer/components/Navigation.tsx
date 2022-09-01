@@ -1,4 +1,5 @@
 import {
+   Text,
    Box,
    BoxProps,
    forwardRef,
@@ -9,6 +10,7 @@ import {
    ListProps,
    SimpleGrid,
    SimpleGridProps,
+   TextProps,
 } from '@chakra-ui/react';
 
 export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
@@ -33,6 +35,10 @@ export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
       );
    }
 );
+
+export const FooterNavigationListHeader = (props: TextProps) => {
+   return <Text fontSize="md" fontWeight="bold" color="white" {...props} />;
+};
 
 export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
    ({ children, ...otherProps }, ref) => {

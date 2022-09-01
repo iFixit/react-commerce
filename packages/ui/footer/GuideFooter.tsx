@@ -15,6 +15,7 @@ import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
    FooterNavigationItem,
    FooterNavigationList,
+   FooterNavigationListHeader,
    FooterNavigationLink,
    FooterNavigationSection,
 } from './components/Navigation';
