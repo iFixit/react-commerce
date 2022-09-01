@@ -23,10 +23,10 @@ export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
                sm: 3,
                lg: 4,
             }}
-            spacing="4"
+            spacing="0"
             px={{
                base: 5,
-               sm: 0,
+               lg: 0,
             }}
             py="10"
             autoFlow="row"
@@ -45,6 +45,10 @@ export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
       return (
          <List
             ref={ref}
+            mb={{
+               base: 4,
+               sm: 0,
+            }}
             pb={{
                base: 4,
                sm: 0,
