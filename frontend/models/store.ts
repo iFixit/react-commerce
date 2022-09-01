@@ -18,6 +18,7 @@ export interface Store {
    footer: {
       menu1: Menu | null;
       menu2: Menu | null;
+      menu3?: Menu | null;
       partners: Menu | null;
       bottomMenu: Menu | null;
    };
