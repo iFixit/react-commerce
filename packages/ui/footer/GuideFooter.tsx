@@ -123,7 +123,7 @@ export function GuideFooter({
 
          <FooterSettingsSection>
             <FooterSettings>
-               {stores.length > 0 && (
+               {stores && stores.length > 0 && (
                   <Menu isLazy lazyBehavior="keepMounted">
                      <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
                         Region
