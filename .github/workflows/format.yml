@@ -1,6 +1,9 @@
 name: Format
 
-on: [push]
+on:
+   push:
+      branches-ignore:
+         - 'main'
 
 jobs:
    prettier:
@@ -28,9 +31,6 @@ jobs:
               fi
          - name: Fail if Dependabot
            if: steps.detect-diff.outputs.HAS_DIFF == 'true' && github.actor == 'dependabot[bot]'
-           run: exit 1
-         - name: Fail in production
-           if: steps.detect-diff.outputs.HAS_DIFF == 'true' && github.ref_name == 'main'
            run: exit 1
          - name: Commit changes
            if: steps.detect-diff.outputs.HAS_DIFF == 'true'
