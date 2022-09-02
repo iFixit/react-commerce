@@ -178,40 +178,7 @@ export function GuideFooter({
 
 const FooterBottomSection = ({ partners }: Store) => {
    if (partners) {
-      return (
-         <FooterPartners>
-            {partners.items.map((partner) => {
-               if (partner.type === MenuItemType.ImageLink) {
-                  return (
-                     <FooterPartnerLink
-                        key={partner.name}
-                        href={partner.url}
-                        position="relative"
-                        p="0"
-                     >
-                        {partner.image?.url ? (
-                           <IfixitImage
-                              layout="fill"
-                              objectFit="contain"
-                              src={partner.image.url}
-                              alt={
-                                 partner.image?.alternativeText ||
-                                 `${partner.name} logo`
-                              }
-                           />
-                        ) : (
-                           <IfixitImage
-                              layout="fill"
-                              objectFit="contain"
-                              src={noImageFixie}
-                           />
-                        )}
-                     </FooterPartnerLink>
-                  );
-               }
-            })}
-         </FooterPartners>
-      );
+      return <FooterPartners partners={partners} />;
    }
 
    return <FooterBottomLogo />;
