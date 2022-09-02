@@ -33,6 +33,7 @@ import {
    getNewsletterForm,
 } from './guideData';
 import { FooterSocialMediaSection } from './components/SocialMedia';
+import { Store } from '@models/store';
 
 export function GuideFooter({
    stores,
@@ -155,42 +156,7 @@ export function GuideFooter({
 
          <FooterDivider />
 
-         {partners ? (
-            <FooterPartners>
-               {partners.items.map((partner) => {
-                  if (partner.type === MenuItemType.ImageLink) {
-                     return (
-                        <FooterPartnerLink
-                           key={partner.name}
-                           href={partner.url}
-                           position="relative"
-                           p="0"
-                        >
-                           {partner.image?.url ? (
-                              <IfixitImage
-                                 layout="fill"
-                                 objectFit="contain"
-                                 src={partner.image.url}
-                                 alt={
-                                    partner.image?.alternativeText ||
-                                    `${partner.name} logo`
-                                 }
-                              />
-                           ) : (
-                              <IfixitImage
-                                 layout="fill"
-                                 objectFit="contain"
-                                 src={noImageFixie}
-                              />
-                           )}
-                        </FooterPartnerLink>
-                     );
-                  }
-               })}
-            </FooterPartners>
-         ) : (
-            <FooterBottomLogo />
-         )}
+         <FooterBottomSection partners={partners} />
 
          <FooterLegalSection>
             <FooterCopyright />
@@ -209,3 +175,44 @@ export function GuideFooter({
       </Footer>
    );
 }
+
+const FooterBottomSection = ({ partners }: Store) => {
+   if (partners) {
+      return (
+         <FooterPartners>
+            {partners.items.map((partner) => {
+               if (partner.type === MenuItemType.ImageLink) {
+                  return (
+                     <FooterPartnerLink
+                        key={partner.name}
+                        href={partner.url}
+                        position="relative"
+                        p="0"
+                     >
+                        {partner.image?.url ? (
+                           <IfixitImage
+                              layout="fill"
+                              objectFit="contain"
+                              src={partner.image.url}
+                              alt={
+                                 partner.image?.alternativeText ||
+                                 `${partner.name} logo`
+                              }
+                           />
+                        ) : (
+                           <IfixitImage
+                              layout="fill"
+                              objectFit="contain"
+                              src={noImageFixie}
+                           />
+                        )}
+                     </FooterPartnerLink>
+                  );
+               }
+            })}
+         </FooterPartners>
+      );
+   }
+
+   return <FooterBottomLogo />;
+};
