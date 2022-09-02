@@ -11,7 +11,7 @@ import { FooterLink } from './Shared';
 import React from 'react';
 
 export const FooterSocialMediaSection = React.memo(
-   ({ accounts }: SocialMediaAccounts) => {
+   ({ accounts }: { accounts: SocialMediaAccounts }) => {
       if (!accounts) {
          return null;
       }
