@@ -3,28 +3,34 @@ import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { Menu, MenuItemType } from '@models/menu';
 import { Store } from '@models/store';
+import React from 'react';
 
 type FooterPartnersSectionProps = BoxProps & {
    partners: Menu;
 };
 
-export const FooterPartnersSection = forwardRef<
-   FooterPartnersSectionProps,
-   'div'
->(({ partners, children, ...otherProps }, ref) => {
-   return (
-      <Box ref={ref} mt={2} p={5} align="center" {...otherProps}>
-         <SimpleGrid
-            minChildWidth="92px"
-            spacing="4"
-            // limit to three columns until large breakpoint
-            maxW={{ base: '375px', lg: '1024px' }}
-         >
-            <FooterPartners partners={partners} />
-         </SimpleGrid>
-      </Box>
-   );
-});
+export const FooterPartnersSection = React.memo(
+   forwardRef<FooterPartnersSectionProps, 'div'>(
+      ({ partners, ...otherProps }, ref) => {
+         if (!partners || partners.items.length === 0) {
+            // if we have no partners to display, don't render the box or grid
+            return null;
+         }
+         return (
+            <Box ref={ref} mt={2} p={5} align="center" {...otherProps}>
+               <SimpleGrid
+                  minChildWidth="92px"
+                  spacing="4"
+                  // limit to three columns until large breakpoint
+                  maxW={{ base: '375px', lg: '1024px' }}
+               >
+                  <FooterPartners partners={partners} />
+               </SimpleGrid>
+            </Box>
+         );
+      }
+   )
+);
 
 const FooterPartners = ({ partners }: Store) => {
    const partnerIcons = partners.items.map((partner: Menu) => {
