@@ -30,7 +30,7 @@ import {
    getNewsletterForm,
 } from './guideData';
 import { FooterSocialMediaSection } from './components/SocialMedia';
-import { Store } from '@models/store';
+import { Menu as MenuType } from '@models/menu';
 
 export function GuideFooter({
    stores,
@@ -173,7 +173,7 @@ export function GuideFooter({
    );
 }
 
-const FooterBottomSection = ({ partners }: Store) => {
+const FooterBottomSection = ({ partners }: { partners: MenuType | null }) => {
    if (partners) {
       return <FooterPartnersSection partners={partners} />;
    }

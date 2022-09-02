@@ -1,7 +1,7 @@
 import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
-import { Menu, MenuItemType } from '@models/menu';
+import { Menu, MenuItem, ImageLinkMenuItem, MenuItemType } from '@models/menu';
 import { Store } from '@models/store';
 import React from 'react';
 
@@ -32,16 +32,20 @@ export const FooterPartnersSection = React.memo(
    )
 );
 
-const FooterPartners = ({ partners }: Store) => {
-   const partnerIcons = partners.items.map((partner: Menu) => {
+const FooterPartners = ({ partners }: { partners: Menu }) => {
+   if (!partners) {
+      return null;
+   }
+   const partnerIcons = partners.items.map((partner: MenuItem) => {
       if (partner.type === MenuItemType.ImageLink) {
          return <FooterPartner partner={partner} />;
       }
    });
-   return partnerIcons;
+   // the type checker complains that this isn't a component if we don't wrap it in a fragment
+   return <>{partnerIcons}</>;
 };
 
-const FooterPartner = ({ partner }: Menu) => {
+const FooterPartner = ({ partner }: { partner: ImageLinkMenuItem }) => {
    return (
       <FooterPartnerLink
          key={partner.name}
@@ -54,8 +58,8 @@ const FooterPartner = ({ partner }: Menu) => {
    );
 };
 
-const PartnerImage = ({ partner }: Menu) => {
-   if (partner.image.url) {
+const PartnerImage = ({ partner }: { partner: ImageLinkMenuItem }) => {
+   if (partner.image) {
       const altText = partner.image?.alternativeText || `${partner.name} logo`;
       return (
          <IfixitImage
