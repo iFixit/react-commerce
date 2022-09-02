@@ -1,14 +1,5 @@
-import { HStack, Menu, MenuList, Spacer } from '@chakra-ui/react';
-import {
-   FacebookLogo,
-   Flag,
-   FlagCountryCode,
-   Language,
-   InstagramLogo,
-   RepairOrgLogo,
-   TwitterLogo,
-   YoutubeLogo,
-} from '@ifixit/icons';
+import { Menu, MenuList, Spacer } from '@chakra-ui/react';
+import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
