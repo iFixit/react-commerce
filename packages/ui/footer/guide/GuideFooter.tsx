@@ -41,6 +41,7 @@ import {
    getGuideFooterMenus,
    getNewsletterForm,
 } from './guideData';
+import { FooterSocialMediaSection } from './components/SocialMedia';
 
 export function GuideFooter({
    stores,
@@ -158,41 +159,7 @@ export function GuideFooter({
 
             <Spacer />
 
-            <HStack
-               spacing={4}
-               justify={{ base: 'space-between', sm: 'center' }}
-            >
-               {socialMediaAccounts.facebook && (
-                  <FooterLink
-                     href={socialMediaAccounts.facebook}
-                     icon={FacebookLogo}
-                  />
-               )}
-               {socialMediaAccounts.twitter && (
-                  <FooterLink
-                     href={socialMediaAccounts.twitter}
-                     icon={TwitterLogo}
-                  />
-               )}
-               {socialMediaAccounts.instagram && (
-                  <FooterLink
-                     href={socialMediaAccounts.instagram}
-                     icon={InstagramLogo}
-                  />
-               )}
-               {socialMediaAccounts.youtube && (
-                  <FooterLink
-                     href={socialMediaAccounts.youtube}
-                     icon={YoutubeLogo}
-                  />
-               )}
-               {socialMediaAccounts.repairOrg && (
-                  <FooterLink
-                     href={socialMediaAccounts.repairOrg}
-                     icon={RepairOrgLogo}
-                  />
-               )}
-            </HStack>
+            <FooterSocialMediaSection accounts={socialMediaAccounts} />
          </FooterSettingsSection>
 
          <FooterDivider />
