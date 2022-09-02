@@ -1,3 +1,6 @@
+import { Store } from '@models/store';
+import { MenuItemType } from '@models/menu';
+
 const baseUrl = 'https://www.ifixit.com/';
 
 export const getGuideSocialMediaAccounts = () => {
@@ -10,43 +13,87 @@ export const getGuideSocialMediaAccounts = () => {
    };
 };
 
-export const getGuideFooterMenus = () => {
+export const getGuideFooterMenus = (): Store['footer'] => {
    return {
       menu1: {
          title: 'iFixit',
          items: [
-            { type: 'link', name: 'About Us', url: baseUrl + 'index' },
             {
-               type: 'link',
+               type: MenuItemType.Link,
+               name: 'About Us',
+               url: baseUrl + 'index',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
                name: 'Customer Support',
                url: 'https://help.ifixit.com',
+               description: null,
             },
-            { type: 'link', name: 'Careers', url: baseUrl + 'Info/jobs' },
-            { type: 'link', name: 'Feedback', url: 'https://meta.ifixit.com' },
-            { type: 'link', name: 'Newsletter', url: baseUrl + 'Newsletter' },
-            { type: 'link', name: 'API', url: baseUrl + 'api/2.0/doc' },
+            {
+               type: MenuItemType.Link,
+               name: 'Careers',
+               url: baseUrl + 'Info/jobs',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
+               name: 'Feedback',
+               url: 'https://meta.ifixit.com',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
+               name: 'Newsletter',
+               url: baseUrl + 'Newsletter',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
+               name: 'API',
+               url: baseUrl + 'api/2.0/doc',
+               description: null,
+            },
          ],
       },
       menu2: {
          title: 'Resources',
          items: [
-            { type: 'link', name: 'Press', url: baseUrl + 'Info/Media' },
             {
-               type: 'link',
+               type: MenuItemType.Link,
+               name: 'Press',
+               url: baseUrl + 'Info/Media',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
                name: 'News',
                url: baseUrl + 'Page/all-categories',
+               description: null,
             },
-            { type: 'link', name: 'Contribute', url: baseUrl + 'Contribute' },
             {
-               type: 'link',
+               type: MenuItemType.Link,
+               name: 'Contribute',
+               url: baseUrl + 'Contribute',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
                name: 'Pro Wholesale',
                url: 'https://pro.ifixit.com/',
+               description: null,
             },
-            { type: 'link', name: 'Retail Locator', url: baseUrl + 'Retail' },
             {
-               type: 'link',
+               type: MenuItemType.Link,
+               name: 'Retail Locator',
+               url: baseUrl + 'Retail',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
                name: 'For Manufacturers',
                url: baseUrl + 'Page/services',
+               description: null,
             },
          ],
       },
@@ -54,22 +101,34 @@ export const getGuideFooterMenus = () => {
          title: 'Legal',
          items: [
             {
-               type: 'link',
+               type: MenuItemType.Link,
                url: baseUrl + 'Info/Accessibility',
                name: 'Accessibility',
+               description: null,
             },
-            { type: 'link', url: baseUrl + 'Info/Privacy', name: 'Privacy' },
-            { type: 'link', url: baseUrl + 'Info/Terms_of_Use', name: 'Terms' },
+            {
+               type: MenuItemType.Link,
+               url: baseUrl + 'Info/Privacy',
+               name: 'Privacy',
+               description: null,
+            },
+            {
+               type: MenuItemType.Link,
+               url: baseUrl + 'Info/Terms_of_Use',
+               name: 'Terms',
+               description: null,
+            },
          ],
       },
-      partners: undefined,
+      partners: null,
       bottomMenu: {
          title: 'Licensing',
          items: [
             {
-               type: 'link',
+               type: MenuItemType.Link,
                url: baseUrl + 'Info/Licensing',
                name: 'Licensed under Creative Commons',
+               description: null,
             },
          ],
       },
