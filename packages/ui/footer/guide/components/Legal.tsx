@@ -18,6 +18,7 @@ export const FooterLegalSection = forwardRef<StackProps, 'div'>(
                base: 1.5,
                md: 0,
             }}
+            mt={5}
             pb="6"
             px={{
                base: 5,

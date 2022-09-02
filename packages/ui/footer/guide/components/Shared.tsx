@@ -70,7 +70,6 @@ export const FooterBottomLogo = forwardRef<StackProps, 'div'>((props, ref) => {
          direction="column"
          spacing={3}
          pt={8}
-         pb={5}
          color="white"
          align="center"
          {...props}
