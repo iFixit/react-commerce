@@ -1,8 +1,5 @@
 import { Menu, MenuList, Spacer } from '@chakra-ui/react';
 import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
-import { MenuItemType } from '@models/menu';
-import { IfixitImage } from '@components/ifixit-image';
-import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import {
    FooterNavigationItem,
    FooterNavigationList,
@@ -17,7 +14,7 @@ import {
    FooterLegalLinkList,
    FooterLegalSection,
 } from './components/Legal';
-import { FooterPartners, FooterPartnerLink } from './components/Partners';
+import { FooterPartnersSection } from './components/Partners';
 import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
 import { NewsletterForm } from './components/Newsletter';
 import {
@@ -178,7 +175,7 @@ export function GuideFooter({
 
 const FooterBottomSection = ({ partners }: Store) => {
    if (partners) {
-      return <FooterPartners partners={partners} />;
+      return <FooterPartnersSection partners={partners} />;
    }
 
    return <FooterBottomLogo />;
