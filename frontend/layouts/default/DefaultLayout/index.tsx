@@ -1,4 +1,3 @@
-import { IfixitHeaderLogoUkraine } from '@assets/svg';
 import {
    Box,
    DrawerCloseButton,
@@ -48,6 +47,7 @@ import {
    UserMenuButton,
    UserMenuHeading,
    UserMenuLink,
+   Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
 import { Menu } from '@models/menu';
@@ -171,13 +171,7 @@ export function DefaultLayout({
                         <HeaderNavigationToggleButton aria-label="Open navigation menu" />
                         <NextLink href="/" passHref>
                            <WordmarkLink aria-label="Go to homepage" pr="4">
-                              <Icon
-                                 as={IfixitHeaderLogoUkraine}
-                                 fill="none"
-                                 w="118px"
-                                 h="36px"
-                                 verticalAlign="middle"
-                              />
+                              <Wordmark />
                            </WordmarkLink>
                         </NextLink>
                         {menu && (
@@ -302,13 +296,7 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
          <DrawerCloseButton />
          <NextLink href="/" passHref>
             <WordmarkLink aria-label="Go to homepage" mb="8">
-               <Icon
-                  as={IfixitHeaderLogoUkraine}
-                  fill="none"
-                  w="118px"
-                  h="36px"
-                  verticalAlign="middle"
-               />
+               <Wordmark />
             </WordmarkLink>
          </NextLink>
          <NavigationAccordion>
