@@ -34,24 +34,27 @@ const FooterPartner = ({ partner }: Menu) => {
          position="relative"
          p="0"
       >
-         {partner.image?.url ? (
-            <IfixitImage
-               layout="fill"
-               objectFit="contain"
-               src={partner.image.url}
-               alt={
-                  partner.image?.alternativeText || `${partner.name} logo`
-               }
-            />
-         ) : (
-            <IfixitImage
-               layout="fill"
-               objectFit="contain"
-               src={noImageFixie}
-            />
-         )}
+         <PartnerImage partner={partner} />
       </FooterPartnerLink>
    );
+};
+
+const PartnerImage = ({ partner }: Menu) => {
+   if (partner.image.url) {
+      const altText = partner.image?.alternativeText || `${partner.name} logo`;
+      return (
+         <IfixitImage
+            layout="fill"
+            objectFit="contain"
+            src={partner.image.url}
+            alt={altText}
+         />
+      );
+   } else {
+      return (
+         <IfixitImage layout="fill" objectFit="contain" src={noImageFixie} />
+      );
+   }
 };
 
 export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
