@@ -22,11 +22,12 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    const variants = response.product.variants.nodes.map((variant) => {
       const isDiscounted =
          variant.compareAtPriceV2 != null &&
-         variant.compareAtPriceV2.amount > variant.priceV2.amount;
+         parseFloat(variant.compareAtPriceV2.amount) >
+            parseFloat(variant.priceV2.amount);
       const discountPercentage = isDiscounted
          ? computeDiscountPercentage(
-              variant.priceV2.amount * 100,
-              variant.compareAtPriceV2!.amount * 100
+              parseFloat(variant.priceV2.amount) * 100,
+              parseFloat(variant.compareAtPriceV2!.amount) * 100
            )
          : 0;
 
