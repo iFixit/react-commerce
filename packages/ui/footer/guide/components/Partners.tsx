@@ -1,6 +1,6 @@
 import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
 
-export const FooterPartners = forwardRef<BoxProps, 'div'>(
+export const FooterPartnersSection = forwardRef<BoxProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
       return (
          <Box ref={ref} mt={2} p={5} align="center" {...otherProps}>
@@ -10,41 +10,46 @@ export const FooterPartners = forwardRef<BoxProps, 'div'>(
                // limit to three columns until large breakpoint
                maxW={{ base: '375px', lg: '1024px' }}
             >
-               {partners.items.map((partner) => {
-                  if (partner.type === MenuItemType.ImageLink) {
-                     return (
-                        <FooterPartnerLink
-                           key={partner.name}
-                           href={partner.url}
-                           position="relative"
-                           p="0"
-                        >
-                           {partner.image?.url ? (
-                              <IfixitImage
-                                 layout="fill"
-                                 objectFit="contain"
-                                 src={partner.image.url}
-                                 alt={
-                                    partner.image?.alternativeText ||
-                                    `${partner.name} logo`
-                                 }
-                              />
-                           ) : (
-                              <IfixitImage
-                                 layout="fill"
-                                 objectFit="contain"
-                                 src={noImageFixie}
-                              />
-                           )}
-                        </FooterPartnerLink>
-                     );
-                  }
-               })}
+               <FooterPartners partners={partners} />
             </SimpleGrid>
          </Box>
       );
    }
 );
+
+const FooterPartners = ({ partners }: Store) => {
+   const partnerIcons = partners.items.map((partner) => {
+      if (partner.type === MenuItemType.ImageLink) {
+         return (
+            <FooterPartnerLink
+               key={partner.name}
+               href={partner.url}
+               position="relative"
+               p="0"
+            >
+               {partner.image?.url ? (
+                  <IfixitImage
+                     layout="fill"
+                     objectFit="contain"
+                     src={partner.image.url}
+                     alt={
+                        partner.image?.alternativeText ||
+                        `${partner.name} logo`
+                     }
+                  />
+               ) : (
+                  <IfixitImage
+                     layout="fill"
+                     objectFit="contain"
+                     src={noImageFixie}
+                  />
+               )}
+            </FooterPartnerLink>
+         );
+      }
+   });
+   return partnerIcons;
+};
 
 export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
    ({ children, ...otherProps }, ref) => {
