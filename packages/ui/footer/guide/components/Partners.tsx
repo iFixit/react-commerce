@@ -2,7 +2,6 @@ import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { Menu, MenuItem, ImageLinkMenuItem, MenuItemType } from '@models/menu';
-import { Store } from '@models/store';
 import React from 'react';
 
 type FooterPartnersSectionProps = BoxProps & {

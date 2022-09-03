@@ -1,22 +1,9 @@
-import {
-   FooterNavigationItem,
-   FooterNavigationList,
-   FooterNavigationListHeader,
-   FooterNavigationLink,
-   FooterNavigationSection,
-} from './components/Navigation';
+import { FooterNavigationSection } from './components/Navigation';
 import { FooterSettingsSection } from './components/Settings';
-import {
-   FooterCopyright,
-   FooterLegalLink,
-   FooterLegalLinkList,
-   FooterLegalSection,
-} from './components/Legal';
+import { FooterLegalSection } from './components/Legal';
 import { FooterPartnersSection } from './components/Partners';
-import { NewsletterForm } from './components/Newsletter';
 import {
    Footer,
-   FooterLink,
    FooterDivider,
    FooterBottomLogo,
    FooterProps,
@@ -26,7 +13,7 @@ import {
    getGuideFooterMenus,
    getNewsletterForm,
 } from './guideData';
-import { Menu as MenuType } from '@models/menu';
+import { Menu } from '@models/menu';
 
 export function GuideFooter({
    stores,
@@ -71,7 +58,7 @@ export function GuideFooter({
    );
 }
 
-const FooterBottomSection = ({ partners }: { partners: MenuType | null }) => {
+const FooterBottomSection = ({ partners }: { partners: Menu | null }) => {
    if (partners) {
       return <FooterPartnersSection partners={partners} />;
    }
