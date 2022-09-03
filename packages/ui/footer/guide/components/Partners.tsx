@@ -39,6 +39,7 @@ const FooterPartners = ({ partners }: { partners: Menu }) => {
       if (partner.type === MenuItemType.ImageLink) {
          return <FooterPartner partner={partner} />;
       }
+      return null;
    });
    // the type checker complains that this isn't a component if we don't wrap it in a fragment
    return <>{partnerIcons}</>;

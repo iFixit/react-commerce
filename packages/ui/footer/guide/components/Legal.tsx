@@ -83,6 +83,7 @@ const FooterLegalLinks = ({ bottomMenu }: { bottomMenu: Menu | null }) => {
             </FooterLegalLink>
          );
       }
+      return null;
    });
 
    return (
