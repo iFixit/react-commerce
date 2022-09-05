@@ -7,9 +7,14 @@ import {
    Stack,
    StackProps,
 } from '@chakra-ui/react';
+import { Menu } from '@models/menu';
 
-export const FooterLegalSection = forwardRef<StackProps, 'div'>(
-   ({ children, ...otherProps }, ref) => {
+type FooterLegalSectionProps = StackProps & {
+   bottomMenu: Menu | null;
+};
+
+export const FooterLegalSection = forwardRef<FooterLegalSectionProps, 'div'>(
+   ({ bottomMenu, ...otherProps }, ref) => {
       return (
          <Stack
             ref={ref}
@@ -47,8 +52,8 @@ export const FooterCopyright = forwardRef<Omit<BoxProps, 'children'>, 'div'>(
    }
 );
 
-export const FooterLegalLinkList = forwardRef<StackProps, 'div'>(
-   ({ children, ...otherProps }, ref) => {
+export const FooterLegalLinkList = forwardRef<FooterLegalSectionProps, 'div'>(
+   ({ bottomMenu, ...otherProps }, ref) => {
       return (
          <Stack
             ref={ref}
