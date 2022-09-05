@@ -29,7 +29,18 @@ export const FooterLegalSection = forwardRef<StackProps, 'div'>(
             align="center"
             {...otherProps}
          >
-            {children}
+            <FooterCopyright />
+            <FooterLegalLinkList>
+               {bottomMenu?.items.map((item, index) => {
+                  if (item.type === 'link') {
+                     return (
+                        <FooterLegalLink key={index} href={item.url}>
+                           {item.name}
+                        </FooterLegalLink>
+                     );
+                  }
+               })}
+            </FooterLegalLinkList>
          </Stack>
       );
    }

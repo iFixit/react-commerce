@@ -116,20 +116,7 @@ export function GuideFooter({
 
          <FooterBottomSection partners={partners} />
 
-         <FooterLegalSection>
-            <FooterCopyright />
-            <FooterLegalLinkList>
-               {bottomMenu?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterLegalLink key={index} href={item.url}>
-                           {item.name}
-                        </FooterLegalLink>
-                     );
-                  }
-               })}
-            </FooterLegalLinkList>
-         </FooterLegalSection>
+         <FooterLegalSection bottomMenu={bottomMenu} />
       </Footer>
    );
 }
