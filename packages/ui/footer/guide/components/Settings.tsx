@@ -1,7 +1,12 @@
 import { forwardRef, Stack, StackProps } from '@chakra-ui/react';
 
-export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
-   (props, ref) => {
+type FooterSettingsProps = StackProps & {
+   stores: StoreListItem[] | undefined;
+   accounts: SocialMediaAccounts;
+};
+
+export const FooterSettingsSection = forwardRef<FooterSettingsProps, 'div'>(
+   ({ stores, accounts, ...props }, ref) => {
       return (
          <Stack
             ref={ref}
