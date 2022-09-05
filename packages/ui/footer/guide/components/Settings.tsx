@@ -34,6 +34,14 @@ export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
    }
 );
 
+const FooterTranslateLink = () => {
+   return (
+      <FooterLink href="https://www.ifixit.com/Translate" icon={Language}>
+         Help translate
+      </FooterLink>
+   );
+};
+
 export const FooterSettings = forwardRef<StackProps, 'div'>((props, ref) => {
    return (
       <Stack
