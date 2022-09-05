@@ -1,4 +1,10 @@
-import { forwardRef, Stack, StackProps } from '@chakra-ui/react';
+import { forwardRef, Stack, StackProps, Spacer } from '@chakra-ui/react';
+import { FooterSocialMediaSection } from './SocialMedia';
+import { StoreMenu } from './StoreMenu';
+import { SocialMediaAccounts } from '@models/store';
+import { FooterLink } from './Shared';
+import { StoreListItem } from '@models/store';
+import { Language } from '@ifixit/icons';
 
 type FooterSettingsProps = StackProps & {
    stores: StoreListItem[] | undefined;

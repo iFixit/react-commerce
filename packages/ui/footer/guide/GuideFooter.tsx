@@ -1,5 +1,3 @@
-import { Spacer } from '@chakra-ui/react';
-import { Language } from '@ifixit/icons';
 import {
    FooterNavigationItem,
    FooterNavigationList,
@@ -7,7 +5,7 @@ import {
    FooterNavigationLink,
    FooterNavigationSection,
 } from './components/Navigation';
-import { FooterSettings, FooterSettingsSection } from './components/Settings';
+import { FooterSettingsSection } from './components/Settings';
 import {
    FooterCopyright,
    FooterLegalLink,
@@ -15,7 +13,6 @@ import {
    FooterLegalSection,
 } from './components/Legal';
 import { FooterPartnersSection } from './components/Partners';
-import { StoreMenu } from './components/StoreMenu';
 import { NewsletterForm } from './components/Newsletter';
 import {
    Footer,
@@ -29,7 +26,6 @@ import {
    getGuideFooterMenus,
    getNewsletterForm,
 } from './guideData';
-import { FooterSocialMediaSection } from './components/SocialMedia';
 import { Menu as MenuType } from '@models/menu';
 
 export function GuideFooter({
