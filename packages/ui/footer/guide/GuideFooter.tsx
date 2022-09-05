@@ -1,5 +1,5 @@
-import { Menu, MenuList, Spacer } from '@chakra-ui/react';
-import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
+import { Spacer } from '@chakra-ui/react';
+import { Language } from '@ifixit/icons';
 import {
    FooterNavigationItem,
    FooterNavigationList,
@@ -15,7 +15,7 @@ import {
    FooterLegalSection,
 } from './components/Legal';
 import { FooterPartnersSection } from './components/Partners';
-import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
+import { StoreMenu } from './components/StoreMenu';
 import { NewsletterForm } from './components/Newsletter';
 import {
    Footer,
