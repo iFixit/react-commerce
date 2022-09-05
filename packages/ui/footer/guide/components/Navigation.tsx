@@ -32,54 +32,10 @@ export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
             autoFlow="row"
             {...props}
          >
-            <FooterNavigationList>
-               <FooterNavigationListHeader>
-                  {menu1?.title}
-               </FooterNavigationListHeader>
-               {menu1?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterNavigationItem key={index}>
-                           <FooterNavigationLink href={item.url}>
-                              {item.name}
-                           </FooterNavigationLink>
-                        </FooterNavigationItem>
-                     );
-                  }
-               })}
-            </FooterNavigationList>
-            <FooterNavigationList>
-               <FooterNavigationListHeader>
-                  {menu2?.title}
-               </FooterNavigationListHeader>
-               {menu2?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterNavigationItem key={index}>
-                           <FooterNavigationLink href={item.url}>
-                              {item.name}
-                           </FooterNavigationLink>
-                        </FooterNavigationItem>
-                     );
-                  }
-               })}
-            </FooterNavigationList>
-            <FooterNavigationList>
-               <FooterNavigationListHeader>
-                  {menu3?.title}
-               </FooterNavigationListHeader>
-               {menu3?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterNavigationItem key={index}>
-                           <FooterNavigationLink href={item.url}>
-                              {item.name}
-                           </FooterNavigationLink>
-                        </FooterNavigationItem>
-                     );
-                  }
-               })}
-            </FooterNavigationList>
+            <FooterNavigationList menu={menu1} />
+            <FooterNavigationList menu={menu2} />
+            <FooterNavigationList menu={menu3} />
+
             <NewsletterForm
                title={newsletterForm.title}
                description={newsletterForm.subtitle}
@@ -96,7 +52,10 @@ export const FooterNavigationListHeader = (props: TextProps) => {
 };
 
 export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
-   ({ children, ...otherProps }, ref) => {
+   ({ menu, ...otherProps }, ref) => {
+      if (!menu) {
+         return null;
+      }
       return (
          <List
             ref={ref}
@@ -115,11 +74,31 @@ export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
             borderBottomColor="gray.700"
             {...otherProps}
          >
-            {children}
+            <FooterNavigationListHeader>
+               {menu.title}
+            </FooterNavigationListHeader>
+            <FooterNavigationListItems menu={menu} />
          </List>
       );
    }
 );
+
+const FooterNavigationListItems = ({ menu }: { menu: Menu }) => {
+   const listItems = menu.items.map((item, index) => {
+      if (item.type === 'link') {
+         return (
+            <FooterNavigationItem key={index}>
+               <FooterNavigationLink href={item.url}>
+                  {item.name}
+               </FooterNavigationLink>
+            </FooterNavigationItem>
+         );
+      }
+      return null;
+   });
+
+   return <>{listItems}</>;
+};
 
 export const FooterNavigationItem = (props: ListItemProps) => {
    return (
