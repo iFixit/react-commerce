@@ -111,16 +111,10 @@ export function GuideFooter({
 
          <FooterDivider />
 
-         <FooterSettingsSection>
-            <FooterSettings>
-               <StoreMenu stores={stores} />
-               <FooterTranslateLink />
-            </FooterSettings>
-
-            <Spacer />
-
-            <FooterSocialMediaSection accounts={socialMediaAccounts} />
-         </FooterSettingsSection>
+         <FooterSettingsSection
+            stores={stores}
+            accounts={socialMediaAccounts}
+         />
 
          <FooterDivider />
 

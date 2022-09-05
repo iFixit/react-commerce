@@ -20,7 +20,16 @@ export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
             }}
             justify="space-between"
             {...props}
-         />
+         >
+            <FooterSettings>
+               <StoreMenu stores={stores} />
+               <FooterTranslateLink />
+            </FooterSettings>
+
+            <Spacer />
+
+            <FooterSocialMediaSection accounts={accounts} />
+         </Stack>
       );
    }
 );
