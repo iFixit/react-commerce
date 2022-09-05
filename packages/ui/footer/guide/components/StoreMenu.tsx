@@ -26,28 +26,27 @@ export const StoreMenu = ({
             <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
                Region
             </StoreMenuButton>
-            <MenuList>
-               {stores.map((store) => {
-                  return (
-                     <StoreMenuItem
-                        key={store.code}
-                        as="a"
-                        href={store.url}
-                        icon={
-                           <Flag
-                              code={store.code.toUpperCase() as any}
-                           />
-                        }
-                        name={store.name}
-                        currency={store.currency}
-                     />
-                  );
-               })}
-            </MenuList>
+            <StoreMenuItems stores={stores} />
          </Menu>
       );
    }
    return null;
+};
+
+const StoreMenuItems = ({ stores }: { stores: StoreListItem[] }) => {
+   const storeMenuItems = stores.map((store) => {
+      return (
+         <StoreMenuItem
+            key={store.code}
+            as="a"
+            href={store.url}
+            icon={<Flag code={store.code.toUpperCase() as any} />}
+            name={store.name}
+            currency={store.currency}
+         />
+      );
+   });
+   return <MenuList>{storeMenuItems}</MenuList>;
 };
 
 export const StoreMenuButton = forwardRef<StoreMenuButtonProps, 'button'>(
