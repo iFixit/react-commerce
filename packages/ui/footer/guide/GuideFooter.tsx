@@ -138,12 +138,7 @@ export function GuideFooter({
                      </MenuList>
                   </Menu>
                )}
-               <FooterLink
-                  href="https://www.ifixit.com/Translate"
-                  icon={Language}
-               >
-                  Help translate
-               </FooterLink>
+               <FooterTranslateLink />
             </FooterSettings>
 
             <Spacer />
@@ -172,6 +167,14 @@ export function GuideFooter({
       </Footer>
    );
 }
+
+const FooterTranslateLink = () => {
+   return (
+      <FooterLink href="https://www.ifixit.com/Translate" icon={Language}>
+         Help translate
+      </FooterLink>
+   );
+};
 
 const FooterBottomSection = ({ partners }: { partners: MenuType | null }) => {
    if (partners) {
