@@ -48,62 +48,12 @@ export function GuideFooter({
 
    return (
       <Footer>
-         <FooterNavigationSection>
-            <FooterNavigationList>
-               <FooterNavigationListHeader>
-                  {menu1?.title}
-               </FooterNavigationListHeader>
-               {menu1?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterNavigationItem key={index}>
-                           <FooterNavigationLink href={item.url}>
-                              {item.name}
-                           </FooterNavigationLink>
-                        </FooterNavigationItem>
-                     );
-                  }
-               })}
-            </FooterNavigationList>
-            <FooterNavigationList>
-               <FooterNavigationListHeader>
-                  {menu2?.title}
-               </FooterNavigationListHeader>
-               {menu2?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterNavigationItem key={index}>
-                           <FooterNavigationLink href={item.url}>
-                              {item.name}
-                           </FooterNavigationLink>
-                        </FooterNavigationItem>
-                     );
-                  }
-               })}
-            </FooterNavigationList>
-            <FooterNavigationList>
-               <FooterNavigationListHeader>
-                  {menu3?.title}
-               </FooterNavigationListHeader>
-               {menu3?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterNavigationItem key={index}>
-                           <FooterNavigationLink href={item.url}>
-                              {item.name}
-                           </FooterNavigationLink>
-                        </FooterNavigationItem>
-                     );
-                  }
-               })}
-            </FooterNavigationList>
-            <NewsletterForm
-               title={newsletterForm.title}
-               description={newsletterForm.subtitle}
-               subscribeLabel={newsletterForm.callToActionButtonTitle}
-               emailPlaceholder={newsletterForm.inputPlaceholder}
-            />
-         </FooterNavigationSection>
+         <FooterNavigationSection
+            menu1={menu1}
+            menu2={menu2}
+            menu3={menu3}
+            newsletterForm={newsletterForm}
+         />
 
          <FooterDivider />
 
