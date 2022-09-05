@@ -30,17 +30,7 @@ export const FooterLegalSection = forwardRef<StackProps, 'div'>(
             {...otherProps}
          >
             <FooterCopyright />
-            <FooterLegalLinkList>
-               {bottomMenu?.items.map((item, index) => {
-                  if (item.type === 'link') {
-                     return (
-                        <FooterLegalLink key={index} href={item.url}>
-                           {item.name}
-                        </FooterLegalLink>
-                     );
-                  }
-               })}
-            </FooterLegalLinkList>
+            <FooterLegalLinkList bottomMenu={bottomMenu} />
          </Stack>
       );
    }
@@ -70,14 +60,35 @@ export const FooterLegalLinkList = forwardRef<StackProps, 'div'>(
             }}
             {...otherProps}
          >
-            <Box px="1" display="block">
-               —
-            </Box>
-            {children}
+            <FooterLegalLinks bottomMenu={bottomMenu} />
          </Stack>
       );
    }
 );
+
+const FooterLegalLinks = ({ bottomMenu }: { bottomMenu: Menu | null }) => {
+   if (!bottomMenu || !bottomMenu.items) {
+      return null;
+   }
+   const links = bottomMenu.items.map((item, index) => {
+      if (item.type === 'link') {
+         return (
+            <FooterLegalLink key={index} href={item.url}>
+               {item.name}
+            </FooterLegalLink>
+         );
+      }
+   });
+
+   return (
+      <>
+         <Box px="1" display="block">
+            —
+         </Box>
+         {links}
+      </>
+   );
+};
 
 export const FooterLegalLink = forwardRef<LinkProps, 'a'>((props, ref) => {
    return (
