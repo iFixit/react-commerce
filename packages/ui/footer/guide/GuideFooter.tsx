@@ -113,31 +113,7 @@ export function GuideFooter({
 
          <FooterSettingsSection>
             <FooterSettings>
-               {stores && stores.length > 0 && (
-                  <Menu isLazy lazyBehavior="keepMounted">
-                     <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
-                        Region
-                     </StoreMenuButton>
-                     <MenuList>
-                        {stores.map((store) => {
-                           return (
-                              <StoreMenuItem
-                                 key={store.code}
-                                 as="a"
-                                 href={store.url}
-                                 icon={
-                                    <Flag
-                                       code={store.code.toUpperCase() as any}
-                                    />
-                                 }
-                                 name={store.name}
-                                 currency={store.currency}
-                              />
-                           );
-                        })}
-                     </MenuList>
-                  </Menu>
-               )}
+               <StoreMenu stores={stores} />
                <FooterTranslateLink />
             </FooterSettings>
 

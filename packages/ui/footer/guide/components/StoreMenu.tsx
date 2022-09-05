@@ -15,6 +15,41 @@ type StoreMenuButtonProps = MenuButtonProps & {
    icon?: React.ReactNode;
 };
 
+export const StoreMenu = ({
+   stores,
+}: {
+   stores: StoreListItem[] | undefined;
+}) => {
+   if (stores && stores.length > 0) {
+      return (
+         <Menu isLazy lazyBehavior="keepMounted">
+            <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
+               Region
+            </StoreMenuButton>
+            <MenuList>
+               {stores.map((store) => {
+                  return (
+                     <StoreMenuItem
+                        key={store.code}
+                        as="a"
+                        href={store.url}
+                        icon={
+                           <Flag
+                              code={store.code.toUpperCase() as any}
+                           />
+                        }
+                        name={store.name}
+                        currency={store.currency}
+                     />
+                  );
+               })}
+            </MenuList>
+         </Menu>
+      );
+   }
+   return null;
+};
+
 export const StoreMenuButton = forwardRef<StoreMenuButtonProps, 'button'>(
    ({ children, icon, ...otherProps }, ref) => {
       return (
