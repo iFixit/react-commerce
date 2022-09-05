@@ -12,46 +12,65 @@ import {
    SimpleGridProps,
    TextProps,
 } from '@chakra-ui/react';
+import { Menu } from '@models/menu';
+import { GlobalSettings } from '@models/global-settings';
+import { NewsletterForm } from './Newsletter';
 
-export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
-   ({ menu1, menu2, menu3, newsletterForm, ...props }, ref) => {
-      return (
-         <SimpleGrid
-            ref={ref}
-            columns={{
-               base: 1,
-               sm: 3,
-               lg: 4,
-            }}
-            spacing="0"
-            px={{
-               base: 5,
-               lg: 0,
-            }}
-            py="10"
-            autoFlow="row"
-            {...props}
-         >
-            <FooterNavigationList menu={menu1} />
-            <FooterNavigationList menu={menu2} />
-            <FooterNavigationList menu={menu3} />
+// Since Strapi does not have a 'menu3' yet, the prop is optional in store.ts.
+// This means that it could be undefined. Once we merge the footers (and Strapi
+// gets a 'menu3') we can make this type Menu | null.
+type FooterNavigationSectionProps = SimpleGridProps & {
+   menu1: Menu | null;
+   menu2: Menu | null;
+   menu3: Menu | null | undefined;
+   newsletterForm: GlobalSettings['newsletterForm'];
+};
 
-            <NewsletterForm
-               title={newsletterForm.title}
-               description={newsletterForm.subtitle}
-               subscribeLabel={newsletterForm.callToActionButtonTitle}
-               emailPlaceholder={newsletterForm.inputPlaceholder}
-            />
-         </SimpleGrid>
-      );
-   }
-);
+export const FooterNavigationSection = forwardRef<
+   FooterNavigationSectionProps,
+   'div'
+>(({ menu1, menu2, menu3, newsletterForm, ...props }, ref) => {
+   return (
+      <SimpleGrid
+         ref={ref}
+         columns={{
+            base: 1,
+            sm: 3,
+            lg: 4,
+         }}
+         spacing="0"
+         px={{
+            base: 5,
+            lg: 0,
+         }}
+         py="10"
+         autoFlow="row"
+         {...props}
+      >
+         <FooterNavigationList menu={menu1} />
+         <FooterNavigationList menu={menu2} />
+         <FooterNavigationList menu={menu3} />
+
+         <NewsletterForm
+            title={newsletterForm.title}
+            description={newsletterForm.subtitle}
+            subscribeLabel={newsletterForm.callToActionButtonTitle}
+            emailPlaceholder={newsletterForm.inputPlaceholder}
+         />
+      </SimpleGrid>
+   );
+});
 
 export const FooterNavigationListHeader = (props: TextProps) => {
    return <Text fontSize="md" fontWeight="bold" color="white" {...props} />;
 };
 
-export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
+// See the comment above about 'undefined'.
+type FooterNavigationListProps = ListProps & {
+   menu: Menu | null | undefined;
+};
+
+export const FooterNavigationList = forwardRef<FooterNavigationListProps, 'ul'>(
    ({ menu, ...otherProps }, ref) => {
       if (!menu) {
          return null;
