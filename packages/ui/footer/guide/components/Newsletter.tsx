@@ -18,6 +18,7 @@ import {
    TextProps,
 } from '@chakra-ui/react';
 import {
+   Subscription,
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';
@@ -184,18 +185,12 @@ export function NewsletterForm({
       <FooterNewsletter>
          <FooterNewsletterCopy title={title} description={description} />
          <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
-            <FooterNewsletterFormControl isInvalid={subscription.error != null}>
-               <FooterNewsletterEmailLabel>
-                  Enter your email
-               </FooterNewsletterEmailLabel>
-               <FooterNewsletterEmailInput
-                  ref={inputRef}
-                  disabled={subscription.status !== SubscriptionStatus.Idle}
-                  placeholder={emailPlaceholder}
-                  visibility={isSubscribed ? 'hidden' : 'visible'}
-               />
-               <FormErrorMessage>{subscription.error}</FormErrorMessage>
-            </FooterNewsletterFormControl>
+            <FooterNewsletterEmail
+               subscription={subscription}
+               inputRef={inputRef}
+               emailPlaceholder={emailPlaceholder}
+               isSubscribed={isSubscribed}
+            />
             <Button
                type="submit"
                data-testid="footer-newsletter-subscribe-button"
@@ -232,3 +227,30 @@ export function NewsletterForm({
       </FooterNewsletter>
    );
 }
+
+const FooterNewsletterEmail = ({
+   subscription,
+   inputRef,
+   emailPlaceholder,
+   isSubscribed,
+}: {
+   subscription: Subscription;
+   inputRef: React.RefObject<HTMLInputElement>;
+   emailPlaceholder: string | undefined;
+   isSubscribed: boolean;
+}) => {
+   return (
+      <FooterNewsletterFormControl isInvalid={subscription.error != null}>
+         <FooterNewsletterEmailLabel>
+            Enter your email
+         </FooterNewsletterEmailLabel>
+         <FooterNewsletterEmailInput
+            ref={inputRef}
+            disabled={subscription.status !== SubscriptionStatus.Idle}
+            placeholder={emailPlaceholder}
+            visibility={isSubscribed ? 'hidden' : 'visible'}
+         />
+         <FormErrorMessage>{subscription.error}</FormErrorMessage>
+      </FooterNewsletterFormControl>
+   );
+};
