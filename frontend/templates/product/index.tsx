@@ -16,9 +16,10 @@ import {
 import { findProduct, Product } from '@models/product';
 import { GetServerSideProps } from 'next';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
+import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductSection } from './sections/ProductSection';
-import { ReviewsSection } from './sections/ReviewsSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
+import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 export type ProductTemplateProps = WithProvidersProps<
@@ -51,6 +52,10 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
             />
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
+            <CrossSellSection
+               product={product}
+               selectedVariant={selectedVariant}
+            />
             <ReviewsSection
                product={product}
                selectedVariant={selectedVariant}

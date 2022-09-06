@@ -1,13 +1,12 @@
 import { IFIXIT_ORIGIN } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
 import { isRecord } from '@ifixit/helpers';
-import { ShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
 import {
-   ShopCredentials,
-   getShopifyStorefrontSdk,
-   MoneyV2,
    CurrencyCode,
    FindProductQuery,
+   getShopifyStorefrontSdk,
+   MoneyV2,
+   ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 
@@ -62,7 +61,7 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          warning: variant.warning?.value ?? null,
          specifications: variant.specifications?.value ?? null,
          warranty: variant.warranty?.value ?? null,
-         crossSell: getCrossSellReferences(variant),
+         crossSellProducts: getCrossSellReferences(variant),
       };
    });
 }
@@ -71,22 +70,21 @@ function getCrossSellReferences(
    variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
 ) {
    const products =
-      variant.crossSell?.references?.nodes.map((reference) => {
-         if (reference.__typename !== 'Product') {
+      variant.crossSell?.references?.nodes.map((product) => {
+         if (product.__typename !== 'Product') {
             return null;
          }
-         const variants = reference.variants.nodes.map((variant) => {
-            return {
-               ...variant,
-               formattedPrice: formatPrice(variant.price),
-               formattedCompareAtPrice: variant.compareAtPrice
-                  ? formatPrice(variant.compareAtPrice)
-                  : null,
-            };
-         });
+         const { variants, ...other } = product;
+         const firstVariant = variants.nodes[0];
          return {
-            ...reference,
-            variants,
+            ...other,
+            variant: {
+               ...firstVariant,
+               formattedPrice: formatPrice(firstVariant.price),
+               formattedCompareAtPrice: firstVariant.compareAtPrice
+                  ? formatPrice(firstVariant.compareAtPrice)
+                  : null,
+            },
          };
       }) ?? [];
    return filterNullableItems(products);
