@@ -91,26 +91,89 @@ const FooterNewsletterDescription = forwardRef<TextProps, 'div'>(
    }
 );
 
-const FooterNewsletterForm = forwardRef<StackProps, 'form'>((props, ref) => {
-   return (
-      <HStack
-         ref={ref}
-         as="form"
-         data-testid="footer-newsletter-form"
-         spacing="3"
-         w={{
-            base: 'full',
-            xl: 'auto',
-         }}
-         justify={{
-            base: 'center',
-            md: 'flex-end',
-         }}
-         align="flex-start"
-         {...props}
-      />
-   );
-});
+type FooterNewsletterFormProps = StackProps & {
+   emailPlaceholder: string | undefined;
+   subscribeLabel: string;
+};
+
+const FooterNewsletterForm = forwardRef<FooterNewsletterFormProps, 'form'>(
+   ({ emailPlaceholder, subscribeLabel, ...props }, ref) => {
+      const inputRef = React.useRef<HTMLInputElement>(null);
+      const [subscription, subscribe] = useSubscribeToNewsletter();
+
+      const onSubscribe = React.useCallback(
+         async (event: React.FormEvent<HTMLDivElement>) => {
+            event.preventDefault();
+            if (inputRef.current) {
+               const email = inputRef.current.value;
+               subscribe(email);
+            }
+         },
+         [subscribe]
+      );
+
+      const isSubscribed =
+         subscription.status === SubscriptionStatus.Subscribed;
+      return (
+         <HStack
+            ref={ref}
+            as="form"
+            data-testid="footer-newsletter-form"
+            spacing="3"
+            w={{
+               base: 'full',
+               xl: 'auto',
+            }}
+            justify={{
+               base: 'center',
+               md: 'flex-end',
+            }}
+            align="flex-start"
+            onSubmit={onSubscribe}
+            {...props}
+         >
+            <FooterNewsletterEmail
+               subscription={subscription}
+               inputRef={inputRef}
+               emailPlaceholder={emailPlaceholder}
+               isSubscribed={isSubscribed}
+            />
+            <Button
+               type="submit"
+               data-testid="footer-newsletter-subscribe-button"
+               isLoading={
+                  subscription.status === SubscriptionStatus.Subscribing
+               }
+               disabled={subscription.status !== SubscriptionStatus.Idle}
+               colorScheme="brand"
+               visibility={isSubscribed ? 'hidden' : undefined}
+            >
+               {subscribeLabel}
+            </Button>
+            {isSubscribed && (
+               <Text
+                  align="center"
+                  position={'absolute'}
+                  top="0"
+                  left="0"
+                  right="5"
+                  bottom="0"
+                  lineHeight="10"
+               >
+                  <Icon
+                     as={RiCheckFill}
+                     boxSize="5"
+                     mb="-5px"
+                     mr="6px"
+                     ml="12px"
+                  />
+                  Subscribed!
+               </Text>
+            )}
+         </HStack>
+      );
+   }
+);
 
 const FooterNewsletterFormControl = forwardRef<FormControlProps, 'div'>(
    (props, ref) => {
@@ -165,65 +228,14 @@ export function NewsletterForm({
    emailPlaceholder,
    subscribeLabel,
 }: NewsletterFormProps) {
-   const inputRef = React.useRef<HTMLInputElement>(null);
-   const [subscription, subscribe] = useSubscribeToNewsletter();
-
-   const onSubscribe = React.useCallback(
-      async (event: React.FormEvent<HTMLDivElement>) => {
-         event.preventDefault();
-         if (inputRef.current) {
-            const email = inputRef.current.value;
-            subscribe(email);
-         }
-      },
-      [subscribe]
-   );
-
-   const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
-
    return (
       <FooterNewsletter>
          <FooterNewsletterCopy title={title} description={description} />
-         <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
-            <FooterNewsletterEmail
-               subscription={subscription}
-               inputRef={inputRef}
-               emailPlaceholder={emailPlaceholder}
-               isSubscribed={isSubscribed}
-            />
-            <Button
-               type="submit"
-               data-testid="footer-newsletter-subscribe-button"
-               isLoading={
-                  subscription.status === SubscriptionStatus.Subscribing
-               }
-               disabled={subscription.status !== SubscriptionStatus.Idle}
-               colorScheme="brand"
-               visibility={isSubscribed ? 'hidden' : undefined}
-            >
-               {subscribeLabel}
-            </Button>
-            {isSubscribed && (
-               <Text
-                  align="center"
-                  position={'absolute'}
-                  top="0"
-                  left="0"
-                  right="5"
-                  bottom="0"
-                  lineHeight="10"
-               >
-                  <Icon
-                     as={RiCheckFill}
-                     boxSize="5"
-                     mb="-5px"
-                     mr="6px"
-                     ml="12px"
-                  />
-                  Subscribed!
-               </Text>
-            )}
-         </FooterNewsletterForm>
+         <FooterNewsletterForm
+            emailPlaceholder={emailPlaceholder}
+            subscribeLabel={subscribeLabel}
+            position="relative"
+         />
       </FooterNewsletter>
    );
 }
