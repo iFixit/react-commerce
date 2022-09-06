@@ -56,11 +56,11 @@ query findProduct($handle: String) {
                width
                url
             }
-            priceV2 {
+            price {
                amount
                currencyCode
             }
-            compareAtPriceV2 {
+            compareAtPrice {
                amount
                currencyCode
             }
@@ -88,6 +88,36 @@ query findProduct($handle: String) {
             }
             warranty: metafield(namespace: "ifixit", key: "warranty") {
                value
+            }
+            crossSell: metafield(namespace: "ifixit", key: "cross_sell_ref") {
+               references(first: 2) {
+                  nodes {
+                     __typename
+                     ... on Product {
+                        handle
+                        title
+                        variants(first: 1) {
+                           nodes {
+                              image {
+                                 id
+                                 altText
+                                 height
+                                 width
+                                 url
+                              }
+                              price {
+                                 amount
+                                 currencyCode
+                              }
+                              compareAtPrice {
+                                 amount
+                                 currencyCode
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
             }
          }
       }

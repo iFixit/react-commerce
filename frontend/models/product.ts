@@ -1,11 +1,13 @@
 import { IFIXIT_ORIGIN } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
 import { isRecord } from '@ifixit/helpers';
+import { ShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
 import {
    ShopCredentials,
    getShopifyStorefrontSdk,
    MoneyV2,
    CurrencyCode,
+   FindProductQuery,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 
@@ -18,21 +20,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    if (response.product == null) {
       return null;
    }
-   const variants = response.product.variants.nodes.map((variant) => {
-      return {
-         ...variant,
-         formattedPrice: formatPrice(variant.priceV2),
-         formattedCompareAtPrice: variant.compareAtPriceV2
-            ? formatPrice(variant.compareAtPriceV2)
-            : null,
-         kitContents: variant.kitContents?.value ?? null,
-         note: variant.note?.value ?? null,
-         disclaimer: variant.disclaimer?.value ?? null,
-         warning: variant.warning?.value ?? null,
-         specifications: variant.specifications?.value ?? null,
-         warranty: variant.warranty?.value ?? null,
-      };
-   });
+   const variants = getVariants(response.product);
    const variantSku = variants.find((variant) => variant.sku != null)?.sku;
    if (variantSku == null) {
       console.warn(`No sku found for product "${handle}"`);
@@ -58,6 +46,50 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ),
       reviewsData,
    };
+}
+
+function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
+   return shopifyProduct.variants.nodes.map((variant) => {
+      return {
+         ...variant,
+         formattedPrice: formatPrice(variant.price),
+         formattedCompareAtPrice: variant.compareAtPrice
+            ? formatPrice(variant.compareAtPrice)
+            : null,
+         kitContents: variant.kitContents?.value ?? null,
+         note: variant.note?.value ?? null,
+         disclaimer: variant.disclaimer?.value ?? null,
+         warning: variant.warning?.value ?? null,
+         specifications: variant.specifications?.value ?? null,
+         warranty: variant.warranty?.value ?? null,
+         crossSell: getCrossSellReferences(variant),
+      };
+   });
+}
+
+function getCrossSellReferences(
+   variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
+) {
+   const products =
+      variant.crossSell?.references?.nodes.map((reference) => {
+         if (reference.__typename !== 'Product') {
+            return null;
+         }
+         const variants = reference.variants.nodes.map((variant) => {
+            return {
+               ...variant,
+               formattedPrice: formatPrice(variant.price),
+               formattedCompareAtPrice: variant.compareAtPrice
+                  ? formatPrice(variant.compareAtPrice)
+                  : null,
+            };
+         });
+         return {
+            ...reference,
+            variants,
+         };
+      }) ?? [];
+   return filterNullableItems(products);
 }
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
