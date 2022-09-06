@@ -54,9 +54,23 @@ const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
    );
 });
 
-const FooterNewsletterCopy = forwardRef<BoxProps, 'div'>((props, ref) => {
-   return <Box ref={ref} textAlign="left" {...props} />;
-});
+type NewsletterCopyProps = BoxProps & {
+   title: string;
+   description: string;
+};
+
+const FooterNewsletterCopy = forwardRef<NewsletterCopyProps, 'div'>(
+   ({ title, description, ...props }, ref) => {
+      return (
+         <Box ref={ref} textAlign="left" {...props}>
+            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
+            <FooterNewsletterDescription>
+               {description}
+            </FooterNewsletterDescription>
+         </Box>
+      );
+   }
+);
 
 const FooterNewsletterTitle = forwardRef<TextProps, 'div'>((props, ref) => {
    return (
@@ -168,12 +182,7 @@ export function NewsletterForm({
 
    return (
       <FooterNewsletter>
-         <FooterNewsletterCopy>
-            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
-            <FooterNewsletterDescription>
-               {description}
-            </FooterNewsletterDescription>
-         </FooterNewsletterCopy>
+         <FooterNewsletterCopy title={title} description={description} />
          <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
             <FooterNewsletterFormControl isInvalid={subscription.error != null}>
                <FooterNewsletterEmailLabel>
