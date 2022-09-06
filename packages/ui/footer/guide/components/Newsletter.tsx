@@ -150,26 +150,7 @@ const FooterNewsletterForm = forwardRef<FooterNewsletterFormProps, 'form'>(
             >
                {subscribeLabel}
             </Button>
-            {isSubscribed && (
-               <Text
-                  align="center"
-                  position={'absolute'}
-                  top="0"
-                  left="0"
-                  right="5"
-                  bottom="0"
-                  lineHeight="10"
-               >
-                  <Icon
-                     as={RiCheckFill}
-                     boxSize="5"
-                     mb="-5px"
-                     mr="6px"
-                     ml="12px"
-                  />
-                  Subscribed!
-               </Text>
-            )}
+            <NewsletterSubscribed isSubscribed={isSubscribed} />
          </HStack>
       );
    }
@@ -264,5 +245,25 @@ const FooterNewsletterEmail = ({
          />
          <FormErrorMessage>{subscription.error}</FormErrorMessage>
       </FooterNewsletterFormControl>
+   );
+};
+
+const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
+   if (!isSubscribed) {
+      return null;
+   }
+   return (
+      <Text
+         align="left"
+         position={'absolute'}
+         top="0"
+         left="0"
+         right="5"
+         bottom="0"
+         lineHeight="10"
+      >
+         <Icon as={RiCheckFill} boxSize="5" mb="-5px" mr="6px" ml="-12px" />
+         Subscribed!
+      </Text>
    );
 };
