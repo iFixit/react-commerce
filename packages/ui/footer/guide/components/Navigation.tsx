@@ -12,7 +12,7 @@ import {
    SimpleGridProps,
    TextProps,
 } from '@chakra-ui/react';
-import { Menu } from '@models/menu';
+import { Menu, MenuItem } from '@models/menu';
 import { GlobalSettings } from '@models/global-settings';
 import { NewsletterForm } from './Newsletter';
 
@@ -103,17 +103,18 @@ export const FooterNavigationList = forwardRef<FooterNavigationListProps, 'ul'>(
 );
 
 const FooterNavigationListItems = ({ menu }: { menu: Menu }) => {
-   const listItems = menu.items.map((item, index) => {
-      if (item.type === 'link') {
-         return (
-            <FooterNavigationItem key={index}>
-               <FooterNavigationLink href={item.url}>
-                  {item.name}
-               </FooterNavigationLink>
-            </FooterNavigationItem>
-         );
+   const listItems = menu.items.map((item: MenuItem, index: number) => {
+      if (item.type !== 'link') {
+         return null;
       }
-      return null;
+
+      return (
+         <FooterNavigationItem key={index}>
+            <FooterNavigationLink href={item.url}>
+               {item.name}
+            </FooterNavigationLink>
+         </FooterNavigationItem>
+      );
    });
 
    return <>{listItems}</>;

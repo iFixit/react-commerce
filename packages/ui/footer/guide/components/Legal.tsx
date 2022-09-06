@@ -7,7 +7,7 @@ import {
    Stack,
    StackProps,
 } from '@chakra-ui/react';
-import { Menu } from '@models/menu';
+import { Menu, MenuItem } from '@models/menu';
 
 type FooterLegalSectionProps = StackProps & {
    bottomMenu: Menu | null;
@@ -75,15 +75,15 @@ const FooterLegalLinks = ({ bottomMenu }: { bottomMenu: Menu | null }) => {
    if (!bottomMenu || !bottomMenu.items) {
       return null;
    }
-   const links = bottomMenu.items.map((item, index) => {
-      if (item.type === 'link') {
-         return (
-            <FooterLegalLink key={index} href={item.url}>
-               {item.name}
-            </FooterLegalLink>
-         );
+   const links = bottomMenu.items.map((item: MenuItem, index: number) => {
+      if (item.type !== 'link') {
+         return null;
       }
-      return null;
+      return (
+         <FooterLegalLink key={index} href={item.url}>
+            {item.name}
+         </FooterLegalLink>
+      );
    });
 
    return (

@@ -35,12 +35,14 @@ const FooterPartners = ({ partners }: { partners: Menu }) => {
    if (!partners) {
       return null;
    }
-   const partnerIcons = partners.items.map((partner: MenuItem) => {
-      if (partner.type === MenuItemType.ImageLink) {
-         return <FooterPartner partner={partner} />;
+   const partnerIcons = partners.items.map(
+      (partner: MenuItem, index: number) => {
+         if (partner.type === MenuItemType.ImageLink) {
+            return <FooterPartner key={index} partner={partner} />;
+         }
+         return null;
       }
-      return null;
-   });
+   );
    // the type checker complains that this isn't a component if we don't wrap it in a fragment
    return <>{partnerIcons}</>;
 };
@@ -59,21 +61,21 @@ const FooterPartner = ({ partner }: { partner: ImageLinkMenuItem }) => {
 };
 
 const PartnerImage = ({ partner }: { partner: ImageLinkMenuItem }) => {
-   if (partner.image) {
-      const altText = partner.image?.alternativeText || `${partner.name} logo`;
-      return (
-         <IfixitImage
-            layout="fill"
-            objectFit="contain"
-            src={partner.image.url}
-            alt={altText}
-         />
-      );
-   } else {
+   if (!partner.image) {
       return (
          <IfixitImage layout="fill" objectFit="contain" src={noImageFixie} />
       );
    }
+
+   const altText = partner.image?.alternativeText || `${partner.name} logo`;
+   return (
+      <IfixitImage
+         layout="fill"
+         objectFit="contain"
+         src={partner.image.url}
+         alt={altText}
+      />
+   );
 };
 
 export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(

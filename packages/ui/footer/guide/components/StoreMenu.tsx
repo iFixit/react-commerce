@@ -24,17 +24,17 @@ export const StoreMenu = ({
 }: {
    stores: StoreListItem[] | undefined;
 }) => {
-   if (stores && stores.length > 0) {
-      return (
-         <Menu isLazy lazyBehavior="keepMounted">
-            <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
-               Region
-            </StoreMenuButton>
-            <StoreMenuItems stores={stores} />
-         </Menu>
-      );
+   if (!stores || stores.length === 0) {
+      return null;
    }
-   return null;
+   return (
+      <Menu isLazy lazyBehavior="keepMounted">
+         <StoreMenuButton icon={<Flag code={FlagCountryCode.US} />}>
+            Region
+         </StoreMenuButton>
+         <StoreMenuItems stores={stores} />
+      </Menu>
+   );
 };
 
 const StoreMenuItems = ({ stores }: { stores: StoreListItem[] }) => {
