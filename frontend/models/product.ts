@@ -1,11 +1,10 @@
 import { IFIXIT_ORIGIN } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
+import { formatShopifyPrice } from '@helpers/commerce-helpers';
 import { isRecord } from '@ifixit/helpers';
 import {
-   CurrencyCode,
    FindProductQuery,
    getShopifyStorefrontSdk,
-   MoneyV2,
    ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
@@ -49,11 +48,12 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
 
 function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
    return shopifyProduct.variants.nodes.map((variant) => {
+      const { crossSell, ...other } = variant;
       return {
-         ...variant,
-         formattedPrice: formatPrice(variant.price),
+         ...other,
+         formattedPrice: formatShopifyPrice(variant.price),
          formattedCompareAtPrice: variant.compareAtPrice
-            ? formatPrice(variant.compareAtPrice)
+            ? formatShopifyPrice(variant.compareAtPrice)
             : null,
          kitContents: variant.kitContents?.value ?? null,
          note: variant.note?.value ?? null,
@@ -80,9 +80,9 @@ function getCrossSellReferences(
             ...other,
             variant: {
                ...firstVariant,
-               formattedPrice: formatPrice(firstVariant.price),
+               formattedPrice: formatShopifyPrice(firstVariant.price),
                formattedCompareAtPrice: firstVariant.compareAtPrice
-                  ? formatPrice(firstVariant.compareAtPrice)
+                  ? formatShopifyPrice(firstVariant.compareAtPrice)
                   : null,
             },
          };
@@ -93,17 +93,6 @@ function getCrossSellReferences(
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
 
 export type ProductVariant = Product['variants'][0];
-
-function formatPrice(money: MoneyV2) {
-   switch (money.currencyCode) {
-      case CurrencyCode.Usd: {
-         return `$${money.amount}`;
-      }
-      default: {
-         return `${money.amount} ${money.currencyCode}`;
-      }
-   }
-}
 
 function parseFaqs(value: string | null | undefined) {
    if (value == null) {

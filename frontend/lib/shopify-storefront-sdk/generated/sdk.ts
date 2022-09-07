@@ -6304,6 +6304,7 @@ export type FindProductQuery = {
                              __typename?: 'ProductVariantConnection';
                              nodes: Array<{
                                 __typename?: 'ProductVariant';
+                                id: string;
                                 image?: Maybe<{
                                    __typename?: 'Image';
                                    id?: Maybe<string>;
@@ -6424,6 +6425,7 @@ export const FindProductDocument = `
                 title
                 variants(first: 1) {
                   nodes {
+                    id
                     image {
                       id
                       altText
