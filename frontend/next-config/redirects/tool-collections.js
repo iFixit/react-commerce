@@ -1,8 +1,9 @@
+const { escapeStringForRegex } = require('../helpers/redirects');
 const legacyFilterSlugs = require('./legacy-filter-slugs.json');
 
 function getToolRedirects() {
    return legacyFilterSlugs['toolLegacyRoutes']
-      .map((route) => route.replaceAll(/([/()])/g, '\\$&'))
+      .map((route) => escapeStringForRegex(route))
       .join('|');
 }
 

@@ -1,3 +1,4 @@
+const { escapeStringForRegex } = require('../helpers/redirects');
 const legacyFilterSlugs = require('./legacy-filter-slugs.json');
 
 function mapPartItemTypes() {
@@ -14,7 +15,7 @@ function mapPartItemTypes() {
    const legacyTagsWithNoItemType = legacyFilterSlugs['tagsWithNoItemType'];
    // Redirect tags we don't support anymore to the base product list page.
    const legacyToParent = legacyTagsWithNoItemType.map((oldTag) => ({
-      source: `/Parts/:slug/${oldTag}`,
+      source: `/Parts/:slug/${escapeStringForRegex(oldTag)}`,
       destination: `/Parts/:slug`,
       permanent: true,
    }));
