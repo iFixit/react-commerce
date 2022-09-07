@@ -30,10 +30,8 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
-import { APICart, useAddToCart } from '@ifixit/cart-sdk';
-import { cartKeys } from '@ifixit/cart-sdk/utils';
-import { PageContentWrapper } from '@ifixit/ui';
-import { useCartContext } from '@ifixit/ui/cart/drawer/hooks/useCartContext';
+import { useAddToCart } from '@ifixit/cart-sdk';
+import { useCartDrawer, PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import {
@@ -43,7 +41,6 @@ import {
    FaShieldAlt,
    FaTruck,
 } from 'react-icons/fa';
-import { useQueryClient } from 'react-query';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -60,7 +57,8 @@ export function ProductSection({
    onVariantChange,
 }: ProductSectionProps) {
    const appContext = useAppContext();
-   const { onOpen } = useCartContext();
+   const addToCart = useAddToCart();
+   const { onOpen } = useCartDrawer();
 
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -76,8 +74,6 @@ export function ProductSection({
       },
       [product.variants, onVariantChange]
    );
-
-   const addToCart = useAddToCart();
 
    const handleAddToCart = React.useCallback(() => {
       if (selectedVariant.sku) {

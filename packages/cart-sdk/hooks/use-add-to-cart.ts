@@ -24,7 +24,6 @@ export function useAddToCart() {
             {
                body: JSON.stringify({
                   quantity: input.quantity,
-                  getMiniCartInfo: true,
                }),
             }
          );
@@ -49,7 +48,7 @@ export function useAddToCart() {
                           ...current,
                           totalNumItems: current.totalNumItems + input.quantity,
                           products: [
-                             // Optimistic update
+                             ...current.products,
                              {
                                 discount: '',
                                 imageSrc: input.imageSrc,
@@ -62,8 +61,9 @@ export function useAddToCart() {
                                 subTotal: input.formattedPrice,
                                 subTotalStr: input.formattedPrice,
                              },
-                             ...current.products,
-                          ],
+                          ].sort((a, b) =>
+                             a.itemcode.localeCompare(b.itemcode)
+                          ),
                        }
                      : {
                           ...current,
