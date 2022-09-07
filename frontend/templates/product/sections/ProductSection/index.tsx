@@ -30,7 +30,8 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
-import { useAddToCart } from '@ifixit/cart-sdk';
+import { APICart, useAddToCart } from '@ifixit/cart-sdk';
+import { cartKeys } from '@ifixit/cart-sdk/utils';
 import { PageContentWrapper } from '@ifixit/ui';
 import { useCartContext } from '@ifixit/ui/cart/drawer/hooks/useCartContext';
 import { Product, ProductVariant } from '@models/product';
@@ -42,6 +43,7 @@ import {
    FaShieldAlt,
    FaTruck,
 } from 'react-icons/fa';
+import { useQueryClient } from 'react-query';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 
@@ -74,16 +76,28 @@ export function ProductSection({
       [product.variants, onVariantChange]
    );
 
-   const addToCart = useAddToCart(() => onOpen());
+   const addToCart = useAddToCart();
 
    const handleAddToCart = React.useCallback(() => {
       if (selectedVariant.sku) {
          addToCart.mutate({
+            name: product.title,
             itemcode: selectedVariant.sku,
+            formattedPrice: selectedVariant.formattedPrice,
             quantity: 1,
+            imageSrc: selectedVariant.image?.url || product.images[0].url,
          });
+         onOpen();
       }
-   }, [addToCart, selectedVariant.sku]);
+   }, [
+      addToCart,
+      product.title,
+      selectedVariant.sku,
+      selectedVariant.formattedPrice,
+      selectedVariant.image,
+      product.images,
+      onOpen,
+   ]);
 
    return (
       <PageContentWrapper as="section">
