@@ -1,4 +1,4 @@
-const legacyFilterSlugs = require('./legacyFilterSlugs.json');
+const legacyFilterSlugs = require('./legacy-filter-slugs.json');
 
 function getToolRedirects() {
    return legacyFilterSlugs['toolLegacyRoutes']
