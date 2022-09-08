@@ -2,6 +2,9 @@ import * as Sentry from '@sentry/nextjs';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { GetServerSidePropsContext } from 'next';
 
+const shouldIgnoreUserAgent =
+   typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);
+
 export const sentryFetch: typeof fetch = async (resource, options) => {
    const context = {
       // Underscore sorts the resource first in Sentry's UI
@@ -13,7 +16,11 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
    };
    return fetch(resource, options)
       .then((response) => {
-         if (response.status >= 400 && response.status !== 401) {
+         if (
+            !shouldIgnoreUserAgent &&
+            response.status >= 400 &&
+            response.status !== 401
+         ) {
             const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
             Sentry.captureException(new Error(msg), (scope) => {
                scope.setContext('request', context);
