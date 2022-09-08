@@ -4,6 +4,7 @@ import {
    Badge,
    Box,
    Button,
+   Circle,
    Divider,
    Flex,
    Heading,
@@ -16,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { IfixitImage } from '@components/ifixit-image';
 import { Card } from '@components/ui';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatShopifyPrice } from '@helpers/commerce-helpers';
@@ -373,15 +375,23 @@ export interface CardImageProps {
 }
 
 export const CardImage = ({ src, alt }: CardImageProps) => {
+   const theme = useTheme();
    if (src == null) {
       return (
          <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-            <IfixitImage
-               sizes="30vw"
-               layout="fill"
-               src={placeholderImageUrl}
-               alt={alt}
-            />
+            <Box bgColor="gray.100" borderRadius="md">
+               <Circle bgColor="gray.200" size="72px">
+                  <FontAwesomeIcon
+                     icon={faImage}
+                     color={theme.colors.gray[500]}
+                     style={{
+                        width: '32px',
+                        height: '32px',
+                        transition: 'color 300ms',
+                     }}
+                  />
+               </Circle>
+            </Box>
          </AspectRatio>
       );
    }
