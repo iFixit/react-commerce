@@ -14,7 +14,6 @@ import {
    useTheme,
    VStack,
 } from '@chakra-ui/react';
-import { ProductRating } from '@components/common';
 import { IfixitImage } from '@components/ifixit-image';
 import { Card } from '@components/ui';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
@@ -35,8 +34,8 @@ export function CrossSellSection({
    selectedVariant,
 }: CrossSellSectionProps) {
    const [selectedVariantIds, setSelectedVariantIds] = React.useState(
-      selectedVariant.crossSellProducts
-         .map((p) => p.variant.id)
+      selectedVariant.crossSellVariants
+         .map((variant) => variant.id)
          .concat(selectedVariant.id)
    );
 
@@ -54,16 +53,16 @@ export function CrossSellSection({
          if (id === selectedVariant.id) {
             return acc + parseFloat(selectedVariant.price.amount);
          }
-         const selectedProduct = selectedVariant.crossSellProducts.find(
-            (p) => p.variant.id === id
+         const variant = selectedVariant.crossSellVariants.find(
+            (variant) => variant.id === id
          );
-         if (selectedProduct) {
-            return acc + parseFloat(selectedProduct.variant.price.amount);
+         if (variant) {
+            return acc + parseFloat(variant.price.amount);
          }
          return acc;
       }, 0);
    }, [
-      selectedVariant.crossSellProducts,
+      selectedVariant.crossSellVariants,
       selectedVariant.id,
       selectedVariant.price.amount,
       selectedVariantIds,
@@ -76,7 +75,7 @@ export function CrossSellSection({
       });
    }, [selectedVariant.price.currencyCode, totalPrice]);
 
-   if (selectedVariant.crossSellProducts.length === 0) {
+   if (selectedVariant.crossSellVariants.length === 0) {
       return null;
    }
 
@@ -134,20 +133,18 @@ export function CrossSellSection({
                         )}
                         onChange={() => handleToggleVariant(selectedVariant.id)}
                      />
-                     {selectedVariant.crossSellProducts.map(
-                        (crossSellProduct) => {
+                     {selectedVariant.crossSellVariants.map(
+                        (crossSellVariant) => {
                            return (
                               <CrossSellItem
-                                 key={crossSellProduct.handle}
-                                 product={crossSellProduct}
-                                 variant={crossSellProduct.variant}
+                                 key={crossSellVariant.id}
+                                 product={crossSellVariant.product}
+                                 variant={crossSellVariant}
                                  isSelected={selectedVariantIds.includes(
-                                    crossSellProduct.variant.id
+                                    crossSellVariant.id
                                  )}
                                  onChange={() =>
-                                    handleToggleVariant(
-                                       crossSellProduct.variant.id
-                                    )
+                                    handleToggleVariant(crossSellVariant.id)
                                  }
                               />
                            );
@@ -323,7 +320,7 @@ function CrossSellItem({
                            {product.title}
                         </Text>
                         {/* Product rating will be shown once the product metafield will be available */}
-                        {/* <ProductRating rating={4.5} count={10} /> */}
+                        {/* <ProductRating rating={product.rating} count={product.reviewsCount} /> */}
                      </Flex>
                   </Flex>
                   <Box

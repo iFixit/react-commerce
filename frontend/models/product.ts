@@ -61,7 +61,7 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          warning: variant.warning?.value ?? null,
          specifications: variant.specifications?.value ?? null,
          warranty: variant.warranty?.value ?? null,
-         crossSellProducts: getCrossSellReferences(variant),
+         crossSellVariants: getCrossSellReferences(variant),
       };
    });
 }
@@ -70,21 +70,16 @@ function getCrossSellReferences(
    variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
 ) {
    const products =
-      variant.crossSell?.references?.nodes.map((product) => {
-         if (product.__typename !== 'Product') {
+      variant.crossSell?.references?.nodes.map((node) => {
+         if (node.__typename !== 'ProductVariant') {
             return null;
          }
-         const { variants, ...other } = product;
-         const firstVariant = variants.nodes[0];
          return {
-            ...other,
-            variant: {
-               ...firstVariant,
-               formattedPrice: formatShopifyPrice(firstVariant.price),
-               formattedCompareAtPrice: firstVariant.compareAtPrice
-                  ? formatShopifyPrice(firstVariant.compareAtPrice)
-                  : null,
-            },
+            ...node,
+            formattedPrice: formatShopifyPrice(node.price),
+            formattedCompareAtPrice: node.compareAtPrice
+               ? formatShopifyPrice(node.compareAtPrice)
+               : null,
          };
       }) ?? [];
    return filterNullableItems(products);

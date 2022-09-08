@@ -6296,37 +6296,34 @@ export type FindProductQuery = {
                      | { __typename: 'GenericFile' }
                      | { __typename: 'MediaImage' }
                      | { __typename: 'Page' }
+                     | { __typename: 'Product' }
                      | {
-                          __typename: 'Product';
-                          handle: string;
-                          title: string;
-                          variants: {
-                             __typename?: 'ProductVariantConnection';
-                             nodes: Array<{
-                                __typename?: 'ProductVariant';
-                                id: string;
-                                image?: Maybe<{
-                                   __typename?: 'Image';
-                                   id?: Maybe<string>;
-                                   altText?: Maybe<string>;
-                                   height?: Maybe<number>;
-                                   width?: Maybe<number>;
-                                   url: string;
-                                }>;
-                                price: {
-                                   __typename?: 'MoneyV2';
-                                   amount: any;
-                                   currencyCode: CurrencyCode;
-                                };
-                                compareAtPrice?: Maybe<{
-                                   __typename?: 'MoneyV2';
-                                   amount: any;
-                                   currencyCode: CurrencyCode;
-                                }>;
-                             }>;
+                          __typename: 'ProductVariant';
+                          id: string;
+                          product: {
+                             __typename?: 'Product';
+                             handle: string;
+                             title: string;
                           };
+                          image?: Maybe<{
+                             __typename?: 'Image';
+                             id?: Maybe<string>;
+                             altText?: Maybe<string>;
+                             height?: Maybe<number>;
+                             width?: Maybe<number>;
+                             url: string;
+                          }>;
+                          price: {
+                             __typename?: 'MoneyV2';
+                             amount: any;
+                             currencyCode: CurrencyCode;
+                          };
+                          compareAtPrice?: Maybe<{
+                             __typename?: 'MoneyV2';
+                             amount: any;
+                             currencyCode: CurrencyCode;
+                          }>;
                        }
-                     | { __typename: 'ProductVariant' }
                      | { __typename: 'Video' }
                   >;
                }>;
@@ -6420,28 +6417,26 @@ export const FindProductDocument = `
           references(first: 2) {
             nodes {
               __typename
-              ... on Product {
-                handle
-                title
-                variants(first: 1) {
-                  nodes {
-                    id
-                    image {
-                      id
-                      altText
-                      height
-                      width
-                      url
-                    }
-                    price {
-                      amount
-                      currencyCode
-                    }
-                    compareAtPrice {
-                      amount
-                      currencyCode
-                    }
-                  }
+              ... on ProductVariant {
+                id
+                product {
+                  handle
+                  title
+                }
+                image {
+                  id
+                  altText
+                  height
+                  width
+                  url
+                }
+                price {
+                  amount
+                  currencyCode
+                }
+                compareAtPrice {
+                  amount
+                  currencyCode
                 }
               }
             }

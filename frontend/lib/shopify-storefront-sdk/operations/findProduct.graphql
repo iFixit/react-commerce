@@ -93,28 +93,26 @@ query findProduct($handle: String) {
                references(first: 2) {
                   nodes {
                      __typename
-                     ... on Product {
-                        handle
-                        title
-                        variants(first: 1) {
-                           nodes {
-                              id
-                              image {
-                                 id
-                                 altText
-                                 height
-                                 width
-                                 url
-                              }
-                              price {
-                                 amount
-                                 currencyCode
-                              }
-                              compareAtPrice {
-                                 amount
-                                 currencyCode
-                              }
-                           }
+                     ... on ProductVariant {
+                        id
+                        product {
+                           handle
+                           title
+                        }
+                        image {
+                           id
+                           altText
+                           height
+                           width
+                           url
+                        }
+                        price {
+                           amount
+                           currencyCode
+                        }
+                        compareAtPrice {
+                           amount
+                           currencyCode
                         }
                      }
                   }
