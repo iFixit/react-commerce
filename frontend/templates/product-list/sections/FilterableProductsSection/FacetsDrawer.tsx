@@ -146,9 +146,7 @@ export function FacetsDrawer({
                            attribute={facet}
                            isOpen={facet === currentFacet}
                            productList={productList}
-                           onClose={() => {
-                              setCurrentFacet(null);
-                           }}
+                           onClose={() => setCurrentFacet(null)}
                         />
                      );
                   })}
