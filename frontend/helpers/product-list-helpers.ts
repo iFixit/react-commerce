@@ -41,35 +41,15 @@ export function encodeDeviceItemTypeSpaces(itemType: string): string {
 /**
  * Convert '_' in URL slug to spaces for product list device title
  */
-export function decodeDeviceTitleSpaces(handle: string): string {
+export function destylizeDeviceTitle(handle: string): string {
    return handle.replace(/_/g, ' ');
 }
 
 /**
  * Convert to spaces in product list device Title to '_' for URL slug
  */
-export function encodeDeviceTitleSpaces(deviceTitle: string): string {
+export function stylizeDeviceTitle(deviceTitle: string): string {
    return deviceTitle.replace(/\s/g, '_');
-}
-
-/**
- * encodeURIComponent for each part of the devices Path
- */
-export function encodeDevicePath(devicePath: string): string {
-   return devicePath
-      .split('/')
-      .map((x) => encodeURIComponent(x))
-      .join('/');
-}
-
-/**
- * decodeURIComponent for each part of the devices Path
- */
-export function decodeDevicePath(devicePath: string): string {
-   return devicePath
-      .split('/')
-      .map((x) => decodeURIComponent(x))
-      .join('/');
 }
 
 type ProductListPathAttributes = Pick<
@@ -89,7 +69,7 @@ export function getProductListPath(
             productList.deviceTitle != null,
             'device product list does not have device title'
          );
-         const deviceHandle = encodeDeviceTitleSpaces(productList.deviceTitle);
+         const deviceHandle = encodeURIComponent(stylizeDeviceTitle(productList.deviceTitle));
          return `/Parts/${deviceHandle}`;
       }
       case ProductListType.AllTools: {
