@@ -5,8 +5,9 @@ import {
 } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
-   decodeDeviceItemTypeSpaces,
+   destylizeDeviceItemType,
    destylizeDeviceTitle as destylizeDeviceTitle,
+   stylizeDeviceItemType,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
@@ -101,7 +102,7 @@ export const getProductListServerSideProps = ({
             }
 
             const itemType = itemTypeHandle
-               ? decodeDeviceItemTypeSpaces(itemTypeHandle)
+               ? destylizeDeviceItemType(itemTypeHandle)
                : null;
 
             productList = await logAsync('findProductList', () =>
@@ -121,7 +122,7 @@ export const getProductListServerSideProps = ({
 
             canonicalPath = getDeviceCanonicalPath(
                productList?.deviceTitle,
-               itemTypeHandle
+               itemType
             );
 
             break;
@@ -252,12 +253,16 @@ function getDevicePathSegments(
 
 function getDeviceCanonicalPath(
    deviceTitle: string | null | undefined,
-   itemTypeHandle?: string
+   itemType: string | null
 ) {
    if (deviceTitle == null) {
       return null;
    }
-   const slug = itemTypeHandle ? `/${encodeURIComponent(itemTypeHandle)}` : '';
-   const canonicalDeviceHandle = encodeURIComponent(stylizeDeviceTitle(deviceTitle));
+   const slug = itemType
+      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
+      : '';
+   const canonicalDeviceHandle = encodeURIComponent(
+      stylizeDeviceTitle(deviceTitle)
+   );
    return `/Parts/${canonicalDeviceHandle}${slug}`;
 }

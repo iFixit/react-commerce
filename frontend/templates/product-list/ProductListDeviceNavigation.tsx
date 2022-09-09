@@ -20,7 +20,9 @@ export function ProductListDeviceNavigation({
       guideUrl = `${IFIXIT_ORIGIN}/Guide`;
       answersUrl = `${IFIXIT_ORIGIN}/Answers`;
    } else if (productList.deviceTitle && productList.deviceTitle.length > 0) {
-      const deviceHandle = encodeURIComponent(stylizeDeviceTitle(productList.deviceTitle));
+      const deviceHandle = encodeURIComponent(
+         stylizeDeviceTitle(productList.deviceTitle)
+      );
       guideUrl = `${IFIXIT_ORIGIN}/Device/${deviceHandle}`;
       answersUrl = `${IFIXIT_ORIGIN}/Answers/Device/${deviceHandle}`;
    }
