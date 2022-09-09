@@ -8,17 +8,6 @@ import { cartKeys } from '../utils';
  * Get the cart from the API.
  */
 export function useCart() {
-   const client = useIFixitApiClient();
-   const query = useQuery(cartKeys.cart, async (): Promise<Cart | null> => {
-      const result = (await client.get('store/user/cart')) || null;
-      if (!isValidCartPayload(result)) {
-         return null;
-      }
-      return {
-         ...result.cart,
-         hasItemsInCart: result.cart.totalNumItems > 0,
-      };
-   });
    return null;
 }
 
