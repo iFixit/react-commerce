@@ -31,6 +31,8 @@ export function useAddToCart() {
       {
          onMutate: async (input: AddProductVariantInput) => {
             await client.cancelQueries(cartKeys.cart);
+            window.onbeforeunload = () =>
+               'Some products are being added to the cart. Do you really want to quit?';
 
             const previousCart = client.getQueryData<APICart>(cartKeys.cart);
 
@@ -90,6 +92,7 @@ export function useAddToCart() {
             );
          },
          onSettled: () => {
+            window.onbeforeunload = () => undefined;
             client.invalidateQueries(cartKeys.cart);
          },
       }
