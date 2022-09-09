@@ -35,7 +35,7 @@ export function useCheckout(): UseCheckout {
    return {
       ...state,
       redirectToCheckout: async () => {
-         if (cart?.data == null || !cart.data.hasItemsInCart) {
+         if (cart!.data == null || !cart.data.hasItemsInCart) {
             dispatch({
                type: ActionType.FailedCheckout,
                error: CartError.EmptyCart,
