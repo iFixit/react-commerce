@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { useAddToCart } from '@ifixit/cart-sdk';
-import { PageContentWrapper } from '@ifixit/ui';
+import { useCartDrawer, PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import {
@@ -57,6 +57,8 @@ export function ProductSection({
    onVariantChange,
 }: ProductSectionProps) {
    const appContext = useAppContext();
+   const addToCart = useAddToCart();
+   const { onOpen } = useCartDrawer();
 
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -73,16 +75,26 @@ export function ProductSection({
       [product.variants, onVariantChange]
    );
 
-   const addToCart = useAddToCart();
-
    const handleAddToCart = React.useCallback(() => {
       if (selectedVariant.sku) {
          addToCart.mutate({
+            name: product.title,
             itemcode: selectedVariant.sku,
+            formattedPrice: selectedVariant.formattedPrice,
             quantity: 1,
+            imageSrc: selectedVariant.image?.url || product.images[0].url,
          });
+         onOpen();
       }
-   }, [addToCart, selectedVariant.sku]);
+   }, [
+      addToCart,
+      product.title,
+      selectedVariant.sku,
+      selectedVariant.formattedPrice,
+      selectedVariant.image,
+      product.images,
+      onOpen,
+   ]);
 
    return (
       <PageContentWrapper as="section">
