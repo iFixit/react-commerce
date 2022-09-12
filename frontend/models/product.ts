@@ -61,12 +61,12 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          warning: variant.warning?.value ?? null,
          specifications: variant.specifications?.value ?? null,
          warranty: variant.warranty?.value ?? null,
-         crossSellVariants: getCrossSellReferences(variant),
+         crossSellVariants: getCrossSellVariants(variant),
       };
    });
 }
 
-function getCrossSellReferences(
+function getCrossSellVariants(
    variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
 ) {
    const products =
@@ -76,6 +76,13 @@ function getCrossSellReferences(
          }
          return {
             ...node,
+            product: {
+               ...node.product,
+               rating: parseRatingMetafieldValue(node.product.rating?.value),
+               reviewsCount: parseNumericMetafieldValue(
+                  node.product.reviewsCount?.value
+               ),
+            },
             formattedPrice: formatShopifyPrice(node.price),
             formattedCompareAtPrice: node.compareAtPrice
                ? formatShopifyPrice(node.compareAtPrice)
@@ -216,4 +223,19 @@ export async function fetchProductReviews(
       return null;
    }
    throw new Error(response.statusText);
+}
+
+function parseRatingMetafieldValue(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   const rating = JSON.parse(value);
+   return rating.value != null ? parseFloat(rating.value) : null;
+}
+
+function parseNumericMetafieldValue(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   return value != null ? parseFloat(value) : null;
 }

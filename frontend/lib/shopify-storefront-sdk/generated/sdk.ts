@@ -6304,6 +6304,14 @@ export type FindProductQuery = {
                              __typename?: 'Product';
                              handle: string;
                              title: string;
+                             rating?: Maybe<{
+                                __typename?: 'Metafield';
+                                value: string;
+                             }>;
+                             reviewsCount?: Maybe<{
+                                __typename?: 'Metafield';
+                                value: string;
+                             }>;
                           };
                           image?: Maybe<{
                              __typename?: 'Image';
@@ -6422,6 +6430,12 @@ export const FindProductDocument = `
                 product {
                   handle
                   title
+                  rating: metafield(namespace: "reviews", key: "rating") {
+                    value
+                  }
+                  reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+                    value
+                  }
                 }
                 image {
                   id

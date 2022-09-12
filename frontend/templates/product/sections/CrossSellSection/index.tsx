@@ -15,6 +15,7 @@ import {
    useTheme,
    VStack,
 } from '@chakra-ui/react';
+import { ProductRating } from '@components/common';
 import { IfixitImage } from '@components/ifixit-image';
 import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
@@ -77,6 +78,18 @@ export function CrossSellSection({
       });
    }, [selectedVariant.price.currencyCode, totalPrice]);
 
+   const currentProduct = React.useMemo<CrossSellProduct>(() => {
+      return {
+         title: product.title,
+         rating: product.reviewsData?.average,
+         reviewsCount: product.reviewsData?.count,
+      };
+   }, [
+      product.reviewsData?.average,
+      product.reviewsData?.count,
+      product.title,
+   ]);
+
    if (selectedVariant.crossSellVariants.length === 0) {
       return null;
    }
@@ -127,7 +140,7 @@ export function CrossSellSection({
                   >
                      <CrossSellItem
                         key={product.handle}
-                        product={product}
+                        product={currentProduct}
                         variant={selectedVariant}
                         isCurrentItem
                         isSelected={selectedVariantIds.includes(
@@ -190,28 +203,28 @@ export function CrossSellSection({
 }
 
 type CrossSellItemProps = {
-   product: CardProduct;
-   variant: CardProductVariant;
+   product: CrossSellProduct;
+   variant: CrossSellProductVariant;
    isCurrentItem?: boolean;
    isSelected: boolean;
    onChange: (selected: boolean) => void;
 };
 
-type CardProduct = {
+type CrossSellProduct = {
    title: string;
+   rating: number | undefined | null;
+   reviewsCount: number | undefined | null;
 };
 
-type CardProductVariant = {
+type CrossSellProductVariant = {
    price: MoneyV2;
    compareAtPrice?: MoneyV2 | null;
    formattedPrice: string;
    formattedCompareAtPrice: string | null;
-   image?: CardImage | null;
-};
-
-type CardImage = {
-   altText?: string | null;
-   url: string;
+   image?: {
+      altText?: string | null;
+      url: string;
+   } | null;
 };
 
 function CrossSellItem({
@@ -321,8 +334,14 @@ function CrossSellItem({
                         >
                            {product.title}
                         </Text>
-                        {/* Product rating will be shown once the product metafield will be available */}
-                        {/* <ProductRating rating={product.rating} count={product.reviewsCount} /> */}
+                        {product.rating != null &&
+                           product.reviewsCount != null && (
+                              <ProductRating
+                                 mb="3"
+                                 rating={product.rating}
+                                 count={product.reviewsCount}
+                              />
+                           )}
                      </Flex>
                   </Flex>
                   <Box
