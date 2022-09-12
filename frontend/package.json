@@ -21,7 +21,8 @@
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
-      "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
+      "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg",
+      "postinstall": "./react-instantsearch-hooks-server-apply-patch.sh"
    },
    "dependencies": {
       "@chakra-ui/icons": "^1.0.15",
