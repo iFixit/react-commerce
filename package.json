@@ -47,5 +47,10 @@
          "pre-commit": "pnpm format",
          "pre-push": "pnpm type-check"
       }
+   },
+   "pnpm": {
+      "patchedDependencies": {
+         "react-instantsearch-hooks-server@6.31.1": "patches/react-instantsearch-hooks-server@6.31.1.patch"
+      }
    }
 }
