@@ -43,6 +43,7 @@ import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
+import { ProductPrice } from '../../../../components/common/ProductPrice';
 
 export type ProductSectionProps = {
    product: Product;
@@ -94,8 +95,12 @@ export function ProductSection({
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
                <ProductPrice
-                  price={selectedVariant.formattedPrice}
-                  compareAt={selectedVariant.formattedCompareAtPrice}
+                  formattedPrice={selectedVariant.formattedPrice}
+                  formattedCompareAtPrice={
+                     selectedVariant.formattedCompareAtPrice
+                  }
+                  isDiscounted={selectedVariant.isDiscounted}
+                  discountLabel={`${selectedVariant.discountPercentage}% OFF`}
                />
                <ProductRating product={product} />
                <ProductOptions
@@ -374,19 +379,6 @@ const ProductTitle = chakra(
       );
    }
 );
-
-type ProductPriceProps = {
-   price: string;
-   compareAt?: string | null;
-};
-
-function ProductPrice({ price, compareAt }: ProductPriceProps) {
-   return (
-      <Text fontWeight="bold" fontSize="xl">
-         {price}
-      </Text>
-   );
-}
 
 type CustomAccordionButtonProps = React.PropsWithChildren<{}>;
 
