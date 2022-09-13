@@ -1,4 +1,4 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN, DEFAULT_STORE_CODE } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { isRecord } from '@ifixit/helpers';
@@ -198,7 +198,8 @@ export async function fetchProductReviews(
    productId: string
 ): Promise<ProductReviewData | null> {
    const response = await fetch(
-      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=us`,
+      // TODO: get store code from user session or fall back to default
+      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`,
       {
          headers: {
             'Content-Type': 'application/json',
