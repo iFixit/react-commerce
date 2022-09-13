@@ -8,7 +8,6 @@ import {
    Alert,
    AlertIcon,
    Box,
-   Button,
    chakra,
    Flex,
    Heading,
@@ -30,8 +29,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
-import { useAddToCart } from '@ifixit/cart-sdk';
-import { useCartDrawer, PageContentWrapper } from '@ifixit/ui';
+import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import {
@@ -41,6 +39,7 @@ import {
    FaShieldAlt,
    FaTruck,
 } from 'react-icons/fa';
+import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -57,8 +56,6 @@ export function ProductSection({
    onVariantChange,
 }: ProductSectionProps) {
    const appContext = useAppContext();
-   const addToCart = useAddToCart();
-   const { onOpen } = useCartDrawer();
 
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -74,27 +71,6 @@ export function ProductSection({
       },
       [product.variants, onVariantChange]
    );
-
-   const handleAddToCart = React.useCallback(() => {
-      if (selectedVariant.sku) {
-         addToCart.mutate({
-            name: product.title,
-            itemcode: selectedVariant.sku,
-            formattedPrice: selectedVariant.formattedPrice,
-            quantity: 1,
-            imageSrc: selectedVariant.image?.url || product.images[0].url,
-         });
-         onOpen();
-      }
-   }, [
-      addToCart,
-      product.title,
-      selectedVariant.sku,
-      selectedVariant.formattedPrice,
-      selectedVariant.image,
-      product.images,
-      onOpen,
-   ]);
 
    return (
       <PageContentWrapper as="section">
@@ -127,46 +103,7 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
-               <VStack mt="5" align="center">
-                  <Button
-                     w="full"
-                     colorScheme="brand"
-                     isLoading={addToCart.isLoading}
-                     onClick={handleAddToCart}
-                  >
-                     Add to cart
-                  </Button>
-                  {selectedVariant.quantityAvailable &&
-                     selectedVariant.quantityAvailable < 10 && (
-                        <Alert
-                           status="error"
-                           bg="transparent"
-                           justifyContent="center"
-                           color="red.600"
-                           py="0"
-                           fontSize="xs"
-                        >
-                           <AlertIcon boxSize="4" />
-                           Only{' '}
-                           <Text fontWeight="bold" mx="1">
-                              {selectedVariant.quantityAvailable}
-                           </Text>{' '}
-                           left
-                        </Alert>
-                     )}
-
-                  <Alert
-                     status="info"
-                     bg="transparent"
-                     justifyContent="center"
-                     colorScheme="gray"
-                     py="0"
-                     fontSize="xs"
-                  >
-                     <AlertIcon boxSize="4" />
-                     Shipping restrictions apply
-                  </Alert>
-               </VStack>
+               <AddToCart product={product} selectedVariant={selectedVariant} />
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
