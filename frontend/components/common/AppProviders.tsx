@@ -45,7 +45,7 @@ export function AppProviders({
       <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
    );
 
-   console.log("Ifixit Origin: ", IFIXIT_ORIGIN);
+   console.log('Ifixit Origin: ', IFIXIT_ORIGIN);
    return (
       <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
          <QueryClientProvider client={queryClient}>
