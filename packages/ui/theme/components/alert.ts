@@ -4,7 +4,6 @@ const Alert: ComponentStyleConfig = {
    baseStyle: {},
    variants: {
       subtle: (props) => {
-         console.log('hey subtle');
          const schemeColors = props.theme.colors[props.colorScheme];
          return {
             container: {

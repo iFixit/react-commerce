@@ -1,4 +1,3 @@
-import placeholderImageUrl from '@assets/images/no-image-fixie.jpeg';
 import {
    AspectRatio,
    Badge,
@@ -22,10 +21,14 @@ import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatShopifyPrice } from '@helpers/commerce-helpers';
-import { PageContentWrapper } from '@ifixit/ui';
+import { useAddToCart } from '@ifixit/cart-sdk';
+import type { AddProductVariantInput } from '@ifixit/cart-sdk';
+import { isPresent } from '@ifixit/helpers';
+import { PageContentWrapper, useCartDrawer } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
 import React from 'react';
+import { filterNullableItems } from '@helpers/application-helpers';
 
 export type CrossSellSectionProps = {
    product: Product;
@@ -36,6 +39,9 @@ export function CrossSellSection({
    product,
    selectedVariant,
 }: CrossSellSectionProps) {
+   const addToCart = useAddToCart();
+   const { onOpen } = useCartDrawer();
+
    const [selectedVariantIds, setSelectedVariantIds] = React.useState(
       selectedVariant.crossSellVariants
          .map((variant) => variant.id)
@@ -89,6 +95,49 @@ export function CrossSellSection({
       product.reviewsData?.count,
       product.title,
    ]);
+
+   const handleAddToCart = () => {
+      const input = selectedVariantIds.map(
+         (variantId): AddProductVariantInput | null => {
+            if (variantId === selectedVariant.id) {
+               if (!isPresent(selectedVariant.sku)) {
+                  return null;
+               }
+               return {
+                  name: product.title,
+                  itemcode: selectedVariant.sku,
+                  formattedPrice: selectedVariant.formattedPrice,
+                  quantity: 1,
+                  imageSrc: selectedVariant.image?.url ?? '',
+               };
+            }
+            const variant = selectedVariant.crossSellVariants.find(
+               (v) => v.id === variantId
+            );
+            const variantSku = variant?.sku;
+            if (variant == null || !isPresent(variantSku)) {
+               return null;
+            }
+            return {
+               name: variant.product.title,
+               itemcode: variantSku,
+               formattedPrice: variant.formattedPrice,
+               quantity: 1,
+               imageSrc: variant.image?.url ?? '',
+            };
+         }
+      );
+      const selectedVariantSku = selectedVariant.sku;
+      if (isPresent(selectedVariantSku)) {
+         addToCart.mutate({
+            currentItemCode: selectedVariantSku,
+            items: filterNullableItems(input),
+         });
+         onOpen();
+      } else {
+         console.error('No SKU found for selected variant');
+      }
+   };
 
    if (selectedVariant.crossSellVariants.length === 0) {
       return null;
@@ -191,7 +240,11 @@ export function CrossSellSection({
                            {formattedTotalPrice}
                         </Box>
                      </Box>
-                     <Button colorScheme="brand" minW="240px">
+                     <Button
+                        colorScheme="brand"
+                        minW="240px"
+                        onClick={handleAddToCart}
+                     >
                         Add to cart
                      </Button>
                   </Flex>

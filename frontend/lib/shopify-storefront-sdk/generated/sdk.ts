@@ -6300,6 +6300,7 @@ export type FindProductQuery = {
                      | {
                           __typename: 'ProductVariant';
                           id: string;
+                          sku?: Maybe<string>;
                           product: {
                              __typename?: 'Product';
                              handle: string;
@@ -6427,6 +6428,7 @@ export const FindProductDocument = `
               __typename
               ... on ProductVariant {
                 id
+                sku
                 product {
                   handle
                   title

@@ -95,6 +95,7 @@ query findProduct($handle: String) {
                      __typename
                      ... on ProductVariant {
                         id
+                        sku
                         product {
                            handle
                            title

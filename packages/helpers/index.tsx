@@ -63,3 +63,7 @@ const loggingTimer = (timerName: string) => {
 
 type Timer = (name: string) => () => void;
 const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
+
+export function isPresent(text: string | null | undefined): text is string {
+   return typeof text === 'string' && text.length > 0;
+}
