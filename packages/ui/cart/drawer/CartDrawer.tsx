@@ -26,7 +26,6 @@ import {
    Skeleton,
    Spinner,
    Text,
-   useDisclosure,
    useTheme,
    VStack,
 } from '@chakra-ui/react';
@@ -42,10 +41,11 @@ import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
+import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
-   const { isOpen, onOpen, onClose } = useDisclosure();
+   const { isOpen, onOpen, onClose } = useCartDrawer();
    const btnRef = React.useRef<HTMLButtonElement | null>(null);
    const isMounted = useIsMounted();
    const cart = useCart();

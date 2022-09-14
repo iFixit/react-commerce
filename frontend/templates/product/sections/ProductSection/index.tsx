@@ -7,7 +7,6 @@ import {
    AccordionPanel,
    Alert,
    Box,
-   Button,
    chakra,
    Flex,
    Heading,
@@ -38,10 +37,11 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
-import { useAddToCart } from '@ifixit/cart-sdk';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
+import { ProductPrice } from '../../../../components/common/ProductPrice';
+import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -75,17 +75,6 @@ export function ProductSection({
       [product.variants, onVariantChange]
    );
 
-   const addToCart = useAddToCart();
-
-   const handleAddToCart = React.useCallback(() => {
-      if (selectedVariant.sku) {
-         addToCart.mutate({
-            itemcode: selectedVariant.sku,
-            quantity: 1,
-         });
-      }
-   }, [addToCart, selectedVariant.sku]);
-
    return (
       <PageContentWrapper as="section">
          <Flex alignItems="flex-start">
@@ -102,8 +91,12 @@ export function ProductSection({
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
                <ProductPrice
-                  price={selectedVariant.formattedPrice}
-                  compareAt={selectedVariant.formattedCompareAtPrice}
+                  formattedPrice={selectedVariant.formattedPrice}
+                  formattedCompareAtPrice={
+                     selectedVariant.formattedCompareAtPrice
+                  }
+                  isDiscounted={selectedVariant.isDiscounted}
+                  discountLabel={`${selectedVariant.discountPercentage}% OFF`}
                />
                <ProductRating product={product} />
                <ProductOptions
@@ -111,54 +104,7 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
-               <VStack mt="5" align="center">
-                  <Button
-                     w="full"
-                     colorScheme="brand"
-                     isLoading={addToCart.isLoading}
-                     onClick={handleAddToCart}
-                  >
-                     Add to cart
-                  </Button>
-                  {selectedVariant.quantityAvailable &&
-                     selectedVariant.quantityAvailable < 10 && (
-                        <Alert
-                           status="error"
-                           bg="transparent"
-                           justifyContent="center"
-                           color="red.600"
-                           py="0"
-                           fontSize="sm"
-                        >
-                           <FontAwesomeIcon
-                              icon={faCircleExclamation}
-                              color={theme.colors.red[600]}
-                              style={{ height: '16px', marginRight: '6px' }}
-                           />
-                           Only{' '}
-                           <Text fontWeight="bold" mx="1">
-                              {selectedVariant.quantityAvailable}
-                           </Text>{' '}
-                           left
-                        </Alert>
-                     )}
-
-                  <Alert
-                     status="info"
-                     bg="transparent"
-                     justifyContent="center"
-                     colorScheme="gray"
-                     py="0"
-                     fontSize="sm"
-                  >
-                     <FontAwesomeIcon
-                        icon={faCircleExclamation}
-                        color={theme.colors.gray[500]}
-                        style={{ height: '16px', marginRight: '6px' }}
-                     />
-                     Shipping restrictions apply
-                  </Alert>
-               </VStack>
+               <AddToCart product={product} selectedVariant={selectedVariant} />
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
@@ -488,19 +434,6 @@ const ProductTitle = chakra(
       );
    }
 );
-
-type ProductPriceProps = {
-   price: string;
-   compareAt?: string | null;
-};
-
-function ProductPrice({ price, compareAt }: ProductPriceProps) {
-   return (
-      <Text fontWeight="bold" fontSize="xl">
-         {price}
-      </Text>
-   );
-}
 
 type CustomAccordionButtonProps = React.PropsWithChildren<{}>;
 

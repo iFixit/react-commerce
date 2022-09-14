@@ -4,6 +4,7 @@ import { breakpoints } from './foundations/breakpoints';
 import { fonts } from './foundations/fonts';
 import { styles } from './styles';
 import Pagination from './components/pagination';
+import Alert from './components/alert';
 
 export const theme: ThemeOverride = {
    colors,
@@ -12,5 +13,6 @@ export const theme: ThemeOverride = {
    styles,
    components: {
       Pagination,
+      Alert,
    },
 };

@@ -1,7 +1,7 @@
 import { Box, Button, HStack, Text, useTheme, VStack } from '@chakra-ui/react';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { encodeDeviceItemType } from '@helpers/product-list-helpers';
+import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { ProductList, ProductListType } from '@models/product-list';
 import {
    RefinementListItem,
@@ -140,7 +140,9 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       );
       // The url created by InstantSearch doesn't have the correct item type slug.
       const path = url.pathname.split('/').filter((part) => part !== '');
-      const itemTypeHandle = encodeDeviceItemType(item.value);
+      const itemTypeHandle = encodeURIComponent(
+         stylizeDeviceItemType(item.value)
+      );
       const href = `/${path[0]}/${path[1]}/${itemTypeHandle}${url.search}`;
       RefinementTitle = (
          <NextLink href={href} passHref>

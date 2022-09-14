@@ -1,7 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
-import { theme } from '@ifixit/ui';
+import { CartDrawerProvider, theme } from '@ifixit/ui';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
@@ -45,17 +45,20 @@ export function AppProviders({
       <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
    );
 
+   console.log('Ifixit Origin: ', IFIXIT_ORIGIN);
    return (
       <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
-         <QueryClientProvider client={queryClient}>
-            {algolia ? (
-               <InstantSearchProvider {...algolia}>
-                  {markup}
-               </InstantSearchProvider>
-            ) : (
-               markup
-            )}
-         </QueryClientProvider>
+         <CartDrawerProvider>
+            <QueryClientProvider client={queryClient}>
+               {algolia ? (
+                  <InstantSearchProvider {...algolia}>
+                     {markup}
+                  </InstantSearchProvider>
+               ) : (
+                  markup
+               )}
+            </QueryClientProvider>
+         </CartDrawerProvider>
       </AppProvider>
    );
 }
