@@ -36,6 +36,11 @@ export const SHOPIFY_STOREFRONT_VERSION = requireEnvVariable(
    'NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION'
 );
 
+export const DEFAULT_STORE_CODE = requireEnvVariable(
+   process.env.NEXT_PUBLIC_DEFAULT_STORE_CODE,
+   'NEXT_PUBLIC_DEFAULT_STORE_CODE'
+);
+
 function requireEnvVariable(
    env: string | null | undefined,
    envName: string

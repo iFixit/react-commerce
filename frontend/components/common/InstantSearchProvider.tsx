@@ -1,8 +1,8 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
 import {
-   decodeDeviceItemType,
-   encodeDeviceItemType,
+   destylizeDeviceItemType,
+   stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
@@ -146,7 +146,9 @@ export function InstantSearchProvider({
                      routeState.filter?.['facet_tags.Item Type'];
                   const itemType = Array.isArray(raw) ? raw[0] : raw;
                   if (itemType?.length) {
-                     const encodedItemType = encodeDeviceItemType(itemType);
+                     const encodedItemType = encodeURIComponent(
+                        stylizeDeviceItemType(itemType)
+                     );
                      path += `/${encodedItemType}`;
                   } else if (renderCount === 1 && itemTypeHandle) {
                      // Prevents a bug when visiting /Parts/iPhone/Cables
@@ -194,7 +196,7 @@ export function InstantSearchProvider({
             const decodedFilters = decodeParsedQuery(filter);
             if (deviceHandle && itemType) {
                decodedFilters['facet_tags.Item Type'] = [
-                  decodeDeviceItemType(decodeURIComponent(itemType)),
+                  destylizeDeviceItemType(decodeURIComponent(itemType)),
                ];
             }
 

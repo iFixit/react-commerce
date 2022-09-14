@@ -1,6 +1,7 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
+import { stylizeDeviceTitle } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 
@@ -19,7 +20,9 @@ export function ProductListDeviceNavigation({
       guideUrl = `${IFIXIT_ORIGIN}/Guide`;
       answersUrl = `${IFIXIT_ORIGIN}/Answers`;
    } else if (productList.deviceTitle && productList.deviceTitle.length > 0) {
-      const deviceHandle = productList.deviceTitle.replace(/\s+/g, '_');
+      const deviceHandle = encodeURIComponent(
+         stylizeDeviceTitle(productList.deviceTitle)
+      );
       guideUrl = `${IFIXIT_ORIGIN}/Device/${deviceHandle}`;
       answersUrl = `${IFIXIT_ORIGIN}/Answers/Device/${deviceHandle}`;
    }

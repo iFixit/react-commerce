@@ -13,7 +13,7 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
    CartDrawer,
-   LayoutFooter,
+   CartFooter,
    Header,
    HeaderBar,
    HeaderCloseHiddenBarButton,
@@ -267,7 +267,7 @@ export function DefaultLayout({
                   {menu && <LayoutNavigationDrawer menu={menu} />}
                </Header>
                {children}
-               <LayoutFooter
+               <CartFooter
                   currentStore={currentStore}
                   stores={stores}
                   globalSettings={globalSettings}
