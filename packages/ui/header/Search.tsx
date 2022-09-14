@@ -2,15 +2,15 @@ import {
    Flex,
    FlexProps,
    forwardRef,
-   Icon,
    Input,
    InputGroup,
    InputGroupProps,
    InputLeftElement,
+   useTheme,
 } from '@chakra-ui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
-import * as React from 'react';
-import { RiSearchLine } from 'react-icons/ri';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export const DesktopHeaderSearchForm = forwardRef<FlexProps, 'form'>(
    (props, ref) => {
@@ -57,10 +57,19 @@ export const HeaderSearchForm = {
 
 export const SearchInput = forwardRef<InputGroupProps, 'input'>(
    (props, ref) => {
+      const theme = useTheme();
       return (
          <InputGroup {...props}>
             <InputLeftElement pointerEvents="none">
-               <Icon as={RiSearchLine} color="white" mr="-2" mb="-1px" />
+               <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  color={theme.colors.gray[400]}
+                  style={{
+                     height: '16px',
+                     marginRight: '-8px',
+                     marginBottom: '-1px',
+                  }}
+               />
             </InputLeftElement>
             <Input
                ref={ref}

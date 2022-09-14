@@ -1,17 +1,21 @@
 import {
+   Box,
    forwardRef,
-   Icon,
    IconButton,
    Input,
    InputGroup,
    InputGroupProps,
    InputLeftElement,
    InputRightElement,
+   useTheme,
 } from '@chakra-ui/react';
+import {
+   faCircleXmark,
+   faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
-import { HiXCircle } from 'react-icons/hi';
-import { RiSearchLine } from 'react-icons/ri';
 import { useSearchBox } from 'react-instantsearch-hooks-web';
 
 type SearchInputProps = InputGroupProps;
@@ -20,6 +24,7 @@ const MAX_SEARCH_QUERY_LENGTH = 100;
 const DEBOUNCE_INTERVAL_MILLIS = 300;
 
 export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
+   const theme = useTheme();
    const { query, refine, clear } = useSearchBox({
       queryHook: debouncedQueryHook,
    });
@@ -36,7 +41,13 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    return (
       <InputGroup ref={ref} {...props}>
          <InputLeftElement pointerEvents="none">
-            <Icon as={RiSearchLine} color="gray.300" />
+            <FontAwesomeIcon
+               icon={faMagnifyingGlass}
+               color={theme.colors.gray[300]}
+               style={{
+                  height: '16px',
+               }}
+            />
          </InputLeftElement>
          <Input
             ref={inputRef}
@@ -64,12 +75,15 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
                   bg: 'transparent',
                }}
                icon={
-                  <Icon
-                     as={HiXCircle}
-                     color="gray.300"
-                     transition="color 300ms"
-                     _hover={{ color: 'gray.500' }}
-                  />
+                  <Box color="gray.300" _hover={{ color: 'gray.500' }}>
+                     <FontAwesomeIcon
+                        icon={faCircleXmark}
+                        style={{
+                           height: '16px',
+                           transition: 'color 300ms',
+                        }}
+                     />
+                  </Box>
                }
             />
          </InputRightElement>

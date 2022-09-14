@@ -1,14 +1,4 @@
-import {
-   Box,
-   forwardRef,
-   Heading,
-   Icon,
-   IconProps,
-   Stack,
-   Text,
-   useTheme,
-   VStack,
-} from '@chakra-ui/react';
+import { Heading, Stack, Text, useTheme, VStack } from '@chakra-ui/react';
 import React from 'react';
 import {
    FontAwesomeIcon,
@@ -42,7 +32,6 @@ export function ServiceValuePropositionSection() {
             borderTopWidth="1px"
             borderBottomWidth="1px"
             borderColor="blue.100"
-            fontSize="xs"
             spacing={{
                base: 8,
                md: 20,
@@ -53,39 +42,25 @@ export function ServiceValuePropositionSection() {
          >
             <ValueProposition>
                <ValuePropositionIcon icon={faBoxCircleCheck} />
-               <Title>Satified or 100% refunded</Title>
-               <Description>
+               <Text fontWeight="bold">Satified or 100% refunded</Text>
+               <Text>
                   Our parts quality consistently sets the industry standard.
-               </Description>
+               </Text>
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faShieldCheck} />
-               <Title>Secure payment</Title>
-               <Description>Encrypted checkout through Shopify.</Description>
+               <Text fontWeight="bold">Secure payment</Text>
+               <Text>Encrypted checkout through Shopify.</Text>
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faRocket} />
-               <Title>Express shipping</Title>
-               <Description>
-                  Shipped same-day if you order before 5PM.
-               </Description>
+               <Text fontWeight="bold">Express shipping</Text>
+               <Text>Shipped same-day if you order before 5PM.</Text>
             </ValueProposition>
          </Stack>
       </>
    );
 }
-
-const ValuePropositionIcon = ({ icon, ...props }: FontAwesomeIconProps) => {
-   const theme = useTheme();
-   return (
-      <FontAwesomeIcon
-         icon={icon}
-         color={theme.colors.brand[500]}
-         style={{ width: '32px', height: '32px' }}
-         {...props}
-      />
-   );
-};
 
 function ValueProposition({ children }: React.PropsWithChildren<{}>) {
    return (
@@ -100,14 +75,14 @@ function ValueProposition({ children }: React.PropsWithChildren<{}>) {
    );
 }
 
-function Title({ children }: React.PropsWithChildren<{}>) {
+const ValuePropositionIcon = ({ icon, ...props }: FontAwesomeIconProps) => {
+   const theme = useTheme();
    return (
-      <Text fontWeight="bold" fontSize="md">
-         {children}
-      </Text>
+      <FontAwesomeIcon
+         icon={icon}
+         color={theme.colors.brand[500]}
+         style={{ height: '32px' }}
+         {...props}
+      />
    );
-}
-
-function Description({ children }: React.PropsWithChildren<{}>) {
-   return <Text fontSize="md">{children}</Text>;
-}
+};

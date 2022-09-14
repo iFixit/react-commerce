@@ -6,7 +6,6 @@ import {
    AccordionItem,
    AccordionPanel,
    Alert,
-   AlertIcon,
    Box,
    Button,
    chakra,
@@ -17,7 +16,6 @@ import {
    IconButton,
    Link,
    List,
-   ListIcon,
    ListItem,
    Popover,
    PopoverArrow,
@@ -27,20 +25,23 @@ import {
    PopoverHeader,
    PopoverTrigger,
    Text,
+   useTheme,
    VStack,
 } from '@chakra-ui/react';
+import {
+   faBadgeDollar,
+   faCircleExclamation,
+   faExclamationTriangle,
+   faInfoCircle,
+   faRocket,
+   faShieldCheck,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
-import {
-   FaExclamationTriangle,
-   FaInfoCircle,
-   FaPercent,
-   FaShieldAlt,
-   FaTruck,
-} from 'react-icons/fa';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -57,6 +58,7 @@ export function ProductSection({
    onVariantChange,
 }: ProductSectionProps) {
    const appContext = useAppContext();
+   const theme = useTheme();
 
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -94,13 +96,7 @@ export function ProductSection({
                onChange={setSelectedImageId}
             />
             {/* Details */}
-            <Flex
-               flexGrow={1}
-               w="200px"
-               pt="5"
-               direction="column"
-               fontSize="sm"
-            >
+            <Flex flexGrow={1} w="200px" pt="5" direction="column">
                {selectedVariant.sku && (
                   <Text color="gray.500">Item # {selectedVariant.sku}</Text>
                )}
@@ -134,7 +130,11 @@ export function ProductSection({
                            py="0"
                            fontSize="xs"
                         >
-                           <AlertIcon boxSize="4" />
+                           <FontAwesomeIcon
+                              icon={faCircleExclamation}
+                              color={theme.colors.red[600]}
+                              style={{ height: '16px', marginRight: '6px' }}
+                           />
                            Only{' '}
                            <Text fontWeight="bold" mx="1">
                               {selectedVariant.quantityAvailable}
@@ -151,25 +151,29 @@ export function ProductSection({
                      py="0"
                      fontSize="xs"
                   >
-                     <AlertIcon boxSize="4" />
+                     <FontAwesomeIcon
+                        icon={faCircleExclamation}
+                        color={theme.colors.gray[500]}
+                        style={{ height: '16px', marginRight: '6px' }}
+                     />
                      Shipping restrictions apply
                   </Alert>
                </VStack>
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
-                        <ListIcon
-                           as={FaPercent}
-                           color="brand.500"
-                           boxSize="5"
+                        <FontAwesomeIcon
+                           icon={faBadgeDollar}
+                           color={theme.colors.brand[500]}
+                           style={{ height: '20px', marginRight: '6px' }}
                         />
                         Satisfaction guaranteed or you money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <ListIcon
-                           as={FaShieldAlt}
-                           color="brand.500"
-                           boxSize="5"
+                        <FontAwesomeIcon
+                           icon={faShieldCheck}
+                           color={theme.colors.brand[500]}
+                           style={{ height: '20px', marginRight: '6px' }}
                         />
                         <div>
                            If it doesn&apos;t meet our meticulous standards, we
@@ -177,7 +181,11 @@ export function ProductSection({
                         </div>
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <ListIcon as={FaTruck} color="brand.500" boxSize="5" />
+                        <FontAwesomeIcon
+                           icon={faRocket}
+                           color={theme.colors.brand[500]}
+                           style={{ height: '20px', marginRight: '6px' }}
+                        />
                         Same day shipping if ordered by 5PM
                      </ListItem>
                   </List>
@@ -207,7 +215,15 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <AlertIcon />
+                                 <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    color={theme.colors.brand[500]}
+                                    style={{
+                                       height: '16px',
+                                       marginTop: '2px',
+                                       marginRight: '10px',
+                                    }}
+                                 />
                                  <Box
                                     fontSize="sm"
                                     dangerouslySetInnerHTML={{
@@ -224,7 +240,15 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <AlertIcon />
+                                 <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    color={theme.colors.orange[500]}
+                                    style={{
+                                       height: '16px',
+                                       marginTop: '2px',
+                                       marginRight: '10px',
+                                    }}
+                                 />
                                  <Box
                                     fontSize="sm"
                                     dangerouslySetInnerHTML={{
@@ -241,7 +265,15 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <AlertIcon />
+                                 <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    color={theme.colors.red[500]}
+                                    style={{
+                                       height: '16px',
+                                       marginTop: '2px',
+                                       marginRight: '10px',
+                                    }}
+                                 />
                                  <Box
                                     fontSize="sm"
                                     dangerouslySetInnerHTML={{
@@ -349,7 +381,11 @@ export function ProductSection({
                                  aria-label="read more about the warning"
                                  size="sm"
                                  icon={
-                                    <Icon as={FaInfoCircle} color="brand.500" />
+                                    <FontAwesomeIcon
+                                       icon={faInfoCircle}
+                                       color={theme.colors.brand[500]}
+                                       style={{ height: '16px' }}
+                                    />
                                  }
                               >
                                  Trigger
@@ -360,10 +396,13 @@ export function ProductSection({
                               <PopoverCloseButton mt="0.5" />
                               <PopoverHeader textTransform="uppercase">
                                  <Flex align="center">
-                                    <Icon
-                                       as={FaExclamationTriangle}
-                                       color="yellow.500"
-                                       mr="2"
+                                    <FontAwesomeIcon
+                                       icon={faExclamationTriangle}
+                                       color={theme.colors.yellow[500]}
+                                       style={{
+                                          height: '16px',
+                                          marginRight: '8px',
+                                       }}
                                     />
                                     Warning
                                  </Flex>

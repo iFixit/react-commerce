@@ -1,19 +1,20 @@
-import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
-import React from 'react';
-import { HiSelector } from 'react-icons/hi';
+import { Box, Button, HStack, Text, useTheme, VStack } from '@chakra-ui/react';
+import { faArrowsUpDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { encodeDeviceItemType } from '@helpers/product-list-helpers';
+import { ProductList, ProductListType } from '@models/product-list';
 import {
-   RefinementListRenderState,
    RefinementListItem,
+   RefinementListRenderState,
 } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
+import NextLink from 'next/link';
+import React from 'react';
 import {
    useCurrentRefinements,
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
-import NextLink from 'next/link';
-import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { ProductList, ProductListType } from '@models/product-list';
-import { encodeDeviceItemType } from '@helpers/product-list-helpers';
+import { useSortBy } from './useSortBy';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -25,6 +26,7 @@ export function RefinementSingleSelect({
    onClose,
    ...otherProps
 }: RefinementSingleSelectProps) {
+   const theme = useTheme();
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...otherProps,
@@ -65,7 +67,14 @@ export function RefinementSingleSelect({
                variant="ghost"
                fontWeight="normal"
                leftIcon={
-                  <Icon as={HiSelector} boxSize="6" color="gray.600" ml="-1" />
+                  <FontAwesomeIcon
+                     icon={faArrowsUpDown}
+                     color={theme.colors.gray[400]}
+                     style={{
+                        height: '16px',
+                        marginLeft: '4px',
+                     }}
+                  />
                }
                mt="3"
                p="0"

@@ -1,18 +1,25 @@
 import {
    Alert,
-   AlertIcon,
    Box,
    Collapse,
    Flex,
    HStack,
-   Icon,
    IconButton,
    IconButtonProps,
    Link,
    Text,
+   useTheme,
    useToast,
    VStack,
 } from '@chakra-ui/react';
+import { IfixitImage } from '@components/ifixit-image';
+import {
+   faCircleExclamation,
+   faCircleMinus,
+   faCirclePlus,
+   faTrash,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import {
    APICartProduct,
@@ -20,13 +27,7 @@ import {
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
 import { motion } from 'framer-motion';
-import { IfixitImage } from '@components/ifixit-image';
 import * as React from 'react';
-import {
-   HiOutlineMinusCircle,
-   HiOutlinePlusCircle,
-   HiOutlineX,
-} from 'react-icons/hi';
 
 interface CartLineItemProps {
    lineItem: APICartProduct;
@@ -37,6 +38,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
    const toast = useToast();
    const removeLineItem = useRemoveLineItem();
    const updateLineItemQuantity = useUpdateLineItemQuantity();
+   const theme = useTheme();
 
    React.useEffect(() => {
       if (updateLineItemQuantity.isError) {
@@ -118,12 +120,24 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            {lineItem.itemcode}
                         </Text>
                      </Flex>
-                     <HStack>
+                     <HStack
+                        borderColor="gray.200"
+                        borderWidth="2px"
+                        borderRadius="lg"
+                     >
                         <MotionIconButton
                            aria-label="Decrease quantity by one"
                            variant="ghost"
                            color="gray.500"
-                           icon={<Icon as={HiOutlineMinusCircle} boxSize="5" />}
+                           icon={
+                              <FontAwesomeIcon
+                                 icon={faCircleMinus}
+                                 color={theme.colors.gray[400]}
+                                 style={{
+                                    height: '16px',
+                                 }}
+                              />
+                           }
                            size="xs"
                            whileTap={{
                               scale: 0.9,
@@ -138,7 +152,15 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            aria-label="Increase quantity by one"
                            variant="ghost"
                            color="gray.500"
-                           icon={<Icon as={HiOutlinePlusCircle} boxSize="5" />}
+                           icon={
+                              <FontAwesomeIcon
+                                 icon={faCirclePlus}
+                                 color={theme.colors.gray[400]}
+                                 style={{
+                                    height: '16px',
+                                 }}
+                              />
+                           }
                            size="xs"
                            whileTap={{
                               scale: 0.9,
@@ -158,7 +180,14 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            fontSize="sm"
                            p="0"
                         >
-                           <AlertIcon boxSize="4" mr="1.5" />
+                           <FontAwesomeIcon
+                              icon={faCircleExclamation}
+                              color={theme.colors.red[500]}
+                              style={{
+                                 height: '16px',
+                                 marginRight: '6px',
+                              }}
+                           />
                            Unable to update quantity.
                         </Alert>
                      </Collapse>
@@ -168,7 +197,15 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
             <Box>
                <IconButton
                   aria-label={`Remove ${lineItem.name} from cart`}
-                  icon={<Icon as={HiOutlineX} boxSize="4" />}
+                  icon={
+                     <FontAwesomeIcon
+                        icon={faTrash}
+                        color={theme.colors.gray[400]}
+                        style={{
+                           height: '16px',
+                        }}
+                     />
+                  }
                   size="xs"
                   onClick={handleRemoveLineItem}
                />

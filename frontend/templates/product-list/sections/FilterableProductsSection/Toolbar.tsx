@@ -4,7 +4,6 @@ import {
    ButtonGroupProps,
    ButtonProps,
    Flex,
-   Icon,
    IconButton,
    IconButtonProps,
    Select,
@@ -12,11 +11,14 @@ import {
    Stack,
    Text,
    useDisclosure,
+   useTheme,
 } from '@chakra-ui/react';
+import { faList } from '@fortawesome/free-solid-svg-icons';
+import { faGrid2 } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
-import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetsDrawer } from './FacetsDrawer';
 import { SearchInput } from './SearchInput';
@@ -164,9 +166,18 @@ export const ProductViewSwitch = (props: ButtonGroupProps) => {
 };
 
 export const ProductViewListButton = (props: IconButtonProps) => {
+   const theme = useTheme();
    return (
       <IconButton
-         icon={<Icon as={HiOutlineMenu} color="gray.500" />}
+         icon={
+            <FontAwesomeIcon
+               icon={faList}
+               color={theme.colors.gray[500]}
+               style={{
+                  height: '16px',
+               }}
+            />
+         }
          mr="-px"
          variant="outline"
          size="md"
@@ -176,9 +187,18 @@ export const ProductViewListButton = (props: IconButtonProps) => {
 };
 
 export const ProductViewGridButton = (props: IconButtonProps) => {
+   const theme = useTheme();
    return (
       <IconButton
-         icon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
+         icon={
+            <FontAwesomeIcon
+               icon={faGrid2}
+               color={theme.colors.gray[500]}
+               style={{
+                  height: '16px',
+               }}
+            />
+         }
          mr="-px"
          variant="outline"
          size="md"

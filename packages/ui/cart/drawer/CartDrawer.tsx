@@ -1,7 +1,6 @@
 import {
    Alert,
    AlertDescription,
-   AlertIcon,
    AlertTitle,
    Badge,
    Box,
@@ -21,7 +20,6 @@ import {
    Flex,
    Heading,
    HStack,
-   Icon,
    IconButton,
    ScaleFade,
    SimpleGrid,
@@ -32,15 +30,18 @@ import {
    useTheme,
    VStack,
 } from '@chakra-ui/react';
+import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
+import {
+   faCircleExclamation,
+   faShoppingCart,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
-import { FiShoppingCart } from 'react-icons/fi';
 import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
 
 export function CartDrawer() {
    const appContext = useAppContext();
@@ -62,7 +63,15 @@ export function CartDrawer() {
                ref={btnRef}
                aria-label="Open cart"
                variant="ghost"
-               icon={<Icon as={FiShoppingCart} color="white" boxSize="6" />}
+               icon={
+                  <FontAwesomeIcon
+                     icon={faShoppingCart}
+                     color="white"
+                     style={{
+                        height: '24px',
+                     }}
+                  />
+               }
                onClick={onOpen}
                _hover={{
                   bg: 'gray.800',
@@ -137,7 +146,13 @@ export function CartDrawer() {
                            textAlign="center"
                            height="200px"
                         >
-                           <AlertIcon boxSize="40px" mr={0} />
+                           <FontAwesomeIcon
+                              icon={faCircleExclamation}
+                              color={theme.colors.red[500]}
+                              style={{
+                                 height: '40px',
+                              }}
+                           />
                            <AlertTitle mt={4} mb={1} fontSize="lg">
                               Unable to fetch the cart
                            </AlertTitle>
@@ -183,6 +198,10 @@ export function CartDrawer() {
                      </Collapse>
                   </DrawerBody>
 
+                  <CheckoutError
+                     error={checkout.error}
+                     onDismiss={checkout.reset}
+                  />
                   <Collapse
                      in={cart.data != null && cart.data.totalNumItems > 0}
                   >
@@ -291,6 +310,7 @@ interface CheckoutErrorProps {
 }
 
 function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
+   const theme = useTheme();
    let checkoutError: React.ReactNode | null = null;
 
    switch (error) {
@@ -315,7 +335,15 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
    return (
       <Collapse in={checkoutError != null}>
          <Alert status="error">
-            <AlertIcon />
+            <FontAwesomeIcon
+               icon={faCircleExclamation}
+               color={theme.colors.red[500]}
+               style={{
+                  height: '16px',
+                  marginTop: '2px',
+                  marginRight: '10px',
+               }}
+            />
             <Box flexGrow={1}>
                <AlertDescription>{checkoutError}</AlertDescription>
             </Box>

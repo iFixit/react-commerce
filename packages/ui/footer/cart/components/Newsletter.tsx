@@ -9,19 +9,20 @@ import {
    FormLabelProps,
    forwardRef,
    HStack,
-   Icon,
    Input,
    InputProps,
    Stack,
    StackProps,
    Text,
    TextProps,
+   useTheme,
 } from '@chakra-ui/react';
+import { faCheck } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';
-import { RiCheckFill } from 'react-icons/ri';
 import React from 'react';
 
 const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
@@ -167,6 +168,7 @@ export function NewsletterForm({
 }: NewsletterFormProps) {
    const inputRef = React.useRef<HTMLInputElement>(null);
    const [subscription, subscribe] = useSubscribeToNewsletter();
+   const theme = useTheme();
 
    const onSubscribe = React.useCallback(
       async (event: React.FormEvent<HTMLDivElement>) => {
@@ -224,12 +226,13 @@ export function NewsletterForm({
                   bottom="0"
                   lineHeight="10"
                >
-                  <Icon
-                     as={RiCheckFill}
-                     boxSize="5"
-                     mb="-5px"
-                     mr="6px"
-                     ml="12px"
+                  <FontAwesomeIcon
+                     icon={faCheck}
+                     color="white"
+                     style={{
+                        height: '16px',
+                        marginRight: '6px',
+                     }}
                   />
                   Subscribed!
                </Text>

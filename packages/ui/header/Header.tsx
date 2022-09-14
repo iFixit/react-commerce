@@ -182,10 +182,6 @@ export const HeaderOpenHiddenBarButton = forwardRef<IconButtonProps, 'button'>(
    }
 );
 
-export const HeaderNavItemIcon = forwardRef<IconProps, 'svg'>((props, ref) => {
-   return <Icon ref={ref} color="white" boxSize="6" {...props} />;
-});
-
 export const HeaderCloseHiddenBarButton = forwardRef<ButtonProps, 'button'>(
    (props, ref) => {
       const context = useHeaderContext();

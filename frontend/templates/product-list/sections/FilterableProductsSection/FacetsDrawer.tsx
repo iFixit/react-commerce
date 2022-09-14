@@ -6,18 +6,21 @@ import {
    Fade,
    Flex,
    HStack,
-   Icon,
    IconButton,
    Portal,
    Text,
    useBreakpointValue,
    useSafeLayoutEffect,
+   useTheme,
    VStack,
 } from '@chakra-ui/react';
+import { faArrowLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 import { ProductList, ProductListType } from '@models/product-list';
+import { RefinementDisplayType } from '@models/product-list/types';
 import * as React from 'react';
-import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import {
    useClearRefinements,
    useCurrentRefinements,
@@ -26,8 +29,6 @@ import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { RefinementDisplayType } from '@models/product-list/types';
-import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
@@ -40,6 +41,7 @@ export function FacetsDrawer({
    onClose,
    productList,
 }: FacetsDrawerProps) {
+   const theme = useTheme();
    const facets = useFilteredFacets(productList);
    const [currentFacet, setCurrentFacet] = React.useState<string | null>(null);
    const countRefinements = useCountRefinements();
@@ -112,10 +114,12 @@ export function FacetsDrawer({
                         aria-label="go back"
                         variant="ghost"
                         icon={
-                           <Icon
-                              as={HiArrowLeft}
-                              boxSize="5"
-                              color="gray.600"
+                           <FontAwesomeIcon
+                              icon={faArrowLeft}
+                              color={theme.colors.gray[600]}
+                              style={{
+                                 height: '16px',
+                              }}
                            />
                         }
                         onClick={() => setCurrentFacet(null)}
@@ -249,6 +253,7 @@ function FacetListItem({
    onSelect,
    productList,
 }: FacetListItemProps) {
+   const theme = useTheme();
    const { items } = useFilteredRefinementList({
       attribute,
       limit: MAX_VALUES_PER_FACET,
@@ -293,7 +298,13 @@ function FacetListItem({
                      {refinedCount}
                   </Text>
                )}
-               <Icon as={HiChevronRight} color="gray.500" boxSize="5" />
+               <FontAwesomeIcon
+                  icon={faChevronRight}
+                  color={theme.colors.gray[500]}
+                  style={{
+                     height: '10px',
+                  }}
+               />
             </HStack>
          </Flex>
          <Divider />

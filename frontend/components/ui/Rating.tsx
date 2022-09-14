@@ -1,12 +1,11 @@
+import { HStack, StackProps, useTheme } from '@chakra-ui/react';
+import { faStar } from '@fortawesome/pro-solid-svg-icons';
+import { faStarHalf } from '@fortawesome/pro-duotone-svg-icons';
+
 import {
-   Box,
-   Flex,
-   FlexProps,
-   forwardRef,
-   HStack,
-   StackProps,
-} from '@chakra-ui/react';
-import { FaStar, FaStarHalf } from 'react-icons/fa';
+   FontAwesomeIcon,
+   FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome';
 
 export interface RatingProps extends StackProps {
    value?: number;
@@ -34,7 +33,7 @@ export const Rating = (props: RatingProps) => {
    );
 };
 
-type RatingStarProps = FlexProps & {
+type RatingStarProps = Omit<FontAwesomeIconProps, 'icon'> & {
    appearence: RatingStarAppearance;
 };
 
@@ -44,51 +43,41 @@ export enum RatingStarAppearance {
    Empty = 'empty',
 }
 
-export const RatingStar = forwardRef<RatingStarProps, 'div'>(
-   ({ appearence = RatingStarAppearance.Empty, ...otherProps }, ref) => {
-      switch (appearence) {
-         case RatingStarAppearance.Empty: {
-            return (
-               <Flex
-                  ref={ref}
-                  as={FaStar}
-                  color="gray.300"
-                  fontSize="larger"
-                  {...otherProps}
-               />
-            );
-         }
-         case RatingStarAppearance.Full: {
-            return (
-               <Flex
-                  ref={ref}
-                  as={FaStar}
-                  color="blue.500"
-                  fontSize="larger"
-                  {...otherProps}
-               />
-            );
-         }
-         case RatingStarAppearance.Half: {
-            return (
-               <Flex ref={ref} {...otherProps}>
-                  <Box
-                     as={FaStarHalf}
-                     color="blue.500"
-                     fontSize="larger"
-                     w="19px"
-                  />
-                  <Box
-                     as={FaStarHalf}
-                     color="gray.300"
-                     fontSize="larger"
-                     transform="scaleX(-1)"
-                     position="absolute"
-                     w="19px"
-                  />
-               </Flex>
-            );
-         }
+export const RatingStar = ({
+   appearence = RatingStarAppearance.Empty,
+   ...otherProps
+}: RatingStarProps) => {
+   const theme = useTheme();
+   switch (appearence) {
+      case RatingStarAppearance.Empty: {
+         return (
+            <FontAwesomeIcon
+               icon={faStar}
+               color={theme.colors.gray[300]}
+               style={{ height: '16px' }}
+               {...otherProps}
+            />
+         );
+      }
+      case RatingStarAppearance.Full: {
+         return (
+            <FontAwesomeIcon
+               icon={faStar}
+               color={theme.colors.brand[500]}
+               style={{ height: '16px' }}
+               {...otherProps}
+            />
+         );
+      }
+      case RatingStarAppearance.Half: {
+         return (
+            <FontAwesomeIcon
+               icon={faStarHalf}
+               color={theme.colors.brand[500]}
+               style={{ height: '16px' }}
+               {...otherProps}
+            />
+         );
       }
    }
-);
+};

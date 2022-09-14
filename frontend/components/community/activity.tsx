@@ -1,16 +1,25 @@
-import { Box, Center, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import Image from 'next/image';
-import * as React from 'react';
-import { Link } from '@chakra-ui/react';
-import { WarningIcon } from '@chakra-ui/icons';
 import {
+   Box,
+   Center,
+   Flex,
+   Heading,
+   Link,
+   SimpleGrid,
+   Text,
+   useTheme,
+} from '@chakra-ui/react';
+import {
+   borderRadius,
    color,
    fontSize,
    fontWeight,
-   space,
-   borderRadius,
    shadow,
+   space,
 } from '@core-ds/primitives';
+import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
+import * as React from 'react';
 
 export interface Activity {
    text: string;
@@ -106,6 +115,7 @@ function ActivityCard({ data }: { data: Activity }) {
 }
 
 export default function ActivityDisplay({ data }: { data: Activity[] }) {
+   const theme = useTheme();
    return (
       <React.Fragment>
          <Heading
@@ -133,7 +143,13 @@ export default function ActivityDisplay({ data }: { data: Activity[] }) {
                   textAlign="center"
                   padding="50px 0"
                >
-                  <WarningIcon w={7} h={7} color="#e23715" />
+                  <FontAwesomeIcon
+                     icon={faCircleExclamation}
+                     color={theme.colors.red[500]}
+                     style={{
+                        height: '28px',
+                     }}
+                  />
                   <Heading
                      as="h3"
                      fontSize={`${fontSize.xl}`}

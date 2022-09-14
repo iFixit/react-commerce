@@ -2,12 +2,17 @@ import {
    Box,
    DrawerCloseButton,
    Flex,
-   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
    Portal,
 } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import {
+   faArrowRight,
+   faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
@@ -19,7 +24,6 @@ import {
    HeaderCloseHiddenBarButton,
    HeaderHiddenBar,
    HeaderNavigationToggleButton,
-   HeaderNavItemIcon,
    HeaderOpenHiddenBarButton,
    HeaderPrimaryNavigation,
    HeaderSearchForm,
@@ -55,8 +59,6 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { HiArrowNarrowRight } from 'react-icons/hi';
-import { RiSearchLine } from 'react-icons/ri';
 import { DefaultLayoutProps } from '../types';
 
 export function DefaultLayout({
@@ -65,6 +67,7 @@ export function DefaultLayout({
    globalSettings,
    children,
 }: React.PropsWithChildren<DefaultLayoutProps>) {
+   const theme = useTheme();
    const { menu } = currentStore.header;
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -207,12 +210,17 @@ export function DefaultLayout({
                                                             >
                                                                <NavigationSubmenuLink
                                                                   disclosureIcon={
-                                                                     <Icon
-                                                                        boxSize="6"
-                                                                        transform="translateY(-50%)"
-                                                                        as={
-                                                                           HiArrowNarrowRight
+                                                                     <FontAwesomeIcon
+                                                                        icon={
+                                                                           faArrowRight
                                                                         }
+                                                                        color="white"
+                                                                        style={{
+                                                                           height:
+                                                                              '20px',
+                                                                           transform:
+                                                                              'translateY(-50%)',
+                                                                        }}
                                                                      />
                                                                   }
                                                                >
@@ -254,7 +262,13 @@ export function DefaultLayout({
                         <HeaderOpenHiddenBarButton
                            aria-label="Search database"
                            icon={
-                              <HeaderNavItemIcon as={RiSearchLine} mt="3px" />
+                              <FontAwesomeIcon
+                                 icon={faMagnifyingGlass}
+                                 color="white"
+                                 style={{
+                                    height: '24px',
+                                 }}
+                              />
                            }
                            onClick={() => {
                               mobileSearchInputRef.current?.focus();

@@ -22,7 +22,6 @@ import {
    IconButtonProps,
    useMergeRefs,
 } from '@chakra-ui/react';
-import * as React from 'react';
 import { useIsMounted } from '../hooks';
 import { useHeaderContext } from './context';
 

@@ -6,20 +6,21 @@ import {
    GridItem,
    Heading,
    HStack,
-   Icon,
    Link,
    Progress,
    Stack,
    Tag,
    Text,
+   useTheme,
 } from '@chakra-ui/react';
 import { Rating, RatingStar, RatingStarAppearance } from '@components/ui';
+import { faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import type { Product } from '@models/product';
 import { ProductVariant } from '@models/product';
 import React from 'react';
-import { FaShieldAlt } from 'react-icons/fa';
 import { useProductReviews } from '../../hooks/useProductReviews';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -34,6 +35,7 @@ export function ReviewsSection({
    selectedVariant,
 }: ReviewsSectionProps) {
    const appContext = useAppContext();
+   const theme = useTheme();
    const reviewsQuery = useProductReviews(product);
    const [visibleReviewsCount, setVisibleReviewsCount] = React.useState(
       INITIAL_VISIBILE_REVIEWS
@@ -177,7 +179,11 @@ export function ReviewsSection({
                               </Link>
                            )}
                            <HStack color="green.500" spacing="1">
-                              <Icon as={FaShieldAlt} />
+                              <FontAwesomeIcon
+                                 icon={faShieldCheck}
+                                 color={theme.colors.green[500]}
+                                 style={{ height: '16px' }}
+                              />
                               <Text fontWeight="bold">Verified buyer</Text>
                            </HStack>
                            {review.created_date && (
