@@ -102,7 +102,6 @@ function ShippingRestrictions() {
             color={theme.colors['gray'][400]}
             style={{
                display: 'block',
-               width: '16px',
                height: '16px',
                marginLeft: '6px',
             }}
@@ -127,7 +126,6 @@ function InventoryMessage({ quantityAvailable }: InvetoryMessageProps) {
             color={theme.colors['red'][500]}
             style={{
                display: 'block',
-               width: '16px',
                height: '16px',
                marginRight: '6px',
             }}
