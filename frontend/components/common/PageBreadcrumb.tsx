@@ -47,9 +47,9 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
             >
                <FontAwesomeIcon
                   icon={faChevronRight}
-                  color={theme.colors.gray[300]}
+                  color={theme.colors.gray[400]}
                   style={{
-                     height: '8px',
+                     height: '10px',
                      display: 'flex',
                      marginTop: '4px',
                   }}
@@ -139,7 +139,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
          >
             <Text
                color="black"
-               fontWeight="bold"
+               fontWeight="medium"
                whiteSpace="nowrap"
                isTruncated
             >

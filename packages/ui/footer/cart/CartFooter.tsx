@@ -1,4 +1,4 @@
-import { Menu, MenuList } from '@chakra-ui/react';
+import { Menu, MenuList, useTheme } from '@chakra-ui/react';
 import {
    FacebookLogo,
    Flag,
@@ -34,6 +34,8 @@ import {
    FooterDivider,
    FooterProps,
 } from './components/Shared';
+import { faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function CartFooter({
    stores,
@@ -43,6 +45,7 @@ export function CartFooter({
    const { footer, socialMediaAccounts } = currentStore;
    const { menu1, menu2, partners, bottomMenu } = footer;
    const { newsletterForm } = globalSettings;
+   const theme = useTheme();
    return (
       <Footer>
          <FooterNavigationSection>
@@ -189,7 +192,18 @@ export function CartFooter({
                      </MenuList>
                   </Menu>
                )}
-               <FooterLink href="https://www.ifixit.com/Translate" icon={Globe}>
+               <FooterLink
+                  href="https://www.ifixit.com/Translate"
+                  icon={() => (
+                     <FontAwesomeIcon
+                        icon={faLanguage}
+                        color={theme.colors.gray[400]}
+                        style={{
+                           height: '16px',
+                        }}
+                     />
+                  )}
+               >
                   Help translate
                </FooterLink>
             </FooterSettings>

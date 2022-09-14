@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Text, useTheme, VStack } from '@chakra-ui/react';
-import { faArrowsUpDown } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { encodeDeviceItemType } from '@helpers/product-list-helpers';
 import { ProductList, ProductListType } from '@models/product-list';
@@ -68,7 +68,7 @@ export function RefinementSingleSelect({
                fontWeight="normal"
                leftIcon={
                   <FontAwesomeIcon
-                     icon={faArrowsUpDown}
+                     icon={faSort}
                      color={theme.colors.gray[400]}
                      style={{
                         height: '16px',

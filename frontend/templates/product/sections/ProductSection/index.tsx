@@ -128,7 +128,7 @@ export function ProductSection({
                            justifyContent="center"
                            color="red.600"
                            py="0"
-                           fontSize="xs"
+                           fontSize="sm"
                         >
                            <FontAwesomeIcon
                               icon={faCircleExclamation}
@@ -149,7 +149,7 @@ export function ProductSection({
                      justifyContent="center"
                      colorScheme="gray"
                      py="0"
-                     fontSize="xs"
+                     fontSize="sm"
                   >
                      <FontAwesomeIcon
                         icon={faCircleExclamation}
@@ -162,30 +162,54 @@ export function ProductSection({
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
-                        <FontAwesomeIcon
-                           icon={faBadgeDollar}
-                           color={theme.colors.brand[500]}
-                           style={{ height: '20px', marginRight: '6px' }}
-                        />
+                        <Flex
+                           justifyContent="center"
+                           alignItems="center"
+                           w={5}
+                           h={5}
+                           mr={1.5}
+                        >
+                           <FontAwesomeIcon
+                              icon={faBadgeDollar}
+                              color={theme.colors.brand[500]}
+                              style={{ height: '16px' }}
+                           />{' '}
+                        </Flex>
                         Satisfaction guaranteed or you money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <FontAwesomeIcon
-                           icon={faShieldCheck}
-                           color={theme.colors.brand[500]}
-                           style={{ height: '20px', marginRight: '6px' }}
-                        />
+                        <Flex
+                           justifyContent="center"
+                           alignItems="center"
+                           w={5}
+                           h={5}
+                           mr={1.5}
+                        >
+                           <FontAwesomeIcon
+                              icon={faShieldCheck}
+                              color={theme.colors.brand[500]}
+                              style={{ height: '16px' }}
+                           />
+                        </Flex>
                         <div>
                            If it doesn&apos;t meet our meticulous standards, we
                            won&apos;t sell it. Period.
                         </div>
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <FontAwesomeIcon
-                           icon={faRocket}
-                           color={theme.colors.brand[500]}
-                           style={{ height: '20px', marginRight: '6px' }}
-                        />
+                        <Flex
+                           justifyContent="center"
+                           alignItems="center"
+                           w={5}
+                           h={5}
+                           mr={1.5}
+                        >
+                           <FontAwesomeIcon
+                              icon={faRocket}
+                              color={theme.colors.brand[500]}
+                              style={{ height: '16px' }}
+                           />
+                        </Flex>
                         Same day shipping if ordered by 5PM
                      </ListItem>
                   </List>

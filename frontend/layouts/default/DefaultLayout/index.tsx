@@ -261,12 +261,17 @@ export function DefaultLayout({
                      <HeaderSecondaryNavigation>
                         <HeaderOpenHiddenBarButton
                            aria-label="Search database"
+                           _hover={{ opacity: '0.7' }}
+                           transition="0.3s"
+                           _active={{
+                              bg: 'gray.900',
+                           }}
                            icon={
                               <FontAwesomeIcon
                                  icon={faMagnifyingGlass}
                                  color="white"
                                  style={{
-                                    height: '24px',
+                                    height: '22px',
                                  }}
                               />
                            }

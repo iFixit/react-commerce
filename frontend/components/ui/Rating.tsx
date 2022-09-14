@@ -73,8 +73,13 @@ export const RatingStar = ({
          return (
             <FontAwesomeIcon
                icon={faStarHalf}
-               color={theme.colors.brand[500]}
-               style={{ height: '16px' }}
+               style={{
+                  height: '16px',
+                  // @ts-ignore
+                  '--fa-primary-color': theme.colors.brand[500],
+                  '--fa-secondary-color': theme.colors.gray[300],
+                  '--fa-secondary-opacity': 1,
+               }}
                {...otherProps}
             />
          );

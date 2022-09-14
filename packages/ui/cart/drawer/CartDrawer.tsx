@@ -63,31 +63,35 @@ export function CartDrawer() {
                ref={btnRef}
                aria-label="Open cart"
                variant="ghost"
+               transition="0.3s"
+               _hover={{ opacity: 0.7 }}
+               display="flex"
+               w={8}
+               h={8}
                icon={
                   <FontAwesomeIcon
                      icon={faShoppingCart}
                      color="white"
                      style={{
-                        height: '24px',
+                        height: '22px',
                      }}
                   />
                }
                onClick={onOpen}
-               _hover={{
-                  bg: 'gray.800',
-               }}
                _active={{
-                  bg: 'gray.800',
+                  bg: 'gray.900',
                }}
             />
             {cart.data && cart.data.totalNumItems > 0 && (
-               <Box
+               <Circle
                   position="absolute"
                   top="0.5"
-                  right="1px"
-                  boxSize="2"
+                  right="2px"
+                  size={3}
                   bg="blue.500"
                   borderRadius="full"
+                  borderWidth={2}
+                  borderColor="gray.900"
                />
             )}
          </Box>

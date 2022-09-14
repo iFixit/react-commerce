@@ -53,9 +53,9 @@ export function ProductListBreadcrumb({
             <Flex>
                <FontAwesomeIcon
                   icon={faChevronRight}
-                  color={theme.colors.gray[300]}
+                  color={theme.colors.gray[400]}
                   style={{
-                     height: '8px',
+                     height: '10px',
                      display: 'flex',
                      marginTop: '4px',
                   }}
@@ -140,7 +140,7 @@ export function ProductListBreadcrumb({
             </BreadcrumbItem>
          )}
          <BreadcrumbItem isCurrentPage display="flex" px="1">
-            <Text color="black" fontWeight="bold" noOfLines={1}>
+            <Text color="black" fontWeight="medium" noOfLines={1}>
                {currentItemTitle}
             </Text>
          </BreadcrumbItem>

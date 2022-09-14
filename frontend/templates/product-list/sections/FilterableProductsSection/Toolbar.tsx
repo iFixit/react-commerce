@@ -14,7 +14,7 @@ import {
    useTheme,
 } from '@chakra-ui/react';
 import { faList } from '@fortawesome/free-solid-svg-icons';
-import { faGrid2 } from '@fortawesome/pro-solid-svg-icons';
+import { faGrid } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
@@ -192,7 +192,7 @@ export const ProductViewGridButton = (props: IconButtonProps) => {
       <IconButton
          icon={
             <FontAwesomeIcon
-               icon={faGrid2}
+               icon={faGrid}
                color={theme.colors.gray[500]}
                style={{
                   height: '16px',

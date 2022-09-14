@@ -91,9 +91,9 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                <Box
                   boxSize="16"
                   position="relative"
-                  borderColor="gray.200"
-                  borderWidth="2px"
-                  borderRadius="lg"
+                  borderColor="gray.300"
+                  borderWidth="1px"
+                  borderRadius="md"
                   overflow="hidden"
                >
                   <IfixitImage
@@ -110,20 +110,20 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                         <Link
                            href={`${appContext.ifixitOrigin}/Store/Product/${lineItem.itemcode}`}
                            isExternal
-                           fontWeight="bold"
-                           fontSize="xs"
+                           fontWeight="semibold"
+                           fontSize="sm"
                            borderRadius="sm"
                         >
                            {lineItem.name}
                         </Link>
-                        <Text color="gray.500" fontSize="xs">
+                        <Text color="gray.500" fontSize="sm">
                            {lineItem.itemcode}
                         </Text>
                      </Flex>
                      <HStack
-                        borderColor="gray.200"
-                        borderWidth="2px"
-                        borderRadius="lg"
+                        borderColor="gray.300"
+                        borderWidth="1px"
+                        borderRadius="md"
                      >
                         <MotionIconButton
                            aria-label="Decrease quantity by one"
@@ -196,11 +196,14 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
             </HStack>
             <Box>
                <IconButton
+                  bg="transparent"
+                  _hover={{ bg: 'gray.100', color: 'gray.400' }}
                   aria-label={`Remove ${lineItem.name} from cart`}
+                  _active={{ bg: 'gray.200' }}
+                  color="gray.300"
                   icon={
                      <FontAwesomeIcon
                         icon={faTrash}
-                        color={theme.colors.gray[400]}
                         style={{
                            height: '16px',
                         }}

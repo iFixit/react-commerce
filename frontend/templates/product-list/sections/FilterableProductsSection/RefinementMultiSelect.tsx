@@ -7,7 +7,7 @@ import {
    useTheme,
    VStack,
 } from '@chakra-ui/react';
-import { faArrowsUpDown } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
 
@@ -46,7 +46,7 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
                fontWeight="normal"
                leftIcon={
                   <FontAwesomeIcon
-                     icon={faArrowsUpDown}
+                     icon={faSort}
                      color={theme.colors.gray[400]}
                      style={{
                         height: '16px',

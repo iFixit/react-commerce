@@ -17,7 +17,7 @@ import {
    TextProps,
    useTheme,
 } from '@chakra-ui/react';
-import { faCheck } from '@fortawesome/pro-solid-svg-icons';
+import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    SubscriptionStatus,
@@ -227,7 +227,7 @@ export function NewsletterForm({
                   lineHeight="10"
                >
                   <FontAwesomeIcon
-                     icon={faCheck}
+                     icon={faCircleCheck}
                      color="white"
                      style={{
                         height: '16px',

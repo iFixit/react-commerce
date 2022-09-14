@@ -105,8 +105,8 @@ export const HeaderSecondaryNavigation = forwardRef<StackProps, 'div'>(
             ref={ref}
             align="center"
             spacing={{
-               base: 4,
-               md: 8,
+               base: 2,
+               md: 2,
             }}
             {...props}
          />

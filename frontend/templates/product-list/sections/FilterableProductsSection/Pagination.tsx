@@ -64,7 +64,7 @@ export function Pagination(props: PaginationProps) {
                               icon={faChevronsLeft}
                               color={theme.colors.gray[500]}
                               style={{
-                                 height: '10px',
+                                 height: '12px',
                               }}
                            />
                         )}
@@ -89,7 +89,7 @@ export function Pagination(props: PaginationProps) {
                               icon={faChevronLeft}
                               color={theme.colors.gray[500]}
                               style={{
-                                 height: '10px',
+                                 height: '12px',
                               }}
                            />
                         )}
@@ -113,6 +113,8 @@ export function Pagination(props: PaginationProps) {
                               event.preventDefault();
                               pagination.goto(page);
                            }}
+                           fontSize="sm"
+                           fontWeight="medium"
                         />
                      </PaginationItem>
                   ))}
@@ -132,7 +134,7 @@ export function Pagination(props: PaginationProps) {
                               icon={faChevronRight}
                               color={theme.colors.gray[500]}
                               style={{
-                                 height: '10px',
+                                 height: '12px',
                               }}
                            />
                         )}
@@ -153,7 +155,7 @@ export function Pagination(props: PaginationProps) {
                               icon={faChevronsRight}
                               color={theme.colors.gray[500]}
                               style={{
-                                 height: '10px',
+                                 height: '12px',
                               }}
                            />
                         )}
