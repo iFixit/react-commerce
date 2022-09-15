@@ -5,9 +5,10 @@ import {
 } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
-   decodeDeviceItemType,
-   decodeDeviceTitle,
-   encodeDeviceTitle,
+   destylizeDeviceItemType,
+   destylizeDeviceTitle as destylizeDeviceTitle,
+   stylizeDeviceItemType,
+   stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -92,6 +93,8 @@ export const getProductListServerSideProps = ({
                'device handle is required'
             );
 
+            const deviceTitle = destylizeDeviceTitle(deviceHandle);
+
             if (otherPathSegments.length > 0) {
                return {
                   notFound: true,
@@ -99,10 +102,9 @@ export const getProductListServerSideProps = ({
             }
 
             const itemType = itemTypeHandle
-               ? decodeDeviceItemType(itemTypeHandle)
+               ? destylizeDeviceItemType(itemTypeHandle)
                : null;
 
-            const deviceTitle = decodeDeviceTitle(deviceHandle);
             productList = await logAsync('findProductList', () =>
                findProductList(
                   {
@@ -120,7 +122,7 @@ export const getProductListServerSideProps = ({
 
             canonicalPath = getDeviceCanonicalPath(
                productList?.deviceTitle,
-               itemTypeHandle
+               itemType
             );
 
             break;
@@ -251,12 +253,16 @@ function getDevicePathSegments(
 
 function getDeviceCanonicalPath(
    deviceTitle: string | null | undefined,
-   itemTypeHandle?: string
+   itemType: string | null
 ) {
    if (deviceTitle == null) {
       return null;
    }
-   const slug = itemTypeHandle ? `/${itemTypeHandle}` : '';
-   const canonicalDeviceTitle = encodeDeviceTitle(deviceTitle);
-   return `/Parts/${canonicalDeviceTitle}${slug}`;
+   const slug = itemType
+      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
+      : '';
+   const canonicalDeviceHandle = encodeURIComponent(
+      stylizeDeviceTitle(deviceTitle)
+   );
+   return `/Parts/${canonicalDeviceHandle}${slug}`;
 }

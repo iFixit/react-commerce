@@ -1,5 +1,6 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN, DEFAULT_STORE_CODE } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
+import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { isRecord } from '@ifixit/helpers';
 import {
    ShopCredentials,
@@ -19,8 +20,21 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       return null;
    }
    const variants = response.product.variants.nodes.map((variant) => {
+      const isDiscounted =
+         variant.compareAtPriceV2 != null &&
+         parseFloat(variant.compareAtPriceV2.amount) >
+            parseFloat(variant.priceV2.amount);
+      const discountPercentage = isDiscounted
+         ? computeDiscountPercentage(
+              parseFloat(variant.priceV2.amount) * 100,
+              parseFloat(variant.compareAtPriceV2!.amount) * 100
+           )
+         : 0;
+
       return {
          ...variant,
+         isDiscounted,
+         discountPercentage,
          formattedPrice: formatPrice(variant.priceV2),
          formattedCompareAtPrice: variant.compareAtPriceV2
             ? formatPrice(variant.compareAtPriceV2)
@@ -184,7 +198,8 @@ export async function fetchProductReviews(
    productId: string
 ): Promise<ProductReviewData | null> {
    const response = await fetch(
-      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=us`,
+      // TODO: get store code from user session or fall back to default
+      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`,
       {
          headers: {
             'Content-Type': 'application/json',
