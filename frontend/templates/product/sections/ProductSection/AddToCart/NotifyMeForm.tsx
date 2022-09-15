@@ -10,10 +10,10 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { faCheckCircle } from '@fortawesome/pro-solid-svg-icons';
-import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { FaIcon } from '@ifixit/icons';
+import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { useProductTemplateData } from '@templates/product/hooks/useProductTemplateData';
 import * as React from 'react';
-import { getProductSku, getProductVariantOptionId } from '@ifixit/helpers';
 
 enum NotifyMeStatus {
    Idle = 'idle',
@@ -24,10 +24,10 @@ enum NotifyMeStatus {
 
 export type NotifyMeFormProps = {
    sku: string;
-   salesChannelID: number;
 };
 
-export function NotifyMeForm({ sku, salesChannelID }: NotifyMeFormProps) {
+export function NotifyMeForm({ sku }: NotifyMeFormProps) {
+   const { layoutProps } = useProductTemplateData();
    const [status, setStatus] = React.useState<NotifyMeStatus>(
       NotifyMeStatus.Idle
    );
@@ -43,15 +43,14 @@ export function NotifyMeForm({ sku, salesChannelID }: NotifyMeFormProps) {
          if (typeof email != 'string') {
             throw new Error('email is required');
          }
-         await ifixitAPI.post('cart/product/notifyWhenInStock', {
+         await ifixitAPI.post('cart/product/notifyWhenSkuInStock', {
             headers: {
                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-               productcode: getProductSku(sku),
-               optionid: getProductVariantOptionId(sku),
+               sku,
+               shop_domain: layoutProps.currentStore.shopify.storefrontDomain,
                email,
-               sales_channelid: salesChannelID,
             }),
          });
          setStatus(NotifyMeStatus.Submitted);

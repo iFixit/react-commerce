@@ -1,35 +1,28 @@
 import { Box } from '@chakra-ui/react';
-import { PageBreadcrumb, WithProvidersProps } from '@components/common';
+import { PageBreadcrumb } from '@components/common';
 import { flags } from '@config/flags';
+import { noindexDevDomains } from '@helpers/next-helpers';
 import { invariant } from '@ifixit/helpers';
-import {
-   DefaultLayout,
-   getLayoutServerSideProps,
-   WithLayoutProps,
-} from '@layouts/default';
-import { findProduct, Product } from '@models/product';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
+import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
+import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
 import { SecondaryNavigation } from './component/SecondaryNavigation';
+import {
+   ProductTemplateProps,
+   useProductTemplateData,
+} from './hooks/useProductTemplateData';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
+import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
-import { ProductSection } from './sections/ProductSection';
 import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
+import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
-import { CompatibilitySection } from './sections/CompatibilitySection';
-import { urlFromContext } from '@ifixit/helpers/nextjs';
-import { noindexDevDomains } from '@helpers/next-helpers';
 
-export type ProductTemplateProps = WithProvidersProps<
-   WithLayoutProps<{
-      product: Product;
-   }>
->;
-
-export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
-   product,
-}) => {
+export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
+   const { product } = useProductTemplateData();
    const { selectedVariant, setSelectedVariantId } =
       useSelectedVariant(product);
 
