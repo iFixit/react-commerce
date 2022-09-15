@@ -7,13 +7,12 @@ import {
    InputGroupProps,
    InputLeftElement,
    InputRightElement,
-   useTheme,
 } from '@chakra-ui/react';
 import {
    faCircleXmark,
    faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { useSearchBox } from 'react-instantsearch-hooks-web';
@@ -24,7 +23,6 @@ const MAX_SEARCH_QUERY_LENGTH = 100;
 const DEBOUNCE_INTERVAL_MILLIS = 300;
 
 export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
-   const theme = useTheme();
    const { query, refine, clear } = useSearchBox({
       queryHook: debouncedQueryHook,
    });
@@ -41,13 +39,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    return (
       <InputGroup ref={ref} {...props}>
          <InputLeftElement pointerEvents="none">
-            <FontAwesomeIcon
-               icon={faMagnifyingGlass}
-               color={theme.colors.gray[300]}
-               style={{
-                  height: '16px',
-               }}
-            />
+            <FaIcon icon={faMagnifyingGlass} h="4" color="gray.300" />
          </InputLeftElement>
          <Input
             ref={inputRef}
@@ -76,12 +68,10 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
                }}
                icon={
                   <Box color="gray.300" _hover={{ color: 'gray.500' }}>
-                     <FontAwesomeIcon
+                     <FaIcon
                         icon={faCircleXmark}
-                        style={{
-                           height: '16px',
-                           transition: 'color 300ms',
-                        }}
+                        h="4"
+                        transition="color 300ms"
                      />
                   </Box>
                }

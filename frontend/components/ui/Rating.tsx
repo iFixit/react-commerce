@@ -1,11 +1,7 @@
-import { HStack, StackProps, useTheme } from '@chakra-ui/react';
-import { faStar } from '@fortawesome/pro-solid-svg-icons';
+import { HStack, StackProps } from '@chakra-ui/react';
 import { faStarHalf } from '@fortawesome/pro-duotone-svg-icons';
-
-import {
-   FontAwesomeIcon,
-   FontAwesomeIconProps,
-} from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/pro-solid-svg-icons';
+import { FaIcon, FaIconProps } from '@ifixit/icons';
 
 export interface RatingProps extends StackProps {
    value?: number;
@@ -33,7 +29,7 @@ export const Rating = (props: RatingProps) => {
    );
 };
 
-type RatingStarProps = Omit<FontAwesomeIconProps, 'icon'> & {
+type RatingStarProps = Omit<FaIconProps, 'icon'> & {
    appearence: RatingStarAppearance;
 };
 
@@ -47,38 +43,24 @@ export const RatingStar = ({
    appearence = RatingStarAppearance.Empty,
    ...otherProps
 }: RatingStarProps) => {
-   const theme = useTheme();
    switch (appearence) {
       case RatingStarAppearance.Empty: {
-         return (
-            <FontAwesomeIcon
-               icon={faStar}
-               color={theme.colors.gray[300]}
-               style={{ height: '16px' }}
-               {...otherProps}
-            />
-         );
+         return <FaIcon icon={faStar} h="4" color="gray.300" {...otherProps} />;
       }
       case RatingStarAppearance.Full: {
          return (
-            <FontAwesomeIcon
-               icon={faStar}
-               color={theme.colors.brand[500]}
-               style={{ height: '16px' }}
-               {...otherProps}
-            />
+            <FaIcon icon={faStar} h="4" color="brand.500" {...otherProps} />
          );
       }
       case RatingStarAppearance.Half: {
          return (
-            <FontAwesomeIcon
+            <FaIcon
                icon={faStarHalf}
-               style={{
-                  height: '16px',
-                  // @ts-ignore
-                  '--fa-primary-color': theme.colors.brand[500],
-                  '--fa-secondary-color': theme.colors.gray[300],
-                  '--fa-secondary-opacity': 1,
+               h="4"
+               sx={{
+                  '--fa-primary-color': 'var(--chakra-colors-brand-500)',
+                  '--fa-secondary-color': 'var(--chakra-colors-gray-300)',
+                  '--fa-secondary-opacity': '1',
                }}
                {...otherProps}
             />

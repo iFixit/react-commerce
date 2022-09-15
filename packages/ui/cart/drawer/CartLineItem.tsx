@@ -8,7 +8,6 @@ import {
    IconButtonProps,
    Link,
    Text,
-   useTheme,
    useToast,
    VStack,
 } from '@chakra-ui/react';
@@ -19,13 +18,13 @@ import {
    faCirclePlus,
    faTrash,
 } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import {
    APICartProduct,
    useRemoveLineItem,
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
+import { FaIcon } from '@ifixit/icons';
 import { motion } from 'framer-motion';
 import * as React from 'react';
 
@@ -38,7 +37,6 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
    const toast = useToast();
    const removeLineItem = useRemoveLineItem();
    const updateLineItemQuantity = useUpdateLineItemQuantity();
-   const theme = useTheme();
 
    React.useEffect(() => {
       if (updateLineItemQuantity.isError) {
@@ -130,12 +128,10 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            variant="ghost"
                            color="gray.500"
                            icon={
-                              <FontAwesomeIcon
+                              <FaIcon
                                  icon={faCircleMinus}
-                                 color={theme.colors.gray[400]}
-                                 style={{
-                                    height: '16px',
-                                 }}
+                                 h="4"
+                                 color="gray.400"
                               />
                            }
                            size="xs"
@@ -153,12 +149,10 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            variant="ghost"
                            color="gray.500"
                            icon={
-                              <FontAwesomeIcon
+                              <FaIcon
                                  icon={faCirclePlus}
-                                 color={theme.colors.gray[400]}
-                                 style={{
-                                    height: '16px',
-                                 }}
+                                 h="4"
+                                 color="gray.400"
                               />
                            }
                            size="xs"
@@ -180,13 +174,11 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            fontSize="sm"
                            p="0"
                         >
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faCircleExclamation}
-                              color={theme.colors.red[500]}
-                              style={{
-                                 height: '16px',
-                                 marginRight: '6px',
-                              }}
+                              h="4"
+                              mr="6px"
+                              color="red.500"
                            />
                            Unable to update quantity.
                         </Alert>
@@ -201,14 +193,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                   aria-label={`Remove ${lineItem.name} from cart`}
                   _active={{ bg: 'gray.200' }}
                   color="gray.300"
-                  icon={
-                     <FontAwesomeIcon
-                        icon={faTrash}
-                        style={{
-                           height: '16px',
-                        }}
-                     />
-                  }
+                  icon={<FaIcon icon={faTrash} h="4" />}
                   size="xs"
                   onClick={handleRemoveLineItem}
                />

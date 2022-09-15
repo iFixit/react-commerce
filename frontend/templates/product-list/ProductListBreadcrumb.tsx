@@ -10,14 +10,13 @@ import {
    MenuItem,
    MenuList,
    Text,
-   useTheme,
 } from '@chakra-ui/react';
 import { faChevronRight, faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    getProductListPath,
    getProductListTitle,
 } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import { ProductListAncestor } from '@models/product-list/types';
 import NextLink from 'next/link';
@@ -32,7 +31,6 @@ export function ProductListBreadcrumb({
    productList,
    ...otherProps
 }: ProductListBreadcrumbProps) {
-   const theme = useTheme();
    let { ancestors } = productList;
    const itemType = useDevicePartsItemType(productList);
 
@@ -51,14 +49,12 @@ export function ProductListBreadcrumb({
          spacing={1}
          separator={
             <Flex>
-               <FontAwesomeIcon
+               <FaIcon
                   icon={faChevronRight}
-                  color={theme.colors.gray[400]}
-                  style={{
-                     height: '10px',
-                     display: 'flex',
-                     marginTop: '4px',
-                  }}
+                  h="10px"
+                  display="flex"
+                  mt="1"
+                  color="gray.400"
                />
             </Flex>
          }
@@ -110,15 +106,7 @@ export function ProductListBreadcrumb({
                   <MenuButton
                      as={IconButton}
                      aria-label="Options"
-                     icon={
-                        <FontAwesomeIcon
-                           icon={faEllipsis}
-                           color={theme.colors.gray[400]}
-                           style={{
-                              height: '16px',
-                           }}
-                        />
-                     }
+                     icon={<FaIcon icon={faEllipsis} h="4" color="gray.400" />}
                      variant="solid"
                      bg="gray.200"
                      size="xs"

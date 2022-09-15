@@ -1,8 +1,6 @@
 import {
    Avatar,
    forwardRef,
-   Icon,
-   IconProps,
    Link,
    LinkProps,
    Menu,
@@ -13,14 +11,12 @@ import {
    MenuProps,
    StackProps,
    Text,
-   useTheme,
    VStack,
-   Circle,
 } from '@chakra-ui/react';
-import { usePreloadImage } from '../hooks';
-import * as React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import * as React from 'react';
+import { usePreloadImage } from '../hooks';
+import { FaIcon } from '@ifixit/icons';
 
 type UserMenuContext = {
    user: User;
@@ -103,7 +99,6 @@ export const UserMenuLink = forwardRef<MenuItemProps, 'a'>((props, ref) => {
 
 export const NoUserLink = forwardRef<Omit<LinkProps, 'children'>, 'a'>(
    (props, ref) => {
-      const theme = useTheme();
       return (
          <Link
             ref={ref}
@@ -117,13 +112,7 @@ export const NoUserLink = forwardRef<Omit<LinkProps, 'children'>, 'a'>(
             _hover={{ opacity: '0.7' }}
             transition="0.3s"
          >
-            <FontAwesomeIcon
-               icon={faUser}
-               color={theme.colors.white}
-               style={{
-                  height: '20px',
-               }}
-            />
+            <FaIcon icon={faUser} h="5" color="white" />
          </Link>
       );
    }
@@ -132,7 +121,7 @@ export const NoUserLink = forwardRef<Omit<LinkProps, 'children'>, 'a'>(
 function UserAvatar() {
    const { user } = useMenuContext();
    const image = usePreloadImage();
-   const theme = useTheme();
+
    React.useEffect(() => {
       if (user?.thumbnail) {
          image.preload(user.thumbnail);
@@ -150,15 +139,7 @@ function UserAvatar() {
             'https://guide-images.cdn.ifixit.com/igi/ZM1kHYv4nvHWF2Hd.thumbnail' ??
             undefined
          }
-         icon={
-            <FontAwesomeIcon
-               icon={faUser}
-               color={theme.colors.gray[300]}
-               style={{
-                  height: '16px',
-               }}
-            />
-         }
+         icon={<FaIcon icon={faUser} h="4" color="gray.300" />}
          bg={user?.thumbnail == null ? undefined : 'transparent'}
          size="sm"
       />

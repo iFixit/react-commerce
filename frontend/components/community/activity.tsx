@@ -6,7 +6,6 @@ import {
    Link,
    SimpleGrid,
    Text,
-   useTheme,
 } from '@chakra-ui/react';
 import {
    borderRadius,
@@ -17,7 +16,7 @@ import {
    space,
 } from '@core-ds/primitives';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -115,7 +114,6 @@ function ActivityCard({ data }: { data: Activity }) {
 }
 
 export default function ActivityDisplay({ data }: { data: Activity[] }) {
-   const theme = useTheme();
    return (
       <React.Fragment>
          <Heading
@@ -143,13 +141,7 @@ export default function ActivityDisplay({ data }: { data: Activity[] }) {
                   textAlign="center"
                   padding="50px 0"
                >
-                  <FontAwesomeIcon
-                     icon={faCircleExclamation}
-                     color={theme.colors.red[500]}
-                     style={{
-                        height: '28px',
-                     }}
-                  />
+                  <FaIcon icon={faCircleExclamation} h="28px" color="red.500" />
                   <Heading
                      as="h3"
                      fontSize={`${fontSize.xl}`}

@@ -1,9 +1,7 @@
-import { Heading, Stack, Text, useTheme, VStack } from '@chakra-ui/react';
+import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import {
-   FontAwesomeIcon,
-   FontAwesomeIconProps,
-} from '@fortawesome/react-fontawesome';
+
+import { FaIcon, FaIconProps } from '@ifixit/icons';
 import {
    faBoxCircleCheck,
    faRocket,
@@ -75,14 +73,6 @@ function ValueProposition({ children }: React.PropsWithChildren<{}>) {
    );
 }
 
-const ValuePropositionIcon = ({ icon, ...props }: FontAwesomeIconProps) => {
-   const theme = useTheme();
-   return (
-      <FontAwesomeIcon
-         icon={icon}
-         color={theme.colors.brand[500]}
-         style={{ height: '32px' }}
-         {...props}
-      />
-   );
+const ValuePropositionIcon = ({ icon, ...props }: FaIconProps) => {
+   return <FaIcon icon={icon} h="8" color="brand.500" {...props} />;
 };

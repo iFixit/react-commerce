@@ -4,10 +4,9 @@ import {
    FlexProps,
    forwardRef,
    ThemeTypings,
-   useTheme,
 } from '@chakra-ui/react';
 import { IconDefinition } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 
 export type IconBadgeProps = FlexProps & {
    colorScheme?: ThemeTypings['colorSchemes'];
@@ -16,7 +15,6 @@ export type IconBadgeProps = FlexProps & {
 
 export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
    ({ children, colorScheme = 'gray', icon, ...props }, ref) => {
-      const theme = useTheme();
       return (
          <Flex
             ref={ref}
@@ -36,11 +34,11 @@ export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
          >
             {icon && (
                <Box mr="1">
-                  <FontAwesomeIcon
+                  <FaIcon
+                     display="block"
                      icon={icon}
-                     size="1x"
-                     color={theme.colors[colorScheme][500]}
-                     style={{ display: 'block' }}
+                     h="4"
+                     color={`${colorScheme}.500`}
                   />
                </Box>
             )}

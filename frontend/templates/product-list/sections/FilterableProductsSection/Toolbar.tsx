@@ -11,12 +11,11 @@ import {
    Stack,
    Text,
    useDisclosure,
-   useTheme,
 } from '@chakra-ui/react';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import { faGrid } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getProductListTitle } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
@@ -166,18 +165,9 @@ export const ProductViewSwitch = (props: ButtonGroupProps) => {
 };
 
 export const ProductViewListButton = (props: IconButtonProps) => {
-   const theme = useTheme();
    return (
       <IconButton
-         icon={
-            <FontAwesomeIcon
-               icon={faList}
-               color={theme.colors.gray[500]}
-               style={{
-                  height: '16px',
-               }}
-            />
-         }
+         icon={<FaIcon icon={faList} h="4" color="gray.500" />}
          mr="-px"
          variant="outline"
          size="md"
@@ -187,18 +177,9 @@ export const ProductViewListButton = (props: IconButtonProps) => {
 };
 
 export const ProductViewGridButton = (props: IconButtonProps) => {
-   const theme = useTheme();
    return (
       <IconButton
-         icon={
-            <FontAwesomeIcon
-               icon={faGrid}
-               color={theme.colors.gray[500]}
-               style={{
-                  height: '16px',
-               }}
-            />
-         }
+         icon={<FaIcon icon={faGrid} h="4" color="gray.500" />}
          mr="-px"
          variant="outline"
          size="md"

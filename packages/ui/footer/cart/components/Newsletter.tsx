@@ -15,15 +15,14 @@ import {
    StackProps,
    Text,
    TextProps,
-   useTheme,
 } from '@chakra-ui/react';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';
 import React from 'react';
+import { FaIcon } from '@ifixit/icons';
 
 const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
    return (
@@ -168,7 +167,6 @@ export function NewsletterForm({
 }: NewsletterFormProps) {
    const inputRef = React.useRef<HTMLInputElement>(null);
    const [subscription, subscribe] = useSubscribeToNewsletter();
-   const theme = useTheme();
 
    const onSubscribe = React.useCallback(
       async (event: React.FormEvent<HTMLDivElement>) => {
@@ -226,14 +224,7 @@ export function NewsletterForm({
                   bottom="0"
                   lineHeight="10"
                >
-                  <FontAwesomeIcon
-                     icon={faCircleCheck}
-                     color="white"
-                     style={{
-                        height: '16px',
-                        marginRight: '6px',
-                     }}
-                  />
+                  <FaIcon icon={faCircleCheck} h="4" mr="6px" color="white" />
                   Subscribed!
                </Text>
             )}

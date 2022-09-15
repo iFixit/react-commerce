@@ -2,35 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
 import * as ProductSearch from '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing';
 import { mockProduct } from 'test/jest/__mocks__/mockProduct';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { theme } from '@ifixit/ui/theme';
 
 jest.mock('@ifixit/app');
-
-// We cannot import the actual theme in AppProviders since there are absolute dependencies
-// towards the frontend folder in packages
-const mockTheme = extendTheme({
-   ...theme,
-   sizes: {
-      ...theme.sizes,
-      header: '68px',
-   },
-   zIndices: {
-      ...theme.zIndices,
-      header: 2000,
-   },
-   styles: {
-      ...theme.styles,
-      global: {
-         ...theme.styles?.global,
-         body: {
-            // @ts-ignore
-            ...theme.styles?.global?.body,
-            touchAction: 'pan-x pan-y',
-         },
-      },
-   },
-});
 
 describe('ProductListItem', () => {
    beforeEach(() => {
@@ -48,12 +21,8 @@ describe('ProductListItem', () => {
    });
 
    it('renders and matches the snapshot', () => {
-      const { asFragment } = render(
-         <ChakraProvider theme={mockTheme}>
-            {/* @ts-ignore */}
-            <ProductListItem product={mockProduct} />
-         </ChakraProvider>
-      );
+      // @ts-ignore
+      const { asFragment } = render(<ProductListItem product={mockProduct} />);
       const shortDescription = screen.getByText(
          'Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.'
       );
@@ -67,12 +36,8 @@ describe('ProductListItem', () => {
       mockProduct.rating = 3.5;
       mockProduct.rating_count = 9;
 
-      render(
-         <ChakraProvider theme={mockTheme}>
-            {/* @ts-ignore */}
-            <ProductListItem product={mockProduct} />
-         </ChakraProvider>
-      );
+      // @ts-ignore
+      render(<ProductListItem product={mockProduct} />);
 
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).not.toBeInTheDocument();
@@ -84,38 +49,23 @@ describe('ProductListItem', () => {
       // If rating < 4; count > 10
       mockProduct.rating = 1;
       mockProduct.rating_count = 15;
-
-      const { rerender } = render(
-         <ChakraProvider theme={mockTheme}>
-            {/* @ts-ignore */}
-            <ProductListItem product={mockProduct} />
-         </ChakraProvider>
-      );
+      // @ts-ignore
+      const { rerender } = render(<ProductListItem product={mockProduct} />);
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).toBeInTheDocument();
 
       // If rating > 4; count < 10
       mockProduct.rating = 5;
       mockProduct.rating_count = 5;
-
-      rerender(
-         <ChakraProvider theme={mockTheme}>
-            {/* @ts-ignore */}
-            <ProductListItem product={mockProduct} />
-         </ChakraProvider>
-      );
+      // @ts-ignore
+      rerender(<ProductListItem product={mockProduct} />);
       (expect(reviewStars) as any).toBeInTheDocument();
 
       // If rating > 4; count > 10
       mockProduct.rating = 5;
       mockProduct.rating_count = 15;
-
-      rerender(
-         <ChakraProvider theme={mockTheme}>
-            {/* @ts-ignore */}
-            <ProductListItem product={mockProduct} />
-         </ChakraProvider>
-      );
+      // @ts-ignore
+      rerender(<ProductListItem product={mockProduct} />);
       (expect(reviewStars) as any).toBeInTheDocument();
    });
 });

@@ -8,10 +8,10 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
     role="group"
   >
     <div
-      class="css-1ej4wy2"
+      class="css-19p2217"
     >
       <div
-        class="css-1upbq1w"
+        class="css-1vobfjw"
       >
         <span
           style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
@@ -37,19 +37,19 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
         </span>
       </div>
       <div
-        class="chakra-stack css-mc053s"
+        class="chakra-stack css-azp3jj"
       >
         <div
-          class="css-1c6uy1d"
+          class="css-1kx59gv"
         >
           <h3
-            class="chakra-heading css-114j6y8"
+            class="chakra-heading css-duzb3d"
             id="product-heading-galaxy-s9-plus-replacement-battery"
           >
             Galaxy S9+ Battery
           </h3>
           <p
-            class="chakra-text css-1lwz3lo"
+            class="chakra-text css-1emk585"
           >
             Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.
           </p>
@@ -58,17 +58,15 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             data-testid="reviewStars"
           >
             <div
-              class="chakra-stack css-134p2gk"
+              class="chakra-stack css-193rmy8"
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star "
-                color="#1975F1"
+                class="svg-inline--fa fa-star  css-41ng9q"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style="height: 16px;"
                 viewBox="0 0 576 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -79,13 +77,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star "
-                color="#1975F1"
+                class="svg-inline--fa fa-star  css-41ng9q"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style="height: 16px;"
                 viewBox="0 0 576 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -96,13 +92,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star "
-                color="#1975F1"
+                class="svg-inline--fa fa-star  css-41ng9q"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style="height: 16px;"
                 viewBox="0 0 576 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -113,13 +107,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star "
-                color="#1975F1"
+                class="svg-inline--fa fa-star  css-41ng9q"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style="height: 16px;"
                 viewBox="0 0 576 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -130,12 +122,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star-half "
+                class="svg-inline--fa fa-star-half  css-z00wzz"
                 data-icon="star-half"
                 data-prefix="fad"
                 focusable="false"
                 role="img"
-                style="height: 16px; --fa-primary-color: #1975F1; --fa-secondary-color: #d1d5db; --fa-secondary-opacity: 1;"
                 viewBox="0 0 576 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -156,49 +147,49 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
             </div>
             <p
-              class="chakra-text css-1g5rt1e"
+              class="chakra-text css-xh8f59"
             >
               18
             </p>
           </div>
           <div
-            class="css-tnmkqf"
+            class="css-14us8ue"
           >
             <span
-              class="chakra-badge css-cqg9za"
+              class="chakra-badge css-1l0yll"
             >
               5% Off
             </span>
           </div>
         </div>
         <div
-          class="chakra-stack css-1gv4c2h"
+          class="chakra-stack css-1x25lam"
         >
           <div
-            class="chakra-stack css-1nrwugr"
+            class="chakra-stack css-1wwkyaq"
           >
             <p
-              class="chakra-text css-hp9wru"
+              class="chakra-text css-12jr671"
               data-testid="product-price"
             >
               $5
             </p>
             <p
-              class="chakra-text css-1928thz"
+              class="chakra-text css-m9wb1i"
               data-testid="product-compared-at-price"
             >
               $5
             </p>
           </div>
           <div
-            class="chakra-stack css-oi2dk3"
+            class="chakra-stack css-1dz9rto"
           >
             <a
               class="chakra-linkbox__overlay css-kvj8dg"
               href="https://www.cominor.com/Store/Android/Galaxy-S9-Battery/IF404-007?o=4"
             >
               <div
-                class="chakra-button css-9gsfzw"
+                class="chakra-button css-1xl7ue1"
               >
                 View
               </div>

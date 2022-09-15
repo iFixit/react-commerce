@@ -1,11 +1,11 @@
-import { HStack, useBreakpointValue, useTheme } from '@chakra-ui/react';
+import { HStack, useBreakpointValue } from '@chakra-ui/react';
 import {
    faChevronLeft,
    faChevronRight,
    faChevronsLeft,
    faChevronsRight,
 } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 import {
    Pagination as BasePagination,
    PaginationItem,
@@ -20,7 +20,6 @@ import {
 type PaginationProps = UsePaginationProps;
 
 export function Pagination(props: PaginationProps) {
-   const theme = useTheme();
    const { currentRefinement, refine, createURL, nbPages } =
       usePagination(props);
    const responsiveVisibleNumberOfPages = useBreakpointValue({
@@ -60,12 +59,10 @@ export function Pagination(props: PaginationProps) {
                         href={createPageUrl(1)}
                         page="first"
                         icon={() => (
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faChevronsLeft}
-                              color={theme.colors.gray[500]}
-                              style={{
-                                 height: '12px',
-                              }}
+                              h="3"
+                              color="gray.500"
                            />
                         )}
                         onClick={(event) => {
@@ -85,12 +82,10 @@ export function Pagination(props: PaginationProps) {
                         }
                         page="previous"
                         icon={() => (
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faChevronLeft}
-                              color={theme.colors.gray[500]}
-                              style={{
-                                 height: '12px',
-                              }}
+                              h="3"
+                              color="gray.500"
                            />
                         )}
                         onClick={(event) => {
@@ -130,12 +125,10 @@ export function Pagination(props: PaginationProps) {
                               : '#'
                         }
                         icon={() => (
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faChevronRight}
-                              color={theme.colors.gray[500]}
-                              style={{
-                                 height: '12px',
-                              }}
+                              h="3"
+                              color="gray.500"
                            />
                         )}
                         onClick={(event) => {
@@ -151,12 +144,10 @@ export function Pagination(props: PaginationProps) {
                         page="last"
                         href={createPageUrl(pagination.numberOfPages)}
                         icon={() => (
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faChevronsRight}
-                              color={theme.colors.gray[500]}
-                              style={{
-                                 height: '12px',
-                              }}
+                              h="3"
+                              color="gray.500"
                            />
                         )}
                         onClick={(event) => {

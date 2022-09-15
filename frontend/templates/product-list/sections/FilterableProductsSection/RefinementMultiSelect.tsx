@@ -1,16 +1,8 @@
-import {
-   Box,
-   Button,
-   Checkbox,
-   HStack,
-   Text,
-   useTheme,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
 
+import { FaIcon } from '@ifixit/icons';
 import { useDecoupledState } from '@ifixit/ui';
 import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
@@ -20,7 +12,6 @@ import { useSortBy } from './useSortBy';
 type RefinementMultiSelectProps = UseRefinementListProps;
 
 export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
-   const theme = useTheme();
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...props,
@@ -44,16 +35,7 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
             <Button
                variant="ghost"
                fontWeight="normal"
-               leftIcon={
-                  <FontAwesomeIcon
-                     icon={faSort}
-                     color={theme.colors.gray[400]}
-                     style={{
-                        height: '16px',
-                        marginLeft: '4px',
-                     }}
-                  />
-               }
+               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
                mt="3"
                p="0"
                w="full"

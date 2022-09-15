@@ -11,13 +11,12 @@ import {
    Text,
    useBreakpointValue,
    useSafeLayoutEffect,
-   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import { faArrowLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatFacetName } from '@helpers/algolia-helpers';
 import { getRefinementDisplayType } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import { RefinementDisplayType } from '@models/product-list/types';
 import * as React from 'react';
@@ -41,7 +40,6 @@ export function FacetsDrawer({
    onClose,
    productList,
 }: FacetsDrawerProps) {
-   const theme = useTheme();
    const facets = useFilteredFacets(productList);
    const [currentFacet, setCurrentFacet] = React.useState<string | null>(null);
    const countRefinements = useCountRefinements();
@@ -114,13 +112,7 @@ export function FacetsDrawer({
                         aria-label="go back"
                         variant="ghost"
                         icon={
-                           <FontAwesomeIcon
-                              icon={faArrowLeft}
-                              color={theme.colors.gray[600]}
-                              style={{
-                                 height: '16px',
-                              }}
-                           />
+                           <FaIcon icon={faArrowLeft} h="4" color="gray.600" />
                         }
                         onClick={() => setCurrentFacet(null)}
                      />
@@ -253,7 +245,6 @@ function FacetListItem({
    onSelect,
    productList,
 }: FacetListItemProps) {
-   const theme = useTheme();
    const { items } = useFilteredRefinementList({
       attribute,
       limit: MAX_VALUES_PER_FACET,
@@ -298,13 +289,7 @@ function FacetListItem({
                      {refinedCount}
                   </Text>
                )}
-               <FontAwesomeIcon
-                  icon={faChevronRight}
-                  color={theme.colors.gray[500]}
-                  style={{
-                     height: '10px',
-                  }}
-               />
+               <FaIcon icon={faChevronRight} h="10px" color="gray.500" />
             </HStack>
          </Flex>
          <Divider />

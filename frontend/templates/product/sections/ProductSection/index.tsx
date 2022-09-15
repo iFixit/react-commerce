@@ -24,7 +24,6 @@ import {
    PopoverHeader,
    PopoverTrigger,
    Text,
-   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import {
@@ -35,8 +34,8 @@ import {
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
+import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
@@ -58,7 +57,6 @@ export function ProductSection({
    onVariantChange,
 }: ProductSectionProps) {
    const appContext = useAppContext();
-   const theme = useTheme();
 
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -115,11 +113,11 @@ export function ProductSection({
                            h={5}
                            mr={1.5}
                         >
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faBadgeDollar}
-                              color={theme.colors.brand[500]}
-                              style={{ height: '16px' }}
-                           />{' '}
+                              h="4"
+                              color="brand.500"
+                           />
                         </Flex>
                         Satisfaction guaranteed or you money back
                      </ListItem>
@@ -131,10 +129,10 @@ export function ProductSection({
                            h={5}
                            mr={1.5}
                         >
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faShieldCheck}
-                              color={theme.colors.brand[500]}
-                              style={{ height: '16px' }}
+                              h="4"
+                              color="brand.500"
                            />
                         </Flex>
                         <div>
@@ -150,11 +148,7 @@ export function ProductSection({
                            h={5}
                            mr={1.5}
                         >
-                           <FontAwesomeIcon
-                              icon={faRocket}
-                              color={theme.colors.brand[500]}
-                              style={{ height: '16px' }}
-                           />
+                           <FaIcon icon={faRocket} h="4" color="brand.500" />
                         </Flex>
                         Same day shipping if ordered by 5PM
                      </ListItem>
@@ -185,14 +179,12 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <FontAwesomeIcon
+                                 <FaIcon
                                     icon={faCircleExclamation}
-                                    color={theme.colors.brand[500]}
-                                    style={{
-                                       height: '16px',
-                                       marginTop: '2px',
-                                       marginRight: '10px',
-                                    }}
+                                    h="4"
+                                    mt="2px"
+                                    mr="10px"
+                                    color="brand.500"
                                  />
                                  <Box
                                     fontSize="sm"
@@ -210,14 +202,12 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <FontAwesomeIcon
+                                 <FaIcon
                                     icon={faCircleExclamation}
-                                    color={theme.colors.orange[500]}
-                                    style={{
-                                       height: '16px',
-                                       marginTop: '2px',
-                                       marginRight: '10px',
-                                    }}
+                                    h="4"
+                                    mt="2px"
+                                    mr="10px"
+                                    color="orange.500"
                                  />
                                  <Box
                                     fontSize="sm"
@@ -235,14 +225,12 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <FontAwesomeIcon
+                                 <FaIcon
                                     icon={faCircleExclamation}
-                                    color={theme.colors.red[500]}
-                                    style={{
-                                       height: '16px',
-                                       marginTop: '2px',
-                                       marginRight: '10px',
-                                    }}
+                                    color="red.500"
+                                    h="4"
+                                    mt="2px"
+                                    mr="10px"
                                  />
                                  <Box
                                     fontSize="sm"
@@ -351,10 +339,10 @@ export function ProductSection({
                                  aria-label="read more about the warning"
                                  size="sm"
                                  icon={
-                                    <FontAwesomeIcon
+                                    <FaIcon
                                        icon={faInfoCircle}
-                                       color={theme.colors.brand[500]}
-                                       style={{ height: '16px' }}
+                                       h="4"
+                                       color="brand.500"
                                     />
                                  }
                               >
@@ -366,13 +354,11 @@ export function ProductSection({
                               <PopoverCloseButton mt="0.5" />
                               <PopoverHeader textTransform="uppercase">
                                  <Flex align="center">
-                                    <FontAwesomeIcon
+                                    <FaIcon
                                        icon={faExclamationTriangle}
-                                       color={theme.colors.yellow[500]}
-                                       style={{
-                                          height: '16px',
-                                          marginRight: '8px',
-                                       }}
+                                       h="4"
+                                       mr="2"
+                                       color="yellow.500"
                                     />
                                     Warning
                                  </Flex>

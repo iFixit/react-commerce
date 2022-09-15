@@ -26,7 +26,6 @@ import {
    Skeleton,
    Spinner,
    Text,
-   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
@@ -34,12 +33,13 @@ import {
    faCircleExclamation,
    faShoppingCart,
 } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
+import { FaIcon } from '@ifixit/icons';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { useIsMounted } from '../../hooks';
+
 import { CartLineItem } from './CartLineItem';
 import { useCartDrawer } from './hooks/useCartDrawer';
 
@@ -54,8 +54,6 @@ export function CartDrawer() {
    const totalDiscount = cart.data?.totals.discount;
    const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
 
-   const theme = useTheme();
-
    return (
       <>
          <Box position="relative">
@@ -68,15 +66,7 @@ export function CartDrawer() {
                display="flex"
                w={8}
                h={8}
-               icon={
-                  <FontAwesomeIcon
-                     icon={faShoppingCart}
-                     color="white"
-                     style={{
-                        height: '22px',
-                     }}
-                  />
-               }
+               icon={<FaIcon icon={faShoppingCart} h="22px" color="white" />}
                onClick={onOpen}
                _active={{
                   bg: 'gray.900',
@@ -150,12 +140,10 @@ export function CartDrawer() {
                            textAlign="center"
                            height="200px"
                         >
-                           <FontAwesomeIcon
+                           <FaIcon
                               icon={faCircleExclamation}
-                              color={theme.colors.red[500]}
-                              style={{
-                                 height: '40px',
-                              }}
+                              h="10"
+                              color="red.500"
                            />
                            <AlertTitle mt={4} mb={1} fontSize="lg">
                               Unable to fetch the cart
@@ -187,11 +175,11 @@ export function CartDrawer() {
                         in={cart.data != null && cart.data.totalNumItems === 0}
                      >
                         <VStack spacing="5" p="5">
-                           <Circle size="72px" bg={theme.colors.brand[100]}>
-                              <FontAwesomeIcon
+                           <Circle size="72px" bg="brand.100">
+                              <FaIcon
                                  icon={faCartCircleExclamation}
-                                 size="2x"
-                                 color={theme.colors.blue.ifixit}
+                                 h="16"
+                                 color="blue.ifixit"
                               />
                            </Circle>
                            <Text>Your cart is empty</Text>
@@ -314,7 +302,6 @@ interface CheckoutErrorProps {
 }
 
 function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
-   const theme = useTheme();
    let checkoutError: React.ReactNode | null = null;
 
    switch (error) {
@@ -339,14 +326,12 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
    return (
       <Collapse in={checkoutError != null}>
          <Alert status="error">
-            <FontAwesomeIcon
+            <FaIcon
                icon={faCircleExclamation}
-               color={theme.colors.red[500]}
-               style={{
-                  height: '16px',
-                  marginTop: '2px',
-                  marginRight: '10px',
-               }}
+               h="4"
+               mt="2px"
+               mr="10px"
+               color="red.500"
             />
             <Box flexGrow={1}>
                <AlertDescription>{checkoutError}</AlertDescription>

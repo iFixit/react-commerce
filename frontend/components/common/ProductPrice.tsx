@@ -1,7 +1,7 @@
-import { Box, Text, ThemeTypings, useTheme } from '@chakra-ui/react';
+import { Box, Text, ThemeTypings } from '@chakra-ui/react';
 import { IconBadge } from '@components/ui';
 import { faRectanglePro } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 
 export type ProductPriceProps = {
    formattedPrice: string;
@@ -26,7 +26,6 @@ export function ProductPrice({
    colorScheme = 'red',
    direction = 'row',
 }: ProductPriceProps) {
-   const theme = useTheme();
    const priceFontSize =
       size === 'large' ? 'xl' : size === 'medium' ? 'md' : 'sm';
    const compareAtPriceFontSize = size === 'large' ? 'md' : 'sm';
@@ -42,14 +41,14 @@ export function ProductPrice({
             mr={direction === 'row' ? 1 : 0}
             fontSize={priceFontSize}
             fontWeight="semibold"
-            color={isDiscounted ? theme.colors[colorScheme][600] : 'gray.900'}
+            color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
          >
             {showProBadge && direction !== 'row' && (
-               <FontAwesomeIcon
+               <FaIcon
                   icon={faRectanglePro}
-                  size="1x"
-                  color={theme.colors[colorScheme][500]}
-                  style={{ marginRight: '6px' }}
+                  h="4"
+                  mr="6px"
+                  color={`${colorScheme}.500`}
                />
             )}
             {formattedPrice}

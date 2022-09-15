@@ -10,10 +10,9 @@ import {
    MenuItem,
    MenuList,
    Text,
-   useTheme,
 } from '@chakra-ui/react';
 import { faChevronRight, faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 import NextLink from 'next/link';
 
 export type PageBreadcrumbProps = BreadcrumbProps & {
@@ -26,7 +25,6 @@ export type TBreadcrumbItem = {
 };
 
 export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
-   const theme = useTheme();
    const ancestors = items.slice(0, -1);
    const reverseAncestorList = [...ancestors].reverse();
    const currentItem = items[items.length - 1];
@@ -45,14 +43,12 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                   md: 'initial',
                }}
             >
-               <FontAwesomeIcon
+               <FaIcon
                   icon={faChevronRight}
-                  color={theme.colors.gray[400]}
-                  style={{
-                     height: '10px',
-                     display: 'flex',
-                     marginTop: '4px',
-                  }}
+                  h="10px"
+                  d="flex"
+                  mt="1"
+                  color="gray.400"
                />
             </Flex>
          }
@@ -104,15 +100,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                   <MenuButton
                      as={IconButton}
                      aria-label="Options"
-                     icon={
-                        <FontAwesomeIcon
-                           icon={faEllipsis}
-                           color={theme.colors.gray[400]}
-                           style={{
-                              height: '16px',
-                           }}
-                        />
-                     }
+                     icon={<FaIcon icon={faEllipsis} h="4" color="gray.400" />}
                      variant="solid"
                      bg="gray.200"
                      size="xs"

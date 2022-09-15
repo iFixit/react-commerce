@@ -1,7 +1,7 @@
-import { Box, Button, HStack, Text, useTheme, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import {
    RefinementListItem,
@@ -26,7 +26,6 @@ export function RefinementSingleSelect({
    onClose,
    ...otherProps
 }: RefinementSingleSelectProps) {
-   const theme = useTheme();
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...otherProps,
@@ -66,16 +65,7 @@ export function RefinementSingleSelect({
             <Button
                variant="ghost"
                fontWeight="normal"
-               leftIcon={
-                  <FontAwesomeIcon
-                     icon={faSort}
-                     color={theme.colors.gray[400]}
-                     style={{
-                        height: '16px',
-                        marginLeft: '4px',
-                     }}
-                  />
-               }
+               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
                mt="3"
                p="0"
                w="full"

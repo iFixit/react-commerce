@@ -11,13 +11,12 @@ import {
    Stack,
    Tag,
    Text,
-   useTheme,
 } from '@chakra-ui/react';
 import { Rating, RatingStar, RatingStarAppearance } from '@components/ui';
 import { faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
+import { FaIcon } from '@ifixit/icons';
 import type { Product } from '@models/product';
 import { ProductVariant } from '@models/product';
 import React from 'react';
@@ -35,7 +34,6 @@ export function ReviewsSection({
    selectedVariant,
 }: ReviewsSectionProps) {
    const appContext = useAppContext();
-   const theme = useTheme();
    const reviewsQuery = useProductReviews(product);
    const [visibleReviewsCount, setVisibleReviewsCount] = React.useState(
       INITIAL_VISIBILE_REVIEWS
@@ -179,10 +177,10 @@ export function ReviewsSection({
                               </Link>
                            )}
                            <HStack color="green.500" spacing="1">
-                              <FontAwesomeIcon
+                              <FaIcon
                                  icon={faShieldCheck}
-                                 color={theme.colors.green[500]}
-                                 style={{ height: '16px' }}
+                                 h="4"
+                                 color="green.500"
                               />
                               <Text fontWeight="bold">Verified buyer</Text>
                            </HStack>

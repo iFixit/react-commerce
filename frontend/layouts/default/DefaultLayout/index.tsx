@@ -7,11 +7,11 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
+import { FaIcon } from '@ifixit/icons';
 import {
    faArrowRight,
    faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
@@ -208,17 +208,13 @@ export function DefaultLayout({
                                                             >
                                                                <NavigationSubmenuLink
                                                                   disclosureIcon={
-                                                                     <FontAwesomeIcon
+                                                                     <FaIcon
                                                                         icon={
                                                                            faArrowRight
                                                                         }
+                                                                        h="5"
+                                                                        transform="translateY(-50%)"
                                                                         color="white"
-                                                                        style={{
-                                                                           height:
-                                                                              '20px',
-                                                                           transform:
-                                                                              'translateY(-50%)',
-                                                                        }}
                                                                      />
                                                                   }
                                                                >
@@ -265,12 +261,10 @@ export function DefaultLayout({
                               bg: 'gray.900',
                            }}
                            icon={
-                              <FontAwesomeIcon
+                              <FaIcon
                                  icon={faMagnifyingGlass}
+                                 h="22px"
                                  color="white"
-                                 style={{
-                                    height: '22px',
-                                 }}
                               />
                            }
                            onClick={() => {
