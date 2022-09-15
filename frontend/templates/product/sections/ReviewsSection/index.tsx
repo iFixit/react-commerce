@@ -7,7 +7,6 @@ import {
    GridItem,
    Heading,
    HStack,
-   Icon,
    Link,
    Progress,
    Stack,
@@ -15,7 +14,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { Rating, RatingStar, RatingStarAppearance } from '@components/ui';
+import { Rating } from '@components/ui';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
@@ -23,7 +22,6 @@ import { PageContentWrapper } from '@ifixit/ui';
 import type { Product } from '@models/product';
 import { ProductVariant } from '@models/product';
 import React from 'react';
-import { FaShieldAlt } from 'react-icons/fa';
 import { useProductReviews } from '../../hooks/useProductReviews';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -74,29 +72,38 @@ export function ReviewsSection({
       );
    };
 
-   if (reviewsData == null) {
+   const hasReview =
+      reviewsData != null &&
+      reviewsData.reviews != null &&
+      reviewsData.reviews.length > 0;
+
+   if (!hasReview) {
+      // TODO: Add an empty state to allow users to write a review when there are no reviews
       return null;
    }
 
    return (
-      <Box bg="white" py="16" fontSize="sm">
+      <Box bg="white" px={{ base: 5, sm: 0 }} py="16" fontSize="sm">
          <PageContentWrapper>
             <Heading
                as="h2"
                fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
-               mb="12"
+               mb={{
+                  base: 8,
+                  md: 16,
+               }}
             >
                Customer reviews
             </Heading>
             {totalReviewsCount > 0 && (
                <Stack
                   direction={{
-                     base: 'column',
+                     base: 'column-reverse',
                      md: 'row',
                   }}
-                  spacing="10"
+                  spacing="8"
                   align="center"
                   justify="center"
                >
@@ -109,22 +116,10 @@ export function ReviewsSection({
                         const percentage = (count / totalReviewsCount) * 100;
                         return (
                            <React.Fragment key={rating}>
-                              <GridItem>
-                                 <Flex align="center">
-                                    <Text
-                                       as="span"
-                                       fontSize="xs"
-                                       lineHeight="1em"
-                                       color="brand.500"
-                                       mr="3px"
-                                       mt="2px"
-                                    >
-                                       {rating}
-                                    </Text>
-                                    <RatingStar
-                                       appearence={RatingStarAppearance.Full}
-                                    />
-                                 </Flex>
+                              <GridItem mt="-1px">
+                                 <Text as="span" fontSize="xs">
+                                    {rating}
+                                 </Text>
                               </GridItem>
                               <GridItem>
                                  <Progress
@@ -155,12 +150,24 @@ export function ReviewsSection({
                   </Flex>
                </Stack>
             )}
-            <Flex bg="gray.100" p="5" rounded="md" mt="24">
+            <Flex
+               bg="gray.100"
+               p="5"
+               rounded="md"
+               mt={{
+                  base: 8,
+                  sm: 24,
+               }}
+            >
                <Button
                   as="a"
                   href={`${appContext.ifixitOrigin}/User/Reviews/${selectedVariant.sku}`}
                   colorScheme="brand"
                   leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}
+                  w={{
+                     base: 'full',
+                     sm: 'auto',
+                  }}
                >
                   Write a review
                </Button>
@@ -171,7 +178,6 @@ export function ReviewsSection({
                      <Box
                         key={review.reviewid}
                         py="6"
-                        mx="5"
                         borderBottomWidth="1px"
                         borderColor="gray.200"
                      >
