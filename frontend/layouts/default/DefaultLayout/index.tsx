@@ -7,7 +7,6 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { useTheme } from '@emotion/react';
 import {
    faArrowRight,
    faMagnifyingGlass,
@@ -67,7 +66,6 @@ export function DefaultLayout({
    globalSettings,
    children,
 }: React.PropsWithChildren<DefaultLayoutProps>) {
-   const theme = useTheme();
    const { menu } = currentStore.header;
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
 
