@@ -1,4 +1,5 @@
 import {
+   Avatar,
    Box,
    Button,
    Flex,
@@ -12,8 +13,11 @@ import {
    Stack,
    Tag,
    Text,
+   VStack,
 } from '@chakra-ui/react';
 import { Rating, RatingStar, RatingStarAppearance } from '@components/ui';
+import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import type { Product } from '@models/product';
@@ -40,6 +44,8 @@ export function ReviewsSection({
    );
 
    const reviewsData = reviewsQuery.data;
+
+   console.log('reviewsData', reviewsData);
 
    const totalReviewsCount = reviewsData?.count ?? 0;
 
@@ -94,13 +100,6 @@ export function ReviewsSection({
                   align="center"
                   justify="center"
                >
-                  <Flex direction="column" align="center">
-                     <Text fontSize="5xl">{reviewsData.average}</Text>
-                     <Rating value={reviewsData.average ?? 0} />
-                     {reviewsData.count && (
-                        <Text fontSize="sm">{reviewsData.count} reviews</Text>
-                     )}
-                  </Flex>
                   <Grid
                      templateColumns="auto 200px auto"
                      gap="2.5"
@@ -147,6 +146,13 @@ export function ReviewsSection({
                         );
                      })}
                   </Grid>
+                  <Flex direction="column" align="center">
+                     <Text fontSize="5xl">{reviewsData.average}</Text>
+                     <Rating value={reviewsData.average ?? 0} />
+                     {reviewsData.count && (
+                        <Text fontSize="sm">{reviewsData.count} reviews</Text>
+                     )}
+                  </Flex>
                </Stack>
             )}
             <Flex bg="gray.100" p="5" rounded="md" mt="24">
@@ -154,51 +160,68 @@ export function ReviewsSection({
                   as="a"
                   href={`${appContext.ifixitOrigin}/User/Reviews/${selectedVariant.sku}`}
                   colorScheme="brand"
-                  minW="200px"
+                  leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}
                >
-                  Write a product review
+                  Write a review
                </Button>
             </Flex>
             <Box>
                {visibleReviews.map((review) => {
                   return (
-                     <Flex
+                     <Box
                         key={review.reviewid}
                         py="6"
                         mx="5"
                         borderBottomWidth="1px"
                         borderColor="gray.200"
                      >
-                        <Box w="240px" flexShrink={0}>
-                           <Rating value={review.rating} mb="4" />
-                           {review.author && (
-                              <Link href={review.author.url} fontWeight="bold">
-                                 {review.author.name}
-                              </Link>
-                           )}
-                           <HStack color="green.500" spacing="1">
-                              <Icon as={FaShieldAlt} />
-                              <Text fontWeight="bold">Verified buyer</Text>
+                        {review.author && (
+                           <HStack>
+                              <Avatar
+                                 name={review.author.name}
+                                 src={review.author.avatar}
+                                 showBorder
+                                 borderColor="brand.500"
+                                 size="md"
+                              />
+                              <VStack align="flex-start" spacing="0">
+                                 <Link
+                                    href={review.author.url}
+                                    fontWeight="bold"
+                                 >
+                                    {review.author.name}
+                                 </Link>
+                                 <HStack spacing="1" color="green.500">
+                                    <FontAwesomeIcon
+                                       icon={faShieldCheck}
+                                       fontSize="1rem"
+                                    />
+                                    <Text fontWeight="bold" color="green.600">
+                                       Verified buyer
+                                    </Text>
+                                 </HStack>
+                              </VStack>
                            </HStack>
+                        )}
+                        <HStack my="4">
+                           <Rating value={review.rating} />
                            {review.created_date && (
                               <Text mt="4" fontWeight="bold" color="gray.500">
-                                 Posted {formatReviewDate(review.created_date)}
+                                 {formatReviewDate(review.created_date)}
                               </Text>
                            )}
-                        </Box>
-                        <Box>
-                           <Text fontWeight="bold" color="brand.500" mb="3">
-                              {review.productName} | {review.productVariantName}
-                           </Text>
-                           {review.body && (
-                              <Box
-                                 dangerouslySetInnerHTML={{
-                                    __html: review.body,
-                                 }}
-                              />
-                           )}
-                        </Box>
-                     </Flex>
+                        </HStack>
+                        <Text fontWeight="bold" my="4">
+                           {review.productName} | {review.productVariantName}
+                        </Text>
+                        {review.body && (
+                           <Box
+                              dangerouslySetInnerHTML={{
+                                 __html: review.body,
+                              }}
+                           />
+                        )}
+                     </Box>
                   );
                })}
             </Box>
@@ -220,7 +243,30 @@ type RatingCount = {
 };
 
 function formatReviewDate(timeSeconds: number) {
-   return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
-      new Date(timeSeconds * 1000)
-   );
+   const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' });
+   const date = new Date(timeSeconds * 1000);
+   let duration = (date.getTime() - new Date().getTime()) / 1000;
+
+   for (let i = 0; i <= DIVISIONS.length; i++) {
+      const division = DIVISIONS[i];
+      if (Math.abs(duration) < division.amount) {
+         return formatter.format(Math.round(duration), division.name);
+      }
+      duration /= division.amount;
+   }
 }
+
+type Division = {
+   amount: number;
+   name: Intl.RelativeTimeFormatUnit;
+};
+
+const DIVISIONS: Division[] = [
+   { amount: 60, name: 'seconds' },
+   { amount: 60, name: 'minutes' },
+   { amount: 24, name: 'hours' },
+   { amount: 7, name: 'days' },
+   { amount: 4.34524, name: 'weeks' },
+   { amount: 12, name: 'months' },
+   { amount: Number.POSITIVE_INFINITY, name: 'years' },
+];
