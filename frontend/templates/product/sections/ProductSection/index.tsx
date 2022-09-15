@@ -75,17 +75,31 @@ export function ProductSection({
 
    return (
       <PageContentWrapper as="section">
-         <Flex alignItems="flex-start">
-            <ProductGallery
-               product={product}
-               selectedVariantId={selectedVariant.id}
-               selectedImageId={selectedImageId}
-               onChange={setSelectedImageId}
-            />
-            {/* Details */}
+         <Flex px={{ base: 5, sm: 0 }}>
             <Flex
-               flexGrow={1}
-               w="200px"
+               position="sticky"
+               alignSelf="flex-start"
+               display={{ base: 'none', md: 'flex' }}
+               top="10"
+               mr={{ base: 5, lg: 10 }}
+               direction="column"
+               flex="1"
+               w="0"
+            >
+               <ProductGallery
+                  product={product}
+                  selectedVariantId={selectedVariant.id}
+                  selectedImageId={selectedImageId}
+                  showThumbnails
+                  onChangeImage={setSelectedImageId}
+               />
+            </Flex>
+            <Flex
+               w={{
+                  base: 'full',
+                  md: '320px',
+                  lg: '400px',
+               }}
                pt="5"
                direction="column"
                fontSize="sm"
@@ -103,6 +117,15 @@ export function ProductSection({
                   discountLabel={`${selectedVariant.discountPercentage}% OFF`}
                />
                <ProductRating product={product} />
+               <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
+                  <ProductGallery
+                     product={product}
+                     selectedVariantId={selectedVariant.id}
+                     selectedImageId={selectedImageId}
+                     onChangeImage={setSelectedImageId}
+                  />
+               </Flex>
+
                <ProductOptions
                   product={product}
                   selected={selectedVariant.id}
