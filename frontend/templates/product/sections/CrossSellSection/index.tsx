@@ -294,7 +294,6 @@ function CrossSellItem({
          overflow="hidden"
          onClick={() => onChange(!isSelected)}
          onKeyUp={(event) => {
-            console.log(event.key, event.code);
             if (['Enter'].includes(event.code)) {
                onChange(!isSelected);
                event.preventDefault();
