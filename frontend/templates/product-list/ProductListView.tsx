@@ -51,7 +51,6 @@ export function ProductListView({
                   w="full"
                   boxSizing="border-box"
                   justify="space-between"
-                  // px={{ base: 3, sm: 0 }}
                >
                   <ProductListBreadcrumb
                      display={{

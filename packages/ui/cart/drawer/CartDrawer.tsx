@@ -178,7 +178,7 @@ export function CartDrawer() {
                            <Circle size="72px" bg="brand.100">
                               <FaIcon
                                  icon={faCartCircleExclamation}
-                                 h="16"
+                                 h="8"
                                  color="blue.ifixit"
                               />
                            </Circle>
