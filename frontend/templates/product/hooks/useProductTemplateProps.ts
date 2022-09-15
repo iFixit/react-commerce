@@ -1,6 +1,6 @@
 import { WithProvidersProps } from '@components/common';
 import { WithLayoutProps } from '@layouts/default';
-import { useLoaderData } from '@lib/loader-data';
+import { useServerSideProps } from '@lib/server-side-props';
 import { Product } from '@models/product';
 
 export type ProductTemplateProps = WithProvidersProps<
@@ -9,5 +9,5 @@ export type ProductTemplateProps = WithProvidersProps<
    }>
 >;
 
-export const useProductTemplateData = () =>
-   useLoaderData<ProductTemplateProps>();
+export const useProductTemplateProps = () =>
+   useServerSideProps<ProductTemplateProps>();

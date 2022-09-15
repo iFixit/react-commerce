@@ -6,28 +6,28 @@
  * to every component via React context.
  * The generic hook let us create type-safe hooks for every page/template, e.g.:
  *
- * export const useProductTemplateData = () => useLoaderData<ProductTemplateProps>();
+ * export const useProductTemplateProps = () => useServerSideProps<ProductTemplateProps>();
  *
  */
 import React from 'react';
 
-const LoaderDataContext = React.createContext<any>(null);
+const ServerSidePropsContext = React.createContext<any>(null);
 
-type LoaderDataProviderProps = React.PropsWithChildren<{
-   pageProps: any;
+type ServerSidePropsProviderProps = React.PropsWithChildren<{
+   props: any;
 }>;
 
-export function LoaderDataProvider({
-   pageProps,
+export function ServerSidePropsProvider({
+   props,
    children,
-}: LoaderDataProviderProps) {
+}: ServerSidePropsProviderProps) {
    return (
-      <LoaderDataContext.Provider value={pageProps}>
+      <ServerSidePropsContext.Provider value={props}>
          {children}
-      </LoaderDataContext.Provider>
+      </ServerSidePropsContext.Provider>
    );
 }
 
-export function useLoaderData<Data>() {
-   return React.useContext<Data>(LoaderDataContext);
+export function useServerSideProps<Props>() {
+   return React.useContext<Props>(ServerSidePropsContext);
 }

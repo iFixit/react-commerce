@@ -10,8 +10,8 @@ import { GetServerSideProps } from 'next';
 import { SecondaryNavigation } from './component/SecondaryNavigation';
 import {
    ProductTemplateProps,
-   useProductTemplateData,
-} from './hooks/useProductTemplateData';
+   useProductTemplateProps,
+} from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
@@ -22,7 +22,7 @@ import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
-   const { product } = useProductTemplateData();
+   const { product } = useProductTemplateProps();
    const { selectedVariant, setSelectedVariantId } =
       useSelectedVariant(product);
 

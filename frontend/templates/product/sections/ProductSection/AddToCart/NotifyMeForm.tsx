@@ -12,7 +12,7 @@ import {
 import { faCheckCircle } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useProductTemplateData } from '@templates/product/hooks/useProductTemplateData';
+import { useProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 import * as React from 'react';
 
 enum NotifyMeStatus {
@@ -27,7 +27,7 @@ export type NotifyMeFormProps = {
 };
 
 export function NotifyMeForm({ sku }: NotifyMeFormProps) {
-   const { layoutProps } = useProductTemplateData();
+   const { layoutProps } = useProductTemplateProps();
    const [status, setStatus] = React.useState<NotifyMeStatus>(
       NotifyMeStatus.Idle
    );
