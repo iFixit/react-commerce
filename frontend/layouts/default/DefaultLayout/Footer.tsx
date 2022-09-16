@@ -17,23 +17,22 @@ import {
    FooterNavigationList,
    FooterNavigationLink,
    FooterNavigationSection,
-} from './components/Navigation';
-import { FooterSettings, FooterSettingsSection } from './components/Settings';
-import {
    FooterCopyright,
    FooterLegalLink,
    FooterLegalLinkList,
    FooterLegalSection,
-} from './components/Legal';
-import { FooterPartners, FooterPartnerLink } from './components/Partners';
-import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
-import { NewsletterForm } from './components/Newsletter';
-import {
+   FooterSettings,
+   FooterSettingsSection,
+   FooterPartners,
+   FooterPartnerLink,
+   StoreMenuButton,
+   StoreMenuItem,
+   NewsletterForm,
    Footer,
    FooterLink,
    FooterDivider,
    FooterProps,
-} from './components/Shared';
+} from '@ifixit/ui';
 
 export function CartFooter({
    stores,
