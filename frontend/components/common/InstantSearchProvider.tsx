@@ -77,11 +77,6 @@ export function InstantSearchProvider({
       };
    }, [router]);
 
-   // We're using this to make `InstantSearch` unmount at every re-render, since
-   // as of version 6.28.0 it breaks when it re-renders. Re-rendering though
-   // should be relatively infrequent in this component, so this should be fine.
-   const renderCount = useCountRenders();
-
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
          stateToRoute(uiState) {
@@ -150,10 +145,6 @@ export function InstantSearchProvider({
                         stylizeDeviceItemType(itemType)
                      );
                      path += `/${encodedItemType}`;
-                  } else if (renderCount === 1 && itemTypeHandle) {
-                     // Prevents a bug when visiting /Parts/iPhone/Cables
-                     // that it would redirect to /Parts/iPhone
-                     path += `/${itemTypeHandle}`;
                   }
                }
             }
@@ -222,12 +213,6 @@ export function InstantSearchProvider({
          </InstantSearch>
       </InstantSearchSSRProvider>
    );
-}
-
-function useCountRenders() {
-   const countRef = React.useRef(0);
-   countRef.current++;
-   return countRef.current;
 }
 
 type RefreshSearchResultsProps = {
