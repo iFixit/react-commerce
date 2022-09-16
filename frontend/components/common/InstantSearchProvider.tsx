@@ -186,25 +186,22 @@ export function InstantSearchProvider({
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
             const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-            const {
-               q = '',
-               p,
-               filter = {},
-               // range = {},
-            } = qsModule.parse(location.search.slice(1));
+            const { q, p, filter } = qsModule.parse(location.search.slice(1));
 
-            const decodedFilters = decodeParsedQuery(filter);
+            const filterObject = (
+               typeof filter === 'object' ? filter : {}
+            ) as Record<string, any>;
+
             if (deviceHandle && itemType) {
-               decodedFilters['facet_tags.Item Type'] = [
+               filterObject['facet_tags.Item Type'] = [
                   destylizeDeviceItemType(decodeURIComponent(itemType)),
                ];
             }
 
             return {
-               q: decodeURIComponent(String(q)),
+               q: String(q || ''),
                p: Number(p),
-               filter: decodedFilters,
-               // range: decodeParsedQuery(range),
+               filter: filterObject,
             };
          },
       }),
@@ -231,18 +228,6 @@ function useCountRenders() {
    const countRef = React.useRef(0);
    countRef.current++;
    return countRef.current;
-}
-
-function decodeParsedQuery(parsed: any) {
-   return typeof parsed === 'object'
-      ? mapValues<Record<string, any>, any>(parsed, (parsedValues) => {
-           return Array.isArray(parsedValues)
-              ? parsedValues.map((v: any) =>
-                   typeof v === 'string' ? decodeURIComponent(v) : v
-                )
-              : decodeURIComponent(parsedValues);
-        })
-      : {};
 }
 
 type RefreshSearchResultsProps = {
