@@ -14,6 +14,12 @@ export type Scalars = {
    Int: number;
    Float: number;
    /**
+    * A string containing a hexadecimal representation of a color.
+    *
+    * For example, "#6A8D48".
+    */
+   Color: any;
+   /**
     * Represents an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded date and time string.
     * For example, 3:50 pm on September 7, 2019 in the time zone of UTC (Coordinated Universal Time) is
     * represented as `"2019-09-07T15:50:00Z`".
@@ -56,6 +62,12 @@ export type Scalars = {
     * (`johns-apparel.myshopify.com`).
     */
    URL: string;
+   /**
+    * An unsigned 64-bit integer. Represents whole numeric values between 0 and 2^64 - 1 encoded as a string of base-10 digits.
+    *
+    * Example value: `"50"`.
+    */
+   UnsignedInt64: any;
 };
 
 /**
@@ -363,6 +375,41 @@ export enum BlogSortKeys {
    Title = 'TITLE',
 }
 
+/** The store's branding configuration. */
+export type Brand = {
+   __typename?: 'Brand';
+   /** The colors of the store's brand. */
+   colors: BrandColors;
+   /** The store's cover image. */
+   coverImage?: Maybe<MediaImage>;
+   /** The store's default logo. */
+   logo?: Maybe<MediaImage>;
+   /** The store's short description. */
+   shortDescription?: Maybe<Scalars['String']>;
+   /** The store's slogan. */
+   slogan?: Maybe<Scalars['String']>;
+   /** The store's preferred logo for square UI elements. */
+   squareLogo?: Maybe<MediaImage>;
+};
+
+/** A group of related colors for the shop's brand. */
+export type BrandColorGroup = {
+   __typename?: 'BrandColorGroup';
+   /** The background color. */
+   background?: Maybe<Scalars['Color']>;
+   /** The foreground color. */
+   foreground?: Maybe<Scalars['Color']>;
+};
+
+/** The colors of the shop's brand. */
+export type BrandColors = {
+   __typename?: 'BrandColors';
+   /** The shop's primary brand colors. */
+   primary: Array<BrandColorGroup>;
+   /** The shop's secondary brand colors. */
+   secondary: Array<BrandColorGroup>;
+};
+
 /** Card brand, such as Visa or Mastercard, which can be used for payments. */
 export enum CardBrand {
    /** American Express. */
@@ -394,7 +441,7 @@ export type Cart = Node & {
    cost: CartCost;
    /** The date and time when the cart was created. */
    createdAt: Scalars['DateTime'];
-   /** The delivery groups available for the cart, based on the buyer identity delivery address or the default address of the logged-in customer. */
+   /** The delivery groups available for the cart, based on the default address of the logged-in customer. */
    deliveryGroups: CartDeliveryGroupConnection;
    /** The discounts that have been applied to the entire cart. */
    discountAllocations: Array<CartDiscountAllocation>;
@@ -465,8 +512,6 @@ export type CartBuyerIdentity = {
    countryCode?: Maybe<CountryCode>;
    /** The customer account associated with the cart. */
    customer?: Maybe<Customer>;
-   /** The address where the merchandise will be delivered. */
-   deliveryAddress?: Maybe<MailingAddress>;
    /** The email address of the buyer that is interacting with the cart. */
    email?: Maybe<Scalars['String']>;
    /** The phone number of the buyer that is interacting with the cart. */
@@ -484,8 +529,6 @@ export type CartBuyerIdentityInput = {
    countryCode?: Maybe<CountryCode>;
    /** The access token used to identify the customer associated with the cart. */
    customerAccessToken?: Maybe<Scalars['String']>;
-   /** The delivery address of the buyer that is interacting with the cart. */
-   deliveryAddress?: Maybe<MailingAddressInput>;
    /** The email address of the buyer that is interacting with the cart. */
    email?: Maybe<Scalars['String']>;
    /** The phone number of the buyer that is interacting with the cart. */
@@ -566,6 +609,8 @@ export type CartDeliveryGroup = {
    deliveryOptions: Array<CartDeliveryOption>;
    /** The ID for the delivery group. */
    id: Scalars['ID'];
+   /** The selected delivery option for the delivery group. */
+   selectedDeliveryOption?: Maybe<CartDeliveryOption>;
 };
 
 /** Information about the options available for one or more line items to be delivered to a specific address. */
@@ -608,6 +653,8 @@ export type CartDeliveryOption = {
    description?: Maybe<Scalars['String']>;
    /** The estimated cost for the delivery option. */
    estimatedCost: MoneyV2;
+   /** The unique identifier of the delivery option. */
+   handle: Scalars['String'];
    /** The title of the delivery option. */
    title?: Maybe<Scalars['String']>;
 };
@@ -816,6 +863,23 @@ export type CartLinesUpdatePayload = {
 /** Return type for `cartNoteUpdate` mutation. */
 export type CartNoteUpdatePayload = {
    __typename?: 'CartNoteUpdatePayload';
+   /** The updated cart. */
+   cart?: Maybe<Cart>;
+   /** The list of errors that occurred from executing the mutation. */
+   userErrors: Array<CartUserError>;
+};
+
+/** The input fields for updating the selected delivery options for a delivery group. */
+export type CartSelectedDeliveryOptionInput = {
+   /** The ID of the cart delivery group. */
+   deliveryGroupId: Scalars['ID'];
+   /** The handle of the selected delivery option. */
+   deliveryOptionHandle: Scalars['String'];
+};
+
+/** Return type for `cartSelectedDeliveryOptionsUpdate` mutation. */
+export type CartSelectedDeliveryOptionsUpdatePayload = {
+   __typename?: 'CartSelectedDeliveryOptionsUpdatePayload';
    /** The updated cart. */
    cart?: Maybe<Cart>;
    /** The list of errors that occurred from executing the mutation. */
@@ -2492,6 +2556,8 @@ export type Customer = HasMetafields & {
    metafield?: Maybe<Metafield>;
    /** The metafields associated with the resource matching the supplied list of namespaces and keys. */
    metafields: Array<Maybe<Metafield>>;
+   /** The number of orders that the customer has made at the store in their lifetime. */
+   numberOfOrders: Scalars['UnsignedInt64'];
    /** The orders associated with the customer. */
    orders: OrderConnection;
    /** The customer’s phone number. */
@@ -4013,6 +4079,7 @@ export type MetafieldParentResource =
 
 /** Returns the resource which is being referred to by a metafield. */
 export type MetafieldReference =
+   | Collection
    | GenericFile
    | MediaImage
    | Page
@@ -4110,6 +4177,8 @@ export type Mutation = {
    cartLinesUpdate?: Maybe<CartLinesUpdatePayload>;
    /** Updates the note on the cart. */
    cartNoteUpdate?: Maybe<CartNoteUpdatePayload>;
+   /** Update the selected delivery options for a delivery group. */
+   cartSelectedDeliveryOptionsUpdate?: Maybe<CartSelectedDeliveryOptionsUpdatePayload>;
    /** Updates the attributes of a checkout if `allowPartialAddresses` is `true`. */
    checkoutAttributesUpdateV2?: Maybe<CheckoutAttributesUpdateV2Payload>;
    /** Completes a checkout without providing payment information. You can use this mutation for free items or items whose purchase price is covered by a gift card. */
@@ -4236,6 +4305,12 @@ export type MutationCartLinesUpdateArgs = {
 export type MutationCartNoteUpdateArgs = {
    cartId: Scalars['ID'];
    note?: Maybe<Scalars['String']>;
+};
+
+/** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
+export type MutationCartSelectedDeliveryOptionsUpdateArgs = {
+   cartId: Scalars['ID'];
+   selectedDeliveryOptions: Array<CartSelectedDeliveryOptionInput>;
 };
 
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
@@ -4606,6 +4681,8 @@ export type OrderConnection = {
    nodes: Array<Order>;
    /** Information to aid in pagination. */
    pageInfo: PageInfo;
+   /** The total count of Orders. */
+   totalCount: Scalars['UnsignedInt64'];
 };
 
 /** An auto-generated type which holds one Order and a cursor during pagination. */
@@ -5866,6 +5943,8 @@ export type ShippingRate = {
 export type Shop = HasMetafields &
    Node & {
       __typename?: 'Shop';
+      /** The shop's branding configuration. */
+      brand?: Maybe<Brand>;
       /** A description of the shop. */
       description?: Maybe<Scalars['String']>;
       /** A globally-unique identifier. */
@@ -6234,6 +6313,56 @@ export type FindProductQuery = {
       prop65Chemicals?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       productVideos?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       replacementGuides?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      relatedProductVariants?: Maybe<{
+         __typename?: 'Metafield';
+         references?: Maybe<{
+            __typename?: 'MetafieldReferenceConnection';
+            nodes: Array<
+               | { __typename: 'Collection' }
+               | { __typename: 'GenericFile' }
+               | { __typename: 'MediaImage' }
+               | { __typename: 'Page' }
+               | { __typename: 'Product' }
+               | {
+                    __typename: 'ProductVariant';
+                    id: string;
+                    sku?: Maybe<string>;
+                    product: {
+                       __typename?: 'Product';
+                       handle: string;
+                       title: string;
+                       rating?: Maybe<{
+                          __typename?: 'Metafield';
+                          value: string;
+                       }>;
+                       reviewsCount?: Maybe<{
+                          __typename?: 'Metafield';
+                          value: string;
+                       }>;
+                    };
+                    image?: Maybe<{
+                       __typename?: 'Image';
+                       id?: Maybe<string>;
+                       altText?: Maybe<string>;
+                       height?: Maybe<number>;
+                       width?: Maybe<number>;
+                       url: string;
+                    }>;
+                    price: {
+                       __typename?: 'MoneyV2';
+                       amount: any;
+                       currencyCode: CurrencyCode;
+                    };
+                    compareAtPrice?: Maybe<{
+                       __typename?: 'MoneyV2';
+                       amount: any;
+                       currencyCode: CurrencyCode;
+                    }>;
+                 }
+               | { __typename: 'Video' }
+            >;
+         }>;
+      }>;
       featuredImage?: Maybe<{ __typename?: 'Image'; id?: Maybe<string> }>;
       images: {
          __typename?: 'ImageConnection';
@@ -6293,6 +6422,7 @@ export type FindProductQuery = {
                references?: Maybe<{
                   __typename?: 'MetafieldReferenceConnection';
                   nodes: Array<
+                     | { __typename: 'Collection' }
                      | { __typename: 'GenericFile' }
                      | { __typename: 'MediaImage' }
                      | { __typename: 'Page' }
@@ -6342,6 +6472,64 @@ export type FindProductQuery = {
    }>;
 };
 
+export type ProductVariantCardFragment = {
+   __typename?: 'ProductVariant';
+   id: string;
+   sku?: Maybe<string>;
+   product: {
+      __typename?: 'Product';
+      handle: string;
+      title: string;
+      rating?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      reviewsCount?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+   };
+   image?: Maybe<{
+      __typename?: 'Image';
+      id?: Maybe<string>;
+      altText?: Maybe<string>;
+      height?: Maybe<number>;
+      width?: Maybe<number>;
+      url: string;
+   }>;
+   price: { __typename?: 'MoneyV2'; amount: any; currencyCode: CurrencyCode };
+   compareAtPrice?: Maybe<{
+      __typename?: 'MoneyV2';
+      amount: any;
+      currencyCode: CurrencyCode;
+   }>;
+};
+
+export const ProductVariantCardFragmentDoc = `
+    fragment ProductVariantCard on ProductVariant {
+  id
+  sku
+  product {
+    handle
+    title
+    rating: metafield(namespace: "reviews", key: "rating") {
+      value
+    }
+    reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+      value
+    }
+  }
+  image {
+    id
+    altText
+    height
+    width
+    url
+  }
+  price {
+    amount
+    currencyCode
+  }
+  compareAtPrice {
+    amount
+    currencyCode
+  }
+}
+    `;
 export const FindProductDocument = `
     query findProduct($handle: String) {
   product(handle: $handle) {
@@ -6362,6 +6550,17 @@ export const FindProductDocument = `
     }
     replacementGuides: metafield(namespace: "ifixit", key: "replacement_guides") {
       value
+    }
+    relatedProductVariants: metafield(
+      namespace: "ifixit"
+      key: "featured_products_ref"
+    ) {
+      references(first: 5) {
+        nodes {
+          __typename
+          ...ProductVariantCard
+        }
+      }
     }
     featuredImage {
       id
@@ -6426,35 +6625,7 @@ export const FindProductDocument = `
           references(first: 2) {
             nodes {
               __typename
-              ... on ProductVariant {
-                id
-                sku
-                product {
-                  handle
-                  title
-                  rating: metafield(namespace: "reviews", key: "rating") {
-                    value
-                  }
-                  reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
-                    value
-                  }
-                }
-                image {
-                  id
-                  altText
-                  height
-                  width
-                  url
-                }
-                price {
-                  amount
-                  currencyCode
-                }
-                compareAtPrice {
-                  amount
-                  currencyCode
-                }
-              }
+              ...ProductVariantCard
             }
           }
         }
@@ -6462,7 +6633,7 @@ export const FindProductDocument = `
     }
   }
 }
-    `;
+    ${ProductVariantCardFragmentDoc}`;
 export type Requester<C = {}> = <R, V>(
    doc: string,
    vars?: V,

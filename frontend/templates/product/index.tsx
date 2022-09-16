@@ -18,6 +18,7 @@ import { GetServerSideProps } from 'next';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductSection } from './sections/ProductSection';
+import { RelatedProductsSection } from './sections/RelatedProductsSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
@@ -60,6 +61,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                product={product}
                selectedVariant={selectedVariant}
             />
+            <RelatedProductsSection product={product} />
          </Box>
       </>
    );

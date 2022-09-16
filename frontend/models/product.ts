@@ -6,6 +6,7 @@ import { isRecord } from '@ifixit/helpers';
 import {
    FindProductQuery,
    getShopifyStorefrontSdk,
+   ProductVariantCardFragment,
    ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
@@ -43,6 +44,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
       ),
+      relatedProductVariants: getRelatedProductVariants(response.product),
       reviewsData,
    };
 }
@@ -87,22 +89,39 @@ function getCrossSellVariants(
          if (node.__typename !== 'ProductVariant') {
             return null;
          }
-         return {
-            ...node,
-            product: {
-               ...node.product,
-               rating: parseRatingMetafieldValue(node.product.rating?.value),
-               reviewsCount: parseNumericMetafieldValue(
-                  node.product.reviewsCount?.value
-               ),
-            },
-            formattedPrice: formatShopifyPrice(node.price),
-            formattedCompareAtPrice: node.compareAtPrice
-               ? formatShopifyPrice(node.compareAtPrice)
-               : null,
-         };
+         return getProductVariantCard(node);
       }) ?? [];
    return filterNullableItems(products);
+}
+
+function getRelatedProductVariants(
+   shopifyProduct: NonNullable<FindProductQuery['product']>
+) {
+   const variants =
+      shopifyProduct.relatedProductVariants?.references?.nodes.map((node) => {
+         if (node.__typename !== 'ProductVariant') {
+            return null;
+         }
+         return getProductVariantCard(node);
+      }) ?? [];
+   return filterNullableItems(variants);
+}
+
+function getProductVariantCard(fragment: ProductVariantCardFragment) {
+   return {
+      ...fragment,
+      product: {
+         ...fragment.product,
+         rating: parseRatingMetafieldValue(fragment.product.rating?.value),
+         reviewsCount: parseNumericMetafieldValue(
+            fragment.product.reviewsCount?.value
+         ),
+      },
+      formattedPrice: formatShopifyPrice(fragment.price),
+      formattedCompareAtPrice: fragment.compareAtPrice
+         ? formatShopifyPrice(fragment.compareAtPrice)
+         : null,
+   };
 }
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;

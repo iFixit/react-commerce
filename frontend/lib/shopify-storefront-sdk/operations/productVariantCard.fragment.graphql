@@ -1,0 +1,29 @@
+fragment ProductVariantCard on ProductVariant {
+   id
+   sku
+   product {
+      handle
+      title
+      rating: metafield(namespace: "reviews", key: "rating") {
+         value
+      }
+      reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+         value
+      }
+   }
+   image {
+      id
+      altText
+      height
+      width
+      url
+   }
+   price {
+      amount
+      currencyCode
+   }
+   compareAtPrice {
+      amount
+      currencyCode
+   }
+}

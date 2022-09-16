@@ -28,6 +28,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { ProductVariantPrice } from '@components/common';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
@@ -43,7 +44,6 @@ import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
-import { ProductPrice } from '../../../../components/common/ProductPrice';
 
 export type ProductSectionProps = {
    product: Product;
@@ -94,13 +94,9 @@ export function ProductSection({
                   <Text color="gray.500">Item # {selectedVariant.sku}</Text>
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
-               <ProductPrice
-                  formattedPrice={selectedVariant.formattedPrice}
-                  formattedCompareAtPrice={
-                     selectedVariant.formattedCompareAtPrice
-                  }
-                  isDiscounted={selectedVariant.isDiscounted}
-                  discountLabel={`${selectedVariant.discountPercentage}% OFF`}
+               <ProductVariantPrice
+                  price={selectedVariant.price}
+                  compareAtPrice={selectedVariant.compareAtPrice}
                />
                <ProductRating product={product} />
                <ProductOptions

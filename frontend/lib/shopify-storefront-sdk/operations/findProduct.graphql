@@ -27,6 +27,17 @@ query findProduct($handle: String) {
       ) {
          value
       }
+      relatedProductVariants: metafield(
+         namespace: "ifixit"
+         key: "featured_products_ref"
+      ) {
+         references(first: 5) {
+            nodes {
+               __typename
+               ...ProductVariantCard
+            }
+         }
+      }
       featuredImage {
          id
       }
@@ -93,41 +104,7 @@ query findProduct($handle: String) {
                references(first: 2) {
                   nodes {
                      __typename
-                     ... on ProductVariant {
-                        id
-                        sku
-                        product {
-                           handle
-                           title
-                           rating: metafield(
-                              namespace: "reviews"
-                              key: "rating"
-                           ) {
-                              value
-                           }
-                           reviewsCount: metafield(
-                              namespace: "reviews"
-                              key: "rating_count"
-                           ) {
-                              value
-                           }
-                        }
-                        image {
-                           id
-                           altText
-                           height
-                           width
-                           url
-                        }
-                        price {
-                           amount
-                           currencyCode
-                        }
-                        compareAtPrice {
-                           amount
-                           currencyCode
-                        }
-                     }
+                     ...ProductVariantCard
                   }
                }
             }
