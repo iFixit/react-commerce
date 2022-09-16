@@ -197,6 +197,7 @@ export function InstantSearchProvider({
             searchClient={algoliaClient}
             indexName={indexName}
             routing={routing}
+            key={url}
          >
             <RefreshSearchResults
                apiKey={algoliaApiKey}
