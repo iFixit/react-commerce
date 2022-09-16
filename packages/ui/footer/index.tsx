@@ -1,4 +1,3 @@
-export * from './guide/GuideFooter';
 export * from './cart/components/Legal';
 export * from './cart/components/Navigation';
 export * from './cart/components/Newsletter';
