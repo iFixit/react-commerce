@@ -34,7 +34,6 @@ type RouteState = Partial<{
    q: string;
    p: number;
    filter: Record<string, any>;
-   // range: Record<string, string>;
 }>;
 
 type IndexUiState = Record<string, any>;
@@ -91,9 +90,6 @@ export function InstantSearchProvider({
             if (indexUiState.refinementList) {
                routeState.filter = indexUiState.refinementList;
             }
-            // if (indexUiState.range != null) {
-            //    routeState.range = indexUiState.range;
-            // }
             return routeState;
          },
          routeToState(routeState: RouteState) {
@@ -107,9 +103,6 @@ export function InstantSearchProvider({
             if (routeState.filter != null) {
                stateObject.refinementList = routeState.filter;
             }
-            // if (routeState.range != null) {
-            //    stateObject.range = routeState.range;
-            // }
             return {
                [indexName]: stateObject,
             };
