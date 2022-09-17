@@ -118,10 +118,11 @@ export function CartDrawer() {
                               bg="gray.100"
                               color="gray.400"
                            >
-                              {cart.isLoading ?
-                                 (<Spinner size="xs" />) :
-                                 (cart.data?.totalNumItems ?? 0)
-                              }
+                              {cart.isLoading ? (
+                                 <Spinner size="xs" />
+                              ) : (
+                                 cart.data?.totalNumItems ?? 0
+                              )}
                            </Badge>
                         )}
                      </HStack>
