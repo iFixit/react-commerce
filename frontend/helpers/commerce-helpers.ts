@@ -1,4 +1,4 @@
-import { CurrencyCode, MoneyV2 } from '@lib/shopify-storefront-sdk';
+import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 
 export function computeDiscountPercentage(
    priceCents: number,
@@ -12,23 +12,15 @@ export function computeDiscountPercentage(
 export type ShopifyPrice = Pick<MoneyV2, 'amount' | 'currencyCode'>;
 
 export function formatShopifyPrice(money: ShopifyPrice) {
-   let textAmount: string;
+   let amount: number;
    if (typeof money.amount === 'number') {
-      textAmount = money.amount.toFixed(2);
+      amount = money.amount;
    } else {
-      textAmount = money.amount;
+      amount = parseFloat(money.amount);
    }
-   const formattedCurrency = formatCurrency(money.currencyCode);
-   return `${formattedCurrency}${textAmount}`;
-}
-
-export function formatCurrency(currencyCode: CurrencyCode): string {
-   switch (currencyCode) {
-      case CurrencyCode.Usd: {
-         return '$';
-      }
-      default: {
-         return currencyCode;
-      }
-   }
+   const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: money.currencyCode,
+   });
+   return formatter.format(amount);
 }
