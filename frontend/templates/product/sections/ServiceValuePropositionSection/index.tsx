@@ -1,24 +1,14 @@
-import {
-   Box,
-   forwardRef,
-   Heading,
-   Icon,
-   IconProps,
-   Stack,
-   Text,
-   useTheme,
-   VStack,
-} from '@chakra-ui/react';
-import React from 'react';
-import {
-   FontAwesomeIcon,
-   FontAwesomeIconProps,
-} from '@fortawesome/react-fontawesome';
+import { Heading, Stack, Text, useTheme, VStack } from '@chakra-ui/react';
 import {
    faBoxCircleCheck,
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-duotone-svg-icons';
+import {
+   FontAwesomeIcon,
+   FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome';
+import React from 'react';
 
 export type ServiceValuePropositionSectionProps = {};
 
@@ -49,7 +39,7 @@ export function ServiceValuePropositionSection() {
             }}
             mt="16"
             py="16"
-            px="6"
+            px={{ base: 5, sm: 6 }}
          >
             <ValueProposition>
                <ValuePropositionIcon icon={faBoxCircleCheck} />

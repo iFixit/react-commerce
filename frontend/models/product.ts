@@ -70,6 +70,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
       ),
+      compatibility: parseCompatibility(response.product.compatibility?.value),
       reviewsData,
    };
 }
@@ -156,6 +157,48 @@ function parseReplacementGuides(
       return null;
    });
    return filterNullableItems(guides);
+}
+
+type CompatibilityMetafield = z.infer<typeof CompatibilityMetafieldSchema>;
+
+const CompatibilityMetafieldSchema = z
+   .object({
+      devices: z.array(
+         z.object({
+            imageUrl: z.string(),
+            deviceUrl: z.string(),
+            deviceName: z.string(),
+            variants: z.array(z.string()),
+         })
+      ),
+      hasMoreDevices: z.boolean(),
+   })
+   .optional()
+   .nullable();
+
+function parseCompatibility(
+   value: string | null | undefined
+): CompatibilityMetafield {
+   if (value == null) {
+      return null;
+   }
+   const rawJson = JSON.parse(value);
+   if (rawJson == null) {
+      return null;
+   }
+   const result = CompatibilityMetafieldSchema.safeParse(rawJson);
+   if (result.success) {
+      return result.data;
+   }
+   const errors = result.error.flatten();
+   console.error(
+      `Failed to parse compatibility metafield:\n ${JSON.stringify(
+         errors.fieldErrors,
+         null,
+         2
+      )}`
+   );
+   return null;
 }
 
 function computeIFixitProductId(variantSku: string) {

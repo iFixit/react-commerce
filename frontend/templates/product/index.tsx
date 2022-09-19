@@ -20,6 +20,7 @@ import { ProductSection } from './sections/ProductSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
+import { CompatibilitySection } from './sections/CompatibilitySection';
 
 export type ProductTemplateProps = WithProvidersProps<
    WithLayoutProps<{
@@ -55,6 +56,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                product={product}
                selectedVariant={selectedVariant}
             />
+            <CompatibilitySection compatibility={product.compatibility} />
          </Box>
       </>
    );
