@@ -6339,6 +6339,10 @@ export type FindProductQuery = {
                           __typename?: 'Metafield';
                           value: string;
                        }>;
+                       oemPartnership?: Maybe<{
+                          __typename?: 'Metafield';
+                          value: string;
+                       }>;
                     };
                     image?: Maybe<{
                        __typename?: 'Image';
@@ -6357,6 +6361,10 @@ export type FindProductQuery = {
                        __typename?: 'MoneyV2';
                        amount: any;
                        currencyCode: CurrencyCode;
+                    }>;
+                    warranty?: Maybe<{
+                       __typename?: 'Metafield';
+                       value: string;
                     }>;
                  }
                | { __typename: 'Video' }
@@ -6443,6 +6451,10 @@ export type FindProductQuery = {
                                 __typename?: 'Metafield';
                                 value: string;
                              }>;
+                             oemPartnership?: Maybe<{
+                                __typename?: 'Metafield';
+                                value: string;
+                             }>;
                           };
                           image?: Maybe<{
                              __typename?: 'Image';
@@ -6461,6 +6473,10 @@ export type FindProductQuery = {
                              __typename?: 'MoneyV2';
                              amount: any;
                              currencyCode: CurrencyCode;
+                          }>;
+                          warranty?: Maybe<{
+                             __typename?: 'Metafield';
+                             value: string;
                           }>;
                        }
                      | { __typename: 'Video' }
@@ -6482,6 +6498,7 @@ export type ProductVariantCardFragment = {
       title: string;
       rating?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       reviewsCount?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      oemPartnership?: Maybe<{ __typename?: 'Metafield'; value: string }>;
    };
    image?: Maybe<{
       __typename?: 'Image';
@@ -6497,6 +6514,7 @@ export type ProductVariantCardFragment = {
       amount: any;
       currencyCode: CurrencyCode;
    }>;
+   warranty?: Maybe<{ __typename?: 'Metafield'; value: string }>;
 };
 
 export const ProductVariantCardFragmentDoc = `
@@ -6510,6 +6528,9 @@ export const ProductVariantCardFragmentDoc = `
       value
     }
     reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+      value
+    }
+    oemPartnership: metafield(namespace: "ifixit", key: "oem_partnership") {
       value
     }
   }
@@ -6527,6 +6548,9 @@ export const ProductVariantCardFragmentDoc = `
   compareAtPrice {
     amount
     currencyCode
+  }
+  warranty: metafield(namespace: "ifixit", key: "warranty") {
+    value
   }
 }
     `;

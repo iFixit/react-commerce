@@ -1,7 +1,10 @@
 export function computeDiscountPercentage(
    price: number | Money,
-   compareAtPrice: number | Money
+   compareAtPrice?: number | Money | null
 ): number {
+   if (compareAtPrice == null) {
+      return 0;
+   }
    const priceCents =
       typeof price === 'number' ? price : convertMoneyToCents(price);
    const compareAtPriceCents =

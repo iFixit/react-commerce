@@ -10,6 +10,9 @@ fragment ProductVariantCard on ProductVariant {
       reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
          value
       }
+      oemPartnership: metafield(namespace: "ifixit", key: "oem_partnership") {
+         value
+      }
    }
    image {
       id
@@ -25,5 +28,8 @@ fragment ProductVariantCard on ProductVariant {
    compareAtPrice {
       amount
       currencyCode
+   }
+   warranty: metafield(namespace: "ifixit", key: "warranty") {
+      value
    }
 }

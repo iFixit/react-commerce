@@ -29,6 +29,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductVariantPrice } from '@components/common';
+import { isLifetimeWarranty } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
@@ -273,7 +274,7 @@ export function ProductSection({
                            as="a"
                            href={`${appContext.ifixitOrigin}/Info/Warranty`}
                         >
-                           {/lifetime/i.test(
+                           {isLifetimeWarranty(
                               selectedVariant.warranty ?? ''
                            ) && (
                               <Icon

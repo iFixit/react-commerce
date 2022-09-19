@@ -39,3 +39,7 @@ export function parseProductOptionId(sku: string): string {
 function parseSkuDigits(sku: string): string {
    return sku.replace(/\D/g, '');
 }
+
+export function isLifetimeWarranty(warranty: string): boolean {
+   return /lifetime/i.test(warranty);
+}

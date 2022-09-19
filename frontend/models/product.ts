@@ -116,7 +116,9 @@ function getProductVariantCard(fragment: ProductVariantCardFragment) {
          reviewsCount: parseNumericMetafieldValue(
             fragment.product.reviewsCount?.value
          ),
+         oemPartnership: fragment.product.oemPartnership?.value ?? null,
       },
+      warranty: fragment.warranty?.value ?? null,
       formattedPrice: formatShopifyPrice(fragment.price),
       formattedCompareAtPrice: fragment.compareAtPrice
          ? formatShopifyPrice(fragment.compareAtPrice)

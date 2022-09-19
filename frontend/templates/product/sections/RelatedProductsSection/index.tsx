@@ -1,5 +1,7 @@
 import {
    AspectRatio,
+   Badge,
+   BadgeProps,
    Box,
    Flex,
    Heading,
@@ -8,6 +10,9 @@ import {
 } from '@chakra-ui/react';
 import { ProductRating, ProductVariantPrice } from '@components/common';
 import { IfixitImage } from '@components/ifixit-image';
+import { computeDiscountPercentage, Money } from '@helpers/commerce-helpers';
+import { isLifetimeWarranty } from '@helpers/product-helpers';
+import { isPresent } from '@ifixit/helpers';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product } from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
@@ -33,7 +38,10 @@ export function RelatedProductsSection({
             </Heading>
          </PageContentWrapper>
          <SimpleGrid
-            columns={5}
+            columns={{
+               base: 2,
+               lg: 5,
+            }}
             spacing="1px"
             bg="gray.200"
             borderTopWidth="1px"
@@ -41,35 +49,133 @@ export function RelatedProductsSection({
          >
             {product.relatedProductVariants.map((variant) => {
                return (
-                  <Flex key={variant.id} direction="column" bg="white" p="4">
-                     <Box flexGrow={1}>
-                        <CardImage
-                           src={variant.image?.url}
-                           alt={product.title}
-                        />
-                        <Text fontSize="md" mt="3">
-                           {variant.product.title}
-                        </Text>
-                        {variant.product.rating != null &&
-                           variant.product.reviewsCount != null && (
-                              <ProductRating
-                                 mt="2"
-                                 mb="3"
-                                 rating={variant.product.rating}
-                                 count={variant.product.reviewsCount}
-                              />
-                           )}
-                     </Box>
-                     <ProductVariantPrice
-                        price={variant.price}
-                        compareAtPrice={variant.compareAtPrice}
-                        alignSelf="flex-end"
-                     />
-                  </Flex>
+                  <ProductGridItem
+                     key={variant.id}
+                     title={variant.product.title}
+                     imageSrc={variant.image?.url}
+                     rating={variant.product.rating}
+                     reviewsCount={variant.product.reviewsCount}
+                     price={variant.price}
+                     compareAtPrice={variant.compareAtPrice}
+                     oemPartnership={variant.product.oemPartnership}
+                     warranty={variant.warranty}
+                  />
                );
             })}
          </SimpleGrid>
       </Box>
+   );
+}
+
+type ProductGridItemProps = {
+   title: string;
+   imageSrc?: string | null;
+   rating?: number | null;
+   reviewsCount?: number | null;
+   price: Money;
+   compareAtPrice?: Money | null;
+   isPro?: boolean;
+   warranty?: string | null;
+   oemPartnership?: string | null;
+};
+
+function ProductGridItem({
+   title,
+   imageSrc,
+   rating,
+   reviewsCount,
+   price,
+   compareAtPrice,
+   isPro,
+   warranty,
+   oemPartnership,
+}: ProductGridItemProps) {
+   const discountPercentage = computeDiscountPercentage(price, compareAtPrice);
+   const hasLifetimeWarranty =
+      typeof warranty === 'string' && isLifetimeWarranty(warranty);
+
+   return (
+      <Flex
+         direction="column"
+         bg="white"
+         p="4"
+         sx={{
+            '@media (max-width: 1000px)': {
+               '&:nth-of-type(1n + 5)': {
+                  display: 'none',
+               },
+            },
+         }}
+      >
+         <Box flexGrow={1} position="relative">
+            <CardImage src={imageSrc} alt={title} />
+            <Text fontSize="md" mt="3">
+               {title}
+            </Text>
+            {rating != null && reviewsCount != null && (
+               <ProductRating
+                  mt="2"
+                  mb="3"
+                  rating={rating}
+                  count={reviewsCount}
+               />
+            )}
+            <Flex
+               position="absolute"
+               top="0"
+               right="0"
+               left="0"
+               justify="flex-end"
+               sx={{
+                  '&>:nth-of-type(1n + 2)': {
+                     display: 'none',
+                  },
+               }}
+            >
+               {isPresent(oemPartnership) && (
+                  <ProductGridItemBadge colorScheme="green">
+                     {oemPartnership}
+                  </ProductGridItemBadge>
+               )}
+               {isPro && (
+                  <ProductGridItemBadge colorScheme="orange">
+                     iFixit Pro
+                  </ProductGridItemBadge>
+               )}
+               {discountPercentage > 0 && (
+                  <ProductGridItemBadge colorScheme="red">
+                     {discountPercentage}% Off
+                  </ProductGridItemBadge>
+               )}
+               {hasLifetimeWarranty && (
+                  <ProductGridItemBadge colorScheme="blue">
+                     Lifetime Warranty
+                  </ProductGridItemBadge>
+               )}
+            </Flex>
+         </Box>
+         <ProductVariantPrice
+            price={price}
+            compareAtPrice={compareAtPrice}
+            alignSelf="flex-end"
+         />
+      </Flex>
+   );
+}
+
+function ProductGridItemBadge(props: BadgeProps) {
+   return (
+      <Badge
+         fontSize={{
+            base: 'xs',
+            xl: 'sm',
+         }}
+         maxW="full"
+         overflow="hidden"
+         isTruncated
+         textTransform="none"
+         {...props}
+      />
    );
 }
 
