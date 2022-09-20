@@ -18,8 +18,7 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
       .then((response) => {
          if (
             !shouldIgnoreUserAgent &&
-            response.status >= 400 &&
-            response.status !== 401
+            response.status >= 500
          ) {
             const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
             Sentry.captureException(new Error(msg), (scope) => {
