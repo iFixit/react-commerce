@@ -46,6 +46,7 @@ export function InstantSearchProvider({
    apiKey,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
+   const historyChangeCount = React.useRef(0);
    cypressWindowLog({ userLoaded: user.isFetched });
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);
@@ -70,9 +71,15 @@ export function InstantSearchProvider({
          window.document.body.hidden = true;
          window.location.reload();
       };
+      const beforeHistoryChange = (url: string) => {
+         historyChangeCount.current++;
+      };
       window.addEventListener('popstate', handleRouteChange);
+      router.events.on('beforeHistoryChange', beforeHistoryChange);
+
       return () => {
          window.removeEventListener('popstate', handleRouteChange);
+         router.events.off('beforeHistoryChange', beforeHistoryChange);
       };
    }, [router]);
 
@@ -197,7 +204,7 @@ export function InstantSearchProvider({
             searchClient={algoliaClient}
             indexName={indexName}
             routing={routing}
-            key={url}
+            key={historyChangeCount.current}
          >
             <RefreshSearchResults
                apiKey={algoliaApiKey}
