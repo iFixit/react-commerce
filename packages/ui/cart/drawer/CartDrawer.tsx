@@ -28,10 +28,11 @@ import {
    Skeleton,
    Spinner,
    Text,
-   useDisclosure,
    useTheme,
    VStack,
 } from '@chakra-ui/react';
+import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
@@ -39,14 +40,11 @@ import * as React from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
 import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
    const { isOpen, onOpen, onClose } = useCartDrawer();
-   const btnRef = React.useRef<HTMLButtonElement | null>(null);
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
@@ -60,7 +58,6 @@ export function CartDrawer() {
       <>
          <Box position="relative">
             <IconButton
-               ref={btnRef}
                aria-label="Open cart"
                variant="ghost"
                icon={<Icon as={FiShoppingCart} color="white" boxSize="6" />}
@@ -88,7 +85,6 @@ export function CartDrawer() {
                isOpen={isOpen}
                placement="right"
                onClose={onClose}
-               finalFocusRef={btnRef}
                size="sm"
             >
                <DrawerOverlay />

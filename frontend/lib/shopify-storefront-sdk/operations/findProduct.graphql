@@ -56,11 +56,11 @@ query findProduct($handle: String) {
                width
                url
             }
-            priceV2 {
+            price {
                amount
                currencyCode
             }
-            compareAtPriceV2 {
+            compareAtPrice {
                amount
                currencyCode
             }
@@ -88,6 +88,48 @@ query findProduct($handle: String) {
             }
             warranty: metafield(namespace: "ifixit", key: "warranty") {
                value
+            }
+            crossSell: metafield(namespace: "ifixit", key: "cross_sell_ref") {
+               references(first: 2) {
+                  nodes {
+                     __typename
+                     ... on ProductVariant {
+                        id
+                        sku
+                        product {
+                           handle
+                           title
+                           rating: metafield(
+                              namespace: "reviews"
+                              key: "rating"
+                           ) {
+                              value
+                           }
+                           reviewsCount: metafield(
+                              namespace: "reviews"
+                              key: "rating_count"
+                           ) {
+                              value
+                           }
+                        }
+                        image {
+                           id
+                           altText
+                           height
+                           width
+                           url
+                        }
+                        price {
+                           amount
+                           currencyCode
+                        }
+                        compareAtPrice {
+                           amount
+                           currencyCode
+                        }
+                     }
+                  }
+               }
             }
          }
       }

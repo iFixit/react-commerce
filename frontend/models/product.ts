@@ -1,12 +1,12 @@
 import { IFIXIT_ORIGIN, DEFAULT_STORE_CODE } from '@config/env';
 import { filterNullableItems, invariant } from '@helpers/application-helpers';
+import { formatShopifyPrice } from '@helpers/commerce-helpers';
 import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { isRecord } from '@ifixit/helpers';
 import {
-   ShopCredentials,
+   FindProductQuery,
    getShopifyStorefrontSdk,
-   MoneyV2,
-   CurrencyCode,
+   ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 
@@ -19,34 +19,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    if (response.product == null) {
       return null;
    }
-   const variants = response.product.variants.nodes.map((variant) => {
-      const isDiscounted =
-         variant.compareAtPriceV2 != null &&
-         parseFloat(variant.compareAtPriceV2.amount) >
-            parseFloat(variant.priceV2.amount);
-      const discountPercentage = isDiscounted
-         ? computeDiscountPercentage(
-              parseFloat(variant.priceV2.amount) * 100,
-              parseFloat(variant.compareAtPriceV2!.amount) * 100
-           )
-         : 0;
-
-      return {
-         ...variant,
-         isDiscounted,
-         discountPercentage,
-         formattedPrice: formatPrice(variant.priceV2),
-         formattedCompareAtPrice: variant.compareAtPriceV2
-            ? formatPrice(variant.compareAtPriceV2)
-            : null,
-         kitContents: variant.kitContents?.value ?? null,
-         note: variant.note?.value ?? null,
-         disclaimer: variant.disclaimer?.value ?? null,
-         warning: variant.warning?.value ?? null,
-         specifications: variant.specifications?.value ?? null,
-         warranty: variant.warranty?.value ?? null,
-      };
-   });
+   const variants = getVariants(response.product);
    const variantSku = variants.find((variant) => variant.sku != null)?.sku;
    if (variantSku == null) {
       console.warn(`No sku found for product "${handle}"`);
@@ -74,20 +47,67 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    };
 }
 
+function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
+   return shopifyProduct.variants.nodes.map((variant) => {
+      const { crossSell, ...other } = variant;
+      const isDiscounted =
+         variant.compareAtPrice != null &&
+         parseFloat(variant.compareAtPrice.amount) >
+            parseFloat(variant.price.amount);
+      const discountPercentage = isDiscounted
+         ? computeDiscountPercentage(
+              parseFloat(variant.price.amount) * 100,
+              parseFloat(variant.compareAtPrice!.amount) * 100
+           )
+         : 0;
+      return {
+         ...other,
+         isDiscounted,
+         discountPercentage,
+         formattedPrice: formatShopifyPrice(variant.price),
+         formattedCompareAtPrice: variant.compareAtPrice
+            ? formatShopifyPrice(variant.compareAtPrice)
+            : null,
+         kitContents: variant.kitContents?.value ?? null,
+         note: variant.note?.value ?? null,
+         disclaimer: variant.disclaimer?.value ?? null,
+         warning: variant.warning?.value ?? null,
+         specifications: variant.specifications?.value ?? null,
+         warranty: variant.warranty?.value ?? null,
+         crossSellVariants: getCrossSellVariants(variant),
+      };
+   });
+}
+
+function getCrossSellVariants(
+   variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
+) {
+   const products =
+      variant.crossSell?.references?.nodes.map((node) => {
+         if (node.__typename !== 'ProductVariant') {
+            return null;
+         }
+         return {
+            ...node,
+            product: {
+               ...node.product,
+               rating: parseRatingMetafieldValue(node.product.rating?.value),
+               reviewsCount: parseNumericMetafieldValue(
+                  node.product.reviewsCount?.value
+               ),
+            },
+            formattedPrice: formatShopifyPrice(node.price),
+            formattedCompareAtPrice: node.compareAtPrice
+               ? formatShopifyPrice(node.compareAtPrice)
+               : null,
+         };
+      }) ?? [];
+   return filterNullableItems(products);
+}
+
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
 
 export type ProductVariant = Product['variants'][0];
-
-function formatPrice(money: MoneyV2) {
-   switch (money.currencyCode) {
-      case CurrencyCode.Usd: {
-         return `$${money.amount}`;
-      }
-      default: {
-         return `${money.amount} ${money.currencyCode}`;
-      }
-   }
-}
 
 function parseFaqs(value: string | null | undefined) {
    if (value == null) {
@@ -217,4 +237,19 @@ export async function fetchProductReviews(
       return null;
    }
    throw new Error(response.statusText);
+}
+
+function parseRatingMetafieldValue(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   const rating = JSON.parse(value);
+   return rating.value != null ? parseFloat(rating.value) : null;
+}
+
+function parseNumericMetafieldValue(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   return value != null ? parseFloat(value) : null;
 }

@@ -3,3 +3,4 @@ export * from './ProductCard';
 export * from './SecondaryNavbar';
 export * from './PageBreadcrumb';
 export * from './useSearchCache';
+export * from './ProductRating';
