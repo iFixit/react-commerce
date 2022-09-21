@@ -18,4 +18,14 @@ Sentry.init({
          'next.runtime': 'server',
       },
    },
+   beforeSend(event, hint) {
+      const ex = hint.originalException;
+      if (ex && typeof ex == 'object' && ex.message) {
+         // Happens when receiving a bad url that fails to decode
+         if (ex.message.match(/URI malformed/)) {
+            return null;
+         }
+      }
+      return event;
+   },
 });
