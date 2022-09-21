@@ -16,7 +16,7 @@ jobs:
               JWT_SECRET: 'ci-secret'
               API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
          - name: Install PNPM
-           run: corepack enable && corepack prepare pnpm@6.32.11 --activate
+           run: corepack enable && corepack prepare pnpm@7 --activate
          - name: Install workspaces
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
