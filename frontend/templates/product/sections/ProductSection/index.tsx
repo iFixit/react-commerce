@@ -100,7 +100,10 @@ export function ProductSection({
                   md: '320px',
                   lg: '400px',
                }}
-               pt="5"
+               pt={{
+                  base: 0,
+                  md: 5,
+               }}
                direction="column"
                fontSize="sm"
             >

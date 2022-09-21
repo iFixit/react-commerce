@@ -1,12 +1,7 @@
 import { Box } from '@chakra-ui/react';
-import {
-   PageBreadcrumb,
-   SecondaryNavbar,
-   WithProvidersProps,
-} from '@components/common';
+import { PageBreadcrumb, WithProvidersProps } from '@components/common';
 import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
-import { PageContentWrapper } from '@ifixit/ui';
 import {
    DefaultLayout,
    getLayoutServerSideProps,
@@ -14,6 +9,7 @@ import {
 } from '@layouts/default';
 import { findProduct, Product } from '@models/product';
 import { GetServerSideProps } from 'next';
+import { SecondaryNavigation } from './component/SecondaryNavigation';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductSection } from './sections/ProductSection';
@@ -36,13 +32,11 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
    return (
       <>
          {product.breadcrumbs != null && (
-            <SecondaryNavbar>
-               <PageContentWrapper>
-                  <PageBreadcrumb items={product.breadcrumbs} />
-               </PageContentWrapper>
-            </SecondaryNavbar>
+            <SecondaryNavigation>
+               <PageBreadcrumb items={product.breadcrumbs} />
+            </SecondaryNavigation>
          )}
-         <Box pt="10">
+         <Box pt="6">
             <ProductSection
                product={product}
                selectedVariant={selectedVariant}

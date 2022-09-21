@@ -30,10 +30,17 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       IFIXIT_ORIGIN,
       iFixitProductId
    );
+   let breadcrumbs = parseBreadcrumbsMetafieldValue(
+      response.product.breadcrumbs?.value
+   );
+   breadcrumbs = breadcrumbsWithCurrentProductPage(
+      breadcrumbs,
+      response.product.title
+   );
 
    return {
       ...response.product,
-      breadcrumbs: parseBreadcrumbs(response.product.breadcrumbs?.value),
+      breadcrumbs,
       iFixitProductId,
       variants,
       images: response.product.images.nodes,
@@ -142,7 +149,7 @@ const BreadcrumbsSchema = z.array(
    })
 );
 
-function parseBreadcrumbs(
+function parseBreadcrumbsMetafieldValue(
    value: string | null | undefined
 ): Breadcrumbs | null {
    if (typeof value !== 'string') {
@@ -154,6 +161,27 @@ function parseBreadcrumbs(
       return parsedValue.data;
    }
    return null;
+}
+
+function breadcrumbsWithCurrentProductPage(
+   breadcrumbs: Breadcrumbs | null,
+   productTitle: string
+) {
+   if (breadcrumbs == null) {
+      return null;
+   }
+   if (breadcrumbs.length > 0) {
+      const lastBreadcrumb = breadcrumbs[breadcrumbs.length - 1];
+      if (lastBreadcrumb.label.toLowerCase() !== productTitle.toLowerCase()) {
+         return breadcrumbs.concat([
+            {
+               label: productTitle,
+               url: '#',
+            },
+         ]);
+      }
+   }
+   return breadcrumbs;
 }
 
 type ReplacementGuideMetafieldItem = z.infer<
