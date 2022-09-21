@@ -1,5 +1,6 @@
 import {
    Avatar,
+   Badge,
    Box,
    Button,
    Flex,
@@ -42,8 +43,6 @@ export function ReviewsSection({
    );
 
    const reviewsData = reviewsQuery.data;
-
-   console.log('reviewsData', reviewsData);
 
    const totalReviewsCount = reviewsData?.count ?? 0;
 
@@ -129,13 +128,15 @@ export function ReviewsSection({
                                  />
                               </GridItem>
                               <GridItem>
-                                 <Tag
-                                    justifyContent="center"
-                                    w="full"
+                                 <Badge
+                                    minW="10"
+                                    fontSize="xs"
                                     colorScheme="brand"
+                                    display="block"
+                                    textAlign="center"
                                  >
                                     {count}
-                                 </Tag>
+                                 </Badge>
                               </GridItem>
                            </React.Fragment>
                         );
