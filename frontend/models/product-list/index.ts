@@ -48,8 +48,7 @@ export type {
  * Get the product list data from the API
  */
 export async function findProductList(
-   filters: ProductListFiltersInput,
-   deviceItemType: string | null = null
+   filters: ProductListFiltersInput
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
@@ -96,7 +95,6 @@ export async function findProductList(
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
-      deviceItemType: deviceItemType,
       path,
       tagline: productList?.tagline ?? null,
       description: description,

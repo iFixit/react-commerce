@@ -4,7 +4,6 @@ import { useCurrentRefinements } from 'react-instantsearch-hooks-web';
 
 type ProductListAttributes = {
    type?: ProductListType | null;
-   deviceItemType?: string | null;
 };
 
 export function useDevicePartsItemType<T extends ProductListAttributes>(
