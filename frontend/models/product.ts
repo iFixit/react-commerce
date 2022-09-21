@@ -33,6 +33,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
 
    return {
       ...response.product,
+      breadcrumbs: parseBreadcrumbs(response.product.breadcrumbs?.value),
       iFixitProductId,
       variants,
       images: response.product.images.nodes,
@@ -130,6 +131,29 @@ function parseFaqs(value: string | null | undefined) {
          };
       })
    );
+}
+
+type Breadcrumbs = z.infer<typeof BreadcrumbsSchema>;
+
+const BreadcrumbsSchema = z.array(
+   z.object({
+      label: z.string(),
+      url: z.string(),
+   })
+);
+
+function parseBreadcrumbs(
+   value: string | null | undefined
+): Breadcrumbs | null {
+   if (typeof value !== 'string') {
+      return null;
+   }
+   const json = JSON.parse(value);
+   const parsedValue = BreadcrumbsSchema.safeParse(json);
+   if (parsedValue.success) {
+      return parsedValue.data;
+   }
+   return null;
 }
 
 type ReplacementGuideMetafieldItem = z.infer<

@@ -43,8 +43,6 @@ export function ReviewsSection({
 
    const reviewsData = reviewsQuery.data;
 
-   console.log('reviewsData', reviewsData);
-
    const totalReviewsCount = reviewsData?.count ?? 0;
 
    const reviewCountsByRating = React.useMemo(() => {

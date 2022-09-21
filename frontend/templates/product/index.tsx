@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import {
    PageBreadcrumb,
    SecondaryNavbar,
-   TBreadcrumbItem,
    WithProvidersProps,
 } from '@components/common';
 import { flags } from '@config/flags';
@@ -33,17 +32,16 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
 }) => {
    const { selectedVariant, setSelectedVariantId } =
       useSelectedVariant(product);
-   const items: TBreadcrumbItem[] = [
-      { label: 'Parts', url: '/Parts' },
-      { label: product.title, url: `/Products/${product.handle}` },
-   ];
+
    return (
       <>
-         <SecondaryNavbar>
-            <PageContentWrapper>
-               <PageBreadcrumb items={items} />
-            </PageContentWrapper>
-         </SecondaryNavbar>
+         {product.breadcrumbs != null && (
+            <SecondaryNavbar>
+               <PageContentWrapper>
+                  <PageBreadcrumb items={product.breadcrumbs} />
+               </PageContentWrapper>
+            </SecondaryNavbar>
+         )}
          <Box pt="10">
             <ProductSection
                product={product}
