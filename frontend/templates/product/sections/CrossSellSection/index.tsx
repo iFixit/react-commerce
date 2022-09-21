@@ -14,16 +14,21 @@ import {
    useTheme,
    VStack,
 } from '@chakra-ui/react';
+import { ProductRating } from '@components/common';
 import { IfixitImage } from '@components/ifixit-image';
 import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatShopifyPrice } from '@helpers/commerce-helpers';
-import { PageContentWrapper } from '@ifixit/ui';
+import { useAddToCart } from '@ifixit/cart-sdk';
+import type { AddProductVariantInput } from '@ifixit/cart-sdk';
+import { isPresent } from '@ifixit/helpers';
+import { PageContentWrapper, useCartDrawer } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
 import React from 'react';
+import { filterNullableItems } from '@helpers/application-helpers';
 
 export type CrossSellSectionProps = {
    product: Product;
@@ -34,6 +39,9 @@ export function CrossSellSection({
    product,
    selectedVariant,
 }: CrossSellSectionProps) {
+   const addToCart = useAddToCart();
+   const { onOpen } = useCartDrawer();
+
    const [selectedVariantIds, setSelectedVariantIds] = React.useState(
       selectedVariant.crossSellVariants
          .map((variant) => variant.id)
@@ -75,6 +83,61 @@ export function CrossSellSection({
          currencyCode: selectedVariant.price.currencyCode,
       });
    }, [selectedVariant.price.currencyCode, totalPrice]);
+
+   const currentProduct = React.useMemo<CrossSellProduct>(() => {
+      return {
+         title: product.title,
+         rating: product.reviewsData?.average,
+         reviewsCount: product.reviewsData?.count,
+      };
+   }, [
+      product.reviewsData?.average,
+      product.reviewsData?.count,
+      product.title,
+   ]);
+
+   const handleAddToCart = () => {
+      const input = selectedVariantIds.map(
+         (variantId): AddProductVariantInput | null => {
+            if (variantId === selectedVariant.id) {
+               if (!isPresent(selectedVariant.sku)) {
+                  return null;
+               }
+               return {
+                  name: product.title,
+                  itemcode: selectedVariant.sku,
+                  formattedPrice: selectedVariant.formattedPrice,
+                  quantity: 1,
+                  imageSrc: selectedVariant.image?.url ?? '',
+               };
+            }
+            const variant = selectedVariant.crossSellVariants.find(
+               (v) => v.id === variantId
+            );
+            const variantSku = variant?.sku;
+            if (variant == null || !isPresent(variantSku)) {
+               return null;
+            }
+            return {
+               name: variant.product.title,
+               itemcode: variantSku,
+               formattedPrice: variant.formattedPrice,
+               quantity: 1,
+               imageSrc: variant.image?.url ?? '',
+            };
+         }
+      );
+      const selectedVariantSku = selectedVariant.sku;
+      if (isPresent(selectedVariantSku)) {
+         addToCart.mutate({
+            currentItemCode: selectedVariantSku,
+            items: filterNullableItems(input),
+         });
+         onOpen();
+      } else {
+         console.error('No SKU found for selected variant');
+      }
+   };
 
    if (selectedVariant.crossSellVariants.length === 0) {
       return null;
@@ -126,7 +189,7 @@ export function CrossSellSection({
                   >
                      <CrossSellItem
                         key={product.handle}
-                        product={product}
+                        product={currentProduct}
                         variant={selectedVariant}
                         isCurrentItem
                         isSelected={selectedVariantIds.includes(
@@ -177,7 +240,11 @@ export function CrossSellSection({
                            {formattedTotalPrice}
                         </Box>
                      </Box>
-                     <Button colorScheme="brand" minW="240px">
+                     <Button
+                        colorScheme="brand"
+                        minW="240px"
+                        onClick={handleAddToCart}
+                     >
                         Add to cart
                      </Button>
                   </Flex>
@@ -189,28 +256,28 @@ export function CrossSellSection({
 }
 
 type CrossSellItemProps = {
-   product: CardProduct;
-   variant: CardProductVariant;
+   product: CrossSellProduct;
+   variant: CrossSellProductVariant;
    isCurrentItem?: boolean;
    isSelected: boolean;
    onChange: (selected: boolean) => void;
 };
 
-type CardProduct = {
+type CrossSellProduct = {
    title: string;
+   rating: number | undefined | null;
+   reviewsCount: number | undefined | null;
 };
 
-type CardProductVariant = {
+type CrossSellProductVariant = {
    price: MoneyV2;
    compareAtPrice?: MoneyV2 | null;
    formattedPrice: string;
    formattedCompareAtPrice: string | null;
-   image?: CardImage | null;
-};
-
-type CardImage = {
-   altText?: string | null;
-   url: string;
+   image?: {
+      altText?: string | null;
+      url: string;
+   } | null;
 };
 
 function CrossSellItem({
@@ -227,7 +294,6 @@ function CrossSellItem({
          overflow="hidden"
          onClick={() => onChange(!isSelected)}
          onKeyUp={(event) => {
-            console.log(event.key, event.code);
             if (['Enter'].includes(event.code)) {
                onChange(!isSelected);
                event.preventDefault();
@@ -312,8 +378,14 @@ function CrossSellItem({
                         >
                            {product.title}
                         </Text>
-                        {/* Product rating will be shown once the product metafield will be available */}
-                        {/* <ProductRating rating={product.rating} count={product.reviewsCount} /> */}
+                        {product.rating != null &&
+                           product.reviewsCount != null && (
+                              <ProductRating
+                                 mb="3"
+                                 rating={product.rating}
+                                 count={product.reviewsCount}
+                              />
+                           )}
                      </Flex>
                   </Flex>
                   <Box

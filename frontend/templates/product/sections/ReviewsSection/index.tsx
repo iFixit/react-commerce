@@ -1,4 +1,5 @@
 import {
+   Avatar,
    Box,
    Button,
    Flex,
@@ -6,20 +7,21 @@ import {
    GridItem,
    Heading,
    HStack,
-   Icon,
    Link,
    Progress,
    Stack,
    Tag,
    Text,
+   VStack,
 } from '@chakra-ui/react';
-import { Rating, RatingStar, RatingStarAppearance } from '@components/ui';
+import { Rating } from '@components/ui';
+import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import type { Product } from '@models/product';
 import { ProductVariant } from '@models/product';
 import React from 'react';
-import { FaShieldAlt } from 'react-icons/fa';
 import { useProductReviews } from '../../hooks/useProductReviews';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -40,6 +42,8 @@ export function ReviewsSection({
    );
 
    const reviewsData = reviewsQuery.data;
+
+   console.log('reviewsData', reviewsData);
 
    const totalReviewsCount = reviewsData?.count ?? 0;
 
@@ -68,39 +72,41 @@ export function ReviewsSection({
       );
    };
 
-   if (reviewsData == null) {
+   const hasReview =
+      reviewsData != null &&
+      reviewsData.reviews != null &&
+      reviewsData.reviews.length > 0;
+
+   if (!hasReview) {
+      // TODO: Add an empty state to allow users to write a review when there are no reviews
       return null;
    }
 
    return (
-      <Box bg="white" py="16" fontSize="sm">
+      <Box bg="white" px={{ base: 5, sm: 0 }} py="16" fontSize="sm">
          <PageContentWrapper>
             <Heading
                as="h2"
                fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
-               mb="12"
+               mb={{
+                  base: 8,
+                  md: 16,
+               }}
             >
                Customer reviews
             </Heading>
             {totalReviewsCount > 0 && (
                <Stack
                   direction={{
-                     base: 'column',
+                     base: 'column-reverse',
                      md: 'row',
                   }}
-                  spacing="10"
+                  spacing="8"
                   align="center"
                   justify="center"
                >
-                  <Flex direction="column" align="center">
-                     <Text fontSize="5xl">{reviewsData.average}</Text>
-                     <Rating value={reviewsData.average ?? 0} />
-                     {reviewsData.count && (
-                        <Text fontSize="sm">{reviewsData.count} reviews</Text>
-                     )}
-                  </Flex>
                   <Grid
                      templateColumns="auto 200px auto"
                      gap="2.5"
@@ -110,22 +116,10 @@ export function ReviewsSection({
                         const percentage = (count / totalReviewsCount) * 100;
                         return (
                            <React.Fragment key={rating}>
-                              <GridItem>
-                                 <Flex align="center">
-                                    <Text
-                                       as="span"
-                                       fontSize="xs"
-                                       lineHeight="1em"
-                                       color="brand.500"
-                                       mr="3px"
-                                       mt="2px"
-                                    >
-                                       {rating}
-                                    </Text>
-                                    <RatingStar
-                                       appearence={RatingStarAppearance.Full}
-                                    />
-                                 </Flex>
+                              <GridItem mt="-1px">
+                                 <Text as="span" fontSize="xs">
+                                    {rating}
+                                 </Text>
                               </GridItem>
                               <GridItem>
                                  <Progress
@@ -147,58 +141,93 @@ export function ReviewsSection({
                         );
                      })}
                   </Grid>
+                  <Flex direction="column" align="center">
+                     <Text fontSize="5xl">{reviewsData.average}</Text>
+                     <Rating value={reviewsData.average ?? 0} />
+                     {reviewsData.count && (
+                        <Text fontSize="sm">{reviewsData.count} reviews</Text>
+                     )}
+                  </Flex>
                </Stack>
             )}
-            <Flex bg="gray.100" p="5" rounded="md" mt="24">
+            <Flex
+               bg="gray.100"
+               p="5"
+               rounded="md"
+               mt={{
+                  base: 8,
+                  sm: 24,
+               }}
+            >
                <Button
                   as="a"
                   href={`${appContext.ifixitOrigin}/User/Reviews/${selectedVariant.sku}`}
                   colorScheme="brand"
-                  minW="200px"
+                  leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}
+                  w={{
+                     base: 'full',
+                     sm: 'auto',
+                  }}
                >
-                  Write a product review
+                  Write a review
                </Button>
             </Flex>
             <Box>
                {visibleReviews.map((review) => {
                   return (
-                     <Flex
+                     <Box
                         key={review.reviewid}
                         py="6"
-                        mx="5"
                         borderBottomWidth="1px"
                         borderColor="gray.200"
                      >
-                        <Box w="240px" flexShrink={0}>
-                           <Rating value={review.rating} mb="4" />
-                           {review.author && (
-                              <Link href={review.author.url} fontWeight="bold">
-                                 {review.author.name}
-                              </Link>
-                           )}
-                           <HStack color="green.500" spacing="1">
-                              <Icon as={FaShieldAlt} />
-                              <Text fontWeight="bold">Verified buyer</Text>
+                        {review.author && (
+                           <HStack>
+                              <Avatar
+                                 name={review.author.name}
+                                 src={review.author.avatar}
+                                 showBorder
+                                 borderColor="brand.500"
+                                 size="md"
+                              />
+                              <VStack align="flex-start" spacing="0">
+                                 <Link
+                                    href={review.author.url}
+                                    fontWeight="bold"
+                                 >
+                                    {review.author.name}
+                                 </Link>
+                                 <HStack spacing="1" color="green.500">
+                                    <FontAwesomeIcon
+                                       icon={faShieldCheck}
+                                       fontSize="1rem"
+                                    />
+                                    <Text fontWeight="bold" color="green.600">
+                                       Verified buyer
+                                    </Text>
+                                 </HStack>
+                              </VStack>
                            </HStack>
+                        )}
+                        <HStack my="4">
+                           <Rating value={review.rating} />
                            {review.created_date && (
                               <Text mt="4" fontWeight="bold" color="gray.500">
-                                 Posted {formatReviewDate(review.created_date)}
+                                 {formatReviewDate(review.created_date)}
                               </Text>
                            )}
-                        </Box>
-                        <Box>
-                           <Text fontWeight="bold" color="brand.500" mb="3">
-                              {review.productName} | {review.productVariantName}
-                           </Text>
-                           {review.body && (
-                              <Box
-                                 dangerouslySetInnerHTML={{
-                                    __html: review.body,
-                                 }}
-                              />
-                           )}
-                        </Box>
-                     </Flex>
+                        </HStack>
+                        <Text fontWeight="bold" my="4">
+                           {review.productName} | {review.productVariantName}
+                        </Text>
+                        {review.body && (
+                           <Box
+                              dangerouslySetInnerHTML={{
+                                 __html: review.body,
+                              }}
+                           />
+                        )}
+                     </Box>
                   );
                })}
             </Box>
@@ -220,7 +249,30 @@ type RatingCount = {
 };
 
 function formatReviewDate(timeSeconds: number) {
-   return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
-      new Date(timeSeconds * 1000)
-   );
+   const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' });
+   const date = new Date(timeSeconds * 1000);
+   let duration = (date.getTime() - new Date().getTime()) / 1000;
+
+   for (let i = 0; i <= DIVISIONS.length; i++) {
+      const division = DIVISIONS[i];
+      if (Math.abs(duration) < division.amount) {
+         return formatter.format(Math.round(duration), division.name);
+      }
+      duration /= division.amount;
+   }
 }
+
+type Division = {
+   amount: number;
+   name: Intl.RelativeTimeFormatUnit;
+};
+
+const DIVISIONS: Division[] = [
+   { amount: 60, name: 'seconds' },
+   { amount: 60, name: 'minutes' },
+   { amount: 24, name: 'hours' },
+   { amount: 7, name: 'days' },
+   { amount: 4.34524, name: 'weeks' },
+   { amount: 12, name: 'months' },
+   { amount: Number.POSITIVE_INFINITY, name: 'years' },
+];

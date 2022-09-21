@@ -23,3 +23,19 @@ export function shouldShowProductRating<T extends Value>(
          : product.reviewsCount;
    return rating >= 4 || ratingCount > 10;
 }
+
+const PRODUCT_CODE_LENGTH = 6;
+
+export function parseProductCode(sku: string): string {
+   const skuDigits = parseSkuDigits(sku);
+   return skuDigits.slice(0, PRODUCT_CODE_LENGTH);
+}
+
+export function parseProductOptionId(sku: string): string {
+   const skuDigits = parseSkuDigits(sku);
+   return skuDigits.slice(PRODUCT_CODE_LENGTH);
+}
+
+function parseSkuDigits(sku: string): string {
+   return sku.replace(/\D/g, '');
+}

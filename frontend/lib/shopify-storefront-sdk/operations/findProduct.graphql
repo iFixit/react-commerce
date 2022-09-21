@@ -95,9 +95,22 @@ query findProduct($handle: String) {
                      __typename
                      ... on ProductVariant {
                         id
+                        sku
                         product {
                            handle
                            title
+                           rating: metafield(
+                              namespace: "reviews"
+                              key: "rating"
+                           ) {
+                              value
+                           }
+                           reviewsCount: metafield(
+                              namespace: "reviews"
+                              key: "rating_count"
+                           ) {
+                              value
+                           }
                         }
                         image {
                            id

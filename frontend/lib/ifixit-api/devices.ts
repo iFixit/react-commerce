@@ -1,4 +1,3 @@
-import { encodeDeviceTitle } from '@helpers/product-list-helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { invariant } from '@ifixit/helpers';
 
@@ -8,7 +7,7 @@ export async function fetchDeviceWiki(
    client: IFixitAPIClient,
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
-   const deviceHandle = encodeDeviceTitle(deviceTitle);
+   const deviceHandle = encodeURIComponent(deviceTitle);
    try {
       invariant(
          deviceHandle.length > 0,

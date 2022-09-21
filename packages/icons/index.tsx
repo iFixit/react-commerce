@@ -1,4 +1,5 @@
 export { default as Globe } from './misc/Globe';
+export { default as Language } from './misc/Language';
 export { default as FacebookLogo } from './social/FacebookLogo';
 export { default as RepairOrgLogo } from './social/RepairOrgLogo';
 export { default as TwitterLogo } from './social/TwitterLogo';

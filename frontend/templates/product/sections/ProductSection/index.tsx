@@ -8,7 +8,6 @@ import {
    Alert,
    AlertIcon,
    Box,
-   Button,
    chakra,
    Flex,
    Heading,
@@ -30,7 +29,6 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
-import { useAddToCart } from '@ifixit/cart-sdk';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
@@ -41,9 +39,11 @@ import {
    FaShieldAlt,
    FaTruck,
 } from 'react-icons/fa';
+import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
+import { ProductPrice } from '../../../../components/common/ProductPrice';
 
 export type ProductSectionProps = {
    product: Product;
@@ -73,30 +73,33 @@ export function ProductSection({
       [product.variants, onVariantChange]
    );
 
-   const addToCart = useAddToCart();
-
-   const handleAddToCart = React.useCallback(() => {
-      if (selectedVariant.sku) {
-         addToCart.mutate({
-            itemcode: selectedVariant.sku,
-            quantity: 1,
-         });
-      }
-   }, [addToCart, selectedVariant.sku]);
-
    return (
       <PageContentWrapper as="section">
-         <Flex alignItems="flex-start">
-            <ProductGallery
-               product={product}
-               selectedVariantId={selectedVariant.id}
-               selectedImageId={selectedImageId}
-               onChange={setSelectedImageId}
-            />
-            {/* Details */}
+         <Flex px={{ base: 5, sm: 0 }}>
             <Flex
-               flexGrow={1}
-               w="200px"
+               position="sticky"
+               alignSelf="flex-start"
+               display={{ base: 'none', md: 'flex' }}
+               top="10"
+               mr={{ base: 5, lg: 10 }}
+               direction="column"
+               flex="1"
+               w="0"
+            >
+               <ProductGallery
+                  product={product}
+                  selectedVariantId={selectedVariant.id}
+                  selectedImageId={selectedImageId}
+                  showThumbnails
+                  onChangeImage={setSelectedImageId}
+               />
+            </Flex>
+            <Flex
+               w={{
+                  base: 'full',
+                  md: '320px',
+                  lg: '400px',
+               }}
                pt="5"
                direction="column"
                fontSize="sm"
@@ -106,55 +109,29 @@ export function ProductSection({
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
                <ProductPrice
-                  price={selectedVariant.formattedPrice}
-                  compareAt={selectedVariant.formattedCompareAtPrice}
+                  formattedPrice={selectedVariant.formattedPrice}
+                  formattedCompareAtPrice={
+                     selectedVariant.formattedCompareAtPrice
+                  }
+                  isDiscounted={selectedVariant.isDiscounted}
+                  discountLabel={`${selectedVariant.discountPercentage}% OFF`}
                />
                <ProductRating product={product} />
+               <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
+                  <ProductGallery
+                     product={product}
+                     selectedVariantId={selectedVariant.id}
+                     selectedImageId={selectedImageId}
+                     onChangeImage={setSelectedImageId}
+                  />
+               </Flex>
+
                <ProductOptions
                   product={product}
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
-               <VStack mt="5" align="center">
-                  <Button
-                     w="full"
-                     colorScheme="brand"
-                     isLoading={addToCart.isLoading}
-                     onClick={handleAddToCart}
-                  >
-                     Add to cart
-                  </Button>
-                  {selectedVariant.quantityAvailable &&
-                     selectedVariant.quantityAvailable < 10 && (
-                        <Alert
-                           status="error"
-                           bg="transparent"
-                           justifyContent="center"
-                           color="red.600"
-                           py="0"
-                           fontSize="xs"
-                        >
-                           <AlertIcon boxSize="4" />
-                           Only{' '}
-                           <Text fontWeight="bold" mx="1">
-                              {selectedVariant.quantityAvailable}
-                           </Text>{' '}
-                           left
-                        </Alert>
-                     )}
-
-                  <Alert
-                     status="info"
-                     bg="transparent"
-                     justifyContent="center"
-                     colorScheme="gray"
-                     py="0"
-                     fontSize="xs"
-                  >
-                     <AlertIcon boxSize="4" />
-                     Shipping restrictions apply
-                  </Alert>
-               </VStack>
+               <AddToCart product={product} selectedVariant={selectedVariant} />
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
@@ -425,19 +402,6 @@ const ProductTitle = chakra(
       );
    }
 );
-
-type ProductPriceProps = {
-   price: string;
-   compareAt?: string | null;
-};
-
-function ProductPrice({ price, compareAt }: ProductPriceProps) {
-   return (
-      <Text fontWeight="bold" fontSize="xl">
-         {price}
-      </Text>
-   );
-}
 
 type CustomAccordionButtonProps = React.PropsWithChildren<{}>;
 
