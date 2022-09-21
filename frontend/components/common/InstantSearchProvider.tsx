@@ -179,9 +179,10 @@ export function InstantSearchProvider({
 
             const { q, p, filter } = qsModule.parse(location.search.slice(1));
 
-            const filterObject = (
-               typeof filter === 'object' ? filter : {}
-            ) as Record<string, any>;
+            const filterObject =
+               typeof filter === 'object' && !Array.isArray(filter)
+                  ? filter
+                  : {};
 
             if (deviceHandle && itemType) {
                filterObject['facet_tags.Item Type'] = [
