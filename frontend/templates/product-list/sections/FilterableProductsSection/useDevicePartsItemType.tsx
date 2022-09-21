@@ -18,10 +18,6 @@ export function useDevicePartsItemType<T extends ProductListAttributes>(
       // `Item Type` is a single select, so just use the first value if it exists.
       return itemTypeRefinement?.refinements[0]?.value;
    }, [items]);
-   if (typeof window === 'undefined') {
-      // Use the device item type from the slug on the server.
-      return productList.deviceItemType ?? undefined;
-   }
    if (!itemType || productList.type !== ProductListType.DeviceParts) {
       return undefined;
    }
