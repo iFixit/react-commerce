@@ -367,15 +367,7 @@ function CrossSellItem({
                            spacing="1"
                            mb="3"
                         >
-                           <Badge
-                              colorScheme="brand"
-                              textTransform="none"
-                              borderRadius="lg"
-                              px="2.5"
-                              py="1"
-                           >
-                              Current item
-                           </Badge>
+                           <Badge colorScheme="brand">Current item</Badge>
                         </HStack>
                      )}
                      <Flex direction="column" h="full" align="flex-start">

@@ -1,4 +1,10 @@
-import { Badge, LinkBox, LinkOverlay, SimpleGrid } from '@chakra-ui/react';
+import {
+   Badge,
+   BadgeProps,
+   LinkBox,
+   LinkOverlay,
+   SimpleGrid,
+} from '@chakra-ui/react';
 import {
    ProductCard,
    ProductCardBadgeList,
@@ -63,24 +69,41 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
    const { price, compareAtPrice, isDiscounted, percentage } =
       useProductSearchHitPricing(product);
 
+   const showProBadge = product.is_pro > 0;
+   const showDiscountBadge = isDiscounted;
+   const showLifetimeWarrantyBadge = product.lifetime_warranty;
+   const showOemPartnershipBadge = product.oem_partnership;
+
    return (
       <LinkBox as="article" display="block" w="full" role="group">
          <ProductCard h="full">
             <ProductCardImage src={product.image_url} alt={product.title} />
-            <ProductCardBadgeList>
-               {product.is_pro > 0 && (
-                  <Badge
-                     colorScheme="orange"
-                     textTransform="none"
-                     borderRadius="lg"
-                     px="2.5"
-                     py="1"
-                  >
-                     PRO
-                  </Badge>
+            <ProductCardBadgeList
+               sx={{
+                  '& > :not(:first-of-type)': {
+                     display: 'none',
+                  },
+               }}
+            >
+               {showOemPartnershipBadge && (
+                  <ProductCardBadge colorScheme="green">
+                     {product.oem_partnership}
+                  </ProductCardBadge>
                )}
-               {isDiscounted && (
-                  <ProductCardDiscountBadge percentage={percentage} />
+               {showProBadge && (
+                  <ProductCardBadge colorScheme="orange">
+                     iFixit Pro
+                  </ProductCardBadge>
+               )}
+               {showDiscountBadge && (
+                  <ProductCardBadge colorScheme="red">
+                     {percentage}% Off
+                  </ProductCardBadge>
+               )}
+               {showLifetimeWarrantyBadge && (
+                  <ProductCardBadge colorScheme="blue">
+                     Lifetime Warranty
+                  </ProductCardBadge>
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
@@ -109,5 +132,20 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
             </ProductCardBody>
          </ProductCard>
       </LinkBox>
+   );
+}
+
+function ProductCardBadge(props: BadgeProps) {
+   return (
+      <Badge
+         fontSize={{
+            base: 'xs',
+            xl: 'sm',
+         }}
+         maxW="full"
+         overflow="hidden"
+         isTruncated
+         {...props}
+      />
    );
 }

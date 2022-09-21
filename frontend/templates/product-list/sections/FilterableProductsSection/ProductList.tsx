@@ -1,6 +1,7 @@
 import placeholderImageUrl from '@assets/images/no-image-fixie.jpeg';
 import {
    Badge,
+   BadgeProps,
    Box,
    Button,
    Divider,
@@ -165,26 +166,26 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            },
                         }}
                      >
-                        {showProBadge &&
-                           ProductListItemBadge({
-                              content: 'iFixit Pro',
-                              colorScheme: 'orange',
-                           })}
-                        {showDiscountBadge &&
-                           ProductListItemBadge({
-                              content: `${percentage}% Off`,
-                              colorScheme: 'red',
-                           })}
-                        {showOemPartnershipBadge &&
-                           ProductListItemBadge({
-                              content: product.oem_partnership!,
-                              colorScheme: 'green',
-                           })}
-                        {showLifetimeWarrantyBadge &&
-                           ProductListItemBadge({
-                              content: 'Lifetime Warranty',
-                              colorScheme: 'blue',
-                           })}
+                        {showProBadge && (
+                           <ProductListItemBadge colorScheme="orange">
+                              iFixit Pro
+                           </ProductListItemBadge>
+                        )}
+                        {showDiscountBadge && (
+                           <ProductListItemBadge colorScheme="red">
+                              {percentage}% Off
+                           </ProductListItemBadge>
+                        )}
+                        {showOemPartnershipBadge && (
+                           <ProductListItemBadge colorScheme="green">
+                              {product.oem_partnership}
+                           </ProductListItemBadge>
+                        )}
+                        {showLifetimeWarrantyBadge && (
+                           <ProductListItemBadge colorScheme="blue">
+                              Lifetime Warranty
+                           </ProductListItemBadge>
+                        )}
                      </Flex>
                   )}
                </Box>
@@ -279,24 +280,17 @@ export function ProductListItem({ product }: ProductListItemProps) {
    );
 }
 
-interface ProductListItemBadgeProps {
-   content: string;
-   colorScheme: ThemeTypings['colorSchemes'];
-}
-
-function ProductListItemBadge({
-   content,
-   colorScheme,
-}: ProductListItemBadgeProps) {
+function ProductListItemBadge(props: BadgeProps) {
    return (
       <Badge
-         colorScheme={colorScheme}
-         textTransform="none"
-         borderRadius="lg"
-         px="2.5"
-         py="1"
-      >
-         {content}
-      </Badge>
+         fontSize={{
+            base: 'xs',
+            sm: 'sm',
+         }}
+         maxW="full"
+         overflow="hidden"
+         isTruncated
+         {...props}
+      />
    );
 }
