@@ -9,7 +9,7 @@ jobs:
          - name: Checkout
            uses: actions/checkout@v2
          - name: Install PNPM
-           run: corepack enable && corepack prepare pnpm@7 --activate
+           run: npm install -g pnpm@7
          - name: Install workspaces
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
