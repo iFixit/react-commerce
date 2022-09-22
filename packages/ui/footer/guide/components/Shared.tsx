@@ -9,12 +9,10 @@ import {
    Stack,
    StackProps,
    Text,
+   Image,
 } from '@chakra-ui/react';
 import React from 'react';
 import { PageContentWrapper } from '../../../misc/PageContentWrapper';
-import { GlobalSettings } from '@models/global-settings';
-import { Store, StoreListItem } from '@models/store';
-import { IfixitImage } from '@components/ifixit-image';
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
@@ -74,7 +72,7 @@ export const FooterBottomLogo = forwardRef<StackProps, 'div'>((props, ref) => {
          align="center"
          {...props}
       >
-         <IfixitImage
+         <Image
             width="74px"
             height="80px"
             src="https://assets.cdn.ifixit.com/static/images/footer/fist-circle-white.png"
@@ -83,9 +81,3 @@ export const FooterBottomLogo = forwardRef<StackProps, 'div'>((props, ref) => {
       </Stack>
    );
 });
-
-export interface FooterProps {
-   stores?: StoreListItem[];
-   currentStore?: Store;
-   globalSettings?: GlobalSettings;
-}

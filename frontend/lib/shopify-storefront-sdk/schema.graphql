@@ -61,22 +61,22 @@ type AppliedGiftCard implements Node {
    """
    The amount that was taken from the gift card by applying it.
    """
-   amountUsed: Money! @deprecated(reason: "Use `amountUsedV2` instead")
+   amountUsed: MoneyV2!
 
    """
    The amount that was taken from the gift card by applying it.
    """
-   amountUsedV2: MoneyV2!
+   amountUsedV2: MoneyV2! @deprecated(reason: "Use `amountUsed` instead")
 
    """
    The amount left on the gift card.
    """
-   balance: Money! @deprecated(reason: "Use `balanceV2` instead")
+   balance: MoneyV2!
 
    """
    The amount left on the gift card.
    """
-   balanceV2: MoneyV2!
+   balanceV2: MoneyV2! @deprecated(reason: "Use `balance` instead")
 
    """
    A globally-unique identifier.
@@ -677,7 +677,7 @@ type Cart implements Node {
    createdAt: DateTime!
 
    """
-   The delivery groups available for the cart, based on the default address of the logged-in customer.
+   The delivery groups available for the cart, based on the buyer identity delivery address or the default address of the logged-in customer.
    """
    deliveryGroups(
       """
@@ -817,6 +817,11 @@ type CartBuyerIdentity {
    customer: Customer
 
    """
+   The address where the merchandise will be delivered.
+   """
+   deliveryAddress: MailingAddress
+
+   """
    The email address of the buyer that is interacting with the cart.
    """
    email: String
@@ -853,6 +858,11 @@ input CartBuyerIdentityInput {
    The access token used to identify the customer associated with the cart.
    """
    customerAccessToken: String
+
+   """
+   The delivery address of the buyer that is interacting with the cart.
+   """
+   deliveryAddress: MailingAddressInput
 }
 
 """
@@ -1622,14 +1632,14 @@ type Checkout implements Node {
    orderStatusUrl: URL
 
    """
-   The amount left to be paid. This is equal to the cost of the line items, taxes and shipping minus discounts and gift cards.
+   The amount left to be paid. This is equal to the cost of the line items, taxes, and shipping, minus discounts and gift cards.
    """
-   paymentDue: Money! @deprecated(reason: "Use `paymentDueV2` instead")
+   paymentDue: MoneyV2!
 
    """
    The amount left to be paid. This is equal to the cost of the line items, duties, taxes, and shipping, minus discounts and gift cards.
    """
-   paymentDueV2: MoneyV2!
+   paymentDueV2: MoneyV2! @deprecated(reason: "Use `paymentDue` instead")
 
    """
    Whether or not the Checkout is ready and can be completed. Checkouts may
@@ -1660,14 +1670,14 @@ type Checkout implements Node {
    shippingLine: ShippingRate
 
    """
-   Price of the checkout before shipping and taxes.
+   The price at checkout before shipping and taxes.
    """
-   subtotalPrice: Money! @deprecated(reason: "Use `subtotalPriceV2` instead")
+   subtotalPrice: MoneyV2!
 
    """
    The price at checkout before duties, shipping, and taxes.
    """
-   subtotalPriceV2: MoneyV2!
+   subtotalPriceV2: MoneyV2! @deprecated(reason: "Use `subtotalPrice` instead")
 
    """
    Whether the checkout is tax exempt.
@@ -1685,24 +1695,24 @@ type Checkout implements Node {
    totalDuties: MoneyV2
 
    """
-   The sum of all the prices of all the items in the checkout, taxes and discounts included.
+   The sum of all the prices of all the items in the checkout, including taxes and duties.
    """
-   totalPrice: Money! @deprecated(reason: "Use `totalPriceV2` instead")
+   totalPrice: MoneyV2!
 
    """
-   The sum of all the prices of all the items in the checkout, including duties, taxes, and discounts.
+   The sum of all the prices of all the items in the checkout, including taxes and duties.
    """
-   totalPriceV2: MoneyV2!
-
-   """
-   The sum of all the taxes applied to the line items and shipping lines in the checkout.
-   """
-   totalTax: Money! @deprecated(reason: "Use `totalTaxV2` instead")
+   totalPriceV2: MoneyV2! @deprecated(reason: "Use `totalPrice` instead")
 
    """
    The sum of all the taxes applied to the line items and shipping lines in the checkout.
    """
-   totalTaxV2: MoneyV2!
+   totalTax: MoneyV2!
+
+   """
+   The sum of all the taxes applied to the line items and shipping lines in the checkout.
+   """
+   totalTaxV2: MoneyV2! @deprecated(reason: "Use `totalTax` instead")
 
    """
    The date and time when the checkout was last updated.
@@ -2185,6 +2195,11 @@ enum CheckoutErrorCode {
    Higher value discount applied.
    """
    HIGHER_VALUE_DISCOUNT_APPLIED
+
+   """
+   Maximum number of discount codes limit reached.
+   """
+   MAXIMUM_DISCOUNT_CODE_LIMIT_REACHED
 
    """
    Discount not found.
@@ -7980,6 +7995,31 @@ type Metafield implements Node {
    reference: MetafieldReference
 
    """
+   A list of reference objects if the metafield's type is a resource reference list.
+   """
+   references(
+      """
+      Returns up to the first `n` elements from the list.
+      """
+      first: Int
+
+      """
+      Returns the elements that come after the specified cursor.
+      """
+      after: String
+
+      """
+      Returns up to the last `n` elements from the list.
+      """
+      last: Int
+
+      """
+      Returns the elements that come before the specified cursor.
+      """
+      before: String
+   ): MetafieldReferenceConnection
+
+   """
    The type name of the metafield.
    See the list of [supported types](https://shopify.dev/apps/metafields/definitions/types).
    """
@@ -8048,6 +8088,41 @@ union MetafieldReference =
    | Video
 
 """
+An auto-generated type for paginating through multiple MetafieldReferences.
+"""
+type MetafieldReferenceConnection {
+   """
+   A list of edges.
+   """
+   edges: [MetafieldReferenceEdge!]!
+
+   """
+   A list of the nodes contained in MetafieldReferenceEdge.
+   """
+   nodes: [MetafieldReference!]!
+
+   """
+   Information to aid in pagination.
+   """
+   pageInfo: PageInfo!
+}
+
+"""
+An auto-generated type which holds one MetafieldReference and a cursor during pagination.
+"""
+type MetafieldReferenceEdge {
+   """
+   A cursor for use in pagination.
+   """
+   cursor: String!
+
+   """
+   The item at the end of MetafieldReferenceEdge.
+   """
+   node: MetafieldReference!
+}
+
+"""
 Represents a Shopify hosted 3D model.
 """
 type Model3d implements Media & Node {
@@ -8101,11 +8176,6 @@ type Model3dSource {
    """
    url: String!
 }
-
-"""
-A monetary value string without a currency symbol or code. Example value: `"100.57"`.
-"""
-scalar Money
 
 """
 Specifies the fields for a monetary value with currency.
@@ -8667,7 +8737,7 @@ type Mutation {
    ): CustomerDefaultAddressUpdatePayload
 
    """
-   Sends a reset password email to the customer, as the first step in the reset password process.
+   "Sends a reset password email to the customer. The reset password email contains a reset password URL and token that you can pass to the [`customerResetByUrl`](https://shopify.dev/api/storefront/latest/mutations/customerResetByUrl) or [`customerReset`](https://shopify.dev/api/storefront/latest/mutations/customerReset) mutation to reset the customer password."
    """
    customerRecover(
       """
@@ -8677,7 +8747,7 @@ type Mutation {
    ): CustomerRecoverPayload
 
    """
-   Resets a customer’s password with a token received from `CustomerRecover`.
+   "Resets a customer’s password with the token received from a reset password email. You can send a reset password email with the [`customerRecover`](https://shopify.dev/api/storefront/latest/mutations/customerRecover) mutation."
    """
    customerReset(
       """
@@ -8692,7 +8762,7 @@ type Mutation {
    ): CustomerResetPayload
 
    """
-   Resets a customer’s password with the reset password url received from `CustomerRecover`.
+   "Resets a customer’s password with the reset password URL received from a reset password email. You can send a reset password email with the [`customerRecover`](https://shopify.dev/api/storefront/latest/mutations/customerRecover) mutation."
    """
    customerResetByUrl(
       """
@@ -8955,12 +9025,12 @@ type Order implements HasMetafields & Node {
    """
    Price of the order before shipping and taxes.
    """
-   subtotalPrice: Money @deprecated(reason: "Use `subtotalPriceV2` instead")
+   subtotalPrice: MoneyV2
 
    """
    Price of the order before duties, shipping and taxes.
    """
-   subtotalPriceV2: MoneyV2
+   subtotalPriceV2: MoneyV2 @deprecated(reason: "Use `subtotalPrice` instead")
 
    """
    List of the order’s successful fulfillments.
@@ -8973,45 +9043,45 @@ type Order implements HasMetafields & Node {
    ): [Fulfillment!]
 
    """
-   The sum of all the prices of all the items in the order, taxes and discounts included (must be positive).
+   The sum of all the prices of all the items in the order, duties, taxes and discounts included (must be positive).
    """
-   totalPrice: Money! @deprecated(reason: "Use `totalPriceV2` instead")
+   totalPrice: MoneyV2!
 
    """
    The sum of all the prices of all the items in the order, duties, taxes and discounts included (must be positive).
    """
-   totalPriceV2: MoneyV2!
+   totalPriceV2: MoneyV2! @deprecated(reason: "Use `totalPrice` instead")
 
    """
    The total amount that has been refunded.
    """
-   totalRefunded: Money! @deprecated(reason: "Use `totalRefundedV2` instead")
+   totalRefunded: MoneyV2!
 
    """
    The total amount that has been refunded.
    """
-   totalRefundedV2: MoneyV2!
+   totalRefundedV2: MoneyV2! @deprecated(reason: "Use `totalRefunded` instead")
 
    """
    The total cost of shipping.
    """
-   totalShippingPrice: Money!
-      @deprecated(reason: "Use `totalShippingPriceV2` instead")
+   totalShippingPrice: MoneyV2!
 
    """
    The total cost of shipping.
    """
    totalShippingPriceV2: MoneyV2!
+      @deprecated(reason: "Use `totalShippingPrice` instead")
 
    """
    The total cost of taxes.
    """
-   totalTax: Money @deprecated(reason: "Use `totalTaxV2` instead")
+   totalTax: MoneyV2
 
    """
    The total cost of taxes.
    """
-   totalTaxV2: MoneyV2
+   totalTaxV2: MoneyV2 @deprecated(reason: "Use `totalTax` instead")
 }
 
 """
@@ -9444,12 +9514,12 @@ type Payment implements Node {
    """
    The amount of the payment.
    """
-   amount: Money! @deprecated(reason: "Use `amountV2` instead")
+   amount: MoneyV2!
 
    """
    The amount of the payment.
    """
-   amountV2: MoneyV2!
+   amountV2: MoneyV2! @deprecated(reason: "Use `amount` instead")
 
    """
    The billing address for the payment.
@@ -9721,6 +9791,11 @@ type Product implements HasMetafields & Node & OnlineStorePublishable {
       """
       sortKey: ProductImageSortKeys = POSITION
    ): ImageConnection!
+
+   """
+   Whether the product is a gift card.
+   """
+   isGiftCard: Boolean!
 
    """
    The media associated with the product.
@@ -10207,12 +10282,12 @@ type ProductVariant implements HasMetafields & Node {
    """
    The compare at price of the variant. This can be used to mark a variant as on sale, when `compareAtPrice` is higher than `price`.
    """
-   compareAtPrice: Money @deprecated(reason: "Use `compareAtPriceV2` instead")
+   compareAtPrice: MoneyV2
 
    """
    The compare at price of the variant. This can be used to mark a variant as on sale, when `compareAtPriceV2` is higher than `priceV2`.
    """
-   compareAtPriceV2: MoneyV2
+   compareAtPriceV2: MoneyV2 @deprecated(reason: "Use `compareAtPrice` instead")
 
    """
    Whether a product is out of stock but still available for purchase (used for backorders).
@@ -10257,12 +10332,12 @@ type ProductVariant implements HasMetafields & Node {
    """
    The product variant’s price.
    """
-   price: Money! @deprecated(reason: "Use `priceV2` instead")
+   price: MoneyV2!
 
    """
    The product variant’s price.
    """
-   priceV2: MoneyV2!
+   priceV2: MoneyV2! @deprecated(reason: "Use `price` instead")
 
    """
    The product object that the product variant belongs to.
@@ -11423,12 +11498,12 @@ type ShippingRate {
    """
    Price of this shipping rate.
    """
-   price: Money! @deprecated(reason: "Use `priceV2` instead")
+   price: MoneyV2!
 
    """
    Price of this shipping rate.
    """
-   priceV2: MoneyV2!
+   priceV2: MoneyV2! @deprecated(reason: "Use `price` instead")
 
    """
    Title of this shipping rate.
@@ -11722,12 +11797,12 @@ type Transaction {
    """
    The amount of money that the transaction was for.
    """
-   amount: Money! @deprecated(reason: "Use `amountV2` instead")
+   amount: MoneyV2!
 
    """
    The amount of money that the transaction was for.
    """
-   amountV2: MoneyV2!
+   amountV2: MoneyV2! @deprecated(reason: "Use `amount` instead")
 
    """
    The kind of the transaction.

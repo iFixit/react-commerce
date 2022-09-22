@@ -13,7 +13,6 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
    CartDrawer,
-   CartFooter,
    Header,
    HeaderBar,
    HeaderCloseHiddenBarButton,
@@ -58,6 +57,7 @@ import * as React from 'react';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { RiSearchLine } from 'react-icons/ri';
 import { DefaultLayoutProps } from '../types';
+import { CartFooter } from './Footer';
 
 export function DefaultLayout({
    stores,

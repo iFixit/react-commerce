@@ -16,3 +16,6 @@ jobs:
            run: pnpm install
          - name: Run Jest tests
            run: cd frontend; pnpm test
+           env:
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

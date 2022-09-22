@@ -1,4 +1,6 @@
-const { mapPartItemTypes } = require('./legacyPartCollectionRoutes');
+const {
+   mapPartItemTypes,
+} = require('./next-config/redirects/part-collections');
 
 const withTM = require('next-transpile-modules')([
    '@ifixit/app',
@@ -15,7 +17,9 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
-const legacyRouting = require('./legacyToolCollectionRoutes.js');
+const {
+   getToolRedirects,
+} = require('./next-config/redirects/tool-collections');
 
 const withBundleAnalyzer =
    process.env.ANALYZE === 'true'
@@ -48,6 +52,8 @@ const moduleExports = {
       NEXT_PUBLIC_MATOMO_URL: process.env.NEXT_PUBLIC_MATOMO_URL,
       NEXT_PUBLIC_GA_URL: process.env.NEXT_PUBLIC_GA_URL,
       NEXT_PUBLIC_GA_KEY: process.env.NEXT_PUBLIC_GA_KEY,
+      NEXT_PUBLIC_DEFAULT_STORE_CODE:
+         process.env.NEXT_PUBLIC_DEFAULT_STORE_CODE,
    },
    async rewrites() {
       return [
@@ -61,7 +67,7 @@ const moduleExports = {
       return [
          ...mapPartItemTypes(),
          {
-            source: `/Tools/:slug(${legacyRouting.getToolRedirects()})`,
+            source: `/Tools/:slug(${getToolRedirects()})`,
             destination: `/Tools`,
             permanent: true,
          },
