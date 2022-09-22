@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { forwardRef, HStack, Stack, StackProps } from '@chakra-ui/react';
 
 export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
