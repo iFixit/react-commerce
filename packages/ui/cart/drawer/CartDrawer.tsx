@@ -190,10 +190,6 @@ export function CartDrawer() {
                      </Collapse>
                   </DrawerBody>
 
-                  <CheckoutError
-                     error={checkout.error}
-                     onDismiss={checkout.reset}
-                  />
                   <Collapse
                      in={cart.data != null && cart.data.totalNumItems > 0}
                   >
