@@ -15,6 +15,7 @@ import {
    IconButton,
    Link,
    List,
+   ListIcon,
    ListItem,
    Popover,
    PopoverArrow,
@@ -106,50 +107,40 @@ export function ProductSection({
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
-                        <Flex
-                           justifyContent="center"
-                           alignItems="center"
-                           w={5}
-                           h={5}
-                           mr={1.5}
-                        >
-                           <FaIcon
-                              icon={faBadgeDollar}
-                              h="4"
-                              color="brand.500"
-                           />
-                        </Flex>
+                        <ListIcon
+                           as={FaIcon}
+                           h="4"
+                           w="5"
+                           mr="1.5"
+                           color="brand.500"
+                           icon={faBadgeDollar}
+                        />
                         Satisfaction guaranteed or you money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <Flex
-                           justifyContent="center"
-                           alignItems="center"
-                           w={5}
-                           h={5}
-                           mr={1.5}
-                        >
-                           <FaIcon
-                              icon={faShieldCheck}
-                              h="4"
-                              color="brand.500"
-                           />
-                        </Flex>
+                        <ListIcon
+                           as={FaIcon}
+                           h="4"
+                           w="5"
+                           mr="1.5"
+                           color="brand.500"
+                           icon={faShieldCheck}
+                        />
+
                         <div>
                            If it doesn&apos;t meet our meticulous standards, we
                            won&apos;t sell it. Period.
                         </div>
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <Flex
-                           justifyContent="center"
-                           alignItems="center"
-                           w={5}
-                           h={5}
-                           mr={1.5}
-                        >
-                           <FaIcon icon={faRocket} h="4" color="brand.500" />
-                        </Flex>
+                        <ListIcon
+                           as={FaIcon}
+                           h="4"
+                           w="5"
+                           mr="1.5"
+                           color="brand.500"
+                           icon={faRocket}
+                        />
                         Same day shipping if ordered by 5PM
                      </ListItem>
                   </List>
