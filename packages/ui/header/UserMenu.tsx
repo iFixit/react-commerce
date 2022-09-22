@@ -135,10 +135,7 @@ function UserAvatar() {
                ? user?.username
                : undefined
          }
-         src={
-            'https://guide-images.cdn.ifixit.com/igi/ZM1kHYv4nvHWF2Hd.thumbnail' ??
-            undefined
-         }
+         src={user?.thumbnail ?? undefined}
          icon={<FaIcon icon={faUser} h="4" color="gray.300" />}
          bg={user?.thumbnail == null ? undefined : 'transparent'}
          size="sm"
