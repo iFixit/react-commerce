@@ -19,7 +19,12 @@ export function CompatibleDevice({ device }: CompatibleDeviceProps) {
             borderColor="gray.300"
             borderRadius="4px"
          />
-         <Flex flexDir="column" alignSelf="center">
+         <Flex
+            minH="12"
+            flexDir="column"
+            alignSelf="flex-start"
+            justifyContent="center"
+         >
             <Text
                my="2px"
                fontWeight="medium"
