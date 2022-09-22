@@ -47,7 +47,7 @@ export function ProductPrice({
                <FaIcon
                   icon={faRectanglePro}
                   h="4"
-                  mr="6px"
+                  mr="1.5"
                   color={`${colorScheme}.500`}
                />
             )}

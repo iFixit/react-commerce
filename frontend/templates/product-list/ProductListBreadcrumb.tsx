@@ -51,7 +51,7 @@ export function ProductListBreadcrumb({
             <Flex>
                <FaIcon
                   icon={faChevronRight}
-                  h="10px"
+                  h="2.5"
                   display="flex"
                   mt="1"
                   color="gray.400"

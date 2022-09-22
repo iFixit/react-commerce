@@ -224,7 +224,7 @@ export function NewsletterForm({
                   bottom="0"
                   lineHeight="10"
                >
-                  <FaIcon icon={faCircleCheck} h="4" mr="6px" color="white" />
+                  <FaIcon icon={faCircleCheck} h="4" mr="1.5" color="white" />
                   Subscribed!
                </Text>
             )}

@@ -141,7 +141,7 @@ export default function ActivityDisplay({ data }: { data: Activity[] }) {
                   textAlign="center"
                   padding="50px 0"
                >
-                  <FaIcon icon={faCircleExclamation} h="28px" color="red.500" />
+                  <FaIcon icon={faCircleExclamation} h="7" color="red.500" />
                   <Heading
                      as="h3"
                      fontSize={`${fontSize.xl}`}

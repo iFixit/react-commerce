@@ -100,7 +100,7 @@ function ShippingRestrictions() {
             display="block"
             icon={faCircleInfo}
             h="4"
-            ml="6px"
+            ml="1.5"
             color="gray.400"
          />
       </Flex>
@@ -121,7 +121,7 @@ function InventoryMessage({ quantityAvailable }: InvetoryMessageProps) {
             icon={faCircleExclamation}
             display="block"
             h="4"
-            mr="6px"
+            mr="1.5"
             color="red.500"
          />
          Only{' '}

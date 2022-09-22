@@ -177,7 +177,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            <FaIcon
                               icon={faCircleExclamation}
                               h="4"
-                              mr="6px"
+                              mr="1.5"
                               color="red.500"
                            />
                            Unable to update quantity.

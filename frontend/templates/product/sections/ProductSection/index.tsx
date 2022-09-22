@@ -182,8 +182,8 @@ export function ProductSection({
                                  <FaIcon
                                     icon={faCircleExclamation}
                                     h="4"
-                                    mt="2px"
-                                    mr="10px"
+                                    mt="0.5"
+                                    mr="2.5"
                                     color="brand.500"
                                  />
                                  <Box
@@ -205,8 +205,8 @@ export function ProductSection({
                                  <FaIcon
                                     icon={faCircleExclamation}
                                     h="4"
-                                    mt="2px"
-                                    mr="10px"
+                                    mt="0.5"
+                                    mr="2.5"
                                     color="orange.500"
                                  />
                                  <Box
@@ -229,8 +229,8 @@ export function ProductSection({
                                     icon={faCircleExclamation}
                                     color="red.500"
                                     h="4"
-                                    mt="2px"
-                                    mr="10px"
+                                    mt="0.5"
+                                    mr="2.5"
                                  />
                                  <Box
                                     fontSize="sm"

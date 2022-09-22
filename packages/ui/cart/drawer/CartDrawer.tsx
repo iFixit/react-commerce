@@ -329,8 +329,8 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
             <FaIcon
                icon={faCircleExclamation}
                h="4"
-               mt="2px"
-               mr="10px"
+               mt="0.5"
+               mr="2.5"
                color="red.500"
             />
             <Box flexGrow={1}>

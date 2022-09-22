@@ -45,7 +45,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
             >
                <FaIcon
                   icon={faChevronRight}
-                  h="10px"
+                  h="2.5"
                   d="flex"
                   mt="1"
                   color="gray.400"

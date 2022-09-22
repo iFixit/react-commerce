@@ -168,7 +168,6 @@ export const ProductViewListButton = (props: IconButtonProps) => {
    return (
       <IconButton
          icon={<FaIcon icon={faList} h="4" color="gray.500" />}
-         mr="-px"
          variant="outline"
          size="md"
          {...props}
@@ -180,7 +179,6 @@ export const ProductViewGridButton = (props: IconButtonProps) => {
    return (
       <IconButton
          icon={<FaIcon icon={faGrid} h="4" color="gray.500" />}
-         mr="-px"
          variant="outline"
          size="md"
          {...props}

@@ -289,7 +289,7 @@ function FacetListItem({
                      {refinedCount}
                   </Text>
                )}
-               <FaIcon icon={faChevronRight} h="10px" color="gray.500" />
+               <FaIcon icon={faChevronRight} h="2.5" color="gray.500" />
             </HStack>
          </Flex>
          <Divider />
