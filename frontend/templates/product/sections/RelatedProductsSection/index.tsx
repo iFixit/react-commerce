@@ -24,6 +24,9 @@ export type RelatedProductsSectionProps = {
 export function RelatedProductsSection({
    product,
 }: RelatedProductsSectionProps) {
+   if (product.relatedProductVariants.length === 0) {
+      return null;
+   }
    return (
       <Box bg="white" pt="16" fontSize="sm">
          <PageContentWrapper>
