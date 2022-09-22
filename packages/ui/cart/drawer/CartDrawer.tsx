@@ -39,14 +39,12 @@ import { FaIcon } from '@ifixit/icons';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { useIsMounted } from '../../hooks';
-
 import { CartLineItem } from './CartLineItem';
 import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
    const { isOpen, onOpen, onClose } = useCartDrawer();
-   const btnRef = React.useRef<HTMLButtonElement | null>(null);
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
@@ -58,7 +56,6 @@ export function CartDrawer() {
       <>
          <Box position="relative">
             <IconButton
-               ref={btnRef}
                aria-label="Open cart"
                variant="ghost"
                transition="0.3s"
@@ -90,7 +87,6 @@ export function CartDrawer() {
                isOpen={isOpen}
                placement="right"
                onClose={onClose}
-               finalFocusRef={btnRef}
                size="sm"
             >
                <DrawerOverlay />
@@ -121,8 +117,10 @@ export function CartDrawer() {
                               bg="gray.100"
                               color="gray.400"
                            >
-                              {cart.data?.totalNumItems ?? (
+                              {cart.isLoading ? (
                                  <Spinner size="xs" />
+                              ) : (
+                                 cart.data?.totalNumItems ?? 0
                               )}
                            </Badge>
                         )}
@@ -172,7 +170,7 @@ export function CartDrawer() {
                      </ScaleFade>
                      <Collapse
                         animateOpacity
-                        in={cart.data != null && cart.data.totalNumItems === 0}
+                        in={cart.isFetched && !cart.data?.totalNumItems}
                      >
                         <VStack spacing="5" p="5">
                            <Circle size="72px" bg="brand.100">
