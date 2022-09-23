@@ -1,13 +1,7 @@
 import { Box } from '@chakra-ui/react';
-import {
-   PageBreadcrumb,
-   SecondaryNavbar,
-   TBreadcrumbItem,
-   WithProvidersProps,
-} from '@components/common';
+import { PageBreadcrumb, WithProvidersProps } from '@components/common';
 import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
-import { PageContentWrapper } from '@ifixit/ui';
 import {
    DefaultLayout,
    getLayoutServerSideProps,
@@ -15,6 +9,7 @@ import {
 } from '@layouts/default';
 import { findProduct, Product } from '@models/product';
 import { GetServerSideProps } from 'next';
+import { SecondaryNavigation } from './component/SecondaryNavigation';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductSection } from './sections/ProductSection';
@@ -34,18 +29,15 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
 }) => {
    const { selectedVariant, setSelectedVariantId } =
       useSelectedVariant(product);
-   const items: TBreadcrumbItem[] = [
-      { label: 'Parts', url: '/Parts' },
-      { label: product.title, url: `/Products/${product.handle}` },
-   ];
+
    return (
       <>
-         <SecondaryNavbar>
-            <PageContentWrapper>
-               <PageBreadcrumb items={items} />
-            </PageContentWrapper>
-         </SecondaryNavbar>
-         <Box pt="10">
+         {product.breadcrumbs != null && (
+            <SecondaryNavigation>
+               <PageBreadcrumb items={product.breadcrumbs} />
+            </SecondaryNavigation>
+         )}
+         <Box pt="6">
             <ProductSection
                product={product}
                selectedVariant={selectedVariant}
