@@ -4,7 +4,7 @@ import { MediaRepository } from './media-repository';
 import { SingleTypeRepository } from './single-type-repository';
 import { ContentTypeSchema } from './types';
 
-type SeedResult = {
+export type SeedResult = {
    contentTypes: Record<
       string,
       {
@@ -16,12 +16,18 @@ type SeedResult = {
    };
 };
 
-const FALLBACK_STRAPI_ORIGIN = 'https://strapi.ifixit.com';
+const FALLBACK_STRAPI_ORIGIN = 'https://main.govinor.com';
+
+type ImportContentTypesOptions = {
+   strapiOrigin?: string;
+   canDeleteExistingContent?: boolean;
+};
 
 export default ({ strapi }: { strapi: Strapi.Strapi }) => ({
-   async importContentTypes(
-      strapiOrigin: string = FALLBACK_STRAPI_ORIGIN
-   ): Promise<SeedResult> {
+   async importContentTypes({
+      strapiOrigin = FALLBACK_STRAPI_ORIGIN,
+      canDeleteExistingContent = false,
+   }: ImportContentTypesOptions): Promise<SeedResult> {
       const mediaRepo = new MediaRepository({ strapi });
       const allTypeUIDs = Object.keys(strapi.contentTypes);
       const apiTypeUIDs = allTypeUIDs.filter((type) =>
@@ -46,11 +52,15 @@ export default ({ strapi }: { strapi: Strapi.Strapi }) => ({
       });
 
       let shouldSeed = false;
-      for (const repo of repos) {
-         const isRepoSeeded = await repo.isSeeded();
-         if (!isRepoSeeded) {
-            shouldSeed = true;
-            break;
+      if (canDeleteExistingContent) {
+         shouldSeed = true;
+      } else {
+         for (const repo of repos) {
+            const isRepoSeeded = await repo.isSeeded();
+            if (!isRepoSeeded) {
+               shouldSeed = true;
+               break;
+            }
          }
       }
 
