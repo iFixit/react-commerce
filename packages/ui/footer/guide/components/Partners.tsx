@@ -1,5 +1,5 @@
 import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
-import { IfixitImage } from '@components/ifixit-image';
+import { IfixitImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { Menu, MenuItem, ImageLinkMenuItem, MenuItemType } from '@models/menu';
 import React from 'react';
