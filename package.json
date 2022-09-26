@@ -28,6 +28,7 @@
       "type-check": "cross-env FORCE_COLOR=1 npm-run-all -l -p -c type-check:*",
       "type-check:backend": "cd backend && pnpm run type-check",
       "type-check:frontend": "cd frontend && pnpm run type-check",
+      "type-check:packages": "cd packages && pnpm run type-check",
       "codegen:download-shopify-storefront-schema": "cd frontend && pnpm run codegen:download-shopify-storefront-schema"
    },
    "keywords": [

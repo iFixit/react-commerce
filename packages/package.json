@@ -1,0 +1,19 @@
+{
+   "name": "@ifixit/commerce-packages",
+   "version": "0.0.0",
+   "license": "MIT",
+   "scripts": {
+      "type-check": "cross-env FORCE_COLOR=1 npm-run-all -l -p -c type-check:*",
+      "type-check:app": "cd app && pnpm run type-check",
+      "type-check:auth-sdk": "cd auth-sdk && pnpm run type-check",
+      "type-check:cart-sdk": "cd cart-sdk && pnpm run type-check",
+      "type-check:helpers": "cd helpers && pnpm run type-check",
+      "type-check:icons": "cd icons && pnpm run type-check",
+      "type-check:ifixit-api-client": "cd ifixit-api-client && pnpm run type-check",
+      "type-check:matomo": "cd matomo && pnpm run type-check",
+      "type-check:newsletter-sdk": "cd newsletter-sdk && pnpm run type-check",
+      "type-check:sentry": "cd sentry && pnpm run type-check",
+      "type-check:shopify-storefront-client": "cd shopify-storefront-client && pnpm run type-check",
+      "type-check:ui": "cd ui && pnpm run type-check"
+   }
+}
