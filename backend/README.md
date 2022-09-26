@@ -18,8 +18,6 @@ To develop the addons plugin, you need to run a different dev command:
 
 ```sh
 npm run dev:addons
-# or
-yarn dev:addons
 ```
 
 This will start the Strapi dashboard in watch mode, and will transpile the addons plugin.
