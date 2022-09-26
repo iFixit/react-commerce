@@ -3,6 +3,7 @@ import {
    AppProvidersProps,
    WithProvidersProps,
 } from '@components/common';
+import { PROD_HOSTNAME } from '@config/constants';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import {
    destylizeDeviceItemType,
@@ -68,6 +69,11 @@ export const getProductListServerSideProps = ({
             'Cache-Control',
             'public, s-maxage=10, stale-while-revalidate=600'
          );
+      }
+
+      const url = urlFromContext(context);
+      if (new URL(url).hostname !== PROD_HOSTNAME) {
+         context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       }
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
@@ -205,7 +211,7 @@ export const getProductListServerSideProps = ({
       const appProps: AppProvidersProps = {
          algolia: {
             indexName,
-            url: urlFromContext(context),
+            url,
             apiKey: productList.algolia.apiKey,
          },
       };
