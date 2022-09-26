@@ -1,5 +1,7 @@
 import {
    Box,
+   Circle,
+   Flex,
    HStack,
    Image,
    Img,
@@ -8,8 +10,10 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import type { Product } from '@models/product';
 import * as React from 'react';
+import { FaIcon } from '@ifixit/icons';
 
 export type ProductOptionsProps = {
    product: Product;
@@ -91,6 +95,7 @@ export function ProductOptions({
                            return (
                               <ProductOptionValue
                                  key={value}
+                                 disabled={variant == null}
                                  isActive={variant?.id === selected}
                                  label={value}
                                  image={variant?.image}
@@ -151,6 +156,7 @@ type ProductOptionProps = {
    label: string;
    image?: Image | null;
    isActive?: boolean;
+   disabled?: boolean;
    onClick?: () => void;
 };
 
@@ -166,6 +172,7 @@ function ProductOptionValue({
    label,
    image,
    isActive,
+   disabled,
    onClick,
 }: ProductOptionProps) {
    return (
@@ -174,13 +181,13 @@ function ProductOptionValue({
          borderWidth={isActive ? 2 : 1}
          borderColor={isActive ? 'brand.500' : 'gray.200'}
          borderRadius="md"
-         px={image == null ? 2 : 2.5}
-         py={image == null ? 1.5 : 2.5}
-         cursor="pointer"
+         px={2.5}
+         py={2.5}
+         cursor={disabled ? 'default' : 'pointer'}
          textAlign="center"
-         onClick={onClick}
+         onClick={disabled ? undefined : onClick}
       >
-         {image && <ProductOptionImage image={image} />}
+         <ProductOptionImage image={image} />
          <Text fontSize="13px" color="gray.800">
             {label}
          </Text>
@@ -189,10 +196,24 @@ function ProductOptionValue({
 }
 
 type ProductOptionImageProps = {
-   image: Image;
+   image?: Image | null;
 };
 
 function ProductOptionImage({ image }: ProductOptionImageProps) {
+   if (!image) {
+      return (
+         <Flex h="16" alignItems="center" justifyContent="center" mb="1">
+            <Circle bgColor="gray.200" size="14">
+               <FaIcon
+                  icon={faImageSlash}
+                  h="6"
+                  color="gray.400"
+                  transition="color 300ms"
+               />
+            </Circle>
+         </Flex>
+      );
+   }
    const ratio =
       image.width != null && image.height != null
          ? image.width / image.height

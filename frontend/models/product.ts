@@ -25,6 +25,18 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       return null;
    }
    const variants = getVariants(response.product);
+   const activeVariants = variants.filter(
+      (variant) =>
+         !variant.disableWhenOOS ||
+         (variant.quantityAvailable && variant.quantityAvailable > 0)
+   );
+   if (activeVariants.length === 0) {
+      return null;
+   }
+
+   const images = getImages(response.product.images, variants);
+   const options = getOptions(response.product.options, activeVariants);
+
    const variantSku = variants.find((variant) => variant.sku != null)?.sku;
    if (variantSku == null) {
       console.warn(`No sku found for product "${handle}"`);
@@ -47,8 +59,9 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ...response.product,
       breadcrumbs,
       iFixitProductId,
-      variants,
-      images: response.product.images.nodes,
+      images,
+      options,
+      variants: activeVariants,
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
@@ -90,8 +103,45 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          specifications: variant.specifications?.value ?? null,
          warranty: variant.warranty?.value ?? null,
          crossSellVariants: getCrossSellVariants(variant),
+         disableWhenOOS: variant.disableWhenOOS?.value === 'true',
       };
    });
+}
+
+function getImages(
+   shopifyImages: NonNullable<FindProductQuery['product']>['images'],
+   variants: ReturnType<typeof getVariants>
+) {
+   return shopifyImages.nodes.filter(
+      (image) =>
+         image.altText == null ||
+         !variants.find((variant) => {
+            const skuAltTextMatch = variant.sku === image.altText;
+            const variantDisabled =
+               variant.disableWhenOOS &&
+               variant.quantityAvailable != null &&
+               variant.quantityAvailable <= 0;
+            return skuAltTextMatch && variantDisabled;
+         })
+   );
+}
+
+function getOptions(
+   shopifyOptions: NonNullable<FindProductQuery['product']>['options'],
+   activeVariants: ReturnType<typeof getVariants>
+) {
+   return shopifyOptions.map((option) => ({
+      ...option,
+      values: option.values.filter((value) =>
+         activeVariants.find((variant) =>
+            variant.selectedOptions.find(
+               (selectedOption) =>
+                  selectedOption.name === option.name &&
+                  selectedOption.value === value
+            )
+         )
+      ),
+   }));
 }
 
 function getCrossSellVariants(
