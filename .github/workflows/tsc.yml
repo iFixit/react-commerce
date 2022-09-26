@@ -15,4 +15,4 @@ jobs:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
            run: pnpm install:all
          - name: Run Typescript Compiler
-           run: bin/type-check.sh
+           run: pnpm type-check
