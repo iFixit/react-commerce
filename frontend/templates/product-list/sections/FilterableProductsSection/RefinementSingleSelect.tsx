@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/pro-solid-svg-icons';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';

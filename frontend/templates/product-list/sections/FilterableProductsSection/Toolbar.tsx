@@ -12,7 +12,7 @@ import {
    Text,
    useDisclosure,
 } from '@chakra-ui/react';
-import { faList } from '@fortawesome/free-solid-svg-icons';
+import { faList } from '@fortawesome/pro-solid-svg-icons';
 import { faGrid } from '@fortawesome/pro-solid-svg-icons';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';

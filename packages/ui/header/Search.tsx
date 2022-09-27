@@ -7,7 +7,7 @@ import {
    InputGroupProps,
    InputLeftElement,
 } from '@chakra-ui/react';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 

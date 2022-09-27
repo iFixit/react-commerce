@@ -13,7 +13,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/pro-solid-svg-icons';
 import * as React from 'react';
 import { usePreloadImage } from '../hooks';
 import { FaIcon } from '@ifixit/icons';

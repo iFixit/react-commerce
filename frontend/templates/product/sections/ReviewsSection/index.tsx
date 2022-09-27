@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
@@ -164,7 +163,7 @@ export function ReviewsSection({
                   as="a"
                   href={`${appContext.ifixitOrigin}/User/Reviews/${selectedVariant.sku}`}
                   colorScheme="brand"
-                  leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}
+                  leftIcon={<FaIcon icon={faPenToSquare} />}
                   w={{
                      base: 'full',
                      sm: 'auto',

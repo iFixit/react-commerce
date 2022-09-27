@@ -11,7 +11,7 @@ import {
 import {
    faCircleXmark,
    faMagnifyingGlass,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import debounce from 'lodash/debounce';
 import * as React from 'react';

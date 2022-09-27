@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/pro-solid-svg-icons';
 import * as React from 'react';
 
 import { FaIcon } from '@ifixit/icons';

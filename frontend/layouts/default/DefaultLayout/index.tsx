@@ -11,7 +11,7 @@ import { FaIcon } from '@ifixit/icons';
 import {
    faArrowRight,
    faMagnifyingGlass,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
