@@ -31,8 +31,7 @@
    },
    "scripts": {
       "dev": "tsc -w",
-      "build": "tsc",
-      "type-check": "tsc --pretty --noEmit"
+      "build": "tsc"
    },
    "license": "MIT"
 }
