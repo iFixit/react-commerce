@@ -88,13 +88,26 @@ export function ProductSection({
                direction="column"
                flex="1"
                w="0"
+               zIndex="1"
             >
                <ProductGallery
                   product={product}
                   selectedVariantId={selectedVariant.id}
                   selectedImageId={selectedImageId}
                   showThumbnails
+                  enableZoom
                   onChangeImage={setSelectedImageId}
+               />
+               <Box
+                  id="zoom-container"
+                  position="absolute"
+                  top="0"
+                  w={{
+                     base: 'full',
+                     md: '320px',
+                     lg: '400px',
+                  }}
+                  left={{ base: 'calc(100% + 20px)', lg: 'calc(100% + 40px)' }}
                />
             </Flex>
             <Flex
@@ -109,6 +122,7 @@ export function ProductSection({
                }}
                direction="column"
                fontSize="sm"
+               position="relative"
             >
                {selectedVariant.sku && (
                   <Text color="gray.500">Item # {selectedVariant.sku}</Text>

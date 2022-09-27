@@ -7,6 +7,7 @@ import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
 import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
 
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
+import ReactDOM from 'react-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -18,6 +19,7 @@ export type ProductGalleryProps = {
    selectedVariantId: string;
    selectedImageId?: string | null;
    showThumbnails?: boolean;
+   enableZoom?: boolean;
    onChangeImage?: (imageId: string) => void;
 };
 
@@ -26,6 +28,7 @@ export function ProductGallery({
    selectedVariantId,
    selectedImageId,
    showThumbnails,
+   enableZoom,
    onChangeImage,
 }: ProductGalleryProps) {
    const selectedVariant = React.useMemo(() => {
@@ -105,12 +108,15 @@ export function ProductGallery({
                />
                {variantImages.map((variantImage) => (
                   <SwiperSlide key={variantImage.id}>
-                     <Image image={variantImage} />
+                     <ImageWithZoom
+                        image={variantImage}
+                        enableZoom={enableZoom}
+                     />
                   </SwiperSlide>
                ))}
             </ReactSwiper>
          ) : variantImages.length === 1 ? (
-            <Image image={variantImages[0]} />
+            <ImageWithZoom image={variantImages[0]} enableZoom={enableZoom} />
          ) : (
             <ImagePlaceholder />
          )}
@@ -226,9 +232,49 @@ type Image = {
 
 type ImageProps = {
    image: Image;
+   enableZoom?: boolean;
 };
 
-function Image({ image }: ImageProps) {
+function ImageWithZoom({ image, enableZoom }: ImageProps) {
+   const ZOOM_FACTOR = 3;
+   const CONTAINER_PADDING = 24;
+   const [show, setShow] = React.useState(false);
+   const [position, setPosition] = React.useState<Position>({
+      left: 0,
+      top: 0,
+      pointerLeft: 0,
+      pointerTop: 0,
+      pointerLeftPercentage: 0,
+      pointerTopPercentage: 0,
+   });
+
+   const galleryRef = React.useRef<HTMLImageElement | null>(null);
+   const zoomMaskRef = React.useRef<HTMLDivElement | null>(null);
+   const pointerRef = React.useRef<HTMLDivElement | null>(null);
+   const zoomPortalRef = React.useRef<HTMLElement | null>(null);
+
+   const zoomAspectRatio =
+      (zoomMaskRef.current?.clientWidth ?? 0) /
+      (zoomMaskRef.current?.clientHeight ?? 1);
+   const pointerWidth =
+      (zoomAspectRatio * (galleryRef.current?.clientHeight || 0)) / ZOOM_FACTOR;
+   const pointerHeight = (galleryRef.current?.clientHeight || 0) / ZOOM_FACTOR;
+
+   React.useEffect(() => {
+      zoomPortalRef.current = document.getElementById('zoom-container');
+   }, []);
+
+   const eventHandlers = enableZoom
+      ? {
+           onMouseOver: () => setShow(true),
+           onMouseOut: () => setShow(false),
+           onMouseMove: (event: React.MouseEvent<HTMLElement>) =>
+              setPosition(
+                 computePointerCenter({ event, pointerWidth, pointerHeight })
+              ),
+        }
+      : {};
+
    return (
       <Flex
          borderColor="gray.200"
@@ -237,15 +283,101 @@ function Image({ image }: ImageProps) {
          overflow="hidden"
          justify="center"
          bg="white"
-         p="6"
+         p={`${CONTAINER_PADDING}px`}
       >
          <Img
+            ref={galleryRef}
             src={image.url}
             alt={image.altText ?? ''}
             htmlWidth={image.width ?? undefined}
             htmlHeight={image.height ?? undefined}
             objectFit="contain"
+            {...eventHandlers}
          />
+         {enableZoom && show && (
+            <Box
+               ref={pointerRef}
+               position="absolute"
+               left="0"
+               top="0"
+               display="flex"
+               alignItems="center"
+               justifyContent="center"
+               pointerEvents="none"
+               transform={`translate(${
+                  position?.pointerLeft + CONTAINER_PADDING
+               }px, ${position?.pointerTop + CONTAINER_PADDING}px)`}
+               width={pointerWidth}
+               height={pointerHeight}
+               color="brand.500"
+            >
+               <Box
+                  w="full"
+                  h="full"
+                  bgColor="brand.100"
+                  pos="absolute"
+                  opacity={0.1}
+               />
+               <svg width="100%" height="100%">
+                  <pattern
+                     id="pattern-circles"
+                     x="0"
+                     y="0"
+                     width="3"
+                     height="3"
+                     patternUnits="userSpaceOnUse"
+                     patternContentUnits="userSpaceOnUse"
+                  >
+                     <circle
+                        id="pattern-circle"
+                        cx="1.5"
+                        cy="1.5"
+                        r="0.5"
+                        fill="currentColor"
+                     ></circle>
+                  </pattern>
+
+                  <rect
+                     id="rect"
+                     x="0"
+                     y="0"
+                     width="100%"
+                     height="100%"
+                     fill="url(#pattern-circles)"
+                  ></rect>
+               </svg>
+            </Box>
+         )}
+         {enableZoom &&
+            zoomPortalRef.current &&
+            ReactDOM.createPortal(
+               <>
+                  {show && (
+                     <Box
+                        ref={zoomMaskRef}
+                        h="75vh"
+                        position="relative"
+                        overflow="hidden"
+                        display={{ base: 'none', md: 'block' }}
+                        borderColor="gray.200"
+                        borderWidth={1}
+                        borderRadius="md"
+                     >
+                        <Img
+                           src={image.url}
+                           pos="absolute"
+                           left="0"
+                           top="0"
+                           transform={`translate(-${position?.pointerLeftPercentage}%, -${position?.pointerTopPercentage}%)`}
+                           height={`${ZOOM_FACTOR * 100}%`}
+                           margin="auto"
+                           maxW="none"
+                        />
+                     </Box>
+                  )}
+               </>,
+               zoomPortalRef.current
+            )}
       </Flex>
    );
 }
@@ -312,3 +444,49 @@ function ImagePlaceholder() {
       </VStack>
    );
 }
+
+type Position = {
+   left: number;
+   top: number;
+   pointerLeft: number;
+   pointerTop: number;
+   pointerLeftPercentage: number;
+   pointerTopPercentage: number;
+};
+
+type ComputePointerCenterParams = {
+   event: React.MouseEvent<HTMLElement>;
+   pointerWidth: number;
+   pointerHeight: number;
+};
+
+const computePointerCenter = ({
+   event,
+   pointerWidth,
+   pointerHeight,
+}: ComputePointerCenterParams): Position => {
+   const { width, height } = event.currentTarget.getBoundingClientRect();
+   const left = event.nativeEvent.offsetX;
+   const top = event.nativeEvent.offsetY;
+   const pointerCenterLeft = Math.max(
+      pointerWidth / 2,
+      Math.min(width - pointerWidth / 2, left)
+   );
+   const pointerCenterTop = Math.max(
+      pointerHeight / 2,
+      Math.min(height - pointerHeight / 2, top)
+   );
+   const pointerLeft = pointerCenterLeft - pointerWidth / 2;
+   const pointerTop = pointerCenterTop - pointerHeight / 2;
+   const pointerLeftPercentage = (pointerLeft / width) * 100;
+   const pointerTopPercentage = (pointerTop / height) * 100;
+
+   return {
+      left,
+      top,
+      pointerLeft,
+      pointerTop,
+      pointerLeftPercentage,
+      pointerTopPercentage,
+   };
+};
