@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { PROD_HOSTNAME } from '@config/constants';
+import { isNonNullable } from '@ifixit/helpers';
 
-type Header = [string, string];
+type Header = [string, string] | null;
 
 export function middleware(request: NextRequest) {
-   const robotTag: Header = [
-      'X-Robots-Tag',
-      request.nextUrl.hostname === PROD_HOSTNAME ? '' : 'noindex, nofollow',
-   ];
-   return NextResponse.next({
-      headers: [robotTag].filter((header) => header[1]),
-   });
+   const robotTag: Header =
+      request.nextUrl.hostname === PROD_HOSTNAME
+         ? ['X-Robots-Tag', 'noindex, nofollow']
+         : null;
+
+   const headers = [robotTag].filter(isNonNullable);
+   return NextResponse.next({ headers });
 }
