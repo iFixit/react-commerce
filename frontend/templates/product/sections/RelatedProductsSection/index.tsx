@@ -116,12 +116,7 @@ function ProductGridItem({
                {title}
             </Text>
             {rating != null && reviewsCount != null && (
-               <ProductRating
-                  mt="2"
-                  mb="3"
-                  rating={rating}
-                  count={reviewsCount}
-               />
+               <ProductRating mt="2" rating={rating} count={reviewsCount} />
             )}
             <Flex
                position="absolute"
@@ -161,6 +156,7 @@ function ProductGridItem({
             price={price}
             compareAtPrice={compareAtPrice}
             alignSelf="flex-end"
+            mt="3"
          />
       </Flex>
    );

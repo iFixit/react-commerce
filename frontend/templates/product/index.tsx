@@ -54,8 +54,8 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                product={product}
                selectedVariant={selectedVariant}
             />
-            <RelatedProductsSection product={product} />
             <CompatibilitySection compatibility={product.compatibility} />
+            <RelatedProductsSection product={product} />
          </Box>
       </>
    );
