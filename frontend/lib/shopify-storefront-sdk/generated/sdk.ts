@@ -6308,6 +6308,7 @@ export type FindProductQuery = {
       title: string;
       handle: string;
       descriptionHtml: string;
+      breadcrumbs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       faqs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       prop65WarningType?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       prop65Chemicals?: Maybe<{ __typename?: 'Metafield'; value: string }>;
@@ -6371,6 +6372,7 @@ export type FindProductQuery = {
             >;
          }>;
       }>;
+      compatibility?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       featuredImage?: Maybe<{ __typename?: 'Image'; id?: Maybe<string> }>;
       images: {
          __typename?: 'ImageConnection';
@@ -6560,6 +6562,9 @@ export const FindProductDocument = `
     title
     handle
     descriptionHtml
+    breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
+      value
+    }
     faqs: metafield(namespace: "custom", key: "faq") {
       value
     }
@@ -6585,6 +6590,9 @@ export const FindProductDocument = `
           ...ProductVariantCard
         }
       }
+    }
+    compatibility: metafield(namespace: "ifixit", key: "compatibility_json") {
+      value
     }
     featuredImage {
       id
