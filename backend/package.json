@@ -13,9 +13,7 @@
       "start": "strapi start",
       "build": "strapi build && npm run build:addons",
       "build:addons": "cd src/plugins/addons && npm run build",
-      "strapi": "strapi",
-      "type-check": "tsc --pretty --noEmit && npm run type-check:addons",
-      "type-check:addons": "cd src/plugins/addons && npm run type-check"
+      "strapi": "strapi"
    },
    "devDependencies": {
       "npm-run-all": "4.1.5"
