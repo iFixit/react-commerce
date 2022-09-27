@@ -31,23 +31,15 @@ export type Money = {
 };
 
 export function formatShopifyPrice(money: Money) {
-   let textAmount: string;
+   let amount: number;
    if (typeof money.amount === 'number') {
-      textAmount = money.amount.toFixed(2);
+      amount = money.amount;
    } else {
-      textAmount = money.amount;
+      amount = parseFloat(money.amount);
    }
-   const formattedCurrency = formatCurrency(money.currencyCode);
-   return `${formattedCurrency}${textAmount}`;
-}
-
-export function formatCurrency(currencyCode: string): string {
-   switch (currencyCode.toLowerCase()) {
-      case 'usd': {
-         return '$';
-      }
-      default: {
-         return currencyCode;
-      }
-   }
+   const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: money.currencyCode,
+   });
+   return formatter.format(amount);
 }

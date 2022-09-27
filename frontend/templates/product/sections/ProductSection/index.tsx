@@ -28,11 +28,12 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { ProductVariantPrice } from '@components/common';
+import { CompatibleDevice, ProductVariantPrice } from '@components/common';
 import { isLifetimeWarranty } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
+import NextLink from 'next/link';
 import * as React from 'react';
 import {
    FaExclamationTriangle,
@@ -76,18 +77,35 @@ export function ProductSection({
 
    return (
       <PageContentWrapper as="section">
-         <Flex alignItems="flex-start">
-            <ProductGallery
-               product={product}
-               selectedVariantId={selectedVariant.id}
-               selectedImageId={selectedImageId}
-               onChange={setSelectedImageId}
-            />
-            {/* Details */}
+         <Flex px={{ base: 5, sm: 0 }}>
             <Flex
-               flexGrow={1}
-               w="200px"
-               pt="5"
+               position="sticky"
+               alignSelf="flex-start"
+               display={{ base: 'none', md: 'flex' }}
+               top="10"
+               mr={{ base: 5, lg: 10 }}
+               direction="column"
+               flex="1"
+               w="0"
+            >
+               <ProductGallery
+                  product={product}
+                  selectedVariantId={selectedVariant.id}
+                  selectedImageId={selectedImageId}
+                  showThumbnails
+                  onChangeImage={setSelectedImageId}
+               />
+            </Flex>
+            <Flex
+               w={{
+                  base: 'full',
+                  md: '320px',
+                  lg: '400px',
+               }}
+               pt={{
+                  base: 0,
+                  md: 5,
+               }}
                direction="column"
                fontSize="sm"
             >
@@ -100,6 +118,15 @@ export function ProductSection({
                   compareAtPrice={selectedVariant.compareAtPrice}
                />
                <ProductRating product={product} />
+               <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
+                  <ProductGallery
+                     product={product}
+                     selectedVariantId={selectedVariant.id}
+                     selectedImageId={selectedImageId}
+                     onChangeImage={setSelectedImageId}
+                  />
+               </Flex>
+
                <ProductOptions
                   product={product}
                   selected={selectedVariant.id}
@@ -114,7 +141,7 @@ export function ProductSection({
                            color="brand.500"
                            boxSize="5"
                         />
-                        Satisfaction guaranteed or you money back
+                        Satisfaction guaranteed or your money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
                         <ListIcon
@@ -231,6 +258,51 @@ export function ProductSection({
                   </AccordionItem>
 
                   <AccordionItem
+                     hidden={
+                        product.compatibility == null ||
+                        product.compatibility.devices.length <= 0
+                     }
+                  >
+                     <CustomAccordionButton>
+                        Compatibility
+                     </CustomAccordionButton>
+                     <CustomAccordionPanel>
+                        {product.compatibility?.devices
+                           .slice(0, 3)
+                           .map((device, index) => (
+                              <NextLink
+                                 key={index}
+                                 href={device.deviceUrl}
+                                 passHref
+                              >
+                                 <chakra.a
+                                    role="group"
+                                    display="flex"
+                                    transition="all 300m"
+                                    mb="6px"
+                                 >
+                                    <CompatibleDevice device={device} />
+                                 </chakra.a>
+                              </NextLink>
+                           ))}
+
+                        {product.compatibility &&
+                        product.compatibility.devices.length > 3 ? (
+                           <NextLink href="#compatibility" passHref>
+                              <Link
+                                 mt={3}
+                                 display="block"
+                                 fontWeight="medium"
+                                 color="brand.500"
+                              >
+                                 See all compatible devices
+                              </Link>
+                           </NextLink>
+                        ) : null}
+                     </CustomAccordionPanel>
+                  </AccordionItem>
+
+                  <AccordionItem
                      hidden={selectedVariant.specifications == null}
                   >
                      <CustomAccordionButton>
@@ -289,6 +361,7 @@ export function ProductSection({
                      </CustomAccordionPanel>
                   </AccordionItem>
                </Accordion>
+
                <VStack mt="10" align="flex-start" spacing="4">
                   {product.prop65WarningType && product.prop65Chemicals && (
                      <Flex align="center">

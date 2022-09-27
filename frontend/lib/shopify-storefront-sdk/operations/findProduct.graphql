@@ -3,6 +3,9 @@ query findProduct($handle: String) {
       title
       handle
       descriptionHtml
+      breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
+         value
+      }
       faqs: metafield(namespace: "custom", key: "faq") {
          value
       }
@@ -37,6 +40,8 @@ query findProduct($handle: String) {
                ...ProductVariantCard
             }
          }
+      compatibility: metafield(namespace: "ifixit", key: "compatibility_json") {
+         value
       }
       featuredImage {
          id

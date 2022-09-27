@@ -3,14 +3,17 @@ import {
    BreadcrumbItem,
    BreadcrumbLink,
    BreadcrumbProps,
-   Icon,
+   Flex,
    IconButton,
    Menu,
    MenuButton,
    MenuItem,
    MenuList,
    Text,
+   useTheme,
 } from '@chakra-ui/react';
+import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    getProductListPath,
    getProductListTitle,
@@ -19,7 +22,6 @@ import { ProductList, ProductListType } from '@models/product-list';
 import { ProductListAncestor } from '@models/product-list/types';
 import NextLink from 'next/link';
 import * as React from 'react';
-import { HiChevronRight, HiDotsHorizontal } from 'react-icons/hi';
 import { useDevicePartsItemType } from './sections/FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListBreadcrumbProps = BreadcrumbProps & {
@@ -30,6 +32,7 @@ export function ProductListBreadcrumb({
    productList,
    ...otherProps
 }: ProductListBreadcrumbProps) {
+   const theme = useTheme();
    let { ancestors } = productList;
    const itemType = useDevicePartsItemType(productList);
 
@@ -46,7 +49,20 @@ export function ProductListBreadcrumb({
    return (
       <Breadcrumb
          spacing={1}
-         separator={<Icon as={HiChevronRight} color="gray.300" mt="1" />}
+         separator={
+            <Flex>
+               <FontAwesomeIcon
+                  icon={faChevronRight}
+                  color={theme.colors['gray'][300]}
+                  style={{
+                     width: '10px',
+                     height: '10px',
+                     display: 'flex',
+                     marginTop: '1px',
+                  }}
+               />
+            </Flex>
+         }
          fontSize="sm"
          display="flex"
          flexWrap="nowrap"
@@ -95,9 +111,15 @@ export function ProductListBreadcrumb({
                   <MenuButton
                      as={IconButton}
                      aria-label="Options"
-                     icon={<Icon as={HiDotsHorizontal} color="gray.400" />}
+                     icon={
+                        <FontAwesomeIcon
+                           icon={faEllipsis}
+                           size="1x"
+                           color={theme.colors['gray'][500]}
+                        />
+                     }
                      variant="solid"
-                     bg="gray.200"
+                     bg="gray.300"
                      size="xs"
                      ml="1"
                   />

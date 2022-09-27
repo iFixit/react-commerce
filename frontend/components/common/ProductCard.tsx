@@ -139,7 +139,21 @@ export const ProductCardPricing = ({
 
 export const ProductCardBadgeList = (props: StackProps) => {
    return (
-      <HStack position="absolute" top="-1" right="4" spacing="1" {...props} />
+      <HStack
+         position="absolute"
+         top="-1"
+         left={{
+            base: 3,
+            md: 4,
+         }}
+         right={{
+            base: 3,
+            md: 4,
+         }}
+         spacing="1"
+         justify="flex-end"
+         {...props}
+      />
    );
 };
 

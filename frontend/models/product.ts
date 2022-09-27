@@ -31,9 +31,17 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       IFIXIT_ORIGIN,
       iFixitProductId
    );
+   let breadcrumbs = parseBreadcrumbsMetafieldValue(
+      response.product.breadcrumbs?.value
+   );
+   breadcrumbs = breadcrumbsWithCurrentProductPage(
+      breadcrumbs,
+      response.product.title
+   );
 
    return {
       ...response.product,
+      breadcrumbs,
       iFixitProductId,
       variants,
       images: response.product.images.nodes,
@@ -45,6 +53,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
          response.product.replacementGuides?.value
       ),
       relatedProductVariants: getRelatedProductVariants(response.product),
+      compatibility: parseCompatibility(response.product.compatibility?.value),
       reviewsData,
    };
 }
@@ -153,6 +162,50 @@ function parseFaqs(value: string | null | undefined) {
    );
 }
 
+type Breadcrumbs = z.infer<typeof BreadcrumbsSchema>;
+
+const BreadcrumbsSchema = z.array(
+   z.object({
+      label: z.string(),
+      url: z.string(),
+   })
+);
+
+function parseBreadcrumbsMetafieldValue(
+   value: string | null | undefined
+): Breadcrumbs | null {
+   if (typeof value !== 'string') {
+      return null;
+   }
+   const json = JSON.parse(value);
+   const parsedValue = BreadcrumbsSchema.safeParse(json);
+   if (parsedValue.success) {
+      return parsedValue.data;
+   }
+   return null;
+}
+
+function breadcrumbsWithCurrentProductPage(
+   breadcrumbs: Breadcrumbs | null,
+   productTitle: string
+) {
+   if (breadcrumbs == null) {
+      return null;
+   }
+   if (breadcrumbs.length > 0) {
+      const lastBreadcrumb = breadcrumbs[breadcrumbs.length - 1];
+      if (lastBreadcrumb.label.toLowerCase() !== productTitle.toLowerCase()) {
+         return breadcrumbs.concat([
+            {
+               label: productTitle,
+               url: '#',
+            },
+         ]);
+      }
+   }
+   return breadcrumbs;
+}
+
 type ReplacementGuideMetafieldItem = z.infer<
    typeof ReplacementGuideMetafieldItemSchema
 >;
@@ -197,6 +250,48 @@ function parseReplacementGuides(
       return null;
    });
    return filterNullableItems(guides);
+}
+
+type CompatibilityMetafield = z.infer<typeof CompatibilityMetafieldSchema>;
+
+const CompatibilityMetafieldSchema = z
+   .object({
+      devices: z.array(
+         z.object({
+            imageUrl: z.string(),
+            deviceUrl: z.string(),
+            deviceName: z.string(),
+            variants: z.array(z.string()),
+         })
+      ),
+      hasMoreDevices: z.boolean(),
+   })
+   .optional()
+   .nullable();
+
+function parseCompatibility(
+   value: string | null | undefined
+): CompatibilityMetafield {
+   if (value == null) {
+      return null;
+   }
+   const rawJson = JSON.parse(value);
+   if (rawJson == null) {
+      return null;
+   }
+   const result = CompatibilityMetafieldSchema.safeParse(rawJson);
+   if (result.success) {
+      return result.data;
+   }
+   const errors = result.error.flatten();
+   console.error(
+      `Failed to parse compatibility metafield:\n ${JSON.stringify(
+         errors.fieldErrors,
+         null,
+         2
+      )}`
+   );
+   return null;
 }
 
 function computeIFixitProductId(variantSku: string) {
