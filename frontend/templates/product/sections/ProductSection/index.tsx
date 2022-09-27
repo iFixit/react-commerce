@@ -149,7 +149,7 @@ export function ProductSection({
                            color="brand.500"
                            boxSize="5"
                         />
-                        Satisfaction guaranteed or you money back
+                        Satisfaction guaranteed or your money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
                         <ListIcon
