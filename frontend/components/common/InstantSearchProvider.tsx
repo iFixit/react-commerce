@@ -34,7 +34,6 @@ type RouteState = Partial<{
    q: string;
    p: number;
    filter: Record<string, any>;
-   // range: Record<string, string>;
 }>;
 
 type IndexUiState = Record<string, any>;
@@ -47,6 +46,7 @@ export function InstantSearchProvider({
    apiKey,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
+   const historyChangeCount = React.useRef(0);
    cypressWindowLog({ userLoaded: user.isFetched });
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);
@@ -71,16 +71,17 @@ export function InstantSearchProvider({
          window.document.body.hidden = true;
          window.location.reload();
       };
+      const beforeHistoryChange = (url: string) => {
+         historyChangeCount.current++;
+      };
       window.addEventListener('popstate', handleRouteChange);
+      router.events.on('beforeHistoryChange', beforeHistoryChange);
+
       return () => {
          window.removeEventListener('popstate', handleRouteChange);
+         router.events.off('beforeHistoryChange', beforeHistoryChange);
       };
    }, [router]);
-
-   // We're using this to make `InstantSearch` unmount at every re-render, since
-   // as of version 6.28.0 it breaks when it re-renders. Re-rendering though
-   // should be relatively infrequent in this component, so this should be fine.
-   const renderCount = useCountRenders();
 
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
@@ -96,9 +97,6 @@ export function InstantSearchProvider({
             if (indexUiState.refinementList) {
                routeState.filter = indexUiState.refinementList;
             }
-            // if (indexUiState.range != null) {
-            //    routeState.range = indexUiState.range;
-            // }
             return routeState;
          },
          routeToState(routeState: RouteState) {
@@ -112,9 +110,6 @@ export function InstantSearchProvider({
             if (routeState.filter != null) {
                stateObject.refinementList = routeState.filter;
             }
-            // if (routeState.range != null) {
-            //    stateObject.range = routeState.range;
-            // }
             return {
                [indexName]: stateObject,
             };
@@ -135,7 +130,6 @@ export function InstantSearchProvider({
                .filter((part) => part !== '');
             const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-            const itemTypeHandle = pathParts.length >= 3 ? pathParts[2] : '';
 
             let path = '';
             if (partsOrTools) {
@@ -150,10 +144,6 @@ export function InstantSearchProvider({
                         stylizeDeviceItemType(itemType)
                      );
                      path += `/${encodedItemType}`;
-                  } else if (renderCount === 1 && itemTypeHandle) {
-                     // Prevents a bug when visiting /Parts/iPhone/Cables
-                     // that it would redirect to /Parts/iPhone
-                     path += `/${itemTypeHandle}`;
                   }
                }
             }
@@ -186,25 +176,23 @@ export function InstantSearchProvider({
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
             const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-            const {
-               q = '',
-               p,
-               filter = {},
-               // range = {},
-            } = qsModule.parse(location.search.slice(1));
+            const { q, p, filter } = qsModule.parse(location.search.slice(1));
 
-            const decodedFilters = decodeParsedQuery(filter);
+            const filterObject =
+               typeof filter === 'object' && !Array.isArray(filter)
+                  ? filter
+                  : {};
+
             if (deviceHandle && itemType) {
-               decodedFilters['facet_tags.Item Type'] = [
+               filterObject['facet_tags.Item Type'] = [
                   destylizeDeviceItemType(decodeURIComponent(itemType)),
                ];
             }
 
             return {
-               q: decodeURIComponent(String(q)),
+               q: String(q || ''),
                p: Number(p),
-               filter: decodedFilters,
-               // range: decodeParsedQuery(range),
+               filter: filterObject,
             };
          },
       }),
@@ -213,10 +201,10 @@ export function InstantSearchProvider({
    return (
       <InstantSearchSSRProvider {...serverState}>
          <InstantSearch
-            key={renderCount}
             searchClient={algoliaClient}
             indexName={indexName}
             routing={routing}
+            key={historyChangeCount.current}
          >
             <RefreshSearchResults
                apiKey={algoliaApiKey}
@@ -226,24 +214,6 @@ export function InstantSearchProvider({
          </InstantSearch>
       </InstantSearchSSRProvider>
    );
-}
-
-function useCountRenders() {
-   const countRef = React.useRef(0);
-   countRef.current++;
-   return countRef.current;
-}
-
-function decodeParsedQuery(parsed: any) {
-   return typeof parsed === 'object'
-      ? mapValues<Record<string, any>, any>(parsed, (parsedValues) => {
-           return Array.isArray(parsedValues)
-              ? parsedValues.map((v: any) =>
-                   typeof v === 'string' ? decodeURIComponent(v) : v
-                )
-              : decodeURIComponent(parsedValues);
-        })
-      : {};
 }
 
 type RefreshSearchResultsProps = {
