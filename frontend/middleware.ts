@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { PROD_HOSTNAME } from '@config/constants';
 
+type Header = [string, string];
+
 export function middleware(request: NextRequest) {
-   const robotTag =
-      request.nextUrl.hostname === PROD_HOSTNAME ? '' : 'noindex, nofollow';
+   const robotTag: Header = [
+      'X-Robots-Tag',
+      request.nextUrl.hostname === PROD_HOSTNAME ? '' : 'noindex, nofollow',
+   ];
    return NextResponse.next({
-      headers: {
-         'X-Robots-Tag': robotTag,
-      },
+      headers: [robotTag].filter((header) => header[1]),
    });
 }
