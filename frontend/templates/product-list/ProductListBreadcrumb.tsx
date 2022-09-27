@@ -11,7 +11,7 @@ import {
    MenuList,
    Text,
 } from '@chakra-ui/react';
-import { faChevronRight, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
 import {
    getProductListPath,
    getProductListTitle,
@@ -106,9 +106,9 @@ export function ProductListBreadcrumb({
                   <MenuButton
                      as={IconButton}
                      aria-label="Options"
-                     icon={<FaIcon icon={faEllipsis} h="4" color="gray.400" />}
+                     icon={<FaIcon icon={faEllipsis} h="3" color="gray.500" />}
                      variant="solid"
-                     bg="gray.200"
+                     bg="gray.300"
                      size="xs"
                      ml={{ base: 3, sm: 1 }}
                      mr="1"

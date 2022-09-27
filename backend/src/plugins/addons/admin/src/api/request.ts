@@ -2,29 +2,32 @@ import React from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import type { AxiosRequestConfig } from 'axios';
 
-type RequestState = {
+type RequestState<Data = any> = {
    isLoading: boolean;
    error: string | null;
-   data: any;
+   data: Data;
 };
 
-type RequestFn = {
-   (strapiOrigin?: string): Promise<any>;
+type RequestFn<Data = any, Input = any> = {
+   (input: Input): Promise<Data>;
 };
 
-export function useRequest<T = any>(
+export function useRequest<Data = any, Input = any>(
    config: AxiosRequestConfig
-): [RequestState, RequestFn] {
+): [RequestState<Data>, RequestFn<Data, Input>] {
    const [state, setState] = React.useState<RequestState>({
       isLoading: false,
       error: null,
       data: null,
    });
-   const request = React.useCallback(async () => {
+   const request = React.useCallback(async (input: Input) => {
       try {
          setState((current) => ({ ...current, isLoading: true }));
          // const result = await axiosInstance.get(endpoint);
-         const result = await axiosInstance.request(config);
+         const result = await axiosInstance.request({
+            ...config,
+            data: input,
+         });
          setState((current) => {
             return {
                ...current,
@@ -33,7 +36,9 @@ export function useRequest<T = any>(
                data: result.data,
             };
          });
+         return result.data;
       } catch (error) {
+         console.log('AAAAAAA Error: ', error);
          setState((current) => ({
             ...current,
             isLoading: false,

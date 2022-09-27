@@ -9,10 +9,9 @@ import {
    MenuButton,
    MenuItem,
    MenuList,
-   Text,
 } from '@chakra-ui/react';
-import { faChevronRight, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
 import NextLink from 'next/link';
 
 export type PageBreadcrumbProps = BreadcrumbProps & {
@@ -24,116 +23,146 @@ export type TBreadcrumbItem = {
    url: string;
 };
 
+const MAX_VISIBLE_ITEMS = 3;
+
 export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
-   const ancestors = items.slice(0, -1);
-   const reverseAncestorList = [...ancestors].reverse();
-   const currentItem = items[items.length - 1];
+   const visibleAncestors = items.slice(-MAX_VISIBLE_ITEMS).slice(0, -1);
+   const desktopCollapsedItems = items.slice(0, -MAX_VISIBLE_ITEMS).reverse();
+   const mobileCollapsedItems = items.slice(0, -1).reverse();
 
    if (items.length === 0) {
       return null;
    }
 
+   const currentItem = items[items.length - 1];
+
    return (
       <Breadcrumb
          spacing={1}
-         separator={
-            <Flex
-               display={{
-                  base: 'none',
-                  md: 'initial',
-               }}
-            >
-               <FaIcon
-                  icon={faChevronRight}
-                  h="2.5"
-                  d="flex"
-                  mt="1"
-                  color="gray.400"
-               />
-            </Flex>
-         }
-         fontSize="sm"
-         display="flex"
-         flexWrap="nowrap"
-         flexShrink={1}
-         minW="0"
-         maxW="full"
-         overflow="hidden"
-         pl="1"
-         ml="-2"
+         separator={<BreadcrumbIcon />}
+         py="3"
+         px={{
+            base: 4,
+            sm: 0,
+         }}
          sx={{
             '& > *': {
                display: 'flex',
+               flexWrap: 'nowrap',
             },
          }}
          {...otherProps}
       >
-         {ancestors.map((ancestor, index) => (
-            <BreadcrumbItem
-               key={index}
-               borderRadius="md"
-               display={{
-                  base: 'none',
-                  lg: 'inline-flex',
-               }}
-            >
-               <NextLink href={ancestor.url} passHref>
-                  <BreadcrumbLink
-                     color="gray.500"
-                     whiteSpace="nowrap"
-                     borderRadius="sm"
-                     px="1"
-                  >
-                     {ancestor.label}
-                  </BreadcrumbLink>
-               </NextLink>
-            </BreadcrumbItem>
-         ))}
-         {reverseAncestorList.length > 0 && (
+         {mobileCollapsedItems.length > 0 && (
             <BreadcrumbItem
                display={{
                   base: 'inline-flex',
                   lg: 'none',
                }}
             >
-               <Menu>
-                  <MenuButton
-                     as={IconButton}
-                     aria-label="Options"
-                     icon={<FaIcon icon={faEllipsis} h="4" color="gray.400" />}
-                     variant="solid"
-                     bg="gray.200"
-                     size="xs"
-                     ml={{ base: 3, sm: 1 }}
-                     mr="1"
-                  />
-                  <MenuList>
-                     {reverseAncestorList.map((ancestor, index) => (
-                        <NextLink key={index} href={ancestor.url} passHref>
-                           <MenuItem as="a">{ancestor.label}</MenuItem>
-                        </NextLink>
-                     ))}
-                  </MenuList>
-               </Menu>
+               <BreadcrumbMenu items={mobileCollapsedItems} />
             </BreadcrumbItem>
          )}
+         {desktopCollapsedItems.length > 0 && (
+            <BreadcrumbItem
+               display={{
+                  base: 'none',
+                  lg: 'inline-flex',
+               }}
+            >
+               <BreadcrumbMenu items={desktopCollapsedItems} />
+            </BreadcrumbItem>
+         )}
+         {visibleAncestors.map((ancestor, index) => {
+            return (
+               <BreadcrumbItem
+                  key={index}
+                  borderRadius="md"
+                  display={{
+                     base: 'none',
+                     lg: 'inline-flex',
+                  }}
+               >
+                  <NextLink href={ancestor.url} passHref>
+                     <BreadcrumbLink
+                        color="gray.500"
+                        whiteSpace="nowrap"
+                        borderRadius="sm"
+                        px="1"
+                        maxW="300px"
+                        isTruncated
+                        fontSize="sm"
+                     >
+                        {ancestor.label}
+                     </BreadcrumbLink>
+                  </NextLink>
+               </BreadcrumbItem>
+            );
+         })}
          <BreadcrumbItem
+            borderRadius="md"
+            isLastChild
             isCurrentPage
-            display={{
-               base: 'none',
-               md: 'flex',
-            }}
-            px="1"
+            overflow="hidden"
          >
-            <Text
+            <BreadcrumbLink
                color="black"
                fontWeight="medium"
-               whiteSpace="nowrap"
+               fontSize="sm"
                isTruncated
+               borderRadius="sm"
+               cursor="auto"
+               px="1"
+               _hover={{
+                  textDecoration: 'none',
+               }}
             >
                {currentItem.label}
-            </Text>
+            </BreadcrumbLink>
          </BreadcrumbItem>
       </Breadcrumb>
+   );
+}
+
+type BreadcrumbMenuProps = {
+   items: TBreadcrumbItem[];
+};
+
+function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
+   return (
+      <Menu>
+         <MenuButton
+            as={IconButton}
+            aria-label="Options"
+            icon={<FaIcon icon={faEllipsis} h="3" color="gray.500" />}
+            variant="solid"
+            bg="gray.300"
+            size="xs"
+            px="1.5"
+         />
+         <MenuList>
+            {items.map((ancestor, index) => (
+               <NextLink key={index} href={ancestor.url} passHref>
+                  <MenuItem fontSize="sm" as="a">
+                     {ancestor.label}
+                  </MenuItem>
+               </NextLink>
+            ))}
+         </MenuList>
+      </Menu>
+   );
+}
+
+function BreadcrumbIcon() {
+   return (
+      <Flex>
+         <FaIcon
+            icon={faChevronRight}
+            h="2.5"
+            display="flex"
+            color="gray.400"
+            mt="1px"
+         />
+      </Flex>
    );
 }

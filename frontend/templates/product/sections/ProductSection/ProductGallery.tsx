@@ -4,7 +4,6 @@ import {
    Button,
    Circle,
    Flex,
-   HStack,
    Img,
    Text,
    useTheme,
@@ -13,16 +12,16 @@ import {
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Product } from '@models/product';
+import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
 import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
 import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
-import { useSwiper } from '@templates/product/hooks/useSwiper';
 
+import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 
 export type ProductGalleryProps = {
    product: Product;

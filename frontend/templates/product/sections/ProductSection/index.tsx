@@ -13,6 +13,7 @@ import {
    HStack,
    Icon,
    IconButton,
+   Img,
    Link,
    List,
    ListIcon,
@@ -39,12 +40,17 @@ import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
+import NextLink from 'next/link';
 import * as React from 'react';
 import { ProductPrice } from '../../../../components/common/ProductPrice';
 import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
+import {
+   CompatibleDevice,
+   CompatibleDeviceProps,
+} from '../../../../components/common/CompatibleDevice';
 
 export type ProductSectionProps = {
    product: Product;
@@ -101,7 +107,10 @@ export function ProductSection({
                   md: '320px',
                   lg: '400px',
                }}
-               pt="5"
+               pt={{
+                  base: 0,
+                  md: 5,
+               }}
                direction="column"
                fontSize="sm"
             >
@@ -144,7 +153,7 @@ export function ProductSection({
                            color="brand.500"
                            icon={faBadgeDollar}
                         />
-                        Satisfaction guaranteed or you money back
+                        Satisfaction guaranteed or your money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
                         <ListIcon
@@ -290,6 +299,51 @@ export function ProductSection({
                   </AccordionItem>
 
                   <AccordionItem
+                     hidden={
+                        product.compatibility == null ||
+                        product.compatibility.devices.length <= 0
+                     }
+                  >
+                     <CustomAccordionButton>
+                        Compatibility
+                     </CustomAccordionButton>
+                     <CustomAccordionPanel>
+                        {product.compatibility?.devices
+                           .slice(0, 3)
+                           .map((device, index) => (
+                              <NextLink
+                                 key={index}
+                                 href={device.deviceUrl}
+                                 passHref
+                              >
+                                 <chakra.a
+                                    role="group"
+                                    display="flex"
+                                    transition="all 300m"
+                                    mb="6px"
+                                 >
+                                    <CompatibleDevice device={device} />
+                                 </chakra.a>
+                              </NextLink>
+                           ))}
+
+                        {product.compatibility &&
+                        product.compatibility.devices.length > 3 ? (
+                           <NextLink href="#compatibility" passHref>
+                              <Link
+                                 mt={3}
+                                 display="block"
+                                 fontWeight="medium"
+                                 color="brand.500"
+                              >
+                                 See all compatible devices
+                              </Link>
+                           </NextLink>
+                        ) : null}
+                     </CustomAccordionPanel>
+                  </AccordionItem>
+
+                  <AccordionItem
                      hidden={selectedVariant.specifications == null}
                   >
                      <CustomAccordionButton>
@@ -348,6 +402,7 @@ export function ProductSection({
                      </CustomAccordionPanel>
                   </AccordionItem>
                </Accordion>
+
                <VStack mt="10" align="flex-start" spacing="4">
                   {product.prop65WarningType && product.prop65Chemicals && (
                      <Flex align="center">

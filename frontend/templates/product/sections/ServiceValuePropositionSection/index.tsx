@@ -1,12 +1,12 @@
 import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import { FaIcon, FaIconProps } from '@ifixit/icons';
 import {
    faBoxCircleCheck,
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-duotone-svg-icons';
+import { FaIcon, FaIconProps } from '@ifixit/icons';
 
 export type ServiceValuePropositionSectionProps = {};
 
@@ -36,7 +36,7 @@ export function ServiceValuePropositionSection() {
             }}
             mt="16"
             py="16"
-            px="6"
+            px={{ base: 5, sm: 6 }}
          >
             <ValueProposition>
                <ValuePropositionIcon icon={faBoxCircleCheck} />

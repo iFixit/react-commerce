@@ -17,7 +17,6 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
    CartDrawer,
-   CartFooter,
    Header,
    HeaderBar,
    HeaderCloseHiddenBarButton,
@@ -59,6 +58,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { DefaultLayoutProps } from '../types';
+import { CartFooter } from './Footer';
 
 export function DefaultLayout({
    stores,

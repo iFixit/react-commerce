@@ -12,28 +12,34 @@ import {
 import { MenuItemType } from '@models/menu';
 import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
+import { GlobalSettings } from '@models/global-settings';
+import { Store, StoreListItem } from '@models/store';
 import {
    FooterNavigationItem,
    FooterNavigationList,
    FooterNavigationLink,
    FooterNavigationSection,
-} from './components/Navigation';
-import { FooterSettings, FooterSettingsSection } from './components/Settings';
-import {
    FooterCopyright,
    FooterLegalLink,
    FooterLegalLinkList,
    FooterLegalSection,
-} from './components/Legal';
-import { FooterPartners, FooterPartnerLink } from './components/Partners';
-import { StoreMenuButton, StoreMenuItem } from './components/StoreMenu';
-import { NewsletterForm } from './components/Newsletter';
-import {
+   FooterSettings,
+   FooterSettingsSection,
+   FooterPartners,
+   FooterPartnerLink,
+   StoreMenuButton,
+   StoreMenuItem,
+   NewsletterForm,
    Footer,
    FooterLink,
    FooterDivider,
-   FooterProps,
-} from './components/Shared';
+} from '@ifixit/ui';
+
+interface FooterProps {
+   stores: StoreListItem[];
+   currentStore: Store;
+   globalSettings: GlobalSettings;
+}
 
 export function CartFooter({
    stores,
