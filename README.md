@@ -141,6 +141,6 @@ With the latest changes, we might run into a situation where the local strapi do
 STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS=true
 ```
 
-With a recent version of main, go to your local strapi at http://localhost:1337/admin/plugins/addons and hit `Reset Seed` with the domain set to `main.govinor.com`.
+With the latest version of main, go to your local strapi at http://localhost:1337/admin/plugins/addons and hit `Reset Seed` with the domain set to `main.govinor.com`.
 
 If this page does not appear, then delete `backend/.cache` and `backend/dist` and re-start the dev server.
