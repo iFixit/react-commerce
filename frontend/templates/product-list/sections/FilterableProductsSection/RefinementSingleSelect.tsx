@@ -144,17 +144,20 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       RefinementTitle = TitleText;
    }
 
-   return (
-      <HStack
-         key={item.label}
-         justify="space-between"
-         color={item.isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={item.isRefined ? 'bold' : 'inherit'}
-      >
-         {RefinementTitle}
-         <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
-            {item.count}
-         </Text>
-      </HStack>
-   );
+   if (item.count > 0) {
+      return (
+         <HStack
+            key={item.label}
+            justify="space-between"
+            color={item.isRefined ? 'brand.500' : 'inherit'}
+            fontWeight={item.isRefined ? 'bold' : 'inherit'}
+         >
+            {RefinementTitle}
+            <Text size="sm" fontFamily="sans-serif" color={'gray.500'}>
+               {item.count}
+            </Text>
+         </HStack>
+      );
+   }
+   return null;
 });
