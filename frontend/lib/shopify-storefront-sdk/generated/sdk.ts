@@ -6314,7 +6314,7 @@ export type FindProductQuery = {
       prop65Chemicals?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       productVideos?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       replacementGuides?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      relatedProductVariants?: Maybe<{
+      featuredProductVariants?: Maybe<{
          __typename?: 'Metafield';
          references?: Maybe<{
             __typename?: 'MetafieldReferenceConnection';
@@ -6580,7 +6580,7 @@ export const FindProductDocument = `
     replacementGuides: metafield(namespace: "ifixit", key: "replacement_guides") {
       value
     }
-    relatedProductVariants: metafield(
+    featuredProductVariants: metafield(
       namespace: "ifixit"
       key: "featured_products_ref"
     ) {

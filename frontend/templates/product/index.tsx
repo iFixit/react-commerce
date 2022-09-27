@@ -13,7 +13,7 @@ import { SecondaryNavigation } from './component/SecondaryNavigation';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductSection } from './sections/ProductSection';
-import { RelatedProductsSection } from './sections/RelatedProductsSection';
+import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
@@ -55,7 +55,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
                selectedVariant={selectedVariant}
             />
             <CompatibilitySection compatibility={product.compatibility} />
-            <RelatedProductsSection product={product} />
+            <FeaturedProductsSection product={product} />
          </Box>
       </>
    );

@@ -30,7 +30,7 @@ query findProduct($handle: String) {
       ) {
          value
       }
-      relatedProductVariants: metafield(
+      featuredProductVariants: metafield(
          namespace: "ifixit"
          key: "featured_products_ref"
       ) {

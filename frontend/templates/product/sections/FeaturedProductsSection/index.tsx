@@ -17,14 +17,14 @@ import { PageContentWrapper } from '@ifixit/ui';
 import { Product } from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 
-export type RelatedProductsSectionProps = {
+export type FeaturedProductsSectionProps = {
    product: Product;
 };
 
-export function RelatedProductsSection({
+export function FeaturedProductsSection({
    product,
-}: RelatedProductsSectionProps) {
-   if (product.relatedProductVariants.length === 0) {
+}: FeaturedProductsSectionProps) {
+   if (product.featuredProductVariants.length === 0) {
       return null;
    }
    return (
@@ -37,7 +37,7 @@ export function RelatedProductsSection({
                textAlign="center"
                mb="12"
             >
-               Related products
+               Featured products
             </Heading>
          </PageContentWrapper>
          <SimpleGrid
@@ -50,7 +50,7 @@ export function RelatedProductsSection({
             borderTopWidth="1px"
             borderColor="gray.200"
          >
-            {product.relatedProductVariants.map((variant) => {
+            {product.featuredProductVariants.map((variant) => {
                return (
                   <ProductGridItem
                      key={variant.id}

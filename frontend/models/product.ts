@@ -52,7 +52,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
       ),
-      relatedProductVariants: getRelatedProductVariants(response.product),
+      featuredProductVariants: getFeaturedProductVariants(response.product),
       compatibility: parseCompatibility(response.product.compatibility?.value),
       reviewsData,
    };
@@ -103,11 +103,11 @@ function getCrossSellVariants(
    return filterNullableItems(products);
 }
 
-function getRelatedProductVariants(
+function getFeaturedProductVariants(
    shopifyProduct: NonNullable<FindProductQuery['product']>
 ) {
    const variants =
-      shopifyProduct.relatedProductVariants?.references?.nodes.map((node) => {
+      shopifyProduct.featuredProductVariants?.references?.nodes.map((node) => {
          if (node.__typename !== 'ProductVariant') {
             return null;
          }
