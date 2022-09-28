@@ -186,7 +186,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           >
             <a
               class="chakra-linkbox__overlay css-kvj8dg"
-              href="https://www.cominor.com/Store/Android/Galaxy-S9-Battery/IF404-007?o=4"
+              href="/Products/galaxy-s9-plus-replacement-battery"
             >
               <div
                 class="chakra-button css-1xl7ue1"

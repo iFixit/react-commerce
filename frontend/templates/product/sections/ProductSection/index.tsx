@@ -13,7 +13,6 @@ import {
    HStack,
    Icon,
    IconButton,
-   Img,
    Link,
    List,
    ListIcon,
@@ -36,21 +35,18 @@ import {
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
+import { CompatibleDevice, ProductVariantPrice } from '@components/common';
+import { isLifetimeWarranty } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import NextLink from 'next/link';
 import * as React from 'react';
-import { ProductPrice } from '../../../../components/common/ProductPrice';
 import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
-import {
-   CompatibleDevice,
-   CompatibleDeviceProps,
-} from '../../../../components/common/CompatibleDevice';
 
 export type ProductSectionProps = {
    product: Product;
@@ -118,13 +114,9 @@ export function ProductSection({
                   <Text color="gray.500">Item # {selectedVariant.sku}</Text>
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
-               <ProductPrice
-                  formattedPrice={selectedVariant.formattedPrice}
-                  formattedCompareAtPrice={
-                     selectedVariant.formattedCompareAtPrice
-                  }
-                  isDiscounted={selectedVariant.isDiscounted}
-                  discountLabel={`${selectedVariant.discountPercentage}% OFF`}
+               <ProductVariantPrice
+                  price={selectedVariant.price}
+                  compareAtPrice={selectedVariant.compareAtPrice}
                />
                <ProductRating product={product} />
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
@@ -387,7 +379,7 @@ export function ProductSection({
                            as="a"
                            href={`${appContext.ifixitOrigin}/Info/Warranty`}
                         >
-                           {/lifetime/i.test(
+                           {isLifetimeWarranty(
                               selectedVariant.warranty ?? ''
                            ) && (
                               <Icon
