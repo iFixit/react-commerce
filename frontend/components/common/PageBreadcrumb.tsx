@@ -9,10 +9,9 @@ import {
    MenuButton,
    MenuItem,
    MenuList,
-   useTheme,
 } from '@chakra-ui/react';
+import { FaIcon } from '@ifixit/icons';
 import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NextLink from 'next/link';
 
 export type PageBreadcrumbProps = BreadcrumbProps & {
@@ -92,6 +91,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                         px="1"
                         maxW="300px"
                         isTruncated
+                        fontSize="sm"
                      >
                         {ancestor.label}
                      </BreadcrumbLink>
@@ -107,6 +107,8 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
          >
             <BreadcrumbLink
                color="black"
+               fontWeight="medium"
+               fontSize="sm"
                isTruncated
                borderRadius="sm"
                cursor="auto"
@@ -127,19 +129,12 @@ type BreadcrumbMenuProps = {
 };
 
 function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
-   const theme = useTheme();
    return (
       <Menu>
          <MenuButton
             as={IconButton}
             aria-label="Options"
-            icon={
-               <FontAwesomeIcon
-                  icon={faEllipsis}
-                  size="1x"
-                  color={theme.colors['gray'][500]}
-               />
-            }
+            icon={<FaIcon icon={faEllipsis} h="3" color="gray.500" />}
             variant="solid"
             bg="gray.300"
             size="xs"
@@ -148,7 +143,9 @@ function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
          <MenuList>
             {items.map((ancestor, index) => (
                <NextLink key={index} href={ancestor.url} passHref>
-                  <MenuItem as="a">{ancestor.label}</MenuItem>
+                  <MenuItem fontSize="sm" as="a">
+                     {ancestor.label}
+                  </MenuItem>
                </NextLink>
             ))}
          </MenuList>
@@ -157,18 +154,14 @@ function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
 }
 
 function BreadcrumbIcon() {
-   const theme = useTheme();
    return (
       <Flex>
-         <FontAwesomeIcon
+         <FaIcon
             icon={faChevronRight}
-            color={theme.colors['gray'][300]}
-            style={{
-               width: '10px',
-               height: '10px',
-               display: 'flex',
-               marginTop: '1px',
-            }}
+            h="2.5"
+            display="flex"
+            color="gray.400"
+            mt="1px"
          />
       </Flex>
    );

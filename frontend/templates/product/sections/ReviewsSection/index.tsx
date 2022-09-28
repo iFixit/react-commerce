@@ -11,14 +11,13 @@ import {
    Link,
    Progress,
    Stack,
-   Tag,
    Text,
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppContext } from '@ifixit/app';
+import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
 import type { Product } from '@models/product';
 import { ProductVariant } from '@models/product';
@@ -164,7 +163,7 @@ export function ReviewsSection({
                   as="a"
                   href={`${appContext.ifixitOrigin}/User/Reviews/${selectedVariant.sku}`}
                   colorScheme="brand"
-                  leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}
+                  leftIcon={<FaIcon icon={faPenToSquare} />}
                   w={{
                      base: 'full',
                      sm: 'auto',
@@ -199,9 +198,10 @@ export function ReviewsSection({
                                     {review.author.name}
                                  </Link>
                                  <HStack spacing="1" color="green.500">
-                                    <FontAwesomeIcon
+                                    <FaIcon
                                        icon={faShieldCheck}
-                                       fontSize="1rem"
+                                       h="4"
+                                       color="green.500"
                                     />
                                     <Text fontWeight="bold" color="green.600">
                                        Verified buyer

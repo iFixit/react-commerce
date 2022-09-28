@@ -1,16 +1,17 @@
 import { HStack, useBreakpointValue } from '@chakra-ui/react';
 import {
+   faChevronLeft,
+   faChevronRight,
+   faChevronsLeft,
+   faChevronsRight,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FaIcon } from '@ifixit/icons';
+import {
    Pagination as BasePagination,
    PaginationItem,
    PaginationLink,
    useIsMounted,
 } from '@ifixit/ui';
-import {
-   HiChevronDoubleLeft,
-   HiChevronDoubleRight,
-   HiChevronLeft,
-   HiChevronRight,
-} from 'react-icons/hi';
 import {
    usePagination,
    UsePaginationProps,
@@ -57,7 +58,13 @@ export function Pagination(props: PaginationProps) {
                         aria-label="Go to first page"
                         href={createPageUrl(1)}
                         page="first"
-                        icon={HiChevronDoubleLeft}
+                        icon={() => (
+                           <FaIcon
+                              icon={faChevronsLeft}
+                              h="3"
+                              color="gray.500"
+                           />
+                        )}
                         onClick={(event) => {
                            event.preventDefault();
                            pagination.first();
@@ -74,7 +81,13 @@ export function Pagination(props: PaginationProps) {
                               : '#'
                         }
                         page="previous"
-                        icon={HiChevronLeft}
+                        icon={() => (
+                           <FaIcon
+                              icon={faChevronLeft}
+                              h="3"
+                              color="gray.500"
+                           />
+                        )}
                         onClick={(event) => {
                            event.preventDefault();
                            pagination.previous();
@@ -95,6 +108,8 @@ export function Pagination(props: PaginationProps) {
                               event.preventDefault();
                               pagination.goto(page);
                            }}
+                           fontSize="sm"
+                           fontWeight="medium"
                         />
                      </PaginationItem>
                   ))}
@@ -109,7 +124,13 @@ export function Pagination(props: PaginationProps) {
                               ? createPageUrl(pagination.currentPage + 1)
                               : '#'
                         }
-                        icon={HiChevronRight}
+                        icon={() => (
+                           <FaIcon
+                              icon={faChevronRight}
+                              h="3"
+                              color="gray.500"
+                           />
+                        )}
                         onClick={(event) => {
                            event.preventDefault();
                            pagination.next();
@@ -122,7 +143,13 @@ export function Pagination(props: PaginationProps) {
                         aria-label="Go to last page"
                         page="last"
                         href={createPageUrl(pagination.numberOfPages)}
-                        icon={HiChevronDoubleRight}
+                        icon={() => (
+                           <FaIcon
+                              icon={faChevronsRight}
+                              h="3"
+                              color="gray.500"
+                           />
+                        )}
                         onClick={(event) => {
                            event.preventDefault();
                            pagination.last();

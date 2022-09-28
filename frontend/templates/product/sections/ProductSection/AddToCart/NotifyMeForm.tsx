@@ -8,15 +8,14 @@ import {
    FormLabel,
    Input,
    Text,
-   useTheme,
 } from '@chakra-ui/react';
 import { faCheckCircle } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    parseProductCode,
    parseProductOptionId,
 } from '@helpers/product-helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
 
 enum NotifyMeStatus {
@@ -32,7 +31,6 @@ export type NotifyMeFormProps = {
 };
 
 export function NotifyMeForm({ sku, salesChannelID }: NotifyMeFormProps) {
-   const theme = useTheme();
    const [status, setStatus] = React.useState<NotifyMeStatus>(
       NotifyMeStatus.Idle
    );
@@ -68,16 +66,7 @@ export function NotifyMeForm({ sku, salesChannelID }: NotifyMeFormProps) {
    if (status === NotifyMeStatus.Submitted) {
       return (
          <Alert status="success">
-            <FontAwesomeIcon
-               icon={faCheckCircle}
-               color={theme.colors['green'][700]}
-               style={{
-                  display: 'block',
-                  width: '20px',
-                  height: '20px',
-                  marginRight: '8px',
-               }}
-            />
+            <FaIcon icon={faCheckCircle} h="5" mr="2" color="green.700" />
             You will be notified when this product is back in stock.
          </Alert>
       );

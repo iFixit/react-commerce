@@ -10,14 +10,13 @@ import {
    MenuItem,
    MenuList,
    Text,
-   useTheme,
 } from '@chakra-ui/react';
 import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    getProductListPath,
    getProductListTitle,
 } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import { ProductListAncestor } from '@models/product-list/types';
 import NextLink from 'next/link';
@@ -32,7 +31,6 @@ export function ProductListBreadcrumb({
    productList,
    ...otherProps
 }: ProductListBreadcrumbProps) {
-   const theme = useTheme();
    let { ancestors } = productList;
    const itemType = useDevicePartsItemType(productList);
 
@@ -51,15 +49,12 @@ export function ProductListBreadcrumb({
          spacing={1}
          separator={
             <Flex>
-               <FontAwesomeIcon
+               <FaIcon
                   icon={faChevronRight}
-                  color={theme.colors['gray'][300]}
-                  style={{
-                     width: '10px',
-                     height: '10px',
-                     display: 'flex',
-                     marginTop: '1px',
-                  }}
+                  h="2.5"
+                  display="flex"
+                  mt="1"
+                  color="gray.400"
                />
             </Flex>
          }
@@ -111,17 +106,12 @@ export function ProductListBreadcrumb({
                   <MenuButton
                      as={IconButton}
                      aria-label="Options"
-                     icon={
-                        <FontAwesomeIcon
-                           icon={faEllipsis}
-                           size="1x"
-                           color={theme.colors['gray'][500]}
-                        />
-                     }
+                     icon={<FaIcon icon={faEllipsis} h="3" color="gray.500" />}
                      variant="solid"
                      bg="gray.300"
                      size="xs"
-                     ml="1"
+                     ml={{ base: 3, sm: 1 }}
+                     mr="1"
                   />
                   <MenuList>
                      {reverseAncestorList.map((ancestor) => (
@@ -137,8 +127,8 @@ export function ProductListBreadcrumb({
                </Menu>
             </BreadcrumbItem>
          )}
-         <BreadcrumbItem isCurrentPage display="flex">
-            <Text color="black" fontWeight="bold" noOfLines={1}>
+         <BreadcrumbItem isCurrentPage display="flex" px="1">
+            <Text color="black" fontWeight="medium" noOfLines={1}>
                {currentItemTitle}
             </Text>
          </BreadcrumbItem>

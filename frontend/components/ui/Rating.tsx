@@ -1,12 +1,7 @@
-import {
-   Box,
-   Flex,
-   FlexProps,
-   forwardRef,
-   HStack,
-   StackProps,
-} from '@chakra-ui/react';
-import { FaStar, FaStarHalf } from 'react-icons/fa';
+import { HStack, StackProps } from '@chakra-ui/react';
+import { faStarHalf } from '@fortawesome/pro-duotone-svg-icons';
+import { faStar } from '@fortawesome/pro-solid-svg-icons';
+import { FaIcon, FaIconProps } from '@ifixit/icons';
 
 export interface RatingProps extends StackProps {
    value?: number;
@@ -34,7 +29,7 @@ export const Rating = (props: RatingProps) => {
    );
 };
 
-type RatingStarProps = FlexProps & {
+type RatingStarProps = Omit<FaIconProps, 'icon'> & {
    appearence: RatingStarAppearance;
 };
 
@@ -44,51 +39,32 @@ export enum RatingStarAppearance {
    Empty = 'empty',
 }
 
-export const RatingStar = forwardRef<RatingStarProps, 'div'>(
-   ({ appearence = RatingStarAppearance.Empty, ...otherProps }, ref) => {
-      switch (appearence) {
-         case RatingStarAppearance.Empty: {
-            return (
-               <Flex
-                  ref={ref}
-                  as={FaStar}
-                  color="gray.300"
-                  fontSize="larger"
-                  {...otherProps}
-               />
-            );
-         }
-         case RatingStarAppearance.Full: {
-            return (
-               <Flex
-                  ref={ref}
-                  as={FaStar}
-                  color="blue.500"
-                  fontSize="larger"
-                  {...otherProps}
-               />
-            );
-         }
-         case RatingStarAppearance.Half: {
-            return (
-               <Flex ref={ref} {...otherProps}>
-                  <Box
-                     as={FaStarHalf}
-                     color="blue.500"
-                     fontSize="larger"
-                     w="19px"
-                  />
-                  <Box
-                     as={FaStarHalf}
-                     color="gray.300"
-                     fontSize="larger"
-                     transform="scaleX(-1)"
-                     position="absolute"
-                     w="19px"
-                  />
-               </Flex>
-            );
-         }
+export const RatingStar = ({
+   appearence = RatingStarAppearance.Empty,
+   ...otherProps
+}: RatingStarProps) => {
+   switch (appearence) {
+      case RatingStarAppearance.Empty: {
+         return <FaIcon icon={faStar} h="4" color="gray.300" {...otherProps} />;
+      }
+      case RatingStarAppearance.Full: {
+         return (
+            <FaIcon icon={faStar} h="4" color="brand.500" {...otherProps} />
+         );
+      }
+      case RatingStarAppearance.Half: {
+         return (
+            <FaIcon
+               icon={faStarHalf}
+               h="4"
+               sx={{
+                  '--fa-primary-color': 'var(--chakra-colors-brand-500)',
+                  '--fa-secondary-color': 'var(--chakra-colors-gray-300)',
+                  '--fa-secondary-opacity': '1',
+               }}
+               {...otherProps}
+            />
+         );
       }
    }
-);
+};

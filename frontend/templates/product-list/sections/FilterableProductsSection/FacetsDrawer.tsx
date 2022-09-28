@@ -6,7 +6,6 @@ import {
    Fade,
    Flex,
    HStack,
-   Icon,
    IconButton,
    Portal,
    Text,
@@ -14,10 +13,13 @@ import {
    useSafeLayoutEffect,
    VStack,
 } from '@chakra-ui/react';
+import { faArrowLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { getRefinementDisplayType } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
+import { RefinementDisplayType } from '@models/product-list/types';
 import * as React from 'react';
-import { HiArrowLeft, HiChevronRight } from 'react-icons/hi';
 import {
    useClearRefinements,
    useCurrentRefinements,
@@ -26,8 +28,6 @@ import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
 import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { RefinementDisplayType } from '@models/product-list/types';
-import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
@@ -112,11 +112,7 @@ export function FacetsDrawer({
                         aria-label="go back"
                         variant="ghost"
                         icon={
-                           <Icon
-                              as={HiArrowLeft}
-                              boxSize="5"
-                              color="gray.600"
-                           />
+                           <FaIcon icon={faArrowLeft} h="4" color="gray.600" />
                         }
                         onClick={() => setCurrentFacet(null)}
                      />
@@ -293,7 +289,7 @@ function FacetListItem({
                      {refinedCount}
                   </Text>
                )}
-               <Icon as={HiChevronRight} color="gray.500" boxSize="5" />
+               <FaIcon icon={faChevronRight} h="2.5" color="gray.500" />
             </HStack>
          </Flex>
          <Divider />
