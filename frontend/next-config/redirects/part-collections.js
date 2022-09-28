@@ -1,4 +1,7 @@
-const { escapeStringForRegex, destylizeURIComponent } = require('../helpers/redirects');
+const {
+   escapeStringForRegex,
+   destylizeURIComponent,
+} = require('../helpers/redirects');
 const legacyFilterSlugs = require('./legacy-filter-slugs.json');
 
 function getLegacyPartItemTypeRedirects() {
@@ -28,6 +31,5 @@ function getRegexForTag(oldTag) {
       encodeURIComponent(destylizeURIComponent(oldTag))
    )}|${escapeStringForRegex(oldTag)})`;
 }
-
 
 module.exports = { getLegacyPartItemTypeRedirects };

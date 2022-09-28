@@ -3,7 +3,7 @@ function escapeStringForRegex(str) {
 }
 
 // based on destylizeDeviceItemType() from product-list-helpers
-function destylizeURIComponent(uriComponent ) {
+function destylizeURIComponent(uriComponent) {
    return uriComponent.replace(/_+/g, ' ');
 }
 
