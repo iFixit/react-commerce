@@ -9,7 +9,6 @@ import {
    FormLabelProps,
    forwardRef,
    HStack,
-   Icon,
    Input,
    InputProps,
    Stack,
@@ -17,12 +16,13 @@ import {
    Text,
    TextProps,
 } from '@chakra-ui/react';
+import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import {
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';
-import { RiCheckFill } from 'react-icons/ri';
 import React from 'react';
+import { FaIcon } from '@ifixit/icons';
 
 const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
    return (
@@ -224,13 +224,7 @@ export function NewsletterForm({
                   bottom="0"
                   lineHeight="10"
                >
-                  <Icon
-                     as={RiCheckFill}
-                     boxSize="5"
-                     mb="-5px"
-                     mr="6px"
-                     ml="12px"
-                  />
+                  <FaIcon icon={faCircleCheck} h="4" mr="1.5" color="white" />
                   Subscribed!
                </Text>
             )}
