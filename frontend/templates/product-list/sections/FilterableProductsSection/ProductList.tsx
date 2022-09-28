@@ -14,7 +14,8 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { IfixitImage } from '@ifixit/ui';
+import { ThemeTypings } from '@chakra-ui/styled-system';
+import { IfixitImage } from '@components/ifixit-image';
 import { Rating } from '@components/ui';
 import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';

@@ -7,10 +7,10 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
-import { IfixitImage } from '@ifixit/ui';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { IfixitImage } from '@components/ifixit-image';
 
 export interface PostCardProps {
    title: string;
