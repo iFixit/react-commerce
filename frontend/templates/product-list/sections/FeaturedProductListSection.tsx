@@ -25,7 +25,7 @@ import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
-import { IfixitImage } from '@components/ifixit-image';
+import { IfixitImage } from '@ifixit/ui';
 import NextLink from 'next/link';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 
