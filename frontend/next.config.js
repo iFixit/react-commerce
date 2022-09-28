@@ -1,6 +1,9 @@
 const {
    getLegacyPartItemTypeRedirects,
 } = require('./next-config/redirects/part-collections');
+const {
+   getLegacyToolRedirects,
+} = require('./next-config/redirects/tool-collections');
 
 const withTM = require('next-transpile-modules')([
    '@ifixit/app',
@@ -17,9 +20,6 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
-const {
-   getToolRedirects,
-} = require('./next-config/redirects/tool-collections');
 
 const withBundleAnalyzer =
    process.env.ANALYZE === 'true'
@@ -66,16 +66,7 @@ const moduleExports = {
    async redirects() {
       return [
          ...getLegacyPartItemTypeRedirects(),
-         {
-            source: `/Tools/:slug(${getToolRedirects()})`,
-            destination: `/Tools`,
-            permanent: true,
-         },
-         {
-            source: `/Tools/Hakko`,
-            destination: `/Tools/Microsoldering`,
-            permanent: true,
-         },
+         ...getLegacyToolRedirects(),
          {
             source: '/Store/Guide/:guideid',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Guide/_/:guideid`,
