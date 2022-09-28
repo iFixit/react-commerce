@@ -137,6 +137,18 @@ pyenv global 2.7.18
 echo 'PATH=$(pyenv root)/shims:$PATH' >> ~/.zshrc
 ```
 
+#### Local Strapi missing iFixit Test Store
+
+With the latest changes, we might run into a situation where the local strapi does not have the ifixit test store in it. In order to fix this add the folowing to `backend/.env`
+
+```
+STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS=true
+```
+
+With the latest version of main, go to your local strapi at http://localhost:1337/admin/plugins/addons and hit `Reset Seed` with the domain set to `main.govinor.com`.
+
+If this page does not appear, then delete `backend/.cache` and `backend/dist` and re-start the dev server.
+
 #### I've updated the Shopify Storefront schema version but the graphql codegen script is not working
 
 Whenever you update the Shopify Storefront schema version, you need to run `pnpm codegen:download-shopify-storefront-schema` to download the new schema.
