@@ -1,6 +1,7 @@
 import {
    Alert,
    Box,
+   Center,
    Collapse,
    Flex,
    HStack,
@@ -11,6 +12,7 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import {
    faCircleExclamation,
    faCircleMinus,
@@ -19,17 +21,19 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import {
-   APICartProduct,
+   CartLineItem as LineItem,
    useRemoveLineItem,
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
+import { multiplyMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { motion } from 'framer-motion';
-import { IfixitImage } from '../../misc/IfixitImage';
 import * as React from 'react';
+import { ProductVariantPrice } from '../../commerce';
+import { IfixitImage } from '../../misc/IfixitImage';
 
 interface CartLineItemProps {
-   lineItem: APICartProduct;
+   lineItem: LineItem;
 }
 
 export function CartLineItem({ lineItem }: CartLineItemProps) {
@@ -86,22 +90,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       <Flex direction="column" w="full" p="3">
          <Flex w="full" justify="space-between" align="flex-start">
             <HStack spacing="3" align="flex-start">
-               <Box
-                  boxSize="16"
-                  position="relative"
-                  borderColor="gray.300"
-                  borderWidth="1px"
-                  borderRadius="md"
-                  overflow="hidden"
-               >
-                  <IfixitImage
-                     src={lineItem.imageSrc}
-                     alt=""
-                     priority
-                     layout="fill"
-                     objectFit="cover"
-                  />
-               </Box>
+               <LineItemImage lineItem={lineItem} />
                <Box>
                   <VStack align="flex-start" pt="1">
                      <Flex direction="column">
@@ -159,7 +148,10 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            whileTap={{
                               scale: 0.9,
                            }}
-                           disabled={lineItem.quantity >= lineItem.maxToAdd}
+                           disabled={
+                              lineItem.maxToAdd != null &&
+                              lineItem.quantity >= lineItem.maxToAdd
+                           }
                            onClick={incrementQuantity}
                         />
                      </HStack>
@@ -199,46 +191,55 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                />
             </Box>
          </Flex>
-         <Pricing lineItem={lineItem} />
+         <Box alignSelf="flex-end">
+            <ProductVariantPrice
+               price={multiplyMoney(lineItem.price, lineItem.quantity)}
+               compareAtPrice={
+                  lineItem.compareAtPrice == null
+                     ? null
+                     : multiplyMoney(lineItem.compareAtPrice, lineItem.quantity)
+               }
+               direction="column-reverse"
+               size="small"
+            />
+         </Box>
       </Flex>
    );
 }
 
 const MotionIconButton = motion<IconButtonProps>(IconButton);
 
-interface PricingProps {
-   lineItem: APICartProduct;
-}
+type LineItemImageProps = {
+   lineItem: LineItem;
+};
 
-function Pricing({ lineItem }: PricingProps) {
-   const subtotal = parseFloat(lineItem.subTotal);
-   const discount = lineItem.discount ? parseFloat(lineItem.discount) : 0;
-   const comparedAt = subtotal + discount;
-   const comparedAtStr = lineItem.subTotalStr.replace(
-      lineItem.subTotal,
-      comparedAt.toFixed(2)
-   );
-
+function LineItemImage({ lineItem }: LineItemImageProps) {
    return (
-      <Box alignSelf="flex-end">
-         {discount > 0 ? (
-            <>
-               <Text
-                  color="gray.400"
-                  fontSize="sm"
-                  fontWeight="medium"
-                  textDecorationLine="line-through"
-               >
-                  {comparedAtStr}
-               </Text>
-               <Text color="blue.500" fontSize="sm" fontWeight="bold">
-                  {lineItem.subTotalStr}
-               </Text>
-            </>
+      <Box
+         boxSize="16"
+         position="relative"
+         borderColor="gray.300"
+         borderWidth="1px"
+         borderRadius="md"
+         overflow="hidden"
+      >
+         {lineItem.imageSrc ? (
+            <IfixitImage
+               src={lineItem.imageSrc}
+               alt={lineItem.name}
+               priority
+               layout="fill"
+               objectFit="cover"
+            />
          ) : (
-            <Text color="gray.800" fontSize="sm" fontWeight="medium">
-               {lineItem.subTotalStr}
-            </Text>
+            <Center bgColor="gray.100" h="full">
+               <FaIcon
+                  icon={faImage}
+                  color="gray.500"
+                  h="6"
+                  transition="color 300ms"
+               />
+            </Center>
          )}
       </Box>
    );

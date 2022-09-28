@@ -27,6 +27,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { CompatibleDevice } from '@components/common';
 import {
    faBadgeDollar,
    faCircleExclamation,
@@ -35,11 +36,10 @@ import {
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
-import { CompatibleDevice, ProductVariantPrice } from '@components/common';
-import { isLifetimeWarranty } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
+import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper } from '@ifixit/ui';
+import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -133,6 +133,7 @@ export function ProductSection({
                <ProductVariantPrice
                   price={selectedVariant.price}
                   compareAtPrice={selectedVariant.compareAtPrice}
+                  proPricesByTier={selectedVariant.proPricesByTier}
                />
                <ProductRating product={product} />
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">

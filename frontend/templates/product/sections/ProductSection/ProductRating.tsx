@@ -1,6 +1,6 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { shouldShowProductRating } from '@helpers/product-helpers';
+import { shouldShowProductRating } from '@ifixit/helpers';
 import { Product } from '@models/product';
 import { useProductReviews } from '../../hooks/useProductReviews';
 

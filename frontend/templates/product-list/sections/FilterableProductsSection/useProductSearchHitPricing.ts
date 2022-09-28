@@ -1,5 +1,5 @@
-import { computeDiscountPercentage } from '@helpers/commerce-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { computeDiscountPercentage } from '@ifixit/helpers';
 import { ProductSearchHit } from '@models/product-list';
 
 export type ProductSearchHitPricing = {

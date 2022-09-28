@@ -2,7 +2,7 @@ import { invariant, isRecord } from '@ifixit/helpers';
 import { useQuery } from 'react-query';
 import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
-type User = {
+export type User = {
    id: number;
    username: string;
    handle: string | null;

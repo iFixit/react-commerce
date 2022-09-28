@@ -35,6 +35,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
+import { formatMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
@@ -48,9 +49,6 @@ export function CartDrawer() {
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
-
-   const totalDiscount = cart.data?.totals.discount;
-   const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
 
    return (
       <>
@@ -69,7 +67,7 @@ export function CartDrawer() {
                   bg: 'gray.900',
                }}
             />
-            {cart.data && cart.data.totalNumItems > 0 && (
+            {cart.data && cart.data.hasItemsInCart && (
                <Circle
                   position="absolute"
                   top="0.5"
@@ -120,7 +118,7 @@ export function CartDrawer() {
                               {cart.isLoading ? (
                                  <Spinner size="xs" />
                               ) : (
-                                 cart.data?.totalNumItems ?? 0
+                                 cart.data?.totals.itemsCount ?? 0
                               )}
                            </Badge>
                         )}
@@ -153,14 +151,14 @@ export function CartDrawer() {
                         </Alert>
                      )}
                      <ScaleFade
-                        in={cart.data != null && cart.data.totalNumItems > 0}
+                        in={cart.data != null && cart.data.hasItemsInCart}
                      >
                         <Box as="ul">
                            <AnimatePresence>
-                              {cart.data?.products.map((product) => {
+                              {cart.data?.lineItems.map((lineItem) => {
                                  return (
-                                    <ListItem key={product.itemcode}>
-                                       <CartLineItem lineItem={product} />
+                                    <ListItem key={lineItem.itemcode}>
+                                       <CartLineItem lineItem={lineItem} />
                                        <Divider borderColor="gray.200" />
                                     </ListItem>
                                  );
@@ -170,7 +168,7 @@ export function CartDrawer() {
                      </ScaleFade>
                      <Collapse
                         animateOpacity
-                        in={cart.isFetched && !cart.data?.totalNumItems}
+                        in={cart.isFetched && !cart.data?.hasItemsInCart}
                      >
                         <VStack spacing="5" p="5">
                            <Circle size="72px" bg="brand.100">
@@ -188,9 +186,7 @@ export function CartDrawer() {
                      </Collapse>
                   </DrawerBody>
 
-                  <Collapse
-                     in={cart.data != null && cart.data.totalNumItems > 0}
-                  >
+                  <Collapse in={cart.data != null && cart.data.hasItemsInCart}>
                      <CheckoutError
                         error={checkout.error}
                         onDismiss={checkout.reset}
@@ -211,14 +207,20 @@ export function CartDrawer() {
                                              lineHeight="1em"
                                              fontWeight="bold"
                                           >
-                                             {cart.data.totals.total.amountStr}
+                                             {formatMoney(
+                                                cart.data.totals.price
+                                             )}
                                           </Text>
-                                          {savedAmount > 0 && totalDiscount && (
-                                             <Text color="gray.500">
-                                                You saved{' '}
-                                                {totalDiscount.amountStr}
-                                             </Text>
-                                          )}
+                                          {cart.data.totals.discount &&
+                                             cart.data.totals.discount.amount >
+                                                0 && (
+                                                <Text color="gray.500">
+                                                   You saved{' '}
+                                                   {formatMoney(
+                                                      cart.data.totals.discount
+                                                   )}
+                                                </Text>
+                                             )}
                                        </>
                                     ) : (
                                        <Skeleton h="20px" w="80px" />

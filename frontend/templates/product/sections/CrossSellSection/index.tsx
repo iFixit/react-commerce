@@ -9,7 +9,6 @@ import {
    Heading,
    HStack,
    Stack,
-   StackProps,
    Text,
    VStack,
 } from '@chakra-ui/react';
@@ -17,16 +16,20 @@ import { ProductRating } from '@components/common';
 import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
-import { formatShopifyPrice } from '@helpers/commerce-helpers';
-import { useAddToCart } from '@ifixit/cart-sdk';
-import type { AddProductVariantInput } from '@ifixit/cart-sdk';
-import { isPresent } from '@ifixit/helpers';
-import { IfixitImage, PageContentWrapper, useCartDrawer } from '@ifixit/ui';
+import { filterNullableItems } from '@helpers/application-helpers';
+import { CartLineItem, useAddToCart } from '@ifixit/cart-sdk';
+import { formatMoney, isPresent, Money } from '@ifixit/helpers';
+import { FaIcon } from '@ifixit/icons';
+import {
+   IfixitImage,
+   PageContentWrapper,
+   ProductVariantPrice,
+   useCartDrawer,
+   useGetUserPrice,
+} from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
 import React from 'react';
-import { filterNullableItems } from '@helpers/application-helpers';
-import { FaIcon } from '@ifixit/icons';
 
 export type CrossSellSectionProps = {
    product: Product;
@@ -38,6 +41,7 @@ export function CrossSellSection({
    selectedVariant,
 }: CrossSellSectionProps) {
    const addToCart = useAddToCart();
+   const getUserPrice = useGetUserPrice();
    const { onOpen } = useCartDrawer();
 
    const [selectedVariantIds, setSelectedVariantIds] = React.useState(
@@ -76,7 +80,7 @@ export function CrossSellSection({
    ]);
 
    const formattedTotalPrice = React.useMemo(() => {
-      return formatShopifyPrice({
+      return formatMoney({
          amount: totalPrice,
          currencyCode: selectedVariant.price.currencyCode,
       });
@@ -95,41 +99,56 @@ export function CrossSellSection({
    ]);
 
    const handleAddToCart = () => {
-      const input = selectedVariantIds.map(
-         (variantId): AddProductVariantInput | null => {
-            if (variantId === selectedVariant.id) {
-               if (!isPresent(selectedVariant.sku)) {
-                  return null;
-               }
-               return {
-                  name: product.title,
-                  itemcode: selectedVariant.sku,
-                  formattedPrice: selectedVariant.formattedPrice,
-                  quantity: 1,
-                  imageSrc: selectedVariant.image?.url ?? '',
-               };
-            }
-            const variant = selectedVariant.crossSellVariants.find(
-               (v) => v.id === variantId
-            );
-            const variantSku = variant?.sku;
-            if (variant == null || !isPresent(variantSku)) {
+      const input = selectedVariantIds.map((variantId): CartLineItem | null => {
+         if (variantId === selectedVariant.id) {
+            if (!isPresent(selectedVariant.sku)) {
                return null;
             }
+            const userPrice = getUserPrice({
+               price: selectedVariant.price,
+               compareAtPrice: selectedVariant.compareAtPrice,
+               proPricesByTier: selectedVariant.proPricesByTier,
+            });
             return {
-               name: variant.product.title,
-               itemcode: variantSku,
-               formattedPrice: variant.formattedPrice,
+               name: product.title,
+               itemcode: selectedVariant.sku,
+               shopifyVariantId: selectedVariant.id,
                quantity: 1,
-               imageSrc: variant.image?.url ?? '',
+               imageSrc: selectedVariant.image?.url,
+               price: userPrice.price,
+               compareAtPrice: userPrice.compareAtPrice,
             };
          }
-      );
+         const variant = selectedVariant.crossSellVariants.find(
+            (v) => v.id === variantId
+         );
+         const variantSku = variant?.sku;
+         if (variant == null || !isPresent(variantSku)) {
+            return null;
+         }
+         const userPrice = getUserPrice({
+            price: variant.price,
+            compareAtPrice: variant.compareAtPrice,
+            proPricesByTier: variant.proPricesByTier,
+         });
+         return {
+            name: variant.product.title,
+            itemcode: variantSku,
+            shopifyVariantId: selectedVariant.id,
+            quantity: 1,
+            imageSrc: variant.image?.url ?? '',
+            price: userPrice.price,
+            compareAtPrice: userPrice.compareAtPrice,
+         };
+      });
       const selectedVariantSku = selectedVariant.sku;
       if (isPresent(selectedVariantSku)) {
          addToCart.mutate({
-            currentItemCode: selectedVariantSku,
-            items: filterNullableItems(input),
+            type: 'bundle',
+            bundle: {
+               currentItemCode: selectedVariantSku,
+               items: filterNullableItems(input),
+            },
          });
          onOpen();
       } else {
@@ -270,8 +289,7 @@ type CrossSellProduct = {
 type CrossSellProductVariant = {
    price: MoneyV2;
    compareAtPrice?: MoneyV2 | null;
-   formattedPrice: string;
-   formattedCompareAtPrice: string | null;
+   proPricesByTier?: Record<string, Money> | null;
    image?: {
       altText?: string | null;
       url: string;
@@ -406,13 +424,11 @@ function CrossSellItem({
                      />
                   </Box>
                </Flex>
-               <Pricing
-                  price={formatShopifyPrice(variant.price)}
-                  compareAtPrice={
-                     variant.compareAtPrice
-                        ? formatShopifyPrice(variant.compareAtPrice)
-                        : undefined
-                  }
+               <ProductVariantPrice
+                  price={variant.price}
+                  compareAtPrice={variant.compareAtPrice}
+                  proPricesByTier={variant.proPricesByTier}
+                  direction="column-reverse"
                   alignSelf="flex-end"
                />
             </Flex>
@@ -472,50 +488,5 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
             alt={alt}
          />
       </AspectRatio>
-   );
-};
-
-export type PricingProps = StackProps & {
-   price: string;
-   compareAtPrice?: string | null;
-};
-
-export const Pricing = ({
-   price,
-   compareAtPrice,
-   ...stackProps
-}: PricingProps) => {
-   const isDiscounted = compareAtPrice != null;
-   if (price == null) {
-      return null;
-   }
-   return (
-      <VStack
-         w="full"
-         flexGrow={1}
-         align="flex-end"
-         justify="flex-end"
-         spacing="2px"
-         {...stackProps}
-      >
-         {isDiscounted && (
-            <Text
-               lineHeight="1em"
-               textDecoration="line-through"
-               color="gray.400"
-               fontSize="sm"
-               data-testid="product-price"
-            >
-               {compareAtPrice}
-            </Text>
-         )}
-         <Text
-            color={isDiscounted ? 'red.600' : 'inherit'}
-            fontWeight="semibold"
-            lineHeight="1em"
-         >
-            {price}
-         </Text>
-      </VStack>
    );
 };

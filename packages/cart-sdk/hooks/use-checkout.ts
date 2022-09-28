@@ -128,9 +128,9 @@ function useStandardCheckout() {
    const createCheckout = useCreateCheckout();
    const updateCheckout = useUpdateCheckout();
    return async () => {
-      const lineItems = cart.data?.miniCart.products.map((product) => {
+      const lineItems = cart.data?.lineItems.map((product) => {
          return {
-            variantId: product.variantId,
+            variantId: product.shopifyVariantId,
             quantity: product.quantity,
          };
       });

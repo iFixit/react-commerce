@@ -9,7 +9,6 @@ import {
    TagProps,
    Text,
 } from '@chakra-ui/react';
-import { IconBadge } from '@components/ui';
 import {
    faClock,
    faGauge,
@@ -18,7 +17,7 @@ import {
    faGaugeMax,
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
-import { IfixitImage, PageContentWrapper } from '@ifixit/ui';
+import { IconBadge, IfixitImage, PageContentWrapper } from '@ifixit/ui';
 import { Product } from '@models/product';
 
 export type ReplacementGuidesSectionProps = {

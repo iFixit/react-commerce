@@ -1,6 +1,6 @@
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from 'react-query';
-import { APICart } from '../types';
+import { Cart } from '../types';
 import { cartKeys } from '../utils';
 
 interface DeleteLineItemInput {
@@ -24,34 +24,39 @@ export function useRemoveLineItem() {
          onMutate: async (input: DeleteLineItemInput) => {
             await client.cancelQueries(cartKeys.cart);
 
-            const previousCart = client.getQueryData<APICart>(cartKeys.cart);
+            const previousCart = client.getQueryData<Cart>(cartKeys.cart);
 
-            client.setQueryData<APICart | undefined>(
-               cartKeys.cart,
-               (current) => {
-                  if (current == null) {
-                     return current;
-                  }
-                  const deletedItem = current.products.find(
-                     (item) => item.itemcode === input.itemcode
-                  );
-                  return deletedItem == null
-                     ? current
-                     : {
-                          ...current,
-                          totalNumItems:
-                             current.totalNumItems - deletedItem.quantity,
-                          products: current.products.filter(
-                             (product) => product.itemcode !== input.itemcode
-                          ),
-                       };
+            client.setQueryData<Cart | undefined>(cartKeys.cart, (current) => {
+               if (current == null) {
+                  return current;
                }
-            );
+               const deletedItem = current.lineItems.find(
+                  (item) => item.itemcode === input.itemcode
+               );
+               if (deletedItem == null) {
+                  return current;
+               }
+               const updatedItemCount = Math.max(
+                  current.totals.itemsCount - deletedItem.quantity,
+                  0
+               );
+               return {
+                  ...current,
+                  hasItemsInCart: updatedItemCount > 0,
+                  lineItems: current.lineItems.filter(
+                     (product) => product.itemcode !== input.itemcode
+                  ),
+                  totals: {
+                     ...current.totals,
+                     itemsCount: updatedItemCount,
+                  },
+               };
+            });
 
             return { previousCart };
          },
          onError: (error, variables, context) => {
-            client.setQueryData<APICart | undefined>(
+            client.setQueryData<Cart | undefined>(
                cartKeys.cart,
                context?.previousCart
             );

@@ -23,14 +23,14 @@ function convertMoneyToCents(money: Money): number {
    return parseFloat(money.amount) * 100;
 }
 
-export type Money = {
+export type Money<T extends string | number = string | number> = {
    /** Numeric or string representation of money expressed as a decimal number (e.g. 39.99) */
-   amount: string | number;
+   amount: T;
    /** Country currency code (e.g. usd) */
    currencyCode: string;
 };
 
-export function formatShopifyPrice(money: Money) {
+export function formatMoney(money: Money) {
    let amount: number;
    if (typeof money.amount === 'number') {
       amount = money.amount;
@@ -42,4 +42,13 @@ export function formatShopifyPrice(money: Money) {
       currency: money.currencyCode,
    });
    return formatter.format(amount);
+}
+
+export function multiplyMoney(money: Money, multiplier: number): Money {
+   const cents = convertMoneyToCents(money);
+   const amount = (cents * multiplier) / 100;
+   return {
+      ...money,
+      amount: amount.toFixed(2),
+   };
 }

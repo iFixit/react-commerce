@@ -1,12 +1,32 @@
-export interface CartAPIResponse {
+import { Money } from '@ifixit/helpers';
+
+export type CartAPIResponse = {
    cart: APICart;
-}
+};
 
-export interface Cart extends APICart {
+export type Cart = {
    hasItemsInCart: boolean;
-}
+   lineItems: CartLineItem[];
+   totals: {
+      discount: Money<number> | null;
+      itemsCount: number;
+      price: Money;
+      compareAtPrice?: Money | null | undefined;
+   };
+};
 
-export interface APICart {
+export type CartLineItem = {
+   itemcode: string;
+   shopifyVariantId: string;
+   name: string;
+   imageSrc?: string | null;
+   quantity: number;
+   maxToAdd?: number;
+   price: Money;
+   compareAtPrice?: Money | null;
+};
+
+export type APICart = {
    couponName: string;
    hasCoupon: boolean;
    hasCustomer: boolean;
@@ -25,15 +45,15 @@ export interface APICart {
    miniCart: {
       products: MiniCartProduct[];
    };
-}
+};
 
-interface APIPriceItem {
+type APIPriceItem = {
    name: string;
    amount: string;
    amountStr: string;
-}
+};
 
-export interface APICartProduct {
+export type APICartProduct = {
    discount: string;
    imageSrc: string;
    itemcode: string;
@@ -44,9 +64,9 @@ export interface APICartProduct {
    subPriceStr: string;
    subTotal: string;
    subTotalStr: string;
-}
+};
 
-export interface MiniCartProduct {
+export type MiniCartProduct = {
    displayName: string;
    imageUrl: string;
    price: number;
@@ -56,4 +76,4 @@ export interface MiniCartProduct {
    sku: string;
    url: string;
    variantId: string;
-}
+};

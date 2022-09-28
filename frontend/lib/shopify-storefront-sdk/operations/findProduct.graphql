@@ -81,6 +81,12 @@ query findProduct($handle: String) {
                amount
                currencyCode
             }
+            proPricesByTier: metafield(
+               namespace: "ifixit"
+               key: "price_tiers"
+            ) {
+               value
+            }
             selectedOptions {
                name
                value

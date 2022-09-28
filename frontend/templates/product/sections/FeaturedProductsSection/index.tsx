@@ -8,11 +8,18 @@ import {
    SimpleGrid,
    Text,
 } from '@chakra-ui/react';
-import { ProductRating, ProductVariantPrice } from '@components/common';
-import { computeDiscountPercentage, Money } from '@helpers/commerce-helpers';
-import { isLifetimeWarranty } from '@helpers/product-helpers';
-import { isPresent } from '@ifixit/helpers';
-import { IfixitImage, PageContentWrapper } from '@ifixit/ui';
+import { ProductRating } from '@components/common';
+import {
+   computeDiscountPercentage,
+   isLifetimeWarranty,
+   isPresent,
+   Money,
+} from '@ifixit/helpers';
+import {
+   IfixitImage,
+   PageContentWrapper,
+   ProductVariantPrice,
+} from '@ifixit/ui';
 import { Product } from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 
@@ -59,6 +66,7 @@ export function FeaturedProductsSection({
                      reviewsCount={variant.product.reviewsCount}
                      price={variant.price}
                      compareAtPrice={variant.compareAtPrice}
+                     proPricesByTier={variant.proPricesByTier}
                      oemPartnership={variant.product.oemPartnership}
                      warranty={variant.warranty}
                   />
@@ -76,6 +84,7 @@ type ProductGridItemProps = {
    reviewsCount?: number | null;
    price: Money;
    compareAtPrice?: Money | null;
+   proPricesByTier?: Record<string, Money> | null;
    isPro?: boolean;
    warranty?: string | null;
    oemPartnership?: string | null;
@@ -88,6 +97,7 @@ function ProductGridItem({
    reviewsCount,
    price,
    compareAtPrice,
+   proPricesByTier,
    isPro,
    warranty,
    oemPartnership,
@@ -154,6 +164,8 @@ function ProductGridItem({
          <ProductVariantPrice
             price={price}
             compareAtPrice={compareAtPrice}
+            proPricesByTier={proPricesByTier}
+            direction="column-reverse"
             alignSelf="flex-end"
             mt="3"
          />

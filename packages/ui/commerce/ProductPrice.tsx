@@ -1,28 +1,34 @@
-import { FaIcon } from '@ifixit/icons';
+/**
+ * This component is used to display product pricing information.
+ * The component is aware of the logged-in user and will display the
+ * pro badge if the user is a pro member.
+ *
+ * Disclaimer: Right now the component assumes that if there is a discount and the user is a pro member,
+ * then it should show a pro badge, even if the discount is due to a general sale. The reason for this is
+ * that the cart API does not return the reason for the discount, so we decided to make this assumption
+ * for the time being.
+ */
 import {
    Box,
    BoxProps,
    forwardRef,
    Text,
    ThemeTypings,
-   useTheme,
 } from '@chakra-ui/react';
-import { IconBadge } from '@components/ui';
 import { faRectanglePro } from '@fortawesome/pro-solid-svg-icons';
-import {
-   computeDiscountPercentage,
-   formatShopifyPrice,
-   Money,
-} from '@helpers/commerce-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { computeDiscountPercentage, formatMoney, Money } from '@ifixit/helpers';
+import { FaIcon } from '@ifixit/icons';
+import { IconBadge } from '../misc';
+import { useUserPrice } from './hooks/useUserPrice';
 
 export type ProductVariantPriceProps = Omit<BoxProps, 'children'> & {
    price: Money;
    compareAtPrice?: Money | null;
-   showProBadge?: boolean;
+   proPricesByTier?: Record<string, Money> | null;
    showDiscountLabel?: boolean;
    formatDiscountLabel?: (discountPercentage: number) => string;
    size?: 'large' | 'medium' | 'small';
-   colorScheme?: ThemeTypings['colorSchemes'];
    direction?: 'row' | 'column' | 'column-reverse';
 };
 
@@ -31,28 +37,39 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
       {
          price,
          compareAtPrice,
-         showProBadge,
+         proPricesByTier,
          showDiscountLabel,
          formatDiscountLabel = (discountPercentage) =>
             `${discountPercentage}% OFF`,
          size,
-         colorScheme,
          direction,
          ...other
       },
       ref
    ) => {
+      const { data: user } = useAuthenticatedUser();
+      const userPrice = useUserPrice({
+         price,
+         compareAtPrice,
+         proPricesByTier,
+      });
+      const isProUser = user?.is_pro ?? false;
       const discountPercentage =
-         compareAtPrice != null
-            ? computeDiscountPercentage(price, compareAtPrice)
+         userPrice.compareAtPrice != null
+            ? computeDiscountPercentage(
+                 userPrice.price,
+                 userPrice.compareAtPrice
+              )
             : 0;
       const isDiscounted = discountPercentage > 0;
       return (
          <ProductPrice
             ref={ref}
-            formattedPrice={formatShopifyPrice(price)}
+            formattedPrice={formatMoney(userPrice.price)}
             formattedCompareAtPrice={
-               compareAtPrice ? formatShopifyPrice(compareAtPrice) : null
+               userPrice.compareAtPrice
+                  ? formatMoney(userPrice.compareAtPrice)
+                  : null
             }
             isDiscounted={isDiscounted}
             discountLabel={
@@ -61,9 +78,9 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
                   : undefined
             }
             showDiscountLabel={showDiscountLabel}
-            showProBadge={showProBadge}
+            showProBadge={isProUser && isDiscounted}
             size={size}
-            colorScheme={colorScheme}
+            colorScheme={isProUser ? 'orange' : 'red'}
             direction={direction}
             {...other}
          />
@@ -99,7 +116,6 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
       },
       ref
    ) => {
-      const theme = useTheme();
       const priceFontSize =
          size === 'large' ? 'xl' : size === 'medium' ? 'md' : 'sm';
       const compareAtPriceFontSize = size === 'large' ? 'md' : 'sm';
@@ -117,9 +133,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                mr={direction === 'row' ? 1 : 0}
                fontSize={priceFontSize}
                fontWeight="semibold"
-               color={
-                  isDiscounted ? theme.colors[colorScheme][600] : 'gray.900'
-               }
+               color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
             >
                {showProBadge && direction !== 'row' && (
                   <FaIcon
