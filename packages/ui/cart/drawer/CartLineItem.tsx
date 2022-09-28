@@ -11,7 +11,6 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react';
-import { IfixitImage } from '@components/ifixit-image';
 import {
    faCircleExclamation,
    faCircleMinus,
@@ -26,6 +25,7 @@ import {
 } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { motion } from 'framer-motion';
+import { IfixitImage } from '../../misc/IfixitImage';
 import * as React from 'react';
 
 interface CartLineItemProps {

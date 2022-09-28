@@ -14,7 +14,6 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
-import { IfixitImage } from '@components/ifixit-image';
 import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
@@ -22,7 +21,7 @@ import { formatShopifyPrice } from '@helpers/commerce-helpers';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import type { AddProductVariantInput } from '@ifixit/cart-sdk';
 import { isPresent } from '@ifixit/helpers';
-import { PageContentWrapper, useCartDrawer } from '@ifixit/ui';
+import { IfixitImage, PageContentWrapper, useCartDrawer } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
 import React from 'react';

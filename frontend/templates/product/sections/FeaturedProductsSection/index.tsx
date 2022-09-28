@@ -9,11 +9,10 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { ProductRating, ProductVariantPrice } from '@components/common';
-import { IfixitImage } from '@components/ifixit-image';
 import { computeDiscountPercentage, Money } from '@helpers/commerce-helpers';
 import { isLifetimeWarranty } from '@helpers/product-helpers';
 import { isPresent } from '@ifixit/helpers';
-import { PageContentWrapper } from '@ifixit/ui';
+import { IfixitImage, PageContentWrapper } from '@ifixit/ui';
 import { Product } from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 
