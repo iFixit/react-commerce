@@ -27,9 +27,10 @@ function getLegacyPartItemTypeRedirects() {
 }
 
 function getRegexForTag(oldTag) {
-   return `(${escapeStringForRegex(
-      encodeURIComponent(destylizeURIComponent(oldTag))
-   )}|${escapeStringForRegex(oldTag)})`;
+   const encodedTag = encodeURIComponent(destylizeURIComponent(oldTag));
+   return encodedTag === oldTag
+      ? escapeStringForRegex(oldTag)
+      : `(${escapeStringForRegex(encodedTag)}|${escapeStringForRegex(oldTag)})`;
 }
 
 module.exports = { getLegacyPartItemTypeRedirects };
