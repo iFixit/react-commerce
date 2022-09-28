@@ -8,7 +8,7 @@ import {
    SimpleGrid,
    Text,
 } from '@chakra-ui/react';
-import { IfixitImage } from '@ifixit/ui';
+import { IfixitImage } from '@components/ifixit-image';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';

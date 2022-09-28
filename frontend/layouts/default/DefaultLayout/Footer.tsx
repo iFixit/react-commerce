@@ -10,7 +10,7 @@ import {
    YoutubeLogo,
 } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
-import { IfixitImage } from '@ifixit/ui';
+import { IfixitImage } from '@components/ifixit-image';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';

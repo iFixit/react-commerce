@@ -13,7 +13,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { IfixitImage } from '@ifixit/ui';
+import { IfixitImage } from '@components/ifixit-image';
 import React from 'react';
 
 export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {

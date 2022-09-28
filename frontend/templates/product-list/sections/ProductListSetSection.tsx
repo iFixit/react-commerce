@@ -8,7 +8,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductListPreview } from '@models/product-list';
-import { IfixitImage } from '@ifixit/ui';
+import { IfixitImage } from '@components/ifixit-image';
 import NextLink from 'next/link';
 import * as React from 'react';
 

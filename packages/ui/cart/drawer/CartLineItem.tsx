@@ -20,7 +20,7 @@ import {
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
 import { motion } from 'framer-motion';
-import { IfixitImage } from '../../misc/IfixitImage';
+import { IfixitImage } from '@components/ifixit-image';
 import * as React from 'react';
 import {
    HiOutlineMinusCircle,
