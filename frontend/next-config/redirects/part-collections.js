@@ -1,12 +1,12 @@
-const { escapeStringForRegex } = require('../helpers/redirects');
+const { escapeStringForRegex, destylizeURIComponent } = require('../helpers/redirects');
 const legacyFilterSlugs = require('./legacy-filter-slugs.json');
 
-function mapPartItemTypes() {
+function getLegacyPartItemTypeRedirects() {
    const legacyTagToItemType = legacyFilterSlugs['tagToItemType'];
    // Redirect tags we've renamed to the new item type name
    const oldToNew = Object.entries(legacyTagToItemType).map(
       ([oldTag, itemType]) => ({
-         source: `/Parts/:device/${escapeStringForRegex(oldTag)}`,
+         source: `/Parts/:device/${getRegexForTag(oldTag)}`,
          destination: `/Parts/:device/${itemType}`,
          permanent: true,
       })
@@ -15,7 +15,7 @@ function mapPartItemTypes() {
    const legacyTagsWithNoItemType = legacyFilterSlugs['tagsWithNoItemType'];
    // Redirect tags we don't support anymore to the base product list page.
    const legacyToParent = legacyTagsWithNoItemType.map((oldTag) => ({
-      source: `/Parts/:device/${escapeStringForRegex(oldTag)}`,
+      source: `/Parts/:device/${getRegexForTag(oldTag)}`,
       destination: `/Parts/:device`,
       permanent: true,
    }));
@@ -23,4 +23,11 @@ function mapPartItemTypes() {
    return [...oldToNew, ...legacyToParent];
 }
 
-module.exports = { mapPartItemTypes };
+function getRegexForTag(oldTag) {
+   return `(${escapeStringForRegex(
+      encodeURIComponent(destylizeURIComponent(oldTag))
+   )}|${escapeStringForRegex(oldTag)})`;
+}
+
+
+module.exports = { getLegacyPartItemTypeRedirects };

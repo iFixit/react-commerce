@@ -1,5 +1,5 @@
 const {
-   mapPartItemTypes,
+   getLegacyPartItemTypeRedirects,
 } = require('./next-config/redirects/part-collections');
 
 const withTM = require('next-transpile-modules')([
@@ -65,7 +65,7 @@ const moduleExports = {
    },
    async redirects() {
       return [
-         ...mapPartItemTypes(),
+         ...getLegacyPartItemTypeRedirects(),
          {
             source: `/Tools/:slug(${getToolRedirects()})`,
             destination: `/Tools`,
