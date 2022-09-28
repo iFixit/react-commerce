@@ -1,5 +1,6 @@
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { invariant } from '@ifixit/helpers';
+import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 
 export type DeviceWiki = Record<string, any>;
 
@@ -7,7 +8,7 @@ export async function fetchDeviceWiki(
    client: IFixitAPIClient,
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
-   const deviceHandle = encodeURIComponent(deviceTitle);
+   const deviceHandle = encodeURIComponent(stylizeDeviceItemType(deviceTitle));
    try {
       invariant(
          deviceHandle.length > 0,
