@@ -1,7 +1,6 @@
 import {
    Alert,
    AlertDescription,
-   AlertIcon,
    AlertTitle,
    Badge,
    Box,
@@ -21,23 +20,24 @@ import {
    Flex,
    Heading,
    HStack,
-   Icon,
    IconButton,
    ScaleFade,
    SimpleGrid,
    Skeleton,
    Spinner,
    Text,
-   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+   faCircleExclamation,
+   faShoppingCart,
+} from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
+import { FaIcon } from '@ifixit/icons';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
-import { FiShoppingCart } from 'react-icons/fi';
 import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
 import { useCartDrawer } from './hooks/useCartDrawer';
@@ -52,31 +52,33 @@ export function CartDrawer() {
    const totalDiscount = cart.data?.totals.discount;
    const savedAmount = totalDiscount ? parseFloat(totalDiscount.amount) : 0;
 
-   const theme = useTheme();
-
    return (
       <>
          <Box position="relative">
             <IconButton
                aria-label="Open cart"
                variant="ghost"
-               icon={<Icon as={FiShoppingCart} color="white" boxSize="6" />}
+               transition="0.3s"
+               _hover={{ opacity: 0.7 }}
+               display="flex"
+               w={8}
+               h={8}
+               icon={<FaIcon icon={faShoppingCart} h="22px" color="white" />}
                onClick={onOpen}
-               _hover={{
-                  bg: 'gray.800',
-               }}
                _active={{
-                  bg: 'gray.800',
+                  bg: 'gray.900',
                }}
             />
             {cart.data && cart.data.totalNumItems > 0 && (
-               <Box
+               <Circle
                   position="absolute"
                   top="0.5"
-                  right="1px"
-                  boxSize="2"
+                  right="2px"
+                  size={3}
                   bg="blue.500"
                   borderRadius="full"
+                  borderWidth={2}
+                  borderColor="gray.900"
                />
             )}
          </Box>
@@ -136,7 +138,11 @@ export function CartDrawer() {
                            textAlign="center"
                            height="200px"
                         >
-                           <AlertIcon boxSize="40px" mr={0} />
+                           <FaIcon
+                              icon={faCircleExclamation}
+                              h="10"
+                              color="red.500"
+                           />
                            <AlertTitle mt={4} mb={1} fontSize="lg">
                               Unable to fetch the cart
                            </AlertTitle>
@@ -167,11 +173,11 @@ export function CartDrawer() {
                         in={cart.isFetched && !cart.data?.totalNumItems}
                      >
                         <VStack spacing="5" p="5">
-                           <Circle size="72px" bg={theme.colors.brand[100]}>
-                              <FontAwesomeIcon
+                           <Circle size="72px" bg="brand.100">
+                              <FaIcon
                                  icon={faCartCircleExclamation}
-                                 size="2x"
-                                 color={theme.colors.blue.ifixit}
+                                 h="8"
+                                 color="blue.ifixit"
                               />
                            </Circle>
                            <Text>Your cart is empty</Text>
@@ -314,7 +320,13 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
    return (
       <Collapse in={checkoutError != null}>
          <Alert status="error">
-            <AlertIcon />
+            <FaIcon
+               icon={faCircleExclamation}
+               h="4"
+               mt="0.5"
+               mr="2.5"
+               color="red.500"
+            />
             <Box flexGrow={1}>
                <AlertDescription>{checkoutError}</AlertDescription>
             </Box>

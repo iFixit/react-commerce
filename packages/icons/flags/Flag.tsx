@@ -1,5 +1,4 @@
 import { forwardRef, Icon, IconProps } from '@chakra-ui/react';
-import * as React from 'react';
 import AuFlag from './AuFlag';
 import CaFlag from './CaFlag';
 import DeFlag from './DeFlag';

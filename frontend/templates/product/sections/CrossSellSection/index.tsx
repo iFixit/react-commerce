@@ -11,7 +11,6 @@ import {
    Stack,
    StackProps,
    Text,
-   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
@@ -19,7 +18,6 @@ import { IfixitImage } from '@components/ifixit-image';
 import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatShopifyPrice } from '@helpers/commerce-helpers';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import type { AddProductVariantInput } from '@ifixit/cart-sdk';
@@ -29,6 +27,7 @@ import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
 import React from 'react';
 import { filterNullableItems } from '@helpers/application-helpers';
+import { FaIcon } from '@ifixit/icons';
 
 export type CrossSellSectionProps = {
    product: Product;
@@ -287,8 +286,6 @@ function CrossSellItem({
    isSelected,
    onChange,
 }: CrossSellItemProps) {
-   const theme = useTheme();
-
    return (
       <Card
          overflow="hidden"
@@ -402,18 +399,11 @@ function CrossSellItem({
                         md: 4,
                      }}
                   >
-                     <FontAwesomeIcon
+                     <FaIcon
                         icon={faCircleCheck}
-                        color={
-                           isSelected
-                              ? theme.colors.brand[500]
-                              : theme.colors.gray[300]
-                        }
-                        style={{
-                           width: '24px',
-                           height: '24px',
-                           transition: 'color 300ms',
-                        }}
+                        color={isSelected ? 'brand.500' : 'gray.300'}
+                        h="6"
+                        transition="color 300ms"
                      />
                   </Box>
                </Flex>
@@ -438,20 +428,16 @@ export interface CardImageProps {
 }
 
 export const CardImage = ({ src, alt }: CardImageProps) => {
-   const theme = useTheme();
    if (src == null) {
       return (
          <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
             <Box bgColor="gray.100" borderRadius="md">
                <Circle bgColor="gray.200" size="72px">
-                  <FontAwesomeIcon
+                  <FaIcon
                      icon={faImage}
-                     color={theme.colors.gray[500]}
-                     style={{
-                        width: '32px',
-                        height: '32px',
-                        transition: 'color 300ms',
-                     }}
+                     color="gray.500"
+                     h="8"
+                     transition="color 300ms"
                   />
                </Circle>
             </Box>

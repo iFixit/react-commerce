@@ -1,19 +1,13 @@
-import {
-   Box,
-   Button,
-   Checkbox,
-   HStack,
-   Icon,
-   Text,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
+import { faSort } from '@fortawesome/pro-solid-svg-icons';
 import * as React from 'react';
-import { HiSelector } from 'react-icons/hi';
+
+import { FaIcon } from '@ifixit/icons';
+import { useDecoupledState } from '@ifixit/ui';
 import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
-import { useDecoupledState } from '@ifixit/ui';
 
 type RefinementMultiSelectProps = UseRefinementListProps;
 
@@ -41,9 +35,7 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
             <Button
                variant="ghost"
                fontWeight="normal"
-               leftIcon={
-                  <Icon as={HiSelector} boxSize="6" color="gray.600" ml="-1" />
-               }
+               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
                mt="3"
                p="0"
                w="full"

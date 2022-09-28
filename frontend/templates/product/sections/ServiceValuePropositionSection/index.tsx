@@ -1,14 +1,12 @@
-import { Heading, Stack, Text, useTheme, VStack } from '@chakra-ui/react';
+import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
+import React from 'react';
+
 import {
    faBoxCircleCheck,
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-duotone-svg-icons';
-import {
-   FontAwesomeIcon,
-   FontAwesomeIconProps,
-} from '@fortawesome/react-fontawesome';
-import React from 'react';
+import { FaIcon, FaIconProps } from '@ifixit/icons';
 
 export type ServiceValuePropositionSectionProps = {};
 
@@ -32,7 +30,6 @@ export function ServiceValuePropositionSection() {
             borderTopWidth="1px"
             borderBottomWidth="1px"
             borderColor="blue.100"
-            fontSize="xs"
             spacing={{
                base: 8,
                md: 20,
@@ -43,39 +40,25 @@ export function ServiceValuePropositionSection() {
          >
             <ValueProposition>
                <ValuePropositionIcon icon={faBoxCircleCheck} />
-               <Title>Satified or 100% refunded</Title>
-               <Description>
+               <Text fontWeight="bold">Satified or 100% refunded</Text>
+               <Text>
                   Our parts quality consistently sets the industry standard.
-               </Description>
+               </Text>
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faShieldCheck} />
-               <Title>Secure payment</Title>
-               <Description>Encrypted checkout through Shopify.</Description>
+               <Text fontWeight="bold">Secure payment</Text>
+               <Text>Encrypted checkout through Shopify.</Text>
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faRocket} />
-               <Title>Express shipping</Title>
-               <Description>
-                  Shipped same-day if you order before 5PM.
-               </Description>
+               <Text fontWeight="bold">Express shipping</Text>
+               <Text>Shipped same-day if you order before 5PM.</Text>
             </ValueProposition>
          </Stack>
       </>
    );
 }
-
-const ValuePropositionIcon = ({ icon, ...props }: FontAwesomeIconProps) => {
-   const theme = useTheme();
-   return (
-      <FontAwesomeIcon
-         icon={icon}
-         color={theme.colors.brand[500]}
-         style={{ width: '32px', height: '32px' }}
-         {...props}
-      />
-   );
-};
 
 function ValueProposition({ children }: React.PropsWithChildren<{}>) {
    return (
@@ -90,14 +73,6 @@ function ValueProposition({ children }: React.PropsWithChildren<{}>) {
    );
 }
 
-function Title({ children }: React.PropsWithChildren<{}>) {
-   return (
-      <Text fontWeight="bold" fontSize="md">
-         {children}
-      </Text>
-   );
-}
-
-function Description({ children }: React.PropsWithChildren<{}>) {
-   return <Text fontSize="md">{children}</Text>;
-}
+const ValuePropositionIcon = ({ icon, ...props }: FaIconProps) => {
+   return <FaIcon icon={icon} h="8" color="brand.500" {...props} />;
+};

@@ -1,9 +1,8 @@
 import { QualityGuarantee } from '@assets/svg';
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import * as React from 'react';
-import backgroundImage from './lifetime-guarantee-background.jpg';
 import { IfixitImage } from '@components/ifixit-image';
+import NextLink from 'next/link';
+import backgroundImage from './lifetime-guarantee-background.jpg';
 
 export interface BannerSectionProps {
    title: string;

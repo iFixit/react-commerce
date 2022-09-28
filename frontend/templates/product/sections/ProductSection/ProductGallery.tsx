@@ -1,16 +1,5 @@
-/* eslint-disable jsx-a11y/alt-text */
-import {
-   Box,
-   Button,
-   Circle,
-   Flex,
-   Img,
-   Text,
-   useTheme,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Product } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -22,6 +11,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
+import { FaIcon } from '@ifixit/icons';
 
 export type ProductGalleryProps = {
    product: Product;
@@ -168,8 +158,6 @@ const CustomNavigation = ({
    isBeginning,
    isEnd,
 }: CustomNavigationType) => {
-   const theme = useTheme();
-
    return (
       <>
          <Button
@@ -195,7 +183,7 @@ const CustomNavigation = ({
                _groupHover={!isBeginning ? { bg: 'gray.800' } : undefined}
                transition="300ms all"
             >
-               <FontAwesomeIcon icon={faArrowLeft} color={theme.colors.white} />
+               <FaIcon icon={faArrowLeft} color="white" />
             </Circle>
          </Button>
          <Button
@@ -221,10 +209,7 @@ const CustomNavigation = ({
                _groupHover={!isEnd ? { bg: 'gray.800' } : undefined}
                transition="300ms all"
             >
-               <FontAwesomeIcon
-                  icon={faArrowRight}
-                  color={theme.colors.white}
-               />
+               <FaIcon icon={faArrowRight} color="white" />
             </Circle>
          </Button>
       </>
@@ -303,7 +288,6 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
 }
 
 function ImagePlaceholder() {
-   const theme = useTheme();
    return (
       <VStack
          borderColor="gray.200"
@@ -320,11 +304,7 @@ function ImagePlaceholder() {
          spacing="4"
       >
          <Circle size="72px" bg="gray.100">
-            <FontAwesomeIcon
-               icon={faImage}
-               size="2x"
-               color={theme.colors.gray[500]}
-            />
+            <FaIcon icon={faImage} h="8" color="gray.500" />
          </Circle>
          <Text px="4" align="center">
             No photos available for this product
