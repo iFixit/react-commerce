@@ -17,14 +17,7 @@ describe('parts page results view', () => {
          });
    });
 
-   /**
-    * TODO: Unskip when the new product page is implemented
-    *
-    * We can link to the old product page by setting
-    * `chromeWebSecurity: false` but it will disable
-    * cors for all cypress tests, thus skipped.
-    */
-   it.skip('product View button directs to the product page', () => {
+   it('product View button directs to the product page', () => {
       user
          .contains('.chakra-button', 'View')
          .parent()
@@ -32,9 +25,9 @@ describe('parts page results view', () => {
             // Find the first product View button and click
             user.wrap(link).click();
 
-            // Assert the current window url is the same as button link
+            // Assert the current window url path is the same as button link
             user
-               .location('href', { timeout: 20000 })
+               .location('pathname', { timeout: 10000 })
                .should('equal', link.attr('href'));
          });
    });

@@ -603,6 +603,71 @@ enum BlogSortKeys {
 }
 
 """
+The store's branding configuration.
+"""
+type Brand {
+   """
+   The colors of the store's brand.
+   """
+   colors: BrandColors!
+
+   """
+   The store's cover image.
+   """
+   coverImage: MediaImage
+
+   """
+   The store's default logo.
+   """
+   logo: MediaImage
+
+   """
+   The store's short description.
+   """
+   shortDescription: String
+
+   """
+   The store's slogan.
+   """
+   slogan: String
+
+   """
+   The store's preferred logo for square UI elements.
+   """
+   squareLogo: MediaImage
+}
+
+"""
+A group of related colors for the shop's brand.
+"""
+type BrandColorGroup {
+   """
+   The background color.
+   """
+   background: Color
+
+   """
+   The foreground color.
+   """
+   foreground: Color
+}
+
+"""
+The colors of the shop's brand.
+"""
+type BrandColors {
+   """
+   The shop's primary brand colors.
+   """
+   primary: [BrandColorGroup!]!
+
+   """
+   The shop's secondary brand colors.
+   """
+   secondary: [BrandColorGroup!]!
+}
+
+"""
 Card brand, such as Visa or Mastercard, which can be used for payments.
 """
 enum CardBrand {
@@ -677,7 +742,7 @@ type Cart implements Node {
    createdAt: DateTime!
 
    """
-   The delivery groups available for the cart, based on the buyer identity delivery address or the default address of the logged-in customer.
+   The delivery groups available for the cart, based on the default address of the logged-in customer.
    """
    deliveryGroups(
       """
@@ -817,11 +882,6 @@ type CartBuyerIdentity {
    customer: Customer
 
    """
-   The address where the merchandise will be delivered.
-   """
-   deliveryAddress: MailingAddress
-
-   """
    The email address of the buyer that is interacting with the cart.
    """
    email: String
@@ -858,11 +918,6 @@ input CartBuyerIdentityInput {
    The access token used to identify the customer associated with the cart.
    """
    customerAccessToken: String
-
-   """
-   The delivery address of the buyer that is interacting with the cart.
-   """
-   deliveryAddress: MailingAddressInput
 }
 
 """
@@ -1025,6 +1080,11 @@ type CartDeliveryGroup {
    The ID for the delivery group.
    """
    id: ID!
+
+   """
+   The selected delivery option for the delivery group.
+   """
+   selectedDeliveryOption: CartDeliveryOption
 }
 
 """
@@ -1085,6 +1145,11 @@ type CartDeliveryOption {
    The estimated cost for the delivery option.
    """
    estimatedCost: MoneyV2!
+
+   """
+   The unique identifier of the delivery option.
+   """
+   handle: String!
 
    """
    The title of the delivery option.
@@ -1469,6 +1534,36 @@ type CartLinesUpdatePayload {
 Return type for `cartNoteUpdate` mutation.
 """
 type CartNoteUpdatePayload {
+   """
+   The updated cart.
+   """
+   cart: Cart
+
+   """
+   The list of errors that occurred from executing the mutation.
+   """
+   userErrors: [CartUserError!]!
+}
+
+"""
+The input fields for updating the selected delivery options for a delivery group.
+"""
+input CartSelectedDeliveryOptionInput {
+   """
+   The ID of the cart delivery group.
+   """
+   deliveryGroupId: ID!
+
+   """
+   The handle of the selected delivery option.
+   """
+   deliveryOptionHandle: String!
+}
+
+"""
+Return type for `cartSelectedDeliveryOptionsUpdate` mutation.
+"""
+type CartSelectedDeliveryOptionsUpdatePayload {
    """
    The updated cart.
    """
@@ -2750,6 +2845,13 @@ enum CollectionSortKeys {
    """
    RELEVANCE
 }
+
+"""
+A string containing a hexadecimal representation of a color.
+
+For example, "#6A8D48".
+"""
+scalar Color
 
 """
 A comment on an article.
@@ -5143,6 +5245,11 @@ type Customer implements HasMetafields {
       """
       identifiers: [HasMetafieldsIdentifier!]!
    ): [Metafield]!
+
+   """
+   The number of orders that the customer has made at the store in their lifetime.
+   """
+   numberOfOrders: UnsignedInt64!
 
    """
    The orders associated with the customer.
@@ -8080,7 +8187,8 @@ union MetafieldParentResource =
 Returns the resource which is being referred to by a metafield.
 """
 union MetafieldReference =
-     GenericFile
+     Collection
+   | GenericFile
    | MediaImage
    | Page
    | Product
@@ -8328,6 +8436,21 @@ type Mutation {
       """
       note: String
    ): CartNoteUpdatePayload
+
+   """
+   Update the selected delivery options for a delivery group.
+   """
+   cartSelectedDeliveryOptionsUpdate(
+      """
+      The ID of the cart.
+      """
+      cartId: ID!
+
+      """
+      The selected delivery options.
+      """
+      selectedDeliveryOptions: [CartSelectedDeliveryOptionInput!]!
+   ): CartSelectedDeliveryOptionsUpdatePayload
 
    """
    Updates the attributes of a checkout if `allowPartialAddresses` is `true`.
@@ -9132,6 +9255,11 @@ type OrderConnection {
    Information to aid in pagination.
    """
    pageInfo: PageInfo!
+
+   """
+   The total count of Orders.
+   """
+   totalCount: UnsignedInt64!
 }
 
 """
@@ -11516,6 +11644,11 @@ Shop represents a collection of the general settings and information about the s
 """
 type Shop implements HasMetafields & Node {
    """
+   The shop's branding configuration.
+   """
+   brand: Brand
+
+   """
    A description of the shop.
    """
    description: String
@@ -12019,6 +12152,13 @@ enum UnitSystem {
    """
    METRIC_SYSTEM
 }
+
+"""
+An unsigned 64-bit integer. Represents whole numeric values between 0 and 2^64 - 1 encoded as a string of base-10 digits.
+
+Example value: `"50"`.
+"""
+scalar UnsignedInt64
 
 """
 A redirect on the online store.

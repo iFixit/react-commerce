@@ -38,7 +38,6 @@ export function useRequest<Data = any, Input = any>(
          });
          return result.data;
       } catch (error) {
-         console.log('AAAAAAA Error: ', error);
          setState((current) => ({
             ...current,
             isLoading: false,

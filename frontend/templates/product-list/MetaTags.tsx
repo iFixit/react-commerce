@@ -30,11 +30,11 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
    const itemType = useDevicePartsItemType(productList);
    let title =
-      productList.metaTitle || getProductListTitle(productList, itemType);
+      productList.metaTitle ||
+      getProductListTitle(productList, itemType) + ' | iFixit';
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
-   title += ' | iFixit';
    const itemTypeHandle = itemType
       ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
       : '';
