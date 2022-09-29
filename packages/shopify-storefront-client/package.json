@@ -15,6 +15,7 @@
    },
    "scripts": {
       "build": "",
-      "clean": ""
+      "clean": "",
+      "type-check": "tsc --pretty --noEmit"
    }
 }
