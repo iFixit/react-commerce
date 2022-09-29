@@ -42,7 +42,8 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             align="center"
             color="gray.300"
             transition="color 300ms"
-            _hover={{ color: 'white' }}
+            _visited={{ color: 'gray.300' }}
+            _hover={{ color: 'white', textDecoration: 'none' }}
             href={href}
             {...otherProps}
          >

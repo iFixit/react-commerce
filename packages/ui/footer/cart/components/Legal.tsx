@@ -88,7 +88,7 @@ export const FooterLegalLink = forwardRef<LinkProps, 'a'>((props, ref) => {
          align="center"
          color="gray.400"
          transition="color 300ms"
-         _hover={{ color: 'gray.100' }}
+         _hover={{ color: 'gray.100', textDecoration: 'none' }}
          sx={{
             _notFirst: {
                _before: {
