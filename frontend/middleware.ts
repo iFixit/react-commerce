@@ -3,9 +3,9 @@ import type { NextRequest } from 'next/server';
 import { PROD_HOSTNAME } from '@config/constants';
 
 export function middleware(request: NextRequest) {
-   const headers =
+   const init =
       request.nextUrl.hostname === PROD_HOSTNAME
-         ? { 'X-Robots-Tag': 'noindex, nofollow' }
+         ? { headers: [['X-Robots-Tag', 'noindex, nofollow']] }
          : undefined;
-   return NextResponse.next({ headers });
+   return NextResponse.next(init);
 }
