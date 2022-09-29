@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/react';
-import * as React from 'react';
 
 export const Wordmark = ({ color = 'brand.500', ...otherProps }: IconProps) => (
    <Icon

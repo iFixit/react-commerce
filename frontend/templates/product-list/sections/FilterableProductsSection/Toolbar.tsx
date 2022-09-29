@@ -4,7 +4,6 @@ import {
    ButtonGroupProps,
    ButtonProps,
    Flex,
-   Icon,
    IconButton,
    IconButtonProps,
    Select,
@@ -13,10 +12,12 @@ import {
    Text,
    useDisclosure,
 } from '@chakra-ui/react';
+import { faList } from '@fortawesome/pro-solid-svg-icons';
+import { faGrid } from '@fortawesome/pro-solid-svg-icons';
 import { getProductListTitle } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
-import { HiOutlineMenu, HiOutlineViewGrid } from 'react-icons/hi';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetsDrawer } from './FacetsDrawer';
 import { SearchInput } from './SearchInput';
@@ -166,8 +167,7 @@ export const ProductViewSwitch = (props: ButtonGroupProps) => {
 export const ProductViewListButton = (props: IconButtonProps) => {
    return (
       <IconButton
-         icon={<Icon as={HiOutlineMenu} color="gray.500" />}
-         mr="-px"
+         icon={<FaIcon icon={faList} h="4" color="gray.500" />}
          variant="outline"
          size="md"
          {...props}
@@ -178,8 +178,7 @@ export const ProductViewListButton = (props: IconButtonProps) => {
 export const ProductViewGridButton = (props: IconButtonProps) => {
    return (
       <IconButton
-         icon={<Icon as={HiOutlineViewGrid} color="gray.500" />}
-         mr="-px"
+         icon={<FaIcon icon={faGrid} h="4" color="gray.500" />}
          variant="outline"
          size="md"
          {...props}

@@ -6,7 +6,8 @@
    "license": "MIT",
    "scripts": {
       "clean": "",
-      "build": ""
+      "build": "",
+      "type-check": "tsc --pretty --noEmit"
    },
    "peerDependencies": {
       "@chakra-ui/react": ">= 1.8.3 < 2",

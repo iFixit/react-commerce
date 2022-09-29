@@ -6,7 +6,8 @@
    "license": "MIT",
    "scripts": {
       "build": "",
-      "clean": ""
+      "clean": "",
+      "type-check": "tsc --pretty --noEmit"
    },
    "dependencies": {
       "@ifixit/app": "workspace:*",

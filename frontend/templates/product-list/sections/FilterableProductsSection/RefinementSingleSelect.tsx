@@ -1,19 +1,20 @@
-import { Box, Button, HStack, Icon, VStack, Text } from '@chakra-ui/react';
-import React from 'react';
-import { HiSelector } from 'react-icons/hi';
+import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
+import { faSort } from '@fortawesome/pro-solid-svg-icons';
+import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
+import { FaIcon } from '@ifixit/icons';
+import { ProductList, ProductListType } from '@models/product-list';
 import {
-   RefinementListRenderState,
    RefinementListItem,
+   RefinementListRenderState,
 } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
+import NextLink from 'next/link';
+import React from 'react';
 import {
    useCurrentRefinements,
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
-import NextLink from 'next/link';
-import { useSortBy } from './useSortBy';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { ProductList, ProductListType } from '@models/product-list';
-import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
+import { useSortBy } from './useSortBy';
 
 type RefinementSingleSelectProps = UseRefinementListProps & {
    productList: ProductList;
@@ -64,9 +65,7 @@ export function RefinementSingleSelect({
             <Button
                variant="ghost"
                fontWeight="normal"
-               leftIcon={
-                  <Icon as={HiSelector} boxSize="6" color="gray.600" ml="-1" />
-               }
+               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
                mt="3"
                p="0"
                w="full"

@@ -105,8 +105,8 @@ export const HeaderSecondaryNavigation = forwardRef<StackProps, 'div'>(
             ref={ref}
             align="center"
             spacing={{
-               base: 4,
-               md: 8,
+               base: 2,
+               md: 2,
             }}
             {...props}
          />
@@ -181,10 +181,6 @@ export const HeaderOpenHiddenBarButton = forwardRef<IconButtonProps, 'button'>(
       );
    }
 );
-
-export const HeaderNavItemIcon = forwardRef<IconProps, 'svg'>((props, ref) => {
-   return <Icon ref={ref} color="white" boxSize="6" {...props} />;
-});
 
 export const HeaderCloseHiddenBarButton = forwardRef<ButtonProps, 'button'>(
    (props, ref) => {

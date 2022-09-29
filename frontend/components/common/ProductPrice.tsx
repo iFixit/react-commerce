@@ -1,3 +1,4 @@
+import { FaIcon } from '@ifixit/icons';
 import {
    Box,
    BoxProps,
@@ -8,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import { IconBadge } from '@components/ui';
 import { faRectanglePro } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    computeDiscountPercentage,
    formatShopifyPrice,
@@ -122,11 +122,11 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                }
             >
                {showProBadge && direction !== 'row' && (
-                  <FontAwesomeIcon
+                  <FaIcon
                      icon={faRectanglePro}
-                     size="1x"
-                     color={theme.colors[colorScheme][500]}
-                     style={{ marginRight: '6px' }}
+                     h="4"
+                     mr="1.5"
+                     color={`${colorScheme}.500`}
                   />
                )}
                {formattedPrice}

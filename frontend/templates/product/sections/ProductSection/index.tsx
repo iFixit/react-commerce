@@ -6,7 +6,6 @@ import {
    AccordionItem,
    AccordionPanel,
    Alert,
-   AlertIcon,
    Box,
    chakra,
    Flex,
@@ -28,20 +27,22 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import {
+   faBadgeDollar,
+   faCircleExclamation,
+   faExclamationTriangle,
+   faInfoCircle,
+   faRocket,
+   faShieldCheck,
+} from '@fortawesome/pro-solid-svg-icons';
 import { CompatibleDevice, ProductVariantPrice } from '@components/common';
 import { isLifetimeWarranty } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
+import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import NextLink from 'next/link';
 import * as React from 'react';
-import {
-   FaExclamationTriangle,
-   FaInfoCircle,
-   FaPercent,
-   FaShieldAlt,
-   FaTruck,
-} from 'react-icons/fa';
 import { AddToCart } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
@@ -137,25 +138,39 @@ export function ProductSection({
                   <List spacing="2.5" fontSize="sm" mt="5">
                      <ListItem display="flex" alignItems="center">
                         <ListIcon
-                           as={FaPercent}
+                           as={FaIcon}
+                           h="4"
+                           w="5"
+                           mr="1.5"
                            color="brand.500"
-                           boxSize="5"
+                           icon={faBadgeDollar}
                         />
                         Satisfaction guaranteed or your money back
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
                         <ListIcon
-                           as={FaShieldAlt}
+                           as={FaIcon}
+                           h="4"
+                           w="5"
+                           mr="1.5"
                            color="brand.500"
-                           boxSize="5"
+                           icon={faShieldCheck}
                         />
+
                         <div>
                            If it doesn&apos;t meet our meticulous standards, we
                            won&apos;t sell it. Period.
                         </div>
                      </ListItem>
                      <ListItem display="flex" alignItems="center">
-                        <ListIcon as={FaTruck} color="brand.500" boxSize="5" />
+                        <ListIcon
+                           as={FaIcon}
+                           h="4"
+                           w="5"
+                           mr="1.5"
+                           color="brand.500"
+                           icon={faRocket}
+                        />
                         Same day shipping if ordered by 5PM
                      </ListItem>
                   </List>
@@ -185,7 +200,13 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <AlertIcon />
+                                 <FaIcon
+                                    icon={faCircleExclamation}
+                                    h="4"
+                                    mt="0.5"
+                                    mr="2.5"
+                                    color="brand.500"
+                                 />
                                  <Box
                                     fontSize="sm"
                                     dangerouslySetInnerHTML={{
@@ -202,7 +223,13 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <AlertIcon />
+                                 <FaIcon
+                                    icon={faCircleExclamation}
+                                    h="4"
+                                    mt="0.5"
+                                    mr="2.5"
+                                    color="orange.500"
+                                 />
                                  <Box
                                     fontSize="sm"
                                     dangerouslySetInnerHTML={{
@@ -219,7 +246,13 @@ export function ProductSection({
                                  borderRadius="md"
                                  alignItems="flex-start"
                               >
-                                 <AlertIcon />
+                                 <FaIcon
+                                    icon={faCircleExclamation}
+                                    color="red.500"
+                                    h="4"
+                                    mt="0.5"
+                                    mr="2.5"
+                                 />
                                  <Box
                                     fontSize="sm"
                                     dangerouslySetInnerHTML={{
@@ -373,7 +406,11 @@ export function ProductSection({
                                  aria-label="read more about the warning"
                                  size="sm"
                                  icon={
-                                    <Icon as={FaInfoCircle} color="brand.500" />
+                                    <FaIcon
+                                       icon={faInfoCircle}
+                                       h="4"
+                                       color="brand.500"
+                                    />
                                  }
                               >
                                  Trigger
@@ -384,10 +421,11 @@ export function ProductSection({
                               <PopoverCloseButton mt="0.5" />
                               <PopoverHeader textTransform="uppercase">
                                  <Flex align="center">
-                                    <Icon
-                                       as={FaExclamationTriangle}
-                                       color="yellow.500"
+                                    <FaIcon
+                                       icon={faExclamationTriangle}
+                                       h="4"
                                        mr="2"
+                                       color="yellow.500"
                                     />
                                     Warning
                                  </Flex>

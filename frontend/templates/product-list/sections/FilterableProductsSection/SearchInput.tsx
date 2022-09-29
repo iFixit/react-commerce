@@ -1,6 +1,6 @@
 import {
+   Box,
    forwardRef,
-   Icon,
    IconButton,
    Input,
    InputGroup,
@@ -8,10 +8,13 @@ import {
    InputLeftElement,
    InputRightElement,
 } from '@chakra-ui/react';
+import {
+   faCircleXmark,
+   faMagnifyingGlass,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FaIcon } from '@ifixit/icons';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
-import { HiXCircle } from 'react-icons/hi';
-import { RiSearchLine } from 'react-icons/ri';
 import { useSearchBox } from 'react-instantsearch-hooks-web';
 
 type SearchInputProps = InputGroupProps;
@@ -36,7 +39,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    return (
       <InputGroup ref={ref} {...props}>
          <InputLeftElement pointerEvents="none">
-            <Icon as={RiSearchLine} color="gray.300" />
+            <FaIcon icon={faMagnifyingGlass} h="4" color="gray.300" />
          </InputLeftElement>
          <Input
             ref={inputRef}
@@ -64,12 +67,13 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
                   bg: 'transparent',
                }}
                icon={
-                  <Icon
-                     as={HiXCircle}
-                     color="gray.300"
-                     transition="color 300ms"
-                     _hover={{ color: 'gray.500' }}
-                  />
+                  <Box color="gray.300" _hover={{ color: 'gray.500' }}>
+                     <FaIcon
+                        icon={faCircleXmark}
+                        h="4"
+                        transition="color 300ms"
+                     />
+                  </Box>
                }
             />
          </InputRightElement>

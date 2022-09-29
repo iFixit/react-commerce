@@ -1,10 +1,10 @@
-import { Box, Button, Flex, Text, useTheme, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
 import {
    faCircleExclamation,
    faCircleInfo,
 } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAddToCart } from '@ifixit/cart-sdk';
+import { FaIcon } from '@ifixit/icons';
 import { useCartDrawer } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
@@ -93,19 +93,15 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
 }
 
 function ShippingRestrictions() {
-   const theme = useTheme();
    return (
       <Flex py="0" fontSize="sm" align="center">
          Shipping restrictions apply
-         <FontAwesomeIcon
+         <FaIcon
+            display="block"
             icon={faCircleInfo}
-            color={theme.colors['gray'][400]}
-            style={{
-               display: 'block',
-               width: '16px',
-               height: '16px',
-               marginLeft: '6px',
-            }}
+            h="4"
+            ml="1.5"
+            color="gray.400"
          />
       </Flex>
    );
@@ -116,21 +112,17 @@ type InvetoryMessageProps = {
 };
 
 function InventoryMessage({ quantityAvailable }: InvetoryMessageProps) {
-   const theme = useTheme();
    if (quantityAvailable == null || quantityAvailable >= 10) {
       return null;
    }
    return (
       <Flex color="red.600" py="0" fontSize="sm" align="center">
-         <FontAwesomeIcon
+         <FaIcon
             icon={faCircleExclamation}
-            color={theme.colors['red'][500]}
-            style={{
-               display: 'block',
-               width: '16px',
-               height: '16px',
-               marginRight: '6px',
-            }}
+            display="block"
+            h="4"
+            mr="1.5"
+            color="red.500"
          />
          Only{' '}
          <Text fontWeight="bold" mx="1">
