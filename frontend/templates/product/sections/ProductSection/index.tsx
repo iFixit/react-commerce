@@ -108,6 +108,8 @@ export function ProductSection({
                      lg: '400px',
                   }}
                   left={{ base: 'calc(100% + 20px)', lg: 'calc(100% + 40px)' }}
+                  boxShadow="md"
+                  borderRadius="md"
                />
             </Flex>
             <Flex

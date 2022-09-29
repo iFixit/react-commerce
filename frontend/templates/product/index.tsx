@@ -34,7 +34,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = ({
    return (
       <>
          {product.breadcrumbs != null && (
-            <SecondaryNavigation>
+            <SecondaryNavigation zIndex="10">
                <PageBreadcrumb items={product.breadcrumbs} />
             </SecondaryNavigation>
          )}
