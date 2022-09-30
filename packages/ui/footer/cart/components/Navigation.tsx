@@ -83,6 +83,7 @@ export const FooterNavigationLink = forwardRef<FooterNavigationLinkProps, 'a'>(
             transition="all 400ms"
             _hover={{
                color: 'white',
+               textDecoration: 'none',
             }}
             {...otherProps}
          >

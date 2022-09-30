@@ -14,6 +14,7 @@ import { IfixitImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
+import { NewsletterForm } from './Newsletter';
 import {
    FooterNavigationItem,
    FooterNavigationList,
@@ -29,7 +30,6 @@ import {
    FooterPartnerLink,
    StoreMenuButton,
    StoreMenuItem,
-   NewsletterForm,
    Footer,
    FooterLink,
    FooterDivider,
