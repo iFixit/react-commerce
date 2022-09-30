@@ -4,7 +4,7 @@ export interface ProductSearchHit {
    handle: string;
    price_float: number;
    compare_at_price?: number;
-   price_tiers?: Record<string, string>;
+   price_tiers?: Record<string, PriceTier>;
    sku: string;
    image_url: string;
    short_description?: string;
@@ -17,6 +17,12 @@ export interface ProductSearchHit {
    is_pro: number;
    [attribute: string]: unknown;
 }
+
+export type PriceTier = {
+   default_variant_price: string | number;
+   min: string | number;
+   max: string | number;
+};
 
 export type WikiInfoEntry = {
    name: string;
