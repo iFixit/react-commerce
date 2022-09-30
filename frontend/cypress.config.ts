@@ -9,10 +9,19 @@ export default defineConfig({
       runMode: 2,
    },
    e2e: {
-      // We've imported your old cypress plugins here.
-      // You may want to clean this up later by importing these.
       setupNodeEvents(on, config) {
-         return require('./test/cypress/plugins/index.js')(on, config);
+         on('before:browser:launch', (browser, launchOptions) => {
+            if (browser.family === 'chromium' && browser.name !== 'electron') {
+               launchOptions.args.push('--window-size=1400,1000');
+               return launchOptions;
+            }
+
+            if (browser.name === 'electron') {
+               launchOptions.preferences.width = 1400;
+               launchOptions.preferences.height = 1000;
+               return launchOptions;
+            }
+         });
       },
       baseUrl: 'http://localhost:3000',
       specPattern: 'test/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
