@@ -17,8 +17,14 @@ export function useProductSearchHitPricing(
    let proTierPrice: number | null = null;
    const discountTier = user.data?.discountTier ?? null;
    if (discountTier) {
-      const priceString = product.price_tiers?.[discountTier];
-      proTierPrice = priceString == null ? null : parseFloat(priceString);
+      const defaultVariantPrice =
+         product.price_tiers?.[discountTier]?.default_variant_price;
+      proTierPrice =
+         defaultVariantPrice == null
+            ? null
+            : typeof defaultVariantPrice === 'string'
+            ? parseFloat(defaultVariantPrice)
+            : defaultVariantPrice;
    }
 
    const price = proTierPrice ?? product.price_float;
