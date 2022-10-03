@@ -18,6 +18,8 @@ import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 import { CompatibilitySection } from './sections/CompatibilitySection';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
+import { noindexDevDomains } from '@helpers/next-helpers';
 
 export type ProductTemplateProps = WithProvidersProps<
    WithLayoutProps<{
@@ -74,6 +76,9 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             notFound: true,
          };
       }
+
+      noindexDevDomains(urlFromContext(context), context);
+
       const layoutProps = await getLayoutServerSideProps();
       const product = await findProduct(
          {
