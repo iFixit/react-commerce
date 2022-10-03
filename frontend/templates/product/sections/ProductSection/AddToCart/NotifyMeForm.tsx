@@ -44,6 +44,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
             throw new Error('email is required');
          }
          await ifixitAPI.post('cart/product/notifyWhenSkuInStock', {
+            credentials: 'same-origin',
             headers: {
                'Content-Type': 'application/json',
             },
