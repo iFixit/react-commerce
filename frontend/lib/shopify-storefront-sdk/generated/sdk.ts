@@ -6363,6 +6363,10 @@ export type FindProductQuery = {
                        amount: any;
                        currencyCode: CurrencyCode;
                     }>;
+                    proPricesByTier?: Maybe<{
+                       __typename?: 'Metafield';
+                       value: string;
+                    }>;
                     warranty?: Maybe<{
                        __typename?: 'Metafield';
                        value: string;
@@ -6415,6 +6419,10 @@ export type FindProductQuery = {
                __typename?: 'MoneyV2';
                amount: any;
                currencyCode: CurrencyCode;
+            }>;
+            proPricesByTier?: Maybe<{
+               __typename?: 'Metafield';
+               value: string;
             }>;
             selectedOptions: Array<{
                __typename?: 'SelectedOption';
@@ -6476,6 +6484,10 @@ export type FindProductQuery = {
                              amount: any;
                              currencyCode: CurrencyCode;
                           }>;
+                          proPricesByTier?: Maybe<{
+                             __typename?: 'Metafield';
+                             value: string;
+                          }>;
                           warranty?: Maybe<{
                              __typename?: 'Metafield';
                              value: string;
@@ -6516,6 +6528,7 @@ export type ProductVariantCardFragment = {
       amount: any;
       currencyCode: CurrencyCode;
    }>;
+   proPricesByTier?: Maybe<{ __typename?: 'Metafield'; value: string }>;
    warranty?: Maybe<{ __typename?: 'Metafield'; value: string }>;
 };
 
@@ -6550,6 +6563,9 @@ export const ProductVariantCardFragmentDoc = `
   compareAtPrice {
     amount
     currencyCode
+  }
+  proPricesByTier: metafield(namespace: "ifixit", key: "price_tiers") {
+    value
   }
   warranty: metafield(namespace: "ifixit", key: "warranty") {
     value
@@ -6630,6 +6646,9 @@ export const FindProductDocument = `
         compareAtPrice {
           amount
           currencyCode
+        }
+        proPricesByTier: metafield(namespace: "ifixit", key: "price_tiers") {
+          value
         }
         selectedOptions {
           name

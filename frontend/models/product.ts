@@ -1,8 +1,12 @@
 import { IFIXIT_ORIGIN, DEFAULT_STORE_CODE } from '@config/env';
-import { filterNullableItems, invariant } from '@helpers/application-helpers';
-import { formatShopifyPrice } from '@helpers/commerce-helpers';
-import { computeDiscountPercentage } from '@helpers/commerce-helpers';
-import { isRecord } from '@ifixit/helpers';
+import { filterNullableItems } from '@helpers/application-helpers';
+import {
+   computeDiscountPercentage,
+   formatMoney,
+   invariant,
+   isRecord,
+   Money,
+} from '@ifixit/helpers';
 import {
    FindProductQuery,
    getShopifyStorefrontSdk,
@@ -73,12 +77,12 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          : 0;
       return {
          ...other,
+         proPricesByTier: parsePriceTiersMetafieldValue(
+            variant.proPricesByTier?.value,
+            variant.price.currencyCode
+         ),
          isDiscounted,
          discountPercentage,
-         formattedPrice: formatShopifyPrice(variant.price),
-         formattedCompareAtPrice: variant.compareAtPrice
-            ? formatShopifyPrice(variant.compareAtPrice)
-            : null,
          kitContents: variant.kitContents?.value ?? null,
          note: variant.note?.value ?? null,
          disclaimer: variant.disclaimer?.value ?? null,
@@ -128,10 +132,14 @@ function getProductVariantCard(fragment: ProductVariantCardFragment) {
          oemPartnership: fragment.product.oemPartnership?.value ?? null,
       },
       warranty: fragment.warranty?.value ?? null,
-      formattedPrice: formatShopifyPrice(fragment.price),
+      formattedPrice: formatMoney(fragment.price),
       formattedCompareAtPrice: fragment.compareAtPrice
-         ? formatShopifyPrice(fragment.compareAtPrice)
+         ? formatMoney(fragment.compareAtPrice)
          : null,
+      proPricesByTier: parsePriceTiersMetafieldValue(
+         fragment.proPricesByTier?.value,
+         fragment.price.currencyCode
+      ),
    };
 }
 
@@ -368,4 +376,41 @@ function parseNumericMetafieldValue(value: string | null | undefined) {
       return null;
    }
    return value != null ? parseFloat(value) : null;
+}
+
+const PriceTiersMetafieldSchema = z.record(z.number());
+
+function parsePriceTiersMetafieldValue(
+   value: string | null | undefined,
+   currencyCode: string
+) {
+   if (value == null) {
+      return null;
+   }
+   const json: unknown = JSON.parse(value);
+   if (json == null) {
+      return null;
+   }
+   const result = PriceTiersMetafieldSchema.safeParse(json);
+   if (result.success) {
+      return Object.keys(result.data).reduce((acc, key) => {
+         const amount = result.data[key];
+         return {
+            ...acc,
+            [key]: {
+               amount,
+               currencyCode,
+            },
+         };
+      }, {} as Record<string, Money>);
+   }
+   const errors = result.error.flatten();
+   console.error(
+      `Failed to parse compatibility metafield:\n ${JSON.stringify(
+         errors.fieldErrors,
+         null,
+         2
+      )}`
+   );
+   return null;
 }

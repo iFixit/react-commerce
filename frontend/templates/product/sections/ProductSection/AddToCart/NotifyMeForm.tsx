@@ -10,13 +10,10 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { faCheckCircle } from '@fortawesome/pro-solid-svg-icons';
-import {
-   parseProductCode,
-   parseProductOptionId,
-} from '@helpers/product-helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
+import { getProductSku, getProductVariantOptionId } from '@ifixit/helpers';
 
 enum NotifyMeStatus {
    Idle = 'idle',
@@ -51,8 +48,8 @@ export function NotifyMeForm({ sku, salesChannelID }: NotifyMeFormProps) {
                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-               productcode: parseProductCode(sku),
-               optionid: parseProductOptionId(sku),
+               productcode: getProductSku(sku),
+               optionid: getProductVariantOptionId(sku),
                email,
                sales_channelid: salesChannelID,
             }),

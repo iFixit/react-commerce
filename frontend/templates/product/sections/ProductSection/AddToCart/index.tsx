@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
-import { useCartDrawer } from '@ifixit/ui';
+import { useCartDrawer, useUserPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import { NotifyMeForm } from './NotifyMeForm';
@@ -20,25 +20,37 @@ type AddToCartProps = {
 export function AddToCart({ product, selectedVariant }: AddToCartProps) {
    const addToCart = useAddToCart();
    const { onOpen } = useCartDrawer();
+   const userPrice = useUserPrice({
+      price: selectedVariant.price,
+      compareAtPrice: selectedVariant.compareAtPrice,
+      proPricesByTier: selectedVariant.proPricesByTier,
+   });
 
    const handleAddToCart = React.useCallback(() => {
       if (selectedVariant.sku) {
          addToCart.mutate({
-            name: product.title,
-            itemcode: selectedVariant.sku,
-            formattedPrice: selectedVariant.formattedPrice,
-            quantity: 1,
-            imageSrc: selectedVariant.image?.url || product.images[0].url,
+            type: 'product',
+            product: {
+               name: product.title,
+               itemcode: selectedVariant.sku,
+               shopifyVariantId: selectedVariant.id,
+               quantity: 1,
+               imageSrc: selectedVariant.image?.url || product.images[0].url,
+               price: userPrice.price,
+               compareAtPrice: userPrice.compareAtPrice,
+            },
          });
          onOpen();
       }
    }, [
+      selectedVariant.sku,
+      selectedVariant.id,
+      selectedVariant.image?.url,
       addToCart,
       product.title,
-      selectedVariant.sku,
-      selectedVariant.formattedPrice,
-      selectedVariant.image,
       product.images,
+      userPrice.price,
+      userPrice.compareAtPrice,
       onOpen,
    ]);
 

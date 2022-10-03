@@ -1,6 +1,6 @@
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from 'react-query';
-import { APICart } from '../types';
+import { Cart } from '../types';
 import { cartKeys } from '../utils';
 
 interface UpdateLineItemQuantityInput {
@@ -29,39 +29,49 @@ export function useUpdateLineItemQuantity() {
          onMutate: async (input: UpdateLineItemQuantityInput) => {
             await client.cancelQueries(cartKeys.cart);
 
-            const previousCart = client.getQueryData<APICart>(cartKeys.cart);
+            const previousCart = client.getQueryData<Cart>(cartKeys.cart);
 
-            client.setQueryData<APICart | undefined>(
-               cartKeys.cart,
-               (current) => {
-                  if (current == null) {
-                     return current;
-                  }
-                  const updatedItem = current.products.find(
-                     (item) => item.itemcode === input.itemcode
-                  );
-                  return updatedItem == null
-                     ? current
-                     : {
-                          ...current,
-                          totalNumItems: current.totalNumItems + input.quantity,
-                          products: current.products.map((product) => {
-                             if (product.itemcode === input.itemcode) {
-                                return {
-                                   ...product,
-                                   quantity: product.quantity + input.quantity,
-                                };
-                             }
-                             return product;
-                          }),
-                       };
+            client.setQueryData<Cart | undefined>(cartKeys.cart, (current) => {
+               if (current == null) {
+                  return current;
                }
-            );
+               const updatedItem = current.lineItems.find(
+                  (item) => item.itemcode === input.itemcode
+               );
+               if (updatedItem == null) {
+                  return current;
+               }
+               const updatedItemsCount = Math.max(
+                  current.totals.itemsCount + input.quantity,
+                  0
+               );
+               return {
+                  ...current,
+                  hasItemsInCart: updatedItemsCount > 0,
+                  lineItems: current.lineItems.map((lineItem) => {
+                     if (lineItem.itemcode === input.itemcode) {
+                        const updatedQuantity = Math.max(
+                           lineItem.quantity + input.quantity,
+                           0
+                        );
+                        return {
+                           ...lineItem,
+                           quantity: updatedQuantity,
+                        };
+                     }
+                     return lineItem;
+                  }),
+                  totals: {
+                     ...current.totals,
+                     itemsCount: updatedItemsCount,
+                  },
+               };
+            });
 
             return { previousCart };
          },
          onError: (error, variables, context) => {
-            client.setQueryData<APICart | undefined>(
+            client.setQueryData<Cart | undefined>(
                cartKeys.cart,
                context?.previousCart
             );

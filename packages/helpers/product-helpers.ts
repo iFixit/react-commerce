@@ -26,18 +26,30 @@ export function shouldShowProductRating<T extends Value>(
 
 const PRODUCT_CODE_LENGTH = 6;
 
-export function parseProductCode(sku: string): string {
-   const skuDigits = parseSkuDigits(sku);
+/**
+ * @param itemcode iFixit product (or product variant) itemcode (e.g. IF145-307-4)
+ * @returns iFixit product sku (e.g. 145307), that is the itemcode digits without the option id
+ */
+export function getProductSku(itemcode: string): string {
+   const skuDigits = getProductVariantSku(itemcode);
    return skuDigits.slice(0, PRODUCT_CODE_LENGTH);
 }
 
-export function parseProductOptionId(sku: string): string {
-   const skuDigits = parseSkuDigits(sku);
+/**
+ * @param itemcode iFixit product variant itemcode (e.g. IF145-307-4)
+ * @returns iFixit product variant option id (e.g. 4)
+ */
+export function getProductVariantOptionId(itemcode: string): string {
+   const skuDigits = getProductVariantSku(itemcode);
    return skuDigits.slice(PRODUCT_CODE_LENGTH);
 }
 
-function parseSkuDigits(sku: string): string {
-   return sku.replace(/\D/g, '');
+/**
+ * @param itemcode iFixit product variant itemcode (e.g. IF145-307-4)
+ * @returns iFixit product variant sku (e.g. 1453074)
+ */
+export function getProductVariantSku(itemcode: string): string {
+   return itemcode.replace(/\D/g, '');
 }
 
 export function isLifetimeWarranty(warranty: string): boolean {

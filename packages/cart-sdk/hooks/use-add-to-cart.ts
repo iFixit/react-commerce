@@ -1,19 +1,22 @@
+import { assertNever } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from 'react-query';
-import { APICart } from '../types';
+import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
 
-export interface AddProductVariantInput {
-   name: string;
-   itemcode: string;
-   formattedPrice: string;
-   quantity: number;
-   imageSrc: string;
-}
+export type AddToCartInput = AddProductToCartInput | AddBundleToCartInput;
 
-export type AddToCartBundleInput = {
-   currentItemCode: string;
-   items: AddProductVariantInput[];
+type AddProductToCartInput = {
+   type: 'product';
+   product: CartLineItem;
+};
+
+type AddBundleToCartInput = {
+   type: 'bundle';
+   bundle: {
+      currentItemCode: string;
+      items: CartLineItem[];
+   };
 };
 
 /**
@@ -24,51 +27,59 @@ export function useAddToCart() {
    const iFixitApiClient = useIFixitApiClient();
    const mutation = useMutation(
       async (input) => {
-         if (isBundleInput(input)) {
-            return iFixitApiClient.post(`store/user/cart/product`, {
-               body: JSON.stringify({
-                  skus: input.items.map((item) =>
-                     getApiSkuFromItemCode(item.itemcode)
-                  ),
-                  pageSku: getApiSkuFromItemCode(input.currentItemCode),
-               }),
-            });
-         }
-         return iFixitApiClient.post(
-            `store/user/cart/product/${input.itemcode}`,
-            {
-               body: JSON.stringify({
-                  quantity: input.quantity,
-               }),
+         switch (input.type) {
+            case 'product': {
+               return iFixitApiClient.post(
+                  `store/user/cart/product/${input.product.itemcode}`,
+                  {
+                     body: JSON.stringify({
+                        quantity: input.product.quantity,
+                     }),
+                  }
+               );
             }
-         );
+            case 'bundle': {
+               return iFixitApiClient.post(`store/user/cart/product`, {
+                  body: JSON.stringify({
+                     skus: input.bundle.items.map((item) =>
+                        getApiSkuFromItemCode(item.itemcode)
+                     ),
+                     pageSku: getApiSkuFromItemCode(
+                        input.bundle.currentItemCode
+                     ),
+                  }),
+               });
+            }
+            default: {
+               throw assertNever(input);
+            }
+         }
       },
       {
-         onMutate: async (
-            input: AddProductVariantInput | AddToCartBundleInput
-         ) => {
+         onMutate: async (input: AddToCartInput) => {
             await client.cancelQueries(cartKeys.cart);
             window.onbeforeunload = () =>
                'Some products are being added to the cart. Do you really want to quit?';
 
-            const previousCart = client.getQueryData<APICart>(cartKeys.cart);
+            const previousCart = client.getQueryData<Cart>(cartKeys.cart);
 
-            client.setQueryData<APICart | undefined>(
+            client.setQueryData<Cart | undefined>(
                cartKeys.cart,
                (currentCart) => {
                   if (currentCart == null) {
                      return currentCart;
                   }
-                  const inputLineItems = isBundleInput(input)
-                     ? input.items
-                     : [input];
+                  const inputLineItems: CartLineItem[] =
+                     input.type === 'bundle'
+                        ? input.bundle.items
+                        : [input.product];
 
                   const updatedCart = inputLineItems.reduce(
                      addLineItem,
                      currentCart
                   );
 
-                  updatedCart.products.sort((a, b) =>
+                  updatedCart.lineItems.sort((a, b) =>
                      a.itemcode.localeCompare(b.itemcode)
                   );
 
@@ -79,7 +90,7 @@ export function useAddToCart() {
             return { previousCart };
          },
          onError: (error, variables, context) => {
-            client.setQueryData<APICart | undefined>(
+            client.setQueryData<Cart | undefined>(
                cartKeys.cart,
                context?.previousCart
             );
@@ -93,47 +104,33 @@ export function useAddToCart() {
    return mutation;
 }
 
-function addLineItem(cart: APICart, inputLineItem: AddProductVariantInput) {
-   const currentLineItemIndex = cart.products.findIndex(
+function addLineItem(cart: Cart, inputLineItem: CartLineItem): Cart {
+   const currentLineItemIndex = cart.lineItems.findIndex(
       (item) => item.itemcode === inputLineItem.itemcode
    );
    const isAlreadyInCart = currentLineItemIndex >= 0;
-   let updatedLineItems = cart.products.slice();
+   let updatedLineItems = cart.lineItems.slice();
    if (isAlreadyInCart) {
-      const currentLineItem = cart.products[currentLineItemIndex];
+      const currentLineItem = cart.lineItems[currentLineItemIndex];
+      const updatedQuantity = currentLineItem.quantity + inputLineItem.quantity;
       updatedLineItems.splice(currentLineItemIndex, 1, {
          ...currentLineItem,
-         quantity: currentLineItem.quantity + inputLineItem.quantity,
+         quantity: updatedQuantity,
       });
    } else {
-      updatedLineItems.push({
-         discount: '',
-         imageSrc: inputLineItem.imageSrc,
-         itemcode: inputLineItem.itemcode,
-         maxToAdd: 0,
-         name: inputLineItem.name,
-         quantity: inputLineItem.quantity,
-         subPrice: inputLineItem.formattedPrice,
-         subPriceStr: inputLineItem.formattedPrice,
-         subTotal: inputLineItem.formattedPrice,
-         subTotalStr: inputLineItem.formattedPrice,
-      });
+      updatedLineItems.push(inputLineItem);
    }
    return {
       ...cart,
-      totalNumItems: cart.totalNumItems + inputLineItem.quantity,
-      products: updatedLineItems,
+      hasItemsInCart: true,
+      lineItems: updatedLineItems,
+      totals: {
+         ...cart.totals,
+         itemsCount: cart.totals.itemsCount + inputLineItem.quantity,
+      },
    };
 }
 
 function getApiSkuFromItemCode(itemCode: string): string {
    return itemCode.replace(/\D/g, '');
-}
-
-function isBundleInput(input: any): input is AddToCartBundleInput {
-   const maybeBundle = input as AddToCartBundleInput;
-   return (
-      Array.isArray(maybeBundle.items) &&
-      typeof maybeBundle.currentItemCode === 'string'
-   );
 }

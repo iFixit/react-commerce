@@ -389,7 +389,9 @@ importers:
       '@emotion/react': '>=11.0.0 <12.0.0'
       '@emotion/styled': '>=11.0.0 <12.0.0'
       '@ifixit/app': workspace:*
+      '@ifixit/auth-sdk': workspace:*
       '@ifixit/cart-sdk': workspace:*
+      '@ifixit/helpers': workspace:*
       '@ifixit/icons': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/tsconfig': workspace:*
@@ -403,7 +405,9 @@ importers:
       typescript: 4.5.3
     dependencies:
       '@ifixit/app': link:../app
+      '@ifixit/auth-sdk': link:../auth-sdk
       '@ifixit/cart-sdk': link:../cart-sdk
+      '@ifixit/helpers': link:../helpers
       '@ifixit/icons': link:../icons
       '@ifixit/newsletter-sdk': link:../newsletter-sdk
     devDependencies:

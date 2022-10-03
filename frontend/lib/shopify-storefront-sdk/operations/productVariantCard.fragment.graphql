@@ -29,6 +29,9 @@ fragment ProductVariantCard on ProductVariant {
       amount
       currencyCode
    }
+   proPricesByTier: metafield(namespace: "ifixit", key: "price_tiers") {
+      value
+   }
    warranty: metafield(namespace: "ifixit", key: "warranty") {
       value
    }
