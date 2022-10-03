@@ -5,6 +5,8 @@ import {
    Box,
    Flex,
    Heading,
+   LinkBox,
+   LinkOverlay,
    SimpleGrid,
    Text,
 } from '@chakra-ui/react';
@@ -22,6 +24,7 @@ import {
 } from '@ifixit/ui';
 import { Product } from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
+import NextLink from 'next/link';
 
 export type FeaturedProductsSectionProps = {
    product: Product;
@@ -60,6 +63,7 @@ export function FeaturedProductsSection({
                return (
                   <ProductGridItem
                      key={variant.id}
+                     handle={variant.product.handle}
                      title={variant.product.title}
                      imageSrc={variant.image?.url}
                      rating={variant.product.rating}
@@ -78,6 +82,7 @@ export function FeaturedProductsSection({
 }
 
 type ProductGridItemProps = {
+   handle: string;
    title: string;
    imageSrc?: string | null;
    rating?: number | null;
@@ -91,6 +96,7 @@ type ProductGridItemProps = {
 };
 
 function ProductGridItem({
+   handle,
    title,
    imageSrc,
    rating,
@@ -106,11 +112,17 @@ function ProductGridItem({
    const hasLifetimeWarranty =
       typeof warranty === 'string' && isLifetimeWarranty(warranty);
 
+   const productHeadingId = `product-heading-${handle}`;
+
    return (
-      <Flex
-         direction="column"
+      <LinkBox
+         as="article"
+         aria-labelledby={productHeadingId}
+         role="group"
          bg="white"
          p="4"
+         display="flex"
+         flexDirection="column"
          sx={{
             '@media (max-width: 1000px)': {
                '&:nth-of-type(1n + 5)': {
@@ -119,19 +131,27 @@ function ProductGridItem({
             },
          }}
       >
-         <Box flexGrow={1} position="relative">
+         <Box flexGrow={1}>
             <CardImage src={imageSrc} alt={title} />
-            <Text fontSize="md" mt="3">
-               {title}
-            </Text>
+            <NextLink href={`/Products/${handle}`} passHref>
+               <LinkOverlay
+                  id={productHeadingId}
+                  mt="3"
+                  display="inline-block"
+                  fontSize="md"
+                  _groupHover={{ color: 'brand.500' }}
+               >
+                  {title}
+               </LinkOverlay>
+            </NextLink>
             {rating != null && reviewsCount != null && (
                <ProductRating mt="2" rating={rating} count={reviewsCount} />
             )}
             <Flex
                position="absolute"
-               top="0"
-               right="0"
-               left="0"
+               top="4"
+               right="4"
+               left="4"
                justify="flex-end"
                sx={{
                   '&>:nth-of-type(1n + 2)': {
@@ -169,7 +189,7 @@ function ProductGridItem({
             alignSelf="flex-end"
             mt="3"
          />
-      </Flex>
+      </LinkBox>
    );
 }
 
