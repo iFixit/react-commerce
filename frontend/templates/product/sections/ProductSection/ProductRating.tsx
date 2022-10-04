@@ -1,4 +1,4 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Link, Text } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { shouldShowProductRating } from '@ifixit/helpers';
 import { Product } from '@models/product';
@@ -25,7 +25,10 @@ export function ProductRating({ product }: ProductRatingProps) {
          <Rating value={reviews.rating} />
          <Text color="gray.600">{reviews.rating}</Text>
          <Box w="1px" bg="gray.300"></Box>
-         <Text color="gray.600">{reviews.reviewsCount} reviews</Text>
+
+         <Link href="#reviews" color="gray.600">
+            {reviews.reviewsCount} reviews
+         </Link>
       </HStack>
    );
 }

@@ -18,3 +18,11 @@ import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.on('window:before:load', (win) => {
+   const htmlNode = win.document.querySelector('html');
+   if (htmlNode) {
+      // Cypress assertions on scroll break when the `scroll-behavior` css property is set to `smooth`.
+      htmlNode.style.scrollBehavior = 'inherit';
+   }
+});
