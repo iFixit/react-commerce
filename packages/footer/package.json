@@ -9,14 +9,6 @@
       "build": "",
       "type-check": "tsc --pretty --noEmit"
    },
-   "dependencies": {
-      "@ifixit/app": "workspace:*",
-      "@ifixit/cart-sdk": "workspace:*",
-      "@ifixit/icons": "workspace:*",
-      "@ifixit/newsletter-sdk": "workspace:*",
-      "@ifixit/helpers": "workspace:*",
-      "@ifixit/auth-sdk": "workspace:*"
-   },
    "peerDependencies": {
       "@chakra-ui/react": ">= 1.8.3 < 2",
       "@core-ds/primitives": ">2.4",
