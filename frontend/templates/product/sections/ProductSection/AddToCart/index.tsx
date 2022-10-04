@@ -10,8 +10,6 @@ import { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import { NotifyMeForm } from './NotifyMeForm';
 
-const US_SALES_CHANNEL_ID = 1;
-
 type AddToCartProps = {
    product: Product;
    selectedVariant: ProductVariant;
@@ -70,20 +68,14 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                >
                   Add to cart
                </Button>
-               {selectedVariant.quantityAvailable != null &&
-                  selectedVariant.quantityAvailable < 10 && (
-                     <InventoryMessage
-                        quantityAvailable={selectedVariant.quantityAvailable}
-                     />
-                  )}
+               <InventoryMessage
+                  quantityAvailable={selectedVariant.quantityAvailable}
+               />
                <ShippingRestrictions />
             </>
          )}
          {!isSelectedVariantAvailable && selectedVariant.sku != null && (
-            <NotifyMeForm
-               sku={selectedVariant.sku}
-               salesChannelID={US_SALES_CHANNEL_ID}
-            />
+            <NotifyMeForm sku={selectedVariant.sku} />
          )}
          {!isSelectedVariantAvailable && selectedVariant.sku == null && (
             <Box
@@ -120,7 +112,7 @@ function ShippingRestrictions() {
 }
 
 type InvetoryMessageProps = {
-   quantityAvailable?: number;
+   quantityAvailable?: number | null;
 };
 
 function InventoryMessage({ quantityAvailable }: InvetoryMessageProps) {
