@@ -68,31 +68,29 @@ const MultiSelectItem = React.memo(function MultiSelectItem({
 }: MultiSelectItemProps) {
    const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
 
-   if (item.count > 0) {
-      return (
-         <HStack key={item.label} justify="space-between">
-            <Checkbox
-               role="option"
-               value={item.value}
-               isChecked={isRefined}
-               onChange={() => {
-                  setIsRefined((current) => !current);
-                  refine(item.value);
-               }}
-               data-value={item.value}
-            >
-               {item.label}
-            </Checkbox>
-            <Text
-               size="sm"
-               fontFamily="sans-serif"
-               color="gray.500"
-               fontWeight={isRefined ? 'bold' : 'inherit'}
-            >
-               {item.count}
-            </Text>
-         </HStack>
-      );
-   }
+   return (
+      <HStack key={item.label} justify="space-between">
+         <Checkbox
+            role="option"
+            value={item.value}
+            isChecked={isRefined}
+            onChange={() => {
+               setIsRefined((current) => !current);
+               refine(item.value);
+            }}
+            data-value={item.value}
+         >
+            {item.label}
+         </Checkbox>
+         <Text
+            size="sm"
+            fontFamily="sans-serif"
+            color="gray.500"
+            fontWeight={isRefined ? 'bold' : 'inherit'}
+         >
+            {item.count}
+         </Text>
+      </HStack>
+   );
    return null;
 });
