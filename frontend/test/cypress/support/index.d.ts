@@ -2,7 +2,7 @@
 
 declare namespace Cypress {
    interface Chainable {
-      isWithinViewport(element: any): Chainable;
+      isWithinViewport(): Chainable<JQuery<HTMLElement>>;
       loadCollectionPageByPath(path: string): Chainable;
    }
 }

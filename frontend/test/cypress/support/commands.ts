@@ -5,11 +5,11 @@ import '@testing-library/cypress/add-commands';
 Cypress.Commands.add(
    'isWithinViewport',
    { prevSubject: true },
-   (selector: any) => {
-      cy.window().then((win) => {
+   (subject: JQuery<HTMLElement>) => {
+      cy.window().should((win) => {
          const rightBoundOfWindow = win.innerWidth;
          const bottomBoundOfWindow = win.innerHeight;
-         const bounding = selector[0].getBoundingClientRect();
+         const bounding = subject[0].getBoundingClientRect();
 
          expect(bounding.top).to.be.at.least(0);
          expect(bounding.left).to.be.at.least(0);
