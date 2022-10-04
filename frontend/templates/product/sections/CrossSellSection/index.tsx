@@ -323,6 +323,7 @@ function CrossSellItem({
          _focus={{
             boxShadow: 'outline',
          }}
+         cursor="pointer"
       >
          <Flex
             direction={{

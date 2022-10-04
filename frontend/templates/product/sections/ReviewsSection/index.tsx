@@ -81,7 +81,13 @@ export function ReviewsSection({
    }
 
    return (
-      <Box bg="white" px={{ base: 5, sm: 0 }} py="16" fontSize="sm">
+      <Box
+         id="reviews"
+         bg="white"
+         px={{ base: 5, sm: 0 }}
+         py="16"
+         fontSize="sm"
+      >
          <PageContentWrapper>
             <Heading
                as="h2"
