@@ -174,7 +174,11 @@ export function InstantSearchProvider({
                .split('/')
                .filter((part) => part !== '');
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+            let itemType = pathParts.length >= 3 ? pathParts[2] : '';
+
+            if (itemType.endsWith('_')) {
+               itemType = itemType.substring(0, itemType.length - 1);
+            }
 
             const { q, p, filter } = qsModule.parse(location.search.slice(1));
 
