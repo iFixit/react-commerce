@@ -135,7 +135,12 @@ export function ProductGallery({
             >
                {variantImages.map((variantImage, index) => {
                   return (
-                     <SwiperSlide key={variantImage.id}>
+                     <SwiperSlide
+                        key={variantImage.id}
+                        style={{
+                           maxWidth: 'calc((100% - 60px) / 6)',
+                        }}
+                     >
                         <ImageThumbnail
                            image={variantImage}
                            active={realIndex === index}
