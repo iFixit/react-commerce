@@ -11,3 +11,15 @@ export function cypressWindowLog(value: { [key: string]: any }) {
       }
    }
 }
+
+/**
+ * Use a different value if Cypress is detected.
+ */
+export function cypressReplace<T, U = T>(value: T, cypressValue: U) {
+   if (typeof window !== 'undefined') {
+      if ((window as any).Cypress) {
+         return cypressValue;
+      }
+   }
+   return value;
+}
