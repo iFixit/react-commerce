@@ -1,9 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
 import { flags } from '@config/flags';
-import { noindexDevDomains } from '@helpers/next-helpers';
 import { invariant } from '@ifixit/helpers';
-import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
@@ -69,8 +67,6 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             notFound: true,
          };
       }
-
-      noindexDevDomains(urlFromContext(context), context);
 
       const layoutProps = await getLayoutServerSideProps();
       const product = await findProduct(
