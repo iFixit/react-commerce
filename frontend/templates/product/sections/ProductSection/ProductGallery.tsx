@@ -139,6 +139,7 @@ export function ProductGallery({
                         key={variantImage.id}
                         style={{
                            maxWidth: 'calc((100% - 60px) / 6)',
+                           marginRight: '12px',
                         }}
                      >
                         <ImageThumbnail
