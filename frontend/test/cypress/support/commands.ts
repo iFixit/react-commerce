@@ -4,7 +4,7 @@ import '@testing-library/cypress/add-commands';
 
 Cypress.Commands.add(
    'isWithinViewport',
-   { prevSubject: true },
+   { prevSubject: 'element' },
    (subject: JQuery<HTMLElement>) => {
       cy.window().should((win) => {
          const rightBoundOfWindow = win.innerWidth;
