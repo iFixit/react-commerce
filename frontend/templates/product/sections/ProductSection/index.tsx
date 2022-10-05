@@ -207,6 +207,12 @@ export function ProductSection({
                                     my: 3,
                                     pl: 5,
                                  },
+                                 p: {
+                                    mb: 3,
+                                    _last: {
+                                       mb: 0,
+                                    },
+                                 },
                               }}
                            />
                            {selectedVariant.note && (
