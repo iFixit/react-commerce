@@ -92,5 +92,4 @@ const MultiSelectItem = React.memo(function MultiSelectItem({
          </Text>
       </HStack>
    );
-   return null;
 });

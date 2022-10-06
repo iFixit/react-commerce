@@ -157,5 +157,4 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          </Text>
       </HStack>
    );
-   return null;
 });
