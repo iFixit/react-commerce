@@ -4,13 +4,28 @@ import { DefaultLayout, DefaultLayoutProps } from '@layouts/default';
 import { getGlobalSettings } from '@models/global-settings';
 import { getStoreByCode, getStoreList } from '@models/store';
 
-export default function Custom404({ currentStore, stores, globalSettings }: DefaultLayoutProps) {
-   return <DefaultLayout {...{currentStore, stores, globalSettings}}> {
-         <Center h='56.6vh'>
-            <Text fontSize={20} fontWeight='bold' fontFamily='Lato' padding='16px'>Error 404: Page not Found</Text>
-         </Center>
-      }
-   </DefaultLayout>
+export default function Custom404({
+   currentStore,
+   stores,
+   globalSettings,
+}: DefaultLayoutProps) {
+   return (
+      <DefaultLayout {...{ currentStore, stores, globalSettings }}>
+         {' '}
+         {
+            <Center h="56.6vh">
+               <Text
+                  fontSize={20}
+                  fontWeight="bold"
+                  fontFamily="Lato"
+                  padding="16px"
+               >
+                  Error 404: Page not Found
+               </Text>
+            </Center>
+         }
+      </DefaultLayout>
+   );
 }
 
 export async function getStaticProps() {
@@ -24,6 +39,6 @@ export async function getStaticProps() {
          globalSettings,
          currentStore,
          stores,
-      }
+      },
    };
 }
