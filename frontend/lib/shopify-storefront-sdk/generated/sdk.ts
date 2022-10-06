@@ -6435,6 +6435,7 @@ export type FindProductQuery = {
             warning?: Maybe<{ __typename?: 'Metafield'; value: string }>;
             specifications?: Maybe<{ __typename?: 'Metafield'; value: string }>;
             warranty?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+            disableWhenOOS?: Maybe<{ __typename?: 'Metafield'; value: string }>;
             crossSell?: Maybe<{
                __typename?: 'Metafield';
                references?: Maybe<{
@@ -6670,6 +6671,9 @@ export const FindProductDocument = `
           value
         }
         warranty: metafield(namespace: "ifixit", key: "warranty") {
+          value
+        }
+        disableWhenOOS: metafield(namespace: "ifixit", key: "disable_when_oos") {
           value
         }
         crossSell: metafield(namespace: "ifixit", key: "cross_sell_ref") {

@@ -152,7 +152,7 @@ export function ProductSection({
                />
                <AddToCart product={product} selectedVariant={selectedVariant} />
                <div>
-                  <List spacing="2.5" fontSize="sm" mt="5">
+                  <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
                      <ListItem display="flex" alignItems="center">
                         <ListIcon
                            as={FaIcon}
