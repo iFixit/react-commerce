@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSideProps } from 'next';
 import { logAsync } from '@ifixit/helpers';
 import { setSentryPageContext } from '@ifixit/sentry';
 import * as Sentry from '@sentry/nextjs';

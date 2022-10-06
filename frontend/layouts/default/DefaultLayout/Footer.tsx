@@ -33,7 +33,7 @@ import {
    Footer,
    FooterLink,
    FooterDivider,
-} from '@ifixit/ui';
+} from '@ifixit/footer';
 
 interface FooterProps {
    stores: StoreListItem[];

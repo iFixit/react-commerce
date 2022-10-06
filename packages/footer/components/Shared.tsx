@@ -10,7 +10,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import { PageContentWrapper } from '../../../misc/PageContentWrapper';
+import { PageContentWrapper } from './PageContentWrapper';
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
