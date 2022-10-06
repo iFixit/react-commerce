@@ -21,8 +21,7 @@ import { ServiceValuePropositionSection } from './sections/ServiceValuePropositi
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
-   const { selectedVariant, setSelectedVariantId } =
-      useSelectedVariant(product);
+   const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
    return (
       <>

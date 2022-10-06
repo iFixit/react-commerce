@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
    return (
       <ServerSidePropsProvider props={pageProps}>
          <AppProviders {...pageProps.appProps}>
-            <NextNProgress />
+            <NextNProgress showOnShallow={false} />
             {getLayout(<Component {...pageProps} />, pageProps)}
          </AppProviders>
       </ServerSidePropsProvider>

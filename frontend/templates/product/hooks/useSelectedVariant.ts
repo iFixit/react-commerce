@@ -1,38 +1,77 @@
-import { usePrevious } from '@ifixit/ui';
-import { Product } from '@models/product';
+import { invariant } from '@ifixit/helpers';
+import { Product, ProductVariant } from '@models/product';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-export function useSelectedVariant(product: Product) {
-   const defaultVariantId = getDefaultVariantId(product);
-   const previousDefaultVariantId = usePrevious(defaultVariantId);
-   const [selectedVariantId, setSelectedVariantId] = React.useState<
-      string | null
-   >();
+type SetVariantIdFn = (variantId: string) => void;
 
-   const hasDefaultVariantChanged =
-      previousDefaultVariantId !== defaultVariantId;
-   const currentId =
-      hasDefaultVariantChanged || selectedVariantId == null
-         ? defaultVariantId
-         : selectedVariantId;
+export function useSelectedVariant(
+   product: Product
+): [ProductVariant, SetVariantIdFn] {
+   const router = useRouter();
 
-   React.useEffect(() => {
-      if (hasDefaultVariantChanged) {
-         setSelectedVariantId(null);
-      }
-   }, [hasDefaultVariantChanged]);
+   const defaultVariantId = useDefaultVariantId(product);
+   const searchParamVariantId = useSearchParamVariantId();
 
-   const selectedVariant = React.useMemo(() => {
-      return product.variants.find((variant) => variant.id === currentId)!;
-   }, [product.variants, currentId]);
+   const currentVariantId = searchParamVariantId ?? defaultVariantId;
 
-   return { selectedVariant, setSelectedVariantId };
+   let variant = product.variants.find((v) => v.id === currentVariantId);
+   if (variant == null) {
+      variant = product.variants.find((v) => v.id === defaultVariantId);
+   }
+
+   invariant(
+      variant,
+      `Something went wrong, variant with id "${currentVariantId}" not found`
+   );
+
+   const setVariantId = React.useCallback<SetVariantIdFn>(
+      (variantId) => {
+         const { variant, ...newQuery } = router.query;
+         if (variantId !== defaultVariantId) {
+            newQuery.variant = encodeVariantId(variantId);
+         }
+         router.replace(
+            {
+               query: newQuery,
+            },
+            undefined,
+            { shallow: true }
+         );
+      },
+      [defaultVariantId, router]
+   );
+
+   return [variant, setVariantId];
 }
 
-function getDefaultVariantId(product: Product) {
+function useDefaultVariantId(product: Product): string {
    const variant =
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
       ) ?? product.variants[0];
    return variant.id;
+}
+
+function useSearchParamVariantId(): string | null {
+   const router = useRouter();
+
+   const searchParamVariantId = router.query?.variant;
+
+   if (typeof searchParamVariantId !== 'string') {
+      return null;
+   }
+   const decodedVariantId = decodeVariantId(searchParamVariantId);
+   return decodedVariantId;
+}
+
+function encodeVariantId(variantId: string) {
+   if (!variantId.startsWith('gid://')) {
+      throw new Error('Variant id must be a global shopify product variant id');
+   }
+   return variantId.replace(/^gid:\/\/shopify\/ProductVariant\//, '');
+}
+
+function decodeVariantId(variantId: string) {
+   return `gid://shopify/ProductVariant/${variantId}`;
 }
