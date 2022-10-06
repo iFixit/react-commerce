@@ -44,6 +44,7 @@ importers:
       '@ifixit/app': workspace:*
       '@ifixit/auth-sdk': workspace:*
       '@ifixit/cart-sdk': workspace:*
+      '@ifixit/footer': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/icons': workspace:*
       '@ifixit/ifixit-api-client': workspace:*
@@ -130,6 +131,7 @@ importers:
       '@ifixit/app': link:../packages/app
       '@ifixit/auth-sdk': link:../packages/auth-sdk
       '@ifixit/cart-sdk': link:../packages/cart-sdk
+      '@ifixit/footer': link:../packages/footer
       '@ifixit/helpers': link:../packages/helpers
       '@ifixit/icons': link:../packages/icons
       '@ifixit/ifixit-api-client': link:../packages/ifixit-api-client
@@ -264,6 +266,34 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
+      typescript: 4.5.3
+
+  packages/footer:
+    specifiers:
+      '@babel/core': '>=7.0.0 <8.0.0'
+      '@emotion/react': '>=11.0.0 <12.0.0'
+      '@emotion/styled': '>=11.0.0 <12.0.0'
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      framer-motion: '>=3.0.0 <4.0.0 || >=4.0.0 <5.0.0 || >=5.0.0 <6.0.0 || >=6.0.0 <7.0.0'
+      react: 16.14.0 || 17.0.2
+      react-dom: '>=16.8.6 <17.0.0 || >=17.0.0 <18.0.0'
+      react-icons: 4.2.0
+      regenerator-runtime: '*'
+      typescript: 4.5.3
+    devDependencies:
+      '@babel/core': 7.18.6
+      '@emotion/react': 11.7.1_yse24c3tnaw3czhkbk3q2k7woy
+      '@emotion/styled': 11.6.0_antrsugujploi4ebyftn3umj4a
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      framer-motion: 6.2.7_sfoxds7t5ydpegc3knd667wn6m
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-icons: 4.2.0_react@17.0.2
+      regenerator-runtime: 0.13.9
       typescript: 4.5.3
 
   packages/helpers:
