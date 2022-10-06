@@ -1,4 +1,4 @@
-import { LifetimeWarrantyIcon } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg';
 import {
    Accordion,
    AccordionButton,
@@ -406,7 +406,7 @@ export function ProductSection({
                               selectedVariant.warranty ?? ''
                            ) && (
                               <Icon
-                                 as={LifetimeWarrantyIcon}
+                                 as={QualityGuarantee}
                                  boxSize="50px"
                                  color="brand.500"
                                  borderRadius="full"

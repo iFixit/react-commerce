@@ -14,6 +14,7 @@ import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
+import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
@@ -48,6 +49,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             />
             <CompatibilitySection compatibility={product.compatibility} />
             <FeaturedProductsSection product={product} />
+            <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
       </>
    );
