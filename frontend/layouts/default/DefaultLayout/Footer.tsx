@@ -3,7 +3,7 @@ import {
    FacebookLogo,
    Flag,
    FlagCountryCode,
-   Globe,
+   Language,
    InstagramLogo,
    RepairOrgLogo,
    TwitterLogo,
@@ -195,7 +195,10 @@ export function CartFooter({
                      </MenuList>
                   </Menu>
                )}
-               <FooterLink href="https://www.ifixit.com/Translate" icon={Globe}>
+               <FooterLink
+                  href="https://www.ifixit.com/Translate"
+                  icon={Language}
+               >
                   Help translate
                </FooterLink>
             </FooterSettings>

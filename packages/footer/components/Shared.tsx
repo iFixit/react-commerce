@@ -34,7 +34,7 @@ type FooterLinkProps = StackProps & {
 };
 
 export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
-   ({ href, children, icon, ...otherProps }, ref) => {
+   ({ fontSize = 'sm', href, children, icon, ...otherProps }, ref) => {
       return (
          <HStack
             ref={ref}
@@ -47,10 +47,10 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             href={href}
             {...otherProps}
          >
-            <Text fontSize="sm" lineHeight="1em" fontWeight="semibold">
+            <Text fontSize={fontSize} lineHeight="1em" fontWeight="semibold">
                {children}
             </Text>
-            {icon && <Icon as={icon} boxSize="6" filter="opacity(0.5)" />}
+            {icon && <Icon as={icon} boxSize="8" filter="opacity(0.5)" />}
          </HStack>
       );
    }

@@ -40,8 +40,8 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
                   sm: 2,
                   lg: 4,
                }}
-               spacing="10"
-               py="10"
+               spacing={{ base: '2', lg: '10' }}
+               py={{ base: '2', sm: '4', lg: '10' }}
             >
                {stats.map((stat, index) => (
                   <Stats
