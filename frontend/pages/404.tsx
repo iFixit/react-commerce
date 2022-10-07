@@ -4,13 +4,9 @@ import { DefaultLayout, DefaultLayoutProps } from '@layouts/default';
 import { getGlobalSettings } from '@models/global-settings';
 import { getStoreByCode, getStoreList } from '@models/store';
 
-export default function Custom404({
-   currentStore,
-   stores,
-   globalSettings,
-}: DefaultLayoutProps) {
+export default function Custom404(layoutProps: DefaultLayoutProps) {
    return (
-      <DefaultLayout {...{ currentStore, stores, globalSettings }}>
+      <DefaultLayout {...layoutProps}>
          {' '}
          {
             <Center h="56.6vh">
