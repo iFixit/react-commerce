@@ -135,6 +135,7 @@ export function ReplacementGuidesSection({
                            <Text
                               as="a"
                               href={guide.guide_url}
+                              target="_blank"
                               fontWeight="bold"
                               fontSize="sm"
                               lineHeight="short"
