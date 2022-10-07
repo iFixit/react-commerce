@@ -1,5 +1,9 @@
-import { Box, Center, Text, Divider} from '@chakra-ui/react';
-import { DefaultLayout, DefaultLayoutProps, getLayoutServerSideProps } from '@layouts/default';
+import { Box, Center, Text, Divider } from '@chakra-ui/react';
+import {
+   DefaultLayout,
+   DefaultLayoutProps,
+   getLayoutServerSideProps,
+} from '@layouts/default';
 
 export default function Custom404(layoutProps: DefaultLayoutProps) {
    return (
@@ -7,11 +11,7 @@ export default function Custom404(layoutProps: DefaultLayoutProps) {
          {
             <Box>
                <Center h="60vh" flexDirection="column">
-                  <Text
-                     fontSize={36}
-                     fontWeight="bold"
-                     fontFamily="Lato"
-                  >
+                  <Text fontSize={36} fontWeight="bold" fontFamily="Lato">
                      404
                   </Text>
                   <Text
@@ -22,7 +22,11 @@ export default function Custom404(layoutProps: DefaultLayoutProps) {
                   >
                      Page not Found
                   </Text>
-                  <Divider borderWidth="1px" borderColor="#ef4444" width="50px"/>
+                  <Divider
+                     borderWidth="1px"
+                     borderColor="#ef4444"
+                     width="50px"
+                  />
                   <Text
                      fontSize={20}
                      fontFamily="Lato"
@@ -42,6 +46,6 @@ export default function Custom404(layoutProps: DefaultLayoutProps) {
 
 export async function getStaticProps() {
    return {
-      props: await getLayoutServerSideProps()
+      props: await getLayoutServerSideProps(),
    };
 }
