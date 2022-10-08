@@ -59,6 +59,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { DefaultLayoutProps } from '../types';
 import { CartFooter } from './Footer';
+import { GoogleAnalytics, Matomo } from '@components/analytics';
 
 export function DefaultLayout({
    stores,
@@ -285,6 +286,8 @@ export function DefaultLayout({
                />
             </Flex>
          </Box>
+         <Matomo />
+         <GoogleAnalytics />
       </ShopifyStorefrontProvider>
    );
 }
