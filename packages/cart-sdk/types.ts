@@ -19,6 +19,7 @@ export type CartLineItem = {
    itemcode: string;
    shopifyVariantId: string;
    name: string;
+   internalDisplayName?: string;
    imageSrc?: string | null;
    quantity: number;
    maxToAdd?: number;
