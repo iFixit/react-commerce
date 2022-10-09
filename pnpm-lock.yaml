@@ -354,8 +354,13 @@ importers:
 
   packages/matomo:
     specifiers:
+      '@ifixit/cart-sdk': workspace:*
+      '@ifixit/helpers': workspace:*
       '@ifixit/tsconfig': workspace:*
       typescript: 4.5.3
+    dependencies:
+      '@ifixit/cart-sdk': link:../cart-sdk
+      '@ifixit/helpers': link:../helpers
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       typescript: 4.5.3
@@ -428,6 +433,7 @@ importers:
       '@ifixit/cart-sdk': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/icons': workspace:*
+      '@ifixit/matomo': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 17.0.37
@@ -444,6 +450,7 @@ importers:
       '@ifixit/cart-sdk': link:../cart-sdk
       '@ifixit/helpers': link:../helpers
       '@ifixit/icons': link:../icons
+      '@ifixit/matomo': link:../matomo
       '@ifixit/newsletter-sdk': link:../newsletter-sdk
     devDependencies:
       '@babel/core': 7.18.6
