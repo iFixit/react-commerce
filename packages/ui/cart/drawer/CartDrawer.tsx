@@ -37,6 +37,7 @@ import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { formatMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
+import { trackMatomoCartChange } from '@ifixit/matomo';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { useIsMounted } from '../../hooks';
@@ -49,6 +50,10 @@ export function CartDrawer() {
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
+
+   React.useEffect(() => {
+      trackMatomoCartChange(cart.data?.lineItems ?? []);
+   }, [cart.data?.lineItems]);
 
    return (
       <>
