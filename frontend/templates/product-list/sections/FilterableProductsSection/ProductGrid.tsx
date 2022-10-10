@@ -110,7 +110,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                <LinkOverlay
                   href={
                      flags.PRODUCT_PAGE_ENABLED
-                        ? `/Products/${product.handle}`
+                        ? `/products/${product.handle}`
                         : `${appContext.ifixitOrigin}${product.url}`
                   }
                >
