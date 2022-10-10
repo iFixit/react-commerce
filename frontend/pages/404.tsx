@@ -6,7 +6,6 @@ import {
    WithLayoutProps,
 } from '@layouts/default';
 import { GetStaticProps } from 'next';
-import { colors } from '../../packages/ui/theme/foundations/colors';
 
 type Custom404Props = WithProvidersProps<WithLayoutProps<{}>>;
 
@@ -22,7 +21,7 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
             </Text>
             <Divider
                borderWidth="1px"
-               borderColor={colors.red['500']}
+               borderColor="red.500"
                width="50px"
             />
             <Text
