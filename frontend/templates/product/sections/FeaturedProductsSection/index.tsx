@@ -133,7 +133,7 @@ function ProductGridItem({
       >
          <Box flexGrow={1}>
             <CardImage src={imageSrc} alt={title} />
-            <NextLink href={`/Products/${handle}`} passHref>
+            <NextLink href={`/products/${handle}`} passHref>
                <LinkOverlay
                   id={productHeadingId}
                   mt="3"
