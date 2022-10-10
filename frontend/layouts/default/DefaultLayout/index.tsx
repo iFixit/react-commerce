@@ -157,7 +157,7 @@ export function DefaultLayout({
                   color="#5bbad5"
                />
             </Head>
-            <Flex direction="column">
+            <Flex direction="column" minH="100vh">
                <Header>
                   <HeaderHiddenBar>
                      <HeaderSearchForm.Mobile>
