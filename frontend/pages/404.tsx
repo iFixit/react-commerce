@@ -8,7 +8,6 @@ import {
 export default function Custom404(layoutProps: DefaultLayoutProps) {
    return (
       <DefaultLayout {...layoutProps}>
-         {
             <Box>
                <Center h="60vh" flexDirection="column">
                   <Text fontSize={36} fontWeight="bold" fontFamily="Lato">
@@ -39,7 +38,6 @@ export default function Custom404(layoutProps: DefaultLayoutProps) {
                   </Text>
                </Center>
             </Box>
-         }
       </DefaultLayout>
    );
 }
