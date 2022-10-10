@@ -365,7 +365,7 @@ export type ProductReviewData = Partial<{
    reviews: ProductReview[];
 }>;
 
-type ProductReview = Partial<{
+export type ProductReview = Partial<{
    author: Partial<ReviewAuthor>;
    body: string;
    created_date: number;
@@ -379,7 +379,7 @@ type ProductReview = Partial<{
    reviewid: number;
 }>;
 
-type ReviewAuthor = {
+export type ReviewAuthor = {
    userid: number;
    name: string;
    avatar: string;
