@@ -1,0 +1,43 @@
+query findPage(
+   $filters: PageFiltersInput
+   $publicationState: PublicationState
+) {
+   pages(filters: $filters, publicationState: $publicationState) {
+      data {
+         id
+         attributes {
+            path
+            title
+            sections {
+               __typename
+               ... on ComponentPageHero {
+                  id
+                  title
+                  description
+                  callToAction {
+                     ...CallToActionFields
+                  }
+                  image {
+                     ...ImageFields
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+fragment ImageFields on UploadFileEntityResponse {
+   data {
+      attributes {
+         alternativeText
+         url
+         formats
+      }
+   }
+}
+
+fragment CallToActionFields on ComponentPageCallToAction {
+   title
+   url
+}
