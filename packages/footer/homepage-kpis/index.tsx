@@ -32,6 +32,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
          bg="blue.50"
          borderWidth={1}
          borderColor="blue.100"
+         mb={-10}
       >
          <PageContentWrapper>
             <SimpleGrid
