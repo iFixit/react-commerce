@@ -1,10 +1,16 @@
 import { Box } from '@chakra-ui/react';
 import { flags } from '@config/flags';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
+import { findPage } from '@models/page';
 import { GetServerSideProps } from 'next';
-import { LandingTemplateProps } from './hooks/useLandingTemplateProps';
+import {
+   PageTemplateProps,
+   usePageTemplateProps,
+} from './hooks/usePageTemplateProps';
 
-export const LandingTemplate: NextPageWithLayout<LandingTemplateProps> = () => {
+export const LandingTemplate: NextPageWithLayout<PageTemplateProps> = () => {
+   const { page } = usePageTemplateProps();
+   console.log(page);
    return (
       <>
          <Box py="6">Store home page</Box>
@@ -16,19 +22,32 @@ LandingTemplate.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
 
-export const getServerSideProps: GetServerSideProps<LandingTemplateProps> =
-   async (context) => {
-      if (!flags.STORE_HOME_PAGE_ENABLED) {
-         return {
-            notFound: true,
-         };
-      }
-      const layoutProps = await getLayoutServerSideProps();
-      const pageProps: LandingTemplateProps = {
-         layoutProps,
-         appProps: {},
-      };
+export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
+   context
+) => {
+   if (!flags.STORE_HOME_PAGE_ENABLED) {
       return {
-         props: pageProps,
+         notFound: true,
       };
+   }
+
+   const layoutProps = await getLayoutServerSideProps();
+   const page = await findPage({
+      path: '/Store',
+   });
+
+   if (page == null) {
+      return {
+         notFound: true,
+      };
+   }
+
+   const pageProps: PageTemplateProps = {
+      layoutProps,
+      appProps: {},
+      page,
    };
+   return {
+      props: pageProps,
+   };
+};

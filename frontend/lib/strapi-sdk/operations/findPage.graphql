@@ -1,8 +1,13 @@
+# Write your query or mutation here
 query findPage(
    $filters: PageFiltersInput
    $publicationState: PublicationState
 ) {
-   pages(filters: $filters, publicationState: $publicationState) {
+   pages(
+      filters: $filters
+      publicationState: $publicationState
+      pagination: { limit: 1 }
+   ) {
       data {
          id
          attributes {

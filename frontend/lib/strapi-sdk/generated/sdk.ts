@@ -2861,7 +2861,11 @@ export const MenuEntityResponsePropsFragmentDoc = `
     ${MenuPropsFragmentDoc}`;
 export const FindPageDocument = `
     query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
-  pages(filters: $filters, publicationState: $publicationState) {
+  pages(
+    filters: $filters
+    publicationState: $publicationState
+    pagination: {limit: 1}
+  ) {
     data {
       id
       attributes {
