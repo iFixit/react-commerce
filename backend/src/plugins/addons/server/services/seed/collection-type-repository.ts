@@ -1,5 +1,6 @@
 import { chunk } from 'lodash';
 import { ContentTypeRepository, LoadArgs } from './content-type-repository';
+import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
 import { ContentTypeItem, MediaItem } from './types';
 
 const PAGE_SIZE = 100;
@@ -23,23 +24,33 @@ export class CollectionTypeRepository extends ContentTypeRepository {
       let page = 1;
       let pageCount = 1;
       this.items = [];
-      do {
-         strapi.log.info(
-            `🌱 [${this.schema.info.displayName}] Fetching page ${page}..`
-         );
-         const response = await this.fetch<CollectionTypeQueryResponse>({
-            strapiOrigin,
-            params: {
-               pagination: {
-                  page,
-                  pageSize: PAGE_SIZE,
+      try {
+         do {
+            strapi.log.info(
+               `🌱 [${this.schema.info.displayName}] Fetching page ${page}..`
+            );
+            const response = await this.fetch<CollectionTypeQueryResponse>({
+               strapiOrigin,
+               params: {
+                  pagination: {
+                     page,
+                     pageSize: PAGE_SIZE,
+                  },
                },
-            },
-         });
-         pageCount = response.meta.pagination.pageCount;
-         this.items = this.items.concat(response.data);
-         page++;
-      } while (page <= pageCount && page * PAGE_SIZE <= MAX_ITEMS_COUNT);
+            });
+            pageCount = response.meta.pagination.pageCount;
+            this.items = this.items.concat(response.data);
+            page++;
+         } while (page <= pageCount && page * PAGE_SIZE <= MAX_ITEMS_COUNT);
+      } catch (error) {
+         if (error instanceof ContentTypeNotFoundError) {
+            strapi.log.warn(
+               `🌱 [${this.schema.info.displayName}] Content type not found`
+            );
+         } else {
+            throw error;
+         }
+      }
    }
 
    async saveAttributes() {
