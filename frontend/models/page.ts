@@ -8,6 +8,13 @@ export type FindPageArgs = {
 
 export type Page = NonNullable<Awaited<ReturnType<typeof findPage>>>;
 
+export type Section = Page['sections'][0];
+
+export type GetSection<T extends Section['__typename']> = Extract<
+   Section,
+   { __typename: T }
+>;
+
 export async function findPage({ path }: FindPageArgs) {
    const response = await strapi.findPage({
       filters: {
@@ -22,7 +29,7 @@ export async function findPage({ path }: FindPageArgs) {
    }
 
    const sections = filterNullableItems(
-      page.sections?.map((section) => {
+      page.sections?.map((section, index) => {
          if (section == null) {
             return null;
          }
@@ -30,6 +37,7 @@ export async function findPage({ path }: FindPageArgs) {
             case 'ComponentPageHero': {
                return {
                   __typename: section.__typename,
+                  id: `${section.__typename}-${index}`,
                   title: section.title ?? null,
                   description: section.description ?? null,
                   callToAction: section.callToAction ?? null,

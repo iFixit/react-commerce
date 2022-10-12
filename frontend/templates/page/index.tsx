@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { flags } from '@config/flags';
+import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findPage } from '@models/page';
 import { GetServerSideProps } from 'next';
@@ -7,18 +8,26 @@ import {
    PageTemplateProps,
    usePageTemplateProps,
 } from './hooks/usePageTemplateProps';
+import { HeroSection } from './sections/HeroSection';
 
-export const LandingTemplate: NextPageWithLayout<PageTemplateProps> = () => {
+export const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
    const { page } = usePageTemplateProps();
-   console.log(page);
    return (
-      <>
-         <Box py="6">Store home page</Box>
-      </>
+      <Box>
+         {page.sections.map((section) => {
+            switch (section.__typename) {
+               case 'ComponentPageHero': {
+                  return <HeroSection key={section.id} data={section} />;
+               }
+               default:
+                  return assertNever(section.__typename);
+            }
+         })}
+      </Box>
    );
 };
 
-LandingTemplate.getLayout = function getLayout(page, pageProps) {
+PageTemplate.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
 
