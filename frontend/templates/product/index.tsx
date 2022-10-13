@@ -63,13 +63,10 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    async (context) => {
       noindexDevDomains(context);
+      // @TODO: Remove this before the page goes live
+      context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
-      if (!flags.PRODUCT_PAGE_ENABLED) {
-         return {
-            notFound: true,
-         };
-      }
       const layoutProps = await getLayoutServerSideProps();
       const product = await findProduct(
          {

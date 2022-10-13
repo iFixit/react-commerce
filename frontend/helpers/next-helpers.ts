@@ -4,7 +4,7 @@ import { setSentryPageContext } from '@ifixit/sentry';
 import * as Sentry from '@sentry/nextjs';
 import { PROD_USER_AGENT } from '@config/constants';
 
-export function serverSidePropsWrapper<T>(
+export function serverSidePropsWrapper<T extends { [key: string]: any }>(
    getServerSidePropsInternal: GetServerSideProps<T>
 ): GetServerSideProps<T> {
    return async (context) => {
