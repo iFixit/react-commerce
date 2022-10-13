@@ -69,7 +69,14 @@ export function trackMatomoCartChange(items: CartLineItem[]) {
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
  */
-type AddToCartData = Omit<ProductData, 'price'> & {
+type AddToCartData = {
+   productSku: string;
+   productName?: string;
+   /**
+    * Category name, or up to five unique categories, e.g. ["Books", "New
+    * Releases", "Technology"]
+    */
+   categoryName?: string | [string, string?, string?, string?, string?];
    price?: Money;
    /**
     * How many of this item to add (Defaults to 1)
