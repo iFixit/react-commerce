@@ -4,6 +4,7 @@ import {
    WithProvidersProps,
 } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
+import { noindexDevDomains } from '@helpers/next-helpers';
 import {
    destylizeDeviceItemType,
    destylizeDeviceTitle as destylizeDeviceTitle,
@@ -69,6 +70,7 @@ export const getProductListServerSideProps = ({
             'public, s-maxage=10, stale-while-revalidate=600'
          );
       }
+      noindexDevDomains(context);
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
       const layoutProps: Promise<DefaultLayoutProps> =
