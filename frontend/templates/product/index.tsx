@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
 import { flags } from '@config/flags';
+import { noindexDevDomains } from '@helpers/next-helpers';
 import { invariant } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
@@ -61,6 +62,7 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    async (context) => {
+      noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
       if (!flags.PRODUCT_PAGE_ENABLED) {
