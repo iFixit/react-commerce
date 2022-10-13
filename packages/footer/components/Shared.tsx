@@ -47,7 +47,12 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             href={href}
             {...otherProps}
          >
-            <Text fontSize={fontSize} lineHeight="1em" fontWeight="semibold" color="gray.300">
+            <Text
+               fontSize={fontSize}
+               lineHeight="1em"
+               fontWeight="semibold"
+               color="gray.300"
+            >
                {children}
             </Text>
             {icon && <Icon as={icon} boxSize="8" filter="opacity(0.5)" />}
