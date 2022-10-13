@@ -1,13 +1,18 @@
 import { CartLineItem } from '@ifixit/cart-sdk';
 import { Money, sumMoney } from '@ifixit/helpers';
 
-const _paq: any[] | undefined =
-   typeof window === 'undefined' ? undefined : (window as any)._paq;
+function usePaq(): any[] | undefined {
+   if (typeof window === 'undefined') {
+      return undefined;
+   }
+   return (window as any)._paq;
+}
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  */
 export function trackPageView(url: string) {
+   const _paq = usePaq();
    if (!_paq) {
       return;
    }
@@ -32,6 +37,7 @@ type ProductData = {
 };
 
 export function trackMatomoEcommerceView(product: ProductData) {
+   const _paq = usePaq();
    if (!_paq) {
       return;
    }
@@ -45,6 +51,7 @@ export function trackMatomoEcommerceView(product: ProductData) {
 }
 
 export function trackMatomoCartChange(items: CartLineItem[]) {
+   const _paq = usePaq();
    if (!_paq) {
       return;
    }
@@ -89,6 +96,7 @@ type AddToCartData = {
  * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
  */
 function trackAddToCart(product: AddToCartData) {
+   const _paq = usePaq();
    if (!_paq) {
       return;
    }
@@ -103,6 +111,7 @@ function trackAddToCart(product: AddToCartData) {
 }
 
 function trackClearCart() {
+   const _paq = usePaq();
    if (!_paq) {
       return;
    }
@@ -110,6 +119,7 @@ function trackClearCart() {
 }
 
 function trackCartUpdated(grandTotal: Money) {
+   const _paq = usePaq();
    if (!_paq) {
       return;
    }
