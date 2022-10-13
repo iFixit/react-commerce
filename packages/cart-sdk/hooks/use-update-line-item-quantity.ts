@@ -1,4 +1,5 @@
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { trackMatomoCartChange } from '@ifixit/matomo';
 import { useMutation, useQueryClient } from 'react-query';
 import { Cart } from '../types';
 import { cartKeys } from '../utils';
@@ -75,6 +76,10 @@ export function useUpdateLineItemQuantity() {
                cartKeys.cart,
                context?.previousCart
             );
+         },
+         onSuccess: () => {
+            const cart = client.getQueryData<Cart>(cartKeys.cart);
+            trackMatomoCartChange(cart?.lineItems ?? []);
          },
          onSettled: () => {
             client.invalidateQueries(cartKeys.cart);

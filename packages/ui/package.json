@@ -13,7 +13,6 @@
       "@ifixit/app": "workspace:*",
       "@ifixit/cart-sdk": "workspace:*",
       "@ifixit/icons": "workspace:*",
-      "@ifixit/matomo": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
       "@ifixit/helpers": "workspace:*",
       "@ifixit/auth-sdk": "workspace:*"

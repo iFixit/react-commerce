@@ -9,6 +9,7 @@
       "@ifixit/helpers": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
       "@ifixit/auth-sdk": "workspace:*",
+      "@ifixit/matomo": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*"
    },
    "peerDependencies": {

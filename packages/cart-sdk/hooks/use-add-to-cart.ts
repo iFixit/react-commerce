@@ -1,5 +1,6 @@
 import { assertNever } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { trackMatomoCartChange } from '@ifixit/matomo';
 import { useMutation, useQueryClient } from 'react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
@@ -94,6 +95,10 @@ export function useAddToCart() {
                cartKeys.cart,
                context?.previousCart
             );
+         },
+         onSuccess: () => {
+            const cart = client.getQueryData<Cart>(cartKeys.cart);
+            trackMatomoCartChange(cart?.lineItems ?? []);
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;
