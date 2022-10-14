@@ -4,10 +4,11 @@ import {
    Flex,
    forwardRef,
    Heading,
-   HStack,
+   ListItem,
    SimpleGrid,
    TagProps,
    Text,
+   UnorderedList,
 } from '@chakra-ui/react';
 import {
    faClock,
@@ -23,6 +24,8 @@ import { Product } from '@models/product';
 export type ReplacementGuidesSectionProps = {
    product: Product;
 };
+
+type ReplacementGuide = Product['replacementGuides'][0];
 
 export function ReplacementGuidesSection({
    product,
@@ -58,128 +61,148 @@ export function ReplacementGuidesSection({
                   base: 1,
                   lg: 2,
                }}
-               spacing="8"
+               spacing="3"
             >
                {product.replacementGuides.map((guide) => {
-                  const hasBadges =
-                     isPresent(guide.difficulty) ||
-                     isPresent(guide.time_required);
-                  return (
-                     <Flex
-                        key={guide.id}
-                        minH={{
-                           base: 'auto',
-                           md: '150px',
-                        }}
-                        bg="white"
-                        overflow="hidden"
-                        borderColor="gray.300"
-                        borderWidth="1px"
-                        borderRadius="md"
-                        // align="center"
-                     >
-                        {guide.image_url && (
-                           <>
-                              <Flex
-                                 align="center"
-                                 justify="center"
-                                 width={{
-                                    base: '96px',
-                                    md: '176px',
-                                 }}
-                                 height={{
-                                    base: '96px',
-                                    md: 'full',
-                                 }}
-                                 my={{
-                                    base: 3,
-                                    md: 0,
-                                 }}
-                                 ml={{
-                                    base: 3,
-                                    md: 0,
-                                 }}
-                                 borderColor="gray.300"
-                                 borderWidth={{
-                                    base: '1px',
-                                    md: '0',
-                                 }}
-                                 borderRadius={{
-                                    base: 'md',
-                                    md: 'none',
-                                 }}
-                                 overflow="hidden"
-                                 flexGrow={0}
-                                 flexShrink={0}
-                                 position="relative"
-                              >
-                                 <IfixitImage
-                                    src={guide.image_url}
-                                    alt=""
-                                    objectFit="cover"
-                                    layout="fill"
-                                    sizes="20vw"
-                                    priority
-                                 />
-                              </Flex>
-                              <Divider
-                                 orientation="vertical"
-                                 display={{
-                                    base: 'none',
-                                    md: 'block',
-                                 }}
-                              />
-                           </>
-                        )}
-                        <Flex direction="column" px="3" py="3">
-                           <Text
-                              as="a"
-                              href={guide.guide_url}
-                              target="_blank"
-                              fontWeight="bold"
-                              fontSize="sm"
-                              lineHeight="short"
-                              noOfLines={3}
-                              flexShrink={0}
-                           >
-                              {guide.title}
-                           </Text>
-                           {isPresent(guide.summary) && (
-                              <Text
-                                 fontSize="sm"
-                                 mt="1"
-                                 flexShrink={0}
-                                 flexGrow={0}
-                                 noOfLines={1}
-                                 display={{
-                                    base: 'none',
-                                    md: '-webkit-box',
-                                 }}
-                              >
-                                 {guide.summary}
-                              </Text>
-                           )}
-                           {hasBadges && (
-                              <HStack mt="3">
-                                 {isPresent(guide.time_required) && (
-                                    <IconBadge icon={faClock}>
-                                       {guide.time_required}
-                                    </IconBadge>
-                                 )}
-                                 {isPresent(guide.difficulty) && (
-                                    <DifficultyBadge
-                                       difficulty={guide.difficulty}
-                                    />
-                                 )}
-                              </HStack>
-                           )}
-                        </Flex>
-                     </Flex>
-                  );
+                  return <ReplacementGuideCard key={guide.id} guide={guide} />;
                })}
             </SimpleGrid>
          </PageContentWrapper>
       </Box>
+   );
+}
+
+type ReplacementGuideCardProps = {
+   guide: ReplacementGuide;
+};
+
+function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
+   const hasBadges =
+      isPresent(guide.difficulty) || isPresent(guide.time_required);
+   return (
+      <Flex
+         minH={{
+            base: 'auto',
+            md: '150px',
+         }}
+         bg="white"
+         borderColor="gray.300"
+         borderWidth="1px"
+         borderRadius="md"
+      >
+         {guide.image_url && (
+            <>
+               <Flex
+                  align="center"
+                  justify="center"
+                  width={{
+                     base: '96px',
+                     md: '176px',
+                  }}
+                  height={{
+                     base: '96px',
+                     md: 'full',
+                  }}
+                  my={{
+                     base: 3,
+                     md: 0,
+                  }}
+                  ml={{
+                     base: 3,
+                     md: 0,
+                  }}
+                  borderColor="gray.300"
+                  borderWidth={{
+                     base: '1px',
+                     md: '0',
+                  }}
+                  borderRadius={{
+                     base: 'md',
+                     md: 'none',
+                  }}
+                  overflow="hidden"
+                  flexGrow={0}
+                  flexShrink={0}
+                  position="relative"
+               >
+                  <IfixitImage
+                     src={guide.image_url}
+                     alt=""
+                     objectFit="cover"
+                     layout="fill"
+                     sizes="20vw"
+                     priority
+                  />
+               </Flex>
+               <Divider
+                  orientation="vertical"
+                  display={{
+                     base: 'none',
+                     md: 'block',
+                  }}
+               />
+            </>
+         )}
+         <Box px="3" py="3" overflow="hidden">
+            <Text
+               as="a"
+               href={guide.guide_url}
+               target="_blank"
+               fontWeight="bold"
+               fontSize="sm"
+               lineHeight="short"
+               noOfLines={3}
+               flexShrink={0}
+            >
+               {guide.title}
+            </Text>
+            {isPresent(guide.summary) && (
+               <Text
+                  fontSize="sm"
+                  mt="1"
+                  flexShrink={0}
+                  flexGrow={0}
+                  noOfLines={1}
+                  display={{
+                     base: 'none',
+                     md: '-webkit-box',
+                  }}
+               >
+                  {guide.summary}
+               </Text>
+            )}
+            {hasBadges && (
+               <UnorderedList
+                  display="flex"
+                  flexWrap="wrap"
+                  listStyleType="none"
+                  mx="0"
+                  mt="1"
+               >
+                  {isPresent(guide.time_required) && (
+                     <BadgeListItem>
+                        <IconBadge icon={faClock}>
+                           {guide.time_required}
+                        </IconBadge>
+                     </BadgeListItem>
+                  )}
+                  {isPresent(guide.difficulty) && (
+                     <BadgeListItem>
+                        <DifficultyBadge difficulty={guide.difficulty} />
+                     </BadgeListItem>
+                  )}
+               </UnorderedList>
+            )}
+         </Box>
+      </Flex>
+   );
+}
+
+function BadgeListItem({ children }: React.PropsWithChildren<{}>) {
+   return (
+      <ListItem display="flex" mr="2" mt="1" maxW="full" overflow="hidden">
+         {children}
+      </ListItem>
    );
 }
 
