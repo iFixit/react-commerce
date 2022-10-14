@@ -3,7 +3,7 @@ import {
    faCircleExclamation,
    faCircleInfo,
 } from '@fortawesome/pro-solid-svg-icons';
-import { useAddToCart } from '@ifixit/cart-sdk';
+import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { useCartDrawer, useUserPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
@@ -12,10 +12,19 @@ import { NotifyMeForm } from './NotifyMeForm';
 
 type AddToCartProps = {
    product: Product;
-   selectedVariant: ProductVariant;
+   selectedVariant: ProductVariantWithSku;
 };
 
+type ProductVariantWithSku = ProductVariant & { sku: string };
+
+export function isVariantWithSku(
+   variant: ProductVariant
+): variant is ProductVariantWithSku {
+   return typeof variant.sku === 'string';
+}
+
 export function AddToCart({ product, selectedVariant }: AddToCartProps) {
+   const inventory = useVariantInventory(selectedVariant);
    const addToCart = useAddToCart();
    const { onOpen } = useCartDrawer();
    const userPrice = useUserPrice({
@@ -25,21 +34,19 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
    });
 
    const handleAddToCart = React.useCallback(() => {
-      if (selectedVariant.sku) {
-         addToCart.mutate({
-            type: 'product',
-            product: {
-               name: product.title,
-               itemcode: selectedVariant.sku,
-               shopifyVariantId: selectedVariant.id,
-               quantity: 1,
-               imageSrc: selectedVariant.image?.url || product.images[0].url,
-               price: userPrice.price,
-               compareAtPrice: userPrice.compareAtPrice,
-            },
-         });
-         onOpen();
-      }
+      addToCart.mutate({
+         type: 'product',
+         product: {
+            name: product.title,
+            itemcode: selectedVariant.sku,
+            shopifyVariantId: selectedVariant.id,
+            quantity: 1,
+            imageSrc: selectedVariant.image?.url || product.images[0].url,
+            price: userPrice.price,
+            compareAtPrice: userPrice.compareAtPrice,
+         },
+      });
+      onOpen();
    }, [
       selectedVariant.sku,
       selectedVariant.id,
@@ -53,8 +60,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
    ]);
 
    const isSelectedVariantAvailable =
-      selectedVariant.quantityAvailable != null &&
-      selectedVariant.quantityAvailable > 0;
+      inventory.maxToBeAdded != null && inventory.maxToBeAdded > 0;
 
    return (
       <VStack mt="5" align="center">
@@ -64,12 +70,14 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                   w="full"
                   colorScheme="brand"
                   isLoading={addToCart.isLoading}
+                  disabled={inventory.remaining === 0}
                   onClick={handleAddToCart}
                >
                   Add to cart
                </Button>
                <InventoryMessage
-                  quantityAvailable={selectedVariant.quantityAvailable}
+                  quantityAvailable={inventory.maxToBeAdded}
+                  quantityAddedToCart={inventory.addedToCart}
                />
                <ShippingRestrictions />
             </>
@@ -113,12 +121,18 @@ function ShippingRestrictions() {
 
 type InvetoryMessageProps = {
    quantityAvailable?: number | null;
+   quantityAddedToCart?: number;
 };
 
-function InventoryMessage({ quantityAvailable }: InvetoryMessageProps) {
+function InventoryMessage({
+   quantityAvailable,
+   quantityAddedToCart = 0,
+}: InvetoryMessageProps) {
    if (quantityAvailable == null || quantityAvailable >= 10) {
       return null;
    }
+   const remaining = Math.max(0, quantityAvailable - quantityAddedToCart);
+
    return (
       <Flex color="red.600" py="0" fontSize="sm" align="center">
          <FaIcon
@@ -128,11 +142,33 @@ function InventoryMessage({ quantityAvailable }: InvetoryMessageProps) {
             mr="1.5"
             color="red.500"
          />
-         Only{' '}
-         <Text fontWeight="bold" mx="1">
-            {quantityAvailable}
-         </Text>{' '}
-         left
+         {remaining > 0 ? (
+            <>
+               Only{' '}
+               <Text fontWeight="bold" mx="1">
+                  {remaining}
+               </Text>{' '}
+               left
+            </>
+         ) : (
+            <>No more items available</>
+         )}
       </Flex>
    );
+}
+
+function useVariantInventory(variant: ProductVariantWithSku) {
+   const cartLineItem = useCartLineItem(variant.sku);
+   const cartMaxToAdd = cartLineItem.data?.maxToAdd ?? undefined;
+   const addedToCart = cartLineItem.data?.quantity ?? undefined;
+   const remaining =
+      cartMaxToAdd != null && addedToCart != null
+         ? Math.max(0, cartMaxToAdd - addedToCart)
+         : undefined;
+   const maxToBeAdded = cartMaxToAdd ?? variant.quantityAvailable ?? undefined;
+   return {
+      maxToBeAdded,
+      addedToCart,
+      remaining,
+   };
 }

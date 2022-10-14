@@ -43,7 +43,7 @@ import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import NextLink from 'next/link';
 import * as React from 'react';
-import { AddToCart } from './AddToCart';
+import { AddToCart, isVariantWithSku } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -150,7 +150,12 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
-               <AddToCart product={product} selectedVariant={selectedVariant} />
+               {isVariantWithSku(selectedVariant) && (
+                  <AddToCart
+                     product={product}
+                     selectedVariant={selectedVariant}
+                  />
+               )}
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
                      <ListItem display="flex" alignItems="center">
