@@ -112,6 +112,9 @@ query findProduct($handle: String) {
             warranty: metafield(namespace: "ifixit", key: "warranty") {
                value
             }
+            enabled: metafield(namespace: "ifixit", key: "enabled2") {
+               value
+            }
             disableWhenOOS: metafield(
                namespace: "ifixit"
                key: "disable_when_oos"

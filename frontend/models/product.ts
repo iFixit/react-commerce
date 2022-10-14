@@ -27,8 +27,9 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    const variants = getVariants(response.product);
    const activeVariants = variants.filter(
       (variant) =>
-         !variant.disableWhenOOS ||
-         (variant.quantityAvailable && variant.quantityAvailable > 0)
+         variant.enabled &&
+         (!variant.disableWhenOOS ||
+            (variant.quantityAvailable && variant.quantityAvailable > 0))
    );
    if (activeVariants.length === 0) {
       return null;
@@ -103,6 +104,7 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          specifications: variant.specifications?.value ?? null,
          warranty: variant.warranty?.value ?? null,
          crossSellVariants: getCrossSellVariants(variant),
+         enabled: variant.enabled?.value === 'true',
          disableWhenOOS: variant.disableWhenOOS?.value === 'true',
       };
    });
@@ -117,10 +119,12 @@ function getImages(
          image.altText == null ||
          !variants.find((variant) => {
             const skuAltTextMatch = variant.sku === image.altText;
-            const variantDisabled =
+            const genericDisabled = !variant.enabled;
+            const OOSDisabled =
                variant.disableWhenOOS &&
                variant.quantityAvailable != null &&
                variant.quantityAvailable <= 0;
+            const variantDisabled = genericDisabled || OOSDisabled;
             return skuAltTextMatch && variantDisabled;
          })
    );
