@@ -4,7 +4,10 @@
    "main": "./index.tsx",
    "types": "./index.tsx",
    "license": "MIT",
-   "dependencies": {},
+   "dependencies": {
+      "@ifixit/cart-sdk": "workspace:*",
+      "@ifixit/helpers": "workspace:*"
+   },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
       "typescript": "4.5.3"

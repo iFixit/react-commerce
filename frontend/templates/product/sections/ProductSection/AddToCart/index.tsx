@@ -38,6 +38,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
          type: 'product',
          product: {
             name: product.title,
+            internalDisplayName: selectedVariant.internalDisplayName?.value,
             itemcode: selectedVariant.sku,
             shopifyVariantId: selectedVariant.id,
             quantity: 1,
@@ -53,6 +54,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       selectedVariant.image?.url,
       addToCart,
       product.title,
+      selectedVariant.internalDisplayName?.value,
       product.images,
       userPrice.price,
       userPrice.compareAtPrice,

@@ -3,9 +3,11 @@ import { PageBreadcrumb } from '@components/common';
 import { flags } from '@config/flags';
 import { noindexDevDomains } from '@helpers/next-helpers';
 import { invariant } from '@ifixit/helpers';
+import { trackMatomoEcommerceView } from '@ifixit/matomo';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
+import * as React from 'react';
 import { SecondaryNavigation } from './component/SecondaryNavigation';
 import {
    ProductTemplateProps,
@@ -24,6 +26,16 @@ import { ServiceValuePropositionSection } from './sections/ServiceValuePropositi
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
+
+   React.useEffect(() => {
+      trackMatomoEcommerceView({
+         productSku: selectedVariant.sku ?? selectedVariant.id,
+         productName:
+            selectedVariant.internalDisplayName?.value ?? product.title,
+         price: selectedVariant.price,
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
 
    return (
       <>

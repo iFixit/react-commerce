@@ -129,6 +129,12 @@ query findProduct($handle: String) {
                   }
                }
             }
+            internalDisplayName: metafield(
+               namespace: "ifixit"
+               key: "internal_display_name"
+            ) {
+               value
+            }
          }
       }
    }

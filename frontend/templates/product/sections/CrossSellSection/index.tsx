@@ -111,6 +111,7 @@ export function CrossSellSection({
             });
             return {
                name: product.title,
+               internalDisplayName: selectedVariant.internalDisplayName?.value,
                itemcode: selectedVariant.sku,
                shopifyVariantId: selectedVariant.id,
                quantity: 1,

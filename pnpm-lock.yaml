@@ -251,6 +251,7 @@ importers:
       '@ifixit/auth-sdk': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/ifixit-api-client': workspace:*
+      '@ifixit/matomo': workspace:*
       '@ifixit/shopify-storefront-client': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 17.0.37
@@ -261,6 +262,7 @@ importers:
       '@ifixit/auth-sdk': link:../auth-sdk
       '@ifixit/helpers': link:../helpers
       '@ifixit/ifixit-api-client': link:../ifixit-api-client
+      '@ifixit/matomo': link:../matomo
       '@ifixit/shopify-storefront-client': link:../shopify-storefront-client
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
@@ -354,8 +356,13 @@ importers:
 
   packages/matomo:
     specifiers:
+      '@ifixit/cart-sdk': workspace:*
+      '@ifixit/helpers': workspace:*
       '@ifixit/tsconfig': workspace:*
       typescript: 4.5.3
+    dependencies:
+      '@ifixit/cart-sdk': link:../cart-sdk
+      '@ifixit/helpers': link:../helpers
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       typescript: 4.5.3

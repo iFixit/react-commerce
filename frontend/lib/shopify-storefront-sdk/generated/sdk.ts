@@ -6499,6 +6499,10 @@ export type FindProductQuery = {
                   >;
                }>;
             }>;
+            internalDisplayName?: Maybe<{
+               __typename?: 'Metafield';
+               value: string;
+            }>;
          }>;
       };
    }>;
@@ -6687,6 +6691,12 @@ export const FindProductDocument = `
               ...ProductVariantCard
             }
           }
+        }
+        internalDisplayName: metafield(
+          namespace: "ifixit"
+          key: "internal_display_name"
+        ) {
+          value
         }
       }
     }

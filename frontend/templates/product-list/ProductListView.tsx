@@ -1,5 +1,4 @@
 import { Flex, VStack } from '@chakra-ui/react';
-import { Matomo, GoogleAnalytics } from '@components/analytics';
 import { SecondaryNavbar } from '@components/common';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { PageContentWrapper } from '@ifixit/ui';
@@ -83,8 +82,6 @@ export function ProductListView({
                <Index indexName={indexName}>
                   <Configure filters={filters} hitsPerPage={18} />
                   <MetaTags productList={productList} />
-                  <Matomo />
-                  <GoogleAnalytics />
                   <HeroSection productList={productList} />
                   {productList.children.length > 0 && (
                      <ProductListChildrenSection productList={productList} />

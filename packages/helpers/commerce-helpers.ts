@@ -52,3 +52,14 @@ export function multiplyMoney(money: Money, multiplier: number): Money {
       amount: amount.toFixed(2),
    };
 }
+
+export function sumMoney(moneys: Money[]): Money {
+   const cents = moneys.reduce((sum, money) => {
+      return sum + convertMoneyToCents(money);
+   }, 0);
+   const amount = cents / 100;
+   return {
+      ...moneys[0],
+      amount: amount.toFixed(2),
+   };
+}
