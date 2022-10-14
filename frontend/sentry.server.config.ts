@@ -9,6 +9,7 @@ const SENTRY_DSN = process.env.SENTRY_DSN;
 Sentry.init({
    dsn: SENTRY_DSN,
    sampleRate: 1.0,
+   normalizeDepth: 5,
    // ...
    // Note: if you want to override the automatic release value, do not set a
    // `release` value here - use the environment variable `SENTRY_RELEASE`, so

@@ -3,15 +3,11 @@ import * as React from 'react';
 function SvgQualityGuarantee(props: React.SVGProps<SVGSVGElement>) {
    return (
       <svg
-         id="quality-guarantee_svg__Layer_1"
          xmlns="http://www.w3.org/2000/svg"
-         x={0}
-         y={0}
          viewBox="0 0 233.7 209.9"
-         xmlSpace="preserve"
+         fill="currentColor"
          {...props}
       >
-         <style>{'.quality-guarantee_svg__st0{fill:#fff}'}</style>
          <path
             className="quality-guarantee_svg__st0"
             d="M102.3 103c.9 1.2.9 3 0 4.1l-10.2 13.5c-.8 1.1-.9 3-.1 4.1l.8 1.1c.8 1.1 2.4 2.7 3.5 3.5l.9.6c1.1.8 3 .8 4.1-.1l13.5-10.3c1.1-.8 3-.8 4.1 0l13.5 10.2c1.1.9 3 .9 4.1.1l1.2-.9c1.2-.8 2.7-2.4 3.5-3.6l.5-.7c.8-1.1.7-3-.1-4.1L131.4 107c-.9-1.2-.9-3 0-4.1l10.3-13.4c.8-1.1 1-3.1.3-4.3l-.5-.9c-.7-1.2-2.2-2.8-3.4-3.5l-1.4-.8c-1.2-.8-3.1-.6-4.2.2L119 90.4c-1.2.8-3 .8-4.1 0l-13.5-10.2c-1.1-.8-3-.9-4.1-.1l-.8.5c-1.2.8-2.8 2.4-3.6 3.5l-.9 1.2c-.8 1.1-.8 3 0 4.1l10.3 13.6z"

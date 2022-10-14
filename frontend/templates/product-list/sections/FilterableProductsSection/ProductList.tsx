@@ -21,6 +21,7 @@ import { useAppContext } from '@ifixit/app';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
+import { getProductPath } from '@helpers/product-helpers';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 
@@ -249,7 +250,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      <LinkOverlay
                         href={
                            flags.PRODUCT_PAGE_ENABLED
-                              ? `/Products/${product.handle}`
+                              ? getProductPath(product.handle)
                               : `${appContext.ifixitOrigin}${product.url}`
                         }
                      >

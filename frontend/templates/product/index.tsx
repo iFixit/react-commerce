@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
 import { flags } from '@config/flags';
+import { noindexDevDomains } from '@helpers/next-helpers';
 import { invariant } from '@ifixit/helpers';
 import { trackMatomoEcommerceView } from '@ifixit/matomo';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
@@ -16,6 +17,7 @@ import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
+import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
@@ -60,6 +62,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             />
             <CompatibilitySection compatibility={product.compatibility} />
             <FeaturedProductsSection product={product} />
+            <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
       </>
    );
@@ -71,13 +74,11 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    async (context) => {
+      noindexDevDomains(context);
+      // @TODO: Remove this before the page goes live
+      context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
-      if (!flags.PRODUCT_PAGE_ENABLED) {
-         return {
-            notFound: true,
-         };
-      }
       const layoutProps = await getLayoutServerSideProps();
       const product = await findProduct(
          {

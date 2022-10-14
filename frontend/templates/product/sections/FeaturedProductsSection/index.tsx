@@ -11,6 +11,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
+import { getProductPath } from '@helpers/product-helpers';
 import {
    computeDiscountPercentage,
    isLifetimeWarranty,
@@ -133,7 +134,7 @@ function ProductGridItem({
       >
          <Box flexGrow={1}>
             <CardImage src={imageSrc} alt={title} />
-            <NextLink href={`/Products/${handle}`} passHref>
+            <NextLink href={getProductPath(handle)} passHref>
                <LinkOverlay
                   id={productHeadingId}
                   mt="3"

@@ -10,7 +10,8 @@
          "@models/*": ["models/*"],
          "@components/*": ["components/*"],
          "@templates/*": ["templates/*"],
-         "@layouts/*": ["layouts/*"]
+         "@layouts/*": ["layouts/*"],
+         "@public/*": ["public/*"]
       },
       "types": ["cypress", "@testing-library/cypress"]
    },

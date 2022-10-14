@@ -46,20 +46,10 @@ export function ProductOptions({
                   <HStack>
                      <Text fontWeight="bold" color="gray.800">
                         {option.name}
+                        {selectorType === SelectorType.SINGLE &&
+                           `: ${option.values[0]}`}
                      </Text>
                   </HStack>
-                  {selectorType === SelectorType.SINGLE && (
-                     <Box
-                        bg="white"
-                        borderWidth={1}
-                        borderColor="gray.200"
-                        borderRadius="md"
-                        px="4"
-                        py="1.5"
-                     >
-                        {option.values[0]}
-                     </Box>
-                  )}
                   {selectorType === SelectorType.SELECT && (
                      <Select
                         bg="white"

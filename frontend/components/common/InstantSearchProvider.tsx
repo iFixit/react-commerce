@@ -185,7 +185,7 @@ export function InstantSearchProvider({
 
             if (deviceHandle && itemType) {
                filterObject['facet_tags.Item Type'] = [
-                  destylizeDeviceItemType(decodeURIComponent(itemType)),
+                  destylizeDeviceItemType(decodeURIComponent(itemType)).trim(),
                ];
             }
 

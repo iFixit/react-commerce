@@ -3,6 +3,7 @@ import {
    Badge,
    Box,
    Button,
+   Circle,
    Flex,
    Grid,
    GridItem,
@@ -15,11 +16,12 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
+import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
-import type { Product } from '@models/product';
+import type { Product, ProductReview } from '@models/product';
 import { ProductVariant } from '@models/product';
 import React from 'react';
 import { useProductReviews } from '../../hooks/useProductReviews';
@@ -35,15 +37,12 @@ export function ReviewsSection({
    product,
    selectedVariant,
 }: ReviewsSectionProps) {
-   const appContext = useAppContext();
    const reviewsQuery = useProductReviews(product);
    const [visibleReviewsCount, setVisibleReviewsCount] = React.useState(
       INITIAL_VISIBILE_REVIEWS
    );
 
    const reviewsData = reviewsQuery.data;
-
-   const totalReviewsCount = reviewsData?.count ?? 0;
 
    const reviewCountsByRating = React.useMemo(() => {
       if (reviewsData?.groupedReviews == null) {
@@ -75,11 +74,6 @@ export function ReviewsSection({
       reviewsData.reviews != null &&
       reviewsData.reviews.length > 0;
 
-   if (!hasReview) {
-      // TODO: Add an empty state to allow users to write a review when there are no reviews
-      return null;
-   }
-
    return (
       <Box
          id="reviews"
@@ -101,149 +95,50 @@ export function ReviewsSection({
             >
                Customer reviews
             </Heading>
-            {totalReviewsCount > 0 && (
-               <Stack
-                  direction={{
-                     base: 'column-reverse',
-                     md: 'row',
-                  }}
-                  spacing="8"
-                  align="center"
-                  justify="center"
-               >
-                  <Grid
-                     templateColumns="auto 200px auto"
-                     gap="2.5"
-                     alignItems="center"
+            {hasReview ? (
+               <>
+                  <ReviewsStats
+                     ratingsCounts={reviewCountsByRating}
+                     averageRating={reviewsData.average}
+                     totalReviewsCount={reviewsData.count ?? 0}
+                  />
+                  <Flex
+                     bg="gray.100"
+                     p="5"
+                     rounded="md"
+                     mt={{
+                        base: 8,
+                        sm: 24,
+                     }}
                   >
-                     {reviewCountsByRating.map(({ rating, count }) => {
-                        const percentage = (count / totalReviewsCount) * 100;
+                     <WriteReviewButton variantSku={selectedVariant.sku} />
+                  </Flex>
+                  <Box>
+                     {visibleReviews.map((review) => {
                         return (
-                           <React.Fragment key={rating}>
-                              <GridItem mt="-1px">
-                                 <Text as="span" fontSize="xs">
-                                    {rating}
-                                 </Text>
-                              </GridItem>
-                              <GridItem>
-                                 <Progress
-                                    w="200px"
-                                    value={percentage}
-                                    rounded="full"
-                                 />
-                              </GridItem>
-                              <GridItem>
-                                 <Badge
-                                    minW="10"
-                                    fontSize="xs"
-                                    colorScheme="brand"
-                                    display="block"
-                                    textAlign="center"
-                                 >
-                                    {count}
-                                 </Badge>
-                              </GridItem>
-                           </React.Fragment>
+                           <ProductReviewLineItem
+                              key={review.reviewid}
+                              review={review}
+                           />
                         );
                      })}
-                  </Grid>
-                  <Flex direction="column" align="center">
-                     <Text fontSize="5xl">{reviewsData.average}</Text>
-                     <Rating value={reviewsData.average ?? 0} />
-                     {reviewsData.count && (
-                        <Text fontSize="sm">{reviewsData.count} reviews</Text>
-                     )}
-                  </Flex>
-               </Stack>
-            )}
-            <Flex
-               bg="gray.100"
-               p="5"
-               rounded="md"
-               mt={{
-                  base: 8,
-                  sm: 24,
-               }}
-            >
-               <Button
-                  as="a"
-                  href={`${appContext.ifixitOrigin}/User/Reviews/${selectedVariant.sku}`}
-                  colorScheme="brand"
-                  leftIcon={<FaIcon icon={faPenToSquare} />}
-                  w={{
-                     base: 'full',
-                     sm: 'auto',
-                  }}
-               >
-                  Write a review
-               </Button>
-            </Flex>
-            <Box>
-               {visibleReviews.map((review) => {
-                  return (
-                     <Box
-                        key={review.reviewid}
-                        py="6"
-                        borderBottomWidth="1px"
-                        borderColor="gray.200"
-                     >
-                        {review.author && (
-                           <HStack>
-                              <Avatar
-                                 name={review.author.name}
-                                 src={review.author.avatar}
-                                 showBorder
-                                 borderColor="brand.500"
-                                 size="md"
-                              />
-                              <VStack align="flex-start" spacing="0">
-                                 <Link
-                                    href={review.author.url}
-                                    fontWeight="bold"
-                                 >
-                                    {review.author.name}
-                                 </Link>
-                                 <HStack spacing="1" color="green.500">
-                                    <FaIcon
-                                       icon={faShieldCheck}
-                                       h="4"
-                                       color="green.500"
-                                    />
-                                    <Text fontWeight="bold" color="green.600">
-                                       Verified buyer
-                                    </Text>
-                                 </HStack>
-                              </VStack>
-                           </HStack>
-                        )}
-                        <HStack my="4">
-                           <Rating value={review.rating} />
-                           {review.created_date && (
-                              <Text mt="4" fontWeight="bold" color="gray.500">
-                                 {formatReviewDate(review.created_date)}
-                              </Text>
-                           )}
-                        </HStack>
-                        <Text fontWeight="bold" my="4">
-                           {review.productName} | {review.productVariantName}
-                        </Text>
-                        {review.body && (
-                           <Box
-                              dangerouslySetInnerHTML={{
-                                 __html: review.body,
-                              }}
-                           />
-                        )}
+                  </Box>
+                  {hasMoreReviews && (
+                     <Box textAlign="center" mt="6">
+                        <Button variant="outline" onClick={showMoreReviews}>
+                           see more reviews
+                        </Button>
                      </Box>
-                  );
-               })}
-            </Box>
-            {hasMoreReviews && (
-               <Box textAlign="center" mt="6">
-                  <Button variant="outline" onClick={showMoreReviews}>
-                     see more reviews
-                  </Button>
-               </Box>
+                  )}
+               </>
+            ) : (
+               <VStack spacing="5">
+                  <Circle size="72px" bg="brand.100">
+                     <FaIcon icon={faStar} h="8" color="blue.ifixit" />
+                  </Circle>
+                  <Text>No reviews yet</Text>
+                  <WriteReviewButton variantSku={selectedVariant.sku} />
+               </VStack>
             )}
          </PageContentWrapper>
       </Box>
@@ -254,6 +149,141 @@ type RatingCount = {
    rating: number;
    count: number;
 };
+
+type ReviewsStatsProps = {
+   ratingsCounts: RatingCount[];
+   totalReviewsCount: number;
+   averageRating: number | undefined | null;
+};
+
+function ReviewsStats({
+   ratingsCounts,
+   totalReviewsCount,
+   averageRating,
+}: ReviewsStatsProps) {
+   if (totalReviewsCount <= 0) {
+      return null;
+   }
+   return (
+      <Stack
+         direction={{
+            base: 'column-reverse',
+            md: 'row',
+         }}
+         spacing="8"
+         align="center"
+         justify="center"
+      >
+         <Grid templateColumns="auto 200px auto" gap="2.5" alignItems="center">
+            {ratingsCounts.map(({ rating, count }) => {
+               const percentage = (count / totalReviewsCount) * 100;
+               return (
+                  <React.Fragment key={rating}>
+                     <GridItem mt="-1px">
+                        <Text as="span" fontSize="xs">
+                           {rating}
+                        </Text>
+                     </GridItem>
+                     <GridItem>
+                        <Progress w="200px" value={percentage} rounded="full" />
+                     </GridItem>
+                     <GridItem>
+                        <Badge
+                           minW="10"
+                           fontSize="xs"
+                           colorScheme="brand"
+                           display="block"
+                           textAlign="center"
+                        >
+                           {count}
+                        </Badge>
+                     </GridItem>
+                  </React.Fragment>
+               );
+            })}
+         </Grid>
+         <Flex direction="column" align="center">
+            <Text fontSize="5xl">{averageRating}</Text>
+            <Rating value={averageRating ?? 0} />
+            {totalReviewsCount && (
+               <Text fontSize="sm">{totalReviewsCount} reviews</Text>
+            )}
+         </Flex>
+      </Stack>
+   );
+}
+
+type ProductReviewLineItemProps = {
+   review: ProductReview;
+};
+function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
+   return (
+      <Box py="6" borderBottomWidth="1px" borderColor="gray.200">
+         {review.author && (
+            <HStack>
+               <Avatar
+                  name={review.author.name}
+                  src={review.author.avatar}
+                  showBorder
+                  borderColor="brand.500"
+                  size="md"
+               />
+               <VStack align="flex-start" spacing="0">
+                  <Link href={review.author.url} fontWeight="bold">
+                     {review.author.name}
+                  </Link>
+                  <HStack spacing="1" color="green.500">
+                     <FaIcon icon={faShieldCheck} h="4" color="green.500" />
+                     <Text fontWeight="bold" color="green.600">
+                        Verified buyer
+                     </Text>
+                  </HStack>
+               </VStack>
+            </HStack>
+         )}
+         <HStack my="4">
+            <Rating value={review.rating} />
+            {review.created_date && (
+               <Text mt="4" fontWeight="bold" color="gray.500">
+                  {formatReviewDate(review.created_date)}
+               </Text>
+            )}
+         </HStack>
+         <Text fontWeight="bold" my="4">
+            {review.productName} | {review.productVariantName}
+         </Text>
+         {review.body && (
+            <Box
+               dangerouslySetInnerHTML={{
+                  __html: review.body,
+               }}
+            />
+         )}
+      </Box>
+   );
+}
+
+type WriteReviewButtonProps = {
+   variantSku: string | undefined | null;
+};
+
+function WriteReviewButton({ variantSku }: WriteReviewButtonProps) {
+   const appContext = useAppContext();
+   return (
+      <Button
+         as="a"
+         href={`${appContext.ifixitOrigin}/User/Reviews/${variantSku}`}
+         colorScheme="brand"
+         leftIcon={<FaIcon icon={faPenToSquare} />}
+         w={{
+            base: 'full',
+            sm: 'auto',
+         }}
+      >
+         Write a review
+      </Button>
+   );
+}
 
 function formatReviewDate(timeSeconds: number) {
    const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' });
