@@ -30,6 +30,7 @@ export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
             alignItems="center"
             borderRadius="md"
             flexShrink={0}
+            maxW="full"
             {...props}
          >
             {icon && (
@@ -42,7 +43,7 @@ export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
                   />
                </Box>
             )}
-            {children}
+            <Box isTruncated>{children}</Box>
          </Flex>
       );
    }
