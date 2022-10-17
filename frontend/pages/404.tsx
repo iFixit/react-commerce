@@ -19,11 +19,7 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
             <Text fontSize={24} fontWeight="semibold" paddingBottom="24px">
                Page not Found
             </Text>
-            <Divider
-               borderWidth="1px"
-               borderColor="red.500"
-               width="50px"
-            />
+            <Divider borderWidth="1px" borderColor="red.500" width="50px" />
             <Text
                fontSize={20}
                paddingTop="24px"
