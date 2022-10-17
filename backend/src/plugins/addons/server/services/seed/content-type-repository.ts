@@ -8,6 +8,7 @@ import {
 } from 'lodash';
 import fetch from 'node-fetch';
 import qs from 'qs';
+import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
 import {
    ContentTypeItem,
    ContentTypeSchema,
@@ -84,8 +85,14 @@ export abstract class ContentTypeRepository {
          endpoint += `?${query}`;
       }
       const response = await fetch(endpoint);
-      const json = await response.json();
-      return json;
+      if (response.ok) {
+         const json = await response.json();
+         return json;
+      }
+      if (response.status === 404) {
+         throw new ContentTypeNotFoundError(apiId);
+      }
+      throw new Error(`Couldn't fetch "${apiId}" data from "${endpoint}"`);
    }
 
    protected keepSimpleAttributes(attributes: Record<string, any>) {

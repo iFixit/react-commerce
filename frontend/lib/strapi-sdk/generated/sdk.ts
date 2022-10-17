@@ -20,6 +20,7 @@ export type Scalars = {
    /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
    JSON: any;
    MenuItemsDynamicZoneInput: any;
+   PageSectionsDynamicZoneInput: any;
    ProductListSectionsDynamicZoneInput: any;
    /** The `Upload` scalar type represents a file upload. */
    Upload: any;
@@ -94,6 +95,22 @@ export type ComponentMenuSubmenu = {
    id: Scalars['ID'];
    name: Scalars['String'];
    submenu?: Maybe<MenuEntityResponse>;
+};
+
+export type ComponentPageCallToAction = {
+   __typename?: 'ComponentPageCallToAction';
+   id: Scalars['ID'];
+   title: Scalars['String'];
+   url: Scalars['String'];
+};
+
+export type ComponentPageHero = {
+   __typename?: 'ComponentPageHero';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   title?: Maybe<Scalars['String']>;
 };
 
 export type ComponentProductListBanner = {
@@ -309,6 +326,8 @@ export type GenericMorph =
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
    | ComponentMenuSubmenu
+   | ComponentPageCallToAction
+   | ComponentPageHero
    | ComponentProductListBanner
    | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
@@ -320,6 +339,7 @@ export type GenericMorph =
    | Global
    | I18NLocale
    | Menu
+   | Page
    | ProductList
    | Store
    | UploadFile
@@ -544,6 +564,8 @@ export type Mutation = {
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
+   createPage?: Maybe<PageEntityResponse>;
+   createPageLocalization?: Maybe<PageEntityResponse>;
    createProductList?: Maybe<ProductListEntityResponse>;
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
@@ -555,6 +577,7 @@ export type Mutation = {
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
+   deletePage?: Maybe<PageEntityResponse>;
    deleteProductList?: Maybe<ProductListEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -577,6 +600,7 @@ export type Mutation = {
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
+   updatePage?: Maybe<PageEntityResponse>;
    updateProductList?: Maybe<ProductListEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -607,6 +631,17 @@ export type MutationCreateMenuArgs = {
 
 export type MutationCreateMenuLocalizationArgs = {
    data?: Maybe<MenuInput>;
+   id?: Maybe<Scalars['ID']>;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreatePageArgs = {
+   data: PageInput;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreatePageLocalizationArgs = {
+   data?: Maybe<PageInput>;
    id?: Maybe<Scalars['ID']>;
    locale?: Maybe<Scalars['I18NLocaleCode']>;
 };
@@ -647,6 +682,11 @@ export type MutationDeleteGlobalArgs = {
 };
 
 export type MutationDeleteMenuArgs = {
+   id: Scalars['ID'];
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationDeletePageArgs = {
    id: Scalars['ID'];
    locale?: Maybe<Scalars['I18NLocaleCode']>;
 };
@@ -725,6 +765,12 @@ export type MutationUpdateMenuArgs = {
    locale?: Maybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationUpdatePageArgs = {
+   data: PageInput;
+   id: Scalars['ID'];
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
 export type MutationUpdateProductListArgs = {
    data: ProductListInput;
    id: Scalars['ID'];
@@ -763,6 +809,70 @@ export type MutationUploadArgs = {
    ref?: Maybe<Scalars['String']>;
    refId?: Maybe<Scalars['ID']>;
 };
+
+export type Page = {
+   __typename?: 'Page';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   locale?: Maybe<Scalars['String']>;
+   localizations?: Maybe<PageRelationResponseCollection>;
+   path: Scalars['String'];
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   sections: Array<Maybe<PageSectionsDynamicZone>>;
+   title: Scalars['String'];
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type PageLocalizationsArgs = {
+   filters?: Maybe<PageFiltersInput>;
+   pagination?: Maybe<PaginationArg>;
+   publicationState?: Maybe<PublicationState>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type PageEntity = {
+   __typename?: 'PageEntity';
+   attributes?: Maybe<Page>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type PageEntityResponse = {
+   __typename?: 'PageEntityResponse';
+   data?: Maybe<PageEntity>;
+};
+
+export type PageEntityResponseCollection = {
+   __typename?: 'PageEntityResponseCollection';
+   data: Array<PageEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type PageFiltersInput = {
+   and?: Maybe<Array<Maybe<PageFiltersInput>>>;
+   createdAt?: Maybe<DateTimeFilterInput>;
+   id?: Maybe<IdFilterInput>;
+   locale?: Maybe<StringFilterInput>;
+   localizations?: Maybe<PageFiltersInput>;
+   not?: Maybe<PageFiltersInput>;
+   or?: Maybe<Array<Maybe<PageFiltersInput>>>;
+   path?: Maybe<StringFilterInput>;
+   publishedAt?: Maybe<DateTimeFilterInput>;
+   title?: Maybe<StringFilterInput>;
+   updatedAt?: Maybe<DateTimeFilterInput>;
+};
+
+export type PageInput = {
+   path?: Maybe<Scalars['String']>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   sections?: Maybe<Array<Scalars['PageSectionsDynamicZoneInput']>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type PageRelationResponseCollection = {
+   __typename?: 'PageRelationResponseCollection';
+   data: Array<PageEntity>;
+};
+
+export type PageSectionsDynamicZone = ComponentPageHero | Error;
 
 export type Pagination = {
    __typename?: 'Pagination';
@@ -912,6 +1022,8 @@ export type Query = {
    me?: Maybe<UsersPermissionsMe>;
    menu?: Maybe<MenuEntityResponse>;
    menus?: Maybe<MenuEntityResponseCollection>;
+   page?: Maybe<PageEntityResponse>;
+   pages?: Maybe<PageEntityResponseCollection>;
    productList?: Maybe<ProductListEntityResponse>;
    productLists?: Maybe<ProductListEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
@@ -948,6 +1060,19 @@ export type QueryMenuArgs = {
 
 export type QueryMenusArgs = {
    filters?: Maybe<MenuFiltersInput>;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   pagination?: Maybe<PaginationArg>;
+   publicationState?: Maybe<PublicationState>;
+   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type QueryPageArgs = {
+   id?: Maybe<Scalars['ID']>;
+   locale?: Maybe<Scalars['I18NLocaleCode']>;
+};
+
+export type QueryPagesArgs = {
+   filters?: Maybe<PageFiltersInput>;
    locale?: Maybe<Scalars['I18NLocaleCode']>;
    pagination?: Maybe<PaginationArg>;
    publicationState?: Maybe<PublicationState>;
@@ -1476,6 +1601,74 @@ export type UsersPermissionsUserInput = {
 export type UsersPermissionsUserRelationResponseCollection = {
    __typename?: 'UsersPermissionsUserRelationResponseCollection';
    data: Array<UsersPermissionsUserEntity>;
+};
+
+export type FindPageQueryVariables = Exact<{
+   filters?: Maybe<PageFiltersInput>;
+   publicationState?: Maybe<PublicationState>;
+}>;
+
+export type FindPageQuery = {
+   __typename?: 'Query';
+   pages?: Maybe<{
+      __typename?: 'PageEntityResponseCollection';
+      data: Array<{
+         __typename?: 'PageEntity';
+         id?: Maybe<string>;
+         attributes?: Maybe<{
+            __typename?: 'Page';
+            path: string;
+            title: string;
+            sections: Array<
+               Maybe<
+                  | {
+                       __typename: 'ComponentPageHero';
+                       id: string;
+                       title?: Maybe<string>;
+                       description?: Maybe<string>;
+                       callToAction?: Maybe<{
+                          __typename?: 'ComponentPageCallToAction';
+                          title: string;
+                          url: string;
+                       }>;
+                       image?: Maybe<{
+                          __typename?: 'UploadFileEntityResponse';
+                          data?: Maybe<{
+                             __typename?: 'UploadFileEntity';
+                             attributes?: Maybe<{
+                                __typename?: 'UploadFile';
+                                alternativeText?: Maybe<string>;
+                                url: string;
+                                formats?: Maybe<any>;
+                             }>;
+                          }>;
+                       }>;
+                    }
+                  | { __typename: 'Error' }
+               >
+            >;
+         }>;
+      }>;
+   }>;
+};
+
+export type ImageFieldsFragment = {
+   __typename?: 'UploadFileEntityResponse';
+   data?: Maybe<{
+      __typename?: 'UploadFileEntity';
+      attributes?: Maybe<{
+         __typename?: 'UploadFile';
+         alternativeText?: Maybe<string>;
+         url: string;
+         formats?: Maybe<any>;
+      }>;
+   }>;
+};
+
+export type CallToActionFieldsFragment = {
+   __typename?: 'ComponentPageCallToAction';
+   title: string;
+   url: string;
 };
 
 export type GetGlobalSettingsQueryVariables = Exact<{ [key: string]: never }>;
@@ -2560,6 +2753,23 @@ export type GetStoreListQuery = {
    }>;
 };
 
+export const ImageFieldsFragmentDoc = `
+    fragment ImageFields on UploadFileEntityResponse {
+  data {
+    attributes {
+      alternativeText
+      url
+      formats
+    }
+  }
+}
+    `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
 export const MenuPropsFragmentDoc = `
     fragment MenuProps on Menu {
   title
@@ -2649,6 +2859,38 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     ${MenuPropsFragmentDoc}`;
+export const FindPageDocument = `
+    query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
+  pages(
+    filters: $filters
+    publicationState: $publicationState
+    pagination: {limit: 1}
+  ) {
+    data {
+      id
+      attributes {
+        path
+        title
+        sections {
+          __typename
+          ... on ComponentPageHero {
+            id
+            title
+            description
+            callToAction {
+              ...CallToActionFields
+            }
+            image {
+              ...ImageFields
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    ${CallToActionFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}`;
 export const GetGlobalSettingsDocument = `
     query getGlobalSettings {
   global {
@@ -2903,6 +3145,16 @@ export type Requester<C = {}> = <R, V>(
 ) => Promise<R>;
 export function getSdk<C>(requester: Requester<C>) {
    return {
+      findPage(
+         variables?: FindPageQueryVariables,
+         options?: C
+      ): Promise<FindPageQuery> {
+         return requester<FindPageQuery, FindPageQueryVariables>(
+            FindPageDocument,
+            variables,
+            options
+         );
+      },
       getGlobalSettings(
          variables?: GetGlobalSettingsQueryVariables,
          options?: C

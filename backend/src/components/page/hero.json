@@ -1,0 +1,28 @@
+{
+   "collectionName": "components_page_heroes",
+   "info": {
+      "displayName": "hero",
+      "icon": "pager",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "image": {
+         "type": "media",
+         "multiple": false,
+         "required": false,
+         "allowedTypes": ["images"]
+      },
+      "callToAction": {
+         "type": "component",
+         "repeatable": false,
+         "component": "page.call-to-action"
+      }
+   }
+}

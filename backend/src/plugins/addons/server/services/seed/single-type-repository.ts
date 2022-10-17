@@ -1,4 +1,5 @@
 import { ContentTypeRepository, LoadArgs } from './content-type-repository';
+import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
 import { ContentTypeItem } from './types';
 
 type ConstructorArgs = {
@@ -16,10 +17,20 @@ export class SingleTypeRepository extends ContentTypeRepository {
    }
 
    async import({ strapiOrigin }: LoadArgs) {
-      const response = await this.fetch<SingleTypeQueryResponse>({
-         strapiOrigin,
-      });
-      this.item = response.data;
+      try {
+         const response = await this.fetch<SingleTypeQueryResponse>({
+            strapiOrigin,
+         });
+         this.item = response.data;
+      } catch (error) {
+         if (error instanceof ContentTypeNotFoundError) {
+            strapi.log.warn(
+               `🌱 [${this.schema.info.displayName}] Content type not found`
+            );
+         } else {
+            throw error;
+         }
+      }
    }
 
    async saveAttributes() {

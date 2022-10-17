@@ -1,4 +1,1 @@
-export {
-   LandingTemplate as default,
-   getServerSideProps,
-} from '@templates/landing';
+export { PageTemplate as default, getServerSideProps } from '@templates/page';

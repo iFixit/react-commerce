@@ -6,6 +6,8 @@
       "api::store.store.findOne",
       "api::store.store.find",
       "api::product-list.product-list.findOne",
-      "api::product-list.product-list.find"
+      "api::product-list.product-list.find",
+      "api::page.page.findOne",
+      "api::page.page.find"
    ]
 }
