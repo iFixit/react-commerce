@@ -72,6 +72,8 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ),
       featuredProductVariants: getFeaturedProductVariants(response.product),
       compatibility: parseCompatibility(response.product.compatibility?.value),
+      metaTitle: response.product.metaTitle?.value ?? null,
+      shortDescription: response.product.shortDescription?.value ?? null,
       reviewsData,
    };
 }

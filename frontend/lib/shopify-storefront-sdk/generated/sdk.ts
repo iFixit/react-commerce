@@ -6377,6 +6377,8 @@ export type FindProductQuery = {
          }>;
       }>;
       compatibility?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      metaTitle?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      shortDescription?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       featuredImage?: Maybe<{ __typename?: 'Image'; id?: Maybe<string> }>;
       images: {
          __typename?: 'ImageConnection';
@@ -6614,6 +6616,12 @@ export const FindProductDocument = `
       }
     }
     compatibility: metafield(namespace: "ifixit", key: "compatibility_json") {
+      value
+    }
+    metaTitle: metafield(namespace: "ifixit", key: "meta_title") {
+      value
+    }
+    shortDescription: metafield(namespace: "ifixit", key: "short_description") {
       value
     }
     featuredImage {
