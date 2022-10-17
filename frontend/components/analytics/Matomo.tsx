@@ -2,7 +2,7 @@ import { MATOMO_URL } from '@config/env';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Script from 'next/script';
-import { trackPageView } from '@ifixit/matomo';
+import { trackPageView } from '@ifixit/analytics';
 
 export function Matomo() {
    const router = useRouter();

@@ -1,6 +1,6 @@
+import { trackMatomoCartChange } from '@ifixit/analytics';
 import { assertNever } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { trackMatomoCartChange } from '@ifixit/matomo';
 import { useMutation, useQueryClient } from 'react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
