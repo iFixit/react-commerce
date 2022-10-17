@@ -14,6 +14,7 @@ import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import type { Product } from '@models/product';
 import * as React from 'react';
 import { FaIcon } from '@ifixit/icons';
+import { invariant } from '@ifixit/helpers';
 
 export type ProductOptionsProps = {
    product: Product;
@@ -59,16 +60,13 @@ export function ProductOptions({
                         }}
                      >
                         {option.values.map((value) => {
-                           const variant = findVariant(product.variants, {
-                              ...selectedOptions,
-                              [option.name]: value,
-                           });
+                           const variant = findVariant(
+                              product,
+                              selectedOptions,
+                              { [option.name]: value }
+                           );
                            return (
-                              <option
-                                 value={variant?.id}
-                                 key={value}
-                                 disabled={variant == null}
-                              >
+                              <option value={variant?.id} key={value}>
                                  {value}
                               </option>
                            );
@@ -78,14 +76,14 @@ export function ProductOptions({
                   {selectorType === SelectorType.IMAGE_RADIO && (
                      <SimpleGrid columns={2} spacing="2">
                         {option.values.map((value) => {
-                           const variant = findVariant(product.variants, {
-                              ...selectedOptions,
-                              [option.name]: value,
-                           });
+                           const variant = findVariant(
+                              product,
+                              selectedOptions,
+                              { [option.name]: value }
+                           );
                            return (
                               <ProductOptionValue
                                  key={value}
-                                 disabled={variant == null}
                                  isActive={variant?.id === selected}
                                  label={value}
                                  image={variant?.image}
@@ -113,19 +111,60 @@ enum SelectorType {
    IMAGE_RADIO,
 }
 
-type Variant = Product['variants'][0];
-
 type Option = Product['options'][0];
 
 function findVariant(
-   variants: Variant[],
-   selectedOptions: Record<string, string>
+   product: Product,
+   previousOptions: Record<string, string>,
+   optionsUpdate: Record<string, string>
 ) {
-   return variants.find((variant) => {
+   const { variants, options } = product;
+   const newOptions = { ...previousOptions, ...optionsUpdate };
+
+   const exactMatch = variants.find((variant) => {
       return variant.selectedOptions.every((option) => {
-         return selectedOptions[option.name] === option.value;
+         return newOptions[option.name] === option.value;
       });
    });
+
+   if (exactMatch) {
+      return exactMatch;
+   }
+
+   const productOptionsNames = options.map((option) => option.name);
+   const optionsUpdateNames = Object.keys(optionsUpdate);
+
+   const variantsMatchingUpdate = variants.filter((variant) => {
+      return optionsUpdateNames.every((name) => {
+         const correspondingVariantOption = variant.selectedOptions.find(
+            (option) => option.name === name
+         );
+         return correspondingVariantOption?.value === optionsUpdate[name];
+      });
+   });
+
+   const scoredVariantsMatchingUpdate = variantsMatchingUpdate
+      .map((variant) => {
+         let distance = 0;
+         for (let i = 0; i < productOptionsNames.length; i++) {
+            const name = productOptionsNames[i];
+            const variantOption = variant.selectedOptions.find(
+               (option) => option.name === name
+            );
+            if (
+               !optionsUpdateNames.includes(name) &&
+               previousOptions[name] !== variantOption?.value
+            ) {
+               distance += 3 - i;
+            }
+         }
+         return { variant, distance };
+      })
+      .sort((a, b) => a.distance - b.distance)
+      .map((update) => update.variant);
+
+   const bestMatch = scoredVariantsMatchingUpdate.shift();
+   return bestMatch;
 }
 
 function getSelectorType(option: Option): SelectorType {
@@ -146,7 +185,6 @@ type ProductOptionProps = {
    label: string;
    image?: Image | null;
    isActive?: boolean;
-   disabled?: boolean;
    onClick?: () => void;
 };
 
@@ -162,7 +200,6 @@ function ProductOptionValue({
    label,
    image,
    isActive,
-   disabled,
    onClick,
 }: ProductOptionProps) {
    return (
@@ -173,9 +210,9 @@ function ProductOptionValue({
          borderRadius="md"
          px={2.5}
          py={2.5}
-         cursor={disabled ? 'default' : 'pointer'}
+         cursor="pointer"
          textAlign="center"
-         onClick={disabled ? undefined : onClick}
+         onClick={onClick}
       >
          <ProductOptionImage image={image} />
          <Text fontSize="13px" color="gray.800">
