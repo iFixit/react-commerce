@@ -28,9 +28,9 @@ jobs:
            id: detect-diff
            run: |
               if [ ! -z "$(git status --short)" ]; then
-                 echo "::set-output name=HAS_DIFF::true"
+                 echo "HAS_DIFF=true" >> $GITHUB_OUTPUT
               else
-                 echo "::set-output name=HAS_DIFF::false"
+                 echo "HAS_DIFF=false" >> $GITHUB_OUTPUT
               fi
          - name: Fail if Dependabot
            if: steps.detect-diff.outputs.HAS_DIFF == 'true' && github.actor == 'dependabot[bot]'
