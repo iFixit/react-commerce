@@ -2,8 +2,11 @@ import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
 import { flags } from '@config/flags';
 import { noindexDevDomains } from '@helpers/next-helpers';
-import { trackMatomoEcommerceView } from '@ifixit/analytics';
-import { invariant } from '@ifixit/helpers';
+import {
+   trackGoogleProductView,
+   trackMatomoEcommerceView,
+} from '@ifixit/analytics';
+import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
@@ -33,6 +36,13 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          productName:
             selectedVariant.internalDisplayName?.value ?? product.title,
          price: selectedVariant.price,
+      });
+      trackGoogleProductView({
+         id: selectedVariant.sku ?? selectedVariant.id,
+         name: product.title,
+         variant: selectedVariant.internalDisplayName?.value,
+         category: parseItemcode(selectedVariant.sku ?? '')?.category,
+         price: moneyToNumber(selectedVariant.price).toFixed(2),
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);

@@ -7,6 +7,8 @@ type ReviewableProduct<T extends Value> = {
 
 type NullablePartial<T> = { [P in keyof T]?: T[P] | null };
 
+const ITEMCODE_RE = /IF(\d{3})-(\d{3})-(\d{1,2})/;
+
 export function shouldShowProductRating<T extends Value>(
    product: NullablePartial<ReviewableProduct<T>>
 ): product is ReviewableProduct<T> {
@@ -30,6 +32,17 @@ export function shouldShowProductRating<T extends Value>(
  */
 export function getProductVariantSku(itemcode: string): string {
    return itemcode.replace(/\D/g, '');
+}
+
+export function parseItemcode(itemcode: string) {
+   let matches = itemcode.match(ITEMCODE_RE);
+   return matches
+      ? {
+           category: matches[1],
+           productcode: matches[1] + matches[2],
+           optionid: matches[3],
+        }
+      : {};
 }
 
 export function isLifetimeWarranty(warranty: string): boolean {
