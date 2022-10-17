@@ -1,22 +1,21 @@
 import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
-import { Product } from '@models/product';
+import { FaIcon } from '@ifixit/icons';
+import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
-import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
-import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
-
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import ReactDOM from 'react-dom';
+import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
-import { FaIcon } from '@ifixit/icons';
+import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
 
 export type ProductGalleryProps = {
    product: Product;
-   selectedVariantId: string;
+   selectedVariant: ProductVariant;
    selectedImageId?: string | null;
    showThumbnails?: boolean;
    enableZoom?: boolean;
@@ -25,37 +24,17 @@ export type ProductGalleryProps = {
 
 export function ProductGallery({
    product,
-   selectedVariantId,
+   selectedVariant,
    selectedImageId,
    showThumbnails,
    enableZoom,
    onChangeImage,
 }: ProductGalleryProps) {
-   const selectedVariant = React.useMemo(() => {
-      return product.variants.find(
-         (variant) => variant.id === selectedVariantId
-      )!;
-   }, [product.variants, selectedVariantId]);
-
-   const variantImages = React.useMemo(() => {
-      return product.images.filter((image) => {
-         if (image.altText == null) {
-            return true;
-         }
-         const variant = findVariant(product.variants, image.altText);
-         return variant == null || variant.id === selectedVariant.id;
-      });
-   }, [product.images, product.variants, selectedVariant.id]);
-
-   const selectedImageWithFallbackId = React.useMemo(() => {
-      return selectedImageId ?? variantImages[0]?.id;
-   }, [selectedImageId, variantImages]);
-
-   const selectedImageIndex = React.useMemo(() => {
-      return variantImages.findIndex(
-         (image) => image.id === selectedImageWithFallbackId
-      )!;
-   }, [variantImages, selectedImageWithFallbackId]);
+   const variantImages = useVariantImages(product, selectedVariant.id);
+   const selectedImageIndex = useCurrentImageIndex(
+      variantImages,
+      selectedImageId
+   );
 
    const onSlideChange = React.useCallback(
       (slideIndex) => onChangeImage?.(variantImages[slideIndex].id!),
@@ -155,8 +134,30 @@ export function ProductGallery({
    );
 }
 
-function findVariant(variants: Product['variants'], sku: string) {
-   return variants.find((variant) => variant.sku === sku);
+function useVariantImages(product: Product, variantId: string) {
+   return React.useMemo(() => {
+      return product.images.filter((image) => {
+         const linkedVariant = product.variants.find(
+            (variant) => variant.id === image.variantId
+         );
+         return linkedVariant == null || linkedVariant.id === variantId;
+      });
+   }, [product, variantId]);
+}
+
+function useCurrentImageIndex(
+   variantImages: ProductImage[],
+   selectedImageId?: string | null
+) {
+   const currentImageId = React.useMemo(() => {
+      return selectedImageId ?? variantImages[0]?.id;
+   }, [selectedImageId, variantImages]);
+
+   const currentImageIndex = React.useMemo(() => {
+      return variantImages.findIndex((image) => image.id === currentImageId)!;
+   }, [variantImages, currentImageId]);
+
+   return currentImageIndex;
 }
 
 type CustomNavigationType = {

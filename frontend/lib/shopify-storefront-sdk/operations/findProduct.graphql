@@ -64,6 +64,7 @@ query findProduct($handle: String) {
       variants(first: 100) {
          nodes {
             id
+            title
             sku
             quantityAvailable
             image {
