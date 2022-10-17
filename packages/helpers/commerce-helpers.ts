@@ -17,10 +17,7 @@ export function computeDiscountPercentage(
 }
 
 function convertMoneyToCents(money: Money): number {
-   if (typeof money.amount === 'number') {
-      return money.amount * 100;
-   }
-   return parseFloat(money.amount) * 100;
+   return moneyToNumber(money) * 100;
 }
 
 export type Money<T extends string | number = string | number> = {
@@ -30,13 +27,15 @@ export type Money<T extends string | number = string | number> = {
    currencyCode: string;
 };
 
-export function formatMoney(money: Money) {
-   let amount: number;
+export function moneyToNumber(money: Money) {
    if (typeof money.amount === 'number') {
-      amount = money.amount;
-   } else {
-      amount = parseFloat(money.amount);
+      return money.amount;
    }
+   return parseFloat(money.amount);
+}
+
+export function formatMoney(money: Money) {
+   const amount = moneyToNumber(money);
    const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: money.currencyCode,
