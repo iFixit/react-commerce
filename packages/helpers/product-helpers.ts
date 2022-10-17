@@ -24,26 +24,6 @@ export function shouldShowProductRating<T extends Value>(
    return rating >= 4 || ratingCount > 10;
 }
 
-const PRODUCT_CODE_LENGTH = 6;
-
-/**
- * @param itemcode iFixit product (or product variant) itemcode (e.g. IF145-307-4)
- * @returns iFixit product sku (e.g. 145307), that is the itemcode digits without the option id
- */
-export function getProductSku(itemcode: string): string {
-   const skuDigits = getProductVariantSku(itemcode);
-   return skuDigits.slice(0, PRODUCT_CODE_LENGTH);
-}
-
-/**
- * @param itemcode iFixit product variant itemcode (e.g. IF145-307-4)
- * @returns iFixit product variant option id (e.g. 4)
- */
-export function getProductVariantOptionId(itemcode: string): string {
-   const skuDigits = getProductVariantSku(itemcode);
-   return skuDigits.slice(PRODUCT_CODE_LENGTH);
-}
-
 /**
  * @param itemcode iFixit product variant itemcode (e.g. IF145-307-4)
  * @returns iFixit product variant sku (e.g. 1453074)
