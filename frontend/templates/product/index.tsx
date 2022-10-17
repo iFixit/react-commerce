@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
-import { flags } from '@config/flags';
 import { noindexDevDomains } from '@helpers/next-helpers';
 import { invariant } from '@ifixit/helpers';
 import { trackMatomoEcommerceView } from '@ifixit/matomo';
@@ -40,7 +39,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    return (
       <>
          {product.breadcrumbs != null && (
-            <SecondaryNavigation zIndex="10">
+            <SecondaryNavigation>
                <PageBreadcrumb items={product.breadcrumbs} />
             </SecondaryNavigation>
          )}

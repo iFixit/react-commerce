@@ -140,7 +140,7 @@ function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
             size="xs"
             px="1.5"
          />
-         <MenuList>
+         <MenuList zIndex="dropdown">
             {items.map((ancestor, index) => (
                <NextLink key={index} href={ancestor.url} passHref>
                   <MenuItem fontSize="sm" as="a">

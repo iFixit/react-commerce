@@ -12,18 +12,10 @@ import {
    Heading,
    HStack,
    Icon,
-   IconButton,
    Link,
    List,
    ListIcon,
    ListItem,
-   Popover,
-   PopoverArrow,
-   PopoverBody,
-   PopoverCloseButton,
-   PopoverContent,
-   PopoverHeader,
-   PopoverTrigger,
    Text,
    VStack,
 } from '@chakra-ui/react';
@@ -31,8 +23,6 @@ import { CompatibleDevice } from '@components/common';
 import {
    faBadgeDollar,
    faCircleExclamation,
-   faExclamationTriangle,
-   faInfoCircle,
    faRocket,
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
@@ -47,6 +37,7 @@ import { AddToCart, isVariantWithSku } from './AddToCart';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
+import { Prop65Warning } from './Prop65Warning';
 
 export type ProductSectionProps = {
    product: Product;
@@ -425,59 +416,10 @@ export function ProductSection({
 
                <VStack mt="10" align="flex-start" spacing="4">
                   {product.prop65WarningType && product.prop65Chemicals && (
-                     <Flex align="center">
-                        <Text>California Residents: Prop 65 WARNING</Text>
-                        <Popover>
-                           <PopoverTrigger>
-                              <IconButton
-                                 variant="ghost"
-                                 aria-label="read more about the warning"
-                                 size="sm"
-                                 icon={
-                                    <FaIcon
-                                       icon={faInfoCircle}
-                                       h="4"
-                                       color="brand.500"
-                                    />
-                                 }
-                              >
-                                 Trigger
-                              </IconButton>
-                           </PopoverTrigger>
-                           <PopoverContent>
-                              <PopoverArrow />
-                              <PopoverCloseButton mt="0.5" />
-                              <PopoverHeader textTransform="uppercase">
-                                 <Flex align="center">
-                                    <FaIcon
-                                       icon={faExclamationTriangle}
-                                       h="4"
-                                       mr="2"
-                                       color="yellow.500"
-                                    />
-                                    Warning
-                                 </Flex>
-                              </PopoverHeader>
-                              <PopoverBody>
-                                 <Text>
-                                    This product can expose you to chemicals
-                                    including {product.prop65Chemicals} which is
-                                    known to the State of California to cause{' '}
-                                    {product.prop65WarningType}.
-                                 </Text>
-                                 <Text mt="2">
-                                    For more information, go to{' '}
-                                    <Link
-                                       href="www.P65Warnings.ca.gov"
-                                       color="brand.500"
-                                    >
-                                       www.P65Warnings.ca.gov
-                                    </Link>
-                                 </Text>
-                              </PopoverBody>
-                           </PopoverContent>
-                        </Popover>
-                     </Flex>
+                     <Prop65Warning
+                        type={product.prop65WarningType}
+                        chemicals={product.prop65Chemicals}
+                     />
                   )}
                   {product.productVideos && (
                      <Box
