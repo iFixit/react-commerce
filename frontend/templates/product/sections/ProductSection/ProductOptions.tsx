@@ -63,7 +63,7 @@ export function ProductOptions({
                            const variant = findVariant(
                               product,
                               selectedOptions,
-                              { [option.name]: value }
+                              { name: option.name, value }
                            );
                            return (
                               <option value={variant?.id} key={value}>
@@ -79,7 +79,7 @@ export function ProductOptions({
                            const variant = findVariant(
                               product,
                               selectedOptions,
-                              { [option.name]: value }
+                              { name: option.name, value }
                            );
                            return (
                               <ProductOptionValue
@@ -112,14 +112,18 @@ enum SelectorType {
 }
 
 type Option = Product['options'][0];
+type OptionValue = { name: string; value: string };
 
 function findVariant(
    product: Product,
    previousOptions: Record<string, string>,
-   optionsUpdate: Record<string, string>
+   optionUpdate: OptionValue
 ) {
    const { variants, options } = product;
-   const newOptions = { ...previousOptions, ...optionsUpdate };
+   const newOptions = {
+      ...previousOptions,
+      [optionUpdate.name]: optionUpdate.value,
+   };
 
    const exactMatch = variants.find((variant) => {
       return variant.selectedOptions.every((option) => {
@@ -132,15 +136,12 @@ function findVariant(
    }
 
    const productOptionsNames = options.map((option) => option.name);
-   const optionsUpdateNames = Object.keys(optionsUpdate);
 
    const variantsMatchingUpdate = variants.filter((variant) => {
-      return optionsUpdateNames.every((name) => {
-         const correspondingVariantOption = variant.selectedOptions.find(
-            (option) => option.name === name
-         );
-         return correspondingVariantOption?.value === optionsUpdate[name];
-      });
+      const matchingOption = variant.selectedOptions.find(
+         (option) => option.name === optionUpdate.name
+      );
+      return optionUpdate.value === matchingOption?.value;
    });
 
    const scoredVariantsMatchingUpdate = variantsMatchingUpdate
@@ -152,10 +153,10 @@ function findVariant(
                (option) => option.name === name
             );
             if (
-               !optionsUpdateNames.includes(name) &&
+               optionUpdate.name !== name &&
                previousOptions[name] !== variantOption?.value
             ) {
-               distance += 3 - i;
+               distance += productOptionsNames.length - i;
             }
          }
          return { variant, distance };
