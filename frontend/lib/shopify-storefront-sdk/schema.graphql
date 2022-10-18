@@ -14,7 +14,7 @@ directive @accessRestricted(
 ) on FIELD_DEFINITION | OBJECT
 
 """
-Contextualizes data based on the additional information provided by the directive. For example, you can use the `@inContext(country: CA)` directive to [query a product's price](https://shopify.dev/api/examples/international-pricing#query-product-prices) in a storefront within the context of Canada.
+Contextualizes data based on the additional information provided by the directive. For example, you can use the `@inContext(country: CA)` directive to [query a product's price](https://shopify.dev/custom-storefronts/internationalization/international-pricing) in a storefront within the context of Canada.
 """
 directive @inContext(
    """
@@ -66,7 +66,7 @@ type AppliedGiftCard implements Node {
    """
    The amount that was taken from the gift card by applying it.
    """
-   amountUsedV2: MoneyV2! @deprecated(reason: "Use `amountUsed` instead")
+   amountUsedV2: MoneyV2! @deprecated(reason: "Use `amountUsed` instead.")
 
    """
    The amount left on the gift card.
@@ -76,7 +76,7 @@ type AppliedGiftCard implements Node {
    """
    The amount left on the gift card.
    """
-   balanceV2: MoneyV2! @deprecated(reason: "Use `balance` instead")
+   balanceV2: MoneyV2! @deprecated(reason: "Use `balance` instead.")
 
    """
    A globally-unique identifier.
@@ -101,7 +101,7 @@ type Article implements HasMetafields & Node & OnlineStorePublishable {
    """
    The article's author.
    """
-   author: ArticleAuthor! @deprecated(reason: "Use `authorV2` instead")
+   author: ArticleAuthor! @deprecated(reason: "Use `authorV2` instead.")
 
    """
    The article's author.
@@ -703,7 +703,10 @@ enum CardBrand {
 }
 
 """
-A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart).
+A cart represents the merchandise that a buyer intends to purchase,
+and the estimated cost associated with the cart. Learn how to
+[interact with a cart](https://shopify.dev/custom-storefronts/internationalization/international-pricing)
+during a customer's session.
 """
 type Cart implements Node {
    """
@@ -732,7 +735,7 @@ type Cart implements Node {
    checkoutUrl: URL!
 
    """
-   The estimated costs that the buyer will pay at checkout. The costs are subject to change and changes will be reflected at checkout. The `cost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+   The estimated costs that the buyer will pay at checkout. The costs are subject to change and changes will be reflected at checkout. The `cost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing).
    """
    cost: CartCost!
 
@@ -742,7 +745,8 @@ type Cart implements Node {
    createdAt: DateTime!
 
    """
-   The delivery groups available for the cart, based on the default address of the logged-in customer.
+   The delivery groups available for the cart, based on the buyer identity default
+   delivery address preference or the default address of the logged-in customer.
    """
    deliveryGroups(
       """
@@ -782,9 +786,12 @@ type Cart implements Node {
    discountCodes: [CartDiscountCode!]!
 
    """
-   The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+   The estimated costs that the buyer will pay at checkout.
+   The estimated costs are subject to change and changes will be reflected at checkout.
+   The `estimatedCost` field uses the `buyerIdentity` field to determine
+   [international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing).
    """
-   estimatedCost: CartEstimatedCost! @deprecated(reason: "Use `cost` instead")
+   estimatedCost: CartEstimatedCost! @deprecated(reason: "Use `cost` instead.")
 
    """
    A globally-unique identifier.
@@ -882,6 +889,13 @@ type CartBuyerIdentity {
    customer: Customer
 
    """
+   An ordered set of delivery addresses tied to the buyer that is interacting with the cart.
+   The rank of the preferences is determined by the order of the addresses in the array. Preferences
+   can be used to populate relevant fields in the checkout flow.
+   """
+   deliveryAddressPreferences: [DeliveryAddress!]!
+
+   """
    The email address of the buyer that is interacting with the cart.
    """
    email: String
@@ -895,7 +909,7 @@ type CartBuyerIdentity {
 """
 Specifies the input fields to update the buyer information associated with a cart.
 Buyer identity is used to determine
-[international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout)
+[international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing)
 and should match the customer's shipping address.
 """
 input CartBuyerIdentityInput {
@@ -918,6 +932,13 @@ input CartBuyerIdentityInput {
    The access token used to identify the customer associated with the cart.
    """
    customerAccessToken: String
+
+   """
+   An ordered set of delivery addresses tied to the buyer that is interacting with the cart.
+   The rank of the preferences is determined by the order of the addresses in the array. Preferences
+   can be used to populate relevant fields in the checkout flow.
+   """
+   deliveryAddressPreferences: [DeliveryAddressInput!]
 }
 
 """
@@ -952,8 +973,8 @@ type CartCodeDiscountAllocation implements CartDiscountAllocation {
 
 """
 The costs that the buyer will pay at checkout.
-It uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
-[international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+The cart cost uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
+[international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing).
 """
 type CartCost {
    """
@@ -1229,8 +1250,10 @@ enum CartErrorCode {
 
 """
 The estimated costs that the buyer will pay at checkout.
-It uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
-[international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+The estimated cost uses
+[`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity)
+to determine
+[international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing).
 """
 type CartEstimatedCost {
    """
@@ -1284,7 +1307,9 @@ input CartInput {
    note: String
 
    """
-   The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address.
+   The customer associated with the cart. Used to determine [international pricing]
+   (https://shopify.dev/custom-storefronts/internationalization/international-pricing).
+   Buyer identity should match the customer's shipping address.
    """
    buyerIdentity: CartBuyerIdentityInput
 }
@@ -1322,7 +1347,7 @@ type CartLine implements Node {
    The estimated cost of the merchandise that the buyer will pay for at checkout. The estimated costs are subject to change and changes will be reflected at checkout.
    """
    estimatedCost: CartLineEstimatedCost!
-      @deprecated(reason: "Use `cost` instead")
+      @deprecated(reason: "Use `cost` instead.")
 
    """
    A globally-unique identifier.
@@ -1734,7 +1759,7 @@ type Checkout implements Node {
    """
    The amount left to be paid. This is equal to the cost of the line items, duties, taxes, and shipping, minus discounts and gift cards.
    """
-   paymentDueV2: MoneyV2! @deprecated(reason: "Use `paymentDue` instead")
+   paymentDueV2: MoneyV2! @deprecated(reason: "Use `paymentDue` instead.")
 
    """
    Whether or not the Checkout is ready and can be completed. Checkouts may
@@ -1772,7 +1797,7 @@ type Checkout implements Node {
    """
    The price at checkout before duties, shipping, and taxes.
    """
-   subtotalPriceV2: MoneyV2! @deprecated(reason: "Use `subtotalPrice` instead")
+   subtotalPriceV2: MoneyV2! @deprecated(reason: "Use `subtotalPrice` instead.")
 
    """
    Whether the checkout is tax exempt.
@@ -1797,7 +1822,7 @@ type Checkout implements Node {
    """
    The sum of all the prices of all the items in the checkout, including taxes and duties.
    """
-   totalPriceV2: MoneyV2! @deprecated(reason: "Use `totalPrice` instead")
+   totalPriceV2: MoneyV2! @deprecated(reason: "Use `totalPrice` instead.")
 
    """
    The sum of all the taxes applied to the line items and shipping lines in the checkout.
@@ -1807,7 +1832,7 @@ type Checkout implements Node {
    """
    The sum of all the taxes applied to the line items and shipping lines in the checkout.
    """
-   totalTaxV2: MoneyV2! @deprecated(reason: "Use `totalTax` instead")
+   totalTaxV2: MoneyV2! @deprecated(reason: "Use `totalTax` instead.")
 
    """
    The date and time when the checkout was last updated.
@@ -1861,7 +1886,7 @@ type CheckoutAttributesUpdateV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -1904,7 +1929,7 @@ type CheckoutCompleteFreePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -1930,7 +1955,7 @@ type CheckoutCompleteWithCreditCardV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -1956,7 +1981,7 @@ type CheckoutCompleteWithTokenizedPaymentV3Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2024,7 +2049,7 @@ type CheckoutCreatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2050,7 +2075,7 @@ type CheckoutCustomerAssociateV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2071,7 +2096,7 @@ type CheckoutCustomerDisassociateV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2092,7 +2117,7 @@ type CheckoutDiscountCodeApplyV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2113,7 +2138,7 @@ type CheckoutDiscountCodeRemovePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2134,7 +2159,7 @@ type CheckoutEmailUpdateV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2380,7 +2405,7 @@ type CheckoutGiftCardRemoveV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2401,7 +2426,7 @@ type CheckoutGiftCardsAppendPayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2542,7 +2567,7 @@ type CheckoutLineItemsAddPayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2563,7 +2588,7 @@ type CheckoutLineItemsRemovePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2599,7 +2624,7 @@ type CheckoutLineItemsUpdatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2620,7 +2645,7 @@ type CheckoutShippingAddressUpdateV2Payload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -2641,7 +2666,7 @@ type CheckoutShippingLineUpdatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `checkoutUserErrors` instead")
+      @deprecated(reason: "Use `checkoutUserErrors` instead.")
 }
 
 """
@@ -5360,7 +5385,7 @@ type CustomerAccessTokenCreatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5471,7 +5496,7 @@ type CustomerActivatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5492,7 +5517,7 @@ type CustomerAddressCreatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5513,7 +5538,7 @@ type CustomerAddressDeletePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5534,7 +5559,7 @@ type CustomerAddressUpdatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5592,7 +5617,7 @@ type CustomerCreatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5613,7 +5638,7 @@ type CustomerDefaultAddressUpdatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5709,7 +5734,7 @@ type CustomerRecoverPayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5735,7 +5760,7 @@ type CustomerResetByUrlPayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5776,7 +5801,7 @@ type CustomerResetPayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5840,7 +5865,7 @@ type CustomerUpdatePayload {
    The list of errors that occurred from executing the mutation.
    """
    userErrors: [UserError!]!
-      @deprecated(reason: "Use `customerUserErrors` instead")
+      @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
 """
@@ -5876,6 +5901,21 @@ A signed decimal number, which supports arbitrary precision and is serialized as
 Example values: `"29.99"`, `"29.999"`.
 """
 scalar Decimal
+
+"""
+A delivery address of the buyer that is interacting with the cart.
+"""
+union DeliveryAddress = MailingAddress
+
+"""
+The input fields for delivery address preferences.
+"""
+input DeliveryAddressInput {
+   """
+   A delivery address preference of a buyer that is interacting with the cart.
+   """
+   deliveryAddress: MailingAddressInput
+}
 
 """
 List of different delivery method types.
@@ -6159,7 +6199,7 @@ type ExternalVideo implements Media & Node {
    """
    The URL.
    """
-   embeddedUrl: URL! @deprecated(reason: "Use `originUrl` instead")
+   embeddedUrl: URL! @deprecated(reason: "Use `originUrl` instead.")
 
    """
    The host of the external video.
@@ -6216,7 +6256,7 @@ type Filter {
 The type of data that the filter group represents.
 
 For more information, refer to [Filter products in a collection with the Storefront API]
-(https://shopify.dev/api/examples/filter-products).
+(https://shopify.dev/custom-storefronts/products-collections/filter-products).
 """
 enum FilterType {
    """
@@ -6505,12 +6545,12 @@ type Image {
 
    If there are any existing transformations in the original source URL, they will remain and not be stripped.
    """
-   originalSrc: URL! @deprecated(reason: "Use `url` instead")
+   originalSrc: URL! @deprecated(reason: "Use `url` instead.")
 
    """
    The location of the image as a URL.
    """
-   src: URL! @deprecated(reason: "Use `url` instead")
+   src: URL! @deprecated(reason: "Use `url` instead.")
 
    """
    The location of the transformed image as a URL.
@@ -7590,7 +7630,7 @@ type MailingAddress implements Node {
 
    For example, US.
    """
-   countryCode: String @deprecated(reason: "Use `countryCodeV2` instead")
+   countryCode: String @deprecated(reason: "Use `countryCodeV2` instead.")
 
    """
    The two-letter code for the country of the address.
@@ -8337,7 +8377,7 @@ type Mutation {
    """
    Updates customer information associated with a cart.
    Buyer identity is used to determine
-   [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout)
+   [international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing)
    and should match the customer's shipping address.
    """
    cartBuyerIdentityUpdate(
@@ -8347,7 +8387,9 @@ type Mutation {
       cartId: ID!
 
       """
-      The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address.
+      The customer associated with the cart. Used to determine
+      [international pricing](https://shopify.dev/custom-storefronts/internationalization/international-pricing).
+      Buyer identity should match the customer's shipping address.
       """
       buyerIdentity: CartBuyerIdentityInput!
    ): CartBuyerIdentityUpdatePayload
@@ -8860,7 +8902,17 @@ type Mutation {
    ): CustomerDefaultAddressUpdatePayload
 
    """
-   "Sends a reset password email to the customer. The reset password email contains a reset password URL and token that you can pass to the [`customerResetByUrl`](https://shopify.dev/api/storefront/latest/mutations/customerResetByUrl) or [`customerReset`](https://shopify.dev/api/storefront/latest/mutations/customerReset) mutation to reset the customer password."
+   Sends a reset password email to the customer. The reset password
+   email contains a reset password URL and token that you can pass to
+   the [`customerResetByUrl`](https://shopify.dev/api/storefront/latest/mutations/customerResetByUrl) or
+   [`customerReset`](https://shopify.dev/api/storefront/latest/mutations/customerReset) mutation to reset the
+   customer password.
+
+   This mutation is throttled by IP. With authenticated access,
+   you can provide a [`Shopify-Storefront-Buyer-IP`](https://shopify.dev/api/usage/authentication#optional-ip-header) instead of the request IP.
+
+   Make sure that the value provided to `Shopify-Storefront-Buyer-IP` is trusted. Unthrottled access to this
+   mutation presents a security risk.
    """
    customerRecover(
       """
@@ -9153,7 +9205,7 @@ type Order implements HasMetafields & Node {
    """
    Price of the order before duties, shipping and taxes.
    """
-   subtotalPriceV2: MoneyV2 @deprecated(reason: "Use `subtotalPrice` instead")
+   subtotalPriceV2: MoneyV2 @deprecated(reason: "Use `subtotalPrice` instead.")
 
    """
    List of the order’s successful fulfillments.
@@ -9173,7 +9225,7 @@ type Order implements HasMetafields & Node {
    """
    The sum of all the prices of all the items in the order, duties, taxes and discounts included (must be positive).
    """
-   totalPriceV2: MoneyV2! @deprecated(reason: "Use `totalPrice` instead")
+   totalPriceV2: MoneyV2! @deprecated(reason: "Use `totalPrice` instead.")
 
    """
    The total amount that has been refunded.
@@ -9183,7 +9235,7 @@ type Order implements HasMetafields & Node {
    """
    The total amount that has been refunded.
    """
-   totalRefundedV2: MoneyV2! @deprecated(reason: "Use `totalRefunded` instead")
+   totalRefundedV2: MoneyV2! @deprecated(reason: "Use `totalRefunded` instead.")
 
    """
    The total cost of shipping.
@@ -9194,7 +9246,7 @@ type Order implements HasMetafields & Node {
    The total cost of shipping.
    """
    totalShippingPriceV2: MoneyV2!
-      @deprecated(reason: "Use `totalShippingPrice` instead")
+      @deprecated(reason: "Use `totalShippingPrice` instead.")
 
    """
    The total cost of taxes.
@@ -9204,7 +9256,7 @@ type Order implements HasMetafields & Node {
    """
    The total cost of taxes.
    """
-   totalTaxV2: MoneyV2 @deprecated(reason: "Use `totalTax` instead")
+   totalTaxV2: MoneyV2 @deprecated(reason: "Use `totalTax` instead.")
 }
 
 """
@@ -9647,7 +9699,7 @@ type Payment implements Node {
    """
    The amount of the payment.
    """
-   amountV2: MoneyV2! @deprecated(reason: "Use `amount` instead")
+   amountV2: MoneyV2! @deprecated(reason: "Use `amount` instead.")
 
    """
    The billing address for the payment.
@@ -10415,7 +10467,8 @@ type ProductVariant implements HasMetafields & Node {
    """
    The compare at price of the variant. This can be used to mark a variant as on sale, when `compareAtPriceV2` is higher than `priceV2`.
    """
-   compareAtPriceV2: MoneyV2 @deprecated(reason: "Use `compareAtPrice` instead")
+   compareAtPriceV2: MoneyV2
+      @deprecated(reason: "Use `compareAtPrice` instead.")
 
    """
    Whether a product is out of stock but still available for purchase (used for backorders).
@@ -10465,7 +10518,7 @@ type ProductVariant implements HasMetafields & Node {
    """
    The product variant’s price.
    """
-   priceV2: MoneyV2! @deprecated(reason: "Use `price` instead")
+   priceV2: MoneyV2! @deprecated(reason: "Use `price` instead.")
 
    """
    The product object that the product variant belongs to.
@@ -10720,7 +10773,7 @@ type QueryRoot {
       The handle of the blog.
       """
       handle: String!
-   ): Blog @deprecated(reason: "Use `blog` instead")
+   ): Blog @deprecated(reason: "Use `blog` instead.")
 
    """
    List of the shop's blogs.
@@ -10770,7 +10823,8 @@ type QueryRoot {
    ): BlogConnection!
 
    """
-   Retrieve a cart by its ID. For more information, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart).
+   Retrieve a cart by its ID. For more information, refer to
+   [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart/manage).
    """
    cart(
       """
@@ -10802,7 +10856,7 @@ type QueryRoot {
       The handle of the collection.
       """
       handle: String!
-   ): Collection @deprecated(reason: "Use `collection` instead")
+   ): Collection @deprecated(reason: "Use `collection` instead.")
 
    """
    List of the shop’s collections.
@@ -10960,7 +11014,7 @@ type QueryRoot {
       The handle of the page.
       """
       handle: String!
-   ): Page @deprecated(reason: "Use `page` instead")
+   ): Page @deprecated(reason: "Use `page` instead.")
 
    """
    List of the shop's pages.
@@ -11032,7 +11086,7 @@ type QueryRoot {
       A unique string that identifies the product. Handles are automatically generated based on the product's title, and are always lowercase. Whitespace and special characters are replaced with a hyphen: `-`. If there are multiple consecutive whitespace or special characters, then they're replaced with a single hyphen. Whitespace or special characters at the beginning are removed. If a duplicate product title is used, then the handle is auto-incremented by one. For example, if you had two products called `Potion`, then their handles would be `potion` and `potion-1`. After a product has been created, changing the product title doesn't update the handle.
       """
       handle: String!
-   ): Product @deprecated(reason: "Use `product` instead")
+   ): Product @deprecated(reason: "Use `product` instead.")
 
    """
    Find recommended products related to a given `product_id`.
@@ -11631,7 +11685,7 @@ type ShippingRate {
    """
    Price of this shipping rate.
    """
-   priceV2: MoneyV2! @deprecated(reason: "Use `price` instead")
+   priceV2: MoneyV2! @deprecated(reason: "Use `price` instead.")
 
    """
    Title of this shipping rate.
@@ -11935,7 +11989,7 @@ type Transaction {
    """
    The amount of money that the transaction was for.
    """
-   amountV2: MoneyV2! @deprecated(reason: "Use `amount` instead")
+   amountV2: MoneyV2! @deprecated(reason: "Use `amount` instead.")
 
    """
    The kind of the transaction.
@@ -11945,7 +11999,7 @@ type Transaction {
    """
    The status of the transaction.
    """
-   status: TransactionStatus! @deprecated(reason: "Use `statusV2` instead")
+   status: TransactionStatus! @deprecated(reason: "Use `statusV2` instead.")
 
    """
    The status of the transaction.

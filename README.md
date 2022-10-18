@@ -119,8 +119,9 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 
 When you need to update the Shopify storefront GraphQL schema version, follow these steps:
 
-1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
-2. Run `pnpm codegen:download-shopify-storefront-schema`
+1. Install `graphqurl`: `npm install -g graphqurl@1.0.1`
+2. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
+3. Run `pnpm codegen:download-shopify-storefront-schema`
 
 ### Troubleshooting
 
