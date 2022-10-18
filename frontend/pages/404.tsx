@@ -1,5 +1,4 @@
 import { Center, Text, Divider, VStack } from '@chakra-ui/react';
-import { WithProvidersProps } from '@components/common';
 import {
    DefaultLayout,
    getLayoutServerSideProps,
@@ -7,11 +6,11 @@ import {
 } from '@layouts/default';
 import { GetStaticProps } from 'next';
 
-type Custom404Props = WithProvidersProps<WithLayoutProps<{}>>;
+type Custom404Props = WithLayoutProps<{}>;
 
 export const Custom404: NextPageWithLayout<Custom404Props> = () => {
    return (
-      <Center flexGrow={1}>
+      <Center flexGrow={1} paddingTop="16px" paddingBottom="16px">
          <VStack>
             <Text fontSize={36} fontWeight="bold">
                404
@@ -27,7 +26,7 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
                align="center"
                maxW="360px"
             >
-               We can&#39;t find the page you&#39;re looking for. Whoops.
+               We can&apos;t find the page you&apos;re looking for. Whoops.
             </Text>
          </VStack>
       </Center>
