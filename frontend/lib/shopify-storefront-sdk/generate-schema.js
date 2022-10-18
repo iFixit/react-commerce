@@ -14,30 +14,13 @@ if (shopName == null || shopName.length === 0) {
    throw new Error('CODEGEN_STOREFRONT_SHOP_NAME is not set');
 }
 
-(async () => {
-   try {
-      await spawn(
-         `gq https://${shopName}.myshopify.com/api/${version}/graphql.json --introspect -H 'X-Shopify-Storefront-Access-Token: ${apiKey}' -H 'Content-Type: application/json' > ${__dirname}/schema.graphql`
-      );
-   } catch (error) {
-      console.log('ERROR:', error);
+child.exec(
+   `gq https://${shopName}.myshopify.com/api/${version}/graphql.json --introspect -H 'X-Shopify-Storefront-Access-Token: ${apiKey}' -H 'Content-Type: application/json' > ${__dirname}/schema.graphql`,
+   {},
+   (error) => {
+      if (error) {
+         console.error('ERROR:', error);
+         process.quit(1);
+      }
    }
-})();
-
-function spawn(command) {
-   return new Promise((resolve, reject) => {
-      const commandProcess = child.spawn(command, undefined, {
-         shell: true,
-      });
-      commandProcess.on('close', (code) => {
-         if (code === 0) {
-            resolve();
-         } else {
-            reject(code);
-         }
-      });
-      commandProcess.on('error', (err) => {
-         reject(err);
-      });
-   });
-}
+);
