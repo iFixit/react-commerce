@@ -6400,6 +6400,7 @@ export type FindProductQuery = {
          nodes: Array<{
             __typename?: 'ProductVariant';
             id: string;
+            title: string;
             sku?: Maybe<string>;
             quantityAvailable?: Maybe<number>;
             image?: Maybe<{
@@ -6636,6 +6637,7 @@ export const FindProductDocument = `
     variants(first: 100) {
       nodes {
         id
+        title
         sku
         quantityAvailable
         image {

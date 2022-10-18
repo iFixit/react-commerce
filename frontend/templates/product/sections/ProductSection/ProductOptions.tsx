@@ -210,14 +210,7 @@ function ProductOptionImage({ image }: ProductOptionImageProps) {
          : null;
 
    if (ratio == null) {
-      return (
-         <Img
-            h="16"
-            src={image.url}
-            alt={image.altText ?? ''}
-            objectFit="contain"
-         />
-      );
+      return <Img h="16" src={image.url} alt="" objectFit="contain" />;
    }
    return (
       <Box h="16" position="relative" overflow="hidden" mb="1">
@@ -227,7 +220,7 @@ function ProductOptionImage({ image }: ProductOptionImageProps) {
             maxW="full"
             mx="auto"
             src={image.url}
-            alt={image.altText ?? ''}
+            alt=""
             objectFit="contain"
          />
       </Box>

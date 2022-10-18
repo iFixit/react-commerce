@@ -83,7 +83,7 @@ export function ProductSection({
             >
                <ProductGallery
                   product={product}
-                  selectedVariantId={selectedVariant.id}
+                  selectedVariant={selectedVariant}
                   selectedImageId={selectedImageId}
                   showThumbnails
                   enableZoom
@@ -130,7 +130,7 @@ export function ProductSection({
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}
-                     selectedVariantId={selectedVariant.id}
+                     selectedVariant={selectedVariant}
                      selectedImageId={selectedImageId}
                      onChangeImage={setSelectedImageId}
                   />

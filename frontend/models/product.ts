@@ -15,6 +15,10 @@ import {
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 
+export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
+export type ProductVariant = ReturnType<typeof getVariants>[0];
+export type ProductImage = ReturnType<typeof getFormattedImages>[0];
+
 export async function findProduct(shop: ShopCredentials, handle: string) {
    const storefront = getShopifyStorefrontSdk(shop);
 
@@ -25,17 +29,16 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       return null;
    }
    const variants = getVariants(response.product);
-   const activeVariants = variants.filter(
-      (variant) =>
-         variant.enabled &&
-         (!variant.disableWhenOOS ||
-            (variant.quantityAvailable && variant.quantityAvailable > 0))
-   );
+   const activeVariants = variants.filter(isActiveVariant);
+
    if (activeVariants.length === 0) {
       return null;
    }
 
-   const images = getImages(response.product.images, variants);
+   const allImages = getFormattedImages(response.product);
+   const activeImages = allImages.filter((image) =>
+      isActiveImage(image, activeVariants)
+   );
    const options = getOptions(response.product.options, activeVariants);
 
    const variantSku = variants.find((variant) => variant.sku != null)?.sku;
@@ -60,7 +63,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ...response.product,
       breadcrumbs,
       iFixitProductId,
-      images,
+      images: activeImages,
       options,
       variants: activeVariants,
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
@@ -76,7 +79,9 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    };
 }
 
-function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
+type ShopifyApiProduct = NonNullable<FindProductQuery['product']>;
+
+function getVariants(shopifyProduct: ShopifyApiProduct) {
    return shopifyProduct.variants.nodes.map((variant) => {
       const { crossSell, ...other } = variant;
       const isDiscounted =
@@ -91,6 +96,9 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
          : 0;
       return {
          ...other,
+         image: variant.image
+            ? formatImage(variant.image, shopifyProduct)
+            : null,
          proPricesByTier: parsePriceTiersMetafieldValue(
             variant.proPricesByTier?.value,
             variant.price.currencyCode
@@ -110,24 +118,35 @@ function getVariants(shopifyProduct: NonNullable<FindProductQuery['product']>) {
    });
 }
 
-function getImages(
-   shopifyImages: NonNullable<FindProductQuery['product']>['images'],
-   variants: ReturnType<typeof getVariants>
-) {
-   return shopifyImages.nodes.filter(
-      (image) =>
-         image.altText == null ||
-         !variants.find((variant) => {
-            const skuAltTextMatch = variant.sku === image.altText;
-            const genericDisabled = !variant.enabled;
-            const OOSDisabled =
-               variant.disableWhenOOS &&
-               variant.quantityAvailable != null &&
-               variant.quantityAvailable <= 0;
-            const variantDisabled = genericDisabled || OOSDisabled;
-            return skuAltTextMatch && variantDisabled;
-         })
+function getFormattedImages(product: ShopifyApiProduct) {
+   return product.images.nodes.map((image) => {
+      return formatImage(image, product);
+   });
+}
+
+type ShopifyApiImage = ShopifyApiProduct['images']['nodes'][0];
+
+function formatImage(image: ShopifyApiImage, product: ShopifyApiProduct) {
+   const linkedVariant = product.variants.nodes.find(
+      (variant) => variant.sku === image.altText
    );
+   let altText = product.title;
+   if (linkedVariant != null) {
+      altText += ` ${linkedVariant.title.replace(/\s*\/\s*/g, ' ')}`;
+   }
+   return { ...image, altText, variantId: linkedVariant?.id ?? null };
+}
+
+function isActiveImage(image: ProductImage, activeVariants: ProductVariant[]) {
+   return (
+      image.variantId == null ||
+      activeVariants.some((variant) => variant.id === image.variantId)
+   );
+}
+
+function isActiveVariant(variant: ProductVariant) {
+   const quantityAvailable = variant.quantityAvailable ?? 0;
+   return variant.enabled && (!variant.disableWhenOOS || quantityAvailable > 0);
 }
 
 function getOptions(
@@ -196,10 +215,6 @@ function getProductVariantCard(fragment: ProductVariantCardFragment) {
       ),
    };
 }
-
-export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
-
-export type ProductVariant = Product['variants'][0];
 
 function parseFaqs(value: string | null | undefined) {
    if (value == null) {
