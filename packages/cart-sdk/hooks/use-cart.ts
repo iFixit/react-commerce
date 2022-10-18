@@ -10,7 +10,8 @@ import { cartKeys } from '../utils';
 export function useCart() {
    const client = useIFixitApiClient();
    const query = useQuery(cartKeys.cart, async (): Promise<Cart | null> => {
-      const result = (await client.get('store/user/cart')) || null;
+      const result =
+         (await client.get('store/user/cart', { disableSentry: true })) || null;
       if (!isValidCartPayload(result)) {
          return null;
       }
