@@ -7,12 +7,13 @@ import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
-import { SecondaryNavigation } from './component/SecondaryNavigation';
+import { SecondaryNavigation } from './components/SecondaryNavigation';
 import {
    ProductTemplateProps,
    useProductTemplateProps,
 } from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
+import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
@@ -38,6 +39,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    return (
       <>
+         <MetaTags product={product} selectedVariant={selectedVariant} />
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
                <PageBreadcrumb items={product.breadcrumbs} />

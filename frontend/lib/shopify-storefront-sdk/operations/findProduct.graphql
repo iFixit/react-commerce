@@ -44,6 +44,15 @@ query findProduct($handle: String) {
       compatibility: metafield(namespace: "ifixit", key: "compatibility_json") {
          value
       }
+      metaTitle: metafield(namespace: "ifixit", key: "meta_title") {
+         value
+      }
+      shortDescription: metafield(
+         namespace: "ifixit"
+         key: "short_description"
+      ) {
+         value
+      }
       featuredImage {
          id
       }
