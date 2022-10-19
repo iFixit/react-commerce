@@ -1,14 +1,6 @@
-import {
-   Box,
-   Button,
-   chakra,
-   Divider,
-   Flex,
-   Heading,
-   SimpleGrid,
-   Text,
-} from '@chakra-ui/react';
-import { IfixitImage } from '@ifixit/ui';
+import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react';
+import { ProductListCard } from '@components/product-list/ProductListCard';
+import { productListPath } from '@helpers/path-helpers';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -98,7 +90,25 @@ export function ProductListChildrenSection({
                pt={1}
             >
                {productListChildren.map((child) => {
-                  return <ChildLink key={child.handle} child={child} />;
+                  return (
+                     <NextLink
+                        key={child.handle}
+                        href={productListPath({
+                           deviceTitle: child.deviceTitle,
+                           handle: child.handle,
+                           type: child.type,
+                        })}
+                        passHref
+                     >
+                        <ProductListCard
+                           as="a"
+                           productList={{
+                              title: child.title,
+                              imageUrl: child.image?.url,
+                           }}
+                        />
+                     </NextLink>
+                  );
                })}
             </SimpleGrid>
          </Box>
@@ -120,77 +130,6 @@ export function ProductListChildrenSection({
       </Box>
    );
 }
-
-interface ChildLinkProps {
-   child: ProductList['children'][0];
-}
-
-const ChildLink = ({ child }: ChildLinkProps) => {
-   return (
-      <NextLink href={child.path} passHref>
-         <chakra.a
-            bg="white"
-            borderRadius="lg"
-            boxShadow="base"
-            _hover={{
-               boxShadow: 'md',
-            }}
-            transition="all 300ms"
-            outline="none"
-            overflow="hidden"
-            height="60px"
-            _focus={{
-               boxShadow: 'outline',
-            }}
-         >
-            <Flex
-               h="full"
-               direction="row"
-               align="center"
-               justifyContent="center"
-               minH="inherit"
-            >
-               {child.image && (
-                  <>
-                     <Flex
-                        align="center"
-                        justify="center"
-                        flexBasis="80px"
-                        h="60px"
-                        flexGrow={0}
-                        flexShrink={0}
-                        position="relative"
-                     >
-                        <IfixitImage
-                           src={child.image.url}
-                           alt=""
-                           objectFit="cover"
-                           layout="fill"
-                           sizes="20vw"
-                           priority
-                        />
-                     </Flex>
-                     <Divider orientation="vertical" />
-                  </>
-               )}
-               <Box
-                  px="3"
-                  py="2"
-                  boxSizing="border-box"
-                  h="full"
-                  display="flex"
-                  alignItems="center"
-                  flexGrow={1}
-               >
-                  <Heading as="span" fontSize="sm">
-                     {child.title}
-                  </Heading>
-               </Box>
-            </Flex>
-         </chakra.a>
-      </NextLink>
-   );
-};
 
 const computeMaskMaxHeight = (
    pixelLinkHeight: number,

@@ -8,6 +8,7 @@ import {
    PageTemplateProps,
    usePageTemplateProps,
 } from './hooks/usePageTemplateProps';
+import { BrowseSection } from './sections/BrowseSection';
 import { HeroSection } from './sections/HeroSection';
 
 export const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
@@ -19,8 +20,11 @@ export const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                case 'ComponentPageHero': {
                   return <HeroSection key={section.id} data={section} />;
                }
+               case 'ComponentPageBrowse': {
+                  return <BrowseSection key={section.id} data={section} />;
+               }
                default:
-                  return assertNever(section.__typename);
+                  return assertNever(section);
             }
          })}
       </Box>
