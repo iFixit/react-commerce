@@ -15,7 +15,12 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
             <Text fontSize={36} fontWeight="bold">
                404
             </Text>
-            <Text fontSize={20} fontWeight="semibold" paddingBottom="24px" textTransform="uppercase">
+            <Text
+               fontSize={20}
+               fontWeight="semibold"
+               paddingBottom="24px"
+               textTransform="uppercase"
+            >
                Page not found
             </Text>
             <Divider borderWidth="1px" borderColor="red.500" width="50px" />
