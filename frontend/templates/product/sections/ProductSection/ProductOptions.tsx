@@ -14,7 +14,6 @@ import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import type { Product } from '@models/product';
 import * as React from 'react';
 import { FaIcon } from '@ifixit/icons';
-import { invariant } from '@ifixit/helpers';
 
 export type ProductOptionsProps = {
    product: Product;
@@ -81,12 +80,16 @@ export function ProductOptions({
                               selectedOptions,
                               { name: option.name, value }
                            );
+                           const variantSpecificImage =
+                              variant?.image?.variantId === variant?.id
+                                 ? variant?.image
+                                 : undefined;
                            return (
                               <ProductOptionValue
                                  key={value}
                                  isActive={variant?.id === selected}
                                  label={value}
-                                 image={variant?.image}
+                                 image={variantSpecificImage}
                                  onClick={() => {
                                     if (variant) {
                                        onChange(variant.id);
