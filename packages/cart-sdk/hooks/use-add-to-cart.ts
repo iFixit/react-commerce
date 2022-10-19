@@ -1,6 +1,6 @@
-import { assertNever } from '@ifixit/helpers';
+import { trackGoogleAddToCart, trackMatomoCartChange } from '@ifixit/analytics';
+import { assertNever, getProductVariantSku } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { trackMatomoCartChange } from '@ifixit/matomo';
 import { useMutation, useQueryClient } from 'react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
@@ -43,9 +43,9 @@ export function useAddToCart() {
                return iFixitApiClient.post(`store/user/cart/product`, {
                   body: JSON.stringify({
                      skus: input.bundle.items.map((item) =>
-                        getApiSkuFromItemCode(item.itemcode)
+                        getProductVariantSku(item.itemcode)
                      ),
-                     pageSku: getApiSkuFromItemCode(
+                     pageSku: getProductVariantSku(
                         input.bundle.currentItemCode
                      ),
                   }),
@@ -96,9 +96,10 @@ export function useAddToCart() {
                context?.previousCart
             );
          },
-         onSuccess: () => {
+         onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
             trackMatomoCartChange(cart?.lineItems ?? []);
+            trackGoogleAddToCart(variables);
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;
@@ -134,8 +135,4 @@ function addLineItem(cart: Cart, inputLineItem: CartLineItem): Cart {
          itemsCount: cart.totals.itemsCount + inputLineItem.quantity,
       },
    };
-}
-
-function getApiSkuFromItemCode(itemCode: string): string {
-   return itemCode.replace(/\D/g, '');
 }

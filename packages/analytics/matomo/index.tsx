@@ -11,7 +11,7 @@ function usePaq(): any[] | undefined {
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  */
-export function trackPageView(url: string) {
+export function trackMatomoPageView(url: string) {
    const _paq = usePaq();
    if (!_paq) {
       return;

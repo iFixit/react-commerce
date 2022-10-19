@@ -6,12 +6,12 @@ const {
 } = require('./next-config/redirects/tool-collections');
 
 const withTM = require('next-transpile-modules')([
+   '@ifixit/analytics',
    '@ifixit/app',
    '@ifixit/ui',
    '@ifixit/icons',
    '@ifixit/auth-sdk',
    '@ifixit/cart-sdk',
-   '@ifixit/matomo',
    '@ifixit/newsletter-sdk',
    '@ifixit/helpers',
    '@ifixit/ifixit-api-client',
