@@ -3,6 +3,7 @@ query findProduct($handle: String) {
       title
       handle
       descriptionHtml
+      tags
       breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
          value
       }

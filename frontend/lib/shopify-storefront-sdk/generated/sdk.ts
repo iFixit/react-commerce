@@ -6308,6 +6308,7 @@ export type FindProductQuery = {
       title: string;
       handle: string;
       descriptionHtml: string;
+      tags: Array<string>;
       breadcrumbs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       faqs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
       prop65WarningType?: Maybe<{ __typename?: 'Metafield'; value: string }>;
@@ -6587,6 +6588,7 @@ export const FindProductDocument = `
     title
     handle
     descriptionHtml
+    tags
     breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
       value
     }
