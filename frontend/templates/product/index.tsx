@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          };
       }
 
-      const proOnly = product?.tags.find((tag: string) => tag === "Pro Only");
+      const proOnly = product?.tags.find((tag: string) => tag === 'Pro Only');
       if (proOnly) {
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
       } else {
