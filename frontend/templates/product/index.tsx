@@ -86,8 +86,6 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    async (context) => {
       noindexDevDomains(context);
-      // @TODO: Remove this before the page goes live
-      context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
       const layoutProps = await getLayoutServerSideProps();
@@ -98,11 +96,21 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          },
          handle
       );
+
       if (product == null) {
          return {
             notFound: true,
          };
       }
+
+      const proOnly = product?.tags.find((tag: string) => tag === "Pro Only");
+      if (proOnly) {
+         context.res.setHeader('X-Robots-Tag', 'noindex, follow');
+      } else {
+         // @TODO: Remove this before the page goes live
+         context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+      }
+
       const pageProps: ProductTemplateProps = {
          layoutProps,
          appProps: {},
