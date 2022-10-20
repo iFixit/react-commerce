@@ -12,7 +12,7 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
    return (
       <Center flexGrow={1} paddingTop="16px" paddingBottom="16px">
          <VStack>
-            <Text fontSize={36} fontWeight="bold">
+            <Text fontSize={50} fontWeight="bold">
                404
             </Text>
             <Text
@@ -25,7 +25,7 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
             </Text>
             <Divider borderWidth="1px" borderColor="red.500" width="50px" />
             <Text
-               fontSize={20}
+               fontSize={18}
                paddingTop="24px"
                overflowWrap="break-word"
                align="center"
@@ -46,7 +46,6 @@ export const getStaticProps: GetStaticProps<Custom404Props> = async () => {
    return {
       props: {
          layoutProps: await getLayoutServerSideProps(),
-         appProps: {},
       },
    };
 };
