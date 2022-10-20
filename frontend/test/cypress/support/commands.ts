@@ -35,3 +35,17 @@ Cypress.Commands.add('loadCollectionPageByPath', (path: string) => {
    cy.wait('@user-api');
    cy.window().its('userLoaded').should('be.true');
 });
+
+Cypress.Commands.add('loadProductPageByPath', (path: string) => {
+   cy.intercept(
+      { method: 'GET', url: '/api/2.0/user' },
+      {
+         userid: 1,
+         algoliaApiKeyProduct: null,
+         username: 'john',
+         unique_username: 'john123',
+      }
+   ).as('user-api');
+   cy.visit(path);
+   cy.wait('@user-api');
+});
