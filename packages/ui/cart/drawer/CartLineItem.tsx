@@ -129,8 +129,13 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            }}
                            disabled={lineItem.quantity <= 1}
                            onClick={decrementQuantity}
+                           data-testid="cart-drawer-decrease-quantity"
                         />
-                        <Text color="gray.800" fontSize="xs">
+                        <Text
+                           color="gray.800"
+                           fontSize="xs"
+                           data-testid="cart-drawer-quantity"
+                        >
                            {lineItem.quantity}
                         </Text>
                         <MotionIconButton
@@ -153,6 +158,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               lineItem.quantity >= lineItem.maxToAdd
                            }
                            onClick={incrementQuantity}
+                           data-testid="cart-drawer-increase-quantity"
                         />
                      </HStack>
                      <Collapse
@@ -188,6 +194,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                   icon={<FaIcon icon={faTrash} h="4" />}
                   size="xs"
                   onClick={handleRemoveLineItem}
+                  data-testid="cart-drawer-remove-item"
                />
             </Box>
          </Flex>

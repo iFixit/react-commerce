@@ -66,6 +66,7 @@ export function CartDrawer() {
                _active={{
                   bg: 'gray.900',
                }}
+               data-testid="cart-drawer-open"
             />
             {cart.data && cart.data.hasItemsInCart && (
                <Circle
@@ -93,6 +94,7 @@ export function CartDrawer() {
                      <DrawerCloseButton
                         top="50%"
                         transform="translateY(-50%)"
+                        data-testid="cart-drawer-close"
                      />
                      <HStack align="center">
                         <Heading
@@ -114,6 +116,7 @@ export function CartDrawer() {
                               justifyContent="center"
                               bg="gray.100"
                               color="gray.400"
+                              data-testid="cart-drawer-item-count"
                            >
                               {cart.isLoading ? (
                                  <Spinner size="xs" />

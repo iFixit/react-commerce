@@ -74,6 +74,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                   isLoading={addToCart.isLoading}
                   disabled={inventory.remaining === 0}
                   onClick={handleAddToCart}
+                  data-testid="product-add-to-cart-button"
                >
                   Add to cart
                </Button>
