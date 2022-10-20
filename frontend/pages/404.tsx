@@ -10,7 +10,13 @@ type Custom404Props = WithLayoutProps<{}>;
 
 export const Custom404: NextPageWithLayout<Custom404Props> = () => {
    return (
-      <Center flexGrow={1} paddingTop="16px" paddingBottom="16px">
+      <Center
+         flexGrow={1}
+         paddingTop="16px"
+         paddingBottom="60px"
+         paddingLeft="20px"
+         paddingRight="20px"
+      >
          <VStack>
             <Text fontSize={50} fontWeight="bold">
                404
