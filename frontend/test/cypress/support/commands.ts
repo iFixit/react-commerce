@@ -49,3 +49,17 @@ Cypress.Commands.add('loadProductPageByPath', (path: string) => {
    cy.visit(path);
    cy.wait('@user-api');
 });
+
+Cypress.Commands.add('removeItemsFromCartAndCloseDrawer', () => {
+   cy.findAllByTestId('cart-drawer-remove-item')
+      .wait(500)
+      .then((items) => items.trigger('click'))
+      .wait(500);
+   cy.findAllByTestId('cart-drawer-item-count')
+      .invoke('text')
+      .then(parseInt)
+      .should('eq', 0);
+   cy.findByTestId('cart-drawer-quantity').should('not.exist');
+   cy.findByTestId('cart-drawer-close').click().wait(500);
+   cy.findByTestId('cart-drawer-close').should('not.exist');
+});

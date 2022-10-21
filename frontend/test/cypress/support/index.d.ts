@@ -5,5 +5,6 @@ declare namespace Cypress {
       isWithinViewport(): Chainable<JQuery<HTMLElement>>;
       loadCollectionPageByPath(path: string): Chainable;
       loadProductPageByPath(path: string): Chainable;
+      removeItemsFromCartAndCloseDrawer(): Chainable;
    }
 }

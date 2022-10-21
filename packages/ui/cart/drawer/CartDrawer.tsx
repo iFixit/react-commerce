@@ -182,7 +182,11 @@ export function CartDrawer() {
                               />
                            </Circle>
                            <Text>Your cart is empty</Text>
-                           <Button colorScheme="blue" onClick={onClose} data-testid="back-to-shopping">
+                           <Button
+                              colorScheme="blue"
+                              onClick={onClose}
+                              data-testid="back-to-shopping"
+                           >
                               Back to shopping
                            </Button>
                         </VStack>
