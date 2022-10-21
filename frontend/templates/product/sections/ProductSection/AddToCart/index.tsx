@@ -166,7 +166,7 @@ function ShippingRestrictions({
    if (primaryRestrictionKey) {
       restrictionKeysToShow.push(primaryRestrictionKey);
    }
-   if (shippingRestrictions?.includes('fulfilled_via_dropshipping')) {
+   if (shippingRestrictions.includes('fulfilled_via_dropshipping')) {
       restrictionKeysToShow.push('fulfilled_via_dropshipping');
    }
 
