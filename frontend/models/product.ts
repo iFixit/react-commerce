@@ -116,6 +116,9 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          crossSellVariants: getCrossSellVariants(variant),
          enabled: variant.enabled?.value === 'true',
          disableWhenOOS: variant.disableWhenOOS?.value === 'true',
+         shippingRestrictions: parseShippingRestrictions(
+            variant.shippingRestrictions?.value
+         ),
       };
    });
 }
@@ -477,7 +480,32 @@ function parsePriceTiersMetafieldValue(
    }
    const errors = result.error.flatten();
    console.error(
-      `Failed to parse compatibility metafield:\n ${JSON.stringify(
+      `Failed to parse price tiers metafield:\n ${JSON.stringify(
+         errors.fieldErrors,
+         null,
+         2
+      )}`
+   );
+   return null;
+}
+
+const ShippingRestrictionsMetafieldSchema = z.array(z.string());
+
+function parseShippingRestrictions(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   const json: unknown = JSON.parse(value);
+   if (json == null) {
+      return null;
+   }
+   const result = ShippingRestrictionsMetafieldSchema.safeParse(json);
+   if (result.success) {
+      return result.data;
+   }
+   const errors = result.error.flatten();
+   console.error(
+      `Failed to parse shipping restrictions metafield:\n ${JSON.stringify(
          errors.fieldErrors,
          null,
          2

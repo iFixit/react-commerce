@@ -6507,6 +6507,10 @@ export type FindProductQuery = {
                __typename?: 'Metafield';
                value: string;
             }>;
+            shippingRestrictions?: Maybe<{
+               __typename?: 'Metafield';
+               value: string;
+            }>;
          }>;
       };
    }>;
@@ -6707,6 +6711,12 @@ export const FindProductDocument = `
         internalDisplayName: metafield(
           namespace: "ifixit"
           key: "internal_display_name"
+        ) {
+          value
+        }
+        shippingRestrictions: metafield(
+          namespace: "ifixit"
+          key: "shipping_restrictions"
         ) {
           value
         }

@@ -146,6 +146,12 @@ query findProduct($handle: String) {
             ) {
                value
             }
+            shippingRestrictions: metafield(
+               namespace: "ifixit"
+               key: "shipping_restrictions"
+            ) {
+               value
+            }
          }
       }
    }
