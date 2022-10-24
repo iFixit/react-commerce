@@ -81,7 +81,7 @@ export function ProductListBreadcrumb({
                   lg: 'inline-flex',
                }}
             >
-               <NextLink href={ancestor.path} passHref>
+               <NextLink href={productListPath(ancestor)} passHref>
                   <BreadcrumbLink
                      color="gray.500"
                      whiteSpace="nowrap"
@@ -115,7 +115,7 @@ export function ProductListBreadcrumb({
                      {reverseAncestorList.map((ancestor) => (
                         <NextLink
                            key={ancestor.handle}
-                           href={ancestor.path}
+                           href={productListPath(ancestor)}
                            passHref
                         >
                            <MenuItem as="a">{ancestor.title}</MenuItem>
@@ -139,15 +139,12 @@ function appendDeviceAncestor(
    productList: ProductList
 ) {
    return ancestors.concat({
+      deviceTitle: productList.deviceTitle,
       title: getProductListTitle({
          title: productList.title,
          type: productList.type,
       }),
+      type: productList.type,
       handle: productList.handle,
-      path: productListPath({
-         type: productList.type,
-         handle: productList.handle,
-         deviceTitle: productList.deviceTitle ?? null,
-      }),
    });
 }

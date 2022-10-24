@@ -234,16 +234,13 @@ function createProductListAncestors(
    const type = getProductListType(attributes.type);
 
    return ancestors.concat({
+      deviceTitle: attributes.deviceTitle ?? null,
       title: getProductListTitle({
          title: attributes.title,
          type,
       }),
+      type: getProductListType(attributes.type),
       handle: attributes.handle,
-      path: productListPath({
-         type,
-         handle: attributes.handle,
-         deviceTitle: attributes.deviceTitle ?? null,
-      }),
    });
 }
 
@@ -368,12 +365,8 @@ function createProductListSection(
                   return {
                      handle: productList.handle,
                      title: productList.title,
+                     type: getProductListType(productList.type),
                      deviceTitle: productList.deviceTitle ?? null,
-                     path: productListPath({
-                        handle: productList.handle,
-                        deviceTitle: productList.deviceTitle ?? null,
-                        type: getProductListType(productList.type),
-                     }),
                      description: productList.description,
                      image:
                         image == null

@@ -92,9 +92,10 @@ interface MarketingProductList extends BaseProductList {
 }
 
 export interface ProductListAncestor {
+   deviceTitle: string | null;
    title: string;
+   type: ProductListType;
    handle: string;
-   path: string;
 }
 
 export interface ProductListChild {
@@ -169,7 +170,7 @@ export interface ProductListProductListSetSection {
 export interface ProductListPreview {
    handle: string;
    title: string;
-   path: string;
+   type: ProductListType;
    deviceTitle: string | null;
    description: string;
    image: ProductListImage | null;

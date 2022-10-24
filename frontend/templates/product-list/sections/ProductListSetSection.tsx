@@ -11,6 +11,7 @@ import { ProductListPreview } from '@models/product-list';
 import { IfixitImage } from '@ifixit/ui';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { productListPath } from '@helpers/path-helpers';
 
 export type ProductListSetSectionProps = {
    title: string;
@@ -83,7 +84,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                </Flex>
             )}
             <Divider orientation="vertical" />
-            <NextLink href={productList.path} passHref>
+            <NextLink href={productListPath(productList)} passHref>
                <LinkOverlay
                   px="3"
                   py="2"
