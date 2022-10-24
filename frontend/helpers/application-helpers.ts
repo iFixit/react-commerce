@@ -35,6 +35,17 @@ export function filterNullableItems<I>(
    return (items?.filter((item) => item != null) as any) || [];
 }
 
+/**
+ * A helper function to remove [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) items from an array.
+ * @param items A list of items
+ * @returns The list of non blank items
+ */
+export function filterFalsyItems<I>(
+   items?: I[] | undefined | null
+): NonNullable<I>[] {
+   return (items?.filter((item) => Boolean(item)) as any) || [];
+}
+
 const isProduction = process.env.NODE_ENV === 'production';
 const prefix = 'invariant failed';
 

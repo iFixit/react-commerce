@@ -5,10 +5,7 @@ import {
    IFIXIT_ORIGIN,
 } from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
-import {
-   getProductListPath,
-   getProductListTitle,
-} from '@helpers/product-list-helpers';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { logAsync, logSync } from '@ifixit/helpers';
 import {
@@ -33,6 +30,7 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
+import { productListPath } from '@helpers/path-helpers';
 
 export { ProductListSectionType, ProductListType } from './types';
 export type {
@@ -83,7 +81,7 @@ export async function findProductList(
    );
    const productListType = getProductListType(productList?.type);
 
-   const path = getProductListPath({
+   const path = productListPath({
       type: productListType,
       handle: handle,
       deviceTitle: deviceTitle,
@@ -132,7 +130,7 @@ export async function findProductList(
    };
 }
 
-function getProductListType(
+export function getProductListType(
    type?: Enum_Productlist_Type | null
 ): ProductListType {
    switch (type) {
@@ -248,7 +246,7 @@ function createProductListAncestors(
          type,
       }),
       handle: attributes.handle,
-      path: getProductListPath({
+      path: productListPath({
          type,
          handle: attributes.handle,
          deviceTitle: attributes.deviceTitle ?? null,
@@ -278,7 +276,7 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
          type,
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
-         path: getProductListPath({
+         path: productListPath({
             type,
             handle: attributes.handle,
             deviceTitle: attributes.deviceTitle ?? null,
@@ -353,7 +351,7 @@ function createProductListSection(
                handle: productList.handle,
                title: productList.title,
                deviceTitle: productList.deviceTitle ?? null,
-               path: getProductListPath({
+               path: productListPath({
                   handle: productList.handle,
                   deviceTitle: productList.deviceTitle ?? null,
                   type: getProductListType(productList.type),
@@ -387,7 +385,7 @@ function createProductListSection(
                      handle: productList.handle,
                      title: productList.title,
                      deviceTitle: productList.deviceTitle ?? null,
-                     path: getProductListPath({
+                     path: productListPath({
                         handle: productList.handle,
                         deviceTitle: productList.deviceTitle ?? null,
                         type: getProductListType(productList.type),

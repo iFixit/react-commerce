@@ -1,0 +1,15 @@
+{
+   "collectionName": "components_page_categories",
+   "info": {
+      "displayName": "category",
+      "icon": "border-all"
+   },
+   "options": {},
+   "attributes": {
+      "productList": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::product-list.product-list"
+      }
+   }
+}

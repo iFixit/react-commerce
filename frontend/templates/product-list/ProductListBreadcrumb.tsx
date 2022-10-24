@@ -12,10 +12,8 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
-import {
-   getProductListPath,
-   getProductListTitle,
-} from '@helpers/product-list-helpers';
+import { productListPath } from '@helpers/path-helpers';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import { ProductListAncestor } from '@models/product-list/types';
@@ -146,7 +144,7 @@ function appendDeviceAncestor(
          type: productList.type,
       }),
       handle: productList.handle,
-      path: getProductListPath({
+      path: productListPath({
          type: productList.type,
          handle: productList.handle,
          deviceTitle: productList.deviceTitle ?? null,

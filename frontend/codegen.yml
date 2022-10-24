@@ -12,6 +12,7 @@ generates:
             - prettier --write
       config:
          documentMode: 'string'
+         dedupeFragments: true
    lib/shopify-storefront-sdk/generated/sdk.ts:
       schema: lib/shopify-storefront-sdk/schema.graphql
       documents: 'lib/shopify-storefront-sdk/operations/**/*.graphql'
