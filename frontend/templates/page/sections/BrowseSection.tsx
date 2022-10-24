@@ -147,11 +147,7 @@ function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                   }}
                >
                   <NextLink
-                     href={productListPath({
-                        deviceTitle: category.deviceTitle,
-                        handle: category.handle,
-                        type: category.type,
-                     })}
+                     href={productListPath(category)}
                      passHref
                   >
                      <ProductListCard
