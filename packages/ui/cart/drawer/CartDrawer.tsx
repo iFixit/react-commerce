@@ -45,7 +45,7 @@ import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
-   const { isOpen, onOpen, onClose } = useCartDrawer();
+   const { isOpen, onOpen, onClose, onViewCart } = useCartDrawer();
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
@@ -240,7 +240,7 @@ export function CartDrawer() {
                                  as="a"
                                  href={`${appContext.ifixitOrigin}/cart/view`}
                                  variant="outline"
-                                 onClick={onClose}
+                                 onClick={onViewCart}
                               >
                                  View cart
                               </Button>

@@ -430,6 +430,7 @@ importers:
       '@babel/core': '>=7.0.0 <8.0.0'
       '@emotion/react': '>=11.0.0 <12.0.0'
       '@emotion/styled': '>=11.0.0 <12.0.0'
+      '@ifixit/analytics': workspace:*
       '@ifixit/app': workspace:*
       '@ifixit/auth-sdk': workspace:*
       '@ifixit/cart-sdk': workspace:*
@@ -446,6 +447,7 @@ importers:
       regenerator-runtime: '*'
       typescript: 4.5.3
     dependencies:
+      '@ifixit/analytics': link:../analytics
       '@ifixit/app': link:../app
       '@ifixit/auth-sdk': link:../auth-sdk
       '@ifixit/cart-sdk': link:../cart-sdk

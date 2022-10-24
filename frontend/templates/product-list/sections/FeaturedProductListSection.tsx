@@ -26,8 +26,10 @@ import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
 import { IfixitImage } from '@ifixit/ui';
 import NextLink from 'next/link';
+import * as React from 'react';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 import { computeDiscountPercentage } from '@ifixit/helpers';
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 
 export interface FeaturedProductListSectionProps {
    productList: FeaturedProductList;
@@ -175,6 +177,12 @@ function ProductListItem({ product }: ProductListItemProps) {
       : 0;
 
    const isSoldOut = product.quantity_available <= 0;
+   const onClick = React.useCallback(() => {
+      trackInMatomoAndGA({
+         eventCategory: 'Featured Products - Product Page',
+         eventAction: `Featured on Product Page - ${product.sku}`,
+      });
+   }, [product.sku]);
 
    return (
       <LinkBox
@@ -202,7 +210,10 @@ function ProductListItem({ product }: ProductListItemProps) {
                )}
             </ProductCardBadgeList>
             <ProductCardBody>
-               <LinkOverlay href={`${appContext.ifixitOrigin}${product.url}`}>
+               <LinkOverlay
+                  href={`${appContext.ifixitOrigin}${product.url}`}
+                  onClick={onClick}
+               >
                   <ProductCardTitle _groupHover={{ color: 'brand.500' }}>
                      {product.title}
                   </ProductCardTitle>
