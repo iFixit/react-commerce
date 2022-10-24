@@ -1,4 +1,5 @@
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
    [K in keyof T]: T[K];
 };
@@ -27,27 +28,27 @@ export type Scalars = {
 };
 
 export type BooleanFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
-   between?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
-   contains?: Maybe<Scalars['Boolean']>;
-   containsi?: Maybe<Scalars['Boolean']>;
-   endsWith?: Maybe<Scalars['Boolean']>;
-   eq?: Maybe<Scalars['Boolean']>;
-   eqi?: Maybe<Scalars['Boolean']>;
-   gt?: Maybe<Scalars['Boolean']>;
-   gte?: Maybe<Scalars['Boolean']>;
-   in?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
-   lt?: Maybe<Scalars['Boolean']>;
-   lte?: Maybe<Scalars['Boolean']>;
-   ne?: Maybe<Scalars['Boolean']>;
-   not?: Maybe<BooleanFilterInput>;
-   notContains?: Maybe<Scalars['Boolean']>;
-   notContainsi?: Maybe<Scalars['Boolean']>;
-   notIn?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['Boolean']>>>;
-   startsWith?: Maybe<Scalars['Boolean']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+   contains?: InputMaybe<Scalars['Boolean']>;
+   containsi?: InputMaybe<Scalars['Boolean']>;
+   endsWith?: InputMaybe<Scalars['Boolean']>;
+   eq?: InputMaybe<Scalars['Boolean']>;
+   eqi?: InputMaybe<Scalars['Boolean']>;
+   gt?: InputMaybe<Scalars['Boolean']>;
+   gte?: InputMaybe<Scalars['Boolean']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+   lt?: InputMaybe<Scalars['Boolean']>;
+   lte?: InputMaybe<Scalars['Boolean']>;
+   ne?: InputMaybe<Scalars['Boolean']>;
+   not?: InputMaybe<BooleanFilterInput>;
+   notContains?: InputMaybe<Scalars['Boolean']>;
+   notContainsi?: InputMaybe<Scalars['Boolean']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
+   startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ComponentGlobalNewsletterForm = {
@@ -60,11 +61,11 @@ export type ComponentGlobalNewsletterForm = {
 };
 
 export type ComponentGlobalNewsletterFormInput = {
-   callToActionButtonTitle?: Maybe<Scalars['String']>;
-   id?: Maybe<Scalars['ID']>;
-   inputPlaceholder?: Maybe<Scalars['String']>;
-   subtitle?: Maybe<Scalars['String']>;
-   title?: Maybe<Scalars['String']>;
+   callToActionButtonTitle?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
+   inputPlaceholder?: InputMaybe<Scalars['String']>;
+   subtitle?: InputMaybe<Scalars['String']>;
+   title?: InputMaybe<Scalars['String']>;
 };
 
 export type ComponentMenuLink = {
@@ -97,11 +98,39 @@ export type ComponentMenuSubmenu = {
    submenu?: Maybe<MenuEntityResponse>;
 };
 
+export type ComponentPageBrowse = {
+   __typename?: 'ComponentPageBrowse';
+   categories?: Maybe<Array<Maybe<ComponentPageCategory>>>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPageBrowseCategoriesArgs = {
+   filters?: InputMaybe<ComponentPageCategoryFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentPageCallToAction = {
    __typename?: 'ComponentPageCallToAction';
    id: Scalars['ID'];
    title: Scalars['String'];
    url: Scalars['String'];
+};
+
+export type ComponentPageCategory = {
+   __typename?: 'ComponentPageCategory';
+   id: Scalars['ID'];
+   productList?: Maybe<ProductListEntityResponse>;
+};
+
+export type ComponentPageCategoryFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentPageCategoryFiltersInput>>>;
+   not?: InputMaybe<ComponentPageCategoryFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentPageCategoryFiltersInput>>>;
+   productList?: InputMaybe<ProductListFiltersInput>;
 };
 
 export type ComponentPageHero = {
@@ -136,10 +165,10 @@ export type ComponentProductListLinkedProductListSet = {
 };
 
 export type ComponentProductListLinkedProductListSetProductListsArgs = {
-   filters?: Maybe<ProductListFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ComponentProductListRelatedPosts = {
@@ -158,21 +187,21 @@ export type ComponentStoreFooter = {
 };
 
 export type ComponentStoreFooterFiltersInput = {
-   and?: Maybe<Array<Maybe<ComponentStoreFooterFiltersInput>>>;
-   bottomMenu?: Maybe<MenuFiltersInput>;
-   menu1?: Maybe<MenuFiltersInput>;
-   menu2?: Maybe<MenuFiltersInput>;
-   not?: Maybe<ComponentStoreFooterFiltersInput>;
-   or?: Maybe<Array<Maybe<ComponentStoreFooterFiltersInput>>>;
-   partners?: Maybe<MenuFiltersInput>;
+   and?: InputMaybe<Array<InputMaybe<ComponentStoreFooterFiltersInput>>>;
+   bottomMenu?: InputMaybe<MenuFiltersInput>;
+   menu1?: InputMaybe<MenuFiltersInput>;
+   menu2?: InputMaybe<MenuFiltersInput>;
+   not?: InputMaybe<ComponentStoreFooterFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentStoreFooterFiltersInput>>>;
+   partners?: InputMaybe<MenuFiltersInput>;
 };
 
 export type ComponentStoreFooterInput = {
-   bottomMenu?: Maybe<Scalars['ID']>;
-   id?: Maybe<Scalars['ID']>;
-   menu1?: Maybe<Scalars['ID']>;
-   menu2?: Maybe<Scalars['ID']>;
-   partners?: Maybe<Scalars['ID']>;
+   bottomMenu?: InputMaybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
+   menu1?: InputMaybe<Scalars['ID']>;
+   menu2?: InputMaybe<Scalars['ID']>;
+   partners?: InputMaybe<Scalars['ID']>;
 };
 
 export type ComponentStoreHeader = {
@@ -182,15 +211,15 @@ export type ComponentStoreHeader = {
 };
 
 export type ComponentStoreHeaderFiltersInput = {
-   and?: Maybe<Array<Maybe<ComponentStoreHeaderFiltersInput>>>;
-   menu?: Maybe<MenuFiltersInput>;
-   not?: Maybe<ComponentStoreHeaderFiltersInput>;
-   or?: Maybe<Array<Maybe<ComponentStoreHeaderFiltersInput>>>;
+   and?: InputMaybe<Array<InputMaybe<ComponentStoreHeaderFiltersInput>>>;
+   menu?: InputMaybe<MenuFiltersInput>;
+   not?: InputMaybe<ComponentStoreHeaderFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentStoreHeaderFiltersInput>>>;
 };
 
 export type ComponentStoreHeaderInput = {
-   id?: Maybe<Scalars['ID']>;
-   menu?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
+   menu?: InputMaybe<Scalars['ID']>;
 };
 
 export type ComponentStoreShopifySettings = {
@@ -201,17 +230,21 @@ export type ComponentStoreShopifySettings = {
 };
 
 export type ComponentStoreShopifySettingsFiltersInput = {
-   and?: Maybe<Array<Maybe<ComponentStoreShopifySettingsFiltersInput>>>;
-   not?: Maybe<ComponentStoreShopifySettingsFiltersInput>;
-   or?: Maybe<Array<Maybe<ComponentStoreShopifySettingsFiltersInput>>>;
-   storefrontAccessToken?: Maybe<StringFilterInput>;
-   storefrontDomain?: Maybe<StringFilterInput>;
+   and?: InputMaybe<
+      Array<InputMaybe<ComponentStoreShopifySettingsFiltersInput>>
+   >;
+   not?: InputMaybe<ComponentStoreShopifySettingsFiltersInput>;
+   or?: InputMaybe<
+      Array<InputMaybe<ComponentStoreShopifySettingsFiltersInput>>
+   >;
+   storefrontAccessToken?: InputMaybe<StringFilterInput>;
+   storefrontDomain?: InputMaybe<StringFilterInput>;
 };
 
 export type ComponentStoreShopifySettingsInput = {
-   id?: Maybe<Scalars['ID']>;
-   storefrontAccessToken?: Maybe<Scalars['String']>;
-   storefrontDomain?: Maybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
+   storefrontAccessToken?: InputMaybe<Scalars['String']>;
+   storefrontDomain?: InputMaybe<Scalars['String']>;
 };
 
 export type ComponentStoreSocialMediaAccounts = {
@@ -225,47 +258,51 @@ export type ComponentStoreSocialMediaAccounts = {
 };
 
 export type ComponentStoreSocialMediaAccountsFiltersInput = {
-   and?: Maybe<Array<Maybe<ComponentStoreSocialMediaAccountsFiltersInput>>>;
-   facebook?: Maybe<StringFilterInput>;
-   instagram?: Maybe<StringFilterInput>;
-   not?: Maybe<ComponentStoreSocialMediaAccountsFiltersInput>;
-   or?: Maybe<Array<Maybe<ComponentStoreSocialMediaAccountsFiltersInput>>>;
-   repairOrg?: Maybe<StringFilterInput>;
-   twitter?: Maybe<StringFilterInput>;
-   youtube?: Maybe<StringFilterInput>;
+   and?: InputMaybe<
+      Array<InputMaybe<ComponentStoreSocialMediaAccountsFiltersInput>>
+   >;
+   facebook?: InputMaybe<StringFilterInput>;
+   instagram?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ComponentStoreSocialMediaAccountsFiltersInput>;
+   or?: InputMaybe<
+      Array<InputMaybe<ComponentStoreSocialMediaAccountsFiltersInput>>
+   >;
+   repairOrg?: InputMaybe<StringFilterInput>;
+   twitter?: InputMaybe<StringFilterInput>;
+   youtube?: InputMaybe<StringFilterInput>;
 };
 
 export type ComponentStoreSocialMediaAccountsInput = {
-   facebook?: Maybe<Scalars['String']>;
-   id?: Maybe<Scalars['ID']>;
-   instagram?: Maybe<Scalars['String']>;
-   repairOrg?: Maybe<Scalars['String']>;
-   twitter?: Maybe<Scalars['String']>;
-   youtube?: Maybe<Scalars['String']>;
+   facebook?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
+   instagram?: InputMaybe<Scalars['String']>;
+   repairOrg?: InputMaybe<Scalars['String']>;
+   twitter?: InputMaybe<Scalars['String']>;
+   youtube?: InputMaybe<Scalars['String']>;
 };
 
 export type DateTimeFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
-   between?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
-   contains?: Maybe<Scalars['DateTime']>;
-   containsi?: Maybe<Scalars['DateTime']>;
-   endsWith?: Maybe<Scalars['DateTime']>;
-   eq?: Maybe<Scalars['DateTime']>;
-   eqi?: Maybe<Scalars['DateTime']>;
-   gt?: Maybe<Scalars['DateTime']>;
-   gte?: Maybe<Scalars['DateTime']>;
-   in?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
-   lt?: Maybe<Scalars['DateTime']>;
-   lte?: Maybe<Scalars['DateTime']>;
-   ne?: Maybe<Scalars['DateTime']>;
-   not?: Maybe<DateTimeFilterInput>;
-   notContains?: Maybe<Scalars['DateTime']>;
-   notContainsi?: Maybe<Scalars['DateTime']>;
-   notIn?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
-   startsWith?: Maybe<Scalars['DateTime']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+   contains?: InputMaybe<Scalars['DateTime']>;
+   containsi?: InputMaybe<Scalars['DateTime']>;
+   endsWith?: InputMaybe<Scalars['DateTime']>;
+   eq?: InputMaybe<Scalars['DateTime']>;
+   eqi?: InputMaybe<Scalars['DateTime']>;
+   gt?: InputMaybe<Scalars['DateTime']>;
+   gte?: InputMaybe<Scalars['DateTime']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+   lt?: InputMaybe<Scalars['DateTime']>;
+   lte?: InputMaybe<Scalars['DateTime']>;
+   ne?: InputMaybe<Scalars['DateTime']>;
+   not?: InputMaybe<DateTimeFilterInput>;
+   notContains?: InputMaybe<Scalars['DateTime']>;
+   notContainsi?: InputMaybe<Scalars['DateTime']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+   startsWith?: InputMaybe<Scalars['DateTime']>;
 };
 
 export enum Enum_Productlist_Type {
@@ -291,33 +328,33 @@ export type Error = {
 };
 
 export type FileInfoInput = {
-   alternativeText?: Maybe<Scalars['String']>;
-   caption?: Maybe<Scalars['String']>;
-   name?: Maybe<Scalars['String']>;
+   alternativeText?: InputMaybe<Scalars['String']>;
+   caption?: InputMaybe<Scalars['String']>;
+   name?: InputMaybe<Scalars['String']>;
 };
 
 export type FloatFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['Float']>>>;
-   between?: Maybe<Array<Maybe<Scalars['Float']>>>;
-   contains?: Maybe<Scalars['Float']>;
-   containsi?: Maybe<Scalars['Float']>;
-   endsWith?: Maybe<Scalars['Float']>;
-   eq?: Maybe<Scalars['Float']>;
-   eqi?: Maybe<Scalars['Float']>;
-   gt?: Maybe<Scalars['Float']>;
-   gte?: Maybe<Scalars['Float']>;
-   in?: Maybe<Array<Maybe<Scalars['Float']>>>;
-   lt?: Maybe<Scalars['Float']>;
-   lte?: Maybe<Scalars['Float']>;
-   ne?: Maybe<Scalars['Float']>;
-   not?: Maybe<FloatFilterInput>;
-   notContains?: Maybe<Scalars['Float']>;
-   notContainsi?: Maybe<Scalars['Float']>;
-   notIn?: Maybe<Array<Maybe<Scalars['Float']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['Float']>>>;
-   startsWith?: Maybe<Scalars['Float']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+   contains?: InputMaybe<Scalars['Float']>;
+   containsi?: InputMaybe<Scalars['Float']>;
+   endsWith?: InputMaybe<Scalars['Float']>;
+   eq?: InputMaybe<Scalars['Float']>;
+   eqi?: InputMaybe<Scalars['Float']>;
+   gt?: InputMaybe<Scalars['Float']>;
+   gte?: InputMaybe<Scalars['Float']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+   lt?: InputMaybe<Scalars['Float']>;
+   lte?: InputMaybe<Scalars['Float']>;
+   ne?: InputMaybe<Scalars['Float']>;
+   not?: InputMaybe<FloatFilterInput>;
+   notContains?: InputMaybe<Scalars['Float']>;
+   notContainsi?: InputMaybe<Scalars['Float']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
 export type GenericMorph =
@@ -326,7 +363,9 @@ export type GenericMorph =
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
    | ComponentMenuSubmenu
+   | ComponentPageBrowse
    | ComponentPageCallToAction
+   | ComponentPageCategory
    | ComponentPageHero
    | ComponentProductListBanner
    | ComponentProductListFeaturedProductList
@@ -359,7 +398,7 @@ export type Global = {
 };
 
 export type GlobalLocalizationsArgs = {
-   publicationState?: Maybe<PublicationState>;
+   publicationState?: InputMaybe<PublicationState>;
 };
 
 export type GlobalEntity = {
@@ -374,8 +413,8 @@ export type GlobalEntityResponse = {
 };
 
 export type GlobalInput = {
-   newsletterForm?: Maybe<ComponentGlobalNewsletterFormInput>;
-   publishedAt?: Maybe<Scalars['DateTime']>;
+   newsletterForm?: InputMaybe<ComponentGlobalNewsletterFormInput>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type GlobalRelationResponseCollection = {
@@ -409,86 +448,86 @@ export type I18NLocaleEntityResponseCollection = {
 };
 
 export type I18NLocaleFiltersInput = {
-   and?: Maybe<Array<Maybe<I18NLocaleFiltersInput>>>;
-   code?: Maybe<StringFilterInput>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   name?: Maybe<StringFilterInput>;
-   not?: Maybe<I18NLocaleFiltersInput>;
-   or?: Maybe<Array<Maybe<I18NLocaleFiltersInput>>>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<I18NLocaleFiltersInput>>>;
+   code?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<I18NLocaleFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<I18NLocaleFiltersInput>>>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type IdFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   between?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   contains?: Maybe<Scalars['ID']>;
-   containsi?: Maybe<Scalars['ID']>;
-   endsWith?: Maybe<Scalars['ID']>;
-   eq?: Maybe<Scalars['ID']>;
-   eqi?: Maybe<Scalars['ID']>;
-   gt?: Maybe<Scalars['ID']>;
-   gte?: Maybe<Scalars['ID']>;
-   in?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   lt?: Maybe<Scalars['ID']>;
-   lte?: Maybe<Scalars['ID']>;
-   ne?: Maybe<Scalars['ID']>;
-   not?: Maybe<IdFilterInput>;
-   notContains?: Maybe<Scalars['ID']>;
-   notContainsi?: Maybe<Scalars['ID']>;
-   notIn?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   startsWith?: Maybe<Scalars['ID']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   contains?: InputMaybe<Scalars['ID']>;
+   containsi?: InputMaybe<Scalars['ID']>;
+   endsWith?: InputMaybe<Scalars['ID']>;
+   eq?: InputMaybe<Scalars['ID']>;
+   eqi?: InputMaybe<Scalars['ID']>;
+   gt?: InputMaybe<Scalars['ID']>;
+   gte?: InputMaybe<Scalars['ID']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   lt?: InputMaybe<Scalars['ID']>;
+   lte?: InputMaybe<Scalars['ID']>;
+   ne?: InputMaybe<Scalars['ID']>;
+   not?: InputMaybe<IdFilterInput>;
+   notContains?: InputMaybe<Scalars['ID']>;
+   notContainsi?: InputMaybe<Scalars['ID']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   startsWith?: InputMaybe<Scalars['ID']>;
 };
 
 export type IntFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['Int']>>>;
-   between?: Maybe<Array<Maybe<Scalars['Int']>>>;
-   contains?: Maybe<Scalars['Int']>;
-   containsi?: Maybe<Scalars['Int']>;
-   endsWith?: Maybe<Scalars['Int']>;
-   eq?: Maybe<Scalars['Int']>;
-   eqi?: Maybe<Scalars['Int']>;
-   gt?: Maybe<Scalars['Int']>;
-   gte?: Maybe<Scalars['Int']>;
-   in?: Maybe<Array<Maybe<Scalars['Int']>>>;
-   lt?: Maybe<Scalars['Int']>;
-   lte?: Maybe<Scalars['Int']>;
-   ne?: Maybe<Scalars['Int']>;
-   not?: Maybe<IntFilterInput>;
-   notContains?: Maybe<Scalars['Int']>;
-   notContainsi?: Maybe<Scalars['Int']>;
-   notIn?: Maybe<Array<Maybe<Scalars['Int']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['Int']>>>;
-   startsWith?: Maybe<Scalars['Int']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+   contains?: InputMaybe<Scalars['Int']>;
+   containsi?: InputMaybe<Scalars['Int']>;
+   endsWith?: InputMaybe<Scalars['Int']>;
+   eq?: InputMaybe<Scalars['Int']>;
+   eqi?: InputMaybe<Scalars['Int']>;
+   gt?: InputMaybe<Scalars['Int']>;
+   gte?: InputMaybe<Scalars['Int']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+   lt?: InputMaybe<Scalars['Int']>;
+   lte?: InputMaybe<Scalars['Int']>;
+   ne?: InputMaybe<Scalars['Int']>;
+   not?: InputMaybe<IntFilterInput>;
+   notContains?: InputMaybe<Scalars['Int']>;
+   notContainsi?: InputMaybe<Scalars['Int']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+   startsWith?: InputMaybe<Scalars['Int']>;
 };
 
 export type JsonFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['JSON']>>>;
-   between?: Maybe<Array<Maybe<Scalars['JSON']>>>;
-   contains?: Maybe<Scalars['JSON']>;
-   containsi?: Maybe<Scalars['JSON']>;
-   endsWith?: Maybe<Scalars['JSON']>;
-   eq?: Maybe<Scalars['JSON']>;
-   eqi?: Maybe<Scalars['JSON']>;
-   gt?: Maybe<Scalars['JSON']>;
-   gte?: Maybe<Scalars['JSON']>;
-   in?: Maybe<Array<Maybe<Scalars['JSON']>>>;
-   lt?: Maybe<Scalars['JSON']>;
-   lte?: Maybe<Scalars['JSON']>;
-   ne?: Maybe<Scalars['JSON']>;
-   not?: Maybe<JsonFilterInput>;
-   notContains?: Maybe<Scalars['JSON']>;
-   notContainsi?: Maybe<Scalars['JSON']>;
-   notIn?: Maybe<Array<Maybe<Scalars['JSON']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['JSON']>>>;
-   startsWith?: Maybe<Scalars['JSON']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+   contains?: InputMaybe<Scalars['JSON']>;
+   containsi?: InputMaybe<Scalars['JSON']>;
+   endsWith?: InputMaybe<Scalars['JSON']>;
+   eq?: InputMaybe<Scalars['JSON']>;
+   eqi?: InputMaybe<Scalars['JSON']>;
+   gt?: InputMaybe<Scalars['JSON']>;
+   gte?: InputMaybe<Scalars['JSON']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+   lt?: InputMaybe<Scalars['JSON']>;
+   lte?: InputMaybe<Scalars['JSON']>;
+   ne?: InputMaybe<Scalars['JSON']>;
+   not?: InputMaybe<JsonFilterInput>;
+   notContains?: InputMaybe<Scalars['JSON']>;
+   notContainsi?: InputMaybe<Scalars['JSON']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+   startsWith?: InputMaybe<Scalars['JSON']>;
 };
 
 export type Menu = {
@@ -503,10 +542,10 @@ export type Menu = {
 };
 
 export type MenuLocalizationsArgs = {
-   filters?: Maybe<MenuFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<MenuFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type MenuEntity = {
@@ -527,22 +566,22 @@ export type MenuEntityResponseCollection = {
 };
 
 export type MenuFiltersInput = {
-   and?: Maybe<Array<Maybe<MenuFiltersInput>>>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   locale?: Maybe<StringFilterInput>;
-   localizations?: Maybe<MenuFiltersInput>;
-   not?: Maybe<MenuFiltersInput>;
-   or?: Maybe<Array<Maybe<MenuFiltersInput>>>;
-   publishedAt?: Maybe<DateTimeFilterInput>;
-   title?: Maybe<StringFilterInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<MenuFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   locale?: InputMaybe<StringFilterInput>;
+   localizations?: InputMaybe<MenuFiltersInput>;
+   not?: InputMaybe<MenuFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<MenuFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type MenuInput = {
-   items?: Maybe<Array<Scalars['MenuItemsDynamicZoneInput']>>;
-   publishedAt?: Maybe<Scalars['DateTime']>;
-   title?: Maybe<Scalars['String']>;
+   items?: InputMaybe<Array<Scalars['MenuItemsDynamicZoneInput']>>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   title?: InputMaybe<Scalars['String']>;
 };
 
 export type MenuItemsDynamicZone =
@@ -619,42 +658,42 @@ export type MutationChangePasswordArgs = {
 };
 
 export type MutationCreateGlobalLocalizationArgs = {
-   data?: Maybe<GlobalInput>;
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   data?: InputMaybe<GlobalInput>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateMenuArgs = {
    data: MenuInput;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateMenuLocalizationArgs = {
-   data?: Maybe<MenuInput>;
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   data?: InputMaybe<MenuInput>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreatePageArgs = {
    data: PageInput;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreatePageLocalizationArgs = {
-   data?: Maybe<PageInput>;
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   data?: InputMaybe<PageInput>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateProductListArgs = {
    data: ProductListInput;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateProductListLocalizationArgs = {
-   data?: Maybe<ProductListInput>;
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   data?: InputMaybe<ProductListInput>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateStoreArgs = {
@@ -678,22 +717,22 @@ export type MutationCreateUsersPermissionsUserArgs = {
 };
 
 export type MutationDeleteGlobalArgs = {
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationDeleteMenuArgs = {
    id: Scalars['ID'];
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationDeletePageArgs = {
    id: Scalars['ID'];
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationDeleteProductListArgs = {
    id: Scalars['ID'];
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationDeleteStoreArgs = {
@@ -729,10 +768,10 @@ export type MutationLoginArgs = {
 };
 
 export type MutationMultipleUploadArgs = {
-   field?: Maybe<Scalars['String']>;
-   files: Array<Maybe<Scalars['Upload']>>;
-   ref?: Maybe<Scalars['String']>;
-   refId?: Maybe<Scalars['ID']>;
+   field?: InputMaybe<Scalars['String']>;
+   files: Array<InputMaybe<Scalars['Upload']>>;
+   ref?: InputMaybe<Scalars['String']>;
+   refId?: InputMaybe<Scalars['ID']>;
 };
 
 export type MutationRegisterArgs = {
@@ -751,30 +790,30 @@ export type MutationResetPasswordArgs = {
 
 export type MutationUpdateFileInfoArgs = {
    id: Scalars['ID'];
-   info?: Maybe<FileInfoInput>;
+   info?: InputMaybe<FileInfoInput>;
 };
 
 export type MutationUpdateGlobalArgs = {
    data: GlobalInput;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationUpdateMenuArgs = {
    data: MenuInput;
    id: Scalars['ID'];
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationUpdatePageArgs = {
    data: PageInput;
    id: Scalars['ID'];
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationUpdateProductListArgs = {
    data: ProductListInput;
    id: Scalars['ID'];
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationUpdateStoreArgs = {
@@ -803,11 +842,11 @@ export type MutationUpdateUsersPermissionsUserArgs = {
 };
 
 export type MutationUploadArgs = {
-   field?: Maybe<Scalars['String']>;
+   field?: InputMaybe<Scalars['String']>;
    file: Scalars['Upload'];
-   info?: Maybe<FileInfoInput>;
-   ref?: Maybe<Scalars['String']>;
-   refId?: Maybe<Scalars['ID']>;
+   info?: InputMaybe<FileInfoInput>;
+   ref?: InputMaybe<Scalars['String']>;
+   refId?: InputMaybe<Scalars['ID']>;
 };
 
 export type Page = {
@@ -823,10 +862,10 @@ export type Page = {
 };
 
 export type PageLocalizationsArgs = {
-   filters?: Maybe<PageFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<PageFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type PageEntity = {
@@ -847,24 +886,24 @@ export type PageEntityResponseCollection = {
 };
 
 export type PageFiltersInput = {
-   and?: Maybe<Array<Maybe<PageFiltersInput>>>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   locale?: Maybe<StringFilterInput>;
-   localizations?: Maybe<PageFiltersInput>;
-   not?: Maybe<PageFiltersInput>;
-   or?: Maybe<Array<Maybe<PageFiltersInput>>>;
-   path?: Maybe<StringFilterInput>;
-   publishedAt?: Maybe<DateTimeFilterInput>;
-   title?: Maybe<StringFilterInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<PageFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   locale?: InputMaybe<StringFilterInput>;
+   localizations?: InputMaybe<PageFiltersInput>;
+   not?: InputMaybe<PageFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<PageFiltersInput>>>;
+   path?: InputMaybe<StringFilterInput>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type PageInput = {
-   path?: Maybe<Scalars['String']>;
-   publishedAt?: Maybe<Scalars['DateTime']>;
-   sections?: Maybe<Array<Scalars['PageSectionsDynamicZoneInput']>>;
-   title?: Maybe<Scalars['String']>;
+   path?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   sections?: InputMaybe<Array<Scalars['PageSectionsDynamicZoneInput']>>;
+   title?: InputMaybe<Scalars['String']>;
 };
 
 export type PageRelationResponseCollection = {
@@ -872,7 +911,10 @@ export type PageRelationResponseCollection = {
    data: Array<PageEntity>;
 };
 
-export type PageSectionsDynamicZone = ComponentPageHero | Error;
+export type PageSectionsDynamicZone =
+   | ComponentPageBrowse
+   | ComponentPageHero
+   | Error;
 
 export type Pagination = {
    __typename?: 'Pagination';
@@ -883,10 +925,10 @@ export type Pagination = {
 };
 
 export type PaginationArg = {
-   limit?: Maybe<Scalars['Int']>;
-   page?: Maybe<Scalars['Int']>;
-   pageSize?: Maybe<Scalars['Int']>;
-   start?: Maybe<Scalars['Int']>;
+   limit?: InputMaybe<Scalars['Int']>;
+   page?: InputMaybe<Scalars['Int']>;
+   pageSize?: InputMaybe<Scalars['Int']>;
+   start?: InputMaybe<Scalars['Int']>;
 };
 
 export type ProductList = {
@@ -917,17 +959,17 @@ export type ProductList = {
 };
 
 export type ProductListChildrenArgs = {
-   filters?: Maybe<ProductListFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ProductListLocalizationsArgs = {
-   filters?: Maybe<ProductListFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ProductListEntity = {
@@ -948,53 +990,53 @@ export type ProductListEntityResponseCollection = {
 };
 
 export type ProductListFiltersInput = {
-   and?: Maybe<Array<Maybe<ProductListFiltersInput>>>;
-   children?: Maybe<ProductListFiltersInput>;
-   childrenHeading?: Maybe<StringFilterInput>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   description?: Maybe<StringFilterInput>;
-   deviceTitle?: Maybe<StringFilterInput>;
-   excludeFromHierarchyDisplay?: Maybe<BooleanFilterInput>;
-   filters?: Maybe<StringFilterInput>;
-   handle?: Maybe<StringFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   legacyDescription?: Maybe<StringFilterInput>;
-   legacyPageId?: Maybe<IntFilterInput>;
-   locale?: Maybe<StringFilterInput>;
-   localizations?: Maybe<ProductListFiltersInput>;
-   metaDescription?: Maybe<StringFilterInput>;
-   metaTitle?: Maybe<StringFilterInput>;
-   not?: Maybe<ProductListFiltersInput>;
-   or?: Maybe<Array<Maybe<ProductListFiltersInput>>>;
-   parent?: Maybe<ProductListFiltersInput>;
-   publishedAt?: Maybe<DateTimeFilterInput>;
-   sortPriority?: Maybe<IntFilterInput>;
-   tagline?: Maybe<StringFilterInput>;
-   title?: Maybe<StringFilterInput>;
-   type?: Maybe<StringFilterInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
+   children?: InputMaybe<ProductListFiltersInput>;
+   childrenHeading?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   description?: InputMaybe<StringFilterInput>;
+   deviceTitle?: InputMaybe<StringFilterInput>;
+   excludeFromHierarchyDisplay?: InputMaybe<BooleanFilterInput>;
+   filters?: InputMaybe<StringFilterInput>;
+   handle?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   legacyDescription?: InputMaybe<StringFilterInput>;
+   legacyPageId?: InputMaybe<IntFilterInput>;
+   locale?: InputMaybe<StringFilterInput>;
+   localizations?: InputMaybe<ProductListFiltersInput>;
+   metaDescription?: InputMaybe<StringFilterInput>;
+   metaTitle?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ProductListFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
+   parent?: InputMaybe<ProductListFiltersInput>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   sortPriority?: InputMaybe<IntFilterInput>;
+   tagline?: InputMaybe<StringFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   type?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type ProductListInput = {
-   children?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   childrenHeading?: Maybe<Scalars['String']>;
-   description?: Maybe<Scalars['String']>;
-   deviceTitle?: Maybe<Scalars['String']>;
-   excludeFromHierarchyDisplay?: Maybe<Scalars['Boolean']>;
-   filters?: Maybe<Scalars['String']>;
-   handle?: Maybe<Scalars['String']>;
-   image?: Maybe<Scalars['ID']>;
-   legacyDescription?: Maybe<Scalars['String']>;
-   legacyPageId?: Maybe<Scalars['Int']>;
-   metaDescription?: Maybe<Scalars['String']>;
-   metaTitle?: Maybe<Scalars['String']>;
-   parent?: Maybe<Scalars['ID']>;
-   publishedAt?: Maybe<Scalars['DateTime']>;
-   sections?: Maybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
-   sortPriority?: Maybe<Scalars['Int']>;
-   tagline?: Maybe<Scalars['String']>;
-   title?: Maybe<Scalars['String']>;
-   type?: Maybe<Enum_Productlist_Type>;
+   children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   childrenHeading?: InputMaybe<Scalars['String']>;
+   description?: InputMaybe<Scalars['String']>;
+   deviceTitle?: InputMaybe<Scalars['String']>;
+   excludeFromHierarchyDisplay?: InputMaybe<Scalars['Boolean']>;
+   filters?: InputMaybe<Scalars['String']>;
+   handle?: InputMaybe<Scalars['String']>;
+   image?: InputMaybe<Scalars['ID']>;
+   legacyDescription?: InputMaybe<Scalars['String']>;
+   legacyPageId?: InputMaybe<Scalars['Int']>;
+   metaDescription?: InputMaybe<Scalars['String']>;
+   metaTitle?: InputMaybe<Scalars['String']>;
+   parent?: InputMaybe<Scalars['ID']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   sections?: InputMaybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
+   sortPriority?: InputMaybe<Scalars['Int']>;
+   tagline?: InputMaybe<Scalars['String']>;
+   title?: InputMaybe<Scalars['String']>;
+   type?: InputMaybe<Enum_Productlist_Type>;
 };
 
 export type ProductListRelationResponseCollection = {
@@ -1039,108 +1081,108 @@ export type Query = {
 };
 
 export type QueryGlobalArgs = {
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
-   publicationState?: Maybe<PublicationState>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+   publicationState?: InputMaybe<PublicationState>;
 };
 
 export type QueryI18NLocaleArgs = {
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryI18NLocalesArgs = {
-   filters?: Maybe<I18NLocaleFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<I18NLocaleFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryMenuArgs = {
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type QueryMenusArgs = {
-   filters?: Maybe<MenuFiltersInput>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<MenuFiltersInput>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryPageArgs = {
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type QueryPagesArgs = {
-   filters?: Maybe<PageFiltersInput>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<PageFiltersInput>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryProductListArgs = {
-   id?: Maybe<Scalars['ID']>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type QueryProductListsArgs = {
-   filters?: Maybe<ProductListFiltersInput>;
-   locale?: Maybe<Scalars['I18NLocaleCode']>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<ProductListFiltersInput>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryStoreArgs = {
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryStoresArgs = {
-   filters?: Maybe<StoreFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   publicationState?: Maybe<PublicationState>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<StoreFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryUploadFileArgs = {
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryUploadFilesArgs = {
-   filters?: Maybe<UploadFileFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UploadFileFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryUploadFolderArgs = {
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryUploadFoldersArgs = {
-   filters?: Maybe<UploadFolderFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UploadFolderFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryUsersPermissionsRoleArgs = {
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryUsersPermissionsRolesArgs = {
-   filters?: Maybe<UsersPermissionsRoleFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryUsersPermissionsUserArgs = {
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryUsersPermissionsUsersArgs = {
-   filters?: Maybe<UsersPermissionsUserFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ResponseCollectionMeta = {
@@ -1181,57 +1223,57 @@ export type StoreEntityResponseCollection = {
 };
 
 export type StoreFiltersInput = {
-   and?: Maybe<Array<Maybe<StoreFiltersInput>>>;
-   code?: Maybe<StringFilterInput>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   currency?: Maybe<StringFilterInput>;
-   footer?: Maybe<ComponentStoreFooterFiltersInput>;
-   header?: Maybe<ComponentStoreHeaderFiltersInput>;
-   id?: Maybe<IdFilterInput>;
-   name?: Maybe<StringFilterInput>;
-   not?: Maybe<StoreFiltersInput>;
-   or?: Maybe<Array<Maybe<StoreFiltersInput>>>;
-   publishedAt?: Maybe<DateTimeFilterInput>;
-   shopifySettings?: Maybe<ComponentStoreShopifySettingsFiltersInput>;
-   socialMediaAccounts?: Maybe<ComponentStoreSocialMediaAccountsFiltersInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
-   url?: Maybe<StringFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<StoreFiltersInput>>>;
+   code?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   currency?: InputMaybe<StringFilterInput>;
+   footer?: InputMaybe<ComponentStoreFooterFiltersInput>;
+   header?: InputMaybe<ComponentStoreHeaderFiltersInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<StoreFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<StoreFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   shopifySettings?: InputMaybe<ComponentStoreShopifySettingsFiltersInput>;
+   socialMediaAccounts?: InputMaybe<ComponentStoreSocialMediaAccountsFiltersInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+   url?: InputMaybe<StringFilterInput>;
 };
 
 export type StoreInput = {
-   code?: Maybe<Scalars['String']>;
-   currency?: Maybe<Enum_Store_Currency>;
-   footer?: Maybe<ComponentStoreFooterInput>;
-   header?: Maybe<ComponentStoreHeaderInput>;
-   name?: Maybe<Scalars['String']>;
-   publishedAt?: Maybe<Scalars['DateTime']>;
-   shopifySettings?: Maybe<ComponentStoreShopifySettingsInput>;
-   socialMediaAccounts?: Maybe<ComponentStoreSocialMediaAccountsInput>;
-   url?: Maybe<Scalars['String']>;
+   code?: InputMaybe<Scalars['String']>;
+   currency?: InputMaybe<Enum_Store_Currency>;
+   footer?: InputMaybe<ComponentStoreFooterInput>;
+   header?: InputMaybe<ComponentStoreHeaderInput>;
+   name?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   shopifySettings?: InputMaybe<ComponentStoreShopifySettingsInput>;
+   socialMediaAccounts?: InputMaybe<ComponentStoreSocialMediaAccountsInput>;
+   url?: InputMaybe<Scalars['String']>;
 };
 
 export type StringFilterInput = {
-   and?: Maybe<Array<Maybe<Scalars['String']>>>;
-   between?: Maybe<Array<Maybe<Scalars['String']>>>;
-   contains?: Maybe<Scalars['String']>;
-   containsi?: Maybe<Scalars['String']>;
-   endsWith?: Maybe<Scalars['String']>;
-   eq?: Maybe<Scalars['String']>;
-   eqi?: Maybe<Scalars['String']>;
-   gt?: Maybe<Scalars['String']>;
-   gte?: Maybe<Scalars['String']>;
-   in?: Maybe<Array<Maybe<Scalars['String']>>>;
-   lt?: Maybe<Scalars['String']>;
-   lte?: Maybe<Scalars['String']>;
-   ne?: Maybe<Scalars['String']>;
-   not?: Maybe<StringFilterInput>;
-   notContains?: Maybe<Scalars['String']>;
-   notContainsi?: Maybe<Scalars['String']>;
-   notIn?: Maybe<Array<Maybe<Scalars['String']>>>;
-   notNull?: Maybe<Scalars['Boolean']>;
-   null?: Maybe<Scalars['Boolean']>;
-   or?: Maybe<Array<Maybe<Scalars['String']>>>;
-   startsWith?: Maybe<Scalars['String']>;
+   and?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+   between?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+   contains?: InputMaybe<Scalars['String']>;
+   containsi?: InputMaybe<Scalars['String']>;
+   endsWith?: InputMaybe<Scalars['String']>;
+   eq?: InputMaybe<Scalars['String']>;
+   eqi?: InputMaybe<Scalars['String']>;
+   gt?: InputMaybe<Scalars['String']>;
+   gte?: InputMaybe<Scalars['String']>;
+   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+   lt?: InputMaybe<Scalars['String']>;
+   lte?: InputMaybe<Scalars['String']>;
+   ne?: InputMaybe<Scalars['String']>;
+   not?: InputMaybe<StringFilterInput>;
+   notContains?: InputMaybe<Scalars['String']>;
+   notContainsi?: InputMaybe<Scalars['String']>;
+   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+   notNull?: InputMaybe<Scalars['Boolean']>;
+   null?: InputMaybe<Scalars['Boolean']>;
+   or?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+   startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export type UploadFile = {
@@ -1273,47 +1315,47 @@ export type UploadFileEntityResponseCollection = {
 };
 
 export type UploadFileFiltersInput = {
-   alternativeText?: Maybe<StringFilterInput>;
-   and?: Maybe<Array<Maybe<UploadFileFiltersInput>>>;
-   caption?: Maybe<StringFilterInput>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   ext?: Maybe<StringFilterInput>;
-   folder?: Maybe<UploadFolderFiltersInput>;
-   folderPath?: Maybe<StringFilterInput>;
-   formats?: Maybe<JsonFilterInput>;
-   hash?: Maybe<StringFilterInput>;
-   height?: Maybe<IntFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   mime?: Maybe<StringFilterInput>;
-   name?: Maybe<StringFilterInput>;
-   not?: Maybe<UploadFileFiltersInput>;
-   or?: Maybe<Array<Maybe<UploadFileFiltersInput>>>;
-   previewUrl?: Maybe<StringFilterInput>;
-   provider?: Maybe<StringFilterInput>;
-   provider_metadata?: Maybe<JsonFilterInput>;
-   size?: Maybe<FloatFilterInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
-   url?: Maybe<StringFilterInput>;
-   width?: Maybe<IntFilterInput>;
+   alternativeText?: InputMaybe<StringFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<UploadFileFiltersInput>>>;
+   caption?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   ext?: InputMaybe<StringFilterInput>;
+   folder?: InputMaybe<UploadFolderFiltersInput>;
+   folderPath?: InputMaybe<StringFilterInput>;
+   formats?: InputMaybe<JsonFilterInput>;
+   hash?: InputMaybe<StringFilterInput>;
+   height?: InputMaybe<IntFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   mime?: InputMaybe<StringFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<UploadFileFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<UploadFileFiltersInput>>>;
+   previewUrl?: InputMaybe<StringFilterInput>;
+   provider?: InputMaybe<StringFilterInput>;
+   provider_metadata?: InputMaybe<JsonFilterInput>;
+   size?: InputMaybe<FloatFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+   url?: InputMaybe<StringFilterInput>;
+   width?: InputMaybe<IntFilterInput>;
 };
 
 export type UploadFileInput = {
-   alternativeText?: Maybe<Scalars['String']>;
-   caption?: Maybe<Scalars['String']>;
-   ext?: Maybe<Scalars['String']>;
-   folder?: Maybe<Scalars['ID']>;
-   folderPath?: Maybe<Scalars['String']>;
-   formats?: Maybe<Scalars['JSON']>;
-   hash?: Maybe<Scalars['String']>;
-   height?: Maybe<Scalars['Int']>;
-   mime?: Maybe<Scalars['String']>;
-   name?: Maybe<Scalars['String']>;
-   previewUrl?: Maybe<Scalars['String']>;
-   provider?: Maybe<Scalars['String']>;
-   provider_metadata?: Maybe<Scalars['JSON']>;
-   size?: Maybe<Scalars['Float']>;
-   url?: Maybe<Scalars['String']>;
-   width?: Maybe<Scalars['Int']>;
+   alternativeText?: InputMaybe<Scalars['String']>;
+   caption?: InputMaybe<Scalars['String']>;
+   ext?: InputMaybe<Scalars['String']>;
+   folder?: InputMaybe<Scalars['ID']>;
+   folderPath?: InputMaybe<Scalars['String']>;
+   formats?: InputMaybe<Scalars['JSON']>;
+   hash?: InputMaybe<Scalars['String']>;
+   height?: InputMaybe<Scalars['Int']>;
+   mime?: InputMaybe<Scalars['String']>;
+   name?: InputMaybe<Scalars['String']>;
+   previewUrl?: InputMaybe<Scalars['String']>;
+   provider?: InputMaybe<Scalars['String']>;
+   provider_metadata?: InputMaybe<Scalars['JSON']>;
+   size?: InputMaybe<Scalars['Float']>;
+   url?: InputMaybe<Scalars['String']>;
+   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type UploadFileRelationResponseCollection = {
@@ -1334,15 +1376,15 @@ export type UploadFolder = {
 };
 
 export type UploadFolderChildrenArgs = {
-   filters?: Maybe<UploadFolderFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UploadFolderFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type UploadFolderFilesArgs = {
-   filters?: Maybe<UploadFileFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UploadFileFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type UploadFolderEntity = {
@@ -1363,27 +1405,27 @@ export type UploadFolderEntityResponseCollection = {
 };
 
 export type UploadFolderFiltersInput = {
-   and?: Maybe<Array<Maybe<UploadFolderFiltersInput>>>;
-   children?: Maybe<UploadFolderFiltersInput>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   files?: Maybe<UploadFileFiltersInput>;
-   id?: Maybe<IdFilterInput>;
-   name?: Maybe<StringFilterInput>;
-   not?: Maybe<UploadFolderFiltersInput>;
-   or?: Maybe<Array<Maybe<UploadFolderFiltersInput>>>;
-   parent?: Maybe<UploadFolderFiltersInput>;
-   path?: Maybe<StringFilterInput>;
-   pathId?: Maybe<IntFilterInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+   children?: InputMaybe<UploadFolderFiltersInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   files?: InputMaybe<UploadFileFiltersInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<UploadFolderFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+   parent?: InputMaybe<UploadFolderFiltersInput>;
+   path?: InputMaybe<StringFilterInput>;
+   pathId?: InputMaybe<IntFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type UploadFolderInput = {
-   children?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   files?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   name?: Maybe<Scalars['String']>;
-   parent?: Maybe<Scalars['ID']>;
-   path?: Maybe<Scalars['String']>;
-   pathId?: Maybe<Scalars['Int']>;
+   children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   files?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   name?: InputMaybe<Scalars['String']>;
+   parent?: InputMaybe<Scalars['ID']>;
+   path?: InputMaybe<Scalars['String']>;
+   pathId?: InputMaybe<Scalars['Int']>;
 };
 
 export type UploadFolderRelationResponseCollection = {
@@ -1451,14 +1493,14 @@ export type UsersPermissionsPermissionEntity = {
 };
 
 export type UsersPermissionsPermissionFiltersInput = {
-   action?: Maybe<StringFilterInput>;
-   and?: Maybe<Array<Maybe<UsersPermissionsPermissionFiltersInput>>>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   not?: Maybe<UsersPermissionsPermissionFiltersInput>;
-   or?: Maybe<Array<Maybe<UsersPermissionsPermissionFiltersInput>>>;
-   role?: Maybe<UsersPermissionsRoleFiltersInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
+   action?: InputMaybe<StringFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<UsersPermissionsPermissionFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<UsersPermissionsPermissionFiltersInput>>>;
+   role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type UsersPermissionsPermissionRelationResponseCollection = {
@@ -1484,15 +1526,15 @@ export type UsersPermissionsRole = {
 };
 
 export type UsersPermissionsRolePermissionsArgs = {
-   filters?: Maybe<UsersPermissionsPermissionFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type UsersPermissionsRoleUsersArgs = {
-   filters?: Maybe<UsersPermissionsUserFiltersInput>;
-   pagination?: Maybe<PaginationArg>;
-   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type UsersPermissionsRoleEntity = {
@@ -1513,25 +1555,25 @@ export type UsersPermissionsRoleEntityResponseCollection = {
 };
 
 export type UsersPermissionsRoleFiltersInput = {
-   and?: Maybe<Array<Maybe<UsersPermissionsRoleFiltersInput>>>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   description?: Maybe<StringFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   name?: Maybe<StringFilterInput>;
-   not?: Maybe<UsersPermissionsRoleFiltersInput>;
-   or?: Maybe<Array<Maybe<UsersPermissionsRoleFiltersInput>>>;
-   permissions?: Maybe<UsersPermissionsPermissionFiltersInput>;
-   type?: Maybe<StringFilterInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
-   users?: Maybe<UsersPermissionsUserFiltersInput>;
+   and?: InputMaybe<Array<InputMaybe<UsersPermissionsRoleFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   description?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<UsersPermissionsRoleFiltersInput>>>;
+   permissions?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+   type?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+   users?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
 
 export type UsersPermissionsRoleInput = {
-   description?: Maybe<Scalars['String']>;
-   name?: Maybe<Scalars['String']>;
-   permissions?: Maybe<Array<Maybe<Scalars['ID']>>>;
-   type?: Maybe<Scalars['String']>;
-   users?: Maybe<Array<Maybe<Scalars['ID']>>>;
+   description?: InputMaybe<Scalars['String']>;
+   name?: InputMaybe<Scalars['String']>;
+   permissions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   type?: InputMaybe<Scalars['String']>;
+   users?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
 
 export type UsersPermissionsUpdateRolePayload = {
@@ -1569,33 +1611,33 @@ export type UsersPermissionsUserEntityResponseCollection = {
 };
 
 export type UsersPermissionsUserFiltersInput = {
-   and?: Maybe<Array<Maybe<UsersPermissionsUserFiltersInput>>>;
-   blocked?: Maybe<BooleanFilterInput>;
-   confirmationToken?: Maybe<StringFilterInput>;
-   confirmed?: Maybe<BooleanFilterInput>;
-   createdAt?: Maybe<DateTimeFilterInput>;
-   email?: Maybe<StringFilterInput>;
-   id?: Maybe<IdFilterInput>;
-   not?: Maybe<UsersPermissionsUserFiltersInput>;
-   or?: Maybe<Array<Maybe<UsersPermissionsUserFiltersInput>>>;
-   password?: Maybe<StringFilterInput>;
-   provider?: Maybe<StringFilterInput>;
-   resetPasswordToken?: Maybe<StringFilterInput>;
-   role?: Maybe<UsersPermissionsRoleFiltersInput>;
-   updatedAt?: Maybe<DateTimeFilterInput>;
-   username?: Maybe<StringFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
+   blocked?: InputMaybe<BooleanFilterInput>;
+   confirmationToken?: InputMaybe<StringFilterInput>;
+   confirmed?: InputMaybe<BooleanFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   email?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<UsersPermissionsUserFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
+   password?: InputMaybe<StringFilterInput>;
+   provider?: InputMaybe<StringFilterInput>;
+   resetPasswordToken?: InputMaybe<StringFilterInput>;
+   role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+   username?: InputMaybe<StringFilterInput>;
 };
 
 export type UsersPermissionsUserInput = {
-   blocked?: Maybe<Scalars['Boolean']>;
-   confirmationToken?: Maybe<Scalars['String']>;
-   confirmed?: Maybe<Scalars['Boolean']>;
-   email?: Maybe<Scalars['String']>;
-   password?: Maybe<Scalars['String']>;
-   provider?: Maybe<Scalars['String']>;
-   resetPasswordToken?: Maybe<Scalars['String']>;
-   role?: Maybe<Scalars['ID']>;
-   username?: Maybe<Scalars['String']>;
+   blocked?: InputMaybe<Scalars['Boolean']>;
+   confirmationToken?: InputMaybe<Scalars['String']>;
+   confirmed?: InputMaybe<Scalars['Boolean']>;
+   email?: InputMaybe<Scalars['String']>;
+   password?: InputMaybe<Scalars['String']>;
+   provider?: InputMaybe<Scalars['String']>;
+   resetPasswordToken?: InputMaybe<Scalars['String']>;
+   role?: InputMaybe<Scalars['ID']>;
+   username?: InputMaybe<Scalars['String']>;
 };
 
 export type UsersPermissionsUserRelationResponseCollection = {
@@ -1603,66 +1645,137 @@ export type UsersPermissionsUserRelationResponseCollection = {
    data: Array<UsersPermissionsUserEntity>;
 };
 
+export type ImageFieldsFragment = {
+   __typename?: 'UploadFileEntityResponse';
+   data?: {
+      __typename?: 'UploadFileEntity';
+      attributes?: {
+         __typename?: 'UploadFile';
+         alternativeText?: string | null;
+         url: string;
+         formats?: any | null;
+      } | null;
+   } | null;
+};
+
+export type ProductListFieldsFragment = {
+   __typename?: 'ProductListEntity';
+   attributes?: {
+      __typename?: 'ProductList';
+      type?: Enum_Productlist_Type | null;
+      handle: string;
+      deviceTitle?: string | null;
+      title: string;
+      metaDescription?: string | null;
+      image?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type FindPageQueryVariables = Exact<{
-   filters?: Maybe<PageFiltersInput>;
-   publicationState?: Maybe<PublicationState>;
+   filters?: InputMaybe<PageFiltersInput>;
+   publicationState?: InputMaybe<PublicationState>;
 }>;
 
 export type FindPageQuery = {
    __typename?: 'Query';
-   pages?: Maybe<{
+   pages?: {
       __typename?: 'PageEntityResponseCollection';
       data: Array<{
          __typename?: 'PageEntity';
-         id?: Maybe<string>;
-         attributes?: Maybe<{
+         id?: string | null;
+         attributes?: {
             __typename?: 'Page';
             path: string;
             title: string;
             sections: Array<
-               Maybe<
-                  | {
-                       __typename: 'ComponentPageHero';
+               | {
+                    __typename: 'ComponentPageBrowse';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                    categories?: Array<{
+                       __typename?: 'ComponentPageCategory';
                        id: string;
-                       title?: Maybe<string>;
-                       description?: Maybe<string>;
-                       callToAction?: Maybe<{
-                          __typename?: 'ComponentPageCallToAction';
-                          title: string;
-                          url: string;
-                       }>;
-                       image?: Maybe<{
-                          __typename?: 'UploadFileEntityResponse';
-                          data?: Maybe<{
-                             __typename?: 'UploadFileEntity';
-                             attributes?: Maybe<{
-                                __typename?: 'UploadFile';
-                                alternativeText?: Maybe<string>;
-                                url: string;
-                                formats?: Maybe<any>;
-                             }>;
-                          }>;
-                       }>;
-                    }
-                  | { __typename: 'Error' }
-               >
+                       productList?: {
+                          __typename?: 'ProductListEntityResponse';
+                          data?: {
+                             __typename?: 'ProductListEntity';
+                             attributes?: {
+                                __typename?: 'ProductList';
+                                type?: Enum_Productlist_Type | null;
+                                handle: string;
+                                deviceTitle?: string | null;
+                                title: string;
+                                metaDescription?: string | null;
+                                image?: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                 }
+               | {
+                    __typename: 'ComponentPageHero';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | { __typename: 'Error' }
+               | null
             >;
-         }>;
+         } | null;
       }>;
-   }>;
-};
-
-export type ImageFieldsFragment = {
-   __typename?: 'UploadFileEntityResponse';
-   data?: Maybe<{
-      __typename?: 'UploadFileEntity';
-      attributes?: Maybe<{
-         __typename?: 'UploadFile';
-         alternativeText?: Maybe<string>;
-         url: string;
-         formats?: Maybe<any>;
-      }>;
-   }>;
+   } | null;
 };
 
 export type CallToActionFieldsFragment = {
@@ -1675,11 +1788,11 @@ export type GetGlobalSettingsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetGlobalSettingsQuery = {
    __typename?: 'Query';
-   global?: Maybe<{
+   global?: {
       __typename?: 'GlobalEntityResponse';
-      data?: Maybe<{
+      data?: {
          __typename?: 'GlobalEntity';
-         attributes?: Maybe<{
+         attributes?: {
             __typename?: 'Global';
             newsletterForm: {
                __typename?: 'ComponentGlobalNewsletterForm';
@@ -1688,1004 +1801,896 @@ export type GetGlobalSettingsQuery = {
                inputPlaceholder: string;
                callToActionButtonTitle: string;
             };
-         }>;
-      }>;
-   }>;
+         } | null;
+      } | null;
+   } | null;
 };
 
 export type GetProductListQueryVariables = Exact<{
-   filters?: Maybe<ProductListFiltersInput>;
+   filters?: InputMaybe<ProductListFiltersInput>;
 }>;
 
 export type GetProductListQuery = {
    __typename?: 'Query';
-   productLists?: Maybe<{
+   productLists?: {
       __typename?: 'ProductListEntityResponseCollection';
       data: Array<{
          __typename?: 'ProductListEntity';
-         id?: Maybe<string>;
-         attributes?: Maybe<{
+         id?: string | null;
+         attributes?: {
             __typename?: 'ProductList';
-            type?: Maybe<Enum_Productlist_Type>;
+            type?: Enum_Productlist_Type | null;
             handle: string;
-            deviceTitle?: Maybe<string>;
+            deviceTitle?: string | null;
             title: string;
-            tagline?: Maybe<string>;
+            tagline?: string | null;
             description: string;
-            metaDescription?: Maybe<string>;
-            metaTitle?: Maybe<string>;
-            filters?: Maybe<string>;
-            childrenHeading?: Maybe<string>;
-            image?: Maybe<{
+            metaDescription?: string | null;
+            metaTitle?: string | null;
+            filters?: string | null;
+            childrenHeading?: string | null;
+            image?: {
                __typename?: 'UploadFileEntityResponse';
-               data?: Maybe<{
+               data?: {
                   __typename?: 'UploadFileEntity';
-                  attributes?: Maybe<{
+                  attributes?: {
                      __typename?: 'UploadFile';
-                     alternativeText?: Maybe<string>;
+                     alternativeText?: string | null;
                      url: string;
-                     formats?: Maybe<any>;
-                  }>;
-               }>;
-            }>;
-            parent?: Maybe<{
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            parent?: {
                __typename?: 'ProductListEntityResponse';
-               data?: Maybe<{
+               data?: {
                   __typename?: 'ProductListEntity';
-                  attributes?: Maybe<{
+                  attributes?: {
                      __typename?: 'ProductList';
-                     type?: Maybe<Enum_Productlist_Type>;
+                     type?: Enum_Productlist_Type | null;
                      title: string;
                      handle: string;
-                     deviceTitle?: Maybe<string>;
-                     parent?: Maybe<{
+                     deviceTitle?: string | null;
+                     parent?: {
                         __typename?: 'ProductListEntityResponse';
-                        data?: Maybe<{
+                        data?: {
                            __typename?: 'ProductListEntity';
-                           attributes?: Maybe<{
+                           attributes?: {
                               __typename?: 'ProductList';
-                              type?: Maybe<Enum_Productlist_Type>;
+                              type?: Enum_Productlist_Type | null;
                               title: string;
                               handle: string;
-                              deviceTitle?: Maybe<string>;
-                              parent?: Maybe<{
+                              deviceTitle?: string | null;
+                              parent?: {
                                  __typename?: 'ProductListEntityResponse';
-                                 data?: Maybe<{
+                                 data?: {
                                     __typename?: 'ProductListEntity';
-                                    attributes?: Maybe<{
+                                    attributes?: {
                                        __typename?: 'ProductList';
-                                       type?: Maybe<Enum_Productlist_Type>;
+                                       type?: Enum_Productlist_Type | null;
                                        title: string;
                                        handle: string;
-                                       deviceTitle?: Maybe<string>;
-                                       parent?: Maybe<{
+                                       deviceTitle?: string | null;
+                                       parent?: {
                                           __typename?: 'ProductListEntityResponse';
-                                          data?: Maybe<{
+                                          data?: {
                                              __typename?: 'ProductListEntity';
-                                             attributes?: Maybe<{
+                                             attributes?: {
                                                 __typename?: 'ProductList';
-                                                type?: Maybe<Enum_Productlist_Type>;
+                                                type?: Enum_Productlist_Type | null;
                                                 title: string;
                                                 handle: string;
-                                                deviceTitle?: Maybe<string>;
-                                                parent?: Maybe<{
+                                                deviceTitle?: string | null;
+                                                parent?: {
                                                    __typename?: 'ProductListEntityResponse';
-                                                   data?: Maybe<{
+                                                   data?: {
                                                       __typename?: 'ProductListEntity';
-                                                      attributes?: Maybe<{
+                                                      attributes?: {
                                                          __typename?: 'ProductList';
-                                                         type?: Maybe<Enum_Productlist_Type>;
+                                                         type?: Enum_Productlist_Type | null;
                                                          title: string;
                                                          handle: string;
-                                                         deviceTitle?: Maybe<string>;
-                                                         parent?: Maybe<{
+                                                         deviceTitle?:
+                                                            | string
+                                                            | null;
+                                                         parent?: {
                                                             __typename?: 'ProductListEntityResponse';
-                                                            data?: Maybe<{
+                                                            data?: {
                                                                __typename?: 'ProductListEntity';
-                                                               attributes?: Maybe<{
+                                                               attributes?: {
                                                                   __typename?: 'ProductList';
-                                                                  type?: Maybe<Enum_Productlist_Type>;
+                                                                  type?: Enum_Productlist_Type | null;
                                                                   title: string;
                                                                   handle: string;
-                                                                  deviceTitle?: Maybe<string>;
-                                                               }>;
-                                                            }>;
-                                                         }>;
-                                                      }>;
-                                                   }>;
-                                                }>;
-                                             }>;
-                                          }>;
-                                       }>;
-                                    }>;
-                                 }>;
-                              }>;
-                           }>;
-                        }>;
-                     }>;
-                  }>;
-               }>;
-            }>;
-            children?: Maybe<{
+                                                                  deviceTitle?:
+                                                                     | string
+                                                                     | null;
+                                                               } | null;
+                                                            } | null;
+                                                         } | null;
+                                                      } | null;
+                                                   } | null;
+                                                } | null;
+                                             } | null;
+                                          } | null;
+                                       } | null;
+                                    } | null;
+                                 } | null;
+                              } | null;
+                           } | null;
+                        } | null;
+                     } | null;
+                  } | null;
+               } | null;
+            } | null;
+            children?: {
                __typename?: 'ProductListRelationResponseCollection';
                data: Array<{
                   __typename?: 'ProductListEntity';
-                  attributes?: Maybe<{
+                  attributes?: {
                      __typename?: 'ProductList';
-                     type?: Maybe<Enum_Productlist_Type>;
-                     sortPriority?: Maybe<number>;
+                     type?: Enum_Productlist_Type | null;
+                     sortPriority?: number | null;
                      handle: string;
-                     deviceTitle?: Maybe<string>;
+                     deviceTitle?: string | null;
                      title: string;
-                     image?: Maybe<{
+                     image?: {
                         __typename?: 'UploadFileEntityResponse';
-                        data?: Maybe<{
+                        data?: {
                            __typename?: 'UploadFileEntity';
-                           attributes?: Maybe<{
+                           attributes?: {
                               __typename?: 'UploadFile';
-                              alternativeText?: Maybe<string>;
+                              alternativeText?: string | null;
                               url: string;
-                              formats?: Maybe<any>;
-                           }>;
-                        }>;
-                     }>;
-                  }>;
+                              formats?: any | null;
+                           } | null;
+                        } | null;
+                     } | null;
+                  } | null;
                }>;
-            }>;
+            } | null;
             sections: Array<
-               Maybe<
-                  | {
-                       __typename: 'ComponentProductListBanner';
-                       id: string;
-                       title: string;
-                       description: string;
-                       callToActionLabel: string;
-                       url: string;
-                    }
-                  | {
-                       __typename: 'ComponentProductListFeaturedProductList';
-                       id: string;
-                       productList?: Maybe<{
-                          __typename?: 'ProductListEntityResponse';
-                          data?: Maybe<{
-                             __typename?: 'ProductListEntity';
-                             attributes?: Maybe<{
-                                __typename?: 'ProductList';
-                                handle: string;
-                                type?: Maybe<Enum_Productlist_Type>;
-                                title: string;
-                                deviceTitle?: Maybe<string>;
-                                description: string;
-                                filters?: Maybe<string>;
-                                image?: Maybe<{
-                                   __typename?: 'UploadFileEntityResponse';
-                                   data?: Maybe<{
-                                      __typename?: 'UploadFileEntity';
-                                      attributes?: Maybe<{
-                                         __typename?: 'UploadFile';
-                                         alternativeText?: Maybe<string>;
-                                         url: string;
-                                         formats?: Maybe<any>;
-                                      }>;
-                                   }>;
-                                }>;
-                             }>;
-                          }>;
+               | {
+                    __typename: 'ComponentProductListBanner';
+                    id: string;
+                    title: string;
+                    description: string;
+                    callToActionLabel: string;
+                    url: string;
+                 }
+               | {
+                    __typename: 'ComponentProductListFeaturedProductList';
+                    id: string;
+                    productList?: {
+                       __typename?: 'ProductListEntityResponse';
+                       data?: {
+                          __typename?: 'ProductListEntity';
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             handle: string;
+                             type?: Enum_Productlist_Type | null;
+                             title: string;
+                             deviceTitle?: string | null;
+                             description: string;
+                             filters?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentProductListLinkedProductListSet';
+                    id: string;
+                    title: string;
+                    productLists?: {
+                       __typename?: 'ProductListRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'ProductListEntity';
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             type?: Enum_Productlist_Type | null;
+                             handle: string;
+                             title: string;
+                             deviceTitle?: string | null;
+                             description: string;
+                             filters?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
                        }>;
-                    }
-                  | {
-                       __typename: 'ComponentProductListLinkedProductListSet';
-                       id: string;
-                       title: string;
-                       productLists?: Maybe<{
-                          __typename?: 'ProductListRelationResponseCollection';
-                          data: Array<{
-                             __typename?: 'ProductListEntity';
-                             attributes?: Maybe<{
-                                __typename?: 'ProductList';
-                                type?: Maybe<Enum_Productlist_Type>;
-                                handle: string;
-                                title: string;
-                                deviceTitle?: Maybe<string>;
-                                description: string;
-                                filters?: Maybe<string>;
-                                image?: Maybe<{
-                                   __typename?: 'UploadFileEntityResponse';
-                                   data?: Maybe<{
-                                      __typename?: 'UploadFileEntity';
-                                      attributes?: Maybe<{
-                                         __typename?: 'UploadFile';
-                                         alternativeText?: Maybe<string>;
-                                         url: string;
-                                         formats?: Maybe<any>;
-                                      }>;
-                                   }>;
-                                }>;
-                             }>;
-                          }>;
-                       }>;
-                    }
-                  | {
-                       __typename: 'ComponentProductListRelatedPosts';
-                       id: string;
-                       tags?: Maybe<string>;
-                    }
-                  | { __typename: 'Error' }
-               >
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentProductListRelatedPosts';
+                    id: string;
+                    tags?: string | null;
+                 }
+               | { __typename: 'Error' }
+               | null
             >;
-         }>;
+         } | null;
       }>;
-   }>;
+   } | null;
 };
 
 export type GetStoreQueryVariables = Exact<{
-   filters?: Maybe<StoreFiltersInput>;
+   filters?: InputMaybe<StoreFiltersInput>;
 }>;
 
 export type GetStoreQuery = {
    __typename?: 'Query';
-   store?: Maybe<{
+   store?: {
       __typename?: 'StoreEntityResponseCollection';
       data: Array<{
          __typename?: 'StoreEntity';
-         attributes?: Maybe<{
+         attributes?: {
             __typename?: 'Store';
             header: {
                __typename?: 'ComponentStoreHeader';
-               menu?: Maybe<{
+               menu?: {
                   __typename?: 'MenuEntityResponse';
-                  data?: Maybe<{
+                  data?: {
                      __typename?: 'MenuEntity';
-                     attributes?: Maybe<{
+                     attributes?: {
                         __typename?: 'Menu';
                         title: string;
                         items: Array<
-                           Maybe<
-                              | {
-                                   __typename: 'ComponentMenuLink';
-                                   name: string;
-                                   url: string;
-                                   description?: Maybe<string>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuLinkWithImage';
-                                   name: string;
-                                   url: string;
-                                   image: {
-                                      __typename?: 'UploadFileEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'UploadFileEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'UploadFile';
-                                            alternativeText?: Maybe<string>;
-                                            url: string;
-                                            formats?: Maybe<any>;
-                                         }>;
-                                      }>;
-                                   };
-                                }
-                              | {
-                                   __typename: 'ComponentMenuProductListLink';
-                                   name: string;
-                                   productList?: Maybe<{
-                                      __typename?: 'ProductListEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'ProductListEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'ProductList';
-                                            handle: string;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuSubmenu';
-                                   name: string;
-                                   submenu?: Maybe<{
-                                      __typename?: 'MenuEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'MenuEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'Menu';
-                                            title: string;
-                                            items: Array<
-                                               Maybe<
-                                                  | {
-                                                       __typename: 'ComponentMenuLink';
-                                                       name: string;
-                                                       url: string;
-                                                       description?: Maybe<string>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuLinkWithImage';
-                                                       name: string;
-                                                       url: string;
-                                                       image: {
-                                                          __typename?: 'UploadFileEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'UploadFileEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'UploadFile';
-                                                                alternativeText?: Maybe<string>;
-                                                                url: string;
-                                                                formats?: Maybe<any>;
-                                                             }>;
-                                                          }>;
-                                                       };
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuProductListLink';
-                                                       name: string;
-                                                       productList?: Maybe<{
-                                                          __typename?: 'ProductListEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'ProductListEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'ProductList';
-                                                                handle: string;
-                                                             }>;
-                                                          }>;
-                                                       }>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuSubmenu';
-                                                       name: string;
-                                                    }
-                                                  | { __typename: 'Error' }
-                                               >
-                                            >;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | { __typename: 'Error' }
-                           >
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
                         >;
-                     }>;
-                  }>;
-               }>;
+                     } | null;
+                  } | null;
+               } | null;
             };
             footer: {
                __typename?: 'ComponentStoreFooter';
-               menu1?: Maybe<{
+               menu1?: {
                   __typename?: 'MenuEntityResponse';
-                  data?: Maybe<{
+                  data?: {
                      __typename?: 'MenuEntity';
-                     attributes?: Maybe<{
+                     attributes?: {
                         __typename?: 'Menu';
                         title: string;
                         items: Array<
-                           Maybe<
-                              | {
-                                   __typename: 'ComponentMenuLink';
-                                   name: string;
-                                   url: string;
-                                   description?: Maybe<string>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuLinkWithImage';
-                                   name: string;
-                                   url: string;
-                                   image: {
-                                      __typename?: 'UploadFileEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'UploadFileEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'UploadFile';
-                                            alternativeText?: Maybe<string>;
-                                            url: string;
-                                            formats?: Maybe<any>;
-                                         }>;
-                                      }>;
-                                   };
-                                }
-                              | {
-                                   __typename: 'ComponentMenuProductListLink';
-                                   name: string;
-                                   productList?: Maybe<{
-                                      __typename?: 'ProductListEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'ProductListEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'ProductList';
-                                            handle: string;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuSubmenu';
-                                   name: string;
-                                   submenu?: Maybe<{
-                                      __typename?: 'MenuEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'MenuEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'Menu';
-                                            title: string;
-                                            items: Array<
-                                               Maybe<
-                                                  | {
-                                                       __typename: 'ComponentMenuLink';
-                                                       name: string;
-                                                       url: string;
-                                                       description?: Maybe<string>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuLinkWithImage';
-                                                       name: string;
-                                                       url: string;
-                                                       image: {
-                                                          __typename?: 'UploadFileEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'UploadFileEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'UploadFile';
-                                                                alternativeText?: Maybe<string>;
-                                                                url: string;
-                                                                formats?: Maybe<any>;
-                                                             }>;
-                                                          }>;
-                                                       };
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuProductListLink';
-                                                       name: string;
-                                                       productList?: Maybe<{
-                                                          __typename?: 'ProductListEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'ProductListEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'ProductList';
-                                                                handle: string;
-                                                             }>;
-                                                          }>;
-                                                       }>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuSubmenu';
-                                                       name: string;
-                                                    }
-                                                  | { __typename: 'Error' }
-                                               >
-                                            >;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | { __typename: 'Error' }
-                           >
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
                         >;
-                     }>;
-                  }>;
-               }>;
-               menu2?: Maybe<{
+                     } | null;
+                  } | null;
+               } | null;
+               menu2?: {
                   __typename?: 'MenuEntityResponse';
-                  data?: Maybe<{
+                  data?: {
                      __typename?: 'MenuEntity';
-                     attributes?: Maybe<{
+                     attributes?: {
                         __typename?: 'Menu';
                         title: string;
                         items: Array<
-                           Maybe<
-                              | {
-                                   __typename: 'ComponentMenuLink';
-                                   name: string;
-                                   url: string;
-                                   description?: Maybe<string>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuLinkWithImage';
-                                   name: string;
-                                   url: string;
-                                   image: {
-                                      __typename?: 'UploadFileEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'UploadFileEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'UploadFile';
-                                            alternativeText?: Maybe<string>;
-                                            url: string;
-                                            formats?: Maybe<any>;
-                                         }>;
-                                      }>;
-                                   };
-                                }
-                              | {
-                                   __typename: 'ComponentMenuProductListLink';
-                                   name: string;
-                                   productList?: Maybe<{
-                                      __typename?: 'ProductListEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'ProductListEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'ProductList';
-                                            handle: string;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuSubmenu';
-                                   name: string;
-                                   submenu?: Maybe<{
-                                      __typename?: 'MenuEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'MenuEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'Menu';
-                                            title: string;
-                                            items: Array<
-                                               Maybe<
-                                                  | {
-                                                       __typename: 'ComponentMenuLink';
-                                                       name: string;
-                                                       url: string;
-                                                       description?: Maybe<string>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuLinkWithImage';
-                                                       name: string;
-                                                       url: string;
-                                                       image: {
-                                                          __typename?: 'UploadFileEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'UploadFileEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'UploadFile';
-                                                                alternativeText?: Maybe<string>;
-                                                                url: string;
-                                                                formats?: Maybe<any>;
-                                                             }>;
-                                                          }>;
-                                                       };
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuProductListLink';
-                                                       name: string;
-                                                       productList?: Maybe<{
-                                                          __typename?: 'ProductListEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'ProductListEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'ProductList';
-                                                                handle: string;
-                                                             }>;
-                                                          }>;
-                                                       }>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuSubmenu';
-                                                       name: string;
-                                                    }
-                                                  | { __typename: 'Error' }
-                                               >
-                                            >;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | { __typename: 'Error' }
-                           >
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
                         >;
-                     }>;
-                  }>;
-               }>;
-               partners?: Maybe<{
+                     } | null;
+                  } | null;
+               } | null;
+               partners?: {
                   __typename?: 'MenuEntityResponse';
-                  data?: Maybe<{
+                  data?: {
                      __typename?: 'MenuEntity';
-                     attributes?: Maybe<{
+                     attributes?: {
                         __typename?: 'Menu';
                         title: string;
                         items: Array<
-                           Maybe<
-                              | {
-                                   __typename: 'ComponentMenuLink';
-                                   name: string;
-                                   url: string;
-                                   description?: Maybe<string>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuLinkWithImage';
-                                   name: string;
-                                   url: string;
-                                   image: {
-                                      __typename?: 'UploadFileEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'UploadFileEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'UploadFile';
-                                            alternativeText?: Maybe<string>;
-                                            url: string;
-                                            formats?: Maybe<any>;
-                                         }>;
-                                      }>;
-                                   };
-                                }
-                              | {
-                                   __typename: 'ComponentMenuProductListLink';
-                                   name: string;
-                                   productList?: Maybe<{
-                                      __typename?: 'ProductListEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'ProductListEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'ProductList';
-                                            handle: string;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuSubmenu';
-                                   name: string;
-                                   submenu?: Maybe<{
-                                      __typename?: 'MenuEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'MenuEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'Menu';
-                                            title: string;
-                                            items: Array<
-                                               Maybe<
-                                                  | {
-                                                       __typename: 'ComponentMenuLink';
-                                                       name: string;
-                                                       url: string;
-                                                       description?: Maybe<string>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuLinkWithImage';
-                                                       name: string;
-                                                       url: string;
-                                                       image: {
-                                                          __typename?: 'UploadFileEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'UploadFileEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'UploadFile';
-                                                                alternativeText?: Maybe<string>;
-                                                                url: string;
-                                                                formats?: Maybe<any>;
-                                                             }>;
-                                                          }>;
-                                                       };
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuProductListLink';
-                                                       name: string;
-                                                       productList?: Maybe<{
-                                                          __typename?: 'ProductListEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'ProductListEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'ProductList';
-                                                                handle: string;
-                                                             }>;
-                                                          }>;
-                                                       }>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuSubmenu';
-                                                       name: string;
-                                                    }
-                                                  | { __typename: 'Error' }
-                                               >
-                                            >;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | { __typename: 'Error' }
-                           >
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
                         >;
-                     }>;
-                  }>;
-               }>;
-               bottomMenu?: Maybe<{
+                     } | null;
+                  } | null;
+               } | null;
+               bottomMenu?: {
                   __typename?: 'MenuEntityResponse';
-                  data?: Maybe<{
+                  data?: {
                      __typename?: 'MenuEntity';
-                     attributes?: Maybe<{
+                     attributes?: {
                         __typename?: 'Menu';
                         title: string;
                         items: Array<
-                           Maybe<
-                              | {
-                                   __typename: 'ComponentMenuLink';
-                                   name: string;
-                                   url: string;
-                                   description?: Maybe<string>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuLinkWithImage';
-                                   name: string;
-                                   url: string;
-                                   image: {
-                                      __typename?: 'UploadFileEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'UploadFileEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'UploadFile';
-                                            alternativeText?: Maybe<string>;
-                                            url: string;
-                                            formats?: Maybe<any>;
-                                         }>;
-                                      }>;
-                                   };
-                                }
-                              | {
-                                   __typename: 'ComponentMenuProductListLink';
-                                   name: string;
-                                   productList?: Maybe<{
-                                      __typename?: 'ProductListEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'ProductListEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'ProductList';
-                                            handle: string;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | {
-                                   __typename: 'ComponentMenuSubmenu';
-                                   name: string;
-                                   submenu?: Maybe<{
-                                      __typename?: 'MenuEntityResponse';
-                                      data?: Maybe<{
-                                         __typename?: 'MenuEntity';
-                                         attributes?: Maybe<{
-                                            __typename?: 'Menu';
-                                            title: string;
-                                            items: Array<
-                                               Maybe<
-                                                  | {
-                                                       __typename: 'ComponentMenuLink';
-                                                       name: string;
-                                                       url: string;
-                                                       description?: Maybe<string>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuLinkWithImage';
-                                                       name: string;
-                                                       url: string;
-                                                       image: {
-                                                          __typename?: 'UploadFileEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'UploadFileEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'UploadFile';
-                                                                alternativeText?: Maybe<string>;
-                                                                url: string;
-                                                                formats?: Maybe<any>;
-                                                             }>;
-                                                          }>;
-                                                       };
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuProductListLink';
-                                                       name: string;
-                                                       productList?: Maybe<{
-                                                          __typename?: 'ProductListEntityResponse';
-                                                          data?: Maybe<{
-                                                             __typename?: 'ProductListEntity';
-                                                             attributes?: Maybe<{
-                                                                __typename?: 'ProductList';
-                                                                handle: string;
-                                                             }>;
-                                                          }>;
-                                                       }>;
-                                                    }
-                                                  | {
-                                                       __typename: 'ComponentMenuSubmenu';
-                                                       name: string;
-                                                    }
-                                                  | { __typename: 'Error' }
-                                               >
-                                            >;
-                                         }>;
-                                      }>;
-                                   }>;
-                                }
-                              | { __typename: 'Error' }
-                           >
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
                         >;
-                     }>;
-                  }>;
-               }>;
+                     } | null;
+                  } | null;
+               } | null;
             };
             socialMediaAccounts: {
                __typename?: 'ComponentStoreSocialMediaAccounts';
-               twitter?: Maybe<string>;
-               facebook?: Maybe<string>;
-               instagram?: Maybe<string>;
-               youtube?: Maybe<string>;
-               repairOrg?: Maybe<string>;
+               twitter?: string | null;
+               facebook?: string | null;
+               instagram?: string | null;
+               youtube?: string | null;
+               repairOrg?: string | null;
             };
-            shopifySettings?: Maybe<{
+            shopifySettings?: {
                __typename?: 'ComponentStoreShopifySettings';
                storefrontDomain: string;
                storefrontAccessToken: string;
-            }>;
-         }>;
+            } | null;
+         } | null;
       }>;
-   }>;
+   } | null;
 };
 
 export type MenuEntityResponsePropsFragment = {
    __typename?: 'MenuEntityResponse';
-   data?: Maybe<{
+   data?: {
       __typename?: 'MenuEntity';
-      attributes?: Maybe<{
+      attributes?: {
          __typename?: 'Menu';
          title: string;
          items: Array<
-            Maybe<
-               | {
-                    __typename: 'ComponentMenuLink';
-                    name: string;
-                    url: string;
-                    description?: Maybe<string>;
-                 }
-               | {
-                    __typename: 'ComponentMenuLinkWithImage';
-                    name: string;
-                    url: string;
-                    image: {
-                       __typename?: 'UploadFileEntityResponse';
-                       data?: Maybe<{
-                          __typename?: 'UploadFileEntity';
-                          attributes?: Maybe<{
-                             __typename?: 'UploadFile';
-                             alternativeText?: Maybe<string>;
-                             url: string;
-                             formats?: Maybe<any>;
-                          }>;
-                       }>;
-                    };
-                 }
-               | {
-                    __typename: 'ComponentMenuProductListLink';
-                    name: string;
-                    productList?: Maybe<{
-                       __typename?: 'ProductListEntityResponse';
-                       data?: Maybe<{
-                          __typename?: 'ProductListEntity';
-                          attributes?: Maybe<{
-                             __typename?: 'ProductList';
-                             handle: string;
-                          }>;
-                       }>;
-                    }>;
-                 }
-               | {
-                    __typename: 'ComponentMenuSubmenu';
-                    name: string;
-                    submenu?: Maybe<{
-                       __typename?: 'MenuEntityResponse';
-                       data?: Maybe<{
-                          __typename?: 'MenuEntity';
-                          attributes?: Maybe<{
-                             __typename?: 'Menu';
-                             title: string;
-                             items: Array<
-                                Maybe<
-                                   | {
-                                        __typename: 'ComponentMenuLink';
-                                        name: string;
-                                        url: string;
-                                        description?: Maybe<string>;
-                                     }
-                                   | {
-                                        __typename: 'ComponentMenuLinkWithImage';
-                                        name: string;
-                                        url: string;
-                                        image: {
-                                           __typename?: 'UploadFileEntityResponse';
-                                           data?: Maybe<{
-                                              __typename?: 'UploadFileEntity';
-                                              attributes?: Maybe<{
-                                                 __typename?: 'UploadFile';
-                                                 alternativeText?: Maybe<string>;
-                                                 url: string;
-                                                 formats?: Maybe<any>;
-                                              }>;
-                                           }>;
-                                        };
-                                     }
-                                   | {
-                                        __typename: 'ComponentMenuProductListLink';
-                                        name: string;
-                                        productList?: Maybe<{
-                                           __typename?: 'ProductListEntityResponse';
-                                           data?: Maybe<{
-                                              __typename?: 'ProductListEntity';
-                                              attributes?: Maybe<{
-                                                 __typename?: 'ProductList';
-                                                 handle: string;
-                                              }>;
-                                           }>;
-                                        }>;
-                                     }
-                                   | {
-                                        __typename: 'ComponentMenuSubmenu';
-                                        name: string;
-                                     }
-                                   | { __typename: 'Error' }
-                                >
-                             >;
-                          }>;
-                       }>;
-                    }>;
-                 }
-               | { __typename: 'Error' }
-            >
-         >;
-      }>;
-   }>;
-};
-
-export type MenuPropsFragment = {
-   __typename?: 'Menu';
-   title: string;
-   items: Array<
-      Maybe<
-         | {
-              __typename: 'ComponentMenuLink';
-              name: string;
-              url: string;
-              description?: Maybe<string>;
-           }
-         | {
-              __typename: 'ComponentMenuLinkWithImage';
-              name: string;
-              url: string;
-              image: {
-                 __typename?: 'UploadFileEntityResponse';
-                 data?: Maybe<{
-                    __typename?: 'UploadFileEntity';
-                    attributes?: Maybe<{
-                       __typename?: 'UploadFile';
-                       alternativeText?: Maybe<string>;
-                       url: string;
-                       formats?: Maybe<any>;
-                    }>;
-                 }>;
-              };
-           }
-         | {
-              __typename: 'ComponentMenuProductListLink';
-              name: string;
-              productList?: Maybe<{
-                 __typename?: 'ProductListEntityResponse';
-                 data?: Maybe<{
-                    __typename?: 'ProductListEntity';
-                    attributes?: Maybe<{
-                       __typename?: 'ProductList';
-                       handle: string;
-                    }>;
-                 }>;
-              }>;
-           }
-         | {
-              __typename: 'ComponentMenuSubmenu';
-              name: string;
-              submenu?: Maybe<{
-                 __typename?: 'MenuEntityResponse';
-                 data?: Maybe<{
-                    __typename?: 'MenuEntity';
-                    attributes?: Maybe<{
-                       __typename?: 'Menu';
-                       title: string;
-                       items: Array<
-                          Maybe<
+            | {
+                 __typename: 'ComponentMenuLink';
+                 name: string;
+                 url: string;
+                 description?: string | null;
+              }
+            | {
+                 __typename: 'ComponentMenuLinkWithImage';
+                 name: string;
+                 url: string;
+                 image: {
+                    __typename?: 'UploadFileEntityResponse';
+                    data?: {
+                       __typename?: 'UploadFileEntity';
+                       attributes?: {
+                          __typename?: 'UploadFile';
+                          alternativeText?: string | null;
+                          url: string;
+                          formats?: any | null;
+                       } | null;
+                    } | null;
+                 };
+              }
+            | {
+                 __typename: 'ComponentMenuProductListLink';
+                 name: string;
+                 productList?: {
+                    __typename?: 'ProductListEntityResponse';
+                    data?: {
+                       __typename?: 'ProductListEntity';
+                       attributes?: {
+                          __typename?: 'ProductList';
+                          handle: string;
+                       } | null;
+                    } | null;
+                 } | null;
+              }
+            | {
+                 __typename: 'ComponentMenuSubmenu';
+                 name: string;
+                 submenu?: {
+                    __typename?: 'MenuEntityResponse';
+                    data?: {
+                       __typename?: 'MenuEntity';
+                       attributes?: {
+                          __typename?: 'Menu';
+                          title: string;
+                          items: Array<
                              | {
                                   __typename: 'ComponentMenuLink';
                                   name: string;
                                   url: string;
-                                  description?: Maybe<string>;
+                                  description?: string | null;
                                }
                              | {
                                   __typename: 'ComponentMenuLinkWithImage';
@@ -2693,44 +2698,148 @@ export type MenuPropsFragment = {
                                   url: string;
                                   image: {
                                      __typename?: 'UploadFileEntityResponse';
-                                     data?: Maybe<{
+                                     data?: {
                                         __typename?: 'UploadFileEntity';
-                                        attributes?: Maybe<{
+                                        attributes?: {
                                            __typename?: 'UploadFile';
-                                           alternativeText?: Maybe<string>;
+                                           alternativeText?: string | null;
                                            url: string;
-                                           formats?: Maybe<any>;
-                                        }>;
-                                     }>;
+                                           formats?: any | null;
+                                        } | null;
+                                     } | null;
                                   };
                                }
                              | {
                                   __typename: 'ComponentMenuProductListLink';
                                   name: string;
-                                  productList?: Maybe<{
+                                  productList?: {
                                      __typename?: 'ProductListEntityResponse';
-                                     data?: Maybe<{
+                                     data?: {
                                         __typename?: 'ProductListEntity';
-                                        attributes?: Maybe<{
+                                        attributes?: {
                                            __typename?: 'ProductList';
                                            handle: string;
-                                        }>;
-                                     }>;
-                                  }>;
+                                        } | null;
+                                     } | null;
+                                  } | null;
                                }
                              | {
                                   __typename: 'ComponentMenuSubmenu';
                                   name: string;
                                }
                              | { __typename: 'Error' }
-                          >
-                       >;
-                    }>;
-                 }>;
-              }>;
-           }
-         | { __typename: 'Error' }
-      >
+                             | null
+                          >;
+                       } | null;
+                    } | null;
+                 } | null;
+              }
+            | { __typename: 'Error' }
+            | null
+         >;
+      } | null;
+   } | null;
+};
+
+export type MenuPropsFragment = {
+   __typename?: 'Menu';
+   title: string;
+   items: Array<
+      | {
+           __typename: 'ComponentMenuLink';
+           name: string;
+           url: string;
+           description?: string | null;
+        }
+      | {
+           __typename: 'ComponentMenuLinkWithImage';
+           name: string;
+           url: string;
+           image: {
+              __typename?: 'UploadFileEntityResponse';
+              data?: {
+                 __typename?: 'UploadFileEntity';
+                 attributes?: {
+                    __typename?: 'UploadFile';
+                    alternativeText?: string | null;
+                    url: string;
+                    formats?: any | null;
+                 } | null;
+              } | null;
+           };
+        }
+      | {
+           __typename: 'ComponentMenuProductListLink';
+           name: string;
+           productList?: {
+              __typename?: 'ProductListEntityResponse';
+              data?: {
+                 __typename?: 'ProductListEntity';
+                 attributes?: {
+                    __typename?: 'ProductList';
+                    handle: string;
+                 } | null;
+              } | null;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentMenuSubmenu';
+           name: string;
+           submenu?: {
+              __typename?: 'MenuEntityResponse';
+              data?: {
+                 __typename?: 'MenuEntity';
+                 attributes?: {
+                    __typename?: 'Menu';
+                    title: string;
+                    items: Array<
+                       | {
+                            __typename: 'ComponentMenuLink';
+                            name: string;
+                            url: string;
+                            description?: string | null;
+                         }
+                       | {
+                            __typename: 'ComponentMenuLinkWithImage';
+                            name: string;
+                            url: string;
+                            image: {
+                               __typename?: 'UploadFileEntityResponse';
+                               data?: {
+                                  __typename?: 'UploadFileEntity';
+                                  attributes?: {
+                                     __typename?: 'UploadFile';
+                                     alternativeText?: string | null;
+                                     url: string;
+                                     formats?: any | null;
+                                  } | null;
+                               } | null;
+                            };
+                         }
+                       | {
+                            __typename: 'ComponentMenuProductListLink';
+                            name: string;
+                            productList?: {
+                               __typename?: 'ProductListEntityResponse';
+                               data?: {
+                                  __typename?: 'ProductListEntity';
+                                  attributes?: {
+                                     __typename?: 'ProductList';
+                                     handle: string;
+                                  } | null;
+                               } | null;
+                            } | null;
+                         }
+                       | { __typename: 'ComponentMenuSubmenu'; name: string }
+                       | { __typename: 'Error' }
+                       | null
+                    >;
+                 } | null;
+              } | null;
+           } | null;
+        }
+      | { __typename: 'Error' }
+      | null
    >;
 };
 
@@ -2738,19 +2847,19 @@ export type GetStoreListQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetStoreListQuery = {
    __typename?: 'Query';
-   stores?: Maybe<{
+   stores?: {
       __typename?: 'StoreEntityResponseCollection';
       data: Array<{
          __typename?: 'StoreEntity';
-         attributes?: Maybe<{
+         attributes?: {
             __typename?: 'Store';
             code: string;
             name: string;
             url: string;
             currency: Enum_Store_Currency;
-         }>;
+         } | null;
       }>;
-   }>;
+   } | null;
 };
 
 export const ImageFieldsFragmentDoc = `
@@ -2760,6 +2869,20 @@ export const ImageFieldsFragmentDoc = `
       alternativeText
       url
       formats
+    }
+  }
+}
+    `;
+export const ProductListFieldsFragmentDoc = `
+    fragment ProductListFields on ProductListEntity {
+  attributes {
+    type
+    handle
+    deviceTitle
+    title
+    metaDescription
+    image {
+      ...ImageFields
     }
   }
 }
@@ -2858,7 +2981,7 @@ export const MenuEntityResponsePropsFragmentDoc = `
     }
   }
 }
-    ${MenuPropsFragmentDoc}`;
+    `;
 export const FindPageDocument = `
     query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
   pages(
@@ -2884,13 +3007,30 @@ export const FindPageDocument = `
               ...ImageFields
             }
           }
+          ... on ComponentPageBrowse {
+            id
+            title
+            description
+            image {
+              ...ImageFields
+            }
+            categories {
+              id
+              productList {
+                data {
+                  ...ProductListFields
+                }
+              }
+            }
+          }
         }
       }
     }
   }
 }
     ${CallToActionFieldsFragmentDoc}
-${ImageFieldsFragmentDoc}`;
+${ImageFieldsFragmentDoc}
+${ProductListFieldsFragmentDoc}`;
 export const GetGlobalSettingsDocument = `
     query getGlobalSettings {
   global {
@@ -3123,7 +3263,8 @@ export const GetStoreDocument = `
     }
   }
 }
-    ${MenuEntityResponsePropsFragmentDoc}`;
+    ${MenuEntityResponsePropsFragmentDoc}
+${MenuPropsFragmentDoc}`;
 export const GetStoreListDocument = `
     query getStoreList {
   stores(pagination: {pageSize: 100}) {
@@ -3138,12 +3279,12 @@ export const GetStoreListDocument = `
   }
 }
     `;
-export type Requester<C = {}> = <R, V>(
+export type Requester<C = {}, E = unknown> = <R, V>(
    doc: string,
    vars?: V,
    options?: C
 ) => Promise<R>;
-export function getSdk<C>(requester: Requester<C>) {
+export function getSdk<C, E>(requester: Requester<C, E>) {
    return {
       findPage(
          variables?: FindPageQueryVariables,

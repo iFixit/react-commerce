@@ -8,6 +8,7 @@ import {
    Select,
    SimpleGrid,
    Text,
+   useTheme,
    VStack,
 } from '@chakra-ui/react';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
@@ -26,6 +27,7 @@ export function ProductOptions({
    selected,
    onChange,
 }: ProductOptionsProps) {
+   const theme = useTheme();
    const selectedVariant = React.useMemo(() => {
       return product.variants.find((variant) => variant.id === selected)!;
    }, [product.variants, selected]);
@@ -59,13 +61,21 @@ export function ProductOptions({
                         }}
                      >
                         {option.values.map((value) => {
-                           const variant = findVariant(
+                           const { exact, variant } = findVariant(
                               product,
                               selectedOptions,
                               { name: option.name, value }
                            );
                            return (
-                              <option value={variant?.id} key={value}>
+                              <option
+                                 value={variant?.id}
+                                 key={value}
+                                 style={
+                                    exact
+                                       ? undefined
+                                       : { color: theme.colors.gray[400] }
+                                 }
+                              >
                                  {value}
                               </option>
                            );
@@ -75,7 +85,7 @@ export function ProductOptions({
                   {selectorType === SelectorType.IMAGE_RADIO && (
                      <SimpleGrid columns={2} spacing="2">
                         {option.values.map((value) => {
-                           const variant = findVariant(
+                           const { exact, variant } = findVariant(
                               product,
                               selectedOptions,
                               { name: option.name, value }
@@ -90,6 +100,7 @@ export function ProductOptions({
                                  isActive={variant?.id === selected}
                                  label={value}
                                  image={variantSpecificImage}
+                                 exactMatch={exact}
                                  onClick={() => {
                                     if (variant) {
                                        onChange(variant.id);
@@ -135,7 +146,7 @@ function findVariant(
    });
 
    if (exactMatch) {
-      return exactMatch;
+      return { exact: true, variant: exactMatch };
    }
 
    const productOptionsNames = options.map((option) => option.name);
@@ -168,7 +179,7 @@ function findVariant(
       .map((update) => update.variant);
 
    const bestMatch = scoredVariantsMatchingUpdate.shift();
-   return bestMatch;
+   return { exact: false, variant: bestMatch };
 }
 
 function getSelectorType(option: Option): SelectorType {
@@ -189,6 +200,7 @@ type ProductOptionProps = {
    label: string;
    image?: Image | null;
    isActive?: boolean;
+   exactMatch?: boolean;
    onClick?: () => void;
 };
 
@@ -204,6 +216,7 @@ function ProductOptionValue({
    label,
    image,
    isActive,
+   exactMatch,
    onClick,
 }: ProductOptionProps) {
    return (
@@ -211,6 +224,7 @@ function ProductOptionValue({
          bg="white"
          borderWidth={isActive ? 2 : 1}
          borderColor={isActive ? 'brand.500' : 'gray.200'}
+         boxSizing="border-box"
          borderRadius="md"
          px={2.5}
          py={2.5}
@@ -218,8 +232,8 @@ function ProductOptionValue({
          textAlign="center"
          onClick={onClick}
       >
-         <ProductOptionImage image={image} />
-         <Text fontSize="13px" color="gray.800">
+         <ProductOptionImage image={image} exactMatch={exactMatch} />
+         <Text fontSize="13px" color={exactMatch ? 'gray.800' : 'gray.400'}>
             {label}
          </Text>
       </Box>
@@ -228,12 +242,19 @@ function ProductOptionValue({
 
 type ProductOptionImageProps = {
    image?: Image | null;
+   exactMatch?: boolean;
 };
 
-function ProductOptionImage({ image }: ProductOptionImageProps) {
+function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
    if (!image) {
       return (
-         <Flex h="16" alignItems="center" justifyContent="center" mb="1">
+         <Flex
+            h="16"
+            alignItems="center"
+            justifyContent="center"
+            mb="1"
+            opacity={exactMatch ? 1 : 0.4}
+         >
             <Circle bgColor="gray.200" size="14">
                <FaIcon
                   icon={faImageSlash}
@@ -251,10 +272,24 @@ function ProductOptionImage({ image }: ProductOptionImageProps) {
          : null;
 
    if (ratio == null) {
-      return <Img h="16" src={image.url} alt="" objectFit="contain" />;
+      return (
+         <Img
+            h="16"
+            src={image.url}
+            alt=""
+            objectFit="contain"
+            opacity={exactMatch ? 1 : 0.4}
+         />
+      );
    }
    return (
-      <Box h="16" position="relative" overflow="hidden" mb="1">
+      <Box
+         h="16"
+         position="relative"
+         overflow="hidden"
+         mb="1"
+         opacity={exactMatch ? 1 : 0.4}
+      >
          <Img
             w="auto"
             maxH="full"

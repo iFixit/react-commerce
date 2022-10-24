@@ -1,4 +1,3 @@
-# Write your query or mutation here
 query findPage(
    $filters: PageFiltersInput
    $publicationState: PublicationState
@@ -26,18 +25,24 @@ query findPage(
                      ...ImageFields
                   }
                }
+               ... on ComponentPageBrowse {
+                  id
+                  title
+                  description
+                  image {
+                     ...ImageFields
+                  }
+                  categories {
+                     id
+                     productList {
+                        data {
+                           ...ProductListFields
+                        }
+                     }
+                  }
+               }
             }
          }
-      }
-   }
-}
-
-fragment ImageFields on UploadFileEntityResponse {
-   data {
-      attributes {
-         alternativeText
-         url
-         formats
       }
    }
 }
