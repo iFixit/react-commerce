@@ -152,7 +152,7 @@ export interface FeaturedProductList {
    };
    handle: string;
    title: string;
-   path: string;
+   type: ProductListType;
    deviceTitle: string | null;
    description: string;
    image: ProductListImage | null;

@@ -338,12 +338,8 @@ function createProductListSection(
             productList: {
                handle: productList.handle,
                title: productList.title,
+               type: getProductListType(productList.type),
                deviceTitle: productList.deviceTitle ?? null,
-               path: productListPath({
-                  handle: productList.handle,
-                  deviceTitle: productList.deviceTitle ?? null,
-                  type: getProductListType(productList.type),
-               }),
                description: productList.description,
                image:
                   image == null
