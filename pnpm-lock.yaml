@@ -369,6 +369,7 @@ importers:
 
   packages/newsletter-sdk:
     specifiers:
+      '@ifixit/analytics': workspace:*
       '@ifixit/app': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/sentry': workspace:*
@@ -377,6 +378,7 @@ importers:
       '@types/react-dom': 17.0.11
       typescript: 4.5.3
     dependencies:
+      '@ifixit/analytics': link:../analytics
       '@ifixit/app': link:../app
       '@ifixit/helpers': link:../helpers
       '@ifixit/sentry': link:../sentry
