@@ -209,8 +209,9 @@ function ShippingRestrictions({
                                  <Link
                                     href={shippingRestriction.link}
                                     color="brand.400"
+                                    target="_blank"
                                  >
-                                    Link
+                                    Learn more
                                  </Link>
                               )}
                            </PopoverBody>
