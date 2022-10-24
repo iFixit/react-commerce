@@ -81,19 +81,12 @@ export async function findProductList(
    );
    const productListType = getProductListType(productList?.type);
 
-   const path = productListPath({
-      type: productListType,
-      handle: handle,
-      deviceTitle: deviceTitle,
-   });
-
    const ancestors = createProductListAncestors(parents);
 
    const baseProductList: BaseProductList = {
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
-      path,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
