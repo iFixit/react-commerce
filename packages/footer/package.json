@@ -9,6 +9,9 @@
       "build": "",
       "type-check": "tsc --pretty --noEmit"
    },
+   "dependencies": {
+      "@ifixit/analytics": "workspace:*"
+   },
    "peerDependencies": {
       "@chakra-ui/react": ">= 1.8.3 < 2",
       "@core-ds/primitives": ">2.4",
