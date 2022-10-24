@@ -3,15 +3,13 @@ import { faSort } from '@fortawesome/pro-solid-svg-icons';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
-import {
-   RefinementListItem,
-   RefinementListRenderState,
-} from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
+import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import NextLink from 'next/link';
 import React from 'react';
 import {
    useCurrentRefinements,
    UseRefinementListProps,
+   useInstantSearch,
 } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
@@ -32,19 +30,6 @@ export function RefinementSingleSelect({
          sortBy: useSortBy(otherProps),
       });
 
-   const onClickSingleSelect = React.useCallback(
-      (newSelected: RefinementListItem) => {
-         refine(newSelected.value);
-
-         const oldSelected: RefinementListItem | undefined = items.find(
-            (item) => item.isRefined
-         );
-         if (oldSelected && oldSelected !== newSelected) {
-            refine(oldSelected.value);
-         }
-      },
-      [items, refine]
-   );
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
@@ -56,7 +41,6 @@ export function RefinementSingleSelect({
                      attribute={otherProps.attribute}
                      productListType={productList.type}
                      onClose={onClose}
-                     onClick={onClickSingleSelect}
                   />
                );
             })}
@@ -84,7 +68,6 @@ type SingleSelectItemProps = {
    attribute: string;
    productListType: ProductListType;
    onClose?: () => void;
-   onClick?: (newSelected: RefinementListItem) => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
@@ -92,9 +75,9 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
    attribute,
    productListType,
    onClose,
-   onClick,
 }: SingleSelectItemProps) {
    const { createURL } = useCurrentRefinements();
+   const { setIndexUiState } = useInstantSearch();
    const shouldBeLink =
       attribute === 'facet_tags.Item Type' &&
       productListType === ProductListType.DeviceParts;
@@ -106,7 +89,21 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
          as={shouldBeLink ? 'a' : 'button'}
          onClick={(event) => {
             event.preventDefault();
-            onClick && onClick(item);
+            setIndexUiState((prevUiState) => {
+               const refinementList = {
+                  ...prevUiState.refinementList,
+                  [attribute]: [item.value],
+               };
+               if (
+                  item.value === prevUiState?.refinementList?.[attribute]?.[0]
+               ) {
+                  delete refinementList[attribute];
+               }
+               return {
+                  ...prevUiState,
+                  refinementList: refinementList,
+               };
+            });
             onClose?.();
          }}
          _hover={{
