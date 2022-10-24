@@ -71,13 +71,13 @@ function trackAddItemToCart(item: CartLineItem, ga: GAType) {
 
    ga('ifixit.ec:addProduct', addProductData);
    ga('ifixit.ec:setAction', 'add');
-   sendEvent({
+   gaSendEvent({
       category: 'Add to Cart',
       action: `Add to Cart - ${productcode}-${optionid}`,
    });
 }
 
-function sendEvent(event: GATrackEvent) {
+export function gaSendEvent(event: GATrackEvent) {
    const ga = useGa();
    if (!ga) {
       return;
