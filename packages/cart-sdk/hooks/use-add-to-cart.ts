@@ -1,4 +1,4 @@
-import { trackGoogleAddToCart, trackMatomoCartChange } from '@ifixit/analytics';
+import { trackAddToCart } from '@ifixit/analytics';
 import { assertNever, getProductVariantSku } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from 'react-query';
@@ -98,8 +98,7 @@ export function useAddToCart() {
          },
          onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackMatomoCartChange(cart?.lineItems ?? []);
-            trackGoogleAddToCart(variables);
+            trackAddToCart(cart?.lineItems ?? [], variables);
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;

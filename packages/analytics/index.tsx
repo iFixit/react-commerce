@@ -1,4 +1,6 @@
-import { gaSendEvent } from './google';
+import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
+import { gaSendEvent, trackGoogleAddToCart } from './google';
+import { trackMatomoCartChange } from './matomo';
 import { TrackEventMatomo, trackInMatomo } from './matomo/track-event';
 
 export * from './google';
@@ -21,3 +23,28 @@ export const trackInMatomoAndGA = (trackData: TrackEventMatomo) => {
       name: eventName,
    });
 };
+
+export function trackAddToCart(
+   cart: CartLineItem[],
+   addToCartInput: AddToCartInput
+) {
+   trackMatomoCartChange(cart);
+   trackGoogleAddToCart(addToCartInput);
+   if (addToCartInput.type === 'bundle') {
+      addToCartInput.bundle.items.forEach((item) =>
+         trackAddItemToCartEvent(item)
+      );
+   } else if (addToCartInput.type === 'product') {
+      trackAddItemToCartEvent(addToCartInput.product);
+   }
+}
+
+function trackAddItemToCartEvent(item: CartLineItem) {
+   const actionSuffix = item.internalDisplayName
+      ? ` - ${item.internalDisplayName}`
+      : '';
+   trackInMatomoAndGA({
+      eventCategory: 'Add to Cart',
+      eventAction: `${item.itemcode}${actionSuffix}`,
+   });
+}
