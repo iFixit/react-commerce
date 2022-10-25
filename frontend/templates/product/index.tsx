@@ -64,6 +64,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
             <CrossSellSection
+               key={selectedVariant.id}
                product={product}
                selectedVariant={selectedVariant}
             />
