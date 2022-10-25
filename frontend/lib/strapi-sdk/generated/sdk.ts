@@ -3014,7 +3014,7 @@ export const FindPageDocument = `
             image {
               ...ImageFields
             }
-            categories {
+            categories(pagination: {limit: 100}) {
               id
               productList {
                 data {
