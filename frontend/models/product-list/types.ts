@@ -54,7 +54,6 @@ export interface BaseProductList {
    title: string;
    handle: string;
    deviceTitle: string | null;
-   path: string;
    tagline: string | null;
    description: string;
    metaDescription: string | null;
@@ -93,16 +92,16 @@ interface MarketingProductList extends BaseProductList {
 }
 
 export interface ProductListAncestor {
+   deviceTitle: string | null;
    title: string;
+   type: ProductListType;
    handle: string;
-   path: string;
 }
 
 export interface ProductListChild {
    title: string;
    deviceTitle: string | null;
    handle: string;
-   path: string;
    image: ProductListImage | null;
    sortPriority: number | null;
    type: ProductListType;
@@ -154,7 +153,7 @@ export interface FeaturedProductList {
    };
    handle: string;
    title: string;
-   path: string;
+   type: ProductListType;
    deviceTitle: string | null;
    description: string;
    image: ProductListImage | null;
@@ -171,7 +170,7 @@ export interface ProductListProductListSetSection {
 export interface ProductListPreview {
    handle: string;
    title: string;
-   path: string;
+   type: ProductListType;
    deviceTitle: string | null;
    description: string;
    image: ProductListImage | null;

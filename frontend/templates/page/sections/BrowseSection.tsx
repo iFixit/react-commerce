@@ -146,14 +146,7 @@ function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                      lg: isBigger ? 6 : 3,
                   }}
                >
-                  <NextLink
-                     href={productListPath({
-                        deviceTitle: category.deviceTitle,
-                        handle: category.handle,
-                        type: category.type,
-                     })}
-                     passHref
-                  >
+                  <NextLink href={productListPath(category)} passHref>
                      <ProductListCard
                         as="a"
                         variant={isBigger ? 'medium' : 'small'}
