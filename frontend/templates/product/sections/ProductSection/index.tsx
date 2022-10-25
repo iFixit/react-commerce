@@ -34,6 +34,7 @@ import { Product, ProductVariant } from '@models/product';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
+import { GenuinePartBanner } from './GenuinePartBanner';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -146,6 +147,9 @@ export function ProductSection({
                      product={product}
                      selectedVariant={selectedVariant}
                   />
+               )}
+               {product.oemPartnership && (
+                  <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
                <div>
                   <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">

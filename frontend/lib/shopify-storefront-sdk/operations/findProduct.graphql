@@ -54,6 +54,12 @@ query findProduct($handle: String) {
       ) {
          value
       }
+      oemPartnership: metafield(
+         namespace: "ifixit"
+         key: "oem_partnership_json"
+      ) {
+         value
+      }
       featuredImage {
          id
       }
