@@ -297,7 +297,10 @@ const ReplacementGuideMetafieldItemSchema = z.object({
    title: z.string(),
    guide_url: z.string(),
    image_url: z.string().optional().nullable(),
-   summary: z.string().optional().nullable(),
+   summary: z.preprocess(
+      (val) => (typeof val === 'string' ? val : null),
+      z.string().optional().nullable()
+   ),
    difficulty: z.string().optional().nullable(),
    time_required: z.string().optional().nullable(),
 });

@@ -81,19 +81,12 @@ export async function findProductList(
    );
    const productListType = getProductListType(productList?.type);
 
-   const path = productListPath({
-      type: productListType,
-      handle: handle,
-      deviceTitle: deviceTitle,
-   });
-
    const ancestors = createProductListAncestors(parents);
 
    const baseProductList: BaseProductList = {
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
-      path,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
@@ -241,16 +234,13 @@ function createProductListAncestors(
    const type = getProductListType(attributes.type);
 
    return ancestors.concat({
+      deviceTitle: attributes.deviceTitle ?? null,
       title: getProductListTitle({
          title: attributes.title,
          type,
       }),
+      type: getProductListType(attributes.type),
       handle: attributes.handle,
-      path: productListPath({
-         type,
-         handle: attributes.handle,
-         deviceTitle: attributes.deviceTitle ?? null,
-      }),
    });
 }
 
@@ -276,11 +266,6 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
          type,
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
-         path: productListPath({
-            type,
-            handle: attributes.handle,
-            deviceTitle: attributes.deviceTitle ?? null,
-         }),
          image:
             imageAttributes == null
                ? deviceWiki && attributes.deviceTitle
@@ -350,12 +335,8 @@ function createProductListSection(
             productList: {
                handle: productList.handle,
                title: productList.title,
+               type: getProductListType(productList.type),
                deviceTitle: productList.deviceTitle ?? null,
-               path: productListPath({
-                  handle: productList.handle,
-                  deviceTitle: productList.deviceTitle ?? null,
-                  type: getProductListType(productList.type),
-               }),
                description: productList.description,
                image:
                   image == null
@@ -384,12 +365,8 @@ function createProductListSection(
                   return {
                      handle: productList.handle,
                      title: productList.title,
+                     type: getProductListType(productList.type),
                      deviceTitle: productList.deviceTitle ?? null,
-                     path: productListPath({
-                        handle: productList.handle,
-                        deviceTitle: productList.deviceTitle ?? null,
-                        type: getProductListType(productList.type),
-                     }),
                      description: productList.description,
                      image:
                         image == null

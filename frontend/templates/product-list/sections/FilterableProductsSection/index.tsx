@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
 import { IFIXIT_ORIGIN } from '@config/env';
+import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { cypressReplace, cypressWindowLog } from '@helpers/test-helpers';
 import { useLocalPreference } from '@ifixit/ui';
@@ -253,7 +254,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                   This collection does not have products.
                </Text>
                {parentCategory && (
-                  <Link href={parentCategory.path}>
+                  <Link href={productListPath(productList)}>
                      Return to {parentCategory.title}
                   </Link>
                )}
