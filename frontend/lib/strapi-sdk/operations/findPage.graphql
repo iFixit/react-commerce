@@ -32,7 +32,7 @@ query findPage(
                   image {
                      ...ImageFields
                   }
-                  categories {
+                  categories(pagination: { limit: 100 }) {
                      id
                      productList {
                         data {
