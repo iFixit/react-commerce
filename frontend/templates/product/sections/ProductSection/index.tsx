@@ -16,6 +16,7 @@ import {
    List,
    ListIcon,
    ListItem,
+   StackProps,
    Text,
    VStack,
 } from '@chakra-ui/react';
@@ -50,8 +51,6 @@ export function ProductSection({
    selectedVariant,
    onVariantChange,
 }: ProductSectionProps) {
-   const appContext = useAppContext();
-
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
    );
@@ -388,31 +387,9 @@ export function ProductSection({
                         />
                      </CustomAccordionPanel>
                   </AccordionItem>
-
-                  <AccordionItem hidden={selectedVariant.warranty == null}>
-                     <CustomAccordionButton>Warranty</CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <HStack
-                           color="brand.500"
-                           fontSize="sm"
-                           as="a"
-                           href={`${appContext.ifixitOrigin}/Info/Warranty`}
-                        >
-                           {isLifetimeWarranty(
-                              selectedVariant.warranty ?? ''
-                           ) && (
-                              <Icon
-                                 as={QualityGuarantee}
-                                 boxSize="50px"
-                                 color="brand.500"
-                                 borderRadius="full"
-                              />
-                           )}
-                           <Box>{selectedVariant.warranty}</Box>
-                        </HStack>
-                     </CustomAccordionPanel>
-                  </AccordionItem>
                </Accordion>
+
+               <VariantWarranty variant={selectedVariant} mt="5" />
 
                <VStack mt="10" align="flex-start" spacing="4">
                   {product.prop65WarningType && product.prop65Chemicals && (
@@ -484,5 +461,33 @@ function CustomAccordionPanel({ children }: CustomAccordionPanelProps) {
       <AccordionPanel pb={4} px="1.5">
          {children}
       </AccordionPanel>
+   );
+}
+
+type VariantWarrantyProps = StackProps & {
+   variant: ProductVariant;
+};
+
+function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
+   const appContext = useAppContext();
+   return (
+      <HStack
+         color="brand.500"
+         fontSize="sm"
+         as="a"
+         target="_blank"
+         href={`${appContext.ifixitOrigin}/Info/Warranty`}
+         {...other}
+      >
+         {isLifetimeWarranty(variant.warranty ?? '') && (
+            <Icon
+               as={QualityGuarantee}
+               boxSize="50px"
+               color="brand.500"
+               borderRadius="full"
+            />
+         )}
+         <Box>{variant.warranty}</Box>
+      </HStack>
    );
 }
