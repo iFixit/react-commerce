@@ -6324,6 +6324,7 @@ export type FindProductQuery = {
       handle: string;
       descriptionHtml: string;
       tags: Array<string>;
+      vendor: string;
       rating?: { __typename?: 'Metafield'; value: string } | null;
       reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
       breadcrumbs?: { __typename?: 'Metafield'; value: string } | null;
@@ -6788,6 +6789,7 @@ export const FindProductDocument = `
         }
       }
     }
+    vendor
   }
 }
     ${ProductVariantCardFragmentDoc}`;

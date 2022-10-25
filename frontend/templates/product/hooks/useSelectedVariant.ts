@@ -45,7 +45,7 @@ export function useSelectedVariant(
    return [variant, setVariantId];
 }
 
-function useDefaultVariantId(product: Product): string {
+export function useDefaultVariantId(product: Product): string {
    const variant =
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
