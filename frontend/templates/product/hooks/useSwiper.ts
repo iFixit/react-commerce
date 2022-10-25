@@ -22,7 +22,7 @@ export function useSwiper({
    const [mainSwiper, setMainSwiper] = React.useState<Swiper | null>(null);
    const [thumbsSwiper, setThumbsSwiper] = React.useState<Swiper | null>(null);
    const slideChangeCallbackRef = React.useRef<(swiper: Swiper) => void>();
-   const slideChangeTransitionStartCallbackRef =
+   const slideNextTransitionStartCallbackRef =
       React.useRef<(swiper: Swiper) => void>();
 
    const [{ realIndex, isBeginning, isEnd }, setNavigationConfig] =
@@ -38,7 +38,7 @@ export function useSwiper({
          setNavigationConfig({ realIndex, isBeginning, isEnd });
          onSlideChange?.(swiper.realIndex);
       };
-      const slideChangeTransitionStartCallback = (swiper: Swiper) => {
+      const slideNextTransitionStartCallback = (swiper: Swiper) => {
          const { realIndex } = swiper;
          if (thumbsSwiper && realIndex > thumbsSwiper.realIndex) {
             thumbsSwiper?.slideTo(realIndex);
@@ -47,20 +47,20 @@ export function useSwiper({
       if (slideChangeCallbackRef.current) {
          mainSwiper?.off('slideChange', slideChangeCallbackRef.current);
       }
-      if (slideChangeTransitionStartCallbackRef.current) {
+      if (slideNextTransitionStartCallbackRef.current) {
          mainSwiper?.off(
-            'slideChangeTransitionStart',
-            slideChangeTransitionStartCallbackRef.current
+            'slideNextTransitionStart',
+            slideNextTransitionStartCallbackRef.current
          );
       }
       mainSwiper?.on('slideChange', slideChangeCallback);
       slideChangeCallbackRef.current = slideChangeCallback;
       mainSwiper?.on(
-         'slideChangeTransitionStart',
-         slideChangeTransitionStartCallback
+         'slideNextTransitionStart',
+         slideNextTransitionStartCallback
       );
-      slideChangeTransitionStartCallbackRef.current =
-         slideChangeTransitionStartCallback;
+      slideNextTransitionStartCallbackRef.current =
+         slideNextTransitionStartCallback;
    }, [mainSwiper, thumbsSwiper, onSlideChange]);
 
    React.useEffect(() => {
