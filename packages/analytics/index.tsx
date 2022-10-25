@@ -26,7 +26,8 @@ export const trackInMatomoAndGA = (trackData: TrackEventMatomo) => {
 
 export function trackAddToCart(
    cart: CartLineItem[],
-   addToCartInput: AddToCartInput
+   addToCartInput: AddToCartInput,
+   message?: string
 ) {
    trackMatomoCartChange(cart);
    trackGoogleAddToCart(addToCartInput);
@@ -39,12 +40,13 @@ export function trackAddToCart(
    }
 }
 
-function trackAddItemToCartEvent(item: CartLineItem) {
+function trackAddItemToCartEvent(item: CartLineItem, message?: string) {
+   const actionPrefix = message ? `${message} - ` : '';
    const actionSuffix = item.internalDisplayName
       ? ` - ${item.internalDisplayName}`
       : '';
    trackInMatomoAndGA({
       eventCategory: 'Add to Cart',
-      eventAction: `${item.itemcode}${actionSuffix}`,
+      eventAction: `${actionPrefix}${item.itemcode}${actionSuffix}`,
    });
 }

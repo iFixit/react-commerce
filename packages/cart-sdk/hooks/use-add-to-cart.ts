@@ -23,7 +23,7 @@ type AddBundleToCartInput = {
 /**
  * Update line item quantity.
  */
-export function useAddToCart() {
+export function useAddToCart(analyticsMessage?: string) {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
    const mutation = useMutation(
@@ -98,7 +98,7 @@ export function useAddToCart() {
          },
          onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackAddToCart(cart?.lineItems ?? [], variables);
+            trackAddToCart(cart?.lineItems ?? [], variables, analyticsMessage);
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;
