@@ -41,6 +41,14 @@ query findPage(
                      }
                   }
                }
+               ... on ComponentPageStats {
+                  id
+                  stats {
+                     id
+                     label
+                     value
+                  }
+               }
             }
          }
       }

@@ -70,6 +70,18 @@ export async function findPage({ path }: FindPageArgs) {
                   categories,
                };
             }
+            case 'ComponentPageStats': {
+               const stats = filterFalsyItems(section.stats).map(
+                  ({ id, label, value }) => {
+                     return { id, label, value };
+                  }
+               );
+               return {
+                  __typename: section.__typename,
+                  id: `${section.__typename}-${index}`,
+                  stats,
+               };
+            }
             case 'Error': {
                console.error('Failed to parse page section:', section);
                return null;
