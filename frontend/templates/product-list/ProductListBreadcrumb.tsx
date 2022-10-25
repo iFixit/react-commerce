@@ -139,7 +139,7 @@ function appendDeviceAncestor(
    productList: ProductList
 ) {
    return ancestors.concat({
-      deviceTitle: productList.deviceTitle,
+      deviceTitle: productList.deviceTitle ?? null,
       title: getProductListTitle({
          title: productList.title,
          type: productList.type,
