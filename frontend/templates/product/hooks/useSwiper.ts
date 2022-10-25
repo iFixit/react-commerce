@@ -19,15 +19,16 @@ export function useSwiper({
    onSlideChange,
 }: UseSwiperProps) {
    const lastSlideIndex = totalSlides > 0 ? totalSlides - 1 : 0;
-   const onSlideChangeRef = React.useRef<(swiper: Swiper) => void>();
    const [mainSwiper, setMainSwiper] = React.useState<Swiper | null>(null);
    const [thumbsSwiper, setThumbsSwiper] = React.useState<Swiper | null>(null);
+   const slideChangeCallbackRef = React.useRef<(swiper: Swiper) => void>();
+   const slideChangeTransitionStartCallbackRef =
+      React.useRef<(swiper: Swiper) => void>();
 
    const [{ realIndex, isBeginning, isEnd }, setNavigationConfig] =
       React.useState({
          realIndex: slideIndex ?? 0,
          isBeginning: true,
-         // We are showing always at least two slides
          isEnd: false,
       });
 
@@ -37,18 +38,34 @@ export function useSwiper({
          setNavigationConfig({ realIndex, isBeginning, isEnd });
          onSlideChange?.(swiper.realIndex);
       };
-      if (onSlideChangeRef.current) {
-         mainSwiper?.off('slideChange', onSlideChangeRef.current);
+      const slideChangeTransitionStartCallback = (swiper: Swiper) => {
+         const { realIndex } = swiper;
+         if (thumbsSwiper && realIndex > thumbsSwiper.realIndex) {
+            thumbsSwiper?.slideTo(realIndex);
+         }
+      };
+      if (slideChangeCallbackRef.current) {
+         mainSwiper?.off('slideChange', slideChangeCallbackRef.current);
+      }
+      if (slideChangeTransitionStartCallbackRef.current) {
+         mainSwiper?.off(
+            'slideChangeTransitionStart',
+            slideChangeTransitionStartCallbackRef.current
+         );
       }
       mainSwiper?.on('slideChange', slideChangeCallback);
-      onSlideChangeRef.current = slideChangeCallback;
-   }, [mainSwiper, onSlideChange]);
+      slideChangeCallbackRef.current = slideChangeCallback;
+      mainSwiper?.on(
+         'slideChangeTransitionStart',
+         slideChangeTransitionStartCallback
+      );
+      slideChangeTransitionStartCallbackRef.current =
+         slideChangeTransitionStartCallback;
+   }, [mainSwiper, thumbsSwiper, onSlideChange]);
 
    React.useEffect(() => {
-      if (slideIndex != null) {
-         if (mainSwiper && !mainSwiper.destroyed && slideIndex != null) {
-            mainSwiper.slideTo(slideIndex);
-         }
+      if (mainSwiper && !mainSwiper.destroyed && slideIndex != null) {
+         mainSwiper.slideTo(slideIndex);
       }
       setNavigationConfig({
          realIndex: slideIndex ?? 0,

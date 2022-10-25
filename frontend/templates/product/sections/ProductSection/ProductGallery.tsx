@@ -105,6 +105,7 @@ export function ProductGallery({
                onSwiper={setThumbsSwiper}
                modules={[Navigation, Thumbs]}
                watchSlidesProgress
+               threshold={5}
                slidesPerView={6}
                spaceBetween={12}
                style={{
