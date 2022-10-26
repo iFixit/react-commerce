@@ -18,14 +18,17 @@ import {
    ListItem,
    StackProps,
    Text,
+   ThemeTypings,
    VStack,
 } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
 import {
    faBadgeDollar,
    faCircleExclamation,
+   faCircleInfo,
    faRocket,
    faShieldCheck,
+   faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
@@ -219,18 +222,15 @@ export function ProductSection({
                                  alignItems="flex-start"
                               >
                                  <FaIcon
-                                    icon={faCircleExclamation}
+                                    icon={faCircleInfo}
                                     h="4"
                                     mt="0.5"
                                     mr="2.5"
                                     color="brand.500"
                                  />
-                                 <Box
-                                    fontSize="sm"
-                                    dangerouslySetInnerHTML={{
-                                       __html: selectedVariant.note,
-                                    }}
-                                 />
+                                 <AlertText colorScheme="brand">
+                                    {selectedVariant.note}
+                                 </AlertText>
                               </Alert>
                            )}
                            {selectedVariant.disclaimer && (
@@ -248,12 +248,9 @@ export function ProductSection({
                                     mr="2.5"
                                     color="orange.500"
                                  />
-                                 <Box
-                                    fontSize="sm"
-                                    dangerouslySetInnerHTML={{
-                                       __html: selectedVariant.disclaimer,
-                                    }}
-                                 />
+                                 <AlertText colorScheme="orange">
+                                    {selectedVariant.disclaimer}
+                                 </AlertText>
                               </Alert>
                            )}
                            {selectedVariant.warning && (
@@ -265,18 +262,15 @@ export function ProductSection({
                                  alignItems="flex-start"
                               >
                                  <FaIcon
-                                    icon={faCircleExclamation}
+                                    icon={faTriangleExclamation}
                                     color="red.500"
                                     h="4"
                                     mt="0.5"
                                     mr="2.5"
                                  />
-                                 <Box
-                                    fontSize="sm"
-                                    dangerouslySetInnerHTML={{
-                                       __html: selectedVariant.warning,
-                                    }}
-                                 />
+                                 <AlertText colorScheme="red">
+                                    {selectedVariant.warning}
+                                 </AlertText>
                               </Alert>
                            )}
                         </VStack>
@@ -490,5 +484,31 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
          )}
          <Box>{variant.warranty}</Box>
       </HStack>
+   );
+}
+
+type AlertTextProps = {
+   children: string;
+   colorScheme: ThemeTypings['colorSchemes'];
+};
+
+function AlertText({ children, colorScheme }: AlertTextProps) {
+   return (
+      <Box
+         fontSize="sm"
+         sx={{
+            a: {
+               fontWeight: 'bold',
+               textDecoration: 'underline',
+               transition: 'all 300ms',
+            },
+            'a:hover': {
+               color: `${colorScheme}.800`,
+            },
+         }}
+         dangerouslySetInnerHTML={{
+            __html: children,
+         }}
+      />
    );
 }
