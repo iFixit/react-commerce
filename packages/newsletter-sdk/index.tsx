@@ -44,7 +44,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             }));
             trackInMatomoAndGA({
                eventCategory: 'Newsletter',
-               eventAction: `Subscribe Form - Submit`,
+               eventAction: 'Subscribe Form - Submit',
             });
          } catch (error) {
             let message: string;
