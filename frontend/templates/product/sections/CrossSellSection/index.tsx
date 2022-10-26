@@ -44,16 +44,15 @@ export function CrossSellSection({
    const addToCart = useAddToCart();
    const getUserPrice = useGetUserPrice();
    const { onOpen } = useCartDrawer();
-   const getIsProductForSale = useGetIsProductForSale();
 
-   const [selectedVariantIds, setSelectedVariantIds] = React.useState(
-      selectedVariant.crossSellVariants
-         .map((variant) => variant.id)
-         .concat(selectedVariant.id)
-   );
+   const crossSellVariantsForSale =
+      useCrossSellVariantsForSale(selectedVariant);
+
+   const [selectedCrossSellVariantIds, setSelectedCrossSellVariantIds] =
+      useSelectCrossSellVariantIds(selectedVariant, crossSellVariantsForSale);
 
    const handleToggleVariant = (variantId: string) => {
-      setSelectedVariantIds((current) => {
+      setSelectedCrossSellVariantIds((current) => {
          if (current.includes(variantId)) {
             return current.filter((id) => id !== variantId);
          }
@@ -62,11 +61,11 @@ export function CrossSellSection({
    };
 
    const totalPrice = React.useMemo(() => {
-      return selectedVariantIds.reduce((acc, id) => {
+      return selectedCrossSellVariantIds.reduce((acc, id) => {
          if (id === selectedVariant.id) {
             return acc + parseFloat(selectedVariant.price.amount);
          }
-         const variant = selectedVariant.crossSellVariants.find(
+         const variant = crossSellVariantsForSale.find(
             (variant) => variant.id === id
          );
          if (variant) {
@@ -75,10 +74,10 @@ export function CrossSellSection({
          return acc;
       }, 0);
    }, [
-      selectedVariant.crossSellVariants,
+      crossSellVariantsForSale,
       selectedVariant.id,
       selectedVariant.price.amount,
-      selectedVariantIds,
+      selectedCrossSellVariantIds,
    ]);
 
    const formattedTotalPrice = React.useMemo(() => {
@@ -101,49 +100,52 @@ export function CrossSellSection({
    ]);
 
    const handleAddToCart = () => {
-      const input = selectedVariantIds.map((variantId): CartLineItem | null => {
-         if (variantId === selectedVariant.id) {
-            if (!isPresent(selectedVariant.sku)) {
+      const input = selectedCrossSellVariantIds.map(
+         (variantId): CartLineItem | null => {
+            if (variantId === selectedVariant.id) {
+               if (!isPresent(selectedVariant.sku)) {
+                  return null;
+               }
+               const userPrice = getUserPrice({
+                  price: selectedVariant.price,
+                  compareAtPrice: selectedVariant.compareAtPrice,
+                  proPricesByTier: selectedVariant.proPricesByTier,
+               });
+               return {
+                  name: product.title,
+                  internalDisplayName:
+                     selectedVariant.internalDisplayName?.value,
+                  itemcode: selectedVariant.sku,
+                  shopifyVariantId: selectedVariant.id,
+                  quantity: 1,
+                  imageSrc: selectedVariant.image?.url,
+                  price: userPrice.price,
+                  compareAtPrice: userPrice.compareAtPrice,
+               };
+            }
+            const variant = crossSellVariantsForSale.find(
+               (v) => v.id === variantId
+            );
+            const variantSku = variant?.sku;
+            if (variant == null || !isPresent(variantSku)) {
                return null;
             }
             const userPrice = getUserPrice({
-               price: selectedVariant.price,
-               compareAtPrice: selectedVariant.compareAtPrice,
-               proPricesByTier: selectedVariant.proPricesByTier,
+               price: variant.price,
+               compareAtPrice: variant.compareAtPrice,
+               proPricesByTier: variant.proPricesByTier,
             });
             return {
-               name: product.title,
-               internalDisplayName: selectedVariant.internalDisplayName?.value,
-               itemcode: selectedVariant.sku,
+               name: variant.product.title,
+               itemcode: variantSku,
                shopifyVariantId: selectedVariant.id,
                quantity: 1,
-               imageSrc: selectedVariant.image?.url,
+               imageSrc: variant.image?.url ?? '',
                price: userPrice.price,
                compareAtPrice: userPrice.compareAtPrice,
             };
          }
-         const variant = selectedVariant.crossSellVariants.find(
-            (v) => v.id === variantId
-         );
-         const variantSku = variant?.sku;
-         if (variant == null || !isPresent(variantSku)) {
-            return null;
-         }
-         const userPrice = getUserPrice({
-            price: variant.price,
-            compareAtPrice: variant.compareAtPrice,
-            proPricesByTier: variant.proPricesByTier,
-         });
-         return {
-            name: variant.product.title,
-            itemcode: variantSku,
-            shopifyVariantId: selectedVariant.id,
-            quantity: 1,
-            imageSrc: variant.image?.url ?? '',
-            price: userPrice.price,
-            compareAtPrice: userPrice.compareAtPrice,
-         };
-      });
+      );
       const selectedVariantSku = selectedVariant.sku;
       if (isPresent(selectedVariantSku)) {
          addToCart.mutate({
@@ -159,14 +161,7 @@ export function CrossSellSection({
       }
    };
 
-   const crossSellVariants = React.useMemo(() => {
-      return selectedVariant.crossSellVariants.filter((variant) => {
-         const isProductForSale = getIsProductForSale(variant.product);
-         return isProductForSale;
-      });
-   }, [getIsProductForSale, selectedVariant.crossSellVariants]);
-
-   if (crossSellVariants.length === 0) {
+   if (crossSellVariantsForSale.length === 0) {
       return null;
    }
 
@@ -219,18 +214,18 @@ export function CrossSellSection({
                         product={currentProduct}
                         variant={selectedVariant}
                         isCurrentItem
-                        isSelected={selectedVariantIds.includes(
+                        isSelected={selectedCrossSellVariantIds.includes(
                            selectedVariant.id
                         )}
                         onChange={() => handleToggleVariant(selectedVariant.id)}
                      />
-                     {crossSellVariants.map((crossSellVariant) => {
+                     {crossSellVariantsForSale.map((crossSellVariant) => {
                         return (
                            <CrossSellItem
                               key={crossSellVariant.id}
                               product={crossSellVariant.product}
                               variant={crossSellVariant}
-                              isSelected={selectedVariantIds.includes(
+                              isSelected={selectedCrossSellVariantIds.includes(
                                  crossSellVariant.id
                               )}
                               onChange={() =>
@@ -500,6 +495,19 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
    );
 };
 
+function useCrossSellVariantsForSale(variant: ProductVariant) {
+   const getIsProductForSale = useGetIsProductForSale();
+
+   const crossSellVariantsForSale = React.useMemo(() => {
+      return variant.crossSellVariants.filter((v) => {
+         const isProductForSale = getIsProductForSale(v.product);
+         return isProductForSale;
+      });
+   }, [getIsProductForSale, variant.crossSellVariants]);
+
+   return crossSellVariantsForSale;
+}
+
 function useGetIsProductForSale() {
    const user = useAuthenticatedUser();
    const getIsProductForSale = React.useCallback(
@@ -512,4 +520,23 @@ function useGetIsProductForSale() {
       [user.data?.is_pro]
    );
    return getIsProductForSale;
+}
+
+function useSelectCrossSellVariantIds(
+   selectedVariant: ProductVariant,
+   crossSellVariants: ReturnType<typeof useCrossSellVariantsForSale>
+) {
+   const [selectedVariantIds, setSelectedVariantIds] = React.useState(
+      crossSellVariants.map((variant) => variant.id).concat(selectedVariant.id)
+   );
+
+   React.useEffect(() => {
+      setSelectedVariantIds(
+         crossSellVariants
+            .map((variant) => variant.id)
+            .concat(selectedVariant.id)
+      );
+   }, [crossSellVariants, selectedVariant.id]);
+
+   return [selectedVariantIds, setSelectedVariantIds] as const;
 }
