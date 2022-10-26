@@ -6446,6 +6446,7 @@ export type FindProductQuery = {
                name: string;
                value: string;
             }>;
+            description?: { __typename?: 'Metafield'; value: string } | null;
             kitContents?: { __typename?: 'Metafield'; value: string } | null;
             note?: { __typename?: 'Metafield'; value: string } | null;
             disclaimer?: { __typename?: 'Metafield'; value: string } | null;
@@ -6687,6 +6688,9 @@ export const FindProductDocument = `
         }
         selectedOptions {
           name
+          value
+        }
+        description: metafield(namespace: "ifixit", key: "description") {
           value
         }
         kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
