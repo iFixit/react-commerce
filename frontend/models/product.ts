@@ -181,7 +181,13 @@ function getCrossSellVariants(
          if (node.__typename !== 'ProductVariant') {
             return null;
          }
-         return getProductVariantCard(node);
+         const variant = getProductVariantCard(node);
+         const quantity = variant.quantityAvailable ?? 0;
+
+         if (quantity > 0 && variant.enabled) {
+            return variant;
+         }
+         return null;
       }) ?? [];
    return filterNullableItems(products);
 }
@@ -219,6 +225,7 @@ function getProductVariantCard(fragment: ProductVariantCardFragment) {
          fragment.proPricesByTier?.value,
          fragment.price.currencyCode
       ),
+      enabled: fragment.enabled?.value === 'true',
    };
 }
 

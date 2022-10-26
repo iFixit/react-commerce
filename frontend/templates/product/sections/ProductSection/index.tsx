@@ -44,6 +44,7 @@ import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { Prop65Warning } from './Prop65Warning';
+import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 
 export type ProductSectionProps = {
    product: Product;
@@ -158,7 +159,7 @@ export function ProductSection({
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
-               {isForSale && <ValuePropositions />}
+               {isForSale && <BuyBoxPropositionSection />}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>
@@ -478,52 +479,6 @@ function NotForSaleAlert(props: AlertProps) {
             </p>
          </Box>
       </Alert>
-   );
-}
-
-function ValuePropositions() {
-   return (
-      <div>
-         <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
-            <ListItem display="flex" alignItems="center">
-               <ListIcon
-                  as={FaIcon}
-                  h="4"
-                  w="5"
-                  mr="1.5"
-                  color="brand.500"
-                  icon={faBadgeDollar}
-               />
-               Satisfaction guaranteed or your money back
-            </ListItem>
-            <ListItem display="flex" alignItems="center">
-               <ListIcon
-                  as={FaIcon}
-                  h="4"
-                  w="5"
-                  mr="1.5"
-                  color="brand.500"
-                  icon={faShieldCheck}
-               />
-
-               <div>
-                  If it doesn&apos;t meet our meticulous standards, we
-                  won&apos;t sell it. Period.
-               </div>
-            </ListItem>
-            <ListItem display="flex" alignItems="center">
-               <ListIcon
-                  as={FaIcon}
-                  h="4"
-                  w="5"
-                  mr="1.5"
-                  color="brand.500"
-                  icon={faRocket}
-               />
-               Same day shipping if ordered by 5PM
-            </ListItem>
-         </List>
-      </div>
    );
 }
 

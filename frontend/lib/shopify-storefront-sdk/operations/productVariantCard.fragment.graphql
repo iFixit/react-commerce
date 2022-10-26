@@ -1,9 +1,11 @@
 fragment ProductVariantCard on ProductVariant {
    id
    sku
+   quantityAvailable
    product {
       handle
       title
+      tags
       rating: metafield(namespace: "reviews", key: "rating") {
          value
       }
@@ -33,6 +35,9 @@ fragment ProductVariantCard on ProductVariant {
       value
    }
    warranty: metafield(namespace: "ifixit", key: "warranty") {
+      value
+   }
+   enabled: metafield(namespace: "ifixit", key: "enabled2") {
       value
    }
 }
