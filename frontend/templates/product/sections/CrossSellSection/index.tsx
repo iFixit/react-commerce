@@ -17,6 +17,7 @@ import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { filterNullableItems } from '@helpers/application-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { CartLineItem, useAddToCart } from '@ifixit/cart-sdk';
 import { formatMoney, isPresent, Money } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
@@ -43,6 +44,7 @@ export function CrossSellSection({
    const addToCart = useAddToCart();
    const getUserPrice = useGetUserPrice();
    const { onOpen } = useCartDrawer();
+   const getIsProductForSale = useGetIsProductForSale();
 
    const [selectedVariantIds, setSelectedVariantIds] = React.useState(
       selectedVariant.crossSellVariants
@@ -157,7 +159,14 @@ export function CrossSellSection({
       }
    };
 
-   if (selectedVariant.crossSellVariants.length === 0) {
+   const crossSellVariants = React.useMemo(() => {
+      return selectedVariant.crossSellVariants.filter((variant) => {
+         const isProductForSale = getIsProductForSale(variant.product);
+         return isProductForSale;
+      });
+   }, [getIsProductForSale, selectedVariant.crossSellVariants]);
+
+   if (crossSellVariants.length === 0) {
       return null;
    }
 
@@ -215,23 +224,21 @@ export function CrossSellSection({
                         )}
                         onChange={() => handleToggleVariant(selectedVariant.id)}
                      />
-                     {selectedVariant.crossSellVariants.map(
-                        (crossSellVariant) => {
-                           return (
-                              <CrossSellItem
-                                 key={crossSellVariant.id}
-                                 product={crossSellVariant.product}
-                                 variant={crossSellVariant}
-                                 isSelected={selectedVariantIds.includes(
-                                    crossSellVariant.id
-                                 )}
-                                 onChange={() =>
-                                    handleToggleVariant(crossSellVariant.id)
-                                 }
-                              />
-                           );
-                        }
-                     )}
+                     {crossSellVariants.map((crossSellVariant) => {
+                        return (
+                           <CrossSellItem
+                              key={crossSellVariant.id}
+                              product={crossSellVariant.product}
+                              variant={crossSellVariant}
+                              isSelected={selectedVariantIds.includes(
+                                 crossSellVariant.id
+                              )}
+                              onChange={() =>
+                                 handleToggleVariant(crossSellVariant.id)
+                              }
+                           />
+                        );
+                     })}
                   </Stack>
                   <Flex
                      direction={{
@@ -492,3 +499,17 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
       </AspectRatio>
    );
 };
+
+function useGetIsProductForSale() {
+   const user = useAuthenticatedUser();
+   const getIsProductForSale = React.useCallback(
+      (product: Pick<Product, 'tags'>) => {
+         const isProOnlyProduct = product.tags.includes('Pro Only');
+         const isProUser = user.data?.is_pro ?? false;
+         const isForSale = !isProOnlyProduct || (isProOnlyProduct && isProUser);
+         return isForSale;
+      },
+      [user.data?.is_pro]
+   );
+   return getIsProductForSale;
+}
