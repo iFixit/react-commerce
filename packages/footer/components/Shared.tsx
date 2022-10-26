@@ -9,8 +9,7 @@ import {
    StackProps,
    Text,
 } from '@chakra-ui/react';
-import { trackInMatomoAndGA } from '@ifixit/analytics';
-import * as React from 'react';
+import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 import { PageContentWrapper } from './PageContentWrapper';
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
@@ -36,17 +35,7 @@ type FooterLinkProps = StackProps & {
 
 export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
    ({ fontSize = 'sm', href, children, icon, onClick, ...otherProps }, ref) => {
-      const trackedOnClick: React.MouseEventHandler<HTMLDivElement> =
-         React.useCallback(
-            (e) => {
-               onClick?.(e);
-               trackInMatomoAndGA({
-                  eventCategory: 'Footer',
-                  eventAction: `Link Click - ${href}`,
-               });
-            },
-            [href, onClick]
-         );
+      const trackedOnClick = useTrackedOnClick({ href, onClick });
       return (
          <HStack
             ref={ref}
