@@ -23,9 +23,15 @@ import {
    PageContentWrapper,
    ProductVariantPrice,
 } from '@ifixit/ui';
-import { Product } from '@models/product';
+import {
+   fetchProductReviews,
+   Product,
+   ProductReviewData,
+} from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
+import { useAppContext } from '@ifixit/app';
+import React, { useState, useEffect } from 'react';
 
 export type FeaturedProductsSectionProps = {
    product: Product;
@@ -74,6 +80,7 @@ export function FeaturedProductsSection({
                      proPricesByTier={variant.proPricesByTier}
                      oemPartnership={variant.product.oemPartnership}
                      warranty={variant.warranty}
+                     sku={variant.sku}
                   />
                );
             })}
@@ -94,6 +101,7 @@ type ProductGridItemProps = {
    isPro?: boolean;
    warranty?: string | null;
    oemPartnership?: string | null;
+   sku?: string | null;
 };
 
 function ProductGridItem({
@@ -108,6 +116,7 @@ function ProductGridItem({
    isPro,
    warranty,
    oemPartnership,
+   sku,
 }: ProductGridItemProps) {
    const discountPercentage = computeDiscountPercentage(price, compareAtPrice);
    const hasLifetimeWarranty =
@@ -115,6 +124,35 @@ function ProductGridItem({
 
    const productHeadingId = `product-heading-${handle}`;
 
+   const appContext = useAppContext();
+   const fetchData = async () => {
+      if (!sku) {
+         return null;
+      }
+      const reviewsData = await fetchProductReviews(
+         appContext.ifixitOrigin,
+         sku
+      );
+      return reviewsData;
+   };
+
+   const [reviewsData, initReviews] = useState<
+      ProductReviewData | null | undefined
+   >();
+   useEffect(() => {
+      fetchData()
+         .then((res) => {
+            initReviews(res);
+         })
+         .catch(() => {
+            initReviews(null);
+         });
+   }, []);
+
+   if (reviewsData?.average != null && reviewsData?.count != null) {
+      rating = reviewsData.average;
+      reviewsCount = reviewsData.count;
+   }
    return (
       <LinkBox
          as="article"
