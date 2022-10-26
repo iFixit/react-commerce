@@ -107,6 +107,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          ),
          isDiscounted,
          discountPercentage,
+         description: variant.description?.value ?? null,
          kitContents: variant.kitContents?.value ?? null,
          note: variant.note?.value ?? null,
          disclaimer: variant.disclaimer?.value ?? null,

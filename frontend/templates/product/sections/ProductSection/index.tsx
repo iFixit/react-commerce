@@ -195,24 +195,10 @@ export function ProductSection({
                      <CustomAccordionButton>Description</CustomAccordionButton>
                      <CustomAccordionPanel>
                         <VStack>
-                           <Box
-                              dangerouslySetInnerHTML={{
-                                 __html: product.descriptionHtml,
-                              }}
-                              fontSize="sm"
-                              sx={{
-                                 ul: {
-                                    my: 3,
-                                    pl: 5,
-                                 },
-                                 p: {
-                                    mb: 3,
-                                    _last: {
-                                       mb: 0,
-                                    },
-                                 },
-                              }}
-                           />
+                           <VariantDescription>
+                              {selectedVariant.description ??
+                                 product.descriptionHtml}
+                           </VariantDescription>
                            {selectedVariant.note && (
                               <Alert
                                  status="info"
@@ -484,6 +470,39 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
          )}
          <Box>{variant.warranty}</Box>
       </HStack>
+   );
+}
+
+type VariantDescriptionProps = {
+   children: string;
+};
+
+function VariantDescription({ children }: VariantDescriptionProps) {
+   return (
+      <Box
+         dangerouslySetInnerHTML={{
+            __html: children,
+         }}
+         fontSize="sm"
+         sx={{
+            ul: {
+               my: 3,
+               pl: 5,
+            },
+            p: {
+               mb: 3,
+               _last: {
+                  mb: 0,
+               },
+            },
+            a: {
+               color: 'brand.500',
+            },
+            'a:hover': {
+               textDecoration: 'underline',
+            },
+         }}
+      />
    );
 }
 
