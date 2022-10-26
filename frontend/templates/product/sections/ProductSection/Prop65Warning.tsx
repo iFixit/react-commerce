@@ -74,8 +74,12 @@ export function Prop65Warning({ type, chemicals }: Prop65WarningProps) {
                   </Text>
                   <Text mt="2">
                      For more information, go to{' '}
-                     <Link href="www.P65Warnings.ca.gov" color="brand.500">
-                        www.P65Warnings.ca.gov
+                     <Link
+                        href="https://www.p65warnings.ca.gov"
+                        isExternal
+                        color="brand.500"
+                     >
+                        www.P65warnings.ca.gov
                      </Link>
                   </Text>
                </PopoverBody>
