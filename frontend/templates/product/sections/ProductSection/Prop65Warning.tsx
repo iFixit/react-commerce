@@ -30,7 +30,7 @@ export function Prop65Warning({ type, chemicals }: Prop65WarningProps) {
       sm: 'bottom',
    });
    return (
-      <Flex align="center" position="relative">
+      <Flex align="center" position="relative" gap="1">
          <Text>California Residents: Prop 65 WARNING</Text>
          <Popover placement={placement}>
             <PopoverTrigger>
