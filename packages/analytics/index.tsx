@@ -33,10 +33,10 @@ export function trackAddToCart(
    trackGoogleAddToCart(addToCartInput);
    if (addToCartInput.type === 'bundle') {
       addToCartInput.bundle.items.forEach((item) =>
-         trackAddItemToCartEvent(item)
+         trackAddItemToCartEvent(item, message)
       );
    } else if (addToCartInput.type === 'product') {
-      trackAddItemToCartEvent(addToCartInput.product);
+      trackAddItemToCartEvent(addToCartInput.product, message);
    }
 }
 
