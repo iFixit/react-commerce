@@ -51,30 +51,25 @@ export function trackGoogleAddToCart(addToCartInput: AddToCartInput) {
    }
    if (addToCartInput.type === 'bundle') {
       addToCartInput.bundle.items.forEach((item) =>
-         trackAddItemToCart(item, ga)
+         trackAddProductData(item, ga)
       );
    } else if (addToCartInput.type === 'product') {
-      trackAddItemToCart(addToCartInput.product, ga);
+      trackAddProductData(addToCartInput.product, ga);
    }
+   ga('ifixit.ec:setAction', 'add');
 }
 
-function trackAddItemToCart(item: CartLineItem, ga: GAType) {
-   const { category, optionid, productcode } = parseItemcode(item.itemcode);
+function trackAddProductData(item: CartLineItem, ga: GAType) {
+   const { category } = parseItemcode(item.itemcode);
    const addProductData: GAProductType & { quantity: number } = {
       id: item.itemcode,
       name: item.name,
       variant: item.internalDisplayName,
-      category: category,
+      category,
       price: moneyToNumber(item.price).toFixed(2),
       quantity: item.quantity,
    };
-
    ga('ifixit.ec:addProduct', addProductData);
-   ga('ifixit.ec:setAction', 'add');
-   gaSendEvent({
-      category: 'Add to Cart',
-      action: `Add to Cart - ${productcode}-${optionid}`,
-   });
 }
 
 export function gaSendEvent(event: GATrackEvent) {

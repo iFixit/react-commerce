@@ -10,6 +10,9 @@ export * from './matomo';
  * @param trackData trackData.eventName will default to the page path if not provided
  */
 export const trackInMatomoAndGA = (trackData: TrackEventMatomo) => {
+   if (typeof window === 'undefined') {
+      return;
+   }
    const eventName =
       trackData.eventName ||
       `${window.location.origin}${window.location.pathname}`;
@@ -29,24 +32,19 @@ export function trackAddToCart(
    addToCartInput: AddToCartInput,
    message?: string
 ) {
+   if (typeof window === 'undefined') {
+      return;
+   }
    trackMatomoCartChange(cart);
    trackGoogleAddToCart(addToCartInput);
-   if (addToCartInput.type === 'bundle') {
-      addToCartInput.bundle.items.forEach((item) =>
-         trackAddItemToCartEvent(item, message)
-      );
-   } else if (addToCartInput.type === 'product') {
-      trackAddItemToCartEvent(addToCartInput.product, message);
-   }
-}
-
-function trackAddItemToCartEvent(item: CartLineItem, message?: string) {
    const actionPrefix = message ? `${message} - ` : '';
-   const actionSuffix = item.internalDisplayName
-      ? ` - ${item.internalDisplayName}`
-      : '';
+   const itemcodes =
+      addToCartInput.type === 'product'
+         ? addToCartInput.product.itemcode
+         : addToCartInput.bundle.items.map((item) => item.itemcode).join(', ');
    trackInMatomoAndGA({
       eventCategory: 'Add to Cart',
-      eventAction: `${actionPrefix}${item.itemcode}${actionSuffix}`,
+      eventAction: `${actionPrefix}${itemcodes}`,
+      eventName: `${window.location.origin}${window.location.pathname}`,
    });
 }
