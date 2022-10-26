@@ -28,6 +28,7 @@ export interface Store {
 
 export interface SocialMediaAccounts {
    twitter: string | null;
+   tiktok: string |null;
    facebook: string | null;
    instagram: string | null;
    youtube: string | null;
@@ -71,6 +72,7 @@ async function getStoreByCodeFromStrapi(code: string): Promise<Store> {
       },
       socialMediaAccounts: {
          twitter: store.socialMediaAccounts.twitter || null,
+         tiktok: store.socialMediaAccounts.tiktok || null,
          facebook: store.socialMediaAccounts.facebook || null,
          instagram: store.socialMediaAccounts.instagram || null,
          youtube: store.socialMediaAccounts.youtube || null,

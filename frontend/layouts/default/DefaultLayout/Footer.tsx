@@ -7,6 +7,7 @@ import {
    InstagramLogo,
    RepairOrgLogo,
    TwitterLogo,
+   TiktokLogo,
    YoutubeLogo,
 } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
@@ -79,6 +80,16 @@ export function CartFooter({
                })}
             </FooterNavigationList>
             <FooterNavigationList>
+               {socialMediaAccounts.tiktok && (
+                  <FooterNavigationItem>
+                     <FooterNavigationLink
+                        href={socialMediaAccounts.tiktok}
+                        icon={TiktokLogo}
+                     >
+                        Tiktok
+                     </FooterNavigationLink>
+                  </FooterNavigationItem>
+               )}
                {socialMediaAccounts.facebook && (
                   <FooterNavigationItem>
                      <FooterNavigationLink

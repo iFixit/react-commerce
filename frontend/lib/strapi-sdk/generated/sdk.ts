@@ -281,6 +281,7 @@ export type ComponentStoreSocialMediaAccounts = {
    instagram?: Maybe<Scalars['String']>;
    repairOrg?: Maybe<Scalars['String']>;
    twitter?: Maybe<Scalars['String']>;
+   tiktok?: Maybe<Scalars['String']>;
    youtube?: Maybe<Scalars['String']>;
 };
 
@@ -296,6 +297,7 @@ export type ComponentStoreSocialMediaAccountsFiltersInput = {
    >;
    repairOrg?: InputMaybe<StringFilterInput>;
    twitter?: InputMaybe<StringFilterInput>;
+   tiktok?: InputMaybe<StringFilterInput>;
    youtube?: InputMaybe<StringFilterInput>;
 };
 
@@ -305,6 +307,7 @@ export type ComponentStoreSocialMediaAccountsInput = {
    instagram?: InputMaybe<Scalars['String']>;
    repairOrg?: InputMaybe<Scalars['String']>;
    twitter?: InputMaybe<Scalars['String']>;
+   tiktok?: InputMaybe<Scalars['String']>;
    youtube?: InputMaybe<Scalars['String']>;
 };
 
@@ -2655,6 +2658,7 @@ export type GetStoreQuery = {
             socialMediaAccounts: {
                __typename?: 'ComponentStoreSocialMediaAccounts';
                twitter?: string | null;
+               tiktok?: string | null;
                facebook?: string | null;
                instagram?: string | null;
                youtube?: string | null;
@@ -3298,6 +3302,7 @@ export const GetStoreDocument = `
         }
         socialMediaAccounts {
           twitter
+          tiktok
           facebook
           instagram
           youtube
