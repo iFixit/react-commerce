@@ -1,4 +1,5 @@
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
    [K in keyof T]: T[K];
 };
@@ -157,21 +158,21 @@ export type Article = HasMetafields &
 
 /** An article in an online store blog. */
 export type ArticleCommentsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An article in an online store blog. */
 export type ArticleContentArgs = {
-   truncateAt?: Maybe<Scalars['Int']>;
+   truncateAt?: InputMaybe<Scalars['Int']>;
 };
 
 /** An article in an online store blog. */
 export type ArticleExcerptArgs = {
-   truncateAt?: Maybe<Scalars['Int']>;
+   truncateAt?: InputMaybe<Scalars['Int']>;
 };
 
 /** An article in an online store blog. */
@@ -320,13 +321,13 @@ export type BlogArticleByHandleArgs = {
 
 /** An online store blog. */
 export type BlogArticlesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ArticleSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ArticleSortKeys>;
 };
 
 /** An online store blog. */
@@ -471,20 +472,20 @@ export type CartAttributeArgs = {
 
 /** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart). */
 export type CartDeliveryGroupsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart). */
 export type CartLinesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** Return type for `cartAttributesUpdate` mutation. */
@@ -526,13 +527,13 @@ export type CartBuyerIdentity = {
  */
 export type CartBuyerIdentityInput = {
    /** The country where the buyer is located. */
-   countryCode?: Maybe<CountryCode>;
+   countryCode?: InputMaybe<CountryCode>;
    /** The access token used to identify the customer associated with the cart. */
-   customerAccessToken?: Maybe<Scalars['String']>;
+   customerAccessToken?: InputMaybe<Scalars['String']>;
    /** The email address of the buyer that is interacting with the cart. */
-   email?: Maybe<Scalars['String']>;
+   email?: InputMaybe<Scalars['String']>;
    /** The phone number of the buyer that is interacting with the cart. */
-   phone?: Maybe<Scalars['String']>;
+   phone?: InputMaybe<Scalars['String']>;
 };
 
 /** Return type for `cartBuyerIdentityUpdate` mutation. */
@@ -615,11 +616,11 @@ export type CartDeliveryGroup = {
 
 /** Information about the options available for one or more line items to be delivered to a specific address. */
 export type CartDeliveryGroupCartLinesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An auto-generated type for paginating through multiple CartDeliveryGroups. */
@@ -719,15 +720,15 @@ export type CartEstimatedCost = {
 /** Specifies the input fields to create a cart. */
 export type CartInput = {
    /** An array of key-value pairs that contains additional information about the cart. */
-   attributes?: Maybe<Array<AttributeInput>>;
+   attributes?: InputMaybe<Array<AttributeInput>>;
    /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
-   buyerIdentity?: Maybe<CartBuyerIdentityInput>;
+   buyerIdentity?: InputMaybe<CartBuyerIdentityInput>;
    /** The case-insensitive discount codes that the customer added at checkout. */
-   discountCodes?: Maybe<Array<Scalars['String']>>;
+   discountCodes?: InputMaybe<Array<Scalars['String']>>;
    /** A list of merchandise lines to add to the cart. */
-   lines?: Maybe<Array<CartLineInput>>;
+   lines?: InputMaybe<Array<CartLineInput>>;
    /** A note that is associated with the cart. For example, the note can be a personalized message to the buyer. */
-   note?: Maybe<Scalars['String']>;
+   note?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents information about the merchandise in the cart. */
@@ -810,27 +811,27 @@ export type CartLineEstimatedCost = {
 /** Specifies the input fields to create a merchandise line on a cart. */
 export type CartLineInput = {
    /** An array of key-value pairs that contains additional information about the merchandise line. */
-   attributes?: Maybe<Array<AttributeInput>>;
+   attributes?: InputMaybe<Array<AttributeInput>>;
    /** The identifier of the merchandise that the buyer intends to purchase. */
    merchandiseId: Scalars['ID'];
    /** The quantity of the merchandise. */
-   quantity?: Maybe<Scalars['Int']>;
+   quantity?: InputMaybe<Scalars['Int']>;
    /** The identifier of the selling plan that the merchandise is being purchased with. */
-   sellingPlanId?: Maybe<Scalars['ID']>;
+   sellingPlanId?: InputMaybe<Scalars['ID']>;
 };
 
 /** Specifies the input fields to update a line item on a cart. */
 export type CartLineUpdateInput = {
    /** An array of key-value pairs that contains additional information about the merchandise line. */
-   attributes?: Maybe<Array<AttributeInput>>;
+   attributes?: InputMaybe<Array<AttributeInput>>;
    /** The identifier of the merchandise line. */
    id: Scalars['ID'];
    /** The identifier of the merchandise for the line item. */
-   merchandiseId?: Maybe<Scalars['ID']>;
+   merchandiseId?: InputMaybe<Scalars['ID']>;
    /** The quantity of the line item. */
-   quantity?: Maybe<Scalars['Int']>;
+   quantity?: InputMaybe<Scalars['Int']>;
    /** The identifier of the selling plan that the merchandise is being purchased with. */
-   sellingPlanId?: Maybe<Scalars['ID']>;
+   sellingPlanId?: InputMaybe<Scalars['ID']>;
 };
 
 /** Return type for `cartLinesAdd` mutation. */
@@ -991,20 +992,20 @@ export type Checkout = Node & {
 
 /** A container for all the information required to checkout items and pay. */
 export type CheckoutDiscountApplicationsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** A container for all the information required to checkout items and pay. */
 export type CheckoutLineItemsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** Specifies the fields required to update a checkout's attributes. */
@@ -1015,11 +1016,11 @@ export type CheckoutAttributesUpdateV2Input = {
     * Full validation of the addresses is still done at completion time. Defaults to `false` with
     * each operation.
     */
-   allowPartialAddresses?: Maybe<Scalars['Boolean']>;
+   allowPartialAddresses?: InputMaybe<Scalars['Boolean']>;
    /** A list of extra information that is added to the checkout. */
-   customAttributes?: Maybe<Array<AttributeInput>>;
+   customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The text of an optional note that a shop owner can attach to the checkout. */
-   note?: Maybe<Scalars['String']>;
+   note?: InputMaybe<Scalars['String']>;
 };
 
 /** Return type for `checkoutAttributesUpdateV2` mutation. */
@@ -1106,19 +1107,19 @@ export type CheckoutCreateInput = {
     * The required attributes are city, province, and country.
     * Full validation of addresses is still done at completion time. Defaults to `null`.
     */
-   allowPartialAddresses?: Maybe<Scalars['Boolean']>;
+   allowPartialAddresses?: InputMaybe<Scalars['Boolean']>;
    /** The identity of the customer associated with the checkout. */
-   buyerIdentity?: Maybe<CheckoutBuyerIdentityInput>;
+   buyerIdentity?: InputMaybe<CheckoutBuyerIdentityInput>;
    /** A list of extra information that is added to the checkout. */
-   customAttributes?: Maybe<Array<AttributeInput>>;
+   customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The email with which the customer wants to checkout. */
-   email?: Maybe<Scalars['String']>;
+   email?: InputMaybe<Scalars['String']>;
    /** A list of line item objects, each one containing information about an item in the checkout. */
-   lineItems?: Maybe<Array<CheckoutLineItemInput>>;
+   lineItems?: InputMaybe<Array<CheckoutLineItemInput>>;
    /** The text of an optional note that a shop owner can attach to the checkout. */
-   note?: Maybe<Scalars['String']>;
+   note?: InputMaybe<Scalars['String']>;
    /** The shipping address to where the line items will be shipped. */
-   shippingAddress?: Maybe<MailingAddressInput>;
+   shippingAddress?: InputMaybe<MailingAddressInput>;
 };
 
 /** Return type for `checkoutCreate` mutation. */
@@ -1371,7 +1372,7 @@ export type CheckoutLineItemEdge = {
 /** Specifies the input fields to create a line item on a checkout. */
 export type CheckoutLineItemInput = {
    /** Extra information in the form of an array of Key-Value pairs about the line item. */
-   customAttributes?: Maybe<Array<AttributeInput>>;
+   customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The quantity of the line item. */
    quantity: Scalars['Int'];
    /** The identifier of the product variant for the line item. */
@@ -1381,13 +1382,13 @@ export type CheckoutLineItemInput = {
 /** Specifies the input fields to update a line item on the checkout. */
 export type CheckoutLineItemUpdateInput = {
    /** Extra information in the form of an array of Key-Value pairs about the line item. */
-   customAttributes?: Maybe<Array<AttributeInput>>;
+   customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The identifier of the line item. */
-   id?: Maybe<Scalars['ID']>;
+   id?: InputMaybe<Scalars['ID']>;
    /** The quantity of the line item. */
-   quantity?: Maybe<Scalars['Int']>;
+   quantity?: InputMaybe<Scalars['Int']>;
    /** The variant identifier of the line item. */
-   variantId?: Maybe<Scalars['ID']>;
+   variantId?: InputMaybe<Scalars['ID']>;
 };
 
 /** Return type for `checkoutLineItemsAdd` mutation. */
@@ -1516,7 +1517,7 @@ export type Collection = HasMetafields &
 
 /** A collection represents a grouping of products that a shop owner can create to organize them or make their shops easier to browse. */
 export type CollectionDescriptionArgs = {
-   truncateAt?: Maybe<Scalars['Int']>;
+   truncateAt?: InputMaybe<Scalars['Int']>;
 };
 
 /** A collection represents a grouping of products that a shop owner can create to organize them or make their shops easier to browse. */
@@ -1532,13 +1533,13 @@ export type CollectionMetafieldsArgs = {
 
 /** A collection represents a grouping of products that a shop owner can create to organize them or make their shops easier to browse. */
 export type CollectionProductsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   filters?: Maybe<Array<ProductFilter>>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ProductCollectionSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   filters?: InputMaybe<Array<ProductFilter>>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ProductCollectionSortKeys>;
 };
 
 /** An auto-generated type for paginating through multiple Collections. */
@@ -1591,7 +1592,7 @@ export type Comment = Node & {
 
 /** A comment on an article. */
 export type CommentContentArgs = {
-   truncateAt?: Maybe<Scalars['Int']>;
+   truncateAt?: InputMaybe<Scalars['Int']>;
 };
 
 /** The author of a comment. */
@@ -2170,7 +2171,7 @@ export type CreditCardPaymentInputV2 = {
    /** The amount and currency of the payment. */
    paymentAmount: MoneyInput;
    /** Executes the payment in test mode if possible. Defaults to `false`. */
-   test?: Maybe<Scalars['Boolean']>;
+   test?: InputMaybe<Scalars['Boolean']>;
    /** The ID returned by Shopify's Card Vault. */
    vaultId: Scalars['String'];
 };
@@ -2253,7 +2254,10 @@ export enum CurrencyCode {
    Bwp = 'BWP',
    /** Belarusian Ruble (BYN). */
    Byn = 'BYN',
-   /** Belarusian Ruble (BYR). */
+   /**
+    * Belarusian Ruble (BYR).
+    * @deprecated `BYR` is deprecated. Use `BYN` available from version `2021-01` onwards instead.
+    */
    Byr = 'BYR',
    /** Belize Dollar (BZD). */
    Bzd = 'BZD',
@@ -2463,7 +2467,10 @@ export enum CurrencyCode {
    Srd = 'SRD',
    /** South Sudanese Pound (SSP). */
    Ssp = 'SSP',
-   /** Sao Tome And Principe Dobra (STD). */
+   /**
+    * Sao Tome And Principe Dobra (STD).
+    * @deprecated `STD` is deprecated. Use `STN` available from version `2022-07` onwards instead.
+    */
    Std = 'STD',
    /** Sao Tome And Principe Dobra (STN). */
    Stn = 'STN',
@@ -2501,7 +2508,10 @@ export enum CurrencyCode {
    Uzs = 'UZS',
    /** Venezuelan Bolivares (VED). */
    Ved = 'VED',
-   /** Venezuelan Bolivares (VEF). */
+   /**
+    * Venezuelan Bolivares (VEF).
+    * @deprecated `VEF` is deprecated. Use `VES` available from version `2020-10` onwards instead.
+    */
    Vef = 'VEF',
    /** Venezuelan Bolivares (VES). */
    Ves = 'VES',
@@ -2573,11 +2583,11 @@ export type Customer = HasMetafields & {
 
 /** A customer represents a customer account with the shop. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout. */
 export type CustomerAddressesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** A customer represents a customer account with the shop. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout. */
@@ -2593,13 +2603,13 @@ export type CustomerMetafieldsArgs = {
 
 /** A customer represents a customer account with the shop. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout. */
 export type CustomerOrdersArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<OrderSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<OrderSortKeys>;
 };
 
 /** A CustomerAccessToken represents the unique token required to make modifications to the customer object. */
@@ -2742,13 +2752,13 @@ export type CustomerAddressUpdatePayload = {
 /** The fields required to create a new customer. */
 export type CustomerCreateInput = {
    /** Indicates whether the customer has consented to be sent marketing material via email. */
-   acceptsMarketing?: Maybe<Scalars['Boolean']>;
+   acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
    /** The customer’s email. */
    email: Scalars['String'];
    /** The customer’s first name. */
-   firstName?: Maybe<Scalars['String']>;
+   firstName?: InputMaybe<Scalars['String']>;
    /** The customer’s last name. */
-   lastName?: Maybe<Scalars['String']>;
+   lastName?: InputMaybe<Scalars['String']>;
    /** The login password used by the customer. */
    password: Scalars['String'];
    /**
@@ -2756,7 +2766,7 @@ export type CustomerCreateInput = {
     *
     * Formatted using E.164 standard. For example, _+16135551111_.
     */
-   phone?: Maybe<Scalars['String']>;
+   phone?: InputMaybe<Scalars['String']>;
 };
 
 /** Return type for `customerCreate` mutation. */
@@ -2876,21 +2886,21 @@ export type CustomerResetPayload = {
 /** Specifies the fields required to update the Customer information. */
 export type CustomerUpdateInput = {
    /** Indicates whether the customer has consented to be sent marketing material via email. */
-   acceptsMarketing?: Maybe<Scalars['Boolean']>;
+   acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
    /** The customer’s email. */
-   email?: Maybe<Scalars['String']>;
+   email?: InputMaybe<Scalars['String']>;
    /** The customer’s first name. */
-   firstName?: Maybe<Scalars['String']>;
+   firstName?: InputMaybe<Scalars['String']>;
    /** The customer’s last name. */
-   lastName?: Maybe<Scalars['String']>;
+   lastName?: InputMaybe<Scalars['String']>;
    /** The login password used by the customer. */
-   password?: Maybe<Scalars['String']>;
+   password?: InputMaybe<Scalars['String']>;
    /**
     * A unique phone number for the customer.
     *
     * Formatted using E.164 standard. For example, _+16135551111_. To remove the phone number, specify `null`.
     */
-   phone?: Maybe<Scalars['String']>;
+   phone?: InputMaybe<Scalars['String']>;
 };
 
 /** Return type for `customerUpdate` mutation. */
@@ -2981,7 +2991,10 @@ export enum DiscountApplicationAllocationMethod {
    Across = 'ACROSS',
    /** The value is applied onto every entitled line. */
    Each = 'EACH',
-   /** The value is specifically applied onto a particular line. */
+   /**
+    * The value is specifically applied onto a particular line.
+    * @deprecated Use ACROSS instead.
+    */
    One = 'ONE',
 }
 
@@ -3153,16 +3166,16 @@ export type Fulfillment = {
 
 /** Represents a single fulfillment in an order. */
 export type FulfillmentFulfillmentLineItemsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** Represents a single fulfillment in an order. */
 export type FulfillmentTrackingInfoArgs = {
-   first?: Maybe<Scalars['Int']>;
+   first?: InputMaybe<Scalars['Int']>;
 };
 
 /** Represents a single line item in a fulfillment. There is at most one fulfillment line item for each order line item. */
@@ -3300,16 +3313,16 @@ export type Image = {
 
 /** Represents an image resource. */
 export type ImageTransformedSrcArgs = {
-   crop?: Maybe<CropRegion>;
-   maxHeight?: Maybe<Scalars['Int']>;
-   maxWidth?: Maybe<Scalars['Int']>;
-   preferredContentType?: Maybe<ImageContentType>;
-   scale?: Maybe<Scalars['Int']>;
+   crop?: InputMaybe<CropRegion>;
+   maxHeight?: InputMaybe<Scalars['Int']>;
+   maxWidth?: InputMaybe<Scalars['Int']>;
+   preferredContentType?: InputMaybe<ImageContentType>;
+   scale?: InputMaybe<Scalars['Int']>;
 };
 
 /** Represents an image resource. */
 export type ImageUrlArgs = {
-   transform?: Maybe<ImageTransformInput>;
+   transform?: InputMaybe<ImageTransformInput>;
 };
 
 /** An auto-generated type for paginating through multiple Images. */
@@ -3355,18 +3368,18 @@ export type ImageTransformInput = {
     * a smaller `maxHeight` indicates a `TOP` or `BOTTOM` crop. For example, `{ maxWidth: 5, maxHeight: 10, crop: LEFT }` will result
     * in an image with a width of 5 and height of 10, where the right side of the image is removed.
     */
-   crop?: Maybe<CropRegion>;
+   crop?: InputMaybe<CropRegion>;
    /** Image height in pixels between 1 and 5760. */
-   maxHeight?: Maybe<Scalars['Int']>;
+   maxHeight?: InputMaybe<Scalars['Int']>;
    /** Image width in pixels between 1 and 5760. */
-   maxWidth?: Maybe<Scalars['Int']>;
+   maxWidth?: InputMaybe<Scalars['Int']>;
    /**
     * Convert the source image into the preferred content type.
     * Supported conversions: `.svg` to `.png`, any file type to `.jpg`, and any file type to `.webp`.
     */
-   preferredContentType?: Maybe<ImageContentType>;
+   preferredContentType?: InputMaybe<ImageContentType>;
    /** Image size multiplier for high-resolution retina displays. Must be within 1..3. */
-   scale?: Maybe<Scalars['Int']>;
+   scale?: InputMaybe<Scalars['Int']>;
 };
 
 /** A language. */
@@ -3805,8 +3818,8 @@ export type MailingAddress = Node & {
 
 /** Represents a mailing address for customers and shipping. */
 export type MailingAddressFormattedArgs = {
-   withCompany?: Maybe<Scalars['Boolean']>;
-   withName?: Maybe<Scalars['Boolean']>;
+   withCompany?: InputMaybe<Scalars['Boolean']>;
+   withName?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An auto-generated type for paginating through multiple MailingAddresses. */
@@ -3832,29 +3845,29 @@ export type MailingAddressEdge = {
 /** Specifies the fields accepted to create or update a mailing address. */
 export type MailingAddressInput = {
    /** The first line of the address. Typically the street address or PO Box number. */
-   address1?: Maybe<Scalars['String']>;
+   address1?: InputMaybe<Scalars['String']>;
    /** The second line of the address. Typically the number of the apartment, suite, or unit. */
-   address2?: Maybe<Scalars['String']>;
+   address2?: InputMaybe<Scalars['String']>;
    /** The name of the city, district, village, or town. */
-   city?: Maybe<Scalars['String']>;
+   city?: InputMaybe<Scalars['String']>;
    /** The name of the customer's company or organization. */
-   company?: Maybe<Scalars['String']>;
+   company?: InputMaybe<Scalars['String']>;
    /** The name of the country. */
-   country?: Maybe<Scalars['String']>;
+   country?: InputMaybe<Scalars['String']>;
    /** The first name of the customer. */
-   firstName?: Maybe<Scalars['String']>;
+   firstName?: InputMaybe<Scalars['String']>;
    /** The last name of the customer. */
-   lastName?: Maybe<Scalars['String']>;
+   lastName?: InputMaybe<Scalars['String']>;
    /**
     * A unique phone number for the customer.
     *
     * Formatted using E.164 standard. For example, _+16135551111_.
     */
-   phone?: Maybe<Scalars['String']>;
+   phone?: InputMaybe<Scalars['String']>;
    /** The region of the address, such as the province, state, or district. */
-   province?: Maybe<Scalars['String']>;
+   province?: InputMaybe<Scalars['String']>;
    /** The zip or postal code of the address. */
-   zip?: Maybe<Scalars['String']>;
+   zip?: InputMaybe<Scalars['String']>;
 };
 
 /** Manual discount applications capture the intentions of a discount that was manually created. */
@@ -4041,10 +4054,10 @@ export type Metafield = Node & {
  * comprised of keys, values, and value types.
  */
 export type MetafieldReferencesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
 };
 
 /**
@@ -4274,13 +4287,13 @@ export type MutationCartBuyerIdentityUpdateArgs = {
 
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
 export type MutationCartCreateArgs = {
-   input?: Maybe<CartInput>;
+   input?: InputMaybe<CartInput>;
 };
 
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
 export type MutationCartDiscountCodesUpdateArgs = {
    cartId: Scalars['ID'];
-   discountCodes?: Maybe<Array<Scalars['String']>>;
+   discountCodes?: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
@@ -4304,7 +4317,7 @@ export type MutationCartLinesUpdateArgs = {
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
 export type MutationCartNoteUpdateArgs = {
    cartId: Scalars['ID'];
-   note?: Maybe<Scalars['String']>;
+   note?: InputMaybe<Scalars['String']>;
 };
 
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
@@ -4339,7 +4352,7 @@ export type MutationCheckoutCompleteWithTokenizedPaymentV3Args = {
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
 export type MutationCheckoutCreateArgs = {
    input: CheckoutCreateInput;
-   queueToken?: Maybe<Scalars['String']>;
+   queueToken?: InputMaybe<Scalars['String']>;
 };
 
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
@@ -4626,20 +4639,20 @@ export type Order = HasMetafields &
 
 /** An order is a customer’s completed request to purchase one or more products from a shop. An order is created when a customer completes the checkout process, during which time they provides an email address, billing address and payment information. */
 export type OrderDiscountApplicationsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An order is a customer’s completed request to purchase one or more products from a shop. An order is created when a customer completes the checkout process, during which time they provides an email address, billing address and payment information. */
 export type OrderLineItemsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An order is a customer’s completed request to purchase one or more products from a shop. An order is created when a customer completes the checkout process, during which time they provides an email address, billing address and payment information. */
@@ -4655,7 +4668,7 @@ export type OrderMetafieldsArgs = {
 
 /** An order is a customer’s completed request to purchase one or more products from a shop. An order is created when a customer completes the checkout process, during which time they provides an email address, billing address and payment information. */
 export type OrderSuccessfulFulfillmentsArgs = {
-   first?: Maybe<Scalars['Int']>;
+   first?: InputMaybe<Scalars['Int']>;
 };
 
 /** Represents the reason for the order's cancellation. */
@@ -4953,9 +4966,9 @@ export enum PaymentTokenType {
 /** A filter used to view a subset of products in a collection matching a specific price range. */
 export type PriceRangeFilter = {
    /** The maximum price in the range. Empty indicates no max price. */
-   max?: Maybe<Scalars['Float']>;
+   max?: InputMaybe<Scalars['Float']>;
    /** The minimum price in the range. Defaults to zero. */
-   min?: Maybe<Scalars['Float']>;
+   min?: InputMaybe<Scalars['Float']>;
 };
 
 /** The value of the percentage pricing object. */
@@ -5060,11 +5073,11 @@ export type Product = HasMetafields &
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductCollectionsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /**
@@ -5072,7 +5085,7 @@ export type ProductCollectionsArgs = {
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductDescriptionArgs = {
-   truncateAt?: Maybe<Scalars['Int']>;
+   truncateAt?: InputMaybe<Scalars['Int']>;
 };
 
 /**
@@ -5080,12 +5093,12 @@ export type ProductDescriptionArgs = {
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductImagesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ProductImageSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ProductImageSortKeys>;
 };
 
 /**
@@ -5093,12 +5106,12 @@ export type ProductImagesArgs = {
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductMediaArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ProductMediaSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ProductMediaSortKeys>;
 };
 
 /**
@@ -5123,7 +5136,7 @@ export type ProductMetafieldsArgs = {
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductOptionsArgs = {
-   first?: Maybe<Scalars['Int']>;
+   first?: InputMaybe<Scalars['Int']>;
 };
 
 /**
@@ -5131,11 +5144,11 @@ export type ProductOptionsArgs = {
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductSellingPlanGroupsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /**
@@ -5151,12 +5164,12 @@ export type ProductVariantBySelectedOptionsArgs = {
  * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
  */
 export type ProductVariantsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ProductVariantSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ProductVariantSortKeys>;
 };
 
 /** The set of valid sort keys for the ProductCollection query. */
@@ -5207,19 +5220,19 @@ export type ProductEdge = {
 /** A filter used to view a subset of products in a collection. */
 export type ProductFilter = {
    /** Filter on if the product is available for sale. */
-   available?: Maybe<Scalars['Boolean']>;
+   available?: InputMaybe<Scalars['Boolean']>;
    /** A range of prices to filter with-in. */
-   price?: Maybe<PriceRangeFilter>;
+   price?: InputMaybe<PriceRangeFilter>;
    /** A product metafield to filter on. */
-   productMetafield?: Maybe<MetafieldFilter>;
+   productMetafield?: InputMaybe<MetafieldFilter>;
    /** The product type to filter on. */
-   productType?: Maybe<Scalars['String']>;
+   productType?: InputMaybe<Scalars['String']>;
    /** The product vendor to filter on. */
-   productVendor?: Maybe<Scalars['String']>;
+   productVendor?: InputMaybe<Scalars['String']>;
    /** A variant metafield to filter on. */
-   variantMetafield?: Maybe<MetafieldFilter>;
+   variantMetafield?: InputMaybe<MetafieldFilter>;
    /** A variant option to filter on. */
-   variantOption?: Maybe<VariantOptionFilter>;
+   variantOption?: InputMaybe<VariantOptionFilter>;
 };
 
 /** The set of valid sort keys for the ProductImage query. */
@@ -5370,20 +5383,20 @@ export type ProductVariantMetafieldsArgs = {
 
 /** A product variant represents a different version of a product, such as differing sizes or differing colors. */
 export type ProductVariantSellingPlanAllocationsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** A product variant represents a different version of a product, such as differing sizes or differing colors. */
 export type ProductVariantStoreAvailabilityArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An auto-generated type for paginating through multiple ProductVariants. */
@@ -5505,19 +5518,19 @@ export type QueryRoot = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootArticlesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ArticleSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ArticleSortKeys>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootBlogArgs = {
-   handle?: Maybe<Scalars['String']>;
-   id?: Maybe<Scalars['ID']>;
+   handle?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5527,13 +5540,13 @@ export type QueryRootBlogByHandleArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootBlogsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<BlogSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<BlogSortKeys>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5543,8 +5556,8 @@ export type QueryRootCartArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootCollectionArgs = {
-   handle?: Maybe<Scalars['String']>;
-   id?: Maybe<Scalars['ID']>;
+   handle?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5554,13 +5567,13 @@ export type QueryRootCollectionByHandleArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootCollectionsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<CollectionSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<CollectionSortKeys>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5570,13 +5583,13 @@ export type QueryRootCustomerArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootLocationsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   near?: Maybe<GeoCoordinateInput>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<LocationSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   near?: InputMaybe<GeoCoordinateInput>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<LocationSortKeys>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5596,8 +5609,8 @@ export type QueryRootNodesArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootPageArgs = {
-   handle?: Maybe<Scalars['String']>;
-   id?: Maybe<Scalars['ID']>;
+   handle?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5607,19 +5620,19 @@ export type QueryRootPageByHandleArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootPagesArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<PageSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<PageSortKeys>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootProductArgs = {
-   handle?: Maybe<Scalars['String']>;
-   id?: Maybe<Scalars['ID']>;
+   handle?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
@@ -5644,22 +5657,22 @@ export type QueryRootProductTypesArgs = {
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootProductsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   query?: Maybe<Scalars['String']>;
-   reverse?: Maybe<Scalars['Boolean']>;
-   sortKey?: Maybe<ProductSortKeys>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   query?: InputMaybe<Scalars['String']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
+   sortKey?: InputMaybe<ProductSortKeys>;
 };
 
 /** The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start. */
 export type QueryRootUrlRedirectsArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** SEO information. */
@@ -5852,11 +5865,11 @@ export type SellingPlanGroup = {
 
 /** Represents a selling method. For example, 'Subscribe and save' is a selling method where customers pay for goods or services per delivery. A selling plan group contains individual selling plans. */
 export type SellingPlanGroupSellingPlansArgs = {
-   after?: Maybe<Scalars['String']>;
-   before?: Maybe<Scalars['String']>;
-   first?: Maybe<Scalars['Int']>;
-   last?: Maybe<Scalars['Int']>;
-   reverse?: Maybe<Scalars['Boolean']>;
+   after?: InputMaybe<Scalars['String']>;
+   before?: InputMaybe<Scalars['String']>;
+   first?: InputMaybe<Scalars['Int']>;
+   last?: InputMaybe<Scalars['Int']>;
+   reverse?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** An auto-generated type for paginating through multiple SellingPlanGroups. */
@@ -6082,13 +6095,13 @@ export type TokenizedPaymentInputV3 = {
    /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests). */
    idempotencyKey: Scalars['String'];
    /** Public Hash Key used for AndroidPay payments only. */
-   identifier?: Maybe<Scalars['String']>;
+   identifier?: InputMaybe<Scalars['String']>;
    /** The amount and currency of the payment. */
    paymentAmount: MoneyInput;
    /** A simple string or JSON containing the required payment data for the tokenized payment. */
    paymentData: Scalars['String'];
    /** Whether to execute the payment in test mode, if possible. Test mode is not supported in production stores. Defaults to `false`. */
-   test?: Maybe<Scalars['Boolean']>;
+   test?: InputMaybe<Scalars['Boolean']>;
    /** The type of payment token. */
    type: PaymentTokenType;
 };
@@ -6298,25 +6311,26 @@ export enum WeightUnit {
 }
 
 export type FindProductQueryVariables = Exact<{
-   handle?: Maybe<Scalars['String']>;
+   handle?: InputMaybe<Scalars['String']>;
 }>;
 
 export type FindProductQuery = {
    __typename?: 'QueryRoot';
-   product?: Maybe<{
+   product?: {
       __typename?: 'Product';
       title: string;
       handle: string;
       descriptionHtml: string;
-      breadcrumbs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      faqs?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      prop65WarningType?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      prop65Chemicals?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      productVideos?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      replacementGuides?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      featuredProductVariants?: Maybe<{
+      tags: Array<string>;
+      breadcrumbs?: { __typename?: 'Metafield'; value: string } | null;
+      faqs?: { __typename?: 'Metafield'; value: string } | null;
+      prop65WarningType?: { __typename?: 'Metafield'; value: string } | null;
+      prop65Chemicals?: { __typename?: 'Metafield'; value: string } | null;
+      productVideos?: { __typename?: 'Metafield'; value: string } | null;
+      replacementGuides?: { __typename?: 'Metafield'; value: string } | null;
+      featuredProductVariants?: {
          __typename?: 'Metafield';
-         references?: Maybe<{
+         references?: {
             __typename?: 'MetafieldReferenceConnection';
             nodes: Array<
                | { __typename: 'Collection' }
@@ -6327,65 +6341,73 @@ export type FindProductQuery = {
                | {
                     __typename: 'ProductVariant';
                     id: string;
-                    sku?: Maybe<string>;
+                    sku?: string | null;
+                    quantityAvailable?: number | null;
                     product: {
                        __typename?: 'Product';
                        handle: string;
                        title: string;
-                       rating?: Maybe<{
+                       tags: Array<string>;
+                       rating?: {
                           __typename?: 'Metafield';
                           value: string;
-                       }>;
-                       reviewsCount?: Maybe<{
+                       } | null;
+                       reviewsCount?: {
                           __typename?: 'Metafield';
                           value: string;
-                       }>;
-                       oemPartnership?: Maybe<{
+                       } | null;
+                       oemPartnership?: {
                           __typename?: 'Metafield';
                           value: string;
-                       }>;
+                       } | null;
                     };
-                    image?: Maybe<{
+                    image?: {
                        __typename?: 'Image';
-                       id?: Maybe<string>;
-                       altText?: Maybe<string>;
-                       height?: Maybe<number>;
-                       width?: Maybe<number>;
+                       id?: string | null;
+                       altText?: string | null;
+                       height?: number | null;
+                       width?: number | null;
                        url: string;
-                    }>;
+                    } | null;
                     price: {
                        __typename?: 'MoneyV2';
                        amount: any;
                        currencyCode: CurrencyCode;
                     };
-                    compareAtPrice?: Maybe<{
+                    compareAtPrice?: {
                        __typename?: 'MoneyV2';
                        amount: any;
                        currencyCode: CurrencyCode;
-                    }>;
-                    proPricesByTier?: Maybe<{
+                    } | null;
+                    proPricesByTier?: {
                        __typename?: 'Metafield';
                        value: string;
-                    }>;
-                    warranty?: Maybe<{
+                    } | null;
+                    warranty?: {
                        __typename?: 'Metafield';
                        value: string;
-                    }>;
+                    } | null;
+                    enabled?: {
+                       __typename?: 'Metafield';
+                       value: string;
+                    } | null;
                  }
                | { __typename: 'Video' }
             >;
-         }>;
-      }>;
-      compatibility?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      featuredImage?: Maybe<{ __typename?: 'Image'; id?: Maybe<string> }>;
+         } | null;
+      } | null;
+      compatibility?: { __typename?: 'Metafield'; value: string } | null;
+      metaTitle?: { __typename?: 'Metafield'; value: string } | null;
+      shortDescription?: { __typename?: 'Metafield'; value: string } | null;
+      featuredImage?: { __typename?: 'Image'; id?: string | null } | null;
       images: {
          __typename?: 'ImageConnection';
          nodes: Array<{
             __typename?: 'Image';
-            id?: Maybe<string>;
-            altText?: Maybe<string>;
-            height?: Maybe<number>;
-            width?: Maybe<number>;
+            id?: string | null;
+            altText?: string | null;
+            height?: number | null;
+            width?: number | null;
             url: string;
          }>;
       };
@@ -6401,46 +6423,47 @@ export type FindProductQuery = {
             __typename?: 'ProductVariant';
             id: string;
             title: string;
-            sku?: Maybe<string>;
-            quantityAvailable?: Maybe<number>;
-            image?: Maybe<{
+            sku?: string | null;
+            quantityAvailable?: number | null;
+            image?: {
                __typename?: 'Image';
-               id?: Maybe<string>;
-               altText?: Maybe<string>;
-               height?: Maybe<number>;
-               width?: Maybe<number>;
+               id?: string | null;
+               altText?: string | null;
+               height?: number | null;
+               width?: number | null;
                url: string;
-            }>;
+            } | null;
             price: {
                __typename?: 'MoneyV2';
                amount: any;
                currencyCode: CurrencyCode;
             };
-            compareAtPrice?: Maybe<{
+            compareAtPrice?: {
                __typename?: 'MoneyV2';
                amount: any;
                currencyCode: CurrencyCode;
-            }>;
-            proPricesByTier?: Maybe<{
+            } | null;
+            proPricesByTier?: {
                __typename?: 'Metafield';
                value: string;
-            }>;
+            } | null;
             selectedOptions: Array<{
                __typename?: 'SelectedOption';
                name: string;
                value: string;
             }>;
-            kitContents?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            note?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            disclaimer?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            warning?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            specifications?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            warranty?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            enabled?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            disableWhenOOS?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-            crossSell?: Maybe<{
+            description?: { __typename?: 'Metafield'; value: string } | null;
+            kitContents?: { __typename?: 'Metafield'; value: string } | null;
+            note?: { __typename?: 'Metafield'; value: string } | null;
+            disclaimer?: { __typename?: 'Metafield'; value: string } | null;
+            warning?: { __typename?: 'Metafield'; value: string } | null;
+            specifications?: { __typename?: 'Metafield'; value: string } | null;
+            warranty?: { __typename?: 'Metafield'; value: string } | null;
+            enabled?: { __typename?: 'Metafield'; value: string } | null;
+            disableWhenOOS?: { __typename?: 'Metafield'; value: string } | null;
+            crossSell?: {
                __typename?: 'Metafield';
-               references?: Maybe<{
+               references?: {
                   __typename?: 'MetafieldReferenceConnection';
                   nodes: Array<
                      | { __typename: 'Collection' }
@@ -6451,101 +6474,116 @@ export type FindProductQuery = {
                      | {
                           __typename: 'ProductVariant';
                           id: string;
-                          sku?: Maybe<string>;
+                          sku?: string | null;
+                          quantityAvailable?: number | null;
                           product: {
                              __typename?: 'Product';
                              handle: string;
                              title: string;
-                             rating?: Maybe<{
+                             tags: Array<string>;
+                             rating?: {
                                 __typename?: 'Metafield';
                                 value: string;
-                             }>;
-                             reviewsCount?: Maybe<{
+                             } | null;
+                             reviewsCount?: {
                                 __typename?: 'Metafield';
                                 value: string;
-                             }>;
-                             oemPartnership?: Maybe<{
+                             } | null;
+                             oemPartnership?: {
                                 __typename?: 'Metafield';
                                 value: string;
-                             }>;
+                             } | null;
                           };
-                          image?: Maybe<{
+                          image?: {
                              __typename?: 'Image';
-                             id?: Maybe<string>;
-                             altText?: Maybe<string>;
-                             height?: Maybe<number>;
-                             width?: Maybe<number>;
+                             id?: string | null;
+                             altText?: string | null;
+                             height?: number | null;
+                             width?: number | null;
                              url: string;
-                          }>;
+                          } | null;
                           price: {
                              __typename?: 'MoneyV2';
                              amount: any;
                              currencyCode: CurrencyCode;
                           };
-                          compareAtPrice?: Maybe<{
+                          compareAtPrice?: {
                              __typename?: 'MoneyV2';
                              amount: any;
                              currencyCode: CurrencyCode;
-                          }>;
-                          proPricesByTier?: Maybe<{
+                          } | null;
+                          proPricesByTier?: {
                              __typename?: 'Metafield';
                              value: string;
-                          }>;
-                          warranty?: Maybe<{
+                          } | null;
+                          warranty?: {
                              __typename?: 'Metafield';
                              value: string;
-                          }>;
+                          } | null;
+                          enabled?: {
+                             __typename?: 'Metafield';
+                             value: string;
+                          } | null;
                        }
                      | { __typename: 'Video' }
                   >;
-               }>;
-            }>;
-            internalDisplayName?: Maybe<{
+               } | null;
+            } | null;
+            internalDisplayName?: {
                __typename?: 'Metafield';
                value: string;
-            }>;
+            } | null;
+            shippingRestrictions?: {
+               __typename?: 'Metafield';
+               value: string;
+            } | null;
          }>;
       };
-   }>;
+   } | null;
 };
 
 export type ProductVariantCardFragment = {
    __typename?: 'ProductVariant';
    id: string;
-   sku?: Maybe<string>;
+   sku?: string | null;
+   quantityAvailable?: number | null;
    product: {
       __typename?: 'Product';
       handle: string;
       title: string;
-      rating?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      reviewsCount?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-      oemPartnership?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+      tags: Array<string>;
+      rating?: { __typename?: 'Metafield'; value: string } | null;
+      reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
+      oemPartnership?: { __typename?: 'Metafield'; value: string } | null;
    };
-   image?: Maybe<{
+   image?: {
       __typename?: 'Image';
-      id?: Maybe<string>;
-      altText?: Maybe<string>;
-      height?: Maybe<number>;
-      width?: Maybe<number>;
+      id?: string | null;
+      altText?: string | null;
+      height?: number | null;
+      width?: number | null;
       url: string;
-   }>;
+   } | null;
    price: { __typename?: 'MoneyV2'; amount: any; currencyCode: CurrencyCode };
-   compareAtPrice?: Maybe<{
+   compareAtPrice?: {
       __typename?: 'MoneyV2';
       amount: any;
       currencyCode: CurrencyCode;
-   }>;
-   proPricesByTier?: Maybe<{ __typename?: 'Metafield'; value: string }>;
-   warranty?: Maybe<{ __typename?: 'Metafield'; value: string }>;
+   } | null;
+   proPricesByTier?: { __typename?: 'Metafield'; value: string } | null;
+   warranty?: { __typename?: 'Metafield'; value: string } | null;
+   enabled?: { __typename?: 'Metafield'; value: string } | null;
 };
 
 export const ProductVariantCardFragmentDoc = `
     fragment ProductVariantCard on ProductVariant {
   id
   sku
+  quantityAvailable
   product {
     handle
     title
+    tags
     rating: metafield(namespace: "reviews", key: "rating") {
       value
     }
@@ -6577,6 +6615,9 @@ export const ProductVariantCardFragmentDoc = `
   warranty: metafield(namespace: "ifixit", key: "warranty") {
     value
   }
+  enabled: metafield(namespace: "ifixit", key: "enabled2") {
+    value
+  }
 }
     `;
 export const FindProductDocument = `
@@ -6585,6 +6626,7 @@ export const FindProductDocument = `
     title
     handle
     descriptionHtml
+    tags
     breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
       value
     }
@@ -6615,6 +6657,12 @@ export const FindProductDocument = `
       }
     }
     compatibility: metafield(namespace: "ifixit", key: "compatibility_json") {
+      value
+    }
+    metaTitle: metafield(namespace: "ifixit", key: "meta_title") {
+      value
+    }
+    shortDescription: metafield(namespace: "ifixit", key: "short_description") {
       value
     }
     featuredImage {
@@ -6662,6 +6710,9 @@ export const FindProductDocument = `
           name
           value
         }
+        description: metafield(namespace: "ifixit", key: "description") {
+          value
+        }
         kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
           value
         }
@@ -6700,17 +6751,23 @@ export const FindProductDocument = `
         ) {
           value
         }
+        shippingRestrictions: metafield(
+          namespace: "ifixit"
+          key: "shipping_restrictions"
+        ) {
+          value
+        }
       }
     }
   }
 }
     ${ProductVariantCardFragmentDoc}`;
-export type Requester<C = {}> = <R, V>(
+export type Requester<C = {}, E = unknown> = <R, V>(
    doc: string,
    vars?: V,
    options?: C
 ) => Promise<R>;
-export function getSdk<C>(requester: Requester<C>) {
+export function getSdk<C, E>(requester: Requester<C, E>) {
    return {
       findProduct(
          variables?: FindProductQueryVariables,

@@ -5,10 +5,7 @@ import {
    IFIXIT_ORIGIN,
 } from '@config/env';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
-import {
-   getProductListPath,
-   getProductListTitle,
-} from '@helpers/product-list-helpers';
+import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { logAsync, logSync } from '@ifixit/helpers';
 import {
@@ -33,6 +30,7 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
+import { productListPath } from '@helpers/path-helpers';
 
 export { ProductListSectionType, ProductListType } from './types';
 export type {
@@ -83,19 +81,12 @@ export async function findProductList(
    );
    const productListType = getProductListType(productList?.type);
 
-   const path = getProductListPath({
-      type: productListType,
-      handle: handle,
-      deviceTitle: deviceTitle,
-   });
-
    const ancestors = createProductListAncestors(parents);
 
    const baseProductList: BaseProductList = {
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
-      path,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
@@ -132,7 +123,7 @@ export async function findProductList(
    };
 }
 
-function getProductListType(
+export function getProductListType(
    type?: Enum_Productlist_Type | null
 ): ProductListType {
    switch (type) {
@@ -243,16 +234,13 @@ function createProductListAncestors(
    const type = getProductListType(attributes.type);
 
    return ancestors.concat({
+      deviceTitle: attributes.deviceTitle ?? null,
       title: getProductListTitle({
          title: attributes.title,
          type,
       }),
+      type: getProductListType(attributes.type),
       handle: attributes.handle,
-      path: getProductListPath({
-         type,
-         handle: attributes.handle,
-         deviceTitle: attributes.deviceTitle ?? null,
-      }),
    });
 }
 
@@ -278,11 +266,6 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
          type,
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
-         path: getProductListPath({
-            type,
-            handle: attributes.handle,
-            deviceTitle: attributes.deviceTitle ?? null,
-         }),
          image:
             imageAttributes == null
                ? deviceWiki && attributes.deviceTitle
@@ -352,12 +335,8 @@ function createProductListSection(
             productList: {
                handle: productList.handle,
                title: productList.title,
+               type: getProductListType(productList.type),
                deviceTitle: productList.deviceTitle ?? null,
-               path: getProductListPath({
-                  handle: productList.handle,
-                  deviceTitle: productList.deviceTitle ?? null,
-                  type: getProductListType(productList.type),
-               }),
                description: productList.description,
                image:
                   image == null
@@ -386,12 +365,8 @@ function createProductListSection(
                   return {
                      handle: productList.handle,
                      title: productList.title,
+                     type: getProductListType(productList.type),
                      deviceTitle: productList.deviceTitle ?? null,
-                     path: getProductListPath({
-                        handle: productList.handle,
-                        deviceTitle: productList.deviceTitle ?? null,
-                        type: getProductListType(productList.type),
-                     }),
                      description: productList.description,
                      image:
                         image == null

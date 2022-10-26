@@ -7,6 +7,8 @@ type ReviewableProduct<T extends Value> = {
 
 type NullablePartial<T> = { [P in keyof T]?: T[P] | null };
 
+const ITEMCODE_RE = /IF(\d{3})-(\d{3})-(\d{1,2})/;
+
 export function shouldShowProductRating<T extends Value>(
    product: NullablePartial<ReviewableProduct<T>>
 ): product is ReviewableProduct<T> {
@@ -24,32 +26,23 @@ export function shouldShowProductRating<T extends Value>(
    return rating >= 4 || ratingCount > 10;
 }
 
-const PRODUCT_CODE_LENGTH = 6;
-
-/**
- * @param itemcode iFixit product (or product variant) itemcode (e.g. IF145-307-4)
- * @returns iFixit product sku (e.g. 145307), that is the itemcode digits without the option id
- */
-export function getProductSku(itemcode: string): string {
-   const skuDigits = getProductVariantSku(itemcode);
-   return skuDigits.slice(0, PRODUCT_CODE_LENGTH);
-}
-
-/**
- * @param itemcode iFixit product variant itemcode (e.g. IF145-307-4)
- * @returns iFixit product variant option id (e.g. 4)
- */
-export function getProductVariantOptionId(itemcode: string): string {
-   const skuDigits = getProductVariantSku(itemcode);
-   return skuDigits.slice(PRODUCT_CODE_LENGTH);
-}
-
 /**
  * @param itemcode iFixit product variant itemcode (e.g. IF145-307-4)
  * @returns iFixit product variant sku (e.g. 1453074)
  */
 export function getProductVariantSku(itemcode: string): string {
    return itemcode.replace(/\D/g, '');
+}
+
+export function parseItemcode(itemcode: string) {
+   let matches = itemcode.match(ITEMCODE_RE);
+   return matches
+      ? {
+           category: matches[1],
+           productcode: matches[1] + matches[2],
+           optionid: matches[3],
+        }
+      : {};
 }
 
 export function isLifetimeWarranty(warranty: string): boolean {

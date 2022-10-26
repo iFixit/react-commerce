@@ -3,6 +3,7 @@ query findProduct($handle: String) {
       title
       handle
       descriptionHtml
+      tags
       breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
          value
       }
@@ -42,6 +43,15 @@ query findProduct($handle: String) {
          }
       }
       compatibility: metafield(namespace: "ifixit", key: "compatibility_json") {
+         value
+      }
+      metaTitle: metafield(namespace: "ifixit", key: "meta_title") {
+         value
+      }
+      shortDescription: metafield(
+         namespace: "ifixit"
+         key: "short_description"
+      ) {
          value
       }
       featuredImage {
@@ -92,6 +102,9 @@ query findProduct($handle: String) {
                name
                value
             }
+            description: metafield(namespace: "ifixit", key: "description") {
+               value
+            }
             kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
                value
             }
@@ -133,6 +146,12 @@ query findProduct($handle: String) {
             internalDisplayName: metafield(
                namespace: "ifixit"
                key: "internal_display_name"
+            ) {
+               value
+            }
+            shippingRestrictions: metafield(
+               namespace: "ifixit"
+               key: "shipping_restrictions"
             ) {
                value
             }

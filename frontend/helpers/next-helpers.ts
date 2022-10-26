@@ -29,7 +29,7 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
 }
 
 export function noindexDevDomains(context: GetServerSidePropsContext) {
-   if (context.req.headers['user-agent'] === PROD_USER_AGENT) {
+   if (context.req.headers['user-agent'] !== PROD_USER_AGENT) {
       context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
    }
 }

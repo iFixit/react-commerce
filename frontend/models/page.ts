@@ -1,6 +1,15 @@
-import { filterNullableItems } from '@helpers/application-helpers';
-import { ImageFieldsFragment, strapi } from '@lib/strapi-sdk';
+import {
+   filterFalsyItems,
+   filterNullableItems,
+} from '@helpers/application-helpers';
+import { assertNever } from '@ifixit/helpers';
+import {
+   ImageFieldsFragment,
+   ProductListFieldsFragment,
+   strapi,
+} from '@lib/strapi-sdk';
 import { z } from 'zod';
+import { getProductListType } from './product-list';
 
 export type FindPageArgs = {
    path: string;
@@ -41,8 +50,44 @@ export async function findPage({ path }: FindPageArgs) {
                   title: section.title ?? null,
                   description: section.description ?? null,
                   callToAction: section.callToAction ?? null,
-                  image: parseImage(section.image),
+                  image: processStrapiImage(section.image),
                };
+            }
+            case 'ComponentPageBrowse': {
+               const categories = filterFalsyItems(
+                  section.categories?.map(
+                     (category) =>
+                        category?.productList?.data &&
+                        processStrapiProductList(category.productList.data)
+                  )
+               );
+               return {
+                  __typename: section.__typename,
+                  id: `${section.__typename}-${index}`,
+                  title: section.title ?? null,
+                  description: section.description ?? null,
+                  image: processStrapiImage(section.image),
+                  categories,
+               };
+            }
+            case 'ComponentPageStats': {
+               const stats = filterFalsyItems(section.stats).map(
+                  ({ id, label, value }) => {
+                     return { id, label, value };
+                  }
+               );
+               return {
+                  __typename: section.__typename,
+                  id: `${section.__typename}-${index}`,
+                  stats,
+               };
+            }
+            case 'Error': {
+               console.error('Failed to parse page section:', section);
+               return null;
+            }
+            default: {
+               return assertNever(section);
             }
          }
       }) ?? []
@@ -55,7 +100,26 @@ export async function findPage({ path }: FindPageArgs) {
    };
 }
 
-function parseImage(imageFragment: ImageFieldsFragment | null | undefined) {
+function processStrapiProductList(
+   productListFragment: ProductListFieldsFragment | null | undefined
+) {
+   const attributes = productListFragment?.attributes;
+   if (attributes == null) {
+      return null;
+   }
+   return {
+      type: getProductListType(attributes.type),
+      handle: attributes.handle,
+      title: attributes.title,
+      deviceTitle: attributes.deviceTitle ?? null,
+      metaDescription: attributes.metaDescription ?? null,
+      image: processStrapiImage(attributes.image),
+   };
+}
+
+function processStrapiImage(
+   imageFragment: ImageFieldsFragment | null | undefined
+) {
    const attributes = imageFragment?.data?.attributes;
    if (attributes == null) {
       return null;

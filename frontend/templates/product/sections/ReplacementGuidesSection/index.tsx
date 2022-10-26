@@ -4,6 +4,8 @@ import {
    Flex,
    forwardRef,
    Heading,
+   LinkBox,
+   LinkOverlay,
    ListItem,
    SimpleGrid,
    TagProps,
@@ -45,6 +47,7 @@ export function ReplacementGuidesSection({
          <PageContentWrapper>
             <Heading
                as="h2"
+               id="guides"
                fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
@@ -80,7 +83,10 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
    const hasBadges =
       isPresent(guide.difficulty) || isPresent(guide.time_required);
    return (
-      <Flex
+      <LinkBox
+         as="article"
+         display="flex"
+         overflow="hidden"
          minH={{
             base: 'auto',
             md: '150px',
@@ -89,6 +95,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
          borderColor="gray.300"
          borderWidth="1px"
          borderRadius="md"
+         role="group"
       >
          {guide.image_url && (
             <>
@@ -144,8 +151,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
             </>
          )}
          <Box px="3" py="3" overflow="hidden">
-            <Text
-               as="a"
+            <LinkOverlay
                href={guide.guide_url}
                target="_blank"
                fontWeight="bold"
@@ -153,9 +159,12 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                lineHeight="short"
                noOfLines={3}
                flexShrink={0}
+               _groupHover={{
+                  color: 'brand.500',
+               }}
             >
                {guide.title}
-            </Text>
+            </LinkOverlay>
             {isPresent(guide.summary) && (
                <Text
                   fontSize="sm"
@@ -194,7 +203,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                </UnorderedList>
             )}
          </Box>
-      </Flex>
+      </LinkBox>
    );
 }
 

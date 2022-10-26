@@ -1,0 +1,12 @@
+fragment ProductListFields on ProductListEntity {
+   attributes {
+      type
+      handle
+      deviceTitle
+      title
+      metaDescription
+      image {
+         ...ImageFields
+      }
+   }
+}

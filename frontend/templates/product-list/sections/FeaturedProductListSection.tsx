@@ -28,6 +28,7 @@ import { IfixitImage } from '@ifixit/ui';
 import NextLink from 'next/link';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 import { computeDiscountPercentage } from '@ifixit/helpers';
+import { productListPath } from '@helpers/path-helpers';
 
 export interface FeaturedProductListSectionProps {
    productList: FeaturedProductList;
@@ -110,7 +111,7 @@ export function FeaturedProductListSection({
                      <Text color="white" noOfLines={2}>
                         {productList.description}
                      </Text>
-                     <NextLink href={productList.path} passHref>
+                     <NextLink href={productListPath(productList)} passHref>
                         <Button
                            as="a"
                            variant="outline"

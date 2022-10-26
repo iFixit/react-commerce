@@ -1,18 +1,22 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
 import { noindexDevDomains } from '@helpers/next-helpers';
-import { invariant } from '@ifixit/helpers';
-import { trackMatomoEcommerceView } from '@ifixit/matomo';
+import {
+   trackGoogleProductView,
+   trackMatomoEcommerceView,
+} from '@ifixit/analytics';
+import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
-import { SecondaryNavigation } from './component/SecondaryNavigation';
+import { SecondaryNavigation } from './components/SecondaryNavigation';
 import {
    ProductTemplateProps,
    useProductTemplateProps,
 } from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
+import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
@@ -33,11 +37,19 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             selectedVariant.internalDisplayName?.value ?? product.title,
          price: selectedVariant.price,
       });
+      trackGoogleProductView({
+         id: selectedVariant.sku ?? selectedVariant.id,
+         name: product.title,
+         variant: selectedVariant.internalDisplayName?.value,
+         category: parseItemcode(selectedVariant.sku ?? '')?.category,
+         price: moneyToNumber(selectedVariant.price).toFixed(2),
+      });
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
    return (
-      <>
+      <React.Fragment key={product.handle}>
+         <MetaTags product={product} selectedVariant={selectedVariant} />
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
                <PageBreadcrumb items={product.breadcrumbs} />
@@ -52,6 +64,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
             <CrossSellSection
+               key={selectedVariant.id}
                product={product}
                selectedVariant={selectedVariant}
             />
@@ -63,7 +76,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <FeaturedProductsSection product={product} />
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
-      </>
+      </React.Fragment>
    );
 };
 
@@ -74,8 +87,6 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    async (context) => {
       noindexDevDomains(context);
-      // @TODO: Remove this before the page goes live
-      context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
       const layoutProps = await getLayoutServerSideProps();
@@ -86,11 +97,21 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          },
          handle
       );
+
       if (product == null) {
          return {
             notFound: true,
          };
       }
+
+      const proOnly = product?.tags.find((tag: string) => tag === 'Pro Only');
+      if (proOnly) {
+         context.res.setHeader('X-Robots-Tag', 'noindex, follow');
+      } else {
+         // @TODO: Remove this before the page goes live
+         context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+      }
+
       const pageProps: ProductTemplateProps = {
          layoutProps,
          appProps: {},

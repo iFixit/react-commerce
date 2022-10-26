@@ -8,7 +8,9 @@ import {
    PageTemplateProps,
    usePageTemplateProps,
 } from './hooks/usePageTemplateProps';
+import { BrowseSection } from './sections/BrowseSection';
 import { HeroSection } from './sections/HeroSection';
+import { StatsSection } from './sections/StatsSection';
 
 export const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
    const { page } = usePageTemplateProps();
@@ -19,8 +21,14 @@ export const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                case 'ComponentPageHero': {
                   return <HeroSection key={section.id} data={section} />;
                }
+               case 'ComponentPageBrowse': {
+                  return <BrowseSection key={section.id} data={section} />;
+               }
+               case 'ComponentPageStats': {
+                  return <StatsSection key={section.id} data={section} />;
+               }
                default:
-                  return assertNever(section.__typename);
+                  return assertNever(section);
             }
          })}
       </Box>
