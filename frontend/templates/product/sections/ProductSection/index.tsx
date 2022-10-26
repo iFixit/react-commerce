@@ -329,6 +329,7 @@ export function ProductSection({
                                  <chakra.a
                                     role="group"
                                     display="flex"
+                                    alignItems="flex-start"
                                     transition="all 300m"
                                     mb="6px"
                                  >

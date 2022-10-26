@@ -12,7 +12,6 @@ export function CompatibleDevice({ device }: CompatibleDeviceProps) {
             src={device.imageUrl}
             alt={device.deviceName ?? ''}
             w="12"
-            h="12"
             mr="3"
             borderWidth="1px"
             borderStyle="solid"
