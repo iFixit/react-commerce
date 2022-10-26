@@ -1,7 +1,8 @@
 import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-
+import { List, ListIcon, ListItem } from '@chakra-ui/react';
 import {
+   faBadgeDollar,
    faBoxCircleCheck,
    faRocket,
    faShieldCheck,
@@ -40,26 +41,75 @@ export function ServiceValuePropositionSection() {
          >
             <ValueProposition>
                <ValuePropositionIcon icon={faBoxCircleCheck} />
-               <Text fontWeight="bold">Satified or 100% refunded</Text>
+               <Text fontWeight="bold">Purchase with purpose</Text>
                <Text>
-                  Our parts quality consistently sets the industry standard.
+                  Repair makes a global impact, reduces e-waste, and saves you
+                  money.
                </Text>
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faShieldCheck} />
-               <Text fontWeight="bold">Secure payment</Text>
-               <Text>Encrypted checkout through Shopify.</Text>
+               <Text fontWeight="bold">Repair with confidence</Text>
+               <Text>
+                  All our products meet rigorous quality standards and are
+                  backed by industry-leading guarantees.
+               </Text>
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faRocket} />
-               <Text fontWeight="bold">Express shipping</Text>
-               <Text>Shipped same-day if you order before 5PM.</Text>
+               <Text fontWeight="bold">Fast shipping</Text>
+               <Text>Same day shipping if ordered by 1PM Pacific.</Text>
             </ValueProposition>
          </Stack>
       </>
    );
 }
 
+export function BuyBoxPropositionSection() {
+   return (
+      <div>
+         <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
+            <ListItem display="flex" alignItems="center">
+               <ListIcon
+                  as={FaIcon}
+                  h="4"
+                  w="5"
+                  mr="1.5"
+                  color="brand.500"
+                  icon={faBadgeDollar}
+               />
+               Purchase with purpose! Repair makes a global impact, reduces
+               e-waste, and saves you money.
+            </ListItem>
+            <ListItem display="flex" alignItems="center">
+               <ListIcon
+                  as={FaIcon}
+                  h="4"
+                  w="5"
+                  mr="1.5"
+                  color="brand.500"
+                  icon={faShieldCheck}
+               />
+               <div>
+                  All our products meet rigorous quality standards and are
+                  backed by industry-leading guarantees.
+               </div>
+            </ListItem>
+            <ListItem display="flex" alignItems="center">
+               <ListIcon
+                  as={FaIcon}
+                  h="4"
+                  w="5"
+                  mr="1.5"
+                  color="brand.500"
+                  icon={faRocket}
+               />
+               Same day shipping if ordered by 1PM Pacific.
+            </ListItem>
+         </List>
+      </div>
+   );
+}
 function ValueProposition({ children }: React.PropsWithChildren<{}>) {
    return (
       <VStack
