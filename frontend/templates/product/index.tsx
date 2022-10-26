@@ -51,7 +51,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    }, []);
 
    return (
-      <>
+      <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
@@ -84,7 +84,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <FeaturedProductsSection product={product} />
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
-      </>
+      </React.Fragment>
    );
 };
 
