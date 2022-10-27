@@ -86,7 +86,7 @@ export function CartFooter({
                         href={socialMediaAccounts.tiktok}
                         icon={TiktokLogo}
                      >
-                        Tiktok
+                        TikTok
                      </FooterNavigationLink>
                   </FooterNavigationItem>
                )}
@@ -126,7 +126,7 @@ export function CartFooter({
                         href={socialMediaAccounts.youtube}
                         icon={YoutubeLogo}
                      >
-                        Youtube
+                        YouTube
                      </FooterNavigationLink>
                   </FooterNavigationItem>
                )}
