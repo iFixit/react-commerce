@@ -181,7 +181,7 @@ export function CrossSellSection({
                }}
                size="lg"
             >
-               Frequently bought together
+               Frequently Bought Together
             </Heading>
             <Flex
                justify="center"
