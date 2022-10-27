@@ -15,7 +15,7 @@ describe('product page add to cart', () => {
    });
 
    it('Clicking Add To Cart Adds Items To Cart', () => {
-      var genArr = Array.from({ length: 5 }, (v, k) => k + 1);
+      const genArr = Array.from({ length: 5 }, (v, k) => k + 1);
       cy.wrap(genArr).each((index) => {
          cy.findByTestId('product-add-to-cart-button').click().wait(10);
          cy
