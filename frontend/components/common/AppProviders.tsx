@@ -32,7 +32,8 @@ const queryClientConfig = shouldIgnoreUserAgent
         queryCache: new QueryCache({
            onError: (error, query) => {
               Sentry.captureException(error, (scope) => {
-                 scope.setContext('React Query: query', { error, query });
+                 scope.setTag('react-query', 'query');
+                 scope.setContext('Query', { queryKey: query.queryKey });
                  return scope;
               });
               console.error(error, query);
@@ -41,11 +42,11 @@ const queryClientConfig = shouldIgnoreUserAgent
         mutationCache: new MutationCache({
            onError: (error, variables, context, mutation) => {
               Sentry.captureException(error, (scope) => {
-                 scope.setContext('React Query: mutation', {
-                    error,
+                 scope.setTag('react-query', 'mutation');
+                 scope.setContext('Mutation', {
                     variables,
                     context,
-                    mutation,
+                    mutationKey: mutation.options.mutationKey,
                  });
                  return scope;
               });
