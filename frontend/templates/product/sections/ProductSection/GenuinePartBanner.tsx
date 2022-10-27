@@ -19,7 +19,8 @@ export type GenuinePartBannerProps = {
 };
 
 const partnerCodeToComponentMap: { [key: string]: React.FC } = {
-   google_pixel: Google,
+   // Don't have permission yet
+   // google_pixel: Google,
    htc_vive: Vive,
    lenovo: Lenovo,
    logitech: Logitech,
