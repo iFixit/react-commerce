@@ -14,6 +14,7 @@ import {
    ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
+import shuffle from 'lodash/shuffle';
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
 export type ProductVariant = ReturnType<typeof getVariants>[0];
@@ -202,7 +203,8 @@ function getFeaturedProductVariants(
          }
          return getProductVariantCard(node);
       }) ?? [];
-   return filterNullableItems(variants);
+   const featuredVariants = filterNullableItems(variants);
+   return shuffle(featuredVariants).slice(0, 5);
 }
 
 function getProductVariantCard(fragment: ProductVariantCardFragment) {
