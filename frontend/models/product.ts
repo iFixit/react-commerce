@@ -14,6 +14,7 @@ import {
    ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
+import shuffle from 'lodash/shuffle';
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
 export type ProductVariant = ReturnType<typeof getVariants>[0];
@@ -110,6 +111,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          ),
          isDiscounted,
          discountPercentage,
+         description: variant.description?.value ?? null,
          kitContents: variant.kitContents?.value ?? null,
          note: variant.note?.value ?? null,
          disclaimer: variant.disclaimer?.value ?? null,
@@ -119,6 +121,9 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          crossSellVariants: getCrossSellVariants(variant),
          enabled: variant.enabled?.value === 'true',
          disableWhenOOS: variant.disableWhenOOS?.value === 'true',
+         shippingRestrictions: parseShippingRestrictions(
+            variant.shippingRestrictions?.value
+         ),
       };
    });
 }
@@ -180,7 +185,13 @@ function getCrossSellVariants(
          if (node.__typename !== 'ProductVariant') {
             return null;
          }
-         return getProductVariantCard(node);
+         const variant = getProductVariantCard(node);
+         const quantity = variant.quantityAvailable ?? 0;
+
+         if (quantity > 0 && variant.enabled) {
+            return variant;
+         }
+         return null;
       }) ?? [];
    return filterNullableItems(products);
 }
@@ -195,7 +206,8 @@ function getFeaturedProductVariants(
          }
          return getProductVariantCard(node);
       }) ?? [];
-   return filterNullableItems(variants);
+   const featuredVariants = filterNullableItems(variants);
+   return shuffle(featuredVariants).slice(0, 5);
 }
 
 function getProductVariantCard(fragment: ProductVariantCardFragment) {
@@ -218,6 +230,7 @@ function getProductVariantCard(fragment: ProductVariantCardFragment) {
          fragment.proPricesByTier?.value,
          fragment.price.currencyCode
       ),
+      enabled: fragment.enabled?.value === 'true',
    };
 }
 
@@ -297,7 +310,10 @@ const ReplacementGuideMetafieldItemSchema = z.object({
    title: z.string(),
    guide_url: z.string(),
    image_url: z.string().optional().nullable(),
-   summary: z.string().optional().nullable(),
+   summary: z.preprocess(
+      (val) => (typeof val === 'string' ? val : null),
+      z.string().optional().nullable()
+   ),
    difficulty: z.string().optional().nullable(),
    time_required: z.string().optional().nullable(),
 });
@@ -516,7 +532,32 @@ function parsePriceTiersMetafieldValue(
    }
    const errors = result.error.flatten();
    console.error(
-      `Failed to parse compatibility metafield:\n ${JSON.stringify(
+      `Failed to parse price tiers metafield:\n ${JSON.stringify(
+         errors.fieldErrors,
+         null,
+         2
+      )}`
+   );
+   return null;
+}
+
+const ShippingRestrictionsMetafieldSchema = z.array(z.string());
+
+function parseShippingRestrictions(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   const json: unknown = JSON.parse(value);
+   if (json == null) {
+      return null;
+   }
+   const result = ShippingRestrictionsMetafieldSchema.safeParse(json);
+   if (result.success) {
+      return result.data;
+   }
+   const errors = result.error.flatten();
+   console.error(
+      `Failed to parse shipping restrictions metafield:\n ${JSON.stringify(
          errors.fieldErrors,
          null,
          2

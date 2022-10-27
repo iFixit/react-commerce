@@ -23,6 +23,7 @@ query getStore($filters: StoreFiltersInput) {
             }
             socialMediaAccounts {
                twitter
+               tiktok
                facebook
                instagram
                youtube

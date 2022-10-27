@@ -6,6 +6,7 @@ import {
    AccordionItem,
    AccordionPanel,
    Alert,
+   AlertProps,
    Box,
    chakra,
    Flex,
@@ -16,21 +17,26 @@ import {
    List,
    ListIcon,
    ListItem,
+   StackProps,
    Text,
+   ThemeTypings,
    VStack,
 } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
 import {
    faBadgeDollar,
    faCircleExclamation,
+   faCircleInfo,
    faRocket,
    faShieldCheck,
+   faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
+import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
@@ -39,6 +45,7 @@ import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { Prop65Warning } from './Prop65Warning';
+import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 
 export type ProductSectionProps = {
    product: Product;
@@ -51,8 +58,6 @@ export function ProductSection({
    selectedVariant,
    onVariantChange,
 }: ProductSectionProps) {
-   const appContext = useAppContext();
-
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
    );
@@ -67,6 +72,8 @@ export function ProductSection({
       },
       [product.variants, onVariantChange]
    );
+
+   const isForSale = useIsProductForSale(product);
 
    return (
       <PageContentWrapper as="section">
@@ -104,7 +111,7 @@ export function ProductSection({
                   borderRadius="md"
                />
             </Flex>
-            <Flex
+            <Box
                w={{
                   base: 'full',
                   md: '320px',
@@ -114,7 +121,6 @@ export function ProductSection({
                   base: 0,
                   md: 5,
                }}
-               direction="column"
                fontSize="sm"
                position="relative"
             >
@@ -122,12 +128,14 @@ export function ProductSection({
                   <Text color="gray.500">Item # {selectedVariant.sku}</Text>
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
-               <ProductVariantPrice
-                  price={selectedVariant.price}
-                  compareAtPrice={selectedVariant.compareAtPrice}
-                  proPricesByTier={selectedVariant.proPricesByTier}
-               />
-               <ProductRating product={product} />
+               {isForSale && (
+                  <ProductVariantPrice
+                     price={selectedVariant.price}
+                     compareAtPrice={selectedVariant.compareAtPrice}
+                     proPricesByTier={selectedVariant.proPricesByTier}
+                  />
+               )}
+               {isForSale && <ProductRating product={product} />}
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}
@@ -142,79 +150,29 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
-               {isVariantWithSku(selectedVariant) && (
-                  <AddToCart
-                     product={product}
-                     selectedVariant={selectedVariant}
-                  />
+               {isForSale ? (
+                  isVariantWithSku(selectedVariant) && (
+                     <AddToCart
+                        product={product}
+                        selectedVariant={selectedVariant}
+                     />
+                  )
+               ) : (
+                  <NotForSaleAlert mt="4" />
                )}
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
-               <div>
-                  <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
-                     <ListItem display="flex" alignItems="center">
-                        <ListIcon
-                           as={FaIcon}
-                           h="4"
-                           w="5"
-                           mr="1.5"
-                           color="brand.500"
-                           icon={faBadgeDollar}
-                        />
-                        Satisfaction guaranteed or your money back
-                     </ListItem>
-                     <ListItem display="flex" alignItems="center">
-                        <ListIcon
-                           as={FaIcon}
-                           h="4"
-                           w="5"
-                           mr="1.5"
-                           color="brand.500"
-                           icon={faShieldCheck}
-                        />
-
-                        <div>
-                           If it doesn&apos;t meet our meticulous standards, we
-                           won&apos;t sell it. Period.
-                        </div>
-                     </ListItem>
-                     <ListItem display="flex" alignItems="center">
-                        <ListIcon
-                           as={FaIcon}
-                           h="4"
-                           w="5"
-                           mr="1.5"
-                           color="brand.500"
-                           icon={faRocket}
-                        />
-                        Same day shipping if ordered by 5PM
-                     </ListItem>
-                  </List>
-               </div>
+               {isForSale && <BuyBoxPropositionSection />}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>
                      <CustomAccordionPanel>
                         <VStack>
-                           <Box
-                              dangerouslySetInnerHTML={{
-                                 __html: product.descriptionHtml,
-                              }}
-                              fontSize="sm"
-                              sx={{
-                                 ul: {
-                                    my: 3,
-                                    pl: 5,
-                                 },
-                                 p: {
-                                    mb: 3,
-                                    _last: {
-                                       mb: 0,
-                                    },
-                                 },
-                              }}
-                           />
+                           <VariantDescription>
+                              {selectedVariant.description ??
+                                 product.descriptionHtml}
+                           </VariantDescription>
                            {selectedVariant.note && (
                               <Alert
                                  status="info"
@@ -224,18 +182,15 @@ export function ProductSection({
                                  alignItems="flex-start"
                               >
                                  <FaIcon
-                                    icon={faCircleExclamation}
+                                    icon={faCircleInfo}
                                     h="4"
                                     mt="0.5"
                                     mr="2.5"
                                     color="brand.500"
                                  />
-                                 <Box
-                                    fontSize="sm"
-                                    dangerouslySetInnerHTML={{
-                                       __html: selectedVariant.note,
-                                    }}
-                                 />
+                                 <AlertText colorScheme="brand">
+                                    {selectedVariant.note}
+                                 </AlertText>
                               </Alert>
                            )}
                            {selectedVariant.disclaimer && (
@@ -253,12 +208,9 @@ export function ProductSection({
                                     mr="2.5"
                                     color="orange.500"
                                  />
-                                 <Box
-                                    fontSize="sm"
-                                    dangerouslySetInnerHTML={{
-                                       __html: selectedVariant.disclaimer,
-                                    }}
-                                 />
+                                 <AlertText colorScheme="orange">
+                                    {selectedVariant.disclaimer}
+                                 </AlertText>
                               </Alert>
                            )}
                            {selectedVariant.warning && (
@@ -270,18 +222,15 @@ export function ProductSection({
                                  alignItems="flex-start"
                               >
                                  <FaIcon
-                                    icon={faCircleExclamation}
+                                    icon={faTriangleExclamation}
                                     color="red.500"
                                     h="4"
                                     mt="0.5"
                                     mr="2.5"
                                  />
-                                 <Box
-                                    fontSize="sm"
-                                    dangerouslySetInnerHTML={{
-                                       __html: selectedVariant.warning,
-                                    }}
-                                 />
+                                 <AlertText colorScheme="red">
+                                    {selectedVariant.warning}
+                                 </AlertText>
                               </Alert>
                            )}
                         </VStack>
@@ -334,6 +283,7 @@ export function ProductSection({
                                  <chakra.a
                                     role="group"
                                     display="flex"
+                                    alignItems="flex-start"
                                     transition="all 300m"
                                     mb="6px"
                                  >
@@ -392,31 +342,9 @@ export function ProductSection({
                         />
                      </CustomAccordionPanel>
                   </AccordionItem>
-
-                  <AccordionItem hidden={selectedVariant.warranty == null}>
-                     <CustomAccordionButton>Warranty</CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <HStack
-                           color="brand.500"
-                           fontSize="sm"
-                           as="a"
-                           href={`${appContext.ifixitOrigin}/Info/Warranty`}
-                        >
-                           {isLifetimeWarranty(
-                              selectedVariant.warranty ?? ''
-                           ) && (
-                              <Icon
-                                 as={QualityGuarantee}
-                                 boxSize="50px"
-                                 color="brand.500"
-                                 borderRadius="full"
-                              />
-                           )}
-                           <Box>{selectedVariant.warranty}</Box>
-                        </HStack>
-                     </CustomAccordionPanel>
-                  </AccordionItem>
                </Accordion>
+
+               <VariantWarranty variant={selectedVariant} mt="5" />
 
                <VStack mt="10" align="flex-start" spacing="4">
                   {product.prop65WarningType && product.prop65Chemicals && (
@@ -438,7 +366,7 @@ export function ProductSection({
                      />
                   )}
                </VStack>
-            </Flex>
+            </Box>
          </Flex>
       </PageContentWrapper>
    );
@@ -488,5 +416,131 @@ function CustomAccordionPanel({ children }: CustomAccordionPanelProps) {
       <AccordionPanel pb={4} px="1.5">
          {children}
       </AccordionPanel>
+   );
+}
+
+type VariantWarrantyProps = StackProps & {
+   variant: ProductVariant;
+};
+
+function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
+   const appContext = useAppContext();
+   return (
+      <HStack
+         color="brand.500"
+         fontSize="sm"
+         as="a"
+         target="_blank"
+         href={`${appContext.ifixitOrigin}/Info/Warranty`}
+         {...other}
+      >
+         {isLifetimeWarranty(variant.warranty ?? '') && (
+            <Icon
+               as={QualityGuarantee}
+               boxSize="50px"
+               color="brand.500"
+               borderRadius="full"
+            />
+         )}
+         <Box>{variant.warranty}</Box>
+      </HStack>
+   );
+}
+
+function NotForSaleAlert(props: AlertProps) {
+   return (
+      <Alert
+         status="warning"
+         borderWidth={1}
+         borderColor="orange.300"
+         borderRadius="md"
+         alignItems="flex-start"
+         {...props}
+      >
+         <FaIcon
+            icon={faCircleExclamation}
+            h="4"
+            mt="0.5"
+            mr="2.5"
+            color="orange.500"
+         />
+         <Box fontSize="sm">
+            <p>Product available for pro users only.</p>
+            <p>
+               Learn more about{' '}
+               <Link
+                  href="https://pro.ifixit.com"
+                  target="_blank"
+                  fontWeight="bold"
+                  textDecoration="underline"
+                  _hover={{
+                     color: 'orange.800',
+                  }}
+               >
+                  iFixit Pro
+               </Link>
+               .
+            </p>
+         </Box>
+      </Alert>
+   );
+}
+
+type VariantDescriptionProps = {
+   children: string;
+};
+
+function VariantDescription({ children }: VariantDescriptionProps) {
+   return (
+      <Box
+         dangerouslySetInnerHTML={{
+            __html: children,
+         }}
+         fontSize="sm"
+         sx={{
+            ul: {
+               my: 3,
+               pl: 5,
+            },
+            p: {
+               mb: 3,
+               _last: {
+                  mb: 0,
+               },
+            },
+            a: {
+               color: 'brand.500',
+            },
+            'a:hover': {
+               textDecoration: 'underline',
+            },
+         }}
+      />
+   );
+}
+
+type AlertTextProps = {
+   children: string;
+   colorScheme: ThemeTypings['colorSchemes'];
+};
+
+function AlertText({ children, colorScheme }: AlertTextProps) {
+   return (
+      <Box
+         fontSize="sm"
+         sx={{
+            a: {
+               fontWeight: 'bold',
+               textDecoration: 'underline',
+               transition: 'all 300ms',
+            },
+            'a:hover': {
+               color: `${colorScheme}.800`,
+            },
+         }}
+         dangerouslySetInnerHTML={{
+            __html: children,
+         }}
+      />
    );
 }

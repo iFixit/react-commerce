@@ -35,7 +35,7 @@ query findProduct($handle: String) {
          namespace: "ifixit"
          key: "featured_products_ref"
       ) {
-         references(first: 5) {
+         references(first: 25) {
             nodes {
                __typename
                ...ProductVariantCard
@@ -108,6 +108,9 @@ query findProduct($handle: String) {
                name
                value
             }
+            description: metafield(namespace: "ifixit", key: "description") {
+               value
+            }
             kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
                value
             }
@@ -149,6 +152,12 @@ query findProduct($handle: String) {
             internalDisplayName: metafield(
                namespace: "ifixit"
                key: "internal_display_name"
+            ) {
+               value
+            }
+            shippingRestrictions: metafield(
+               namespace: "ifixit"
+               key: "shipping_restrictions"
             ) {
                value
             }

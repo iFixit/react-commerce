@@ -142,6 +142,33 @@ export type ComponentPageHero = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentPageStatItem = {
+   __typename?: 'ComponentPageStatItem';
+   id: Scalars['ID'];
+   label: Scalars['String'];
+   value: Scalars['String'];
+};
+
+export type ComponentPageStatItemFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentPageStatItemFiltersInput>>>;
+   label?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ComponentPageStatItemFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentPageStatItemFiltersInput>>>;
+   value?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentPageStats = {
+   __typename?: 'ComponentPageStats';
+   id: Scalars['ID'];
+   stats: Array<Maybe<ComponentPageStatItem>>;
+};
+
+export type ComponentPageStatsStatsArgs = {
+   filters?: InputMaybe<ComponentPageStatItemFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentProductListBanner = {
    __typename?: 'ComponentProductListBanner';
    callToActionLabel: Scalars['String'];
@@ -254,6 +281,7 @@ export type ComponentStoreSocialMediaAccounts = {
    instagram?: Maybe<Scalars['String']>;
    repairOrg?: Maybe<Scalars['String']>;
    twitter?: Maybe<Scalars['String']>;
+   tiktok?: Maybe<Scalars['String']>;
    youtube?: Maybe<Scalars['String']>;
 };
 
@@ -269,6 +297,7 @@ export type ComponentStoreSocialMediaAccountsFiltersInput = {
    >;
    repairOrg?: InputMaybe<StringFilterInput>;
    twitter?: InputMaybe<StringFilterInput>;
+   tiktok?: InputMaybe<StringFilterInput>;
    youtube?: InputMaybe<StringFilterInput>;
 };
 
@@ -278,6 +307,7 @@ export type ComponentStoreSocialMediaAccountsInput = {
    instagram?: InputMaybe<Scalars['String']>;
    repairOrg?: InputMaybe<Scalars['String']>;
    twitter?: InputMaybe<Scalars['String']>;
+   tiktok?: InputMaybe<Scalars['String']>;
    youtube?: InputMaybe<Scalars['String']>;
 };
 
@@ -367,6 +397,8 @@ export type GenericMorph =
    | ComponentPageCallToAction
    | ComponentPageCategory
    | ComponentPageHero
+   | ComponentPageStatItem
+   | ComponentPageStats
    | ComponentProductListBanner
    | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
@@ -914,6 +946,7 @@ export type PageRelationResponseCollection = {
 export type PageSectionsDynamicZone =
    | ComponentPageBrowse
    | ComponentPageHero
+   | ComponentPageStats
    | Error;
 
 export type Pagination = {
@@ -1770,6 +1803,16 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
+               | {
+                    __typename: 'ComponentPageStats';
+                    id: string;
+                    stats: Array<{
+                       __typename?: 'ComponentPageStatItem';
+                       id: string;
+                       label: string;
+                       value: string;
+                    } | null>;
+                 }
                | { __typename: 'Error' }
                | null
             >;
@@ -2615,6 +2658,7 @@ export type GetStoreQuery = {
             socialMediaAccounts: {
                __typename?: 'ComponentStoreSocialMediaAccounts';
                twitter?: string | null;
+               tiktok?: string | null;
                facebook?: string | null;
                instagram?: string | null;
                youtube?: string | null;
@@ -3014,13 +3058,21 @@ export const FindPageDocument = `
             image {
               ...ImageFields
             }
-            categories {
+            categories(pagination: {limit: 100}) {
               id
               productList {
                 data {
                   ...ProductListFields
                 }
               }
+            }
+          }
+          ... on ComponentPageStats {
+            id
+            stats {
+              id
+              label
+              value
             }
           }
         }
@@ -3250,6 +3302,7 @@ export const GetStoreDocument = `
         }
         socialMediaAccounts {
           twitter
+          tiktok
           facebook
           instagram
           youtube

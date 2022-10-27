@@ -6342,10 +6342,12 @@ export type FindProductQuery = {
                     __typename: 'ProductVariant';
                     id: string;
                     sku?: string | null;
+                    quantityAvailable?: number | null;
                     product: {
                        __typename?: 'Product';
                        handle: string;
                        title: string;
+                       tags: Array<string>;
                        rating?: {
                           __typename?: 'Metafield';
                           value: string;
@@ -6382,6 +6384,10 @@ export type FindProductQuery = {
                        value: string;
                     } | null;
                     warranty?: {
+                       __typename?: 'Metafield';
+                       value: string;
+                    } | null;
+                    enabled?: {
                        __typename?: 'Metafield';
                        value: string;
                     } | null;
@@ -6447,6 +6453,7 @@ export type FindProductQuery = {
                name: string;
                value: string;
             }>;
+            description?: { __typename?: 'Metafield'; value: string } | null;
             kitContents?: { __typename?: 'Metafield'; value: string } | null;
             note?: { __typename?: 'Metafield'; value: string } | null;
             disclaimer?: { __typename?: 'Metafield'; value: string } | null;
@@ -6469,10 +6476,12 @@ export type FindProductQuery = {
                           __typename: 'ProductVariant';
                           id: string;
                           sku?: string | null;
+                          quantityAvailable?: number | null;
                           product: {
                              __typename?: 'Product';
                              handle: string;
                              title: string;
+                             tags: Array<string>;
                              rating?: {
                                 __typename?: 'Metafield';
                                 value: string;
@@ -6512,12 +6521,20 @@ export type FindProductQuery = {
                              __typename?: 'Metafield';
                              value: string;
                           } | null;
+                          enabled?: {
+                             __typename?: 'Metafield';
+                             value: string;
+                          } | null;
                        }
                      | { __typename: 'Video' }
                   >;
                } | null;
             } | null;
             internalDisplayName?: {
+               __typename?: 'Metafield';
+               value: string;
+            } | null;
+            shippingRestrictions?: {
                __typename?: 'Metafield';
                value: string;
             } | null;
@@ -6530,10 +6547,12 @@ export type ProductVariantCardFragment = {
    __typename?: 'ProductVariant';
    id: string;
    sku?: string | null;
+   quantityAvailable?: number | null;
    product: {
       __typename?: 'Product';
       handle: string;
       title: string;
+      tags: Array<string>;
       rating?: { __typename?: 'Metafield'; value: string } | null;
       reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
       oemPartnership?: { __typename?: 'Metafield'; value: string } | null;
@@ -6554,15 +6573,18 @@ export type ProductVariantCardFragment = {
    } | null;
    proPricesByTier?: { __typename?: 'Metafield'; value: string } | null;
    warranty?: { __typename?: 'Metafield'; value: string } | null;
+   enabled?: { __typename?: 'Metafield'; value: string } | null;
 };
 
 export const ProductVariantCardFragmentDoc = `
     fragment ProductVariantCard on ProductVariant {
   id
   sku
+  quantityAvailable
   product {
     handle
     title
+    tags
     rating: metafield(namespace: "reviews", key: "rating") {
       value
     }
@@ -6592,6 +6614,9 @@ export const ProductVariantCardFragmentDoc = `
     value
   }
   warranty: metafield(namespace: "ifixit", key: "warranty") {
+    value
+  }
+  enabled: metafield(namespace: "ifixit", key: "enabled2") {
     value
   }
 }
@@ -6625,7 +6650,7 @@ export const FindProductDocument = `
       namespace: "ifixit"
       key: "featured_products_ref"
     ) {
-      references(first: 5) {
+      references(first: 25) {
         nodes {
           __typename
           ...ProductVariantCard
@@ -6689,6 +6714,9 @@ export const FindProductDocument = `
           name
           value
         }
+        description: metafield(namespace: "ifixit", key: "description") {
+          value
+        }
         kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
           value
         }
@@ -6724,6 +6752,12 @@ export const FindProductDocument = `
         internalDisplayName: metafield(
           namespace: "ifixit"
           key: "internal_display_name"
+        ) {
+          value
+        }
+        shippingRestrictions: metafield(
+          namespace: "ifixit"
+          key: "shipping_restrictions"
         ) {
           value
         }

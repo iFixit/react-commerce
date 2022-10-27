@@ -11,6 +11,7 @@ import { findProduct } from '@models/product';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
+import { useIsProductForSale } from './hooks/useIsProductForSale';
 import {
    ProductTemplateProps,
    useProductTemplateProps,
@@ -30,6 +31,8 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
+   const isProductForSale = useIsProductForSale(product);
+
    React.useEffect(() => {
       trackMatomoEcommerceView({
          productSku: selectedVariant.sku ?? selectedVariant.id,
@@ -48,7 +51,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    }, []);
 
    return (
-      <>
+      <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
@@ -63,19 +66,25 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             />
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
-            <CrossSellSection
-               product={product}
-               selectedVariant={selectedVariant}
-            />
-            <ReviewsSection
-               product={product}
-               selectedVariant={selectedVariant}
-            />
+            {isProductForSale && (
+               <CrossSellSection
+                  key={selectedVariant.id}
+                  product={product}
+                  selectedVariant={selectedVariant}
+               />
+            )}
+            {isProductForSale && (
+               <ReviewsSection
+                  product={product}
+                  selectedVariant={selectedVariant}
+               />
+            )}
+
             <CompatibilitySection compatibility={product.compatibility} />
             <FeaturedProductsSection product={product} />
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
-      </>
+      </React.Fragment>
    );
 };
 
@@ -106,9 +115,6 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       const proOnly = product?.tags.find((tag: string) => tag === 'Pro Only');
       if (proOnly) {
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
-      } else {
-         // @TODO: Remove this before the page goes live
-         context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       }
 
       const pageProps: ProductTemplateProps = {

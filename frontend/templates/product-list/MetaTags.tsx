@@ -1,4 +1,5 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
+import { productListPath } from '@helpers/path-helpers';
 import {
    getProductListTitle,
    stylizeDeviceItemType,
@@ -38,9 +39,9 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const itemTypeHandle = itemType
       ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
       : '';
-   const canonicalUrl = `${appContext.ifixitOrigin}${
-      productList.path
-   }${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
+   const canonicalUrl = `${appContext.ifixitOrigin}${productListPath(
+      productList
+   )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
    const imageUrl = productList.image?.url;
    const productListExemptions =
       noIndexExemptions[productList.deviceTitle ?? ''];

@@ -9,7 +9,7 @@ const FILES_TABLE_NAME = 'files';
 
 export class MediaRepository {
    private strapi: Strapi.Strapi;
-   private mediaList: MediaItem[] = [];
+   private mediaById: Record<string, MediaItem> = {};
 
    constructor({ strapi }: ConstructorArgs) {
       this.strapi = strapi;
@@ -17,15 +17,17 @@ export class MediaRepository {
 
    async addMedia(media: MediaItem | MediaItem[]) {
       const list = Array.isArray(media) ? media : [media];
-      this.mediaList.push(...list);
+      list.forEach((item) => {
+         this.mediaById[item.id] = item;
+      });
    }
 
    get count() {
-      return this.mediaList.length;
+      return this.items.length;
    }
 
    get items() {
-      return this.mediaList;
+      return Object.values(this.mediaById);
    }
 
    /**
@@ -38,7 +40,7 @@ export class MediaRepository {
    }
 
    async save() {
-      const batches = chunk(this.mediaList, 20);
+      const batches = chunk(this.items, 20);
       // @ts-ignore
       const knex = this.strapi.db.connection;
 
