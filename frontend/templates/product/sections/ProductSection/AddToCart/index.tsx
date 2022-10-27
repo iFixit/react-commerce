@@ -255,7 +255,13 @@ function InventoryMessage({
    const remaining = Math.max(0, quantityAvailable - quantityAddedToCart);
 
    return (
-      <Flex color="red.600" py="0" fontSize="sm" align="center">
+      <Flex
+         color="red.600"
+         mt="2.5"
+         fontSize="sm"
+         align="center"
+         justify="center"
+      >
          <FaIcon
             icon={faCircleExclamation}
             display="block"
