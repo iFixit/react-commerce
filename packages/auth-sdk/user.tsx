@@ -1,6 +1,6 @@
 import { invariant, isRecord } from '@ifixit/helpers';
 import { useQuery } from 'react-query';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
 export type User = {
@@ -22,16 +22,15 @@ const userDataLocalKey = 'user.data';
 
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
-   const cachedUserData = useMemo(
-      () =>
-         !hasLocalStorage
-            ? null
-            : (() => {
-                 const storedString = localStorage.getItem(userDataLocalKey);
-                 return storedString === null ? null : JSON.parse(storedString);
-              })(),
-      []
-   );
+   const getCachedUserData = useCallback(() => {
+      if (hasLocalStorage) {
+         const storedString = localStorage.getItem(userDataLocalKey);
+         console.log('Extracting');
+         return storedString === null ? null : JSON.parse(storedString);
+      } else {
+         return null;
+      }
+   }, []);
    const query = useQuery(
       userKeys.user,
       () => {
@@ -53,7 +52,7 @@ export function useAuthenticatedUser() {
       {
          retryOnMount: false,
          staleTime: Infinity,
-         placeholderData: cachedUserData,
+         placeholderData: getCachedUserData,
       }
    );
 
