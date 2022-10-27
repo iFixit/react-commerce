@@ -115,9 +115,6 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       const proOnly = product?.tags.find((tag: string) => tag === 'Pro Only');
       if (proOnly) {
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
-      } else {
-         // @TODO: Remove this before the page goes live
-         context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       }
 
       const pageProps: ProductTemplateProps = {
