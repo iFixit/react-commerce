@@ -6,6 +6,7 @@ import {
    AccordionItem,
    AccordionPanel,
    Alert,
+   AlertProps,
    Box,
    chakra,
    Flex,
@@ -35,6 +36,7 @@ import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
+import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
@@ -69,6 +71,8 @@ export function ProductSection({
       },
       [product.variants, onVariantChange]
    );
+
+   const isForSale = useIsProductForSale(product);
 
    return (
       <PageContentWrapper as="section">
@@ -106,7 +110,7 @@ export function ProductSection({
                   borderRadius="md"
                />
             </Flex>
-            <Flex
+            <Box
                w={{
                   base: 'full',
                   md: '320px',
@@ -116,7 +120,6 @@ export function ProductSection({
                   base: 0,
                   md: 5,
                }}
-               direction="column"
                fontSize="sm"
                position="relative"
             >
@@ -124,12 +127,14 @@ export function ProductSection({
                   <Text color="gray.500">Item # {selectedVariant.sku}</Text>
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
-               <ProductVariantPrice
-                  price={selectedVariant.price}
-                  compareAtPrice={selectedVariant.compareAtPrice}
-                  proPricesByTier={selectedVariant.proPricesByTier}
-               />
-               <ProductRating product={product} />
+               {isForSale && (
+                  <ProductVariantPrice
+                     price={selectedVariant.price}
+                     compareAtPrice={selectedVariant.compareAtPrice}
+                     proPricesByTier={selectedVariant.proPricesByTier}
+                  />
+               )}
+               {isForSale && <ProductRating product={product} />}
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}
@@ -144,13 +149,17 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
-               {isVariantWithSku(selectedVariant) && (
-                  <AddToCart
-                     product={product}
-                     selectedVariant={selectedVariant}
-                  />
+               {isForSale ? (
+                  isVariantWithSku(selectedVariant) && (
+                     <AddToCart
+                        product={product}
+                        selectedVariant={selectedVariant}
+                     />
+                  )
+               ) : (
+                  <NotForSaleAlert mt="4" />
                )}
-               <BuyBoxPropositionSection />
+               {isForSale && <BuyBoxPropositionSection />}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>
@@ -353,7 +362,7 @@ export function ProductSection({
                      />
                   )}
                </VStack>
-            </Flex>
+            </Box>
          </Flex>
       </PageContentWrapper>
    );
@@ -431,6 +440,45 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
          )}
          <Box>{variant.warranty}</Box>
       </HStack>
+   );
+}
+
+function NotForSaleAlert(props: AlertProps) {
+   return (
+      <Alert
+         status="warning"
+         borderWidth={1}
+         borderColor="orange.300"
+         borderRadius="md"
+         alignItems="flex-start"
+         {...props}
+      >
+         <FaIcon
+            icon={faCircleExclamation}
+            h="4"
+            mt="0.5"
+            mr="2.5"
+            color="orange.500"
+         />
+         <Box fontSize="sm">
+            <p>Product available for pro users only.</p>
+            <p>
+               Learn more about{' '}
+               <Link
+                  href="https://pro.ifixit.com"
+                  target="_blank"
+                  fontWeight="bold"
+                  textDecoration="underline"
+                  _hover={{
+                     color: 'orange.800',
+                  }}
+               >
+                  iFixit Pro
+               </Link>
+               .
+            </p>
+         </Box>
+      </Alert>
    );
 }
 
