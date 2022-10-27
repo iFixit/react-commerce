@@ -141,19 +141,21 @@ export function useLocalPreference<Data = any>(
    const [data, setData] = React.useState(defaultData);
 
    React.useEffect(() => {
-      const serializedData = localStorage.getItem(key);
-      if (serializedData != null) {
-         try {
+      try {
+         const serializedData = localStorage.getItem(key);
+         if (serializedData != null) {
             const data = JSON.parse(serializedData);
             setData(data as Data);
-         } catch (error) {}
-      }
+         }
+      } catch (error) {}
    }, []);
 
    const setAndSave = (data: Data) => {
       setData(data);
       const serializedData = JSON.stringify(data);
-      localStorage.setItem(key, serializedData);
+      try {
+         localStorage.setItem(key, serializedData);
+      } catch (error) {}
    };
 
    return [data, setAndSave];

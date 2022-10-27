@@ -24,9 +24,14 @@ export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
    const getCachedUserData = useCallback(() => {
       if (hasLocalStorage) {
-         const storedString = localStorage.getItem(userDataLocalKey);
-         console.log('Extracting');
-         return storedString === null ? null : JSON.parse(storedString);
+         try {
+            const storedString = localStorage.getItem(userDataLocalKey);
+            return storedString === null ? null : JSON.parse(storedString);
+            // On some browsers, with some security settings on, just calling
+            // methods on localStorage throws exceptions.
+         } catch (error) {
+            return null;
+         }
       } else {
          return null;
       }
