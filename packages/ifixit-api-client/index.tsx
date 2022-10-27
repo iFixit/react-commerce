@@ -7,6 +7,9 @@ export interface ClientOptions {
    origin: string;
    version?: string;
 }
+type IFixitRequestInit = RequestInit & {
+   disableSentry?: boolean;
+};
 
 export class IFixitAPIClient {
    origin: string;
@@ -17,40 +20,41 @@ export class IFixitAPIClient {
       this.version = options.version ?? '2.0';
    }
 
-   async get(endpoint: string, init?: RequestInit) {
+   async get(endpoint: string, init?: IFixitRequestInit) {
       return this.fetch(endpoint, {
          ...init,
          method: 'GET',
       });
    }
 
-   async post(endpoint: string, init?: RequestInit) {
+   async post(endpoint: string, init?: IFixitRequestInit) {
       return this.fetch(endpoint, {
          ...init,
          method: 'POST',
       });
    }
 
-   async put(endpoint: string, init?: RequestInit) {
+   async put(endpoint: string, init?: IFixitRequestInit) {
       return this.fetch(endpoint, {
          ...init,
          method: 'PUT',
       });
    }
 
-   async delete(endpoint: string, init?: RequestInit) {
+   async delete(endpoint: string, init?: IFixitRequestInit) {
       return this.fetch(endpoint, {
          ...init,
          method: 'DELETE',
       });
    }
 
-   async fetch(endpoint: string, init?: RequestInit) {
+   async fetch(endpoint: string, init?: IFixitRequestInit) {
+      const fetchMethod = init?.disableSentry ? fetch : sentryFetch;
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
       const response = await logAsync(
          `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
          () =>
-            sentryFetch(url, {
+            fetchMethod(url, {
                credentials: 'include',
                ...init,
             })

@@ -9,6 +9,9 @@
       "twitter": {
          "type": "string"
       },
+      "tiktok": {
+         "type": "string"
+      },
       "facebook": {
          "type": "string"
       },

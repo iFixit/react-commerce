@@ -242,30 +242,34 @@ type ImageProps = {
    enableZoom?: boolean;
 };
 
+const ZOOM_FACTOR = 3;
+const CONTAINER_PADDING = 24;
+
 function ImageWithZoom({ image, enableZoom }: ImageProps) {
-   const ZOOM_FACTOR = 3;
-   const CONTAINER_PADDING = 24;
    const [show, setShow] = React.useState(false);
-   const [position, setPosition] = React.useState<Position>({
+   const [dimensionData, setDimensionData] = React.useState<DimensionData>({
+      zoomMaskAspectRatio: 1,
+      galleryAspectRatio: 1,
+      galleryWidth: 0,
+      galleryHeight: 0,
+      galleryRealWidth: 0,
+      galleryRealHeight: 0,
+      pointerWidth: 0,
+      pointerHeight: 0,
+   });
+   const [pointerData, setPointerData] = React.useState<PointerData>({
       left: 0,
       top: 0,
       pointerLeft: 0,
       pointerTop: 0,
-      pointerLeftPercentage: 0,
-      pointerTopPercentage: 0,
+      zoomTranslationLeftPercentage: 0,
+      zoomTranslationTopPercentage: 0,
    });
 
    const galleryRef = React.useRef<HTMLImageElement | null>(null);
-   const zoomMaskRef = React.useRef<HTMLDivElement | null>(null);
    const pointerRef = React.useRef<HTMLDivElement | null>(null);
    const zoomPortalRef = React.useRef<HTMLElement | null>(null);
-
-   const zoomAspectRatio =
-      (zoomMaskRef.current?.clientWidth ?? 0) /
-      (zoomMaskRef.current?.clientHeight ?? 1);
-   const pointerWidth =
-      (zoomAspectRatio * (galleryRef.current?.clientHeight || 0)) / ZOOM_FACTOR;
-   const pointerHeight = (galleryRef.current?.clientHeight || 0) / ZOOM_FACTOR;
+   const zoomMaskRef = React.useRef<HTMLDivElement | null>(null);
 
    React.useEffect(() => {
       zoomPortalRef.current = document.getElementById('zoom-container');
@@ -275,10 +279,30 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
       ? {
            onMouseOver: () => setShow(true),
            onMouseOut: () => setShow(false),
-           onMouseMove: (event: React.MouseEvent<HTMLElement>) =>
-              setPosition(
-                 computePointerCenter({ event, pointerWidth, pointerHeight })
-              ),
+           onMouseMove: (event: React.MouseEvent<HTMLImageElement>) => {
+              setDimensionData(
+                 computeDimensionData({ zoomMaskRef, galleryRef })
+              );
+              const {
+                 galleryWidth,
+                 galleryHeight,
+                 galleryRealWidth,
+                 galleryRealHeight,
+                 pointerWidth,
+                 pointerHeight,
+              } = dimensionData;
+              setPointerData(
+                 computePointerData({
+                    event,
+                    galleryWidth,
+                    galleryHeight,
+                    galleryRealWidth,
+                    galleryRealHeight,
+                    pointerWidth,
+                    pointerHeight,
+                 })
+              );
+           },
         }
       : {};
 
@@ -290,17 +314,31 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
          overflow="hidden"
          justify="center"
          bg="white"
-         p={`${CONTAINER_PADDING}px`}
+         position="relative"
+         h="0"
+         pb="100%"
       >
-         <Img
-            ref={galleryRef}
-            src={image.url}
-            alt={image.altText ?? ''}
-            htmlWidth={image.width ?? undefined}
-            htmlHeight={image.height ?? undefined}
-            objectFit="contain"
-            {...eventHandlers}
-         />
+         <Flex
+            position="absolute"
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            height="100%"
+            p={`${CONTAINER_PADDING}px`}
+         >
+            <Img
+               ref={galleryRef}
+               src={image.url}
+               alt={image.altText ?? ''}
+               htmlWidth={image.width ?? undefined}
+               htmlHeight={image.height ?? undefined}
+               objectFit="contain"
+               width="100%"
+               height="100%"
+               {...eventHandlers}
+            />
+         </Flex>
+
          {enableZoom && show && (
             <Box
                ref={pointerRef}
@@ -312,10 +350,10 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
                justifyContent="center"
                pointerEvents="none"
                transform={`translate(${
-                  position?.pointerLeft + CONTAINER_PADDING
-               }px, ${position?.pointerTop + CONTAINER_PADDING}px)`}
-               width={pointerWidth}
-               height={pointerHeight}
+                  pointerData?.pointerLeft + CONTAINER_PADDING
+               }px, ${pointerData?.pointerTop + CONTAINER_PADDING}px)`}
+               width={`${dimensionData.pointerWidth}px`}
+               height={`${dimensionData.pointerHeight}px`}
                color="brand.500"
             >
                <Box
@@ -369,14 +407,20 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
                         borderColor="gray.200"
                         borderWidth={1}
                         borderRadius="md"
+                        bg="white"
                      >
                         <Img
                            src={image.url}
                            pos="absolute"
                            left="0"
                            top="0"
-                           transform={`translate(-${position?.pointerLeftPercentage}%, -${position?.pointerTopPercentage}%)`}
-                           height={`${ZOOM_FACTOR * 100}%`}
+                           transform={`translate(${-pointerData?.zoomTranslationLeftPercentage}%, ${-pointerData?.zoomTranslationTopPercentage}%)`}
+                           height={`${
+                              100 *
+                              ZOOM_FACTOR *
+                              (dimensionData.galleryRealHeight /
+                                 dimensionData.galleryHeight)
+                           }%`}
                            margin="auto"
                            maxW="none"
                         />
@@ -405,9 +449,18 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
          justify="center"
          cursor="pointer"
          onClick={onClick}
+         bg="white"
+         w="100%"
+         pb="100%"
+         position="relative"
+         h="0"
       >
          <Flex
-            bg="white"
+            position="absolute"
+            width="100%"
+            height="100%"
+            alignItems="center"
+            justifyContent="center"
             p="1"
             borderColor={active ? 'gray.400' : 'white'}
             borderWidth={1}
@@ -452,48 +505,129 @@ function ImagePlaceholder() {
    );
 }
 
-type Position = {
-   left: number;
-   top: number;
-   pointerLeft: number;
-   pointerTop: number;
-   pointerLeftPercentage: number;
-   pointerTopPercentage: number;
-};
-
-type ComputePointerCenterParams = {
-   event: React.MouseEvent<HTMLElement>;
+type DimensionData = {
+   zoomMaskAspectRatio: number;
+   galleryAspectRatio: number;
+   galleryWidth: number;
+   galleryHeight: number;
+   galleryRealWidth: number;
+   galleryRealHeight: number;
    pointerWidth: number;
    pointerHeight: number;
 };
 
-const computePointerCenter = ({
+type ComputeDimensionDataParams = {
+   zoomMaskRef: React.MutableRefObject<HTMLDivElement | null>;
+   galleryRef: React.MutableRefObject<HTMLImageElement | null>;
+};
+
+const computeDimensionData = ({
+   zoomMaskRef,
+   galleryRef,
+}: ComputeDimensionDataParams): DimensionData => {
+   let zoomMaskAspectRatio = 1,
+      galleryAspectRatio = 1,
+      galleryWidth = 0,
+      galleryHeight = 0,
+      galleryRealWidth = 0,
+      galleryRealHeight = 0,
+      pointerWidth = 0,
+      pointerHeight = 0;
+
+   if (zoomMaskRef.current && galleryRef.current) {
+      const { clientWidth: zoomWidth, clientHeight: zoomHeight } =
+         zoomMaskRef.current;
+      const {
+         clientWidth,
+         clientHeight,
+         naturalWidth: galleryNaturalWidth,
+         naturalHeight: galleryNaturalHeight,
+      } = galleryRef.current;
+
+      galleryWidth = clientWidth;
+      galleryHeight = clientHeight;
+
+      zoomMaskAspectRatio = zoomHeight / zoomWidth;
+      galleryAspectRatio = galleryNaturalHeight / galleryNaturalWidth;
+
+      galleryRealWidth =
+         galleryAspectRatio > 1
+            ? galleryHeight / galleryAspectRatio
+            : galleryWidth;
+      galleryRealHeight =
+         galleryAspectRatio > 1
+            ? galleryHeight
+            : galleryWidth * galleryAspectRatio;
+      pointerWidth = galleryHeight / (zoomMaskAspectRatio * ZOOM_FACTOR || 1);
+      pointerHeight = galleryHeight / ZOOM_FACTOR;
+   }
+
+   return {
+      zoomMaskAspectRatio,
+      galleryAspectRatio,
+      galleryWidth,
+      galleryHeight,
+      galleryRealWidth,
+      galleryRealHeight,
+      pointerWidth,
+      pointerHeight,
+   };
+};
+
+type PointerData = {
+   left: number;
+   top: number;
+   pointerLeft: number;
+   pointerTop: number;
+   zoomTranslationLeftPercentage: number;
+   zoomTranslationTopPercentage: number;
+};
+
+type ComputePointerDataParams = {
+   event: React.MouseEvent<HTMLImageElement>;
+   galleryWidth: number;
+   galleryHeight: number;
+   galleryRealWidth: number;
+   galleryRealHeight: number;
+   pointerWidth: number;
+   pointerHeight: number;
+};
+
+const computePointerData = ({
    event,
+   galleryWidth,
+   galleryHeight,
+   galleryRealWidth,
+   galleryRealHeight,
    pointerWidth,
    pointerHeight,
-}: ComputePointerCenterParams): Position => {
-   const { width, height } = event.currentTarget.getBoundingClientRect();
+}: ComputePointerDataParams): PointerData => {
    const left = event.nativeEvent.offsetX;
    const top = event.nativeEvent.offsetY;
    const pointerCenterLeft = Math.max(
       pointerWidth / 2,
-      Math.min(width - pointerWidth / 2, left)
+      Math.min(galleryWidth - pointerWidth / 2, left)
    );
    const pointerCenterTop = Math.max(
       pointerHeight / 2,
-      Math.min(height - pointerHeight / 2, top)
+      Math.min(galleryHeight - pointerHeight / 2, top)
    );
    const pointerLeft = pointerCenterLeft - pointerWidth / 2;
    const pointerTop = pointerCenterTop - pointerHeight / 2;
-   const pointerLeftPercentage = (pointerLeft / width) * 100;
-   const pointerTopPercentage = (pointerTop / height) * 100;
+
+   const horizontalGap = (galleryWidth - galleryRealWidth) / 2;
+   const verticalGap = (galleryHeight - galleryRealHeight) / 2;
+   const zoomTranslationLeftPercentage =
+      ((pointerLeft - horizontalGap) / galleryRealWidth) * 100;
+   const zoomTranslationTopPercentage =
+      ((pointerTop - verticalGap) / galleryRealHeight) * 100;
 
    return {
       left,
       top,
       pointerLeft,
       pointerTop,
-      pointerLeftPercentage,
-      pointerTopPercentage,
+      zoomTranslationLeftPercentage,
+      zoomTranslationTopPercentage,
    };
 };

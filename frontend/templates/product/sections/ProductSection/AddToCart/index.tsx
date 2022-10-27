@@ -8,6 +8,7 @@ import {
    PopoverBody,
    PopoverContent,
    PopoverTrigger,
+   StackProps,
    Text,
    VStack,
 } from '@chakra-ui/react';
@@ -77,7 +78,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       inventory.maxToBeAdded != null && inventory.maxToBeAdded > 0;
 
    return (
-      <VStack mt="5" align="center">
+      <Box mt="5">
          {isSelectedVariantAvailable && (
             <>
                <Button
@@ -97,12 +98,22 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                {selectedVariant.shippingRestrictions && (
                   <ShippingRestrictions
                      shippingRestrictions={selectedVariant.shippingRestrictions}
+                     mt="2.5"
                   />
                )}
             </>
          )}
          {!isSelectedVariantAvailable && selectedVariant.sku != null && (
-            <NotifyMeForm sku={selectedVariant.sku} />
+            <>
+               {selectedVariant.shippingRestrictions && (
+                  <ShippingRestrictions
+                     shippingRestrictions={selectedVariant.shippingRestrictions}
+                     mb="2.5"
+                     align="flex-start"
+                  />
+               )}
+               <NotifyMeForm sku={selectedVariant.sku} />
+            </>
          )}
          {!isSelectedVariantAvailable && selectedVariant.sku == null && (
             <Box
@@ -119,7 +130,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                Sold out
             </Box>
          )}
-      </VStack>
+      </Box>
    );
 }
 
@@ -151,12 +162,13 @@ const shippingRestrictionsInfo: ShippingRestrictionsInfo = {
    },
 };
 
-type ShippingRestrictionsProps = {
+type ShippingRestrictionsProps = StackProps & {
    shippingRestrictions: string[];
 };
 
 function ShippingRestrictions({
    shippingRestrictions,
+   ...stackProps
 }: ShippingRestrictionsProps) {
    const restrictionKeysToShow: string[] = [];
    const primaryRestrictionKey = shippingRestrictions.find(
@@ -173,7 +185,7 @@ function ShippingRestrictions({
 
    if (restrictionKeysToShow.length > 0) {
       return (
-         <VStack mt="2.5" spacing="1">
+         <VStack spacing="1" {...stackProps}>
             {restrictionKeysToShow.map((restrictionKey) => {
                const shippingRestriction =
                   shippingRestrictionsInfo[restrictionKey];

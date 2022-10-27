@@ -3,7 +3,13 @@ import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
 import { CartDrawerProvider, theme } from '@ifixit/ui';
 import * as React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import * as Sentry from '@sentry/nextjs';
+import {
+   MutationCache,
+   QueryCache,
+   QueryClient,
+   QueryClientProvider,
+} from 'react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
 
 const customTheme = extendTheme({
@@ -18,7 +24,37 @@ const customTheme = extendTheme({
    },
 });
 
-const queryClient = new QueryClient();
+const shouldIgnoreUserAgent =
+   typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);
+const queryClientConfig = shouldIgnoreUserAgent
+   ? undefined
+   : {
+        queryCache: new QueryCache({
+           onError: (error, query) => {
+              Sentry.captureException(error, (scope) => {
+                 scope.setTag('react-query', 'query');
+                 scope.setContext('Query', { queryKey: query.queryKey });
+                 return scope;
+              });
+              console.error(error, query);
+           },
+        }),
+        mutationCache: new MutationCache({
+           onError: (error, variables, context, mutation) => {
+              Sentry.captureException(error, (scope) => {
+                 scope.setTag('react-query', 'mutation');
+                 scope.setContext('Mutation', {
+                    variables,
+                    context,
+                    mutationKey: mutation.options.mutationKey,
+                 });
+                 return scope;
+              });
+              console.error(error, variables, context, mutation);
+           },
+        }),
+     };
+const queryClient = new QueryClient(queryClientConfig);
 
 export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
 

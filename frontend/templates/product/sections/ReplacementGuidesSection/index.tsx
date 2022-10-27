@@ -47,6 +47,7 @@ export function ReplacementGuidesSection({
          <PageContentWrapper>
             <Heading
                as="h2"
+               id="guides"
                fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
