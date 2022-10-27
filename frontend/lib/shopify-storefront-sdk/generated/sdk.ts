@@ -6649,7 +6649,7 @@ export const FindProductDocument = `
       namespace: "ifixit"
       key: "featured_products_ref"
     ) {
-      references(first: 5) {
+      references(first: 25) {
         nodes {
           __typename
           ...ProductVariantCard
