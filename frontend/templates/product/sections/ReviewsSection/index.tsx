@@ -93,7 +93,7 @@ export function ReviewsSection({
                   md: 16,
                }}
             >
-               Customer reviews
+               Customer Reviews
             </Heading>
             {hasReview ? (
                <>

@@ -49,7 +49,7 @@ export function FeaturedProductsSection({
                textAlign="center"
                mb="12"
             >
-               Featured products
+               Featured Products
             </Heading>
          </PageContentWrapper>
          <SimpleGrid
