@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
    Box,
    BoxProps,
@@ -8,6 +7,7 @@ import {
    Stack,
    StackProps,
 } from '@chakra-ui/react';
+import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 export const FooterLegalSection = forwardRef<StackProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
@@ -81,10 +81,12 @@ export const FooterLegalLinkList = forwardRef<StackProps, 'div'>(
 );
 
 export const FooterLegalLink = forwardRef<LinkProps, 'a'>((props, ref) => {
+   const trackedOnClick = useTrackedOnClick(props);
    return (
       <Link
          ref={ref}
          as="a"
+         onClick={trackedOnClick}
          align="center"
          color="gray.400"
          transition="color 300ms"

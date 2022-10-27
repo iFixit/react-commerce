@@ -10,6 +10,7 @@
       "type-check": "tsc --pretty --noEmit"
    },
    "dependencies": {
+      "@ifixit/analytics": "workspace:*",
       "@ifixit/app": "workspace:*",
       "@ifixit/cart-sdk": "workspace:*",
       "@ifixit/icons": "workspace:*",

@@ -1,4 +1,5 @@
 import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
+import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 export const FooterPartners = forwardRef<BoxProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
@@ -26,10 +27,12 @@ export const FooterPartners = forwardRef<BoxProps, 'div'>(
 
 export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
    ({ children, ...otherProps }, ref) => {
+      const trackedOnClick = useTrackedOnClick(otherProps);
       return (
          <Box
             ref={ref}
             as="a"
+            onClick={trackedOnClick}
             bg="gray.800"
             opacity="0.5"
             h="48px"

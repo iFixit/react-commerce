@@ -41,7 +41,7 @@ export function CrossSellSection({
    product,
    selectedVariant,
 }: CrossSellSectionProps) {
-   const addToCart = useAddToCart();
+   const addToCart = useAddToCart('Frequently Bought Together');
    const getUserPrice = useGetUserPrice();
    const { onOpen } = useCartDrawer();
 

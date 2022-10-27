@@ -1,12 +1,6 @@
 import { CartLineItem } from '@ifixit/cart-sdk';
 import { Money, sumMoney } from '@ifixit/helpers';
-
-function usePaq(): any[] | undefined {
-   if (typeof window === 'undefined') {
-      return undefined;
-   }
-   return (window as any)._paq;
-}
+import { usePaq } from './usePaq';
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript

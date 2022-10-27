@@ -1,3 +1,4 @@
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { isError } from '@ifixit/helpers';
 import { sentryFetch } from '@ifixit/sentry';
@@ -41,6 +42,10 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
                status: SubscriptionStatus.Subscribed,
                error: undefined,
             }));
+            trackInMatomoAndGA({
+               eventCategory: 'Newsletter',
+               eventAction: 'Subscribe Form - Submit',
+            });
          } catch (error) {
             let message: string;
             if (isError(error)) {

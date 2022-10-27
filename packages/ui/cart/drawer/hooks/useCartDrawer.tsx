@@ -1,4 +1,5 @@
 import { useDisclosure } from '@chakra-ui/react';
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 import * as React from 'react';
 
 export type CartDrawerContext = ReturnType<typeof useDisclosure> & {};
@@ -25,5 +26,12 @@ export function useCartDrawer() {
    if (context === null) {
       throw new Error('useCartDrawer must be used within a CartDrawerProvider');
    }
-   return context;
+   const onViewCart = React.useCallback(() => {
+      trackInMatomoAndGA({
+         eventCategory: 'Mini Cart',
+         eventAction: 'Btn "View Cart" - Click',
+      });
+      context.onClose();
+   }, [context.onClose]);
+   return { ...context, onViewCart };
 }
