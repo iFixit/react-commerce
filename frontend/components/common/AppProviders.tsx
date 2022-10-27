@@ -27,7 +27,8 @@ const customTheme = extendTheme({
 const shouldIgnoreUserAgent =
    typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);
 const queryClientConfig = shouldIgnoreUserAgent
-   ? {
+   ? undefined
+   : {
         queryCache: new QueryCache({
            onError: (error, query) => {
               Sentry.captureException(error, (scope) => {
@@ -51,8 +52,7 @@ const queryClientConfig = shouldIgnoreUserAgent
               console.error(error, variables, context, mutation);
            },
         }),
-     }
-   : undefined;
+     };
 const queryClient = new QueryClient(queryClientConfig);
 
 export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
