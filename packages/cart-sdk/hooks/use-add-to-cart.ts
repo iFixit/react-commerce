@@ -36,6 +36,7 @@ export function useAddToCart() {
                      body: JSON.stringify({
                         quantity: input.product.quantity,
                      }),
+                     disableSentry: true,
                   }
                );
             }
@@ -49,6 +50,7 @@ export function useAddToCart() {
                         input.bundle.currentItemCode
                      ),
                   }),
+                  disableSentry: true,
                });
             }
             default: {
