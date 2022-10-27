@@ -1,5 +1,6 @@
 import { invariant, isRecord } from '@ifixit/helpers';
 import { useQuery } from 'react-query';
+import { useMemo } from 'react';
 import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
 export type User = {
@@ -16,16 +17,46 @@ const userKeys = {
    user: ['user'],
 };
 
+const hasLocalStorage = typeof localStorage !== 'undefined';
+const userDataLocalKey = 'user.data';
+
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
+   const cachedUserData = useMemo(
+      () =>
+         !hasLocalStorage
+            ? null
+            : (() => {
+                 const storedString = localStorage.getItem(userDataLocalKey);
+                 return storedString === null ? null : JSON.parse(storedString);
+              })(),
+      []
+   );
    const query = useQuery(
       userKeys.user,
-      () => fetchAuthenticatedUser(apiClient).catch(() => null),
+      () => {
+         const responsePromise = fetchAuthenticatedUser(apiClient).catch(
+            () => null
+         );
+         if (hasLocalStorage) {
+            responsePromise
+               .then((response) => {
+                  localStorage.setItem(
+                     userDataLocalKey,
+                     JSON.stringify(response)
+                  );
+               })
+               .catch(() => {});
+         }
+         return responsePromise;
+      },
       {
          retryOnMount: false,
          staleTime: Infinity,
+         placeholderData: cachedUserData,
       }
    );
+
    return query;
 }
 
