@@ -28,7 +28,7 @@ export interface Store {
 
 export interface SocialMediaAccounts {
    twitter: string | null;
-   tiktok: string |null;
+   tiktok: string | null;
    facebook: string | null;
    instagram: string | null;
    youtube: string | null;
