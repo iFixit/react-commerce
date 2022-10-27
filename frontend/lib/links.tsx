@@ -24,7 +24,7 @@ const links = {
    MANUFACTURERS: 'https://www.ifixit.com/Page/Services',
    FACEBOOK: 'https://facebook.com/ifixit',
    TWITTER: 'https://twitter.com/ifixit',
-   TIKTOK: 'https://tiktok.com/ifixit',
+   TIKTOK: 'https://tiktok.com/@ifixit.com',
    YOUTUBE: 'https://www.youtube.com/user/iFixitYourself',
    INSTAGRAM: 'https://www.instagram.com/ifixit/',
    REPAIR_ORG: 'https://www.repair.org/',
