@@ -13,7 +13,6 @@ describe('parts page search', () => {
 
       // Wait for search result to be updated
       cy.wait('@search');
-      cy.wait(2000);
 
       // Check that url parameter contains ?q after searching
       cy.location({ timeout: 2000 }).should((loc) => {

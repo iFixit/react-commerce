@@ -29,7 +29,6 @@ describe('product list filters', () => {
 
       // Wait for the search to be triggered and let the UI update.
       cy.wait('@search');
-      cy.wait(2000);
 
       cy.get('@first-facet-option-value').then((refinementValue) => {
          const lowercaseRefinementValue: string = (
