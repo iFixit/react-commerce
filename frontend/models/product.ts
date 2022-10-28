@@ -24,7 +24,7 @@ export type ProductImage = ReturnType<typeof getFormattedImages>[0];
 
 export async function findProduct(shop: ShopCredentials, handle: string) {
    const storefront = getShopifyStorefrontSdk(shop);
-   const ifixitApiClient = new IFixitAPIClient({ origin: IFIXIT_ORIGIN });
+   const iFixitApiClient = new IFixitAPIClient({ origin: IFIXIT_ORIGIN });
 
    const response = await logAsync('shopify.findProduct', () =>
       storefront.findProduct({
@@ -54,7 +54,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    }
    const iFixitProductId = computeIFixitProductId(variantSku);
    const reviewsData = await fetchProductReviews(
-      ifixitApiClient,
+      iFixitApiClient,
       iFixitProductId
    );
    let breadcrumbs = parseBreadcrumbsMetafieldValue(
