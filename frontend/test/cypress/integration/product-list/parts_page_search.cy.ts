@@ -15,7 +15,7 @@ describe('parts page search', () => {
       cy.wait('@search');
 
       // Check that url parameter contains ?q after searching
-      cy.location({ timeout: 2000 }).should((loc) => {
+      cy.location().should((loc) => {
          expect(loc.search).to.have.string('?q=iphone');
       });
 
@@ -37,7 +37,7 @@ describe('parts page search', () => {
       cy.wait('@search');
 
       // Check that url parameter contains ?q after searching
-      cy.location({ timeout: 2000 }).should((loc) => {
+      cy.location().should((loc) => {
          expect(loc.search).to.have.string('?q=');
       });
 

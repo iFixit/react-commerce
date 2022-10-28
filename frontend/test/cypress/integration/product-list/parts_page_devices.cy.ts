@@ -10,18 +10,12 @@ describe('parts page devices', () => {
       cy.get('body').then(($body) => {
          const device = $body.find('a[href="/Parts/Mac"]');
          if (!device.is(':visible')) {
-            cy.get('button', { timeout: 10000 })
-               .contains('Show more')
-               .should('be.visible')
-               .click();
+            cy.get('button').contains('Show more').should('be.visible').click();
          }
          device[0].click();
       });
 
-      cy.location('pathname', { timeout: 20000 }).should(
-         'include',
-         '/Parts/Mac'
-      );
+      cy.location('pathname').should('include', '/Parts/Mac');
       cy.get('h1').contains('Mac Parts').should('be.visible');
 
       navigateUntilLastDevice();
@@ -57,10 +51,7 @@ describe('parts page devices', () => {
          cy.get('@device')
             .should('have.attr', 'href')
             .then((href) => {
-               cy.location('pathname', { timeout: 20000 }).should(
-                  'include',
-                  href
-               );
+               cy.location('pathname').should('include', href);
             });
          assertVisibleFilterAndProducts();
          navigateUntilLastDevice();

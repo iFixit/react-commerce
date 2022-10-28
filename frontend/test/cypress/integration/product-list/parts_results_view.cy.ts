@@ -21,10 +21,7 @@ describe('parts page results view', () => {
             cy.wrap(link).click();
 
             // Assert the current window url path is the same as button link
-            cy.location('pathname', { timeout: 10000 }).should(
-               'equal',
-               link.attr('href')
-            );
+            cy.location('pathname').should('equal', link.attr('href'));
          });
    });
 });
