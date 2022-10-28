@@ -144,7 +144,7 @@ function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
             {items.map((ancestor, index) => (
                <NextLink key={index} href={ancestor.url} passHref>
                   <MenuItem fontSize="sm" as="a">
-                     {ancestor.label}
+                     {ancestor.label === 'Home' ? 'Store' : ancestor.label}
                   </MenuItem>
                </NextLink>
             ))}
