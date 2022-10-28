@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { Money } from '@ifixit/helpers';
+import { lessThan, Money } from '@ifixit/helpers';
 
 type UseUserPriceProps = {
    price: Money;
@@ -41,7 +41,7 @@ export function useGetUserPrice() {
             discountTier != null && isProUser
                ? proPricesByTier?.[discountTier]
                : null;
-         if (proPrice == null || price.amount < proPrice.amount) {
+         if (proPrice == null || lessThan(price, proPrice)) {
             return {
                price,
                compareAtPrice,

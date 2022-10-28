@@ -62,3 +62,7 @@ export function sumMoney(moneys: Money[]): Money {
       amount: amount.toFixed(2),
    };
 }
+
+export function lessThan(a: Money, b: Money): boolean {
+   return convertMoneyToCents(a) < convertMoneyToCents(b);
+}
