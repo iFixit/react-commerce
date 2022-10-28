@@ -26,6 +26,15 @@ describe('/parts page', () => {
             );
          }
       );
+
+      cy.request({ url: '/products/sitemap.xml', followRedirect: false }).then(
+         (response) => {
+            expect(response.status).to.eq(308);
+            expect(response.headers.location).to.match(
+               /\/sitemap\/products\.xml$/
+            );
+         }
+      );
    });
 });
 
