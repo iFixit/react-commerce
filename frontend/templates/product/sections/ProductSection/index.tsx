@@ -285,7 +285,7 @@ export function ProductSection({
                                  >
                                     <CompatibleDevice
                                        device={device}
-                                       truncate={3}
+                                       truncate={4}
                                     />
                                  </chakra.a>
                               </NextLink>
