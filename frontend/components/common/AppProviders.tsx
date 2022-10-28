@@ -12,6 +12,12 @@ import {
 } from '@tanstack/react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
 
+declare module 'react-query/types/react/QueryClientProvider' {
+   interface QueryClientProviderProps {
+      children?: React.ReactNode;
+   }
+}
+
 const customTheme = extendTheme({
    ...theme,
    sizes: {

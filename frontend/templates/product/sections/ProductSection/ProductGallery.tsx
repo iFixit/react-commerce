@@ -40,7 +40,7 @@ export function ProductGallery({
       selectedImageId
    );
    const onSlideChange = React.useCallback(
-      (slideIndex) => onChangeImage?.(variantImages[slideIndex].id!),
+      (slideIndex: number) => onChangeImage?.(variantImages[slideIndex].id!),
       [onChangeImage, variantImages]
    );
 

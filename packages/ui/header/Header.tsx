@@ -7,10 +7,8 @@ import {
    FlexProps,
    forwardRef,
    HStack,
-   Icon,
    IconButton,
    IconButtonProps,
-   IconProps,
    StackProps,
    useDisclosure,
 } from '@chakra-ui/react';
