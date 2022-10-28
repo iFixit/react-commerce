@@ -90,7 +90,8 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                         borderRadius="sm"
                         px="1"
                         maxW="300px"
-                        isTruncated
+                        noOfLines={1}
+                        display="inline-block"
                         fontSize="sm"
                      >
                         {ancestor.label}
@@ -109,7 +110,8 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                color="black"
                fontWeight="medium"
                fontSize="sm"
-               isTruncated
+               noOfLines={1}
+               display="inline-block"
                borderRadius="sm"
                cursor="auto"
                px="1"

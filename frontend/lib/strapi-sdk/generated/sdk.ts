@@ -285,11 +285,6 @@ export type ComponentStoreSocialMediaAccounts = {
    id: Scalars['ID'];
    instagram?: Maybe<Scalars['String']>;
    repairOrg?: Maybe<Scalars['String']>;
-<<<<<<< HEAD
-=======
-   tiktok?: Maybe<Scalars['String']>;
-   twitter?: Maybe<Scalars['String']>;
->>>>>>> 28cbce0b (refactor: Upgrade to React 18)
    tiktok?: Maybe<Scalars['String']>;
    twitter?: Maybe<Scalars['String']>;
    youtube?: Maybe<Scalars['String']>;
@@ -306,11 +301,6 @@ export type ComponentStoreSocialMediaAccountsFiltersInput = {
       Array<InputMaybe<ComponentStoreSocialMediaAccountsFiltersInput>>
    >;
    repairOrg?: InputMaybe<StringFilterInput>;
-<<<<<<< HEAD
-=======
-   tiktok?: InputMaybe<StringFilterInput>;
-   twitter?: InputMaybe<StringFilterInput>;
->>>>>>> 28cbce0b (refactor: Upgrade to React 18)
    tiktok?: InputMaybe<StringFilterInput>;
    twitter?: InputMaybe<StringFilterInput>;
    youtube?: InputMaybe<StringFilterInput>;
@@ -321,11 +311,6 @@ export type ComponentStoreSocialMediaAccountsInput = {
    id?: InputMaybe<Scalars['ID']>;
    instagram?: InputMaybe<Scalars['String']>;
    repairOrg?: InputMaybe<Scalars['String']>;
-<<<<<<< HEAD
-=======
-   tiktok?: InputMaybe<Scalars['String']>;
-   twitter?: InputMaybe<Scalars['String']>;
->>>>>>> 28cbce0b (refactor: Upgrade to React 18)
    tiktok?: InputMaybe<Scalars['String']>;
    twitter?: InputMaybe<Scalars['String']>;
    youtube?: InputMaybe<Scalars['String']>;

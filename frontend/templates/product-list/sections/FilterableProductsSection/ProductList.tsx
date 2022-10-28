@@ -291,7 +291,8 @@ function ProductListItemBadge(props: BadgeProps) {
          }}
          maxW="full"
          overflow="hidden"
-         isTruncated
+         noOfLines={1}
+         display="inline-block"
          {...props}
       />
    );
