@@ -1,6 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
-import { noindexDevDomains } from '@helpers/next-helpers';
+import {
+   noindexDevDomains,
+   serverSidePropsWrapper,
+} from '@helpers/next-helpers';
 import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
@@ -8,7 +11,7 @@ import {
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import * as React from 'react';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
@@ -93,7 +96,7 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 };
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
-   async (context) => {
+   serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
@@ -125,4 +128,4 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       return {
          props: pageProps,
       };
-   };
+   });
