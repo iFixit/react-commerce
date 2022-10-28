@@ -3,9 +3,16 @@ import { Product } from '@models/product';
 
 export type CompatibleDeviceProps = {
    device: NonNullable<Product['compatibility']>['devices'][number];
+   truncate?: number;
 };
 
-export function CompatibleDevice({ device }: CompatibleDeviceProps) {
+export function CompatibleDevice({
+   device,
+   truncate = 0,
+}: CompatibleDeviceProps) {
+   const variants = truncate
+      ? device.variants.slice(0, truncate)
+      : device.variants;
    return (
       <>
          <Img
@@ -32,7 +39,7 @@ export function CompatibleDevice({ device }: CompatibleDeviceProps) {
                {device.deviceName}
             </Text>
             <Flex mb="2px" flexDir="column">
-               {device.variants.map((variant) => (
+               {variants.map((variant) => (
                   <Text
                      key={variant}
                      lineHeight="short"

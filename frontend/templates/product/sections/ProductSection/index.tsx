@@ -283,7 +283,10 @@ export function ProductSection({
                                     transition="all 300m"
                                     mb="6px"
                                  >
-                                    <CompatibleDevice device={device} />
+                                    <CompatibleDevice
+                                       device={device}
+                                       truncate={3}
+                                    />
                                  </chakra.a>
                               </NextLink>
                            ))}
