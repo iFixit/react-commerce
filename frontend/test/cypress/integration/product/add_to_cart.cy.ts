@@ -17,7 +17,7 @@ describe('product page add to cart', () => {
          cy.findByTestId('cart-drawer-close').click();
       }
       cy.findByTestId('cart-drawer-open').click();
-      removeItemFromCartAndCloseDrawer();
+      removeItemsFromCartAndCloseDrawer();
    });
 
    it('Clicking + and - Buttons Changes Item Quantity in Cart', () => {
@@ -36,7 +36,7 @@ describe('product page add to cart', () => {
       }
       cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
       cy.findAllByTestId('cart-drawer-quantity').should('have.text', 1);
-      removeItemFromCartAndCloseDrawer();
+      removeItemsFromCartAndCloseDrawer();
    });
 
    it('Item Can Be Added Again After Removing The Item', () => {
@@ -48,7 +48,7 @@ describe('product page add to cart', () => {
       cy.findByTestId('cart-drawer-close').click();
       cy.findByTestId('product-add-to-cart-button').click();
       cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
-      removeItemFromCartAndCloseDrawer();
+      removeItemsFromCartAndCloseDrawer();
    });
 
    it('Back to Shopping Button Works', () => {
@@ -70,7 +70,7 @@ describe('product page add to cart', () => {
    });
 });
 
-function removeItemFromCartAndCloseDrawer() {
+function removeItemsFromCartAndCloseDrawer() {
    cy.findAllByTestId('cart-drawer-remove-item').click();
    cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
    cy.findByTestId('cart-drawer-quantity').should('not.exist');
