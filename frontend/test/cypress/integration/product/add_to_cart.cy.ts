@@ -1,139 +1,81 @@
 describe('product page add to cart', () => {
-   const user = cy;
-
    beforeEach(() => {
-      user.loadProductPageByPath(
+      cy.loadProductPageByPath(
          '/products/spudger-retail-3-pack?variantid=39419992408154'
       );
-      user.findByTestId('cart-drawer-open').click().wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .should('exist')
-         .invoke('text')
-         .should('eq', '0');
-      user.findByTestId('cart-drawer-quantity').should('not.exist');
-      user.findByTestId('cart-drawer-close').click().wait(10);
-      user.findByTestId('cart-drawer-close').should('not.exist');
+      cy.findByTestId('cart-drawer-open').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
+      cy.findByTestId('cart-drawer-quantity').should('not.exist');
+      cy.findByTestId('cart-drawer-close').click();
+      cy.findByTestId('cart-drawer-close').should('not.exist');
    });
 
    it('Clicking Add To Cart Adds Items To Cart', () => {
-      var genArr = Array.from({ length: 5 }, (v, k) => k + 1);
-      user.wrap(genArr).each((index) => {
-         user.findByTestId('product-add-to-cart-button').click().wait(10);
-         user
-            .findAllByTestId('cart-drawer-quantity')
-            .invoke('text')
-            .then(parseInt)
-            .should('eq', index);
-         user.findByTestId('cart-drawer-close').click().wait(10);
-      });
-
-      user.findByTestId('cart-drawer-open').click().wait(10);
-      user.removeItemsFromCartAndCloseDrawer();
+      for (let i = 1; i <= 5; i++) {
+         cy.findByTestId('product-add-to-cart-button').click();
+         cy.findAllByTestId('cart-drawer-quantity').should('have.text', i);
+         cy.findByTestId('cart-drawer-close').click();
+      }
+      cy.findByTestId('cart-drawer-open').click();
+      removeItemsFromCartAndCloseDrawer();
    });
 
    it('Clicking + and - Buttons Changes Item Quantity in Cart', () => {
-      user.findByTestId('product-add-to-cart-button').click().wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 1);
-      const genArr = Array.from({ length: 5 }, (v, k) => k + 2);
-      user.wrap(genArr).each((index) => {
-         user.findByTestId('cart-drawer-increase-quantity').click().wait(10);
-         user
-            .findAllByTestId('cart-drawer-quantity')
-            .invoke('text')
-            .then(parseInt)
-            .should('eq', index);
-      });
-      user.findByTestId('cart-drawer-close').click().wait(10);
+      cy.findByTestId('product-add-to-cart-button').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
+      for (let i = 2; i <= 6; i++) {
+         cy.findByTestId('cart-drawer-increase-quantity').click();
+         cy.findAllByTestId('cart-drawer-quantity').should('have.text', i);
+      }
+      cy.findByTestId('cart-drawer-close').click();
 
-      user.findByTestId('cart-drawer-open').click().wait(10);
-      const genArrRev = Array.from({ length: 5 }, (v, k) => k + 1).reverse();
-      user.wrap(genArrRev).each((index) => {
-         user.findByTestId('cart-drawer-decrease-quantity').click().wait(10);
-         user
-            .findAllByTestId('cart-drawer-quantity')
-            .invoke('text')
-            .then(parseInt)
-            .should('eq', index);
-      });
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 1);
-      user
-         .findAllByTestId('cart-drawer-quantity')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 1);
-      user.removeItemsFromCartAndCloseDrawer();
+      cy.findByTestId('cart-drawer-open').click();
+      for (let i = 5; i >= 1; i--) {
+         cy.findByTestId('cart-drawer-decrease-quantity').click();
+         cy.findAllByTestId('cart-drawer-quantity').should('have.text', i);
+      }
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
+      cy.findAllByTestId('cart-drawer-quantity').should('have.text', 1);
+      removeItemsFromCartAndCloseDrawer();
    });
 
    it('Item Can Be Added Again After Removing The Item', () => {
-      user.findByTestId('product-add-to-cart-button').click().wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 1);
-      user
-         .findAllByTestId('cart-drawer-remove-item')
-         .wait(10)
-         .then((items) => items.trigger('click'))
-         .wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 0);
-      user.findAllByTestId('cart-drawer-quantity').should('not.exist');
-      user.findByTestId('cart-drawer-close').click().wait(10);
-      user.findByTestId('product-add-to-cart-button').click().wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 1);
-      user.removeItemsFromCartAndCloseDrawer();
+      cy.findByTestId('product-add-to-cart-button').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
+      cy.findAllByTestId('cart-drawer-remove-item').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
+      cy.findAllByTestId('cart-drawer-quantity').should('not.exist');
+      cy.findByTestId('cart-drawer-close').click();
+      cy.findByTestId('product-add-to-cart-button').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
+      removeItemsFromCartAndCloseDrawer();
    });
 
    it('Back to Shopping Button Works', () => {
-      user.findByTestId('cart-drawer-open').click().wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .should('exist')
-         .invoke('text')
-         .should('eq', '0');
-      user.findAllByTestId('cart-drawer-quantity').should('not.exist');
-      user.findByTestId('back-to-shopping').click().wait(10);
-      user.findAllByTestId('cart-drawer-item-count').should('not.exist');
+      cy.findByTestId('cart-drawer-open').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
+      cy.findAllByTestId('cart-drawer-quantity').should('not.exist');
+      cy.findByTestId('back-to-shopping').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('not.exist');
 
-      user.findByTestId('product-add-to-cart-button').click().wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 1);
-      user.findByTestId('back-to-shopping').should('not.be.visible');
-      user
-         .findAllByTestId('cart-drawer-remove-item')
-         .wait(10)
-         .then((items) => items.trigger('click'))
-         .wait(10);
-      user
-         .findAllByTestId('cart-drawer-item-count')
-         .invoke('text')
-         .then(parseInt)
-         .should('eq', 0);
-      user.findByTestId('cart-drawer-quantity').should('not.exist');
-      user.findByTestId('back-to-shopping').click().wait(10);
-      user.findAllByTestId('cart-drawer-item-count').should('not.exist');
-      user.findByTestId('cart-drawer-close').should('not.exist');
+      cy.findByTestId('product-add-to-cart-button').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
+      cy.findByTestId('back-to-shopping').should('not.be.visible');
+      cy.findAllByTestId('cart-drawer-remove-item').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
+      cy.findByTestId('cart-drawer-quantity').should('not.exist');
+      cy.findByTestId('back-to-shopping').click();
+      cy.findAllByTestId('cart-drawer-item-count').should('not.exist');
+      cy.findByTestId('cart-drawer-close').should('not.exist');
    });
 });
+
+function removeItemsFromCartAndCloseDrawer() {
+   cy.findAllByTestId('cart-drawer-remove-item').click();
+   cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
+   cy.findByTestId('cart-drawer-quantity').should('not.exist');
+   cy.findByTestId('cart-drawer-close').click();
+   cy.findByTestId('cart-drawer-close').should('not.exist');
+}
 
 export {};
