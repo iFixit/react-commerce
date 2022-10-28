@@ -6,6 +6,7 @@ import {
    invariant,
    isRecord,
    Money,
+   logAsync,
 } from '@ifixit/helpers';
 import {
    FindProductQuery,
@@ -23,9 +24,11 @@ export type ProductImage = ReturnType<typeof getFormattedImages>[0];
 export async function findProduct(shop: ShopCredentials, handle: string) {
    const storefront = getShopifyStorefrontSdk(shop);
 
-   const response = await storefront.findProduct({
-      handle,
-   });
+   const response = await logAsync('shopify.findProduct', () =>
+      storefront.findProduct({
+         handle,
+      })
+   );
    if (response.product == null) {
       return null;
    }
