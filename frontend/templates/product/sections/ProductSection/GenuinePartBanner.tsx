@@ -39,6 +39,10 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
 
    const PartnerLogo = partnerCodeToComponentMap[code];
 
+   if (!PartnerLogo) {
+      return null;
+   }
+
    return (
       <Flex
          mt="4"
@@ -60,7 +64,7 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
             bg="gray.100"
             alignItems="center"
          >
-            {PartnerLogo && <PartnerLogo />}
+            <PartnerLogo />
          </Flex>
          <Flex
             direction="column"
