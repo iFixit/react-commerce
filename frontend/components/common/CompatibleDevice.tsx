@@ -13,7 +13,7 @@ export function CompatibleDevice({
 }: CompatibleDeviceProps) {
    let variants = device.variants;
    let unlistedVariants = 0;
-   if (variants.length > truncate) {
+   if (truncate > 0 && variants.length > truncate) {
       variants = device.variants.slice(0, truncate - 1);
       unlistedVariants = device.variants.length - variants.length;
    }
