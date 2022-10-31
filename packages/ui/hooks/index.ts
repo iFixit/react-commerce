@@ -136,7 +136,7 @@ export function useSSRBreakpointValue<Value>(
 export function useExpiringLocalPreference<Data = any>(
    key: string,
    defaultData: Data,
-   expireInDays: number,
+   expireInDays: number
 ): [Data, (data: Data) => void] {
    type ExpiringData = {
       value: Data;
@@ -150,7 +150,9 @@ export function useExpiringLocalPreference<Data = any>(
       if (serializedData != null) {
          try {
             const data = JSON.parse(serializedData) as ExpiringData;
-            const expiresAt = Number.isInteger(data?.expires) ? data.expires : 0;
+            const expiresAt = Number.isInteger(data?.expires)
+               ? data.expires
+               : 0;
             if (expiresAt && Date.now() < expiresAt) {
                setData(data?.value);
             } else {
@@ -164,7 +166,7 @@ export function useExpiringLocalPreference<Data = any>(
       setData(data);
       const expiringData = {
          value: data,
-         expires: Date.now() + (expireInDays * 1000 * 86400),
+         expires: Date.now() + expireInDays * 1000 * 86400,
       } as ExpiringData;
       const serializedData = JSON.stringify(expiringData);
       localStorage.setItem(key, serializedData);
@@ -172,7 +174,6 @@ export function useExpiringLocalPreference<Data = any>(
 
    return [data, setAndSave];
 }
-
 
 /**
  * A simple hook to store user preferences in local storage.
