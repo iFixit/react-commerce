@@ -139,7 +139,11 @@ export function ProductGallery({
                   left="0"
                   zIndex="10"
                   pointerEvents="none"
-                  opacity={realIndex > 0 ? 1 : 0}
+                  opacity={
+                     realIndex > 1 && variantImages.length > THUMBNAILS_COUNT
+                        ? 1
+                        : 0
+                  }
                   transition="all 300ms"
                ></Box>
                <Box
@@ -153,7 +157,9 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     variantImages.length - realIndex > THUMBNAILS_COUNT ? 1 : 0
+                     variantImages.length - realIndex >= THUMBNAILS_COUNT
+                        ? 1
+                        : 0
                   }
                   transition="all 300ms"
                ></Box>
