@@ -131,7 +131,7 @@ export function ProductGallery({
                </ReactSwiper>
                <Box
                   position="absolute"
-                  bgGradient="linear(to-l, transparent, white)"
+                  bgGradient="linear(to-l, transparent, blueGray.50)"
                   w="25%"
                   h="full"
                   top="0"
@@ -144,7 +144,7 @@ export function ProductGallery({
                ></Box>
                <Box
                   position="absolute"
-                  bgGradient="linear(to-r, transparent, white)"
+                  bgGradient="linear(to-r, transparent, blueGray.50)"
                   w="25%"
                   h="full"
                   top="0"
