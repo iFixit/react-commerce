@@ -45,6 +45,8 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { Prop65Warning } from './Prop65Warning';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
+import { InternationalBuyBox } from './InternationalBuyBox';
 
 export type ProductSectionProps = {
    product: Product;
@@ -73,6 +75,8 @@ export function ProductSection({
    );
 
    const isForSale = useIsProductForSale(product);
+
+   const internationalBuyBox = useInternationalBuyBox(product);
 
    return (
       <PageContentWrapper as="section">
@@ -150,12 +154,15 @@ export function ProductSection({
                   onChange={handleVariantChange}
                />
                {isForSale ? (
-                  isVariantWithSku(selectedVariant) && (
+                  isVariantWithSku(selectedVariant) &&
+                  (internationalBuyBox ? (
+                     <InternationalBuyBox {...internationalBuyBox} />
+                  ) : (
                      <AddToCart
                         product={product}
                         selectedVariant={selectedVariant}
                      />
-                  )
+                  ))
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
