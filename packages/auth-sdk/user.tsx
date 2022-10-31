@@ -1,4 +1,5 @@
 import { invariant, isRecord } from '@ifixit/helpers';
+import { useLocalPreference } from '@ifixit/ui';
 import { useQuery } from 'react-query';
 import { useCallback } from 'react';
 import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
@@ -22,42 +23,27 @@ const userDataLocalKey = 'user.data';
 
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
-   const getCachedUserData = useCallback(() => {
-      if (hasLocalStorage) {
-         try {
-            const storedString = localStorage.getItem(userDataLocalKey);
-            return storedString === null ? null : JSON.parse(storedString);
-            // On some browsers, with some security settings on, just calling
-            // methods on localStorage throws exceptions.
-         } catch (error) {
-            return null;
-         }
-      } else {
-         return null;
-      }
-   }, []);
+   const [cachedUserData, setCachedUserData] = useLocalPreference<User | null>(
+      userDataLocalKey,
+      null
+   );
    const query = useQuery(
       userKeys.user,
       () => {
          const responsePromise = fetchAuthenticatedUser(apiClient).catch(
             () => null
          );
-         if (hasLocalStorage) {
-            responsePromise
-               .then((response) => {
-                  localStorage.setItem(
-                     userDataLocalKey,
-                     JSON.stringify(response)
-                  );
-               })
-               .catch(() => {});
-         }
+         responsePromise
+            .then((response) => {
+               setCachedUserData(response);
+            })
+            .catch(() => {});
          return responsePromise;
       },
       {
          retryOnMount: false,
          staleTime: Infinity,
-         placeholderData: getCachedUserData,
+         placeholderData: cachedUserData,
       }
    );
 
