@@ -1,6 +1,7 @@
 import {
    Badge,
    BadgeProps,
+   HStack,
    LinkBox,
    LinkOverlay,
    SimpleGrid,
@@ -9,15 +10,14 @@ import {
    ProductCard,
    ProductCardBadgeList,
    ProductCardBody,
-   ProductCardDiscountBadge,
    ProductCardImage,
-   ProductCardPricing,
    ProductCardRating,
    ProductCardTitle,
 } from '@components/common';
 import { flags } from '@config/flags';
 import { getProductPath } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
+import { ProductVariantPrice } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
@@ -67,7 +67,7 @@ export interface ProductGridItemProps {
 export function ProductGridItem({ product }: ProductGridItemProps) {
    const appContext = useAppContext();
 
-   const { price, compareAtPrice, isDiscounted, percentage } =
+   const { price, compareAtPrice, isDiscounted, percentage, proPricesByTier } =
       useProductSearchHitPricing(product);
 
    const showProBadge = product.is_pro > 0;
@@ -125,11 +125,15 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                      count={product.rating_count}
                   />
                )}
-               <ProductCardPricing
-                  currency="$"
-                  price={price}
-                  compareAtPrice={compareAtPrice}
-               />
+               <HStack w="full" flexGrow={1} justify="flex-end" spacing="2">
+                  <ProductVariantPrice
+                     price={price}
+                     compareAtPrice={compareAtPrice}
+                     proPricesByTier={proPricesByTier}
+                     showDiscountLabel={false}
+                     alignSelf="flex-end"
+                  />
+               </HStack>
             </ProductCardBody>
          </ProductCard>
       </LinkBox>

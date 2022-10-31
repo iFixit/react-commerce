@@ -3,6 +3,7 @@ import {
    Button,
    Flex,
    Heading,
+   HStack,
    LinkBox,
    LinkOverlay,
    SimpleGrid,
@@ -15,7 +16,6 @@ import {
    ProductCardBody,
    ProductCardDiscountBadge,
    ProductCardImage,
-   ProductCardPricing,
    ProductCardRating,
    ProductCardSoldOutBadge,
    ProductCardTitle,
@@ -24,11 +24,12 @@ import { Card } from '@components/ui';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
-import { IfixitImage } from '@ifixit/ui';
+import { IfixitImage, ProductVariantPrice } from '@ifixit/ui';
 import NextLink from 'next/link';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 import { computeDiscountPercentage } from '@ifixit/helpers';
 import { productListPath } from '@helpers/path-helpers';
+import { useProductSearchHitPricing } from './FilterableProductsSection/useProductSearchHitPricing';
 
 export interface FeaturedProductListSectionProps {
    productList: FeaturedProductList;
@@ -164,17 +165,8 @@ interface ProductListItemProps {
 
 function ProductListItem({ product }: ProductListItemProps) {
    const appContext = useAppContext();
-   const isDiscounted =
-      product.compare_at_price != null &&
-      product.compare_at_price > product.price_float;
-
-   const percentage = isDiscounted
-      ? computeDiscountPercentage(
-           product.price_float * 100,
-           product.compare_at_price! * 100
-        )
-      : 0;
-
+   const { price, compareAtPrice, isDiscounted, percentage, proPricesByTier } =
+      useProductSearchHitPricing(product);
    const isSoldOut = product.quantity_available <= 0;
 
    return (
@@ -209,11 +201,15 @@ function ProductListItem({ product }: ProductListItemProps) {
                   </ProductCardTitle>
                </LinkOverlay>
                <ProductCardRating rating={product.rating} count={102} />
-               <ProductCardPricing
-                  currency="$"
-                  price={product.price_float}
-                  compareAtPrice={product.compare_at_price}
-               />
+               <HStack w="full" flexGrow={1} justify="flex-end" spacing="2">
+                  <ProductVariantPrice
+                     price={price}
+                     compareAtPrice={compareAtPrice}
+                     proPricesByTier={proPricesByTier}
+                     showDiscountLabel={false}
+                     alignSelf="flex-end"
+                  />
+               </HStack>
             </ProductCardBody>
          </ProductCard>
       </LinkBox>

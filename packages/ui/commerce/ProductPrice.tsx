@@ -131,6 +131,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                fontSize={priceFontSize}
                fontWeight="semibold"
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
+               data-testid="product-price"
             >
                {showProBadge && direction !== 'row' && (
                   <FaIcon
