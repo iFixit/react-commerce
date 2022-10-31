@@ -16,26 +16,22 @@ import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
 export type ProductGalleryProps = {
    product: Product;
    selectedVariant: ProductVariant;
-   selectedImageId?: string | null;
    showThumbnails?: boolean;
    enableZoom?: boolean;
    onChangeImage?: (imageId: string) => void;
 };
 
+const THUMBNAILS_COUNT = 6;
+const THUMBNAILS_SPACE_BETWEEN = 12;
+
 export function ProductGallery({
    product,
    selectedVariant,
-   selectedImageId,
    showThumbnails,
    enableZoom,
    onChangeImage,
 }: ProductGalleryProps) {
    const variantImages = useVariantImages(product, selectedVariant.id);
-   const selectedImageIndex = useCurrentImageIndex(
-      variantImages,
-      selectedImageId
-   );
-
    const onSlideChange = React.useCallback(
       (slideIndex) => onChangeImage?.(variantImages[slideIndex].id!),
       [onChangeImage, variantImages]
@@ -50,7 +46,6 @@ export function ProductGallery({
       isBeginning,
       isEnd,
    } = useSwiper({
-      slideIndex: selectedImageIndex,
       totalSlides: variantImages.length,
       showThumbnails: variantImages.length > 1,
       onSlideChange,
@@ -101,35 +96,68 @@ export function ProductGallery({
          )}
 
          {showThumbnails && variantImages.length > 1 && (
-            <ReactSwiper
-               onSwiper={setThumbsSwiper}
-               modules={[Navigation, Thumbs]}
-               watchSlidesProgress
-               threshold={5}
-               slidesPerView={6}
-               spaceBetween={12}
-               style={{
-                  width: '100%',
-                  marginTop: '12px',
-               }}
-            >
-               {variantImages.map((variantImage, index) => {
-                  return (
-                     <SwiperSlide
-                        key={variantImage.id}
-                        style={{
-                           maxWidth: 'calc((100% - 60px) / 6)',
-                           marginRight: '12px',
-                        }}
-                     >
-                        <ImageThumbnail
-                           image={variantImage}
-                           active={realIndex === index}
-                        />
-                     </SwiperSlide>
-                  );
-               })}
-            </ReactSwiper>
+            <Box position="relative">
+               <ReactSwiper
+                  onSwiper={setThumbsSwiper}
+                  modules={[Navigation, Thumbs]}
+                  watchSlidesProgress
+                  threshold={5}
+                  slidesPerView={THUMBNAILS_COUNT}
+                  spaceBetween={THUMBNAILS_SPACE_BETWEEN}
+                  style={{
+                     width: '100%',
+                     marginTop: '12px',
+                  }}
+               >
+                  {variantImages.map((variantImage, index) => {
+                     return (
+                        <SwiperSlide
+                           key={variantImage.id}
+                           style={{
+                              maxWidth: `calc((100% - ${
+                                 THUMBNAILS_SPACE_BETWEEN *
+                                 (THUMBNAILS_COUNT - 1)
+                              }px) / ${THUMBNAILS_COUNT})`,
+                              marginRight: `${THUMBNAILS_SPACE_BETWEEN}px`,
+                           }}
+                        >
+                           <ImageThumbnail
+                              image={variantImage}
+                              active={realIndex === index}
+                           />
+                        </SwiperSlide>
+                     );
+                  })}
+               </ReactSwiper>
+               <Box
+                  position="absolute"
+                  bgGradient="linear(to-l, transparent, white)"
+                  w="25%"
+                  h="full"
+                  top="0"
+                  bottom="0"
+                  left="0"
+                  zIndex="10"
+                  pointerEvents="none"
+                  opacity={realIndex > 0 ? 1 : 0}
+                  transition="all 300ms"
+               ></Box>
+               <Box
+                  position="absolute"
+                  bgGradient="linear(to-r, transparent, white)"
+                  w="25%"
+                  h="full"
+                  top="0"
+                  bottom="0"
+                  right="0"
+                  zIndex="10"
+                  pointerEvents="none"
+                  opacity={
+                     variantImages.length - realIndex > THUMBNAILS_COUNT ? 1 : 0
+                  }
+                  transition="all 300ms"
+               ></Box>
+            </Box>
          )}
       </Box>
    );
@@ -144,21 +172,6 @@ function useVariantImages(product: Product, variantId: string) {
          return linkedVariant == null || linkedVariant.id === variantId;
       });
    }, [product, variantId]);
-}
-
-function useCurrentImageIndex(
-   variantImages: ProductImage[],
-   selectedImageId?: string | null
-) {
-   const currentImageId = React.useMemo(() => {
-      return selectedImageId ?? variantImages[0]?.id;
-   }, [selectedImageId, variantImages]);
-
-   const currentImageIndex = React.useMemo(() => {
-      return variantImages.findIndex((image) => image.id === currentImageId)!;
-   }, [variantImages, currentImageId]);
-
-   return currentImageIndex;
 }
 
 type CustomNavigationType = {

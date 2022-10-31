@@ -56,21 +56,6 @@ export function ProductSection({
    onVariantChange,
    internationalBuyBox,
 }: ProductSectionProps) {
-   const [selectedImageId, setSelectedImageId] = React.useState(
-      selectedVariant.image?.id
-   );
-
-   const handleVariantChange = React.useCallback(
-      (variantId: string) => {
-         onVariantChange(variantId);
-         const variant = product.variants.find(
-            (variant) => variant.id === variantId
-         )!;
-         setSelectedImageId(variant.image?.id);
-      },
-      [product.variants, onVariantChange]
-   );
-
    const isForSale = useIsProductForSale(product);
 
    const compatibilityDrawerModelsTruncate = 4;
@@ -100,10 +85,8 @@ export function ProductSection({
                <ProductGallery
                   product={product}
                   selectedVariant={selectedVariant}
-                  selectedImageId={selectedImageId}
                   showThumbnails
                   enableZoom
-                  onChangeImage={setSelectedImageId}
                />
                <Box
                   id="zoom-container"
@@ -148,15 +131,13 @@ export function ProductSection({
                   <ProductGallery
                      product={product}
                      selectedVariant={selectedVariant}
-                     selectedImageId={selectedImageId}
-                     onChangeImage={setSelectedImageId}
                   />
                </Flex>
 
                <ProductOptions
                   product={product}
                   selected={selectedVariant.id}
-                  onChange={handleVariantChange}
+                  onChange={onVariantChange}
                />
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&

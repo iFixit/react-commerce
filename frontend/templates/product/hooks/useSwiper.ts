@@ -24,6 +24,8 @@ export function useSwiper({
    const slideChangeCallbackRef = React.useRef<(swiper: Swiper) => void>();
    const slideNextTransitionStartCallbackRef =
       React.useRef<(swiper: Swiper) => void>();
+   const slidePrevTransitionStartCallbackRef =
+      React.useRef<(swiper: Swiper) => void>();
 
    const [{ realIndex, isBeginning, isEnd }, setNavigationConfig] =
       React.useState({
@@ -40,8 +42,14 @@ export function useSwiper({
       };
       const slideNextTransitionStartCallback = (swiper: Swiper) => {
          const { realIndex } = swiper;
-         if (thumbsSwiper && realIndex > thumbsSwiper.realIndex) {
-            thumbsSwiper?.slideTo(realIndex);
+         if (thumbsSwiper && realIndex > thumbsSwiper.realIndex + 1) {
+            thumbsSwiper?.slideTo(realIndex - 1);
+         }
+      };
+      const slidePrevTransitionStartCallback = (swiper: Swiper) => {
+         const { realIndex } = swiper;
+         if (thumbsSwiper && realIndex < thumbsSwiper.realIndex + 1) {
+            thumbsSwiper?.slideTo(realIndex - 1);
          }
       };
       if (slideChangeCallbackRef.current) {
@@ -53,6 +61,12 @@ export function useSwiper({
             slideNextTransitionStartCallbackRef.current
          );
       }
+      if (slidePrevTransitionStartCallbackRef.current) {
+         mainSwiper?.off(
+            'slidePrevTransitionStart',
+            slidePrevTransitionStartCallbackRef.current
+         );
+      }
       mainSwiper?.on('slideChange', slideChangeCallback);
       slideChangeCallbackRef.current = slideChangeCallback;
       mainSwiper?.on(
@@ -60,6 +74,12 @@ export function useSwiper({
          slideNextTransitionStartCallback
       );
       slideNextTransitionStartCallbackRef.current =
+         slideNextTransitionStartCallback;
+      mainSwiper?.on(
+         'slidePrevTransitionStart',
+         slidePrevTransitionStartCallback
+      );
+      slidePrevTransitionStartCallbackRef.current =
          slideNextTransitionStartCallback;
    }, [mainSwiper, thumbsSwiper, onSlideChange]);
 
