@@ -7,6 +7,7 @@ import {
    isRecord,
    Money,
    logAsync,
+   parseItemcode,
 } from '@ifixit/helpers';
 import {
    FindProductQuery,
@@ -69,6 +70,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ...response.product,
       breadcrumbs,
       iFixitProductId,
+      productcode: parseItemcode(variantSku).productcode,
       images: activeImages,
       options,
       variants: activeVariants,
@@ -102,8 +104,11 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
               parseFloat(variant.compareAtPrice!.amount) * 100
            )
          : 0;
+      const { productcode, optionid } = parseItemcode(String(variant.sku));
       return {
          ...other,
+         productcode,
+         optionid,
          image: variant.image
             ? formatImage(variant.image, shopifyProduct)
             : null,
