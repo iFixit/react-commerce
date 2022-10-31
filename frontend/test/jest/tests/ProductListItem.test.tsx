@@ -9,8 +9,8 @@ describe('ProductListItem', () => {
    beforeEach(() => {
       // @ts-ignore
       ProductSearch.useProductSearchHitPricing = jest.fn().mockReturnValue({
-         price: 5,
-         compareAtPrice: 5,
+         price: { amount: 5, currencyCode: 'usd' },
+         compareAtPrice: { amount: 5, currencyCode: 'usd' },
          isDiscounted: 5,
          percentage: 5,
       });
