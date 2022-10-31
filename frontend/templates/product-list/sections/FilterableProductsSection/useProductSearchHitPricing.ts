@@ -29,10 +29,10 @@ export function useProductSearchHitPricing(
 
    const price = proTierPrice ?? product.price_float;
    const compareAtPrice = product.compare_at_price ?? product.price_float;
-   const isDiscounted = compareAtPrice != null && compareAtPrice > price;
+   const isDiscounted = compareAtPrice > price;
 
    const percentage = isDiscounted
-      ? computeDiscountPercentage(price * 100, compareAtPrice! * 100)
+      ? computeDiscountPercentage(price * 100, compareAtPrice * 100)
       : 0;
 
    return {
