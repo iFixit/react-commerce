@@ -1,11 +1,22 @@
-import { Flex, Img, Text } from '@chakra-ui/react';
+import { Flex, Img, Link, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { Product } from '@models/product';
 
 export type CompatibleDeviceProps = {
    device: NonNullable<Product['compatibility']>['devices'][number];
+   truncate?: number;
 };
 
-export function CompatibleDevice({ device }: CompatibleDeviceProps) {
+export function CompatibleDevice({
+   device,
+   truncate = 0,
+}: CompatibleDeviceProps) {
+   let variants = device.variants;
+   let unlistedVariants = 0;
+   if (truncate > 0 && variants.length > truncate) {
+      variants = device.variants.slice(0, truncate - 1);
+      unlistedVariants = device.variants.length - variants.length;
+   }
    return (
       <>
          <Img
@@ -32,7 +43,7 @@ export function CompatibleDevice({ device }: CompatibleDeviceProps) {
                {device.deviceName}
             </Text>
             <Flex mb="2px" flexDir="column">
-               {device.variants.map((variant) => (
+               {variants.map((variant) => (
                   <Text
                      key={variant}
                      lineHeight="short"
@@ -43,6 +54,11 @@ export function CompatibleDevice({ device }: CompatibleDeviceProps) {
                   </Text>
                ))}
             </Flex>
+            {unlistedVariants !== 0 && (
+               <Text my="1px" lineHeight="short" fontSize="xs">
+                  And {unlistedVariants} other devices...
+               </Text>
+            )}
          </Flex>
       </>
    );
