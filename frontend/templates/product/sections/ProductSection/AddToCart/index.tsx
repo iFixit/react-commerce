@@ -55,7 +55,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
             itemcode: selectedVariant.sku,
             shopifyVariantId: selectedVariant.id,
             quantity: 1,
-            imageSrc: selectedVariant.image?.url || product.images[0].url,
+            imageSrc: selectedVariant.image?.url || product.images[0]?.url,
             price: userPrice.price,
             compareAtPrice: userPrice.compareAtPrice,
          },
