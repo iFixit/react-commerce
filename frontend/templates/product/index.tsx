@@ -68,7 +68,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                onVariantChange={setSelectedVariantId}
             />
             <ReplacementGuidesSection product={product} />
-            <ServiceValuePropositionSection />
+            <ServiceValuePropositionSection variant={selectedVariant} />
             {isProductForSale && (
                <CrossSellSection
                   key={selectedVariant.id}

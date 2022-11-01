@@ -159,7 +159,9 @@ export function ProductSection({
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
-               {isForSale && <BuyBoxPropositionSection />}
+               {isForSale && (
+                  <BuyBoxPropositionSection variant={selectedVariant} />
+               )}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>
