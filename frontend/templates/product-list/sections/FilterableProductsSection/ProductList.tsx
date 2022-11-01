@@ -213,6 +213,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            compareAtPrice={compareAtPrice}
                            proPricesByTier={proPricesByTier}
                            showDiscountLabel={false}
+                           direction="column"
                         />
                      </VStack>
                   )}
