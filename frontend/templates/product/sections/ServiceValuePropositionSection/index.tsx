@@ -13,22 +13,10 @@ import {
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
+import { useSelectedVariant } from '../../hooks/useSelectedVariant';
 
-export type ServiceValuePropositionSectionProps = {
-   variant: ProductVariant;
-};
-
-export function ServiceValuePropositionSection({
-   variant,
-}: ServiceValuePropositionSectionProps) {
-   if (isDropshipped(variant)) {
-      return null;
-   } else {
-      return <ServiceValuePropositionSectioniFixit />;
-   }
-}
-
-function ServiceValuePropositionSectioniFixit() {
+export function ServiceValuePropositionSection() {
+   const variant = useSelectedVariant();
    return (
       <>
          <Heading as="h2" srOnly>
@@ -72,31 +60,20 @@ function ServiceValuePropositionSectioniFixit() {
                   backed by industry-leading guarantees.
                </Text>
             </ValueProposition>
-            <ValueProposition>
-               <ValuePropositionIcon icon={faRocketDuo} />
-               <Text fontWeight="bold">Fast shipping</Text>
-               <Text>Same day shipping if ordered by 1PM Pacific.</Text>
-            </ValueProposition>
+            {!isDropshipped(variant) && (
+               <ValueProposition>
+                  <ValuePropositionIcon icon={faRocketDuo} />
+                  <Text fontWeight="bold">Fast shipping</Text>
+                  <Text>Same day shipping if ordered by 1PM Pacific.</Text>
+               </ValueProposition>
+            )}
          </Stack>
       </>
    );
 }
 
-export type BuyBoxPropositionSectionProps = {
-   variant: ProductVariant;
-};
-
-export function BuyBoxPropositionSection({
-   variant,
-}: BuyBoxPropositionSectionProps) {
-   if (isDropshipped(variant)) {
-      return null;
-   } else {
-      return <BuyBoxPropositionSectioniFixit />;
-   }
-}
-
-export function BuyBoxPropositionSectioniFixit() {
+export function BuyBoxPropositionSection() {
+   const variant = useSelectedVariant();
    return (
       <div>
          <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
@@ -126,17 +103,19 @@ export function BuyBoxPropositionSectioniFixit() {
                   backed by industry-leading guarantees.
                </div>
             </ListItem>
-            <ListItem display="flex" alignItems="center">
-               <ListIcon
-                  as={FaIcon}
-                  h="4"
-                  w="5"
-                  mr="1.5"
-                  color="brand.500"
-                  icon={faRocket}
-               />
-               Same day shipping if ordered by 1PM Pacific.
-            </ListItem>
+            {!isDropshipped(variant) && (
+               <ListItem display="flex" alignItems="center">
+                  <ListIcon
+                     as={FaIcon}
+                     h="4"
+                     w="5"
+                     mr="1.5"
+                     color="brand.500"
+                     icon={faRocket}
+                  />
+                  Same day shipping if ordered by 1PM Pacific.
+               </ListItem>
+            )}
          </List>
       </div>
    );
