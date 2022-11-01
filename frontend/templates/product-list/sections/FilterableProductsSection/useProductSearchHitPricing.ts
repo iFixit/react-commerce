@@ -31,11 +31,12 @@ export function useProductSearchHitPricing(
 
    const price = proTierPrice ?? product.price_float;
    const compareAtPrice = product.compare_at_price ?? product.price_float;
-   const isDiscounted = compareAtPrice > price;
 
-   const percentage = isDiscounted
-      ? computeDiscountPercentage(price * 100, compareAtPrice * 100)
-      : 0;
+   const percentage = computeDiscountPercentage(
+      price * 100,
+      compareAtPrice * 100
+   );
+   const isDiscounted = percentage > 0;
 
    const proPricesByTier =
       product.price_tiers && !isEmpty(product.price_tiers)
