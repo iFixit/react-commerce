@@ -30,6 +30,7 @@ import {
 } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import React from 'react';
 
 export type CrossSellSectionProps = {
@@ -44,6 +45,7 @@ export function CrossSellSection({
    const addToCart = useAddToCart('Frequently Bought Together');
    const getUserPrice = useGetUserPrice();
    const { onOpen } = useCartDrawer();
+   const internationalBuyBox = useInternationalBuyBox(product);
 
    const crossSellVariantsForSale =
       useCrossSellVariantsForSale(selectedVariant);
@@ -162,6 +164,10 @@ export function CrossSellSection({
    };
 
    if (crossSellVariantsForSale.length === 0) {
+      return null;
+   }
+
+   if (internationalBuyBox) {
       return null;
    }
 
