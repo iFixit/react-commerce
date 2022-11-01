@@ -1,3 +1,4 @@
+import { ProductVariant } from '@models/product';
 import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { List, ListIcon, ListItem } from '@chakra-ui/react';
@@ -13,9 +14,21 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
 
-export type ServiceValuePropositionSectionProps = {};
+export type ServiceValuePropositionSectionProps = {
+   selectedVariant: ProductVariant;
+};
 
-export function ServiceValuePropositionSection() {
+export function ServiceValuePropositionSection({
+   selectedVariant,
+}: ServiceValuePropositionSectionProps) {
+   if (isDropshipped(selectedVariant)) {
+      return null;
+   } else {
+      return <ServiceValuePropositionSectioniFixit />;
+   }
+}
+
+function ServiceValuePropositionSectioniFixit() {
    return (
       <>
          <Heading as="h2" srOnly>
@@ -69,7 +82,21 @@ export function ServiceValuePropositionSection() {
    );
 }
 
-export function BuyBoxPropositionSection() {
+export type BuyBoxPropositionSectionProps = {
+   selectedVariant: ProductVariant;
+};
+
+export function BuyBoxPropositionSection({
+   selectedVariant,
+}: BuyBoxPropositionSectionProps) {
+   if (isDropshipped(selectedVariant)) {
+      return null;
+   } else {
+      return <BuyBoxPropositionSectioniFixit />;
+   }
+}
+
+export function BuyBoxPropositionSectioniFixit() {
    return (
       <div>
          <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
@@ -130,3 +157,8 @@ function ValueProposition({ children }: React.PropsWithChildren<{}>) {
 const ValuePropositionIcon = ({ icon, ...props }: FaIconProps) => {
    return <FaIcon icon={icon} h="8" color="brand.500" {...props} />;
 };
+
+function isDropshipped(variant: ProductVariant) {
+   const restrictions = variant.shippingRestrictions;
+   return restrictions && restrictions.includes('fulfilled_via_dropshipping');
+}
