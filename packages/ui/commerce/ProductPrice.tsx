@@ -28,7 +28,7 @@ export type ProductVariantPriceProps = Omit<BoxProps, 'children'> & {
    showDiscountLabel?: boolean;
    formatDiscountLabel?: (discountPercentage: number) => string;
    size?: 'large' | 'medium' | 'small';
-   direction?: 'row' | 'column' | 'column-reverse';
+   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
 };
 
 export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
@@ -94,7 +94,7 @@ type ProductPriceProps = {
    showProBadge?: boolean;
    size?: 'large' | 'medium' | 'small';
    colorScheme?: ThemeTypings['colorSchemes'];
-   direction?: 'row' | 'column' | 'column-reverse';
+   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
 };
 
 const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
@@ -116,6 +116,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
       const priceFontSize =
          size === 'large' ? 'xl' : size === 'medium' ? 'md' : 'sm';
       const compareAtPriceFontSize = size === 'large' ? 'md' : 'sm';
+      const isRow = direction === 'row' || direction === 'row-reverse';
 
       return (
          <Box
@@ -123,17 +124,17 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             display="flex"
             flexDir={direction}
             alignSelf="flex-start"
-            alignItems={direction === 'row' ? 'center' : 'flex-end'}
+            alignItems={isRow ? 'center' : 'flex-end'}
             {...other}
          >
             <Text
-               mr={direction === 'row' ? 1 : 0}
+               mr={isRow ? 1 : 0}
                fontSize={priceFontSize}
                fontWeight="semibold"
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
                data-testid="product-price"
             >
-               {showProBadge && direction !== 'row' && (
+               {showProBadge && !isRow && (
                   <FaIcon
                      icon={faRectanglePro}
                      h="4"
@@ -146,14 +147,14 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             {isDiscounted && (
                <>
                   <Text
-                     mr={direction === 'row' ? '10px' : 0}
+                     mr={isRow ? '10px' : 0}
                      fontSize={compareAtPriceFontSize}
                      color="gray.500"
                      textDecor="line-through"
                   >
                      {formattedCompareAtPrice}
                   </Text>
-                  {isDiscounted && showDiscountLabel && direction === 'row' && (
+                  {isDiscounted && showDiscountLabel && isRow && (
                      <IconBadge
                         icon={showProBadge ? faRectanglePro : undefined}
                         colorScheme={colorScheme}

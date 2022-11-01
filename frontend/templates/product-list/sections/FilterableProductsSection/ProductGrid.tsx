@@ -131,6 +131,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                      compareAtPrice={compareAtPrice}
                      proPricesByTier={proPricesByTier}
                      showDiscountLabel={false}
+                     direction="row-reverse"
                      alignSelf="flex-end"
                   />
                </HStack>
