@@ -19,7 +19,10 @@ import {
    ProductTemplateProps,
    useProductTemplateProps,
 } from './hooks/useProductTemplateProps';
-import { useSelectedVariant } from './hooks/useSelectedVariant';
+import {
+   SelectedVariantProvider,
+   useSelectedVariantFromUrl,
+} from './hooks/useSelectedVariant';
 import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
@@ -32,7 +35,8 @@ import { ServiceValuePropositionSection } from './sections/ServiceValuePropositi
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
-   const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
+   const [selectedVariant, setSelectedVariantId] =
+      useSelectedVariantFromUrl(product);
 
    const isProductForSale = useIsProductForSale(product);
 
@@ -54,7 +58,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    }, []);
 
    return (
-      <React.Fragment key={product.handle}>
+      <SelectedVariantProvider value={selectedVariant} key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
@@ -87,7 +91,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <FeaturedProductsSection product={product} />
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
-      </React.Fragment>
+      </SelectedVariantProvider>
    );
 };
 

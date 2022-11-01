@@ -1,11 +1,22 @@
 import { invariant } from '@ifixit/helpers';
 import { Product, ProductVariant } from '@models/product';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
+import {
+   useCallback,
+   createContext,
+   useContext,
+   PropsWithChildren,
+} from 'react';
 
 type SetVariantIdFn = (variantId: string) => void;
 
-export function useSelectedVariant(
+const SelectedVariantContext = createContext<ProductVariant | undefined>(
+   undefined
+);
+
+export const SelectedVariantProvider = SelectedVariantContext.Provider;
+
+export function useSelectedVariantFromUrl(
    product: Product
 ): [ProductVariant, SetVariantIdFn] {
    const router = useRouter();
@@ -43,6 +54,14 @@ export function useSelectedVariant(
    );
 
    return [variant, setVariantId];
+}
+
+export function useSelectedVariant(): ProductVariant {
+   const contextValue = useContext(SelectedVariantContext);
+   if (!contextValue) {
+      throw new Error('Component must be inside SelectedVariantProvider');
+   }
+   return contextValue;
 }
 
 function useDefaultVariantId(product: Product): string {
