@@ -45,17 +45,21 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { Prop65Warning } from './Prop65Warning';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
+import { InternationalBuyBox } from './InternationalBuyBox';
 
 export type ProductSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
+   internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 };
 
 export function ProductSection({
    product,
    selectedVariant,
    onVariantChange,
+   internationalBuyBox,
 }: ProductSectionProps) {
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -150,12 +154,15 @@ export function ProductSection({
                   onChange={handleVariantChange}
                />
                {isForSale ? (
-                  isVariantWithSku(selectedVariant) && (
+                  isVariantWithSku(selectedVariant) &&
+                  (internationalBuyBox ? (
+                     <InternationalBuyBox {...internationalBuyBox} />
+                  ) : (
                      <AddToCart
                         product={product}
                         selectedVariant={selectedVariant}
                      />
-                  )
+                  ))
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
