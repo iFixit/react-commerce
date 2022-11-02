@@ -21,28 +21,24 @@ import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
-import type { Product, ProductReview } from '@models/product';
+import { ProductReview, ProductReviewData } from '@models/product';
 import { ProductVariant } from '@models/product';
 import React from 'react';
-import { useProductReviews } from '../../hooks/useProductReviews';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
 
 export type ReviewsSectionProps = {
-   product: Product;
    selectedVariant: ProductVariant;
+   reviewsData: ProductReviewData | null | undefined;
 };
 
 export function ReviewsSection({
-   product,
    selectedVariant,
+   reviewsData,
 }: ReviewsSectionProps) {
-   const reviewsQuery = useProductReviews(product);
    const [visibleReviewsCount, setVisibleReviewsCount] = React.useState(
       INITIAL_VISIBILE_REVIEWS
    );
-
-   const reviewsData = reviewsQuery.data;
 
    const reviewCountsByRating = React.useMemo(() => {
       if (reviewsData?.groupedReviews == null) {

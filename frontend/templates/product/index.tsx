@@ -9,10 +9,16 @@ import {
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
-import { findProduct } from '@models/product';
+import {
+   fetchProductReviews,
+   findProduct,
+   ProductReviewData,
+} from '@models/product';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import {
@@ -33,6 +39,22 @@ import { ServiceValuePropositionSection } from './sections/ServiceValuePropositi
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
+   const apiClient = useIFixitApiClient();
+   const [reviewsData, setReviewsData] = useState<
+      ProductReviewData | null | undefined
+   >();
+   useEffect(() => {
+      if (!product.iFixitProductId) {
+         return;
+      }
+      fetchProductReviews(apiClient, product.iFixitProductId)
+         .then((res) => {
+            setReviewsData(res);
+         })
+         .catch(() => {
+            setReviewsData(null);
+         });
+   }, []);
 
    const isProductForSale = useIsProductForSale(product);
 
@@ -66,6 +88,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                product={product}
                selectedVariant={selectedVariant}
                onVariantChange={setSelectedVariantId}
+               reviewsData={reviewsData}
             />
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
@@ -74,11 +97,12 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                   key={selectedVariant.id}
                   product={product}
                   selectedVariant={selectedVariant}
+                  reviewsData={reviewsData}
                />
             )}
             {isProductForSale && (
                <ReviewsSection
-                  product={product}
+                  reviewsData={reviewsData}
                   selectedVariant={selectedVariant}
                />
             )}

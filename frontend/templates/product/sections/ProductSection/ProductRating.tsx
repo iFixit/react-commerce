@@ -1,16 +1,14 @@
 import { Box, HStack, Link, Text } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { shouldShowProductRating } from '@ifixit/helpers';
-import { Product } from '@models/product';
-import { useProductReviews } from '../../hooks/useProductReviews';
+import { Product, ProductReviewData } from '@models/product';
 
 type ProductRatingProps = {
    product: Product;
+   reviewsData: ProductReviewData;
 };
 
-export function ProductRating({ product }: ProductRatingProps) {
-   const reviewsQuery = useProductReviews(product);
-   const reviewsData = reviewsQuery.data;
+export function ProductRating({ product, reviewsData }: ProductRatingProps) {
    const reviews = {
       rating: reviewsData?.average,
       reviewsCount: reviewsData?.count,

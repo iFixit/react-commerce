@@ -35,7 +35,7 @@ import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
-import { Product, ProductVariant } from '@models/product';
+import { Product, ProductReviewData, ProductVariant } from '@models/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -50,12 +50,14 @@ export type ProductSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
+   reviewsData: ProductReviewData | null | undefined;
 };
 
 export function ProductSection({
    product,
    selectedVariant,
    onVariantChange,
+   reviewsData,
 }: ProductSectionProps) {
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -134,7 +136,9 @@ export function ProductSection({
                      proPricesByTier={selectedVariant.proPricesByTier}
                   />
                )}
-               {isForSale && <ProductRating product={product} />}
+               {isForSale && reviewsData && (
+                  <ProductRating product={product} reviewsData={reviewsData} />
+               )}
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}
