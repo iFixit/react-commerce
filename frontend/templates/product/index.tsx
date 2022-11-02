@@ -35,6 +35,7 @@ import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -55,6 +56,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             setReviewsData(null);
          });
    }, [product.iFixitProductId]);
+   const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);
 
@@ -89,10 +91,11 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                selectedVariant={selectedVariant}
                onVariantChange={setSelectedVariantId}
                reviewsData={reviewsData}
+               internationalBuyBox={internationalBuyBox}
             />
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
-            {isProductForSale && (
+            {isProductForSale && !internationalBuyBox && (
                <CrossSellSection
                   key={selectedVariant.id}
                   product={product}
