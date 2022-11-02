@@ -130,14 +130,19 @@ export const ProductCardSoldOutBadge = (props: BadgeProps) => {
 
 export type ProductCardDiscountBadgeProps = BadgeProps & {
    percentage: number;
+   isProPrice: boolean;
 };
 
 export const ProductCardDiscountBadge = ({
    percentage,
+   isProPrice,
    ...badgeProps
 }: ProductCardDiscountBadgeProps) => {
    return (
-      <ProductCardBadge {...badgeProps} colorScheme="red">
+      <ProductCardBadge
+         {...badgeProps}
+         colorScheme={isProPrice ? 'orange' : 'red'}
+      >
          {percentage}% Off
       </ProductCardBadge>
    );

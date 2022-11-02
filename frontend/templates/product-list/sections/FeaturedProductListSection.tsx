@@ -24,7 +24,7 @@ import { Card } from '@components/ui';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
-import { IfixitImage, ProductVariantPrice } from '@ifixit/ui';
+import { IfixitImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import NextLink from 'next/link';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 import { computeDiscountPercentage } from '@ifixit/helpers';
@@ -169,6 +169,12 @@ function ProductListItem({ product }: ProductListItemProps) {
       useProductSearchHitPricing(product);
    const isSoldOut = product.quantity_available <= 0;
 
+   const { isProPrice } = useUserPrice({
+      price,
+      compareAtPrice,
+      proPricesByTier,
+   });
+
    return (
       <LinkBox
          as="article"
@@ -190,7 +196,10 @@ function ProductListItem({ product }: ProductListItemProps) {
                   <ProductCardSoldOutBadge />
                ) : (
                   isDiscounted && (
-                     <ProductCardDiscountBadge percentage={percentage} />
+                     <ProductCardDiscountBadge
+                        percentage={percentage}
+                        isProPrice={isProPrice}
+                     />
                   )
                )}
             </ProductCardBadgeList>

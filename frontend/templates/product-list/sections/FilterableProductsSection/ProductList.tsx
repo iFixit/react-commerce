@@ -14,7 +14,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { IfixitImage, ProductVariantPrice } from '@ifixit/ui';
+import { IfixitImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import { Rating } from '@components/ui';
 import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';
@@ -63,6 +63,12 @@ export function ProductListItem({ product }: ProductListItemProps) {
       showDiscountBadge ||
       showLifetimeWarrantyBadge ||
       showOemPartnershipBadge;
+
+   const { isProPrice } = useUserPrice({
+      price,
+      compareAtPrice,
+      proPricesByTier,
+   });
 
    return (
       <LinkBox as="article" aria-labelledby={productHeadingId} role="group">
@@ -172,7 +178,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            </ProductListItemBadge>
                         )}
                         {showDiscountBadge && (
-                           <ProductListItemBadge colorScheme="red">
+                           <ProductListItemBadge
+                              colorScheme={isProPrice ? 'orange' : 'red'}
+                           >
                               {percentage}% Off
                            </ProductListItemBadge>
                         )}

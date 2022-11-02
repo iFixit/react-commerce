@@ -17,7 +17,7 @@ import {
 import { flags } from '@config/flags';
 import { getProductPath } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
-import { ProductVariantPrice } from '@ifixit/ui';
+import { ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
@@ -75,6 +75,12 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
    const showLifetimeWarrantyBadge = product.lifetime_warranty;
    const showOemPartnershipBadge = product.oem_partnership;
 
+   const { isProPrice } = useUserPrice({
+      price,
+      compareAtPrice,
+      proPricesByTier,
+   });
+
    return (
       <LinkBox as="article" display="block" w="full" role="group">
          <ProductCard h="full">
@@ -97,7 +103,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                   </ProductCardBadge>
                )}
                {showDiscountBadge && (
-                  <ProductCardBadge colorScheme="red">
+                  <ProductCardBadge colorScheme={isProPrice ? 'orange' : 'red'}>
                      {percentage}% Off
                   </ProductCardBadge>
                )}
