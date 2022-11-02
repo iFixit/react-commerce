@@ -54,7 +54,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          .catch(() => {
             setReviewsData(null);
          });
-   }, []);
+   }, [product.iFixitProductId]);
 
    const isProductForSale = useIsProductForSale(product);
 
