@@ -6668,7 +6668,7 @@ export const FindProductDocument = `
     featuredImage {
       id
     }
-    images(first: 20) {
+    images(first: 250) {
       nodes {
         id
         altText
