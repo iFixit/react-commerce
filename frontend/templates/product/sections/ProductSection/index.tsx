@@ -52,12 +52,14 @@ export type ProductSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
+   internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 };
 
 export function ProductSection({
    product,
    selectedVariant,
    onVariantChange,
+   internationalBuyBox,
 }: ProductSectionProps) {
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -75,8 +77,6 @@ export function ProductSection({
    );
 
    const isForSale = useIsProductForSale(product);
-
-   const internationalBuyBox = useInternationalBuyBox(product);
 
    return (
       <PageContentWrapper as="section">
