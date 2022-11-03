@@ -240,6 +240,7 @@ export function ProductSection({
                      </CustomAccordionPanel>
                   </AccordionItem>
                   <WikiHtmlAccordianItem title="Kit contents" contents={selectedVariant.kitContents}/>
+                  <WikiHtmlAccordianItem title="Assembly contents" contents={selectedVariant.assemblyContents}/>
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
