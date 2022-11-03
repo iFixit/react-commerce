@@ -2,8 +2,6 @@ import * as React from 'react';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
 
-export const MAX_VALUES_PER_FACET = 200;
-
 export function useFacets() {
    return [
       'facet_tags.Capacity',
