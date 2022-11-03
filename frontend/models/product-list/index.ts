@@ -232,7 +232,7 @@ function createProductListAncestors(
       return [
          {
             deviceTitle: '',
-            title: 'Home',
+            title: 'Store',
             type: getProductListType(Enum_Productlist_Type.Store),
             handle: 'Store',
          },
