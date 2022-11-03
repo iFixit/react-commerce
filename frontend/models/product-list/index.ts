@@ -229,7 +229,14 @@ function createProductListAncestors(
 ): ProductListAncestor[] {
    const attributes = parent?.data?.attributes;
    if (attributes == null) {
-      return [];
+      return [
+         {
+            deviceTitle: '',
+            title: 'Home',
+            type: getProductListType(Enum_Productlist_Type.Store),
+            handle: 'Store',
+         },
+      ];
    }
    const ancestors = createProductListAncestors(attributes.parent);
 
