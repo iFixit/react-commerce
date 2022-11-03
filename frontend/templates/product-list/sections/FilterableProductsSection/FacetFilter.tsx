@@ -8,13 +8,13 @@ import { RefinementDisplayType } from '@models/product-list/types';
 type FacetFilterProps = {
    attribute: string;
    productList: ProductList;
-   onClose?: () => void;
+   onItemClick?: () => void;
 };
 
 export function FacetFilter({
    attribute,
    productList,
-   onClose,
+   onItemClick,
 }: FacetFilterProps) {
    switch (getRefinementDisplayType(attribute)) {
       case RefinementDisplayType.SingleSelect:
@@ -24,7 +24,7 @@ export function FacetFilter({
                showMore
                showMoreLimit={200}
                productList={productList}
-               onClose={onClose}
+               onItemClick={onItemClick}
             />
          );
       case RefinementDisplayType.MultiSelect:

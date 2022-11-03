@@ -19,14 +19,17 @@ import { ShowMoreButton } from './ShowMoreButton';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
 
-type RefinementSingleSelectProps = UseRefinementListProps & {
+type RefinementSingleSelectProps = Omit<
+   UseRefinementListProps,
+   'sortBy'
+> & {
    productList: ProductList;
-   onClose?: () => void;
+   onItemClick?: () => void;
 };
 
 export function RefinementSingleSelect({
    productList,
-   onClose,
+   onItemClick,
    ...otherProps
 }: RefinementSingleSelectProps) {
    const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
@@ -62,14 +65,14 @@ type SingleSelectItemProps = {
    item: RefinementListRenderState['items'][0];
    attribute: string;
    productListType: ProductListType;
-   onClose?: () => void;
+   onClick?: () => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
    item,
    attribute,
    productListType,
-   onClose,
+   onClick,
 }: SingleSelectItemProps) {
    const { createURL } = useCurrentRefinements();
    const { setIndexUiState } = useInstantSearch();
@@ -99,7 +102,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
                   refinementList: refinementList,
                };
             });
-            onClose?.();
+            onClick?.();
          }}
          _hover={{
             textDecoration: 'underline',

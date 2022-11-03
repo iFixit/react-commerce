@@ -325,7 +325,7 @@ function FacetPanel({
             <FacetFilter
                attribute={attribute}
                productList={productList}
-               onClose={onClose}
+               onItemClick={onClose}
             />
          </VStack>
       </Box>
