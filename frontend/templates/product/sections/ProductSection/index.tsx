@@ -239,8 +239,14 @@ export function ProductSection({
                         </VStack>
                      </CustomAccordionPanel>
                   </AccordionItem>
-                  <WikiHtmlAccordianItem title="Kit contents" contents={selectedVariant.kitContents}/>
-                  <WikiHtmlAccordianItem title="Assembly contents" contents={selectedVariant.assemblyContents}/>
+                  <WikiHtmlAccordianItem
+                     title="Kit contents"
+                     contents={selectedVariant.kitContents}
+                  />
+                  <WikiHtmlAccordianItem
+                     title="Assembly contents"
+                     contents={selectedVariant.assemblyContents}
+                  />
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -527,7 +533,13 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
    );
 }
 
-function WikiHtmlAccordianItem({title, contents}: {title:string, contents:string|null}) {
+function WikiHtmlAccordianItem({
+   title,
+   contents,
+}: {
+   title: string;
+   contents: string | null;
+}) {
    return (
       <AccordionItem hidden={contents == null}>
          <CustomAccordionButton>{title}</CustomAccordionButton>
@@ -549,7 +561,7 @@ function WikiHtmlAccordianItem({title, contents}: {title:string, contents:string
                   },
                }}
                dangerouslySetInnerHTML={{
-                  __html: contents ?? ''
+                  __html: contents ?? '',
                }}
             ></Box>
          </CustomAccordionPanel>
