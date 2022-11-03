@@ -9,7 +9,7 @@
       "@types/react": "18.0.24",
       "@types/react-dom": "18.0.8",
       "@ifixit/tsconfig": "workspace:*",
-      "typescript": "4.5.3",
+      "typescript": "4.8.4",
       "react": ">=18.2.0"
    },
    "scripts": {
