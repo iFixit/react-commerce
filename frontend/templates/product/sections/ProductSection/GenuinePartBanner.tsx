@@ -51,7 +51,7 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
          borderWidth="1px"
          borderStyle="solid"
          borderColor="brand.500"
-         borderRadius="4px"
+         borderRadius="md"
          boxShadow={`0 0 10px ${theme.colors.brand[200]}`}
          overflow="hidden"
       >
