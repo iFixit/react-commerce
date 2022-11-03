@@ -35,6 +35,11 @@ const partnerCodeToComponentMap: { [key: string]: React.FC } = {
 
 export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
    const { code, text, url } = oemPartnership;
+   // This text is designed to be used as a badge, here we
+   // lowercase the first letter and Part/Tool so it fits in a sentence.
+   const lowerCaseText = text.replace(/^(.)|Tool|Part/g, (str) =>
+      str.toLowerCase()
+   );
    const theme = useTheme();
 
    const PartnerLogo = partnerCodeToComponentMap[code];
@@ -74,10 +79,10 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
             fontWeight="medium"
             lineHeight="short"
          >
-            <Text lineHeight="shorter">{`This is a ${text}`}</Text>
+            <Text lineHeight="shorter">This is a {lowerCaseText}.</Text>
             {url && (
                <Link href={url} color="brand.500" target="_blank">
-                  Learn more
+                  Learn more.
                </Link>
             )}
          </Flex>
