@@ -1,7 +1,11 @@
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
-import { faSort } from '@fortawesome/pro-solid-svg-icons';
+import {
+   Box,
+   HStack,
+   StackProps,
+   Text,
+   VStack,
+} from '@chakra-ui/react';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
-import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import NextLink from 'next/link';
@@ -11,6 +15,7 @@ import {
    UseRefinementListProps,
    useInstantSearch,
 } from 'react-instantsearch-hooks-web';
+import { ShowMoreButton } from './ShowMoreButton';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
 
@@ -32,32 +37,22 @@ export function RefinementSingleSelect({
 
    return (
       <Box>
-         <VStack align="stretch" spacing="1" role="listbox">
-            {items.map((item) => {
-               return (
-                  <SingleSelectItem
-                     key={item.label}
-                     item={item}
-                     attribute={otherProps.attribute}
-                     productListType={productList.type}
-                     onClose={onClose}
-                  />
-               );
-            })}
-         </VStack>
+         <SingleSelectStack>
+            {items.map((item) => (
+               <SingleSelectItem
+                  key={item.label}
+                  item={item}
+                  attribute={otherProps.attribute}
+                  shouldBeLink={isDevicePartsItemType}
+                  onClick={onItemClick}
+               />
+            ))}
+         </SingleSelectStack>
          {canToggleShowMore && (
-            <Button
-               variant="ghost"
-               fontWeight="normal"
-               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
-               mt="3"
-               p="0"
-               w="full"
-               justifyContent="flex-start"
+            <ShowMoreButton
+               isShowingMore={isShowingMore}
                onClick={toggleShowMore}
-            >
-               {isShowingMore ? 'Show less' : 'Show more'}
-            </Button>
+            />
          )}
       </Box>
    );
@@ -154,3 +149,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       </HStack>
    );
 });
+
+function SingleSelectStack(props: StackProps) {
+   return <VStack align="stretch" spacing="1" role="listbox" {...props} />;
+}
