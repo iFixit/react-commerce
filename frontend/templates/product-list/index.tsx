@@ -180,6 +180,9 @@ export const getProductListServerSideProps = ({
 
             break;
          }
+         case ProductListType.Store: {
+            throw new Error('Unexpected object: ' + productListType);
+         }
          default: {
             return assertNever(productListType);
          }
