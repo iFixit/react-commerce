@@ -52,7 +52,7 @@ export function IfixitImage({ alt = '', ...props }: ImageProps) {
 
 function isGuideImage(src: string) {
    return src.match(
-      /^https:\/\/(guide-images\.cdn\.ifixit\.com\/|([^/]+\.(ubreakit|cominor)\.com\/igi))\//
+      /^https:\/\/(guide-images\.cdn\.ifixit\.com|([^/]+\.(ubreakit|cominor)\.com\/igi))\//
    );
 }
 
