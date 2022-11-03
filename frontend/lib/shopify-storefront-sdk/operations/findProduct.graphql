@@ -4,6 +4,12 @@ query findProduct($handle: String) {
       handle
       descriptionHtml
       tags
+      rating: metafield(namespace: "reviews", key: "rating") {
+         value
+      }
+      reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+         value
+      }
       breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
          value
       }

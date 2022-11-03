@@ -53,6 +53,10 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       return null;
    }
    const iFixitProductId = computeIFixitProductId(variantSku);
+
+   const ratingData = JSON.parse(response.product?.rating?.value ?? '');
+   const ratingCount = response.product?.reviewsCount?.value;
+
    let breadcrumbs = parseBreadcrumbsMetafieldValue(
       response.product.breadcrumbs?.value
    );
@@ -80,6 +84,8 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       compatibility: parseCompatibility(response.product.compatibility?.value),
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
+      rating: ratingData,
+      reviewsCount: ratingCount ? parseInt(ratingCount) : null,
    };
 }
 

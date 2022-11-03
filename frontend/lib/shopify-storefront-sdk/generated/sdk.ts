@@ -6322,6 +6322,8 @@ export type FindProductQuery = {
       handle: string;
       descriptionHtml: string;
       tags: Array<string>;
+      rating?: { __typename?: 'Metafield'; value: string } | null;
+      reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
       breadcrumbs?: { __typename?: 'Metafield'; value: string } | null;
       faqs?: { __typename?: 'Metafield'; value: string } | null;
       prop65WarningType?: { __typename?: 'Metafield'; value: string } | null;
@@ -6627,6 +6629,12 @@ export const FindProductDocument = `
     handle
     descriptionHtml
     tags
+    rating: metafield(namespace: "reviews", key: "rating") {
+      value
+    }
+    reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+      value
+    }
     breadcrumbs: metafield(namespace: "ifixit", key: "breadcrumbs") {
       value
     }
