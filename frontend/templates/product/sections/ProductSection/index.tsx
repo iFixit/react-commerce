@@ -14,9 +14,6 @@ import {
    HStack,
    Icon,
    Link,
-   List,
-   ListIcon,
-   ListItem,
    StackProps,
    Text,
    ThemeTypings,
@@ -24,18 +21,15 @@ import {
 } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
 import {
-   faBadgeDollar,
    faCircleExclamation,
    faCircleInfo,
-   faRocket,
-   faShieldCheck,
    faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
-import { Product, ProductReviewData, ProductVariant } from '@models/product';
+import { Product, ProductVariant } from '@models/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -52,7 +46,6 @@ export type ProductSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
-   reviewsData: ProductReviewData | null | undefined;
    internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 };
 
@@ -60,7 +53,6 @@ export function ProductSection({
    product,
    selectedVariant,
    onVariantChange,
-   reviewsData,
    internationalBuyBox,
 }: ProductSectionProps) {
    const [selectedImageId, setSelectedImageId] = React.useState(
@@ -140,9 +132,7 @@ export function ProductSection({
                      proPricesByTier={selectedVariant.proPricesByTier}
                   />
                )}
-               {isForSale && reviewsData && (
-                  <ProductRating product={product} reviewsData={reviewsData} />
-               )}
+               {isForSale && <ProductRating product={product} />}
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}

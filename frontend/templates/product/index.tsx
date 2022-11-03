@@ -9,16 +9,10 @@ import {
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
-import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
-import {
-   fetchProductReviews,
-   findProduct,
-   ProductReviewData,
-} from '@models/product';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { findProduct } from '@models/product';
+import { GetServerSideProps } from 'next';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import {
@@ -40,22 +34,7 @@ import { useInternationalBuyBox } from '@templates/product/hooks/useInternationa
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
-   const apiClient = useIFixitApiClient();
-   const [reviewsData, setReviewsData] = useState<
-      ProductReviewData | null | undefined
-   >();
-   useEffect(() => {
-      if (!product.iFixitProductId) {
-         return;
-      }
-      fetchProductReviews(apiClient, product.iFixitProductId)
-         .then((res) => {
-            setReviewsData(res);
-         })
-         .catch(() => {
-            setReviewsData(null);
-         });
-   }, [product.iFixitProductId]);
+
    const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);
@@ -90,7 +69,6 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                product={product}
                selectedVariant={selectedVariant}
                onVariantChange={setSelectedVariantId}
-               reviewsData={reviewsData}
                internationalBuyBox={internationalBuyBox}
             />
             <ReplacementGuidesSection product={product} />
@@ -100,12 +78,11 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                   key={selectedVariant.id}
                   product={product}
                   selectedVariant={selectedVariant}
-                  reviewsData={reviewsData}
                />
             )}
             {isProductForSale && (
                <ReviewsSection
-                  reviewsData={reviewsData}
+                  product={product}
                   selectedVariant={selectedVariant}
                />
             )}

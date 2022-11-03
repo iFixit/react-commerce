@@ -20,22 +20,41 @@ import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
+import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { PageContentWrapper } from '@ifixit/ui';
-import { ProductReview, ProductReviewData } from '@models/product';
+import {
+   fetchProductReviews,
+   Product,
+   ProductReview,
+   ProductReviewData,
+} from '@models/product';
 import { ProductVariant } from '@models/product';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
 
 export type ReviewsSectionProps = {
+   product: Product;
    selectedVariant: ProductVariant;
-   reviewsData: ProductReviewData | null | undefined;
 };
 
 export function ReviewsSection({
+   product,
    selectedVariant,
-   reviewsData,
 }: ReviewsSectionProps) {
+   const apiClient = useIFixitApiClient();
+   const [reviewsData, setReviewsData] = useState<ProductReviewData | null>(
+      null
+   );
+   useEffect(() => {
+      if (!product.iFixitProductId) {
+         return;
+      }
+      fetchProductReviews(apiClient, product.iFixitProductId).then((res) => {
+         setReviewsData(res);
+      });
+   }, [product.iFixitProductId]);
+
    const [visibleReviewsCount, setVisibleReviewsCount] = React.useState(
       INITIAL_VISIBILE_REVIEWS
    );

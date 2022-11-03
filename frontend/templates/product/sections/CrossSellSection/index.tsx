@@ -29,19 +29,17 @@ import {
    useGetUserPrice,
 } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
-import { Product, ProductReviewData, ProductVariant } from '@models/product';
+import { Product, ProductVariant } from '@models/product';
 import React from 'react';
 
 export type CrossSellSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
-   reviewsData: ProductReviewData | null | undefined;
 };
 
 export function CrossSellSection({
    product,
    selectedVariant,
-   reviewsData,
 }: CrossSellSectionProps) {
    const addToCart = useAddToCart('Frequently Bought Together');
    const getUserPrice = useGetUserPrice();
@@ -92,10 +90,10 @@ export function CrossSellSection({
    const currentProduct = React.useMemo<CrossSellProduct>(() => {
       return {
          title: product.title,
-         rating: reviewsData?.average,
-         reviewsCount: reviewsData?.count,
+         rating: product?.rating?.value,
+         reviewsCount: product?.reviewsCount,
       };
-   }, [reviewsData?.average, reviewsData?.count, product.title]);
+   }, [product?.rating?.value, product?.reviewsCount, product.title]);
 
    const handleAddToCart = () => {
       const input = selectedCrossSellVariantIds.map(
