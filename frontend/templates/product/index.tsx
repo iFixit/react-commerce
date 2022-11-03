@@ -32,11 +32,13 @@ import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] =
       useSelectedVariantFromUrl(product);
+   const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);
 
@@ -70,10 +72,11 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                product={product}
                selectedVariant={selectedVariant}
                onVariantChange={setSelectedVariantId}
+               internationalBuyBox={internationalBuyBox}
             />
             <ReplacementGuidesSection product={product} />
             <ServiceValuePropositionSection />
-            {isProductForSale && (
+            {isProductForSale && !internationalBuyBox && (
                <CrossSellSection
                   key={selectedVariant.id}
                   product={product}
