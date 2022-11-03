@@ -3,6 +3,7 @@ import {
    HStack,
    StackProps,
    Text,
+   useBoolean,
    VStack,
 } from '@chakra-ui/react';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
@@ -16,12 +17,15 @@ import {
    useInstantSearch,
 } from 'react-instantsearch-hooks-web';
 import { ShowMoreButton } from './ShowMoreButton';
-import { useFilteredRefinementList } from './useFilteredRefinementList';
+import {
+   DEFAULT_SHOW_MORE_LIMIT,
+   useFilteredRefinementList,
+} from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
 
 type RefinementSingleSelectProps = Omit<
    UseRefinementListProps,
-   'sortBy'
+   'sortBy' | 'limit'
 > & {
    productList: ProductList;
    onItemClick?: () => void;
@@ -32,13 +36,29 @@ export function RefinementSingleSelect({
    onItemClick,
    ...otherProps
 }: RefinementSingleSelectProps) {
-   const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
+   const isDevicePartsItemType =
+      otherProps.attribute === 'facet_tags.Item Type' &&
+      productList.type === ProductListType.DeviceParts;
+   const shouldRenderHiddenItems =
+      isDevicePartsItemType && otherProps.showMore && otherProps.showMoreLimit;
+   const limit = shouldRenderHiddenItems
+      ? otherProps.showMoreLimit! - 1
+      : undefined;
+   const { items, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...otherProps,
+         limit,
          sortBy: useSortBy(otherProps),
       });
 
-   return (
+   return shouldRenderHiddenItems ? (
+      <SingleSelectRenderAll
+         items={items}
+         attribute={otherProps.attribute}
+         showMoreLimit={DEFAULT_SHOW_MORE_LIMIT}
+         onItemClick={onItemClick}
+      />
+   ) : (
       <Box>
          <SingleSelectStack>
             {items.map((item) => (
@@ -61,24 +81,74 @@ export function RefinementSingleSelect({
    );
 }
 
+type SingleSelectRenderAllProps = {
+   items: RefinementListRenderState['items'];
+   attribute: string;
+   showMoreLimit: number;
+   onItemClick?: () => void;
+};
+
+const SingleSelectRenderAll = React.memo(function SingleSelectRenderAll({
+   items,
+   attribute,
+   showMoreLimit,
+   onItemClick,
+}: SingleSelectRenderAllProps) {
+   const [isShowingAll, { toggle: toggleShowAll }] = useBoolean(false);
+   const previewItems = React.useMemo(
+      () => items.slice(0, showMoreLimit),
+      [items, showMoreLimit]
+   );
+   const invisibleItems = React.useMemo(
+      () => items.slice(showMoreLimit),
+      [items, showMoreLimit]
+   );
+   return (
+      <>
+         <SingleSelectStack>
+            {(isShowingAll ? items : previewItems).map((item) => (
+               <SingleSelectItem
+                  key={item.label}
+                  item={item}
+                  attribute={attribute}
+                  shouldBeLink
+                  onClick={onItemClick}
+               />
+            ))}
+            {!isShowingAll && (
+               <Box h="0" overflow="hidden">
+                  {invisibleItems.map((item) => (
+                     <SingleSelectItem
+                        key={item.label}
+                        item={item}
+                        attribute={attribute}
+                        shouldBeLink
+                        onClick={onItemClick}
+                     />
+                  ))}
+               </Box>
+            )}
+         </SingleSelectStack>
+         <ShowMoreButton isShowingMore={isShowingAll} onClick={toggleShowAll} />
+      </>
+   );
+});
+
 type SingleSelectItemProps = {
    item: RefinementListRenderState['items'][0];
    attribute: string;
-   productListType: ProductListType;
+   shouldBeLink: boolean;
    onClick?: () => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
    item,
    attribute,
-   productListType,
+   shouldBeLink,
    onClick,
 }: SingleSelectItemProps) {
    const { createURL } = useCurrentRefinements();
    const { setIndexUiState } = useInstantSearch();
-   const shouldBeLink =
-      attribute === 'facet_tags.Item Type' &&
-      productListType === ProductListType.DeviceParts;
 
    const TitleText = (
       <Text
