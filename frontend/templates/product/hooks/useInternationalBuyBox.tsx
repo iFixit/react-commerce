@@ -15,7 +15,7 @@ export function useInternationalBuyBox(product: Product) {
       null,
       7 // expire in days
    );
-   const [selectedVariant] = useSelectedVariant(product);
+   const selectedVariant = useSelectedVariant();
    const buyBox = useQuery(
       buyBoxKey(String(product.productcode)),
       () => {
