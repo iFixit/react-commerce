@@ -1,9 +1,11 @@
 import { Button, Link, Box } from '@chakra-ui/react';
+import { useCallback } from 'react';
 import {
    BuyBoxResponse,
    BuyBoxVariant,
 } from '@lib/ifixit-api/international-buy-box';
 import { Flag, FlagCountryCode } from '@ifixit/icons';
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 
 type InternationalBuyBoxProps = {
    store: BuyBoxResponse;
@@ -16,6 +18,13 @@ export function InternationalBuyBox({
    selectedVariant,
    dismissBuyBox,
 }: InternationalBuyBoxProps) {
+   const trackClick = useCallback(() => {
+      const category = `${store.salesChannel} Store Buy Box`;
+      trackInMatomoAndGA({
+         eventCategory: category,
+         eventAction: `${category} - Click - ${selectedVariant.gaSku}`,
+      });
+   }, [selectedVariant, store]);
    return (
       <Box textAlign="center">
          <Button
@@ -24,6 +33,7 @@ export function InternationalBuyBox({
             as="a"
             w="full"
             colorScheme="brand"
+            onClick={trackClick}
             href={selectedVariant?.productURL}
          >
             <Flag mr={3} w={7} code={store.countryCode as FlagCountryCode} />{' '}
