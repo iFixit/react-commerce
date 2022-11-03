@@ -135,6 +135,8 @@ export function getProductListType(
          return ProductListType.ToolsCategory;
       case Enum_Productlist_Type.Marketing:
          return ProductListType.Marketing;
+      case Enum_Productlist_Type.Store:
+         return ProductListType.Store;
       default:
          return ProductListType.DeviceParts;
    }

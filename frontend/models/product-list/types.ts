@@ -36,6 +36,7 @@ export enum ProductListType {
    AllTools = 'tools',
    ToolsCategory = 'tools-category',
    Marketing = 'marketing',
+   Store = 'store',
 }
 
 export enum RefinementDisplayType {
@@ -48,7 +49,8 @@ export type ProductList =
    | DevicePartsProductList
    | AllToolsProductList
    | ToolsCategoryProductList
-   | MarketingProductList;
+   | MarketingProductList
+   | StoreProductList;
 
 export interface BaseProductList {
    title: string;
@@ -89,6 +91,10 @@ interface ToolsCategoryProductList extends BaseProductList {
 
 interface MarketingProductList extends BaseProductList {
    type: ProductListType.Marketing;
+}
+
+interface StoreProductList extends BaseProductList {
+   type: ProductListType.Store;
 }
 
 export interface ProductListAncestor {

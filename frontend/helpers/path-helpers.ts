@@ -27,6 +27,9 @@ export function productListPath(
       case ProductListType.AllTools: {
          return '/Tools';
       }
+      case ProductListType.Store: {
+         return '/Store';
+      }
       case ProductListType.ToolsCategory: {
          return `/Tools/${productList.handle}`;
       }
