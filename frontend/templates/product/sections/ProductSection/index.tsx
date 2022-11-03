@@ -239,32 +239,7 @@ export function ProductSection({
                         </VStack>
                      </CustomAccordionPanel>
                   </AccordionItem>
-                  <AccordionItem hidden={selectedVariant.kitContents == null}>
-                     <CustomAccordionButton>Kit contents</CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <Box
-                           fontSize="sm"
-                           sx={{
-                              ul: {
-                                 listStyle: 'none',
-                              },
-                              li: {
-                                 borderTopWidth: '1px',
-                                 borderTopColor: 'gray.200',
-                                 py: 3,
-                                 '& ul': {
-                                    mt: 3,
-                                    ml: 5,
-                                 },
-                              },
-                           }}
-                           dangerouslySetInnerHTML={{
-                              __html: selectedVariant.kitContents ?? '',
-                           }}
-                        ></Box>
-                     </CustomAccordionPanel>
-                  </AccordionItem>
-
+                  <WikiHtmlAccordianItem title="Kit contents" contents={selectedVariant.kitContents}/>
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -548,5 +523,35 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
             __html: children,
          }}
       />
+   );
+}
+
+function WikiHtmlAccordianItem({title, contents}: {title:string, contents:string|null}) {
+   return (
+      <AccordionItem hidden={contents == null}>
+         <CustomAccordionButton>{title}</CustomAccordionButton>
+         <CustomAccordionPanel>
+            <Box
+               fontSize="sm"
+               sx={{
+                  ul: {
+                     listStyle: 'none',
+                  },
+                  li: {
+                     borderTopWidth: '1px',
+                     borderTopColor: 'gray.200',
+                     py: 3,
+                     '& ul': {
+                        mt: 3,
+                        ml: 5,
+                     },
+                  },
+               }}
+               dangerouslySetInnerHTML={{
+                  __html: contents ?? ''
+               }}
+            ></Box>
+         </CustomAccordionPanel>
+      </AccordionItem>
    );
 }
