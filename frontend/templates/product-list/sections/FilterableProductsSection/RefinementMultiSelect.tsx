@@ -1,13 +1,12 @@
-import { Box, Button, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
-import { faSort } from '@fortawesome/pro-solid-svg-icons';
+import { Box, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
 import * as React from 'react';
 
-import { FaIcon } from '@ifixit/icons';
 import { useDecoupledState } from '@ifixit/ui';
 import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
+import { ShowMoreButton } from './ShowMoreButton';
 
 type RefinementMultiSelectProps = UseRefinementListProps;
 
@@ -32,18 +31,10 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
             })}
          </VStack>
          {canToggleShowMore && (
-            <Button
-               variant="ghost"
-               fontWeight="normal"
-               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
-               mt="3"
-               p="0"
-               w="full"
-               justifyContent="flex-start"
+            <ShowMoreButton
+               isShowingMore={isShowingMore}
                onClick={toggleShowMore}
-            >
-               {isShowingMore ? 'Show less' : 'Show more'}
-            </Button>
+            />
          )}
       </Box>
    );

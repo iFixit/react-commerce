@@ -26,7 +26,7 @@ import {
 } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
-import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
+import { useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 
 type FacetsDrawerProps = {
@@ -245,10 +245,7 @@ function FacetListItem({
    onSelect,
    productList,
 }: FacetListItemProps) {
-   const { items } = useFilteredRefinementList({
-      attribute,
-      limit: MAX_VALUES_PER_FACET,
-   });
+   const { items } = useFilteredRefinementList({ attribute });
    const hasApplicableRefinements = items.length > 0;
 
    if (!hasApplicableRefinements) {
@@ -328,7 +325,7 @@ function FacetPanel({
             <FacetFilter
                attribute={attribute}
                productList={productList}
-               onClose={onClose}
+               onItemClick={onClose}
             />
          </VStack>
       </Box>

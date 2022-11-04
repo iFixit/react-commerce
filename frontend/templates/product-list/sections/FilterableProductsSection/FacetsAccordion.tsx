@@ -17,7 +17,7 @@ import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
 import { FacetFilter } from './FacetFilter';
 import { useCountRefinements } from './useCountRefinements';
-import { MAX_VALUES_PER_FACET, useFilteredFacets } from './useFacets';
+import { useFilteredFacets } from './useFacets';
 import { useFilteredRefinementList } from './useFilteredRefinementList';
 import { RefinementDisplayType } from '@models/product-list/types';
 import { getRefinementDisplayType } from '@helpers/product-list-helpers';
@@ -90,10 +90,7 @@ type FacetAccordionItemProps = AccordionItemProps & {
 
 export const FacetAccordionItem = forwardRef<FacetAccordionItemProps, 'div'>(
    ({ attribute, refinedCount, productList, isExpanded, ...props }, ref) => {
-      const { items } = useFilteredRefinementList({
-         attribute,
-         limit: MAX_VALUES_PER_FACET,
-      });
+      const { items } = useFilteredRefinementList({ attribute });
       const { hits } = useHits();
       const isProductListEmpty = hits.length === 0;
       const hasApplicableRefinements = items.length > 0;

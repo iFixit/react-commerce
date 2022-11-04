@@ -1,7 +1,12 @@
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
-import { faSort } from '@fortawesome/pro-solid-svg-icons';
+import {
+   Box,
+   HStack,
+   StackProps,
+   Text,
+   useBoolean,
+   VStack,
+} from '@chakra-ui/react';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
-import { FaIcon } from '@ifixit/icons';
 import { ProductList, ProductListType } from '@models/product-list';
 import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
 import NextLink from 'next/link';
@@ -11,76 +16,139 @@ import {
    UseRefinementListProps,
    useInstantSearch,
 } from 'react-instantsearch-hooks-web';
-import { useFilteredRefinementList } from './useFilteredRefinementList';
+import { ShowMoreButton } from './ShowMoreButton';
+import {
+   DEFAULT_SHOW_MORE_LIMIT,
+   useFilteredRefinementList,
+} from './useFilteredRefinementList';
 import { useSortBy } from './useSortBy';
 
-type RefinementSingleSelectProps = UseRefinementListProps & {
+type RefinementSingleSelectProps = Omit<
+   UseRefinementListProps,
+   'sortBy' | 'limit'
+> & {
    productList: ProductList;
-   onClose?: () => void;
+   onItemClick?: () => void;
 };
 
 export function RefinementSingleSelect({
    productList,
-   onClose,
+   onItemClick,
    ...otherProps
 }: RefinementSingleSelectProps) {
-   const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
+   const isDevicePartsItemType =
+      otherProps.attribute === 'facet_tags.Item Type' &&
+      productList.type === ProductListType.DeviceParts;
+   const shouldRenderHiddenItems =
+      isDevicePartsItemType && otherProps.showMore && otherProps.showMoreLimit;
+   const limit = shouldRenderHiddenItems
+      ? otherProps.showMoreLimit! - 1
+      : undefined;
+   const { items, isShowingMore, toggleShowMore, canToggleShowMore } =
       useFilteredRefinementList({
          ...otherProps,
+         limit,
          sortBy: useSortBy(otherProps),
       });
 
-   return (
+   return shouldRenderHiddenItems ? (
+      <SingleSelectRenderAll
+         items={items}
+         attribute={otherProps.attribute}
+         showMoreLimit={DEFAULT_SHOW_MORE_LIMIT}
+         onItemClick={onItemClick}
+      />
+   ) : (
       <Box>
-         <VStack align="stretch" spacing="1" role="listbox">
-            {items.map((item) => {
-               return (
-                  <SingleSelectItem
-                     key={item.label}
-                     item={item}
-                     attribute={otherProps.attribute}
-                     productListType={productList.type}
-                     onClose={onClose}
-                  />
-               );
-            })}
-         </VStack>
+         <SingleSelectStack>
+            {items.map((item) => (
+               <SingleSelectItem
+                  key={item.label}
+                  item={item}
+                  attribute={otherProps.attribute}
+                  shouldBeLink={isDevicePartsItemType}
+                  onClick={onItemClick}
+               />
+            ))}
+         </SingleSelectStack>
          {canToggleShowMore && (
-            <Button
-               variant="ghost"
-               fontWeight="normal"
-               leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
-               mt="3"
-               p="0"
-               w="full"
-               justifyContent="flex-start"
+            <ShowMoreButton
+               isShowingMore={isShowingMore}
                onClick={toggleShowMore}
-            >
-               {isShowingMore ? 'Show less' : 'Show more'}
-            </Button>
+            />
          )}
       </Box>
    );
 }
 
+type SingleSelectRenderAllProps = {
+   items: RefinementListRenderState['items'];
+   attribute: string;
+   showMoreLimit: number;
+   onItemClick?: () => void;
+};
+
+const SingleSelectRenderAll = React.memo(function SingleSelectRenderAll({
+   items,
+   attribute,
+   showMoreLimit,
+   onItemClick,
+}: SingleSelectRenderAllProps) {
+   const [isShowingAll, { toggle: toggleShowAll }] = useBoolean(false);
+   const previewItems = React.useMemo(
+      () => items.slice(0, showMoreLimit),
+      [items, showMoreLimit]
+   );
+   const invisibleItems = React.useMemo(
+      () => items.slice(showMoreLimit),
+      [items, showMoreLimit]
+   );
+   return (
+      <>
+         <SingleSelectStack>
+            {(isShowingAll ? items : previewItems).map((item) => (
+               <SingleSelectItem
+                  key={item.label}
+                  item={item}
+                  attribute={attribute}
+                  shouldBeLink
+                  onClick={onItemClick}
+               />
+            ))}
+            {!isShowingAll && (
+               <Box h="0" overflow="hidden">
+                  {invisibleItems.map((item) => (
+                     <SingleSelectItem
+                        key={item.label}
+                        item={item}
+                        attribute={attribute}
+                        shouldBeLink
+                        onClick={onItemClick}
+                     />
+                  ))}
+               </Box>
+            )}
+         </SingleSelectStack>
+         <ShowMoreButton isShowingMore={isShowingAll} onClick={toggleShowAll} />
+      </>
+   );
+});
+
 type SingleSelectItemProps = {
    item: RefinementListRenderState['items'][0];
    attribute: string;
-   productListType: ProductListType;
-   onClose?: () => void;
+   shouldBeLink: boolean;
+   onClick?: () => void;
 };
 
 const SingleSelectItem = React.memo(function SingleSelectItem({
    item,
    attribute,
-   productListType,
-   onClose,
+   shouldBeLink,
+   onClick,
 }: SingleSelectItemProps) {
    const { createURL } = useCurrentRefinements();
    const { setIndexUiState } = useInstantSearch();
-   const shouldBeLink =
-      attribute === 'facet_tags.Item Type' &&
-      productListType === ProductListType.DeviceParts;
 
    const TitleText = (
       <Text
@@ -104,7 +172,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
                   refinementList: refinementList,
                };
             });
-            onClose?.();
+            onClick?.();
          }}
          _hover={{
             textDecoration: 'underline',
@@ -154,3 +222,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
       </HStack>
    );
 });
+
+function SingleSelectStack(props: StackProps) {
+   return <VStack align="stretch" spacing="1" role="listbox" {...props} />;
+}
