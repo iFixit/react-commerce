@@ -1,5 +1,4 @@
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
-import { invariant } from '@ifixit/helpers';
 
 export type BuyBoxVariant = {
    sku: string;
