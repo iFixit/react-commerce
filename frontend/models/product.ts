@@ -85,6 +85,9 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       compatibility: parseCompatibility(response.product.compatibility?.value),
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
+      oemPartnership: parseOemPartnership(
+         response.product.oemPartnership?.value
+      ),
       reviewsData,
    };
 }
@@ -392,6 +395,42 @@ function parseCompatibility(
    const errors = result.error.flatten();
    console.error(
       `Failed to parse compatibility metafield:\n ${JSON.stringify(
+         errors.fieldErrors,
+         null,
+         2
+      )}`
+   );
+   return null;
+}
+
+type OemPartnershipMetafield = z.infer<typeof OemPartnershipMetafieldSchema>;
+
+const OemPartnershipMetafieldSchema = z
+   .object({
+      text: z.string(),
+      code: z.string(),
+      url: z.string().optional().nullable(),
+   })
+   .optional()
+   .nullable();
+
+function parseOemPartnership(
+   value: string | null | undefined
+): OemPartnershipMetafield {
+   if (value == null) {
+      return null;
+   }
+   const rawJson = JSON.parse(value);
+   if (rawJson == null) {
+      return null;
+   }
+   const result = OemPartnershipMetafieldSchema.safeParse(rawJson);
+   if (result.success) {
+      return result.data;
+   }
+   const errors = result.error.flatten();
+   console.error(
+      `Failed to parse oem partnership metafield:\n ${JSON.stringify(
          errors.fieldErrors,
          null,
          2

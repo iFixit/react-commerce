@@ -40,6 +40,7 @@ import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSal
 import NextLink from 'next/link';
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
+import { GenuinePartBanner } from './GenuinePartBanner';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -165,6 +166,9 @@ export function ProductSection({
                   ))
                ) : (
                   <NotForSaleAlert mt="4" />
+               )}
+               {product.oemPartnership && (
+                  <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
                {isForSale && <BuyBoxPropositionSection />}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
