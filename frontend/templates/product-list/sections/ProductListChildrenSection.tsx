@@ -27,20 +27,15 @@ export function ProductListChildrenSection({
          computeMaskMaxHeight(
             60,
             16,
-            gridRef.current?.clientHeight,
             isShowingMore,
-            productList.defaultShowAllChildrenOnLgSizes
+            gridRef.current?.clientHeight
          ),
-      [isShowingMore, productList]
+      [isShowingMore]
    );
 
    const showMoreVisibility = React.useMemo(
-      () =>
-         computeShowMoreVisibility(
-            productListChildren.length,
-            productList.defaultShowAllChildrenOnLgSizes
-         ),
-      [productListChildren, productList]
+      () => computeShowMoreVisibility(productListChildren.length),
+      [productListChildren]
    );
 
    const onToggle = React.useCallback(() => {
@@ -139,9 +134,8 @@ export function ProductListChildrenSection({
 const computeMaskMaxHeight = (
    pixelLinkHeight: number,
    pixelGap: number,
-   maxHeight = 10000,
-   isShowingMore = false,
-   defaultShowAllChildrenOnLgSizes = false
+   isShowingMore: boolean,
+   maxHeight = 10000
 ) => {
    const shadowMargin = 4;
    if (isShowingMore) {
@@ -150,18 +144,12 @@ const computeMaskMaxHeight = (
    return {
       base: `${4 * pixelLinkHeight + 3 * pixelGap + shadowMargin}px`,
       sm: `${3 * pixelLinkHeight + 2 * pixelGap + shadowMargin}px`,
-      lg: defaultShowAllChildrenOnLgSizes
-         ? `${maxHeight + shadowMargin}px`
-         : undefined,
    };
 };
 
-const computeShowMoreVisibility = (
-   itemCount: number,
-   defaultShowAllChildrenOnLgSizes: boolean
-) => ({
+const computeShowMoreVisibility = (itemCount: number) => ({
    base: itemCount > 4 ? 'block' : 'none',
    sm: itemCount > 6 ? 'block' : 'none',
    md: itemCount > 9 ? 'block' : 'none',
-   lg: itemCount > 12 && !defaultShowAllChildrenOnLgSizes ? 'block' : 'none',
+   lg: itemCount > 12 ? 'block' : 'none',
 });
