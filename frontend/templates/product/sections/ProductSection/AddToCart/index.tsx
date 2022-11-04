@@ -55,7 +55,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
             itemcode: selectedVariant.sku,
             shopifyVariantId: selectedVariant.id,
             quantity: 1,
-            imageSrc: selectedVariant.image?.url || product.images[0].url,
+            imageSrc: selectedVariant.image?.url || product.images[0]?.url,
             price: userPrice.price,
             compareAtPrice: userPrice.compareAtPrice,
          },
@@ -255,7 +255,13 @@ function InventoryMessage({
    const remaining = Math.max(0, quantityAvailable - quantityAddedToCart);
 
    return (
-      <Flex color="red.600" py="0" fontSize="sm" align="center">
+      <Flex
+         color="red.600"
+         mt="2.5"
+         fontSize="sm"
+         align="center"
+         justify="center"
+      >
          <FaIcon
             icon={faCircleExclamation}
             display="block"

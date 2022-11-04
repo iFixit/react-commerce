@@ -2,11 +2,15 @@ import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { List, ListIcon, ListItem } from '@chakra-ui/react';
 import {
+   faBoxCircleCheck as faBoxCircleCheckDuo,
+   faRocket as faRocketDuo,
+   faShieldCheck as faShieldCheckDuo,
+} from '@fortawesome/pro-duotone-svg-icons';
+import {
    faBadgeDollar,
-   faBoxCircleCheck,
    faRocket,
    faShieldCheck,
-} from '@fortawesome/pro-duotone-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
 
 export type ServiceValuePropositionSectionProps = {};
@@ -40,7 +44,7 @@ export function ServiceValuePropositionSection() {
             px={{ base: 5, sm: 6 }}
          >
             <ValueProposition>
-               <ValuePropositionIcon icon={faBoxCircleCheck} />
+               <ValuePropositionIcon icon={faBoxCircleCheckDuo} />
                <Text fontWeight="bold">Purchase with purpose</Text>
                <Text>
                   Repair makes a global impact, reduces e-waste, and saves you
@@ -48,7 +52,7 @@ export function ServiceValuePropositionSection() {
                </Text>
             </ValueProposition>
             <ValueProposition>
-               <ValuePropositionIcon icon={faShieldCheck} />
+               <ValuePropositionIcon icon={faShieldCheckDuo} />
                <Text fontWeight="bold">Repair with confidence</Text>
                <Text>
                   All our products meet rigorous quality standards and are
@@ -56,7 +60,7 @@ export function ServiceValuePropositionSection() {
                </Text>
             </ValueProposition>
             <ValueProposition>
-               <ValuePropositionIcon icon={faRocket} />
+               <ValuePropositionIcon icon={faRocketDuo} />
                <Text fontWeight="bold">Fast shipping</Text>
                <Text>Same day shipping if ordered by 1PM Pacific.</Text>
             </ValueProposition>

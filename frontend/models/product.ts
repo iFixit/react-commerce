@@ -6,6 +6,8 @@ import {
    invariant,
    isRecord,
    Money,
+   logAsync,
+   parseItemcode,
 } from '@ifixit/helpers';
 import {
    FindProductQuery,
@@ -15,6 +17,7 @@ import {
 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 import shuffle from 'lodash/shuffle';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
 export type ProductVariant = ReturnType<typeof getVariants>[0];
@@ -22,10 +25,13 @@ export type ProductImage = ReturnType<typeof getFormattedImages>[0];
 
 export async function findProduct(shop: ShopCredentials, handle: string) {
    const storefront = getShopifyStorefrontSdk(shop);
+   const iFixitApiClient = new IFixitAPIClient({ origin: IFIXIT_ORIGIN });
 
-   const response = await storefront.findProduct({
-      handle,
-   });
+   const response = await logAsync('shopify.findProduct', () =>
+      storefront.findProduct({
+         handle,
+      })
+   );
    if (response.product == null) {
       return null;
    }
@@ -49,7 +55,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    }
    const iFixitProductId = computeIFixitProductId(variantSku);
    const reviewsData = await fetchProductReviews(
-      IFIXIT_ORIGIN,
+      iFixitApiClient,
       iFixitProductId
    );
    let breadcrumbs = parseBreadcrumbsMetafieldValue(
@@ -64,6 +70,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       ...response.product,
       breadcrumbs,
       iFixitProductId,
+      productcode: parseItemcode(variantSku).productcode,
       images: activeImages,
       options,
       variants: activeVariants,
@@ -100,8 +107,11 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
               parseFloat(variant.compareAtPrice!.amount) * 100
            )
          : 0;
+      const { productcode, optionid } = parseItemcode(String(variant.sku));
       return {
          ...other,
+         productcode,
+         optionid,
          image: variant.image
             ? formatImage(variant.image, shopifyProduct)
             : null,
@@ -113,6 +123,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          discountPercentage,
          description: variant.description?.value ?? null,
          kitContents: variant.kitContents?.value ?? null,
+         assemblyContents: variant.assemblyContents?.value ?? null,
          note: variant.note?.value ?? null,
          disclaimer: variant.disclaimer?.value ?? null,
          warning: variant.warning?.value ?? null,
@@ -464,29 +475,16 @@ export type ReviewAuthor = {
 };
 
 export async function fetchProductReviews(
-   apiOrigin: string,
+   apiClient: IFixitAPIClient,
    productId: string
 ): Promise<ProductReviewData | null> {
-   const response = await fetch(
+   const response = await apiClient.get(
       // TODO: get store code from user session or fall back to default
-      `${apiOrigin}/api/2.0/reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`,
-      {
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      }
+      `reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`
    );
 
-   if (response.ok) {
-      const payload = await response.json();
-      invariant(isRecord(payload), 'unexpected api response');
-      return payload;
-   }
-
-   if (response.status === 401) {
-      return null;
-   }
-   throw new Error(response.statusText);
+   invariant(isRecord(response), 'unexpected api response');
+   return response;
 }
 
 function parseRatingMetafieldValue(value: string | null | undefined) {

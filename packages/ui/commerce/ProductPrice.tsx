@@ -16,7 +16,6 @@ import {
    ThemeTypings,
 } from '@chakra-ui/react';
 import { faRectanglePro } from '@fortawesome/pro-solid-svg-icons';
-import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { computeDiscountPercentage, formatMoney, Money } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { IconBadge } from '../misc';
@@ -47,13 +46,11 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
       },
       ref
    ) => {
-      const { data: user } = useAuthenticatedUser();
       const userPrice = useUserPrice({
          price,
          compareAtPrice,
          proPricesByTier,
       });
-      const isProUser = user?.is_pro ?? false;
       const discountPercentage =
          userPrice.compareAtPrice != null
             ? computeDiscountPercentage(
@@ -78,9 +75,9 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
                   : undefined
             }
             showDiscountLabel={showDiscountLabel}
-            showProBadge={isProUser && isDiscounted}
+            showProBadge={userPrice.isProPrice && isDiscounted}
             size={size}
-            colorScheme={isProUser ? 'orange' : 'red'}
+            colorScheme={userPrice.isProPrice ? 'orange' : 'red'}
             direction={direction}
             {...other}
          />

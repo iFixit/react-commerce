@@ -46,17 +46,21 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { Prop65Warning } from './Prop65Warning';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
+import { InternationalBuyBox } from './InternationalBuyBox';
 
 export type ProductSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
+   internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 };
 
 export function ProductSection({
    product,
    selectedVariant,
    onVariantChange,
+   internationalBuyBox,
 }: ProductSectionProps) {
    const [selectedImageId, setSelectedImageId] = React.useState(
       selectedVariant.image?.id
@@ -151,12 +155,15 @@ export function ProductSection({
                   onChange={handleVariantChange}
                />
                {isForSale ? (
-                  isVariantWithSku(selectedVariant) && (
+                  isVariantWithSku(selectedVariant) &&
+                  (internationalBuyBox ? (
+                     <InternationalBuyBox {...internationalBuyBox} />
+                  ) : (
                      <AddToCart
                         product={product}
                         selectedVariant={selectedVariant}
                      />
-                  )
+                  ))
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
@@ -236,32 +243,14 @@ export function ProductSection({
                         </VStack>
                      </CustomAccordionPanel>
                   </AccordionItem>
-                  <AccordionItem hidden={selectedVariant.kitContents == null}>
-                     <CustomAccordionButton>Kit contents</CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <Box
-                           fontSize="sm"
-                           sx={{
-                              ul: {
-                                 listStyle: 'none',
-                              },
-                              li: {
-                                 borderTopWidth: '1px',
-                                 borderTopColor: 'gray.200',
-                                 py: 3,
-                                 '& ul': {
-                                    mt: 3,
-                                    ml: 5,
-                                 },
-                              },
-                           }}
-                           dangerouslySetInnerHTML={{
-                              __html: selectedVariant.kitContents ?? '',
-                           }}
-                        ></Box>
-                     </CustomAccordionPanel>
-                  </AccordionItem>
-
+                  <WikiHtmlAccordianItem
+                     title="Kit contents"
+                     contents={selectedVariant.kitContents}
+                  />
+                  <WikiHtmlAccordianItem
+                     title="Assembly contents"
+                     contents={selectedVariant.assemblyContents}
+                  />
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -287,7 +276,10 @@ export function ProductSection({
                                     transition="all 300m"
                                     mb="6px"
                                  >
-                                    <CompatibleDevice device={device} />
+                                    <CompatibleDevice
+                                       device={device}
+                                       truncate={4}
+                                    />
                                  </chakra.a>
                               </NextLink>
                            ))}
@@ -542,5 +534,41 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
             __html: children,
          }}
       />
+   );
+}
+
+function WikiHtmlAccordianItem({
+   title,
+   contents,
+}: {
+   title: string;
+   contents: string | null;
+}) {
+   return (
+      <AccordionItem hidden={contents == null}>
+         <CustomAccordionButton>{title}</CustomAccordionButton>
+         <CustomAccordionPanel>
+            <Box
+               fontSize="sm"
+               sx={{
+                  ul: {
+                     listStyle: 'none',
+                  },
+                  li: {
+                     borderTopWidth: '1px',
+                     borderTopColor: 'gray.200',
+                     py: 3,
+                     '& ul': {
+                        mt: 3,
+                        ml: 5,
+                     },
+                  },
+               }}
+               dangerouslySetInnerHTML={{
+                  __html: contents ?? '',
+               }}
+            ></Box>
+         </CustomAccordionPanel>
+      </AccordionItem>
    );
 }

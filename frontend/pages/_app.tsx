@@ -7,11 +7,11 @@ import NextNProgress from 'nextjs-progressbar';
 // Improve FontAwesome integration with Next.js https://fontawesome.com/v5/docs/web/use-with/react#next-js
 config.autoAddCss = false;
 
-type AppPropsWithLayout = AppProps & {
+type AppPropsWithLayout<P> = AppProps<P> & {
    Component: NextPageWithLayout;
 };
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
    const getLayout = Component.getLayout ?? ((page) => page);
    return (
       <ServerSidePropsProvider props={pageProps}>

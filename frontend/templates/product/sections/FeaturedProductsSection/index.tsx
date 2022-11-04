@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
 import { getProductPath } from '@helpers/product-helpers';
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 import {
    computeDiscountPercentage,
    isLifetimeWarranty,
@@ -26,6 +27,7 @@ import {
 import { Product } from '@models/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
+import * as React from 'react';
 
 export type FeaturedProductsSectionProps = {
    product: Product;
@@ -47,7 +49,7 @@ export function FeaturedProductsSection({
                textAlign="center"
                mb="12"
             >
-               Featured products
+               Featured Products
             </Heading>
          </PageContentWrapper>
          <SimpleGrid
@@ -114,6 +116,12 @@ function ProductGridItem({
       typeof warranty === 'string' && isLifetimeWarranty(warranty);
 
    const productHeadingId = `product-heading-${handle}`;
+   const onClick = React.useCallback(() => {
+      trackInMatomoAndGA({
+         eventCategory: 'Featured Products - Product Page',
+         eventAction: `Featured on Product Page - ${handle}`,
+      });
+   }, [handle]);
 
    return (
       <LinkBox
@@ -137,6 +145,7 @@ function ProductGridItem({
             <NextLink href={getProductPath(handle)} passHref>
                <LinkOverlay
                   id={productHeadingId}
+                  onClick={onClick}
                   mt="3"
                   display="inline-block"
                   fontSize="md"

@@ -16,7 +16,8 @@ export function computeProductListAlgoliaFilterPreset<
    const conditions: string[] = [];
 
    if (filters && filters.length > 0) {
-      conditions.push(filters);
+      // Algolia can't handle newlines in the filter, so replace with space.
+      conditions.push(filters.replaceAll('\n', ' '));
    } else if (deviceTitle && deviceTitle.length > 0) {
       conditions.push(`device:${JSON.stringify(deviceTitle)}`);
    }

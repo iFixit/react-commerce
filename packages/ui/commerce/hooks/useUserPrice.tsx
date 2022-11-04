@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { Money } from '@ifixit/helpers';
+import { lessThan, Money } from '@ifixit/helpers';
 
 type UseUserPriceProps = {
    price: Money;
@@ -11,7 +11,16 @@ type UseUserPriceProps = {
 type UseUserPriceResult = {
    price: Money;
    compareAtPrice?: Money | null;
+   isProPrice: boolean;
 };
+
+enum DiscountTier {
+   Employee = 'employee',
+   Pro1 = 'pro_1',
+   Pro2 = 'pro_2',
+   Pro3 = 'pro_3',
+   Pro4 = 'pro_4',
+}
 
 export function useUserPrice(props: UseUserPriceProps): UseUserPriceResult {
    const getUserPrice = useGetUserPrice();
@@ -32,15 +41,17 @@ export function useGetUserPrice() {
             discountTier != null && isProUser
                ? proPricesByTier?.[discountTier]
                : null;
-         if (proPrice == null) {
+         if (proPrice == null || lessThan(price, proPrice)) {
             return {
                price,
                compareAtPrice,
+               isProPrice: false,
             };
          }
          return {
             price: proPrice,
             compareAtPrice: compareAtPrice ?? price,
+            isProPrice: discountTier !== DiscountTier.Employee,
          };
       },
       [discountTier, isProUser]

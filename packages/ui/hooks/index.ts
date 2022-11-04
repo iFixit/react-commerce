@@ -131,6 +131,53 @@ export function useSSRBreakpointValue<Value>(
 /**
  * A simple hook to store user preferences in local storage.
  * @param key localStorage key
+ * @returns [value, setValue] tuple where `value` is the current value and `setValue` is a function to update it.
+ */
+export function useExpiringLocalPreference<Data = any>(
+   key: string,
+   defaultData: Data,
+   expireInDays: number
+): [Data, (data: Data) => void] {
+   type ExpiringData = {
+      value: Data;
+      expires: number;
+   };
+
+   const [data, setData] = React.useState(defaultData);
+
+   React.useEffect(() => {
+      const serializedData = localStorage.getItem(key);
+      if (serializedData != null) {
+         try {
+            const data = JSON.parse(serializedData) as ExpiringData;
+            const expiresAt = Number.isInteger(data?.expires)
+               ? data.expires
+               : 0;
+            if (expiresAt && Date.now() < expiresAt) {
+               setData(data?.value);
+            } else {
+               localStorage.deleteIem(key);
+            }
+         } catch (error) {}
+      }
+   }, []);
+
+   const setAndSave = (data: Data) => {
+      setData(data);
+      const expiringData = {
+         value: data,
+         expires: Date.now() + expireInDays * 1000 * 86400,
+      } as ExpiringData;
+      const serializedData = JSON.stringify(expiringData);
+      localStorage.setItem(key, serializedData);
+   };
+
+   return [data, setAndSave];
+}
+
+/**
+ * A simple hook to store user preferences in local storage.
+ * @param key localStorage key
  * @param defaultData
  * @returns [value, setValue] tuple where `value` is the current value and `setValue` is a function to update it.
  */

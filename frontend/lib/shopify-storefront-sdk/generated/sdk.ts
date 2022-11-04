@@ -6455,6 +6455,10 @@ export type FindProductQuery = {
             }>;
             description?: { __typename?: 'Metafield'; value: string } | null;
             kitContents?: { __typename?: 'Metafield'; value: string } | null;
+            assemblyContents?: {
+               __typename?: 'Metafield';
+               value: string;
+            } | null;
             note?: { __typename?: 'Metafield'; value: string } | null;
             disclaimer?: { __typename?: 'Metafield'; value: string } | null;
             warning?: { __typename?: 'Metafield'; value: string } | null;
@@ -6672,7 +6676,7 @@ export const FindProductDocument = `
     featuredImage {
       id
     }
-    images(first: 20) {
+    images(first: 250) {
       nodes {
         id
         altText
@@ -6718,6 +6722,9 @@ export const FindProductDocument = `
           value
         }
         kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
+          value
+        }
+        assemblyContents: metafield(namespace: "ifixit", key: "assembly_contents") {
           value
         }
         note: metafield(namespace: "ifixit", key: "note") {

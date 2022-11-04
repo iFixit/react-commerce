@@ -11,6 +11,7 @@ import {
    SimpleGrid,
    SimpleGridProps,
 } from '@chakra-ui/react';
+import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
    (props, ref) => {
@@ -75,10 +76,12 @@ type FooterNavigationLinkProps = BoxProps & {
 
 export const FooterNavigationLink = forwardRef<FooterNavigationLinkProps, 'a'>(
    ({ icon, children, ...otherProps }, ref) => {
+      const trackedOnClick = useTrackedOnClick(otherProps);
       return (
          <Box
             ref={ref}
             as="a"
+            onClick={trackedOnClick}
             cursor="pointer"
             transition="all 400ms"
             _hover={{

@@ -1,4 +1,4 @@
-import { useAppContext } from '@ifixit/app';
+import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { fetchProductReviews, Product } from '@models/product';
 import { useQuery } from 'react-query';
 
@@ -9,11 +9,10 @@ const productReviewsKeys = {
 };
 
 export function useProductReviews(product: Product) {
-   const appContext = useAppContext();
+   const apiClient = useIFixitApiClient();
    const query = useQuery(
       productReviewsKeys.reviews(product.iFixitProductId),
-      () =>
-         fetchProductReviews(appContext.ifixitOrigin, product.iFixitProductId),
+      () => fetchProductReviews(apiClient, product.iFixitProductId),
       {
          initialData: product.reviewsData,
          staleTime: Infinity, // Right now we're not interested in refreshing data client side
