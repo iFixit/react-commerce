@@ -16,6 +16,7 @@ import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
 export type ProductGalleryProps = {
    product: Product;
    selectedVariant: ProductVariant;
+   selectedImageId?: string | null;
    showThumbnails?: boolean;
    enableZoom?: boolean;
    onChangeImage?: (imageId: string) => void;
@@ -27,11 +28,16 @@ const THUMBNAILS_SPACE_BETWEEN = 12;
 export function ProductGallery({
    product,
    selectedVariant,
+   selectedImageId,
    showThumbnails,
    enableZoom,
    onChangeImage,
 }: ProductGalleryProps) {
    const variantImages = useVariantImages(product, selectedVariant.id);
+   const selectedImageIndex = useCurrentImageIndex(
+      variantImages,
+      selectedImageId
+   );
    const onSlideChange = React.useCallback(
       (slideIndex) => onChangeImage?.(variantImages[slideIndex].id!),
       [onChangeImage, variantImages]
@@ -46,6 +52,7 @@ export function ProductGallery({
       isBeginning,
       isEnd,
    } = useSwiper({
+      slideIndex: selectedImageIndex,
       totalSlides: variantImages.length,
       showThumbnails: variantImages.length > 1,
       onSlideChange,
@@ -178,6 +185,24 @@ function useVariantImages(product: Product, variantId: string) {
          return linkedVariant == null || linkedVariant.id === variantId;
       });
    }, [product, variantId]);
+}
+
+function useCurrentImageIndex(
+   variantImages: ProductImage[],
+   selectedImageId?: string | null
+) {
+   const currentImageId = React.useMemo(() => {
+      return selectedImageId ?? variantImages[0]?.id;
+   }, [selectedImageId, variantImages]);
+
+   const currentImageIndex = React.useMemo(() => {
+      const index = variantImages.findIndex(
+         (image) => image.id === currentImageId
+      );
+      return index >= 0 ? index : 0;
+   }, [variantImages, currentImageId]);
+
+   return currentImageIndex;
 }
 
 type CustomNavigationType = {

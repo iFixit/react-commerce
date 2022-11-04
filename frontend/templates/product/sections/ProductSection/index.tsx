@@ -33,13 +33,13 @@ import { Product, ProductVariant } from '@models/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { Prop65Warning } from './Prop65Warning';
-import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { InternationalBuyBox } from './InternationalBuyBox';
 
@@ -56,6 +56,17 @@ export function ProductSection({
    onVariantChange,
    internationalBuyBox,
 }: ProductSectionProps) {
+   const [selectedImageId, setSelectedImageId] = React.useState<string | null>(
+      null
+   );
+
+   const handleVariantChange = React.useCallback(
+      (variantId: string) => {
+         onVariantChange(variantId);
+         setSelectedImageId(null);
+      },
+      [onVariantChange]
+   );
    const isForSale = useIsProductForSale(product);
 
    const compatibilityDrawerModelsTruncate = 4;
@@ -85,8 +96,10 @@ export function ProductSection({
                <ProductGallery
                   product={product}
                   selectedVariant={selectedVariant}
+                  selectedImageId={selectedImageId}
                   showThumbnails
                   enableZoom
+                  onChangeImage={setSelectedImageId}
                />
                <Box
                   id="zoom-container"
@@ -131,13 +144,15 @@ export function ProductSection({
                   <ProductGallery
                      product={product}
                      selectedVariant={selectedVariant}
+                     selectedImageId={selectedImageId}
+                     onChangeImage={setSelectedImageId}
                   />
                </Flex>
 
                <ProductOptions
                   product={product}
                   selected={selectedVariant.id}
-                  onChange={onVariantChange}
+                  onChange={handleVariantChange}
                />
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&
