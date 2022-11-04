@@ -19,6 +19,11 @@ Cypress.Commands.add(
    }
 );
 
+Cypress.Commands.add('times', (times, callback) => {
+   const items = Array.from({ length: times }, (_, i) => i);
+   cy.wrap(items).each(callback);
+});
+
 Cypress.Commands.add('loadCollectionPageByPath', (path: string) => {
    cy.intercept('/1/indexes/**').as('search');
    interceptLogin();
