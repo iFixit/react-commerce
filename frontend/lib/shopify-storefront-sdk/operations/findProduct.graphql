@@ -108,6 +108,12 @@ query findProduct($handle: String) {
             kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
                value
             }
+            assemblyContents: metafield(
+               namespace: "ifixit"
+               key: "assembly_contents"
+            ) {
+               value
+            }
             note: metafield(namespace: "ifixit", key: "note") {
                value
             }
