@@ -168,18 +168,16 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           <div
             class="chakra-stack css-1wwkyaq"
           >
-            <p
-              class="chakra-text css-12jr671"
-              data-testid="product-price"
+            <div
+              class="css-14apnby"
             >
-              $5
-            </p>
-            <p
-              class="chakra-text css-m9wb1i"
-              data-testid="product-compared-at-price"
-            >
-              $5
-            </p>
+              <p
+                class="chakra-text css-1bsyxr8"
+                data-testid="product-price"
+              >
+                $5.00
+              </p>
+            </div>
           </div>
           <div
             class="chakra-stack css-1dz9rto"
