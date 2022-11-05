@@ -13,7 +13,6 @@ import {
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
-import { useSelectedVariant } from '../../hooks/useSelectedVariant';
 
 export type ServiceValuePropositionSectionProps = {
    selectedVariant: ProductVariant;
