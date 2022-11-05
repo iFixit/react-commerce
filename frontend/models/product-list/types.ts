@@ -36,6 +36,9 @@ export enum ProductListType {
    AllTools = 'tools',
    ToolsCategory = 'tools-category',
    Marketing = 'marketing',
+}
+
+export enum iFixitPageType {
    Store = 'store',
 }
 
@@ -49,8 +52,9 @@ export type ProductList =
    | DevicePartsProductList
    | AllToolsProductList
    | ToolsCategoryProductList
-   | MarketingProductList
-   | StoreProductList;
+   | MarketingProductList;
+
+export type iFixitPage = |StorePage;
 
 export interface BaseProductList {
    title: string;
@@ -93,14 +97,14 @@ interface MarketingProductList extends BaseProductList {
    type: ProductListType.Marketing;
 }
 
-interface StoreProductList extends BaseProductList {
-   type: ProductListType.Store;
+interface StorePage extends BaseProductList {
+   type: iFixitPageType.Store;
 }
 
 export interface ProductListAncestor {
    deviceTitle: string | null;
    title: string;
-   type: ProductListType;
+   type: ProductListType | iFixitPageType;
    handle: string;
 }
 

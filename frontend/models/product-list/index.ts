@@ -22,6 +22,8 @@ import {
 import algoliasearch from 'algoliasearch';
 import {
    BaseProductList,
+   iFixitPageType,
+   iFixitPage,
    ProductList,
    ProductListAncestor,
    ProductListChild,
@@ -30,11 +32,11 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
-import { productListPath } from '@helpers/path-helpers';
 
-export { ProductListSectionType, ProductListType } from './types';
+export { ProductListSectionType, ProductListType, iFixitPageType } from './types';
 export type {
    FeaturedProductList,
+   iFixitPage,
    ProductList,
    ProductListPreview,
    ProductListSection,
@@ -135,8 +137,6 @@ export function getProductListType(
          return ProductListType.ToolsCategory;
       case Enum_Productlist_Type.Marketing:
          return ProductListType.Marketing;
-      case Enum_Productlist_Type.Store:
-         return ProductListType.Store;
       default:
          return ProductListType.DeviceParts;
    }
@@ -233,7 +233,7 @@ function createProductListAncestors(
          {
             deviceTitle: '',
             title: 'Store',
-            type: getProductListType(Enum_Productlist_Type.Store),
+            type: iFixitPageType.Store,
             handle: 'Store',
          },
       ];

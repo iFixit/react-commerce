@@ -1,9 +1,9 @@
 import { invariant } from '@ifixit/helpers';
-import { ProductList, ProductListType } from '@models/product-list';
+import { ProductList, ProductListType, iFixitPageType, iFixitPage } from '@models/product-list';
 import { stylizeDeviceTitle } from './product-list-helpers';
 
 type ProductListPathAttributes = Pick<
-   ProductList,
+   ProductList | iFixitPage,
    'type' | 'handle' | 'deviceTitle'
 >;
 
@@ -27,14 +27,14 @@ export function productListPath(
       case ProductListType.AllTools: {
          return '/Tools';
       }
-      case ProductListType.Store: {
-         return '/Store';
-      }
       case ProductListType.ToolsCategory: {
          return `/Tools/${productList.handle}`;
       }
       case ProductListType.Marketing: {
          return `/Shop/${productList.handle}`;
+      }
+      case iFixitPageType.Store: {
+         return '/Store';
       }
       default: {
          throw new Error(`unknown product list type: ${productList.type}`);
