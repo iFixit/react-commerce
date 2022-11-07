@@ -341,7 +341,6 @@ export enum Enum_Productlist_Type {
    Marketing = 'marketing',
    Parts = 'parts',
    Tools = 'tools',
-   Store = 'store',
 }
 
 export enum Enum_Store_Currency {
