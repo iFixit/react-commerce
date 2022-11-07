@@ -29,6 +29,7 @@ import {
    ProductReviewData,
 } from '@models/product';
 import { ProductVariant } from '@models/product';
+import { useProductReviews } from '@templates/product/hooks/useProductReviews';
 import React, { useEffect, useState } from 'react';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -42,18 +43,8 @@ export function ReviewsSection({
    product,
    selectedVariant,
 }: ReviewsSectionProps) {
-   const apiClient = useIFixitApiClient();
-   const [reviewsData, setReviewsData] = useState<ProductReviewData | null>(
-      null
-   );
-   useEffect(() => {
-      if (!product.iFixitProductId) {
-         return;
-      }
-      fetchProductReviews(apiClient, product.iFixitProductId).then((res) => {
-         setReviewsData(res);
-      });
-   }, [product.iFixitProductId]);
+   const reviewsQuery = useProductReviews(product);
+   const reviewsData = reviewsQuery.data;
 
    const [visibleReviewsCount, setVisibleReviewsCount] = React.useState(
       INITIAL_VISIBILE_REVIEWS

@@ -54,7 +54,7 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
    }
    const iFixitProductId = computeIFixitProductId(variantSku);
 
-   const ratingData = JSON.parse(response.product?.rating?.value ?? '');
+   const ratingData = JSON.parse(response.product?.rating?.value ?? '{}');
    const ratingCount = response.product?.reviewsCount?.value;
 
    let breadcrumbs = parseBreadcrumbsMetafieldValue(
