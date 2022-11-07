@@ -54,7 +54,7 @@ export type ProductList =
    | ToolsCategoryProductList
    | MarketingProductList;
 
-export type iFixitPage = |StorePage;
+export type iFixitPage = StorePage;
 
 export interface BaseProductList {
    title: string;

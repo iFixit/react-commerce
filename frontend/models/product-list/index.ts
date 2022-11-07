@@ -33,7 +33,11 @@ import {
    ProductListType,
 } from './types';
 
-export { ProductListSectionType, ProductListType, iFixitPageType } from './types';
+export {
+   ProductListSectionType,
+   ProductListType,
+   iFixitPageType,
+} from './types';
 export type {
    FeaturedProductList,
    iFixitPage,

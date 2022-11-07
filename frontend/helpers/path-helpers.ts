@@ -1,5 +1,10 @@
 import { invariant } from '@ifixit/helpers';
-import { ProductList, ProductListType, iFixitPageType, iFixitPage } from '@models/product-list';
+import {
+   ProductList,
+   ProductListType,
+   iFixitPageType,
+   iFixitPage,
+} from '@models/product-list';
 import { stylizeDeviceTitle } from './product-list-helpers';
 
 type ProductListPathAttributes = Pick<
