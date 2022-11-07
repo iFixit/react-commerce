@@ -1,6 +1,6 @@
 import { getProductVariantSku, Money } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { APICart, Cart, CartAPIResponse, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
 

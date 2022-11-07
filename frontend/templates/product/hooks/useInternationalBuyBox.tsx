@@ -1,5 +1,5 @@
 import { Product } from '@models/product';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useSelectedVariant } from './useSelectedVariant';

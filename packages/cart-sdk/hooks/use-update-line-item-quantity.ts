@@ -1,6 +1,6 @@
 import { trackMatomoCartChange } from '@ifixit/analytics';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Cart } from '../types';
 import { cartKeys } from '../utils';
 

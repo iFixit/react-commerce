@@ -1,6 +1,6 @@
 import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import { fetchPosts, Post } from '@models/posts';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { PostCard } from './PostCard';
 
 export interface RelatedPostsSectionProps {

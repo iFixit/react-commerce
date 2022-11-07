@@ -9,7 +9,7 @@ import {
    QueryCache,
    QueryClient,
    QueryClientProvider,
-} from 'react-query';
+} from '@tanstack/react-query';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
 
 const customTheme = extendTheme({
