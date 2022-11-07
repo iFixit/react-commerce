@@ -152,12 +152,15 @@ export function InstantSearchProvider({
                // Item Type is the slug on device pages, not in the query.
                delete filterCopy['facet_tags.Item Type'];
             }
-            const initialQuery = qsModule.parse(location.search, {
-               ignoreQueryPrefix: true,
-            });
+            const { q, p, filter, ...otherParams } = qsModule.parse(
+               location.search,
+               {
+                  ignoreQueryPrefix: true,
+               }
+            );
             const queryString = qsModule.stringify(
                {
-                  ...initialQuery,
+                  ...otherParams,
                   ...routeState,
                   filter: filterCopy,
                },
