@@ -1,6 +1,7 @@
 import { invariant, isRecord } from '@ifixit/helpers';
-import { useQuery } from 'react-query';
-import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { IFixitAPIClient, useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { useLocalPreference } from '@ifixit/ui';
+import { useQuery } from '@tanstack/react-query';
 
 export type User = {
    id: number;
@@ -16,16 +17,35 @@ const userKeys = {
    user: ['user'],
 };
 
+const hasLocalStorage = typeof localStorage !== 'undefined';
+const userDataLocalKey = 'user.data';
+
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
+   const [cachedUserData, setCachedUserData] = useLocalPreference<User | null>(
+      userDataLocalKey,
+      null
+   );
    const query = useQuery(
       userKeys.user,
-      () => fetchAuthenticatedUser(apiClient).catch(() => null),
+      () => {
+         const responsePromise = fetchAuthenticatedUser(apiClient).catch(
+            () => null
+         );
+         responsePromise
+            .then((response) => {
+               setCachedUserData(response);
+            })
+            .catch(() => {});
+         return responsePromise;
+      },
       {
          retryOnMount: false,
          staleTime: Infinity,
+         placeholderData: cachedUserData,
       }
    );
+
    return query;
 }
 

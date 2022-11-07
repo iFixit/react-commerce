@@ -88,55 +88,6 @@ export const ProductCardRating = ({
    );
 };
 
-export type ProductCardPricingProps = StackProps & {
-   price: number;
-   compareAtPrice?: number;
-   currency: string;
-};
-
-export const ProductCardPricing = ({
-   price,
-   compareAtPrice,
-   currency,
-   ...stackProps
-}: ProductCardPricingProps) => {
-   const isDiscounted = compareAtPrice != null && compareAtPrice > price;
-   if (price == null) {
-      return null;
-   }
-   return (
-      <HStack
-         w="full"
-         flexGrow={1}
-         align="flex-end"
-         justify="flex-end"
-         spacing="2"
-         {...stackProps}
-      >
-         {isDiscounted && (
-            <Text
-               lineHeight="1em"
-               textDecoration="line-through"
-               color="gray.400"
-               data-testid="product-price"
-            >
-               {currency}
-               {compareAtPrice}
-            </Text>
-         )}
-         <Text
-            color={isDiscounted ? 'red.700' : 'inherit'}
-            fontWeight="bold"
-            fontSize="xl"
-            lineHeight="1em"
-         >
-            {currency}
-            {price}
-         </Text>
-      </HStack>
-   );
-};
-
 export const ProductCardBadgeList = (props: StackProps) => {
    return (
       <HStack
@@ -179,14 +130,19 @@ export const ProductCardSoldOutBadge = (props: BadgeProps) => {
 
 export type ProductCardDiscountBadgeProps = BadgeProps & {
    percentage: number;
+   isProPrice: boolean;
 };
 
 export const ProductCardDiscountBadge = ({
    percentage,
+   isProPrice,
    ...badgeProps
 }: ProductCardDiscountBadgeProps) => {
    return (
-      <ProductCardBadge {...badgeProps} colorScheme="red">
+      <ProductCardBadge
+         {...badgeProps}
+         colorScheme={isProPrice ? 'orange' : 'red'}
+      >
          {percentage}% Off
       </ProductCardBadge>
    );

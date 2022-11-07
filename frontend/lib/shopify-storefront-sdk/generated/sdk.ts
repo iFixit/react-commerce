@@ -6401,6 +6401,7 @@ export type FindProductQuery = {
       compatibility?: { __typename?: 'Metafield'; value: string } | null;
       metaTitle?: { __typename?: 'Metafield'; value: string } | null;
       shortDescription?: { __typename?: 'Metafield'; value: string } | null;
+      oemPartnership?: { __typename?: 'Metafield'; value: string } | null;
       featuredImage?: { __typename?: 'Image'; id?: string | null } | null;
       images: {
          __typename?: 'ImageConnection';
@@ -6456,6 +6457,10 @@ export type FindProductQuery = {
             }>;
             description?: { __typename?: 'Metafield'; value: string } | null;
             kitContents?: { __typename?: 'Metafield'; value: string } | null;
+            assemblyContents?: {
+               __typename?: 'Metafield';
+               value: string;
+            } | null;
             note?: { __typename?: 'Metafield'; value: string } | null;
             disclaimer?: { __typename?: 'Metafield'; value: string } | null;
             warning?: { __typename?: 'Metafield'; value: string } | null;
@@ -6673,10 +6678,13 @@ export const FindProductDocument = `
     shortDescription: metafield(namespace: "ifixit", key: "short_description") {
       value
     }
+    oemPartnership: metafield(namespace: "ifixit", key: "oem_partnership_json") {
+      value
+    }
     featuredImage {
       id
     }
-    images(first: 20) {
+    images(first: 250) {
       nodes {
         id
         altText
@@ -6722,6 +6730,9 @@ export const FindProductDocument = `
           value
         }
         kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
+          value
+        }
+        assemblyContents: metafield(namespace: "ifixit", key: "assembly_contents") {
           value
         }
         note: metafield(namespace: "ifixit", key: "note") {

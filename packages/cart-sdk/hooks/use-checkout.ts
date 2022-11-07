@@ -229,15 +229,24 @@ interface LocalCheckout {
 }
 
 function getLocalCheckout(): LocalCheckout | null {
-   const session = localStorage.getItem(LOCAL_CHECKOUT_STORAGE_KEY);
-   if (session == null) {
+   try {
+      const session = localStorage.getItem(LOCAL_CHECKOUT_STORAGE_KEY);
+      if (session == null) {
+         return null;
+      }
+      return JSON.parse(session);
+   } catch (error) {
       return null;
    }
-   return JSON.parse(session);
 }
 
 function setLocalCheckout(checkout: LocalCheckout) {
-   localStorage.setItem(LOCAL_CHECKOUT_STORAGE_KEY, JSON.stringify(checkout));
+   try {
+      localStorage.setItem(
+         LOCAL_CHECKOUT_STORAGE_KEY,
+         JSON.stringify(checkout)
+      );
+   } catch (error) {}
 }
 
 const checkoutCreateMutation = /* GraphQL */ `

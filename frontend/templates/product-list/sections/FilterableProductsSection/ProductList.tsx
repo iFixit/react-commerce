@@ -14,7 +14,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { IfixitImage } from '@ifixit/ui';
+import { IfixitImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import { Rating } from '@components/ui';
 import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';
@@ -47,7 +47,7 @@ export interface ProductListItemProps {
 export function ProductListItem({ product }: ProductListItemProps) {
    const appContext = useAppContext();
 
-   const { price, compareAtPrice, isDiscounted, percentage } =
+   const { price, compareAtPrice, isDiscounted, percentage, proPricesByTier } =
       useProductSearchHitPricing(product);
 
    const productHeadingId = `product-heading-${product.handle}`;
@@ -63,6 +63,12 @@ export function ProductListItem({ product }: ProductListItemProps) {
       showDiscountBadge ||
       showLifetimeWarrantyBadge ||
       showOemPartnershipBadge;
+
+   const { isProPrice } = useUserPrice({
+      price,
+      compareAtPrice,
+      proPricesByTier,
+   });
 
    return (
       <LinkBox as="article" aria-labelledby={productHeadingId} role="group">
@@ -172,7 +178,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            </ProductListItemBadge>
                         )}
                         {showDiscountBadge && (
-                           <ProductListItemBadge colorScheme="red">
+                           <ProductListItemBadge
+                              colorScheme={isProPrice ? 'orange' : 'red'}
+                           >
                               {percentage}% Off
                            </ProductListItemBadge>
                         )}
@@ -208,25 +216,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            lg: 0,
                         }}
                      >
-                        <Text
-                           color={isDiscounted ? 'red.700' : 'inherit'}
-                           fontWeight="bold"
-                           fontSize="xl"
-                           lineHeight="1em"
-                           data-testid="product-price"
-                        >
-                           ${price}
-                        </Text>
-                        {isDiscounted && (
-                           <Text
-                              lineHeight="1em"
-                              textDecoration="line-through"
-                              color="gray.400"
-                              data-testid="product-compared-at-price"
-                           >
-                              ${compareAtPrice}
-                           </Text>
-                        )}
+                        <ProductVariantPrice
+                           price={price}
+                           compareAtPrice={compareAtPrice}
+                           proPricesByTier={proPricesByTier}
+                           showDiscountLabel={false}
+                           direction="column"
+                        />
                      </VStack>
                   )}
                   <Stack

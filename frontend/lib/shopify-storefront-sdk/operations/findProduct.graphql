@@ -60,10 +60,16 @@ query findProduct($handle: String) {
       ) {
          value
       }
+      oemPartnership: metafield(
+         namespace: "ifixit"
+         key: "oem_partnership_json"
+      ) {
+         value
+      }
       featuredImage {
          id
       }
-      images(first: 20) {
+      images(first: 250) {
          nodes {
             id
             altText
@@ -112,6 +118,12 @@ query findProduct($handle: String) {
                value
             }
             kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
+               value
+            }
+            assemblyContents: metafield(
+               namespace: "ifixit"
+               key: "assembly_contents"
+            ) {
                value
             }
             note: metafield(namespace: "ifixit", key: "note") {

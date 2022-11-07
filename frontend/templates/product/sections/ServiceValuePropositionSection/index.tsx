@@ -1,3 +1,4 @@
+import { ProductVariant } from '@models/product';
 import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { List, ListIcon, ListItem } from '@chakra-ui/react';
@@ -13,9 +14,13 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
 
-export type ServiceValuePropositionSectionProps = {};
+export type ServiceValuePropositionSectionProps = {
+   selectedVariant: ProductVariant;
+};
 
-export function ServiceValuePropositionSection() {
+export function ServiceValuePropositionSection({
+   selectedVariant,
+}: ServiceValuePropositionSectionProps) {
    return (
       <>
          <Heading as="h2" srOnly>
@@ -59,17 +64,25 @@ export function ServiceValuePropositionSection() {
                   backed by industry-leading guarantees.
                </Text>
             </ValueProposition>
-            <ValueProposition>
-               <ValuePropositionIcon icon={faRocketDuo} />
-               <Text fontWeight="bold">Fast shipping</Text>
-               <Text>Same day shipping if ordered by 1PM Pacific.</Text>
-            </ValueProposition>
+            {!isDropshipped(selectedVariant) && (
+               <ValueProposition>
+                  <ValuePropositionIcon icon={faRocketDuo} />
+                  <Text fontWeight="bold">Fast shipping</Text>
+                  <Text>Same day shipping if ordered by 1PM Pacific.</Text>
+               </ValueProposition>
+            )}
          </Stack>
       </>
    );
 }
 
-export function BuyBoxPropositionSection() {
+export type BuyBoxPropositionSectionProps = {
+   selectedVariant: ProductVariant;
+};
+
+export function BuyBoxPropositionSection({
+   selectedVariant,
+}: BuyBoxPropositionSectionProps) {
    return (
       <div>
          <List spacing="2.5" fontSize="sm" mt="5" lineHeight="short">
@@ -99,17 +112,19 @@ export function BuyBoxPropositionSection() {
                   backed by industry-leading guarantees.
                </div>
             </ListItem>
-            <ListItem display="flex" alignItems="center">
-               <ListIcon
-                  as={FaIcon}
-                  h="4"
-                  w="5"
-                  mr="1.5"
-                  color="brand.500"
-                  icon={faRocket}
-               />
-               Same day shipping if ordered by 1PM Pacific.
-            </ListItem>
+            {!isDropshipped(selectedVariant) && (
+               <ListItem display="flex" alignItems="center">
+                  <ListIcon
+                     as={FaIcon}
+                     h="4"
+                     w="5"
+                     mr="1.5"
+                     color="brand.500"
+                     icon={faRocket}
+                  />
+                  Same day shipping if ordered by 1PM Pacific.
+               </ListItem>
+            )}
          </List>
       </div>
    );
@@ -130,3 +145,8 @@ function ValueProposition({ children }: React.PropsWithChildren<{}>) {
 const ValuePropositionIcon = ({ icon, ...props }: FaIconProps) => {
    return <FaIcon icon={icon} h="8" color="brand.500" {...props} />;
 };
+
+function isDropshipped(variant: ProductVariant) {
+   const restrictions = variant.shippingRestrictions;
+   return restrictions && restrictions.includes('fulfilled_via_dropshipping');
+}

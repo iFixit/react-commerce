@@ -72,7 +72,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                internationalBuyBox={internationalBuyBox}
             />
             <ReplacementGuidesSection product={product} />
-            <ServiceValuePropositionSection />
+            <ServiceValuePropositionSection selectedVariant={selectedVariant} />
             {isProductForSale && !internationalBuyBox && (
                <CrossSellSection
                   key={selectedVariant.id}

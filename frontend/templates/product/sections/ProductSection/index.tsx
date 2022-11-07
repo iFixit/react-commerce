@@ -34,6 +34,7 @@ import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSal
 import NextLink from 'next/link';
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
+import { GenuinePartBanner } from './GenuinePartBanner';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
@@ -160,7 +161,12 @@ export function ProductSection({
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
-               {isForSale && <BuyBoxPropositionSection />}
+               {product.oemPartnership && (
+                  <GenuinePartBanner oemPartnership={product.oemPartnership} />
+               )}
+               {isForSale && (
+                  <BuyBoxPropositionSection selectedVariant={selectedVariant} />
+               )}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>
@@ -233,32 +239,14 @@ export function ProductSection({
                         </VStack>
                      </CustomAccordionPanel>
                   </AccordionItem>
-                  <AccordionItem hidden={selectedVariant.kitContents == null}>
-                     <CustomAccordionButton>Kit contents</CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <Box
-                           fontSize="sm"
-                           sx={{
-                              ul: {
-                                 listStyle: 'none',
-                              },
-                              li: {
-                                 borderTopWidth: '1px',
-                                 borderTopColor: 'gray.200',
-                                 py: 3,
-                                 '& ul': {
-                                    mt: 3,
-                                    ml: 5,
-                                 },
-                              },
-                           }}
-                           dangerouslySetInnerHTML={{
-                              __html: selectedVariant.kitContents ?? '',
-                           }}
-                        ></Box>
-                     </CustomAccordionPanel>
-                  </AccordionItem>
-
+                  <WikiHtmlAccordianItem
+                     title="Kit contents"
+                     contents={selectedVariant.kitContents}
+                  />
+                  <WikiHtmlAccordianItem
+                     title="Assembly contents"
+                     contents={selectedVariant.assemblyContents}
+                  />
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -542,5 +530,41 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
             __html: children,
          }}
       />
+   );
+}
+
+function WikiHtmlAccordianItem({
+   title,
+   contents,
+}: {
+   title: string;
+   contents: string | null;
+}) {
+   return (
+      <AccordionItem hidden={contents == null}>
+         <CustomAccordionButton>{title}</CustomAccordionButton>
+         <CustomAccordionPanel>
+            <Box
+               fontSize="sm"
+               sx={{
+                  ul: {
+                     listStyle: 'none',
+                  },
+                  li: {
+                     borderTopWidth: '1px',
+                     borderTopColor: 'gray.200',
+                     py: 3,
+                     '& ul': {
+                        mt: 3,
+                        ml: 5,
+                     },
+                  },
+               }}
+               dangerouslySetInnerHTML={{
+                  __html: contents ?? '',
+               }}
+            ></Box>
+         </CustomAccordionPanel>
+      </AccordionItem>
    );
 }

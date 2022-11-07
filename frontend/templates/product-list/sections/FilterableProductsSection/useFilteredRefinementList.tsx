@@ -4,6 +4,8 @@ import {
    UseRefinementListProps,
 } from 'react-instantsearch-hooks-web';
 
+export const DEFAULT_SHOW_MORE_LIMIT = 10;
+
 export function useFilteredRefinementList(props: UseRefinementListProps) {
    const isPriceRange = props.attribute == 'price_range';
    const { items, ...rest } = useRefinementList({ ...props });

@@ -1,12 +1,14 @@
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { computeDiscountPercentage } from '@ifixit/helpers';
+import { computeDiscountPercentage, Money } from '@ifixit/helpers';
 import { ProductSearchHit } from '@models/product-list';
+import { isEmpty } from 'lodash';
 
 export type ProductSearchHitPricing = {
-   price: number;
-   compareAtPrice: number | undefined;
+   price: Money;
+   compareAtPrice: Money | undefined;
    isDiscounted: boolean;
    percentage: number;
+   proPricesByTier: Record<string, Money> | undefined;
 };
 
 export function useProductSearchHitPricing(
@@ -29,16 +31,31 @@ export function useProductSearchHitPricing(
 
    const price = proTierPrice ?? product.price_float;
    const compareAtPrice = product.compare_at_price ?? product.price_float;
-   const isDiscounted = compareAtPrice != null && compareAtPrice > price;
 
-   const percentage = isDiscounted
-      ? computeDiscountPercentage(price * 100, compareAtPrice! * 100)
-      : 0;
+   const percentage = computeDiscountPercentage(
+      price * 100,
+      compareAtPrice * 100
+   );
+   const isDiscounted = percentage > 0;
+
+   const proPricesByTier =
+      product.price_tiers && !isEmpty(product.price_tiers)
+         ? Object.fromEntries(
+              Object.entries(product.price_tiers).map(([tier, price]) => [
+                 tier,
+                 {
+                    amount: price.default_variant_price,
+                    currencyCode: 'usd',
+                 },
+              ])
+           )
+         : undefined;
 
    return {
-      price,
-      compareAtPrice,
+      price: { amount: price, currencyCode: 'usd' },
+      compareAtPrice: { amount: compareAtPrice, currencyCode: 'usd' },
       isDiscounted,
       percentage,
+      proPricesByTier,
    };
 }

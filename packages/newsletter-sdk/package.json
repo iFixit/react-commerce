@@ -11,7 +11,7 @@
       "@ifixit/sentry": "workspace:*"
    },
    "peerDependencies": {
-      "react-query": "3.x"
+      "@tanstack/react-query": "4.x"
    },
    "devDependencies": {
       "@types/react": "17.0.37",

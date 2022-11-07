@@ -53,7 +53,7 @@ const sortAlphabetically: UseRefinementListProps['sortBy'] = (a, b) => {
 };
 
 export function useSortBy(
-   props: UseRefinementListProps
+   props: Omit<UseRefinementListProps, 'sortBy'>
 ): UseRefinementListProps['sortBy'] {
    switch (props.attribute) {
       case 'price_range':
