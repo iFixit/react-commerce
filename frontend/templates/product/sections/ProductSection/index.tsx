@@ -170,7 +170,9 @@ export function ProductSection({
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
-               {isForSale && <BuyBoxPropositionSection />}
+               {isForSale && (
+                  <BuyBoxPropositionSection selectedVariant={selectedVariant} />
+               )}
                <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>

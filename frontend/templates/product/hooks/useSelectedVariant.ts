@@ -1,7 +1,7 @@
 import { invariant } from '@ifixit/helpers';
 import { Product, ProductVariant } from '@models/product';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useCallback } from 'react';
 
 type SetVariantIdFn = (variantId: string) => void;
 
@@ -25,7 +25,7 @@ export function useSelectedVariant(
       `Something went wrong, variant with id "${currentVariantId}" not found`
    );
 
-   const setVariantId = React.useCallback<SetVariantIdFn>(
+   const setVariantId = useCallback<SetVariantIdFn>(
       (variantId) => {
          const { variant, ...newQuery } = router.query;
          if (variantId !== defaultVariantId) {
