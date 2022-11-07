@@ -108,11 +108,14 @@ export const getProductListServerSideProps = ({
                : null;
 
             productList = await logAsync('findProductList', () =>
-               findProductList({
-                  deviceTitle: {
-                     eqi: deviceTitle,
+               findProductList(
+                  {
+                     deviceTitle: {
+                        eqi: deviceTitle,
+                     },
                   },
-               })
+                  itemType
+               )
             );
 
             shouldRedirectToCanonical =

@@ -130,6 +130,7 @@ export function InstantSearchProvider({
                .filter((part) => part !== '');
             const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const itemTypeHandle = pathParts.length >= 3 ? pathParts[2] : '';
 
             let path = '';
             if (partsOrTools) {
