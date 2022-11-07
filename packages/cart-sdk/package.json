@@ -13,7 +13,7 @@
       "@ifixit/shopify-storefront-client": "workspace:*"
    },
    "peerDependencies": {
-      "react-query": "3.x",
+      "@tanstack/react-query": "4.x",
       "immer": "9.x"
    },
    "devDependencies": {

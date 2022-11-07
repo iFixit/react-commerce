@@ -1,8 +1,7 @@
 import { invariant, isRecord } from '@ifixit/helpers';
+import { IFixitAPIClient, useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useLocalPreference } from '@ifixit/ui';
-import { useQuery } from 'react-query';
-import { useCallback } from 'react';
-import { useIFixitApiClient, IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { useQuery } from '@tanstack/react-query';
 
 export type User = {
    id: number;

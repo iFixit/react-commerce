@@ -11,7 +11,7 @@
       "@ifixit/ifixit-api-client": "workspace:*"
    },
    "peerDependencies": {
-      "react-query": "3.x",
+      "@tanstack/react-query": "4.x",
       "next": "*",
       "cookie": "0.5.0"
    },
