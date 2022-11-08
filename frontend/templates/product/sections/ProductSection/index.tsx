@@ -14,9 +14,6 @@ import {
    HStack,
    Icon,
    Link,
-   List,
-   ListIcon,
-   ListItem,
    StackProps,
    Text,
    ThemeTypings,
@@ -24,11 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
 import {
-   faBadgeDollar,
    faCircleExclamation,
    faCircleInfo,
-   faRocket,
-   faShieldCheck,
    faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';

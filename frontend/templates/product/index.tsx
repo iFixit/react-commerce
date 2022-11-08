@@ -11,7 +11,7 @@ import {
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSideProps } from 'next';
 import * as React from 'react';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
@@ -34,6 +34,7 @@ import { useInternationalBuyBox } from '@templates/product/hooks/useInternationa
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
+
    const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);

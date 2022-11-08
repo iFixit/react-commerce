@@ -90,14 +90,10 @@ export function CrossSellSection({
    const currentProduct = React.useMemo<CrossSellProduct>(() => {
       return {
          title: product.title,
-         rating: product.reviewsData?.average,
-         reviewsCount: product.reviewsData?.count,
+         rating: product?.rating?.value,
+         reviewsCount: product?.reviewsCount,
       };
-   }, [
-      product.reviewsData?.average,
-      product.reviewsData?.count,
-      product.title,
-   ]);
+   }, [product?.rating?.value, product?.reviewsCount, product.title]);
 
    const handleAddToCart = () => {
       const input = selectedCrossSellVariantIds.map(
