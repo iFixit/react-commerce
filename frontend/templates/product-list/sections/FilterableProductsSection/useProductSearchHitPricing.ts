@@ -29,7 +29,7 @@ export function useProductSearchHitPricing(
             : defaultVariantPrice;
    }
 
-   const price = proTierPrice ?? product.price_float;
+   const price = Math.min(proTierPrice ?? Infinity, product.price_float);
    const compareAtPrice = product.compare_at_price ?? product.price_float;
 
    const percentage = computeDiscountPercentage(
