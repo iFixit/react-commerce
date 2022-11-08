@@ -168,8 +168,7 @@ const SingleSelectItem = React.memo(function SingleSelectItem({
                   delete refinementList[attribute];
                }
                return {
-                  ...prevUiState,
-                  refinementList: refinementList,
+                  refinementList,
                };
             });
             onClick?.();
