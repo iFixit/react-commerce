@@ -20,17 +20,11 @@ import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
-import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { PageContentWrapper } from '@ifixit/ui';
-import {
-   fetchProductReviews,
-   Product,
-   ProductReview,
-   ProductReviewData,
-} from '@models/product';
+import { Product, ProductReview } from '@models/product';
 import { ProductVariant } from '@models/product';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
 

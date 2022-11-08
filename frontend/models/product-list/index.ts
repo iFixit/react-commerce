@@ -30,7 +30,6 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
-import { productListPath } from '@helpers/path-helpers';
 
 export { ProductListSectionType, ProductListType } from './types';
 export type {

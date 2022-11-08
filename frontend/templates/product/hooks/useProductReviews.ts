@@ -12,7 +12,8 @@ export function useProductReviews(product: Product) {
    const apiClient = useIFixitApiClient();
    const query = useQuery(
       productReviewsKeys.reviews(product.iFixitProductId),
-      () => fetchProductReviews(apiClient, product.iFixitProductId)
+      () => fetchProductReviews(apiClient, product.iFixitProductId),
+      { staleTime: Infinity }
    );
    return query;
 }
