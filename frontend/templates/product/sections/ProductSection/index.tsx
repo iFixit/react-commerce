@@ -80,7 +80,6 @@ export function ProductSection({
       (product.compatibility.devices.length >
          compatibilityDrawerDeviceTruncate ||
          product.compatibility.devices
-            .slice(0, compatibilityDrawerDeviceTruncate)
             .some(
                (currentValue) =>
                   currentValue.variants.length >
