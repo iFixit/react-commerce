@@ -29,10 +29,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes.length === 1 &&
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
-   const itemType =
-      typeof window === 'undefined' && productList.deviceItemType
-         ? productList.deviceItemType
-         : useDevicePartsItemType(productList);
+   const itemType = useDevicePartsItemType(productList);
    let title =
       productList.metaTitle ||
       getProductListTitle(productList, itemType) + ' | iFixit';
