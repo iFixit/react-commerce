@@ -79,12 +79,10 @@ export function ProductSection({
       product.compatibility &&
       (product.compatibility.devices.length >
          compatibilityDrawerDeviceTruncate ||
-         product.compatibility.devices
-            .some(
-               (currentValue) =>
-                  currentValue.variants.length >
-                  compatibilityDrawerModelsTruncate
-            ));
+         product.compatibility.devices.some(
+            (currentValue) =>
+               currentValue.variants.length > compatibilityDrawerModelsTruncate
+         ));
    return (
       <PageContentWrapper as="section">
          <Flex px={{ base: 5, sm: 0 }}>
