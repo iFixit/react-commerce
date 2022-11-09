@@ -206,6 +206,12 @@ function useUpdateCheckout() {
          lineItems,
       });
 
+      // Seems like the "already completed" state results in top-level errors
+      // and checkoutLineItemsReplace === null, sometimes, even response is
+      // undefined
+      if (!response?.checkoutLineItemsReplace) {
+         return null;
+      }
       const { checkout, userErrors } = response.checkoutLineItemsReplace;
       if (userErrors.length > 0) {
          if (
