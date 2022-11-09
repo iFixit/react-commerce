@@ -145,10 +145,12 @@ function useStandardCheckout() {
       const localCheckout = getLocalCheckout();
       let checkoutUrl: string | null = null;
       if (localCheckout != null) {
-         const checkout = await updateCheckout(localCheckout.id, lineItems);
-         if (checkout != null) {
-            checkoutUrl = checkout.webUrl;
-         }
+         try {
+            const checkout = await updateCheckout(localCheckout.id, lineItems);
+            if (checkout != null) {
+               checkoutUrl = checkout.webUrl;
+            }
+         } catch (error) {}
       }
       if (checkoutUrl == null) {
          const checkout = await createCheckout(lineItems);
