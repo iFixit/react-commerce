@@ -5,4 +5,4 @@ export * from './components/Settings';
 export * from './components/Shared';
 export * from './components/StoreMenu';
 export * from './homepage-kpis';
-export { ClickTracker } from './hooks/TrackingContext.ts';
+export { ClickTracker } from './hooks/TrackingContext';
