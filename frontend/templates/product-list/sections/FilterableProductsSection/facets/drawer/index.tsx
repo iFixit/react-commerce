@@ -11,23 +11,20 @@ import {
    Text,
    useBreakpointValue,
    useSafeLayoutEffect,
-   VStack,
 } from '@chakra-ui/react';
-import { faArrowLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/pro-solid-svg-icons';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { getRefinementDisplayType } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
-import { ProductList, ProductListType } from '@models/product-list';
-import { RefinementDisplayType } from '@models/product-list/types';
+import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
 } from 'react-instantsearch-hooks-web';
-import { FacetFilter } from './FacetFilter';
-import { useCountRefinements } from './useCountRefinements';
-import { useFilteredFacets } from './useFacets';
-import { useFilteredRefinementList } from './useFilteredRefinementList';
+import { useCountRefinements } from '../useCountRefinements';
+import { useFilteredFacets } from '../useFacets';
+import { FacetListItem } from './FacetListItem';
+import { FacetPanel } from './FacetPanel';
 
 type FacetsDrawerProps = {
    isOpen: boolean;
@@ -229,106 +226,6 @@ function ClearAllButton({ isVisible }: ClearAllButtonProps) {
       <Button w="50%" variant="outline" onClick={() => refine()}>
          Clear all
       </Button>
-   );
-}
-
-type FacetListItemProps = {
-   attribute: string;
-   refinedCount: number;
-   onSelect: (attribute: string) => void;
-   productList: ProductList;
-};
-
-function FacetListItem({
-   attribute,
-   refinedCount,
-   onSelect,
-   productList,
-}: FacetListItemProps) {
-   const { items } = useFilteredRefinementList({ attribute });
-   const hasApplicableRefinements = items.length > 0;
-
-   if (!hasApplicableRefinements) {
-      return null;
-   }
-
-   const isToolCategoryOnParts =
-      (productList.type === ProductListType.AllParts ||
-         productList.type === ProductListType.DeviceParts) &&
-      attribute === 'facet_tags.Tool Category';
-
-   if (isToolCategoryOnParts) {
-      return null;
-   }
-
-   const isSingleSelectFacet =
-      getRefinementDisplayType(attribute) ===
-      RefinementDisplayType.SingleSelect;
-
-   return (
-      <Box pl="4" onClick={() => onSelect(attribute)}>
-         <Flex py="4" pl="1.5" justify="space-between" align="center" pr="4">
-            <Text fontSize="sm" color="gray.700">
-               {formatFacetName(attribute)}
-            </Text>
-            <HStack>
-               {isSingleSelectFacet && refinedCount && (
-                  <Box w="2" h="2" borderRadius="full" bg="brand.500"></Box>
-               )}
-               {!isSingleSelectFacet && refinedCount > 0 && (
-                  <Text
-                     rounded="full"
-                     bg="gray.600"
-                     color="white"
-                     px="1.5"
-                     fontSize="xs"
-                  >
-                     {refinedCount}
-                  </Text>
-               )}
-               <FaIcon icon={faChevronRight} h="2.5" color="gray.500" />
-            </HStack>
-         </Flex>
-         <Divider />
-      </Box>
-   );
-}
-
-type FacetPanelProps = {
-   attribute: string;
-   isOpen: boolean;
-   productList: ProductList;
-   onClose?: () => void;
-};
-
-function FacetPanel({
-   attribute,
-   isOpen,
-   productList,
-   onClose,
-}: FacetPanelProps) {
-   return (
-      <Box
-         position="absolute"
-         transition="all 300ms"
-         transform={isOpen ? 'translateX(0)' : 'translateX(100%)'}
-         top="0"
-         left="0"
-         right="0"
-         height="100%"
-         overflowY="scroll"
-         bg="white"
-         shadow={isOpen ? 'lg' : 'none'}
-         p="5"
-      >
-         <VStack align="stretch" spacing="3">
-            <FacetFilter
-               attribute={attribute}
-               productList={productList}
-               onItemClick={onClose}
-            />
-         </VStack>
-      </Box>
    );
 }
 

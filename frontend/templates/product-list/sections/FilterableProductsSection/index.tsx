@@ -33,7 +33,7 @@ import {
    useSearchBox,
 } from 'react-instantsearch-hooks-web';
 import { CurrentRefinements } from './CurrentRefinements';
-import { FacetsAccordion } from './FacetsAccordion';
+import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
