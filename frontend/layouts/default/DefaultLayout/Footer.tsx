@@ -35,7 +35,7 @@ import {
    Footer,
    FooterLink,
    FooterDivider,
-   ClickTracker,
+   EventTracker,
 } from '@ifixit/footer';
 
 interface FooterProps {
@@ -53,7 +53,7 @@ export function CartFooter({
    const { menu1, menu2, partners, bottomMenu } = footer;
    const { newsletterForm } = globalSettings;
    return (
-      <ClickTracker value={{ trackClick: trackInMatomoAndGA }}>
+      <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
          <Footer>
             <FooterNavigationSection>
                <FooterNavigationList>
@@ -243,6 +243,6 @@ export function CartFooter({
                </FooterLegalLinkList>
             </FooterLegalSection>
          </Footer>
-      </ClickTracker>
+      </EventTracker>
    );
 }

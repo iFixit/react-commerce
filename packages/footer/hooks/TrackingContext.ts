@@ -38,4 +38,4 @@ const defaultTracker: TrackContext = {
 };
 
 export const TrackingContext = createContext(defaultTracker);
-export const ClickTracker = TrackingContext.Provider;
+export const EventTracker = TrackingContext.Provider;
