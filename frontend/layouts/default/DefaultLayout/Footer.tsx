@@ -54,7 +54,6 @@ export function CartFooter({
    const { newsletterForm } = globalSettings;
    return (
       <ClickTracker value={{ trackClick: trackAddToCart }}>
-         >
          <Footer>
             <FooterNavigationSection>
                <FooterNavigationList>
