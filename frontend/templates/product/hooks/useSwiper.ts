@@ -36,8 +36,6 @@ export function useSwiper({
          isEnd: false,
       });
 
-   console.log({ realIndex, snapIndex, isBeginning, isEnd });
-
    React.useEffect(() => {
       if (!showThumbnails) {
          setThumbsSwiper(null);
@@ -46,7 +44,6 @@ export function useSwiper({
 
    React.useEffect(() => {
       if (mainSwiper && !mainSwiper.destroyed && slideIndex != null) {
-         console.log('!DESTROYED');
          mainSwiper.slideTo(slideIndex);
          setNavigationConfig((navigationConfig) => ({
             ...navigationConfig,
