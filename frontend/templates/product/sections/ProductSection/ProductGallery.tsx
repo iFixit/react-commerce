@@ -49,6 +49,7 @@ export function ProductGallery({
       thumbsSwiper,
       setThumbsSwiper,
       realIndex,
+      snapIndex,
       isBeginning,
       isEnd,
    } = useSwiper({
@@ -147,12 +148,12 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     realIndex > 1 && variantImages.length > THUMBNAILS_COUNT
+                     snapIndex > 0 && variantImages.length > THUMBNAILS_COUNT
                         ? 1
                         : 0
                   }
                   transition="all 300ms"
-               ></Box>
+               />
                <Box
                   position="absolute"
                   bgGradient="linear(to-r, transparent, blueGray.50)"
@@ -164,12 +165,12 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     variantImages.length - realIndex >= THUMBNAILS_COUNT
+                     variantImages.length - snapIndex - 1 >= THUMBNAILS_COUNT
                         ? 1
                         : 0
                   }
                   transition="all 300ms"
-               ></Box>
+               />
             </Box>
          )}
       </Box>
