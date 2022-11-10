@@ -1,4 +1,4 @@
-import { trackAddToCart } from '@ifixit/analytics';
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { Menu, MenuList } from '@chakra-ui/react';
 import {
    FacebookLogo,
@@ -53,7 +53,7 @@ export function CartFooter({
    const { menu1, menu2, partners, bottomMenu } = footer;
    const { newsletterForm } = globalSettings;
    return (
-      <ClickTracker value={{ trackClick: trackAddToCart }}>
+      <ClickTracker value={{ trackClick: trackInMatomoAndGA }}>
          <Footer>
             <FooterNavigationSection>
                <FooterNavigationList>
