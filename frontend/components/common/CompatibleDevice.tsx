@@ -42,7 +42,7 @@ export function CompatibleDevice({
             >
                {device.deviceName}
             </Text>
-            <Flex mb="2px" flexDir="column">
+            <Flex flexDir="column">
                {variants.map((variant) => (
                   <Text
                      key={variant}
@@ -55,8 +55,8 @@ export function CompatibleDevice({
                ))}
             </Flex>
             {unlistedVariants !== 0 && (
-               <Text my="1px" lineHeight="short" fontSize="xs">
-                  And {unlistedVariants} other devices...
+               <Text mb="2px" lineHeight="short" fontSize="xs" color="gray.600">
+                  And {unlistedVariants} other models...
                </Text>
             )}
          </Flex>
