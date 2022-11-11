@@ -1,5 +1,6 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
+import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
    stylizeDeviceItemType,
@@ -51,7 +52,7 @@ export function InstantSearchProvider({
    const previousApiKey = usePrevious(algoliaApiKey);
 
    const algoliaClient = React.useMemo(() => {
-      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
+      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey, CLIENT_OPTIONS);
    }, [algoliaApiKey]);
 
    const router = useRouter();

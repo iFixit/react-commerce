@@ -32,6 +32,7 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
+import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 
 export {
    ProductListSectionType,
@@ -401,7 +402,7 @@ function createProductListSection(
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {
-   const client = algoliasearch(appId, apiKey);
+   const client = algoliasearch(appId, apiKey, CLIENT_OPTIONS);
    const publicKey = client.generateSecuredApiKey(apiKey, {
       filters: 'public=1 AND is_pro!=1',
    });

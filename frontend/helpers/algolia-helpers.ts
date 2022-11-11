@@ -1,7 +1,17 @@
 import { capitalize } from '@helpers/application-helpers';
+import { AlgoliaSearchOptions } from 'algoliasearch';
 
 const FACETS_NAME_OVERRIDES: { [rawName: string]: string } = {
    price_range: 'Price Range',
+};
+
+export const CLIENT_OPTIONS: AlgoliaSearchOptions = {
+   // Default timeouts: connect = 2s, read = 5s, write = 30s
+   timeouts: {
+      connect: 5,
+      read: 5,
+      write: 30,
+   },
 };
 
 export function formatFacetName(algoliaName: string): string {
