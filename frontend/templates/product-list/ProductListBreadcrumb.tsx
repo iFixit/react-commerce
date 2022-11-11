@@ -30,7 +30,10 @@ export function ProductListBreadcrumb({
    ...otherProps
 }: ProductListBreadcrumbProps) {
    let { ancestors } = productList;
-   const itemType = useDevicePartsItemType(productList);
+   const itemType = useDevicePartsItemType({
+      ...productList,
+      deviceItemType: null,
+   });
 
    let currentItemTitle = productList.title;
    if (productList.type === ProductListType.DeviceParts && itemType) {
