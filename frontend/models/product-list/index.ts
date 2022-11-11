@@ -22,6 +22,8 @@ import {
 import algoliasearch from 'algoliasearch';
 import {
    BaseProductList,
+   iFixitPageType,
+   iFixitPage,
    ProductList,
    ProductListAncestor,
    ProductListChild,
@@ -30,11 +32,15 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
-import { productListPath } from '@helpers/path-helpers';
 
-export { ProductListSectionType, ProductListType } from './types';
+export {
+   ProductListSectionType,
+   ProductListType,
+   iFixitPageType,
+} from './types';
 export type {
    FeaturedProductList,
+   iFixitPage,
    ProductList,
    ProductListPreview,
    ProductListSection,
@@ -229,7 +235,14 @@ function createProductListAncestors(
 ): ProductListAncestor[] {
    const attributes = parent?.data?.attributes;
    if (attributes == null) {
-      return [];
+      return [
+         {
+            deviceTitle: '',
+            title: 'Store',
+            type: iFixitPageType.Store,
+            handle: 'Store',
+         },
+      ];
    }
    const ancestors = createProductListAncestors(attributes.parent);
 

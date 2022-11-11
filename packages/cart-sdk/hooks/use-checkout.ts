@@ -145,10 +145,12 @@ function useStandardCheckout() {
       const localCheckout = getLocalCheckout();
       let checkoutUrl: string | null = null;
       if (localCheckout != null) {
-         const checkout = await updateCheckout(localCheckout.id, lineItems);
-         if (checkout != null) {
-            checkoutUrl = checkout.webUrl;
-         }
+         try {
+            const checkout = await updateCheckout(localCheckout.id, lineItems);
+            if (checkout != null) {
+               checkoutUrl = checkout.webUrl;
+            }
+         } catch (error) {}
       }
       if (checkoutUrl == null) {
          const checkout = await createCheckout(lineItems);
@@ -206,6 +208,12 @@ function useUpdateCheckout() {
          lineItems,
       });
 
+      // Seems like the "already completed" state results in top-level errors
+      // and checkoutLineItemsReplace === null, sometimes, even response is
+      // undefined
+      if (!response?.checkoutLineItemsReplace) {
+         return null;
+      }
       const { checkout, userErrors } = response.checkoutLineItemsReplace;
       if (userErrors.length > 0) {
          if (

@@ -1,4 +1,4 @@
-import { IFIXIT_ORIGIN, DEFAULT_STORE_CODE } from '@config/env';
+import { DEFAULT_STORE_CODE } from '@config/env';
 import { filterNullableItems } from '@helpers/application-helpers';
 import {
    computeDiscountPercentage,
@@ -25,7 +25,6 @@ export type ProductImage = ReturnType<typeof getFormattedImages>[0];
 
 export async function findProduct(shop: ShopCredentials, handle: string) {
    const storefront = getShopifyStorefrontSdk(shop);
-   const iFixitApiClient = new IFixitAPIClient({ origin: IFIXIT_ORIGIN });
 
    const response = await logAsync('shopify.findProduct', () =>
       storefront.findProduct({
@@ -54,10 +53,10 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       return null;
    }
    const iFixitProductId = computeIFixitProductId(variantSku);
-   const reviewsData = await fetchProductReviews(
-      iFixitApiClient,
-      iFixitProductId
-   );
+
+   const ratingData = JSON.parse(response.product?.rating?.value ?? '{}');
+   const ratingCount = response.product?.reviewsCount?.value;
+
    let breadcrumbs = parseBreadcrumbsMetafieldValue(
       response.product.breadcrumbs?.value
    );
@@ -85,10 +84,11 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       compatibility: parseCompatibility(response.product.compatibility?.value),
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
+      rating: ratingData,
+      reviewsCount: ratingCount ? parseInt(ratingCount) : null,
       oemPartnership: parseOemPartnership(
          response.product.oemPartnership?.value
       ),
-      reviewsData,
    };
 }
 

@@ -38,6 +38,10 @@ export enum ProductListType {
    Marketing = 'marketing',
 }
 
+export enum iFixitPageType {
+   Store = 'store',
+}
+
 export enum RefinementDisplayType {
    MultiSelect = 'multi-select',
    SingleSelect = 'single-select',
@@ -49,6 +53,8 @@ export type ProductList =
    | AllToolsProductList
    | ToolsCategoryProductList
    | MarketingProductList;
+
+export type iFixitPage = StorePage;
 
 export interface BaseProductList {
    title: string;
@@ -92,10 +98,14 @@ interface MarketingProductList extends BaseProductList {
    type: ProductListType.Marketing;
 }
 
+interface StorePage extends BaseProductList {
+   type: iFixitPageType.Store;
+}
+
 export interface ProductListAncestor {
    deviceTitle: string | null;
    title: string;
-   type: ProductListType;
+   type: ProductListType | iFixitPageType;
    handle: string;
 }
 

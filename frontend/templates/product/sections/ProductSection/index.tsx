@@ -14,9 +14,6 @@ import {
    HStack,
    Icon,
    Link,
-   List,
-   ListIcon,
-   ListItem,
    StackProps,
    Text,
    ThemeTypings,
@@ -24,11 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
 import {
-   faBadgeDollar,
    faCircleExclamation,
    faCircleInfo,
-   faRocket,
-   faShieldCheck,
    faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
@@ -79,6 +73,16 @@ export function ProductSection({
 
    const isForSale = useIsProductForSale(product);
 
+   const compatibilityDrawerModelsTruncate = 4;
+   const compatibilityDrawerDeviceTruncate = 3;
+   const compatibilityDrawerIncomplete =
+      product.compatibility &&
+      (product.compatibility.devices.length >
+         compatibilityDrawerDeviceTruncate ||
+         product.compatibility.devices.some(
+            (currentValue) =>
+               currentValue.variants.length > compatibilityDrawerModelsTruncate
+         ));
    return (
       <PageContentWrapper as="section">
          <Flex px={{ base: 5, sm: 0 }}>
@@ -280,14 +284,15 @@ export function ProductSection({
                                  >
                                     <CompatibleDevice
                                        device={device}
-                                       truncate={4}
+                                       truncate={
+                                          compatibilityDrawerModelsTruncate
+                                       }
                                     />
                                  </chakra.a>
                               </NextLink>
                            ))}
 
-                        {product.compatibility &&
-                        product.compatibility.devices.length > 3 ? (
+                        {compatibilityDrawerIncomplete ? (
                            <NextLink href="#compatibility" passHref>
                               <Link
                                  mt={3}

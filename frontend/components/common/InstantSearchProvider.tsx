@@ -11,7 +11,6 @@ import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
 import { UiState } from 'instantsearch.js/es/types';
-import { mapValues } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
@@ -153,13 +152,17 @@ export function InstantSearchProvider({
                // Item Type is the slug on device pages, not in the query.
                delete filterCopy['facet_tags.Item Type'];
             }
-            const customQueryParams = new URLSearchParams(location.search);
+            const { q, p, filter, ...otherParams } = qsModule.parse(
+               location.search,
+               {
+                  ignoreQueryPrefix: true,
+               }
+            );
             const queryString = qsModule.stringify(
                {
+                  ...otherParams,
                   ...routeState,
                   filter: filterCopy,
-                  _vercel_no_cache:
-                     customQueryParams.get('_vercel_no_cache') || undefined,
                },
                {
                   addQueryPrefix: true,
@@ -176,7 +179,9 @@ export function InstantSearchProvider({
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
             const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-            const { q, p, filter } = qsModule.parse(location.search.slice(1));
+            const { q, p, filter } = qsModule.parse(location.search, {
+               ignoreQueryPrefix: true,
+            });
 
             const filterObject =
                typeof filter === 'object' && !Array.isArray(filter)

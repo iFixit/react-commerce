@@ -13,10 +13,7 @@ export function useProductReviews(product: Product) {
    const query = useQuery(
       productReviewsKeys.reviews(product.iFixitProductId),
       () => fetchProductReviews(apiClient, product.iFixitProductId),
-      {
-         initialData: product.reviewsData,
-         staleTime: Infinity, // Right now we're not interested in refreshing data client side
-      }
+      { staleTime: Infinity }
    );
    return query;
 }
