@@ -11,18 +11,16 @@ export function useDevicePartsItemType<T extends ProductListAttributes>(
    productList: T
 ) {
    const { items } = useCurrentRefinements();
-   const itemType = React.useMemo(() => {
+   const algoliaItemType = React.useMemo(() => {
       const itemTypeRefinement = items.find(
          (refinementItem) => refinementItem.attribute === 'facet_tags.Item Type'
       );
       // `Item Type` is a single select, so just use the first value if it exists.
       return itemTypeRefinement?.refinements[0]?.value;
    }, [items]);
-   if (typeof window === 'undefined' && productList.deviceItemType) {
-      return productList.deviceItemType;
-   }
-   if (!itemType || productList.type !== ProductListType.DeviceParts) {
-      return undefined;
-   }
-   return String(itemType);
+   const productListItemType =
+      productList.type === ProductListType.DeviceParts &&
+      productList.deviceItemType;
+   const itemType = algoliaItemType || productListItemType;
+   return itemType ? String(itemType) : undefined;
 }
