@@ -8,12 +8,12 @@ import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { logAsync, logSync } from '@ifixit/helpers';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    Enum_Productlist_Type,
    ProductListFiltersInput,
@@ -23,7 +23,6 @@ import algoliasearch from 'algoliasearch';
 import {
    BaseProductList,
    iFixitPageType,
-   iFixitPage,
    ProductList,
    ProductListAncestor,
    ProductListChild,
@@ -35,9 +34,10 @@ import {
 import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 
 export {
+   iFixitPageType,
    ProductListSectionType,
    ProductListType,
-   iFixitPageType,
+   FacetWidgetType,
 } from './types';
 export type {
    FeaturedProductList,
@@ -47,6 +47,7 @@ export type {
    ProductListSection,
    ProductSearchHit,
    WikiInfoEntry,
+   ProductListAncestor,
 } from './types';
 
 /**

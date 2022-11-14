@@ -1,6 +1,37 @@
-import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
+type UseSortByProps = {
+   attribute: string;
+};
 
-const sortByPriceRange: UseRefinementListProps['sortBy'] = (a, b) => {
+type SortByDirection<TCriterion extends string> =
+   | TCriterion
+   | `${TCriterion}:asc`
+   | `${TCriterion}:desc`;
+
+type SortByFn =
+   | (<FacetValue extends FacetValueRequiredAttributes>(
+        a: FacetValue,
+        b: FacetValue
+     ) => number)
+   | SortByDirection<'count' | 'name' | 'isRefined'>[];
+
+type FacetValueRequiredAttributes = {
+   escapedValue: string;
+};
+
+export function useSortBy(props: UseSortByProps): SortByFn {
+   switch (props.attribute) {
+      case 'price_range':
+         return sortByPriceRange;
+      case 'facet_tags.Capacity':
+         return sortByCapacityHighToLow;
+      case 'facet_tags.Item Type':
+         return sortAlphabetically;
+      default:
+         return ['count:desc', 'name:asc'];
+   }
+}
+
+const sortByPriceRange: SortByFn = (a, b) => {
    const aAvg = avg(a.escapedValue);
    const bAvg = avg(b.escapedValue);
 
@@ -24,7 +55,7 @@ function avg(x: string): number | null {
    return nums.reduce((x, y) => x + parseFloat(y), 0) / nums.length;
 }
 
-const sortByCapacityHighToLow: UseRefinementListProps['sortBy'] = (a, b) => {
+const sortByCapacityHighToLow: SortByFn = (a, b) => {
    return capacityToBytes(b.escapedValue) - capacityToBytes(a.escapedValue);
 };
 
@@ -48,21 +79,6 @@ function capacityToBytes(x: string): number {
 
 const enCollator = new Intl.Collator('en');
 
-const sortAlphabetically: UseRefinementListProps['sortBy'] = (a, b) => {
+const sortAlphabetically: SortByFn = (a, b) => {
    return enCollator.compare(a.escapedValue, b.escapedValue);
 };
-
-export function useSortBy(
-   props: Omit<UseRefinementListProps, 'sortBy'>
-): UseRefinementListProps['sortBy'] {
-   switch (props.attribute) {
-      case 'price_range':
-         return sortByPriceRange;
-      case 'facet_tags.Capacity':
-         return sortByCapacityHighToLow;
-      case 'facet_tags.Item Type':
-         return sortAlphabetically;
-      default:
-         return ['count:desc', 'name:asc'];
-   }
-}

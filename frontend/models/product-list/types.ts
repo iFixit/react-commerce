@@ -42,9 +42,9 @@ export enum iFixitPageType {
    Store = 'store',
 }
 
-export enum RefinementDisplayType {
-   MultiSelect = 'multi-select',
-   SingleSelect = 'single-select',
+export enum FacetWidgetType {
+   RefinementList = 'refinement-list',
+   Menu = 'menu',
 }
 
 export type ProductList =

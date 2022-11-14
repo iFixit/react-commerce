@@ -3,11 +3,14 @@ import { ALGOLIA_APP_ID } from '@config/env';
 import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
+   getFacetWidgetType,
    stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
+import { FacetWidgetType } from '@models/product-list';
 import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
@@ -71,7 +74,7 @@ export function InstantSearchProvider({
          window.document.body.hidden = true;
          window.location.reload();
       };
-      const beforeHistoryChange = (url: string) => {
+      const beforeHistoryChange = () => {
          historyChangeCount.current++;
       };
       window.addEventListener('popstate', handleRouteChange);
@@ -97,6 +100,12 @@ export function InstantSearchProvider({
             if (indexUiState.refinementList) {
                routeState.filter = indexUiState.refinementList;
             }
+            if (indexUiState.menu) {
+               routeState.filter = {
+                  ...routeState.filter,
+                  ...indexUiState.menu,
+               };
+            }
             return routeState;
          },
          routeToState(routeState: RouteState) {
@@ -107,8 +116,27 @@ export function InstantSearchProvider({
             if (routeState.p != null) {
                stateObject.page = routeState.p;
             }
-            if (routeState.filter != null) {
-               stateObject.refinementList = routeState.filter;
+            const filter = routeState.filter;
+            if (filter != null) {
+               stateObject.menu = {};
+               stateObject.refinementList = {};
+               Object.keys(filter).forEach((attribute) => {
+                  const widgetType = getFacetWidgetType(attribute);
+                  switch (widgetType) {
+                     case FacetWidgetType.Menu: {
+                        stateObject.menu[attribute] = filter[attribute];
+                        break;
+                     }
+                     case FacetWidgetType.RefinementList: {
+                        stateObject.refinementList[attribute] =
+                           filter[attribute];
+                        break;
+                     }
+                     default: {
+                        return assertNever(widgetType);
+                     }
+                  }
+               });
             }
             return {
                [indexName]: stateObject,
@@ -190,14 +218,14 @@ export function InstantSearchProvider({
                   : {};
 
             if (deviceHandle && itemType) {
-               filterObject['facet_tags.Item Type'] = [
-                  destylizeDeviceItemType(decodeURIComponent(itemType)).trim(),
-               ];
+               filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
+                  decodeURIComponent(itemType)
+               ).trim();
             }
 
             return {
                q: String(q || ''),
-               p: Number(p),
+               p: typeof p === 'string' ? parseInt(p) : undefined,
                filter: filterObject,
             };
          },
