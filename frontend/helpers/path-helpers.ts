@@ -1,3 +1,4 @@
+import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import {
    ProductList,
@@ -45,4 +46,8 @@ export function productListPath(
          throw new Error(`unknown product list type: ${productList.type}`);
       }
    }
+}
+
+export function ifixitOriginFromHost(host: string): string {
+   return host.match(/(?:\w*\.)*cominor\.com/) ? '' : IFIXIT_ORIGIN;
 }

@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { flags } from '@config/flags';
+import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findPage } from '@models/page';
@@ -61,7 +62,9 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
 
    const pageProps: PageTemplateProps = {
       layoutProps,
-      appProps: {},
+      appProps: {
+         ifixitOrigin: ifixitOriginFromHost(context.req.headers.host ?? ''),
+      },
       page,
    };
    return {

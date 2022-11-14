@@ -30,6 +30,7 @@ import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
+import { ifixitOriginFromHost } from '@helpers/path-helpers';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -126,7 +127,9 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
 
       const pageProps: ProductTemplateProps = {
          layoutProps,
-         appProps: {},
+         appProps: {
+            ifixitOrigin: ifixitOriginFromHost(context.req.headers.host ?? ''),
+         },
          product,
       };
       return {

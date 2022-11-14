@@ -11,12 +11,12 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
       console.log('context.resolvedUrl', context.resolvedUrl);
       console.log('context.req.url', context.req.url);
       Sentry.setContext('Extra Info', {
-         headers: context?.req.headers,
-         url: context?.req.url,
-         method: context?.req.method,
-         locale: context?.locale,
-         ...context?.params,
-         ...context?.query,
+         headers: context.req.headers,
+         url: context.req.url,
+         method: context.req.method,
+         locale: context.locale,
+         ...context.params,
+         ...context.query,
       });
       return logAsync('getServerSideProps', () =>
          getServerSidePropsInternal(context)
