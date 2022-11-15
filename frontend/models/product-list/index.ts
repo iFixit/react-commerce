@@ -63,7 +63,10 @@ export async function findProductList(
       logAsync('strapi:getProductList', () =>
          strapi.getProductList({ filters })
       ),
-      fetchDeviceWiki(createIFixitAPIClient(ifixitOrigin), filterDeviceTitle),
+      fetchDeviceWiki(
+         new IFixitAPIClient({ origin: ifixitOrigin }),
+         filterDeviceTitle
+      ),
    ]);
 
    const productList = result.productLists?.data?.[0]?.attributes;
@@ -166,7 +169,7 @@ async function fillMissingImagesFromApi(
    ) as string[]; // cast is safe cause we filter nulls above,
    // typescript just doesn't understand
    const imagesResponse = await fetchMultipleDeviceImages(
-      createIFixitAPIClient(ifixitOrigin),
+      new IFixitAPIClient({ origin: ifixitOrigin }),
       deviceTitlesWithoutImages,
       'thumbnail'
    );
@@ -412,8 +415,4 @@ function createPublicAlgoliaKey(appId: string, apiKey: string): string {
       filters: 'public=1 AND is_pro!=1',
    });
    return publicKey;
-}
-
-function createIFixitAPIClient(origin: string) {
-   return new IFixitAPIClient({ origin });
 }
