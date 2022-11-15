@@ -60,10 +60,11 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
       };
    }
 
+   const forwardedHost = context.req.headers['x-forwarded-host'] as string;
    const pageProps: PageTemplateProps = {
       layoutProps,
       appProps: {
-         ifixitOrigin: ifixitOriginFromHost(context.req.headers.host ?? ''),
+         ifixitOrigin: ifixitOriginFromHost(forwardedHost),
       },
       page,
    };

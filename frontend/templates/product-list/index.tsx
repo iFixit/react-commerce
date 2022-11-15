@@ -80,7 +80,8 @@ export const getProductListServerSideProps = ({
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
 
-      const ifixitOrigin = ifixitOriginFromHost(context.req.headers.host ?? '');
+      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
+      const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
 
       switch (productListType) {
          case ProductListType.AllParts: {

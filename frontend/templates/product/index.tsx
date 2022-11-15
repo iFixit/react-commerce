@@ -125,10 +125,11 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
       }
 
+      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
       const pageProps: ProductTemplateProps = {
          layoutProps,
          appProps: {
-            ifixitOrigin: ifixitOriginFromHost(context.req.headers.host ?? ''),
+            ifixitOrigin: ifixitOriginFromHost(forwardedHost),
          },
          product,
       };
