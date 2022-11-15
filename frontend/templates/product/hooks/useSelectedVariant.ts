@@ -46,7 +46,11 @@ export function useSelectedVariant(
 }
 
 function useDefaultVariantId(product: Product): string {
-   return product.variants[0].id;
+   const variant =
+      product.variants.find(
+         (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
+      ) ?? product.variants[0];
+   return variant.id;
 }
 
 function useSearchParamVariantId(): string | null {
