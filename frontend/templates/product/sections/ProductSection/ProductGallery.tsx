@@ -2,6 +2,7 @@ import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { ResizableImage } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -326,17 +327,18 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
             height="100%"
             p={`${CONTAINER_PADDING}px`}
          >
-            <Img
-               ref={galleryRef}
-               src={image.url}
-               alt={image.altText ?? ''}
-               htmlWidth={image.width ?? undefined}
-               htmlHeight={image.height ?? undefined}
-               objectFit="contain"
-               width="100%"
-               height="100%"
-               {...eventHandlers}
-            />
+            <Flex ref={galleryRef}>
+               <Img
+                  src={image.url}
+                  alt={image.altText ?? ''}
+                  htmlWidth={image.width ?? undefined}
+                  htmlHeight={image.height ?? undefined}
+                  objectFit="contain"
+                  width="100%"
+                  height="100%"
+                  {...eventHandlers}
+               />
+            </Flex>
          </Flex>
 
          {enableZoom && show && (
@@ -467,11 +469,10 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
             overflow="hidden"
             borderRadius="5px"
          >
-            <Img
+            <ResizableImage
                src={image.url}
                alt={image.altText ?? ''}
-               htmlWidth={image.width ?? undefined}
-               htmlHeight={image.height ?? undefined}
+               layout="fill"
                objectFit="contain"
             />
          </Flex>
@@ -621,6 +622,16 @@ const computePointerData = ({
       ((pointerLeft - horizontalGap) / galleryRealWidth) * 100;
    const zoomTranslationTopPercentage =
       ((pointerTop - verticalGap) / galleryRealHeight) * 100;
+
+   console.log({
+      event,
+      galleryWidth,
+      galleryHeight,
+      galleryRealWidth,
+      galleryRealHeight,
+      pointerWidth,
+      pointerHeight,
+   });
 
    return {
       left,

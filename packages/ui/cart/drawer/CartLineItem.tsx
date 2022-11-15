@@ -30,7 +30,7 @@ import { FaIcon } from '@ifixit/icons';
 import { motion } from 'framer-motion';
 import * as React from 'react';
 import { ProductVariantPrice } from '../../commerce';
-import { IfixitImage } from '../../misc/IfixitImage';
+import { ResizableImage } from '../../misc';
 
 interface CartLineItemProps {
    lineItem: LineItem;
@@ -231,7 +231,7 @@ function LineItemImage({ lineItem }: LineItemImageProps) {
          overflow="hidden"
       >
          {lineItem.imageSrc ? (
-            <IfixitImage
+            <ResizableImage
                src={lineItem.imageSrc}
                alt={lineItem.name}
                priority

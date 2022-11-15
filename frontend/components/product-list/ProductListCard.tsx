@@ -1,5 +1,5 @@
 import { Box, Divider, Flex, forwardRef, Heading } from '@chakra-ui/react';
-import { IfixitImage } from '@ifixit/ui';
+import { ResizableImage } from '@ifixit/ui';
 
 interface ProductListCardProps {
    variant?: 'small' | 'medium';
@@ -59,7 +59,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                         }}
                      >
                         <Box position="relative" h="full" w="full">
-                           <IfixitImage
+                           <ResizableImage
                               src={productList.imageUrl}
                               alt=""
                               objectFit="cover"

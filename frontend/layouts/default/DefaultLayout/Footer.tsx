@@ -12,7 +12,7 @@ import {
    YoutubeLogo,
 } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
-import { IfixitImage } from '@ifixit/ui';
+import { ResizableImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
@@ -156,7 +156,7 @@ export function CartFooter({
                                  p="0"
                               >
                                  {partner.image?.url ? (
-                                    <IfixitImage
+                                    <ResizableImage
                                        layout="fill"
                                        objectFit="contain"
                                        src={partner.image.url}
@@ -166,7 +166,7 @@ export function CartFooter({
                                        }
                                     />
                                  ) : (
-                                    <IfixitImage
+                                    <ResizableImage
                                        layout="fill"
                                        objectFit="contain"
                                        src={noImageFixie}
