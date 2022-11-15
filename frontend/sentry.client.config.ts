@@ -25,5 +25,12 @@ Sentry.init({
    ignoreErrors: [
       'TypeError: NetworkError when attempting to fetch resource.',
       'TypeError: Network request failed',
+      // Algolia error when network requests fail.
+      // Only happens on iOS devices (across all browsers)
+      'RetryError: Unreachable hosts - your application id may be incorrect',
+      // Can't reproduce, promise rejection with an instance of a CustomEvent
+      // is unhandled.
+      // Only happens on Macs, mostly Chrome, but some on safari
+      'CustomEvent: Non-Error promise rejection captured with keys: currentTarget, detail, isTrusted, target',
    ],
 });
