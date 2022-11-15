@@ -251,6 +251,7 @@ export type ComponentStoreHeaderInput = {
 
 export type ComponentStoreShopifySettings = {
    __typename?: 'ComponentStoreShopifySettings';
+   delegateAccessToken?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    storefrontAccessToken: Scalars['String'];
    storefrontDomain: Scalars['String'];
@@ -260,6 +261,7 @@ export type ComponentStoreShopifySettingsFiltersInput = {
    and?: InputMaybe<
       Array<InputMaybe<ComponentStoreShopifySettingsFiltersInput>>
    >;
+   delegateAccessToken?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<ComponentStoreShopifySettingsFiltersInput>;
    or?: InputMaybe<
       Array<InputMaybe<ComponentStoreShopifySettingsFiltersInput>>
@@ -269,6 +271,7 @@ export type ComponentStoreShopifySettingsFiltersInput = {
 };
 
 export type ComponentStoreShopifySettingsInput = {
+   delegateAccessToken?: InputMaybe<Scalars['String']>;
    id?: InputMaybe<Scalars['ID']>;
    storefrontAccessToken?: InputMaybe<Scalars['String']>;
    storefrontDomain?: InputMaybe<Scalars['String']>;
