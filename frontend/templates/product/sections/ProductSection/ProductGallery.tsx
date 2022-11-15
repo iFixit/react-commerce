@@ -2,8 +2,10 @@ import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { Image } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
+import Head from 'next/head';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
@@ -85,9 +87,10 @@ export function ProductGallery({
                   isBeginning={isBeginning}
                   isEnd={isEnd}
                />
-               {variantImages.map((variantImage) => (
+               {variantImages.map((variantImage, index) => (
                   <SwiperSlide key={variantImage.id}>
                      <ImageWithZoom
+                        index={index}
                         image={variantImage}
                         enableZoom={enableZoom}
                      />
@@ -95,7 +98,11 @@ export function ProductGallery({
                ))}
             </ReactSwiper>
          ) : variantImages.length === 1 ? (
-            <ImageWithZoom image={variantImages[0]} enableZoom={enableZoom} />
+            <ImageWithZoom
+               index={0}
+               image={variantImages[0]}
+               enableZoom={enableZoom}
+            />
          ) : (
             <ImagePlaceholder />
          )}
@@ -229,7 +236,7 @@ const CustomNavigation = ({
    );
 };
 
-type Image = {
+type ImageType = {
    id?: string | null;
    url: string;
    altText?: string | null;
@@ -238,14 +245,15 @@ type Image = {
 };
 
 type ImageProps = {
-   image: Image;
+   index: number;
+   image: ImageType;
    enableZoom?: boolean;
 };
 
 const ZOOM_FACTOR = 3;
 const CONTAINER_PADDING = 24;
 
-function ImageWithZoom({ image, enableZoom }: ImageProps) {
+function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
    const [show, setShow] = React.useState(false);
    const [dimensionData, setDimensionData] = React.useState<DimensionData>({
       zoomMaskAspectRatio: 1,
@@ -326,15 +334,24 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
             height="100%"
             p={`${CONTAINER_PADDING}px`}
          >
-            <Img
+            <Image
                ref={galleryRef}
-               src={image.url}
+               data={image}
                alt={image.altText ?? ''}
-               htmlWidth={image.width ?? undefined}
-               htmlHeight={image.height ?? undefined}
-               objectFit="contain"
-               width="100%"
-               height="100%"
+               loading={index === 0 ? 'eager' : 'lazy'}
+               decoding={index === 0 ? 'sync' : 'async'}
+               injectable={
+                  index === 0 ? (
+                     <Head>
+                        <link
+                           key="product-page-image"
+                           rel="preload"
+                           href={image.url}
+                           as="image"
+                        />
+                     </Head>
+                  ) : undefined
+               }
                {...eventHandlers}
             />
          </Flex>
@@ -434,7 +451,7 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
 }
 
 type ImageThumbnailProps = {
-   image: Image;
+   image: ImageType;
    active: boolean;
    onClick?: () => void;
 };
@@ -467,12 +484,10 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
             overflow="hidden"
             borderRadius="5px"
          >
-            <Img
-               src={image.url}
+            <Image
+               data={image}
                alt={image.altText ?? ''}
-               htmlWidth={image.width ?? undefined}
-               htmlHeight={image.height ?? undefined}
-               objectFit="contain"
+               loaderOptions={{ width: 300 }}
             />
          </Flex>
       </Flex>
