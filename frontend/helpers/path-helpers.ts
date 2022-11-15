@@ -48,6 +48,6 @@ export function productListPath(
    }
 }
 
-export function ifixitOriginFromHost(host: string): string {
-   return host.match(/(?:\w*\.)*cominor\.com/) ? '' : IFIXIT_ORIGIN;
+export function ifixitOriginFromHost(host?: string): string {
+   return host?.match(/\.(cominor\.com|ubreakit\.com)$/) ? '' : IFIXIT_ORIGIN;
 }
