@@ -49,5 +49,7 @@ export function productListPath(
 }
 
 export function ifixitOriginFromHost(host?: string): string {
-   return host?.match(/\.(cominor\.com|ubreakit\.com)$/) ? '' : IFIXIT_ORIGIN;
+   const isDevProxy = !!host?.match(/\.(cominor\.com|ubreakit\.com)$/);
+   const hostIfProxy = typeof window === 'undefined' ? host : '';
+   return isDevProxy ? hostIfProxy! : IFIXIT_ORIGIN;
 }
