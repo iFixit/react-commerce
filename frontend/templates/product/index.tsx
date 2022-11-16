@@ -104,8 +104,7 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
-      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
-      const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
+      const ifixitOrigin = ifixitOriginFromHost(context);
       const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
       if (isProxied) {
          context.res.setHeader(

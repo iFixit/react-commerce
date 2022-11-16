@@ -51,8 +51,7 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
       };
    }
 
-   const forwardedHost = context.req.headers['x-forwarded-host'] as string;
-   const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
+   const ifixitOrigin = ifixitOriginFromHost(context);
    const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
    if (isProxied) {
       context.res.setHeader(

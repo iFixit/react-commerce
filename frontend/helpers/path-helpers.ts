@@ -6,6 +6,7 @@ import {
    iFixitPageType,
    iFixitPage,
 } from '@models/product-list';
+import { GetServerSidePropsContext } from 'next';
 import { stylizeDeviceTitle } from './product-list-helpers';
 
 type ProductListPathAttributes = Pick<
@@ -48,7 +49,12 @@ export function productListPath(
    }
 }
 
-export function ifixitOriginFromHost(host?: string): string {
+export function ifixitOriginFromHost(
+   context: GetServerSidePropsContext
+): string {
+   const headers = context.req.headers;
+   const host = (headers['x-ifixit-forwarded-host'] ||
+      headers['x-forwarded-host']) as string | undefined;
    const isDevProxy = !!host?.match(/\.(cominor\.com|ubreakit\.com)$/);
    const hostIfProxy = typeof window === 'undefined' ? `https://${host}` : '';
    return isDevProxy ? hostIfProxy! : IFIXIT_ORIGIN;

@@ -59,8 +59,7 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
-      const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
+      const ifixitOrigin = ifixitOriginFromHost(context);
       const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
       if (context.query._vercel_no_cache === '1' || isProxied) {
          context.res.setHeader(
