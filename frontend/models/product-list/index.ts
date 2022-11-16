@@ -8,12 +8,12 @@ import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { logAsync, logSync } from '@ifixit/helpers';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    Enum_Productlist_Type,
    ProductListFiltersInput,
@@ -23,7 +23,6 @@ import algoliasearch from 'algoliasearch';
 import {
    BaseProductList,
    iFixitPageType,
-   iFixitPage,
    ProductList,
    ProductListAncestor,
    ProductListChild,
@@ -32,11 +31,13 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
+import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 
 export {
+   iFixitPageType,
    ProductListSectionType,
    ProductListType,
-   iFixitPageType,
+   FacetWidgetType,
 } from './types';
 export type {
    FeaturedProductList,
@@ -46,13 +47,15 @@ export type {
    ProductListSection,
    ProductSearchHit,
    WikiInfoEntry,
+   ProductListAncestor,
 } from './types';
 
 /**
  * Get the product list data from the API
  */
 export async function findProductList(
-   filters: ProductListFiltersInput
+   filters: ProductListFiltersInput,
+   deviceItemType: string | null = null
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
@@ -93,6 +96,7 @@ export async function findProductList(
       title: title,
       handle: handle,
       deviceTitle: deviceTitle,
+      deviceItemType: deviceItemType,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
@@ -401,7 +405,7 @@ function createProductListSection(
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {
-   const client = algoliasearch(appId, apiKey);
+   const client = algoliasearch(appId, apiKey, CLIENT_OPTIONS);
    const publicKey = client.generateSecuredApiKey(apiKey, {
       filters: 'public=1 AND is_pro!=1',
    });

@@ -1,28 +1,32 @@
 import { Box, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
-import * as React from 'react';
-
 import { useDecoupledState } from '@ifixit/ui';
-import { RefinementListRenderState } from 'instantsearch.js/es/connectors/refinement-list/connectRefinementList';
-import { UseRefinementListProps } from 'react-instantsearch-hooks-web';
-import { useFilteredRefinementList } from './useFilteredRefinementList';
-import { useSortBy } from './useSortBy';
+import * as React from 'react';
 import { ShowMoreButton } from './ShowMoreButton';
+import { RefinementListFacetState } from './useRefinementListFacet';
 
-type RefinementMultiSelectProps = UseRefinementListProps;
+type RefinementListFacetProps = {
+   items: RefinementListItem[];
+   refine: (value: string) => void;
+   canToggleShowMore?: boolean;
+   isShowingMore?: boolean;
+   onToggleShowMore?: () => void;
+};
 
-export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
-   const { items, refine, isShowingMore, toggleShowMore, canToggleShowMore } =
-      useFilteredRefinementList({
-         ...props,
-         sortBy: useSortBy(props),
-      });
+type RefinementListItem = RefinementListFacetState['items'][0];
 
+export function RefinementListFacet({
+   items,
+   refine,
+   canToggleShowMore,
+   isShowingMore = false,
+   onToggleShowMore,
+}: RefinementListFacetProps) {
    return (
       <Box>
          <VStack align="stretch" spacing="1" role="listbox">
             {items.map((item) => {
                return (
-                  <MultiSelectItem
+                  <RefinementListItem
                      key={item.label}
                      item={item}
                      refine={refine}
@@ -33,22 +37,22 @@ export function RefinementMultiSelect(props: RefinementMultiSelectProps) {
          {canToggleShowMore && (
             <ShowMoreButton
                isShowingMore={isShowingMore}
-               onClick={toggleShowMore}
+               onClick={onToggleShowMore}
             />
          )}
       </Box>
    );
 }
 
-type MultiSelectItemProps = {
-   item: RefinementListRenderState['items'][0];
-   refine: RefinementListRenderState['refine'];
+type RefinementListItemProps = {
+   item: RefinementListItem;
+   refine: (value: string) => void;
 };
 
-const MultiSelectItem = React.memo(function MultiSelectItem({
+const RefinementListItem = React.memo(function RefinementListItem({
    item,
    refine,
-}: MultiSelectItemProps) {
+}: RefinementListItemProps) {
    const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
 
    return (

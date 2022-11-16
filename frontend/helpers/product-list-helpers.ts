@@ -1,6 +1,4 @@
-import { invariant } from '@ifixit/helpers';
-import { ProductList, ProductListType } from '@models/product-list';
-import { RefinementDisplayType } from '@models/product-list/types';
+import { FacetWidgetType, ProductListType } from '@models/product-list';
 
 type ProductListAttributes = {
    filters?: string | null;
@@ -17,7 +15,7 @@ export function computeProductListAlgoliaFilterPreset<
 
    if (filters && filters.length > 0) {
       // Algolia can't handle newlines in the filter, so replace with space.
-      conditions.push(filters.replaceAll('\n', ' '));
+      conditions.push(filters.replace(/(\n|\r)+/g, ' '));
    } else if (deviceTitle && deviceTitle.length > 0) {
       conditions.push(`device:${JSON.stringify(deviceTitle)}`);
    }
@@ -68,13 +66,20 @@ export function getProductListTitle(
    return productList.title;
 }
 
-const refinementDisplayTypeMap: Record<string, RefinementDisplayType> = {
-   'facet_tags.Capacity': RefinementDisplayType.MultiSelect,
-   price_range: RefinementDisplayType.MultiSelect,
+const facetWidgetTypeMap: Record<string, FacetWidgetType> = {
+   'facet_tags.Capacity': FacetWidgetType.RefinementList,
+   price_range: FacetWidgetType.RefinementList,
 };
 
-export function getRefinementDisplayType(attribute: string) {
+export function getFacetWidgetType(attribute: string) {
+   return facetWidgetTypeMap[attribute] ?? FacetWidgetType.Menu;
+}
+
+export function isPartsProductList<
+   ProductList extends { type: ProductListType }
+>(productList: ProductList): boolean {
    return (
-      refinementDisplayTypeMap[attribute] ?? RefinementDisplayType.SingleSelect
+      productList.type === ProductListType.AllParts ||
+      productList.type === ProductListType.DeviceParts
    );
 }

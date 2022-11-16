@@ -5,3 +5,4 @@ export * from './components/Settings';
 export * from './components/Shared';
 export * from './components/StoreMenu';
 export * from './homepage-kpis';
+export { EventTracker } from './hooks/TrackingContext';

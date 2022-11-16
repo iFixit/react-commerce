@@ -19,7 +19,7 @@ import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { useHits } from 'react-instantsearch-hooks-web';
-import { FacetsDrawer } from './FacetsDrawer';
+import { FacetsDrawer } from './facets/drawer';
 import { SearchInput } from './SearchInput';
 
 export enum ProductViewType {

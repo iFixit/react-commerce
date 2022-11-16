@@ -1,5 +1,5 @@
-import { trackInMatomoAndGA } from '@ifixit/analytics';
 import * as React from 'react';
+import { TrackingContext } from './TrackingContext';
 
 type UseFooterLinkTrackingProps<T> = {
    href?: string;
@@ -10,9 +10,10 @@ export function useTrackedOnClick<T>({
    href,
    onClick,
 }: UseFooterLinkTrackingProps<T>) {
+   const { trackClick } = React.useContext(TrackingContext);
    const trackedOnClick: React.MouseEventHandler<T> = React.useCallback(
       (e) => {
-         trackInMatomoAndGA({
+         trackClick({
             eventCategory: 'Footer',
             eventAction: `Link Click - ${href}`,
          });

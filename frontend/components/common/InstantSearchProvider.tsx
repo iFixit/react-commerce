@@ -1,17 +1,20 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID } from '@config/env';
+import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
+   getFacetWidgetType,
    stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
+import { FacetWidgetType } from '@models/product-list';
 import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
 import { UiState } from 'instantsearch.js/es/types';
-import { mapValues } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
@@ -52,7 +55,7 @@ export function InstantSearchProvider({
    const previousApiKey = usePrevious(algoliaApiKey);
 
    const algoliaClient = React.useMemo(() => {
-      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey);
+      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey, CLIENT_OPTIONS);
    }, [algoliaApiKey]);
 
    const router = useRouter();
@@ -71,7 +74,7 @@ export function InstantSearchProvider({
          window.document.body.hidden = true;
          window.location.reload();
       };
-      const beforeHistoryChange = (url: string) => {
+      const beforeHistoryChange = () => {
          historyChangeCount.current++;
       };
       window.addEventListener('popstate', handleRouteChange);
@@ -97,6 +100,12 @@ export function InstantSearchProvider({
             if (indexUiState.refinementList) {
                routeState.filter = indexUiState.refinementList;
             }
+            if (indexUiState.menu) {
+               routeState.filter = {
+                  ...routeState.filter,
+                  ...indexUiState.menu,
+               };
+            }
             return routeState;
          },
          routeToState(routeState: RouteState) {
@@ -107,8 +116,27 @@ export function InstantSearchProvider({
             if (routeState.p != null) {
                stateObject.page = routeState.p;
             }
-            if (routeState.filter != null) {
-               stateObject.refinementList = routeState.filter;
+            const filter = routeState.filter;
+            if (filter != null) {
+               stateObject.menu = {};
+               stateObject.refinementList = {};
+               Object.keys(filter).forEach((attribute) => {
+                  const widgetType = getFacetWidgetType(attribute);
+                  switch (widgetType) {
+                     case FacetWidgetType.Menu: {
+                        stateObject.menu[attribute] = filter[attribute];
+                        break;
+                     }
+                     case FacetWidgetType.RefinementList: {
+                        stateObject.refinementList[attribute] =
+                           filter[attribute];
+                        break;
+                     }
+                     default: {
+                        return assertNever(widgetType);
+                     }
+                  }
+               });
             }
             return {
                [indexName]: stateObject,
@@ -153,13 +181,17 @@ export function InstantSearchProvider({
                // Item Type is the slug on device pages, not in the query.
                delete filterCopy['facet_tags.Item Type'];
             }
-            const customQueryParams = new URLSearchParams(location.search);
+            const { q, p, filter, ...otherParams } = qsModule.parse(
+               location.search,
+               {
+                  ignoreQueryPrefix: true,
+               }
+            );
             const queryString = qsModule.stringify(
                {
+                  ...otherParams,
                   ...routeState,
                   filter: filterCopy,
-                  _vercel_no_cache:
-                     customQueryParams.get('_vercel_no_cache') || undefined,
                },
                {
                   addQueryPrefix: true,
@@ -176,7 +208,9 @@ export function InstantSearchProvider({
             const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
             const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-            const { q, p, filter } = qsModule.parse(location.search.slice(1));
+            const { q, p, filter } = qsModule.parse(location.search, {
+               ignoreQueryPrefix: true,
+            });
 
             const filterObject =
                typeof filter === 'object' && !Array.isArray(filter)
@@ -184,14 +218,14 @@ export function InstantSearchProvider({
                   : {};
 
             if (deviceHandle && itemType) {
-               filterObject['facet_tags.Item Type'] = [
-                  destylizeDeviceItemType(decodeURIComponent(itemType)).trim(),
-               ];
+               filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
+                  decodeURIComponent(itemType)
+               ).trim();
             }
 
             return {
                q: String(q || ''),
-               p: Number(p),
+               p: typeof p === 'string' ? parseInt(p) : undefined,
                filter: filterObject,
             };
          },
