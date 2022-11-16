@@ -50,6 +50,6 @@ export function productListPath(
 
 export function ifixitOriginFromHost(host?: string): string {
    const isDevProxy = !!host?.match(/\.(cominor\.com|ubreakit\.com)$/);
-   const hostIfProxy = typeof window === 'undefined' ? host : '';
+   const hostIfProxy = typeof window === 'undefined' ? `https://${host}` : '';
    return isDevProxy ? hostIfProxy! : IFIXIT_ORIGIN;
 }
