@@ -21,7 +21,7 @@ function ImageInner<GenericLoaderOpts>(
                   rel="preload"
                   as="image"
                   href={src}
-                  // @ts-ignore
+                  // @ts-ignore - otherwise tsc raise error
                   imageSrcSet={srcSet}
                />
             </Head>

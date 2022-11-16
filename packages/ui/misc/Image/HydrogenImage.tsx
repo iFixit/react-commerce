@@ -14,7 +14,7 @@ export type ImageProps<GenericLoaderOpts> =
    | ShopifyImageProps
    | ExternalImageProps<GenericLoaderOpts>;
 
-// Redecalare forwardRef
+// Redecalare forwardRef to allow generics in props
 declare module 'react' {
    function forwardRef<T, P = {}>(
       render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
