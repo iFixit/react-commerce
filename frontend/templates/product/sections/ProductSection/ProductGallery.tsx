@@ -5,7 +5,6 @@ import { FaIcon } from '@ifixit/icons';
 import { Image } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
-import Head from 'next/head';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
@@ -340,18 +339,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
                alt={image.altText ?? ''}
                loading={index === 0 ? 'eager' : 'lazy'}
                decoding={index === 0 ? 'sync' : 'async'}
-               injectable={
-                  index === 0 ? (
-                     <Head>
-                        <link
-                           key="product-page-image"
-                           rel="preload"
-                           href={image.url}
-                           as="image"
-                        />
-                     </Head>
-                  ) : undefined
-               }
+               preload={index === 0}
                {...eventHandlers}
             />
          </Flex>
