@@ -37,12 +37,11 @@ export type ProductListTemplateProps = WithProvidersProps<
    }>
 >;
 
-export const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> =
-   ({ productList, indexName }) => {
-      return (
-         <ProductListView productList={productList} indexName={indexName} />
-      );
-   };
+export const ProductListTemplate: NextPageWithLayout<
+   ProductListTemplateProps
+> = ({ productList, indexName }) => {
+   return <ProductListView productList={productList} indexName={indexName} />;
+};
 
 ProductListTemplate.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
