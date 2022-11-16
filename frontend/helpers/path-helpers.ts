@@ -55,7 +55,9 @@ export function ifixitOriginFromHost(
    const headers = context.req.headers;
    const host = (headers['x-ifixit-forwarded-host'] ||
       headers['x-forwarded-host']) as string | undefined;
-   const isDevProxy = !!host?.match(/\.(cominor\.com|ubreakit\.com)$/);
+   const isDevProxy = !!host?.match(
+      /^(?!react-commerce).*(\.cominor\.com|\.ubreakit\.com)$/
+   );
    const hostIfProxy = typeof window === 'undefined' ? `https://${host}` : '';
    return isDevProxy ? hostIfProxy! : IFIXIT_ORIGIN;
 }
