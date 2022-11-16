@@ -3,7 +3,7 @@ import {
    AppProvidersProps,
    WithProvidersProps,
 } from '@components/common';
-import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
+import { ALGOLIA_PRODUCT_INDEX_NAME, IFIXIT_ORIGIN } from '@config/env';
 import { noindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
@@ -59,7 +59,10 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      if (context.query._vercel_no_cache === '1') {
+      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
+      const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
+      const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
+      if (context.query._vercel_no_cache === '1' || isProxied) {
          context.res.setHeader(
             'Cache-Control',
             'no-store, no-cache, must-revalidate, stale-if-error=0'
@@ -79,9 +82,6 @@ export const getProductListServerSideProps = ({
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
-
-      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
-      const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
 
       switch (productListType) {
          case ProductListType.AllParts: {

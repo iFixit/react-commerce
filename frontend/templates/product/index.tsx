@@ -31,6 +31,8 @@ import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { IFIXIT_ORIGIN } from '@config/env';
+import { clearCache } from '@lib/cache';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -102,6 +104,17 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
+      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
+      const ifixitOrigin = ifixitOriginFromHost(forwardedHost);
+      const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
+      if (isProxied) {
+         context.res.setHeader(
+            'Cache-Control',
+            'no-store, no-cache, must-revalidate, stale-if-error=0'
+         );
+         clearCache();
+      }
+
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
@@ -125,11 +138,10 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
       }
 
-      const forwardedHost = context.req.headers['x-forwarded-host'] as string;
       const pageProps: ProductTemplateProps = {
          layoutProps,
          appProps: {
-            ifixitOrigin: ifixitOriginFromHost(forwardedHost),
+            ifixitOrigin,
          },
          product,
       };
