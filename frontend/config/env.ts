@@ -41,6 +41,8 @@ export const DEFAULT_STORE_CODE = requireEnvVariable(
    'NEXT_PUBLIC_DEFAULT_STORE_CODE'
 );
 
+export const POLYFILL_DOMAIN = process.env.NEXT_PUBLIC_POLYFILL_DOMAIN;
+
 function requireEnvVariable(
    env: string | null | undefined,
    envName: string

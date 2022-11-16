@@ -55,6 +55,7 @@ const moduleExports = {
       NEXT_PUBLIC_GA_KEY: process.env.NEXT_PUBLIC_GA_KEY,
       NEXT_PUBLIC_DEFAULT_STORE_CODE:
          process.env.NEXT_PUBLIC_DEFAULT_STORE_CODE,
+      NEXT_PUBLIC_POLYFILL_DOMAIN: process.env.NEXT_PUBLIC_POLYFILL_DOMAIN,
    },
    async rewrites() {
       return [
