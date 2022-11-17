@@ -8,9 +8,9 @@ export type ImageProps<GenericLoaderOpts> =
    | ShopifyImageProps
    | ExternalImageProps<GenericLoaderOpts>;
 
-export const Image = React.forwardRef(ImageInner);
+export const ResponsiveImage = React.forwardRef(ResponsiveImageInner);
 
-function ImageInner<GenericLoaderOpts>(
+function ResponsiveImageInner<GenericLoaderOpts>(
    props: ImageProps<GenericLoaderOpts> & {
       preloader?: (
          params: Pick<HtmlImageProps, 'src' | 'srcSet'>
@@ -21,12 +21,14 @@ function ImageInner<GenericLoaderOpts>(
    const { preloader } = props;
 
    if (!props.data && !props.src) {
-      throw new Error(`<Image/>: requires either a 'data' or 'src' prop.`);
+      throw new Error(
+         `<ResponsiveImage/>: requires either a 'data' or 'src' prop.`
+      );
    }
 
    if (process.env.NODE_ENV !== 'production' && props.data && props.src) {
       console.warn(
-         `<Image/>: using both 'data' and 'src' props is not supported; using the 'data' prop by default`
+         `<ResponsiveImage/>: using both 'data' and 'src' props is not supported; using the 'data' prop by default`
       );
    }
 

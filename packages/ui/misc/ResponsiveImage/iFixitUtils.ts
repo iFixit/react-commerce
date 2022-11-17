@@ -61,7 +61,7 @@ export function iFixitImageLoader({ src, ...props }: ExternalImageProps<{}>) {
 function createLoader(sizeMap: SizeMap, defaultSize: string) {
    return ({ src, width }: LoaderProps<{}>) => {
       if (!src) {
-         throw new Error(`<Image/>: 'src' is missing`);
+         throw new Error(`<ResponsiveImage/>: 'src' is missing`);
       }
 
       const baseSrc = src?.replace(/\.[^/.]+$/, '');

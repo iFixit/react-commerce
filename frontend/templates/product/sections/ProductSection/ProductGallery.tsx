@@ -3,7 +3,7 @@ import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { defaultPreloader } from '@helpers/image-helpers';
 import { FaIcon } from '@ifixit/icons';
-import { HtmlImageProps, Image } from '@ifixit/ui';
+import { HtmlImageProps, ResponsiveImage } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -342,7 +342,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
             height="100%"
             p={`${CONTAINER_PADDING}px`}
          >
-            <Image
+            <ResponsiveImage
                ref={galleryRef}
                data={image}
                alt={image.altText ?? ''}
@@ -483,7 +483,7 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
             overflow="hidden"
             borderRadius="5px"
          >
-            <Image
+            <ResponsiveImage
                data={image}
                alt={image.altText ?? ''}
                loaderOptions={{ width: 300 }}

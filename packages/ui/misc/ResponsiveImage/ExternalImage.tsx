@@ -81,13 +81,13 @@ export const ExternalImage = React.forwardRef<
    ) => {
       if (!width || !height) {
          throw new Error(
-            `<Image/>: when 'src' is provided, 'width' and 'height' are required and need to be valid values (i.e. greater than zero). Provided values: 'src': ${src}, 'width': ${width}, 'height': ${height}`
+            `<ResponsiveImage/>: when 'src' is provided, 'width' and 'height' are required and need to be valid values (i.e. greater than zero). Provided values: 'src': ${src}, 'width': ${width}, 'height': ${height}`
          );
       }
 
       if (process.env.NODE_ENV !== 'production' && !alt) {
          console.warn(
-            `<Image/>: when 'src' is provided, 'alt' should also be provided. ${`Image: ${src}`}`
+            `<ResponsiveImage/>: when 'src' is provided, 'alt' should also be provided. ${`Image: ${src}`}`
          );
       }
 
@@ -97,7 +97,7 @@ export const ExternalImage = React.forwardRef<
          widths.some((size) => isNaN(size as number))
       )
          throw new Error(
-            `<Image/>: the 'widths' property must be an array of numbers`
+            `<ResponsiveImage/>: the 'widths' property must be an array of numbers`
          );
 
       let finalSrc = src;
@@ -105,7 +105,9 @@ export const ExternalImage = React.forwardRef<
       if (loader) {
          finalSrc = loader({ src, width, height, ...loaderOptions });
          if (typeof finalSrc !== 'string' || !finalSrc) {
-            throw new Error(`<Image/>: 'loader' did not return a valid string`);
+            throw new Error(
+               `<ResponsiveImage/>: 'loader' did not return a valid string`
+            );
          }
       }
       let finalSrcset = rest.srcSet ?? undefined;

@@ -77,13 +77,13 @@ export const ShopifyImage = React.forwardRef<
    ) => {
       if (!data.url) {
          throw new Error(
-            `<Image/>: the 'data' prop requires the 'url' property`
+            `<ResponsiveImage/>: the 'data' prop requires the 'url' property`
          );
       }
 
       if (process.env.NODE_ENV !== 'production' && !data.altText && !rest.alt) {
          console.warn(
-            `<Image/>: the 'data' prop should have the 'altText' property, or the 'alt' prop, and one of them should not be empty. ${`Image: ${
+            `<ResponsiveImage/>: the 'data' prop should have the 'altText' property, or the 'alt' prop, and one of them should not be empty. ${`Image: ${
                data.id ?? data.url
             }`}`
          );
@@ -104,7 +104,7 @@ export const ShopifyImage = React.forwardRef<
          (!imgElementWidth || !imgElementHeight)
       ) {
          console.warn(
-            `<Image/>: the 'data' prop requires either 'width' or 'data.width', and 'height' or 'data.height' properties. ${`Image: ${
+            `<ResponsiveImage/>: the 'data' prop requires either 'width' or 'data.width', and 'height' or 'data.height' properties. ${`Image: ${
                data.id ?? data.url
             }`}`
          );
@@ -121,7 +121,7 @@ export const ShopifyImage = React.forwardRef<
          });
          if (typeof finalSrc !== 'string' || !finalSrc) {
             throw new Error(
-               `<Image/>: 'loader' did not return a valid string. ${`Image: ${
+               `<ResponsiveImage/>: 'loader' did not return a valid string. ${`Image: ${
                   data.id ?? data.url
                }`}`
             );
@@ -183,7 +183,9 @@ function internalImageSrcSet({
 }: InternalShopifySrcSetGeneratorsParams) {
    const hasCustomWidths = widths && Array.isArray(widths);
    if (hasCustomWidths && widths.some((size) => isNaN(size as number))) {
-      throw new Error(`<Image/>: the 'widths' must be an array of numbers`);
+      throw new Error(
+         `<ResponsiveImage/>: the 'widths' must be an array of numbers`
+      );
    }
 
    let aspectRatio = 1;

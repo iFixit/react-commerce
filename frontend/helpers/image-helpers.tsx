@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { HtmlImageProps } from '@ifixit/ui/misc/Image';
+import { HtmlImageProps } from '@ifixit/ui/misc/ResponsiveImage';
 
 export const defaultPreloader =
    ({ preloadKey }: { preloadKey: string }) =>
