@@ -11,11 +11,13 @@ import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
+   useInstantSearch,
 } from 'react-instantsearch-hooks-web';
 
 export function CurrentRefinements() {
    const currentRefinements = useCurrentRefinements();
    const clearRefinements = useClearRefinements();
+   const { setIndexUiState } = useInstantSearch();
 
    return (
       <Collapse
@@ -47,6 +49,12 @@ export function CurrentRefinements() {
                                  aria-label={`Remove ${formattedFacetName}: ${refinement.label}`}
                                  onClick={() => {
                                     item.refine(refinement);
+                                    setIndexUiState((uiState) => {
+                                       return {
+                                          ...uiState,
+                                          page: NaN,
+                                       };
+                                    });
                                  }}
                               />
                            </Tag>
