@@ -18,6 +18,11 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
          ...context.params,
          ...context.query,
       });
+      console.log({
+         'x-forwarded-host': context.req.headers['x-forwarded-host'],
+         'x-ifixit-forwarded-host':
+            context.req.headers['x-ifixit-forwarded-host'],
+      });
       return logAsync('getServerSideProps', () =>
          getServerSidePropsInternal(context)
       ).catch((err) => {
