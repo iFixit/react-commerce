@@ -1,8 +1,9 @@
 import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
+import { defaultPreloader } from '@helpers/image-helpers';
 import { FaIcon } from '@ifixit/icons';
-import { Image } from '@ifixit/ui';
+import { HtmlImageProps, Image } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -313,6 +314,14 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
         }
       : {};
 
+   const preloader = React.useMemo(() => {
+      return index === 0
+         ? defaultPreloader({
+              preloadKey: 'product-page-lcp-image',
+           })
+         : undefined;
+   }, [index]);
+
    return (
       <Flex
          borderColor="gray.200"
@@ -339,7 +348,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
                alt={image.altText ?? ''}
                loading={index === 0 ? 'eager' : 'lazy'}
                decoding={index === 0 ? 'sync' : 'async'}
-               preload={index === 0}
+               preloader={preloader}
                width="100%"
                height="100%"
                {...eventHandlers}

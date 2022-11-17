@@ -1,4 +1,3 @@
-import { ImageLoader, ImageLoaderProps, ImageProps } from 'next/image';
 import { ExternalImageProps, LoaderProps } from './ExternalImage';
 
 interface SizeMapEntry {

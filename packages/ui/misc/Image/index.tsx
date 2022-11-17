@@ -1,5 +1,4 @@
-import Head from 'next/head';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { ExternalImage, ExternalImageProps } from './ExternalImage';
 import { iFixitImageLoader, IMG_SRC_SET_SIZES } from './iFixitUtils';
 import { ShopifyImage, ShopifyImageProps } from './ShopifyImage';
@@ -13,29 +12,13 @@ export const Image = React.forwardRef(ImageInner);
 
 function ImageInner<GenericLoaderOpts>(
    props: ImageProps<GenericLoaderOpts> & {
-      preload?: boolean;
-      preloadKey?: string;
+      preloader?: (
+         params: Pick<HtmlImageProps, 'src' | 'srcSet'>
+      ) => React.ReactElement | null;
    },
    ref: React.ForwardedRef<HTMLImageElement>
 ) {
-   const { preload = false, preloadKey, ...otherProps } = props;
-   const preloader = useCallback(
-      ({ src, srcSet }) => {
-         return preload ? (
-            <Head>
-               <link
-                  key={preloadKey}
-                  rel="preload"
-                  as="image"
-                  href={src}
-                  // @ts-ignore - otherwise tsc raise error
-                  imageSrcSet={srcSet}
-               />
-            </Head>
-         ) : null;
-      },
-      [preload]
-   );
+   const { preloader } = props;
 
    if (!props.data && !props.src) {
       throw new Error(`<Image/>: requires either a 'data' or 'src' prop.`);
