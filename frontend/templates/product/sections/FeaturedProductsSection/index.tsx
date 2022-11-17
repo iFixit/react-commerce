@@ -8,7 +8,6 @@ import {
    LinkBox,
    LinkOverlay,
    SimpleGrid,
-   Text,
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
 import { getProductPath } from '@helpers/product-helpers';
@@ -241,6 +240,13 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
             src={src}
             alt={alt}
          />
+         {/* <Image
+            src={src}
+            alt={alt ?? ''}
+            // width ?
+            // height ?
+            sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
+         /> */}
       </AspectRatio>
    );
 };

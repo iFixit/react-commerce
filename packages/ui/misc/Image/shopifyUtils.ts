@@ -1,6 +1,6 @@
 import type { PartialDeep } from 'type-fest';
-import { ShopifyLoaderOptions, ShopifyLoaderParams } from './HydrogenImage';
 import type { Image as ImageType } from '../../../../frontend/lib/shopify-storefront-sdk/generated/sdk';
+import { ShopifyLoaderOptions, ShopifyLoaderParams } from './ShopifyImage';
 
 // TODO: Are there other CDNs missing from here?
 const PRODUCTION_CDN_HOSTNAMES = [
