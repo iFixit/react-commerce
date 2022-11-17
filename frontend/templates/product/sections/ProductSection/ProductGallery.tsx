@@ -2,7 +2,7 @@ import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { ResizableImage } from '@ifixit/ui';
+import { defaultBlurDataUrl, ResizableImage } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -347,10 +347,12 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
                   alt={image.altText ?? ''}
                   layout="fill"
                   objectFit="contain"
-                  priority={index === 0}
+                  // priority={index === 0}
                   onLoadingComplete={(dimensions) => {
                      galleryImageDimensionsRef.current = dimensions;
                   }}
+                  placeholder="blur"
+                  blurDataURL={defaultBlurDataUrl}
                   {...eventHandlers}
                />
             </Box>
