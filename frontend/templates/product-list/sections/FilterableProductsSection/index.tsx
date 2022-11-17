@@ -16,10 +16,10 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
-import { IFIXIT_ORIGIN } from '@config/env';
 import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { cypressReplace, cypressWindowLog } from '@helpers/test-helpers';
+import { useAppContext } from '@ifixit/app';
 import { useLocalPreference } from '@ifixit/ui';
 import {
    ProductList as TProductList,
@@ -173,6 +173,8 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
       const ancestors = productList.ancestors;
       const parentCategory = ancestors[ancestors.length - 1];
 
+      const appContext = useAppContext();
+
       if (isFiltered) {
          return (
             <VStack
@@ -198,7 +200,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                <Link
                   maxW="500px"
                   color="brand.500"
-                  href={`${IFIXIT_ORIGIN}/Search?query=${encodedQuery}`}
+                  href={`${appContext.ifixitOrigin}/Search?query=${encodedQuery}`}
                >
                   Search all of iFixit for&nbsp;
                   <Text as="span" fontWeight="bold">

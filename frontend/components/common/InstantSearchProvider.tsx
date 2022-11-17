@@ -1,5 +1,5 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
-import { ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
@@ -275,11 +275,11 @@ function RefreshSearchResults({
 }
 
 function getBaseOrigin(location: Location): string {
-   if (typeof window === 'undefined' && process.env.NEXT_PUBLIC_IFIXIT_ORIGIN) {
+   if (typeof window === 'undefined' && IFIXIT_ORIGIN) {
       // On the server, use the IFIXIT_ORIGIN url
       // This ensures that the SSR produces the correct links on Vercel
       // (where the Host header doesn't match the page URL.)
-      const publicOrigin = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
+      const publicOrigin = new URL(IFIXIT_ORIGIN);
       return publicOrigin.origin;
    }
    return location.origin;

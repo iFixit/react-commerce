@@ -1,7 +1,10 @@
 import { Box } from '@chakra-ui/react';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { flags } from '@config/flags';
+import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
+import { clearCache } from '@lib/cache';
 import { findPage } from '@models/page';
 import { GetServerSideProps } from 'next';
 import {
@@ -48,6 +51,16 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
       };
    }
 
+   const ifixitOrigin = ifixitOriginFromHost(context);
+   const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
+   if (isProxied) {
+      context.res.setHeader(
+         'Cache-Control',
+         'no-store, no-cache, must-revalidate, stale-if-error=0'
+      );
+      clearCache();
+   }
+
    const layoutProps = await getLayoutServerSideProps();
    const page = await findPage({
       path: '/Store',
@@ -61,7 +74,9 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
 
    const pageProps: PageTemplateProps = {
       layoutProps,
-      appProps: {},
+      appProps: {
+         ifixitOrigin,
+      },
       page,
    };
    return {

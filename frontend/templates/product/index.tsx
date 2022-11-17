@@ -30,6 +30,9 @@ import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
+import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { IFIXIT_ORIGIN } from '@config/env';
+import { clearCache } from '@lib/cache';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -101,6 +104,16 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
+      const ifixitOrigin = ifixitOriginFromHost(context);
+      const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
+      if (isProxied) {
+         context.res.setHeader(
+            'Cache-Control',
+            'no-store, no-cache, must-revalidate, stale-if-error=0'
+         );
+         clearCache();
+      }
+
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
@@ -126,7 +139,9 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
 
       const pageProps: ProductTemplateProps = {
          layoutProps,
-         appProps: {},
+         appProps: {
+            ifixitOrigin,
+         },
          product,
       };
       return {
