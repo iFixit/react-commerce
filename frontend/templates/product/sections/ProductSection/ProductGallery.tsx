@@ -86,9 +86,10 @@ export function ProductGallery({
                   isBeginning={isBeginning}
                   isEnd={isEnd}
                />
-               {variantImages.map((variantImage) => (
+               {variantImages.map((variantImage, index) => (
                   <SwiperSlide key={variantImage.id}>
                      <ImageWithZoom
+                        index={index}
                         image={variantImage}
                         enableZoom={enableZoom}
                      />
@@ -96,7 +97,11 @@ export function ProductGallery({
                ))}
             </ReactSwiper>
          ) : variantImages.length === 1 ? (
-            <ImageWithZoom image={variantImages[0]} enableZoom={enableZoom} />
+            <ImageWithZoom
+               index={0}
+               image={variantImages[0]}
+               enableZoom={enableZoom}
+            />
          ) : (
             <ImagePlaceholder />
          )}
@@ -239,6 +244,7 @@ type Image = {
 };
 
 type ImageProps = {
+   index: number;
    image: Image;
    enableZoom?: boolean;
 };
@@ -246,7 +252,7 @@ type ImageProps = {
 const ZOOM_FACTOR = 3;
 const CONTAINER_PADDING = 24;
 
-function ImageWithZoom({ image, enableZoom }: ImageProps) {
+function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
    const [show, setShow] = React.useState(false);
    const [dimensionData, setDimensionData] = React.useState<DimensionData>({
       zoomMaskAspectRatio: 1,
@@ -268,6 +274,10 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
    });
 
    const galleryRef = React.useRef<HTMLImageElement | null>(null);
+   const galleryImageDimensionsRef = React.useRef<{
+      naturalWidth: number;
+      naturalHeight: number;
+   } | null>(null);
    const pointerRef = React.useRef<HTMLDivElement | null>(null);
    const zoomPortalRef = React.useRef<HTMLElement | null>(null);
    const zoomMaskRef = React.useRef<HTMLDivElement | null>(null);
@@ -282,7 +292,11 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
            onMouseOut: () => setShow(false),
            onMouseMove: (event: React.MouseEvent<HTMLImageElement>) => {
               setDimensionData(
-                 computeDimensionData({ zoomMaskRef, galleryRef })
+                 computeDimensionData({
+                    zoomMaskRef,
+                    galleryRef,
+                    galleryImageDimensionsRef,
+                 })
               );
               const {
                  galleryWidth,
@@ -327,18 +341,20 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
             height="100%"
             p={`${CONTAINER_PADDING}px`}
          >
-            <Flex ref={galleryRef}>
-               <Img
+            <Box ref={galleryRef} pos="relative" w="full" h="full">
+               <ResizableImage
                   src={image.url}
                   alt={image.altText ?? ''}
-                  htmlWidth={image.width ?? undefined}
-                  htmlHeight={image.height ?? undefined}
+                  layout="fill"
                   objectFit="contain"
-                  width="100%"
-                  height="100%"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  priority={index === 0}
+                  onLoadingComplete={(dimensions) => {
+                     galleryImageDimensionsRef.current = dimensions;
+                  }}
                   {...eventHandlers}
                />
-            </Flex>
+            </Box>
          </Flex>
 
          {enableZoom && show && (
@@ -474,6 +490,7 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
                alt={image.altText ?? ''}
                layout="fill"
                objectFit="contain"
+               sizes="250px"
             />
          </Flex>
       </Flex>
@@ -520,11 +537,16 @@ type DimensionData = {
 type ComputeDimensionDataParams = {
    zoomMaskRef: React.MutableRefObject<HTMLDivElement | null>;
    galleryRef: React.MutableRefObject<HTMLImageElement | null>;
+   galleryImageDimensionsRef: React.MutableRefObject<{
+      naturalWidth: number;
+      naturalHeight: number;
+   } | null>;
 };
 
 const computeDimensionData = ({
    zoomMaskRef,
    galleryRef,
+   galleryImageDimensionsRef,
 }: ComputeDimensionDataParams): DimensionData => {
    let zoomMaskAspectRatio = 1,
       galleryAspectRatio = 1,
@@ -535,15 +557,19 @@ const computeDimensionData = ({
       pointerWidth = 0,
       pointerHeight = 0;
 
-   if (zoomMaskRef.current && galleryRef.current) {
+   if (
+      zoomMaskRef.current &&
+      galleryRef.current &&
+      galleryImageDimensionsRef.current
+   ) {
       const { clientWidth: zoomWidth, clientHeight: zoomHeight } =
          zoomMaskRef.current;
+      const { clientWidth, clientHeight } = galleryRef.current;
+
       const {
-         clientWidth,
-         clientHeight,
          naturalWidth: galleryNaturalWidth,
          naturalHeight: galleryNaturalHeight,
-      } = galleryRef.current;
+      } = galleryImageDimensionsRef.current;
 
       galleryWidth = clientWidth;
       galleryHeight = clientHeight;
