@@ -649,16 +649,6 @@ const computePointerData = ({
    const zoomTranslationTopPercentage =
       ((pointerTop - verticalGap) / galleryRealHeight) * 100;
 
-   console.log({
-      event,
-      galleryWidth,
-      galleryHeight,
-      galleryRealWidth,
-      galleryRealHeight,
-      pointerWidth,
-      pointerHeight,
-   });
-
    return {
       left,
       top,
