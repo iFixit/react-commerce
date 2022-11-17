@@ -7,10 +7,10 @@ export * from './generated/sdk';
 
 export type ShopCredentials = {
    shopDomain: string;
-   accessToken: string;
+   storefrontDelegateToken: string;
 };
 
-export function getShopifyStorefrontSdk(shop: ShopCredentials) {
+export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
    const requester: Requester = async <R, V>(
       doc: string,
       variables: V
@@ -21,7 +21,7 @@ export function getShopifyStorefrontSdk(shop: ShopCredentials) {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
-               'X-Shopify-Storefront-Access-Token': shop.accessToken,
+               'Shopify-Storefront-Private-Token': shop.storefrontDelegateToken,
             },
             body: JSON.stringify({
                query: doc,

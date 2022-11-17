@@ -7,13 +7,14 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { FaIcon } from '@ifixit/icons';
+import { GoogleAnalytics, Matomo } from '@components/analytics';
 import {
    faArrowRight,
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { FaIcon } from '@ifixit/icons';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
    CartDrawer,
@@ -57,13 +58,13 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { DefaultLayoutProps } from '../types';
+import type { DefaultLayoutProps } from '../getLayoutServerSideProps';
 import { CartFooter } from './Footer';
-import { GoogleAnalytics, Matomo } from '@components/analytics';
 
 export function DefaultLayout({
    stores,
    currentStore,
+   shopifyCredentials,
    globalSettings,
    children,
 }: React.PropsWithChildren<DefaultLayoutProps>) {
@@ -72,8 +73,8 @@ export function DefaultLayout({
 
    return (
       <ShopifyStorefrontProvider
-         shopDomain={currentStore.shopify.storefrontDomain}
-         storefrontAccessToken={currentStore.shopify.storefrontAccessToken}
+         shopDomain={shopifyCredentials.storefrontDomain}
+         storefrontAccessToken={shopifyCredentials.storefrontAccessToken}
          apiVersion="2020-01"
       >
          <Box>
@@ -280,7 +281,11 @@ export function DefaultLayout({
                </Header>
                {children}
                <CartFooter
-                  currentStore={currentStore}
+                  menu1={currentStore.footer.menu1}
+                  menu2={currentStore.footer.menu2}
+                  partners={currentStore.footer.partners}
+                  bottomMenu={currentStore.footer.bottomMenu}
+                  socialMediaAccounts={currentStore.socialMediaAccounts}
                   stores={stores}
                   globalSettings={globalSettings}
                />

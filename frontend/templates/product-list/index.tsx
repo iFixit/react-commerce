@@ -3,21 +3,21 @@ import {
    AppProvidersProps,
    WithProvidersProps,
 } from '@components/common';
-import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
+import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
 import { noindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
-   destylizeDeviceTitle as destylizeDeviceTitle,
+   destylizeDeviceTitle,
    stylizeDeviceItemType,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import {
-   getLayoutServerSideProps,
    DefaultLayout,
    DefaultLayoutProps,
+   getLayoutServerSideProps,
    WithLayoutProps,
 } from '@layouts/default';
 import {
@@ -64,8 +64,11 @@ export const getProductListServerSideProps = ({
       noindexDevDomains(context);
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
-      const layoutProps: Promise<DefaultLayoutProps> =
-         getLayoutServerSideProps();
+      const layoutProps: Promise<DefaultLayoutProps> = getLayoutServerSideProps(
+         {
+            storeCode: DEFAULT_STORE_CODE,
+         }
+      );
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
