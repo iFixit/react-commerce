@@ -20,7 +20,7 @@ import {
    Money,
 } from '@ifixit/helpers';
 import {
-   ResizableImage,
+   ResponsiveImage,
    PageContentWrapper,
    ProductVariantPrice,
 } from '@ifixit/ui';
@@ -234,7 +234,7 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
    }
    return (
       <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-         <ResizableImage
+         <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
             layout="fill"
             objectFit="contain"

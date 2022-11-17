@@ -20,7 +20,7 @@ import {
    faGaugeMax,
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
-import { IconBadge, ResizableImage, PageContentWrapper } from '@ifixit/ui';
+import { IconBadge, ResponsiveImage, PageContentWrapper } from '@ifixit/ui';
 import { Product } from '@models/product';
 
 export type ReplacementGuidesSectionProps = {
@@ -132,7 +132,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                   flexShrink={0}
                   position="relative"
                >
-                  <ResizableImage
+                  <ResponsiveImage
                      src={guide.image_url}
                      alt=""
                      objectFit="cover"

@@ -2,7 +2,7 @@ import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { ResizableImage } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -342,7 +342,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
             p={`${CONTAINER_PADDING}px`}
          >
             <Box ref={galleryRef} pos="relative" w="full" h="full">
-               <ResizableImage
+               <ResponsiveImage
                   src={image.url}
                   alt={image.altText ?? ''}
                   layout="fill"
@@ -484,7 +484,7 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
             overflow="hidden"
             borderRadius="5px"
          >
-            <ResizableImage
+            <ResponsiveImage
                src={image.url}
                alt={image.altText ?? ''}
                layout="fill"

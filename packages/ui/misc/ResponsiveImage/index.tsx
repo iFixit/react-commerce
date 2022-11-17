@@ -9,7 +9,7 @@ import {
 } from './iFixitUtils';
 import { getShopifyImageLoader, isShopifyImage } from './shopifyUtils';
 
-export function ResizableImage(props: ImageProps) {
+export function ResponsiveImage(props: ImageProps) {
    const alt = props.alt ?? '';
    let loader = props.loader;
    let unoptimized = props.unoptimized;

@@ -13,7 +13,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { ResizableImage } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import React from 'react';
 
 export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {
@@ -40,7 +40,7 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    if (src == null) {
       return (
          <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-            <ResizableImage
+            <ResponsiveImage
                sizes="30vw"
                layout="fill"
                src={placeholderImageUrl}
@@ -51,7 +51,7 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    }
    return (
       <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
-         <ResizableImage
+         <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
             layout="fill"
             objectFit="contain"
