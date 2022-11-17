@@ -347,7 +347,6 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
                   alt={image.altText ?? ''}
                   layout="fill"
                   objectFit="contain"
-                  loading={index === 0 ? 'eager' : 'lazy'}
                   priority={index === 0}
                   onLoadingComplete={(dimensions) => {
                      galleryImageDimensionsRef.current = dimensions;
