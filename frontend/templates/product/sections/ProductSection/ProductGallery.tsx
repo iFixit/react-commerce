@@ -343,11 +343,12 @@ function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
          >
             <Box ref={galleryRef} pos="relative" w="full" h="full">
                <ResponsiveImage
+                  priority={index === 0}
                   src={image.url}
                   alt={image.altText ?? ''}
                   layout="fill"
                   objectFit="contain"
-                  priority={index === 0}
+                  sizes="(max-width: 767px) 100vw, 700px"
                   onLoadingComplete={(dimensions) => {
                      galleryImageDimensionsRef.current = dimensions;
                   }}
@@ -489,7 +490,7 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
                alt={image.altText ?? ''}
                layout="fill"
                objectFit="contain"
-               sizes="250px"
+               sizes="100px"
             />
          </Flex>
       </Flex>
