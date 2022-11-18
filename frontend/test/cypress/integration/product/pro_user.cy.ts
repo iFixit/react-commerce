@@ -10,6 +10,14 @@ describe('Pro user test', () => {
             expect(productTitle).to.equal('Repair Business Toolkit');
          });
 
+      // Assert product sku is visible
+      cy.findByTestId('product-sku')
+         .should('be.visible')
+         .invoke('text')
+         .then((productSku) => {
+            expect(productSku).to.match(/IF\d*\-\d*/g);
+         });
+
       // Get price from page
       cy.findAllByTestId('product-price')
          .first()
