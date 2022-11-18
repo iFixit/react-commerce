@@ -21,8 +21,12 @@ describe('Pro user test', () => {
       // Get price from page
       cy.findAllByTestId('product-price')
          .first()
+         .should('be.visible')
          .invoke('text')
          .then((originalPriceString) => {
+            // regex to match $299.99 with dollar sign
+            expect(originalPriceString).to.match(/\$\d*\.\d*/g);
+
             // Login as pro
             cy.interceptLogin('pro_4');
             cy.reload();
