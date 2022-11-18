@@ -122,6 +122,16 @@ When you need to update the Shopify storefront GraphQL schema version, follow th
 1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
 2. Run `pnpm codegen:download-shopify-storefront-schema`
 
+#### Generate Shopify storefront delegate access token
+
+The public Shopify storefront API is rate limited by user IP. To avoid hitting the rate limit when making requests from the server, we use Shopify storefront API with a [delegate access token](https://shopify.dev/apps/auth/oauth/delegate-access-tokens). To generate a token for a shop, use the automation bot:
+
+```sh
+pnpm bot shopify create delegate-token
+```
+
+> :information_source: You can use the **Admin API Password** of the app that you use to generate the Storefront access token.
+
 ### Troubleshooting
 
 #### Backend folder dependencies errors
