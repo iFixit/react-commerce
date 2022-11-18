@@ -378,6 +378,7 @@ const ProductTitle = chakra(
             className={className}
             size="xl"
             fontFamily="Archivo Black"
+            data-testid="product-title"
          >
             {children}
          </Heading>

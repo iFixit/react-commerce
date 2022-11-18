@@ -2,6 +2,14 @@ describe('Pro user test', () => {
    it('will give pro users a discount', () => {
       cy.loadProductPageByPath('/products/repair-business-toolkit');
 
+      // Assert product title is visible
+      cy.findByTestId('product-title')
+         .should('be.visible')
+         .invoke('text')
+         .then((productTitle) => {
+            expect(productTitle).to.equal('Repair Business Toolkit');
+         });
+
       // Get price from page
       cy.findAllByTestId('product-price')
          .first()
