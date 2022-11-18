@@ -56,6 +56,7 @@ const moduleExports = {
       NEXT_PUBLIC_DEFAULT_STORE_CODE:
          process.env.NEXT_PUBLIC_DEFAULT_STORE_CODE,
       NEXT_PUBLIC_POLYFILL_DOMAIN: process.env.NEXT_PUBLIC_POLYFILL_DOMAIN,
+      NEXT_PUBLIC_CACHE_DISABLED: process.env.NEXT_PUBLIC_CACHE_DISABLED,
    },
    async rewrites() {
       return [
