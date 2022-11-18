@@ -28,7 +28,7 @@ describe('Pro user test', () => {
             expect(originalPriceString).to.match(/\$\d*\.\d*/g);
 
             // Login as pro
-            cy.interceptLogin('pro_4');
+            cy.interceptLogin({ discount_tier: 'pro_4' });
             cy.reload();
 
             // Wait until the pro icon is shown.
