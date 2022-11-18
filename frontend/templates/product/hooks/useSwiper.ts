@@ -19,43 +19,22 @@ export function useSwiper({
    onSlideChange,
 }: UseSwiperProps) {
    const lastSlideIndex = totalSlides > 0 ? totalSlides - 1 : 0;
-   const onSlideChangeRef = React.useRef<(swiper: Swiper) => void>();
    const [mainSwiper, setMainSwiper] = React.useState<Swiper | null>(null);
    const [thumbsSwiper, setThumbsSwiper] = React.useState<Swiper | null>(null);
+   const slideChangeCallbackRef = React.useRef<(swiper: Swiper) => void>();
+   const slideNextTransitionStartCallbackRef =
+      React.useRef<(swiper: Swiper) => void>();
+   const slidePrevTransitionStartCallbackRef =
+      React.useRef<(swiper: Swiper) => void>();
+   const snapIndexChangeCallbackRef = React.useRef<(swiper: Swiper) => void>();
 
-   const [{ realIndex, isBeginning, isEnd }, setNavigationConfig] =
+   const [{ realIndex, snapIndex, isBeginning, isEnd }, setNavigationConfig] =
       React.useState({
          realIndex: slideIndex ?? 0,
+         snapIndex: 0,
          isBeginning: true,
-         // We are showing always at least two slides
          isEnd: false,
       });
-
-   React.useEffect(() => {
-      const slideChangeCallback = (swiper: Swiper) => {
-         const { realIndex, isBeginning, isEnd } = swiper;
-         setNavigationConfig({ realIndex, isBeginning, isEnd });
-         onSlideChange?.(swiper.realIndex);
-      };
-      if (onSlideChangeRef.current) {
-         mainSwiper?.off('slideChange', onSlideChangeRef.current);
-      }
-      mainSwiper?.on('slideChange', slideChangeCallback);
-      onSlideChangeRef.current = slideChangeCallback;
-   }, [mainSwiper, onSlideChange]);
-
-   React.useEffect(() => {
-      if (slideIndex != null) {
-         if (mainSwiper && !mainSwiper.destroyed && slideIndex != null) {
-            mainSwiper.slideTo(slideIndex);
-         }
-      }
-      setNavigationConfig({
-         realIndex: slideIndex ?? 0,
-         isBeginning: (slideIndex ?? 0) === 0,
-         isEnd: (slideIndex ?? 0) === lastSlideIndex,
-      });
-   }, [slideIndex, totalSlides, lastSlideIndex, mainSwiper]);
 
    React.useEffect(() => {
       if (!showThumbnails) {
@@ -63,12 +42,96 @@ export function useSwiper({
       }
    }, [showThumbnails]);
 
+   React.useEffect(() => {
+      if (mainSwiper && !mainSwiper.destroyed && slideIndex != null) {
+         mainSwiper.slideTo(slideIndex);
+         setNavigationConfig((navigationConfig) => ({
+            ...navigationConfig,
+            realIndex: slideIndex ?? 0,
+            isBeginning: (slideIndex ?? 0) === 0,
+            isEnd: (slideIndex ?? 0) === lastSlideIndex,
+         }));
+      }
+   }, [slideIndex, lastSlideIndex, mainSwiper]);
+
+   React.useEffect(() => {
+      const slideChangeCallback = (swiper: Swiper) => {
+         const { realIndex, isBeginning, isEnd } = swiper;
+         setNavigationConfig((navigationConfig) => ({
+            ...navigationConfig,
+            realIndex,
+            snapIndex: realIndex - 1 > 0 ? realIndex - 1 : 0,
+            isBeginning,
+            isEnd,
+         }));
+         onSlideChange?.(swiper.realIndex);
+      };
+      const slideNextTransitionStartCallback = (swiper: Swiper) => {
+         const { realIndex } = swiper;
+         if (thumbsSwiper && realIndex > thumbsSwiper.realIndex + 1) {
+            thumbsSwiper?.slideTo(realIndex - 1);
+         }
+      };
+      const slidePrevTransitionStartCallback = (swiper: Swiper) => {
+         const { realIndex } = swiper;
+         if (thumbsSwiper && realIndex < thumbsSwiper.realIndex + 1) {
+            thumbsSwiper?.slideTo(realIndex - 1);
+         }
+      };
+      const snapIndexChangeCallback = (swiper: Swiper) => {
+         setNavigationConfig((navigationConfig) => ({
+            ...navigationConfig,
+            snapIndex: swiper.snapIndex,
+         }));
+      };
+
+      if (slideChangeCallbackRef.current) {
+         mainSwiper?.off('slideChange', slideChangeCallbackRef.current);
+      }
+      if (slideNextTransitionStartCallbackRef.current) {
+         mainSwiper?.off(
+            'slideNextTransitionStart',
+            slideNextTransitionStartCallbackRef.current
+         );
+      }
+      if (slidePrevTransitionStartCallbackRef.current) {
+         mainSwiper?.off(
+            'slidePrevTransitionStart',
+            slidePrevTransitionStartCallbackRef.current
+         );
+      }
+      if (snapIndexChangeCallbackRef.current) {
+         thumbsSwiper?.off(
+            'snapIndexChange',
+            snapIndexChangeCallbackRef.current
+         );
+      }
+
+      mainSwiper?.on('slideChange', slideChangeCallback);
+      slideChangeCallbackRef.current = slideChangeCallback;
+      mainSwiper?.on(
+         'slideNextTransitionStart',
+         slideNextTransitionStartCallback
+      );
+      slideNextTransitionStartCallbackRef.current =
+         slideNextTransitionStartCallback;
+      mainSwiper?.on(
+         'slidePrevTransitionStart',
+         slidePrevTransitionStartCallback
+      );
+      slidePrevTransitionStartCallbackRef.current =
+         slideNextTransitionStartCallback;
+      thumbsSwiper?.on('snapIndexChange', snapIndexChangeCallback);
+      snapIndexChangeCallbackRef.current = snapIndexChangeCallback;
+   }, [mainSwiper, thumbsSwiper, onSlideChange]);
+
    return {
       mainSwiper,
       setMainSwiper,
       thumbsSwiper,
       setThumbsSwiper,
       realIndex,
+      snapIndex,
       isBeginning,
       isEnd,
    };
