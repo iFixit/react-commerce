@@ -38,7 +38,7 @@ Cypress.Commands.add('loadProductPageByPath', (path: string) => {
    cy.wait('@user-api');
 });
 
-Cypress.Commands.add('interceptLogin', () => {
+Cypress.Commands.add('interceptLogin', (discount_tier?: string) => {
    cy.intercept(
       { method: 'GET', url: '/api/2.0/user' },
       {
@@ -46,6 +46,7 @@ Cypress.Commands.add('interceptLogin', () => {
          algoliaApiKeyProduct: null,
          username: 'john',
          unique_username: 'john123',
+         discount_tier: discount_tier,
       }
    ).as('user-api');
 });
