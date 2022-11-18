@@ -43,6 +43,8 @@ export const DEFAULT_STORE_CODE = requireEnvVariable(
 
 export const POLYFILL_DOMAIN = process.env.NEXT_PUBLIC_POLYFILL_DOMAIN;
 
+export const CACHE_DISABLED = process.env.NEXT_PUBLIC_CACHE_DISABLED === 'true';
+
 function requireEnvVariable(
    env: string | null | undefined,
    envName: string

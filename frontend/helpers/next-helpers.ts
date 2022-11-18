@@ -3,6 +3,8 @@ import { logAsync } from '@ifixit/helpers';
 import { setSentryPageContext } from '@ifixit/sentry';
 import * as Sentry from '@sentry/nextjs';
 import { PROD_USER_AGENT } from '@config/constants';
+import { clearCache } from '@lib/cache';
+import { CACHE_DISABLED } from '@config/env';
 
 export function serverSidePropsWrapper<T extends { [key: string]: any }>(
    getServerSidePropsInternal: GetServerSideProps<T>
@@ -18,17 +20,28 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
          ...context.params,
          ...context.query,
       });
-      console.log({
-         'x-forwarded-host': context.req.headers['x-forwarded-host'],
-         'x-ifixit-forwarded-host':
-            context.req.headers['x-ifixit-forwarded-host'],
-      });
+      const isCacheDisabled =
+         CACHE_DISABLED || context.query._vercel_no_cache === '1';
+      if (isCacheDisabled) {
+         clearCache();
+      }
       return logAsync('getServerSideProps', () =>
          getServerSidePropsInternal(context)
-      ).catch((err) => {
-         setSentryPageContext(context);
-         throw err;
-      });
+      )
+         .then((result) => {
+            if (isCacheDisabled) {
+               context.res.setHeader(
+                  'Cache-Control',
+                  'no-store, no-cache, must-revalidate, stale-if-error=0'
+               );
+               clearCache();
+            }
+            return result;
+         })
+         .catch((err) => {
+            setSentryPageContext(context);
+            throw err;
+         });
    };
 }
 

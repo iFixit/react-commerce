@@ -3,7 +3,7 @@ import {
    AppProvidersProps,
    WithProvidersProps,
 } from '@components/common';
-import { ALGOLIA_PRODUCT_INDEX_NAME, IFIXIT_ORIGIN } from '@config/env';
+import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
 import { noindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
@@ -20,7 +20,6 @@ import {
    DefaultLayoutProps,
    WithLayoutProps,
 } from '@layouts/default';
-import { clearCache } from '@lib/cache';
 import {
    findProductList,
    ProductList,
@@ -58,20 +57,10 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      const ifixitOrigin = ifixitOriginFromHost(context);
-      const isProxied = ifixitOrigin !== IFIXIT_ORIGIN;
-      if (context.query._vercel_no_cache === '1' || isProxied) {
-         context.res.setHeader(
-            'Cache-Control',
-            'no-store, no-cache, must-revalidate, stale-if-error=0'
-         );
-         clearCache();
-      } else {
-         context.res.setHeader(
-            'Cache-Control',
-            'public, s-maxage=10, stale-while-revalidate=600'
-         );
-      }
+      context.res.setHeader(
+         'Cache-Control',
+         'public, s-maxage=10, stale-while-revalidate=600'
+      );
       noindexDevDomains(context);
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
@@ -80,6 +69,7 @@ export const getProductListServerSideProps = ({
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
+      const ifixitOrigin = ifixitOriginFromHost(context);
 
       switch (productListType) {
          case ProductListType.AllParts: {
