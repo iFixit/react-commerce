@@ -20,11 +20,16 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
          ...context.params,
          ...context.query,
       });
+      const isCacheDisabled =
+         CACHE_DISABLED || context.query._vercel_no_cache === '1';
+      if (isCacheDisabled) {
+         clearCache();
+      }
       return logAsync('getServerSideProps', () =>
          getServerSidePropsInternal(context)
       )
          .then((result) => {
-            if (CACHE_DISABLED || context.query._vercel_no_cache === '1') {
+            if (isCacheDisabled) {
                context.res.setHeader(
                   'Cache-Control',
                   'no-store, no-cache, must-revalidate, stale-if-error=0'
