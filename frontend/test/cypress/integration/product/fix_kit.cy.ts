@@ -25,5 +25,17 @@ describe('Fix Kit and Part Only test', () => {
                });
          });
    });
+
+   it('test product image changes', () => {
+      cy.findByText('Fix Kit').click();
+
+      cy.get('img[alt$="Fix Kit"]').should('be.visible');
+      cy.get('img[alt$="Part Only"]').should('not.exist');
+
+      cy.findByText('Part Only').click();
+
+      cy.get('img[alt$="Part Only"]').should('be.visible');
+      cy.get('img[alt$="Fix Kit"]').should('not.exist');
+   });
 });
 export {};
