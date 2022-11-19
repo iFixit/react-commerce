@@ -129,7 +129,9 @@ export function ProductSection({
                position="relative"
             >
                {selectedVariant.sku && (
-                  <Text color="gray.500">Item # {selectedVariant.sku}</Text>
+                  <Text color="gray.500" data-testid="product-sku">
+                     Item # {selectedVariant.sku}
+                  </Text>
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
                {isForSale && (
@@ -378,6 +380,7 @@ const ProductTitle = chakra(
             className={className}
             size="xl"
             fontFamily="Archivo Black"
+            data-testid="product-title"
          >
             {children}
          </Heading>
