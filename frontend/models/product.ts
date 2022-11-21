@@ -15,7 +15,7 @@ import {
    ProductVariantCardFragment,
    ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import shuffle from 'lodash/shuffle';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
@@ -348,14 +348,7 @@ function parseReplacementGuides(
       if (result.success) {
          return result.data;
       }
-      const errors = result.error.flatten();
-      console.error(
-         `Failed to parse replacement guide:\n ${JSON.stringify(
-            errors.fieldErrors,
-            null,
-            2
-         )}`
-      );
+      logParseErrors(result.error, 'replacement guide');
       return null;
    });
    return filterNullableItems(guides);
@@ -392,14 +385,7 @@ function parseCompatibility(
    if (result.success) {
       return result.data;
    }
-   const errors = result.error.flatten();
-   console.error(
-      `Failed to parse compatibility metafield:\n ${JSON.stringify(
-         errors.fieldErrors,
-         null,
-         2
-      )}`
-   );
+   logParseErrors(result.error, 'compatibility metafield');
    return null;
 }
 
@@ -428,14 +414,7 @@ function parseOemPartnership(
    if (result.success) {
       return result.data;
    }
-   const errors = result.error.flatten();
-   console.error(
-      `Failed to parse oem partnership metafield:\n ${JSON.stringify(
-         errors.fieldErrors,
-         null,
-         2
-      )}`
-   );
+   logParseErrors(result.error, 'oem partnership metafield');
    return null;
 }
 
@@ -528,14 +507,7 @@ function parsePriceTiersMetafieldValue(
          };
       }, {} as Record<string, Money>);
    }
-   const errors = result.error.flatten();
-   console.error(
-      `Failed to parse price tiers metafield:\n ${JSON.stringify(
-         errors.fieldErrors,
-         null,
-         2
-      )}`
-   );
+   logParseErrors(result.error, 'price tiers metafield');
    return null;
 }
 
@@ -553,13 +525,17 @@ function parseShippingRestrictions(value: string | null | undefined) {
    if (result.success) {
       return result.data;
    }
-   const errors = result.error.flatten();
+   logParseErrors(result.error, 'shipping restricitions metafield');
+   return null;
+}
+
+function logParseErrors(error: ZodError, typeName: string): void {
+   const errors = error.flatten();
    console.error(
-      `Failed to parse shipping restrictions metafield:\n ${JSON.stringify(
+      `Failed to parse shipping ${typeName}:\n ${JSON.stringify(
          errors.fieldErrors,
          null,
          2
       )}`
    );
-   return null;
 }
