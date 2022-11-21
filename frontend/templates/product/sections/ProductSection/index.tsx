@@ -87,7 +87,7 @@ export function ProductSection({
                alignSelf="flex-start"
                display={{ base: 'none', md: 'flex' }}
                top="10"
-               mr={{ base: 5, lg: 10 }}
+               mr={{ base: 6, lg: 10 }}
                direction="column"
                flex="1"
                w="0"
@@ -106,11 +106,11 @@ export function ProductSection({
                   position="absolute"
                   top="0"
                   w={{
-                     base: 'full',
                      md: '320px',
-                     lg: '400px',
+                     lg: 'calc(400px + 16px + ((100vw - 960px) / 2 - 24px))',
+                     xl: 'calc(400px + 16px + ((100vw - 1100px) / 2 - 24px))',
                   }}
-                  left={{ base: 'calc(100% + 20px)', lg: 'calc(100% + 40px)' }}
+                  left="calc(100% + 24px)"
                   boxShadow="md"
                   borderRadius="md"
                />
