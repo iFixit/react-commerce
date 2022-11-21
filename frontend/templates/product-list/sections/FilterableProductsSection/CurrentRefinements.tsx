@@ -11,7 +11,7 @@ import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
-   useInstantSearch,
+   usePagination,
 } from 'react-instantsearch-hooks-web';
 
 export function CurrentRefinements() {
