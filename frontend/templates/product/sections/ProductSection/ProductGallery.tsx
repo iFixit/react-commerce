@@ -446,7 +446,10 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
                   {show && (
                      <Box
                         ref={zoomMaskRef}
-                        h="75vh"
+                        h={{
+                           md: 'calc(100vh - 164px)',
+                           lg: 'calc(100vh - 165px)',
+                        }}
                         position="relative"
                         overflow="hidden"
                         display={{ base: 'none', md: 'block' }}
