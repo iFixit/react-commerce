@@ -49,12 +49,7 @@ export function CurrentRefinements() {
                                  aria-label={`Remove ${formattedFacetName}: ${refinement.label}`}
                                  onClick={() => {
                                     item.refine(refinement);
-                                    setIndexUiState((uiState) => {
-                                       return {
-                                          ...uiState,
-                                          page: NaN,
-                                       };
-                                    });
+                                    pagination.refine(0);
                                  }}
                               />
                            </Tag>
