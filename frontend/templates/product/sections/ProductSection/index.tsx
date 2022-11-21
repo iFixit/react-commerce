@@ -38,6 +38,7 @@ import { GenuinePartBanner } from './GenuinePartBanner';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
+import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
@@ -352,18 +353,7 @@ export function ProductSection({
                         chemicals={product.prop65Chemicals}
                      />
                   )}
-                  {product.productVideos && (
-                     <Box
-                        as="iframe"
-                        width="100%"
-                        height="315"
-                        src={product.productVideos}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                     />
-                  )}
+                  <ProductVideos product={product} />
                </VStack>
             </Box>
          </Flex>
