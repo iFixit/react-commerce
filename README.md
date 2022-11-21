@@ -4,6 +4,71 @@ New iFixit e-commerce site.
 
 ## Development
 
+### Prerequisites
+
+-  npm v8
+-  pnpm v7
+-  node v16
+-  yarn
+
+Here's one way you can get all the right versions installed and setup:
+
+1. Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. `nvm use`
+   -  run this command in the project root to install compatible versions of `node` and `npm`
+3. `npm install -g pnpm@7`
+
+### Setup
+
+This command will install both backend and frontend dependencies:
+
+Copy `.env.local.example` to `.env.local` and fill in the values.
+
+```sh
+pnpm install:all
+```
+
+#### Copy the environment files to local
+
+1. Copy `backend/.env.example` to `backend/.env`
+2. Copy `frontend/.env.local.example` to `frontend/.env.local`
+
+#### Fill in the Algolia API Key
+
+In `frontend/.env.local` fill in `ALGOLIA_API_KEY` by either:
+
+-  Copying the `Search API Key` [from Algolia](https://www.algolia.com/account/api-keys/all?applicationId=XQEP3AD9ZT)
+
+   -  :warning: You may need to ask for access to our Algolia
+
+-  Or copy the dev key from Cominor:
+
+   ```sh
+   cat /etc/dozuki/algolia-keys.json | jq --raw-output .searchApiKey
+   ```
+
+> Note: `SENTRY_AUTH_TOKEN` is not needed in development
+
+### Start dev server
+
+This command will start Strapi dev server and Next.js dev server:
+
+```sh
+pnpm dev
+```
+
+After running the dev server, you can access the site at `http://localhost:3000/Parts` or `http://localhost:3000/Tools`
+
+> :warning: `http://localhost:3000/` is not yet routed and will 404.
+
+#### Local Strapi instance
+
+After running the dev server, you can access the Strapi admin panel at `http://localhost:1337/admin`. To login use email `strapi@ifixit.com` and password `Password1`.
+
+The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
+
+### Project structure
+
 The project contains a `backend` folder with Strapi config and a `frontend` with Next.js.
 You can run the backend both using SQLite and using Postgres with docker compose. For now the recommended approach for local dev is to just use SQLite.
 
@@ -22,72 +87,11 @@ The `frontend` directory is structured as follows:
 -  `public`: contains the static files
 -  `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
 
-### Install Prerequisites
+### Application architecture
 
--  npm v8
--  pnpm v7
--  node v16
--  yarn
+Here's an overview of the production setup (the focus is on Next.js, therefore details on the iFixit app have been left out):
 
-Here's one way you can get all the right versions installed and setup:
-
-1. Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-2. `nvm use`
-   -  run this command in the project root to install compatible versions of `node` and `npm`
-3. `npm install -g pnpm@7`
-
-### Install
-
-This command will install both backend and frontend dependencies:
-
-Copy `.env.local.example` to `.env.local` and fill in the values.
-
-```sh
-pnpm install:all
-```
-
->
-
-### Copy the environment files to local
-
-1. Copy `backend/.env.example` to `backend/.env`
-2. Copy `frontend/.env.local.example` to `frontend/.env.local`
-
-### Fill in the Algolia API Key
-
-In `frontend/.env.local` fill in `ALGOLIA_API_KEY` by either:
-
--  Copying the `Search API Key` [from Aloglia](https://www.algolia.com/account/api-keys/all?applicationId=XQEP3AD9ZT)
-
-   -  :warning: You may need to ask for access to our Aloglia
-
--  Or copy the dev key from cominor:
-
-```sh
-cat /etc/dozuki/algolia-keys.json | jq --raw-output .searchApiKey
-```
-
-(Note: `SENTRY_AUTH_TOKEN` is not needed in development)
-
-### Dev server
-
-This command will start Strapi dev server and Next.js dev server:
-
-```sh
-pnpm dev
-```
-
-### Working with the Frontend (Next.js)
-
-After running the dev server, you can access the site at `http://localhost:3000/Parts` or `http://localhost:3000/Tools`
-
-:warning: `http://localhost:3000/` is not yet routed and will 404.
-
-### Working with the Backend (Strapi)
-
-After running the dev server, you can access the Strapi admin panel at `http://localhost:1337/admin`. To login use email `strapi@ifixit.com` and password `Password1`.
-
-The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
+![image](https://user-images.githubusercontent.com/4640135/203180384-96f4d3d6-b39e-4da6-915d-d9cfd44de5c6.png)
 
 ### Test
 
