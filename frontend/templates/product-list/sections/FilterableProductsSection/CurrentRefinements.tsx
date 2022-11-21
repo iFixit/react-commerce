@@ -17,7 +17,7 @@ import {
 export function CurrentRefinements() {
    const currentRefinements = useCurrentRefinements();
    const clearRefinements = useClearRefinements();
-   const { setIndexUiState } = useInstantSearch();
+   const pagination = usePagination();
 
    return (
       <Collapse
