@@ -1,7 +1,12 @@
 import { Product } from '@models/product';
 import { Box } from '@chakra-ui/react';
+import { LiteYoutubeEmbed } from 'react-lite-yt-embed';
 
 export function ProductVideos({ product }: { product: Product }) {
+   const video = product.productVideosJson;
+   if (video?.service === 'youtube') {
+      return <LiteYoutubeEmbed id={video.id} />;
+   }
    return (
       product.productVideos && (
          <Box
