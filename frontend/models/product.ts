@@ -76,6 +76,9 @@ export async function findProduct(shop: ShopCredentials, handle: string) {
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
+      productVideosJson: parseVideosJson(
+         response.product.productVideosJson?.value ?? null
+      ),
       faqs: parseFaqs(response.product.faqs?.value),
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
@@ -526,6 +529,31 @@ function parseShippingRestrictions(value: string | null | undefined) {
       return result.data;
    }
    logParseErrors(result.error, 'shipping restricitions metafield');
+   return null;
+}
+
+type ProductVideoMetafield = z.infer<typeof ProductVideoMetafieldSchema>;
+
+const ProductVideoMetafieldSchema = z.object({
+   id: z.string(),
+   service: z.string(),
+});
+
+function parseVideosJson(
+   value: string | null | undefined
+): ProductVideoMetafield | null {
+   if (value == null) {
+      return null;
+   }
+   const json: unknown = JSON.parse(value);
+   if (json == null) {
+      return null;
+   }
+   const result = ProductVideoMetafieldSchema.safeParse(json);
+   if (result.success) {
+      return result.data;
+   }
+   logParseErrors(result.error, 'product_videos_json metafield');
    return null;
 }
 
