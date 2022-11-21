@@ -4,6 +4,9 @@ patchedDependencies:
   react-instantsearch-hooks-server@6.32.1:
     hash: hiec5pcpgig2m3qcu64y3isqke
     path: patches/react-instantsearch-hooks-server@6.32.1.patch
+  react-lite-yt-embed@1.2.7:
+    hash: govv7rvipvpuihepwlh66bbxfy
+    path: patches/react-lite-yt-embed@1.2.7.patch
 
 importers:
 
