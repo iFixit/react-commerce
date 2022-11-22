@@ -217,6 +217,16 @@ export function InstantSearchProvider({
                   ? filter
                   : {};
 
+            Object.entries(filterObject).forEach(([attribute, value]) => {
+               const widgetType = getFacetWidgetType(attribute);
+               if (
+                  widgetType === FacetWidgetType.Menu &&
+                  Array.isArray(value)
+               ) {
+                  filterObject[attribute] = value[0];
+               }
+            });
+
             if (deviceHandle && itemType) {
                filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
                   decodeURIComponent(itemType)
