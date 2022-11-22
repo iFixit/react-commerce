@@ -1,6 +1,6 @@
 import { QualityGuarantee } from '@assets/svg';
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
-import { IfixitImage } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import NextLink from 'next/link';
 import backgroundImage from './lifetime-guarantee-background.jpg';
 
@@ -27,7 +27,7 @@ export function BannerSection({
          overflow="hidden"
          position="relative"
       >
-         <IfixitImage
+         <ResponsiveImage
             src={backgroundImage}
             alt=""
             layout="fill"

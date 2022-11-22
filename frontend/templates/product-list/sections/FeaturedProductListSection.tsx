@@ -24,7 +24,7 @@ import { Card } from '@components/ui';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
-import { IfixitImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
+import { ResponsiveImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import NextLink from 'next/link';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
 import { computeDiscountPercentage } from '@ifixit/helpers';
@@ -72,7 +72,7 @@ export function FeaturedProductListSection({
                alignItems="center"
             >
                {productList.image && (
-                  <IfixitImage
+                  <ResponsiveImage
                      src={productList.image.url}
                      alt={productList.image.alternativeText ?? ''}
                      objectFit="contain"
