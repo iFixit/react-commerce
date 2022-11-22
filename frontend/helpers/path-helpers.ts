@@ -1,3 +1,4 @@
+import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import {
    ProductList,
@@ -5,6 +6,7 @@ import {
    iFixitPageType,
    iFixitPage,
 } from '@models/product-list';
+import { GetServerSidePropsContext } from 'next';
 import { stylizeDeviceTitle } from './product-list-helpers';
 
 type ProductListPathAttributes = Pick<
@@ -45,4 +47,17 @@ export function productListPath(
          throw new Error(`unknown product list type: ${productList.type}`);
       }
    }
+}
+
+export function ifixitOriginFromHost(
+   context: GetServerSidePropsContext
+): string {
+   const headers = context.req.headers;
+   const host = (headers['x-ifixit-forwarded-host'] ||
+      headers['x-forwarded-host']) as string | undefined;
+   const isDevProxy = !!host?.match(
+      /^(?!react-commerce).*(\.cominor\.com|\.ubreakit\.com)$/
+   );
+   const hostIfProxy = typeof window === 'undefined' ? `https://${host}` : '';
+   return isDevProxy ? hostIfProxy! : IFIXIT_ORIGIN;
 }

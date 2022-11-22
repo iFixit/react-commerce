@@ -14,7 +14,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { IfixitImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
+import { ResponsiveImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import { Rating } from '@components/ui';
 import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';
@@ -91,7 +91,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                }}
             >
                {product.image_url ? (
-                  <IfixitImage
+                  <ResponsiveImage
                      src={product.image_url}
                      alt={product.title}
                      objectFit="contain"
@@ -99,7 +99,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      height="180px"
                   />
                ) : (
-                  <IfixitImage
+                  <ResponsiveImage
                      src={placeholderImageUrl}
                      alt={product.title}
                      sizes="180px"

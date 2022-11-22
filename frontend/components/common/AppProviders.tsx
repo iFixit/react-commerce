@@ -60,18 +60,20 @@ export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
 
 export type AppProvidersProps = {
    algolia?: AlgoliaProps;
+   ifixitOrigin?: string;
 };
 
 export function AppProviders({
    children,
    algolia,
+   ifixitOrigin,
 }: React.PropsWithChildren<AppProvidersProps>) {
    const markup = (
       <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
    );
 
    return (
-      <AppProvider ifixitOrigin={IFIXIT_ORIGIN}>
+      <AppProvider ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}>
          <CartDrawerProvider>
             <QueryClientProvider client={queryClient}>
                {algolia ? (

@@ -1,9 +1,11 @@
 import { Box } from '@chakra-ui/react';
 import { PageBreadcrumb } from '@components/common';
+import { DEFAULT_STORE_CODE } from '@config/env';
 import {
    noindexDevDomains,
    serverSidePropsWrapper,
 } from '@helpers/next-helpers';
+import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
@@ -11,6 +13,7 @@ import {
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
@@ -29,7 +32,6 @@ import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
-import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 
 export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -104,14 +106,13 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
-      const layoutProps = await getLayoutServerSideProps();
-      const product = await findProduct(
-         {
-            shopDomain: layoutProps.currentStore.shopify.storefrontDomain,
-            accessToken: layoutProps.currentStore.shopify.storefrontAccessToken,
-         },
-         handle
-      );
+      const layoutProps = await getLayoutServerSideProps({
+         storeCode: DEFAULT_STORE_CODE,
+      });
+      const product = await findProduct({
+         handle,
+         storeCode: DEFAULT_STORE_CODE,
+      });
 
       if (product == null) {
          return {
@@ -126,7 +127,9 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
 
       const pageProps: ProductTemplateProps = {
          layoutProps,
-         appProps: {},
+         appProps: {
+            ifixitOrigin: ifixitOriginFromHost(context),
+         },
          product,
       };
       return {

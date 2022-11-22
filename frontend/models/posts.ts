@@ -1,4 +1,3 @@
-import { IFIXIT_ORIGIN } from '@config/env';
 import { sentryFetch } from '@ifixit/sentry';
 
 export interface Post {
@@ -14,9 +13,12 @@ export interface PostImage {
    url: string;
 }
 
-export async function fetchPosts(tags: string[]): Promise<Post[]> {
+export async function fetchPosts(
+   tags: string[],
+   ifixitOrigin: string
+): Promise<Post[]> {
    const response = await sentryFetch(
-      `${IFIXIT_ORIGIN}/api/2.0/related_posts?data=${encodeURIComponent(
+      `${ifixitOrigin}/api/2.0/related_posts?data=${encodeURIComponent(
          JSON.stringify({ tags })
       )}`
    );

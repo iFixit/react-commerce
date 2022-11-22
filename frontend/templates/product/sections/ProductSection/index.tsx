@@ -33,6 +33,7 @@ import { Product, ProductVariant } from '@models/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import NextLink from 'next/link';
 import * as React from 'react';
+import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { ProductGallery } from './ProductGallery';
@@ -40,7 +41,6 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
-import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { InternationalBuyBox } from './InternationalBuyBox';
 
@@ -57,21 +57,17 @@ export function ProductSection({
    onVariantChange,
    internationalBuyBox,
 }: ProductSectionProps) {
-   const [selectedImageId, setSelectedImageId] = React.useState(
-      selectedVariant.image?.id
+   const [selectedImageId, setSelectedImageId] = React.useState<string | null>(
+      null
    );
 
    const handleVariantChange = React.useCallback(
       (variantId: string) => {
          onVariantChange(variantId);
-         const variant = product.variants.find(
-            (variant) => variant.id === variantId
-         )!;
-         setSelectedImageId(variant.image?.id);
+         setSelectedImageId(null);
       },
-      [product.variants, onVariantChange]
+      [onVariantChange]
    );
-
    const isForSale = useIsProductForSale(product);
 
    const compatibilityDrawerModelsTruncate = 4;
@@ -92,7 +88,7 @@ export function ProductSection({
                alignSelf="flex-start"
                display={{ base: 'none', md: 'flex' }}
                top="10"
-               mr={{ base: 5, lg: 10 }}
+               mr={{ base: 6, lg: 10 }}
                direction="column"
                flex="1"
                w="0"
@@ -111,11 +107,11 @@ export function ProductSection({
                   position="absolute"
                   top="0"
                   w={{
-                     base: 'full',
                      md: '320px',
-                     lg: '400px',
+                     lg: 'calc(400px + 16px + ((100vw - 960px) / 2 - 24px))',
+                     xl: 'calc(400px + 16px + ((100vw - 1100px) / 2 - 24px))',
                   }}
-                  left={{ base: 'calc(100% + 20px)', lg: 'calc(100% + 40px)' }}
+                  left="calc(100% + 24px)"
                   boxShadow="md"
                   borderRadius="md"
                />
@@ -134,7 +130,9 @@ export function ProductSection({
                position="relative"
             >
                {selectedVariant.sku && (
-                  <Text color="gray.500">Item # {selectedVariant.sku}</Text>
+                  <Text color="gray.500" data-testid="product-sku">
+                     Item # {selectedVariant.sku}
+                  </Text>
                )}
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
                {isForSale && (
@@ -372,6 +370,7 @@ const ProductTitle = chakra(
             className={className}
             size="xl"
             fontFamily="Archivo Black"
+            data-testid="product-title"
          >
             {children}
          </Heading>

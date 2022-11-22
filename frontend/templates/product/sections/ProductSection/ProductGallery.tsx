@@ -2,6 +2,7 @@ import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { ResponsiveImage } from '@ifixit/ui';
 import { Product, ProductImage, ProductVariant } from '@models/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -22,6 +23,9 @@ export type ProductGalleryProps = {
    onChangeImage?: (imageId: string) => void;
 };
 
+const THUMBNAILS_COUNT = 6;
+const THUMBNAILS_SPACE_BETWEEN = 12;
+
 export function ProductGallery({
    product,
    selectedVariant,
@@ -35,7 +39,6 @@ export function ProductGallery({
       variantImages,
       selectedImageId
    );
-
    const onSlideChange = React.useCallback(
       (slideIndex) => onChangeImage?.(variantImages[slideIndex].id!),
       [onChangeImage, variantImages]
@@ -47,6 +50,7 @@ export function ProductGallery({
       thumbsSwiper,
       setThumbsSwiper,
       realIndex,
+      snapIndex,
       isBeginning,
       isEnd,
    } = useSwiper({
@@ -85,9 +89,10 @@ export function ProductGallery({
                   isBeginning={isBeginning}
                   isEnd={isEnd}
                />
-               {variantImages.map((variantImage) => (
+               {variantImages.map((variantImage, index) => (
                   <SwiperSlide key={variantImage.id}>
                      <ImageWithZoom
+                        index={index}
                         image={variantImage}
                         enableZoom={enableZoom}
                      />
@@ -95,40 +100,84 @@ export function ProductGallery({
                ))}
             </ReactSwiper>
          ) : variantImages.length === 1 ? (
-            <ImageWithZoom image={variantImages[0]} enableZoom={enableZoom} />
+            <ImageWithZoom
+               index={0}
+               image={variantImages[0]}
+               enableZoom={enableZoom}
+            />
          ) : (
             <ImagePlaceholder />
          )}
 
          {showThumbnails && variantImages.length > 1 && (
-            <ReactSwiper
-               onSwiper={setThumbsSwiper}
-               modules={[Navigation, Thumbs]}
-               watchSlidesProgress
-               slidesPerView={6}
-               spaceBetween={12}
-               style={{
-                  width: '100%',
-                  marginTop: '12px',
-               }}
-            >
-               {variantImages.map((variantImage, index) => {
-                  return (
-                     <SwiperSlide
-                        key={variantImage.id}
-                        style={{
-                           maxWidth: 'calc((100% - 60px) / 6)',
-                           marginRight: '12px',
-                        }}
-                     >
-                        <ImageThumbnail
-                           image={variantImage}
-                           active={realIndex === index}
-                        />
-                     </SwiperSlide>
-                  );
-               })}
-            </ReactSwiper>
+            <Box position="relative">
+               <ReactSwiper
+                  onSwiper={setThumbsSwiper}
+                  modules={[Navigation, Thumbs]}
+                  watchSlidesProgress
+                  threshold={5}
+                  slidesPerView={THUMBNAILS_COUNT}
+                  spaceBetween={THUMBNAILS_SPACE_BETWEEN}
+                  style={{
+                     width: '100%',
+                     marginTop: '12px',
+                  }}
+               >
+                  {variantImages.map((variantImage, index) => {
+                     return (
+                        <SwiperSlide
+                           key={variantImage.id}
+                           style={{
+                              maxWidth: `calc((100% - ${
+                                 THUMBNAILS_SPACE_BETWEEN *
+                                 (THUMBNAILS_COUNT - 1)
+                              }px) / ${THUMBNAILS_COUNT})`,
+                              marginRight: `${THUMBNAILS_SPACE_BETWEEN}px`,
+                           }}
+                        >
+                           <ImageThumbnail
+                              image={variantImage}
+                              active={realIndex === index}
+                           />
+                        </SwiperSlide>
+                     );
+                  })}
+               </ReactSwiper>
+               <Box
+                  position="absolute"
+                  bgGradient="linear(to-l, transparent, blueGray.50)"
+                  w="25%"
+                  h="full"
+                  top="0"
+                  bottom="0"
+                  left="0"
+                  zIndex="10"
+                  pointerEvents="none"
+                  opacity={
+                     snapIndex > 0 && variantImages.length > THUMBNAILS_COUNT
+                        ? 1
+                        : 0
+                  }
+                  transition="all 300ms"
+               />
+               <Box
+                  position="absolute"
+                  bgGradient="linear(to-r, transparent, blueGray.50)"
+                  w="25%"
+                  h="full"
+                  top="0"
+                  bottom="0"
+                  right="0"
+                  zIndex="10"
+                  pointerEvents="none"
+                  opacity={
+                     variantImages.length - snapIndex - 1 >= THUMBNAILS_COUNT
+                        ? 1
+                        : 0
+                  }
+                  transition="all 300ms"
+               />
+            </Box>
          )}
       </Box>
    );
@@ -154,7 +203,10 @@ function useCurrentImageIndex(
    }, [selectedImageId, variantImages]);
 
    const currentImageIndex = React.useMemo(() => {
-      return variantImages.findIndex((image) => image.id === currentImageId)!;
+      const index = variantImages.findIndex(
+         (image) => image.id === currentImageId
+      );
+      return index >= 0 ? index : 0;
    }, [variantImages, currentImageId]);
 
    return currentImageIndex;
@@ -238,6 +290,7 @@ type Image = {
 };
 
 type ImageProps = {
+   index: number;
    image: Image;
    enableZoom?: boolean;
 };
@@ -245,7 +298,7 @@ type ImageProps = {
 const ZOOM_FACTOR = 3;
 const CONTAINER_PADDING = 24;
 
-function ImageWithZoom({ image, enableZoom }: ImageProps) {
+function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
    const [show, setShow] = React.useState(false);
    const [dimensionData, setDimensionData] = React.useState<DimensionData>({
       zoomMaskAspectRatio: 1,
@@ -267,6 +320,10 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
    });
 
    const galleryRef = React.useRef<HTMLImageElement | null>(null);
+   const galleryImageDimensionsRef = React.useRef<{
+      naturalWidth: number;
+      naturalHeight: number;
+   } | null>(null);
    const pointerRef = React.useRef<HTMLDivElement | null>(null);
    const zoomPortalRef = React.useRef<HTMLElement | null>(null);
    const zoomMaskRef = React.useRef<HTMLDivElement | null>(null);
@@ -281,7 +338,11 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
            onMouseOut: () => setShow(false),
            onMouseMove: (event: React.MouseEvent<HTMLImageElement>) => {
               setDimensionData(
-                 computeDimensionData({ zoomMaskRef, galleryRef })
+                 computeDimensionData({
+                    zoomMaskRef,
+                    galleryRef,
+                    galleryImageDimensionsRef,
+                 })
               );
               const {
                  galleryWidth,
@@ -326,17 +387,20 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
             height="100%"
             p={`${CONTAINER_PADDING}px`}
          >
-            <Img
-               ref={galleryRef}
-               src={image.url}
-               alt={image.altText ?? ''}
-               htmlWidth={image.width ?? undefined}
-               htmlHeight={image.height ?? undefined}
-               objectFit="contain"
-               width="100%"
-               height="100%"
-               {...eventHandlers}
-            />
+            <Box ref={galleryRef} pos="relative" w="full" h="full">
+               <ResponsiveImage
+                  priority={index === 0}
+                  src={image.url}
+                  alt={image.altText ?? ''}
+                  layout="fill"
+                  objectFit="contain"
+                  sizes="(max-width: 767px) 100vw, 700px"
+                  onLoadingComplete={(dimensions) => {
+                     galleryImageDimensionsRef.current = dimensions;
+                  }}
+                  {...eventHandlers}
+               />
+            </Box>
          </Flex>
 
          {enableZoom && show && (
@@ -400,7 +464,10 @@ function ImageWithZoom({ image, enableZoom }: ImageProps) {
                   {show && (
                      <Box
                         ref={zoomMaskRef}
-                        h="75vh"
+                        h={{
+                           md: 'calc(100vh - 164px)',
+                           lg: 'calc(100vh - 165px)',
+                        }}
                         position="relative"
                         overflow="hidden"
                         display={{ base: 'none', md: 'block' }}
@@ -467,12 +534,12 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
             overflow="hidden"
             borderRadius="5px"
          >
-            <Img
+            <ResponsiveImage
                src={image.url}
                alt={image.altText ?? ''}
-               htmlWidth={image.width ?? undefined}
-               htmlHeight={image.height ?? undefined}
+               layout="fill"
                objectFit="contain"
+               sizes="100px"
             />
          </Flex>
       </Flex>
@@ -519,11 +586,16 @@ type DimensionData = {
 type ComputeDimensionDataParams = {
    zoomMaskRef: React.MutableRefObject<HTMLDivElement | null>;
    galleryRef: React.MutableRefObject<HTMLImageElement | null>;
+   galleryImageDimensionsRef: React.MutableRefObject<{
+      naturalWidth: number;
+      naturalHeight: number;
+   } | null>;
 };
 
 const computeDimensionData = ({
    zoomMaskRef,
    galleryRef,
+   galleryImageDimensionsRef,
 }: ComputeDimensionDataParams): DimensionData => {
    let zoomMaskAspectRatio = 1,
       galleryAspectRatio = 1,
@@ -534,15 +606,19 @@ const computeDimensionData = ({
       pointerWidth = 0,
       pointerHeight = 0;
 
-   if (zoomMaskRef.current && galleryRef.current) {
+   if (
+      zoomMaskRef.current &&
+      galleryRef.current &&
+      galleryImageDimensionsRef.current
+   ) {
       const { clientWidth: zoomWidth, clientHeight: zoomHeight } =
          zoomMaskRef.current;
+      const { clientWidth, clientHeight } = galleryRef.current;
+
       const {
-         clientWidth,
-         clientHeight,
          naturalWidth: galleryNaturalWidth,
          naturalHeight: galleryNaturalHeight,
-      } = galleryRef.current;
+      } = galleryImageDimensionsRef.current;
 
       galleryWidth = clientWidth;
       galleryHeight = clientHeight;

@@ -12,5 +12,6 @@ declare namespace Cypress {
       times(times: number, callback: (index: number) => void): Chainable;
       loadCollectionPageByPath(path: string): Chainable;
       loadProductPageByPath(path: string): Chainable;
+      interceptLogin(optional?: Object): Chainable;
    }
 }

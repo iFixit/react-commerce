@@ -1,23 +1,35 @@
-import { DEFAULT_STORE_CODE } from '@config/env';
-import { getGlobalSettings } from '@models/global-settings';
-import { getStoreByCode, getStoreList } from '@models/store';
-import { DefaultLayoutProps } from './types';
 import { logAsync } from '@ifixit/helpers';
+import { getGlobalSettings } from '@models/global-settings';
+import { findStoreByCode, getStoreList } from '@models/store';
 
-export async function getLayoutServerSideProps(): Promise<DefaultLayoutProps> {
-   const [globalSettings, stores, currentStore] = await logAsync(
-      'layoutProps',
-      () =>
+type GetLayoutServerSidePropsArgs = {
+   storeCode: string;
+};
+
+export type DefaultLayoutProps = Awaited<
+   ReturnType<typeof getLayoutServerSideProps>
+>;
+
+export type WithLayoutProps<T> = T & { layoutProps: DefaultLayoutProps };
+
+export async function getLayoutServerSideProps({
+   storeCode,
+}: GetLayoutServerSidePropsArgs) {
+   const [globalSettings, stores, { shopify, ...currentStore }] =
+      await logAsync('layoutProps', () =>
          Promise.all([
             getGlobalSettings(),
             getStoreList(),
-            // TODO: get store code from user session or fall back to default
-            getStoreByCode(DEFAULT_STORE_CODE),
+            findStoreByCode(storeCode),
          ])
-   );
+      );
    return {
       globalSettings,
       currentStore,
+      shopifyCredentials: {
+         storefrontDomain: shopify.storefrontDomain,
+         storefrontAccessToken: shopify.storefrontAccessToken,
+      },
       stores,
    };
 }

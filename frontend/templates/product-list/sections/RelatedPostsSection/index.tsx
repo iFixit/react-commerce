@@ -1,4 +1,5 @@
 import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
+import { useAppContext } from '@ifixit/app';
 import { fetchPosts, Post } from '@models/posts';
 import { useQuery } from '@tanstack/react-query';
 import { PostCard } from './PostCard';
@@ -58,10 +59,11 @@ const computeRelatedPostsKey = (tags: string[]) => [
 ];
 
 function usePosts(tags: string[]) {
+   const appContext = useAppContext();
    const query = useQuery(
       computeRelatedPostsKey(tags),
       async (): Promise<Post[]> => {
-         return await fetchPosts(tags);
+         return await fetchPosts(tags, appContext.ifixitOrigin);
       },
       {
          retryOnMount: false,

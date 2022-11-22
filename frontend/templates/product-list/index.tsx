@@ -3,23 +3,23 @@ import {
    AppProvidersProps,
    WithProvidersProps,
 } from '@components/common';
-import { ALGOLIA_PRODUCT_INDEX_NAME } from '@config/env';
+import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
 import { noindexDevDomains } from '@helpers/next-helpers';
+import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
-   destylizeDeviceTitle as destylizeDeviceTitle,
+   destylizeDeviceTitle,
    stylizeDeviceItemType,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import {
-   getLayoutServerSideProps,
    DefaultLayout,
    DefaultLayoutProps,
+   getLayoutServerSideProps,
    WithLayoutProps,
 } from '@layouts/default';
-import { clearCache } from '@lib/cache';
 import {
    findProductList,
    ProductList,
@@ -37,12 +37,11 @@ export type ProductListTemplateProps = WithProvidersProps<
    }>
 >;
 
-export const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> =
-   ({ productList, indexName }) => {
-      return (
-         <ProductListView productList={productList} indexName={indexName} />
-      );
-   };
+export const ProductListTemplate: NextPageWithLayout<
+   ProductListTemplateProps
+> = ({ productList, indexName }) => {
+   return <ProductListView productList={productList} indexName={indexName} />;
+};
 
 ProductListTemplate.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
@@ -58,31 +57,27 @@ export const getProductListServerSideProps = ({
    productListType,
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
    return async (context) => {
-      if (context.query._vercel_no_cache === '1') {
-         context.res.setHeader(
-            'Cache-Control',
-            'no-store, no-cache, must-revalidate, stale-if-error=0'
-         );
-         clearCache();
-      } else {
-         context.res.setHeader(
-            'Cache-Control',
-            'public, s-maxage=10, stale-while-revalidate=600'
-         );
-      }
+      context.res.setHeader(
+         'Cache-Control',
+         'public, s-maxage=10, stale-while-revalidate=600'
+      );
       noindexDevDomains(context);
 
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
-      const layoutProps: Promise<DefaultLayoutProps> =
-         getLayoutServerSideProps();
+      const layoutProps: Promise<DefaultLayoutProps> = getLayoutServerSideProps(
+         {
+            storeCode: DEFAULT_STORE_CODE,
+         }
+      );
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
+      const ifixitOrigin = ifixitOriginFromHost(context);
 
       switch (productListType) {
          case ProductListType.AllParts: {
             productList = await logAsync('findProductList', () =>
-               findProductList({ handle: { eq: 'Parts' } })
+               findProductList({ handle: { eq: 'Parts' } }, ifixitOrigin)
             );
             break;
          }
@@ -114,6 +109,7 @@ export const getProductListServerSideProps = ({
                         eqi: deviceTitle,
                      },
                   },
+                  ifixitOrigin,
                   itemType
                )
             );
@@ -131,7 +127,7 @@ export const getProductListServerSideProps = ({
          }
          case ProductListType.AllTools: {
             productList = await logAsync('findProductList', () =>
-               findProductList({ handle: { eq: 'Tools' } })
+               findProductList({ handle: { eq: 'Tools' } }, ifixitOrigin)
             );
             break;
          }
@@ -143,7 +139,7 @@ export const getProductListServerSideProps = ({
             );
 
             productList = await logAsync('findProductList', () =>
-               findProductList({ handle: { eqi: handle } })
+               findProductList({ handle: { eqi: handle } }, ifixitOrigin)
             );
 
             shouldRedirectToCanonical =
@@ -164,14 +160,17 @@ export const getProductListServerSideProps = ({
             );
 
             productList = await logAsync('findProductList', () =>
-               findProductList({
-                  handle: {
-                     eqi: handle,
+               findProductList(
+                  {
+                     handle: {
+                        eqi: handle,
+                     },
+                     type: {
+                        eq: 'marketing',
+                     },
                   },
-                  type: {
-                     eq: 'marketing',
-                  },
-               })
+                  ifixitOrigin
+               )
             );
             shouldRedirectToCanonical =
                typeof productList?.handle === 'string' &&
@@ -210,6 +209,7 @@ export const getProductListServerSideProps = ({
             url: urlFromContext(context),
             apiKey: productList.algolia.apiKey,
          },
+         ifixitOrigin,
       };
 
       const appMarkup = (

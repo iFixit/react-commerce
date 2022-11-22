@@ -1,4 +1,5 @@
-import { Center, Text, Divider, VStack } from '@chakra-ui/react';
+import { Center, Divider, Text, VStack } from '@chakra-ui/react';
+import { DEFAULT_STORE_CODE } from '@config/env';
 import {
    DefaultLayout,
    getLayoutServerSideProps,
@@ -51,7 +52,9 @@ Custom404.getLayout = function getLayout(page, pageProps) {
 export const getStaticProps: GetStaticProps<Custom404Props> = async () => {
    return {
       props: {
-         layoutProps: await getLayoutServerSideProps(),
+         layoutProps: await getLayoutServerSideProps({
+            storeCode: DEFAULT_STORE_CODE,
+         }),
       },
    };
 };

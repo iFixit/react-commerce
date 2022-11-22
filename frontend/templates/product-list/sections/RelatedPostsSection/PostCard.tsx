@@ -7,7 +7,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Card } from '@components/ui';
-import { IfixitImage } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -42,7 +42,7 @@ export function PostCard({
          <Flex direction="column">
             {imageSrc && (
                <Box position="relative" h="140px">
-                  <IfixitImage
+                  <ResponsiveImage
                      src={imageSrc}
                      alt={imageAlt}
                      layout="fill"

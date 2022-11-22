@@ -1,13 +1,12 @@
-import Image, { ImageProps, ImageLoader, ImageLoaderProps } from 'next/image';
+import { ImageLoader, ImageLoaderProps } from 'next/image';
 
-interface SizeMapEntry {
+type SizeMap = {
    width: number;
    name: string;
-}
-type SizeMap = Array<SizeMapEntry>;
+}[];
 
-// These should be sorted in order of ascending width.
-const guideImageSizeMap: SizeMap = [
+// The following lists should be sorted in order of ascending width.
+export const guideImageSizeMap: SizeMap = [
    { name: 'mini', width: 41 },
    { name: 'thumbnail', width: 70 },
    { name: '140x105', width: 110 },
@@ -19,7 +18,7 @@ const guideImageSizeMap: SizeMap = [
    { name: 'huge', width: 1600 },
 ];
 
-const cartImageSizeMap: SizeMap = [
+export const cartImageSizeMap: SizeMap = [
    { name: 'mini', width: 41 },
    { name: 'thumbnail', width: 70 },
    { name: 'size110', width: 110 },
@@ -31,44 +30,25 @@ const cartImageSizeMap: SizeMap = [
    { name: 'large', width: 3000 },
 ];
 
-export function IfixitImage({ alt = '', ...props }: ImageProps) {
-   let loader = props.loader;
-   let unoptimized = props.unoptimized;
-
-   if (typeof props.src === 'string') {
-      if (isGuideImage(props.src)) {
-         loader = getImageLoader(guideImageSizeMap, 'huge', props.width);
-      } else if (isCartImage(props.src)) {
-         loader = getImageLoader(cartImageSizeMap, 'large', props.width);
-      } else if (isStrapiImage(props.src)) {
-         unoptimized = true;
-      }
-   }
-
-   return (
-      <Image {...props} alt={alt} unoptimized={unoptimized} loader={loader} />
-   );
-}
-
-function isGuideImage(src: string) {
+export function isGuideImage(src: string) {
    return src.match(
       /^https:\/\/(guide-images\.cdn\.ifixit\.com|([^/]+\.(ubreakit|cominor)\.com\/igi))\//
    );
 }
 
-function isCartImage(src: string) {
+export function isCartImage(src: string) {
    return src.match(
       /^https:\/\/(cart-products\.cdn\.ifixit\.com|([^/]+\.(ubreakit|cominor)\.com\/cart-products))\//
    );
 }
 
-function isStrapiImage(src: string) {
+export function isStrapiImage(src: string) {
    return src.match(
       /^https:\/\/ifixit-(dev-)?strapi-uploads.s3.amazonaws.com\//
    );
 }
 
-function getImageLoader(
+export function getIFixitImageLoader(
    sizeMap: SizeMap,
    defaultSize: string,
    baseWidth?: number | string

@@ -5,26 +5,40 @@ import {
    formatMoney,
    invariant,
    isRecord,
-   Money,
    logAsync,
+   Money,
    parseItemcode,
 } from '@ifixit/helpers';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    FindProductQuery,
-   getShopifyStorefrontSdk,
+   getServerShopifyStorefrontSdk,
    ProductVariantCardFragment,
-   ShopCredentials,
 } from '@lib/shopify-storefront-sdk';
-import { z, ZodError } from 'zod';
 import shuffle from 'lodash/shuffle';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { z, ZodError } from 'zod';
+import { findStoreByCode } from './store';
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
 export type ProductVariant = ReturnType<typeof getVariants>[0];
 export type ProductImage = ReturnType<typeof getFormattedImages>[0];
 
-export async function findProduct(shop: ShopCredentials, handle: string) {
-   const storefront = getShopifyStorefrontSdk(shop);
+export type FindProductArgs = {
+   handle: string;
+   storeCode: string;
+};
+
+export async function findProduct({ handle, storeCode }: FindProductArgs) {
+   const store = await findStoreByCode(storeCode);
+   const { storefrontDomain, storefrontDelegateAccessToken } = store.shopify;
+   invariant(
+      storefrontDelegateAccessToken,
+      `Storefront delegate access token not found for store "${storeCode}"`
+   );
+   const storefront = getServerShopifyStorefrontSdk({
+      shopDomain: storefrontDomain,
+      storefrontDelegateToken: storefrontDelegateAccessToken,
+   });
 
    const response = await logAsync('shopify.findProduct', () =>
       storefront.findProduct({

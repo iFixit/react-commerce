@@ -26,26 +26,31 @@ Cypress.Commands.add('times', (times, callback) => {
 
 Cypress.Commands.add('loadCollectionPageByPath', (path: string) => {
    cy.intercept('/1/indexes/**').as('search');
-   interceptLogin();
+   cy.interceptLogin();
    cy.visit(path);
    cy.wait('@user-api');
    cy.window().its('userLoaded').should('be.true');
 });
 
 Cypress.Commands.add('loadProductPageByPath', (path: string) => {
-   interceptLogin();
+   cy.interceptLogin();
    cy.visit(path);
    cy.wait('@user-api');
 });
 
-function interceptLogin() {
+Cypress.Commands.add('interceptLogin', (optional?: Object) => {
+   let defaultParams = {
+      userid: 1,
+      algoliaApiKeyProduct: null,
+      username: 'john',
+      unique_username: 'john123',
+   };
+
    cy.intercept(
       { method: 'GET', url: '/api/2.0/user' },
       {
-         userid: 1,
-         algoliaApiKeyProduct: null,
-         username: 'john',
-         unique_username: 'john123',
+         ...defaultParams,
+         ...optional,
       }
    ).as('user-api');
-}
+});

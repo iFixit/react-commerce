@@ -11,11 +11,13 @@ import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
+   usePagination,
 } from 'react-instantsearch-hooks-web';
 
 export function CurrentRefinements() {
    const currentRefinements = useCurrentRefinements();
    const clearRefinements = useClearRefinements();
+   const pagination = usePagination();
 
    return (
       <Collapse
@@ -47,6 +49,7 @@ export function CurrentRefinements() {
                                  aria-label={`Remove ${formattedFacetName}: ${refinement.label}`}
                                  onClick={() => {
                                     item.refine(refinement);
+                                    pagination.refine(0);
                                  }}
                               />
                            </Tag>

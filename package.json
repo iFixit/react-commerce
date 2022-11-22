@@ -19,7 +19,7 @@
       "start:frontend": "cd frontend && pnpm run start",
       "start": "cross-env FORCE_COLOR=1 npm-run-all -l -p start:*",
       "strapi": "cd backend && pnpm run strapi",
-      "test": "echo \"Error: no test specified\" && exit 1",
+      "test": "pnpm run -r test",
       "transform-svg": "cd frontend && pnpm run transform-svg",
       "cypress:open": "cd frontend && pnpm run cypress:open",
       "cypress:run": "cd frontend && pnpm run cypress:run",
@@ -29,7 +29,8 @@
       "type-check:backend": "cd backend && pnpm run type-check",
       "type-check:frontend": "pnpm run -r type-check",
       "codegen:download-shopify-storefront-schema": "cd frontend && pnpm run codegen:download-shopify-storefront-schema",
-      "prepare": "husky install"
+      "prepare": "husky install",
+      "bot": "./packages/bot/cli.ts"
    },
    "keywords": [
       "ifixit",
@@ -42,7 +43,7 @@
       "cross-env": "7.0.3",
       "husky": "8.0.1",
       "npm-run-all": "4.1.5",
-      "prettier": "2.3.2",
+      "prettier": "2.7.1",
       "wait-on": "6.0.0"
    },
    "pnpm": {

@@ -12,7 +12,7 @@ import {
    YoutubeLogo,
 } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
-import { IfixitImage } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
@@ -40,17 +40,23 @@ import {
 
 interface FooterProps {
    stores: StoreListItem[];
-   currentStore: Store;
+   menu1: Store['footer']['menu1'];
+   menu2: Store['footer']['menu2'];
+   partners: Store['footer']['partners'];
+   bottomMenu: Store['footer']['bottomMenu'];
+   socialMediaAccounts: Store['socialMediaAccounts'];
    globalSettings: GlobalSettings;
 }
 
 export function CartFooter({
    stores,
-   currentStore,
+   menu1,
+   menu2,
+   partners,
+   bottomMenu,
+   socialMediaAccounts,
    globalSettings,
 }: FooterProps) {
-   const { footer, socialMediaAccounts } = currentStore;
-   const { menu1, menu2, partners, bottomMenu } = footer;
    const { newsletterForm } = globalSettings;
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
@@ -156,7 +162,7 @@ export function CartFooter({
                                  p="0"
                               >
                                  {partner.image?.url ? (
-                                    <IfixitImage
+                                    <ResponsiveImage
                                        layout="fill"
                                        objectFit="contain"
                                        src={partner.image.url}
@@ -166,7 +172,7 @@ export function CartFooter({
                                        }
                                     />
                                  ) : (
-                                    <IfixitImage
+                                    <ResponsiveImage
                                        layout="fill"
                                        objectFit="contain"
                                        src={noImageFixie}

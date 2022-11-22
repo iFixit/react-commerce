@@ -1,4 +1,4 @@
-query getStore($filters: StoreFiltersInput) {
+query findStore($filters: StoreFiltersInput) {
    store: stores(filters: $filters) {
       data {
          attributes {
@@ -32,6 +32,7 @@ query getStore($filters: StoreFiltersInput) {
             shopifySettings {
                storefrontDomain
                storefrontAccessToken
+               delegateAccessToken
             }
          }
       }

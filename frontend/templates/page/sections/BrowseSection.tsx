@@ -11,8 +11,8 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
-import { IFIXIT_ORIGIN } from '@config/env';
 import { productListPath } from '@helpers/path-helpers';
+import { useAppContext } from '@ifixit/app';
 import { PageContentWrapper } from '@ifixit/ui';
 import { GetSection } from '@models/page';
 import Image from 'next/image';
@@ -86,11 +86,12 @@ function HeadingBackground({ image }: HeadingBackgroundProps) {
 }
 
 function SearchBox() {
+   const appContext = useAppContext();
    return (
       <Flex
          as="form"
          method="GET"
-         action={`${IFIXIT_ORIGIN}/Search`}
+         action={`${appContext.ifixitOrigin}/Search`}
          w="full"
          justify="center"
       >

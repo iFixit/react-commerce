@@ -8,7 +8,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductListPreview } from '@models/product-list';
-import { IfixitImage } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { productListPath } from '@helpers/path-helpers';
@@ -74,7 +74,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                   flexGrow={0}
                   flexShrink={0}
                >
-                  <IfixitImage
+                  <ResponsiveImage
                      src={productList.image.url}
                      alt=""
                      width="80px"

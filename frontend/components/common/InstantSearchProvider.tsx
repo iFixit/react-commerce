@@ -1,9 +1,10 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
-import { ALGOLIA_APP_ID } from '@config/env';
+import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
    getFacetWidgetType,
+   isValidRefinementListValue,
    stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
@@ -11,6 +12,7 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
 import { FacetWidgetType } from '@models/product-list';
+import { useFacets } from '@templates/product-list/sections/FilterableProductsSection/facets/useFacets';
 import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
@@ -59,6 +61,7 @@ export function InstantSearchProvider({
    }, [algoliaApiKey]);
 
    const router = useRouter();
+   const facets = useFacets();
 
    // Currently, Algolia routing does not play well with Next.js routing, since Next.js
    // is not aware of url changes that happens without interacting with its builtin router.
@@ -217,6 +220,33 @@ export function InstantSearchProvider({
                   ? filter
                   : {};
 
+            Object.entries(filterObject).forEach(([attribute, value]) => {
+               if (!facets.includes(attribute)) {
+                  delete filterObject[attribute];
+                  return;
+               }
+               const widgetType = getFacetWidgetType(attribute);
+               switch (widgetType) {
+                  case FacetWidgetType.Menu: {
+                     if (isValidRefinementListValue(value)) {
+                        filterObject[attribute] = (value as string[])[0];
+                     } else if (typeof value !== 'string') {
+                        delete filterObject[attribute];
+                     }
+                     break;
+                  }
+                  case FacetWidgetType.RefinementList: {
+                     if (!isValidRefinementListValue(value)) {
+                        delete filterObject[attribute];
+                     }
+                     break;
+                  }
+                  default: {
+                     return assertNever(widgetType);
+                  }
+               }
+            });
+
             if (deviceHandle && itemType) {
                filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
                   decodeURIComponent(itemType)
@@ -275,11 +305,11 @@ function RefreshSearchResults({
 }
 
 function getBaseOrigin(location: Location): string {
-   if (typeof window === 'undefined' && process.env.NEXT_PUBLIC_IFIXIT_ORIGIN) {
+   if (typeof window === 'undefined' && IFIXIT_ORIGIN) {
       // On the server, use the IFIXIT_ORIGIN url
       // This ensures that the SSR produces the correct links on Vercel
       // (where the Host header doesn't match the page URL.)
-      const publicOrigin = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
+      const publicOrigin = new URL(IFIXIT_ORIGIN);
       return publicOrigin.origin;
    }
    return location.origin;
