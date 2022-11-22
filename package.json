@@ -19,7 +19,7 @@
       "start:frontend": "cd frontend && pnpm run start",
       "start": "cross-env FORCE_COLOR=1 npm-run-all -l -p start:*",
       "strapi": "cd backend && pnpm run strapi",
-      "test": "echo \"Error: no test specified\" && exit 1",
+      "test": "pnpm run -r test",
       "transform-svg": "cd frontend && pnpm run transform-svg",
       "cypress:open": "cd frontend && pnpm run cypress:open",
       "cypress:run": "cd frontend && pnpm run cypress:run",
