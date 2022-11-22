@@ -50,7 +50,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
             },
             body: JSON.stringify({
                sku,
-               shop_domain: layoutProps.currentStore.shopify.storefrontDomain,
+               shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
                email,
             }),
          });

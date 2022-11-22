@@ -40,17 +40,23 @@ import {
 
 interface FooterProps {
    stores: StoreListItem[];
-   currentStore: Store;
+   menu1: Store['footer']['menu1'];
+   menu2: Store['footer']['menu2'];
+   partners: Store['footer']['partners'];
+   bottomMenu: Store['footer']['bottomMenu'];
+   socialMediaAccounts: Store['socialMediaAccounts'];
    globalSettings: GlobalSettings;
 }
 
 export function CartFooter({
    stores,
-   currentStore,
+   menu1,
+   menu2,
+   partners,
+   bottomMenu,
+   socialMediaAccounts,
    globalSettings,
 }: FooterProps) {
-   const { footer, socialMediaAccounts } = currentStore;
-   const { menu1, menu2, partners, bottomMenu } = footer;
    const { newsletterForm } = globalSettings;
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>

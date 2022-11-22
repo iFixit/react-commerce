@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { DEFAULT_STORE_CODE } from '@config/env';
 import { flags } from '@config/flags';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { assertNever } from '@ifixit/helpers';
@@ -49,7 +50,9 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
       };
    }
 
-   const layoutProps = await getLayoutServerSideProps();
+   const layoutProps = await getLayoutServerSideProps({
+      storeCode: DEFAULT_STORE_CODE,
+   });
    const page = await findPage({
       path: '/Store',
    });

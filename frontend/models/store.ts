@@ -1,6 +1,6 @@
 import { filterNullableItems, Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
-import { strapi } from '@lib/strapi-sdk';
+import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
 import {
    ImageLinkMenuItem,
    LinkMenuItem,
@@ -11,46 +11,27 @@ import {
    SubmenuMenuItem,
 } from './menu';
 
-export interface Store {
-   header: {
-      menu: Menu | null;
-   };
-   footer: {
-      menu1: Menu | null;
-      menu2: Menu | null;
-      menu3?: Menu | null;
-      partners: Menu | null;
-      bottomMenu: Menu | null;
-   };
-   socialMediaAccounts: SocialMediaAccounts;
-   shopify: ShopifySettings;
-}
+export type Store = Awaited<ReturnType<typeof findStoreByCode>>;
 
-export interface SocialMediaAccounts {
-   twitter: string | null;
-   tiktok: string | null;
-   facebook: string | null;
-   instagram: string | null;
-   youtube: string | null;
-   repairOrg: string | null;
-}
+export type SocialMediaAccounts = Store['socialMediaAccounts'];
 
-export interface ShopifySettings {
-   storefrontDomain: string;
-   storefrontAccessToken: string;
-}
-
-export function getStoreByCode(code: string): Promise<Store> {
-   return cache(`store-${code}`, () => getStoreByCodeFromStrapi(code), 60 * 60);
-}
+export type ShopifySettings = Store['shopify'];
 
 /**
  * Get the store data (header menus, footer menus, etc) from the API.
  * @param {string} code The code of the store
  * @returns The store data.
  */
-async function getStoreByCodeFromStrapi(code: string): Promise<Store> {
-   const result = await strapi.getStore({
+export function findStoreByCode(code: string) {
+   return cache(
+      `store-${code}`,
+      () => findStoreByCodeFromStrapi(code),
+      60 * 60
+   );
+}
+
+async function findStoreByCodeFromStrapi(code: string) {
+   const result = await strapi.findStore({
       filters: { code: { eq: code } },
    });
    const store = result.store?.data?.[0]?.attributes;
@@ -81,6 +62,8 @@ async function getStoreByCodeFromStrapi(code: string): Promise<Store> {
       shopify: {
          storefrontDomain: store.shopifySettings.storefrontDomain,
          storefrontAccessToken: store.shopifySettings.storefrontAccessToken,
+         storefrontDelegateAccessToken:
+            store.shopifySettings.delegateAccessToken ?? null,
       },
    };
 }
@@ -119,11 +102,11 @@ async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
    );
 }
 
-type ApiMenu = NonNullable<
-   NonNullable<
-      Awaited<ReturnType<typeof strapi.getStore>>['store']
-   >['data'][0]['attributes']
->['header']['menu'];
+type ApiStore = NonNullable<
+   NonNullable<FindStoreQuery['store']>['data'][0]['attributes']
+>;
+
+type ApiMenu = ApiStore['header']['menu'];
 
 type ApiMenuItem = NonNullable<
    NonNullable<NonNullable<NonNullable<ApiMenu>['data']>['attributes']>['items']
