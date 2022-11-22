@@ -4,6 +4,7 @@ import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
    getFacetWidgetType,
+   isValidRefinementListValue,
    stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
 import { cypressWindowLog } from '@helpers/test-helpers';
@@ -11,6 +12,7 @@ import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
 import { FacetWidgetType } from '@models/product-list';
+import { useFacets } from '@templates/product-list/sections/FilterableProductsSection/facets/useFacets';
 import algoliasearch from 'algoliasearch/lite';
 import { history } from 'instantsearch.js/es/lib/routers';
 import { RouterProps } from 'instantsearch.js/es/middlewares';
@@ -59,6 +61,7 @@ export function InstantSearchProvider({
    }, [algoliaApiKey]);
 
    const router = useRouter();
+   const facets = useFacets();
 
    // Currently, Algolia routing does not play well with Next.js routing, since Next.js
    // is not aware of url changes that happens without interacting with its builtin router.
@@ -218,12 +221,29 @@ export function InstantSearchProvider({
                   : {};
 
             Object.entries(filterObject).forEach(([attribute, value]) => {
+               if (!facets.includes(attribute)) {
+                  delete filterObject[attribute];
+                  return;
+               }
                const widgetType = getFacetWidgetType(attribute);
-               if (
-                  widgetType === FacetWidgetType.Menu &&
-                  Array.isArray(value)
-               ) {
-                  filterObject[attribute] = value[0];
+               switch (widgetType) {
+                  case FacetWidgetType.Menu: {
+                     if (isValidRefinementListValue(value)) {
+                        filterObject[attribute] = (value as string[])[0];
+                     } else if (typeof value !== 'string') {
+                        delete filterObject[attribute];
+                     }
+                     break;
+                  }
+                  case FacetWidgetType.RefinementList: {
+                     if (!isValidRefinementListValue(value)) {
+                        delete filterObject[attribute];
+                     }
+                     break;
+                  }
+                  default: {
+                     return assertNever(widgetType);
+                  }
                }
             });
 

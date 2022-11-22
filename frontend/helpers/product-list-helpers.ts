@@ -1,4 +1,5 @@
 import { FacetWidgetType, ProductListType } from '@models/product-list';
+import { z } from 'zod';
 
 type ProductListAttributes = {
    filters?: string | null;
@@ -73,6 +74,12 @@ const facetWidgetTypeMap: Record<string, FacetWidgetType> = {
 
 export function getFacetWidgetType(attribute: string) {
    return facetWidgetTypeMap[attribute] ?? FacetWidgetType.Menu;
+}
+
+const RefinementListValueSchema = z.string().array().nonempty();
+
+export function isValidRefinementListValue(value: unknown) {
+   return RefinementListValueSchema.safeParse(value).success;
 }
 
 export function isPartsProductList<
