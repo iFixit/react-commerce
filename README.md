@@ -82,7 +82,7 @@ The `frontend` directory is structured as follows:
 -  `layouts`: contains the layouts that each page can use. Right now we only have a default layout, but in the future we might have pages that will require to use a different layout component.
 -  `components`: contains the React view components
 -  `helpers`: contains reusable custom app-related helper functions
--  `lib`: contains custom libraries that can stand on their own (e.g. `lib/algolia`). Think of these as packages that potentially could be used in other projects.
+-  `lib`: contains custom libraries that can stand on their own (e.g. `lib/strapi-sdk`). Think of these as packages that potentially could be used in other projects.
 -  `assets`: contains assets imported from view components (e.g. svg illustrations)
 -  `public`: contains the static files
 -  `config`: contains app configurable settings (e.g. environment variables, constants, etc.)
