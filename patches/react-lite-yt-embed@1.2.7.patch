@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 732c9a8b0dcd05104013bb0a18eadc74694ee862..5639112b226312bf53210740da727ece1500a163 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,7 @@
+ {
+   "version": "1.2.7",
+   "license": "MIT",
+-  "main": "dist/index.js",
++  "main": "dist/react-lite-yt-embed.cjs.production.min.js",
+   "typings": "dist/index.d.ts",
+   "files": [
+     "dist"

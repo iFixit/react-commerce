@@ -4,6 +4,9 @@ patchedDependencies:
   react-instantsearch-hooks-server@6.32.1:
     hash: hiec5pcpgig2m3qcu64y3isqke
     path: patches/react-instantsearch-hooks-server@6.32.1.patch
+  react-lite-yt-embed@1.2.7:
+    hash: govv7rvipvpuihepwlh66bbxfy
+    path: patches/react-lite-yt-embed@1.2.7.patch
 
 importers:
 
@@ -110,6 +113,7 @@ importers:
       react-icons: 4.2.0
       react-instantsearch-hooks-server: 6.32.1
       react-instantsearch-hooks-web: 6.32.1
+      react-lite-yt-embed: 1.2.7
       sharp: 0.30.7
       snarkdown: 2.0.0
       swiper: 8.3.2
@@ -162,6 +166,7 @@ importers:
       react-icons: 4.2.0_react@17.0.2
       react-instantsearch-hooks-server: 6.32.1_hiec5pcpgig2m3qcu64y3isqke_mqkkssxuzkavfps52i4oqes75i
       react-instantsearch-hooks-web: 6.32.1_mqkkssxuzkavfps52i4oqes75i
+      react-lite-yt-embed: 1.2.7_react@17.0.2
       sharp: 0.30.7
       snarkdown: 2.0.0
       swiper: 8.3.2
@@ -13339,6 +13344,15 @@ packages:
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
+
+  /react-lite-yt-embed/1.2.7_react@17.0.2:
+    resolution: {integrity: sha512-c660Rp089OJnhIKHq6BzI/2XiExveJAYBVZBj0q26A1Pl2uqlXeLHW/WruGjszQdRHxiJquo2o7hVTvJ5OongA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /react-remove-scroll-bar/2.3.0_wk7fohhuxwcjfgq2kdoh4ny7by:
     resolution: {integrity: sha512-v2vf8kgrRph5FQeLVZjSOmM0g3ZiBxwMk98VXhsiJDSPeRDUaXJrzYDk2Hhoe6qLggrhWtAXJZVxUwXmRXa93g==}

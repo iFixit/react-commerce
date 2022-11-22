@@ -16,7 +16,7 @@ import {
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
 import shuffle from 'lodash/shuffle';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import { findStoreByCode } from './store';
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
@@ -90,6 +90,9 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
+      productVideosJson: parseVideosJson(
+         response.product.productVideosJson?.value ?? null
+      ),
       faqs: parseFaqs(response.product.faqs?.value),
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
@@ -362,14 +365,7 @@ function parseReplacementGuides(
       if (result.success) {
          return result.data;
       }
-      const errors = result.error.flatten();
-      console.error(
-         `Failed to parse replacement guide:\n ${JSON.stringify(
-            errors.fieldErrors,
-            null,
-            2
-         )}`
-      );
+      logParseErrors(result.error, 'replacement guide');
       return null;
    });
    return filterNullableItems(guides);
@@ -406,14 +402,7 @@ function parseCompatibility(
    if (result.success) {
       return result.data;
    }
-   const errors = result.error.flatten();
-   console.error(
-      `Failed to parse compatibility metafield:\n ${JSON.stringify(
-         errors.fieldErrors,
-         null,
-         2
-      )}`
-   );
+   logParseErrors(result.error, 'compatibility metafield');
    return null;
 }
 
@@ -442,14 +431,7 @@ function parseOemPartnership(
    if (result.success) {
       return result.data;
    }
-   const errors = result.error.flatten();
-   console.error(
-      `Failed to parse oem partnership metafield:\n ${JSON.stringify(
-         errors.fieldErrors,
-         null,
-         2
-      )}`
-   );
+   logParseErrors(result.error, 'oem partnership metafield');
    return null;
 }
 
@@ -542,14 +524,7 @@ function parsePriceTiersMetafieldValue(
          };
       }, {} as Record<string, Money>);
    }
-   const errors = result.error.flatten();
-   console.error(
-      `Failed to parse price tiers metafield:\n ${JSON.stringify(
-         errors.fieldErrors,
-         null,
-         2
-      )}`
-   );
+   logParseErrors(result.error, 'price tiers metafield');
    return null;
 }
 
@@ -567,13 +542,42 @@ function parseShippingRestrictions(value: string | null | undefined) {
    if (result.success) {
       return result.data;
    }
-   const errors = result.error.flatten();
+   logParseErrors(result.error, 'shipping restricitions metafield');
+   return null;
+}
+
+type ProductVideoMetafield = z.infer<typeof ProductVideoMetafieldSchema>;
+
+const ProductVideoMetafieldSchema = z.object({
+   id: z.string(),
+   service: z.string(),
+});
+
+function parseVideosJson(
+   value: string | null | undefined
+): ProductVideoMetafield | null {
+   if (value == null) {
+      return null;
+   }
+   const json: unknown = JSON.parse(value);
+   if (json == null) {
+      return null;
+   }
+   const result = ProductVideoMetafieldSchema.safeParse(json);
+   if (result.success) {
+      return result.data;
+   }
+   logParseErrors(result.error, 'product_videos_json metafield');
+   return null;
+}
+
+function logParseErrors(error: ZodError, typeName: string): void {
+   const errors = error.flatten();
    console.error(
-      `Failed to parse shipping restrictions metafield:\n ${JSON.stringify(
+      `Failed to parse shipping ${typeName}:\n ${JSON.stringify(
          errors.fieldErrors,
          null,
          2
       )}`
    );
-   return null;
 }

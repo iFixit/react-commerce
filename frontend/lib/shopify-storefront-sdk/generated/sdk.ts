@@ -6331,6 +6331,7 @@ export type FindProductQuery = {
       prop65WarningType?: { __typename?: 'Metafield'; value: string } | null;
       prop65Chemicals?: { __typename?: 'Metafield'; value: string } | null;
       productVideos?: { __typename?: 'Metafield'; value: string } | null;
+      productVideosJson?: { __typename?: 'Metafield'; value: string } | null;
       replacementGuides?: { __typename?: 'Metafield'; value: string } | null;
       featuredProductVariants?: {
          __typename?: 'Metafield';
@@ -6655,6 +6656,9 @@ export const FindProductDocument = `
       value
     }
     productVideos: metafield(namespace: "ifixit", key: "product_videos") {
+      value
+    }
+    productVideosJson: metafield(namespace: "ifixit", key: "product_videos_json") {
       value
     }
     replacementGuides: metafield(namespace: "ifixit", key: "replacement_guides") {
