@@ -18,6 +18,8 @@ export const STRAPI_ORIGIN = requireEnvVariable(
    'NEXT_PUBLIC_STRAPI_ORIGIN'
 );
 
+export const PIXEL_PING_URL = process.env.NEXT_PUBLIC_PIXEL_PING_URL;
+
 export const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL;
 
 export const GA_URL = process.env.NEXT_PUBLIC_GA_URL;
