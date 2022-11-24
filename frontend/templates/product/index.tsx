@@ -94,7 +94,9 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <FeaturedProductsSection product={product} />
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
-         {product.productcode && <PixelPing productcode={product.productcode} />}
+         {product.productcode && (
+            <PixelPing productcode={product.productcode} />
+         )}
       </React.Fragment>
    );
 };
