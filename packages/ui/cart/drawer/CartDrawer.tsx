@@ -128,7 +128,7 @@ export function CartDrawer() {
                      </HStack>
                   </DrawerHeader>
 
-                  <DrawerBody p="0">
+                  <DrawerBody p="0" data-testid="cart-drawer-body">
                      {cart.isError && (
                         <Alert
                            status="error"
