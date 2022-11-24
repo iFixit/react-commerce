@@ -23,7 +23,11 @@ describe('Product option test', () => {
       cy.findByTestId('product-add-to-cart-button').click();
       cy.findByTestId('cart-drawer-close').click();
 
-      cy.get('@selector').select(1);
+      cy.get('@selector')
+         .select(1)
+         .then(() => {
+            cy.contains(this.firstOptionSkuText).should('not.exist');
+         });
 
       // Get the price, sku, and name for the second product option
       cy.findAllByTestId('product-price')
