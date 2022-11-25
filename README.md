@@ -91,7 +91,7 @@ The `frontend` directory is structured as follows:
 
 Here's an overview of the production setup (the focus is on Next.js, therefore details on the iFixit app have been left out):
 
-![image](https://user-images.githubusercontent.com/4640135/203180384-96f4d3d6-b39e-4da6-915d-d9cfd44de5c6.png)
+![image](https://user-images.githubusercontent.com/4640135/203581627-82ab19ca-7de7-4343-ae05-2a4f6330f38a.png)
 
 ### Test
 
