@@ -79,7 +79,7 @@ export function ProductListChildrenSection({
          >
             <SimpleGrid
                ref={gridRef}
-               data-testid="product-list-devices"
+               data-testid="product-list-children"
                columns={{
                   base: 1,
                   sm: 2,
