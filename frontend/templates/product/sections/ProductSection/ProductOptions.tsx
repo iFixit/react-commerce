@@ -59,6 +59,7 @@ export function ProductOptions({
                         onChange={(event) => {
                            onChange(event.target.value);
                         }}
+                        data-testid="product-option-selector"
                      >
                         {option.values.map((value) => {
                            const { exact, variant } = findVariant(
