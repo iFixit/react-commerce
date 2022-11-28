@@ -16,6 +16,7 @@ import { findProduct } from '@models/product';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
+import { PixelPing } from './components/PixelPing';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import {
@@ -93,6 +94,9 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             <FeaturedProductsSection product={product} />
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
+         {product.productcode && (
+            <PixelPing productcode={product.productcode} />
+         )}
       </React.Fragment>
    );
 };
