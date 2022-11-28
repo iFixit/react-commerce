@@ -525,6 +525,9 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
             'a:hover': {
                color: `${colorScheme}.800`,
             },
+            'p:not(:first-of-type)': {
+               mt: 2,
+            },
          }}
          dangerouslySetInnerHTML={{
             __html: children,
