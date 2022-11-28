@@ -6,57 +6,53 @@ describe('parts page devices', () => {
    it('should navigate until the last device page', () => {
       assertVisibleFilterAndProducts();
       assertAvailableProducts();
+      const navigateUntilLastDevice = () => {
+         cy.get('body').then(($body) => {
+            const $children = $body.find(
+               '[data-testid="product-list-children"]'
+            );
+            if ($children.length <= 0) return false;
 
-      cy.get('body').then(($body) => {
-         const device = $body.find('a[href="/Parts/Mac"]');
-         if (!device.is(':visible')) {
-            cy.get('button').contains('Show more').should('be.visible').click();
-         }
-         device[0].click();
-      });
+            cy.findByTestId('product-list-children')
+               .findAllByRole('link')
+               .first()
+               .as('childLink');
 
-      cy.location('pathname').should('include', '/Parts/Mac');
-      cy.get('h1').contains('Mac Parts').should('be.visible');
+            cy.get('@childLink').then(($childLink) => {
+               const childHref = $childLink.attr('href');
+               cy.location('pathname').should('not.equal', childHref);
+
+               cy.get('@childLink').click();
+
+               cy.location('pathname').should('equal', childHref);
+
+               const childTitle = $childLink.text();
+               const childTitleRegexp = new RegExp(`^${childTitle}$`, 'i');
+               cy.findByRole('heading', {
+                  level: 1,
+                  name: childTitleRegexp,
+               }).should('exist');
+
+               navigateUntilLastDevice();
+            });
+         });
+      };
 
       navigateUntilLastDevice();
-      assertVisibleFilterAndProducts();
-      assertAvailableProducts();
    });
-
-   function assertVisibleFilterAndProducts() {
-      cy.findByTestId('filterable-products-section').should('be.visible');
-      cy.findByTestId('facets-accordion').scrollIntoView().should('be.visible');
-   }
-
-   // Makes sure there is at least 1 product available
-   function assertAvailableProducts() {
-      cy.findByTestId('list-view-products')
-         .children('article')
-         .its('length')
-         .should('be.gte', 1);
-   }
-
-   // Recursively navigate to the first device until no sub-devices are left
-   function navigateUntilLastDevice() {
-      cy.get('body').then(($body) => {
-         if ($body.find('[data-testid="product-list-devices"]').length <= 0)
-            return false;
-
-         cy.findByTestId('product-list-devices')
-            .find('a')
-            .first()
-            .as('device')
-            .click();
-
-         cy.get('@device')
-            .should('have.attr', 'href')
-            .then((href) => {
-               cy.location('pathname').should('include', href);
-            });
-         assertVisibleFilterAndProducts();
-         navigateUntilLastDevice();
-      });
-   }
 });
+
+function assertVisibleFilterAndProducts() {
+   cy.findByTestId('filterable-products-section').should('be.visible');
+   cy.findByTestId('facets-accordion').scrollIntoView().should('be.visible');
+}
+
+// Makes sure there is at least 1 product available
+function assertAvailableProducts() {
+   cy.findByTestId('list-view-products')
+      .children('article')
+      .its('length')
+      .should('be.gte', 1);
+}
 
 export {};
