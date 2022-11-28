@@ -76,7 +76,10 @@ type FooterNavigationLinkProps = BoxProps & {
 
 export const FooterNavigationLink = forwardRef<FooterNavigationLinkProps, 'a'>(
    ({ icon, children, ...otherProps }, ref) => {
-      const trackedOnClick = useTrackedOnClick(otherProps);
+      const trackedOnClick = useTrackedOnClick({
+         clickName: children?.toString(),
+         ...otherProps,
+      });
       return (
          <Box
             ref={ref}
