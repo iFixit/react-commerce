@@ -11,6 +11,7 @@ import {
    MenuItemProps,
    Text,
 } from '@chakra-ui/react';
+import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 type StoreMenuButtonProps = MenuButtonProps & {
    icon?: React.ReactNode;
@@ -53,8 +54,19 @@ type StoreMenuItemProps = Omit<MenuItemProps, 'children'> & {
 
 export const StoreMenuItem = forwardRef<StoreMenuItemProps, 'div'>(
    ({ icon, name, currency, ...otherProps }, ref) => {
+      const trackedOnClick = useTrackedOnClick({
+         clickName: name,
+         isStoreLink: true,
+         ...otherProps,
+      });
       return (
-         <MenuItem ref={ref} fontSize="sm" color="black" {...otherProps}>
+         <MenuItem
+            ref={ref}
+            fontSize="sm"
+            color="black"
+            onClick={trackedOnClick}
+            {...otherProps}
+         >
             <Flex w="full" align="center">
                {icon}
                <Text ref={ref} ml="3" mt="-1px" flexGrow={1}>
