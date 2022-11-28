@@ -106,6 +106,9 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       oemPartnership: parseOemPartnership(
          response.product.oemPartnership?.value
       ),
+      enabledDomains: parseEnabledDomains(
+         response.product.enabledDomains?.value
+      ),
    };
 }
 
@@ -432,6 +435,31 @@ function parseOemPartnership(
       return result.data;
    }
    logParseErrors(result.error, 'oem partnership metafield');
+   return null;
+}
+
+const EnabledDomainsSchema = z
+   .object({
+      domain: z.string().url(),
+      locale: z.string(),
+   })
+   .array()
+   .optional()
+   .nullable();
+
+function parseEnabledDomains(value: string | null | undefined) {
+   if (value == null) {
+      return null;
+   }
+   const rawJson = JSON.parse(value);
+   if (rawJson == null) {
+      return null;
+   }
+   const result = EnabledDomainsSchema.safeParse(rawJson);
+   if (result.success) {
+      return result.data;
+   }
+   logParseErrors(result.error, 'enabled domains metafield');
    return null;
 }
 
