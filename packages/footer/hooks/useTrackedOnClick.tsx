@@ -19,8 +19,10 @@ export function useTrackedOnClick<T>({
    const trackedOnClick: React.MouseEventHandler<T> = React.useCallback(
       (e) => {
          trackClick({
-            eventCategory: 'Footer',
-            eventAction: `Footer ${LinkType} Link - \"${clickName || href || 'undefined'}\" - Click`,
+            eventCategory: `Footer ${LinkType} Link`,
+            eventAction: `Footer ${LinkType} Link - \"${
+               clickName || href || 'undefined'
+            }\" - Click`,
          });
          onClick?.(e);
       },
