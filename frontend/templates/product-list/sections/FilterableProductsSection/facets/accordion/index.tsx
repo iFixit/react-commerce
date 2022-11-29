@@ -36,6 +36,9 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
          onChange={handleChangeIndexes}
          data-testid="facets-accordion"
          sx={{
+            '> :not(style)': {
+               borderColor: 'gray.200',
+            },
             '> .visible': {
                borderTopWidth: '0px',
             },

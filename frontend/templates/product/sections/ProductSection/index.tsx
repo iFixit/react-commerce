@@ -176,7 +176,16 @@ export function ProductSection({
                {isForSale && (
                   <BuyBoxPropositionSection selectedVariant={selectedVariant} />
                )}
-               <Accordion defaultIndex={[0, 1]} allowMultiple mt="10">
+               <Accordion
+                  defaultIndex={[0, 1]}
+                  allowMultiple
+                  mt="10"
+                  sx={{
+                     '& > :not(style)': {
+                        borderColor: 'gray.200',
+                     },
+                  }}
+               >
                   <AccordionItem>
                      <CustomAccordionButton>Description</CustomAccordionButton>
                      <CustomAccordionPanel>

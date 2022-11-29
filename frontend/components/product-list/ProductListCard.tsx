@@ -69,7 +69,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                            />
                         </Box>
                      </Flex>
-                     <Divider orientation="vertical" />
+                     <Divider orientation="vertical" borderColor="gray.200" />
                   </>
                )}
                <Flex
