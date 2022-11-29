@@ -1,10 +1,11 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { assertNever, isError } from '@ifixit/helpers';
+import { assertNever, invariant, isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
 import * as React from 'react';
+import z from 'zod';
 import { CartError } from '../utils';
 import { useCart } from './use-cart';
 
@@ -116,12 +117,17 @@ function useDraftOrderCheckout() {
    const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/${shopifyClient.shopDomain}?checkout=1`;
    return async () => {
       const result = await client.post('cart/order/draftOrder');
-      const returnToUrl = new URL(result.invoiceUrl);
+      const draftOrder = DraftOrderResponseSchema.parse(result);
+      const returnToUrl = new URL(draftOrder.invoiceUrl);
       const ssoUrl = new URL(ssoRoute);
       ssoUrl.searchParams.set('return_to', returnToUrl.toString());
       return ssoUrl.href;
    };
 }
+
+const DraftOrderResponseSchema = z.object({
+   invoiceUrl: z.string(),
+});
 
 function useStandardCheckout() {
    const appContext = useAppContext();

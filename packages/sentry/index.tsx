@@ -2,20 +2,49 @@ import * as Sentry from '@sentry/nextjs';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { GetServerSidePropsContext } from 'next';
 
-const shouldIgnoreUserAgent =
-   typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);
+type Fetcher = typeof fetch;
 
-export const sentryFetch: typeof fetch = async (resource, options) => {
-   const context = {
-      // Underscore sorts the resource first in Sentry's UI
-      _resource: resource,
-      headers: options?.headers,
-      method: options?.method,
-      // Parse to pretty print GraphQL queries
-      body: options?.body ? JSON.parse(String(options?.body)) : undefined,
-   };
-   return fetch(resource, options)
-      .then((response) => {
+type FetchMiddleware = (
+   fetcher: Fetcher,
+   shouldSkipRequest?: SkipRequestFn
+) => Fetcher;
+
+type FetcherParams = Parameters<Fetcher>;
+
+type SkipRequestFn = (...args: FetcherParams) => boolean;
+
+const isClientSide = typeof window !== 'undefined';
+
+const shouldIgnoreUserAgent =
+   isClientSide && /Yeti/.test(window.navigator.userAgent);
+
+export const setSentryPageContext = (context: GetServerSidePropsContext) => {
+   Sentry.setTag('resolved_url', urlFromContext(context));
+};
+
+export const applySentryFetchMiddleware = () => {
+   if (isClientSide) {
+      window.fetch = withSentry(window.fetch, shouldSkipReporting);
+   } else {
+      global.fetch = withSentry(global.fetch, shouldSkipReporting);
+   }
+};
+
+const withSentry: FetchMiddleware =
+   (fetcher, shouldSkipRequest) => async (input, init) => {
+      if (shouldSkipRequest?.(input, init)) {
+         return fetcher(input, init);
+      }
+      const context = {
+         // Underscore sorts the resource first in Sentry's UI
+         _resource: input,
+         headers: init?.headers,
+         method: init?.method,
+         // Parse to pretty print GraphQL queries
+         body: init?.body ? JSON.parse(String(init?.body)) : undefined,
+      };
+      try {
+         const response = await fetcher(input, init);
          if (
             !shouldIgnoreUserAgent &&
             response.status >= 400 &&
@@ -30,14 +59,26 @@ export const sentryFetch: typeof fetch = async (resource, options) => {
             console.error(msg, context);
          }
          return response;
-      })
-      .catch((error) => {
+      } catch (error) {
          // We don't want to hear about network errors in Sentry
          console.error(error, context);
          throw error;
-      });
+      }
+   };
+
+const shouldSkipReporting: SkipRequestFn = (input, init) => {
+   const url = getRequestUrl(input);
+   // We have custom logic in place for reporting errors only after React Query retries have failed,
+   // so we don't want to report errors for the cart API here.
+   return url.includes('/store/user/cart');
 };
 
-export const setSentryPageContext = (context: GetServerSidePropsContext) => {
-   Sentry.setTag('resolved_url', urlFromContext(context));
+const getRequestUrl = (input: RequestInfo | URL) => {
+   if (typeof input === 'string') {
+      return input;
+   }
+   if (input instanceof URL) {
+      return input.href;
+   }
+   return input.url;
 };

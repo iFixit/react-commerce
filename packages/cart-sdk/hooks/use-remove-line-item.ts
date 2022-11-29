@@ -17,8 +17,7 @@ export function useRemoveLineItem() {
    const mutation = useMutation(
       async (input) => {
          await iFixitApiClient.delete(
-            `store/user/cart/product/${input.itemcode}`,
-            { disableSentry: true }
+            `store/user/cart/product/${input.itemcode}`
          );
          return true;
       },
