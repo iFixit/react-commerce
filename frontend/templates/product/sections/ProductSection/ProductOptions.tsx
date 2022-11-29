@@ -270,19 +270,13 @@ function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
    }
 
    return (
-      <Box
-         h="16"
-         position="relative"
-         overflow="hidden"
-         mb="1"
-         opacity={exactMatch ? 1 : 0.4}
-      >
+      <Box h="16" position="relative" mb="1" opacity={exactMatch ? 1 : 0.4}>
          <ResponsiveImage
+            height={64 /* chakra theme sizes.16 = 4em == 70 */}
+            width={64}
             src={image.url}
             alt=""
-            layout="fill"
             objectFit="contain"
-            sizes={theme.sizes[16]}
          />
       </Box>
    );
