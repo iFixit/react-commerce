@@ -52,6 +52,15 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
          <link rel="canonical" href={canonicalUrl} />
          <meta property="og:url" content={canonicalUrl} />
 
+         {product.enabledDomains?.map((store) => (
+            <link
+               key={store.domain}
+               rel="alternate"
+               hrefLang={store.locale}
+               href={`${store.domain}/products/${product.handle}`}
+            />
+         ))}
+
          {genericImages.length > 0 &&
             genericImages.map((image) => (
                <meta key={image.id} property="og:image" content={image.url} />

@@ -6405,6 +6405,7 @@ export type FindProductQuery = {
       metaTitle?: { __typename?: 'Metafield'; value: string } | null;
       shortDescription?: { __typename?: 'Metafield'; value: string } | null;
       oemPartnership?: { __typename?: 'Metafield'; value: string } | null;
+      enabledDomains?: { __typename?: 'Metafield'; value: string } | null;
       featuredImage?: { __typename?: 'Image'; id?: string | null } | null;
       images: {
          __typename?: 'ImageConnection';
@@ -6685,6 +6686,9 @@ export const FindProductDocument = `
       value
     }
     oemPartnership: metafield(namespace: "ifixit", key: "oem_partnership_json") {
+      value
+    }
+    enabledDomains: metafield(namespace: "ifixit", key: "enabled_domains") {
       value
     }
     featuredImage {
