@@ -14,13 +14,13 @@ export function useTrackedOnClick<T>({
    clickName,
    isStoreLink,
 }: UseFooterLinkTrackingProps<T>) {
-   const LinkType = isStoreLink ? 'Stores' : 'iFixit';
+   const linkType = isStoreLink ? 'Stores' : 'iFixit';
    const { trackClick } = React.useContext(TrackingContext);
    const trackedOnClick: React.MouseEventHandler<T> = React.useCallback(
       (e) => {
          trackClick({
-            eventCategory: `Footer ${LinkType} Link`,
-            eventAction: `Footer ${LinkType} Link - \"${
+            eventCategory: `Footer ${linkType} Link`,
+            eventAction: `Footer ${linkType} Link - \"${
                clickName || href || 'undefined'
             }\" - Click`,
          });
