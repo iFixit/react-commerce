@@ -267,22 +267,7 @@ function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
          </Flex>
       );
    }
-   const ratio =
-      image.width != null && image.height != null
-         ? image.width / image.height
-         : null;
 
-   if (ratio == null) {
-      return (
-         <Img
-            h="16"
-            src={image.url}
-            alt=""
-            objectFit="contain"
-            opacity={exactMatch ? 1 : 0.4}
-         />
-      );
-   }
    return (
       <Box
          h="16"
