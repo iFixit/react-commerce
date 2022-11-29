@@ -26,7 +26,6 @@
    "dependencies": {
       "@chakra-ui/icons": "^1.0.15",
       "@chakra-ui/react": "1.8.8",
-      "@chakra-ui/system": "1.12.1",
       "@core-ds/primitives": "2.4.5",
       "@emotion/react": "11.7.1",
       "@emotion/styled": "11.6.0",

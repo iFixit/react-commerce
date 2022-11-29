@@ -46,7 +46,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
             sm: 0,
          }}
          sx={{
-            '& > *': {
+            '& > :not(style)': {
                display: 'flex',
                flexWrap: 'nowrap',
             },

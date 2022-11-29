@@ -72,7 +72,7 @@ export function ProductListBreadcrumb({
          pl="1"
          ml="-2"
          sx={{
-            '& > *': {
+            '& > :not(style)': {
                display: 'flex',
             },
          }}

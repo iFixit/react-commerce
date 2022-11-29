@@ -33,7 +33,13 @@ export function ProductList({ children }: ProductListProps) {
          align="stretch"
          width="full"
          boxSizing="border-box"
-         divider={<Divider mt="0" style={{ marginTop: 0, marginBottom: 0 }} />}
+         divider={
+            <Divider
+               mt="0"
+               borderColor="gray.200"
+               style={{ marginTop: 0, marginBottom: 0 }}
+            />
+         }
       >
          {children}
       </VStack>

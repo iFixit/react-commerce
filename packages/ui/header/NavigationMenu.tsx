@@ -37,7 +37,7 @@ export const NavigationMenuItem = forwardRef<FlexProps, 'li'>(
             transition="background-color 300ms"
             _hover={{
                bg: 'gray.800',
-               '& > *': {
+               '& > :not(style)': {
                   display: 'flex',
                },
             }}

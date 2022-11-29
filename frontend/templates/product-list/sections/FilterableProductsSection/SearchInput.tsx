@@ -45,6 +45,10 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             ref={inputRef}
             data-testid="collections-search-box"
             bg="white"
+            borderColor="gray.200"
+            _placeholder={{
+               color: 'gray.400',
+            }}
             placeholder={props.placeholder}
             tabIndex={0}
             onChange={(event) => refine(event.currentTarget.value)}

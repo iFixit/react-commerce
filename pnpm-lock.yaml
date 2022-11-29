@@ -31,7 +31,6 @@ importers:
       '@babel/preset-typescript': 7.18.6
       '@chakra-ui/icons': ^1.0.15
       '@chakra-ui/react': 1.8.8
-      '@chakra-ui/system': 1.12.1
       '@core-ds/primitives': 2.4.5
       '@emotion/react': 11.7.1
       '@emotion/styled': 11.6.0
@@ -121,9 +120,8 @@ importers:
       webpack: 5.73.0
       zod: 3.18.0
     dependencies:
-      '@chakra-ui/icons': 1.1.7_5qblqjf622vzzkdskgddihcrca
+      '@chakra-ui/icons': 1.1.7_react@17.0.2
       '@chakra-ui/react': 1.8.8_mt4gt3o63p32tfns77ndyyxdka
-      '@chakra-ui/system': 1.12.1_sivilwsx4nsguv2gln4xbmg6qu
       '@core-ds/primitives': 2.4.5
       '@emotion/react': 11.7.1_uab7lvcpgrxw5cnrwyn5a6bzvq
       '@emotion/styled': 11.6.0_hunrzlunfsbetgabvhqyg3fuge
@@ -141,7 +139,7 @@ importers:
       '@ifixit/icons': link:../packages/icons
       '@ifixit/ifixit-api-client': link:../packages/ifixit-api-client
       '@ifixit/newsletter-sdk': link:../packages/newsletter-sdk
-      '@ifixit/react-components': 0.3.0_4bx7e3vbdhtpqjh6nevglqbelu
+      '@ifixit/react-components': 0.3.0_7dolcl63z6sfo5um6qbr72qohm
       '@ifixit/sentry': link:../packages/sentry
       '@ifixit/shopify-storefront-client': link:../packages/shopify-storefront-client
       '@ifixit/ui': link:../packages/ui
@@ -166,7 +164,7 @@ importers:
       react-icons: 4.2.0_react@17.0.2
       react-instantsearch-hooks-server: 6.32.1_hiec5pcpgig2m3qcu64y3isqke_mqkkssxuzkavfps52i4oqes75i
       react-instantsearch-hooks-web: 6.32.1_mqkkssxuzkavfps52i4oqes75i
-      react-lite-yt-embed: 1.2.7_react@17.0.2
+      react-lite-yt-embed: 1.2.7_govv7rvipvpuihepwlh66bbxfy_react@17.0.2
       sharp: 0.30.7
       snarkdown: 2.0.0
       swiper: 8.3.2
@@ -3456,14 +3454,23 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@chakra-ui/icons/1.1.7_5qblqjf622vzzkdskgddihcrca:
+  /@chakra-ui/icon/2.0.5_react@17.0.2:
+    resolution: {integrity: sha512-ZrqRvCCIxGr4qFd/r1pmtd9tobRmv8KAxV7ygFoc/t4vOSKTcVIjhE12gsI3FzgvXM15ZFVwsxa1zodwgo5neQ==}
+    peerDependencies:
+      '@chakra-ui/system': '>=1.0.0'
+      react: '>=16.8.6'
+    dependencies:
+      '@chakra-ui/utils': 1.10.4
+      react: 17.0.2
+    dev: false
+
+  /@chakra-ui/icons/1.1.7_react@17.0.2:
     resolution: {integrity: sha512-YIHxey/B4M2PyFASlHXtAWFyW+tsAtGAChOJ8dsM2kpu1MbVUqm/6nMI1KIFd7Te5IWuNYA75rAHBdLI0Yu61A==}
     peerDependencies:
       '@chakra-ui/system': '>=1.0.0'
       react: '>=16.8.6'
     dependencies:
-      '@chakra-ui/icon': 2.0.5_5qblqjf622vzzkdskgddihcrca
-      '@chakra-ui/system': 1.12.1_sivilwsx4nsguv2gln4xbmg6qu
+      '@chakra-ui/icon': 2.0.5_react@17.0.2
       '@types/react': 17.0.37
       react: 17.0.2
     dev: false
@@ -3938,12 +3945,11 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@chakra-ui/theme-tools/1.1.5_@chakra-ui+system@1.12.1:
+  /@chakra-ui/theme-tools/1.1.5:
     resolution: {integrity: sha512-X+fuWvmMmuIV4HPcIJBsLNGzOTWCADfpP0Q6yoym+Jd1824BkWMhEucw3pQ3CjxHmCETOy4qXpyvXaKzK0VP3Q==}
     peerDependencies:
       '@chakra-ui/system': '>=1.0.0'
     dependencies:
-      '@chakra-ui/system': 1.12.1_sivilwsx4nsguv2gln4xbmg6qu
       '@chakra-ui/utils': 1.6.0
       '@types/tinycolor2': 1.4.2
       tinycolor2: 1.4.2
@@ -5042,7 +5048,7 @@ packages:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
 
-  /@ifixit/react-components/0.3.0_4bx7e3vbdhtpqjh6nevglqbelu:
+  /@ifixit/react-components/0.3.0_7dolcl63z6sfo5um6qbr72qohm:
     resolution: {integrity: sha512-+UrZXGiPLjtcsr7FiYhO/ZPSiP+aF3pzKeWHY0O8cQ1c/f0FdBRAJsmdJJPovccG6emnD+kc4y+ThWH9ietuGA==}
     peerDependencies:
       '@chakra-ui/react': '>=1.4.2'
@@ -5053,7 +5059,7 @@ packages:
     dependencies:
       '@chakra-ui/react': 1.8.8_mt4gt3o63p32tfns77ndyyxdka
       '@chakra-ui/react-utils': 1.1.1_react@17.0.2
-      '@chakra-ui/theme-tools': 1.1.5_@chakra-ui+system@1.12.1
+      '@chakra-ui/theme-tools': 1.1.5
       '@chakra-ui/utils': 1.6.0
       '@emotion/react': 11.7.1_uab7lvcpgrxw5cnrwyn5a6bzvq
       '@emotion/styled': 11.6.0_hunrzlunfsbetgabvhqyg3fuge
@@ -13345,7 +13351,7 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
 
-  /react-lite-yt-embed/1.2.7_react@17.0.2:
+  /react-lite-yt-embed/1.2.7_govv7rvipvpuihepwlh66bbxfy_react@17.0.2:
     resolution: {integrity: sha512-c660Rp089OJnhIKHq6BzI/2XiExveJAYBVZBj0q26A1Pl2uqlXeLHW/WruGjszQdRHxiJquo2o7hVTvJ5OongA==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -13353,6 +13359,7 @@ packages:
     dependencies:
       react: 17.0.2
     dev: false
+    patched: true
 
   /react-remove-scroll-bar/2.3.0_wk7fohhuxwcjfgq2kdoh4ny7by:
     resolution: {integrity: sha512-v2vf8kgrRph5FQeLVZjSOmM0g3ZiBxwMk98VXhsiJDSPeRDUaXJrzYDk2Hhoe6qLggrhWtAXJZVxUwXmRXa93g==}
