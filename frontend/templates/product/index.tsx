@@ -107,6 +107,11 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
+      context.res.setHeader(
+         'Cache-Control',
+         'public, s-maxage=60, stale-while-revalidate=600'
+      );
+
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
