@@ -66,6 +66,7 @@ export interface BaseProductList {
    metaDescription: string | null;
    metaTitle: string | null;
    filters: string | null;
+   forceNoindex: boolean | null;
    image: ProductListImage | null;
    ancestors: ProductListAncestor[];
    children: ProductListChild[];
