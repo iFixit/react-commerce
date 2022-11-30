@@ -128,7 +128,7 @@ export async function findProductList(
          apiKey: algoliaApiKey,
       },
       wikiInfo: deviceWiki?.info || [],
-      forceNoIndex: !productList,
+      isOnStrapi: !!productList,
    };
 
    return {
