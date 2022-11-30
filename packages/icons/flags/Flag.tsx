@@ -12,6 +12,7 @@ export enum FlagCountryCode {
    CA = 'CA',
    DE = 'DE',
    FR = 'FR',
+   UK = 'UK',
    GB = 'GB',
    EU = 'EU',
    US = 'US',
@@ -63,6 +64,7 @@ const Flag = forwardRef<FlagProps, 'svg'>(({ code, ...otherProps }, ref) => {
                {...otherProps}
             />
          );
+      case FlagCountryCode.UK:
       case FlagCountryCode.GB:
          return (
             <Icon
