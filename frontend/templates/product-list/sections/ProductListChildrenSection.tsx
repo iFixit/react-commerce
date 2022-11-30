@@ -1,10 +1,15 @@
 import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
+import { PRODUCT_LIST_MAX_FACET_VALUES_COUNT } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
-import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import {
+   useCurrentRefinements,
+   useHits,
+   useMenu,
+} from 'react-instantsearch-hooks-web';
 import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
@@ -33,9 +38,21 @@ export function ProductListChildrenSection({
       [isShowingMore]
    );
 
+   const { items: deviceMenuItems } = useMenu({
+      attribute: 'device',
+      limit: PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
+   });
+   const nonEmptyProductListChildren = React.useMemo(
+      () =>
+         productListChildren.filter((child) =>
+            deviceMenuItems.some((item) => item.value === child.deviceTitle)
+         ),
+      [deviceMenuItems, productListChildren]
+   );
+
    const showMoreVisibility = React.useMemo(
-      () => computeShowMoreVisibility(productListChildren.length),
-      [productListChildren]
+      () => computeShowMoreVisibility(nonEmptyProductListChildren.length),
+      [nonEmptyProductListChildren]
    );
 
    const onToggle = React.useCallback(() => {
@@ -89,7 +106,7 @@ export function ProductListChildrenSection({
                spacing="3"
                pt={1}
             >
-               {productListChildren.map((child) => {
+               {nonEmptyProductListChildren.map((child) => {
                   return (
                      <NextLink
                         key={child.handle}
