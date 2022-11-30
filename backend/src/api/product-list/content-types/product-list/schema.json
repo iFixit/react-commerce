@@ -107,6 +107,16 @@
          },
          "type": "string"
       },
+      "forceNoindex": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "boolean",
+         "default": false,
+         "required": false
+      },
       "excludeFromHierarchyDisplay": {
          "pluginOptions": {
             "i18n": {
