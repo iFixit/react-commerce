@@ -8,7 +8,8 @@
       "@ifixit/analytics": "workspace:*",
       "@ifixit/app": "workspace:*",
       "@ifixit/helpers": "workspace:*",
-      "@ifixit/sentry": "workspace:*"
+      "@ifixit/sentry": "workspace:*",
+      "@ifixit/ifixit-api-client": "workspace:*"
    },
    "peerDependencies": {
       "@tanstack/react-query": "4.x"
