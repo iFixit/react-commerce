@@ -74,6 +74,27 @@ export function useIsMounted() {
    return isMounted;
 }
 
+const isClient = typeof window !== 'undefined';
+let hydrationComplete = false;
+
+/**
+ * Returns true on all client-side renders *after* hydration is complete.
+ * Useful for deferring some components to the client-side while allowing later
+ * mounts to render immediately (instead of waiting for useEffect()).
+ */
+export function useIsClientSide() {
+   const [isClientSide, setIsClientSide] = React.useState(
+      isClient && hydrationComplete
+   );
+
+   React.useEffect(() => {
+      isClientSide || setIsClientSide(true);
+      hydrationComplete = true;
+   }, []);
+
+   return isClientSide;
+}
+
 interface UsePreloadImage {
    preload(url: string): void;
    isLoaded: boolean;

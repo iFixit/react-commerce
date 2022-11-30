@@ -1,5 +1,5 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
-import { Menu, MenuList } from '@chakra-ui/react';
+import { Menu, MenuList, Box } from '@chakra-ui/react';
 import {
    FacebookLogo,
    Flag,
@@ -13,6 +13,7 @@ import {
 } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
 import { ResponsiveImage } from '@ifixit/ui';
+import { useIsClientSide } from '@ifixit/ui/hooks';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
@@ -57,6 +58,9 @@ export function CartFooter({
    socialMediaAccounts,
    globalSettings,
 }: FooterProps) {
+   if (!useIsClientSide()) {
+      return <FooterPlaceholder />;
+   }
    const { newsletterForm } = globalSettings;
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
@@ -250,5 +254,20 @@ export function CartFooter({
             </FooterLegalSection>
          </Footer>
       </EventTracker>
+   );
+}
+
+function FooterPlaceholder() {
+   return (
+      <Box
+         bg="black"
+         height={{
+            base: '80em',
+            sm: '56em',
+            md: '48em',
+            lg: '34.5em',
+            xl: '25.5em',
+         }}
+      ></Box>
    );
 }
