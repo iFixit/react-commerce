@@ -1,16 +1,10 @@
-import { Flex, VStack } from '@chakra-ui/react';
-import { SecondaryNavbar } from '@components/common';
+import { VStack } from '@chakra-ui/react';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { PageContentWrapper } from '@ifixit/ui';
-import {
-   ProductList,
-   ProductListSectionType,
-   ProductListType,
-} from '@models/product-list';
+import { ProductList, ProductListSectionType } from '@models/product-list';
 import { Configure, Index } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
-import { ProductListBreadcrumb } from './ProductListBreadcrumb';
-import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
+import { SecondaryNavigation } from './SecondaryNavigation';
 import {
    BannerSection,
    FeaturedProductListSection,
@@ -31,50 +25,10 @@ export function ProductListView({
    indexName,
 }: ProductListViewProps) {
    const filters = computeProductListAlgoliaFilterPreset(productList);
-   const isToolPage =
-      productList.type === ProductListType.AllTools ||
-      productList.type === ProductListType.ToolsCategory;
 
    return (
       <>
-         <SecondaryNavbar
-            display={{
-               base: isToolPage ? 'none' : 'initial',
-            }}
-         >
-            <PageContentWrapper h="full">
-               <Flex
-                  h="full"
-                  w="full"
-                  boxSizing="border-box"
-                  justify="space-between"
-               >
-                  <ProductListBreadcrumb
-                     display={{
-                        base: 'none',
-                        sm: 'flex',
-                     }}
-                     productList={productList}
-                  />
-                  <ProductListDeviceNavigation
-                     productList={productList}
-                     hidden={isToolPage}
-                  />
-               </Flex>
-            </PageContentWrapper>
-         </SecondaryNavbar>
-         <SecondaryNavbar
-            display={{
-               base: 'initial',
-               sm: !isToolPage ? 'none' : 'initial',
-            }}
-         >
-            <PageContentWrapper h="full">
-               <Flex h="full" w="full" boxSizing="border-box">
-                  <ProductListBreadcrumb productList={productList} />
-               </Flex>
-            </PageContentWrapper>
-         </SecondaryNavbar>
+         <SecondaryNavigation productList={productList} />
          <PageContentWrapper py="10">
             <VStack align="stretch" spacing="12">
                <Index indexName={indexName}>
