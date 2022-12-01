@@ -37,6 +37,9 @@ query findProduct($handle: String) {
       ) {
          value
       }
+      redirectUrl: metafield(namespace: "ifixit", key: "redirect_url") {
+         value
+      }
       replacementGuides: metafield(
          namespace: "ifixit"
          key: "replacement_guides"
