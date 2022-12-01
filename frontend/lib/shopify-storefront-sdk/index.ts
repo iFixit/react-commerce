@@ -1,8 +1,7 @@
 import { SHOPIFY_STOREFRONT_VERSION } from '@config/env';
-import { getSdk, Requester } from './generated/sdk';
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
-import { sentryFetch } from '@ifixit/sentry';
+import { getSdk, Requester } from './generated/sdk';
 export * from './generated/sdk';
 
 export type ShopCredentials = {
@@ -15,7 +14,7 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
       doc: string,
       variables: V
    ): Promise<R> => {
-      const response = await sentryFetch(
+      const response = await fetch(
          `https://${shop.shopDomain}/api/${SHOPIFY_STOREFRONT_VERSION}/graphql.json`,
          {
             method: 'POST',

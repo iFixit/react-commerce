@@ -1,5 +1,3 @@
-import { sentryFetch } from '@ifixit/sentry';
-
 export interface Post {
    id: number;
    title: string;
@@ -17,7 +15,7 @@ export async function fetchPosts(
    tags: string[],
    ifixitOrigin: string
 ): Promise<Post[]> {
-   const response = await sentryFetch(
+   const response = await fetch(
       `${ifixitOrigin}/api/2.0/related_posts?data=${encodeURIComponent(
          JSON.stringify({ tags })
       )}`

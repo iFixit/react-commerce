@@ -23,7 +23,6 @@ export function useUpdateLineItemQuantity() {
                body: JSON.stringify({
                   quantity: input.quantity,
                }),
-               disableSentry: true,
             }
          );
       },
