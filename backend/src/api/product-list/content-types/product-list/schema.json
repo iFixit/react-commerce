@@ -114,8 +114,7 @@
             }
          },
          "type": "boolean",
-         "default": false,
-         "required": false
+         "default": false
       },
       "excludeFromHierarchyDisplay": {
          "pluginOptions": {
