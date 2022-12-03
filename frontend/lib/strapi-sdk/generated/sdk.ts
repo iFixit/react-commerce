@@ -2690,6 +2690,7 @@ export type GetProductListQuery = {
             metaDescription?: string | null;
             metaTitle?: string | null;
             filters?: string | null;
+            forceNoindex?: boolean | null;
             childrenHeading?: string | null;
             image?: {
                __typename?: 'UploadFileEntityResponse';
@@ -3166,6 +3167,7 @@ export const GetProductListDocument = `
         metaDescription
         metaTitle
         filters
+        forceNoindex
         image {
           data {
             attributes {

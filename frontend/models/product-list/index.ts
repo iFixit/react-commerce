@@ -105,6 +105,7 @@ export async function findProductList(
       metaDescription: productList?.metaDescription ?? null,
       metaTitle: productList?.metaTitle ?? null,
       filters: productList?.filters ?? null,
+      forceNoindex: productList?.forceNoindex ?? null,
       image: null,
       ancestors,
       // Strapi sort order is case sensitive, so we need to improve on it in memory
@@ -128,7 +129,7 @@ export async function findProductList(
          apiKey: algoliaApiKey,
       },
       wikiInfo: deviceWiki?.info || [],
-      forceNoIndex: !productList,
+      isOnStrapi: !!productList,
    };
 
    return {
