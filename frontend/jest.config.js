@@ -7,11 +7,15 @@ module.exports = {
       '\\.(gif|ttf|jpeg|eot|svg|png)$':
          '<rootDir>/test/jest/__mocks__/fileMock.js',
       // Handle module aliases
+      '@assets(.+)': '<rootDir>/assets/$1',
       '@components(.+)': '<rootDir>/components/$1',
       '@templates(.+)': '<rootDir>/templates/$1',
       '@helpers(.+)': '<rootDir>/helpers/$1',
       '@config(.+)': '<rootDir>/config/$1',
+      '@layouts(.+)': '<rootDir>/layouts/$1',
       '@lib(.+)': '<rootDir>/lib/$1',
+      '@models(.+)': '<rootDir>/models/$1',
+      '@public(.+)': '<rootDir>/public/$1',
    },
    setupFilesAfterEnv: ['<rootDir>/test/jest/jest-setup.ts'],
    testPathIgnorePatterns: ['<rootDir>/(node_modules|.next|test/cypress)/'],
