@@ -1,30 +1,33 @@
 import { render, screen } from '@testing-library/react';
 import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
-import * as ProductSearch from '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing';
-import * as UserPrice from '@ifixit/ui/commerce/hooks/useUserPrice';
 import { mockProduct } from 'test/jest/__mocks__/mockProduct';
 
-jest.mock('@ifixit/app');
+jest.mock(
+   '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing',
+   () => ({
+      ...jest.requireActual(
+         '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing'
+      ),
+      useProductSearchHitPricing: jest.fn(() => {
+         return {
+            price: { amount: 5, currencyCode: 'usd' },
+            compareAtPrice: { amount: 5, currencyCode: 'usd' },
+            isDiscounted: 5,
+            percentage: 5,
+         };
+      }),
+   })
+);
 
-describe('ProductListItem', () => {
-   beforeEach(() => {
-      // @ts-ignore
-      ProductSearch.useProductSearchHitPricing = jest.fn().mockReturnValue({
+jest.mock('@ifixit/ui/commerce/hooks/useUserPrice', () => ({
+   ...jest.requireActual('@ifixit/ui/commerce/hooks/useUserPrice'),
+   useUserPrice: jest.fn(() => {
+      return {
          price: { amount: 5, currencyCode: 'usd' },
          compareAtPrice: { amount: 5, currencyCode: 'usd' },
-         isDiscounted: 5,
-         percentage: 5,
-      });
-      // @ts-ignore: Assigning to a read-only property
-      UserPrice.useUserPrice = jest.fn().mockReturnValue({
-         price: { amount: 5, currencyCode: 'usd' },
-         compareAtPrice: { amount: 5, currencyCode: 'usd' },
-      });
-   });
-
-   afterEach(() => {
-      jest.clearAllMocks();
-   });
+      };
+   }),
+}));
 
    it('renders and matches the snapshot', () => {
       // @ts-ignore
