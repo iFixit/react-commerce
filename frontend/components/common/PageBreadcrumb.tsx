@@ -112,6 +112,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                fontSize="sm"
                noOfLines={1}
                display="inline-block"
+               whiteSpace="nowrap"
                borderRadius="sm"
                cursor="auto"
                px="1"
