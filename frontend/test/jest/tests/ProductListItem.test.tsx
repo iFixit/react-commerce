@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { renderWithAppContext } from '../utils';
+import { screen } from '@testing-library/react';
 import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
 import { mockProduct } from 'test/jest/__mocks__/mockProduct';
 
@@ -29,9 +30,12 @@ jest.mock('@ifixit/ui/commerce/hooks/useUserPrice', () => ({
    }),
 }));
 
+describe('ProductListItem', () => {
    it('renders and matches the snapshot', () => {
       // @ts-ignore
-      const { asFragment } = render(<ProductListItem product={mockProduct} />);
+      const { asFragment } = renderWithAppContext(
+         <ProductListItem product={mockProduct} />
+      );
       const shortDescription = screen.getByText(
          'Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.'
       );
@@ -46,7 +50,7 @@ jest.mock('@ifixit/ui/commerce/hooks/useUserPrice', () => ({
       mockProduct.rating_count = 9;
 
       // @ts-ignore
-      render(<ProductListItem product={mockProduct} />);
+      renderWithAppContext(<ProductListItem product={mockProduct} />);
 
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).not.toBeInTheDocument();
@@ -59,7 +63,9 @@ jest.mock('@ifixit/ui/commerce/hooks/useUserPrice', () => ({
       mockProduct.rating = 1;
       mockProduct.rating_count = 15;
       // @ts-ignore
-      const { rerender } = render(<ProductListItem product={mockProduct} />);
+      const { rerender } = renderWithAppContext(
+         <ProductListItem product={mockProduct} />
+      );
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).toBeInTheDocument();
 
