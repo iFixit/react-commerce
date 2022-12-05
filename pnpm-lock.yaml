@@ -98,6 +98,7 @@ importers:
       identity-obj-proxy: 3.0.0
       immer: 9.0.14
       jest: 28.1.2
+      jest-css-modules-transform: ^4.4.2
       jest-environment-jsdom: 28.1.2
       jest-watch-typeahead: 1.1.0
       lodash: 4.17.21
@@ -208,6 +209,7 @@ importers:
       graphqurl: 1.0.1_vgajgqmf7vdik5dur3uiriunbe
       identity-obj-proxy: 3.0.0
       jest: 28.1.2_@types+node@14.14.25
+      jest-css-modules-transform: 4.4.2
       jest-environment-jsdom: 28.1.2
       jest-watch-typeahead: 1.1.0_jest@28.1.2
       next-transpile-modules: 9.0.0
@@ -8308,6 +8310,12 @@ packages:
       source-map-resolve: 0.6.0
     dev: true
 
+  /cssesc/3.0.0:
+    resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
+    engines: {node: '>=4'}
+    hasBin: true
+    dev: true
+
   /csso/4.2.0:
     resolution: {integrity: sha512-wvlcdIbf6pwKEk7vHj8/Bkc0B4ylXZruLvOgs9doS5eOsOpuodOV2zJChSpkp+pRpYQLQMeF04nr3Z68Sta9jA==}
     engines: {node: '>=8.0.0'}
@@ -11005,6 +11013,15 @@ packages:
       - supports-color
     dev: true
 
+  /jest-css-modules-transform/4.4.2:
+    resolution: {integrity: sha512-qsUVOcY26chaFMJNMVrFYJBtYvPt1TImi9FWGaVycfsP6xnFW2HlnKRdZdKdg2LVVBv2Q9M4aLv7IbxPSXqPmg==}
+    engines: {node: '>=10.0.0'}
+    dependencies:
+      camelcase: 6.3.0
+      postcss: 8.4.14
+      postcss-nested: 5.0.6_postcss@8.4.14
+    dev: true
+
   /jest-diff/27.5.1:
     resolution: {integrity: sha512-m0NvkX55LDt9T4mctTEgnZk3fmEg3NRYutvMPWM/0iPnkFj2wIeF45O1718cMSOFO1vINkqmxqD8vE37uTEbqw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -12996,6 +13013,24 @@ packages:
       hey-listen: 1.0.8
       style-value-types: 5.0.0
       tslib: 2.4.0
+
+  /postcss-nested/5.0.6_postcss@8.4.14:
+    resolution: {integrity: sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.2.14
+    dependencies:
+      postcss: 8.4.14
+      postcss-selector-parser: 6.0.11
+    dev: true
+
+  /postcss-selector-parser/6.0.11:
+    resolution: {integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==}
+    engines: {node: '>=4'}
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+    dev: true
 
   /postcss/8.4.14:
     resolution: {integrity: sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig==}
@@ -15105,7 +15140,6 @@ packages:
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-    dev: false
 
   /util.promisify/1.0.1:
     resolution: {integrity: sha512-g9JpC/3He3bm38zsLupWryXHoEcS22YHthuPQSJdMy6KNrzIRzWqcsHzD/WUnqe45whVou4VIsPew37DoXWNrA==}

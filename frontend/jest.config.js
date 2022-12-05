@@ -22,11 +22,9 @@ module.exports = {
    testEnvironment: 'jsdom',
    transform: {
       '\\.[jt]sx?$': ['babel-jest', { presets: ['next/babel'] }],
+      '.+\\.(css|style|less|sass|scss)$': 'jest-css-modules-transform',
    },
-   transformIgnorePatterns: [
-      '/node_modules/',
-      '^.+\\.module\\.(css|sass|scss)$',
-   ],
+   transformIgnorePatterns: [],
    watchPlugins: [
       'jest-watch-typeahead/filename',
       'jest-watch-typeahead/testname',
