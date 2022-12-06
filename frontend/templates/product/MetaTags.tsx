@@ -57,7 +57,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                store.locales || (store.locale ? [store.locale] : []);
             return locales.map((locale) => (
                <link
-                  key={store.domain}
+                  key={`${store.domain}-${locale}`}
                   rel="alternate"
                   hrefLang={locale}
                   href={`${store.domain}/products/${product.handle}`}
