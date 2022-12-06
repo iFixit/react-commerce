@@ -438,9 +438,12 @@ function CrossSellItem({
                         >
                            <FaIcon
                               icon={faCircleCheck}
-                              color={isSelected ? 'brand.500' : 'gray.300'}
+                              color={isSelected ? 'brand.500' : 'gray.300'}                        
                               h="6"
                               transition="color 300ms"
+                              _hover={ isSelected ? {color: 'gray.300'} :
+                                 {color: 'brand.500'}
+                              }
                            />
                         </Center>
                      </Box>
