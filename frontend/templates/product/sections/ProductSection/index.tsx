@@ -203,40 +203,9 @@ export function ProductSection({
                      </CustomAccordionPanel>
                   </AccordionItem>
 
-                  <AccordionItem
-                     hidden={selectedVariant.specifications == null}
-                  >
-                     <CustomAccordionButton>
-                        Specifications
-                     </CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <Box
-                           dangerouslySetInnerHTML={{
-                              __html: selectedVariant.specifications ?? '',
-                           }}
-                           fontSize="sm"
-                           sx={{
-                              table: {
-                                 display: 'flex',
-                                 p: 1.5,
-                              },
-                              tbody: {
-                                 w: 'full',
-                              },
-                              tr: {
-                                 display: 'flex',
-                                 flexDirection: 'column',
-                                 borderTopWidth: '1px',
-                                 borderTopColor: 'gray.200',
-                                 py: 2,
-                              },
-                              th: {
-                                 textAlign: 'left',
-                              },
-                           }}
-                        />
-                     </CustomAccordionPanel>
-                  </AccordionItem>
+                  <WikiHtmlAccordianItem title="Specifications">
+                     {selectedVariant.specifications}
+                  </WikiHtmlAccordianItem>
                </Accordion>
 
                <VariantWarranty variant={selectedVariant} mt="5" />
@@ -407,6 +376,23 @@ function WikiHtmlAccordianItem({
                      },
                      'a:hover': {
                         color: 'brand.600',
+                     },
+                     table: {
+                        display: 'flex',
+                        p: 1.5,
+                     },
+                     tbody: {
+                        w: 'full',
+                     },
+                     tr: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        borderTopWidth: '1px',
+                        borderTopColor: 'gray.200',
+                        py: 2,
+                     },
+                     th: {
+                        textAlign: 'left',
                      },
                   }}
                   dangerouslySetInnerHTML={{
