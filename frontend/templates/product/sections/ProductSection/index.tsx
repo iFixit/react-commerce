@@ -18,7 +18,6 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { CompatibleDevice } from '@components/common';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
@@ -26,7 +25,6 @@ import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
-import NextLink from 'next/link';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { AddToCart, isVariantWithSku } from './AddToCart';
@@ -39,6 +37,7 @@ import { Prop65Warning } from './Prop65Warning';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { InternationalBuyBox } from './InternationalBuyBox';
 import { ProductDescription } from './ProductDescription';
+import { CompatibleDevices } from './CompatibleDevices';
 
 export type ProductSectionProps = {
    product: Product;
@@ -66,16 +65,6 @@ export function ProductSection({
    );
    const isForSale = useIsProductForSale(product);
 
-   const compatibilityDrawerModelsTruncate = 4;
-   const compatibilityDrawerDeviceTruncate = 3;
-   const compatibilityDrawerIncomplete =
-      product.compatibility &&
-      (product.compatibility.devices.length >
-         compatibilityDrawerDeviceTruncate ||
-         product.compatibility.devices.some(
-            (currentValue) =>
-               currentValue.variants.length > compatibilityDrawerModelsTruncate
-         ));
    return (
       <PageContentWrapper as="section">
          <Flex px={{ base: 5, sm: 0 }}>
@@ -210,43 +199,7 @@ export function ProductSection({
                         Compatibility
                      </CustomAccordionButton>
                      <CustomAccordionPanel>
-                        {product.compatibility?.devices
-                           .slice(0, 3)
-                           .map((device, index) => (
-                              <NextLink
-                                 key={index}
-                                 href={device.deviceUrl}
-                                 passHref
-                              >
-                                 <chakra.a
-                                    role="group"
-                                    display="flex"
-                                    alignItems="flex-start"
-                                    transition="all 300m"
-                                    mb="6px"
-                                 >
-                                    <CompatibleDevice
-                                       device={device}
-                                       truncate={
-                                          compatibilityDrawerModelsTruncate
-                                       }
-                                    />
-                                 </chakra.a>
-                              </NextLink>
-                           ))}
-
-                        {compatibilityDrawerIncomplete ? (
-                           <NextLink href="#compatibility" passHref>
-                              <Link
-                                 mt={3}
-                                 display="block"
-                                 fontWeight="medium"
-                                 color="brand.500"
-                              >
-                                 See all compatible devices
-                              </Link>
-                           </NextLink>
-                        ) : null}
+                        <CompatibleDevices product={product} />
                      </CustomAccordionPanel>
                   </AccordionItem>
 
