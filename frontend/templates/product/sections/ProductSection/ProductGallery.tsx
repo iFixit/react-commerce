@@ -35,6 +35,14 @@ export function ProductGallery({
    onChangeImage,
 }: ProductGalleryProps) {
    const variantImages = useVariantImages(product, selectedVariant.id);
+   const innerEnableZoom = React.useMemo(
+      () =>
+         enableZoom &&
+         !product.images.find(
+            ({ width, height }) => !width || !height || width * height < 1e6
+         ),
+      [product, enableZoom]
+   );
    const selectedImageIndex = useCurrentImageIndex(
       variantImages,
       selectedImageId
@@ -94,7 +102,7 @@ export function ProductGallery({
                      <ImageWithZoom
                         index={index}
                         image={variantImage}
-                        enableZoom={enableZoom}
+                        enableZoom={innerEnableZoom}
                      />
                   </SwiperSlide>
                ))}
@@ -103,7 +111,7 @@ export function ProductGallery({
             <ImageWithZoom
                index={0}
                image={variantImages[0]}
-               enableZoom={enableZoom}
+               enableZoom={innerEnableZoom}
             />
          ) : (
             <ImagePlaceholder />
@@ -289,7 +297,7 @@ type Image = {
    height?: number | null;
 };
 
-type ImageProps = {
+type ImageWithZoomProps = {
    index: number;
    image: Image;
    enableZoom?: boolean;
@@ -298,7 +306,7 @@ type ImageProps = {
 const ZOOM_FACTOR = 3;
 const CONTAINER_PADDING = 24;
 
-function ImageWithZoom({ index, image, enableZoom }: ImageProps) {
+function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
    const [show, setShow] = React.useState(false);
    const [dimensionData, setDimensionData] = React.useState<DimensionData>({
       zoomMaskAspectRatio: 1,
