@@ -87,6 +87,7 @@ export function ProductSection({
                   enableZoom
                   onChangeImage={setSelectedImageId}
                />
+
                <Box
                   id="zoom-container"
                   position="absolute"
@@ -101,6 +102,7 @@ export function ProductSection({
                   borderRadius="md"
                />
             </Flex>
+
             <Box
                w={{
                   base: 'full',
@@ -119,7 +121,9 @@ export function ProductSection({
                      Item # {selectedVariant.sku}
                   </Text>
                )}
+
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
+
                {isForSale && (
                   <ProductVariantPrice
                      price={selectedVariant.price}
@@ -127,7 +131,9 @@ export function ProductSection({
                      proPricesByTier={selectedVariant.proPricesByTier}
                   />
                )}
+
                {isForSale && <ProductRating product={product} />}
+
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}
@@ -142,6 +148,7 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
+
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&
                   (internationalBuyBox ? (
@@ -155,12 +162,15 @@ export function ProductSection({
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
+
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
+
                {isForSale && (
                   <BuyBoxPropositionSection selectedVariant={selectedVariant} />
                )}
+
                <Accordion
                   defaultIndex={[0, 1]}
                   allowMultiple
@@ -186,9 +196,11 @@ export function ProductSection({
                   <WikiHtmlAccordianItem title="Kit contents">
                      {selectedVariant.kitContents}
                   </WikiHtmlAccordianItem>
+
                   <WikiHtmlAccordianItem title="Assembly contents">
                      {selectedVariant.assemblyContents}
                   </WikiHtmlAccordianItem>
+
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -217,6 +229,7 @@ export function ProductSection({
                         chemicals={product.prop65Chemicals}
                      />
                   )}
+
                   <ProductVideos product={product} />
                </VStack>
             </Box>
@@ -318,6 +331,7 @@ function NotForSaleAlert(props: AlertProps) {
             mr="2.5"
             color="orange.500"
          />
+
          <Box fontSize="sm">
             <p>Product available for pro users only.</p>
             <p>
