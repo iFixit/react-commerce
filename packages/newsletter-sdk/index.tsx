@@ -1,7 +1,6 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
-import { useAppContext } from '@ifixit/app';
 import { isError } from '@ifixit/helpers';
-import { sentryFetch } from '@ifixit/sentry';
+import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import * as React from 'react';
 
 /**
@@ -25,7 +24,7 @@ export interface SubscribeFn {
 }
 
 export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
-   const appContext = useAppContext();
+   const client = useIFixitApiClient();
    const [state, setState] = React.useState<Subscription>({
       status: SubscriptionStatus.Idle,
    });
@@ -37,7 +36,9 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             status: SubscriptionStatus.Subscribing,
          }));
          try {
-            await subscribeToNewsletter(appContext.ifixitOrigin, email);
+            await client.post('cart/newsletter/subscribe', {
+               body: JSON.stringify({ email }),
+            });
             setState(() => ({
                status: SubscriptionStatus.Subscribed,
                error: undefined,
@@ -49,7 +50,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
          } catch (error) {
             let message: string;
             if (isError(error)) {
-               message = error.message;
+               message = 'Error trying to subscribe to newsletter.';
             }
             setState(() => ({
                status: SubscriptionStatus.Idle,
@@ -65,28 +66,4 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
    }, []);
 
    return [state, subscribe];
-}
-
-/**
- * Subscribe an email to the newsletter
- * @param email The email to subscribe
- */
-export async function subscribeToNewsletter(
-   apiOrigin: string,
-   email: string
-): Promise<void> {
-   const response = await sentryFetch(
-      `${apiOrigin}/api/2.0/cart/newsletter/subscribe`,
-      {
-         method: 'POST',
-         body: JSON.stringify({
-            email,
-         }),
-      }
-   );
-   if (response.status >= 300) {
-      const error = await response.text();
-      console.error('Subscribe to newsletter error:', error);
-      throw new Error('Error trying to subscribe to newsletter.');
-   }
 }

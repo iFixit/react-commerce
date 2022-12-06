@@ -4,7 +4,6 @@ import {
    Flex,
    HStack,
    Image,
-   Img,
    Select,
    SimpleGrid,
    Text,
@@ -15,6 +14,7 @@ import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import type { Product } from '@models/product';
 import * as React from 'react';
 import { FaIcon } from '@ifixit/icons';
+import { ResponsiveImage } from '@ifixit/ui';
 
 export type ProductOptionsProps = {
    product: Product;
@@ -247,6 +247,7 @@ type ProductOptionImageProps = {
 };
 
 function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
+   const theme = useTheme();
    if (!image) {
       return (
          <Flex
@@ -267,35 +268,12 @@ function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
          </Flex>
       );
    }
-   const ratio =
-      image.width != null && image.height != null
-         ? image.width / image.height
-         : null;
 
-   if (ratio == null) {
-      return (
-         <Img
-            h="16"
-            src={image.url}
-            alt=""
-            objectFit="contain"
-            opacity={exactMatch ? 1 : 0.4}
-         />
-      );
-   }
    return (
-      <Box
-         h="16"
-         position="relative"
-         overflow="hidden"
-         mb="1"
-         opacity={exactMatch ? 1 : 0.4}
-      >
-         <Img
-            w="auto"
-            maxH="full"
-            maxW="full"
-            mx="auto"
+      <Box h="16" position="relative" mb="1" opacity={exactMatch ? 1 : 0.4}>
+         <ResponsiveImage
+            height={64 /* chakra theme sizes.16 = 4em == 70 */}
+            width={64}
             src={image.url}
             alt=""
             objectFit="contain"

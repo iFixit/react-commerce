@@ -440,8 +440,10 @@ function parseOemPartnership(
 
 const EnabledDomainsSchema = z
    .object({
+      code: z.string(),
       domain: z.string().url(),
-      locale: z.string(),
+      locale: z.string().optional(),
+      locales: z.string().array().optional(),
    })
    .array()
    .optional()

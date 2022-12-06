@@ -1,14 +1,13 @@
 import { STRAPI_ORIGIN } from '@config/env';
-import { sentryFetch } from '@ifixit/sentry';
-import { getSdk, Requester } from './generated/sdk';
 import * as Sentry from '@sentry/nextjs';
+import { getSdk, Requester } from './generated/sdk';
 export * from './generated/sdk';
 
 const requester: Requester = async <R, V>(
    doc: string,
    variables: V
 ): Promise<R> => {
-   const response = await sentryFetch(`${STRAPI_ORIGIN}/graphql`, {
+   const response = await fetch(`${STRAPI_ORIGIN}/graphql`, {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',

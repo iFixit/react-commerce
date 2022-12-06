@@ -107,10 +107,15 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
+      context.res.setHeader(
+         'Cache-Control',
+         'public, s-maxage=60, stale-while-revalidate=600'
+      );
+
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
-      const layoutProps = await getLayoutServerSideProps({
+      const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
       });
       const product = await findProduct({
@@ -129,8 +134,27 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
       }
 
+      const codeToDomain =
+         product.enabledDomains?.reduce((acc, { code, domain }) => {
+            acc[code] = domain;
+            return acc;
+         }, {} as Record<string, string>) ?? {};
+      const storesWithProductUrls = stores.map((store) => {
+         const domain =
+            store.code === DEFAULT_STORE_CODE
+               ? new URL(store.url).origin
+               : codeToDomain[store.code];
+         if (domain) {
+            store.url = `${domain}/products/${product.handle}`;
+         }
+         return store;
+      });
+
       const pageProps: ProductTemplateProps = {
-         layoutProps,
+         layoutProps: {
+            ...otherLayoutProps,
+            stores: storesWithProductUrls,
+         },
          appProps: {
             ifixitOrigin: ifixitOriginFromHost(context),
          },

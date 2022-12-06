@@ -402,6 +402,7 @@ importers:
       '@ifixit/analytics': workspace:*
       '@ifixit/app': workspace:*
       '@ifixit/helpers': workspace:*
+      '@ifixit/ifixit-api-client': workspace:*
       '@ifixit/sentry': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 17.0.37
@@ -411,6 +412,7 @@ importers:
       '@ifixit/analytics': link:../analytics
       '@ifixit/app': link:../app
       '@ifixit/helpers': link:../helpers
+      '@ifixit/ifixit-api-client': link:../ifixit-api-client
       '@ifixit/sentry': link:../sentry
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
