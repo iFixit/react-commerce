@@ -1,4 +1,4 @@
-import { constants } from 'test/cypress/support/constants';
+import { constants } from 'tests/cypress/support/constants';
 
 describe('parts page search', () => {
    beforeEach(() => {

@@ -5,7 +5,7 @@ module.exports = {
       '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
       // Handle image imports
       '\\.(gif|ttf|jpeg|eot|svg|png)$':
-         '<rootDir>/test/jest/__mocks__/fileMock.js',
+         '<rootDir>/tests/jest/__mocks__/fileMock.js',
       // Handle module aliases
       '@components(.+)': '<rootDir>/components/$1',
       '@templates(.+)': '<rootDir>/templates/$1',
@@ -13,8 +13,8 @@ module.exports = {
       '@config(.+)': '<rootDir>/config/$1',
       '@lib(.+)': '<rootDir>/lib/$1',
    },
-   setupFilesAfterEnv: ['<rootDir>/test/jest/jest-setup.ts'],
-   testPathIgnorePatterns: ['<rootDir>/(node_modules|.next|test/cypress)/'],
+   setupFilesAfterEnv: ['<rootDir>/tests/jest/jest-setup.ts'],
+   testPathIgnorePatterns: ['<rootDir>/(node_modules|.next|tests/cypress)/'],
    testEnvironment: 'jsdom',
    transform: {
       '\\.[jt]sx?$': ['babel-jest', { presets: ['next/babel'] }],
