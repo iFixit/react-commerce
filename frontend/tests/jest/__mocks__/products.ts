@@ -1,6 +1,8 @@
-export const mockProduct = {
+import { ProductSearchHit } from '@models/product-list';
+
+export const mockedProductSearchHit: ProductSearchHit = {
+   sku: 'IF-313-1233',
    category: ['Batteries'],
-   compare_at_price: null,
    description:
       'Replace a dead or malfunctioning model EB-BG965ABE battery in a Samsung Galaxy S9 Plus smartphone.',
    device: [

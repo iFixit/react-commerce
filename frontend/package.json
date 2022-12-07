@@ -116,6 +116,7 @@
       "graphqurl": "1.0.1",
       "identity-obj-proxy": "3.0.0",
       "jest": "28.1.2",
+      "jest-css-modules-transform": "^4.4.2",
       "jest-environment-jsdom": "28.1.2",
       "jest-watch-typeahead": "1.1.0",
       "next-transpile-modules": "9.0.0",
