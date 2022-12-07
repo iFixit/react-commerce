@@ -38,3 +38,6 @@ tests/cypress/screenshots
 
 # Sentry
 .sentryclirc
+/test-results/
+/playwright-report/
+/playwright/.cache/
