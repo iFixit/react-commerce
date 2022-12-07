@@ -109,7 +109,6 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       enabledDomains: parseEnabledDomains(
          response.product.enabledDomains?.value
       ),
-      redirectUrl: response.product.redirectUrl?.value ?? null,
    };
 }
 
