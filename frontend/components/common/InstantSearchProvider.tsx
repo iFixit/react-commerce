@@ -51,43 +51,17 @@ export function InstantSearchProvider({
    apiKey,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
-   const historyChangeCount = React.useRef(0);
    cypressWindowLog({ userLoaded: user.isFetched });
+
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);
-
    const algoliaClient = React.useMemo(() => {
       return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey, CLIENT_OPTIONS);
    }, [algoliaApiKey]);
 
-   const router = useRouter();
+   const resetKey = useSearchStateForceResetKey();
+
    const facets = useFacets();
-
-   // Currently, Algolia routing does not play well with Next.js routing, since Next.js
-   // is not aware of url changes that happens without interacting with its builtin router.
-   // To make popstate work (i.e. whenever the browser back button is pressed), we do a
-   // a full page reload as a workaround.
-   // This should be only a temporary workaround until Algolia routing is fixed.
-   useSafeLayoutEffect(() => {
-      const handleRouteChange = () => {
-         // When the back button is pressed, the popstate event is fired, and
-         // Algolia tries to re-render the page (although in a broken state).
-         // To avoid seeing this broken re-render we hide the page while we wait for
-         // the page to be reloaded.
-         window.document.body.hidden = true;
-         window.location.reload();
-      };
-      const beforeHistoryChange = () => {
-         historyChangeCount.current++;
-      };
-      window.addEventListener('popstate', handleRouteChange);
-      router.events.on('beforeHistoryChange', beforeHistoryChange);
-
-      return () => {
-         window.removeEventListener('popstate', handleRouteChange);
-         router.events.off('beforeHistoryChange', beforeHistoryChange);
-      };
-   }, [router]);
 
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
@@ -268,7 +242,7 @@ export function InstantSearchProvider({
             searchClient={algoliaClient}
             indexName={indexName}
             routing={routing}
-            key={historyChangeCount.current}
+            key={resetKey}
          >
             <RefreshSearchResults
                apiKey={algoliaApiKey}
@@ -314,3 +288,35 @@ function getBaseOrigin(location: Location): string {
    }
    return location.origin;
 }
+
+const useSearchStateForceResetKey = () => {
+   const router = useRouter();
+   const historyChangeCount = React.useRef(0);
+   // Currently, Algolia routing does not play well with Next.js routing, since Next.js
+   // is not aware of url changes that happens without interacting with its builtin router.
+   // To make popstate work (i.e. whenever the browser back button is pressed), we do a
+   // a full page reload as a workaround.
+   // This should be only a temporary workaround until Algolia routing is fixed.
+   useSafeLayoutEffect(() => {
+      const handleRouteChange = () => {
+         // When the back button is pressed, the popstate event is fired, and
+         // Algolia tries to re-render the page (although in a broken state).
+         // To avoid seeing this broken re-render we hide the page while we wait for
+         // the page to be reloaded.
+         window.document.body.hidden = true;
+         window.location.reload();
+      };
+      const beforeHistoryChange = () => {
+         historyChangeCount.current++;
+      };
+      window.addEventListener('popstate', handleRouteChange);
+      router.events.on('beforeHistoryChange', beforeHistoryChange);
+
+      return () => {
+         window.removeEventListener('popstate', handleRouteChange);
+         router.events.off('beforeHistoryChange', beforeHistoryChange);
+      };
+   }, [router]);
+
+   return historyChangeCount.current;
+};

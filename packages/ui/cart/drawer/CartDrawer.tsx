@@ -43,6 +43,14 @@ import { useIsMounted } from '../../hooks';
 import { CartLineItem } from './CartLineItem';
 import { useCartDrawer } from './hooks/useCartDrawer';
 
+// This is a temporary type fix for Framer Motion since
+// React 18 typings breaks FC which Framer Motion relies on.
+declare module 'framer-motion' {
+   export interface AnimatePresenceProps {
+      children?: React.ReactNode;
+   }
+}
+
 export function CartDrawer() {
    const appContext = useAppContext();
    const { isOpen, onOpen, onClose, onViewCart } = useCartDrawer();
