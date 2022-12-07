@@ -93,13 +93,13 @@ export function CrossSellSection({
       return {
          handle: product.handle,
          title: product.title,
-         rating: product?.rating?.value,
-         reviewsCount: product?.reviewsCount,
+         rating: product.rating?.value,
+         reviewsCount: product.reviewsCount,
       };
    }, [
       product.handle,
-      product?.rating?.value,
-      product?.reviewsCount,
+      product.rating?.value,
+      product.reviewsCount,
       product.title,
    ]);
 
