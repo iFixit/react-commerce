@@ -424,7 +424,7 @@ function CrossSellItem({
                               event.stopPropagation();
                            }}
                            onKeyDown={(event) => {
-                              if (['Enter'].includes(event.code)) {
+                              if ('Enter' === event.code) {
                                  onChange(!isSelected);
                                  event.preventDefault();
                                  event.stopPropagation();
