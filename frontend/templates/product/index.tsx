@@ -11,6 +11,7 @@ import {
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
@@ -126,6 +127,16 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       if (product == null) {
          return {
             notFound: true,
+         };
+      }
+
+      if (product.redirectUrl) {
+         const query = new URL(urlFromContext(context)).search;
+         return {
+            redirect: {
+               destination: `${product.redirectUrl}${query}`,
+               permanent: true,
+            },
          };
       }
 
