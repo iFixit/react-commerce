@@ -97,7 +97,7 @@ export function CrossSellSection({
          reviewsCount: product?.reviewsCount,
       };
    }, [
-      product?.handle,
+      product.handle,
       product?.rating?.value,
       product?.reviewsCount,
       product.title,
@@ -265,6 +265,7 @@ export function CrossSellSection({
                         </Box>
                      </Box>
                      <Button
+                        disabled={!selectedCrossSellVariantIds.length}
                         colorScheme="brand"
                         minW="240px"
                         onClick={handleAddToCart}
