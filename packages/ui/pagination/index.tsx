@@ -17,7 +17,7 @@ import { usePagination, UsePagination } from './usePagination';
 const PaginationContext = React.createContext<UsePagination | null>(null);
 
 export interface PaginationProps
-   extends Omit<HTMLChakraProps<'nav'>, 'onChange'>,
+   extends Omit<HTMLChakraProps<'nav'>, 'onChange' | 'children'>,
       ThemingProps<'Pagination'> {
    numberOfPages: number;
    defaultPage?: number;

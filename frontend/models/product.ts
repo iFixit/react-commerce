@@ -442,8 +442,7 @@ const EnabledDomainsSchema = z
    .object({
       code: z.string(),
       domain: z.string().url(),
-      locale: z.string().optional(),
-      locales: z.string().array().optional(),
+      locales: z.string().array(),
    })
    .array()
    .optional()

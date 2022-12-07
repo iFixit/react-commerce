@@ -29,6 +29,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { getServerState } from 'react-instantsearch-hooks-server';
 import { ProductListView } from './ProductListView';
+import { renderToString } from 'react-dom/server';
 
 export type ProductListTemplateProps = WithProvidersProps<
    WithLayoutProps<{
@@ -219,7 +220,7 @@ export const getProductListServerSideProps = ({
       );
 
       const serverState = await logAsync('getServerState', () =>
-         getServerState(appMarkup)
+         getServerState(appMarkup, { renderToString })
       );
 
       const pageProps: ProductListTemplateProps = {

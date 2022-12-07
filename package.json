@@ -48,7 +48,6 @@
    },
    "pnpm": {
       "patchedDependencies": {
-         "react-instantsearch-hooks-server@6.32.1": "patches/react-instantsearch-hooks-server@6.32.1.patch",
          "react-lite-yt-embed@1.2.7": "patches/react-lite-yt-embed@1.2.7.patch"
       }
    }

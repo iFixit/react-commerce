@@ -105,6 +105,11 @@ const moduleExports = {
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Store/Tools/Manta-Driver-Kit--112-Bit-Driver-Kit/IF145-392`,
             permanent: false,
          },
+         {
+            source: '/Parts/Over-Ear_Headphone',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Headphone`,
+            permanent: true,
+         },
       ];
    },
    images: {
