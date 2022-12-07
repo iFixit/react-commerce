@@ -21,6 +21,7 @@
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
+      "playwright:run": "playwright test",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {

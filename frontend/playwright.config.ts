@@ -108,10 +108,14 @@ const config: PlaywrightTestConfig = {
    outputDir: 'tests/playwright/test-results/artifacts/',
 
    /* Run your local dev server before starting the tests */
-   // webServer: {
-   //   command: 'npm run start',
-   //   port: 3000,
-   // },
+   webServer: {
+      cwd: '../',
+      command: 'pnpm run dev',
+      port: 3000,
+      timeout: 120 * 1000,
+      /* Reuse the same server if on local dev */
+      reuseExistingServer: !process.env.CI,
+   },
 };
 
 export default config;
