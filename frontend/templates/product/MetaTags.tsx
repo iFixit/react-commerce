@@ -53,9 +53,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
          <meta property="og:url" content={canonicalUrl} />
 
          {product.enabledDomains?.flatMap((store) => {
-            const locales =
-               store.locales || (store.locale ? [store.locale] : []);
-            return locales.map((locale) => (
+            return store.locales.map((locale) => (
                <link
                   key={`${store.domain}-${locale}`}
                   rel="alternate"
