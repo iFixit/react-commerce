@@ -443,9 +443,7 @@ function CrossSellItem({
                               h="6"
                               transition="color 300ms"
                               _hover={
-                                 isSelected
-                                    ? { color: 'gray.300' }
-                                    : { color: 'brand.500' }
+                                 isSelected ? { color: 'brand.700' } : undefined
                               }
                            />
                         </Center>
