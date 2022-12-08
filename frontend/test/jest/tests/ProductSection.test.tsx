@@ -1,7 +1,11 @@
 import { screen } from '@testing-library/react';
-import { mockMatchMedia, renderWithAppContext } from '../utils';
+import {
+   mockMatchMedia,
+   renderWithAppContext,
+   getMockProduct,
+   getMockProductVariant,
+} from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
-import { mockedProduct, mockedProductVariant } from '../__mocks__/products';
 
 jest.mock('@templates/product/hooks/useIsProductForSale');
 
@@ -14,11 +18,10 @@ describe('ProductSection Tests', () => {
       // @ts-ignore
       renderWithAppContext(
          <ProductSection
-            product={mockedProduct}
-            selectedVariant={{
-               ...mockedProductVariant,
+            product={getMockProduct()}
+            selectedVariant={getMockProductVariant({
                description: 'Mocked Product Description',
-            }}
+            })}
             onVariantChange={jest.fn()}
             internationalBuyBox={null}
          />
@@ -31,11 +34,11 @@ describe('ProductSection Tests', () => {
    });
 
    test('note renders', async () => {
-      const productVariant = { ...mockedProductVariant, note: 'Mocked Note' };
+      const productVariant = getMockProductVariant({ note: 'Mocked Note' });
 
       renderWithAppContext(
          <ProductSection
-            product={mockedProduct}
+            product={getMockProduct()}
             selectedVariant={productVariant}
             onVariantChange={jest.fn()}
             internationalBuyBox={null}
@@ -48,14 +51,13 @@ describe('ProductSection Tests', () => {
    });
 
    test('disclaimer renders', async () => {
-      const productVariant = {
-         ...mockedProductVariant,
+      const productVariant = getMockProductVariant({
          disclaimer: 'Mocked Disclaimer',
-      };
+      });
 
       renderWithAppContext(
          <ProductSection
-            product={mockedProduct}
+            product={getMockProduct()}
             selectedVariant={productVariant}
             onVariantChange={jest.fn()}
             internationalBuyBox={null}
@@ -68,14 +70,13 @@ describe('ProductSection Tests', () => {
    });
 
    test('warning renders', async () => {
-      const productVariant = {
-         ...mockedProductVariant,
+      const productVariant = getMockProductVariant({
          warning: 'Mocked Warning',
-      };
+      });
 
       renderWithAppContext(
          <ProductSection
-            product={mockedProduct}
+            product={getMockProduct()}
             selectedVariant={productVariant}
             onVariantChange={jest.fn()}
             internationalBuyBox={null}
@@ -88,16 +89,15 @@ describe('ProductSection Tests', () => {
    });
 
    test('descriptors do not render', async () => {
-      const productVariant = {
-         ...mockedProductVariant,
+      const productVariant = getMockProductVariant({
          note: '',
          warning: '',
          disclaimer: '',
-      };
+      });
 
       renderWithAppContext(
          <ProductSection
-            product={mockedProduct}
+            product={getMockProduct()}
             selectedVariant={productVariant}
             onVariantChange={jest.fn()}
             internationalBuyBox={null}
