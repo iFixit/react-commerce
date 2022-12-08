@@ -2,9 +2,12 @@ import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { AppProviders } from '@components/common';
 import { Product, ProductVariant } from '@models/product';
 import {
+   mockedBatteryProduct,
+   mockedPartProduct,
    mockedProduct,
    mockedProductSearchHit,
    mockedProductVariant,
+   mockedToolProduct,
 } from './__mocks__/products';
 import { ProductSearchHit } from '@models/product-list';
 import { CurrencyCode } from '@lib/shopify-storefront-sdk';
@@ -114,4 +117,15 @@ export const getNonDiscountedProduct = (originalPrice: number = 49.99) => {
       ],
    });
    return product;
+};
+
+export const getProductOfType = (type: 'battery' | 'tool' | 'part') => {
+   switch (type) {
+      case 'battery':
+         return { ...mockedBatteryProduct };
+      case 'tool':
+         return { ...mockedToolProduct };
+      case 'part':
+         return { ...mockedPartProduct };
+   }
 };
