@@ -7,21 +7,21 @@ export type CompatibleDevicesProps = {
    product: Product;
 };
 
+const MAX_VISIBLE_DEVICES = 3;
+const MAX_VISIBLE_MODELS_PER_DEVICE = 4;
+
 export function CompatibleDevices({ product }: CompatibleDevicesProps) {
-   const compatibilityDrawerModelsTruncate = 4;
-   const compatibilityDrawerDeviceTruncate = 3;
-   const compatibilityDrawerIncomplete =
-      product.compatibility &&
-      (product.compatibility.devices.length >
-         compatibilityDrawerDeviceTruncate ||
-         product.compatibility.devices.some(
-            (currentValue) =>
-               currentValue.variants.length > compatibilityDrawerModelsTruncate
-         ));
+   const devices = product.compatibility?.devices ?? [];
+
+   const hasMoreToShow =
+      devices.length > MAX_VISIBLE_DEVICES ||
+      devices.some(
+         (device) => device.variants.length > MAX_VISIBLE_MODELS_PER_DEVICE
+      );
 
    return (
       <>
-         {product.compatibility?.devices.slice(0, 3).map((device, index) => (
+         {devices.slice(0, 3).map((device, index) => (
             <NextLink key={index} href={device.deviceUrl} passHref>
                <chakra.a
                   role="group"
@@ -32,13 +32,13 @@ export function CompatibleDevices({ product }: CompatibleDevicesProps) {
                >
                   <CompatibleDevice
                      device={device}
-                     truncate={compatibilityDrawerModelsTruncate}
+                     truncate={MAX_VISIBLE_MODELS_PER_DEVICE}
                   />
                </chakra.a>
             </NextLink>
          ))}
 
-         {compatibilityDrawerIncomplete ? (
+         {hasMoreToShow ? (
             <NextLink href="#compatibility" passHref>
                <Link
                   mt={3}
