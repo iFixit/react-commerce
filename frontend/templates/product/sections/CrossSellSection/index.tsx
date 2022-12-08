@@ -3,6 +3,7 @@ import {
    Badge,
    Box,
    Button,
+   Center,
    Circle,
    Divider,
    Flex,
@@ -30,6 +31,7 @@ import {
 } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { Product, ProductVariant } from '@models/product';
+import NextLink from 'next/link';
 import React from 'react';
 
 export type CrossSellSectionProps = {
@@ -89,11 +91,17 @@ export function CrossSellSection({
 
    const currentProduct = React.useMemo<CrossSellProduct>(() => {
       return {
+         handle: product.handle,
          title: product.title,
-         rating: product?.rating?.value,
-         reviewsCount: product?.reviewsCount,
+         rating: product.rating?.value,
+         reviewsCount: product.reviewsCount,
       };
-   }, [product?.rating?.value, product?.reviewsCount, product.title]);
+   }, [
+      product.handle,
+      product.rating?.value,
+      product.reviewsCount,
+      product.title,
+   ]);
 
    const handleAddToCart = () => {
       const input = selectedCrossSellVariantIds.map(
@@ -257,6 +265,7 @@ export function CrossSellSection({
                         </Box>
                      </Box>
                      <Button
+                        disabled={!selectedCrossSellVariantIds.length}
                         colorScheme="brand"
                         minW="240px"
                         onClick={handleAddToCart}
@@ -280,6 +289,7 @@ type CrossSellItemProps = {
 };
 
 type CrossSellProduct = {
+   handle: string;
    title: string;
    rating: number | undefined | null;
    reviewsCount: number | undefined | null;
@@ -303,137 +313,153 @@ function CrossSellItem({
    onChange,
 }: CrossSellItemProps) {
    return (
-      <Card
-         overflow="hidden"
-         onClick={() => onChange(!isSelected)}
-         onKeyUp={(event) => {
-            if (['Enter'].includes(event.code)) {
-               onChange(!isSelected);
-               event.preventDefault();
-               event.stopPropagation();
-            }
-         }}
-         tabIndex={0}
-         flexBasis={{
-            md: 0,
-         }}
-         flexGrow={1}
-         outline="none"
-         _focus={{
-            boxShadow: 'outline',
-         }}
-         cursor="pointer"
-      >
-         <Flex
-            direction={{
-               base: 'row',
-               md: 'column',
+      <NextLink href={`/products/${product.handle}`} passHref legacyBehavior>
+         <Card
+            as="a"
+            overflow="hidden"
+            flexBasis={{
+               md: 0,
             }}
-            bg="white"
-            position="relative"
-            align={{
-               base: 'flex-start',
-               md: 'stretch',
-            }}
-            p={{
-               base: 3,
-               md: 4,
-            }}
-            h="full"
-            borderWidth="2px"
-            borderColor={isSelected ? 'brand.500' : 'transparent'}
-            borderRadius="lg"
-            transition="all 300ms"
+            flexGrow={1}
          >
-            <CardImage src={variant.image?.url ?? null} alt={product.title} />
             <Flex
-               direction="column"
-               w="full"
+               direction={{
+                  base: 'row',
+                  md: 'column',
+               }}
+               bg="white"
+               position="relative"
+               align={{
+                  base: 'flex-start',
+                  md: 'stretch',
+               }}
+               p={{
+                  base: 3,
+                  md: 4,
+               }}
                h="full"
-               justify="space-between"
-               flexGrow={1}
+               borderWidth="2px"
+               borderColor={isSelected ? 'brand.500' : 'transparent'}
+               borderRadius="lg"
+               transition="all 300ms"
             >
-               <Flex w="full">
-                  <Flex
-                     w="full"
-                     direction={{
-                        base: 'column',
-                     }}
-                     ml={{
-                        base: 3,
-                        md: 0,
-                     }}
-                  >
-                     {isCurrentItem && (
-                        <HStack
-                           position={{
-                              base: 'relative',
-                              md: 'absolute',
-                           }}
-                           top={{
-                              base: 'auto',
-                              md: 4,
-                           }}
-                           right={{
-                              base: 'auto',
-                              md: 4,
-                           }}
-                           spacing="1"
-                           mb="3"
-                        >
-                           <Badge colorScheme="brand">Current item</Badge>
-                        </HStack>
-                     )}
-                     <Flex direction="column" h="full" align="flex-start">
-                        <Text
-                           fontSize="md"
-                           mb="2"
-                           _groupHover={{ color: 'brand.500' }}
-                        >
-                           {product.title}
-                        </Text>
-                        {product.rating != null &&
-                           product.reviewsCount != null && (
-                              <ProductRating
-                                 mb="3"
-                                 rating={product.rating}
-                                 count={product.reviewsCount}
-                              />
-                           )}
-                     </Flex>
-                  </Flex>
-                  <Box
-                     position={{
-                        base: 'relative',
-                        md: 'absolute',
-                     }}
-                     pl={{
-                        base: 3,
-                        md: 0,
-                     }}
-                     top={{
-                        base: 0,
-                        md: 4,
-                     }}
-                  >
-                     <FaIcon
-                        icon={faCircleCheck}
-                        color={isSelected ? 'brand.500' : 'gray.300'}
-                        h="6"
-                        transition="color 300ms"
-                     />
-                  </Box>
-               </Flex>
-               <ProductVariantPrice
-                  price={variant.price}
-                  compareAtPrice={variant.compareAtPrice}
-                  proPricesByTier={variant.proPricesByTier}
-                  direction="column-reverse"
-                  alignSelf="flex-end"
+               <CardImage
+                  src={variant.image?.url ?? null}
+                  alt={product.title}
                />
+               <Flex
+                  direction="column"
+                  w="full"
+                  h="full"
+                  justify="space-between"
+                  flexGrow={1}
+               >
+                  <Flex w="full">
+                     <Flex
+                        w="full"
+                        direction={{
+                           base: 'column',
+                        }}
+                        ml={{
+                           base: 3,
+                           md: 0,
+                        }}
+                     >
+                        {isCurrentItem && (
+                           <HStack
+                              position={{
+                                 base: 'relative',
+                                 md: 'absolute',
+                              }}
+                              top={{
+                                 base: 'auto',
+                                 md: 4,
+                              }}
+                              right={{
+                                 base: 'auto',
+                                 md: 4,
+                              }}
+                              spacing="1"
+                              mb="3"
+                           >
+                              <Badge colorScheme="brand">Current item</Badge>
+                           </HStack>
+                        )}
+                        <Flex direction="column" h="full" align="flex-start">
+                           <Text
+                              fontSize="md"
+                              mb="2"
+                              _groupHover={{ color: 'brand.500' }}
+                           >
+                              {product.title}
+                           </Text>
+                           {product.rating != null &&
+                              product.reviewsCount != null && (
+                                 <ProductRating
+                                    mb="3"
+                                    rating={product.rating}
+                                    count={product.reviewsCount}
+                                 />
+                              )}
+                        </Flex>
+                     </Flex>
+                     <Box
+                        position={{
+                           base: 'relative',
+                           md: 'absolute',
+                        }}
+                        pl={{
+                           base: 3,
+                           md: 0,
+                        }}
+                        top={{
+                           base: 0,
+                           md: 4,
+                        }}
+                     >
+                        <Center
+                           onClick={(event) => {
+                              onChange(!isSelected);
+                              event.preventDefault();
+                              event.stopPropagation();
+                           }}
+                           onKeyDown={(event) => {
+                              if ('Enter' === event.code) {
+                                 onChange(!isSelected);
+                                 event.preventDefault();
+                                 event.stopPropagation();
+                              }
+                           }}
+                           tabIndex={0}
+                           outline="none"
+                           _focus={{
+                              boxShadow: 'outline',
+                           }}
+                           cursor="pointer"
+                        >
+                           <FaIcon
+                              icon={faCircleCheck}
+                              color={isSelected ? 'brand.500' : 'gray.300'}
+                              h="6"
+                              transition="color 300ms"
+                              _hover={
+                                 isSelected ? { color: 'brand.700' } : undefined
+                              }
+                           />
+                        </Center>
+                     </Box>
+                  </Flex>
+                  <ProductVariantPrice
+                     price={variant.price}
+                     compareAtPrice={variant.compareAtPrice}
+                     proPricesByTier={variant.proPricesByTier}
+                     direction="column-reverse"
+                     alignSelf="flex-end"
+                  />
+               </Flex>
             </Flex>
-         </Flex>
-      </Card>
+         </Card>
+      </NextLink>
    );
 }
 

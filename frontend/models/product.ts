@@ -16,7 +16,7 @@ import {
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
 import shuffle from 'lodash/shuffle';
-import { z, ZodError } from 'zod';
+import { z, ZodError, RefinementCtx } from 'zod';
 import { findStoreByCode } from './store';
 
 export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
@@ -68,7 +68,6 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
    }
    const iFixitProductId = computeIFixitProductId(variantSku);
 
-   const ratingData = JSON.parse(response.product?.rating?.value ?? '{}');
    const ratingCount = response.product?.reviewsCount?.value;
 
    let breadcrumbs = parseBreadcrumbsMetafieldValue(
@@ -101,7 +100,7 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       compatibility: parseCompatibility(response.product.compatibility?.value),
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
-      rating: ratingData,
+      rating: parseRating(response.product.rating?.value),
       reviewsCount: ratingCount ? parseInt(ratingCount) : null,
       oemPartnership: parseOemPartnership(
          response.product.oemPartnership?.value
@@ -109,6 +108,7 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       enabledDomains: parseEnabledDomains(
          response.product.enabledDomains?.value
       ),
+      redirectUrl: response.product.redirectUrl?.value ?? null,
    };
 }
 
@@ -442,8 +442,7 @@ const EnabledDomainsSchema = z
    .object({
       code: z.string(),
       domain: z.string().url(),
-      locale: z.string().optional(),
-      locales: z.string().array().optional(),
+      locales: z.string().array(),
    })
    .array()
    .optional()
@@ -598,6 +597,42 @@ function parseVideosJson(
       return result.data;
    }
    logParseErrors(result.error, 'product_videos_json metafield');
+   return null;
+}
+
+type RatingMetafield = z.infer<typeof RatingMetafieldSchema>;
+
+const stringNumberTransform = (val: string, ctx: RefinementCtx) => {
+   const parsed = parseInt(val);
+   if (isNaN(parsed)) {
+      ctx.addIssue({
+         code: z.ZodIssueCode.custom,
+         message: 'Not a number',
+      });
+      return;
+   }
+   return parsed;
+};
+
+const RatingMetafieldSchema = z.object({
+   scale_min: z.string().transform(stringNumberTransform),
+   scale_max: z.string().transform(stringNumberTransform),
+   value: z.string().transform(stringNumberTransform),
+});
+
+function parseRating(value: string | null | undefined): RatingMetafield | null {
+   if (value == null) {
+      return null;
+   }
+   const json: unknown = JSON.parse(value);
+   if (json == null) {
+      return null;
+   }
+   const result = RatingMetafieldSchema.safeParse(json);
+   if (result.success) {
+      return result.data;
+   }
+   logParseErrors(result.error, 'rating metafield');
    return null;
 }
 

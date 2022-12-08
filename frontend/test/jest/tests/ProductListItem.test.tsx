@@ -1,34 +1,41 @@
-import { render, screen } from '@testing-library/react';
+import { renderWithAppContext } from '../utils';
+import { screen } from '@testing-library/react';
 import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
-import * as ProductSearch from '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing';
-import * as UserPrice from '@ifixit/ui/commerce/hooks/useUserPrice';
-import { mockProduct } from 'test/jest/__mocks__/mockProduct';
+import { mockedProductSearchHit } from '../__mocks__/products';
 
-jest.mock('@ifixit/app');
+jest.mock(
+   '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing',
+   () => ({
+      ...jest.requireActual(
+         '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing'
+      ),
+      useProductSearchHitPricing: jest.fn(() => {
+         return {
+            price: { amount: 5, currencyCode: 'usd' },
+            compareAtPrice: { amount: 5, currencyCode: 'usd' },
+            isDiscounted: 5,
+            percentage: 5,
+         };
+      }),
+   })
+);
+
+jest.mock('@ifixit/ui/commerce/hooks/useUserPrice', () => ({
+   ...jest.requireActual('@ifixit/ui/commerce/hooks/useUserPrice'),
+   useUserPrice: jest.fn(() => {
+      return {
+         price: { amount: 5, currencyCode: 'usd' },
+         compareAtPrice: { amount: 5, currencyCode: 'usd' },
+      };
+   }),
+}));
 
 describe('ProductListItem', () => {
-   beforeEach(() => {
-      // @ts-ignore
-      ProductSearch.useProductSearchHitPricing = jest.fn().mockReturnValue({
-         price: { amount: 5, currencyCode: 'usd' },
-         compareAtPrice: { amount: 5, currencyCode: 'usd' },
-         isDiscounted: 5,
-         percentage: 5,
-      });
-      // @ts-ignore: Assigning to a read-only property
-      UserPrice.useUserPrice = jest.fn().mockReturnValue({
-         price: { amount: 5, currencyCode: 'usd' },
-         compareAtPrice: { amount: 5, currencyCode: 'usd' },
-      });
-   });
-
-   afterEach(() => {
-      jest.clearAllMocks();
-   });
-
    it('renders and matches the snapshot', () => {
       // @ts-ignore
-      const { asFragment } = render(<ProductListItem product={mockProduct} />);
+      const { asFragment } = renderWithAppContext(
+         <ProductListItem product={mockedProductSearchHit} />
+      );
       const shortDescription = screen.getByText(
          'Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.'
       );
@@ -39,11 +46,16 @@ describe('ProductListItem', () => {
 
    it('renders without the review stars', () => {
       // We don't render the stars if the rating <= 4 AND rating_count < 10
-      mockProduct.rating = 3.5;
-      mockProduct.rating_count = 9;
+      const mockedProductSearchHitWithRating = {
+         ...mockedProductSearchHit,
+         rating: 3.5,
+         rating_count: 9,
+      };
 
       // @ts-ignore
-      render(<ProductListItem product={mockProduct} />);
+      renderWithAppContext(
+         <ProductListItem product={mockedProductSearchHitWithRating} />
+      );
 
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).not.toBeInTheDocument();
@@ -53,25 +65,31 @@ describe('ProductListItem', () => {
       // We render the stars if the rating >= 4 OR rating_count > 10
 
       // If rating < 4; count > 10
-      mockProduct.rating = 1;
-      mockProduct.rating_count = 15;
+      const mockedProductSearchHitWithRating = {
+         ...mockedProductSearchHit,
+         rating: 1,
+         rating_count: 15,
+      };
+
       // @ts-ignore
-      const { rerender } = render(<ProductListItem product={mockProduct} />);
+      const { rerender } = renderWithAppContext(
+         <ProductListItem product={mockedProductSearchHitWithRating} />
+      );
       const reviewStars = screen.queryByTestId('reviewStars');
       (expect(reviewStars) as any).toBeInTheDocument();
 
       // If rating > 4; count < 10
-      mockProduct.rating = 5;
-      mockProduct.rating_count = 5;
+      mockedProductSearchHitWithRating.rating = 5;
+      mockedProductSearchHitWithRating.rating_count = 5;
       // @ts-ignore
-      rerender(<ProductListItem product={mockProduct} />);
+      rerender(<ProductListItem product={mockedProductSearchHitWithRating} />);
       (expect(reviewStars) as any).toBeInTheDocument();
 
       // If rating > 4; count > 10
-      mockProduct.rating = 5;
-      mockProduct.rating_count = 15;
+      mockedProductSearchHitWithRating.rating = 5;
+      mockedProductSearchHitWithRating.rating_count = 15;
       // @ts-ignore
-      rerender(<ProductListItem product={mockProduct} />);
+      rerender(<ProductListItem product={mockedProductSearchHitWithRating} />);
       (expect(reviewStars) as any).toBeInTheDocument();
    });
 });

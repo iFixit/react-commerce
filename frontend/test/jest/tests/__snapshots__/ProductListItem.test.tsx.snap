@@ -4,14 +4,14 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
 <DocumentFragment>
   <article
     aria-labelledby="product-heading-galaxy-s9-plus-replacement-battery"
-    class="chakra-linkbox css-hng3kb"
+    class="chakra-linkbox css-10n1vic"
     role="group"
   >
     <div
-      class="css-19p2217"
+      class="css-1ej4wy2"
     >
       <div
-        class="css-1vobfjw"
+        class="css-1upbq1w"
       >
         <span
           style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
@@ -37,19 +37,19 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
         </span>
       </div>
       <div
-        class="chakra-stack css-azp3jj"
+        class="chakra-stack css-mc053s"
       >
         <div
-          class="css-1kx59gv"
+          class="css-1c6uy1d"
         >
           <h3
-            class="chakra-heading css-duzb3d"
+            class="chakra-heading css-114j6y8"
             id="product-heading-galaxy-s9-plus-replacement-battery"
           >
             Galaxy S9+ Battery
           </h3>
           <p
-            class="chakra-text css-1emk585"
+            class="chakra-text css-1lwz3lo"
           >
             Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.
           </p>
@@ -58,11 +58,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             data-testid="reviewStars"
           >
             <div
-              class="chakra-stack css-193rmy8"
+              class="chakra-stack css-134p2gk"
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-41ng9q"
+                class="svg-inline--fa fa-star  css-1gcrmlt"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -77,7 +77,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-41ng9q"
+                class="svg-inline--fa fa-star  css-1gcrmlt"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -92,7 +92,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-41ng9q"
+                class="svg-inline--fa fa-star  css-1gcrmlt"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -107,7 +107,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-41ng9q"
+                class="svg-inline--fa fa-star  css-1gcrmlt"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -122,7 +122,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star-half  css-z00wzz"
+                class="svg-inline--fa fa-star-half  css-9vnjhs"
                 data-icon="star-half"
                 data-prefix="fad"
                 focusable="false"
@@ -147,32 +147,32 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
             </div>
             <p
-              class="chakra-text css-xh8f59"
+              class="chakra-text css-1g5rt1e"
             >
               18
             </p>
           </div>
           <div
-            class="css-14us8ue"
+            class="css-tnmkqf"
           >
             <span
-              class="chakra-badge css-o6n1ax"
+              class="chakra-badge css-1oc4o55"
             >
               5% Off
             </span>
           </div>
         </div>
         <div
-          class="chakra-stack css-1x25lam"
+          class="chakra-stack css-1gv4c2h"
         >
           <div
-            class="chakra-stack css-1wwkyaq"
+            class="chakra-stack css-1nrwugr"
           >
             <div
               class="css-14apnby"
             >
               <p
-                class="chakra-text css-1bsyxr8"
+                class="chakra-text css-15s1nop"
                 data-testid="product-price"
               >
                 $5.00
@@ -180,14 +180,14 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             </div>
           </div>
           <div
-            class="chakra-stack css-1dz9rto"
+            class="chakra-stack css-oi2dk3"
           >
             <a
-              class="chakra-linkbox__overlay css-kvj8dg"
+              class="chakra-linkbox__overlay css-1hnz6hu"
               href="/products/galaxy-s9-plus-replacement-battery"
             >
               <div
-                class="chakra-button css-1xl7ue1"
+                class="chakra-button css-xjy76z"
               >
                 View
               </div>
@@ -197,5 +197,9 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
       </div>
     </div>
   </article>
+  <span
+    hidden=""
+    id="__chakra_env"
+  />
 </DocumentFragment>
 `;

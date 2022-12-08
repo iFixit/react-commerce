@@ -29,6 +29,7 @@ export function ProductDescription({
                borderColor="brand.300"
                borderRadius="md"
                alignItems="flex-start"
+               data-testid="product-note"
             >
                <FaIcon
                   icon={faCircleInfo}
@@ -48,6 +49,7 @@ export function ProductDescription({
                borderColor="orange.300"
                borderRadius="md"
                alignItems="flex-start"
+               data-testid="product-disclaimer"
             >
                <FaIcon
                   icon={faCircleExclamation}
@@ -69,6 +71,7 @@ export function ProductDescription({
                borderColor="red.300"
                borderRadius="md"
                alignItems="flex-start"
+               data-testid="product-warning"
             >
                <FaIcon
                   icon={faTriangleExclamation}
