@@ -7,6 +7,7 @@ import {
    mockedProductVariant,
 } from './__mocks__/products';
 import { ProductSearchHit } from '@models/product-list';
+import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 
 /* This is needed if there is some code that uses a method which is not available in the jsdom environment yet
  * https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
@@ -66,4 +67,51 @@ export const getMockProductSearchHit = (
       ...mockedProductSearchHit,
       ...overrides,
    };
+};
+
+/*
+ * To match a real use case, you will need to set the selectedVariant to the
+ * first variant in the variants array from the returned product.
+ */
+export const getDiscountedProduct = (
+   originalPrice: number = 49.99,
+   discountPercentage: number = 10
+) => {
+   const discountedPrice =
+      originalPrice - originalPrice * (discountPercentage / 100);
+
+   const product = getMockProduct({
+      variants: [
+         getMockProductVariant({
+            price: {
+               amount: discountedPrice,
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: {
+               amount: originalPrice,
+               currencyCode: CurrencyCode.Usd,
+            },
+            isDiscounted: true,
+            discountPercentage: discountPercentage,
+         }),
+      ],
+   });
+   return product;
+};
+
+export const getNonDiscountedProduct = (originalPrice: number = 49.99) => {
+   const product = getMockProduct({
+      variants: [
+         getMockProductVariant({
+            price: {
+               amount: originalPrice,
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: null,
+            isDiscounted: false,
+            discountPercentage: 0,
+         }),
+      ],
+   });
+   return product;
 };
