@@ -10,7 +10,10 @@ import {
    OfferItemCondition as SchemaOfferItemCondition,
    Product as SchemaProduct,
 } from 'schema-dts';
-import { useDefaultVariantId } from './hooks/useSelectedVariant';
+import {
+   encodeVariantId,
+   useDefaultVariantId,
+} from './hooks/useSelectedVariant';
 export interface MetaTagsProps {
    product: Product;
    selectedVariant: ProductVariant;
@@ -24,10 +27,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
    const canonicalUrl = `${appContext.ifixitOrigin}/products/${product.handle}`;
    const urlParams =
       selectedVariant.id !== defaultVariantId
-         ? `?variant=${selectedVariant.id.replace(
-              /^gid:\/\/shopify\/ProductVariant\//,
-              ''
-           )}`
+         ? `?variant=${encodeVariantId(selectedVariant.id)}`
          : '';
    const selectedVariantUrl = `${appContext.ifixitOrigin}/products/${product.handle}${urlParams}`;
 

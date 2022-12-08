@@ -65,7 +65,7 @@ function useSearchParamVariantId(): string | null {
    return decodedVariantId;
 }
 
-function encodeVariantId(variantId: string) {
+export function encodeVariantId(variantId: string) {
    if (!variantId.startsWith('gid://')) {
       throw new Error('Variant id must be a global shopify product variant id');
    }
