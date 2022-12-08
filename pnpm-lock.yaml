@@ -55,7 +55,7 @@ importers:
       '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@next/bundle-analyzer': 12.1.6
-      '@playwright/test': ^1.28.1
+      '@playwright/test': 1.28.1
       '@sentry/nextjs': 7.8.1
       '@sentry/tracing': 7.8.1
       '@svgr/cli': 5.5.0
