@@ -90,14 +90,16 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
          <link rel="canonical" href={canonicalUrl} />
          <meta property="og:url" content={canonicalUrl} />
 
-         {product.enabledDomains?.map((store) => (
-            <link
-               key={store.domain}
-               rel="alternate"
-               hrefLang={store.locale}
-               href={`${store.domain}/products/${product.handle}`}
-            />
-         ))}
+         {product.enabledDomains?.flatMap((store) => {
+            return store.locales.map((locale) => (
+               <link
+                  key={`${store.domain}-${locale}`}
+                  rel="alternate"
+                  hrefLang={locale}
+                  href={`${store.domain}/products/${product.handle}`}
+               />
+            ));
+         })}
 
          {genericImages.length > 0 &&
             genericImages.map((image) => (

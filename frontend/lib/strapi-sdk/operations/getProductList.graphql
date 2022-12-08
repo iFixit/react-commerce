@@ -16,6 +16,7 @@ query getProductList($filters: ProductListFiltersInput) {
             metaDescription
             metaTitle
             filters
+            forceNoindex
             image {
                data {
                   attributes {

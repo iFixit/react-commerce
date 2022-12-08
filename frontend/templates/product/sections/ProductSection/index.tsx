@@ -257,14 +257,12 @@ export function ProductSection({
                         </VStack>
                      </CustomAccordionPanel>
                   </AccordionItem>
-                  <WikiHtmlAccordianItem
-                     title="Kit contents"
-                     contents={selectedVariant.kitContents}
-                  />
-                  <WikiHtmlAccordianItem
-                     title="Assembly contents"
-                     contents={selectedVariant.assemblyContents}
-                  />
+                  <WikiHtmlAccordianItem title="Kit contents">
+                     {selectedVariant.kitContents}
+                  </WikiHtmlAccordianItem>
+                  <WikiHtmlAccordianItem title="Assembly contents">
+                     {selectedVariant.assemblyContents}
+                  </WikiHtmlAccordianItem>
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -545,37 +543,49 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
    );
 }
 
+interface WikiHtmlAccordianItemProps {
+   title: string;
+   children: string | null | undefined;
+}
+
 function WikiHtmlAccordianItem({
    title,
-   contents,
-}: {
-   title: string;
-   contents: string | null;
-}) {
+   children,
+}: WikiHtmlAccordianItemProps) {
    return (
-      <AccordionItem hidden={contents == null}>
+      <AccordionItem hidden={children == null}>
          <CustomAccordionButton>{title}</CustomAccordionButton>
          <CustomAccordionPanel>
-            <Box
-               fontSize="sm"
-               sx={{
-                  ul: {
-                     listStyle: 'none',
-                  },
-                  li: {
-                     borderTopWidth: '1px',
-                     borderTopColor: 'gray.200',
-                     py: 3,
-                     '& ul': {
-                        mt: 3,
-                        ml: 5,
+            {children && (
+               <Box
+                  fontSize="sm"
+                  sx={{
+                     ul: {
+                        listStyle: 'none',
                      },
-                  },
-               }}
-               dangerouslySetInnerHTML={{
-                  __html: contents ?? '',
-               }}
-            ></Box>
+                     li: {
+                        borderTopWidth: '1px',
+                        borderTopColor: 'gray.200',
+                        py: 3,
+                        '& ul': {
+                           mt: 3,
+                           ml: 5,
+                        },
+                     },
+                     a: {
+                        fontWeight: 'bold',
+                        transition: 'all 300ms',
+                        color: 'brand.500',
+                     },
+                     'a:hover': {
+                        color: 'brand.600',
+                     },
+                  }}
+                  dangerouslySetInnerHTML={{
+                     __html: children,
+                  }}
+               ></Box>
+            )}
          </CustomAccordionPanel>
       </AccordionItem>
    );

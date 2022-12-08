@@ -7,5 +7,8 @@ declare type NextPageWithLayout<P = {}, IP = P> = import('next').NextPage<
    P,
    IP
 > & {
-   getLayout?: (page: React.ReactElement, pageProps: P) => React.ReactNode;
+   getLayout?: (
+      page: import('react').ReactElement,
+      pageProps: P
+   ) => import('react').ReactNode;
 };

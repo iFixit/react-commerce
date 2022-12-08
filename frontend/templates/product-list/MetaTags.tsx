@@ -49,7 +49,11 @@ export function MetaTags({ productList }: MetaTagsProps) {
       ? productListExemptions?.itemTypes?.includes(itemType)
       : productListExemptions?.root;
    const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
-   const shouldNoIndex = isFiltered || !hasResults || productList.forceNoIndex;
+   const shouldNoIndex =
+      isFiltered ||
+      !hasResults ||
+      productList.forceNoindex ||
+      !productList.isOnStrapi;
    return (
       <Head>
          {shouldNoIndex ? (

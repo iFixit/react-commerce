@@ -43,7 +43,7 @@ export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
                   />
                </Box>
             )}
-            <Box isTruncated>{children}</Box>
+            <Box noOfLines={1}>{children}</Box>
          </Flex>
       );
    }
