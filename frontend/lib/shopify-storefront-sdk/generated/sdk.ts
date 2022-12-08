@@ -6324,6 +6324,7 @@ export type FindProductQuery = {
       handle: string;
       descriptionHtml: string;
       tags: Array<string>;
+      vendor: string;
       rating?: { __typename?: 'Metafield'; value: string } | null;
       reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
       breadcrumbs?: { __typename?: 'Metafield'; value: string } | null;
@@ -6332,6 +6333,7 @@ export type FindProductQuery = {
       prop65Chemicals?: { __typename?: 'Metafield'; value: string } | null;
       productVideos?: { __typename?: 'Metafield'; value: string } | null;
       productVideosJson?: { __typename?: 'Metafield'; value: string } | null;
+      redirectUrl?: { __typename?: 'Metafield'; value: string } | null;
       replacementGuides?: { __typename?: 'Metafield'; value: string } | null;
       featuredProductVariants?: {
          __typename?: 'Metafield';
@@ -6662,6 +6664,9 @@ export const FindProductDocument = `
     productVideosJson: metafield(namespace: "ifixit", key: "product_videos_json") {
       value
     }
+    redirectUrl: metafield(namespace: "ifixit", key: "redirect_url") {
+      value
+    }
     replacementGuides: metafield(namespace: "ifixit", key: "replacement_guides") {
       value
     }
@@ -6788,6 +6793,7 @@ export const FindProductDocument = `
         }
       }
     }
+    vendor
   }
 }
     ${ProductVariantCardFragmentDoc}`;
