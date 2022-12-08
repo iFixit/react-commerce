@@ -30,9 +30,9 @@ export const mockedProduct: Product = {
       'worksin:1059',
    ],
    rating: {
-      scale_min: '1.0',
-      scale_max: '5.0',
-      value: '4.8',
+      scale_min: 1.0,
+      scale_max: 5.0,
+      value: 4.8,
    },
    reviewsCount: 41,
    breadcrumbs: [
@@ -891,6 +891,8 @@ export const mockedProduct: Product = {
    productcode: '315007',
    productVideosJson: null,
    enabledDomains: undefined,
+   redirectUrl: null,
+   vendor: '',
 };
 
 export const mockedProductVariant: ProductVariant = {
