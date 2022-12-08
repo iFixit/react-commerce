@@ -129,3 +129,31 @@ export const getProductOfType = (type: 'battery' | 'tool' | 'part') => {
          return { ...mockedPartProduct };
    }
 };
+
+/*
+ * These warranty values are listed in iFixit's product warranty policy:
+ * https://www.ifixit.com/Info/Warranty#Section_iFixit_Guarantees
+ *
+ * Full Guarantee refers to Lifetime Warranty.
+ * Limited Guarantee refers to 1-Year Warranty.
+ * As-Is refers to No Warranty.
+ */
+export const getProductWithWarranty = (
+   guarantee: 'full' | 'limited' | 'as-is'
+) => {
+   enum Warranty {
+      'full' = 'Lifetime Guraantee',
+      'limited' = 'One year warranty',
+      'as-is' = 'Sold as-is; no refunds or returns',
+   }
+
+   const product = getMockProduct({
+      variants: [
+         getMockProductVariant({
+            warranty: Warranty[guarantee],
+         }),
+      ],
+   });
+
+   return product;
+};
