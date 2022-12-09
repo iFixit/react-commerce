@@ -1,7 +1,6 @@
-import { renderWithAppContext } from '../utils';
+import { renderWithAppContext, getMockProductSearchHit } from '../utils';
 import { screen } from '@testing-library/react';
 import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
-import { mockedProductSearchHit } from '../__mocks__/products';
 
 jest.mock(
    '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing',
@@ -34,7 +33,7 @@ describe('ProductListItem', () => {
    it('renders and matches the snapshot', () => {
       // @ts-ignore
       const { asFragment } = renderWithAppContext(
-         <ProductListItem product={mockedProductSearchHit} />
+         <ProductListItem product={getMockProductSearchHit()} />
       );
       const shortDescription = screen.getByText(
          'Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.'
@@ -46,11 +45,10 @@ describe('ProductListItem', () => {
 
    it('renders without the review stars', () => {
       // We don't render the stars if the rating <= 4 AND rating_count < 10
-      const mockedProductSearchHitWithRating = {
-         ...mockedProductSearchHit,
+      const mockedProductSearchHitWithRating = getMockProductSearchHit({
          rating: 3.5,
          rating_count: 9,
-      };
+      });
 
       // @ts-ignore
       renderWithAppContext(
@@ -65,11 +63,10 @@ describe('ProductListItem', () => {
       // We render the stars if the rating >= 4 OR rating_count > 10
 
       // If rating < 4; count > 10
-      const mockedProductSearchHitWithRating = {
-         ...mockedProductSearchHit,
+      const mockedProductSearchHitWithRating = getMockProductSearchHit({
          rating: 1,
          rating_count: 15,
-      };
+      });
 
       // @ts-ignore
       const { rerender } = renderWithAppContext(
