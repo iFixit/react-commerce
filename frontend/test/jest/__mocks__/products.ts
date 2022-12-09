@@ -1382,9 +1382,9 @@ export const mockedBatteryProduct: Product = {
       'worksin:1884',
    ],
    rating: {
-      scale_min: '1.0',
-      scale_max: '5.0',
-      value: '5.0',
+      scale_min: 1.0,
+      scale_max: 5.0,
+      value: 5.0,
    },
    reviewsCount: 2,
    breadcrumbs: [
@@ -1819,6 +1819,8 @@ export const mockedBatteryProduct: Product = {
    ],
    iFixitProductId: 'IF390-042',
    productcode: '390042',
+   redirectUrl: null,
+   vendor: '',
 };
 
 export const mockedToolProduct: Product = {
@@ -1828,9 +1830,9 @@ export const mockedToolProduct: Product = {
       '<p>Very precise fine tipped tweezers for microsoldering and manipulating tiny parts.</p>',
    tags: ['Condition:New', 'Tool', 'Tool Category (Legacy):Soldering & Wiring'],
    rating: {
-      scale_min: '1.0',
-      scale_max: '5.0',
-      value: '5.0',
+      scale_min: 1.0,
+      scale_max: 5.0,
+      value: 5.0,
    },
    reviewsCount: 2,
    breadcrumbs: [
@@ -2263,6 +2265,8 @@ export const mockedToolProduct: Product = {
    ],
    iFixitProductId: 'IF317-048',
    productcode: '317048',
+   redirectUrl: null,
+   vendor: '',
 };
 
 export const mockedPartProduct: Product = {
@@ -2282,9 +2286,9 @@ export const mockedPartProduct: Product = {
       'worksin:2255',
    ],
    rating: {
-      scale_min: '1.0',
-      scale_max: '5.0',
-      value: '5.0',
+      scale_min: 1.0,
+      scale_max: 5.0,
+      value: 5.0,
    },
    reviewsCount: 1,
    breadcrumbs: [
@@ -2731,4 +2735,6 @@ export const mockedPartProduct: Product = {
    ],
    iFixitProductId: 'IF457-000',
    productcode: '457000',
+   redirectUrl: null,
+   vendor: '',
 };
