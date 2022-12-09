@@ -105,7 +105,12 @@ function SearchBox() {
             }}
          >
             <InputLeftElement pointerEvents="none">
-               <FaIcon icon={faMagnifyingGlass} color="gray.400" mr="-2" mb="-1px" />
+               <FaIcon
+                  icon={faMagnifyingGlass}
+                  color="gray.400"
+                  mr="-2"
+                  mb="-1px"
+               />
             </InputLeftElement>
             <Input
                name="query"
