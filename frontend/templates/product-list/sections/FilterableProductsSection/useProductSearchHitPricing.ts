@@ -1,7 +1,7 @@
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { computeDiscountPercentage, Money } from '@ifixit/helpers';
 import { ProductSearchHit } from '@models/product-list';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 export type ProductSearchHitPricing = {
    price: Money;
