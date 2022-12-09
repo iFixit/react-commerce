@@ -25,7 +25,6 @@
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {
-      "@chakra-ui/icons": "^2.0.11",
       "@chakra-ui/react": "2.3.6",
       "@core-ds/primitives": "2.4.5",
       "@emotion/react": "11.10.5",
@@ -66,7 +65,6 @@
       "query-string": "7.0.1",
       "react": "18.2.0",
       "react-dom": "18.2.0",
-      "react-icons": "4.2.0",
       "react-instantsearch-hooks-server": "6.38.1",
       "react-instantsearch-hooks-web": "6.38.1",
       "react-lite-yt-embed": "1.2.7",

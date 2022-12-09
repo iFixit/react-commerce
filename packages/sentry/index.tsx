@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/nextjs';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { GetServerSidePropsContext } from 'next';
+import { Scope } from '@sentry/nextjs';
 
 type Fetcher = typeof fetch;
 
@@ -12,6 +13,11 @@ type FetchMiddleware = (
 type FetcherParams = Parameters<Fetcher>;
 
 type SkipRequestFn = (...args: FetcherParams) => boolean;
+
+type CaptureWithContextFn = (
+   e: Error,
+   context: Parameters<Scope['setContext']>[1]
+) => void;
 
 const isClientSide = typeof window !== 'undefined';
 
@@ -28,6 +34,13 @@ export const applySentryFetchMiddleware = () => {
    } else {
       global.fetch = withSentry(global.fetch, shouldSkipReporting);
    }
+};
+
+export const reportException: CaptureWithContextFn = (e, context) => {
+   Sentry.captureException(e, (scope) => {
+      scope.setContext('request', context);
+      return scope;
+   });
 };
 
 const withSentry: FetchMiddleware =

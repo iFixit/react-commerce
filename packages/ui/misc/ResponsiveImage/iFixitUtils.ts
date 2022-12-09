@@ -7,13 +7,13 @@ type SizeMap = {
 
 // The following lists should be sorted in order of ascending width.
 export const guideImageSizeMap: SizeMap = [
-   { name: 'mini', width: 41 },
-   { name: 'thumbnail', width: 70 },
-   { name: '140x105', width: 110 },
-   { name: '200x150', width: 170 },
-   { name: 'standard', width: 250 },
-   { name: '440x330', width: 400 },
-   { name: 'medium', width: 600 },
+   { name: 'mini', width: 56 },
+   { name: 'thumbnail', width: 96 },
+   { name: '140x105', width: 140 },
+   { name: '200x150', width: 200 },
+   { name: 'standard', width: 300 },
+   { name: '440x330', width: 440 },
+   { name: 'medium', width: 592 },
    { name: 'large', width: 800 },
    { name: 'huge', width: 1600 },
 ];

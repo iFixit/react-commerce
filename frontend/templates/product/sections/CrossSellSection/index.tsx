@@ -165,7 +165,10 @@ export function CrossSellSection({
       }
    };
 
-   if (crossSellVariantsForSale.length === 0) {
+   if (
+      !selectedVariant.quantityAvailable ||
+      crossSellVariantsForSale.length === 0
+   ) {
       return null;
    }
 

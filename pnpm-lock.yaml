@@ -26,7 +26,6 @@ importers:
       '@babel/core': 7.17.9
       '@babel/preset-env': 7.18.6
       '@babel/preset-typescript': 7.18.6
-      '@chakra-ui/icons': ^2.0.11
       '@chakra-ui/react': 2.3.6
       '@core-ds/primitives': 2.4.5
       '@emotion/react': 11.10.5
@@ -109,7 +108,6 @@ importers:
       query-string: 7.0.1
       react: 18.2.0
       react-dom: 18.2.0
-      react-icons: 4.2.0
       react-instantsearch-hooks-server: 6.38.1
       react-instantsearch-hooks-web: 6.38.1
       react-lite-yt-embed: 1.2.7
@@ -122,7 +120,6 @@ importers:
       webpack: 5.73.0
       zod: 3.18.0
     dependencies:
-      '@chakra-ui/icons': 2.0.13_react@18.2.0
       '@chakra-ui/react': 2.3.6_dcg2t2i3u3zsy6dxglozcx6cvu
       '@core-ds/primitives': 2.4.5
       '@emotion/react': 11.10.5_5sk75k55old2mvxbb7qmm7otxe
@@ -163,7 +160,6 @@ importers:
       query-string: 7.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.2.0_react@18.2.0
       react-instantsearch-hooks-server: 6.38.1_3d5redehl2jjvbpdn3mne6usq4
       react-instantsearch-hooks-web: 6.38.1_3d5redehl2jjvbpdn3mne6usq4
       react-lite-yt-embed: 1.2.7_govv7rvipvpuihepwlh66bbxfy_react@18.2.0
@@ -331,7 +327,6 @@ importers:
       framer-motion: '>=3.0.0 <4.0.0 || >=4.0.0 <5.0.0 || >=5.0.0 <6.0.0 || >=6.0.0 <7.0.0'
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
-      react-icons: 4.2.0
       regenerator-runtime: '*'
       typescript: 4.8.4
     devDependencies:
@@ -344,7 +339,6 @@ importers:
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.2.0_react@18.2.0
       regenerator-runtime: 0.13.9
       typescript: 4.8.4
 
@@ -479,7 +473,6 @@ importers:
       framer-motion: '>=3.0.0 <4.0.0 || >=4.0.0 <5.0.0 || >=5.0.0 <6.0.0 || >=6.0.0 <7.0.0'
       react: 18.2.0
       react-dom: 18.2.0
-      react-icons: 4.2.0
       regenerator-runtime: '*'
       typescript: 4.8.4
     dependencies:
@@ -500,7 +493,6 @@ importers:
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.2.0_react@18.2.0
       regenerator-runtime: 0.13.9
       typescript: 4.8.4
 
@@ -3481,26 +3473,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@chakra-ui/icon/3.0.13_react@18.2.0:
-    resolution: {integrity: sha512-RaDLC4psd8qyInY2RX4AlYRfpLBNw3VsMih17BFf8EESVhBXNJcYy7Q9eMV/K4NvZfZT42vuVqGVNFmkG89lBQ==}
-    peerDependencies:
-      '@chakra-ui/system': '>=2.0.0'
-      react: '>=18'
-    dependencies:
-      '@chakra-ui/shared-utils': 2.0.3
-      react: 18.2.0
-    dev: false
-
-  /@chakra-ui/icons/2.0.13_react@18.2.0:
-    resolution: {integrity: sha512-86X+NXAr2N/whkp8vNt0Qf5udqSPVc3lAe4U4w7SkSa/+PnDggfAM6Sc5HwLp8Er0h/RF97DuwFi9YZ/ZRJCDA==}
-    peerDependencies:
-      '@chakra-ui/system': '>=2.0.0'
-      react: '>=18'
-    dependencies:
-      '@chakra-ui/icon': 3.0.13_react@18.2.0
-      react: 18.2.0
-    dev: false
-
   /@chakra-ui/image/2.0.11_e5d2utcogkjxxdp5h2rcoxuz2u:
     resolution: {integrity: sha512-S6NqAprPcbHnck/J+2wg06r9SSol62v5A01O8Kke2PnAyjalMcS+6P59lDRO7wvPqsdxq4PPbSTZP6Dww2CvcA==}
     peerDependencies:
@@ -4034,10 +4006,6 @@ packages:
 
   /@chakra-ui/shared-utils/2.0.2:
     resolution: {integrity: sha512-wC58Fh6wCnFFQyiebVZ0NI7PFW9+Vch0QE6qN7iR+bLseOzQY9miYuzPJ1kMYiFd6QTOmPJkI39M3wHqrPYiOg==}
-    dev: false
-
-  /@chakra-ui/shared-utils/2.0.3:
-    resolution: {integrity: sha512-pCU+SUGdXzjAuUiUT8mriekL3tJVfNdwSTIaNeip7k/SWDzivrKGMwAFBxd3XVTDevtVusndkO4GJuQ3yILzDg==}
     dev: false
 
   /@chakra-ui/skeleton/2.0.17_e5d2utcogkjxxdp5h2rcoxuz2u:
@@ -13592,13 +13560,6 @@ packages:
       use-callback-ref: 1.3.0_bbvjflvjoibwhtpmedigb26h6y
       use-sidecar: 1.1.2_bbvjflvjoibwhtpmedigb26h6y
     dev: false
-
-  /react-icons/4.2.0_react@18.2.0:
-    resolution: {integrity: sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==}
-    peerDependencies:
-      react: '*'
-    dependencies:
-      react: 18.2.0
 
   /react-instantsearch-hooks-server/6.38.1_3d5redehl2jjvbpdn3mne6usq4:
     resolution: {integrity: sha512-CxA9ryLnP+R3VRj5ba2qLm06GSMhfvvcQtbELN0tZKr6jF0UPhQRg4DNYNnzIswsZ8PqTCAjtD63BHAEBf/QLQ==}

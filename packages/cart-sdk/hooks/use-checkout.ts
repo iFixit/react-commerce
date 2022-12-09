@@ -1,7 +1,7 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { assertNever, invariant, isError } from '@ifixit/helpers';
+import { assertNever, isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
 import * as React from 'react';
@@ -187,6 +187,9 @@ function useCreateCheckout() {
             lineItems,
          },
       });
+      if (!response?.checkoutCreate) {
+         throw new Error('checkout unavailable');
+      }
       const { checkout, checkoutUserErrors } = response.checkoutCreate;
       if (checkoutUserErrors.length > 0) {
          console.error(checkoutUserErrors);
@@ -213,10 +216,6 @@ function useUpdateCheckout() {
          checkoutId,
          lineItems,
       });
-
-      // Seems like the "already completed" state results in top-level errors
-      // and checkoutLineItemsReplace === null, sometimes, even response is
-      // undefined
       if (!response?.checkoutLineItemsReplace) {
          return null;
       }
