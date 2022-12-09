@@ -44,8 +44,8 @@ const queryClientConfig = shouldIgnoreUserAgent
               Sentry.captureException(error, (scope) => {
                  scope.setTag('react-query', 'mutation');
                  scope.setContext('Mutation', {
-                    variables,
-                    context,
+                    variables: JSON.stringify(variables, null, 2),
+                    context: JSON.stringify(context, null, 2),
                     mutationKey: mutation.options.mutationKey,
                  });
                  return scope;
