@@ -4,10 +4,14 @@ import {
    renderWithAppContext,
    getMockProduct,
    getMockProductVariant,
+   getNonDiscountedProduct,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 
-jest.mock('@templates/product/hooks/useIsProductForSale');
+jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
+   ...jest.requireActual('@templates/product/hooks/useIsProductForSale'),
+   useIsProductForSale: jest.fn(() => true),
+}));
 
 describe('ProductSection Tests', () => {
    beforeAll(() => {
@@ -112,6 +116,26 @@ describe('ProductSection Tests', () => {
          (expect(warning) as any).not.toBeInTheDocument();
          (expect(note) as any).not.toBeInTheDocument();
          (expect(disclaimer) as any).not.toBeInTheDocument();
+      });
+   });
+
+   describe('Product Price Tests', () => {
+      test('Regular Price Renders', async () => {
+         const nonDiscountedProduct = getNonDiscountedProduct(29.99);
+
+         renderWithAppContext(
+            <ProductSection
+               product={nonDiscountedProduct}
+               selectedVariant={nonDiscountedProduct.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const price = await screen.findByTestId('product-price');
+
+         (expect(price) as any).toBeInTheDocument();
+         (expect(price.textContent) as any).toBe('$29.99');
       });
    });
 });
