@@ -107,7 +107,6 @@ importers:
       query-string: 7.0.1
       react: 18.2.0
       react-dom: 18.2.0
-      react-icons: 4.2.0
       react-instantsearch-hooks-server: 6.38.1
       react-instantsearch-hooks-web: 6.38.1
       react-lite-yt-embed: 1.2.7
@@ -160,7 +159,6 @@ importers:
       query-string: 7.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.2.0_react@18.2.0
       react-instantsearch-hooks-server: 6.38.1_3d5redehl2jjvbpdn3mne6usq4
       react-instantsearch-hooks-web: 6.38.1_3d5redehl2jjvbpdn3mne6usq4
       react-lite-yt-embed: 1.2.7_govv7rvipvpuihepwlh66bbxfy_react@18.2.0
@@ -327,7 +325,6 @@ importers:
       framer-motion: '>=3.0.0 <4.0.0 || >=4.0.0 <5.0.0 || >=5.0.0 <6.0.0 || >=6.0.0 <7.0.0'
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
-      react-icons: 4.2.0
       regenerator-runtime: '*'
       typescript: 4.8.4
     devDependencies:
@@ -340,7 +337,6 @@ importers:
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.2.0_react@18.2.0
       regenerator-runtime: 0.13.9
       typescript: 4.8.4
 
@@ -475,7 +471,6 @@ importers:
       framer-motion: '>=3.0.0 <4.0.0 || >=4.0.0 <5.0.0 || >=5.0.0 <6.0.0 || >=6.0.0 <7.0.0'
       react: 18.2.0
       react-dom: 18.2.0
-      react-icons: 4.2.0
       regenerator-runtime: '*'
       typescript: 4.8.4
     dependencies:
@@ -496,7 +491,6 @@ importers:
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.2.0_react@18.2.0
       regenerator-runtime: 0.13.9
       typescript: 4.8.4
 
@@ -13549,13 +13543,6 @@ packages:
       use-callback-ref: 1.3.0_bbvjflvjoibwhtpmedigb26h6y
       use-sidecar: 1.1.2_bbvjflvjoibwhtpmedigb26h6y
     dev: false
-
-  /react-icons/4.2.0_react@18.2.0:
-    resolution: {integrity: sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==}
-    peerDependencies:
-      react: '*'
-    dependencies:
-      react: 18.2.0
 
   /react-instantsearch-hooks-server/6.38.1_3d5redehl2jjvbpdn3mne6usq4:
     resolution: {integrity: sha512-CxA9ryLnP+R3VRj5ba2qLm06GSMhfvvcQtbELN0tZKr6jF0UPhQRg4DNYNnzIswsZ8PqTCAjtD63BHAEBf/QLQ==}

@@ -17,7 +17,8 @@ import { PageContentWrapper } from '@ifixit/ui';
 import { GetSection } from '@models/page';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { RiSearchLine } from 'react-icons/ri';
+import { faMagnifyingGlass } from '@fortawesome/pro-solid-svg-icons';
+import { FaIcon } from '@ifixit/icons';
 import { SectionDescription } from '../components/SectionDescription';
 import { SectionHeading } from '../components/SectionHeading';
 
@@ -104,7 +105,7 @@ function SearchBox() {
             }}
          >
             <InputLeftElement pointerEvents="none">
-               <Icon as={RiSearchLine} color="gray.400" mr="-2" mb="-1px" />
+               <FaIcon icon={faMagnifyingGlass} color="gray.400" mr="-2" mb="-1px" />
             </InputLeftElement>
             <Input
                name="query"
