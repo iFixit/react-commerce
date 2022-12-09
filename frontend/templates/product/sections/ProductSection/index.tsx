@@ -116,15 +116,6 @@ export function ProductSection({
                fontSize="sm"
                position="relative"
             >
-               <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
-                  <ProductGallery
-                     product={product}
-                     selectedVariant={selectedVariant}
-                     selectedImageId={selectedImageId}
-                     onChangeImage={setSelectedImageId}
-                  />
-               </Flex>
-
                {selectedVariant.sku && (
                   <Text color="gray.500" data-testid="product-sku">
                      Item # {selectedVariant.sku}
@@ -142,6 +133,15 @@ export function ProductSection({
                )}
 
                {isForSale && <ProductRating product={product} />}
+
+               <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
+                  <ProductGallery
+                     product={product}
+                     selectedVariant={selectedVariant}
+                     selectedImageId={selectedImageId}
+                     onChangeImage={setSelectedImageId}
+                  />
+               </Flex>
 
                <ProductOptions
                   product={product}
