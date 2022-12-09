@@ -603,7 +603,7 @@ function parseVideosJson(
 type RatingMetafield = z.infer<typeof RatingMetafieldSchema>;
 
 const stringNumberTransform = (val: string, ctx: RefinementCtx) => {
-   const parsed = parseInt(val);
+   const parsed = parseFloat(val);
    if (isNaN(parsed)) {
       ctx.addIssue({
          code: z.ZodIssueCode.custom,
