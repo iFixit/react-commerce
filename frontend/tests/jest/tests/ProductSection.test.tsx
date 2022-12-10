@@ -5,6 +5,7 @@ import {
    getMockProduct,
    getMockProductVariant,
    getNonDiscountedProduct,
+   getDiscountedProduct,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 
@@ -136,6 +137,50 @@ describe('ProductSection Tests', () => {
 
          (expect(price) as any).toBeInTheDocument();
          (expect(price.textContent) as any).toBe('$29.99');
+      });
+
+      test.only('Discounted Price Renders', async () => {
+         const originalPrice = 29.99;
+         const discountPercentage = 10;
+         const discountPrice = (
+            originalPrice -
+            (originalPrice * discountPercentage) / 100
+         ).toFixed(2);
+
+         const discountedProduct = getDiscountedProduct(29.99, 10);
+
+         renderWithAppContext(
+            <ProductSection
+               product={discountedProduct}
+               selectedVariant={discountedProduct.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const price = await screen.findByTestId('product-price');
+         (expect(price) as any).toBeInTheDocument();
+         (expect(price.textContent) as any).toBe('$' + discountPrice);
+
+         // Get the parent element of the element
+         const parentElement = price.parentElement;
+
+         // Get all of the children of the parent element
+         const children = parentElement?.children;
+
+         // Filter out the element itself to get only its siblings
+         const siblings = Array.prototype.filter.call(
+            children,
+            (child: HTMLElement) => {
+               return child !== price;
+            }
+         );
+
+         const priceTexts = [discountPercentage + '% OFF', '$' + originalPrice];
+
+         siblings.forEach((sibling: HTMLElement) => {
+            (expect(priceTexts) as any).toContain(sibling.textContent);
+         });
       });
    });
 });
