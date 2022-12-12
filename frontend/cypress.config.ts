@@ -1,9 +1,9 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
-   fixturesFolder: 'test/cypress/fixtures',
-   screenshotsFolder: 'test/cypress/screenshots',
-   videosFolder: 'test/cypress/videos',
+   fixturesFolder: 'tests/cypress/fixtures',
+   screenshotsFolder: 'tests/cypress/screenshots',
+   videosFolder: 'tests/cypress/videos',
    video: false,
    retries: {
       runMode: 2,
@@ -24,8 +24,8 @@ export default defineConfig({
          });
       },
       baseUrl: 'http://localhost:3000',
-      specPattern: 'test/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
-      supportFile: 'test/cypress/support/index.ts',
+      specPattern: 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
+      supportFile: 'tests/cypress/support/index.ts',
       // https://docs.cypress.io/guides/references/configuration#e2e
       experimentalSessionAndOrigin: true,
    },

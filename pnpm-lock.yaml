@@ -54,6 +54,7 @@ importers:
       '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@next/bundle-analyzer': 12.1.6
+      '@playwright/test': 1.28.1
       '@sentry/nextjs': 7.8.1
       '@sentry/tracing': 7.8.1
       '@svgr/cli': 5.5.0
@@ -178,6 +179,7 @@ importers:
       '@graphql-codegen/typescript-operations': 2.5.4_graphql@15.5.3
       '@ifixit/tsconfig': link:../packages/tsconfig
       '@next/bundle-analyzer': 12.1.6
+      '@playwright/test': 1.28.1
       '@svgr/cli': 5.5.0
       '@testing-library/cypress': 8.0.3_cypress@10.9.0
       '@testing-library/dom': 8.19.0
@@ -5970,6 +5972,15 @@ packages:
   /@oclif/screen/1.0.4:
     resolution: {integrity: sha512-60CHpq+eqnTxLZQ4PGHYNwUX572hgpMHGPtTWMjdTMsAvlm69lZV/4ly6O3sAYkomo4NggGcomrDpBe34rxUqw==}
     engines: {node: '>=8.0.0'}
+    dev: true
+
+  /@playwright/test/1.28.1:
+    resolution: {integrity: sha512-xN6spdqrNlwSn9KabIhqfZR7IWjPpFK1835tFNgjrlysaSezuX8PYUwaz38V/yI8TJLG9PkAMEXoHRXYXlpTPQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 18.11.5
+      playwright-core: 1.28.1
     dev: true
 
   /@polka/url/1.0.0-next.21:
@@ -13226,6 +13237,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 4.1.0
+    dev: true
+
+  /playwright-core/1.28.1:
+    resolution: {integrity: sha512-3PixLnGPno0E8rSBJjtwqTwJe3Yw72QwBBBxNoukIj3lEeBNXwbNiKrNuB1oyQgTBw5QHUhNO3SteEtHaMK6ag==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /pngjs/6.0.0:

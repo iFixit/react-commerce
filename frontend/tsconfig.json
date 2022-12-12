@@ -23,7 +23,7 @@
       "**/*.tsx",
       "**/*.js",
       "@types/index.d.ts",
-      "./test/jest-setup.ts"
+      "./tests/jest-setup.ts"
    ],
    "exclude": ["node_modules", ".next", "out"]
 }

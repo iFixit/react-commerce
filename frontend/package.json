@@ -21,6 +21,7 @@
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
+      "playwright:run": "playwright test",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {
@@ -84,6 +85,7 @@
       "@graphql-codegen/typescript-operations": "2.5.4",
       "@ifixit/tsconfig": "workspace:*",
       "@next/bundle-analyzer": "12.1.6",
+      "@playwright/test": "1.28.1",
       "@svgr/cli": "5.5.0",
       "@testing-library/cypress": "8.0.3",
       "@testing-library/dom": "8.19.0",
