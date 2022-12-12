@@ -1,5 +1,6 @@
 import { Box, Divider, Flex, forwardRef, Heading } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
+import { ImageProps } from 'next/image';
 
 interface ProductListCardProps {
    variant?: 'small' | 'medium';
@@ -12,7 +13,7 @@ interface ProductListCardProps {
 
 export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
    ({ productList, variant = 'small', ...other }, ref) => {
-      const imageSizeProps =
+      const imageSizeProps: Partial<ImageProps> =
          variant === 'small'
             ? {
                  height: 60,
