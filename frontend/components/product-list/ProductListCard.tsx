@@ -12,17 +12,18 @@ interface ProductListCardProps {
 
 export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
    ({ productList, variant = 'small', ...other }, ref) => {
-      const imageSizeProps = variant === 'small'
-        ? {
-          height: 60,
-          width: 80,
-          layout: "fixed",
-        }
-        : {
-          sizes: '20vw',
-          objectFit: "cover",
-          layout: "fill",
-        };
+      const imageSizeProps =
+         variant === 'small'
+            ? {
+                 height: 60,
+                 width: 80,
+                 layout: 'fixed',
+              }
+            : {
+                 sizes: '20vw',
+                 objectFit: 'cover',
+                 layout: 'fill',
+              };
       return (
          <Box
             ref={ref}
