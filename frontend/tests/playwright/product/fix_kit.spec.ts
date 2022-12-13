@@ -1,41 +1,42 @@
-describe('Fix Kit and Part Only test', () => {
-   beforeEach(() => {
-      cy.loadProductPageByPath('/products/iphone-6s-plus-replacement-battery');
+import { test, expect } from '@playwright/test';
+
+test.describe('Fix Kit and Part Only test', () => {
+   test.beforeEach(async ({ page }) => {
+      await page.goto('/products/iphone-6s-plus-replacement-battery');
    });
 
-   it('test kit contents and product skus', () => {
-      cy.findByText('Fix Kit').click();
-      cy.findByText('Kit contents').should('be.visible');
-      cy.findByText('Assembly contents').should('not.be.visible');
+   test('test kit contents and product skus', async ({ page }) => {
+      await page.getByText('Fix Kit').nth(1).click();
+      await expect(page.getByText('Kit contents')).toBeVisible();
+      await expect(page.getByText('Assembly contents')).not.toBeVisible();
 
-      cy.findByTestId('product-sku')
-         .should('be.visible')
-         .invoke('text')
-         .then((fixKitSku) => {
-            cy.findByText('Part Only').click();
+      await expect(page.getByTestId('product-sku')).toBeVisible();
+      const fixKitSku = await page.getByTestId('product-sku').textContent();
 
-            cy.findByText('Assembly contents').should('be.visible');
-            cy.findByText('Kit contents').should('not.be.visible');
+      await page.getByText('Part Only').nth(0).click();
+      await expect(page.getByText('Assembly contents')).toBeVisible();
+      await expect(page.getByText('Kit contents')).not.toBeVisible();
 
-            cy.findByTestId('product-sku')
-               .should('be.visible')
-               .invoke('text')
-               .then((partOnlySku) => {
-                  expect(fixKitSku).to.not.equal(partOnlySku);
-               });
-         });
+      await expect(page.getByTestId('product-sku')).toBeVisible();
+      const partOnlySku = await page.getByTestId('product-sku').textContent();
+
+      expect(fixKitSku).not.toEqual(partOnlySku);
    });
 
-   it('test product image changes', () => {
-      cy.findByText('Fix Kit').click();
+   test('test product image changes', async ({ page }) => {
+      await page.getByText('Fix Kit').nth(1).click();
 
-      cy.get('img[alt$="Fix Kit"]').should('be.visible');
-      cy.get('img[alt$="Part Only"]').should('not.exist');
+      await expect(page.getByRole('img', { name: 'Fix Kit' })).toBeVisible();
+      await expect(
+         page.getByRole('img', { name: 'Part Only' }).first()
+      ).not.toBeVisible();
 
-      cy.findByText('Part Only').click();
-
-      cy.get('img[alt$="Part Only"]').should('be.visible');
-      cy.get('img[alt$="Fix Kit"]').should('not.exist');
+      await page.getByText('Part Only').nth(0).click();
+      await expect(
+         page.getByRole('img', { name: 'Part Only' }).first()
+      ).toBeVisible();
+      await expect(
+         page.getByRole('img', { name: 'Fix Kit' })
+      ).not.toBeVisible();
    });
 });
-export {};
