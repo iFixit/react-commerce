@@ -57,6 +57,7 @@
       "dayjs": "1.10.5",
       "framer-motion": "6.2.7",
       "graphql": "15.5.3",
+      "hot-shots": "9.3.0",
       "immer": "9.0.14",
       "lodash": "4.17.21",
       "lru-cache": "7.10.1",
