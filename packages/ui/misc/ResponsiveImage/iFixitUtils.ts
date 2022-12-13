@@ -1,6 +1,6 @@
 import { ImageLoader, ImageLoaderProps } from 'next/image';
 
-type SizeMap = {
+export type SizeMap = {
    width: number;
    name: string;
 }[];
@@ -54,7 +54,6 @@ export function getIFixitImageLoader(
    baseWidth?: number | string
 ): ImageLoader {
    return ({ src, width }: ImageLoaderProps) => {
-      const baseSrc = src.replace(/\.[^/.]+$/, '');
       let realWidth = width;
       if (typeof baseWidth === 'string') {
          realWidth = parseInt(baseWidth);
@@ -67,7 +66,7 @@ export function getIFixitImageLoader(
 
       const sizeName = getImageSize(scaledWidth, sizeMap, defaultSize);
       // We don't use the ?width param server-side, but it gets rid of a nextjs warning
-      return baseSrc.concat('.', sizeName, `?width=${scaledWidth}`);
+      return getResizedImageUrl(src, sizeName) + `?width=${scaledWidth}`;
    };
 }
 
@@ -82,4 +81,20 @@ function getImageSize(
       }
    }
    return defaultSize;
+}
+
+function getResizedImageUrl(
+   src: string,
+   sizeName: string
+): string {
+   return src.replace(/\.[^/.]+$/, '.' + sizeName);
+}
+
+export function buildSrcSet(
+   sizeMap: SizeMap,
+   src: string
+): string {
+   return Object.values(sizeMap).map(
+      ({width, name}) => `${getResizedImageUrl(src, name)} ${width}w`
+   ).join(', ');
 }
