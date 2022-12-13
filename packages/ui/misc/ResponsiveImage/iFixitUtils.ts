@@ -83,18 +83,12 @@ function getImageSize(
    return defaultSize;
 }
 
-function getResizedImageUrl(
-   src: string,
-   sizeName: string
-): string {
+function getResizedImageUrl(src: string, sizeName: string): string {
    return src.replace(/\.[^/.]+$/, '.' + sizeName);
 }
 
-export function buildSrcSet(
-   sizeMap: SizeMap,
-   src: string
-): string {
-   return Object.values(sizeMap).map(
-      ({width, name}) => `${getResizedImageUrl(src, name)} ${width}w`
-   ).join(', ');
+export function buildSrcSet(sizeMap: SizeMap, src: string): string {
+   return Object.values(sizeMap)
+      .map(({ width, name }) => `${getResizedImageUrl(src, name)} ${width}w`)
+      .join(', ');
 }

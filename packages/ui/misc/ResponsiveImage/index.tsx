@@ -23,9 +23,10 @@ export function ResponsiveImage(props: ImageProps) {
          if (typeof props.sizes === 'string') {
             return (
                <FixedSizesResponsiveImage
-               src={props.src}
-               sizes={props.sizes}
-               sizeMap={cartImageSizeMap} />
+                  src={props.src}
+                  sizes={props.sizes}
+                  sizeMap={cartImageSizeMap}
+               />
             );
          }
          loader = getIFixitImageLoader(cartImageSizeMap, 'large', props.width);
@@ -46,9 +47,16 @@ type FixedSizesResponsiveImageProps = {
    alt?: string;
    sizeMap: SizeMap;
    sizes: string | undefined;
-}
+};
 
 function FixedSizesResponsiveImage(props: FixedSizesResponsiveImageProps) {
    const srcSet = buildSrcSet(props.sizeMap, props.src);
-   return <img src={props.src} alt={props.alt} srcSet={srcSet} sizes={props.sizes} />
+   return (
+      <img
+         src={props.src}
+         alt={props.alt}
+         srcSet={srcSet}
+         sizes={props.sizes}
+      />
+   );
 }
