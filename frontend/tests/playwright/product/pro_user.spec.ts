@@ -1,31 +1,30 @@
-describe('Pro user test', () => {
-   it('will give pro users a discount', () => {
-      cy.loadProductPageByPath('/products/repair-business-toolkit');
+import { interceptLogin } from '../utils';
+import { test, expect } from '@playwright/test';
+
+test.describe('Pro user test', () => {
+   test('will give pro users a discount', async ({ page }) => {
+      await page.goto('/products/repair-business-toolkit');
 
       // Get price from page
-      cy.findAllByTestId('product-price')
+      const originalPriceString = await page
+         .getByTestId('product-price')
          .first()
-         .invoke('text')
-         .then((originalPriceString) => {
-            // Login as pro
-            cy.interceptLogin({ discount_tier: 'pro_4' });
-            cy.reload();
+         .innerText();
 
-            // Wait until the pro icon is shown.
-            cy.get('.fa-rectangle-pro').should('be.visible');
+      // Login as pro and reload page
+      await interceptLogin(page, {
+         discount_tier: 'pro_4',
+      });
+      await page.reload({ waitUntil: 'networkidle' });
 
-            // Assert price on page is lower than step 1
-            cy.findAllByTestId('product-price')
-               .first()
-               .invoke('text')
-               .then((proPriceString) => {
-                  const originalPrice = parseFloat(
-                     originalPriceString.replace('$', '')
-                  );
-                  const proPrice = parseFloat(proPriceString.replace('$', ''));
-                  expect(originalPrice).to.be.greaterThan(proPrice);
-               });
-         });
+      // Assert price on page is lower than step 1
+      const proPriceString = await page
+         .getByTestId('product-price')
+         .first()
+         .innerText();
+
+      expect(parseFloat(originalPriceString.replace('$', ''))).toBeGreaterThan(
+         parseFloat(proPriceString.replace('$', ''))
+      );
    });
 });
-export {};
