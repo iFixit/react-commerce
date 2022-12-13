@@ -235,7 +235,8 @@ function LineItemImage({ lineItem }: LineItemImageProps) {
                src={lineItem.imageSrc}
                alt={lineItem.name}
                priority
-               layout="fill"
+               height={62}
+               width={62}
                objectFit="cover"
             />
          ) : (
