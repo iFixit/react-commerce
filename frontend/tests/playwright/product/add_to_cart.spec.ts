@@ -1,78 +1,90 @@
-describe('product page add to cart', () => {
-   beforeEach(() => {
-      cy.intercept('/api/2.0/internal/international_store_promotion/buybox*', {
-         statusCode: 200,
-         body: null,
-      }).as('buybox');
-      cy.loadProductPageByPath('/products/spudger-retail-3-pack');
+import { test, expect } from '@playwright/test';
+
+test.describe('product page add to cart', () => {
+   test.beforeEach(async ({ page }) => {
+      await page.route(
+         '/api/2.0/internal/international_store_promotion/buybox*',
+         (route) => {
+            route.fulfill({
+               status: 200,
+               body: '',
+            });
+         }
+      );
+      await page.goto('/products/spudger-retail-3-pack');
    });
 
-   it('Clicking Add To Cart Adds Items To Cart', () => {
-      cy.times(5, (index) => {
-         cy.findByTestId('product-add-to-cart-button').click();
-         const expectedQuantity = index + 1;
-         cy.findAllByTestId('cart-drawer-quantity').should(
-            'have.text',
-            expectedQuantity
-         );
-         cy.findByTestId('cart-drawer-close').click();
-      });
-      cy.findByTestId('cart-drawer-open').click();
+   test('Clicking Add To Cart Adds Items To Cart', async ({ page }) => {
+      for (let i = 1; i <= 5; i++) {
+         await page.getByTestId('product-add-to-cart-button').click();
+         const quantity = page.getByTestId('cart-drawer-quantity');
+         await expect(quantity).toHaveText(`${i}`);
+         await page.getByTestId('cart-drawer-close').click();
+      }
+
+      await page.getByTestId('cart-drawer-open').click();
+      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('5');
    });
 
-   it('Clicking + and - Buttons Changes Item Quantity in Cart', () => {
-      cy.findByTestId('product-add-to-cart-button').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
-      cy.times(5, (index) => {
-         cy.findByTestId('cart-drawer-increase-quantity').click();
-         const expectedQuantity = index + 2;
-         cy.findAllByTestId('cart-drawer-quantity').should(
-            'have.text',
-            expectedQuantity
-         );
-      });
-      cy.findByTestId('cart-drawer-close').click();
-      cy.findByTestId('cart-drawer-open').click();
-      cy.times(5, (index) => {
-         cy.findByTestId('cart-drawer-decrease-quantity').click();
-         const expectedQuantity = 5 - index;
-         cy.findAllByTestId('cart-drawer-quantity').should(
-            'have.text',
-            expectedQuantity
-         );
-      });
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
-      cy.findAllByTestId('cart-drawer-quantity').should('have.text', 1);
+   test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
+      page,
+   }) => {
+      await page.getByTestId('product-add-to-cart-button').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+
+      for (let i = 2; i <= 5; i++) {
+         await page.getByTestId('cart-drawer-increase-quantity').click();
+         const quantity = await page
+            .getByTestId('cart-drawer-quantity')
+            .textContent();
+         expect(quantity).toBe(`${i}`);
+      }
+
+      await page.getByTestId('cart-drawer-close').click();
+      await page.getByTestId('cart-drawer-open').click();
+
+      for (let i = 5; i > 1; i--) {
+         await page.getByTestId('cart-drawer-decrease-quantity').click();
+         const quantity = await page
+            .getByTestId('cart-drawer-quantity')
+            .textContent();
+         expect(quantity).toBe(`${i - 1}`);
+      }
+
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
    });
 
-   it('Item Can Be Added Again After Removing The Item', () => {
-      cy.findByTestId('product-add-to-cart-button').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
-      cy.findAllByTestId('cart-drawer-remove-item').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
-      cy.findAllByTestId('cart-drawer-quantity').should('not.exist');
-      cy.findByTestId('cart-drawer-close').click();
-      cy.findByTestId('product-add-to-cart-button').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
+   test('Item Can Be Added Again After Removing The Item', async ({ page }) => {
+      await page.getByTestId('product-add-to-cart-button').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await page.getByTestId('cart-drawer-remove-item').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
+      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await page.getByTestId('cart-drawer-close').click();
+      await page.getByTestId('product-add-to-cart-button').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
    });
 
-   it('Back to Shopping Button Works', () => {
-      cy.findByTestId('cart-drawer-open').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
-      cy.findAllByTestId('cart-drawer-quantity').should('not.exist');
-      cy.findByTestId('back-to-shopping').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('not.exist');
+   test('Back to Shopping Button Works', async ({ page }) => {
+      await page.getByTestId('cart-drawer-open').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
+      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await page.getByTestId('back-to-shopping').click();
+      await expect(
+         page.getByTestId('cart-drawer-item-count')
+      ).not.toBeVisible();
 
-      cy.findByTestId('product-add-to-cart-button').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 1);
-      cy.findByTestId('back-to-shopping').should('not.be.visible');
-      cy.findAllByTestId('cart-drawer-remove-item').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('have.text', 0);
-      cy.findByTestId('cart-drawer-quantity').should('not.exist');
-      cy.findByTestId('back-to-shopping').click();
-      cy.findAllByTestId('cart-drawer-item-count').should('not.exist');
-      cy.findByTestId('cart-drawer-close').should('not.exist');
+      await page.getByTestId('product-add-to-cart-button').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
+      await page.getByTestId('cart-drawer-remove-item').click();
+      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
+      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await page.getByTestId('back-to-shopping').click();
+      await expect(
+         page.getByTestId('cart-drawer-item-count')
+      ).not.toBeVisible();
+      await expect(page.getByTestId('cart-drawer-close')).not.toBeVisible();
    });
 });
-
-export {};

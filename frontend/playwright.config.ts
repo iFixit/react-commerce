@@ -19,7 +19,7 @@ const config: PlaywrightTestConfig = {
        * Maximum time expect() should wait for the condition to be met.
        * For example in `await expect(locator).toHaveText();`
        */
-      timeout: 5000,
+      timeout: 10000,
    },
    /* Run tests in files in parallel */
    fullyParallel: true,
@@ -50,6 +50,9 @@ const config: PlaywrightTestConfig = {
       trace: 'on-first-retry',
 
       viewport: { width: 1400, height: 1000 },
+      launchOptions: {
+         slowMo: 1000,
+      },
    },
 
    /* Configure projects for major browsers */
@@ -68,12 +71,13 @@ const config: PlaywrightTestConfig = {
          },
       },
 
-      {
-         name: 'webkit',
-         use: {
-            ...devices['Desktop Safari'],
-         },
-      },
+      // We need to enable cross-site tracking for Safari to work locally.
+      // {
+      //    name: 'webkit',
+      //    use: {
+      //       ...devices['Desktop Safari'],
+      //    },
+      // },
 
       /* Test against mobile viewports. */
       // {
