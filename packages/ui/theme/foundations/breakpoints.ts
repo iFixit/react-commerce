@@ -2,7 +2,7 @@ import type { ThemeOverride } from '@chakra-ui/react';
 import primitives from '@core-ds/primitives';
 
 export const breakpoints: ThemeOverride['breakpoints'] = {
-   base: '0em',
+   base: '0px',
    sm: primitives.breakpoint.sm, // 576px
    md: primitives.breakpoint.md, // 768px
    lg: primitives.breakpoint.lg, // 1000px
