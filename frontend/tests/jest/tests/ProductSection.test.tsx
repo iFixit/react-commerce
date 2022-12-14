@@ -183,4 +183,40 @@ describe('ProductSection Tests', () => {
          });
       });
    });
+
+   describe('Product Specification Tests', () => {
+      test('renders product specifications', async () => {
+         renderWithAppContext(
+            <ProductSection
+               product={getMockProduct()}
+               selectedVariant={getMockProductVariant({
+                  specifications: 'Mocked Product Specification',
+               })}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const specification = await screen.findByText(
+            /mocked product specification/i
+         );
+         (expect(specification) as any).toBeInTheDocument();
+      });
+
+      test('specifications accordion is hidden if no specifications', async () => {
+         renderWithAppContext(
+            <ProductSection
+               product={getMockProduct()}
+               selectedVariant={getMockProductVariant({
+                  specifications: null,
+               })}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const specificationsAccordion = await screen.queryByText(/Specification/i);
+         (expect(specificationsAccordion) as any).not.toBeVisible();
+      });
+   });
 });
