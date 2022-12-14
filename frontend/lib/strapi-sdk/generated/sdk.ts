@@ -3,12 +3,10 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
    [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-   [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-   [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+   { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+   { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
    ID: string;
@@ -974,6 +972,7 @@ export type ProductList = {
    children?: Maybe<ProductListRelationResponseCollection>;
    childrenHeading?: Maybe<Scalars['String']>;
    createdAt?: Maybe<Scalars['DateTime']>;
+   defaultShowAllChildrenOnLgSizes?: Maybe<Scalars['Boolean']>;
    description: Scalars['String'];
    deviceTitle?: Maybe<Scalars['String']>;
    excludeFromHierarchyDisplay: Scalars['Boolean'];
@@ -1033,6 +1032,7 @@ export type ProductListFiltersInput = {
    children?: InputMaybe<ProductListFiltersInput>;
    childrenHeading?: InputMaybe<StringFilterInput>;
    createdAt?: InputMaybe<DateTimeFilterInput>;
+   defaultShowAllChildrenOnLgSizes?: InputMaybe<BooleanFilterInput>;
    description?: InputMaybe<StringFilterInput>;
    deviceTitle?: InputMaybe<StringFilterInput>;
    excludeFromHierarchyDisplay?: InputMaybe<BooleanFilterInput>;
@@ -1060,6 +1060,7 @@ export type ProductListFiltersInput = {
 export type ProductListInput = {
    children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
    childrenHeading?: InputMaybe<Scalars['String']>;
+   defaultShowAllChildrenOnLgSizes?: InputMaybe<Scalars['Boolean']>;
    description?: InputMaybe<Scalars['String']>;
    deviceTitle?: InputMaybe<Scalars['String']>;
    excludeFromHierarchyDisplay?: InputMaybe<Scalars['Boolean']>;
