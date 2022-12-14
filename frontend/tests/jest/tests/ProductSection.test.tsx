@@ -183,4 +183,30 @@ describe('ProductSection Tests', () => {
          });
       });
    });
+
+   describe('Product Inventory Tests', () => {
+      test('Greater than 10 stock does not render low stock message', async () => {
+         const product = getMockProduct({
+            variants: [
+               getMockProductVariant({
+                  quantityAvailable: 11,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const lowStockMessage = screen.queryByTestId(
+            'product-inventory-message'
+         );
+         (expect(lowStockMessage) as any).not.toBeInTheDocument();
+      });
+   });
 });
