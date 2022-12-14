@@ -5,45 +5,48 @@ import * as Sentry from '@sentry/nextjs';
 import { PROD_USER_AGENT } from '@config/constants';
 import { clearCache } from '@lib/cache';
 import { CACHE_DISABLED } from '@config/env';
+import { timeAsync } from '@lib/stats';
 
 export function serverSidePropsWrapper<T extends { [key: string]: any }>(
    pageName: string,
    getServerSidePropsInternal: GetServerSideProps<T>
 ): GetServerSideProps<T> {
-   return async (context) => {
-      console.log('context.resolvedUrl', context.resolvedUrl);
-      console.log('context.req.url', context.req.url);
-      Sentry.setContext('Extra Info', {
-         headers: context.req.headers,
-         url: context.req.url,
-         method: context.req.method,
-         locale: context.locale,
-         ...context.params,
-         ...context.query,
-      });
-      const isCacheDisabled =
-         CACHE_DISABLED || context.query._vercel_no_cache === '1';
-      if (isCacheDisabled) {
-         clearCache();
-      }
-      return logAsync(`page.${pageName}.getServerSideProps`, () =>
-         getServerSidePropsInternal(context)
-      )
-         .then((result) => {
-            if (isCacheDisabled) {
-               context.res.setHeader(
-                  'Cache-Control',
-                  'no-store, no-cache, must-revalidate, stale-if-error=0'
-               );
-               clearCache();
-            }
-            return result;
-         })
-         .catch((err) => {
-            setSentryPageContext(context);
-            throw err;
+   return (context) => {
+      return timeAsync(`page.${pageName}.server_side_props`, async () => {
+         console.log('context.resolvedUrl', context.resolvedUrl);
+         console.log('context.req.url', context.req.url);
+         Sentry.setContext('Extra Info', {
+            headers: context.req.headers,
+            url: context.req.url,
+            method: context.req.method,
+            locale: context.locale,
+            ...context.params,
+            ...context.query,
          });
-   };
+         const isCacheDisabled =
+            CACHE_DISABLED || context.query._vercel_no_cache === '1';
+         if (isCacheDisabled) {
+            clearCache();
+         }
+         return logAsync(`page.${pageName}.getServerSideProps`, () =>
+            getServerSidePropsInternal(context)
+         )
+            .then((result) => {
+               if (isCacheDisabled) {
+                  context.res.setHeader(
+                     'Cache-Control',
+                     'no-store, no-cache, must-revalidate, stale-if-error=0'
+                  );
+                  clearCache();
+               }
+               return result;
+            })
+            .catch((err) => {
+               setSentryPageContext(context);
+               throw err;
+            });
+         });
+   }
 }
 
 export function noindexDevDomains(context: GetServerSidePropsContext) {
