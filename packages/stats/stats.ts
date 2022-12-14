@@ -1,5 +1,6 @@
 import StatsD from 'hot-shots';
-import { STATSD_HOST } from '@config/env';
+
+const STATSD_HOST = process.env.STATSD_HOST;
 
 export const stats = new StatsD({
    // When unset, will just log the stats

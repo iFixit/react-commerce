@@ -51,6 +51,7 @@ importers:
       '@ifixit/react-components': ^0.3.0
       '@ifixit/sentry': workspace:*
       '@ifixit/shopify-storefront-client': workspace:*
+      '@ifixit/stats': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@next/bundle-analyzer': 12.1.6
@@ -93,7 +94,6 @@ importers:
       graphql: 15.5.3
       graphql-tag: 2.12.6
       graphqurl: 1.0.1
-      hot-shots: 9.3.0
       identity-obj-proxy: 3.0.0
       immer: 9.0.14
       jest: 28.1.2
@@ -142,6 +142,7 @@ importers:
       '@ifixit/react-components': 0.3.0_yjtcaku3fmaryer2qp2rwfzyqa
       '@ifixit/sentry': link:../packages/sentry
       '@ifixit/shopify-storefront-client': link:../packages/shopify-storefront-client
+      '@ifixit/stats': link:../packages/stats
       '@ifixit/ui': link:../packages/ui
       '@sentry/nextjs': 7.8.1_5cy3dema5qwip6n7exqk4sqtji
       '@sentry/tracing': 7.8.1
@@ -153,7 +154,6 @@ importers:
       dayjs: 1.10.5
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       graphql: 15.5.3
-      hot-shots: 9.3.0
       immer: 9.0.14
       lodash: 4.17.21
       lru-cache: 7.10.1
@@ -452,6 +452,17 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      typescript: 4.8.4
+
+  packages/stats:
+    specifiers:
+      '@ifixit/tsconfig': workspace:*
+      hot-shots: 9.3.0
+      typescript: 4.8.4
+    dependencies:
+      hot-shots: 9.3.0
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
       typescript: 4.8.4
 
   packages/tsconfig:

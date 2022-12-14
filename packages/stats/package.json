@@ -1,0 +1,19 @@
+{
+   "name": "@ifixit/stats",
+   "version": "0.0.0",
+   "main": "./stats.ts",
+   "types": "./stats.ts",
+   "license": "MIT",
+   "dependencies": {
+      "hot-shots": "9.3.0"
+   },
+   "devDependencies": {
+      "@ifixit/tsconfig": "workspace:*",
+      "typescript": "4.8.4"
+   },
+   "scripts": {
+      "build": "",
+      "clean": "",
+      "type-check": "tsc --pretty --noEmit"
+   }
+}

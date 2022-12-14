@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/nextjs';
 import { PROD_USER_AGENT } from '@config/constants';
 import { clearCache } from '@lib/cache';
 import { CACHE_DISABLED } from '@config/env';
-import { timeAsync } from '@lib/stats';
+import { timeAsync } from '@ifixit/stats';
 
 export function serverSidePropsWrapper<T extends { [key: string]: any }>(
    pageName: string,
