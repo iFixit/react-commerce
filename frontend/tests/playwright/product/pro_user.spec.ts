@@ -15,7 +15,10 @@ test.describe('Pro user test', () => {
       await interceptLogin(page, {
          discount_tier: 'pro_4',
       });
-      await page.reload({ waitUntil: 'networkidle' });
+      await page.reload();
+
+      // Wait until the pro icon is shown.
+      await page.waitForSelector('.fa-rectangle-pro');
 
       // Assert price on page is lower than step 1
       const proPriceString = await page
