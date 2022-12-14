@@ -139,7 +139,7 @@ describe('ProductSection Tests', () => {
          (expect(price.textContent) as any).toBe('$29.99');
       });
 
-      test.only('Discounted Price Renders', async () => {
+      test('Discounted Price Renders', async () => {
          const originalPrice = 29.99;
          const discountPercentage = 10;
          const discountPrice = (
