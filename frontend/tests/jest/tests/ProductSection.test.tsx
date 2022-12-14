@@ -215,7 +215,9 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const specificationsAccordion = await screen.queryByText(/Specification/i);
+         const specificationsAccordion = await screen.queryByText(
+            /Specification/i
+         );
          (expect(specificationsAccordion) as any).not.toBeVisible();
       });
    });
