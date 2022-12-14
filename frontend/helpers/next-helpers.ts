@@ -7,6 +7,7 @@ import { clearCache } from '@lib/cache';
 import { CACHE_DISABLED } from '@config/env';
 
 export function serverSidePropsWrapper<T extends { [key: string]: any }>(
+   pageName: string,
    getServerSidePropsInternal: GetServerSideProps<T>
 ): GetServerSideProps<T> {
    return async (context) => {
@@ -25,7 +26,7 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
       if (isCacheDisabled) {
          clearCache();
       }
-      return logAsync('getServerSideProps', () =>
+      return logAsync(`page.${pageName}.getServerSideProps`, () =>
          getServerSidePropsInternal(context)
       )
          .then((result) => {
