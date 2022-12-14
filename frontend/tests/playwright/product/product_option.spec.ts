@@ -1,69 +1,75 @@
-describe('Product option test', () => {
-   it('test different styles', function () {
-      cy.loadProductPageByPath('/products/repair-business-toolkit');
+import { test, expect } from '@playwright/test';
 
-      cy.findByText('Style').should('be.visible');
-      cy.findByTestId('product-option-selector').as('selector');
+test.describe('Product option test', () => {
+   test('test different styles', async ({ page }) => {
+      await page.goto('/products/repair-business-toolkit');
+
+      await expect(page.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
-      cy.findAllByTestId('product-price')
+      const firstOptionPrice = await page
+         .getByTestId('product-price')
          .first()
-         .invoke('text')
-         .as('firstOptionPrice');
-      cy.findAllByTestId('product-sku')
-         .first()
-         .invoke('text')
-         .as('firstOptionSkuText');
-      cy.get('@selector')
-         .get('option:selected')
-         .invoke('text')
-         .as('firstOptionName');
+         .innerText();
+      const firstOptionSku = await page
+         .getByTestId('product-sku')
+         .textContent();
+      const firstOptionName = await page
+         .getByTestId('product-option-selector')
+         .locator('option')
+         .nth(0)
+         .textContent();
 
       // Add the first product option to the cart
-      cy.findByTestId('product-add-to-cart-button').click();
-      cy.findByTestId('cart-drawer-close').click();
+      await page.getByTestId('product-add-to-cart-button').click();
+      await page.getByTestId('cart-drawer-close').click();
 
-      cy.get('@selector')
-         .select(1)
-         .then(() => {
-            cy.contains(this.firstOptionSkuText).should('not.exist');
-         });
+      // Switch to the second product option
+      await page
+         .getByTestId('product-option-selector')
+         .selectOption({ index: 1 });
+      expect(page.getByTestId('product-sku')).not.toContain(firstOptionSku);
 
       // Get the price, sku, and name for the second product option
-      cy.findAllByTestId('product-price')
+      const secondOptionPrice = await page
+         .getByTestId('product-price')
          .first()
-         .invoke('text')
-         .as('secondOptionPrice');
-      cy.findAllByTestId('product-sku')
-         .first()
-         .invoke('text')
-         .as('secondOptionSkuText');
-      cy.get('@selector')
-         .get('option:selected')
-         .invoke('text')
-         .as('secondOptionName');
+         .innerText();
+      const secondOptionSku = await page
+         .getByTestId('product-sku')
+         .textContent();
+      const secondOptionName = await page
+         .getByTestId('product-option-selector')
+         .locator('option')
+         .nth(1)
+         .textContent();
+
+      expect(firstOptionName).not.toEqual(secondOptionName);
 
       // Add the second product option to the cart
-      cy.findByTestId('product-add-to-cart-button').click();
+      await page.getByTestId('product-add-to-cart-button').click();
 
       // Assert that the cart drawer contains the skus and prices of the added products
-      cy.findByTestId('cart-drawer-body')
-         .should('be.visible')
-         .then((el) => {
-            // Parse out the skus from the skuTexts which are in form of "Item # IF145-278-14"
-            const sku1 = this.firstOptionSkuText.match(/IF\d*\-\d*\-\d*/g)[0];
-            const sku2 = this.secondOptionSkuText.match(/IF\d*\-\d*\-\d*/g)[0];
+      await expect(page.getByTestId('cart-drawer-body')).toBeVisible();
 
-            cy.wrap(el).contains(sku1);
-            cy.wrap(el).contains(sku2);
-            cy.wrap(el).contains(this.firstOptionPrice);
-            cy.wrap(el).contains(this.secondOptionPrice);
+      // Parse out the skus from the skuTexts which are in form of "Item # IF145-278-14"
+      const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
+      const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
 
-            expect(sku1).to.not.eq(sku2);
-            expect(this.firstOptionName).to.not.eq(this.secondOptionName);
-            expect(this.firstOptionPrice).to.not.eq(this.secondOptionPrice);
-         });
+      // Assert that the cart drawer contains the skus of the added products
+      await expect(
+         page.getByTestId('cart-drawer-body').getByText(sku1)
+      ).toBeVisible();
+      await expect(
+         page.getByTestId('cart-drawer-body').getByText(sku2)
+      ).toBeVisible();
+
+      // Assert that the cart drawer contains the prices of the added products
+      await expect(
+         page.getByTestId('cart-drawer-body').getByText(firstOptionPrice)
+      ).toBeVisible();
+      await expect(
+         page.getByTestId('cart-drawer-body').getByText(secondOptionPrice)
+      ).toBeVisible();
    });
 });
-
-export {};
