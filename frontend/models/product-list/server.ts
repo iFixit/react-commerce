@@ -91,6 +91,8 @@ export async function findProductList(
       description: description,
       metaDescription: productList?.metaDescription ?? null,
       metaTitle: productList?.metaTitle ?? null,
+      defaultShowAllChildrenOnLgSizes:
+         productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
       image: null,
