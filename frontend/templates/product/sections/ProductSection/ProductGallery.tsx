@@ -34,15 +34,25 @@ export function ProductGallery({
    enableZoom,
    onChangeImage,
 }: ProductGalleryProps) {
+   const galleryContainerRef = React.useRef<HTMLDivElement | null>(null);
    const variantImages = useVariantImages(product, selectedVariant.id);
-   const innerEnableZoom = React.useMemo(
-      () =>
-         enableZoom &&
-         !product.images.find(
-            ({ width, height }) => !width || !height || width * height < 1e6
-         ),
-      [product, enableZoom]
-   );
+
+   const [innerEnableZoom, setInnerEnableZoom] = React.useState(false);
+
+   React.useEffect(() => {
+      if (enableZoom && galleryContainerRef.current) {
+         const { clientWidth, clientHeight } = galleryContainerRef.current;
+         setInnerEnableZoom(
+            !product.images.find(
+               ({ width, height }) =>
+                  !width ||
+                  !height ||
+                  width * height < clientWidth * clientHeight
+            )
+         );
+      }
+   }, [product, enableZoom]);
+
    const selectedImageIndex = useCurrentImageIndex(
       variantImages,
       selectedImageId
@@ -81,41 +91,43 @@ export function ProductGallery({
          }}
          w="full"
       >
-         {variantImages.length > 1 ? (
-            <ReactSwiper
-               onSwiper={setMainSwiper}
-               modules={[Navigation, Pagination, Thumbs]}
-               thumbs={{ swiper: thumbsSwiper }}
-               spaceBetween={12}
-               style={{ width: '100%' }}
-               pagination={{
-                  clickable: true,
-               }}
-            >
-               <CustomNavigation
-                  swiper={mainSwiper}
-                  isBeginning={isBeginning}
-                  isEnd={isEnd}
+         <Box ref={galleryContainerRef}>
+            {variantImages.length > 1 ? (
+               <ReactSwiper
+                  onSwiper={setMainSwiper}
+                  modules={[Navigation, Pagination, Thumbs]}
+                  thumbs={{ swiper: thumbsSwiper }}
+                  spaceBetween={12}
+                  style={{ width: '100%' }}
+                  pagination={{
+                     clickable: true,
+                  }}
+               >
+                  <CustomNavigation
+                     swiper={mainSwiper}
+                     isBeginning={isBeginning}
+                     isEnd={isEnd}
+                  />
+                  {variantImages.map((variantImage, index) => (
+                     <SwiperSlide key={variantImage.id}>
+                        <ImageWithZoom
+                           index={index}
+                           image={variantImage}
+                           enableZoom={innerEnableZoom}
+                        />
+                     </SwiperSlide>
+                  ))}
+               </ReactSwiper>
+            ) : variantImages.length === 1 ? (
+               <ImageWithZoom
+                  index={0}
+                  image={variantImages[0]}
+                  enableZoom={innerEnableZoom}
                />
-               {variantImages.map((variantImage, index) => (
-                  <SwiperSlide key={variantImage.id}>
-                     <ImageWithZoom
-                        index={index}
-                        image={variantImage}
-                        enableZoom={innerEnableZoom}
-                     />
-                  </SwiperSlide>
-               ))}
-            </ReactSwiper>
-         ) : variantImages.length === 1 ? (
-            <ImageWithZoom
-               index={0}
-               image={variantImages[0]}
-               enableZoom={innerEnableZoom}
-            />
-         ) : (
-            <ImagePlaceholder />
-         )}
+            ) : (
+               <ImagePlaceholder />
+            )}
+         </Box>
 
          {showThumbnails && variantImages.length > 1 && (
             <Box position="relative">
@@ -327,7 +339,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
       zoomTranslationTopPercentage: 0,
    });
 
-   const galleryRef = React.useRef<HTMLImageElement | null>(null);
+   const galleryImageContainerRef = React.useRef<HTMLDivElement | null>(null);
    const galleryImageDimensionsRef = React.useRef<{
       naturalWidth: number;
       naturalHeight: number;
@@ -348,7 +360,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
               setDimensionData(
                  computeDimensionData({
                     zoomMaskRef,
-                    galleryRef,
+                    galleryImageContainerRef,
                     galleryImageDimensionsRef,
                  })
               );
@@ -395,7 +407,12 @@ function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
             height="100%"
             p={`${CONTAINER_PADDING}px`}
          >
-            <Box ref={galleryRef} pos="relative" w="full" h="full">
+            <Box
+               ref={galleryImageContainerRef}
+               pos="relative"
+               w="full"
+               h="full"
+            >
                <ResponsiveImage
                   priority={index === 0}
                   src={image.url}
@@ -593,7 +610,7 @@ type DimensionData = {
 
 type ComputeDimensionDataParams = {
    zoomMaskRef: React.MutableRefObject<HTMLDivElement | null>;
-   galleryRef: React.MutableRefObject<HTMLImageElement | null>;
+   galleryImageContainerRef: React.MutableRefObject<HTMLDivElement | null>;
    galleryImageDimensionsRef: React.MutableRefObject<{
       naturalWidth: number;
       naturalHeight: number;
@@ -602,7 +619,7 @@ type ComputeDimensionDataParams = {
 
 const computeDimensionData = ({
    zoomMaskRef,
-   galleryRef,
+   galleryImageContainerRef,
    galleryImageDimensionsRef,
 }: ComputeDimensionDataParams): DimensionData => {
    let zoomMaskAspectRatio = 1,
@@ -616,12 +633,12 @@ const computeDimensionData = ({
 
    if (
       zoomMaskRef.current &&
-      galleryRef.current &&
+      galleryImageContainerRef.current &&
       galleryImageDimensionsRef.current
    ) {
       const { clientWidth: zoomWidth, clientHeight: zoomHeight } =
          zoomMaskRef.current;
-      const { clientWidth, clientHeight } = galleryRef.current;
+      const { clientWidth, clientHeight } = galleryImageContainerRef.current;
 
       const {
          naturalWidth: galleryNaturalWidth,
