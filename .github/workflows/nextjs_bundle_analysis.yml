@@ -24,6 +24,8 @@ jobs:
            with:
               version: 7
               run_install: true
+           env:
+              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
 
          - name: Restore next build
            uses: actions/cache@v2
