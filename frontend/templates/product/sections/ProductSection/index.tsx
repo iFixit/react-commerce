@@ -207,7 +207,7 @@ export function ProductSection({
                         product.compatibility.devices.length <= 0
                      }
                   >
-                     <CustomAccordionButton data-testid="product-compatibility-dropdown-button">
+                     <CustomAccordionButton>
                         Compatibility
                      </CustomAccordionButton>
                      <CustomAccordionPanel data-testid="product-compatibility-dropdown">
@@ -259,12 +259,9 @@ const ProductTitle = chakra(
 
 type CustomAccordionButtonProps = React.PropsWithChildren<{}>;
 
-function CustomAccordionButton({
-   children,
-   ...other
-}: CustomAccordionButtonProps) {
+function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
    return (
-      <AccordionButton py="5" px="1.5" {...other}>
+      <AccordionButton py="5" px="1.5">
          <Box
             flex="1"
             textAlign="left"

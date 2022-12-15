@@ -133,13 +133,17 @@ describe('ProductSection Tests', () => {
             expect(screen.getByTestId('product-compatibility-dropdown')) as any
          ).not.toBeVisible();
 
-         await (
-            screen.findByTestId('product-compatibility-dropdown-button') as any
-         ).click();
+         act(() => {
+            screen.getByRole('button', { name: /compatibility/i }).click();
+         });
 
-         (
-            expect(screen.getByTestId('product-compatibility-dropdown')) as any
-         ).toBeVisible();
+         waitFor(() => {
+            (
+               expect(
+                  screen.getByTestId('product-compatibility-dropdown')
+               ) as any
+            ).toBeVisible();
+         });
       });
 
       test('compatibility does not render', async () => {
@@ -158,7 +162,10 @@ describe('ProductSection Tests', () => {
 
          (
             expect(
-               screen.getByTestId('product-compatibility-dropdown-button')
+               screen.getByRole('button', {
+                  name: /compatibility/i,
+                  hidden: true,
+               })
             ) as any
          ).not.toBeVisible();
       });
@@ -183,7 +190,7 @@ describe('ProductSection Tests', () => {
          (expect(price.textContent) as any).toBe('$29.99');
       });
 
-      test.only('Discounted Price Renders', async () => {
+      test('Discounted Price Renders', async () => {
          const originalPrice = 29.99;
          const discountPercentage = 10;
          const discountPrice = (
