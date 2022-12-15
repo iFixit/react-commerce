@@ -129,8 +129,8 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         expect(
-            screen.getByTestId('product-compatibility-dropdown')
+         (
+            expect(screen.getByTestId('product-compatibility-dropdown')) as any
          ).not.toBeVisible();
 
          const compatibilityButton = await screen.findByTestId(
@@ -140,8 +140,10 @@ describe('ProductSection Tests', () => {
          await act(() => compatibilityButton.click());
 
          waitFor(() =>
-            expect(
-               screen.getByTestId('product-compatibility-dropdown')
+            (
+               expect(
+                  screen.getByTestId('product-compatibility-dropdown')
+               ) as any
             ).toBeVisible()
          );
       });
@@ -160,8 +162,10 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         expect(
-            screen.getByTestId('product-compatibility-dropdown-button')
+         (
+            expect(
+               screen.getByTestId('product-compatibility-dropdown-button')
+            ) as any
          ).not.toBeVisible();
       });
    });
