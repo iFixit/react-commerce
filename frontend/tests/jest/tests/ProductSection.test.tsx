@@ -133,19 +133,13 @@ describe('ProductSection Tests', () => {
             expect(screen.getByTestId('product-compatibility-dropdown')) as any
          ).not.toBeVisible();
 
-         const compatibilityButton = await screen.findByTestId(
-            'product-compatibility-dropdown-button'
-         );
+         await screen
+            .findByTestId('product-compatibility-dropdown-button')
+            .click();
 
-         await act(() => compatibilityButton.click());
-
-         waitFor(() =>
-            (
-               expect(
-                  screen.getByTestId('product-compatibility-dropdown')
-               ) as any
-            ).toBeVisible()
-         );
+         (
+            expect(screen.getByTestId('product-compatibility-dropdown')) as any
+         ).toBeVisible();
       });
 
       test('compatibility does not render', async () => {
