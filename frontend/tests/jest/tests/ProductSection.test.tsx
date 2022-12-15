@@ -7,6 +7,7 @@ import {
    getNonDiscountedProduct,
    getDiscountedProduct,
    getProductOfType,
+   getProductWithWarranty,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 
@@ -259,6 +260,36 @@ describe('ProductSection Tests', () => {
             /shipping restrictions apply/i
          );
          (expect(shippingRestrictionText) as any).not.toBeInTheDocument();
+      });
+   });
+
+   describe('Product Warranty Tests', () => {
+      test('renders the lifetime guarantee warranty', async () => {
+         const fullWarrantyProduct = getProductWithWarranty('full');
+
+         renderWithAppContext(
+            <ProductSection
+               product={fullWarrantyProduct}
+               selectedVariant={fullWarrantyProduct.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const lifetimeGuaranteeText = await screen.findByText(
+            /lifetime guarantee/i
+         );
+         (expect(lifetimeGuaranteeText) as any).toBeVisible();
+         (
+            expect(
+               screen.getByRole('link', { name: 'Lifetime Guarantee' })
+            ) as any
+         ).toHaveAttribute('href', 'www.cominor.com/Info/Warranty');
+
+         // We display quality guarantee icon for products with lifetime warrant
+         const qualityGuaranteeIcon = await screen.findByTestId(
+            'quality-guarantee-icon'
+         );
+         (expect(qualityGuaranteeIcon) as any).toBeVisible();
       });
    });
 });
