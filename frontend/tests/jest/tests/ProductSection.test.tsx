@@ -291,5 +291,49 @@ describe('ProductSection Tests', () => {
          );
          (expect(qualityGuaranteeIcon) as any).toBeVisible();
       });
+
+      test('renders the limited warranty', async () => {
+         const limitedWarrantyProduct = getProductWithWarranty('limited');
+
+         renderWithAppContext(
+            <ProductSection
+               product={limitedWarrantyProduct}
+               selectedVariant={limitedWarrantyProduct.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const warrantyText = await screen.findByText(/One year warranty/i);
+         (expect(warrantyText) as any).toBeVisible();
+         (
+            expect(
+               screen.getByRole('link', { name: 'One year warranty' })
+            ) as any
+         ).toHaveAttribute('href', 'www.cominor.com/Info/Warranty');
+      });
+
+      test('renders the as-is warranty', async () => {
+         const asIsWarrantyProduct = getProductWithWarranty('as-is');
+
+         renderWithAppContext(
+            <ProductSection
+               product={asIsWarrantyProduct}
+               selectedVariant={asIsWarrantyProduct.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const warrantyText = await screen.findByText(
+            /Sold as-is; no refunds or returns/i
+         );
+         (expect(warrantyText) as any).toBeVisible();
+         (
+            expect(
+               screen.getByRole('link', {
+                  name: 'Sold as-is; no refunds or returns',
+               })
+            ) as any
+         ).toHaveAttribute('href', 'www.cominor.com/Info/Warranty');
+      });
    });
 });
