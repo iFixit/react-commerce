@@ -145,6 +145,25 @@ describe('ProductSection Tests', () => {
             ).toBeVisible()
          );
       });
+
+      test('compatibility does not render', async () => {
+         const mockProduct = getMockProduct({
+            compatibility: null,
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={mockProduct}
+               selectedVariant={getMockProductVariant()}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         expect(
+            screen.getByTestId('product-compatibility-dropdown-button')
+         ).not.toBeVisible();
+      });
    });
 
    describe('Product Price Tests', () => {
