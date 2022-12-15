@@ -10,21 +10,20 @@ on:
 defaults:
   run:
     # change this if your nextjs app does not live at the root of the repo
-    working-directory: ./
+    working-directory: ./frontend
 
 jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Set up node
-        uses: actions/setup-node@v1
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
         with:
-          node-version: '14.x'
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+          version: 7
+          run_install: false
 
       - name: Restore next build
         uses: actions/cache@v2
