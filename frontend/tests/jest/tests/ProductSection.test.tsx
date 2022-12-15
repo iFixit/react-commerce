@@ -6,6 +6,7 @@ import {
    getMockProductVariant,
    getNonDiscountedProduct,
    getDiscountedProduct,
+   getProductOfType,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 
@@ -219,6 +220,45 @@ describe('ProductSection Tests', () => {
             /Specification/i
          );
          (expect(specificationsAccordion) as any).not.toBeVisible();
+      });
+   });
+
+   describe('Product Shipping Restrinctions Tests', () => {
+      test('renders shipping restrictions', async () => {
+         const battery = getProductOfType('battery');
+         renderWithAppContext(
+            <ProductSection
+               product={battery}
+               selectedVariant={battery.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const shippingRestrictionText = await screen.findByText(
+            /shipping restrictions apply/i
+         );
+         (expect(shippingRestrictionText) as any).toBeVisible();
+
+         const batteryShippingInfo = screen.getByText(
+            'Batteries may only be shipped within the contiguous USA at this time and may only ship via standard shipping.'
+         );
+         (expect(batteryShippingInfo) as any).toBeInTheDocument();
+      });
+
+      test('does not render shipping restrictions', async () => {
+         const tool = getProductOfType('tool');
+         renderWithAppContext(
+            <ProductSection
+               product={tool}
+               selectedVariant={tool.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const shippingRestrictionText = await screen.queryByText(
+            /shipping restrictions apply/i
+         );
+         (expect(shippingRestrictionText) as any).not.toBeInTheDocument();
       });
    });
 });
