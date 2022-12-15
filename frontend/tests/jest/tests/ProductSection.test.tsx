@@ -133,8 +133,8 @@ describe('ProductSection Tests', () => {
             expect(screen.getByTestId('product-compatibility-dropdown')) as any
          ).not.toBeVisible();
 
-         await screen
-            .findByTestId('product-compatibility-dropdown-button')
+         await (screen
+            .findByTestId('product-compatibility-dropdown-button')as any)
             .click();
 
          (
