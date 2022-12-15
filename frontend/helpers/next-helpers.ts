@@ -28,9 +28,7 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
          if (isCacheDisabled) {
             clearCache();
          }
-         return logAsync(`page.${pageName}.getServerSideProps`, () =>
-            getServerSidePropsInternal(context)
-         )
+         return getServerSidePropsInternal(context)
             .then((result) => {
                if (isCacheDisabled) {
                   context.res.setHeader(
@@ -45,8 +43,8 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
                setSentryPageContext(context);
                throw err;
             });
-         });
-   }
+      });
+   };
 }
 
 export function noindexDevDomains(context: GetServerSidePropsContext) {

@@ -1,5 +1,7 @@
 import StatsD from 'hot-shots';
 
+import { logAsync } from '@ifixit/helpers';
+
 const STATSD_HOST = process.env.STATSD_HOST;
 
 export const stats = new StatsD({
@@ -27,7 +29,7 @@ if (!STATSD_HOST) {
 
 export function timeAsync<T>(statName: string, promiseFunc: () => Promise<T>): Promise<T> {
    const t = Date.now();
-   const result = promiseFunc();
+   const result = logAsync(statName, promiseFunc);
    result.then(() => {
       stats.distribution(statName, (Date.now() - t) / 1e3);
    });

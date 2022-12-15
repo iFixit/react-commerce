@@ -456,12 +456,14 @@ importers:
 
   packages/stats:
     specifiers:
+      '@ifixit/helpers': workspace:*
       '@ifixit/tsconfig': workspace:*
       hot-shots: 9.3.0
       typescript: 4.8.4
     dependencies:
       hot-shots: 9.3.0
     devDependencies:
+      '@ifixit/helpers': link:../helpers
       '@ifixit/tsconfig': link:../tsconfig
       typescript: 4.8.4
 

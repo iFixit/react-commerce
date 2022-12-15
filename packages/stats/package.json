@@ -8,6 +8,7 @@
       "hot-shots": "9.3.0"
    },
    "devDependencies": {
+      "@ifixit/helpers": "workspace:*",
       "@ifixit/tsconfig": "workspace:*",
       "typescript": "4.8.4"
    },
