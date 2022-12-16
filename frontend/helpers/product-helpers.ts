@@ -40,7 +40,7 @@ export function getAdminLinks({
    storeCode,
 }: GetAdminLinksProps): ProductEditMenuLink[] {
    const encodedProductcode = encodeURIComponent(productcode ?? '');
-   const decodedProductId = decodeProductId(productId);
+   const encodedProductId = encodeProductId(productId);
    const akeneoOrigin = ifixitOriginWithSubdomain('akeneo');
    return [
       {
@@ -51,7 +51,7 @@ export function getAdminLinks({
       {
          icon: faShop,
          label: 'Shopify',
-         url: `https://ifixit-${storeCode}.myshopify.com/admin/products/${decodedProductId}`,
+         url: `https://ifixit-${storeCode}.myshopify.com/admin/products/${encodedProductId}`,
       },
       {
          icon: faWarehouse,
@@ -66,6 +66,9 @@ export function getAdminLinks({
    ];
 }
 
-function decodeProductId(productId: string) {
-   return `gid://shopify/Product/${productId}`;
+export function encodeProductId(productId: string) {
+   if (!productId.startsWith('gid://')) {
+      throw new Error('Product id must be a global shopify product id');
+   }
+   return productId.replace(/^gid:\/\/shopify\/Product\//, '');
 }
