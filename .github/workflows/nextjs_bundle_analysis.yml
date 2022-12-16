@@ -44,6 +44,7 @@ jobs:
            run: ./node_modules/.bin/next build
            env:
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+              NEXT_PUBLIC_STRAPI_ORIGIN: https://main.govinor.com
 
          # Here's the first place where next-bundle-analysis' own script is used
          # This step pulls the raw bundle stats for the current bundle
