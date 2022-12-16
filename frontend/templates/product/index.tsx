@@ -7,6 +7,7 @@ import {
    serverSidePropsWrapper,
 } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
@@ -66,6 +67,16 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
+   const adminLinks = React.useMemo(
+      () =>
+         getAdminLinks({
+            productcode: product.productcode,
+            productId: product.id,
+            storeCode: DEFAULT_STORE_CODE,
+         }),
+      [product.productcode, product.id]
+   );
+
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
@@ -76,7 +87,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                borderBottomWidth="thin"
             >
                <SecondaryNavigationRow direction="row-reverse">
-                  <ProductEditMenu links={[]} />
+                  <ProductEditMenu links={adminLinks} />
                </SecondaryNavigationRow>
             </SecondaryNavigation>
          )}
@@ -86,7 +97,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                   <PageBreadcrumb items={product.breadcrumbs} />
                   {isAdminUser && (
                      <ProductEditMenu
-                        links={[]}
+                        links={adminLinks}
                         display={{
                            base: 'none',
                            lg: 'block',
