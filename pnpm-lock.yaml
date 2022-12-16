@@ -248,18 +248,18 @@ importers:
   packages/auth-sdk:
     specifiers:
       '@ifixit/app': workspace:*
-      '@ifixit/helpers': workspace:*
       '@ifixit/ifixit-api-client': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       typescript: 4.8.4
+      zod: 3.18.0
     dependencies:
       '@ifixit/app': link:../app
-      '@ifixit/helpers': link:../helpers
       '@ifixit/ifixit-api-client': link:../ifixit-api-client
       '@ifixit/ui': link:../ui
+      zod: 3.18.0
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
