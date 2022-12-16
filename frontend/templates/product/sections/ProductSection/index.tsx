@@ -303,6 +303,7 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
       >
          {isLifetimeWarranty(variant.warranty ?? '') && (
             <Icon
+               data-testid="quality-guarantee-icon"
                as={QualityGuarantee}
                boxSize="50px"
                color="brand.500"

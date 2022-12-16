@@ -142,7 +142,7 @@ export const getProductWithWarranty = (
    guarantee: 'full' | 'limited' | 'as-is'
 ) => {
    enum Warranty {
-      'full' = 'Lifetime Guraantee',
+      'full' = 'Lifetime Guarantee',
       'limited' = 'One year warranty',
       'as-is' = 'Sold as-is; no refunds or returns',
    }
