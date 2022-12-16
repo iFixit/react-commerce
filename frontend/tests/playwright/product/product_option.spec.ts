@@ -55,6 +55,8 @@ test.describe('Product option test', () => {
       // Parse out the skus from the skuTexts which are in form of "Item # IF145-278-14"
       const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
       const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
+      expect(sku1).not.toEqual('');
+      expect(sku2).not.toEqual('');
 
       // Assert that the cart drawer contains the skus of the added products
       await expect(
