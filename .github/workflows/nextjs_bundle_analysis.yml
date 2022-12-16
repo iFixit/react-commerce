@@ -19,11 +19,11 @@ jobs:
          - name: Checkout
            uses: actions/checkout@v2
 
-         - name: Install pnpm
-           uses: pnpm/action-setup@v2.0.1
-           with:
-              version: 7
-              run_install: true
+         - name: Setup and cache pnpm
+           uses: ./.github/actions/pnpm-setup
+
+         - name: pnpm install
+           run: pnpm install
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
 
