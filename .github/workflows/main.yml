@@ -25,8 +25,8 @@ jobs:
            id: cache-cypress
            uses: actions/cache@v1
            with:
-             path: ~/.cache/Cypress
-             key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+              path: ~/.cache/Cypress
+              key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
          # now let's install Cypress binary
          - run: npx cypress install
          - name: Cypress run
