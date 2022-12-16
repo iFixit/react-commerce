@@ -11,6 +11,7 @@ export type User = {
    is_pro: boolean;
    discountTier: string | null;
    algoliaApiKeyProducts: string | null | undefined;
+   isAdmin: boolean;
 };
 
 const userKeys = {
@@ -60,6 +61,7 @@ const UserApiResponseSchema = z.object({
       .nullable(),
    algoliaApiKeyProducts: z.string().optional().nullable(),
    discount_tier: z.string().optional().nullable(),
+   privileges: z.array(z.string()),
 });
 
 async function fetchAuthenticatedUser(
@@ -75,5 +77,6 @@ async function fetchAuthenticatedUser(
       is_pro: userSchema.discount_tier != null,
       algoliaApiKeyProducts: userSchema.algoliaApiKeyProducts,
       discountTier: userSchema.discount_tier ?? null,
+      isAdmin: userSchema.privileges.includes('Admin'),
    };
 }
