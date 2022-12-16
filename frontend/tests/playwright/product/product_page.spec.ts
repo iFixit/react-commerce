@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Product page test', () => {
-   test('verify product title, price and sku are visible', async ({ page }) => {
+   test('Verify product title, price and sku are visible', async ({ page }) => {
       await page.goto('/products/repair-business-toolkit');
 
       // Assert product title is visible

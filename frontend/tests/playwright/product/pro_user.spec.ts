@@ -2,7 +2,7 @@ import { interceptLogin } from '../utils';
 import { test, expect } from '@playwright/test';
 
 test.describe('Pro user test', () => {
-   test('will give pro users a discount', async ({ page }) => {
+   test('Will give pro users a discount', async ({ page }) => {
       await page.goto('/products/repair-business-toolkit');
 
       // Get price from page

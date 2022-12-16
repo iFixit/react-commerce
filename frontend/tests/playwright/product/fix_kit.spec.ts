@@ -5,7 +5,7 @@ test.describe('Fix Kit and Part Only test', () => {
       await page.goto('/products/iphone-6s-plus-replacement-battery');
    });
 
-   test('test kit contents and product skus', async ({ page }) => {
+   test('Kit contents and product skus', async ({ page }) => {
       await page.getByText('Fix Kit').nth(1).click();
       await expect(page.getByText('Kit contents')).toBeVisible();
       await expect(page.getByText('Assembly contents')).not.toBeVisible();
@@ -23,7 +23,7 @@ test.describe('Fix Kit and Part Only test', () => {
       expect(fixKitSku).not.toEqual(partOnlySku);
    });
 
-   test('test product image changes', async ({ page }) => {
+   test('Product image changes', async ({ page }) => {
       await page.getByText('Fix Kit').nth(1).click();
 
       await expect(page.getByRole('img', { name: 'Fix Kit' })).toBeVisible();

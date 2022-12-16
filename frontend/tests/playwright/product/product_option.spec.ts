@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Product option test', () => {
-   test('test different styles', async ({ page }) => {
+   test('Different styles', async ({ page }) => {
       await page.goto('/products/repair-business-toolkit');
 
       await expect(page.getByText('Style')).toBeVisible();
