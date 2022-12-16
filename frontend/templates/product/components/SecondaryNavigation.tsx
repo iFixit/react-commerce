@@ -19,11 +19,3 @@ export function SecondaryNavigation({ children, ...other }: BoxProps) {
       </Box>
    );
 }
-
-export function SecondaryNavigationRow({ children, ...props }: FlexProps) {
-   return (
-      <Flex h="full" w="full" boxSizing="border-box" {...props}>
-         {children}
-      </Flex>
-   );
-}

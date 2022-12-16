@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { ProductEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { DEFAULT_STORE_CODE } from '@config/env';
@@ -21,10 +21,7 @@ import { useInternationalBuyBox } from '@templates/product/hooks/useInternationa
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 import { PixelPing } from './components/PixelPing';
-import {
-   SecondaryNavigation,
-   SecondaryNavigationRow,
-} from './components/SecondaryNavigation';
+import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import {
    ProductTemplateProps,
@@ -86,15 +83,15 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                bg="white"
                borderBottomWidth="thin"
             >
-               <SecondaryNavigationRow direction="row-reverse">
+               <Flex w="full" direction="row-reverse">
                   <ProductEditMenu links={adminLinks} />
-               </SecondaryNavigationRow>
+               </Flex>
             </SecondaryNavigation>
          )}
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
-               <SecondaryNavigationRow justify="space-between">
-                  <PageBreadcrumb items={product.breadcrumbs} />
+               <Flex w="full" justify="space-between">
+                  <PageBreadcrumb items={product.breadcrumbs} w="full" />
                   {isAdminUser && (
                      <ProductEditMenu
                         links={adminLinks}
@@ -104,7 +101,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         }}
                      />
                   )}
-               </SecondaryNavigationRow>
+               </Flex>
             </SecondaryNavigation>
          )}
          <Box pt="6">
