@@ -21,6 +21,14 @@ jobs:
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
            run: pnpm install
+         - name: Cache Cypress
+           id: cache-cypress
+           uses: actions/cache@v1
+           with:
+             path: ~/.cache/Cypress
+             key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+         # now let's install Cypress binary
+         - run: npx cypress install
          - name: Cypress run
            uses: cypress-io/github-action@v4.2.0
            env:
