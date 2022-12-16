@@ -8,10 +8,15 @@ import {
    getDiscountedProduct,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
+import { mockedLayoutProps } from '../__mocks__/products';
 
 jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
    ...jest.requireActual('@templates/product/hooks/useIsProductForSale'),
    useIsProductForSale: jest.fn(() => true),
+}));
+
+jest.mock('@templates/product/hooks/useProductTemplateProps', () => ({
+   useProductTemplateProps: jest.fn(() => ({ ...mockedLayoutProps })),
 }));
 
 describe('ProductSection Tests', () => {
@@ -232,7 +237,39 @@ describe('ProductSection Tests', () => {
             'product-inventory-message'
          );
          (expect(lowStockMessage) as any).toBeInTheDocument();
-         (expect(lowStockMessage.textContent) as any).toContain(`Only ${quantity} left`);
+         (expect(lowStockMessage.textContent) as any).toContain(
+            `Only ${quantity} left`
+         );
+      });
+
+      test('Out of stock renders out of stock message and email form', async () => {
+         const product = getMockProduct({
+            variants: [
+               getMockProductVariant({
+                  quantityAvailable: 0,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const outOfStockMessage = screen.queryByTestId(
+            'product-inventory-message'
+         );
+         (expect(outOfStockMessage) as any).not.toBeInTheDocument();
+
+         const notifyMeForm = screen.queryByText(/this item is currently/i);
+         (expect(notifyMeForm) as any).toBeInTheDocument();
+         (expect(notifyMeForm?.textContent) as any).toEqual(
+            'This item is currently Out of Stock'
+         );
       });
    });
 });
