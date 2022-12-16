@@ -1,5 +1,8 @@
 name: Setup pnpm
 description: Installs pnpm, and caches the data store
+env:
+   npm_config_userconfig: './.npmrc'
+   npm_config_globalconfig: './.npmrc'
 runs:
    using: 'composite'
    steps:
