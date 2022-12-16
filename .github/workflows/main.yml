@@ -15,11 +15,8 @@ jobs:
            env:
               JWT_SECRET: 'ci-secret'
               API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
-         - name: Install pnpm
-           uses: pnpm/action-setup@v2.0.1
-           with:
-              version: 7
-              run_install: false
+         - name: Setup and cache pnpm
+           uses: ./.github/actions/pnpm-setup
          - name: Install workspaces
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
