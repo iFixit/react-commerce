@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, Flex, FlexProps } from '@chakra-ui/react';
 import { PageContentWrapper } from '@ifixit/ui';
 
 export function SecondaryNavigation({ children, ...other }: BoxProps) {
@@ -17,5 +17,13 @@ export function SecondaryNavigation({ children, ...other }: BoxProps) {
       >
          <PageContentWrapper>{children}</PageContentWrapper>
       </Box>
+   );
+}
+
+export function SecondaryNavigationRow({ children, ...props }: FlexProps) {
+   return (
+      <Flex h="full" w="full" boxSizing="border-box" {...props}>
+         {children}
+      </Flex>
    );
 }

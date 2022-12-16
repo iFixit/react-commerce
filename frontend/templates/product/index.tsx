@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { ProductEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
@@ -10,6 +11,7 @@ import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
@@ -18,7 +20,10 @@ import { useInternationalBuyBox } from '@templates/product/hooks/useInternationa
 import { GetServerSideProps } from 'next';
 import * as React from 'react';
 import { PixelPing } from './components/PixelPing';
-import { SecondaryNavigation } from './components/SecondaryNavigation';
+import {
+   SecondaryNavigation,
+   SecondaryNavigationRow,
+} from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import {
    ProductTemplateProps,
@@ -42,6 +47,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
       trackMatomoEcommerceView({
@@ -63,9 +69,31 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
+         {isAdminUser && (
+            <SecondaryNavigation
+               display={{ lg: 'none' }}
+               bg="white"
+               borderBottomWidth="thin"
+            >
+               <SecondaryNavigationRow direction="row-reverse">
+                  <ProductEditMenu links={[]} />
+               </SecondaryNavigationRow>
+            </SecondaryNavigation>
+         )}
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
-               <PageBreadcrumb items={product.breadcrumbs} />
+               <SecondaryNavigationRow justify="space-between">
+                  <PageBreadcrumb items={product.breadcrumbs} />
+                  {isAdminUser && (
+                     <ProductEditMenu
+                        links={[]}
+                        display={{
+                           base: 'none',
+                           lg: 'block',
+                        }}
+                     />
+                  )}
+               </SecondaryNavigationRow>
             </SecondaryNavigation>
          )}
          <Box pt="6">
