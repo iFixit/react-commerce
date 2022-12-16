@@ -3,7 +3,6 @@ name: E2E tests
 on: [push]
 env:
    npm_config_userconfig: './.npmrc'
-   npm_config_globalconfig: './.npmrc'
 jobs:
    cypress-run:
       runs-on: ubuntu-latest
@@ -28,7 +27,7 @@ jobs:
               path: ~/.cache/Cypress
               key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
          # now let's install Cypress binary
-         - run: npx cypress install
+         - run: cd frontend && npm exec cypress install
          - name: Cypress run
            uses: cypress-io/github-action@v4.2.0
            env:
