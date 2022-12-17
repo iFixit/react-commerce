@@ -1,4 +1,5 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import { ProductEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
@@ -6,10 +7,12 @@ import {
    serverSidePropsWrapper,
 } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
@@ -42,6 +45,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
       trackMatomoEcommerceView({
@@ -60,12 +64,44 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
+   const adminLinks = React.useMemo(
+      () =>
+         getAdminLinks({
+            productcode: product.productcode,
+            productId: product.id,
+            storeCode: DEFAULT_STORE_CODE,
+         }),
+      [product.productcode, product.id]
+   );
+
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
+         {isAdminUser && (
+            <SecondaryNavigation
+               display={{ lg: 'none' }}
+               bg="white"
+               borderBottomWidth="thin"
+            >
+               <Flex w="full" direction="row-reverse">
+                  <ProductEditMenu links={adminLinks} />
+               </Flex>
+            </SecondaryNavigation>
+         )}
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
-               <PageBreadcrumb items={product.breadcrumbs} />
+               <Flex w="full" justify="space-between">
+                  <PageBreadcrumb items={product.breadcrumbs} w="full" />
+                  {isAdminUser && (
+                     <ProductEditMenu
+                        links={adminLinks}
+                        display={{
+                           base: 'none',
+                           lg: 'block',
+                        }}
+                     />
+                  )}
+               </Flex>
             </SecondaryNavigation>
          )}
          <Box pt="6">

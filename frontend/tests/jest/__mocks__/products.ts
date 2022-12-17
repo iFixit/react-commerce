@@ -3,6 +3,7 @@ import { Product, ProductVariant } from '@models/product';
 import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 
 export const mockedProduct: Product = {
+   id: 'gid://shopify/Product/1231231231231',
    title: 'Mocked Product Title',
    handle: 'iphone-6s-plus-replacement-battery',
    descriptionHtml:
@@ -1364,6 +1365,7 @@ export const mockedProductSearchHit: ProductSearchHit = {
 };
 
 export const mockedBatteryProduct: Product = {
+   id: 'gid://shopify/Product/6556284026970',
    title: 'Moto G7 Play Battery',
    handle: 'moto-g7-play-replacement-battery',
    descriptionHtml:
@@ -1824,6 +1826,7 @@ export const mockedBatteryProduct: Product = {
 };
 
 export const mockedToolProduct: Product = {
+   id: 'gid://shopify/Product/6556235071578',
    title: 'Hakko 5B SA Curved Tweezers',
    handle: 'hakko-5b-sa-curved-tweezers',
    descriptionHtml:
@@ -2270,6 +2273,7 @@ export const mockedToolProduct: Product = {
 };
 
 export const mockedPartProduct: Product = {
+   id: 'gid://shopify/Product/6581511684186',
    title: 'Galaxy A51 Screen',
    handle: 'galaxy-a51-screen',
    descriptionHtml:

@@ -6320,6 +6320,7 @@ export type FindProductQuery = {
    __typename?: 'QueryRoot';
    product?: {
       __typename?: 'Product';
+      id: string;
       title: string;
       handle: string;
       descriptionHtml: string;
@@ -6636,6 +6637,7 @@ export const ProductVariantCardFragmentDoc = `
 export const FindProductDocument = `
     query findProduct($handle: String) {
   product(handle: $handle) {
+    id
     title
     handle
     descriptionHtml

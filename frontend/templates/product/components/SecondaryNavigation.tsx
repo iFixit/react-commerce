@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, Flex, FlexProps } from '@chakra-ui/react';
 import { PageContentWrapper } from '@ifixit/ui';
 
 export function SecondaryNavigation({ children, ...other }: BoxProps) {

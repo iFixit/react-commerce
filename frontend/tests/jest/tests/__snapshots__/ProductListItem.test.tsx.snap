@@ -62,7 +62,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-1gcrmlt"
+                class="svg-inline--fa fa-star  css-86s11o"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -77,7 +77,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-1gcrmlt"
+                class="svg-inline--fa fa-star  css-86s11o"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -92,7 +92,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-1gcrmlt"
+                class="svg-inline--fa fa-star  css-86s11o"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -107,7 +107,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star  css-1gcrmlt"
+                class="svg-inline--fa fa-star  css-86s11o"
                 data-icon="star"
                 data-prefix="fas"
                 focusable="false"
@@ -122,7 +122,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-star-half  css-9vnjhs"
+                class="svg-inline--fa fa-star-half  css-1p6kd4g"
                 data-icon="star-half"
                 data-prefix="fad"
                 focusable="false"

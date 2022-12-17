@@ -1,5 +1,6 @@
 query findProduct($handle: String) {
    product(handle: $handle) {
+      id
       title
       handle
       descriptionHtml

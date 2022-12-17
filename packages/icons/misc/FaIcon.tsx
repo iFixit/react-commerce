@@ -6,5 +6,7 @@ const FactoryFaIcon = chakra(FontAwesomeIcon);
 export type FaIconProps = React.ComponentProps<typeof FactoryFaIcon>;
 
 export const FaIcon = forwardRef<FaIconProps, 'svg'>((props, ref) => {
-   return <FactoryFaIcon {...props} ref={ref} />;
+   return (
+      <FactoryFaIcon display="flex" alignItems="center" {...props} ref={ref} />
+   );
 });
