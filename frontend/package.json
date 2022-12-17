@@ -123,5 +123,11 @@
       "prettier": "2.7.1",
       "typescript": "4.8.4",
       "webpack": "5.73.0"
+   },
+   "nextBundleAnalysis": {
+      "budget": null,
+      "budgetPercentIncreaseRed": 20,
+      "showDetails": true,
+      "minimumChangeThreshold": 500
    }
 }
