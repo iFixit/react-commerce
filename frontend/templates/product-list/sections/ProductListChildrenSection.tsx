@@ -2,6 +2,7 @@ import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
 import { PRODUCT_LIST_MAX_FACET_VALUES_COUNT } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
+import { isPartsProductList } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
 import { ProductListChild } from '@models/product-list/types';
 import NextLink from 'next/link';
@@ -43,18 +44,20 @@ export function ProductListChildrenSection({
       attribute: 'device',
       limit: PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
    });
-   const taggedChildren: (ProductListChild & { isEmpty: boolean })[] =
+   const taggedChildren: (ProductListChild & { isEmpty?: boolean })[] =
       React.useMemo(
          () =>
-            productListChildren
-               .map((child) => ({
-                  ...child,
-                  isEmpty: !deviceMenuItems.some(
-                     (item) => item.value === child.deviceTitle
-                  ),
-               }))
-               .sort((a, b) => Number(a.isEmpty) - Number(b.isEmpty)),
-         [deviceMenuItems, productListChildren]
+            isPartsProductList(productList)
+               ? productListChildren
+                    .map((child) => ({
+                       ...child,
+                       isEmpty: !deviceMenuItems.some(
+                          (item) => item.value === child.deviceTitle
+                       ),
+                    }))
+                    .sort((a, b) => Number(a.isEmpty) - Number(b.isEmpty))
+               : productListChildren,
+         [deviceMenuItems, productList, productListChildren]
       );
 
    const showMoreVisibility = React.useMemo(
