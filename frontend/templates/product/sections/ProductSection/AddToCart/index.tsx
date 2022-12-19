@@ -261,6 +261,7 @@ function InventoryMessage({
          fontSize="sm"
          align="center"
          justify="center"
+         data-testid="product-inventory-message"
       >
          <FaIcon
             icon={faCircleExclamation}
