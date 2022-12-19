@@ -87,6 +87,9 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
             <ProductCardImage src={product.image_url} alt={product.title} />
             <ProductCardBadgeList
                sx={{
+                  '& > :first-of-type': {
+                     display: 'block',
+                  },
                   '& > :not(:first-of-type)': {
                      display: 'none',
                   },
@@ -156,7 +159,7 @@ function ProductCardBadge(props: BadgeProps) {
          }}
          maxW="full"
          overflow="hidden"
-         isTruncated
+         noOfLines={1}
          {...props}
       />
    );

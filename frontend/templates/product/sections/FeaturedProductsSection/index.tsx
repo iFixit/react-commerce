@@ -212,7 +212,7 @@ function ProductGridItemBadge(props: BadgeProps) {
          }}
          maxW="full"
          overflow="hidden"
-         isTruncated
+         noOfLines={1}
          textTransform="none"
          {...props}
       />

@@ -31,11 +31,30 @@ export const Footer = forwardRef<FlexProps, 'footer'>(
 
 type FooterLinkProps = StackProps & {
    icon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+   eventCategory?: string;
+   eventAction?: string;
 };
 
 export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
-   ({ fontSize = 'sm', href, children, icon, onClick, ...otherProps }, ref) => {
-      const trackedOnClick = useTrackedOnClick({ href, onClick });
+   (
+      {
+         fontSize = 'sm',
+         href,
+         children,
+         icon,
+         onClick,
+         eventCategory,
+         eventAction,
+         ...otherProps
+      },
+      ref
+   ) => {
+      const trackedOnClick = useTrackedOnClick({
+         href,
+         onClick,
+         eventCategory,
+         eventAction,
+      });
       return (
          <HStack
             ref={ref}

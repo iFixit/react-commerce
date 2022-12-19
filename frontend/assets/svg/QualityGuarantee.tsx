@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 function SvgQualityGuarantee(props: React.SVGProps<SVGSVGElement>) {
    return (
       <svg

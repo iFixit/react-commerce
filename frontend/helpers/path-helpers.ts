@@ -61,3 +61,7 @@ export function ifixitOriginFromHost(
    const hostIfProxy = typeof window === 'undefined' ? `https://${host}` : '';
    return isDevProxy ? hostIfProxy! : IFIXIT_ORIGIN;
 }
+
+export function ifixitOriginWithSubdomain(subdomain: string) {
+   return IFIXIT_ORIGIN.replace(/(^https:\/\/)www/, `$1${subdomain}`);
+}

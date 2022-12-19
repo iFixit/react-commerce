@@ -7,6 +7,7 @@ import {
    Heading,
 } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
+import { ImageProps } from 'next/image';
 
 type ProductListCardProps = BoxProps & {
    variant?: 'small' | 'medium';
@@ -19,6 +20,18 @@ type ProductListCardProps = BoxProps & {
 
 export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
    ({ productList, variant = 'small', ...other }, ref) => {
+      const imageSizeProps: Partial<ImageProps> =
+         variant === 'small'
+            ? {
+                 height: 60,
+                 width: 80,
+                 layout: 'fixed',
+              }
+            : {
+                 sizes: '20vw',
+                 objectFit: 'cover',
+                 layout: 'fill',
+              };
       return (
          <Box
             ref={ref}
@@ -69,10 +82,8 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                            <ResponsiveImage
                               src={productList.imageUrl}
                               alt=""
-                              objectFit="cover"
-                              layout="fill"
-                              sizes="20vw"
                               priority
+                              {...imageSizeProps}
                            />
                         </Box>
                      </Flex>

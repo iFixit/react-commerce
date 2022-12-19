@@ -978,6 +978,7 @@ export type ProductList = {
    deviceTitle?: Maybe<Scalars['String']>;
    excludeFromHierarchyDisplay: Scalars['Boolean'];
    filters?: Maybe<Scalars['String']>;
+   forceNoindex?: Maybe<Scalars['Boolean']>;
    handle: Scalars['String'];
    image?: Maybe<UploadFileEntityResponse>;
    legacyDescription?: Maybe<Scalars['String']>;
@@ -1036,6 +1037,7 @@ export type ProductListFiltersInput = {
    deviceTitle?: InputMaybe<StringFilterInput>;
    excludeFromHierarchyDisplay?: InputMaybe<BooleanFilterInput>;
    filters?: InputMaybe<StringFilterInput>;
+   forceNoindex?: InputMaybe<BooleanFilterInput>;
    handle?: InputMaybe<StringFilterInput>;
    id?: InputMaybe<IdFilterInput>;
    legacyDescription?: InputMaybe<StringFilterInput>;
@@ -1062,6 +1064,7 @@ export type ProductListInput = {
    deviceTitle?: InputMaybe<Scalars['String']>;
    excludeFromHierarchyDisplay?: InputMaybe<Scalars['Boolean']>;
    filters?: InputMaybe<Scalars['String']>;
+   forceNoindex?: InputMaybe<Scalars['Boolean']>;
    handle?: InputMaybe<Scalars['String']>;
    image?: InputMaybe<Scalars['ID']>;
    legacyDescription?: InputMaybe<Scalars['String']>;
@@ -2687,6 +2690,7 @@ export type GetProductListQuery = {
             metaDescription?: string | null;
             metaTitle?: string | null;
             filters?: string | null;
+            forceNoindex?: boolean | null;
             childrenHeading?: string | null;
             image?: {
                __typename?: 'UploadFileEntityResponse';
@@ -3163,6 +3167,7 @@ export const GetProductListDocument = `
         metaDescription
         metaTitle
         filters
+        forceNoindex
         image {
           data {
             attributes {
