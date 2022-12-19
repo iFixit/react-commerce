@@ -3,6 +3,7 @@ import { ProductListCard } from '@components/product-list/ProductListCard';
 import { PRODUCT_LIST_MAX_FACET_VALUES_COUNT } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
 import { ProductList } from '@models/product-list';
+import { ProductListChild } from '@models/product-list/types';
 import NextLink from 'next/link';
 import * as React from 'react';
 import {
@@ -42,17 +43,23 @@ export function ProductListChildrenSection({
       attribute: 'device',
       limit: PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
    });
-   const nonEmptyProductListChildren = React.useMemo(
-      () =>
-         productListChildren.filter((child) =>
-            deviceMenuItems.some((item) => item.value === child.deviceTitle)
-         ),
-      [deviceMenuItems, productListChildren]
-   );
+   const taggedChildren: (ProductListChild & { isEmpty: boolean })[] =
+      React.useMemo(
+         () =>
+            productListChildren
+               .map((child) => ({
+                  ...child,
+                  isEmpty: !deviceMenuItems.some(
+                     (item) => item.value === child.deviceTitle
+                  ),
+               }))
+               .sort((a, b) => Number(a.isEmpty) - Number(b.isEmpty)),
+         [deviceMenuItems, productListChildren]
+      );
 
    const showMoreVisibility = React.useMemo(
-      () => computeShowMoreVisibility(nonEmptyProductListChildren.length),
-      [nonEmptyProductListChildren]
+      () => computeShowMoreVisibility(productListChildren.length),
+      [productListChildren]
    );
 
    const onToggle = React.useCallback(() => {
@@ -106,7 +113,7 @@ export function ProductListChildrenSection({
                spacing="3"
                pt={1}
             >
-               {nonEmptyProductListChildren.map((child) => {
+               {taggedChildren.map((child) => {
                   return (
                      <NextLink
                         key={child.handle}
@@ -123,6 +130,7 @@ export function ProductListChildrenSection({
                               title: child.title,
                               imageUrl: child.image?.url,
                            }}
+                           opacity={child.isEmpty ? 0.5 : 1}
                         />
                      </NextLink>
                   );

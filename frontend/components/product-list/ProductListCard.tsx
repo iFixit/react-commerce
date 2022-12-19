@@ -1,14 +1,21 @@
-import { Box, Divider, Flex, forwardRef, Heading } from '@chakra-ui/react';
+import {
+   Box,
+   BoxProps,
+   Divider,
+   Flex,
+   forwardRef,
+   Heading,
+} from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
 
-interface ProductListCardProps {
+type ProductListCardProps = BoxProps & {
    variant?: 'small' | 'medium';
    productList: {
       title: string;
       description?: string | null;
       imageUrl?: string | null;
    };
-}
+};
 
 export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
    ({ productList, variant = 'small', ...other }, ref) => {
