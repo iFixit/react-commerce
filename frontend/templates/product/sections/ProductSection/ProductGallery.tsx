@@ -40,17 +40,27 @@ export function ProductGallery({
    const [innerEnableZoom, setInnerEnableZoom] = React.useState(false);
 
    React.useEffect(() => {
-      if (enableZoom && galleryContainerRef.current) {
-         const { clientWidth, clientHeight } = galleryContainerRef.current;
-         setInnerEnableZoom(
-            !product.images.find(
-               ({ width, height }) =>
-                  !width ||
-                  !height ||
-                  width * height < clientWidth * clientHeight
-            )
-         );
+      const containingElement = galleryContainerRef.current;
+      let observer: ResizeObserver | undefined;
+
+      if (enableZoom && containingElement) {
+         observer = new ResizeObserver((entries) => {
+            const { width: containerWidth, height: containerHeight } =
+               entries[0].contentRect;
+            setInnerEnableZoom(
+               !product.images.find(
+                  ({ width, height }) =>
+                     !width ||
+                     !height ||
+                     width * height < containerWidth * containerHeight
+               )
+            );
+         });
+         observer.observe(containingElement);
       }
+      return () => {
+         containingElement && observer?.unobserve(containingElement);
+      };
    }, [product, enableZoom]);
 
    const selectedImageIndex = useCurrentImageIndex(
