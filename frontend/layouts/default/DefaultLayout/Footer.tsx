@@ -224,6 +224,8 @@ export function CartFooter({
                   <FooterLink
                      href="https://www.ifixit.com/Translate"
                      icon={Language}
+                     eventCategory="Translate"
+                     eventAction='Translate - Btn "Help Translate iFixit" - Footer - Click'
                   >
                      Help translate
                   </FooterLink>

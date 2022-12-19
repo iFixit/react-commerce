@@ -1,4 +1,5 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import { ProductEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
@@ -6,11 +7,14 @@ import {
    serverSidePropsWrapper,
 } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
 import { findProduct } from '@models/product';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
@@ -41,6 +45,7 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const internationalBuyBox = useInternationalBuyBox(product);
 
    const isProductForSale = useIsProductForSale(product);
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
       trackMatomoEcommerceView({
@@ -59,12 +64,44 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
+   const adminLinks = React.useMemo(
+      () =>
+         getAdminLinks({
+            productcode: product.productcode,
+            productId: product.id,
+            storeCode: DEFAULT_STORE_CODE,
+         }),
+      [product.productcode, product.id]
+   );
+
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
+         {isAdminUser && (
+            <SecondaryNavigation
+               display={{ lg: 'none' }}
+               bg="white"
+               borderBottomWidth="thin"
+            >
+               <Flex w="full" direction="row-reverse">
+                  <ProductEditMenu links={adminLinks} />
+               </Flex>
+            </SecondaryNavigation>
+         )}
          {product.breadcrumbs != null && (
             <SecondaryNavigation>
-               <PageBreadcrumb items={product.breadcrumbs} />
+               <Flex w="full" justify="space-between">
+                  <PageBreadcrumb items={product.breadcrumbs} w="full" />
+                  {isAdminUser && (
+                     <ProductEditMenu
+                        links={adminLinks}
+                        display={{
+                           base: 'none',
+                           lg: 'block',
+                        }}
+                     />
+                  )}
+               </Flex>
             </SecondaryNavigation>
          )}
          <Box pt="6">
@@ -115,7 +152,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       noindexDevDomains(context);
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
-      const layoutProps = await getLayoutServerSideProps({
+      const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
       });
       const product = await findProduct({
@@ -129,13 +166,42 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          };
       }
 
+      if (product.redirectUrl) {
+         const query = new URL(urlFromContext(context)).search;
+         return {
+            redirect: {
+               destination: `${product.redirectUrl}${query}`,
+               permanent: true,
+            },
+         };
+      }
+
       const proOnly = product?.tags.find((tag: string) => tag === 'Pro Only');
       if (proOnly) {
          context.res.setHeader('X-Robots-Tag', 'noindex, follow');
       }
 
+      const codeToDomain =
+         product.enabledDomains?.reduce((acc, { code, domain }) => {
+            acc[code] = domain;
+            return acc;
+         }, {} as Record<string, string>) ?? {};
+      const storesWithProductUrls = stores.map((store) => {
+         const domain =
+            store.code === DEFAULT_STORE_CODE
+               ? new URL(store.url).origin
+               : codeToDomain[store.code];
+         if (domain) {
+            store.url = `${domain}/products/${product.handle}`;
+         }
+         return store;
+      });
+
       const pageProps: ProductTemplateProps = {
-         layoutProps,
+         layoutProps: {
+            ...otherLayoutProps,
+            stores: storesWithProductUrls,
+         },
          appProps: {
             ifixitOrigin: ifixitOriginFromHost(context),
          },

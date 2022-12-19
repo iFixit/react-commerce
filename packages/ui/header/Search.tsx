@@ -71,6 +71,9 @@ export const SearchInput = forwardRef<InputGroupProps, 'input'>(
                ref={ref}
                name="query"
                placeholder="Search"
+               _placeholder={{
+                  color: 'gray.400',
+               }}
                tabIndex={0}
                variant="filled"
                bg="gray.800"

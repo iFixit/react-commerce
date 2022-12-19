@@ -16,22 +16,15 @@ import {
    Link,
    StackProps,
    Text,
-   ThemeTypings,
    VStack,
 } from '@chakra-ui/react';
-import { CompatibleDevice } from '@components/common';
-import {
-   faCircleExclamation,
-   faCircleInfo,
-   faTriangleExclamation,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
 import { Product, ProductVariant } from '@models/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
-import NextLink from 'next/link';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { AddToCart, isVariantWithSku } from './AddToCart';
@@ -43,6 +36,8 @@ import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { InternationalBuyBox } from './InternationalBuyBox';
+import { ProductDescription } from './ProductDescription';
+import { CompatibleDevices } from './CompatibleDevices';
 
 export type ProductSectionProps = {
    product: Product;
@@ -70,16 +65,6 @@ export function ProductSection({
    );
    const isForSale = useIsProductForSale(product);
 
-   const compatibilityDrawerModelsTruncate = 4;
-   const compatibilityDrawerDeviceTruncate = 3;
-   const compatibilityDrawerIncomplete =
-      product.compatibility &&
-      (product.compatibility.devices.length >
-         compatibilityDrawerDeviceTruncate ||
-         product.compatibility.devices.some(
-            (currentValue) =>
-               currentValue.variants.length > compatibilityDrawerModelsTruncate
-         ));
    return (
       <PageContentWrapper as="section">
          <Flex px={{ base: 5, sm: 0 }}>
@@ -102,6 +87,7 @@ export function ProductSection({
                   enableZoom
                   onChangeImage={setSelectedImageId}
                />
+
                <Box
                   id="zoom-container"
                   position="absolute"
@@ -116,6 +102,7 @@ export function ProductSection({
                   borderRadius="md"
                />
             </Flex>
+
             <Box
                w={{
                   base: 'full',
@@ -134,7 +121,9 @@ export function ProductSection({
                      Item # {selectedVariant.sku}
                   </Text>
                )}
+
                <ProductTitle mb="2.5">{product.title}</ProductTitle>
+
                {isForSale && (
                   <ProductVariantPrice
                      price={selectedVariant.price}
@@ -142,7 +131,9 @@ export function ProductSection({
                      proPricesByTier={selectedVariant.proPricesByTier}
                   />
                )}
+
                {isForSale && <ProductRating product={product} />}
+
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
                      product={product}
@@ -157,6 +148,7 @@ export function ProductSection({
                   selected={selectedVariant.id}
                   onChange={handleVariantChange}
                />
+
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&
                   (internationalBuyBox ? (
@@ -170,12 +162,15 @@ export function ProductSection({
                ) : (
                   <NotForSaleAlert mt="4" />
                )}
+
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
+
                {isForSale && (
                   <BuyBoxPropositionSection selectedVariant={selectedVariant} />
                )}
+
                <Accordion
                   defaultIndex={[0, 1]}
                   allowMultiple
@@ -190,81 +185,22 @@ export function ProductSection({
                      <CustomAccordionButton>Description</CustomAccordionButton>
                      <CustomAccordionPanel>
                         <VStack>
-                           <VariantDescription>
-                              {selectedVariant.description ??
-                                 product.descriptionHtml}
-                           </VariantDescription>
-                           {selectedVariant.note && (
-                              <Alert
-                                 status="info"
-                                 borderWidth={1}
-                                 borderColor="brand.300"
-                                 borderRadius="md"
-                                 alignItems="flex-start"
-                              >
-                                 <FaIcon
-                                    icon={faCircleInfo}
-                                    h="4"
-                                    mt="0.5"
-                                    mr="2.5"
-                                    color="brand.500"
-                                 />
-                                 <AlertText colorScheme="brand">
-                                    {selectedVariant.note}
-                                 </AlertText>
-                              </Alert>
-                           )}
-                           {selectedVariant.disclaimer && (
-                              <Alert
-                                 status="warning"
-                                 borderWidth={1}
-                                 borderColor="orange.300"
-                                 borderRadius="md"
-                                 alignItems="flex-start"
-                              >
-                                 <FaIcon
-                                    icon={faCircleExclamation}
-                                    h="4"
-                                    mt="0.5"
-                                    mr="2.5"
-                                    color="orange.500"
-                                 />
-                                 <AlertText colorScheme="orange">
-                                    {selectedVariant.disclaimer}
-                                 </AlertText>
-                              </Alert>
-                           )}
-                           {selectedVariant.warning && (
-                              <Alert
-                                 status="error"
-                                 borderWidth={1}
-                                 borderColor="red.300"
-                                 borderRadius="md"
-                                 alignItems="flex-start"
-                              >
-                                 <FaIcon
-                                    icon={faTriangleExclamation}
-                                    color="red.500"
-                                    h="4"
-                                    mt="0.5"
-                                    mr="2.5"
-                                 />
-                                 <AlertText colorScheme="red">
-                                    {selectedVariant.warning}
-                                 </AlertText>
-                              </Alert>
-                           )}
+                           <ProductDescription
+                              product={product}
+                              selectedVariant={selectedVariant}
+                           />
                         </VStack>
                      </CustomAccordionPanel>
                   </AccordionItem>
-                  <WikiHtmlAccordianItem
-                     title="Kit contents"
-                     contents={selectedVariant.kitContents}
-                  />
-                  <WikiHtmlAccordianItem
-                     title="Assembly contents"
-                     contents={selectedVariant.assemblyContents}
-                  />
+
+                  <WikiHtmlAccordianItem title="Kit contents">
+                     {selectedVariant.kitContents}
+                  </WikiHtmlAccordianItem>
+
+                  <WikiHtmlAccordianItem title="Assembly contents">
+                     {selectedVariant.assemblyContents}
+                  </WikiHtmlAccordianItem>
+
                   <AccordionItem
                      hidden={
                         product.compatibility == null ||
@@ -275,80 +211,13 @@ export function ProductSection({
                         Compatibility
                      </CustomAccordionButton>
                      <CustomAccordionPanel>
-                        {product.compatibility?.devices
-                           .slice(0, 3)
-                           .map((device, index) => (
-                              <NextLink
-                                 key={index}
-                                 href={device.deviceUrl}
-                                 passHref
-                              >
-                                 <chakra.a
-                                    role="group"
-                                    display="flex"
-                                    alignItems="flex-start"
-                                    transition="all 300m"
-                                    mb="6px"
-                                 >
-                                    <CompatibleDevice
-                                       device={device}
-                                       truncate={
-                                          compatibilityDrawerModelsTruncate
-                                       }
-                                    />
-                                 </chakra.a>
-                              </NextLink>
-                           ))}
-
-                        {compatibilityDrawerIncomplete ? (
-                           <NextLink href="#compatibility" passHref>
-                              <Link
-                                 mt={3}
-                                 display="block"
-                                 fontWeight="medium"
-                                 color="brand.500"
-                              >
-                                 See all compatible devices
-                              </Link>
-                           </NextLink>
-                        ) : null}
+                        <CompatibleDevices product={product} />
                      </CustomAccordionPanel>
                   </AccordionItem>
 
-                  <AccordionItem
-                     hidden={selectedVariant.specifications == null}
-                  >
-                     <CustomAccordionButton>
-                        Specifications
-                     </CustomAccordionButton>
-                     <CustomAccordionPanel>
-                        <Box
-                           dangerouslySetInnerHTML={{
-                              __html: selectedVariant.specifications ?? '',
-                           }}
-                           fontSize="sm"
-                           sx={{
-                              table: {
-                                 display: 'flex',
-                                 p: 1.5,
-                              },
-                              tbody: {
-                                 w: 'full',
-                              },
-                              tr: {
-                                 display: 'flex',
-                                 flexDirection: 'column',
-                                 borderTopWidth: '1px',
-                                 borderTopColor: 'gray.200',
-                                 py: 2,
-                              },
-                              th: {
-                                 textAlign: 'left',
-                              },
-                           }}
-                        />
-                     </CustomAccordionPanel>
-                  </AccordionItem>
+                  <WikiHtmlAccordianItem title="Specifications">
+                     {selectedVariant.specifications}
+                  </WikiHtmlAccordianItem>
                </Accordion>
 
                <VariantWarranty variant={selectedVariant} mt="5" />
@@ -360,6 +229,7 @@ export function ProductSection({
                         chemicals={product.prop65Chemicals}
                      />
                   )}
+
                   <ProductVideos product={product} />
                </VStack>
             </Box>
@@ -433,6 +303,7 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
       >
          {isLifetimeWarranty(variant.warranty ?? '') && (
             <Icon
+               data-testid="quality-guarantee-icon"
                as={QualityGuarantee}
                boxSize="50px"
                color="brand.500"
@@ -461,6 +332,7 @@ function NotForSaleAlert(props: AlertProps) {
             mr="2.5"
             color="orange.500"
          />
+
          <Box fontSize="sm">
             <p>Product available for pro users only.</p>
             <p>
@@ -483,99 +355,66 @@ function NotForSaleAlert(props: AlertProps) {
    );
 }
 
-type VariantDescriptionProps = {
-   children: string;
-};
-
-function VariantDescription({ children }: VariantDescriptionProps) {
-   return (
-      <Box
-         dangerouslySetInnerHTML={{
-            __html: children,
-         }}
-         fontSize="sm"
-         sx={{
-            ul: {
-               my: 3,
-               pl: 5,
-            },
-            p: {
-               mb: 3,
-               _last: {
-                  mb: 0,
-               },
-            },
-            a: {
-               color: 'brand.500',
-            },
-            'a:hover': {
-               textDecoration: 'underline',
-            },
-         }}
-      />
-   );
-}
-
-type AlertTextProps = {
-   children: string;
-   colorScheme: ThemeTypings['colorSchemes'];
-};
-
-function AlertText({ children, colorScheme }: AlertTextProps) {
-   return (
-      <Box
-         fontSize="sm"
-         sx={{
-            a: {
-               fontWeight: 'bold',
-               textDecoration: 'underline',
-               transition: 'all 300ms',
-            },
-            'a:hover': {
-               color: `${colorScheme}.800`,
-            },
-            'p:not(:first-of-type)': {
-               mt: 2,
-            },
-         }}
-         dangerouslySetInnerHTML={{
-            __html: children,
-         }}
-      />
-   );
+interface WikiHtmlAccordianItemProps {
+   title: string;
+   children: string | null | undefined;
 }
 
 function WikiHtmlAccordianItem({
    title,
-   contents,
-}: {
-   title: string;
-   contents: string | null;
-}) {
+   children,
+}: WikiHtmlAccordianItemProps) {
    return (
-      <AccordionItem hidden={contents == null}>
+      <AccordionItem hidden={children == null}>
          <CustomAccordionButton>{title}</CustomAccordionButton>
          <CustomAccordionPanel>
-            <Box
-               fontSize="sm"
-               sx={{
-                  ul: {
-                     listStyle: 'none',
-                  },
-                  li: {
-                     borderTopWidth: '1px',
-                     borderTopColor: 'gray.200',
-                     py: 3,
-                     '& ul': {
-                        mt: 3,
-                        ml: 5,
+            {children && (
+               <Box
+                  fontSize="sm"
+                  sx={{
+                     ul: {
+                        listStyle: 'none',
                      },
-                  },
-               }}
-               dangerouslySetInnerHTML={{
-                  __html: contents ?? '',
-               }}
-            ></Box>
+                     li: {
+                        borderTopWidth: '1px',
+                        borderTopColor: 'gray.200',
+                        py: 3,
+                        '& ul': {
+                           mt: 3,
+                           ml: 5,
+                        },
+                     },
+                     a: {
+                        fontWeight: 'bold',
+                        transition: 'all 300ms',
+                        color: 'brand.500',
+                     },
+                     'a:hover': {
+                        color: 'brand.600',
+                     },
+                     table: {
+                        display: 'flex',
+                        p: 1.5,
+                     },
+                     tbody: {
+                        w: 'full',
+                     },
+                     tr: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        borderTopWidth: '1px',
+                        borderTopColor: 'gray.200',
+                        py: 2,
+                     },
+                     th: {
+                        textAlign: 'left',
+                     },
+                  }}
+                  dangerouslySetInnerHTML={{
+                     __html: children,
+                  }}
+               ></Box>
+            )}
          </CustomAccordionPanel>
       </AccordionItem>
    );

@@ -39,11 +39,12 @@ Cypress.Commands.add('loadProductPageByPath', (path: string) => {
 });
 
 Cypress.Commands.add('interceptLogin', (optional?: Object) => {
-   let defaultParams = {
+   const defaultParams = {
       userid: 1,
       algoliaApiKeyProduct: null,
       username: 'john',
       unique_username: 'john123',
+      privileges: [],
    };
 
    cy.intercept(

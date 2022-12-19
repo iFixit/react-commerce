@@ -1,6 +1,7 @@
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { invariant } from '@ifixit/helpers';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
+import { z } from 'zod';
 
 export type DeviceWiki = Record<string, any>;
 
@@ -20,9 +21,13 @@ export async function fetchDeviceWiki(
    }
 }
 
-export type MultipleDeviceApiResponse = {
-   images: Record<string, string>;
-};
+export type MultipleDeviceApiResponse = z.infer<
+   typeof MultipleDeviceApiResponseSchema
+>;
+
+const MultipleDeviceApiResponseSchema = z.object({
+   images: z.record(z.string()),
+});
 
 export type GuideImageSize =
    | 'mini'
@@ -35,7 +40,7 @@ export type GuideImageSize =
    | 'large'
    | 'huge';
 
-export function fetchMultipleDeviceImages(
+export async function fetchMultipleDeviceImages(
    client: IFixitAPIClient,
    deviceTitles: string[],
    size: GuideImageSize
@@ -45,7 +50,13 @@ export function fetchMultipleDeviceImages(
    deviceTitles.forEach((deviceTitle) => {
       params.append('t[]', deviceTitle);
    });
-   return client
-      .get(`wikis/topic_images?` + params.toString())
-      .catch(() => ({ images: {} }));
+   try {
+      const result = await client.get(
+         `wikis/topic_images?` + params.toString()
+      );
+      return MultipleDeviceApiResponseSchema.parse(result);
+   } catch (error) {
+      console.error(error);
+      return { images: {} };
+   }
 }

@@ -1,16 +1,11 @@
 import { useAppContext } from '@ifixit/app';
 import { logAsync } from '@ifixit/helpers';
-import { sentryFetch } from '@ifixit/sentry';
 import * as React from 'react';
 
 export interface ClientOptions {
    origin: string;
    version?: string;
 }
-type IFixitRequestInit = RequestInit & {
-   disableSentry?: boolean;
-};
-
 export class IFixitAPIClient {
    origin: string;
    version: string;
@@ -20,41 +15,52 @@ export class IFixitAPIClient {
       this.version = options.version ?? '2.0';
    }
 
-   async get(endpoint: string, init?: IFixitRequestInit) {
+   async get<Data = unknown>(
+      endpoint: string,
+      init?: RequestInit
+   ): Promise<Data> {
       return this.fetch(endpoint, {
          ...init,
          method: 'GET',
       });
    }
 
-   async post(endpoint: string, init?: IFixitRequestInit) {
+   async post<Data = unknown>(
+      endpoint: string,
+      init?: RequestInit
+   ): Promise<Data> {
       return this.fetch(endpoint, {
          ...init,
          method: 'POST',
       });
    }
 
-   async put(endpoint: string, init?: IFixitRequestInit) {
+   async put<Data = unknown>(
+      endpoint: string,
+      init?: RequestInit
+   ): Promise<Data> {
       return this.fetch(endpoint, {
          ...init,
          method: 'PUT',
       });
    }
 
-   async delete(endpoint: string, init?: IFixitRequestInit) {
+   async delete<Data = unknown>(
+      endpoint: string,
+      init?: RequestInit
+   ): Promise<Data> {
       return this.fetch(endpoint, {
          ...init,
          method: 'DELETE',
       });
    }
 
-   async fetch(endpoint: string, init?: IFixitRequestInit) {
-      const fetchMethod = init?.disableSentry ? fetch : sentryFetch;
+   async fetch(endpoint: string, init?: RequestInit) {
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
       const response = await logAsync(
          `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
          () =>
-            fetchMethod(url, {
+            fetch(url, {
                credentials: 'include',
                ...init,
             })

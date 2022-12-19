@@ -33,8 +33,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-test/cypress/videos
-test/cypress/screenshots
+tests/cypress/videos
+tests/cypress/screenshots
 
 # Sentry
 .sentryclirc
+tests/playwright/test-results/
+/playwright/.cache/

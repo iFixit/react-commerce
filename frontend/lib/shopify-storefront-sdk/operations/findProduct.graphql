@@ -1,5 +1,6 @@
 query findProduct($handle: String) {
    product(handle: $handle) {
+      id
       title
       handle
       descriptionHtml
@@ -35,6 +36,9 @@ query findProduct($handle: String) {
          namespace: "ifixit"
          key: "product_videos_json"
       ) {
+         value
+      }
+      redirectUrl: metafield(namespace: "ifixit", key: "redirect_url") {
          value
       }
       replacementGuides: metafield(
@@ -184,5 +188,6 @@ query findProduct($handle: String) {
             }
          }
       }
+      vendor
    }
 }

@@ -241,7 +241,9 @@ export function useSafeSetState<T>(
          mountedRef.current = false;
       };
    }, []);
-   const safeSetState = React.useCallback(
+   const safeSetState = React.useCallback<
+      React.Dispatch<React.SetStateAction<T>>
+   >(
       (args) => {
          if (mountedRef.current) {
             return setState(args);
