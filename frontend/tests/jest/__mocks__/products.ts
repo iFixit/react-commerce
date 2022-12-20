@@ -3179,7 +3179,7 @@ export const mockedReviews: ProductReview[] = [
    {
       reviewid: 37443,
       rating: 5,
-      headline: null,
+      headline: 'Cool and useful at the same time',
       productName: 'Precision Cleaning Kit',
       productVariantName: 'New',
       body: 'As advertised and solved our problem.',
