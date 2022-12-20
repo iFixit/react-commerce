@@ -1,47 +1,102 @@
+import { VStack } from '@chakra-ui/react';
+import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
+import { PageContentWrapper } from '@ifixit/ui';
+import { DefaultLayout } from '@layouts/default';
+import { ProductListSectionType } from '@models/product-list';
+import { Configure, Index } from 'react-instantsearch-hooks-web';
+import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
+import { MetaTags } from './MetaTags';
+import { SecondaryNavigation } from './SecondaryNavigation';
 import {
-   AppProviders,
-   AppProvidersProps,
-   WithProvidersProps,
-} from '@components/common';
-import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
-import { noindexDevDomains } from '@helpers/next-helpers';
-import { ifixitOriginFromHost } from '@helpers/path-helpers';
-import {
-   destylizeDeviceItemType,
-   destylizeDeviceTitle,
-   stylizeDeviceItemType,
-   stylizeDeviceTitle,
-} from '@helpers/product-list-helpers';
-import { assertNever, invariant, logAsync } from '@ifixit/helpers';
-import { urlFromContext } from '@ifixit/helpers/nextjs';
-import {
-   DefaultLayout,
-   DefaultLayoutProps,
-   getLayoutServerSideProps,
-   WithLayoutProps,
-} from '@layouts/default';
-import {
-   findProductList,
-   ProductList,
-   ProductListType,
-} from '@models/product-list';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { ParsedUrlQuery } from 'querystring';
-import { getServerState } from 'react-instantsearch-hooks-server';
-import { ProductListView } from './ProductListView';
-import { renderToString } from 'react-dom/server';
+   BannerSection,
+   FeaturedProductListSection,
+   FilterableProductsSection,
+   HeroSection,
+   ProductListChildrenSection,
+   ProductListSetSection,
+   RelatedPostsSection,
+} from './sections';
 
-export type ProductListTemplateProps = WithProvidersProps<
-   WithLayoutProps<{
-      productList: ProductList;
-      indexName: string;
-   }>
->;
+const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> = ({
+   productList,
+   indexName,
+}) => {
+   const filters = computeProductListAlgoliaFilterPreset(productList);
 
-export const ProductListTemplate: NextPageWithLayout<
-   ProductListTemplateProps
-> = ({ productList, indexName }) => {
-   return <ProductListView productList={productList} indexName={indexName} />;
+   return (
+      <>
+         <SecondaryNavigation productList={productList} />
+         <PageContentWrapper py="10">
+            <VStack align="stretch" spacing="12">
+               <Index indexName={indexName}>
+                  <Configure filters={filters} hitsPerPage={18} />
+                  <MetaTags productList={productList} />
+                  <HeroSection productList={productList} />
+                  {productList.children.length > 0 && (
+                     <ProductListChildrenSection productList={productList} />
+                  )}
+                  <FilterableProductsSection productList={productList} />
+               </Index>
+               {productList.sections.map((section, index) => {
+                  switch (section.type) {
+                     case ProductListSectionType.Banner: {
+                        return (
+                           <BannerSection
+                              key={index}
+                              title={section.title}
+                              description={section.description}
+                              callToActionLabel={section.callToActionLabel}
+                              url={section.url}
+                           />
+                        );
+                     }
+                     case ProductListSectionType.RelatedPosts: {
+                        const tags = [productList.title].concat(
+                           section.tags?.split(',').map((tag) => tag.trim()) ||
+                              []
+                        );
+                        return <RelatedPostsSection key={index} tags={tags} />;
+                     }
+                     case ProductListSectionType.FeaturedProductList: {
+                        const { productList } = section;
+                        if (productList) {
+                           return (
+                              <FeaturedProductListSection
+                                 key={index}
+                                 productList={productList}
+                                 index={index}
+                              />
+                           );
+                        }
+                        return null;
+                     }
+                     case ProductListSectionType.ProductListSet: {
+                        const { title, productLists } = section;
+                        if (productLists.length > 0) {
+                           return (
+                              <ProductListSetSection
+                                 key={index}
+                                 title={title}
+                                 productLists={productLists}
+                              />
+                           );
+                        }
+                        return null;
+                     }
+                     default: {
+                        console.warn(
+                           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                           // @ts-ignore
+                           `Section ${section.__typename} not implemented`
+                        );
+                        return null;
+                     }
+                  }
+               })}
+            </VStack>
+         </PageContentWrapper>
+      </>
+   );
 };
 
 ProductListTemplate.getLayout = function getLayout(page, pageProps) {
@@ -49,223 +104,3 @@ ProductListTemplate.getLayout = function getLayout(page, pageProps) {
 };
 
 export default ProductListTemplate;
-
-type GetProductListServerSidePropsOptions = {
-   productListType: ProductListType;
-};
-
-export const getProductListServerSideProps = ({
-   productListType,
-}: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
-   return async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=10, stale-while-revalidate=600'
-      );
-      noindexDevDomains(context);
-
-      const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
-      const layoutProps: Promise<DefaultLayoutProps> = getLayoutServerSideProps(
-         {
-            storeCode: DEFAULT_STORE_CODE,
-         }
-      );
-      let productList: ProductList | null;
-      let shouldRedirectToCanonical = false;
-      let canonicalPath: string | null = null;
-      const ifixitOrigin = ifixitOriginFromHost(context);
-
-      switch (productListType) {
-         case ProductListType.AllParts: {
-            productList = await logAsync('findProductList', () =>
-               findProductList({ handle: { eq: 'Parts' } }, ifixitOrigin)
-            );
-            break;
-         }
-         case ProductListType.DeviceParts: {
-            const [deviceHandle, itemTypeHandle, ...otherPathSegments] =
-               getDevicePathSegments(context);
-
-            invariant(
-               typeof deviceHandle === 'string',
-               'device handle is required'
-            );
-
-            const deviceTitle = destylizeDeviceTitle(deviceHandle);
-
-            if (otherPathSegments.length > 0) {
-               return {
-                  notFound: true,
-               };
-            }
-
-            const itemType = itemTypeHandle
-               ? destylizeDeviceItemType(itemTypeHandle)
-               : null;
-
-            productList = await logAsync('findProductList', () =>
-               findProductList(
-                  {
-                     deviceTitle: {
-                        eqi: deviceTitle,
-                     },
-                  },
-                  ifixitOrigin,
-                  itemType
-               )
-            );
-
-            shouldRedirectToCanonical =
-               typeof productList?.deviceTitle === 'string' &&
-               productList.deviceTitle !== deviceTitle;
-
-            canonicalPath = getDeviceCanonicalPath(
-               productList?.deviceTitle,
-               itemType
-            );
-
-            break;
-         }
-         case ProductListType.AllTools: {
-            productList = await logAsync('findProductList', () =>
-               findProductList({ handle: { eq: 'Tools' } }, ifixitOrigin)
-            );
-            break;
-         }
-         case ProductListType.ToolsCategory: {
-            const { handle } = context.params || {};
-            invariant(
-               typeof handle === 'string',
-               'tools category handle is required'
-            );
-
-            productList = await logAsync('findProductList', () =>
-               findProductList({ handle: { eqi: handle } }, ifixitOrigin)
-            );
-
-            shouldRedirectToCanonical =
-               typeof productList?.handle === 'string' &&
-               productList.handle !== handle;
-            canonicalPath =
-               typeof productList?.handle === 'string'
-                  ? `/Tools/${productList.handle}`
-                  : null;
-
-            break;
-         }
-         case ProductListType.Marketing: {
-            const { handle } = context.params || {};
-            invariant(
-               typeof handle === 'string',
-               'shop category handle is required'
-            );
-
-            productList = await logAsync('findProductList', () =>
-               findProductList(
-                  {
-                     handle: {
-                        eqi: handle,
-                     },
-                     type: {
-                        eq: 'marketing',
-                     },
-                  },
-                  ifixitOrigin
-               )
-            );
-            shouldRedirectToCanonical =
-               typeof productList?.handle === 'string' &&
-               productList.handle !== handle;
-            canonicalPath =
-               typeof productList?.handle === 'string'
-                  ? `/Shop/${productList.handle}`
-                  : null;
-
-            break;
-         }
-         default: {
-            return assertNever(productListType);
-         }
-      }
-
-      if (productList == null) {
-         return {
-            notFound: true,
-         };
-      }
-
-      if (shouldRedirectToCanonical) {
-         invariant(canonicalPath != null, 'canonical path is required');
-         return {
-            redirect: {
-               permanent: true,
-               destination: canonicalPath,
-            },
-         };
-      }
-
-      const appProps: AppProvidersProps = {
-         algolia: {
-            indexName,
-            url: urlFromContext(context),
-            apiKey: productList.algolia.apiKey,
-         },
-         ifixitOrigin,
-      };
-
-      const appMarkup = (
-         <AppProviders {...appProps}>
-            <ProductListView productList={productList} indexName={indexName} />
-         </AppProviders>
-      );
-
-      const serverState = await logAsync('getServerState', () =>
-         getServerState(appMarkup, { renderToString })
-      );
-
-      const pageProps: ProductListTemplateProps = {
-         productList,
-         indexName,
-         layoutProps: await layoutProps,
-         appProps: {
-            ...appProps,
-            algolia: appProps.algolia
-               ? {
-                    ...appProps.algolia,
-                    serverState,
-                 }
-               : undefined,
-         },
-      };
-
-      return {
-         props: pageProps,
-      };
-   };
-};
-
-function getDevicePathSegments(
-   context: GetServerSidePropsContext<ParsedUrlQuery>
-) {
-   const { deviceHandleItemType } = context.params || {};
-   if (Array.isArray(deviceHandleItemType)) {
-      return deviceHandleItemType;
-   }
-   return [];
-}
-
-function getDeviceCanonicalPath(
-   deviceTitle: string | null | undefined,
-   itemType: string | null
-) {
-   if (deviceTitle == null) {
-      return null;
-   }
-   const slug = itemType
-      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
-      : '';
-   const canonicalDeviceHandle = encodeURIComponent(
-      stylizeDeviceTitle(deviceTitle)
-   );
-   return `/Parts/${canonicalDeviceHandle}${slug}`;
-}
