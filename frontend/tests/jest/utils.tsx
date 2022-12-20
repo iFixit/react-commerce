@@ -177,9 +177,10 @@ export const getReviewsResponse = (
       reviews: reviews,
       count: reviews.length,
       average:
-         // @ts-ignore
-         reviews.reduce((total, next) => total + next.rating, 0) /
-         (reviews.length == 0 ? 1 : reviews.length),
+         reviews.length == 0
+            ? 0 // @ts-ignore
+            : reviews.reduce((total, next) => total + next.rating, 0) /
+              reviews.length,
       groupedReviews: {
          1: reviews.filter((review) => review.rating == 1).length,
          2: reviews.filter((review) => review.rating == 2).length,
