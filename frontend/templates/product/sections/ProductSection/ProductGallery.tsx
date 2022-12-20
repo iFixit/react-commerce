@@ -41,25 +41,28 @@ export function ProductGallery({
 
    React.useEffect(() => {
       const containingElement = galleryContainerRef.current;
-      let observer: ResizeObserver | undefined;
 
-      if (enableZoom && containingElement) {
-         observer = new ResizeObserver((entries) => {
-            const { width: containerWidth, height: containerHeight } =
-               entries[0].contentRect;
-            setInnerEnableZoom(
-               !product.images.find(
-                  ({ width, height }) =>
-                     !width ||
-                     !height ||
-                     width * height < containerWidth * containerHeight
-               )
-            );
-         });
-         observer.observe(containingElement);
+      if (!containingElement || !enableZoom) {
+         return;
       }
+
+      const onResize = (entries: ResizeObserverEntry[]) => {
+         const { width: containerWidth, height: containerHeight } =
+            entries[0].contentRect;
+         setInnerEnableZoom(
+            !product.images.find(
+               ({ width, height }) =>
+                  !width ||
+                  !height ||
+                  width * height < containerWidth * containerHeight
+            )
+         );
+      };
+
+      const observer = new ResizeObserver(onResize);
+      observer.observe(containingElement);
       return () => {
-         containingElement && observer?.unobserve(containingElement);
+         observer?.unobserve(containingElement);
       };
    }, [product, enableZoom]);
 
