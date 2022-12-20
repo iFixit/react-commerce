@@ -17,7 +17,7 @@ test.describe('collections scroll', () => {
       await page.getByTestId('next-page').click();
 
       // Wait for the page to scroll to the top
-      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(1000);
 
       // When it scrolls to the top, the search bar should be visible
       await (
