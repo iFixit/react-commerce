@@ -1,50 +1,72 @@
-import { constants } from 'tests/cypress/support/constants';
+import { test, expect } from '@playwright/test';
 
-describe('parts page search', () => {
-   beforeEach(() => {
-      cy.loadCollectionPageByPath('/Parts');
+const NO_SEARCH_RESULT = 'No matching products found';
+const NO_SEARCH_RESULTS_DESC =
+   "Try adjusting your search or filter to find what you're looking for";
+
+test.describe('parts page search', () => {
+   test.beforeEach(async ({ page }) => {
+      await page.goto('/Parts');
    });
 
-   it('should show results when the search term exists', () => {
-      cy.findByTestId('collections-search-box')
-         .should('be.visible')
-         .should('not.be.disabled')
-         .type('iphone');
+   test('Should show results when the search term exists', async ({ page }) => {
+      expect(page.getByTestId('collections-search-box')).toBeVisible();
+      expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
-      // Wait for search result to be updated
-      cy.wait('@search');
+      // Start listening for algolia search request
+      const queryResponse = page.waitForResponse((response) => {
+         return (
+            response.url().includes('algolia') &&
+            response.url().includes('queries?') &&
+            response.status() === 200
+         );
+      });
+
+      await page.getByTestId('collections-search-box').fill('iphone');
+
+      // Wait for search request to finish
+      await queryResponse;
 
       // Check that url parameter contains ?q after searching
-      cy.location().should((loc) => {
-         expect(loc.search).to.have.string('?q=iphone');
-      });
+      expect(page.url()).toContain('?q=iphone');
 
       // Assert that all products in the result contains word watch
-      cy.findByTestId('list-view-products')
-         .children('article')
-         .each((productListItem) => {
-            cy.wrap(productListItem).contains('iphone', { matchCase: false });
-         });
+      const products = page
+         .getByTestId('list-view-products')
+         .getByRole('article');
+      const productCount = await products.count();
+
+      for (let i = 0; i < productCount; i++) {
+         const product = products.nth(i);
+         expect(await product.textContent()).toContain('iphone');
+      }
    });
 
-   it("should show no results when search term doesn't exist", () => {
-      cy.findByTestId('collections-search-box')
-         .should('be.visible')
-         .should('not.be.disabled')
-         .type('asdasasdadasd');
+   test("Should show no results when search term doesn't exist", async ({
+      page,
+   }) => {
+      expect(page.getByTestId('collections-search-box')).toBeVisible();
+      expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
-      // Wait for search result to be updated
-      cy.wait('@search');
-
-      // Check that url parameter contains ?q after searching
-      cy.location().should((loc) => {
-         expect(loc.search).to.have.string('?q=');
+      // Start listening for algolia search request
+      const queryResponse = page.waitForResponse((response) => {
+         return (
+            response.url().includes('algolia') &&
+            response.url().includes('queries?') &&
+            response.status() === 200
+         );
       });
 
-      cy.findByTestId('list-view-products').should('not.exist');
-      cy.contains(constants.NO_SEARCH_RESULTS);
-      cy.contains(constants.NO_SEARCH_RESULT_DESC);
+      await page.getByTestId('collections-search-box').fill('asdasasdadasd');
+
+      // Wait for search request to finish
+      await queryResponse;
+
+      // Check that url parameter contains ?q after searching
+      expect(page.url()).toContain('?q=');
+
+      await expect(page.getByTestId('list-view-products')).not.toBeVisible();
+      await expect(page.getByText(NO_SEARCH_RESULT)).toBeVisible();
+      await expect(page.getByText(NO_SEARCH_RESULTS_DESC)).toBeVisible();
    });
 });
-
-export {};
