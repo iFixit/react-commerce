@@ -1,6 +1,11 @@
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { AppProviders } from '@components/common';
-import { Product, ProductVariant } from '@models/product';
+import {
+   Product,
+   ProductVariant,
+   ProductReview,
+   ProductReviewData,
+} from '@models/product';
 import {
    mockedBatteryProduct,
    mockedPartProduct,
@@ -8,6 +13,7 @@ import {
    mockedProductSearchHit,
    mockedProductVariant,
    mockedToolProduct,
+   mockedReviews,
 } from './__mocks__/products';
 import { ProductSearchHit } from '@models/product-list';
 import { CurrencyCode } from '@lib/shopify-storefront-sdk';
@@ -156,4 +162,30 @@ export const getProductWithWarranty = (
    });
 
    return product;
+};
+
+export const getReviewsResponse = (
+   type: 'filled' | 'empty' = 'filled'
+): ProductReviewData => {
+   let reviews: ProductReview[] = mockedReviews;
+
+   if (type === 'empty') {
+      reviews = [];
+   }
+
+   return {
+      reviews: reviews,
+      count: reviews.length,
+      average:
+         // @ts-ignore
+         reviews.reduce((total, next) => total + next.rating, 0) /
+         (reviews.length == 0 ? 1 : reviews.length),
+      groupedReviews: {
+         1: reviews.filter((review) => review.rating == 1).length,
+         2: reviews.filter((review) => review.rating == 2).length,
+         3: reviews.filter((review) => review.rating == 3).length,
+         4: reviews.filter((review) => review.rating == 4).length,
+         5: reviews.filter((review) => review.rating == 5).length,
+      },
+   };
 };
