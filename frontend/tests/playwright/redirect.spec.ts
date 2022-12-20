@@ -1,40 +1,30 @@
-describe('/parts page', () => {
-   it('redirects to correct sitemap', () => {
-      cy.request({ url: '/Parts/sitemap.xml', followRedirect: false }).then(
-         (response) => {
-            expect(response.status).to.eq(308);
-            expect(response.headers.location).to.match(
-               /\/sitemap\/parts\.xml$/
-            );
-         }
-      );
+import { test, expect } from '@playwright/test';
 
-      cy.request({ url: '/Tools/sitemap.xml', followRedirect: false }).then(
-         (response) => {
-            expect(response.status).to.eq(308);
-            expect(response.headers.location).to.match(
-               /\/sitemap\/tools\.xml$/
-            );
-         }
-      );
+test.describe('/parts page', () => {
+   test('Redirects to correct sitemap', async ({ page }) => {
+      // Use the APIRequestContext object to make requests without
+      // redirecting.
+      const request = page.request;
 
-      cy.request({ url: '/Shop/sitemap.xml', followRedirect: false }).then(
-         (response) => {
-            expect(response.status).to.eq(308);
-            expect(response.headers.location).to.match(
-               /\/sitemap\/marketing\.xml$/
-            );
-         }
-      );
+      let response = await request.get('/Parts/sitemap.xml', {
+         maxRedirects: 0,
+      });
+      expect(response.status()).toBe(308);
+      expect(response.headers().location).toMatch(/\/sitemap\/parts\.xml$/);
 
-      cy.request({ url: '/products/sitemap.xml', followRedirect: false }).then(
-         (response) => {
-            expect(response.status).to.eq(308);
-            expect(response.headers.location).to.match(
-               /\/sitemap\/products\.xml$/
-            );
-         }
-      );
+      response = await request.get('/Tools/sitemap.xml', { maxRedirects: 0 });
+      expect(response.status()).toBe(308);
+      expect(response.headers().location).toMatch(/\/sitemap\/tools\.xml$/);
+
+      response = await request.get('/Shop/sitemap.xml', { maxRedirects: 0 });
+      expect(response.status()).toBe(308);
+      expect(response.headers().location).toMatch(/\/sitemap\/marketing\.xml$/);
+
+      response = await request.get('/products/sitemap.xml', {
+         maxRedirects: 0,
+      });
+      expect(response.status()).toBe(308);
+      expect(response.headers().location).toMatch(/\/sitemap\/products\.xml$/);
    });
 });
 
