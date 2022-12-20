@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import {
    renderWithAppContext,
    getMockProduct,
+   getProductOfType,
 } from '../utils';
 import { ReplacementGuidesSection } from '@templates/product/sections/ReplacementGuidesSection';
 
@@ -27,5 +28,20 @@ describe('Product Replacement Guides Section Tests', () => {
       (
          expect(screen.getByRole('link', { name: expectedGuideTitle })) as any
       ).toHaveAttribute('href', expectedGuideUrl);
+   });
+
+   test('does not render Replacement Guides Section for a product with no replacement guides', async () => {
+      const { container } = renderWithAppContext(
+         <ReplacementGuidesSection
+            product={getProductOfType('tool')} // The mocked tool doesn't have associated replacement guides
+         />
+      );
+
+      const replacementGuidesHeading = await screen.queryByText(
+         /Replacement Guides/i
+      );
+      (expect(replacementGuidesHeading) as any).not.toBeInTheDocument();
+
+      (expect(container.firstChild) as any).toBeEmptyDOMElement();
    });
 });
