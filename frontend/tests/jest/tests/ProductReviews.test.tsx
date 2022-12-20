@@ -6,6 +6,7 @@ import {
    getReviewsResponse,
 } from '../utils';
 import { ReviewsSection } from '@templates/product/sections/ReviewsSection/index';
+import { ProductRating } from '@templates/product/sections/ProductSection/ProductRating';
 import { useProductReviews } from 'templates/product/hooks/useProductReviews';
 
 jest.mock('@templates/product/hooks/useProductReviews', () => ({
@@ -61,4 +62,46 @@ describe('Product Reviews Tests', () => {
       (expect(noReviewsYetText) as any).not.toBeInTheDocument();
    });
 
+   /*
+    * On product page, we display ProductRating on top of the page
+    * and ReviewsSection at the bottom.
+    *
+    * This test is to confirm that we display the same/matching
+    * number of reviews and review average for both components.
+    */
+   test('Product Section and Reviews Section review stars match', async () => {
+      const reviewsResponseWithReviews = getReviewsResponse();
+      const reviewsCount = reviewsResponseWithReviews.count; // 6
+      const ratingValue = reviewsResponseWithReviews.average; // 4.5
+
+      renderWithAppContext(
+         <ProductRating
+            product={getMockProduct({
+               rating: { value: ratingValue },
+               reviewsCount: reviewsCount,
+            })}
+         />
+      );
+
+      (useProductReviews as jest.Mock<any, any>).mockImplementation(() => ({
+         data: reviewsResponseWithReviews,
+      }));
+      renderWithAppContext(
+         <ReviewsSection
+            product={getMockProduct()}
+            selectedVariant={getMockProductVariant()}
+         />
+      );
+
+      // Assert that we find 2 of the expected texts
+      const reviewAverageValue = screen.getAllByText(
+         `${reviewsResponseWithReviews.average}`
+      );
+      (expect(reviewAverageValue.length) as any).toBe(2);
+
+      const expectedReviewCount = screen.getAllByText(
+         `${reviewsResponseWithReviews.count} reviews`
+      );
+      (expect(expectedReviewCount.length) as any).toBe(2);
+   });
 });
