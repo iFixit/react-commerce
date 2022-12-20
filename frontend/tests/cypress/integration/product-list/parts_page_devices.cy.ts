@@ -31,6 +31,7 @@ describe('parts page devices', () => {
                cy.findByRole('heading', {
                   level: 1,
                   name: childTitleRegexp,
+                  timeout: 10000,
                }).should('exist');
 
                navigateUntilLastDevice();

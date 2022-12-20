@@ -319,6 +319,66 @@ describe('ProductSection Tests', () => {
       });
    });
 
+   describe('Prop 65 Warning Tests', () => {
+      test('renders prop 65 warning', async () => {
+         const battery = getProductOfType('battery');
+
+         renderWithAppContext(
+            <ProductSection
+               product={battery}
+               selectedVariant={battery.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const prop65WarningText = await screen.findByText(/prop 65 warning/i);
+         (expect(prop65WarningText) as any).toBeVisible();
+      });
+
+      test('does not render prop 65 warning', async () => {
+         const tool = getProductOfType('tool');
+
+         renderWithAppContext(
+            <ProductSection
+               product={tool}
+               selectedVariant={tool.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         (
+            expect(screen.queryByText(/prop 65 warning/i)) as any
+         ).not.toBeInTheDocument();
+      });
+
+      test('renders prop 65 info popup', async () => {
+         const battery = getProductOfType('battery');
+
+         renderWithAppContext(
+            <ProductSection
+               product={battery}
+               selectedVariant={battery.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         act(() => {
+            screen.getByLabelText('read more about the warning').click();
+         });
+
+         waitFor(() => {
+            (
+               expect(
+                  screen.queryByText(
+                     /This product can expose you to chemicals including lead/i
+                  )
+               ) as any
+            ).toBeVisible();
+         });
+      });
+   });
+
    describe('Product Warranty Tests', () => {
       test('renders the lifetime guarantee warranty', async () => {
          const fullWarrantyProduct = getProductWithWarranty('full');
