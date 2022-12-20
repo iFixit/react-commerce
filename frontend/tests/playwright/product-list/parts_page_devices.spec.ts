@@ -1,58 +1,52 @@
-describe('parts page devices', () => {
-   beforeEach(() => {
-      cy.loadCollectionPageByPath('/Parts');
+import { test, expect } from '@playwright/test';
+
+test.describe('parts page devices', () => {
+   test.beforeEach(async ({ page }) => {
+      await page.goto('/Parts');
    });
 
-   it('should navigate until the last device page', () => {
-      assertVisibleFilterAndProducts();
-      assertAvailableProducts();
-      const navigateUntilLastDevice = () => {
-         cy.get('body').then(($body) => {
-            const $children = $body.find(
-               '[data-testid="product-list-children"]'
-            );
-            if ($children.length <= 0) return false;
+   test('Should navigate until the last device page', async ({ page }) => {
+      await expect(
+         page.getByTestId('filterable-products-section')
+      ).toBeVisible();
+      await page.getByTestId('facets-accordion').scrollIntoViewIfNeeded();
+      await expect(page.getByTestId('facets-accordion')).toBeVisible();
 
-            cy.findByTestId('product-list-children')
-               .findAllByRole('link')
-               .first()
-               .as('childLink');
+      // Makes sure there is at least 1 product available
+      expect(
+         await page.getByTestId('list-view-products').count()
+      ).toBeGreaterThanOrEqual(1);
 
-            cy.get('@childLink').then(($childLink) => {
-               const childHref = $childLink.attr('href');
-               cy.location('pathname').should('not.equal', childHref);
+      const navigateUntilLastDevice = async () => {
+         if ((await page.getByTestId('product-list-children').count()) <= 0)
+            return false;
 
-               cy.get('@childLink').click();
+         const childLink = page
+            .getByTestId('product-list-children')
+            .getByRole('link')
+            .first();
+         const childHref = await childLink.getAttribute('href');
+         const childTitle = await childLink.textContent();
+         const childTitleRegexp = new RegExp(`^${childTitle}$`, 'i');
 
-               cy.location('pathname').should('equal', childHref);
+         let currentURL = new URL(page.url());
+         expect(currentURL.pathname).not.toEqual(childHref);
 
-               const childTitle = $childLink.text();
-               const childTitleRegexp = new RegExp(`^${childTitle}$`, 'i');
-               cy.findByRole('heading', {
-                  level: 1,
-                  name: childTitleRegexp,
-               }).should('exist');
+         // Start waiting for navigation before clicking
+         const navigationPromise = page.waitForNavigation();
+         await childLink.click();
+         await navigationPromise;
 
-               navigateUntilLastDevice();
-            });
-         });
+         currentURL = new URL(page.url());
+
+         expect(currentURL.pathname).toEqual(childHref);
+         await expect(
+            page.getByRole('heading', { level: 1, name: childTitleRegexp })
+         ).toBeVisible();
+
+         await navigateUntilLastDevice();
       };
 
-      navigateUntilLastDevice();
+      await navigateUntilLastDevice();
    });
 });
-
-function assertVisibleFilterAndProducts() {
-   cy.findByTestId('filterable-products-section').should('be.visible');
-   cy.findByTestId('facets-accordion').scrollIntoView().should('be.visible');
-}
-
-// Makes sure there is at least 1 product available
-function assertAvailableProducts() {
-   cy.findByTestId('list-view-products')
-      .children('article')
-      .its('length')
-      .should('be.gte', 1);
-}
-
-export {};
