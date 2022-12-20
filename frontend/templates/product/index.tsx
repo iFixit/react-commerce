@@ -30,7 +30,7 @@ import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
-export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
+const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
@@ -133,3 +133,5 @@ export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 ProductTemplate.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
+
+export default ProductTemplate;
