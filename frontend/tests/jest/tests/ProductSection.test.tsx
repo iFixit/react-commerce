@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import {
    mockMatchMedia,
    renderWithAppContext,
@@ -124,6 +124,57 @@ describe('ProductSection Tests', () => {
          (expect(warning) as any).not.toBeInTheDocument();
          (expect(note) as any).not.toBeInTheDocument();
          (expect(disclaimer) as any).not.toBeInTheDocument();
+      });
+
+      test('compatibility renders', async () => {
+         renderWithAppContext(
+            <ProductSection
+               product={getMockProduct()}
+               selectedVariant={getMockProductVariant()}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         (
+            expect(screen.getByTestId('product-compatibility-dropdown')) as any
+         ).not.toBeVisible();
+
+         act(() => {
+            screen.getByRole('button', { name: /compatibility/i }).click();
+         });
+
+         waitFor(() => {
+            (
+               expect(
+                  screen.getByTestId('product-compatibility-dropdown')
+               ) as any
+            ).toBeVisible();
+         });
+      });
+
+      test('compatibility does not render', async () => {
+         const mockProduct = getMockProduct({
+            compatibility: null,
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={mockProduct}
+               selectedVariant={getMockProductVariant()}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         (
+            expect(
+               screen.getByRole('button', {
+                  name: /compatibility/i,
+                  hidden: true,
+               })
+            ) as any
+         ).not.toBeVisible();
       });
    });
 

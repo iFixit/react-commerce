@@ -210,7 +210,7 @@ export function ProductSection({
                      <CustomAccordionButton>
                         Compatibility
                      </CustomAccordionButton>
-                     <CustomAccordionPanel>
+                     <CustomAccordionPanel data-testid="product-compatibility-dropdown">
                         <CompatibleDevices product={product} />
                      </CustomAccordionPanel>
                   </AccordionItem>
@@ -278,9 +278,12 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
 
 type CustomAccordionPanelProps = React.PropsWithChildren<{}>;
 
-function CustomAccordionPanel({ children }: CustomAccordionPanelProps) {
+function CustomAccordionPanel({
+   children,
+   ...other
+}: CustomAccordionPanelProps) {
    return (
-      <AccordionPanel pb={4} px="1.5">
+      <AccordionPanel pb={4} px="1.5" {...other}>
          {children}
       </AccordionPanel>
    );
