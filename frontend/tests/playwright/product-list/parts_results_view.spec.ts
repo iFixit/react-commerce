@@ -1,29 +1,36 @@
-describe('parts page results view', () => {
-   beforeEach(() => {
-      cy.loadCollectionPageByPath('/Parts');
+import { test, expect } from '@playwright/test';
+
+test.describe('parts page results view', () => {
+   test.beforeEach(async ({ page }) => {
+      await page.goto('/Parts');
    });
 
-   it('all products have a visible price', () => {
-      cy.findByTestId('list-view-products')
-         .children('article')
-         .each((productListItem) => {
-            cy.wrap(productListItem)
-               .findByTestId('product-price')
-               .should('be.visible');
-         });
+   test('All products have a visible price', async ({ page }) => {
+      const products = page
+         .getByTestId('list-view-products')
+         .getByRole('article');
+      const productCount = await products.count();
+
+      for (let i = 0; i < productCount; i++) {
+         const product = products.nth(i);
+         await expect(product.getByTestId('product-price')).toBeVisible();
+      }
    });
 
-   it('product View button directs to the product page', () => {
-      cy.contains('.chakra-button', 'View')
-         .parent()
-         .then((link) => {
-            // Find the first product View button and click
-            cy.wrap(link).click();
+   test('Product View button directs to product page', async ({ page }) => {
+      const productViewButton = page
+         .getByRole('link', { name: 'View' })
+         .first();
+      const productViewButtonHref = await productViewButton.getAttribute(
+         'href'
+      );
 
-            // Assert the current window url path is the same as button link
-            cy.location('pathname').should('equal', link.attr('href'));
-         });
+      const navigationPromise = page.waitForNavigation();
+      await productViewButton.click();
+      await navigationPromise;
+
+      // Assert the current window url path is the same as button link
+      const url = new URL(page.url());
+      expect(url.pathname).toEqual(productViewButtonHref);
    });
 });
-
-export {};
