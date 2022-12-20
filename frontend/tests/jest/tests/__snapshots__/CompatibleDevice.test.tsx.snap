@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompatibleDevice renders and matches the snapshot 1`] = `
+<DocumentFragment>
+  <img
+    alt="iPhone 6s Plus"
+    class="chakra-image css-yqon05"
+    src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
+  />
+  <div
+    class="css-gislc8"
+  >
+    <p
+      class="chakra-text css-1h9z0di"
+    >
+      iPhone 6s Plus
+    </p>
+    <div
+      class="css-j7qwjs"
+    >
+      <p
+        class="chakra-text css-4137gr"
+      >
+        A1634 US AT&T Locked or SIM Free
+      </p>
+      <p
+        class="chakra-text css-4137gr"
+      >
+        A1687 US Sprint/Verizon and Global
+      </p>
+      <p
+        class="chakra-text css-4137gr"
+      >
+        A1699 Mainland China
+      </p>
+    </div>
+  </div>
+  <span
+    hidden=""
+    id="__chakra_env"
+  />
+</DocumentFragment>
+`;
+
+exports[`CompatibleDevice renders and matches the snapshot with truncated variants 1`] = `
+<DocumentFragment>
+  <img
+    alt="iPhone 6s Plus"
+    class="chakra-image css-yqon05"
+    src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
+  />
+  <div
+    class="css-gislc8"
+  >
+    <p
+      class="chakra-text css-1h9z0di"
+    >
+      iPhone 6s Plus
+    </p>
+    <div
+      class="css-j7qwjs"
+    />
+    <p
+      class="chakra-text css-1ji9qma"
+    >
+      And 3 other models...
+    </p>
+  </div>
+  <span
+    hidden=""
+    id="__chakra_env"
+  />
+</DocumentFragment>
+`;
