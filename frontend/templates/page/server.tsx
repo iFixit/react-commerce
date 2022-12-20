@@ -1,7 +1,7 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { flags } from '@config/flags';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
-import { getLayoutServerSideProps } from '@layouts/default';
+import { getLayoutServerSideProps } from '@layouts/default/server';
 import { findPage } from '@models/page';
 import { GetServerSideProps } from 'next';
 import { PageTemplateProps } from './hooks/usePageTemplateProps';

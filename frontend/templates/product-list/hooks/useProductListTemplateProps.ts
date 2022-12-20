@@ -1,5 +1,5 @@
 import { WithProvidersProps } from '@components/common';
-import { WithLayoutProps } from '@layouts/default';
+import type { WithLayoutProps } from '@layouts/default/server';
 import { useServerSideProps } from '@lib/server-side-props';
 import type { ProductList } from '@models/product-list';
 

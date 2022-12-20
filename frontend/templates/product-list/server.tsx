@@ -10,7 +10,8 @@ import {
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
-import { DefaultLayoutProps, getLayoutServerSideProps } from '@layouts/default';
+import type { DefaultLayoutProps } from '@layouts/default/server';
+import { getLayoutServerSideProps } from '@layouts/default/server';
 import {
    findProductList,
    ProductList,
