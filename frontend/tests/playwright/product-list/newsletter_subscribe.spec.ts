@@ -1,46 +1,65 @@
-describe('subscribe to newsletter', () => {
-   beforeEach(() => {
-      cy.loadCollectionPageByPath('/Parts');
+import { test, expect } from '@playwright/test';
+
+test.describe('Subscribe to newsletter', () => {
+   test.beforeEach(async ({ page }) => {
+      await page.goto('/Parts');
    });
 
-   it('requires an email', () => {
-      cy.findByTestId('footer-newsletter-form').within(() => {
-         cy.findByText(/please insert a valid email/i).should('not.exist');
-         cy.findByRole('button', { name: /subscribe|join/i }).click();
-         cy.findByText(/please insert a valid email/i).should('be.visible');
-      });
+   test('Requires an email', async ({ page }) => {
+      const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
+
+      await expect(
+         footerNewsletterForm.getByText(/please insert a valid email/i)
+      ).not.toBeVisible();
+
+      await footerNewsletterForm
+         .getByRole('button', { name: /subscribe|join/i })
+         .click();
+
+      await expect(
+         footerNewsletterForm.getByText(/please insert a valid email/i)
+      ).toBeVisible();
    });
 
-   it('prevents invalid email', () => {
-      cy.findByText(/please insert a valid email/i).should('not.exist');
-      cy.findByLabelText(/enter your email/i).type('test@example');
-      cy.findByRole('button', { name: /subscribe|join/i }).click();
-      cy.findByText(/please insert a valid email/i).should('be.visible');
+   test('Prevents invalid email', async ({ page }) => {
+      await expect(
+         page.getByText(/please insert a valid email/i)
+      ).not.toBeVisible();
+
+      await page.getByLabel(/enter your email/i).fill('test@example');
+      await page.getByRole('button', { name: /subscribe|join/i }).click();
+      await expect(
+         page.getByText(/please insert a valid email/i)
+      ).toBeVisible();
    });
 
-   it('shows confirmation when email is subscribed', () => {
-      cy.intercept('/api/2.0/cart/newsletter/subscribe', {
-         statusCode: 200,
-      });
-      cy.findByLabelText(/enter your email/i).type('test@example.com');
-      cy.findByRole('button', { name: /subscribe|join/i }).click();
-      cy.findByText('Subscribed!').should('be.visible');
-      cy.findByTestId('footer-newsletter-subscribe-button').should(
-         'not.be.visible'
+   test('Shows confirmation when email is subscribed', async ({ page }) => {
+      await page.route('/api/2.0/cart/newsletter/subscribe', (route) =>
+         route.fulfill({ status: 200 })
       );
-      cy.findByText(/please insert a valid email/i).should('not.exist');
+
+      await page.getByLabel(/enter your email/i).fill('test@example.com');
+      await page.getByRole('button', { name: /subscribe|join/i }).click();
+      await expect(page.getByText('Subscribed!')).toBeVisible();
+      await expect(
+         page.getByTestId('footer-newsletter-subscribe-button')
+      ).not.toBeVisible();
+      await expect(
+         page.getByText(/please insert a valid email/i)
+      ).not.toBeVisible();
    });
 
-   it('shows an error when server request fails', () => {
-      cy.intercept('/api/2.0/cart/newsletter/subscribe', {
-         statusCode: 500,
-      });
-      cy.findByLabelText(/enter your email/i).type('test@example.com');
-      cy.findByRole('button', { name: /subscribe|join/i }).click();
-      cy.findByText(/error trying to subscribe to newsletter/i).should(
-         'be.visible'
+   test('Shows an error when server request fails', async ({ page }) => {
+      await page.route('**/api/2.0/cart/newsletter/subscribe', (route) =>
+         route.fulfill({ status: 500 })
       );
+
+      await page.getByLabel(/enter your email/i).fill('test@example.com');
+
+      await page.getByRole('button', { name: /subscribe|join/i }).click();
+
+      await expect(
+         page.getByText(/error trying to subscribe to newsletter/i)
+      ).toBeVisible();
    });
 });
-
-export {};
