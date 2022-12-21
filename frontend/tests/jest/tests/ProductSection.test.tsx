@@ -8,6 +8,7 @@ import {
    getDiscountedProduct,
    getProductOfType,
    getProductWithWarranty,
+   mockResizeObserver,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 
@@ -19,6 +20,7 @@ jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
 describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
+      mockResizeObserver();
    });
 
    describe('Product Description Tests', () => {
