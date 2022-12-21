@@ -2,23 +2,15 @@ import { Box, Flex } from '@chakra-ui/react';
 import { ProductEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import {
-   noindexDevDomains,
-   serverSidePropsWrapper,
-} from '@helpers/next-helpers';
-import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { invariant, moneyToNumber, parseItemcode } from '@ifixit/helpers';
-import { urlFromContext } from '@ifixit/helpers/nextjs';
-import { DefaultLayout, getLayoutServerSideProps } from '@layouts/default';
-import { findProduct } from '@models/product';
+import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import { DefaultLayout } from '@layouts/default';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
-import { GetServerSideProps } from 'next';
 import * as React from 'react';
 import { PixelPing } from './components/PixelPing';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
@@ -38,7 +30,7 @@ import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
-export const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
+const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
@@ -142,72 +134,4 @@ ProductTemplate.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
 
-export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
-   serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=60, stale-while-revalidate=600'
-      );
-
-      noindexDevDomains(context);
-      const { handle } = context.params || {};
-      invariant(typeof handle === 'string', 'handle param is missing');
-      const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
-         storeCode: DEFAULT_STORE_CODE,
-      });
-      const product = await findProduct({
-         handle,
-         storeCode: DEFAULT_STORE_CODE,
-      });
-
-      if (product == null) {
-         return {
-            notFound: true,
-         };
-      }
-
-      if (product.redirectUrl) {
-         const query = new URL(urlFromContext(context)).search;
-         return {
-            redirect: {
-               destination: `${product.redirectUrl}${query}`,
-               permanent: true,
-            },
-         };
-      }
-
-      const proOnly = product?.tags.find((tag: string) => tag === 'Pro Only');
-      if (proOnly) {
-         context.res.setHeader('X-Robots-Tag', 'noindex, follow');
-      }
-
-      const codeToDomain =
-         product.enabledDomains?.reduce((acc, { code, domain }) => {
-            acc[code] = domain;
-            return acc;
-         }, {} as Record<string, string>) ?? {};
-      const storesWithProductUrls = stores.map((store) => {
-         const domain =
-            store.code === DEFAULT_STORE_CODE
-               ? new URL(store.url).origin
-               : codeToDomain[store.code];
-         if (domain) {
-            store.url = `${domain}/products/${product.handle}`;
-         }
-         return store;
-      });
-
-      const pageProps: ProductTemplateProps = {
-         layoutProps: {
-            ...otherLayoutProps,
-            stores: storesWithProductUrls,
-         },
-         appProps: {
-            ifixitOrigin: ifixitOriginFromHost(context),
-         },
-         product,
-      };
-      return {
-         props: pageProps,
-      };
-   });
+export default ProductTemplate;

@@ -1,1 +1,2 @@
-export { PageTemplate as default, getServerSideProps } from '@templates/page';
+export { default } from '@templates/page';
+export { getServerSideProps } from '@templates/page/server';
