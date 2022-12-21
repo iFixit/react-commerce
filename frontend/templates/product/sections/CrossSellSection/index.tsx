@@ -23,14 +23,14 @@ import { CartLineItem, useAddToCart } from '@ifixit/cart-sdk';
 import { formatMoney, isPresent, Money } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import {
-   ResponsiveImage,
    PageContentWrapper,
    ProductVariantPrice,
+   ResponsiveImage,
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
 import { MoneyV2 } from '@lib/shopify-storefront-sdk';
-import { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@models/product.server';
 import NextLink from 'next/link';
 import React from 'react';
 

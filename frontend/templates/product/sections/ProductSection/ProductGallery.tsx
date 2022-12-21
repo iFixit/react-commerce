@@ -3,7 +3,11 @@ import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
-import { Product, ProductImage, ProductVariant } from '@models/product';
+import type {
+   Product,
+   ProductImage,
+   ProductVariant,
+} from '@models/product.server';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
 import ReactDOM from 'react-dom';

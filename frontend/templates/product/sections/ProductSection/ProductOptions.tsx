@@ -11,10 +11,10 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
-import type { Product } from '@models/product';
-import * as React from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
+import type { Product } from '@models/product.server';
+import * as React from 'react';
 
 export type ProductOptionsProps = {
    product: Product;

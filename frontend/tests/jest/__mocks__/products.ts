@@ -1,7 +1,8 @@
 import { MenuItemType } from '@models/menu';
 import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 import { ProductSearchHit } from '@models/product-list';
-import { Product, ProductVariant, ProductReview } from '@models/product';
+import { ProductReview } from '@models/product';
+import type { Product, ProductVariant } from '@models/product.server';
 import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 
 export const mockedProduct: Product = {

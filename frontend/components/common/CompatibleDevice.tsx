@@ -1,6 +1,6 @@
-import * as React from 'react';
 import { Flex, Img, Text } from '@chakra-ui/react';
-import { Product } from '@models/product';
+import type { Product } from '@models/product.server';
+import * as React from 'react';
 
 export type CompatibleDeviceProps = {
    device: NonNullable<Product['compatibility']>['devices'][number];
