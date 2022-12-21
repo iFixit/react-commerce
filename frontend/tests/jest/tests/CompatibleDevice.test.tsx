@@ -25,7 +25,7 @@ describe('CompatibleDevice', () => {
 
       // @ts-ignore
       const { asFragment } = renderWithAppContext(
-         <CompatibleDevice device={device} truncate={1} />
+         <CompatibleDevice device={device} maxModelLines={2} />
       );
 
       (expect(screen.queryByText(/other models.../i)) as any).toBeVisible();
