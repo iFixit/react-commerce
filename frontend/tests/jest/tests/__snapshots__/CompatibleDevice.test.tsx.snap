@@ -59,11 +59,17 @@ exports[`CompatibleDevice renders and matches the snapshot with truncated varian
     </p>
     <div
       class="css-j7qwjs"
-    />
+    >
+      <p
+        class="chakra-text css-4137gr"
+      >
+        A1634 US AT&T Locked or SIM Free
+      </p>
+    </div>
     <p
       class="chakra-text css-1ji9qma"
     >
-      And 3 other models...
+      And 2 other models...
     </p>
   </div>
   <span
