@@ -383,7 +383,7 @@ const CompatibilityMetafieldSchema = z
             imageUrl: z.string(),
             deviceUrl: z.string(),
             deviceName: z.string(),
-            variants: z.array(z.string()),
+            variants: z.array(z.string().nullable()),
          })
       ),
       hasMoreDevices: z.boolean(),
