@@ -34,4 +34,4 @@ jobs:
               NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-           run: cd frontend && DEBUG=pw:api pnpm playwright:run --project=chromium fix_kit
+           run: cd frontend && DEBUG=pw:api pnpm playwright:run --project=chromium
