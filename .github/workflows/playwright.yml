@@ -26,9 +26,6 @@ jobs:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
            run: pnpm install
 
-         - name: Install Playwright Dependencies
-           run: cd frontend && npx playwright install --with-deps
-
          - name: Run Playwright Tests
            env:
               NODE_ENV: test
