@@ -1,5 +1,5 @@
-import { Flex, Img, Link, Text } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import * as React from 'react';
+import { Flex, Img, Text } from '@chakra-ui/react';
 import { Product } from '@models/product';
 
 export type CompatibleDeviceProps = {
@@ -11,12 +11,17 @@ export function CompatibleDevice({
    device,
    truncate = 0,
 }: CompatibleDeviceProps) {
-   let variants = device.variants;
-   let unlistedVariants = 0;
-   if (truncate > 0 && variants.length > truncate) {
-      variants = device.variants.slice(0, truncate - 1);
-      unlistedVariants = device.variants.length - variants.length;
-   }
+   const variants = React.useMemo(
+      () => device.variants.filter(Boolean),
+      [device.variants]
+   );
+   const [visibleVariants, hiddenVariantCount] = React.useMemo(
+      () =>
+         truncate > 0 && variants.length > truncate
+            ? [variants.slice(0, truncate), variants.length - truncate]
+            : [variants, 0],
+      [truncate, variants]
+   );
    return (
       <>
          <Img
@@ -43,7 +48,7 @@ export function CompatibleDevice({
                {device.deviceName}
             </Text>
             <Flex flexDir="column">
-               {variants.map((variant) => (
+               {visibleVariants.map((variant) => (
                   <Text
                      key={variant}
                      lineHeight="short"
@@ -54,9 +59,10 @@ export function CompatibleDevice({
                   </Text>
                ))}
             </Flex>
-            {unlistedVariants !== 0 && (
+            {hiddenVariantCount > 0 && (
                <Text mb="2px" lineHeight="short" fontSize="xs" color="gray.600">
-                  And {unlistedVariants} other models...
+                  And {hiddenVariantCount} other model
+                  {hiddenVariantCount > 1 ? 's' : ''}...
                </Text>
             )}
          </Flex>
