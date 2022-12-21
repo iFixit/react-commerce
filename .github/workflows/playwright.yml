@@ -2,6 +2,8 @@ name: Playwright Tests
 on:
    pull_request:
 
+env:
+   npm_config_userconfig: './.npmrc'
 jobs:
    playwright-run:
       timeout-minutes: 60
@@ -10,13 +12,19 @@ jobs:
          - name: Checkout
            uses: actions/checkout@v3
 
+         - name: Start strapi server
+           run: cd backend && docker-compose up -d
+           env:
+              JWT_SECRET: 'ci-secret'
+              API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
+
          - name: Setup and Cache pnpm
            uses: ./.github/actions/pnpm-setup
 
          - name: Install workspaces
            env:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
-           run: pnpm install:all
+           run: pnpm install
 
          - name: Install Playwright Dependencies
            run: cd frontend && npx playwright install --with-deps
