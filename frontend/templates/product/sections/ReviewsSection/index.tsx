@@ -59,20 +59,23 @@ export function ReviewsSection({
       return reviewsCount;
    }, [reviewsData?.groupedReviews]);
 
-   const allReviews = reviewsData?.reviews ?? [];
-   const visibleReviews = allReviews.slice(0, visibleReviewsCount) ?? [];
-   const hasMoreReviews = visibleReviewsCount < allReviews.length;
+   const allReviewsWithBody =
+      reviewsData?.reviews?.filter((review) => review.body) ?? [];
+   const visibleReviews =
+      allReviewsWithBody.slice(0, visibleReviewsCount) ?? [];
+   const hasMoreReviews = visibleReviewsCount < allReviewsWithBody.length;
 
    const showMoreReviews = () => {
       setVisibleReviewsCount(
-         Math.min(allReviews.length, visibleReviewsCount + 20)
+         Math.min(allReviewsWithBody.length, visibleReviewsCount + 20)
       );
    };
 
-   const hasReview =
+   const canShowReviews =
       reviewsData != null &&
-      reviewsData.reviews != null &&
-      reviewsData.reviews.length > 0;
+      reviewsData.count &&
+      reviewsData.average &&
+      (reviewsData.average >= 4 || reviewsData.count > 10);
 
    return (
       <Box
@@ -95,7 +98,7 @@ export function ReviewsSection({
             >
                Customer Reviews
             </Heading>
-            {hasReview ? (
+            {canShowReviews ? (
                <>
                   <ReviewsStats
                      ratingsCounts={reviewCountsByRating}
