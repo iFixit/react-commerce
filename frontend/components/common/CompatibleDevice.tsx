@@ -4,12 +4,12 @@ import { Product } from '@models/product';
 
 export type CompatibleDeviceProps = {
    device: NonNullable<Product['compatibility']>['devices'][number];
-   truncate?: number;
+   maxModelLines?: number;
 };
 
 export function CompatibleDevice({
    device,
-   truncate = 0,
+   maxModelLines = 0,
 }: CompatibleDeviceProps) {
    const variants = React.useMemo(
       () => device.variants.filter(Boolean),
@@ -17,10 +17,13 @@ export function CompatibleDevice({
    );
    const [visibleVariants, hiddenVariantCount] = React.useMemo(
       () =>
-         truncate > 0 && variants.length > truncate
-            ? [variants.slice(0, truncate), variants.length - truncate]
+         maxModelLines > 0 && variants.length > maxModelLines
+            ? [
+                 variants.slice(0, maxModelLines - 1),
+                 variants.length - maxModelLines + 1,
+              ]
             : [variants, 0],
-      [truncate, variants]
+      [maxModelLines, variants]
    );
    return (
       <>
