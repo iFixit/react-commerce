@@ -14,7 +14,7 @@ export const stats = new StatsD({
 });
 
 if (!STATSD_HOST) {
-   console.log("Mocking stats. Will log instead of send");
+   console.log('Mocking stats. Will log instead of send');
    setInterval(() => {
       if (!stats.mockBuffer?.length) {
          return;
@@ -27,7 +27,10 @@ if (!STATSD_HOST) {
    }, 500);
 }
 
-export function timeAsync<T>(statName: string, promiseFunc: () => Promise<T>): Promise<T> {
+export function timeAsync<T>(
+   statName: string,
+   promiseFunc: () => Promise<T>
+): Promise<T> {
    const t = Date.now();
    const result = logAsync(statName, promiseFunc);
    result.then(() => {
