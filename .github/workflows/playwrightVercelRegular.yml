@@ -44,11 +44,10 @@ jobs:
            with:
               path: ~/.cache/ms-playwright
               key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-              restore-keys: ${{ runner.os }}-playwright-
 
          - name: Install Playwright Dependencies
-           run: cd frontend && npx playwright install
            if: steps.playwright-cache.outputs.cache-hit != 'true'
+           run: cd frontend && npx playwright install
 
          - name: Run playwright tests
            run: cd frontend && pnpm playwright:run
