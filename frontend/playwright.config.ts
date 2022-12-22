@@ -51,7 +51,6 @@ const config: PlaywrightTestConfig = {
 
       /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
       trace: 'on-first-retry',
-      screenshot: 'only-on-failure',
       viewport: { width: 1400, height: 1000 },
       launchOptions: {
          slowMo: 1000,
