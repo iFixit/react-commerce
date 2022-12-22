@@ -43,3 +43,9 @@ jobs:
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
            run: cd frontend && pnpm playwright:run
+
+         - uses: actions/upload-artifact@v2
+           if: failure()
+           with:
+              name: playwright-screenshots
+              path: frontend/tests/playwright/test-results/artifacts
