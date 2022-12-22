@@ -115,7 +115,7 @@ const config: PlaywrightTestConfig = {
 
    /* Run your local dev server before starting the tests */
    webServer: {
-      cwd: '../',
+      cwd: './',
       command: 'pnpm run dev',
       port: 3000,
       timeout: 120 * 1000,
