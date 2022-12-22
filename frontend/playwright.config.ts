@@ -28,16 +28,18 @@ const config: PlaywrightTestConfig = {
    /* Retry on CI only */
    retries: process.env.CI ? 2 : 0,
    /* Opt out of parallel tests on CI. */
-   workers: process.env.CI ? 1 : undefined,
+   workers: process.env.CI ? '100%' : undefined,
    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
    reporter: [
-      [
-         'html',
-         {
-            open: 'never', // will not try to automatically open the report in the browser if test fails
-            outputFolder: 'tests/playwright/test-results/reports/',
-         },
-      ],
+      process.env.CI
+         ? ['list']
+         : [
+              'html',
+              {
+                 open: 'never', // will not try to automatically open the report in the browser if test fails
+                 outputFolder: 'tests/playwright/test-results/reports/',
+              },
+           ],
    ],
    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
    use: {
