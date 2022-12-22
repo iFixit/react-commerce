@@ -34,7 +34,7 @@ test.describe('Subscribe to newsletter', () => {
    });
 
    test('Shows confirmation when email is subscribed', async ({ page }) => {
-      await page.route('/api/2.0/cart/newsletter/subscribe', (route) =>
+      await page.route('**/api/2.0/cart/newsletter/subscribe', (route) =>
          route.fulfill({ status: 200 })
       );
 
