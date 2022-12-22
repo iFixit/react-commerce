@@ -7,6 +7,7 @@ export const interceptLogin = async (page: Page, userParams?: Object) => {
       algoliaApiKeyProduct: null,
       username: 'john',
       unique_username: 'john123',
+      privileges: [],
    };
 
    await page.route('**/api/2.0/user', (route) =>

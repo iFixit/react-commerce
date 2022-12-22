@@ -58,7 +58,7 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import type { DefaultLayoutProps } from '../getLayoutServerSideProps';
+import type { DefaultLayoutProps } from './server';
 import { CartFooter } from './Footer';
 
 export function DefaultLayout({
