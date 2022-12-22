@@ -67,3 +67,9 @@ const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
 export function isPresent(text: string | null | undefined): text is string {
    return typeof text === 'string' && text.length > 0;
 }
+
+export function filterNullableItems<I>(
+   items?: I[] | undefined | null
+): NonNullable<I>[] {
+   return (items?.filter((item) => item != null) as any) || [];
+}

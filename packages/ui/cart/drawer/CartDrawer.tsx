@@ -54,6 +54,17 @@ export function CartDrawer() {
    const cart = useCart();
    const checkout = useCheckout();
 
+   const upsellItem = React.useMemo(() => {
+      const item = cart.data?.upsellProducts[0];
+      const isAlreadyInCart =
+         item &&
+         cart.data?.lineItems.find(
+            (lineItem) => lineItem.itemcode === item.itemcode
+         );
+      if (isAlreadyInCart) return null;
+      return item;
+   }, [cart.data]);
+
    return (
       <>
          <CartDrawerTrigger
@@ -146,7 +157,7 @@ export function CartDrawer() {
                                  );
                               })}
                            </AnimatePresence>
-                           <Upsell />
+                           {upsellItem && <Upsell item={upsellItem} />}
                         </Box>
                      </ScaleFade>
                      <Collapse

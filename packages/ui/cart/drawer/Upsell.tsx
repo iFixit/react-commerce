@@ -1,54 +1,36 @@
-import {
-   Box,
-   Button,
-   Flex,
-   HStack,
-   List,
-   ListIcon,
-   ListItem,
-   Text,
-} from '@chakra-ui/react';
-import { Money } from '@ifixit/helpers';
-import { FaIcon } from '@ifixit/icons';
+import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
+import { useAddToCart } from '@ifixit/cart-sdk';
+import { UpsellProduct } from '@ifixit/cart-sdk/types';
+import { useCallback } from 'react';
+import { ProductVariantPrice, useUserPrice } from '../../commerce';
 import { CartLineItemImage } from './CartLineItemImage';
-import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
-import { ProductVariantPrice } from '../../commerce';
 
 export interface UpsellProps {
-   item?: UpsellItem;
+   item: UpsellProduct;
 }
 
-interface UpsellItem {
-   id: string; // variant id
-   title: string;
-   subtitle: string;
-   imageUrl?: string | null; // url to image
-   variantTitle: string;
-   valuePropositions: string[];
-   price: Money;
-   compareAtPrice?: Money | null;
-   proPricesByTier?: Record<string, Money> | null;
-}
+export function Upsell({ item }: UpsellProps) {
+   const addToCart = useAddToCart();
+   const userPrice = useUserPrice({
+      price: item.price,
+      compareAtPrice: item.compareAtPrice,
+      proPricesByTier: item.proPricesByTier,
+   });
+   const handleAddToCart = useCallback(() => {
+      addToCart.mutate({
+         type: 'product',
+         product: {
+            name: item.name,
+            itemcode: item.itemcode,
+            shopifyVariantId: item.shopifyVariantId,
+            quantity: 1,
+            imageSrc: item.imageSrc,
+            price: userPrice.price,
+            compareAtPrice: userPrice.compareAtPrice,
+         },
+      });
+   }, [userPrice.price, userPrice.compareAtPrice, item]);
 
-const mockItem: UpsellItem = {
-   id: '123',
-   title: 'Anti-clamp is the safest way to open glued devices',
-   subtitle: 'Add the product below to your order',
-   imageUrl: null,
-   variantTitle: 'Anti-clamp',
-   valuePropositions: [
-      'Precision tool for separating screens',
-      'Opposed suction cups help open any screen',
-   ],
-   price: {
-      amount: 100,
-      currencyCode: 'USD',
-   },
-   compareAtPrice: null,
-   proPricesByTier: null,
-};
-
-export function Upsell({ item = mockItem }: UpsellProps) {
    return (
       <Box p="3">
          <Box
@@ -61,40 +43,24 @@ export function Upsell({ item = mockItem }: UpsellProps) {
             borderStyle="solid"
          >
             <Text color="brand.500" fontWeight="semibold">
-               {item.title}
+               {item.marketingTitle ?? item.name}
             </Text>
-            <Text color="brand.500">{item.subtitle}</Text>
-            <HStack mt="3" align="flex-start" spacing="3">
-               <CartLineItemImage src={item.imageUrl} alt={item.variantTitle} />
-               <Box py="1">
-                  <Text fontWeight="semibold">{item.variantTitle}</Text>
-                  <List spacing="2.5" fontSize="sm" mt="1.5" lineHeight="short">
-                     {item.valuePropositions.map((valueProposition, index) => {
-                        return (
-                           <ListItem
-                              key={index}
-                              display="flex"
-                              alignItems="center"
-                           >
-                              <ListIcon
-                                 as={FaIcon}
-                                 h="4"
-                                 w="5"
-                                 mr="1.5"
-                                 color="brand.500"
-                                 icon={faCircleCheck}
-                              />
-                              {valueProposition}
-                           </ListItem>
-                        );
-                     })}
-                  </List>
-               </Box>
+            <Text color="brand.500">Add the product below to your order</Text>
+            <HStack mt="3" align="center" spacing="3">
+               <CartLineItemImage src={item.imageSrc} alt={item.name} />
+               <Text fontSize="sm">{item.marketingBlurb}</Text>
             </HStack>
             <Flex mt="2" justify="flex-end">
-               <ProductVariantPrice price={item.price} size="small" />
+               <ProductVariantPrice
+                  price={item.price}
+                  compareAtPrice={item.compareAtPrice}
+                  proPricesByTier={item.proPricesByTier}
+                  size="small"
+               />
             </Flex>
             <Button
+               isLoading={addToCart.isLoading}
+               onClick={handleAddToCart}
                w="full"
                colorScheme="brand"
                mt="3"

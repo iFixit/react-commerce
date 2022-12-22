@@ -17,6 +17,7 @@ export function CartLineItemImage({ src, alt }: CartLineItemImageProps) {
          borderWidth="1px"
          borderRadius="md"
          overflow="hidden"
+         flexShrink={0}
       >
          {src ? (
             <ResponsiveImage
