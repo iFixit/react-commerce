@@ -42,11 +42,12 @@ const config: PlaywrightTestConfig = {
            ],
    ],
    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+   globalSetup: require.resolve('./global-setup'),
    use: {
       /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
       actionTimeout: 0,
       /* Base URL to use in actions like `await page.goto('/')`. */
-      baseURL: 'http://localhost:3000',
+      baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
 
       /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
       trace: 'on-first-retry',
@@ -117,7 +118,10 @@ const config: PlaywrightTestConfig = {
    webServer: {
       cwd: './',
       command: 'pnpm run dev',
-      port: 3000,
+      // command: process.env.CI ? '(pnpm run build && pnpm start &)' : 'pnpm run dev',
+      url: process.env.PLAYWRIGHT_TEST_BASE_URL
+         ? `${process.env.PLAYWRIGHT_TEST_BASE_URL}/Tools`
+         : 'http://127.0.0.1:3000',
       timeout: 120 * 1000,
       /* Reuse the same server if on local dev */
       reuseExistingServer: !process.env.CI,
