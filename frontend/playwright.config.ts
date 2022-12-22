@@ -118,10 +118,11 @@ const config: PlaywrightTestConfig = {
    webServer: {
       cwd: './',
       command: 'pnpm run dev',
+      port: 3000,
       // command: process.env.CI ? '(pnpm run build && pnpm start &)' : 'pnpm run dev',
-      url: process.env.PLAYWRIGHT_TEST_BASE_URL
-         ? `${process.env.PLAYWRIGHT_TEST_BASE_URL}/Tools`
-         : 'http://127.0.0.1:3000',
+      // url: process.env.PLAYWRIGHT_TEST_BASE_URL
+      //    ? `${process.env.PLAYWRIGHT_TEST_BASE_URL}/Tools`
+      //    : 'http://127.0.0.1:3000',
       timeout: 120 * 1000,
       /* Reuse the same server if on local dev */
       reuseExistingServer: !process.env.CI,
