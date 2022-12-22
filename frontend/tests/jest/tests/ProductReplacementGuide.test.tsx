@@ -1,9 +1,5 @@
 import { screen } from '@testing-library/react';
-import {
-   renderWithAppContext,
-   getMockProduct,
-   getProductOfType,
-} from '../utils';
+import { renderWithAppContext, getMockProduct } from '../utils';
 import { ReplacementGuidesSection } from '@templates/product/sections/ReplacementGuidesSection';
 
 describe('Product Replacement Guides Section Tests', () => {
@@ -33,7 +29,7 @@ describe('Product Replacement Guides Section Tests', () => {
    test('does not render Replacement Guides Section for a product with no replacement guides', async () => {
       const { container } = renderWithAppContext(
          <ReplacementGuidesSection
-            product={getProductOfType('tool')} // The mocked tool doesn't have associated replacement guides
+            product={getMockProduct({ replacementGuides: [] })}
          />
       );
 
