@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { get } from 'lodash';
 
 export const interceptLogin = async (page: Page, userParams?: Object) => {
    const defaultUser = {
@@ -20,3 +21,24 @@ export const interceptLogin = async (page: Page, userParams?: Object) => {
       })
    );
 };
+
+/*
+ * This function is used to resolve a path in an object using dot notation.
+ * It is a way to mimic the `its` function in Cypress by using
+ * lodash's `get` function.
+ *
+ * Usage:
+ * Let's say you have the following object:
+ * const obj = {
+ *   foo: {
+ *    bar: {
+ *     baz: 'hello'
+ *   }
+ * }
+ *
+ * And you want to get the value of baz, you can use this function like so:
+ * resolvePath(obj, 'foo.bar.baz') // returns 'hello'
+ */
+export function resolvePath(obj: Object, path: string) {
+   return get(obj, path);
+}
