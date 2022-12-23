@@ -1,3 +1,4 @@
+import { waitForAlgoliaSearch } from './../utils';
 import { test, expect } from '@playwright/test';
 
 const NO_SEARCH_RESULT = 'No matching products found';
@@ -14,13 +15,7 @@ test.describe('parts page search', () => {
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
       // Start listening for algolia search request
-      const queryResponse = page.waitForResponse((response) => {
-         return (
-            response.url().includes('algolia') &&
-            response.url().includes('queries?') &&
-            response.status() === 200
-         );
-      });
+      const queryResponse = waitForAlgoliaSearch(page);
 
       await page.getByTestId('collections-search-box').fill('iphone');
 
@@ -49,13 +44,7 @@ test.describe('parts page search', () => {
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
       // Start listening for algolia search request
-      const queryResponse = page.waitForResponse((response) => {
-         return (
-            response.url().includes('algolia') &&
-            response.url().includes('queries?') &&
-            response.status() === 200
-         );
-      });
+      const queryResponse = waitForAlgoliaSearch(page);
 
       await page.getByTestId('collections-search-box').fill('asdasasdadasd');
 
