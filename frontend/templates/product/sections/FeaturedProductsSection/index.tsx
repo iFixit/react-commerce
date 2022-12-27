@@ -8,7 +8,6 @@ import {
    LinkBox,
    LinkOverlay,
    SimpleGrid,
-   Text,
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
 import { getProductPath } from '@helpers/product-helpers';
@@ -20,11 +19,11 @@ import {
    Money,
 } from '@ifixit/helpers';
 import {
-   ResponsiveImage,
    PageContentWrapper,
    ProductVariantPrice,
+   ResponsiveImage,
 } from '@ifixit/ui';
-import { Product } from '@models/product';
+import type { Product } from '@models/product.server';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
 import * as React from 'react';

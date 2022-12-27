@@ -1,22 +1,18 @@
-import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { AppProviders } from '@components/common';
-import {
-   Product,
-   ProductVariant,
-   ProductReview,
-   ProductReviewData,
-} from '@models/product';
+import { CurrencyCode } from '@lib/shopify-storefront-sdk';
+import { ProductReview, ProductReviewData } from '@models/product';
+import { ProductSearchHit } from '@models/product-list';
+import type { Product, ProductVariant } from '@models/product.server';
+import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import {
    mockedBatteryProduct,
    mockedPartProduct,
    mockedProduct,
    mockedProductSearchHit,
    mockedProductVariant,
-   mockedToolProduct,
    mockedReviews,
+   mockedToolProduct,
 } from './__mocks__/products';
-import { ProductSearchHit } from '@models/product-list';
-import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 
 /* This is needed if there is some code that uses a method which is not available in the jsdom environment yet
  * https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
@@ -83,8 +79,8 @@ export const getMockProductSearchHit = (
  * first variant in the variants array from the returned product.
  */
 export const getDiscountedProduct = (
-   originalPrice: number = 49.99,
-   discountPercentage: number = 10
+   originalPrice = 49.99,
+   discountPercentage = 10
 ) => {
    const discountedPrice =
       originalPrice - originalPrice * (discountPercentage / 100);
@@ -108,7 +104,7 @@ export const getDiscountedProduct = (
    return product;
 };
 
-export const getNonDiscountedProduct = (originalPrice: number = 49.99) => {
+export const getNonDiscountedProduct = (originalPrice = 49.99) => {
    const product = getMockProduct({
       variants: [
          getMockProductVariant({

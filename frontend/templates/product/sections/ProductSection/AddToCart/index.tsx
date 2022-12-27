@@ -19,7 +19,7 @@ import {
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { useCartDrawer, useUserPrice } from '@ifixit/ui';
-import { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@models/product.server';
 import * as React from 'react';
 import { NotifyMeForm } from './NotifyMeForm';
 

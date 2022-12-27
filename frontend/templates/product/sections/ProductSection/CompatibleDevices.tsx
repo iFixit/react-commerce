@@ -1,7 +1,7 @@
-import { Product } from '@models/product';
-import NextLink from 'next/link';
-import { CompatibleDevice } from '@components/common';
 import { chakra, Link } from '@chakra-ui/react';
+import { CompatibleDevice } from '@components/common';
+import type { Product } from '@models/product.server';
+import NextLink from 'next/link';
 
 export type CompatibleDevicesProps = {
    product: Product;

@@ -3,7 +3,7 @@ import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { PageContentWrapper } from '@ifixit/ui';
-import { ProductVariant } from '@models/product';
+import type { ProductVariant } from '@models/product.server';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
 import Image from 'next/image';
 

@@ -11,7 +11,7 @@ import {
    Vive,
 } from '@assets/svg/partners';
 import { Flex, Link, Text, useTheme } from '@chakra-ui/react';
-import { Product } from '@models/product';
+import type { Product } from '@models/product.server';
 import React from 'react';
 
 export type GenuinePartBannerProps = {

@@ -21,8 +21,8 @@ import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';
-import { Product, ProductReview } from '@models/product';
-import { ProductVariant } from '@models/product';
+import type { ProductReview } from '@models/product';
+import type { Product, ProductVariant } from '@models/product.server';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
 import React from 'react';
 
