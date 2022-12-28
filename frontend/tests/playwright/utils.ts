@@ -22,6 +22,15 @@ export const interceptLogin = async (page: Page, userParams?: Object) => {
    );
 };
 
+export const waitForAlgoliaSearch = async (page: Page) => {
+   return page.waitForResponse(async (response) => {
+      return (
+         response.url().includes('1/indexes/*/queries') &&
+         response.status() === 200
+      );
+   });
+};
+
 /*
  * This function is used to resolve a path in an object using dot notation.
  * It is a way to mimic the `its` function in Cypress by using

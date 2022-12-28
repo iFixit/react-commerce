@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { resolvePath } from '../utils';
+import { waitForAlgoliaSearch, resolvePath } from '../utils';
 
 test.describe('product list filters', () => {
    test.beforeEach(async ({ page }) => {
@@ -25,13 +25,7 @@ test.describe('product list filters', () => {
       await firstCollapsedAccordionItem.click();
 
       // Define a Promise to wait for the search to be triggered and let the UI update.
-      const queryResponse = page.waitForResponse(async (response) => {
-         return (
-            response.url().includes('algolia') &&
-            response.url().includes('queries?') &&
-            response.status() === 200
-         );
-      });
+      const queryResponse = waitForAlgoliaSearch(page);
 
       // Click the first facet item
       const firstFacetOption = await firstCollapsedAccordionItem.$(
