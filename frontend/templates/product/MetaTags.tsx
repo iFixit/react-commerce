@@ -120,7 +120,10 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                      '@type': 'ListItem',
                      position: index + 1,
                      name: item.label,
-                     item: `${appContext.ifixitOrigin}${item.url}`,
+                     item:
+                        item.url && item.url !== '#'
+                           ? `${appContext.ifixitOrigin}${item.url}`
+                           : undefined,
                   })) || undefined,
             })}
          />
