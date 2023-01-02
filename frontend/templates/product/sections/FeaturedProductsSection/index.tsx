@@ -57,7 +57,7 @@ export function FeaturedProductsSection({
                }}
                spacing="1px"
                bg="gray.200"
-               borderTopWidth="1px"
+               borderWidth="1px"
                borderColor="gray.200"
             >
                {product.featuredProductVariants.map((variant) => {
