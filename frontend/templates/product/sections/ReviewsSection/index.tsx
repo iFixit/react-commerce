@@ -221,7 +221,12 @@ type ProductReviewLineItemProps = {
 };
 function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
    return (
-      <Box py="6" borderBottomWidth="1px" borderColor="gray.200">
+      <Box
+         py="6"
+         borderBottomWidth="1px"
+         borderColor="gray.200"
+         data-testid="product-review-line-item"
+      >
          {review.author && (
             <HStack>
                <Avatar
