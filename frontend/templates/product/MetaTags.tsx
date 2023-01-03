@@ -135,7 +135,9 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                name: metaTitle || undefined,
                url: selectedVariantUrl,
                aggregateRating:
-                  product.rating && product.reviewsCount
+                  product.rating?.value &&
+                  product.reviewsCount &&
+                  (product.rating.value >= 4 || product.reviewsCount > 10)
                      ? {
                           '@type': 'AggregateRating',
                           ratingValue: product.rating.value,
