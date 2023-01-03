@@ -16,7 +16,7 @@ import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
-import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
+import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export interface HeroSectionProps {
    productList: ProductList;

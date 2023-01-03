@@ -38,7 +38,7 @@ import { Pagination } from './Pagination';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
-import { useDevicePartsItemType } from './useDevicePartsItemType';
+import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
