@@ -102,20 +102,18 @@ export function MetaTags({ productList }: MetaTagsProps) {
             {...jsonLdScriptProps<SchemaBreadcrumbList>({
                '@context': 'https://schema.org',
                '@type': 'BreadcrumbList',
-               itemListElement: completeBreadcrumb?.map(
-                  (item, index) =>
-                     ({
-                        '@type': 'ListItem',
-                        position: index + 1,
-                        name: item.title,
-                        item:
-                           item.handle && item.handle !== '#'
-                              ? `${appContext.ifixitOrigin}${productListPath(
-                                   item
-                                )}`
-                              : undefined,
-                     } || undefined)
-               ),
+               itemListElement:
+                  completeBreadcrumb?.map((item, index) => ({
+                     '@type': 'ListItem',
+                     position: index + 1,
+                     name: item.title,
+                     item:
+                        item.handle && item.handle !== '#'
+                           ? `${appContext.ifixitOrigin}${productListPath(
+                                item
+                             )}`
+                           : undefined,
+                  })) || undefined,
             })}
          />
       </Head>
