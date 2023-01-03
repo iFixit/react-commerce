@@ -22,6 +22,7 @@
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
       "playwright:run": "playwright test",
+      "playwright:debug": "DEBUG=pw:api playwright test --project=chromium --debug",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {
