@@ -25,7 +25,7 @@ describe('Product page test', () => {
          .should('be.visible')
          .invoke('text')
          .then((originalPriceString) => {
-            // regex to match $299.99 with dollar sign 
+            // regex to match $299.99 with dollar sign
             expect(originalPriceString).to.match(/\$\d*\.\d*/g);
          });
    });
