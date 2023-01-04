@@ -3,8 +3,16 @@ import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 
 export const handlers: RequestHandler[] = [
    graphql.query('findProduct', async (req, res, ctx) => {
-      if (req.variables.handle === 'caig-electronic-cleaner') {
+      if (req.variables.handle === 'caig-electronic-cleaner-low-stocked') {
          return res(ctx.data(mockedProductQuery));
+      } else if (
+         req.variables.handle === 'caig-electronic-cleaner-out-of-stock'
+      ) {
+         const outOfStockProduct = { ...mockedProductQuery };
+         if (outOfStockProduct.product) {
+            outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
+         }
+         return res(ctx.data(outOfStockProduct));
       } else {
          // Perform an original request to the intercepted request URL
          const originalResponse = await ctx.fetch(req);

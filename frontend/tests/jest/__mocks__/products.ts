@@ -3665,7 +3665,7 @@ export const mockedProductQuery: FindProductQuery = {
                id: 'gid://shopify/ProductVariant/40035028402266',
                title: 'New',
                sku: 'IF317-100-1',
-               quantityAvailable: 7,
+               quantityAvailable: 3,
                image: {
                   id: 'gid://shopify/ProductImage/31648513065050',
                   altText: 'IF317-100-1',
