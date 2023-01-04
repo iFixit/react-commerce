@@ -93,6 +93,13 @@ test.describe.serial('product page add to cart', () => {
          await page.goto(
             '/products/iphone-6s-plus-replacement-battery-low-stocked'
          );
+
+         const firstOptionSku = await page
+            .getByTestId('product-sku')
+            .textContent();
+         const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
+         expect(sku1).not.toEqual('');
+
          await expect(
             page.getByTestId('product-inventory-message')
          ).toBeVisible();
@@ -128,11 +135,47 @@ test.describe.serial('product page add to cart', () => {
             page.getByTestId('product-add-to-cart-button')
          ).toBeDisabled();
 
-         await page.getByTestId('cart-drawer-open').click();
-         await page.getByTestId('cart-drawer-decrease-quantity').click();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+         await page.getByText('Part Only').first().click();
+         const secondOptionSku = await page
+            .getByTestId('product-sku')
+            .textContent();
+         const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
+         expect(sku2).not.toEqual('');
+         await expect(
+            page.getByTestId('product-add-to-cart-button')
+         ).toBeVisible();
+         await expect(
+            page.getByTestId('product-inventory-message')
+         ).not.toBeVisible();
+         await page.getByTestId('product-add-to-cart-button').click();
+
+         await expect(
+            page
+               .getByRole('listitem')
+               .filter({ hasText: sku2 })
+               .getByTestId('cart-drawer-quantity')
+         ).toHaveText('1');
+         await expect(
+            page
+               .getByRole('listitem')
+               .filter({ hasText: sku1 })
+               .getByTestId('cart-drawer-quantity')
+         ).toHaveText('3');
+
+         await page
+            .getByRole('listitem')
+            .filter({ hasText: sku1 })
+            .getByTestId('cart-drawer-decrease-quantity')
+            .click();
+         await expect(
+            page
+               .getByRole('listitem')
+               .filter({ hasText: sku1 })
+               .getByTestId('cart-drawer-quantity')
+         ).toHaveText('2');
 
          await page.getByTestId('cart-drawer-close').click();
+         await page.getByText('Fix Kit').nth(1).click();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'Only 1 left'
          );
