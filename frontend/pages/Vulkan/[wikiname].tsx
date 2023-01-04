@@ -1,3 +1,3 @@
 export { default } from '@templates/vulkan';
 
-export { getServerSideProps } from '@templates/page/server';
+export { getServerSideProps } from '@templates/vulkan/server';
