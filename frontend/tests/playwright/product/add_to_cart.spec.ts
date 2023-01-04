@@ -189,6 +189,16 @@ test.describe.serial('product page add to cart', () => {
       });
 
       test('Out of stock product cannot be added to cart', async ({ page }) => {
+         await page.route(
+            '/api/2.0/cart/product/notifyWhenSkuInStock',
+            (route) => {
+               route.fulfill({
+                  status: 200,
+                  body: '',
+               });
+            }
+         );
+
          await page.goto(
             '/products/iphone-6s-plus-replacement-battery-out-of-stock'
          );
