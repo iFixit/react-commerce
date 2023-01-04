@@ -11,10 +11,11 @@ test.describe.serial('product page add to cart', () => {
             });
          }
       );
-      await page.goto('/products/spudger-retail-3-pack');
    });
 
    test('Clicking Add To Cart Adds Items To Cart', async ({ page }) => {
+      await page.goto('/products/spudger-retail-3-pack');
+
       for (let i = 1; i <= 5; i++) {
          await page.getByTestId('product-add-to-cart-button').click();
          const quantity = page.getByTestId('cart-drawer-quantity');
@@ -29,6 +30,8 @@ test.describe.serial('product page add to cart', () => {
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
       page,
    }) => {
+      await page.goto('/products/spudger-retail-3-pack');
+
       await page.getByTestId('product-add-to-cart-button').click();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
 
@@ -56,6 +59,8 @@ test.describe.serial('product page add to cart', () => {
    });
 
    test('Item Can Be Added Again After Removing The Item', async ({ page }) => {
+      await page.goto('/products/spudger-retail-3-pack');
+
       await page.getByTestId('product-add-to-cart-button').click();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
       await page.getByTestId('cart-drawer-remove-item').click();
@@ -67,6 +72,8 @@ test.describe.serial('product page add to cart', () => {
    });
 
    test('Back to Shopping Button Works', async ({ page }) => {
+      await page.goto('/products/spudger-retail-3-pack');
+
       await page.getByTestId('cart-drawer-open').click();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
