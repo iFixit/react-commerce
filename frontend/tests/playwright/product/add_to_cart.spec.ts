@@ -92,6 +92,7 @@ test.describe('product page add to cart', () => {
 test.describe('Product Stock Levels', () => {
    test('Low stocked product changes quantity', async ({ page }) => {
       await page.goto('/products/caig-electronic-cleaner-low-stocked');
+      await expect(page.getByTestId('product-inventory-message')).toBeVisible();
       await expect(page.getByTestId('product-inventory-message')).toHaveText(
          'Only 3 left'
       );
