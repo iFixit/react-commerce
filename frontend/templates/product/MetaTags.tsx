@@ -70,6 +70,8 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
          ? 'https://schema.org/InStock'
          : 'https://schema.org/OutOfStock';
 
+   const shouldNoIndex = !product.isEnabled;
+
    return (
       <Head>
          {metaTitle && (
@@ -87,7 +89,11 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
 
          <meta property="og:type" content="website" />
 
-         <link rel="canonical" href={canonicalUrl} />
+         {shouldNoIndex ? (
+            <meta name="robots" content="noindex,nofollow" />
+         ) : (
+            <link rel="canonical" href={canonicalUrl} />
+         )}
          <meta property="og:url" content={canonicalUrl} />
 
          {product.enabledDomains?.flatMap((store) => {

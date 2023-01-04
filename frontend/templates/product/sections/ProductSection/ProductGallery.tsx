@@ -189,8 +189,8 @@ export function ProductGallery({
 
 function useVariantImages(product: Product, variantId: string) {
    return React.useMemo(() => {
-      return product.images.filter((image) => {
-         const linkedVariant = product.variants.find(
+      return product.allImages.filter((image) => {
+         const linkedVariant = product.allVariants.find(
             (variant) => variant.id === image.variantId
          );
          return linkedVariant == null || linkedVariant.id === variantId;
