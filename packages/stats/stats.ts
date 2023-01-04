@@ -33,10 +33,5 @@ export function timeAsync<T>(
    statName: string,
    promiseFunc: () => Promise<T>
 ): Promise<T> {
-   const t = Date.now();
-   const result = logAsync(statName, promiseFunc);
-   result.then(() => {
-      stats.distribution(statName, (Date.now() - t) / 1e3);
-   });
-   return result;
+   return stats.asyncTimer(promiseFunc, statName)();
 }
