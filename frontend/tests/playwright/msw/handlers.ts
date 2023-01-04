@@ -1,5 +1,6 @@
 import { RequestHandler, graphql } from 'msw';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
+import { cloneDeep } from 'lodash';
 
 export const handlers: RequestHandler[] = [
    graphql.query('findProduct', async (req, res, ctx) => {
@@ -12,7 +13,7 @@ export const handlers: RequestHandler[] = [
          req.variables.handle ===
          'iphone-6s-plus-replacement-battery-out-of-stock'
       ) {
-         const outOfStockProduct = { ...mockedProductQuery };
+         const outOfStockProduct = cloneDeep(mockedProductQuery);
          if (outOfStockProduct.product) {
             outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
          }
