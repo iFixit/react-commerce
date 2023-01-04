@@ -1,7 +1,16 @@
 import { useRouter } from 'next/router';
+import { DefaultLayout } from '@layouts/default';
+import { DefaultLayoutProps } from '@layouts/default/server';
 
-export default function Wiki() {
-   // fetch param from dynamic next route
+const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
    const { wikiname } = useRouter().query;
    return <div>Wiki {wikiname}</div>;
-}
+};
+
+Wiki.getLayout = function getLayout(page, pageProps) {
+   return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
+};
+
+export default Wiki;
+
+export { getServerSideProps } from '@templates/page/server';
