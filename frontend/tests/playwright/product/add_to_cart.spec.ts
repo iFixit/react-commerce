@@ -90,7 +90,7 @@ test.describe.serial('product page add to cart', () => {
 
    test.describe('Product Stock Levels', () => {
       test('Low stocked product changes quantity', async ({ page }) => {
-         await page.goto('/products/caig-electronic-cleaner-low-stocked');
+         await page.goto('/products/iphone-6s-plus-replacement-battery-low-stocked');
          await expect(
             page.getByTestId('product-inventory-message')
          ).toBeVisible();
@@ -137,7 +137,7 @@ test.describe.serial('product page add to cart', () => {
       });
 
       test('Out of stock product cannot be added to cart', async ({ page }) => {
-         await page.goto('/products/caig-electronic-cleaner-out-of-stock');
+         await page.goto('/products/iphone-6s-plus-replacement-battery-out-of-stock');
          await expect(
             page.getByTestId('product-add-to-cart-button')
          ).not.toBeVisible();

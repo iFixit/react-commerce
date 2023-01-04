@@ -3299,26 +3299,55 @@ export const mockedReviews: ProductReview[] = [
 
 export const mockedProductQuery: FindProductQuery = {
    product: {
-      id: 'gid://shopify/Product/6766499168346',
-      title: 'CAIG Electronic Cleaner',
-      handle: 'caig-electronic-cleaner',
+      id: 'gid://shopify/Product/4562303156314',
+      title: 'iPhone 6s Plus Battery',
+      handle: 'iphone-6s-plus-replacement-battery',
       descriptionHtml:
-         '<p>Heavily soiled electronics can be difficult and time consuming to clean. CAIG Labs Electronic Cleaner makes cutting through dirt, dust, and oil an easy task. This cleaner and degreaser is safe on most plastics, non-corrosive and fast drying, perfect for machinery and electronic equipment.</p>',
-      tags: ['Condition:New', 'Dangerous', 'Tool'],
-      rating: null,
+         '<p>This replacement battery is what you need to bring that dead smartphone back to life.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li></ul>',
+      tags: [
+         'Apple Device=iPhone',
+         'BATTERY',
+         'Condition:New',
+         'Device Brand:Apple',
+         'Device Category:Phone',
+         'Device Manufacturer=Apple',
+         'Device Type:iPhone',
+         'Device Type=Smartphones',
+         'Item Type:Batteries',
+         'Main Category=Parts',
+         'Model Number=A1634',
+         'Model Number=A1687',
+         'Model=iPhone 6s Plus',
+         'OS:iOS',
+         'Part',
+         'Part or Kit:Fix Kit',
+         'Part or Kit:Part Only',
+         'Spare Part=Batteries',
+         'Version=iPhone Repair Kits',
+         'worksin:1059',
+      ],
+      rating: {
+         value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
+      },
       reviewsCount: {
-         value: '0',
+         value: '231',
       },
       breadcrumbs: {
-         value: '[{"label":"Home","url":"/Store"},{"label":"Tools","url":"/Tools"}]',
+         value: '[{"label":"Home","url":"/Store"},{"label":"Parts","url":"/Parts"},{"label":"Electronics","url":"/Parts/Electronics"},{"label":"iPhone","url":"/Parts/iPhone"},{"label":"iPhone 6s Plus","url":"/Parts/iPhone_6s_Plus"}]',
       },
       faqs: null,
-      prop65WarningType: null,
-      prop65Chemicals: {
-         value: 'none',
+      prop65WarningType: {
+         value: 'cancer and birth defects or other reproductive harm',
       },
-      productVideos: null,
-      replacementGuides: null,
+      prop65Chemicals: {
+         value: 'lead',
+      },
+      productVideos: {
+         value: 'https://www.youtube-nocookie.com/embed/4Kskal4s1sU?wmode=opaque',
+      },
+      replacementGuides: {
+         value: '[{"title":"iPhone 6s Plus Battery Replacement","guide_url":"/Guide/iPhone+6s+Plus+Battery+Replacement/51380","image_url":"https://mmcelvain.cominor.com/igi/LVQpdSdCEY1YxPkM.thumbnail","summary":"Use this guide to bring life back to your...","difficulty":"Moderate","time_required":"15 - 45 minutes"}]',
+      },
       featuredProductVariants: {
          references: {
             nodes: [
@@ -3620,86 +3649,300 @@ export const mockedProductQuery: FindProductQuery = {
                      value: 'true',
                   },
                },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965719359578',
+                  sku: 'IF315-001-10',
+                  quantityAvailable: 24,
+                  product: {
+                     handle:
+                        'iphone-6s-plus-lightning-connector-and-headphone-jack',
+                     title: 'iPhone 6s Plus Lightning Connector and Headphone Jack',
+                     tags: [
+                        'Apple Device=iPhone',
+                        'Condition:New',
+                        'Condition:Used',
+                        'Device Brand:Apple',
+                        'Device Category:Phone',
+                        'Device Manufacturer=Apple',
+                        'Device Type:iPhone',
+                        'Device Type=Smartphones',
+                        'Item Type:Cables',
+                        'Item Type:Headphone Jacks',
+                        'Main Category=Parts',
+                        'Model Number=A1634',
+                        'Model Number=A1687',
+                        'Model=iPhone 6s Plus',
+                        'OS:iOS',
+                        'Part',
+                        'Part or Kit:Fix Kit',
+                        'Part or Kit:Part Only',
+                        'Spare Part=Cables',
+                        'Spare Part=Ports',
+                        'Version=iPhone Repair Kits',
+                        'worksin:1059',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
+                     },
+                     reviewsCount: {
+                        value: '26',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/30908225880154',
+                     altText: 'IF315-001-10',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/YxAoEm2PB226SQqA.jpg?v=1642621510',
+                  },
+                  price: {
+                     amount: '29.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: null,
+                  proPricesByTier: {
+                     value: '{"pro_1":29.99,"pro_2":29.99,"pro_3":29.99,"pro_4":29.99}',
+                  },
+                  warranty: {
+                     value: 'Lifetime Guarantee',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965718147162',
+                  sku: 'IF315-007-10',
+                  quantityAvailable: 67,
+                  product: {
+                     handle: 'iphone-6s-plus-replacement-battery',
+                     title: 'iPhone 6s Plus Battery',
+                     tags: [
+                        'Apple Device=iPhone',
+                        'BATTERY',
+                        'Condition:New',
+                        'Device Brand:Apple',
+                        'Device Category:Phone',
+                        'Device Manufacturer=Apple',
+                        'Device Type:iPhone',
+                        'Device Type=Smartphones',
+                        'Item Type:Batteries',
+                        'Main Category=Parts',
+                        'Model Number=A1634',
+                        'Model Number=A1687',
+                        'Model=iPhone 6s Plus',
+                        'OS:iOS',
+                        'Part',
+                        'Part or Kit:Fix Kit',
+                        'Part or Kit:Part Only',
+                        'Spare Part=Batteries',
+                        'Version=iPhone Repair Kits',
+                        'worksin:1059',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
+                     },
+                     reviewsCount: {
+                        value: '231',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/31263941197914',
+                     altText: 'IF315-007-10',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
+                  },
+                  price: {
+                     amount: '23.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: {
+                     amount: '29.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  proPricesByTier: {
+                     value: '{"pro_1":29.99,"pro_2":29.99,"pro_3":29.99,"pro_4":29.99}',
+                  },
+                  warranty: {
+                     value: 'One year warranty',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965713363034',
+                  sku: 'IF315-038-5',
+                  quantityAvailable: 20,
+                  product: {
+                     handle: 'iphone-6s-plus-screen',
+                     title: 'iPhone 6s Plus Screen',
+                     tags: [
+                        'Apple Device=iPhone',
+                        'Condition:New',
+                        'Device Brand:Apple',
+                        'Device Category:Phone',
+                        'Device Manufacturer=Apple',
+                        'Device Type:iPhone',
+                        'Device Type=Smartphones',
+                        'Item Type:Screens',
+                        'Main Category=Parts',
+                        'Model Number=A1634',
+                        'Model Number=A1687',
+                        'Model=iPhone 6s Plus',
+                        'OS:iOS',
+                        'Part',
+                        'Part or Kit:Fix Kit',
+                        'Part or Kit:Part Only',
+                        'Spare Part=Screens',
+                        'Version=iPhone Repair Kits',
+                        'worksin:1059',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
+                     },
+                     reviewsCount: {
+                        value: '116',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/31268982063194',
+                     altText: 'IF315-038-5',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/uvAlGKEBunYYDr3d_64fffe8c-26c4-4ece-ba71-9ee691281f23.jpg?v=1656622264',
+                  },
+                  price: {
+                     amount: '64.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: null,
+                  proPricesByTier: {
+                     value: '{"pro_1":64.99,"pro_2":64.99,"pro_3":64.99,"pro_4":64.99}',
+                  },
+                  warranty: {
+                     value: 'Lifetime Guarantee',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
             ],
          },
       },
-      compatibility: null,
+      compatibility: {
+         value: '{"devices":[{"imageUrl":"https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail","deviceUrl":"/Device/iPhone_6s_Plus","deviceName":"iPhone 6s Plus","variants":["A1634 US AT&T Locked or SIM Free","A1687 US Sprint/Verizon and Global","A1699 Mainland China"]}],"hasMoreDevices":false}',
+      },
       metaTitle: {
-         value: 'CAIG Electronic Cleaner',
+         value: 'iPhone 6s Plus Battery: Replacement Part / Repair Kit',
       },
       shortDescription: {
-         value: 'CAIG Labs Electronic Cleaner makes cutting through dirt, dust, and oil an easy task.',
+         value: 'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',
       },
       oemPartnership: null,
       featuredImage: {
-         id: 'gid://shopify/ProductImage/31648513065050',
+         id: 'gid://shopify/ProductImage/31263941197914',
       },
       images: {
          nodes: [
             {
-               id: 'gid://shopify/ProductImage/31648513065050',
-               altText: 'IF317-100-1',
+               id: 'gid://shopify/ProductImage/31263941197914',
+               altText: 'IF315-007-10',
                height: 2000,
                width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/TbkOf1Sqi3UVSkrm.jpg?v=1667587346',
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
             },
             {
-               id: 'gid://shopify/ProductImage/31648513097818',
-               altText: 'IF317-100-1',
+               id: 'gid://shopify/ProductImage/31263941230682',
+               altText: 'IF315-007-9',
                height: 2000,
                width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/HyIWEcMqGkt2DWYs.jpg?v=1667587346',
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/RIvaaHOkDZJTBCBM_6b73f13e-f9b2-4eee-887f-b699cfb66f29.jpg?v=1656545132',
+            },
+            {
+               id: 'gid://shopify/ProductImage/31263941263450',
+               altText: 'IF315-007-9',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Z1Bdx4Xp52FOXtG2_e21190de-41a3-4952-9df0-f1630410dbae.jpg?v=1656545132',
             },
          ],
       },
       options: [
          {
-            id: 'gid://shopify/ProductOption/8699727052890',
+            id: 'gid://shopify/ProductOption/5958025085018',
             name: 'Condition',
             values: ['New'],
+         },
+         {
+            id: 'gid://shopify/ProductOption/6267341635674',
+            name: 'Part or Kit',
+            values: ['Fix Kit', 'Part Only'],
          },
       ],
       variants: {
          nodes: [
             {
-               id: 'gid://shopify/ProductVariant/40035028402266',
-               title: 'New',
-               sku: 'IF317-100-1',
+               id: 'gid://shopify/ProductVariant/32965718147162',
+               title: 'New / Fix Kit',
+               sku: 'IF315-007-10',
                quantityAvailable: 3,
                image: {
-                  id: 'gid://shopify/ProductImage/31648513065050',
-                  altText: 'IF317-100-1',
+                  id: 'gid://shopify/ProductImage/31263941197914',
+                  altText: 'IF315-007-10',
                   height: 2000,
                   width: 2000,
-                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/TbkOf1Sqi3UVSkrm.jpg?v=1667587346',
+                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
                },
                price: {
-                  amount: '7.95',
+                  amount: '23.99',
                   currencyCode: CurrencyCode.Usd,
                },
-               compareAtPrice: null,
+               compareAtPrice: {
+                  amount: '29.99',
+                  currencyCode: CurrencyCode.Usd,
+               },
                proPricesByTier: {
-                  value: '{"pro_1":7.95,"pro_2":7.95,"pro_3":7.95,"pro_4":7.95}',
+                  value: '{"pro_1":29.99,"pro_2":29.99,"pro_3":29.99,"pro_4":29.99}',
                },
                selectedOptions: [
                   {
                      name: 'Condition',
                      value: 'New',
                   },
+                  {
+                     name: 'Part or Kit',
+                     value: 'Fix Kit',
+                  },
                ],
                description: {
-                  value: '<p>Heavily soiled electronics can be difficult and time consuming to clean. CAIG Labs Electronic Cleaner makes cutting through dirt, dust, and oil an easy task. This cleaner and degreaser is safe on most plastics, non-corrosive and fast drying, perfect for machinery and electronic equipment.</p>',
+                  value: '<p>This replacement battery is what you need to bring that dead smartphone back to life. The Fix Kit includes everything you need to swap in a new replacement battery.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li><li>Make disassembly for future repairs easier, replace your pentalobe bottom screws with the Phillips screws included in the kit.</li></ul>',
                },
-               kitContents: null,
+               kitContents: {
+                  value: '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus with Adhesive Strips Preinstalled</li><li><a href="https://mmcelvain.cominor.com/products/iphone-6s-plus-display-assembly-adhesive">iPhone 6s Plus Display Assembly Adhesive</a></li><li><a href="https://mmcelvain.cominor.com/products/spudger">Spudger</a></li><li><a href="https://mmcelvain.cominor.com/products/suction-handle">Suction Handle</a></li><li><a href="https://mmcelvain.cominor.com/products/tweezers">Tweezers / Angled / Pro / ESD</a></li><li><a href="https://mmcelvain.cominor.com/products/ifixit-opening-tool">iFixit Opening Tool</a></li><li>Replacement Phillips Bottom Screws</li><li><a href="https://mmcelvain.cominor.com/products/ifixit-precision-bit-driver">Precision Bit Driver</a></li><li><a href="https://mmcelvain.cominor.com/products/ifixit-precision-4-mm-screwdriver-bit">4 mm Precision Bits</a>:<ul><li>Phillips #000</li><li>Pentalobe P2</li><li>Tri-point Y000</li></ul></li></ul>',
+               },
                assemblyContents: null,
-               note: null,
-               disclaimer: null,
-               warning: null,
+               note: {
+                  value: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
+               },
+               disclaimer: {
+                  value: '<p>While not necessary, some fixers prefer to use additional tools to accomplish this repair: <a href="https://mmcelvain.cominor.com/products/iopener">iOpener</a> and <a href="https://mmcelvain.cominor.com/products/plastic-cards">Plastic Card</a>.</p>',
+               },
+               warning: {
+                  value: '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
+               },
                specifications: {
-                  value: "<table class='specifications'><tr><th>Part #</th><td>DDW-V611</td></tr></table>",
+                  value: "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
                },
                warranty: {
-                  value: 'Sold as-is; no refunds or returns',
+                  value: 'One year warranty',
                },
                enabled: {
                   value: 'true',
@@ -3712,34 +3955,37 @@ export const mockedProductQuery: FindProductQuery = {
                      nodes: [
                         {
                            __typename: 'ProductVariant',
-                           id: 'gid://shopify/ProductVariant/39419991457882',
-                           sku: 'IF145-284-3',
-                           quantityAvailable: 181,
+                           id: 'gid://shopify/ProductVariant/32965720473690',
+                           sku: 'IF145-257-1',
+                           quantityAvailable: 261,
                            product: {
-                              handle: 'microfiber-cleaning-cloths',
-                              title: 'Microfiber Cleaning Cloths',
+                              handle: 'anti-static-project-tray',
+                              title: 'Anti-Static Project Tray',
                               tags: [
                                  'Condition:New',
+                                 'ESD-safe:ESD-safe',
+                                 'iFixit Exclusive:iFixit Exclusive',
+                                 'Item Type:SIM',
                                  'Main Category=Tools',
                                  'Product Manufacturer=iFixit',
                                  'Tool',
-                                 'Tool Category (Legacy):Cleaning',
-                                 'Tool Type=Cleaning Tools',
+                                 'Tool Category (Legacy):ESD Safe',
+                                 'Tool Type=Organization Tools',
                               ],
                               rating: {
                                  value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
                               },
                               reviewsCount: {
-                                 value: '24',
+                                 value: '273',
                               },
                               oemPartnership: null,
                            },
                            image: {
-                              id: 'gid://shopify/ProductImage/30908817408090',
+                              id: 'gid://shopify/ProductImage/31676200616026',
                               altText: '*',
-                              height: 1440,
-                              width: 1440,
-                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/2FWdnADRCFlkK3Zv_3fbfd0ee-158d-4fc1-b287-896b352604aa.jpg?v=1642628657',
+                              height: 2000,
+                              width: 2000,
+                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/xe2tWdmD14WfKdFS_86300a0a-2151-4f54-83df-378d583824df.jpg?v=1670617187',
                            },
                            price: {
                               amount: '4.99',
@@ -3747,10 +3993,10 @@ export const mockedProductQuery: FindProductQuery = {
                            },
                            compareAtPrice: null,
                            proPricesByTier: {
-                              value: '{"pro_1":4.49,"pro_2":4.24,"pro_3":3.99,"pro_4":3.74}',
+                              value: '{"pro_1":3.99,"pro_2":3.99,"pro_3":3.99,"pro_4":3.99}',
                            },
                            warranty: {
-                              value: 'Sold as-is; no refunds or returns',
+                              value: 'Lifetime Guarantee',
                            },
                            enabled: {
                               value: 'true',
@@ -3758,39 +4004,250 @@ export const mockedProductQuery: FindProductQuery = {
                         },
                         {
                            __typename: 'ProductVariant',
-                           id: 'gid://shopify/ProductVariant/39333790810202',
-                           sku: 'IF317-084-2',
-                           quantityAvailable: 7,
+                           id: 'gid://shopify/ProductVariant/32965720178778',
+                           sku: 'IF145-307-4',
+                           quantityAvailable: 1002,
                            product: {
-                              handle: 'deoxit-connector-cleaning-kit',
-                              title: 'DeoxIT® Connector Cleaning Kit',
+                              handle: 'pro-tech-toolkit',
+                              title: 'Pro Tech Toolkit',
                               tags: [
                                  'Condition:New',
+                                 'iFixit Exclusive:iFixit Exclusive',
+                                 'Item Type:Kits',
+                                 'Item Type:SIM',
+                                 'Main Category=Tools',
+                                 'Product Manufacturer=iFixit',
+                                 'Profile=Adapter',
+                                 'Profile=Flathead',
+                                 'Profile=Gamebit',
+                                 'Profile=Hex',
+                                 'Profile=iPhone Standoff',
+                                 'Profile=JIS',
+                                 'Profile=Magnetic Pickup',
+                                 'Profile=Nut Driver',
+                                 'Profile=Oval Bit',
+                                 'Profile=Pentalobe',
+                                 'Profile=Phillips',
+                                 'Profile=SIM Eject',
+                                 'Profile=Spanner',
+                                 'Profile=Square',
+                                 'Profile=Torx',
+                                 'Profile=Torx Security',
+                                 'Profile=Tri-point',
+                                 'Profile=Triangle',
+                                 'Screwdriver Type:Interchangeable Bits',
                                  'Tool',
-                                 'Tool Category (Legacy):Cleaning',
+                                 'Tool Category (Legacy):Drivers & Wrenches',
+                                 'Tool Type=Toolkits',
                               ],
                               rating: {
-                                 value: '{"scale_min":"1.0","scale_max":"5.0","value":"5.0"}',
+                                 value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.9"}',
                               },
                               reviewsCount: {
-                                 value: '4',
+                                 value: '1470',
                               },
                               oemPartnership: null,
                            },
                            image: {
-                              id: 'gid://shopify/ProductImage/31648475447386',
-                              altText: 'IF317-084-2',
-                              height: 600,
-                              width: 600,
-                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/T5cV5PHCNy34SsyZ_5f2e9630-002f-416a-b41f-9e36e578d18d.jpg?v=1667586762',
+                              id: 'gid://shopify/ProductImage/31674254884954',
+                              altText: 'IF145-307-4',
+                              height: 2000,
+                              width: 2000,
+                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_1a1db931-d7d8-4bec-a8ef-739ed6bcba78.jpg?v=1670274750',
                            },
                            price: {
-                              amount: '6.99',
+                              amount: '74.99',
                               currencyCode: CurrencyCode.Usd,
                            },
                            compareAtPrice: null,
                            proPricesByTier: {
-                              value: '{"pro_1":6.29,"pro_2":5.9399999999999995,"pro_3":5.59,"pro_4":5.24}',
+                              value: '{"pro_1":59.99,"pro_2":59.99,"pro_3":59.99,"pro_4":59.99}',
+                           },
+                           warranty: {
+                              value: 'Lifetime Guarantee',
+                           },
+                           enabled: {
+                              value: 'true',
+                           },
+                        },
+                     ],
+                  },
+               },
+               internalDisplayName: {
+                  value: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
+               },
+               shippingRestrictions: {
+                  value: '["is_battery"]',
+               },
+            },
+            {
+               id: 'gid://shopify/ProductVariant/32965718179930',
+               title: 'New / Part Only',
+               sku: 'IF315-007-9',
+               quantityAvailable: 42,
+               image: {
+                  id: 'gid://shopify/ProductImage/31263941230682',
+                  altText: 'IF315-007-9',
+                  height: 2000,
+                  width: 2000,
+                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/RIvaaHOkDZJTBCBM_6b73f13e-f9b2-4eee-887f-b699cfb66f29.jpg?v=1656545132',
+               },
+               price: {
+                  amount: '24.99',
+                  currencyCode: CurrencyCode.Usd,
+               },
+               compareAtPrice: null,
+               proPricesByTier: {
+                  value: '{"pro_1":23.33,"pro_2":17.5,"pro_3":11,"pro_4":10}',
+               },
+               selectedOptions: [
+                  {
+                     name: 'Condition',
+                     value: 'New',
+                  },
+                  {
+                     name: 'Part or Kit',
+                     value: 'Part Only',
+                  },
+               ],
+               description: {
+                  value: '<p>This replacement battery is what you need to bring that dead smartphone back to life.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li></ul>',
+               },
+               kitContents: null,
+               assemblyContents: {
+                  value: '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus</li><li>Battery Adhesive Strips</li></ul>',
+               },
+               note: {
+                  value: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
+               },
+               disclaimer: null,
+               warning: {
+                  value: '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
+               },
+               specifications: {
+                  value: "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
+               },
+               warranty: {
+                  value: 'One year warranty',
+               },
+               enabled: {
+                  value: 'true',
+               },
+               disableWhenOOS: {
+                  value: 'false',
+               },
+               crossSell: {
+                  references: {
+                     nodes: [
+                        {
+                           __typename: 'ProductVariant',
+                           id: 'gid://shopify/ProductVariant/39333786746970',
+                           sku: 'IF315-038-1',
+                           quantityAvailable: 25,
+                           product: {
+                              handle: 'iphone-6s-plus-screen',
+                              title: 'iPhone 6s Plus Screen',
+                              tags: [
+                                 'Apple Device=iPhone',
+                                 'Condition:New',
+                                 'Device Brand:Apple',
+                                 'Device Category:Phone',
+                                 'Device Manufacturer=Apple',
+                                 'Device Type:iPhone',
+                                 'Device Type=Smartphones',
+                                 'Item Type:Screens',
+                                 'Main Category=Parts',
+                                 'Model Number=A1634',
+                                 'Model Number=A1687',
+                                 'Model=iPhone 6s Plus',
+                                 'OS:iOS',
+                                 'Part',
+                                 'Part or Kit:Fix Kit',
+                                 'Part or Kit:Part Only',
+                                 'Spare Part=Screens',
+                                 'Version=iPhone Repair Kits',
+                                 'worksin:1059',
+                              ],
+                              rating: {
+                                 value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
+                              },
+                              reviewsCount: {
+                                 value: '116',
+                              },
+                              oemPartnership: null,
+                           },
+                           image: {
+                              id: 'gid://shopify/ProductImage/31268982194266',
+                              altText: 'IF315-038-1',
+                              height: 2000,
+                              width: 2000,
+                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5VOJlrQqeBjCF3nF.jpg?v=1656622264',
+                           },
+                           price: {
+                              amount: '59.99',
+                              currencyCode: CurrencyCode.Usd,
+                           },
+                           compareAtPrice: null,
+                           proPricesByTier: {
+                              value: '{"pro_1":59.99,"pro_2":59.99,"pro_3":44.82,"pro_4":37.92}',
+                           },
+                           warranty: {
+                              value: 'Lifetime Guarantee',
+                           },
+                           enabled: {
+                              value: 'true',
+                           },
+                        },
+                        {
+                           __typename: 'ProductVariant',
+                           id: 'gid://shopify/ProductVariant/39333786583130',
+                           sku: 'IF315-049-2',
+                           quantityAvailable: 46,
+                           product: {
+                              handle:
+                                 'iphone-6s-plus-display-assembly-adhesive',
+                              title: 'iPhone 6s Plus Display Assembly Adhesive',
+                              tags: [
+                                 'Apple Device=iPhone',
+                                 'Condition:New',
+                                 'Device Brand:Apple',
+                                 'Device Category:Phone',
+                                 'Device Manufacturer=Apple',
+                                 'Device Type:iPhone',
+                                 'Device Type=Smartphones',
+                                 'Item Type:Adhesives',
+                                 'Main Category=Parts',
+                                 'Model Number=A1634',
+                                 'Model Number=A1687',
+                                 'Model=iPhone 6s Plus',
+                                 'OS:iOS',
+                                 'Part',
+                                 'Part or Kit:Part Only',
+                                 'Spare Part=Adhesives',
+                                 'worksin:1059',
+                              ],
+                              rating: {
+                                 value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.7"}',
+                              },
+                              reviewsCount: {
+                                 value: '30',
+                              },
+                              oemPartnership: null,
+                           },
+                           image: {
+                              id: 'gid://shopify/ProductImage/30908245409882',
+                              altText: 'IF315-049-2',
+                              height: 2000,
+                              width: 2000,
+                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/BBYFChBH3BMOwJvp_6d0c34d9-eb5f-49e8-8c43-3a443b66fa14.jpg?v=1642621670',
+                           },
+                           price: {
+                              amount: '4.99',
+                              currencyCode: CurrencyCode.Usd,
+                           },
+                           compareAtPrice: null,
+                           proPricesByTier: {
+                              value: '{"pro_1":4.49,"pro_2":3.99,"pro_3":1.5,"pro_4":0.9}',
                            },
                            warranty: {
                               value: 'Sold as-is; no refunds or returns',
@@ -3803,10 +4260,10 @@ export const mockedProductQuery: FindProductQuery = {
                   },
                },
                internalDisplayName: {
-                  value: 'CAIG Electronic Cleaner',
+                  value: 'iPhone 6s Plus Battery / Part and Adhesive',
                },
                shippingRestrictions: {
-                  value: '["is_dangerous"]',
+                  value: '["is_battery"]',
                },
             },
          ],
