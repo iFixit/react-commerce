@@ -88,3 +88,49 @@ test.describe('product page add to cart', () => {
       await expect(page.getByTestId('cart-drawer-close')).not.toBeVisible();
    });
 });
+
+test.describe('Product Stock Levels', () => {
+   test('Low stocked product changes quantity', async ({ page }) => {
+      await page.goto('/products/caig-electronic-cleaner-low-stocked');
+      await expect(page.getByTestId('product-inventory-message')).toHaveText(
+         'Only 3 left'
+      );
+      await page.getByTestId('product-add-to-cart-button').click();
+      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+
+      await page.getByTestId('cart-drawer-close').click();
+      await expect(page.getByTestId('product-inventory-message')).toHaveText(
+         'Only 2 left'
+      );
+
+      await page.getByTestId('cart-drawer-open').click();
+      await page.getByTestId('cart-drawer-increase-quantity').click();
+      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+
+      await page.getByTestId('cart-drawer-close').click();
+      await expect(page.getByTestId('product-inventory-message')).toHaveText(
+         'Only 1 left'
+      );
+
+      await page.getByTestId('cart-drawer-open').click();
+      await page.getByTestId('cart-drawer-increase-quantity').click();
+      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
+
+      await page.getByTestId('cart-drawer-close').click();
+      await expect(page.getByTestId('product-inventory-message')).toHaveText(
+         'No more items available'
+      );
+      await expect(
+         page.getByTestId('product-add-to-cart-button')
+      ).toBeDisabled();
+
+      await page.getByTestId('cart-drawer-open').click();
+      await page.getByTestId('cart-drawer-decrease-quantity').click();
+      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+
+      await page.getByTestId('cart-drawer-close').click();
+      await expect(page.getByTestId('product-inventory-message')).toHaveText(
+         'Only 1 left'
+      );
+   });
+});
