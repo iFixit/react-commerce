@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe.serial('product page add to cart', () => {
    test.beforeEach(async ({ page }) => {
       await page.route(
-         '/api/2.0/internal/international_store_promotion/buybox*',
+         '**/api/2.0/internal/international_store_promotion/buybox*',
          (route) => {
             route.fulfill({
                status: 200,
@@ -190,7 +190,7 @@ test.describe.serial('product page add to cart', () => {
 
       test('Out of stock product cannot be added to cart', async ({ page }) => {
          await page.route(
-            '/api/2.0/cart/product/notifyWhenSkuInStock',
+            '**/api/2.0/cart/product/notifyWhenSkuInStock',
             (route) => {
                route.fulfill({
                   status: 200,
