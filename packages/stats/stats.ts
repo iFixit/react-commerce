@@ -25,6 +25,8 @@ if (!STATSD_HOST) {
       });
       stats.mockBuffer = [];
    }, 500);
+} else {
+   console.log(`Sending statsd stats to ${STATSD_HOST}`);
 }
 
 export function timeAsync<T>(
