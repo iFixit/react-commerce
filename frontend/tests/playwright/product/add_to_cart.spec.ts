@@ -133,4 +133,28 @@ test.describe('Product Stock Levels', () => {
          'Only 1 left'
       );
    });
+
+   test('Out of stock product cannot be added to cart', async ({ page }) => {
+      await page.goto('/products/caig-electronic-cleaner-out-of-stock');
+      await expect(
+         page.getByTestId('product-add-to-cart-button')
+      ).not.toBeVisible();
+      await expect(
+         page.getByTestId('product-inventory-message')
+      ).not.toBeVisible();
+
+      const notifyMeForm = page.getByText(/this item is currently/i);
+      await expect(notifyMeForm).toBeVisible();
+      await expect(notifyMeForm).toHaveText(
+         'This item is currently Out of Stock'
+      );
+
+      await page.getByLabel('Email address').fill('test@example.com');
+      await page.getByRole('button', { name: 'Notify me' }).click();
+      await expect(
+         page.getByText(
+            'You will be notified when this product is back in stock.'
+         )
+      ).toBeVisible();
+   });
 });
