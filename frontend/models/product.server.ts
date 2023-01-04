@@ -3,10 +3,10 @@ import {
    computeDiscountPercentage,
    formatMoney,
    invariant,
-   logAsync,
    Money,
    parseItemcode,
 } from '@ifixit/helpers';
+import { timeAsync } from '@ifixit/stats';
 import {
    FindProductQuery,
    getServerShopifyStorefrontSdk,
@@ -37,7 +37,7 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       storefrontDelegateToken: storefrontDelegateAccessToken,
    });
 
-   const response = await logAsync('shopify.findProduct', () =>
+   const response = await timeAsync('shopify_api.findProduct', () =>
       storefront.findProduct({
          handle,
       })
