@@ -16,6 +16,8 @@ export const setupMocks = async () => {
     */
    if (typeof window === 'undefined') {
       const { mswServer } = await import('./server');
-      mswServer.listen({ onUnhandledRequest: 'warn' });
+      mswServer.listen({
+         onUnhandledRequest: process.env.CI ? 'bypass' : 'warn',
+      });
    }
 };
