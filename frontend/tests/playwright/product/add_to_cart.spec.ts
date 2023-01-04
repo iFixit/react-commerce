@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('product page add to cart', () => {
+test.describe.serial('product page add to cart', () => {
    test.beforeEach(async ({ page }) => {
       await page.route(
          '/api/2.0/internal/international_store_promotion/buybox*',
@@ -87,75 +87,77 @@ test.describe('product page add to cart', () => {
       ).not.toBeVisible();
       await expect(page.getByTestId('cart-drawer-close')).not.toBeVisible();
    });
-});
 
-test.describe('Product Stock Levels', () => {
-   test('Low stocked product changes quantity', async ({ page }) => {
-      await page.goto('/products/caig-electronic-cleaner-low-stocked');
-      await expect(page.getByTestId('product-inventory-message')).toBeVisible();
-      await expect(page.getByTestId('product-inventory-message')).toHaveText(
-         'Only 3 left'
-      );
-      await page.getByTestId('product-add-to-cart-button').click();
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+   test.describe('Product Stock Levels', () => {
+      test('Low stocked product changes quantity', async ({ page }) => {
+         await page.goto('/products/caig-electronic-cleaner-low-stocked');
+         await expect(
+            page.getByTestId('product-inventory-message')
+         ).toBeVisible();
+         await expect(page.getByTestId('product-inventory-message')).toHaveText(
+            'Only 3 left'
+         );
+         await page.getByTestId('product-add-to-cart-button').click();
+         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
 
-      await page.getByTestId('cart-drawer-close').click();
-      await expect(page.getByTestId('product-inventory-message')).toHaveText(
-         'Only 2 left'
-      );
+         await page.getByTestId('cart-drawer-close').click();
+         await expect(page.getByTestId('product-inventory-message')).toHaveText(
+            'Only 2 left'
+         );
 
-      await page.getByTestId('cart-drawer-open').click();
-      await page.getByTestId('cart-drawer-increase-quantity').click();
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+         await page.getByTestId('cart-drawer-open').click();
+         await page.getByTestId('cart-drawer-increase-quantity').click();
+         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
 
-      await page.getByTestId('cart-drawer-close').click();
-      await expect(page.getByTestId('product-inventory-message')).toHaveText(
-         'Only 1 left'
-      );
+         await page.getByTestId('cart-drawer-close').click();
+         await expect(page.getByTestId('product-inventory-message')).toHaveText(
+            'Only 1 left'
+         );
 
-      await page.getByTestId('cart-drawer-open').click();
-      await page.getByTestId('cart-drawer-increase-quantity').click();
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
+         await page.getByTestId('cart-drawer-open').click();
+         await page.getByTestId('cart-drawer-increase-quantity').click();
+         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
 
-      await page.getByTestId('cart-drawer-close').click();
-      await expect(page.getByTestId('product-inventory-message')).toHaveText(
-         'No more items available'
-      );
-      await expect(
-         page.getByTestId('product-add-to-cart-button')
-      ).toBeDisabled();
+         await page.getByTestId('cart-drawer-close').click();
+         await expect(page.getByTestId('product-inventory-message')).toHaveText(
+            'No more items available'
+         );
+         await expect(
+            page.getByTestId('product-add-to-cart-button')
+         ).toBeDisabled();
 
-      await page.getByTestId('cart-drawer-open').click();
-      await page.getByTestId('cart-drawer-decrease-quantity').click();
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+         await page.getByTestId('cart-drawer-open').click();
+         await page.getByTestId('cart-drawer-decrease-quantity').click();
+         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
 
-      await page.getByTestId('cart-drawer-close').click();
-      await expect(page.getByTestId('product-inventory-message')).toHaveText(
-         'Only 1 left'
-      );
-   });
+         await page.getByTestId('cart-drawer-close').click();
+         await expect(page.getByTestId('product-inventory-message')).toHaveText(
+            'Only 1 left'
+         );
+      });
 
-   test('Out of stock product cannot be added to cart', async ({ page }) => {
-      await page.goto('/products/caig-electronic-cleaner-out-of-stock');
-      await expect(
-         page.getByTestId('product-add-to-cart-button')
-      ).not.toBeVisible();
-      await expect(
-         page.getByTestId('product-inventory-message')
-      ).not.toBeVisible();
+      test('Out of stock product cannot be added to cart', async ({ page }) => {
+         await page.goto('/products/caig-electronic-cleaner-out-of-stock');
+         await expect(
+            page.getByTestId('product-add-to-cart-button')
+         ).not.toBeVisible();
+         await expect(
+            page.getByTestId('product-inventory-message')
+         ).not.toBeVisible();
 
-      const notifyMeForm = page.getByText(/this item is currently/i);
-      await expect(notifyMeForm).toBeVisible();
-      await expect(notifyMeForm).toHaveText(
-         'This item is currently Out of Stock'
-      );
+         const notifyMeForm = page.getByText(/this item is currently/i);
+         await expect(notifyMeForm).toBeVisible();
+         await expect(notifyMeForm).toHaveText(
+            'This item is currently Out of Stock'
+         );
 
-      await page.getByLabel('Email address').fill('test@example.com');
-      await page.getByRole('button', { name: 'Notify me' }).click();
-      await expect(
-         page.getByText(
-            'You will be notified when this product is back in stock.'
-         )
-      ).toBeVisible();
+         await page.getByLabel('Email address').fill('test@example.com');
+         await page.getByRole('button', { name: 'Notify me' }).click();
+         await expect(
+            page.getByText(
+               'You will be notified when this product is back in stock.'
+            )
+         ).toBeVisible();
+      });
    });
 });
