@@ -3241,7 +3241,7 @@ export const mockedReviews: ProductReview[] = [
       headline: null,
       productName: 'Precision Cleaning Kit',
       productVariantName: 'New',
-      body: undefined,
+      body: 'Amazing product',
       date: '<time   title="Wed, 26 Oct 2022 11:15:54 -0700" datetime="2022-10-26T11:15:54-07:00">Oct 26, 2022</time>',
       created_date: 1666808154,
       modified_date: 1666808154,

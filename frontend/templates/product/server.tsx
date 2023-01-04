@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
                ? new URL(store.url).origin
                : codeToDomain[store.code];
          if (domain) {
-            store.url = `${domain}/products/${product.handle}`;
+            return { ...store, url: `${domain}/products/${product.handle}` };
          }
          return store;
       });

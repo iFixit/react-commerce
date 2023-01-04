@@ -120,7 +120,10 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                      '@type': 'ListItem',
                      position: index + 1,
                      name: item.label,
-                     item: `${appContext.ifixitOrigin}${item.url}`,
+                     item:
+                        item.url && item.url !== '#'
+                           ? `${appContext.ifixitOrigin}${item.url}`
+                           : undefined,
                   })) || undefined,
             })}
          />
@@ -132,7 +135,9 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                name: metaTitle || undefined,
                url: selectedVariantUrl,
                aggregateRating:
-                  product.rating && product.reviewsCount
+                  product.rating?.value &&
+                  product.reviewsCount &&
+                  (product.rating.value >= 4 || product.reviewsCount > 10)
                      ? {
                           '@type': 'AggregateRating',
                           ratingValue: product.rating.value,

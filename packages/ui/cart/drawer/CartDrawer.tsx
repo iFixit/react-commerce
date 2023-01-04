@@ -6,7 +6,6 @@ import {
    Box,
    BoxProps,
    Button,
-   Circle,
    CloseButton,
    Collapse,
    Divider,
@@ -20,19 +19,13 @@ import {
    Flex,
    Heading,
    HStack,
-   IconButton,
    ScaleFade,
    SimpleGrid,
    Skeleton,
    Spinner,
    Text,
-   VStack,
 } from '@chakra-ui/react';
-import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
-import {
-   faCircleExclamation,
-   faShoppingCart,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { formatMoney } from '@ifixit/helpers';
@@ -40,8 +33,11 @@ import { FaIcon } from '@ifixit/icons';
 import { AnimatePresence, motion, usePresence } from 'framer-motion';
 import * as React from 'react';
 import { useIsMounted } from '../../hooks';
+import { CartDrawerTrigger } from './CartDrawerTrigger';
+import { CartEmptyState } from './CartEmptyState';
 import { CartLineItem } from './CartLineItem';
 import { useCartDrawer } from './hooks/useCartDrawer';
+import { Upsell } from './Upsell';
 
 // This is a temporary type fix for Framer Motion since
 // React 18 typings breaks FC which Framer Motion relies on.
@@ -58,37 +54,23 @@ export function CartDrawer() {
    const cart = useCart();
    const checkout = useCheckout();
 
+   const upsellItem = React.useMemo(() => {
+      const item = cart.data?.upsellProducts[0];
+      const isAlreadyInCart =
+         item &&
+         cart.data?.lineItems.find(
+            (lineItem) => lineItem.itemcode === item.itemcode
+         );
+      if (isAlreadyInCart) return null;
+      return item;
+   }, [cart.data]);
+
    return (
       <>
-         <Box position="relative">
-            <IconButton
-               aria-label="Open cart"
-               variant="ghost"
-               transition="0.3s"
-               _hover={{ opacity: 0.7 }}
-               display="flex"
-               w={8}
-               h={8}
-               icon={<FaIcon icon={faShoppingCart} h="22px" color="white" />}
-               onClick={onOpen}
-               _active={{
-                  bg: 'gray.900',
-               }}
-               data-testid="cart-drawer-open"
-            />
-            {cart.data && cart.data.hasItemsInCart && (
-               <Circle
-                  position="absolute"
-                  top="0.5"
-                  right="2px"
-                  size={3}
-                  bg="blue.500"
-                  borderRadius="full"
-                  borderWidth={2}
-                  borderColor="gray.900"
-               />
-            )}
-         </Box>
+         <CartDrawerTrigger
+            onClick={onOpen}
+            hasItemsInCart={cart.data?.hasItemsInCart}
+         />
          {isMounted && (
             <Drawer
                isOpen={isOpen}
@@ -175,29 +157,14 @@ export function CartDrawer() {
                                  );
                               })}
                            </AnimatePresence>
+                           {upsellItem && <Upsell item={upsellItem} />}
                         </Box>
                      </ScaleFade>
                      <Collapse
                         animateOpacity
                         in={cart.isFetched && !cart.data?.hasItemsInCart}
                      >
-                        <VStack spacing="5" p="5">
-                           <Circle size="72px" bg="brand.100">
-                              <FaIcon
-                                 icon={faCartCircleExclamation}
-                                 h="8"
-                                 color="blue.ifixit"
-                              />
-                           </Circle>
-                           <Text>Your cart is empty</Text>
-                           <Button
-                              colorScheme="blue"
-                              onClick={onClose}
-                              data-testid="back-to-shopping"
-                           >
-                              Back to shopping
-                           </Button>
-                        </VStack>
+                        <CartEmptyState onClose={onClose} />
                      </Collapse>
                   </DrawerBody>
 
