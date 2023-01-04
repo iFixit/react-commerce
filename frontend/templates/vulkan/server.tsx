@@ -1,1 +1,1 @@
-export { getServerSideProps } from "@templates/page/server";
+export { getServerSideProps } from '@templates/page/server';
