@@ -3,7 +3,7 @@ import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplat
 import { ProductSearchHit } from '@models/product-list';
 import { ProductReview } from '@models/product';
 import type { Product, ProductVariant } from '@models/product.server';
-import { CurrencyCode } from '@lib/shopify-storefront-sdk';
+import { CurrencyCode, FindProductQuery } from '@lib/shopify-storefront-sdk';
 
 export const mockedProduct: Product = {
    id: 'gid://shopify/Product/1231231231231',
@@ -3296,3 +3296,521 @@ export const mockedReviews: ProductReview[] = [
       },
    },
 ];
+
+export const mockedProductQuery: FindProductQuery = {
+   product: {
+      id: 'gid://shopify/Product/6766499168346',
+      title: 'CAIG Electronic Cleaner',
+      handle: 'caig-electronic-cleaner',
+      descriptionHtml:
+         '<p>Heavily soiled electronics can be difficult and time consuming to clean. CAIG Labs Electronic Cleaner makes cutting through dirt, dust, and oil an easy task. This cleaner and degreaser is safe on most plastics, non-corrosive and fast drying, perfect for machinery and electronic equipment.</p>',
+      tags: ['Condition:New', 'Dangerous', 'Tool'],
+      rating: null,
+      reviewsCount: {
+         value: '0',
+      },
+      breadcrumbs: {
+         value: '[{"label":"Home","url":"/Store"},{"label":"Tools","url":"/Tools"}]',
+      },
+      faqs: null,
+      prop65WarningType: null,
+      prop65Chemicals: {
+         value: 'none',
+      },
+      productVideos: null,
+      replacementGuides: null,
+      featuredProductVariants: {
+         references: {
+            nodes: [
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965714182234',
+                  sku: 'IF145-299-4',
+                  quantityAvailable: 3536,
+                  product: {
+                     handle: 'mako-driver-kit-64-precision-bits',
+                     title: 'Mako Driver Kit - 64 Precision Bits',
+                     tags: [
+                        'Condition:New',
+                        'iFixit Exclusive:iFixit Exclusive',
+                        'Item Type:Kits',
+                        'Item Type:SIM',
+                        'Main Category=Tools',
+                        'Product Manufacturer=iFixit',
+                        'Profile=Adapter',
+                        'Profile=Flathead',
+                        'Profile=Gamebit',
+                        'Profile=Hex',
+                        'Profile=iPhone Standoff',
+                        'Profile=JIS',
+                        'Profile=Magnetic Pickup',
+                        'Profile=Nut Driver',
+                        'Profile=Oval Bit',
+                        'Profile=Pentalobe',
+                        'Profile=Phillips',
+                        'Profile=SIM Eject',
+                        'Profile=Spanner',
+                        'Profile=Square',
+                        'Profile=Torx',
+                        'Profile=Torx Security',
+                        'Profile=Tri-point',
+                        'Profile=Triangle',
+                        'Screwdriver Type:Interchangeable Bits',
+                        'Tool',
+                        'Tool Category (Legacy):Drivers & Wrenches',
+                        'Tool Type=Toolkits',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.9"}',
+                     },
+                     reviewsCount: {
+                        value: '430',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/31671538810970',
+                     altText: 'IF145-299-4',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/PO4uhbYhRmOcWPNV_f3088c21-0731-47f8-8ec6-88e40e7bf9a5.jpg?v=1669759131',
+                  },
+                  price: {
+                     amount: '5.0',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: {
+                     amount: '55.0',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  proPricesByTier: {
+                     value: '{"pro_1":31.99,"pro_2":31.99,"pro_3":31.99,"pro_4":31.99}',
+                  },
+                  warranty: {
+                     value: 'Lifetime Guarantee',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965720178778',
+                  sku: 'IF145-307-4',
+                  quantityAvailable: 1002,
+                  product: {
+                     handle: 'pro-tech-toolkit',
+                     title: 'Pro Tech Toolkit',
+                     tags: [
+                        'Condition:New',
+                        'iFixit Exclusive:iFixit Exclusive',
+                        'Item Type:Kits',
+                        'Item Type:SIM',
+                        'Main Category=Tools',
+                        'Product Manufacturer=iFixit',
+                        'Profile=Adapter',
+                        'Profile=Flathead',
+                        'Profile=Gamebit',
+                        'Profile=Hex',
+                        'Profile=iPhone Standoff',
+                        'Profile=JIS',
+                        'Profile=Magnetic Pickup',
+                        'Profile=Nut Driver',
+                        'Profile=Oval Bit',
+                        'Profile=Pentalobe',
+                        'Profile=Phillips',
+                        'Profile=SIM Eject',
+                        'Profile=Spanner',
+                        'Profile=Square',
+                        'Profile=Torx',
+                        'Profile=Torx Security',
+                        'Profile=Tri-point',
+                        'Profile=Triangle',
+                        'Screwdriver Type:Interchangeable Bits',
+                        'Tool',
+                        'Tool Category (Legacy):Drivers & Wrenches',
+                        'Tool Type=Toolkits',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.9"}',
+                     },
+                     reviewsCount: {
+                        value: '1470',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/31674254884954',
+                     altText: 'IF145-307-4',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_1a1db931-d7d8-4bec-a8ef-739ed6bcba78.jpg?v=1670274750',
+                  },
+                  price: {
+                     amount: '74.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: null,
+                  proPricesByTier: {
+                     value: '{"pro_1":59.99,"pro_2":59.99,"pro_3":59.99,"pro_4":59.99}',
+                  },
+                  warranty: {
+                     value: 'Lifetime Guarantee',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/39443942670426',
+                  sku: 'IF145-348-5',
+                  quantityAvailable: 676,
+                  product: {
+                     handle: 'essential-electronics-toolkit',
+                     title: 'Essential Electronics Toolkit',
+                     tags: [
+                        'iFixit Exclusive:iFixit Exclusive',
+                        'Item Type:Kits',
+                        'Item Type:SIM',
+                        'Manufacturer=iFixit',
+                        'SCHUON',
+                        'Screwdriver Type:Interchangeable Bits',
+                        'Tool',
+                        'Tool Category:Drivers & Wrenches',
+                        'Type=Toolkits',
+                     ],
+                     rating: null,
+                     reviewsCount: null,
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/30147156082778',
+                     altText: 'IF145-348-5',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/6JwXuUWvBHYYrIRj_e1a5b3b5-3158-4bf2-bb38-85c53c6c9959.jpg?v=1629216720',
+                  },
+                  price: {
+                     amount: '24.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: null,
+                  proPricesByTier: null,
+                  warranty: {
+                     value: 'Lifetime Warranty',
+                  },
+                  enabled: null,
+               },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965709070426',
+                  sku: 'IF145-474-1',
+                  quantityAvailable: 354,
+                  product: {
+                     handle: 'minnow-driver-kit',
+                     title: 'Minnow Driver Kit',
+                     tags: [
+                        'Condition:New',
+                        'iFixit Exclusive:iFixit Exclusive',
+                        'Item Type:Kits',
+                        'Item Type:SIM',
+                        'Main Category=Tools',
+                        'Product Manufacturer=iFixit',
+                        'Profile=Flathead',
+                        'Profile=iPhone Standoff',
+                        'Profile=Pentalobe',
+                        'Profile=Phillips',
+                        'Profile=Torx',
+                        'Profile=Torx Security',
+                        'Profile=Tri-point',
+                        'Screwdriver Type:Interchangeable Bits',
+                        'Tool',
+                        'Tool Category (Legacy):Drivers & Wrenches',
+                        'Tool Type=Toolkits',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.9"}',
+                     },
+                     reviewsCount: {
+                        value: '67',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/30908169715802',
+                     altText: 'IF145-474-1',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5lpZ4dPTlPLT1QrK.jpg?v=1642620980',
+                  },
+                  price: {
+                     amount: '14.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: null,
+                  proPricesByTier: {
+                     value: '{"pro_1":11.99,"pro_2":11.99,"pro_3":11.99,"pro_4":11.99}',
+                  },
+                  warranty: {
+                     value: 'Lifetime Guarantee',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
+               {
+                  __typename: 'ProductVariant',
+                  id: 'gid://shopify/ProductVariant/32965709037658',
+                  sku: 'IF145-475-1',
+                  quantityAvailable: 3742,
+                  product: {
+                     handle: 'moray-driver-kit',
+                     title: 'Moray Driver Kit',
+                     tags: [
+                        'Condition:New',
+                        'iFixit Exclusive:iFixit Exclusive',
+                        'Item Type:Kits',
+                        'Item Type:SIM',
+                        'Main Category=Tools',
+                        'Product Manufacturer=iFixit',
+                        'Profile=Flathead',
+                        'Profile=Gamebit',
+                        'Profile=Hex',
+                        'Profile=iPhone Standoff',
+                        'Profile=Nut Driver',
+                        'Profile=Pentalobe',
+                        'Profile=Phillips',
+                        'Profile=Torx',
+                        'Profile=Torx Security',
+                        'Profile=Tri-point',
+                        'Profile=Triangle',
+                        'Screwdriver Type:Interchangeable Bits',
+                        'Tool',
+                        'Tool Category (Legacy):Drivers & Wrenches',
+                        'Tool Type=Toolkits',
+                     ],
+                     rating: {
+                        value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.9"}',
+                     },
+                     reviewsCount: {
+                        value: '76',
+                     },
+                     oemPartnership: null,
+                  },
+                  image: {
+                     id: 'gid://shopify/ProductImage/30908170797146',
+                     altText: 'IF145-475-1',
+                     height: 2000,
+                     width: 2000,
+                     url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/GdLBXgihLH5iFnHZ.jpg?v=1642620989',
+                  },
+                  price: {
+                     amount: '19.99',
+                     currencyCode: CurrencyCode.Usd,
+                  },
+                  compareAtPrice: null,
+                  proPricesByTier: {
+                     value: '{"pro_1":15.99,"pro_2":15.99,"pro_3":15.99,"pro_4":15.99}',
+                  },
+                  warranty: {
+                     value: 'Lifetime Guarantee',
+                  },
+                  enabled: {
+                     value: 'true',
+                  },
+               },
+            ],
+         },
+      },
+      compatibility: null,
+      metaTitle: {
+         value: 'CAIG Electronic Cleaner',
+      },
+      shortDescription: {
+         value: 'CAIG Labs Electronic Cleaner makes cutting through dirt, dust, and oil an easy task.',
+      },
+      oemPartnership: null,
+      featuredImage: {
+         id: 'gid://shopify/ProductImage/31648513065050',
+      },
+      images: {
+         nodes: [
+            {
+               id: 'gid://shopify/ProductImage/31648513065050',
+               altText: 'IF317-100-1',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/TbkOf1Sqi3UVSkrm.jpg?v=1667587346',
+            },
+            {
+               id: 'gid://shopify/ProductImage/31648513097818',
+               altText: 'IF317-100-1',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/HyIWEcMqGkt2DWYs.jpg?v=1667587346',
+            },
+         ],
+      },
+      options: [
+         {
+            id: 'gid://shopify/ProductOption/8699727052890',
+            name: 'Condition',
+            values: ['New'],
+         },
+      ],
+      variants: {
+         nodes: [
+            {
+               id: 'gid://shopify/ProductVariant/40035028402266',
+               title: 'New',
+               sku: 'IF317-100-1',
+               quantityAvailable: 7,
+               image: {
+                  id: 'gid://shopify/ProductImage/31648513065050',
+                  altText: 'IF317-100-1',
+                  height: 2000,
+                  width: 2000,
+                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/TbkOf1Sqi3UVSkrm.jpg?v=1667587346',
+               },
+               price: {
+                  amount: '7.95',
+                  currencyCode: CurrencyCode.Usd,
+               },
+               compareAtPrice: null,
+               proPricesByTier: {
+                  value: '{"pro_1":7.95,"pro_2":7.95,"pro_3":7.95,"pro_4":7.95}',
+               },
+               selectedOptions: [
+                  {
+                     name: 'Condition',
+                     value: 'New',
+                  },
+               ],
+               description: {
+                  value: '<p>Heavily soiled electronics can be difficult and time consuming to clean. CAIG Labs Electronic Cleaner makes cutting through dirt, dust, and oil an easy task. This cleaner and degreaser is safe on most plastics, non-corrosive and fast drying, perfect for machinery and electronic equipment.</p>',
+               },
+               kitContents: null,
+               assemblyContents: null,
+               note: null,
+               disclaimer: null,
+               warning: null,
+               specifications: {
+                  value: "<table class='specifications'><tr><th>Part #</th><td>DDW-V611</td></tr></table>",
+               },
+               warranty: {
+                  value: 'Sold as-is; no refunds or returns',
+               },
+               enabled: {
+                  value: 'true',
+               },
+               disableWhenOOS: {
+                  value: 'false',
+               },
+               crossSell: {
+                  references: {
+                     nodes: [
+                        {
+                           __typename: 'ProductVariant',
+                           id: 'gid://shopify/ProductVariant/39419991457882',
+                           sku: 'IF145-284-3',
+                           quantityAvailable: 181,
+                           product: {
+                              handle: 'microfiber-cleaning-cloths',
+                              title: 'Microfiber Cleaning Cloths',
+                              tags: [
+                                 'Condition:New',
+                                 'Main Category=Tools',
+                                 'Product Manufacturer=iFixit',
+                                 'Tool',
+                                 'Tool Category (Legacy):Cleaning',
+                                 'Tool Type=Cleaning Tools',
+                              ],
+                              rating: {
+                                 value: '{"scale_min":"1.0","scale_max":"5.0","value":"4.8"}',
+                              },
+                              reviewsCount: {
+                                 value: '24',
+                              },
+                              oemPartnership: null,
+                           },
+                           image: {
+                              id: 'gid://shopify/ProductImage/30908817408090',
+                              altText: '*',
+                              height: 1440,
+                              width: 1440,
+                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/2FWdnADRCFlkK3Zv_3fbfd0ee-158d-4fc1-b287-896b352604aa.jpg?v=1642628657',
+                           },
+                           price: {
+                              amount: '4.99',
+                              currencyCode: CurrencyCode.Usd,
+                           },
+                           compareAtPrice: null,
+                           proPricesByTier: {
+                              value: '{"pro_1":4.49,"pro_2":4.24,"pro_3":3.99,"pro_4":3.74}',
+                           },
+                           warranty: {
+                              value: 'Sold as-is; no refunds or returns',
+                           },
+                           enabled: {
+                              value: 'true',
+                           },
+                        },
+                        {
+                           __typename: 'ProductVariant',
+                           id: 'gid://shopify/ProductVariant/39333790810202',
+                           sku: 'IF317-084-2',
+                           quantityAvailable: 7,
+                           product: {
+                              handle: 'deoxit-connector-cleaning-kit',
+                              title: 'DeoxIT® Connector Cleaning Kit',
+                              tags: [
+                                 'Condition:New',
+                                 'Tool',
+                                 'Tool Category (Legacy):Cleaning',
+                              ],
+                              rating: {
+                                 value: '{"scale_min":"1.0","scale_max":"5.0","value":"5.0"}',
+                              },
+                              reviewsCount: {
+                                 value: '4',
+                              },
+                              oemPartnership: null,
+                           },
+                           image: {
+                              id: 'gid://shopify/ProductImage/31648475447386',
+                              altText: 'IF317-084-2',
+                              height: 600,
+                              width: 600,
+                              url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/T5cV5PHCNy34SsyZ_5f2e9630-002f-416a-b41f-9e36e578d18d.jpg?v=1667586762',
+                           },
+                           price: {
+                              amount: '6.99',
+                              currencyCode: CurrencyCode.Usd,
+                           },
+                           compareAtPrice: null,
+                           proPricesByTier: {
+                              value: '{"pro_1":6.29,"pro_2":5.9399999999999995,"pro_3":5.59,"pro_4":5.24}',
+                           },
+                           warranty: {
+                              value: 'Sold as-is; no refunds or returns',
+                           },
+                           enabled: {
+                              value: 'true',
+                           },
+                        },
+                     ],
+                  },
+               },
+               internalDisplayName: {
+                  value: 'CAIG Electronic Cleaner',
+               },
+               shippingRestrictions: {
+                  value: '["is_dangerous"]',
+               },
+            },
+         ],
+      },
+      vendor: '',
+   },
+};
