@@ -51,6 +51,7 @@ describe('Product option test', () => {
          .should('be.visible')
          .then((el) => {
             // Parse out the skus from the skuTexts which are in form of "Item # IF145-278-14"
+            /* eslint-disable no-useless-escape */
             const sku1 = this.firstOptionSkuText.match(/IF\d*\-\d*\-\d*/g)[0];
             const sku2 = this.secondOptionSkuText.match(/IF\d*\-\d*\-\d*/g)[0];
 
