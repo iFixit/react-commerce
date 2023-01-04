@@ -90,7 +90,9 @@ test.describe.serial('product page add to cart', () => {
 
    test.describe('Product Stock Levels', () => {
       test('Low stocked product changes quantity', async ({ page }) => {
-         await page.goto('/products/iphone-6s-plus-replacement-battery-low-stocked');
+         await page.goto(
+            '/products/iphone-6s-plus-replacement-battery-low-stocked'
+         );
          await expect(
             page.getByTestId('product-inventory-message')
          ).toBeVisible();
@@ -137,7 +139,18 @@ test.describe.serial('product page add to cart', () => {
       });
 
       test('Out of stock product cannot be added to cart', async ({ page }) => {
-         await page.goto('/products/iphone-6s-plus-replacement-battery-out-of-stock');
+         await page.goto(
+            '/products/iphone-6s-plus-replacement-battery-out-of-stock'
+         );
+         await expect(
+            page.getByRole('img', { name: 'Fix Kit' })
+         ).not.toBeVisible();
+         await expect(
+            page.getByRole('img', { name: 'Part Only' }).first()
+         ).toBeVisible();
+
+         await page.getByText('Fix Kit').nth(1).click();
+
          await expect(
             page.getByTestId('product-add-to-cart-button')
          ).not.toBeVisible();
@@ -158,6 +171,34 @@ test.describe.serial('product page add to cart', () => {
                'You will be notified when this product is back in stock.'
             )
          ).toBeVisible();
+
+         await page.getByText('Part Only').first().click();
+         await expect(
+            page.getByTestId('product-add-to-cart-button')
+         ).toBeVisible();
+         await expect(
+            page.getByTestId('product-inventory-message')
+         ).not.toBeVisible();
+
+         const partOnlySku = await page
+            .getByTestId('product-sku')
+            .textContent();
+         const sku = partOnlySku?.replace('Item # ', '') ?? '';
+         expect(sku).not.toEqual('');
+
+         await page.getByTestId('product-add-to-cart-button').click();
+         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+         await expect(
+            page.getByTestId('cart-drawer-body').getByText(sku)
+         ).toBeVisible();
+
+         await page.getByTestId('cart-drawer-close').click();
+         await expect(
+            page.getByTestId('product-add-to-cart-button')
+         ).toBeEnabled();
+         await expect(
+            page.getByTestId('product-inventory-message')
+         ).not.toBeVisible();
       });
    });
 });
