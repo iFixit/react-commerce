@@ -70,9 +70,10 @@ test.describe('Cross-sell test', () => {
          allProductTitles.push(
             await product.getByTestId('cross-sell-item-title').textContent()
          );
-         expectedTotalPrice += parseFloat(
-            (await product.getByTestId('product-price').textContent()).slice(1)
-         );
+         const productPrice = await product
+            .getByTestId('product-price')
+            .textContent();
+         expectedTotalPrice += parseFloat(productPrice!.slice(1));
       }
 
       // Assert total price matches the sum of all products
