@@ -268,6 +268,7 @@ export function CrossSellSection({
                         </Box>
                      </Box>
                      <Button
+                        data-testid="cross-sell-add-to-cart-button"
                         disabled={!selectedCrossSellVariantIds.length}
                         colorScheme="brand"
                         minW="240px"
@@ -318,6 +319,7 @@ function CrossSellItem({
    return (
       <NextLink href={`/products/${product.handle}`} passHref legacyBehavior>
          <Card
+            data-testid="cross-sell-item"
             as="a"
             overflow="hidden"
             flexBasis={{
@@ -390,6 +392,7 @@ function CrossSellItem({
                         )}
                         <Flex direction="column" h="full" align="flex-start">
                            <Text
+                              data-testid="cross-sell-item-title"
                               fontSize="md"
                               mb="2"
                               _groupHover={{ color: 'brand.500' }}
@@ -433,6 +436,7 @@ function CrossSellItem({
                                  event.stopPropagation();
                               }
                            }}
+                           data-testid='cross-sell-item-select'
                            tabIndex={0}
                            outline="none"
                            _focus={{
