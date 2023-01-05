@@ -46,6 +46,7 @@
       "@ifixit/react-components": "^0.3.0",
       "@ifixit/sentry": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*",
+      "@ifixit/stats": "workspace:*",
       "@ifixit/ui": "workspace:*",
       "@sentry/nextjs": "7.8.1",
       "@sentry/tracing": "7.8.1",
