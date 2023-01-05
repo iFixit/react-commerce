@@ -176,7 +176,7 @@ export function ProductSection({
                )}
 
                <Accordion
-                  defaultIndex={[0, 1]}
+                  defaultIndex={product.isEnabled ? [0, 1] : undefined}
                   allowMultiple
                   mt="10"
                   sx={{
