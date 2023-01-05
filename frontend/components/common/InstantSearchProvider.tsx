@@ -2,10 +2,11 @@ import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
-   destylizeDeviceItemType,
+   destylizeFacetValue,
    getFacetWidgetType,
    isValidRefinementListValue,
-   stylizeDeviceItemType,
+   processLocation,
+   stylizeFacetValue,
 } from '@helpers/product-list-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
@@ -130,35 +131,43 @@ export function InstantSearchProvider({
             return window.location;
          },
          createURL({ qsModule, routeState, location }) {
-            const baseUrl = getBaseOrigin(location);
-            const pathParts = location.pathname
-               .split('/')
-               .filter((part) => part !== '');
-            const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
-            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+            const { baseUrl, pathParts, isPartsPage, isToolsPage } =
+               processLocation(location);
 
+            const filterCopy = { ...routeState.filter };
             let path = '';
-            if (partsOrTools) {
-               path += `/${partsOrTools}`;
-               if (deviceHandle) {
-                  path += `/${deviceHandle}`;
+
+            if (isPartsPage) {
+               path += `/${pathParts[0]}`;
+               if (pathParts[1]) {
+                  path += `/${pathParts[1]}`;
                   const raw: string | string[] | undefined =
                      routeState.filter?.['facet_tags.Item Type'];
                   const itemType = Array.isArray(raw) ? raw[0] : raw;
                   if (itemType?.length) {
                      const encodedItemType = encodeURIComponent(
-                        stylizeDeviceItemType(itemType)
+                        stylizeFacetValue(itemType)
+                     );
+                     path += `/${encodedItemType}`;
+                  }
+                  delete filterCopy['facet_tags.Item Type'];
+               }
+            } else if (isToolsPage) {
+               path += `/${pathParts[0]}`;
+               if (pathParts[1]) {
+                  const raw: string | string[] | undefined =
+                     routeState.filter?.['facet_tags.Tool Category'];
+                  const toolCategory = Array.isArray(raw) ? raw[0] : raw;
+                  if (toolCategory?.length) {
+                     const encodedItemType = encodeURIComponent(
+                        stylizeFacetValue(toolCategory)
                      );
                      path += `/${encodedItemType}`;
                   }
                }
+               delete filterCopy['facet_tags.Tool Category'];
             }
 
-            const filterCopy = { ...routeState.filter };
-            if (partsOrTools && deviceHandle) {
-               // Item Type is the slug on device pages, not in the query.
-               delete filterCopy['facet_tags.Item Type'];
-            }
             const { q, p, filter, ...otherParams } = qsModule.parse(
                location.search,
                {
@@ -180,11 +189,8 @@ export function InstantSearchProvider({
             return `${baseUrl}${path}${queryString}`;
          },
          parseURL({ qsModule, location }) {
-            const pathParts = location.pathname
-               .split('/')
-               .filter((part) => part !== '');
-            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+            const { pathParts, isPartsPage, isToolsPage } =
+               processLocation(location);
 
             const { q, p, filter } = qsModule.parse(location.search, {
                ignoreQueryPrefix: true,
@@ -222,9 +228,14 @@ export function InstantSearchProvider({
                }
             });
 
-            if (deviceHandle && itemType) {
-               filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
-                  decodeURIComponent(itemType)
+            if (isPartsPage && pathParts[2]) {
+               filterObject['facet_tags.Item Type'] = destylizeFacetValue(
+                  decodeURIComponent(pathParts[2])
+               ).trim();
+            }
+            if (isToolsPage && pathParts[1]) {
+               filterObject['facet_tags.Tool Category'] = destylizeFacetValue(
+                  decodeURIComponent(pathParts[1])
                ).trim();
             }
 
@@ -277,17 +288,6 @@ function RefreshSearchResults({
       }
    }, [apiKey, prevApiKey]);
    return null;
-}
-
-function getBaseOrigin(location: Location): string {
-   if (typeof window === 'undefined' && IFIXIT_ORIGIN) {
-      // On the server, use the IFIXIT_ORIGIN url
-      // This ensures that the SSR produces the correct links on Vercel
-      // (where the Host header doesn't match the page URL.)
-      const publicOrigin = new URL(IFIXIT_ORIGIN);
-      return publicOrigin.origin;
-   }
-   return location.origin;
 }
 
 const useSearchStateForceResetKey = () => {

@@ -1,6 +1,6 @@
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { invariant } from '@ifixit/helpers';
-import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
+import { stylizeFacetValue } from '@helpers/product-list-helpers';
 import { z } from 'zod';
 
 export type DeviceWiki = Record<string, any>;
@@ -9,7 +9,7 @@ export async function fetchDeviceWiki(
    client: IFixitAPIClient,
    deviceTitle: string
 ): Promise<DeviceWiki | null> {
-   const deviceHandle = encodeURIComponent(stylizeDeviceItemType(deviceTitle));
+   const deviceHandle = encodeURIComponent(stylizeFacetValue(deviceTitle));
    try {
       invariant(
          deviceHandle.length > 0,

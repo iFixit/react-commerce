@@ -3,6 +3,7 @@ import { ProductList, ProductListType } from '@models/product-list';
 import { useCallback } from 'react';
 import { MenuFacet } from '../MenuFacet';
 import { useCreateItemTypeURL } from '../useCreateItemTypeURL';
+import { useCreateToolCategoryURL } from '../useCreateToolCategoryURL';
 import { useMenuFacet } from '../useMenuFacet';
 import { FacetAccordionItem } from './FacetAccordionItem';
 import { useFacetAccordionItemState } from './useFacetAccordionItemState';
@@ -26,6 +27,10 @@ export function FacetMenuAccordionItem({
       attribute === 'facet_tags.Item Type' &&
       productList.type === ProductListType.DeviceParts;
 
+   const isToolsCategory =
+      attribute === 'facet_tags.Tool Category' &&
+      productList.type === ProductListType.ToolsCategory;
+
    const {
       items,
       refine,
@@ -41,7 +46,13 @@ export function FacetMenuAccordionItem({
       hasApplicableRefinements,
       productList,
    });
-   const createItemURL = useCreateItemTypeURL();
+   const createItemTypeURL = useCreateItemTypeURL();
+   const createToolCategoryURL = useCreateToolCategoryURL();
+   const createItemURL = isDevicePartsItemType
+      ? createItemTypeURL
+      : isToolsCategory
+      ? createToolCategoryURL
+      : undefined;
 
    const handleItemClick = useCallback(
       (value: string) => {
@@ -66,7 +77,7 @@ export function FacetMenuAccordionItem({
             canToggleShowMore={canLoadMore ? canToggleShowMore : undefined}
             isShowingMore={canLoadMore ? isShowingMore : undefined}
             onShowMore={canLoadMore ? toggleShowMore : undefined}
-            createItemURL={isDevicePartsItemType ? createItemURL : undefined}
+            createItemURL={createItemURL}
             onItemClick={handleItemClick}
          />
       </FacetAccordionItem>

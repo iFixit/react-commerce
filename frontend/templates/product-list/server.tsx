@@ -3,9 +3,9 @@ import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
 import { noindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
-   destylizeDeviceItemType,
+   destylizeFacetValue,
    destylizeDeviceTitle,
-   stylizeDeviceItemType,
+   stylizeFacetValue,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { assertNever, invariant, timeAsync } from '@ifixit/helpers';
@@ -71,7 +71,7 @@ export const getProductListServerSideProps = ({
             }
 
             const itemType = itemTypeHandle
-               ? destylizeDeviceItemType(itemTypeHandle)
+               ? destylizeFacetValue(itemTypeHandle)
                : null;
 
             productList = await timeAsync('findProductList', () =>
@@ -233,7 +233,7 @@ function getDeviceCanonicalPath(
       return null;
    }
    const slug = itemType
-      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
+      ? `/${encodeURIComponent(stylizeFacetValue(itemType))}`
       : '';
    const canonicalDeviceHandle = encodeURIComponent(
       stylizeDeviceTitle(deviceTitle)

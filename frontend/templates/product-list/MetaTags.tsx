@@ -2,7 +2,7 @@ import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
 import {
    getProductListTitle,
-   stylizeDeviceItemType,
+   stylizeFacetValue,
 } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList, ProductListAncestor } from '@models/product-list';
@@ -56,7 +56,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
       title += ` - Page ${page}`;
    }
    const itemTypeHandle = itemType
-      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
+      ? `/${encodeURIComponent(stylizeFacetValue(itemType))}`
       : '';
    const canonicalUrl = `${appContext.ifixitOrigin}${productListPath(
       productList
