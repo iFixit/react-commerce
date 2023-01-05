@@ -74,26 +74,26 @@ const config: PlaywrightTestConfig = {
          },
       },
 
+      /* Test against mobile viewports. */
+      {
+         name: 'Mobile Chrome',
+         use: {
+            ...devices['Pixel 5'],
+         },
+      },
+      {
+         name: 'Tablet Chrome',
+         use: {
+            ...devices['Galaxy Tab S4'],
+         },
+      },
+
       // We need to enable cross-site tracking for Safari to work locally.
       // {
       //    name: 'webkit',
       //    use: {
       //       ...devices['Desktop Safari'],
       //    },
-      // },
-
-      /* Test against mobile viewports. */
-      // {
-      //   name: 'Mobile Chrome',
-      //   use: {
-      //     ...devices['Pixel 5'],
-      //   },
-      // },
-      // {
-      //   name: 'Mobile Safari',
-      //   use: {
-      //     ...devices['iPhone 12'],
-      //   },
       // },
 
       /* Test against branded browsers. */
