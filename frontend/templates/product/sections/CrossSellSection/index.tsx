@@ -436,7 +436,7 @@ function CrossSellItem({
                                  event.stopPropagation();
                               }
                            }}
-                           data-testid='cross-sell-item-select'
+                           data-testid="cross-sell-item-select"
                            tabIndex={0}
                            outline="none"
                            _focus={{
