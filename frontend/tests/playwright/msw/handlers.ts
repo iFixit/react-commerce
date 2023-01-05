@@ -8,7 +8,11 @@ export const handlers: RequestHandler[] = [
          req.variables.handle ===
          'iphone-6s-plus-replacement-battery-low-stocked'
       ) {
-         return res(ctx.data(mockedProductQuery));
+         const lowStockedProduct = cloneDeep(mockedProductQuery);
+         if (lowStockedProduct.product) {
+            lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
+         }
+         return res(ctx.data(lowStockedProduct));
       } else if (
          req.variables.handle ===
          'iphone-6s-plus-replacement-battery-out-of-stock'
