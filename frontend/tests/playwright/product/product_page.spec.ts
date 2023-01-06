@@ -12,6 +12,7 @@ test.describe('Product page test', () => {
 
       // Assert product sku is visible
       await expect(page.getByTestId('product-sku')).toBeVisible();
+      /* eslint-disable no-useless-escape */
       await expect(page.getByTestId('product-sku')).toHaveText(/IF\d*\-\d*/g);
 
       // Get price from page
