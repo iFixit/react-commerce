@@ -36,4 +36,38 @@ test.describe('Product breadcrumb test', () => {
          }
       });
    });
+
+   test.describe('Desktop', () => {
+      test.skip(({ page }) => {
+         const viewPort = page.viewportSize();
+         return !viewPort || viewPort.width < 1000;
+      }, 'Only run on desktop.');
+
+      /*
+       * Makes sure that the ancestor and last child breadcrumbs are visible
+       * and the breadcrumb menu is not visible.
+       */
+      test('with less than or equal to 3 breacrumb links', async ({ page }) => {
+         await page.goto('/products/iflex-opening-tool');
+
+         const lastChildBreadcrumb = page.getByTestId(
+            'breadcrumb-last-child-link'
+         );
+         await expect(lastChildBreadcrumb).toBeVisible();
+
+         const desktopBreadcrumbAncestorLinks = page.getByTestId(
+            'breadcrumb-ancestor-link-desktop'
+         );
+         const ancestorLinksCount =
+            await desktopBreadcrumbAncestorLinks.count();
+
+         for (let i = 0; i < ancestorLinksCount; i++) {
+            expect(desktopBreadcrumbAncestorLinks.nth(i)).toBeVisible();
+            expect(
+               await desktopBreadcrumbAncestorLinks.nth(i).getAttribute('href')
+            ).not.toBeNull();
+         }
+         expect(ancestorLinksCount).toBeLessThanOrEqual(3);
+      });
+   });
 });
