@@ -13,7 +13,7 @@ test.describe('Cross-sell test', () => {
 
       let currentProductTitle = null;
       let currentProductPrice = null;
-      let otherProductTitles = [];
+      const otherProductTitles = [];
 
       for (let i = 0; i < count; i++) {
          const product = products.nth(i);
@@ -61,7 +61,7 @@ test.describe('Cross-sell test', () => {
       const products = await page.getByTestId('cross-sell-item');
       const count = await products.count();
 
-      let allProductTitles = [];
+      const allProductTitles = [];
       let expectedTotalPrice = 0;
 
       for (let i = 0; i < count; i++) {
