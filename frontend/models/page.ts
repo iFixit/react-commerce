@@ -9,7 +9,7 @@ import {
    strapi,
 } from '@lib/strapi-sdk';
 import { z } from 'zod';
-import { getProductListType } from './product-list';
+import { getProductListType } from './product-list/server';
 
 export type FindPageArgs = {
    path: string;
