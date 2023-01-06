@@ -67,7 +67,7 @@ test.describe('Product breadcrumb test', () => {
                await desktopBreadcrumbAncestorLinks.nth(i).getAttribute('href')
             ).not.toBeNull();
          }
-         expect(ancestorLinksCount).toBeLessThanOrEqual(3);
+         expect(ancestorLinksCount).toBeLessThanOrEqual(2);
 
          // If the product has less than or equal to 3 breadcrumb links, we don't display the breadcrumb menu
          const desktopBreadcrumbMenu = page.getByTestId(
@@ -103,7 +103,7 @@ test.describe('Product breadcrumb test', () => {
                await desktopBreadcrumbAncestorLinks.nth(i).getAttribute('href')
             ).not.toBeNull();
          }
-         expect(ancestorLinksCount).toBeLessThanOrEqual(3);
+         expect(ancestorLinksCount).toBeLessThanOrEqual(2);
 
          const desktopBreadcrumbMenu = page.getByTestId(
             'breadcrumb-menu-desktop'
