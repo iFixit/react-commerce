@@ -80,5 +80,40 @@ test.describe('Product breadcrumb test', () => {
          );
          await expect(mobileBreadcrumbMenu).not.toBeVisible();
       });
+
+      /*
+       * Same as the test above, but checks that the desktop breadcrumb menu is visible.
+       */
+      test('with more than 3 breacrumb links', async ({ page }) => {
+         await page.goto('/products/iphone-6s-plus-replacement-battery');
+
+         const lastChildBreadcrumb = page.getByTestId(
+            'breadcrumb-last-child-link'
+         );
+         await expect(lastChildBreadcrumb).toBeVisible();
+
+         const desktopBreadcrumbAncestorLinks = page.getByTestId(
+            'breadcrumb-ancestor-link-desktop'
+         );
+         const ancestorLinksCount =
+            await desktopBreadcrumbAncestorLinks.count();
+         for (let i = 0; i < ancestorLinksCount; i++) {
+            expect(desktopBreadcrumbAncestorLinks.nth(i)).toBeVisible();
+            expect(
+               await desktopBreadcrumbAncestorLinks.nth(i).getAttribute('href')
+            ).not.toBeNull();
+         }
+         expect(ancestorLinksCount).toBeLessThanOrEqual(3);
+
+         const desktopBreadcrumbMenu = page.getByTestId(
+            'breadcrumb-menu-desktop'
+         );
+         await expect(desktopBreadcrumbMenu).toBeVisible();
+
+         const mobileBreadcrumbMenu = page.getByTestId(
+            'breadcrumb-menu-mobile'
+         );
+         await expect(mobileBreadcrumbMenu).not.toBeVisible();
+      });
    });
 });
