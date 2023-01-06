@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Product image test', () => {
+   test.skip(({ page }) => {
+      const viewPort = page.viewportSize();
+      return !viewPort || viewPort.width < 1000;
+   }, 'Only run on desktop. Still working on mobile.');
+
    test('product with a single image ', async ({ page }) => {
       await page.goto('/products/iflex-opening-tool');
 
