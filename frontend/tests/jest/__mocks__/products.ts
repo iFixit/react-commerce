@@ -2,8 +2,457 @@ import { MenuItemType } from '@models/menu';
 import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 import { ProductSearchHit } from '@models/product-list';
 import { ProductReview } from '@models/product';
-import type { Product, ProductVariant } from '@models/product.server';
+import type {
+   Product,
+   ProductImage,
+   ProductVariant,
+} from '@models/product.server';
 import { CurrencyCode } from '@lib/shopify-storefront-sdk';
+
+const productImages: ProductImage[] = [
+   {
+      id: 'gid://shopify/ProductImage/31263941197914',
+      altText: 'iPhone 6s Plus Battery New Fix Kit',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
+      variantId: 'gid://shopify/ProductVariant/32965718147162',
+   },
+   {
+      id: 'gid://shopify/ProductImage/31263941230682',
+      altText: 'iPhone 6s Plus Battery New Part Only',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/RIvaaHOkDZJTBCBM_6b73f13e-f9b2-4eee-887f-b699cfb66f29.jpg?v=1656545132',
+      variantId: 'gid://shopify/ProductVariant/32965718179930',
+   },
+   {
+      id: 'gid://shopify/ProductImage/31263941263450',
+      altText: 'iPhone 6s Plus Battery New Part Only',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Z1Bdx4Xp52FOXtG2_e21190de-41a3-4952-9df0-f1630410dbae.jpg?v=1656545132',
+      variantId: 'gid://shopify/ProductVariant/32965718179930',
+   },
+];
+
+const productVariants: ProductVariant[] = [
+   {
+      id: 'gid://shopify/ProductVariant/32965718147162',
+      title: 'New / Fix Kit',
+      sku: 'IF315-007-10',
+      quantityAvailable: 63,
+      image: {
+         id: 'gid://shopify/ProductImage/31263941197914',
+         altText: 'iPhone 6s Plus Battery New Fix Kit',
+         height: 2000,
+         width: 2000,
+         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
+         variantId: 'gid://shopify/ProductVariant/32965718147162',
+      },
+      price: {
+         amount: '23.99',
+         currencyCode: CurrencyCode.Usd,
+      },
+      compareAtPrice: {
+         amount: '29.99',
+         currencyCode: CurrencyCode.Usd,
+      },
+      proPricesByTier: {
+         pro_1: {
+            amount: 29.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_2: {
+            amount: 29.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_3: {
+            amount: 29.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_4: {
+            amount: 29.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+      },
+      selectedOptions: [
+         {
+            name: 'Condition',
+            value: 'New',
+         },
+         {
+            name: 'Part or Kit',
+            value: 'Fix Kit',
+         },
+      ],
+      description:
+         '<p>This replacement battery is what you need to bring that dead smartphone back to life. The Fix Kit includes everything you need to swap in a new replacement battery.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li><li>Make disassembly for future repairs easier, replace your pentalobe bottom screws with the Phillips screws included in the kit.</li></ul>',
+      kitContents:
+         '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus with Adhesive Strips Preinstalled</li><li><a href="/products/iphone-6s-plus-display-assembly-adhesive">iPhone 6s Plus Display Assembly Adhesive</a></li><li><a href="/products/spudger">Spudger</a></li><li><a href="/products/suction-handle">Suction Handle</a></li><li><a href="/products/tweezers">Tweezers / Angled / Pro / ESD</a></li><li><a href="/products/ifixit-opening-tool">iFixit Opening Tool</a></li><li>Replacement Phillips Bottom Screws</li><li><a href="/products/ifixit-precision-bit-driver">Precision Bit Driver</a></li><li><a href="/products/ifixit-precision-4-mm-screwdriver-bit">4 mm Precision Bits</a>:<ul><li>Phillips #000</li><li>Pentalobe P2</li><li>Tri-point Y000</li></ul></li></ul>',
+      assemblyContents: null,
+      note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
+      disclaimer:
+         '<p>While not necessary, some fixers prefer to use additional tools to accomplish this repair: <a href="/products/iopener">iOpener</a> and <a href="/products/plastic-cards">Plastic Card</a>.</p>',
+      warning:
+         '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
+      specifications:
+         "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
+      warranty: 'One year warranty',
+      enabled: true,
+      disableWhenOOS: false,
+      internalDisplayName: {
+         value: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
+      },
+      shippingRestrictions: ['is_battery'],
+      productcode: '315007',
+      optionid: '10',
+      isDiscounted: true,
+      discountPercentage: 20,
+      crossSellVariants: [
+         {
+            __typename: 'ProductVariant',
+            id: 'gid://shopify/ProductVariant/32965720473690',
+            sku: 'IF145-257-1',
+            quantityAvailable: 186,
+            product: {
+               handle: 'anti-static-project-tray',
+               title: 'Anti-Static Project Tray',
+               tags: [
+                  'Condition:New',
+                  'ESD-safe:ESD-safe',
+                  'iFixit Exclusive:iFixit Exclusive',
+                  'Item Type:SIM',
+                  'Main Category=Tools',
+                  'Product Manufacturer=iFixit',
+                  'Tool',
+                  'Tool Category (Legacy):ESD Safe',
+                  'Tool Type=Organization Tools',
+               ],
+               rating: 4.8,
+               reviewsCount: 273,
+               oemPartnership: null,
+            },
+            image: {
+               id: 'gid://shopify/ProductImage/30908161917018',
+               altText: '*',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/xe2tWdmD14WfKdFS.jpg?v=1642620899',
+            },
+            price: {
+               amount: '4.99',
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: null,
+            proPricesByTier: {
+               pro_1: {
+                  amount: 3.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_2: {
+                  amount: 3.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_3: {
+                  amount: 3.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_4: {
+                  amount: 3.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+            },
+            warranty: 'Lifetime Guarantee',
+            enabled: true,
+            formattedPrice: '$4.99',
+            formattedCompareAtPrice: null,
+         },
+         {
+            __typename: 'ProductVariant',
+            id: 'gid://shopify/ProductVariant/32965720178778',
+            sku: 'IF145-307-4',
+            quantityAvailable: 607,
+            product: {
+               handle: 'pro-tech-toolkit',
+               title: 'Pro Tech Toolkit',
+               tags: [
+                  'Condition:New',
+                  'iFixit Exclusive:iFixit Exclusive',
+                  'Item Type:Kits',
+                  'Item Type:SIM',
+                  'Main Category=Tools',
+                  'Product Manufacturer=iFixit',
+                  'Profile=Adapter',
+                  'Profile=Flathead',
+                  'Profile=Gamebit',
+                  'Profile=Hex',
+                  'Profile=iPhone Standoff',
+                  'Profile=JIS',
+                  'Profile=Magnetic Pickup',
+                  'Profile=Nut Driver',
+                  'Profile=Oval Bit',
+                  'Profile=Pentalobe',
+                  'Profile=Phillips',
+                  'Profile=SIM Eject',
+                  'Profile=Spanner',
+                  'Profile=Square',
+                  'Profile=Torx',
+                  'Profile=Torx Security',
+                  'Profile=Tri-point',
+                  'Profile=Triangle',
+                  'Screwdriver Type:Interchangeable Bits',
+                  'Tool',
+                  'Tool Category (Legacy):Drivers & Wrenches',
+                  'Tool Type=Toolkits',
+               ],
+               rating: 4.9,
+               reviewsCount: 1381,
+               oemPartnership: null,
+            },
+            image: {
+               id: 'gid://shopify/ProductImage/31392629260378',
+               altText: 'IF145-307-4',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_0b395d12-94a4-40b6-932e-3cbc60cef003.jpg?v=1660832943',
+            },
+            price: {
+               amount: '74.99',
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: null,
+            proPricesByTier: {
+               pro_1: {
+                  amount: 59.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_2: {
+                  amount: 59.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_3: {
+                  amount: 59.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_4: {
+                  amount: 59.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+            },
+            warranty: 'Lifetime Guarantee',
+            enabled: true,
+            formattedPrice: '$74.99',
+            formattedCompareAtPrice: null,
+         },
+      ],
+   },
+   {
+      id: 'gid://shopify/ProductVariant/32965718179930',
+      title: 'New / Part Only',
+      sku: 'IF315-007-9',
+      quantityAvailable: 42,
+      image: {
+         id: 'gid://shopify/ProductImage/31263941230682',
+         altText: 'iPhone 6s Plus Battery New Part Only',
+         height: 2000,
+         width: 2000,
+         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/RIvaaHOkDZJTBCBM_6b73f13e-f9b2-4eee-887f-b699cfb66f29.jpg?v=1656545132',
+         variantId: 'gid://shopify/ProductVariant/32965718179930',
+      },
+      price: {
+         amount: '24.99',
+         currencyCode: CurrencyCode.Usd,
+      },
+      compareAtPrice: null,
+      proPricesByTier: {
+         pro_1: {
+            amount: 23.33,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_2: {
+            amount: 17.5,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_3: {
+            amount: 11,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_4: {
+            amount: 10,
+            currencyCode: CurrencyCode.Usd,
+         },
+      },
+      selectedOptions: [
+         {
+            name: 'Condition',
+            value: 'New',
+         },
+         {
+            name: 'Part or Kit',
+            value: 'Part Only',
+         },
+      ],
+      description:
+         '<p>This replacement battery is what you need to bring that dead smartphone back to life.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li></ul>',
+      kitContents: null,
+      assemblyContents:
+         '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus</li><li>Battery Adhesive Strips</li></ul>',
+      note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
+      disclaimer: null,
+      warning:
+         '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
+      specifications:
+         "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
+      warranty: 'One year warranty',
+      enabled: true,
+      disableWhenOOS: false,
+      internalDisplayName: {
+         value: 'iPhone 6s Plus Battery / Part and Adhesive',
+      },
+      shippingRestrictions: ['is_battery'],
+      productcode: '315007',
+      optionid: '9',
+      isDiscounted: false,
+      discountPercentage: 0,
+      crossSellVariants: [
+         {
+            __typename: 'ProductVariant',
+            id: 'gid://shopify/ProductVariant/39333786746970',
+            sku: 'IF315-038-1',
+            quantityAvailable: 25,
+            product: {
+               handle: 'iphone-6s-plus-screen',
+               title: 'iPhone 6s Plus Screen',
+               tags: [
+                  'Apple Device=iPhone',
+                  'Condition:New',
+                  'Device Brand:Apple',
+                  'Device Category:Phone',
+                  'Device Manufacturer=Apple',
+                  'Device Type:iPhone',
+                  'Device Type=Smartphones',
+                  'Item Type:Screens',
+                  'Main Category=Parts',
+                  'Model Number=A1634',
+                  'Model Number=A1687',
+                  'Model=iPhone 6s Plus',
+                  'OS:iOS',
+                  'Part',
+                  'Part or Kit:Fix Kit',
+                  'Part or Kit:Part Only',
+                  'Spare Part=Screens',
+                  'Version=iPhone Repair Kits',
+                  'worksin:1059',
+               ],
+               rating: 4.7,
+               reviewsCount: 27,
+               oemPartnership: null,
+            },
+            image: {
+               id: 'gid://shopify/ProductImage/31268982194266',
+               altText: 'IF315-038-1',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5VOJlrQqeBjCF3nF.jpg?v=1656622264',
+            },
+            price: {
+               amount: '59.99',
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: null,
+            proPricesByTier: {
+               pro_1: {
+                  amount: 59.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_2: {
+                  amount: 59.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_3: {
+                  amount: 44.82,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_4: {
+                  amount: 37.92,
+                  currencyCode: CurrencyCode.Usd,
+               },
+            },
+            warranty: 'Lifetime Warranty',
+            enabled: true,
+            formattedPrice: '$59.99',
+            formattedCompareAtPrice: null,
+         },
+         {
+            __typename: 'ProductVariant',
+            id: 'gid://shopify/ProductVariant/39333786583130',
+            sku: 'IF315-049-2',
+            quantityAvailable: 46,
+            product: {
+               handle: 'iphone-6s-plus-display-assembly-adhesive',
+               title: 'iPhone 6s Plus Display Assembly Adhesive',
+               tags: [
+                  'Apple Device=iPhone',
+                  'Condition:New',
+                  'Device Brand:Apple',
+                  'Device Category:Phone',
+                  'Device Manufacturer=Apple',
+                  'Device Type:iPhone',
+                  'Device Type=Smartphones',
+                  'Item Type:Adhesives',
+                  'Main Category=Parts',
+                  'Model Number=A1634',
+                  'Model Number=A1687',
+                  'Model=iPhone 6s Plus',
+                  'OS:iOS',
+                  'Part',
+                  'Part or Kit:Part Only',
+                  'Spare Part=Adhesives',
+                  'worksin:1059',
+               ],
+               rating: 4.7,
+               reviewsCount: 20,
+               oemPartnership: null,
+            },
+            image: {
+               id: 'gid://shopify/ProductImage/30908245409882',
+               altText: 'IF315-049-2',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/BBYFChBH3BMOwJvp_6d0c34d9-eb5f-49e8-8c43-3a443b66fa14.jpg?v=1642621670',
+            },
+            price: {
+               amount: '4.99',
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: null,
+            proPricesByTier: {
+               pro_1: {
+                  amount: 4.49,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_2: {
+                  amount: 3.99,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_3: {
+                  amount: 1.5,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_4: {
+                  amount: 0.9,
+                  currencyCode: CurrencyCode.Usd,
+               },
+            },
+            warranty: 'Sold as-is; no refunds or returns',
+            enabled: true,
+            formattedPrice: '$4.99',
+            formattedCompareAtPrice: null,
+         },
+      ],
+   },
+];
 
 export const mockedProduct: Product = {
    id: 'gid://shopify/Product/1231231231231',
@@ -436,32 +885,8 @@ export const mockedProduct: Product = {
    featuredImage: {
       id: 'gid://shopify/ProductImage/31263941197914',
    },
-   images: [
-      {
-         id: 'gid://shopify/ProductImage/31263941197914',
-         altText: 'iPhone 6s Plus Battery New Fix Kit',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
-         variantId: 'gid://shopify/ProductVariant/32965718147162',
-      },
-      {
-         id: 'gid://shopify/ProductImage/31263941230682',
-         altText: 'iPhone 6s Plus Battery New Part Only',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/RIvaaHOkDZJTBCBM_6b73f13e-f9b2-4eee-887f-b699cfb66f29.jpg?v=1656545132',
-         variantId: 'gid://shopify/ProductVariant/32965718179930',
-      },
-      {
-         id: 'gid://shopify/ProductImage/31263941263450',
-         altText: 'iPhone 6s Plus Battery New Part Only',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Z1Bdx4Xp52FOXtG2_e21190de-41a3-4952-9df0-f1630410dbae.jpg?v=1656545132',
-         variantId: 'gid://shopify/ProductVariant/32965718179930',
-      },
-   ],
+   images: productImages,
+   allImages: productImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/5958025085018',
@@ -474,423 +899,9 @@ export const mockedProduct: Product = {
          values: ['Fix Kit', 'Part Only'],
       },
    ],
-   variants: [
-      {
-         id: 'gid://shopify/ProductVariant/32965718147162',
-         title: 'New / Fix Kit',
-         sku: 'IF315-007-10',
-         quantityAvailable: 63,
-         image: {
-            id: 'gid://shopify/ProductImage/31263941197914',
-            altText: 'iPhone 6s Plus Battery New Fix Kit',
-            height: 2000,
-            width: 2000,
-            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
-            variantId: 'gid://shopify/ProductVariant/32965718147162',
-         },
-         price: {
-            amount: '23.99',
-            currencyCode: CurrencyCode.Usd,
-         },
-         compareAtPrice: {
-            amount: '29.99',
-            currencyCode: CurrencyCode.Usd,
-         },
-         proPricesByTier: {
-            pro_1: {
-               amount: 29.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_2: {
-               amount: 29.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_3: {
-               amount: 29.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_4: {
-               amount: 29.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-         },
-         selectedOptions: [
-            {
-               name: 'Condition',
-               value: 'New',
-            },
-            {
-               name: 'Part or Kit',
-               value: 'Fix Kit',
-            },
-         ],
-         description:
-            '<p>This replacement battery is what you need to bring that dead smartphone back to life. The Fix Kit includes everything you need to swap in a new replacement battery.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li><li>Make disassembly for future repairs easier, replace your pentalobe bottom screws with the Phillips screws included in the kit.</li></ul>',
-         kitContents:
-            '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus with Adhesive Strips Preinstalled</li><li><a href="/products/iphone-6s-plus-display-assembly-adhesive">iPhone 6s Plus Display Assembly Adhesive</a></li><li><a href="/products/spudger">Spudger</a></li><li><a href="/products/suction-handle">Suction Handle</a></li><li><a href="/products/tweezers">Tweezers / Angled / Pro / ESD</a></li><li><a href="/products/ifixit-opening-tool">iFixit Opening Tool</a></li><li>Replacement Phillips Bottom Screws</li><li><a href="/products/ifixit-precision-bit-driver">Precision Bit Driver</a></li><li><a href="/products/ifixit-precision-4-mm-screwdriver-bit">4 mm Precision Bits</a>:<ul><li>Phillips #000</li><li>Pentalobe P2</li><li>Tri-point Y000</li></ul></li></ul>',
-         assemblyContents: null,
-         note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
-         disclaimer:
-            '<p>While not necessary, some fixers prefer to use additional tools to accomplish this repair: <a href="/products/iopener">iOpener</a> and <a href="/products/plastic-cards">Plastic Card</a>.</p>',
-         warning:
-            '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
-         specifications:
-            "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
-         warranty: 'One year warranty',
-         enabled: true,
-         disableWhenOOS: false,
-         internalDisplayName: {
-            value: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
-         },
-         shippingRestrictions: ['is_battery'],
-         productcode: '315007',
-         optionid: '10',
-         isDiscounted: true,
-         discountPercentage: 20,
-         crossSellVariants: [
-            {
-               __typename: 'ProductVariant',
-               id: 'gid://shopify/ProductVariant/32965720473690',
-               sku: 'IF145-257-1',
-               quantityAvailable: 186,
-               product: {
-                  handle: 'anti-static-project-tray',
-                  title: 'Anti-Static Project Tray',
-                  tags: [
-                     'Condition:New',
-                     'ESD-safe:ESD-safe',
-                     'iFixit Exclusive:iFixit Exclusive',
-                     'Item Type:SIM',
-                     'Main Category=Tools',
-                     'Product Manufacturer=iFixit',
-                     'Tool',
-                     'Tool Category (Legacy):ESD Safe',
-                     'Tool Type=Organization Tools',
-                  ],
-                  rating: 4.8,
-                  reviewsCount: 273,
-                  oemPartnership: null,
-               },
-               image: {
-                  id: 'gid://shopify/ProductImage/30908161917018',
-                  altText: '*',
-                  height: 2000,
-                  width: 2000,
-                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/xe2tWdmD14WfKdFS.jpg?v=1642620899',
-               },
-               price: {
-                  amount: '4.99',
-                  currencyCode: CurrencyCode.Usd,
-               },
-               compareAtPrice: null,
-               proPricesByTier: {
-                  pro_1: {
-                     amount: 3.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_2: {
-                     amount: 3.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_3: {
-                     amount: 3.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_4: {
-                     amount: 3.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-               },
-               warranty: 'Lifetime Guarantee',
-               enabled: true,
-               formattedPrice: '$4.99',
-               formattedCompareAtPrice: null,
-            },
-            {
-               __typename: 'ProductVariant',
-               id: 'gid://shopify/ProductVariant/32965720178778',
-               sku: 'IF145-307-4',
-               quantityAvailable: 607,
-               product: {
-                  handle: 'pro-tech-toolkit',
-                  title: 'Pro Tech Toolkit',
-                  tags: [
-                     'Condition:New',
-                     'iFixit Exclusive:iFixit Exclusive',
-                     'Item Type:Kits',
-                     'Item Type:SIM',
-                     'Main Category=Tools',
-                     'Product Manufacturer=iFixit',
-                     'Profile=Adapter',
-                     'Profile=Flathead',
-                     'Profile=Gamebit',
-                     'Profile=Hex',
-                     'Profile=iPhone Standoff',
-                     'Profile=JIS',
-                     'Profile=Magnetic Pickup',
-                     'Profile=Nut Driver',
-                     'Profile=Oval Bit',
-                     'Profile=Pentalobe',
-                     'Profile=Phillips',
-                     'Profile=SIM Eject',
-                     'Profile=Spanner',
-                     'Profile=Square',
-                     'Profile=Torx',
-                     'Profile=Torx Security',
-                     'Profile=Tri-point',
-                     'Profile=Triangle',
-                     'Screwdriver Type:Interchangeable Bits',
-                     'Tool',
-                     'Tool Category (Legacy):Drivers & Wrenches',
-                     'Tool Type=Toolkits',
-                  ],
-                  rating: 4.9,
-                  reviewsCount: 1381,
-                  oemPartnership: null,
-               },
-               image: {
-                  id: 'gid://shopify/ProductImage/31392629260378',
-                  altText: 'IF145-307-4',
-                  height: 2000,
-                  width: 2000,
-                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_0b395d12-94a4-40b6-932e-3cbc60cef003.jpg?v=1660832943',
-               },
-               price: {
-                  amount: '74.99',
-                  currencyCode: CurrencyCode.Usd,
-               },
-               compareAtPrice: null,
-               proPricesByTier: {
-                  pro_1: {
-                     amount: 59.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_2: {
-                     amount: 59.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_3: {
-                     amount: 59.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_4: {
-                     amount: 59.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-               },
-               warranty: 'Lifetime Guarantee',
-               enabled: true,
-               formattedPrice: '$74.99',
-               formattedCompareAtPrice: null,
-            },
-         ],
-      },
-      {
-         id: 'gid://shopify/ProductVariant/32965718179930',
-         title: 'New / Part Only',
-         sku: 'IF315-007-9',
-         quantityAvailable: 42,
-         image: {
-            id: 'gid://shopify/ProductImage/31263941230682',
-            altText: 'iPhone 6s Plus Battery New Part Only',
-            height: 2000,
-            width: 2000,
-            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/RIvaaHOkDZJTBCBM_6b73f13e-f9b2-4eee-887f-b699cfb66f29.jpg?v=1656545132',
-            variantId: 'gid://shopify/ProductVariant/32965718179930',
-         },
-         price: {
-            amount: '24.99',
-            currencyCode: CurrencyCode.Usd,
-         },
-         compareAtPrice: null,
-         proPricesByTier: {
-            pro_1: {
-               amount: 23.33,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_2: {
-               amount: 17.5,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_3: {
-               amount: 11,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_4: {
-               amount: 10,
-               currencyCode: CurrencyCode.Usd,
-            },
-         },
-         selectedOptions: [
-            {
-               name: 'Condition',
-               value: 'New',
-            },
-            {
-               name: 'Part or Kit',
-               value: 'Part Only',
-            },
-         ],
-         description:
-            '<p>This replacement battery is what you need to bring that dead smartphone back to life.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li></ul>',
-         kitContents: null,
-         assemblyContents:
-            '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus</li><li>Battery Adhesive Strips</li></ul>',
-         note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
-         disclaimer: null,
-         warning:
-            '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
-         specifications:
-            "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
-         warranty: 'One year warranty',
-         enabled: true,
-         disableWhenOOS: false,
-         internalDisplayName: {
-            value: 'iPhone 6s Plus Battery / Part and Adhesive',
-         },
-         shippingRestrictions: ['is_battery'],
-         productcode: '315007',
-         optionid: '9',
-         isDiscounted: false,
-         discountPercentage: 0,
-         crossSellVariants: [
-            {
-               __typename: 'ProductVariant',
-               id: 'gid://shopify/ProductVariant/39333786746970',
-               sku: 'IF315-038-1',
-               quantityAvailable: 25,
-               product: {
-                  handle: 'iphone-6s-plus-screen',
-                  title: 'iPhone 6s Plus Screen',
-                  tags: [
-                     'Apple Device=iPhone',
-                     'Condition:New',
-                     'Device Brand:Apple',
-                     'Device Category:Phone',
-                     'Device Manufacturer=Apple',
-                     'Device Type:iPhone',
-                     'Device Type=Smartphones',
-                     'Item Type:Screens',
-                     'Main Category=Parts',
-                     'Model Number=A1634',
-                     'Model Number=A1687',
-                     'Model=iPhone 6s Plus',
-                     'OS:iOS',
-                     'Part',
-                     'Part or Kit:Fix Kit',
-                     'Part or Kit:Part Only',
-                     'Spare Part=Screens',
-                     'Version=iPhone Repair Kits',
-                     'worksin:1059',
-                  ],
-                  rating: 4.7,
-                  reviewsCount: 27,
-                  oemPartnership: null,
-               },
-               image: {
-                  id: 'gid://shopify/ProductImage/31268982194266',
-                  altText: 'IF315-038-1',
-                  height: 2000,
-                  width: 2000,
-                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5VOJlrQqeBjCF3nF.jpg?v=1656622264',
-               },
-               price: {
-                  amount: '59.99',
-                  currencyCode: CurrencyCode.Usd,
-               },
-               compareAtPrice: null,
-               proPricesByTier: {
-                  pro_1: {
-                     amount: 59.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_2: {
-                     amount: 59.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_3: {
-                     amount: 44.82,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_4: {
-                     amount: 37.92,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-               },
-               warranty: 'Lifetime Warranty',
-               enabled: true,
-               formattedPrice: '$59.99',
-               formattedCompareAtPrice: null,
-            },
-            {
-               __typename: 'ProductVariant',
-               id: 'gid://shopify/ProductVariant/39333786583130',
-               sku: 'IF315-049-2',
-               quantityAvailable: 46,
-               product: {
-                  handle: 'iphone-6s-plus-display-assembly-adhesive',
-                  title: 'iPhone 6s Plus Display Assembly Adhesive',
-                  tags: [
-                     'Apple Device=iPhone',
-                     'Condition:New',
-                     'Device Brand:Apple',
-                     'Device Category:Phone',
-                     'Device Manufacturer=Apple',
-                     'Device Type:iPhone',
-                     'Device Type=Smartphones',
-                     'Item Type:Adhesives',
-                     'Main Category=Parts',
-                     'Model Number=A1634',
-                     'Model Number=A1687',
-                     'Model=iPhone 6s Plus',
-                     'OS:iOS',
-                     'Part',
-                     'Part or Kit:Part Only',
-                     'Spare Part=Adhesives',
-                     'worksin:1059',
-                  ],
-                  rating: 4.7,
-                  reviewsCount: 20,
-                  oemPartnership: null,
-               },
-               image: {
-                  id: 'gid://shopify/ProductImage/30908245409882',
-                  altText: 'IF315-049-2',
-                  height: 2000,
-                  width: 2000,
-                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/BBYFChBH3BMOwJvp_6d0c34d9-eb5f-49e8-8c43-3a443b66fa14.jpg?v=1642621670',
-               },
-               price: {
-                  amount: '4.99',
-                  currencyCode: CurrencyCode.Usd,
-               },
-               compareAtPrice: null,
-               proPricesByTier: {
-                  pro_1: {
-                     amount: 4.49,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_2: {
-                     amount: 3.99,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_3: {
-                     amount: 1.5,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_4: {
-                     amount: 0.9,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-               },
-               warranty: 'Sold as-is; no refunds or returns',
-               enabled: true,
-               formattedPrice: '$4.99',
-               formattedCompareAtPrice: null,
-            },
-         ],
-      },
-   ],
+   variants: productVariants,
+   allVariants: productVariants,
+   isEnabled: true,
    iFixitProductId: 'IF315-007',
    productcode: '315007',
    productVideosJson: null,
@@ -1367,6 +1378,93 @@ export const mockedProductSearchHit: ProductSearchHit = {
    __position: 121,
 };
 
+const batteryProductImages: ProductImage[] = [
+   {
+      id: 'gid://shopify/ProductImage/31667478593626',
+      altText: 'Moto G7 Play Battery New',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Q6EDGMTQM3yGyAgE_2c2debb6-12c5-4d42-9f3f-6f2e7bfc5218.jpg?v=1669273550',
+      variantId: 'gid://shopify/ProductVariant/39333868634202',
+   },
+   {
+      id: 'gid://shopify/ProductImage/31667478626394',
+      altText: 'Moto G7 Play Battery New',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/FsQKrYKlBIjmfAlg_b68db7e6-40f2-4d78-b7a5-a22b86daa44f.jpg?v=1669273550',
+      variantId: 'gid://shopify/ProductVariant/39333868634202',
+   },
+];
+
+const batteryProductVariants: ProductVariant[] = [
+   {
+      id: 'gid://shopify/ProductVariant/39333868634202',
+      title: 'New',
+      sku: 'IF390-042-1',
+      quantityAvailable: 462,
+      image: {
+         id: 'gid://shopify/ProductImage/31667478593626',
+         altText: 'Moto G7 Play Battery New',
+         height: 2000,
+         width: 2000,
+         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Q6EDGMTQM3yGyAgE_2c2debb6-12c5-4d42-9f3f-6f2e7bfc5218.jpg?v=1669273550',
+         variantId: 'gid://shopify/ProductVariant/39333868634202',
+      },
+      price: {
+         amount: '32.99',
+         currencyCode: CurrencyCode.Usd,
+      },
+      compareAtPrice: null,
+      proPricesByTier: {
+         pro_1: {
+            amount: 29.69,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_2: {
+            amount: 28.04,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_3: {
+            amount: 26.39,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_4: {
+            amount: 24.74,
+            currencyCode: CurrencyCode.Usd,
+         },
+      },
+      selectedOptions: [
+         {
+            name: 'Condition',
+            value: 'New',
+         },
+      ],
+      description:
+         "<p>This Moto G7 Play replacement battery is what you need to bring your dead smartphone back to life!</p>\n\n<ul><li>Repair with confidence! iFixit is an authorized Motorola parts reseller.</li></ul>\n\n<p>Battery degradation is an inevitable part of your Android phone's lifespan — extend it with this replacement battery compatible with the Moto G7 Play. If your phone won’t turn on, won’t hold a charge, or you simply experience poor battery life, this replacement battery may be what you need to fix it.</p>",
+      kitContents: null,
+      assemblyContents: null,
+      note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
+      disclaimer: null,
+      warning:
+         '<p><a href="https://www.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
+      specifications:
+         "<table class='specifications'><tr><th>Battery Model #</th><td>JE40</td></tr>\n<tr><th>Watt Hours</th><td> 11.4 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td> 3000 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Motorola</td></tr></table>",
+      warranty: 'One year warranty',
+      enabled: true,
+      disableWhenOOS: false,
+      internalDisplayName: {
+         value: 'Moto G7 Play Battery / Part Only',
+      },
+      shippingRestrictions: ['is_battery'],
+      productcode: '390042',
+      optionid: '1',
+      isDiscounted: false,
+      discountPercentage: 0,
+      crossSellVariants: [],
+   },
+];
+
 export const mockedBatteryProduct: Product = {
    id: 'gid://shopify/Product/6556284026970',
    title: 'Moto G7 Play Battery',
@@ -1730,24 +1828,8 @@ export const mockedBatteryProduct: Product = {
    featuredImage: {
       id: 'gid://shopify/ProductImage/31667478593626',
    },
-   images: [
-      {
-         id: 'gid://shopify/ProductImage/31667478593626',
-         altText: 'Moto G7 Play Battery New',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Q6EDGMTQM3yGyAgE_2c2debb6-12c5-4d42-9f3f-6f2e7bfc5218.jpg?v=1669273550',
-         variantId: 'gid://shopify/ProductVariant/39333868634202',
-      },
-      {
-         id: 'gid://shopify/ProductImage/31667478626394',
-         altText: 'Moto G7 Play Battery New',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/FsQKrYKlBIjmfAlg_b68db7e6-40f2-4d78-b7a5-a22b86daa44f.jpg?v=1669273550',
-         variantId: 'gid://shopify/ProductVariant/39333868634202',
-      },
-   ],
+   images: batteryProductImages,
+   allImages: batteryProductImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/8434015174746',
@@ -1755,78 +1837,144 @@ export const mockedBatteryProduct: Product = {
          values: ['New'],
       },
    ],
-   variants: [
-      {
-         id: 'gid://shopify/ProductVariant/39333868634202',
-         title: 'New',
-         sku: 'IF390-042-1',
-         quantityAvailable: 462,
-         image: {
-            id: 'gid://shopify/ProductImage/31667478593626',
-            altText: 'Moto G7 Play Battery New',
-            height: 2000,
-            width: 2000,
-            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/Q6EDGMTQM3yGyAgE_2c2debb6-12c5-4d42-9f3f-6f2e7bfc5218.jpg?v=1669273550',
-            variantId: 'gid://shopify/ProductVariant/39333868634202',
-         },
-         price: {
-            amount: '32.99',
-            currencyCode: CurrencyCode.Usd,
-         },
-         compareAtPrice: null,
-         proPricesByTier: {
-            pro_1: {
-               amount: 29.69,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_2: {
-               amount: 28.04,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_3: {
-               amount: 26.39,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_4: {
-               amount: 24.74,
-               currencyCode: CurrencyCode.Usd,
-            },
-         },
-         selectedOptions: [
-            {
-               name: 'Condition',
-               value: 'New',
-            },
-         ],
-         description:
-            "<p>This Moto G7 Play replacement battery is what you need to bring your dead smartphone back to life!</p>\n\n<ul><li>Repair with confidence! iFixit is an authorized Motorola parts reseller.</li></ul>\n\n<p>Battery degradation is an inevitable part of your Android phone's lifespan — extend it with this replacement battery compatible with the Moto G7 Play. If your phone won’t turn on, won’t hold a charge, or you simply experience poor battery life, this replacement battery may be what you need to fix it.</p>",
-         kitContents: null,
-         assemblyContents: null,
-         note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
-         disclaimer: null,
-         warning:
-            '<p><a href="https://www.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
-         specifications:
-            "<table class='specifications'><tr><th>Battery Model #</th><td>JE40</td></tr>\n<tr><th>Watt Hours</th><td> 11.4 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td> 3000 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Motorola</td></tr></table>",
-         warranty: 'One year warranty',
-         enabled: true,
-         disableWhenOOS: false,
-         internalDisplayName: {
-            value: 'Moto G7 Play Battery / Part Only',
-         },
-         shippingRestrictions: ['is_battery'],
-         productcode: '390042',
-         optionid: '1',
-         isDiscounted: false,
-         discountPercentage: 0,
-         crossSellVariants: [],
-      },
-   ],
+   variants: batteryProductVariants,
+   allVariants: batteryProductVariants,
+   isEnabled: true,
    iFixitProductId: 'IF390-042',
    productcode: '390042',
    redirectUrl: null,
    vendor: '',
 };
+
+const toolProductImages: ProductImage[] = [
+   {
+      id: 'gid://shopify/ProductImage/31648428556378',
+      altText: 'Hakko 5B SA Curved Tweezers New',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/4LRTYhhAGRDEVEAX.jpg?v=1667585986',
+      variantId: 'gid://shopify/ProductVariant/39333789761626',
+   },
+];
+
+const toolProductVariants: ProductVariant[] = [
+   {
+      id: 'gid://shopify/ProductVariant/39333789761626',
+      title: 'New',
+      sku: 'IF317-048-1',
+      quantityAvailable: 13,
+      image: {
+         id: 'gid://shopify/ProductImage/31648428556378',
+         altText: 'Hakko 5B SA Curved Tweezers New',
+         height: 2000,
+         width: 2000,
+         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/4LRTYhhAGRDEVEAX.jpg?v=1667585986',
+         variantId: 'gid://shopify/ProductVariant/39333789761626',
+      },
+      price: {
+         amount: '9.99',
+         currencyCode: CurrencyCode.Usd,
+      },
+      compareAtPrice: null,
+      proPricesByTier: {
+         pro_1: {
+            amount: 9.95,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_2: {
+            amount: 9.95,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_3: {
+            amount: 9.95,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_4: {
+            amount: 9.95,
+            currencyCode: CurrencyCode.Usd,
+         },
+      },
+      selectedOptions: [
+         {
+            name: 'Condition',
+            value: 'New',
+         },
+      ],
+      description:
+         '<p>Very precise fine tipped tweezers for microsoldering and manipulating tiny parts.</p>',
+      kitContents: null,
+      assemblyContents: null,
+      note: null,
+      disclaimer: null,
+      warning: null,
+      specifications: null,
+      warranty: 'One year warranty',
+      enabled: true,
+      disableWhenOOS: false,
+      internalDisplayName: {
+         value: 'Hakko 5B SA Curved Tweezers',
+      },
+      shippingRestrictions: null,
+      productcode: '317048',
+      optionid: '1',
+      isDiscounted: false,
+      discountPercentage: 0,
+      crossSellVariants: [
+         {
+            __typename: 'ProductVariant',
+            id: 'gid://shopify/ProductVariant/39333789794394',
+            sku: 'IF317-047-1',
+            quantityAvailable: 31,
+            product: {
+               handle: 'hakko-3-sa-tweezers',
+               title: 'Hakko 3 SA Tweezers',
+               tags: [
+                  'Condition:New',
+                  'Tool',
+                  'Tool Category (Legacy):Soldering & Wiring',
+               ],
+               rating: 5,
+               reviewsCount: 3,
+               oemPartnership: null,
+            },
+            image: {
+               id: 'gid://shopify/ProductImage/31648429015130',
+               altText: 'IF317-047-1',
+               height: 2000,
+               width: 2000,
+               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/NHvasuuucgWNLOiK_5fe4cc71-1a6d-4718-b654-3f4cde68dbec.jpg?v=1667585988',
+            },
+            price: {
+               amount: '9.99',
+               currencyCode: CurrencyCode.Usd,
+            },
+            compareAtPrice: null,
+            proPricesByTier: {
+               pro_1: {
+                  amount: 9.95,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_2: {
+                  amount: 9.95,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_3: {
+                  amount: 9.95,
+                  currencyCode: CurrencyCode.Usd,
+               },
+               pro_4: {
+                  amount: 9.95,
+                  currencyCode: CurrencyCode.Usd,
+               },
+            },
+            warranty: 'One year warranty',
+            enabled: true,
+            formattedPrice: '$9.99',
+            formattedCompareAtPrice: null,
+         },
+      ],
+   },
+];
 
 export const mockedToolProduct: Product = {
    id: 'gid://shopify/Product/6556235071578',
@@ -2134,16 +2282,8 @@ export const mockedToolProduct: Product = {
    featuredImage: {
       id: 'gid://shopify/ProductImage/31648428556378',
    },
-   images: [
-      {
-         id: 'gid://shopify/ProductImage/31648428556378',
-         altText: 'Hakko 5B SA Curved Tweezers New',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/4LRTYhhAGRDEVEAX.jpg?v=1667585986',
-         variantId: 'gid://shopify/ProductVariant/39333789761626',
-      },
-   ],
+   images: toolProductImages,
+   allImages: toolProductImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/8433952227418',
@@ -2151,129 +2291,105 @@ export const mockedToolProduct: Product = {
          values: ['New'],
       },
    ],
-   variants: [
-      {
-         id: 'gid://shopify/ProductVariant/39333789761626',
-         title: 'New',
-         sku: 'IF317-048-1',
-         quantityAvailable: 13,
-         image: {
-            id: 'gid://shopify/ProductImage/31648428556378',
-            altText: 'Hakko 5B SA Curved Tweezers New',
-            height: 2000,
-            width: 2000,
-            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/4LRTYhhAGRDEVEAX.jpg?v=1667585986',
-            variantId: 'gid://shopify/ProductVariant/39333789761626',
-         },
-         price: {
-            amount: '9.99',
-            currencyCode: CurrencyCode.Usd,
-         },
-         compareAtPrice: null,
-         proPricesByTier: {
-            pro_1: {
-               amount: 9.95,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_2: {
-               amount: 9.95,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_3: {
-               amount: 9.95,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_4: {
-               amount: 9.95,
-               currencyCode: CurrencyCode.Usd,
-            },
-         },
-         selectedOptions: [
-            {
-               name: 'Condition',
-               value: 'New',
-            },
-         ],
-         description:
-            '<p>Very precise fine tipped tweezers for microsoldering and manipulating tiny parts.</p>',
-         kitContents: null,
-         assemblyContents: null,
-         note: null,
-         disclaimer: null,
-         warning: null,
-         specifications: null,
-         warranty: 'One year warranty',
-         enabled: true,
-         disableWhenOOS: false,
-         internalDisplayName: {
-            value: 'Hakko 5B SA Curved Tweezers',
-         },
-         shippingRestrictions: null,
-         productcode: '317048',
-         optionid: '1',
-         isDiscounted: false,
-         discountPercentage: 0,
-         crossSellVariants: [
-            {
-               __typename: 'ProductVariant',
-               id: 'gid://shopify/ProductVariant/39333789794394',
-               sku: 'IF317-047-1',
-               quantityAvailable: 31,
-               product: {
-                  handle: 'hakko-3-sa-tweezers',
-                  title: 'Hakko 3 SA Tweezers',
-                  tags: [
-                     'Condition:New',
-                     'Tool',
-                     'Tool Category (Legacy):Soldering & Wiring',
-                  ],
-                  rating: 5,
-                  reviewsCount: 3,
-                  oemPartnership: null,
-               },
-               image: {
-                  id: 'gid://shopify/ProductImage/31648429015130',
-                  altText: 'IF317-047-1',
-                  height: 2000,
-                  width: 2000,
-                  url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/NHvasuuucgWNLOiK_5fe4cc71-1a6d-4718-b654-3f4cde68dbec.jpg?v=1667585988',
-               },
-               price: {
-                  amount: '9.99',
-                  currencyCode: CurrencyCode.Usd,
-               },
-               compareAtPrice: null,
-               proPricesByTier: {
-                  pro_1: {
-                     amount: 9.95,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_2: {
-                     amount: 9.95,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_3: {
-                     amount: 9.95,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-                  pro_4: {
-                     amount: 9.95,
-                     currencyCode: CurrencyCode.Usd,
-                  },
-               },
-               warranty: 'One year warranty',
-               enabled: true,
-               formattedPrice: '$9.99',
-               formattedCompareAtPrice: null,
-            },
-         ],
-      },
-   ],
+   variants: toolProductVariants,
+   allVariants: toolProductVariants,
+   isEnabled: true,
    iFixitProductId: 'IF317-048',
    productcode: '317048',
    redirectUrl: null,
    vendor: '',
 };
+
+const partProductImages: ProductImage[] = [
+   {
+      id: 'gid://shopify/ProductImage/31667549864026',
+      altText: 'Galaxy A51 Screen New Part Only',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/hUxkteGSKrZWtprS_11f56205-e41f-40a9-bd40-d2318d15d2b3.jpg?v=1669276040',
+      variantId: 'gid://shopify/ProductVariant/39425225392218',
+   },
+   {
+      id: 'gid://shopify/ProductImage/31667549896794',
+      altText: 'Galaxy A51 Screen New Part Only',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/IlEA1KXGbvi4Hd2G_0f0ff27f-8532-4302-bdc5-6f8ed677c251.jpg?v=1669276040',
+      variantId: 'gid://shopify/ProductVariant/39425225392218',
+   },
+];
+
+const partProductVariants: ProductVariant[] = [
+   {
+      id: 'gid://shopify/ProductVariant/39425225392218',
+      title: 'New / Part Only',
+      sku: 'IF457-000-1',
+      quantityAvailable: 360,
+      image: {
+         id: 'gid://shopify/ProductImage/31667549864026',
+         altText: 'Galaxy A51 Screen New Part Only',
+         height: 2000,
+         width: 2000,
+         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/hUxkteGSKrZWtprS_11f56205-e41f-40a9-bd40-d2318d15d2b3.jpg?v=1669276040',
+         variantId: 'gid://shopify/ProductVariant/39425225392218',
+      },
+      price: {
+         amount: '119.99',
+         currencyCode: CurrencyCode.Usd,
+      },
+      compareAtPrice: null,
+      proPricesByTier: {
+         pro_1: {
+            amount: 119.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_2: {
+            amount: 119.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_3: {
+            amount: 119.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+         pro_4: {
+            amount: 119.99,
+            currencyCode: CurrencyCode.Usd,
+         },
+      },
+      selectedOptions: [
+         {
+            name: 'Condition',
+            value: 'New',
+         },
+         {
+            name: 'Part or Kit',
+            value: 'Part Only',
+         },
+      ],
+      description:
+         '<p>This Galaxy A51 replacement screen includes all of the small parts preinstalled in the assembly, saving time and increasing the quality of your repair.</p>\n\n<p>Replace a cracked or scratched front glass panel or malfunctioning AMOLED display on your phone. This screen and digitizer assembly will renew the appearance of your front panel, restore touch function, and eliminate the dead pixels or flickering on an aging display.</p>\n\n<p>This is an aftermarket part. It is not a genuine Samsung part.</p>',
+      kitContents: null,
+      assemblyContents:
+         '<ul><li>Front Glass Digitizer Screen</li><li>AMOLED Display</li></ul>',
+      note: null,
+      disclaimer: '<p>Installation adhesive is not included.</p>',
+      warning: null,
+      specifications:
+         "<table class='specifications'><tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
+      warranty: 'Lifetime Guarantee',
+      enabled: true,
+      disableWhenOOS: false,
+      internalDisplayName: {
+         value: 'Galaxy A51 Screen / New / Part Only',
+      },
+      shippingRestrictions: null,
+      productcode: '457000',
+      optionid: '1',
+      isDiscounted: false,
+      discountPercentage: 0,
+      crossSellVariants: [],
+   },
+];
 
 export const mockedPartProduct: Product = {
    id: 'gid://shopify/Product/6581511684186',
@@ -2639,24 +2755,8 @@ export const mockedPartProduct: Product = {
    featuredImage: {
       id: 'gid://shopify/ProductImage/31667549864026',
    },
-   images: [
-      {
-         id: 'gid://shopify/ProductImage/31667549864026',
-         altText: 'Galaxy A51 Screen New Part Only',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/hUxkteGSKrZWtprS_11f56205-e41f-40a9-bd40-d2318d15d2b3.jpg?v=1669276040',
-         variantId: 'gid://shopify/ProductVariant/39425225392218',
-      },
-      {
-         id: 'gid://shopify/ProductImage/31667549896794',
-         altText: 'Galaxy A51 Screen New Part Only',
-         height: 2000,
-         width: 2000,
-         url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/IlEA1KXGbvi4Hd2G_0f0ff27f-8532-4302-bdc5-6f8ed677c251.jpg?v=1669276040',
-         variantId: 'gid://shopify/ProductVariant/39425225392218',
-      },
-   ],
+   images: partProductImages,
+   allImages: partProductImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/8466995773530',
@@ -2669,77 +2769,9 @@ export const mockedPartProduct: Product = {
          values: ['Part Only'],
       },
    ],
-   variants: [
-      {
-         id: 'gid://shopify/ProductVariant/39425225392218',
-         title: 'New / Part Only',
-         sku: 'IF457-000-1',
-         quantityAvailable: 360,
-         image: {
-            id: 'gid://shopify/ProductImage/31667549864026',
-            altText: 'Galaxy A51 Screen New Part Only',
-            height: 2000,
-            width: 2000,
-            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/hUxkteGSKrZWtprS_11f56205-e41f-40a9-bd40-d2318d15d2b3.jpg?v=1669276040',
-            variantId: 'gid://shopify/ProductVariant/39425225392218',
-         },
-         price: {
-            amount: '119.99',
-            currencyCode: CurrencyCode.Usd,
-         },
-         compareAtPrice: null,
-         proPricesByTier: {
-            pro_1: {
-               amount: 119.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_2: {
-               amount: 119.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_3: {
-               amount: 119.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-            pro_4: {
-               amount: 119.99,
-               currencyCode: CurrencyCode.Usd,
-            },
-         },
-         selectedOptions: [
-            {
-               name: 'Condition',
-               value: 'New',
-            },
-            {
-               name: 'Part or Kit',
-               value: 'Part Only',
-            },
-         ],
-         description:
-            '<p>This Galaxy A51 replacement screen includes all of the small parts preinstalled in the assembly, saving time and increasing the quality of your repair.</p>\n\n<p>Replace a cracked or scratched front glass panel or malfunctioning AMOLED display on your phone. This screen and digitizer assembly will renew the appearance of your front panel, restore touch function, and eliminate the dead pixels or flickering on an aging display.</p>\n\n<p>This is an aftermarket part. It is not a genuine Samsung part.</p>',
-         kitContents: null,
-         assemblyContents:
-            '<ul><li>Front Glass Digitizer Screen</li><li>AMOLED Display</li></ul>',
-         note: null,
-         disclaimer: '<p>Installation adhesive is not included.</p>',
-         warning: null,
-         specifications:
-            "<table class='specifications'><tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
-         warranty: 'Lifetime Guarantee',
-         enabled: true,
-         disableWhenOOS: false,
-         internalDisplayName: {
-            value: 'Galaxy A51 Screen / New / Part Only',
-         },
-         shippingRestrictions: null,
-         productcode: '457000',
-         optionid: '1',
-         isDiscounted: false,
-         discountPercentage: 0,
-         crossSellVariants: [],
-      },
-   ],
+   variants: partProductVariants,
+   allVariants: partProductVariants,
+   isEnabled: true,
    iFixitProductId: 'IF457-000',
    productcode: '457000',
    redirectUrl: null,

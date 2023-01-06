@@ -17,7 +17,7 @@ export function useSelectedVariant(
 
    let variant = product.variants.find((v) => v.id === currentVariantId);
    if (variant == null) {
-      variant = product.variants.find((v) => v.id === defaultVariantId);
+      variant = product.allVariants.find((v) => v.id === defaultVariantId);
    }
 
    invariant(
@@ -49,7 +49,9 @@ export function useDefaultVariantId(product: Product): string {
    const variant =
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
-      ) ?? product.variants[0];
+      ) ??
+      product.variants[0] ??
+      product.allVariants[0];
    return variant.id;
 }
 

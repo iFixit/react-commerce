@@ -48,10 +48,6 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
    const variants = getVariants(response.product);
    const activeVariants = variants.filter(isActiveVariant);
 
-   if (activeVariants.length === 0) {
-      return null;
-   }
-
    const allImages = getFormattedImages(response.product);
    const activeImages = allImages.filter((image) =>
       isActiveImage(image, activeVariants)
@@ -81,8 +77,11 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       iFixitProductId,
       productcode: parseItemcode(variantSku).productcode,
       images: activeImages,
+      allImages,
       options,
       variants: activeVariants,
+      allVariants: variants,
+      isEnabled: activeVariants.length > 0,
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
