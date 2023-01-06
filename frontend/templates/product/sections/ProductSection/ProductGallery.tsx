@@ -256,6 +256,7 @@ const CustomNavigation = ({
             </Circle>
          </Button>
          <Button
+            data-testid="swiper-next-image"
             pos="absolute"
             top="50%"
             right="2"
