@@ -68,6 +68,17 @@ test.describe('Product breadcrumb test', () => {
             ).not.toBeNull();
          }
          expect(ancestorLinksCount).toBeLessThanOrEqual(3);
+
+         // If the product has less than or equal to 3 breadcrumb links, we don't display the breadcrumb menu
+         const desktopBreadcrumbMenu = page.getByTestId(
+            'breadcrumb-menu-desktop'
+         );
+         await expect(desktopBreadcrumbMenu).not.toBeVisible();
+
+         const mobileBreadcrumbMenu = page.getByTestId(
+            'breadcrumb-menu-mobile'
+         );
+         await expect(mobileBreadcrumbMenu).not.toBeVisible();
       });
    });
 });
