@@ -52,6 +52,16 @@ jobs:
               path: frontend/test/cypress/screenshots
 
    playwright-run:
+      strategy:
+         fail-fast: false
+         matrix:
+            project:
+               [
+                  'Desktop Chrome',
+                  'Desktop Firefox',
+                  'Mobile Chrome',
+                  'Tablet Chrome',
+               ]
       runs-on: ubuntu-latest
       steps:
          - name: Checkout
@@ -88,7 +98,7 @@ jobs:
               NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-           run: cd frontend && pnpm playwright:run
+           run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}"
 
          - uses: actions/upload-artifact@v2
            if: failure()

@@ -61,16 +61,30 @@ const config: PlaywrightTestConfig = {
    /* Configure projects for major browsers */
    projects: [
       {
-         name: 'chromium',
+         name: 'Desktop Chrome',
          use: {
             ...devices['Desktop Chrome'],
          },
       },
 
       {
-         name: 'firefox',
+         name: 'Desktop Firefox',
          use: {
             ...devices['Desktop Firefox'],
+         },
+      },
+
+      /* Test against mobile viewports. */
+      {
+         name: 'Mobile Chrome',
+         use: {
+            ...devices['Pixel 5'],
+         },
+      },
+      {
+         name: 'Tablet Chrome',
+         use: {
+            ...devices['Galaxy Tab S4'],
          },
       },
 
@@ -80,20 +94,6 @@ const config: PlaywrightTestConfig = {
       //    use: {
       //       ...devices['Desktop Safari'],
       //    },
-      // },
-
-      /* Test against mobile viewports. */
-      // {
-      //   name: 'Mobile Chrome',
-      //   use: {
-      //     ...devices['Pixel 5'],
-      //   },
-      // },
-      // {
-      //   name: 'Mobile Safari',
-      //   use: {
-      //     ...devices['iPhone 12'],
-      //   },
       // },
 
       /* Test against branded browsers. */
