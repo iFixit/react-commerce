@@ -10,19 +10,19 @@ import { Box, Container, Heading } from '@chakra-ui/react';
 type Problem = {
    heading: string;
    body: string;
-}
+};
 
 type TroubleshootingData = {
    toc: string;
-   groups: Problem[]
-}
+   groups: Problem[];
+};
 
 const renderStyles = {
-   'a': {
-      'color': 'blue.500',
+   a: {
+      color: 'blue.500',
    },
    'ul, ol': {
-      'paddingLeft': 4,
+      paddingLeft: 4,
    },
 };
 
@@ -31,7 +31,9 @@ const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
    const client = new IFixitAPIClient({ origin: appContext.ifixitOrigin });
 
    const { wikiname } = useRouter().query;
-   const [wikiData, setWikiData] = React.useState<TroubleshootingData|null>(null);
+   const [wikiData, setWikiData] = React.useState<TroubleshootingData | null>(
+      null
+   );
    React.useEffect(() => {
       client
          .get(`Troubleshooting/${wikiname}`, {
@@ -42,7 +44,7 @@ const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
          });
    }, [wikiname]);
    if (!wikiData) {
-      return <p>waiting</p>
+      return <p>waiting</p>;
    }
    return (
       <Container sx={renderStyles}>
@@ -51,8 +53,8 @@ const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
          </Head>
          <Heading as="h1">{wikiData.title}</Heading>
          {wikiData.groups.map((group) => (
-            <ProblemCard problem={group} />)
-         )}
+            <ProblemCard problem={group} />
+         ))}
       </Container>
    );
 };
