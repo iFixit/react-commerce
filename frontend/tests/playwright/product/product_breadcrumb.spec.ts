@@ -16,15 +16,11 @@ test.describe('Product breadcrumb test', () => {
          await page.goto('/products/iflex-opening-tool');
 
          // Last child breadcrumb is visible on both mobile and desktop
-         const lastChildBreadcrumb = page.getByTestId(
-            'breadcrumb-last-child-link'
-         );
-         await expect(lastChildBreadcrumb).toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-last-child-link')
+         ).toBeVisible();
 
-         const mobileBreadcrumbMenu = page.getByTestId(
-            'breadcrumb-menu-mobile'
-         );
-         await expect(mobileBreadcrumbMenu).toBeVisible();
+         await expect(page.getByTestId('breadcrumb-menu-mobile')).toBeVisible();
 
          // Assert that the ancestor breadcrumb links are not visible on mobile
          const desktopBreadcrumbAncestorLinks = page.getByTestId(
@@ -32,7 +28,9 @@ test.describe('Product breadcrumb test', () => {
          );
          const count = await desktopBreadcrumbAncestorLinks.count();
          for (let i = 0; i < count; i++) {
-            expect(desktopBreadcrumbAncestorLinks.nth(i)).not.toBeVisible();
+            await expect(
+               desktopBreadcrumbAncestorLinks.nth(i)
+            ).not.toBeVisible();
          }
       });
    });
@@ -50,10 +48,9 @@ test.describe('Product breadcrumb test', () => {
       test('with less than or equal to 3 breacrumb links', async ({ page }) => {
          await page.goto('/products/iflex-opening-tool');
 
-         const lastChildBreadcrumb = page.getByTestId(
-            'breadcrumb-last-child-link'
-         );
-         await expect(lastChildBreadcrumb).toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-last-child-link')
+         ).toBeVisible();
 
          const desktopBreadcrumbAncestorLinks = page.getByTestId(
             'breadcrumb-ancestor-link-desktop'
@@ -70,15 +67,13 @@ test.describe('Product breadcrumb test', () => {
          expect(ancestorLinksCount).toBeLessThanOrEqual(2);
 
          // If the product has less than or equal to 3 breadcrumb links, we don't display the breadcrumb menu
-         const desktopBreadcrumbMenu = page.getByTestId(
-            'breadcrumb-menu-desktop'
-         );
-         await expect(desktopBreadcrumbMenu).not.toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-menu-desktop')
+         ).not.toBeVisible();
 
-         const mobileBreadcrumbMenu = page.getByTestId(
-            'breadcrumb-menu-mobile'
-         );
-         await expect(mobileBreadcrumbMenu).not.toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-menu-mobile')
+         ).not.toBeVisible();
       });
 
       /*
@@ -87,10 +82,9 @@ test.describe('Product breadcrumb test', () => {
       test('with more than 3 breacrumb links', async ({ page }) => {
          await page.goto('/products/iphone-6s-plus-replacement-battery');
 
-         const lastChildBreadcrumb = page.getByTestId(
-            'breadcrumb-last-child-link'
-         );
-         await expect(lastChildBreadcrumb).toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-last-child-link')
+         ).toBeVisible();
 
          const desktopBreadcrumbAncestorLinks = page.getByTestId(
             'breadcrumb-ancestor-link-desktop'
@@ -105,15 +99,13 @@ test.describe('Product breadcrumb test', () => {
          }
          expect(ancestorLinksCount).toBeLessThanOrEqual(2);
 
-         const desktopBreadcrumbMenu = page.getByTestId(
-            'breadcrumb-menu-desktop'
-         );
-         await expect(desktopBreadcrumbMenu).toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-menu-desktop')
+         ).toBeVisible();
 
-         const mobileBreadcrumbMenu = page.getByTestId(
-            'breadcrumb-menu-mobile'
-         );
-         await expect(mobileBreadcrumbMenu).not.toBeVisible();
+         await expect(
+            page.getByTestId('breadcrumb-menu-mobile')
+         ).not.toBeVisible();
       });
    });
 });
