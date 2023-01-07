@@ -535,5 +535,34 @@ describe('ProductSection Tests', () => {
             'This item is currently Out of Stock'
          );
       });
+
+      test('Product with no image', async () => {
+         const product = getMockProduct({
+            images: [],
+            variants: [
+               getMockProductVariant({
+                  image: null,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const imagePlaceholders = screen.queryAllByText(
+            /No photos available for this product/i
+         );
+         // We have 2 image placeholders in the dom where one of them is hidden
+         // and the other is visible (due to different viewports).
+         imagePlaceholders.forEach((el) =>
+            (expect(el) as any).toBeInTheDocument()
+         );
+      });
    });
 });
