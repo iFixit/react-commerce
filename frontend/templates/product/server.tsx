@@ -12,7 +12,7 @@ import { GetServerSideProps } from 'next';
 import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
-   serverSidePropsWrapper<ProductTemplateProps>(async (context) => {
+   serverSidePropsWrapper<ProductTemplateProps>('product', async (context) => {
       context.res.setHeader(
          'Cache-Control',
          'public, s-maxage=60, stale-while-revalidate=600'

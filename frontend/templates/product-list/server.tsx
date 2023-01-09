@@ -12,11 +12,8 @@ import { assertNever, invariant, logAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
-import {
-   findProductList,
-   ProductList,
-   ProductListType,
-} from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
+import { findProductList } from '@models/product-list/server';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { renderToString } from 'react-dom/server';

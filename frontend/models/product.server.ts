@@ -3,10 +3,10 @@ import {
    computeDiscountPercentage,
    formatMoney,
    invariant,
-   logAsync,
    Money,
    parseItemcode,
 } from '@ifixit/helpers';
+import { timeAsync } from '@ifixit/stats';
 import {
    FindProductQuery,
    getServerShopifyStorefrontSdk,
@@ -37,7 +37,7 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       storefrontDelegateToken: storefrontDelegateAccessToken,
    });
 
-   const response = await logAsync('shopify.findProduct', () =>
+   const response = await timeAsync('shopify_api.findProduct', () =>
       storefront.findProduct({
          handle,
       })
@@ -47,10 +47,6 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
    }
    const variants = getVariants(response.product);
    const activeVariants = variants.filter(isActiveVariant);
-
-   if (activeVariants.length === 0) {
-      return null;
-   }
 
    const allImages = getFormattedImages(response.product);
    const activeImages = allImages.filter((image) =>
@@ -81,8 +77,11 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
       iFixitProductId,
       productcode: parseItemcode(variantSku).productcode,
       images: activeImages,
+      allImages,
       options,
       variants: activeVariants,
+      allVariants: variants,
+      isEnabled: activeVariants.length > 0,
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
       productVideos: response.product.productVideos?.value ?? null,
