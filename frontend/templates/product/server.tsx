@@ -1,24 +1,27 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
-import {
-   noindexDevDomains,
-   serverSidePropsWrapper,
-} from '@helpers/next-helpers';
+import { withCacheLong } from '@helpers/cache-control-helpers';
+import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { findProduct } from '@models/product.server';
+import compose from 'lodash/flowRight';
 import { GetServerSideProps } from 'next';
 import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
-export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
-   serverSidePropsWrapper<ProductTemplateProps>('product', async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=60, stale-while-revalidate=600'
-      );
+const withNamedLogging = withLogging({
+   pageName: 'product',
+});
 
-      noindexDevDomains(context);
+const withMiddleware = compose(
+   withNamedLogging<ProductTemplateProps>,
+   withCacheLong<ProductTemplateProps>,
+   withNoindexDevDomains<ProductTemplateProps>
+);
+
+export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
+   withMiddleware(async (context) => {
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
       const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
