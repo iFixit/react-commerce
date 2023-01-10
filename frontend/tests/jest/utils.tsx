@@ -33,6 +33,17 @@ export const mockMatchMedia = () => {
    });
 };
 
+export const mockResizeObserver = () => {
+   Object.defineProperty(global, 'ResizeObserver', {
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({
+         observe: jest.fn(),
+         unobserve: jest.fn(),
+         disconnect: jest.fn(),
+      })),
+   });
+};
+
 export const GlobalContextProvider = ({
    // @ts-ignore
    children,
