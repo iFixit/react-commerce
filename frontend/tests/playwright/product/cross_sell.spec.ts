@@ -72,7 +72,7 @@ test.describe('Cross-sell test', () => {
 
       // Assert total price matches the sum of all products
       await expect(
-         page.getByText('Total Price: $' + expectedTotalPrice)
+         page.getByText('Total Price: $' + expectedTotalPrice.toFixed(2))
       ).toBeVisible();
 
       // Assert adding to cart adds all products
