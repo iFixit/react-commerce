@@ -22,6 +22,16 @@ export const handlers: RequestHandler[] = [
             outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
          }
          return res(ctx.data(outOfStockProduct));
+      } else if (
+         req.variables.handle === 'iphone-6s-plus-replacement-battery-disabled'
+      ) {
+         const disabledProduct = cloneDeep(mockedProductQuery);
+         if (disabledProduct.product) {
+            disabledProduct.product.variants.nodes.forEach((variant) => {
+               variant.enabled = null;
+            });
+         }
+         return res(ctx.data(disabledProduct));
       } else {
          // Perform an original request to the intercepted request URL
          const originalResponse = await ctx.fetch(req);
