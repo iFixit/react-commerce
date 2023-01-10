@@ -6,11 +6,13 @@ import * as Sentry from '@sentry/nextjs';
 import { BrowserTracing } from '@sentry/tracing';
 
 const SENTRY_DSN = process.env.SENTRY_DSN;
+const SENTRY_FORCE_CLIENT_SAMPLING =
+   process.env.SENTRY_FORCE_CLIENT_SAMPLING === 'true';
 
 Sentry.init({
    dsn: SENTRY_DSN,
    integrations: [new BrowserTracing()],
-   sampleRate: 1.0,
+   sampleRate: SENTRY_FORCE_CLIENT_SAMPLING ? 0.05 : 1.0,
    normalizeDepth: 5,
    tracesSampleRate: 0.005,
    // ...
