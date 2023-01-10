@@ -88,14 +88,6 @@ const config: PlaywrightTestConfig = {
          },
       },
 
-      // We need to enable cross-site tracking for Safari to work locally.
-      // {
-      //    name: 'webkit',
-      //    use: {
-      //       ...devices['Desktop Safari'],
-      //    },
-      // },
-
       /* Test against branded browsers. */
       // {
       //   name: 'Microsoft Edge',
