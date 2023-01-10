@@ -59,6 +59,7 @@
       "framer-motion": "6.2.7",
       "graphql": "15.5.3",
       "immer": "9.0.14",
+      "ioredis": "5.2.4",
       "lodash": "4.17.21",
       "lru-cache": "7.10.1",
       "next": "12.2.3",
