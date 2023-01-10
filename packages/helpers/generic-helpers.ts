@@ -48,6 +48,14 @@ export function logSync<T>(name: string, syncFunction: () => T): T {
    return response;
 }
 
+export function withLogging<ARGS extends Array<any>, RETURN>(
+   name: string,
+   promiseFunction: (...args: ARGS) => Promise<RETURN>
+) {
+   const done = time(name);
+   return (...args: ARGS) => promiseFunction(...args).finally(done);
+}
+
 function noOp() {}
 const silentTimer = function (timerName: string) {
    return noOp;

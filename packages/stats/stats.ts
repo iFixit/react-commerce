@@ -1,6 +1,6 @@
 import StatsD from 'hot-shots';
 
-import { logAsync } from '@ifixit/helpers';
+import { logAsync, withLogging } from '@ifixit/helpers';
 
 const STATSD_HOST = process.env.STATSD_HOST;
 
@@ -29,9 +29,16 @@ if (!STATSD_HOST) {
    console.log(`Sending statsd stats to ${STATSD_HOST}`);
 }
 
-export function timeAsync<T>(
+export function timeAsync<Return>(
    statName: string,
-   promiseFunc: () => Promise<T>
-): Promise<T> {
-   return stats.asyncTimer(promiseFunc, statName)();
+   promiseFunc: () => Promise<Return>
+): Promise<Return> {
+   return withTiming(statName, promiseFunc)();
+}
+
+export function withTiming<Args extends unknown[], Return>(
+   statName: string,
+   promiseFunc: (...args: Args) => Promise<Return>
+) {
+   return withLogging(statName, stats.asyncTimer(promiseFunc, statName));
 }
