@@ -9,15 +9,12 @@ test.describe('Cross-sell test', () => {
       page,
    }) => {
       const products = await page.getByTestId('cross-sell-item');
-      const count = await products.count();
 
       let currentProductTitle = null;
       let currentProductPrice = null;
       const otherProductTitles = [];
 
-      for (let i = 0; i < count; i++) {
-         const product = products.nth(i);
-
+      for (const product of await products.all()) {
          const isCurrent = await product
             .locator('span', { hasText: 'Current item' })
             .isVisible();
@@ -59,13 +56,11 @@ test.describe('Cross-sell test', () => {
 
    test('Cross-sell products can be added to cart', async ({ page }) => {
       const products = await page.getByTestId('cross-sell-item');
-      const count = await products.count();
 
       const allProductTitles = [];
       let expectedTotalPrice = 0;
 
-      for (let i = 0; i < count; i++) {
-         const product = products.nth(i);
+      for (const product of await products.all()) {
 
          allProductTitles.push(
             await product.getByTestId('cross-sell-item-title').textContent()
