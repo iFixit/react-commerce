@@ -9,7 +9,7 @@ test.describe('Vulcan page', () => {
    test('it should not be indexed', async ({ page }) => {
       await page.goto('/Vulcan/iPhone');
       // check that the meta robots tag is set to noindex
-      const meta = page.locator('meta[name="robots"]')
+      const meta = page.locator('meta[name="robots"]');
       await expect(meta).toHaveAttribute('content', 'noindex');
    });
 });
