@@ -12,7 +12,8 @@
          "@components/*": ["components/*"],
          "@templates/*": ["templates/*"],
          "@layouts/*": ["layouts/*"],
-         "@public/*": ["public/*"]
+         "@public/*": ["public/*"],
+         "@pages/*": ["pages/*"]
       },
       "types": ["cypress", "@testing-library/cypress"],
       "preserveSymlinks": true

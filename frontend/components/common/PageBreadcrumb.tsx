@@ -60,7 +60,10 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                   lg: 'none',
                }}
             >
-               <BreadcrumbMenu items={mobileCollapsedItems} />
+               <BreadcrumbMenu
+                  items={mobileCollapsedItems}
+                  data-testid="breadcrumb-menu-mobile"
+               />
             </BreadcrumbItem>
          )}
          {desktopCollapsedItems.length > 0 && (
@@ -70,7 +73,10 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                   lg: 'inline-flex',
                }}
             >
-               <BreadcrumbMenu items={desktopCollapsedItems} />
+               <BreadcrumbMenu
+                  items={desktopCollapsedItems}
+                  data-testid="breadcrumb-menu-desktop"
+               />
             </BreadcrumbItem>
          )}
          {visibleAncestors.map((ancestor, index) => {
@@ -85,6 +91,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                >
                   <NextLink href={ancestor.url} passHref>
                      <BreadcrumbLink
+                        data-testid="breadcrumb-ancestor-link-desktop"
                         color="gray.500"
                         whiteSpace="nowrap"
                         borderRadius="sm"
@@ -119,6 +126,7 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                _hover={{
                   textDecoration: 'none',
                }}
+               data-testid="breadcrumb-last-child-link"
             >
                {currentItem.label}
             </BreadcrumbLink>
@@ -131,7 +139,7 @@ type BreadcrumbMenuProps = {
    items: TBreadcrumbItem[];
 };
 
-function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
+function BreadcrumbMenu({ items, ...otherProps }: BreadcrumbMenuProps) {
    return (
       <Menu>
          <MenuButton
@@ -142,6 +150,7 @@ function BreadcrumbMenu({ items }: BreadcrumbMenuProps) {
             bg="gray.300"
             size="xs"
             px="1.5"
+            {...otherProps}
          />
          <MenuList zIndex="dropdown">
             {items.map((ancestor, index) => (

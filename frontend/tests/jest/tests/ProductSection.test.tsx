@@ -8,6 +8,7 @@ import {
    getDiscountedProduct,
    getProductOfType,
    getProductWithWarranty,
+   mockResizeObserver,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 import { mockedLayoutProps } from '../__mocks__/products';
@@ -24,6 +25,7 @@ jest.mock('@templates/product/hooks/useProductTemplateProps', () => ({
 describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
+      mockResizeObserver();
    });
 
    describe('Product Description Tests', () => {
