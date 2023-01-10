@@ -61,7 +61,6 @@ test.describe('Cross-sell test', () => {
       let expectedTotalPrice = 0;
 
       for (const product of await products.all()) {
-
          allProductTitles.push(
             await product.getByTestId('cross-sell-item-title').textContent()
          );
