@@ -21,7 +21,8 @@
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "cypress:open": "cypress open",
       "cypress:run": "cypress run",
-      "playwright:run": "playwright test",
+      "playwright:run": "NEXT_PUBLIC_MOCK_API=true playwright test",
+      "playwright:debug": "NEXT_PUBLIC_MOCK_API=true DEBUG=pw:api playwright test --project=chromium --debug",
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {
@@ -122,6 +123,7 @@
       "jest-css-modules-transform": "^4.4.2",
       "jest-environment-jsdom": "28.1.2",
       "jest-watch-typeahead": "1.1.0",
+      "msw": "0.49.2",
       "next-transpile-modules": "9.0.0",
       "prettier": "2.7.1",
       "typescript": "4.8.4",
@@ -132,5 +134,8 @@
       "budgetPercentIncreaseRed": 20,
       "showDetails": true,
       "minimumChangeThreshold": 500
+   },
+   "msw": {
+      "workerDirectory": "public"
    }
 }

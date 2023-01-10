@@ -3,6 +3,7 @@
    "compilerOptions": {
       "baseUrl": ".",
       "paths": {
+         "@tests/*": ["tests/*"],
          "@config/*": ["config/*"],
          "@assets/*": ["assets/*"],
          "@lib/*": ["lib/*"],
