@@ -43,7 +43,7 @@ Sentry.init({
       const ex = hint.originalException;
       if (ex && typeof ex == 'object' && ex.message) {
          // Sample hydration errors.
-         if (hydrationErrors.includes(ex.message)) {
+         if (hydrationErrors.some((msg) => ex.message.match(msg))) {
             return Math.random() < 0.05 ? event : null;
          }
       }
