@@ -12,7 +12,7 @@ test.describe('parts page devices', () => {
          page.getByTestId('filterable-products-section')
       ).toBeVisible();
 
-      if (viewPort!.width > 1000) {
+      if (viewPort!.width > 768) {
          await page.getByTestId('facets-accordion').scrollIntoViewIfNeeded();
          await expect(page.getByTestId('facets-accordion')).toBeVisible();
       } else {

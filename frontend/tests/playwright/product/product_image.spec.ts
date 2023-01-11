@@ -21,7 +21,7 @@ test.describe('Product image test', () => {
          .getAttribute('src');
 
       const firstImage =
-         viewPort!.width > 1000
+         viewPort!.width > 768
             ? page
                  .getByTestId('product-gallery-desktop')
                  .locator(`img[src="${firstImageSrc}"]`)
@@ -34,7 +34,7 @@ test.describe('Product image test', () => {
       await expect(firstImage).toBeVisible();
 
       // Click on the arrow for the next image
-      if (viewPort!.width > 1000) {
+      if (viewPort!.width > 768) {
          await page
             .getByTestId('product-gallery-desktop')
             .getByTestId('swiper-next-image')
