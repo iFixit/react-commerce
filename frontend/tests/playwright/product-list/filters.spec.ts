@@ -211,5 +211,68 @@ test.describe('product list filters', () => {
             await page.locator('[data-testid^=current-refinement-]').count()
          ).toBe(0);
       });
+
+      test('Apply and Clear all buttons work in Facet Drawer', async ({
+         page,
+      }) => {
+         // Select the first filter and click Apply button
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         await page.getByTestId('facets-drawer-list-item').nth(1).click();
+         const firstFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await firstFacetOption.click();
+         await page.getByRole('button', { name: 'Apply' }).click();
+
+         // Check that the refinement value is in the current refinements.
+         if (!firstFacetOptionValue) {
+            throw new Error('Could not find first facet option value');
+         }
+         await expect(
+            page.getByTestId(`current-refinement-${firstFacetOptionValue}`)
+         ).toBeVisible();
+
+         // Select the second filter and click Apply button
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         await page.getByTestId('facets-drawer-list-item').nth(2).click();
+         const secondFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const secondFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await secondFacetOption.click();
+         await page
+            .getByRole('button', { name: 'Apply' })
+            .click({ clickCount: 2 });
+
+         // Check that the refinement value is in the current refinements.
+         if (!secondFacetOptionValue) {
+            throw new Error('Could not find second facet option value');
+         }
+         await expect(
+            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
+         ).toBeVisible();
+
+         // Click "Clear All" buttom amd check if refinements are empty.
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         await page
+            .getByRole('button', { name: 'Clear all', exact: true })
+            .click();
+         expect(
+            await page.locator('[data-testid^=current-refinement-]').count()
+         ).toBe(0);
+      });
    });
 });
