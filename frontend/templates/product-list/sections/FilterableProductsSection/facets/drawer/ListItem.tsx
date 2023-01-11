@@ -17,7 +17,12 @@ export function ListItem({
    onSelect,
 }: ListItemProps) {
    return (
-      <Box pl="4" onClick={() => onSelect(attribute)}>
+      <Box
+         data-testid="facets-drawer-list-item"
+         data-drawer-list-item-name={attribute}
+         pl="4"
+         onClick={() => onSelect(attribute)}
+      >
          <Flex py="4" pl="1.5" justify="space-between" align="center" pr="4">
             <Text fontSize="sm" color="gray.700">
                {formatFacetName(attribute)}
