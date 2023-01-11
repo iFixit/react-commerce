@@ -7,6 +7,12 @@ import { BrowserTracing } from '@sentry/tracing';
 
 const SENTRY_DSN = process.env.SENTRY_DSN;
 
+const hydrationErrors = [
+   'Hydration failed because the initial UI does not match what was rendered on the server.',
+   'Text content does not match server-rendered HTML.',
+   'There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.',
+];
+
 Sentry.init({
    dsn: SENTRY_DSN,
    integrations: [new BrowserTracing()],
@@ -33,4 +39,14 @@ Sentry.init({
       // Only happens on Macs, mostly Chrome, but some on safari
       'CustomEvent: Non-Error promise rejection captured with keys: currentTarget, detail, isTrusted, target',
    ],
+   beforeSend: (event, hint) => {
+      const ex = hint.originalException;
+      if (ex && typeof ex == 'object' && ex.message) {
+         // Sample hydration errors.
+         if (hydrationErrors.includes(ex.message)) {
+            return Math.random() < 0.05 ? event : null;
+         }
+      }
+      return event;
+   },
 });
