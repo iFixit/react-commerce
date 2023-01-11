@@ -1,10 +1,8 @@
 import { Center, Divider, Text, VStack } from '@chakra-ui/react';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import {
-   DefaultLayout,
-   getLayoutServerSideProps,
-   WithLayoutProps,
-} from '@layouts/default';
+import { DefaultLayout } from '@layouts/default';
+import type { WithLayoutProps } from '@layouts/default/server';
+import { getLayoutServerSideProps } from '@layouts/default/server';
 import { GetStaticProps } from 'next';
 
 type Custom404Props = WithLayoutProps<{}>;

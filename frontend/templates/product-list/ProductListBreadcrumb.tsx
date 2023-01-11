@@ -13,16 +13,10 @@ import {
 } from '@chakra-ui/react';
 import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
 import { productListPath } from '@helpers/path-helpers';
-import { getProductListTitle } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
-import {
-   ProductList,
-   ProductListAncestor,
-   ProductListType,
-} from '@models/product-list';
+import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
-import * as React from 'react';
-import { useDevicePartsItemType } from './sections/FilterableProductsSection/useDevicePartsItemType';
+import { useProductListAncestors } from './hooks/useProductListAncestors';
 
 export type ProductListBreadcrumbProps = BreadcrumbProps & {
    productList: ProductList;
@@ -32,21 +26,8 @@ export function ProductListBreadcrumb({
    productList,
    ...otherProps
 }: ProductListBreadcrumbProps) {
-   let { ancestors } = productList;
-   const itemType = useDevicePartsItemType({
-      ...productList,
-      deviceItemType: null,
-   });
-
-   let currentItemTitle = productList.title;
-   if (productList.type === ProductListType.DeviceParts && itemType) {
-      ancestors = appendDeviceAncestor(ancestors, productList);
-      currentItemTitle = itemType;
-   }
-
-   const reverseAncestorList = React.useMemo(() => {
-      return [...ancestors].reverse();
-   }, [ancestors]);
+   const { currentItemTitle, ancestors, reverseAncestorList } =
+      useProductListAncestors(productList);
 
    return (
       <Breadcrumb
@@ -138,19 +119,4 @@ export function ProductListBreadcrumb({
          </BreadcrumbItem>
       </Breadcrumb>
    );
-}
-
-function appendDeviceAncestor(
-   ancestors: ProductListAncestor[],
-   productList: ProductList
-) {
-   return ancestors.concat({
-      deviceTitle: productList.deviceTitle ?? null,
-      title: getProductListTitle({
-         title: productList.title,
-         type: productList.type,
-      }),
-      type: productList.type,
-      handle: productList.handle,
-   });
 }

@@ -1,5 +1,5 @@
-import { Product } from '@models/product';
 import { Box } from '@chakra-ui/react';
+import type { Product } from '@models/product.server';
 import { LiteYoutubeEmbed } from 'react-lite-yt-embed';
 
 export function ProductVideos({ product }: { product: Product }) {

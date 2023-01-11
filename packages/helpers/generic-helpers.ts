@@ -48,6 +48,14 @@ export function logSync<T>(name: string, syncFunction: () => T): T {
    return response;
 }
 
+export function withLogging<ARGS extends Array<any>, RETURN>(
+   name: string,
+   promiseFunction: (...args: ARGS) => Promise<RETURN>
+) {
+   const done = time(name);
+   return (...args: ARGS) => promiseFunction(...args).finally(done);
+}
+
 function noOp() {}
 const silentTimer = function (timerName: string) {
    return noOp;
@@ -66,4 +74,10 @@ const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
 
 export function isPresent(text: string | null | undefined): text is string {
    return typeof text === 'string' && text.length > 0;
+}
+
+export function filterNullableItems<I>(
+   items?: I[] | undefined | null
+): NonNullable<I>[] {
+   return (items?.filter((item) => item != null) as any) || [];
 }

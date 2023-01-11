@@ -19,7 +19,7 @@ import {
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { useCartDrawer, useUserPrice } from '@ifixit/ui';
-import { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@models/product.server';
 import * as React from 'react';
 import { NotifyMeForm } from './NotifyMeForm';
 
@@ -261,6 +261,7 @@ function InventoryMessage({
          fontSize="sm"
          align="center"
          justify="center"
+         data-testid="product-inventory-message"
       >
          <FaIcon
             icon={faCircleExclamation}
@@ -289,10 +290,10 @@ function useVariantInventory(variant: ProductVariantWithSku) {
    const cartMaxToAdd = cartLineItem.data?.maxToAdd ?? undefined;
    const addedToCart = cartLineItem.data?.quantity ?? undefined;
    const remaining =
-      cartMaxToAdd != null && addedToCart != null
-         ? Math.max(0, cartMaxToAdd - addedToCart)
+      variant.quantityAvailable != null && addedToCart != null
+         ? Math.max(0, variant.quantityAvailable - addedToCart)
          : undefined;
-   const maxToBeAdded = cartMaxToAdd ?? variant.quantityAvailable ?? undefined;
+   const maxToBeAdded = variant.quantityAvailable ?? cartMaxToAdd ?? undefined;
    return {
       maxToBeAdded,
       addedToCart,

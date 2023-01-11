@@ -5,7 +5,7 @@ import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
 import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
-import { useDevicePartsItemType } from './FilterableProductsSection/useDevicePartsItemType';
+import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
    productList: ProductList;

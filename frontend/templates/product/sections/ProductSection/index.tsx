@@ -23,7 +23,7 @@ import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
-import { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@models/product.server';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
@@ -132,6 +132,8 @@ export function ProductSection({
                   />
                )}
 
+               {!product.isEnabled && <NotForSaleAlert />}
+
                {isForSale && <ProductRating product={product} />}
 
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
@@ -143,11 +145,13 @@ export function ProductSection({
                   />
                </Flex>
 
-               <ProductOptions
-                  product={product}
-                  selected={selectedVariant.id}
-                  onChange={handleVariantChange}
-               />
+               {product.isEnabled && (
+                  <ProductOptions
+                     product={product}
+                     selected={selectedVariant.id}
+                     onChange={handleVariantChange}
+                  />
+               )}
 
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&
@@ -159,9 +163,9 @@ export function ProductSection({
                         selectedVariant={selectedVariant}
                      />
                   ))
-               ) : (
-                  <NotForSaleAlert mt="4" />
-               )}
+               ) : product.isEnabled ? (
+                  <ProOnlyAlert mt="4" />
+               ) : null}
 
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
@@ -172,7 +176,7 @@ export function ProductSection({
                )}
 
                <Accordion
-                  defaultIndex={[0, 1]}
+                  defaultIndex={product.isEnabled ? [0, 1] : undefined}
                   allowMultiple
                   mt="10"
                   sx={{
@@ -210,7 +214,7 @@ export function ProductSection({
                      <CustomAccordionButton>
                         Compatibility
                      </CustomAccordionButton>
-                     <CustomAccordionPanel>
+                     <CustomAccordionPanel data-testid="product-compatibility-dropdown">
                         <CompatibleDevices product={product} />
                      </CustomAccordionPanel>
                   </AccordionItem>
@@ -278,9 +282,12 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
 
 type CustomAccordionPanelProps = React.PropsWithChildren<{}>;
 
-function CustomAccordionPanel({ children }: CustomAccordionPanelProps) {
+function CustomAccordionPanel({
+   children,
+   ...other
+}: CustomAccordionPanelProps) {
    return (
-      <AccordionPanel pb={4} px="1.5">
+      <AccordionPanel pb={4} px="1.5" {...other}>
          {children}
       </AccordionPanel>
    );
@@ -315,7 +322,7 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
    );
 }
 
-function NotForSaleAlert(props: AlertProps) {
+function ProOnlyAlert(props: AlertProps) {
    return (
       <Alert
          status="warning"
@@ -350,6 +357,31 @@ function NotForSaleAlert(props: AlertProps) {
                </Link>
                .
             </p>
+         </Box>
+      </Alert>
+   );
+}
+
+function NotForSaleAlert(props: AlertProps) {
+   return (
+      <Alert
+         status="warning"
+         borderWidth={1}
+         borderColor="orange.300"
+         borderRadius="md"
+         alignItems="flex-start"
+         {...props}
+      >
+         <FaIcon
+            icon={faCircleExclamation}
+            h="4"
+            mt="0.5"
+            mr="2.5"
+            color="orange.500"
+         />
+
+         <Box fontSize="sm">
+            <p>Not for Sale.</p>
          </Box>
       </Alert>
    );

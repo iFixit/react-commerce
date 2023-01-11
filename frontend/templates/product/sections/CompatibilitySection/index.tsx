@@ -1,8 +1,7 @@
 import { Box, chakra, Heading, SimpleGrid } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common/CompatibleDevice';
-
 import { PageContentWrapper } from '@ifixit/ui';
-import { Product } from '@models/product';
+import type { Product } from '@models/product.server';
 import NextLink from 'next/link';
 
 export type CompatibilitySectionProps = {

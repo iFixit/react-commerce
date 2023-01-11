@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import {
    mockMatchMedia,
    renderWithAppContext,
@@ -8,17 +8,24 @@ import {
    getDiscountedProduct,
    getProductOfType,
    getProductWithWarranty,
+   mockResizeObserver,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
+import { mockedLayoutProps } from '../__mocks__/products';
 
 jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
    ...jest.requireActual('@templates/product/hooks/useIsProductForSale'),
    useIsProductForSale: jest.fn(() => true),
 }));
 
+jest.mock('@templates/product/hooks/useProductTemplateProps', () => ({
+   useProductTemplateProps: jest.fn(() => ({ ...mockedLayoutProps })),
+}));
+
 describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
+      mockResizeObserver();
    });
 
    describe('Product Description Tests', () => {
@@ -119,6 +126,57 @@ describe('ProductSection Tests', () => {
          (expect(warning) as any).not.toBeInTheDocument();
          (expect(note) as any).not.toBeInTheDocument();
          (expect(disclaimer) as any).not.toBeInTheDocument();
+      });
+
+      test('compatibility renders', async () => {
+         renderWithAppContext(
+            <ProductSection
+               product={getMockProduct()}
+               selectedVariant={getMockProductVariant()}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         (
+            expect(screen.getByTestId('product-compatibility-dropdown')) as any
+         ).not.toBeVisible();
+
+         act(() => {
+            screen.getByRole('button', { name: /compatibility/i }).click();
+         });
+
+         waitFor(() => {
+            (
+               expect(
+                  screen.getByTestId('product-compatibility-dropdown')
+               ) as any
+            ).toBeVisible();
+         });
+      });
+
+      test('compatibility does not render', async () => {
+         const mockProduct = getMockProduct({
+            compatibility: null,
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={mockProduct}
+               selectedVariant={getMockProductVariant()}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         (
+            expect(
+               screen.getByRole('button', {
+                  name: /compatibility/i,
+                  hidden: true,
+               })
+            ) as any
+         ).not.toBeVisible();
       });
    });
 
@@ -263,6 +321,66 @@ describe('ProductSection Tests', () => {
       });
    });
 
+   describe('Prop 65 Warning Tests', () => {
+      test('renders prop 65 warning', async () => {
+         const battery = getProductOfType('battery');
+
+         renderWithAppContext(
+            <ProductSection
+               product={battery}
+               selectedVariant={battery.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         const prop65WarningText = await screen.findByText(/prop 65 warning/i);
+         (expect(prop65WarningText) as any).toBeVisible();
+      });
+
+      test('does not render prop 65 warning', async () => {
+         const tool = getProductOfType('tool');
+
+         renderWithAppContext(
+            <ProductSection
+               product={tool}
+               selectedVariant={tool.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+         (
+            expect(screen.queryByText(/prop 65 warning/i)) as any
+         ).not.toBeInTheDocument();
+      });
+
+      test('renders prop 65 info popup', async () => {
+         const battery = getProductOfType('battery');
+
+         renderWithAppContext(
+            <ProductSection
+               product={battery}
+               selectedVariant={battery.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         act(() => {
+            screen.getByLabelText('read more about the warning').click();
+         });
+
+         waitFor(() => {
+            (
+               expect(
+                  screen.queryByText(
+                     /This product can expose you to chemicals including lead/i
+                  )
+               ) as any
+            ).toBeVisible();
+         });
+      });
+   });
+
    describe('Product Warranty Tests', () => {
       test('renders the lifetime guarantee warranty', async () => {
          const fullWarrantyProduct = getProductWithWarranty('full');
@@ -334,6 +452,119 @@ describe('ProductSection Tests', () => {
                })
             ) as any
          ).toHaveAttribute('href', 'www.cominor.com/Info/Warranty');
+      });
+   });
+
+   describe('Product Inventory Tests', () => {
+      test('Greater than 10 stock does not render low stock message', async () => {
+         const product = getMockProduct({
+            variants: [
+               getMockProductVariant({
+                  quantityAvailable: 11,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const lowStockMessage = screen.queryByTestId(
+            'product-inventory-message'
+         );
+         (expect(lowStockMessage) as any).not.toBeInTheDocument();
+      });
+
+      test('Less than 10 stock renders low stock message', async () => {
+         const quantity = 9;
+         const product = getMockProduct({
+            variants: [
+               getMockProductVariant({
+                  quantityAvailable: quantity,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const lowStockMessage = await screen.findByTestId(
+            'product-inventory-message'
+         );
+         (expect(lowStockMessage) as any).toBeInTheDocument();
+         (expect(lowStockMessage.textContent) as any).toContain(
+            `Only ${quantity} left`
+         );
+      });
+
+      test('Out of stock renders out of stock message and email form', async () => {
+         const product = getMockProduct({
+            variants: [
+               getMockProductVariant({
+                  quantityAvailable: 0,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const outOfStockMessage = screen.queryByTestId(
+            'product-inventory-message'
+         );
+         (expect(outOfStockMessage) as any).not.toBeInTheDocument();
+
+         const notifyMeForm = screen.queryByText(/this item is currently/i);
+         (expect(notifyMeForm) as any).toBeInTheDocument();
+         (expect(notifyMeForm?.textContent) as any).toEqual(
+            'This item is currently Out of Stock'
+         );
+      });
+
+      test('Product with no image', async () => {
+         const product = getMockProduct({
+            images: [],
+            variants: [
+               getMockProductVariant({
+                  image: null,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const imagePlaceholders = screen.queryAllByText(
+            /No photos available for this product/i
+         );
+         // We have 2 image placeholders in the dom where one of them is hidden
+         // and the other is visible (due to different viewports).
+         imagePlaceholders.forEach((el) =>
+            (expect(el) as any).toBeInTheDocument()
+         );
       });
    });
 });

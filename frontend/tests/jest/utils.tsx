@@ -1,16 +1,18 @@
-import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { AppProviders } from '@components/common';
-import { Product, ProductVariant } from '@models/product';
+import { CurrencyCode } from '@lib/shopify-storefront-sdk';
+import { ProductReview, ProductReviewData } from '@models/product';
+import { ProductSearchHit } from '@models/product-list';
+import type { Product, ProductVariant } from '@models/product.server';
+import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import {
    mockedBatteryProduct,
    mockedPartProduct,
    mockedProduct,
    mockedProductSearchHit,
    mockedProductVariant,
+   mockedReviews,
    mockedToolProduct,
 } from './__mocks__/products';
-import { ProductSearchHit } from '@models/product-list';
-import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 
 /* This is needed if there is some code that uses a method which is not available in the jsdom environment yet
  * https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
@@ -27,6 +29,17 @@ export const mockMatchMedia = () => {
          addEventListener: jest.fn(),
          removeEventListener: jest.fn(),
          dispatchEvent: jest.fn(),
+      })),
+   });
+};
+
+export const mockResizeObserver = () => {
+   Object.defineProperty(global, 'ResizeObserver', {
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({
+         observe: jest.fn(),
+         unobserve: jest.fn(),
+         disconnect: jest.fn(),
       })),
    });
 };
@@ -77,8 +90,8 @@ export const getMockProductSearchHit = (
  * first variant in the variants array from the returned product.
  */
 export const getDiscountedProduct = (
-   originalPrice: number = 49.99,
-   discountPercentage: number = 10
+   originalPrice = 49.99,
+   discountPercentage = 10
 ) => {
    const discountedPrice =
       originalPrice - originalPrice * (discountPercentage / 100);
@@ -102,7 +115,7 @@ export const getDiscountedProduct = (
    return product;
 };
 
-export const getNonDiscountedProduct = (originalPrice: number = 49.99) => {
+export const getNonDiscountedProduct = (originalPrice = 49.99) => {
    const product = getMockProduct({
       variants: [
          getMockProductVariant({
@@ -156,4 +169,31 @@ export const getProductWithWarranty = (
    });
 
    return product;
+};
+
+export const getReviewsResponse = (
+   type: 'filled' | 'empty' = 'filled'
+): ProductReviewData => {
+   let reviews: ProductReview[] = mockedReviews;
+
+   if (type === 'empty') {
+      reviews = [];
+   }
+
+   return {
+      reviews: reviews,
+      count: reviews.length,
+      average:
+         reviews.length == 0
+            ? 0
+            : reviews.reduce((total, next) => total + (next.rating || 0), 0) /
+              reviews.length,
+      groupedReviews: {
+         1: reviews.filter((review) => review.rating == 1).length,
+         2: reviews.filter((review) => review.rating == 2).length,
+         3: reviews.filter((review) => review.rating == 3).length,
+         4: reviews.filter((review) => review.rating == 4).length,
+         5: reviews.filter((review) => review.rating == 5).length,
+      },
+   };
 };

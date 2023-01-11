@@ -8,7 +8,6 @@ import {
    LinkBox,
    LinkOverlay,
    SimpleGrid,
-   Text,
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
 import { getProductPath } from '@helpers/product-helpers';
@@ -20,11 +19,11 @@ import {
    Money,
 } from '@ifixit/helpers';
 import {
-   ResponsiveImage,
    PageContentWrapper,
    ProductVariantPrice,
+   ResponsiveImage,
 } from '@ifixit/ui';
-import { Product } from '@models/product';
+import type { Product } from '@models/product.server';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -51,35 +50,35 @@ export function FeaturedProductsSection({
             >
                Featured Products
             </Heading>
+            <SimpleGrid
+               columns={{
+                  base: 2,
+                  lg: 5,
+               }}
+               spacing="1px"
+               bg="gray.200"
+               borderWidth="1px"
+               borderColor="gray.200"
+            >
+               {product.featuredProductVariants.map((variant) => {
+                  return (
+                     <ProductGridItem
+                        key={variant.id}
+                        handle={variant.product.handle}
+                        title={variant.product.title}
+                        imageSrc={variant.image?.url}
+                        rating={variant.product.rating}
+                        reviewsCount={variant.product.reviewsCount}
+                        price={variant.price}
+                        compareAtPrice={variant.compareAtPrice}
+                        proPricesByTier={variant.proPricesByTier}
+                        oemPartnership={variant.product.oemPartnership}
+                        warranty={variant.warranty}
+                     />
+                  );
+               })}
+            </SimpleGrid>
          </PageContentWrapper>
-         <SimpleGrid
-            columns={{
-               base: 2,
-               lg: 5,
-            }}
-            spacing="1px"
-            bg="gray.200"
-            borderTopWidth="1px"
-            borderColor="gray.200"
-         >
-            {product.featuredProductVariants.map((variant) => {
-               return (
-                  <ProductGridItem
-                     key={variant.id}
-                     handle={variant.product.handle}
-                     title={variant.product.title}
-                     imageSrc={variant.image?.url}
-                     rating={variant.product.rating}
-                     reviewsCount={variant.product.reviewsCount}
-                     price={variant.price}
-                     compareAtPrice={variant.compareAtPrice}
-                     proPricesByTier={variant.proPricesByTier}
-                     oemPartnership={variant.product.oemPartnership}
-                     warranty={variant.warranty}
-                  />
-               );
-            })}
-         </SimpleGrid>
       </Box>
    );
 }

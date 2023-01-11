@@ -1,7 +1,18 @@
-import { getProductVariantSku, Money } from '@ifixit/helpers';
+import {
+   filterNullableItems,
+   getProductVariantSku,
+   Money,
+   parseMoney,
+} from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useQuery } from '@tanstack/react-query';
-import { APICart, Cart, CartAPIResponse, CartLineItem } from '../types';
+import {
+   APICart,
+   Cart,
+   CartAPIResponse,
+   CartLineItem,
+   UpsellProduct,
+} from '../types';
 import { cartKeys } from '../utils';
 
 /**
@@ -69,6 +80,7 @@ function createCart(input: APICart): Cart {
               currencyCode: 'usd',
            }
          : null;
+
    return {
       hasItemsInCart: input.totalNumItems > 0,
       lineItems,
@@ -78,5 +90,40 @@ function createCart(input: APICart): Cart {
          price: totalPrice,
          compareAtPrice: totalCompareAtPrice,
       },
+      upsellProducts: filterNullableItems(
+         input.upsellProducts.map<UpsellProduct | null>((apiProduct) => {
+            if (apiProduct.subPrice == null) {
+               return null;
+            }
+            const variantId = `gid://shopify/ProductVariant/${apiProduct.variant_id}`;
+            return {
+               marketingTitle: apiProduct.marketing_title,
+               marketingBlurb: apiProduct.product_blurb,
+               itemcode: apiProduct.itemcode,
+               shopifyVariantId: btoa(variantId),
+               name: apiProduct.name,
+               imageSrc: apiProduct.imageSrc,
+               price: parseMoney(apiProduct.subPrice),
+               compareAtPrice: apiProduct.compare_at_price
+                  ? parseMoney(apiProduct.compare_at_price)
+                  : null,
+               proPricesByTier: apiProduct.price_tiers
+                  ? parsePriceTiers(apiProduct.price_tiers)
+                  : null,
+            };
+         })
+      ),
    };
 }
+
+const parsePriceTiers = (
+   priceTiers: Record<string, number>
+): Record<string, Money> => {
+   return Object.entries(priceTiers).reduce((acc, [key, value]) => {
+      acc[key] = {
+         amount: value,
+         currencyCode: 'usd',
+      };
+      return acc;
+   }, {} as Record<string, Money>);
+};

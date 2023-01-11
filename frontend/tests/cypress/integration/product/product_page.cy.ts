@@ -15,6 +15,7 @@ describe('Product page test', () => {
          .should('be.visible')
          .invoke('text')
          .then((productSku) => {
+            /* eslint-disable no-useless-escape */
             expect(productSku).to.match(/IF\d*\-\d*/g);
          });
 

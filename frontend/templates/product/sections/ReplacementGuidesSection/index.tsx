@@ -20,8 +20,8 @@ import {
    faGaugeMax,
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
-import { IconBadge, ResponsiveImage, PageContentWrapper } from '@ifixit/ui';
-import { Product } from '@models/product';
+import { IconBadge, PageContentWrapper, ResponsiveImage } from '@ifixit/ui';
+import type { Product } from '@models/product.server';
 
 export type ReplacementGuidesSectionProps = {
    product: Product;
