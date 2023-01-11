@@ -1,7 +1,7 @@
 import { PROD_USER_AGENT } from '@config/constants';
 import { CACHE_DISABLED } from '@config/env';
 import { setSentryPageContext } from '@ifixit/sentry';
-import { timeAsync } from '@ifixit/stats';
+import { withTiming } from '@ifixit/stats';
 import { clearCache } from '@lib/cache';
 import type { GetServerSidePropsMiddleware } from '@lib/next-middleware';
 import * as Sentry from '@sentry/nextjs';
@@ -18,8 +18,9 @@ interface WithLoggingMiddleware {
 export const withLogging: WithLoggingMiddleware =
    ({ pageName }) =>
    (next) => {
-      return async (context) => {
-         return timeAsync(`page.${pageName}.server_side_props`, async () => {
+      return withTiming(
+         `page.${pageName}.server_side_props`,
+         async (context) => {
             console.log('context.resolvedUrl', context.resolvedUrl);
             console.log('context.req.url', context.req.url);
             Sentry.setContext('Extra Info', {
@@ -50,8 +51,8 @@ export const withLogging: WithLoggingMiddleware =
                   setSentryPageContext(context);
                   throw err;
                });
-         });
-      };
+         }
+      );
    };
 
 export function noindexDevDomains(context: GetServerSidePropsContext) {
