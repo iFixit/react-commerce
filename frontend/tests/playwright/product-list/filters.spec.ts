@@ -122,5 +122,94 @@ test.describe('product list filters', () => {
          return !viewPort || viewPort.width > 768;
       }, 'Only run on mobile and tablet.');
 
+      test('Should help user filter', async ({ page }) => {
+         // Select the first filter and close the drawer
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         const firstFacet = page.getByTestId('facets-drawer-list-item').nth(1);
+         const firstFacetName = await firstFacet?.getAttribute(
+            'data-drawer-list-item-name'
+         );
+         await firstFacet.click();
+
+         const queryResponse = waitForAlgoliaSearch(page);
+         const firstFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await firstFacetOption.click();
+         await page.getByRole('button', { name: 'Close' }).click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         if (!firstFacetOptionValue) {
+            throw new Error('Could not find first facet option value');
+         }
+         await expect(
+            page.getByTestId(`current-refinement-${firstFacetOptionValue}`)
+         ).toBeVisible();
+
+         // Check that the refinement value is in the search results.
+         if (!firstFacetName) {
+            throw new Error('Could not find first facet name');
+         }
+         const filteredProducts = results.reduce(
+            (products: [], searchResults: { hits: [] }) => {
+               return [...products, ...searchResults.hits];
+            },
+            []
+         );
+         filteredProducts.forEach((product: any) => {
+            expect(resolvePath(product, firstFacetName)).toContain(
+               firstFacetOptionValue
+            );
+         });
+
+         // Select the second filter and close the drawer
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         const secondFacet = page.getByTestId('facets-drawer-list-item').nth(2);
+         await secondFacet.click();
+         const secondFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const secondFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await secondFacetOption.click();
+         await page.getByRole('button', { name: 'Close' }).click();
+
+         // Check that the refinement value is in the current refinements.
+         if (!secondFacetOptionValue) {
+            throw new Error('Could not find second facet option value');
+         }
+         await expect(
+            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
+         ).toBeVisible();
+
+         // Remove the newest refinement.
+         await page
+            .getByTestId(`current-refinement-${secondFacetOptionValue}`)
+            .getByRole('button', { name: /remove/i })
+            .click();
+
+         // Check that the refinement value is not in the current refinements.
+         await expect(
+            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
+         ).not.toBeVisible();
+
+         await page.getByRole('button', { name: /clear all filters/i }).click();
+
+         // Check that the current refinements are empty
+         expect(
+            await page.locator('[data-testid^=current-refinement-]').count()
+         ).toBe(0);
+      });
    });
 });
