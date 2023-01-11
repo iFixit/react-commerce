@@ -15,6 +15,12 @@ type AppPropsWithLayout<P> = AppProps<P> & {
    Component: NextPageWithLayout;
 };
 
+if (process.env.NEXT_PUBLIC_MOCK_API === 'true') {
+   import('@tests/playwright/msw').then(({ setupMocks }) => {
+      setupMocks();
+   });
+}
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
    const getLayout = Component.getLayout ?? ((page) => page);
    const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';

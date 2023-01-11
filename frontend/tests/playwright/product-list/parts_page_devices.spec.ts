@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('parts page devices', () => {
+   test.skip(({ page }) => {
+      const viewPort = page.viewportSize();
+      return !viewPort || viewPort.width < 768;
+   }, 'Only run on desktop. Still need to rework this test for mobile.');
+
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });

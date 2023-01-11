@@ -290,10 +290,10 @@ function useVariantInventory(variant: ProductVariantWithSku) {
    const cartMaxToAdd = cartLineItem.data?.maxToAdd ?? undefined;
    const addedToCart = cartLineItem.data?.quantity ?? undefined;
    const remaining =
-      cartMaxToAdd != null && addedToCart != null
-         ? Math.max(0, cartMaxToAdd - addedToCart)
+      variant.quantityAvailable != null && addedToCart != null
+         ? Math.max(0, variant.quantityAvailable - addedToCart)
          : undefined;
-   const maxToBeAdded = cartMaxToAdd ?? variant.quantityAvailable ?? undefined;
+   const maxToBeAdded = variant.quantityAvailable ?? cartMaxToAdd ?? undefined;
    return {
       maxToBeAdded,
       addedToCart,

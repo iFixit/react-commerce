@@ -186,6 +186,15 @@
             }
          },
          "type": "string"
+      },
+      "defaultShowAllChildrenOnLgSizes": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "boolean",
+         "default": false
       }
    }
 }

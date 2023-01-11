@@ -1,0 +1,19 @@
+name: Datadog
+
+on:
+   workflow_run:
+      workflows:
+         - '**'
+      types:
+         - completed
+
+jobs:
+   send:
+      runs-on: ubuntu-latest
+      timeout-minutes: 10
+      steps:
+         - uses: iFixit/datadog-actions-metrics@v1
+           with:
+              datadog-api-key: ${{ secrets.DATADOG_API_KEY }}
+              send-pull-request-labels: true
+              collect-job-metrics: true
