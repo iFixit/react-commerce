@@ -39,12 +39,14 @@ export class ShopifyStorefrontClient {
       if (json.errors) {
          const msg = 'Shopify Storefront API error';
          console.error(msg, json.errors);
-         throw new Error(msg, { cause: {
-            errors: json.errors,
-            response: json,
-            query,
-            variables: JSON.stringify(variables, null, 2),
-         }});
+         throw new Error(msg, {
+            cause: {
+               errors: json.errors,
+               response: json,
+               query,
+               variables: JSON.stringify(variables, null, 2),
+            },
+         });
       }
       return json.data;
    }
