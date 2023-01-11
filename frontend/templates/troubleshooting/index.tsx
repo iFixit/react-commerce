@@ -13,6 +13,7 @@ type Problem = {
 };
 
 type TroubleshootingData = {
+   title: string;
    toc: string;
    groups: Problem[];
 };
