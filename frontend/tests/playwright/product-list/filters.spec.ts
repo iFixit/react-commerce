@@ -1,5 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { waitForAlgoliaSearch, resolvePath } from '../utils';
+
+// Check that the refinement value is in the current refinements.
+async function checkRefinementValue(value: string | null | undefined, page: Page) {
+   if (!value) {
+      throw new Error("Could not find " + value);
+   }
+   await expect(
+      page.getByTestId(`current-refinement-${value}`)
+   ).toBeVisible();
+}
 
 test.describe('product list filters', () => {
    test.beforeEach(async ({ page }) => {
@@ -44,12 +54,7 @@ test.describe('product list filters', () => {
          const firstFacetOptionValue = await firstFacetOption?.getAttribute(
             'data-value'
          );
-         if (!firstFacetOptionValue) {
-            throw new Error('Could not find first facet option value');
-         }
-         await expect(
-            page.getByTestId(`current-refinement-${firstFacetOptionValue}`)
-         ).toBeVisible();
+         await checkRefinementValue(firstFacetOptionValue, page);
 
          // Reduce the search results to a single array of products.
          const filteredProducts = results.reduce(
@@ -88,12 +93,7 @@ test.describe('product list filters', () => {
          const secondFacetOptionValue = await secondFacetOption?.getAttribute(
             'data-value'
          );
-         if (!secondFacetOptionValue) {
-            throw new Error('Could not find second facet option value');
-         }
-         await expect(
-            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-         ).toBeVisible();
+         await checkRefinementValue(secondFacetOptionValue, page);
 
          // Remove the newest refinement.
          await page
@@ -146,12 +146,7 @@ test.describe('product list filters', () => {
          const { results } = await (await queryResponse).json();
 
          // Check that the refinement value is in the current refinements.
-         if (!firstFacetOptionValue) {
-            throw new Error('Could not find first facet option value');
-         }
-         await expect(
-            page.getByTestId(`current-refinement-${firstFacetOptionValue}`)
-         ).toBeVisible();
+         await checkRefinementValue(firstFacetOptionValue, page);
 
          // Check that the refinement value is in the search results.
          if (!firstFacetName) {
@@ -186,12 +181,7 @@ test.describe('product list filters', () => {
          await page.getByRole('button', { name: 'Close' }).click();
 
          // Check that the refinement value is in the current refinements.
-         if (!secondFacetOptionValue) {
-            throw new Error('Could not find second facet option value');
-         }
-         await expect(
-            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-         ).toBeVisible();
+         await checkRefinementValue(secondFacetOptionValue, page);
 
          // Remove the newest refinement.
          await page
@@ -231,12 +221,7 @@ test.describe('product list filters', () => {
          await page.getByRole('button', { name: 'Apply' }).click();
 
          // Check that the refinement value is in the current refinements.
-         if (!firstFacetOptionValue) {
-            throw new Error('Could not find first facet option value');
-         }
-         await expect(
-            page.getByTestId(`current-refinement-${firstFacetOptionValue}`)
-         ).toBeVisible();
+         await checkRefinementValue(firstFacetOptionValue, page);
 
          // Select the second filter and click Apply button
          await page
@@ -256,12 +241,7 @@ test.describe('product list filters', () => {
             .click({ clickCount: 2 });
 
          // Check that the refinement value is in the current refinements.
-         if (!secondFacetOptionValue) {
-            throw new Error('Could not find second facet option value');
-         }
-         await expect(
-            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-         ).toBeVisible();
+         await checkRefinementValue(secondFacetOptionValue, page);
 
          // Click "Clear All" buttom amd check if refinements are empty.
          await page
