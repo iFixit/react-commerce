@@ -21,6 +21,7 @@ import type { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { getCache } from './adapters';
 import {
+   CacheEntry,
    createCacheEntry,
    createCacheKey,
    isStale,
@@ -68,6 +69,14 @@ export const withCache = <
    const logger: Logger = log ? defaultLog : nullLog;
    const cache = getCache();
 
+   const logError = (error: unknown) => {
+      if (error instanceof Error) {
+         logger.error(error.message);
+      } else {
+         logger.error('unknown error');
+      }
+   };
+
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
       fetch(`${APP_ORIGIN}/${endpoint}`, {
          method: 'POST',
@@ -87,7 +96,13 @@ export const withCache = <
    >['get'] = async (variables) => {
       const key = createCacheKey(endpoint, variables);
       let start = performance.now();
-      const cachedEntry = await cache.get(key);
+      let cachedEntry: CacheEntry | null = null;
+      try {
+         cachedEntry = await cache.get(key);
+      } catch (error) {
+         logError(error);
+         logger.warning(`[cache > get]: unable to get key: "${key}"`);
+      }
       let elapsed = performance.now() - start;
       if (isValidCacheEntry(cachedEntry)) {
          if (isStale(cachedEntry)) {
@@ -111,9 +126,16 @@ export const withCache = <
             ttl,
             staleWhileRevalidate,
          });
-         await cache.set(key, cacheEntry);
-         elapsed = performance.now() - start;
-         logger.info(`[cache > set]: (${elapsed.toFixed(2)}ms) key: "${key}"`);
+         try {
+            await cache.set(key, cacheEntry);
+            elapsed = performance.now() - start;
+            logger.info(
+               `[cache > set]: (${elapsed.toFixed(2)}ms) key: "${key}"`
+            );
+         } catch (error) {
+            logError(error);
+            logger.warning(`[cache > set]: unable to set key: "${key}"`);
+         }
       }
       return value;
    };
