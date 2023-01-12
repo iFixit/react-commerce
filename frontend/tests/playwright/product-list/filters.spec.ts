@@ -52,9 +52,7 @@ async function removeAndCheckRefinement(
 
 async function resetAndCheckRefinements(buttonText: string, page: Page) {
    // Reset the filters.
-   await page
-      .getByRole('button', { name: new RegExp(buttonText, 'i'), exact: true })
-      .click();
+   await page.getByRole('button', { name: buttonText, exact: true }).click();
 
    // Check that the current refinements are empty
    expect(
@@ -241,11 +239,11 @@ test.describe('product list filters', () => {
          // Check that the refinement value is in the current refinements.
          await checkRefinementValue(secondFacetOptionValue, page);
 
-         // Click "Clear All" button and check if refinements are empty.
+         // Click "Clear all" button and check if refinements are empty.
          await page
             .getByRole('button', { name: 'Filters', exact: true })
             .click();
-         await resetAndCheckRefinements('Clear All', page);
+         await resetAndCheckRefinements('Clear all', page);
       });
    });
 });
