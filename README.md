@@ -95,10 +95,10 @@ Here's an overview of the production setup (the focus is on Next.js, therefore d
 
 ### Test
 
-This command will start Cypress:
+This command will run Playwright tests:
 
 ```sh
-pnpm run cypress:open
+cd frontend && pnpm run playwright:run
 ```
 
 ### Using SVG
