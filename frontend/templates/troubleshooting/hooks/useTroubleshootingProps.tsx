@@ -12,8 +12,9 @@ export type TroubleshootingData = {
    groups: Problem[];
 };
 
-
 type TroubleshootingPageProps = {
-    wikiData: TroubleshootingData
-}
-export type TroubleshootingProps = WithProvidersProps<WithLayoutProps<TroubleshootingPageProps>>;
+   wikiData: TroubleshootingData;
+};
+export type TroubleshootingProps = WithProvidersProps<
+   WithLayoutProps<TroubleshootingPageProps>
+>;

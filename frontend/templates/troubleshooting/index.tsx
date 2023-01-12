@@ -17,7 +17,10 @@ const renderStyles = {
    },
 };
 
-const Wiki: NextPageWithLayout<{ wikiData: TroubleshootingData, layoutProps: DefaultLayoutProps }> = ({wikiData}) => {
+const Wiki: NextPageWithLayout<{
+   wikiData: TroubleshootingData;
+   layoutProps: DefaultLayoutProps;
+}> = ({ wikiData }) => {
    const appContext = useAppContext();
    const client = new IFixitAPIClient({ origin: appContext.ifixitOrigin });
 

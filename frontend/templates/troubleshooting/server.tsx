@@ -3,7 +3,10 @@ import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { GetServerSideProps } from 'next';
-import { TroubleshootingProps, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import {
+   TroubleshootingProps,
+   TroubleshootingData,
+} from './hooks/useTroubleshootingProps';
 
 export const getServerSideProps: GetServerSideProps<
    TroubleshootingProps
@@ -15,7 +18,7 @@ export const getServerSideProps: GetServerSideProps<
    const ifixitOrigin = ifixitOriginFromHost(context);
    const client = new IFixitAPIClient({ origin: ifixitOrigin });
 
-   const wikiname = context.params?.wikiname
+   const wikiname = context.params?.wikiname;
 
    if (!wikiname) {
       return {
@@ -23,9 +26,12 @@ export const getServerSideProps: GetServerSideProps<
       };
    }
 
-   const wikiData = await client.get<TroubleshootingData>(`Troubleshooting/${wikiname}`, {
-      credentials: 'include',
-   })
+   const wikiData = await client.get<TroubleshootingData>(
+      `Troubleshooting/${wikiname}`,
+      {
+         credentials: 'include',
+      }
+   );
 
    const pageProps: TroubleshootingProps = {
       wikiData,
