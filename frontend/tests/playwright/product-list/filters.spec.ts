@@ -30,6 +30,19 @@ async function checkRefinementInSearchResult(facetName: string | null, facetOpti
    });
 }
 
+async function removeAndCheckRefinement(facetOptionValue: string | null | undefined, buttonText: string, page: Page) {
+   // Remove the newest refinement.
+   await page
+      .getByTestId(`current-refinement-${facetOptionValue}`)
+      .getByRole('button', { name: new RegExp(buttonText, 'i') })
+      .click();
+
+   // Check that the refinement value is not in the current refinements.
+   await expect(
+      page.getByTestId(`current-refinement-${facetOptionValue}`)
+   ).not.toBeVisible();
+}
+
 test.describe('product list filters', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
@@ -98,17 +111,7 @@ test.describe('product list filters', () => {
             'data-value'
          );
          await checkRefinementValue(secondFacetOptionValue, page);
-
-         // Remove the newest refinement.
-         await page
-            .getByTestId(`current-refinement-${secondFacetOptionValue}`)
-            .getByRole('button', { name: /remove/i })
-            .click();
-
-         // Check that the refinement value is not in the current refinements.
-         await expect(
-            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-         ).not.toBeVisible();
+         await removeAndCheckRefinement(secondFacetOptionValue, "remove", page);
 
          // Reset the filters.
          await page.getByRole('button', { name: /clear all filters/i }).click();
@@ -173,17 +176,7 @@ test.describe('product list filters', () => {
 
          // Check that the refinement value is in the current refinements.
          await checkRefinementValue(secondFacetOptionValue, page);
-
-         // Remove the newest refinement.
-         await page
-            .getByTestId(`current-refinement-${secondFacetOptionValue}`)
-            .getByRole('button', { name: /remove/i })
-            .click();
-
-         // Check that the refinement value is not in the current refinements.
-         await expect(
-            page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-         ).not.toBeVisible();
+         await removeAndCheckRefinement(secondFacetOptionValue, "remove", page);
 
          await page.getByRole('button', { name: /clear all filters/i }).click();
 
