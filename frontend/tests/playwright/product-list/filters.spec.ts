@@ -2,17 +2,22 @@ import { test, expect, Page } from '@playwright/test';
 import { waitForAlgoliaSearch, resolvePath } from '../utils';
 
 // Check that the refinement value is in the current refinements.
-async function checkRefinementValue(value: string | null | undefined, page: Page) {
+async function checkRefinementValue(
+   value: string | null | undefined,
+   page: Page
+) {
    if (!value) {
-      throw new Error("Could not find " + value);
+      throw new Error('Could not find ' + value);
    }
-   await expect(
-      page.getByTestId(`current-refinement-${value}`)
-   ).toBeVisible();
+   await expect(page.getByTestId(`current-refinement-${value}`)).toBeVisible();
 }
 
 // Check that the refinement value is in the search results
-async function checkRefinementInSearchResult(facetName: string | null, facetOptionValue: string | null | undefined, results: Array<any>) {
+async function checkRefinementInSearchResult(
+   facetName: string | null,
+   facetOptionValue: string | null | undefined,
+   results: Array<any>
+) {
    if (!facetName) {
       throw new Error('Could not find first facet name');
    }
@@ -24,13 +29,15 @@ async function checkRefinementInSearchResult(facetName: string | null, facetOpti
       []
    );
    filteredProducts.forEach((product: any) => {
-      expect(resolvePath(product, facetName)).toContain(
-         facetOptionValue
-      );
+      expect(resolvePath(product, facetName)).toContain(facetOptionValue);
    });
 }
 
-async function removeAndCheckRefinement(facetOptionValue: string | null | undefined, buttonText: string, page: Page) {
+async function removeAndCheckRefinement(
+   facetOptionValue: string | null | undefined,
+   buttonText: string,
+   page: Page
+) {
    // Remove the newest refinement.
    await page
       .getByTestId(`current-refinement-${facetOptionValue}`)
@@ -45,7 +52,9 @@ async function removeAndCheckRefinement(facetOptionValue: string | null | undefi
 
 async function resetAndCheckRefinements(buttonText: string, page: Page) {
    // Reset the filters.
-   await page.getByRole('button', { name: new RegExp(buttonText, 'i'), exact: true}).click();
+   await page
+      .getByRole('button', { name: new RegExp(buttonText, 'i'), exact: true })
+      .click();
 
    // Check that the current refinements are empty
    expect(
@@ -102,7 +111,11 @@ test.describe('product list filters', () => {
          const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
             'data-facet-name'
          );
-         await checkRefinementInSearchResult(firstFacetName, firstFacetOptionValue, results);
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue,
+            results
+         );
 
          // Click the second facet accordion item.
          if (!secondCollapsedAccordionItem) {
@@ -121,8 +134,8 @@ test.describe('product list filters', () => {
             'data-value'
          );
          await checkRefinementValue(secondFacetOptionValue, page);
-         await removeAndCheckRefinement(secondFacetOptionValue, "remove", page);
-         await resetAndCheckRefinements("Clear all filters", page);
+         await removeAndCheckRefinement(secondFacetOptionValue, 'remove', page);
+         await resetAndCheckRefinements('Clear all filters', page);
       });
    });
 
@@ -159,7 +172,11 @@ test.describe('product list filters', () => {
          await checkRefinementValue(firstFacetOptionValue, page);
 
          // Check that the refinement value is in the search results.
-         await checkRefinementInSearchResult(firstFacetName, firstFacetOptionValue, results);
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue,
+            results
+         );
 
          // Select the second filter and close the drawer
          await page
@@ -179,8 +196,8 @@ test.describe('product list filters', () => {
 
          // Check that the refinement value is in the current refinements.
          await checkRefinementValue(secondFacetOptionValue, page);
-         await removeAndCheckRefinement(secondFacetOptionValue, "remove", page);
-         await resetAndCheckRefinements("Clear all filters", page);
+         await removeAndCheckRefinement(secondFacetOptionValue, 'remove', page);
+         await resetAndCheckRefinements('Clear all filters', page);
       });
 
       test('Apply and Clear all buttons work in Facet Drawer', async ({
@@ -228,7 +245,7 @@ test.describe('product list filters', () => {
          await page
             .getByRole('button', { name: 'Filters', exact: true })
             .click();
-         await resetAndCheckRefinements("Clear All", page);
+         await resetAndCheckRefinements('Clear All', page);
       });
    });
 });
