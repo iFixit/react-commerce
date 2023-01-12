@@ -3,7 +3,7 @@ import {
    ALGOLIA_APP_ID,
    ALGOLIA_PRODUCT_INDEX_NAME,
 } from '@config/env';
-import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
+import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
 import { timeAsync } from '@ifixit/stats';
 import { cache } from '@lib/cache';
 import algoliasearch from 'algoliasearch';
@@ -26,9 +26,12 @@ async function fetchDevices(device: string) {
       CLIENT_OPTIONS
    );
    const index = client.initIndex(ALGOLIA_PRODUCT_INDEX_NAME);
+   const deviceSuffix = device
+      ? ` AND device:"${escapeFilterValue(device)}"`
+      : '';
    const { facets } = await index.search('', {
       facets: ['device'],
-      filters: `public = 1${device ? ` AND device:"${device}"` : ''}`,
+      filters: `public = 1${deviceSuffix}`,
       maxValuesPerFacet: 1000,
       hitsPerPage: 0,
    });
