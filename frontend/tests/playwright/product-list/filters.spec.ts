@@ -43,6 +43,16 @@ async function removeAndCheckRefinement(facetOptionValue: string | null | undefi
    ).not.toBeVisible();
 }
 
+async function resetAndCheckRefinements(buttonText: string, page: Page) {
+   // Reset the filters.
+   await page.getByRole('button', { name: new RegExp(buttonText, 'i'), exact: true}).click();
+
+   // Check that the current refinements are empty
+   expect(
+      await page.locator('[data-testid^=current-refinement-]').count()
+   ).toBe(0);
+}
+
 test.describe('product list filters', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
@@ -112,14 +122,7 @@ test.describe('product list filters', () => {
          );
          await checkRefinementValue(secondFacetOptionValue, page);
          await removeAndCheckRefinement(secondFacetOptionValue, "remove", page);
-
-         // Reset the filters.
-         await page.getByRole('button', { name: /clear all filters/i }).click();
-
-         // Check that the current refinements are empty
-         expect(
-            await page.locator('[data-testid^=current-refinement-]').count()
-         ).toBe(0);
+         await resetAndCheckRefinements("Clear all filters", page);
       });
    });
 
@@ -177,13 +180,7 @@ test.describe('product list filters', () => {
          // Check that the refinement value is in the current refinements.
          await checkRefinementValue(secondFacetOptionValue, page);
          await removeAndCheckRefinement(secondFacetOptionValue, "remove", page);
-
-         await page.getByRole('button', { name: /clear all filters/i }).click();
-
-         // Check that the current refinements are empty
-         expect(
-            await page.locator('[data-testid^=current-refinement-]').count()
-         ).toBe(0);
+         await resetAndCheckRefinements("Clear all filters", page);
       });
 
       test('Apply and Clear all buttons work in Facet Drawer', async ({
@@ -227,16 +224,11 @@ test.describe('product list filters', () => {
          // Check that the refinement value is in the current refinements.
          await checkRefinementValue(secondFacetOptionValue, page);
 
-         // Click "Clear All" buttom amd check if refinements are empty.
+         // Click "Clear All" button and check if refinements are empty.
          await page
             .getByRole('button', { name: 'Filters', exact: true })
             .click();
-         await page
-            .getByRole('button', { name: 'Clear all', exact: true })
-            .click();
-         expect(
-            await page.locator('[data-testid^=current-refinement-]').count()
-         ).toBe(0);
+         await resetAndCheckRefinements("Clear All", page);
       });
    });
 });
