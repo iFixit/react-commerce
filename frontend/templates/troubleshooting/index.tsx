@@ -6,17 +6,7 @@ import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import React from 'react';
 import { useAppContext } from '@ifixit/app';
 import { Box, Container, Heading } from '@chakra-ui/react';
-
-type Problem = {
-   heading: string;
-   body: string;
-};
-
-type TroubleshootingData = {
-   title: string;
-   toc: string;
-   groups: Problem[];
-};
+import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
 
 const renderStyles = {
    a: {
@@ -27,26 +17,10 @@ const renderStyles = {
    },
 };
 
-const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
+const Wiki: NextPageWithLayout<{ wikiData: TroubleshootingData, layoutProps: DefaultLayoutProps }> = ({wikiData}) => {
    const appContext = useAppContext();
    const client = new IFixitAPIClient({ origin: appContext.ifixitOrigin });
 
-   const { wikiname } = useRouter().query;
-   const [wikiData, setWikiData] = React.useState<TroubleshootingData | null>(
-      null
-   );
-   React.useEffect(() => {
-      client
-         .get(`Troubleshooting/${wikiname}`, {
-            credentials: 'include',
-         })
-         .then((res: any) => {
-            setWikiData(res);
-         });
-   }, [wikiname]);
-   if (!wikiData) {
-      return <p>waiting</p>;
-   }
    return (
       <Container sx={renderStyles}>
          <Head>
