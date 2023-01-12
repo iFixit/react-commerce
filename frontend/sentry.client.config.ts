@@ -18,7 +18,7 @@ Sentry.init({
    integrations: [new BrowserTracing()],
    sampleRate: 1.0,
    normalizeDepth: 5,
-   tracesSampleRate: 0.005,
+   tracesSampleRate: 0.05,
    // ...
    // Note: if you want to override the automatic release value, do not set a
    // `release` value here - use the environment variable `SENTRY_RELEASE`, so
