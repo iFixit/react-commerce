@@ -11,6 +11,25 @@ async function checkRefinementValue(value: string | null | undefined, page: Page
    ).toBeVisible();
 }
 
+// Check that the refinement value is in the search results
+async function checkRefinementInSearchResult(facetName: string | null, facetOptionValue: string | null | undefined, results: Array<any>) {
+   if (!facetName) {
+      throw new Error('Could not find first facet name');
+   }
+   // Reduce the search results to a single array of products.
+   const filteredProducts = results.reduce(
+      (products: [], searchResults: { hits: [] }) => {
+         return [...products, ...searchResults.hits];
+      },
+      []
+   );
+   filteredProducts.forEach((product: any) => {
+      expect(resolvePath(product, facetName)).toContain(
+         facetOptionValue
+      );
+   });
+}
+
 test.describe('product list filters', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
@@ -56,26 +75,11 @@ test.describe('product list filters', () => {
          );
          await checkRefinementValue(firstFacetOptionValue, page);
 
-         // Reduce the search results to a single array of products.
-         const filteredProducts = results.reduce(
-            (products: [], searchResults: { hits: [] }) => {
-               return [...products, ...searchResults.hits];
-            },
-            []
-         );
-
          // Check that the refinement value is in the search results.
          const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
             'data-facet-name'
          );
-         if (!firstFacetName) {
-            throw new Error('Could not find first facet name');
-         }
-         filteredProducts.forEach((product: any) => {
-            expect(resolvePath(product, firstFacetName)).toContain(
-               firstFacetOptionValue
-            );
-         });
+         await checkRefinementInSearchResult(firstFacetName, firstFacetOptionValue, results);
 
          // Click the second facet accordion item.
          if (!secondCollapsedAccordionItem) {
@@ -149,20 +153,7 @@ test.describe('product list filters', () => {
          await checkRefinementValue(firstFacetOptionValue, page);
 
          // Check that the refinement value is in the search results.
-         if (!firstFacetName) {
-            throw new Error('Could not find first facet name');
-         }
-         const filteredProducts = results.reduce(
-            (products: [], searchResults: { hits: [] }) => {
-               return [...products, ...searchResults.hits];
-            },
-            []
-         );
-         filteredProducts.forEach((product: any) => {
-            expect(resolvePath(product, firstFacetName)).toContain(
-               firstFacetOptionValue
-            );
-         });
+         await checkRefinementInSearchResult(firstFacetName, firstFacetOptionValue, results);
 
          // Select the second filter and close the drawer
          await page
