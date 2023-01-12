@@ -32,6 +32,7 @@ import {
    ProductListType,
 } from './types';
 import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
+import { findDescendantDevicesWithProducts } from '@lib/algolia/server';
 
 /**
  * Get the product list data from the API
@@ -42,8 +43,9 @@ export async function findProductList(
    deviceItemType: string | null = null
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
+   const isPartsList = filterDeviceTitle || filters.handle?.eq === 'Parts';
 
-   const [result, deviceWiki] = await Promise.all([
+   const [result, deviceWiki, devicesWithProducts] = await Promise.all([
       timeAsync('strapi.getProductList', () =>
          strapi.getProductList({ filters })
       ),
@@ -51,6 +53,9 @@ export async function findProductList(
          new IFixitAPIClient({ origin: ifixitOrigin }),
          filterDeviceTitle
       ),
+      isPartsList
+         ? findDescendantDevicesWithProducts(filterDeviceTitle)
+         : Promise.resolve(null),
    ]);
 
    const productList = result.productLists?.data?.[0]?.attributes;
@@ -80,10 +85,10 @@ export async function findProductList(
    const ancestors = createProductListAncestors(parents);
 
    const baseProductList: BaseProductList = {
-      title: title,
-      handle: handle,
-      deviceTitle: deviceTitle,
-      deviceItemType: deviceItemType,
+      title,
+      handle,
+      deviceTitle,
+      deviceItemType,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
@@ -95,12 +100,15 @@ export async function findProductList(
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: await fillMissingImagesFromApi(
          sortProductListChildren(
-            filterNullableItems(
-               productList?.children?.data.map(
-                  createProductListChild({
-                     deviceWiki,
-                  })
-               )
+            filterDevicesWithNoProducts(
+               filterNullableItems(
+                  productList?.children?.data.map(
+                     createProductListChild({
+                        deviceWiki,
+                     })
+                  )
+               ),
+               devicesWithProducts
             )
          ),
          ifixitOrigin
@@ -137,6 +145,21 @@ export function getProductListType(
       default:
          return ProductListType.DeviceParts;
    }
+}
+
+function filterDevicesWithNoProducts(
+   productListChildren: ProductListChild[],
+   devicesWithProducts: string[] | null
+) {
+   if (devicesWithProducts == null) {
+      return productListChildren;
+   }
+   if (devicesWithProducts.length === 0) {
+      return [];
+   }
+   return productListChildren.filter((child) =>
+      devicesWithProducts.some((device) => device === child.deviceTitle)
+   );
 }
 
 async function fillMissingImagesFromApi(
