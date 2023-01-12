@@ -31,7 +31,7 @@ const Wiki: NextPageWithLayout<{
          </Head>
          <Heading as="h1">{wikiData.title}</Heading>
          {wikiData.groups.map((group) => (
-            <ProblemCard problem={group} />
+            <ProblemCard key={group.heading} problem={group} />
          ))}
       </Container>
    );
