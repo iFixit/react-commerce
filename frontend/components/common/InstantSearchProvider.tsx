@@ -7,7 +7,6 @@ import {
    isValidRefinementListValue,
    stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
-import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
@@ -51,7 +50,6 @@ export function InstantSearchProvider({
    apiKey,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
-   cypressWindowLog({ userLoaded: user.isFetched });
 
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);

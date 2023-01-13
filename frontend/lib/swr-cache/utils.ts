@@ -17,7 +17,7 @@ const CacheEntrySchema = z.object({
    value: z.unknown(),
 });
 
-type CacheEntry = z.infer<typeof CacheEntrySchema>;
+export type CacheEntry = z.infer<typeof CacheEntrySchema>;
 
 interface CreateCacheEntryOptions {
    ttl?: number;

@@ -80,6 +80,7 @@ export function ProductSection({
                zIndex="1"
             >
                <ProductGallery
+                  data-testid="product-gallery-desktop"
                   product={product}
                   selectedVariant={selectedVariant}
                   selectedImageId={selectedImageId}
@@ -138,6 +139,7 @@ export function ProductSection({
 
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
+                     data-testid="product-gallery-mobile"
                      product={product}
                      selectedVariant={selectedVariant}
                      selectedImageId={selectedImageId}
