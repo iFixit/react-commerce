@@ -1,8 +1,8 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Product image test', () => {
-   test('product with a single image ', async ({ page }) => {
-      await page.goto('/products/iflex-opening-tool');
+   test('product with a single image ', async ({ page, productPage }) => {
+      await productPage.gotoProduct('iflex-opening-tool');
 
       const image = page
          .getByRole('img', { name: 'iFlex Opening Tool' })
@@ -10,8 +10,8 @@ test.describe('Product image test', () => {
       expect(image).toBeVisible;
    });
 
-   test('product with multiple images ', async ({ page }) => {
-      await page.goto('/products/repair-business-toolkit');
+   test('product with multiple images ', async ({ page, productPage }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
       const viewPort = page.viewportSize();
 
       const firstImageSrc = await page

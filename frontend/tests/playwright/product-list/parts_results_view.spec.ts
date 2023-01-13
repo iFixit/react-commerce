@@ -1,11 +1,11 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('parts page results view', () => {
-   test.beforeEach(async ({ page }) => {
+   test.beforeEach(async ({ page, productPage }) => {
       await page.goto('/Parts');
    });
 
-   test('All products have a visible price', async ({ page }) => {
+   test('All products have a visible price', async ({ page, productPage }) => {
       const products = page
          .getByTestId('list-view-products')
          .getByRole('article');
@@ -17,7 +17,10 @@ test.describe('parts page results view', () => {
       }
    });
 
-   test('Product View button directs to product page', async ({ page }) => {
+   test('Product View button directs to product page', async ({
+      page,
+      productPage,
+   }) => {
       const productViewButton = page
          .getByRole('link', { name: 'View' })
          .first();

@@ -1,8 +1,13 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Disabled Product Test', () => {
-   test('Not for Sale text renders and noindexed', async ({ page }) => {
-      await page.goto('products/iphone-6s-plus-replacement-battery-disabled');
+   test('Not for Sale text renders and noindexed', async ({
+      page,
+      productPage,
+   }) => {
+      await productPage.gotoProduct(
+         'iphone-6s-plus-replacement-battery-disabled'
+      );
 
       await expect(page.getByText('Not for Sale')).toBeVisible();
       await expect(page.getByText('Description')).toBeVisible();

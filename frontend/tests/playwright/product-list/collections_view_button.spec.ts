@@ -1,11 +1,14 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('collection display', () => {
-   test.beforeEach(async ({ page }) => {
+   test.beforeEach(async ({ page, productPage }) => {
       await page.goto('/Tools');
    });
 
-   test('Should display grid view when selected', async ({ page }) => {
+   test('Should display grid view when selected', async ({
+      page,
+      productPage,
+   }) => {
       await page.getByTestId('grid-view-button').click();
       await expect(page.getByTestId('list-view-products')).not.toBeVisible();
 
@@ -14,7 +17,10 @@ test.describe('collection display', () => {
       await expect(grid).toHaveCSS('display', 'grid');
    });
 
-   test('Should display list view when selected', async ({ page }) => {
+   test('Should display list view when selected', async ({
+      page,
+      productPage,
+   }) => {
       // First click on grid view button
       await page.getByTestId('grid-view-button').click();
       // Then switch back to list view button

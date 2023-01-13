@@ -62,7 +62,7 @@ async function resetAndCheckRefinements(buttonText: string, page: Page) {
 }
 
 test.describe('product list filters', () => {
-   test.beforeEach(async ({ page }) => {
+   test.beforeEach(async ({ page, productPage }) => {
       await page.goto('/Parts');
    });
 
@@ -72,7 +72,7 @@ test.describe('product list filters', () => {
          return !viewPort || viewPort.width < 768;
       }, 'Only run on desktop.');
 
-      test('Should help user filter', async ({ page }) => {
+      test('Should help user filter', async ({ page, productPage }) => {
          const facetList = page
             .getByTestId('facets-accordion')
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
@@ -148,7 +148,7 @@ test.describe('product list filters', () => {
          return !viewPort || viewPort.width > 768;
       }, 'Only run on mobile and tablet.');
 
-      test('Should help user filter', async ({ page }) => {
+      test('Should help user filter', async ({ page, productPage }) => {
          // Select the first filter and close the drawer
          await page
             .getByRole('button', { name: 'Filters', exact: true })

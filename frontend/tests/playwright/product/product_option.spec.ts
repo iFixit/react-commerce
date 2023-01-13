@@ -1,8 +1,8 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Product option test', () => {
-   test('Different styles', async ({ page }) => {
-      await page.goto('/products/repair-business-toolkit');
+   test('Different styles', async ({ page, productPage }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
 
       await expect(page.getByText('Style')).toBeVisible();
 
@@ -21,7 +21,7 @@ test.describe('Product option test', () => {
          .textContent();
 
       // Add the first product option to the cart
-      await page.getByTestId('product-add-to-cart-button').click();
+      await productPage.addToCart();
       await page.getByTestId('cart-drawer-close').click();
 
       // Switch to the second product option
@@ -47,7 +47,7 @@ test.describe('Product option test', () => {
       expect(firstOptionName).not.toEqual(secondOptionName);
 
       // Add the second product option to the cart
-      await page.getByTestId('product-add-to-cart-button').click();
+      await productPage.addToCart();
 
       // Assert that the cart drawer contains the skus and prices of the added products
       await expect(page.getByTestId('cart-drawer-body')).toBeVisible();
