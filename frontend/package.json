@@ -42,7 +42,6 @@
       "@ifixit/icons": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
-      "@ifixit/react-components": "^0.3.0",
       "@ifixit/sentry": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*",
       "@ifixit/stats": "workspace:*",
