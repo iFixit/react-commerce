@@ -31,8 +31,7 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
-import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
-import { findDescendantDevicesWithProducts } from '@lib/algolia/server';
+import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
 
 /**
  * Get the product list data from the API
@@ -423,4 +422,25 @@ function createPublicAlgoliaKey(appId: string, apiKey: string): string {
       filters: 'public=1 AND is_pro!=1',
    });
    return publicKey;
+}
+
+async function findDescendantDevicesWithProducts(device: string) {
+   return timeAsync('algolia.findDescendantDevicesWithProducts', async () => {
+      const client = algoliasearch(
+         ALGOLIA_APP_ID,
+         ALGOLIA_API_KEY,
+         CLIENT_OPTIONS
+      );
+      const index = client.initIndex(ALGOLIA_PRODUCT_INDEX_NAME);
+      const deviceSuffix = device
+         ? ` AND device:"${escapeFilterValue(device)}"`
+         : '';
+      const { facets } = await index.search('', {
+         facets: ['device'],
+         filters: `public = 1${deviceSuffix}`,
+         maxValuesPerFacet: 1000,
+         hitsPerPage: 0,
+      });
+      return facets?.device ? Object.keys(facets?.device) : [];
+   });
 }
