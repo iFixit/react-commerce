@@ -59,6 +59,7 @@ export interface UpsellProduct {
    price: Money;
    compareAtPrice?: Money | null;
    proPricesByTier?: Record<string, Money> | null;
+   url: string;
 }
 
 interface APIUpsellProduct {
@@ -72,7 +73,7 @@ interface APIUpsellProduct {
    price_tiers: Record<string, number> | null;
    product_blurb: string | null;
    subPrice: string | null;
-   url: string | null;
+   url: string;
    variant_id: number;
 }
 

@@ -110,6 +110,7 @@ function createCart(input: APICart): Cart {
                proPricesByTier: apiProduct.price_tiers
                   ? parsePriceTiers(apiProduct.price_tiers)
                   : null,
+               url: apiProduct.url,
             };
          })
       ),

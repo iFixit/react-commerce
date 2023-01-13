@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Link, Text } from '@chakra-ui/react';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { UpsellProduct } from '@ifixit/cart-sdk/types';
 import { useCallback } from 'react';
@@ -42,12 +42,14 @@ export function Upsell({ item }: UpsellProps) {
             borderColor="brand.200"
             borderStyle="solid"
          >
-            <Text color="brand.500" fontWeight="semibold">
+            <Link href={item.url} color="brand.500" fontWeight="semibold">
                {item.marketingTitle ?? item.name}
-            </Text>
+            </Link>
             <Text color="brand.500">Add the product below to your order</Text>
             <HStack mt="3" align="center" spacing="3">
-               <CartLineItemImage src={item.imageSrc} alt={item.name} />
+               <a href={item.url}>
+                  <CartLineItemImage src={item.imageSrc} alt={item.name} />
+               </a>
                <Text fontSize="sm">{item.marketingBlurb}</Text>
             </HStack>
             <Flex mt="2" justify="flex-end">
