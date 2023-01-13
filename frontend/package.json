@@ -24,7 +24,7 @@
       "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
    },
    "dependencies": {
-      "@chakra-ui/react": "2.3.6",
+      "@chakra-ui/react": "2.4.8",
       "@core-ds/primitives": "2.4.5",
       "@emotion/react": "11.10.5",
       "@emotion/styled": "11.10.5",
