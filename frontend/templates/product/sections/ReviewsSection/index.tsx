@@ -16,8 +16,9 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { faStar } from '@fortawesome/pro-duotone-svg-icons';
-import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
+import { faStar } from '@fortawesome/pro-duotone-svg-icons/faStar';
+import { faShieldCheck } from '@fortawesome/pro-solid-svg-icons/faShieldCheck';
+import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons/faPenToSquare';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper } from '@ifixit/ui';

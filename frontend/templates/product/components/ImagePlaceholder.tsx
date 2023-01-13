@@ -1,5 +1,5 @@
 import { Box, BoxProps, Circle, forwardRef } from '@chakra-ui/react';
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons/faImage';
 import { FaIcon } from '@ifixit/icons';
 
 export const ImagePlaceholder = forwardRef<BoxProps, 'div'>(

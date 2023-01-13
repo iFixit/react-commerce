@@ -1,5 +1,5 @@
 import { Box, Center } from '@chakra-ui/react';
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons/faImage';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '../../misc';
 

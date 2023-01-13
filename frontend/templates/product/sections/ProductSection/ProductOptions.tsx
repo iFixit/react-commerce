@@ -10,7 +10,7 @@ import {
    useTheme,
    VStack,
 } from '@chakra-ui/react';
-import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
+import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons/faImageSlash';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
 import type { Product } from '@models/product.server';

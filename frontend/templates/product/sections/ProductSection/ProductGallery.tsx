@@ -1,5 +1,5 @@
 import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons/faImage';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';

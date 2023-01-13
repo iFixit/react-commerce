@@ -4,14 +4,22 @@ import React from 'react';
 import { List, ListIcon, ListItem } from '@chakra-ui/react';
 import {
    faBoxCircleCheck as faBoxCircleCheckDuo,
+} from '@fortawesome/pro-duotone-svg-icons/faBoxCircleCheck';
+import {
    faRocket as faRocketDuo,
+} from '@fortawesome/pro-duotone-svg-icons/faRocket';
+import {
    faShieldCheck as faShieldCheckDuo,
-} from '@fortawesome/pro-duotone-svg-icons';
+} from '@fortawesome/pro-duotone-svg-icons/faShieldCheck';
 import {
    faBadgeDollar,
+} from '@fortawesome/pro-solid-svg-icons/faBadgeDollar';
+import {
    faRocket,
+} from '@fortawesome/pro-solid-svg-icons/faRocket';
+import {
    faShieldCheck,
-} from '@fortawesome/pro-solid-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons/faShieldCheck';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
 
 export type ServiceValuePropositionSectionProps = {

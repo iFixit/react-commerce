@@ -1,5 +1,5 @@
 import { HStack, StackProps } from '@chakra-ui/react';
-import { faStarHalf } from '@fortawesome/pro-duotone-svg-icons';
+import { faStarHalf } from '@fortawesome/pro-duotone-svg-icons/faStarHalf';
 import { faStar } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
 

@@ -1,5 +1,5 @@
 import { Button, Circle, Text, VStack } from '@chakra-ui/react';
-import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons';
+import { faCartCircleExclamation } from '@fortawesome/pro-duotone-svg-icons/faCartCircleExclamation';
 import { FaIcon } from '@ifixit/icons';
 
 export interface CartEmptyStateProps {

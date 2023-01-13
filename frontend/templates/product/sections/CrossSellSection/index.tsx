@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
 import { Card } from '@components/ui';
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
+import { faImage } from '@fortawesome/pro-duotone-svg-icons/faImage';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { filterNullableItems } from '@helpers/application-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
