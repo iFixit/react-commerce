@@ -111,11 +111,7 @@ test.describe.serial('product page add to cart', () => {
             'iphone-6s-plus-replacement-battery-low-stocked'
          );
 
-         const firstOptionSku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
-         expect(sku1).not.toEqual('');
+         const firstOptionSku = await productPage.getSku();
 
          await expect(
             page.getByTestId('product-inventory-message')
@@ -153,11 +149,8 @@ test.describe.serial('product page add to cart', () => {
          ).toBeDisabled();
 
          await page.getByText('Part Only').first().click();
-         const secondOptionSku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
-         expect(sku2).not.toEqual('');
+         const secondOptionSku = await productPage.getSku();
+
          await expect(
             page.getByTestId('product-add-to-cart-button')
          ).toBeVisible();
@@ -169,25 +162,25 @@ test.describe.serial('product page add to cart', () => {
          await expect(
             page
                .getByRole('listitem')
-               .filter({ hasText: sku2 })
+               .filter({ hasText: secondOptionSku })
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('1');
          await expect(
             page
                .getByRole('listitem')
-               .filter({ hasText: sku1 })
+               .filter({ hasText: firstOptionSku })
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('3');
 
          await page
             .getByRole('listitem')
-            .filter({ hasText: sku1 })
+            .filter({ hasText: firstOptionSku })
             .getByTestId('cart-drawer-decrease-quantity')
             .click();
          await expect(
             page
                .getByRole('listitem')
-               .filter({ hasText: sku1 })
+               .filter({ hasText: firstOptionSku })
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('2');
 
@@ -253,16 +246,12 @@ test.describe.serial('product page add to cart', () => {
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
 
-         const partOnlySku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku = partOnlySku?.replace('Item # ', '') ?? '';
-         expect(sku).not.toEqual('');
+         const partOnlySku = await productPage.getSku();
 
          await productPage.addToCart();
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
          await expect(
-            page.getByTestId('cart-drawer-body').getByText(sku)
+            page.getByTestId('cart-drawer-body').getByText(partOnlySku)
          ).toBeVisible();
 
          await page.getByTestId('cart-drawer-close').click();

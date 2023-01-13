@@ -10,15 +10,13 @@ test.describe('Fix Kit and Part Only test', () => {
       await expect(page.getByText('Kit contents')).toBeVisible();
       await expect(page.getByText('Assembly contents')).not.toBeVisible();
 
-      await expect(page.getByTestId('product-sku')).toBeVisible();
-      const fixKitSku = await page.getByTestId('product-sku').textContent();
+      const fixKitSku = await productPage.getSku();
 
       await page.getByText('Part Only').nth(0).click();
       await expect(page.getByText('Assembly contents')).toBeVisible();
       await expect(page.getByText('Kit contents')).not.toBeVisible();
 
-      await expect(page.getByTestId('product-sku')).toBeVisible();
-      const partOnlySku = await page.getByTestId('product-sku').textContent();
+      const partOnlySku = await productPage.getSku();
 
       expect(fixKitSku).not.toEqual(partOnlySku);
    });

@@ -11,9 +11,7 @@ test.describe('Product option test', () => {
          .getByTestId('product-price')
          .first()
          .innerText();
-      const firstOptionSku = await page
-         .getByTestId('product-sku')
-         .textContent();
+      const firstOptionSku = await productPage.getSku();
       const firstOptionName = await page
          .getByTestId('product-option-selector')
          .locator('option')
@@ -28,16 +26,14 @@ test.describe('Product option test', () => {
       await page
          .getByTestId('product-option-selector')
          .selectOption({ index: 1 });
-      expect(page.getByTestId('product-sku')).not.toContain(firstOptionSku);
+      expect(await productPage.getSku()).not.toContain(firstOptionSku);
 
       // Get the price, sku, and name for the second product option
       const secondOptionPrice = await page
          .getByTestId('product-price')
          .first()
          .innerText();
-      const secondOptionSku = await page
-         .getByTestId('product-sku')
-         .textContent();
+      const secondOptionSku = await productPage.getSku();
       const secondOptionName = await page
          .getByTestId('product-option-selector')
          .locator('option')
@@ -52,18 +48,12 @@ test.describe('Product option test', () => {
       // Assert that the cart drawer contains the skus and prices of the added products
       await expect(page.getByTestId('cart-drawer-body')).toBeVisible();
 
-      // Parse out the skus from the skuTexts which are in form of "Item # IF145-278-14"
-      const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
-      const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
-      expect(sku1).not.toEqual('');
-      expect(sku2).not.toEqual('');
-
       // Assert that the cart drawer contains the skus of the added products
       await expect(
-         page.getByTestId('cart-drawer-body').getByText(sku1)
+         page.getByTestId('cart-drawer-body').getByText(firstOptionSku)
       ).toBeVisible();
       await expect(
-         page.getByTestId('cart-drawer-body').getByText(sku2)
+         page.getByTestId('cart-drawer-body').getByText(secondOptionSku)
       ).toBeVisible();
 
       // Assert that the cart drawer contains the prices of the added products
