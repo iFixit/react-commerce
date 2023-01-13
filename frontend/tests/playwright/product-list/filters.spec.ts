@@ -15,7 +15,7 @@ async function checkRefinementValue(
 // Check that the refinement value is in the search results
 async function checkRefinementInSearchResult(
    facetName: string | null,
-   facetOptionValue: string | null | undefined,
+   facetOptionValue: string,
    results: Array<any>
 ) {
    if (!facetName) {
@@ -111,7 +111,7 @@ test.describe('product list filters', () => {
          );
          await checkRefinementInSearchResult(
             firstFacetName,
-            firstFacetOptionValue,
+            firstFacetOptionValue!,
             results
          );
 
@@ -176,7 +176,7 @@ test.describe('product list filters', () => {
          // Check that the refinement value is in the search results.
          await checkRefinementInSearchResult(
             firstFacetName,
-            firstFacetOptionValue,
+            firstFacetOptionValue!,
             results
          );
 
