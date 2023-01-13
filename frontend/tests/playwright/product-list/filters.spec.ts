@@ -132,7 +132,11 @@ test.describe('product list filters', () => {
             'data-value'
          );
          await checkRefinementValue(secondFacetOptionValue, page);
-         await removeAndCheckRefinement(secondFacetOptionValue!, 'remove', page);
+         await removeAndCheckRefinement(
+            secondFacetOptionValue!,
+            'remove',
+            page
+         );
          await resetAndCheckRefinements('Clear all filters', page);
       });
    });
@@ -194,7 +198,11 @@ test.describe('product list filters', () => {
 
          // Check that the refinement value is in the current refinements.
          await checkRefinementValue(secondFacetOptionValue, page);
-         await removeAndCheckRefinement(secondFacetOptionValue!, 'remove', page);
+         await removeAndCheckRefinement(
+            secondFacetOptionValue!,
+            'remove',
+            page
+         );
          await resetAndCheckRefinements('Clear all filters', page);
       });
 
