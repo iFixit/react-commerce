@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product page test', () => {
    test('Verify product title, price and sku are visible', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product breadcrumb test', () => {
    test.describe('Mobile and Tablet', () => {

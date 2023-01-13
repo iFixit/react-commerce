@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product image test', () => {
    test('product with a single image ', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Fix Kit and Part Only test', () => {
    test.beforeEach(async ({ page }) => {

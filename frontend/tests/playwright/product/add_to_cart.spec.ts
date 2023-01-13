@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe.serial('product page add to cart', () => {
    test.beforeEach(async ({ page }) => {

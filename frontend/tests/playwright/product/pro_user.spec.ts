@@ -1,5 +1,5 @@
 import { interceptLogin } from '../utils';
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Pro user test', () => {
    test('Will give pro users a discount', async ({ page }) => {

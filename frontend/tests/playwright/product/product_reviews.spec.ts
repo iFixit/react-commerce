@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product Page Reviews test', () => {
    test('see more reviews button displays more reviews', async ({ page }) => {
