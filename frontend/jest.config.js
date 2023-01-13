@@ -20,7 +20,7 @@ const customJestConfig = {
       '@public(.+)': '<rootDir>/public/$1',
    },
    setupFilesAfterEnv: ['<rootDir>/tests/jest/jest-setup.ts'],
-   testPathIgnorePatterns: ['<rootDir>/tests/(cypress|playwright)'],
+   testPathIgnorePatterns: ['<rootDir>/tests/playwright'],
    testEnvironment: 'jsdom',
    transform: {
       '.+\\.(css|style|less|sass|scss)$': 'jest-css-modules-transform',
