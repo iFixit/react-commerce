@@ -1,5 +1,13 @@
-import { Box, Button, Flex, HStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
-import NextLink from 'next/link'
+import {
+   Box,
+   Button,
+   Flex,
+   HStack,
+   LinkBox,
+   LinkOverlay,
+   Text,
+} from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { UpsellProduct } from '@ifixit/cart-sdk/types';
 import { useCallback } from 'react';
@@ -52,11 +60,11 @@ export function Upsell({ item }: UpsellProps) {
                   _groupHover={{ color: 'black' }}
                >
                   {item.marketingTitle ?? item.name}
-                  <Text >Add the product below to your order</Text>
+                  <Text>Add the product below to your order</Text>
                </LinkOverlay>
             </NextLink>
             <HStack mt="3" align="center" spacing="3">
-               <CartLineItemImage src={item.imageSrc} alt={item.name}/>
+               <CartLineItemImage src={item.imageSrc} alt={item.name} />
                <Text fontSize="sm">{item.marketingBlurb}</Text>
             </HStack>
             <Flex mt="2" justify="flex-end">
