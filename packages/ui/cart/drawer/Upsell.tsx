@@ -1,4 +1,5 @@
-import { Box, Button, Flex, HStack, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
+import NextLink from 'next/link'
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { UpsellProduct } from '@ifixit/cart-sdk/types';
 import { useCallback } from 'react';
@@ -33,7 +34,8 @@ export function Upsell({ item }: UpsellProps) {
 
    return (
       <Box p="3">
-         <Box
+         <LinkBox
+            role="group"
             bgColor="brand.100"
             py="4"
             px="3"
@@ -42,14 +44,19 @@ export function Upsell({ item }: UpsellProps) {
             borderColor="brand.200"
             borderStyle="solid"
          >
-            <Link href={item.url} color="brand.500" fontWeight="semibold">
-               {item.marketingTitle ?? item.name}
-            </Link>
-            <Text color="brand.500">Add the product below to your order</Text>
+            <NextLink href={`/products/${item.handle}`} passHref>
+               <LinkOverlay
+                  id={item.handle}
+                  fontWeight="semibold"
+                  color="brand.500"
+                  _groupHover={{ color: 'black' }}
+               >
+                  {item.marketingTitle ?? item.name}
+                  <Text >Add the product below to your order</Text>
+               </LinkOverlay>
+            </NextLink>
             <HStack mt="3" align="center" spacing="3">
-               <a href={item.url}>
-                  <CartLineItemImage src={item.imageSrc} alt={item.name} />
-               </a>
+               <CartLineItemImage src={item.imageSrc} alt={item.name}/>
                <Text fontSize="sm">{item.marketingBlurb}</Text>
             </HStack>
             <Flex mt="2" justify="flex-end">
@@ -70,7 +77,7 @@ export function Upsell({ item }: UpsellProps) {
             >
                Add to cart
             </Button>
-         </Box>
+         </LinkBox>
       </Box>
    );
 }
