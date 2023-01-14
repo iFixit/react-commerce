@@ -1,13 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product image test', () => {
-   test.skip(({ page }) => {
-      const viewPort = page.viewportSize();
-      return !viewPort || viewPort.width < 1000;
-   }, 'Only run on desktop. Still working on mobile.');
-
-   test('product with a single image ', async ({ page }) => {
-      await page.goto('/products/iflex-opening-tool');
+   test('product with a single image ', async ({ page, productPage }) => {
+      await productPage.gotoProduct('iflex-opening-tool');
 
       const image = page
          .getByRole('img', { name: 'iFlex Opening Tool' })
@@ -15,19 +10,41 @@ test.describe('Product image test', () => {
       expect(image).toBeVisible;
    });
 
-   test('product with multiple images ', async ({ page }) => {
-      await page.goto('/products/repair-business-toolkit');
+   test('product with multiple images ', async ({ page, productPage }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
+      const viewPort = page.viewportSize();
 
       const firstImageSrc = await page
          .locator('.swiper-slide.swiper-slide-active')
          .getByRole('img')
          .first()
          .getAttribute('src');
-      const firstImage = page.locator(`img[src="${firstImageSrc}"]`).first();
+
+      const firstImage =
+         viewPort!.width > 768
+            ? page
+                 .getByTestId('product-gallery-desktop')
+                 .locator(`img[src="${firstImageSrc}"]`)
+                 .first()
+            : page
+                 .getByTestId('product-gallery-mobile')
+                 .locator(`img[src="${firstImageSrc}"]`)
+                 .first();
+
       await expect(firstImage).toBeVisible();
 
       // Click on the arrow for the next image
-      await page.getByTestId('swiper-next-image').first().click();
+      if (viewPort!.width > 768) {
+         await page
+            .getByTestId('product-gallery-desktop')
+            .getByTestId('swiper-next-image')
+            .click();
+      } else {
+         await page
+            .getByTestId('product-gallery-mobile')
+            .getByTestId('swiper-next-image')
+            .click();
+      }
 
       const secondImageSrc = await page
          .locator('.swiper-slide.swiper-slide-active')

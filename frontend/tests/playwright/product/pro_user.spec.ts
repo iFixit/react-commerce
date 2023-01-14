@@ -1,9 +1,9 @@
 import { interceptLogin } from '../utils';
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Pro user test', () => {
-   test('Will give pro users a discount', async ({ page }) => {
-      await page.goto('/products/repair-business-toolkit');
+   test('Will give pro users a discount', async ({ page, productPage }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
 
       // Get price from page
       const originalPriceString = await page

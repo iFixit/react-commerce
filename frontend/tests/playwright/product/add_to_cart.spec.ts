@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe.serial('product page add to cart', () => {
    test.beforeEach(async ({ page }) => {
@@ -13,11 +13,14 @@ test.describe.serial('product page add to cart', () => {
       );
    });
 
-   test('Clicking Add To Cart Adds Items To Cart', async ({ page }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+   test('Clicking Add To Cart Adds Items To Cart', async ({
+      page,
+      productPage,
+   }) => {
+      await productPage.gotoProduct('spudger-retail-3-pack');
 
       for (let i = 1; i <= 5; i++) {
-         await page.getByTestId('product-add-to-cart-button').click();
+         await productPage.addToCart();
          const quantity = page.getByTestId('cart-drawer-quantity');
          await expect(quantity).toHaveText(`${i}`);
          await page.getByTestId('cart-drawer-close').click();
@@ -29,10 +32,11 @@ test.describe.serial('product page add to cart', () => {
 
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
       page,
+      productPage,
    }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+      await productPage.gotoProduct('spudger-retail-3-pack');
 
-      await page.getByTestId('product-add-to-cart-button').click();
+      await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
 
       for (let i = 2; i <= 5; i++) {
@@ -58,21 +62,24 @@ test.describe.serial('product page add to cart', () => {
       await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
    });
 
-   test('Item Can Be Added Again After Removing The Item', async ({ page }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+   test('Item Can Be Added Again After Removing The Item', async ({
+      page,
+      productPage,
+   }) => {
+      await productPage.gotoProduct('spudger-retail-3-pack');
 
-      await page.getByTestId('product-add-to-cart-button').click();
+      await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
       await page.getByTestId('cart-drawer-remove-item').click();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await page.getByTestId('cart-drawer-close').click();
-      await page.getByTestId('product-add-to-cart-button').click();
+      await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
    });
 
-   test('Back to Shopping Button Works', async ({ page }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+   test('Back to Shopping Button Works', async ({ page, productPage }) => {
+      await productPage.gotoProduct('spudger-retail-3-pack');
 
       await page.getByTestId('cart-drawer-open').click();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
@@ -82,7 +89,7 @@ test.describe.serial('product page add to cart', () => {
          page.getByTestId('cart-drawer-item-count')
       ).not.toBeVisible();
 
-      await page.getByTestId('product-add-to-cart-button').click();
+      await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
       await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
       await page.getByTestId('cart-drawer-remove-item').click();
@@ -96,16 +103,15 @@ test.describe.serial('product page add to cart', () => {
    });
 
    test.describe('Product Stock Levels', () => {
-      test('Low stocked product changes quantity', async ({ page }) => {
-         await page.goto(
-            '/products/iphone-6s-plus-replacement-battery-low-stocked'
+      test('Low stocked product changes quantity', async ({
+         page,
+         productPage,
+      }) => {
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-low-stocked'
          );
 
-         const firstOptionSku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
-         expect(sku1).not.toEqual('');
+         const firstOptionSku = await productPage.getSku();
 
          await expect(
             page.getByTestId('product-inventory-message')
@@ -113,7 +119,7 @@ test.describe.serial('product page add to cart', () => {
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'Only 3 left'
          );
-         await page.getByTestId('product-add-to-cart-button').click();
+         await productPage.addToCart();
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
 
          await page.getByTestId('cart-drawer-close').click();
@@ -143,41 +149,38 @@ test.describe.serial('product page add to cart', () => {
          ).toBeDisabled();
 
          await page.getByText('Part Only').first().click();
-         const secondOptionSku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
-         expect(sku2).not.toEqual('');
+         const secondOptionSku = await productPage.getSku();
+
          await expect(
             page.getByTestId('product-add-to-cart-button')
          ).toBeVisible();
          await expect(
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
-         await page.getByTestId('product-add-to-cart-button').click();
+         await productPage.addToCart();
 
          await expect(
             page
                .getByRole('listitem')
-               .filter({ hasText: sku2 })
+               .filter({ hasText: secondOptionSku })
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('1');
          await expect(
             page
                .getByRole('listitem')
-               .filter({ hasText: sku1 })
+               .filter({ hasText: firstOptionSku })
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('3');
 
          await page
             .getByRole('listitem')
-            .filter({ hasText: sku1 })
+            .filter({ hasText: firstOptionSku })
             .getByTestId('cart-drawer-decrease-quantity')
             .click();
          await expect(
             page
                .getByRole('listitem')
-               .filter({ hasText: sku1 })
+               .filter({ hasText: firstOptionSku })
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('2');
 
@@ -188,7 +191,10 @@ test.describe.serial('product page add to cart', () => {
          );
       });
 
-      test('Out of stock product cannot be added to cart', async ({ page }) => {
+      test('Out of stock product cannot be added to cart', async ({
+         page,
+         productPage,
+      }) => {
          await page.route(
             '**/api/2.0/cart/product/notifyWhenSkuInStock',
             (route) => {
@@ -199,8 +205,8 @@ test.describe.serial('product page add to cart', () => {
             }
          );
 
-         await page.goto(
-            '/products/iphone-6s-plus-replacement-battery-out-of-stock'
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-out-of-stock'
          );
          await expect(
             page.getByRole('img', { name: 'Fix Kit' })
@@ -240,16 +246,12 @@ test.describe.serial('product page add to cart', () => {
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
 
-         const partOnlySku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku = partOnlySku?.replace('Item # ', '') ?? '';
-         expect(sku).not.toEqual('');
+         const partOnlySku = await productPage.getSku();
 
-         await page.getByTestId('product-add-to-cart-button').click();
+         await productPage.addToCart();
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
          await expect(
-            page.getByTestId('cart-drawer-body').getByText(sku)
+            page.getByTestId('cart-drawer-body').getByText(partOnlySku)
          ).toBeVisible();
 
          await page.getByTestId('cart-drawer-close').click();

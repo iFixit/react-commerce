@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Cross-sell test', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.goto('/products/iphone-6s-plus-replacement-battery');
+   test.beforeEach(async ({ productPage }) => {
+      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
    });
 
    test('Current item from cross-sell can be added to cart', async ({
