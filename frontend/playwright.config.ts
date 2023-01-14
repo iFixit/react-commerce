@@ -1,6 +1,4 @@
-import type { Locator, PlaywrightTestConfig } from '@playwright/test';
-import { expect, devices } from '@playwright/test';
-import { format } from 'util';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -118,53 +116,5 @@ const config: PlaywrightTestConfig = {
       reuseExistingServer: !process.env.CI,
    },
 };
-
-expect.extend({
-   async toBeWithinViewport(
-      element: Locator,
-      viewportSize: { width: number; height: number } | null
-   ) {
-      if (!viewportSize) {
-         throw new Error('Viewport size was null.');
-      }
-
-      const boundingBox = await element.boundingBox();
-      if (!boundingBox) {
-         return {
-            message: () => 'Element is not visible.',
-            pass: false,
-         };
-      }
-
-      const { x, y, width, height } = boundingBox;
-      const { width: viewportWidth, height: viewportHeight } = viewportSize;
-
-      if (
-         x < 0 ||
-         y < 0 ||
-         x + width > viewportWidth ||
-         y + height > viewportHeight
-      ) {
-         return {
-            message: () =>
-               format(
-                  'Element is not within viewport. Element: %o, Viewport: %o',
-                  boundingBox,
-                  viewportSize
-               ),
-            pass: false,
-         };
-      }
-      return {
-         message: () =>
-            format(
-               'Element is within viewport. Element: %o, Viewport: %o',
-               boundingBox,
-               viewportSize
-            ),
-         pass: true,
-      };
-   },
-});
 
 export default config;
