@@ -1,13 +1,12 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Cross-sell test', () => {
-   test.beforeEach(async ({ page, productPage }) => {
+   test.beforeEach(async ({ productPage }) => {
       await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
    });
 
    test('Current item from cross-sell can be added to cart', async ({
       page,
-      productPage,
    }) => {
       const products = await page.getByTestId('cross-sell-item');
 
@@ -55,10 +54,7 @@ test.describe('Cross-sell test', () => {
       expect(cartDrawerText).toContain(currentProductTitle);
    });
 
-   test('Cross-sell products can be added to cart', async ({
-      page,
-      productPage,
-   }) => {
+   test('Cross-sell products can be added to cart', async ({ page }) => {
       const products = await page.getByTestId('cross-sell-item');
 
       const allProductTitles = [];

@@ -1,11 +1,11 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Subscribe to newsletter', () => {
-   test.beforeEach(async ({ page, productPage }) => {
+   test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test('Requires an email', async ({ page, productPage }) => {
+   test('Requires an email', async ({ page }) => {
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
 
       await expect(
@@ -21,7 +21,7 @@ test.describe('Subscribe to newsletter', () => {
       ).toBeVisible();
    });
 
-   test('Prevents invalid email', async ({ page, productPage }) => {
+   test('Prevents invalid email', async ({ page }) => {
       await expect(
          page.getByText(/please insert a valid email/i)
       ).not.toBeVisible();
@@ -33,10 +33,7 @@ test.describe('Subscribe to newsletter', () => {
       ).toBeVisible();
    });
 
-   test('Shows confirmation when email is subscribed', async ({
-      page,
-      productPage,
-   }) => {
+   test('Shows confirmation when email is subscribed', async ({ page }) => {
       await page.route('**/api/2.0/cart/newsletter/subscribe', (route) =>
          route.fulfill({ status: 200 })
       );
@@ -52,10 +49,7 @@ test.describe('Subscribe to newsletter', () => {
       ).not.toBeVisible();
    });
 
-   test('Shows an error when server request fails', async ({
-      page,
-      productPage,
-   }) => {
+   test('Shows an error when server request fails', async ({ page }) => {
       await page.route('**/api/2.0/cart/newsletter/subscribe', (route) =>
          route.fulfill({ status: 500 })
       );

@@ -6,14 +6,11 @@ const NO_SEARCH_RESULTS_DESC =
    "Try adjusting your search or filter to find what you're looking for";
 
 test.describe('parts page search', () => {
-   test.beforeEach(async ({ page, productPage }) => {
+   test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test('Should show results when the search term exists', async ({
-      page,
-      productPage,
-   }) => {
+   test('Should show results when the search term exists', async ({ page }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
@@ -42,7 +39,6 @@ test.describe('parts page search', () => {
 
    test("Should show no results when search term doesn't exist", async ({
       page,
-      productPage,
    }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();

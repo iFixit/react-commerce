@@ -3,13 +3,12 @@ import { test, expect } from '../test-fixtures';
 // the page scrolls back up.
 
 test.describe('collections scroll', () => {
-   test.beforeEach(async ({ page, productPage }) => {
+   test.beforeEach(async ({ page }) => {
       await page.goto('/Tools');
    });
 
    test('Should scroll to the top of the page after clicking next page', async ({
       page,
-      productPage,
    }) => {
       await (
          expect(page.getByTestId('collections-search-box')) as any
