@@ -111,7 +111,7 @@ pnpm run playwright:run --project="Desktop Chrome" fix_kit         // Runs fix_k
 pnpm run playwright:run --project="Mobile Chrome" --headed fix_kit // Runs fix_kit test for mobile chrome headed
 ```
 
-Note: We need to have the dev server running before we run the Playwright tests.
+> ⚠️  We need to have the dev server running before we run the Playwright tests.
 Luckily, Playwright webserver will start the app automatically if it's not running yet.
 
 This command will run Jest tests:
@@ -120,7 +120,7 @@ This command will run Jest tests:
 pnpm test
 ```
 
-Note: We don't need to have the dev server running before we run the Jest tests.
+> ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
 ### Using SVG
 
