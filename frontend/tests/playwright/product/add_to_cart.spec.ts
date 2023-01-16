@@ -232,7 +232,7 @@ test.describe.serial('product page add to cart', () => {
             )
          ).toBeVisible();
 
-         await page.getByText('Part Only').first().click();
+         await productPage.switchSelectedVariant();
          await expect(productPage.addToCartButton).toBeVisible();
          await expect(
             page.getByTestId('product-inventory-message')
