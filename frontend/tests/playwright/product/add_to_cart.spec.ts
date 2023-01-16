@@ -14,21 +14,20 @@ test.describe.serial('product page add to cart', () => {
    });
 
    test('Clicking Add To Cart Adds Items To Cart', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
 
+      const sku = await productPage.getSku();
       for (let i = 1; i <= 5; i++) {
          await productPage.addToCart();
-         const quantity = page.getByTestId('cart-drawer-quantity');
-         await expect(quantity).toHaveText(`${i}`);
+         await cartDrawer.assertItemQuantity(sku, i);
          await cartDrawer.close();
       }
 
       await cartDrawer.open();
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('5');
+      await cartDrawer.assertItemQuantity(sku, 5);
    });
 
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
@@ -44,10 +43,7 @@ test.describe.serial('product page add to cart', () => {
 
       for (let i = 2; i <= 5; i++) {
          await cartDrawer.increaseItemQuantity(sku);
-         const quantity = await page
-            .getByTestId('cart-drawer-quantity')
-            .textContent();
-         expect(quantity).toBe(`${i}`);
+         await cartDrawer.assertItemQuantity(sku, i);
       }
 
       await cartDrawer.close();
@@ -55,14 +51,11 @@ test.describe.serial('product page add to cart', () => {
 
       for (let i = 5; i > 1; i--) {
          await cartDrawer.decreaseItemQuantity(sku);
-         const quantity = await page
-            .getByTestId('cart-drawer-quantity')
-            .textContent();
-         expect(quantity).toBe(`${i - 1}`);
+         await cartDrawer.assertItemQuantity(sku, i - 1);
       }
 
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+      await cartDrawer.assertItemQuantity(sku, 1);
    });
 
    test('Item Can Be Added Again After Removing The Item', async ({
@@ -135,7 +128,7 @@ test.describe.serial('product page add to cart', () => {
             'Only 3 left'
          );
          await productPage.addToCart();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+         await cartDrawer.assertItemQuantity(firstOptionSku, 1);
 
          await cartDrawer.close();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
@@ -144,7 +137,7 @@ test.describe.serial('product page add to cart', () => {
 
          await cartDrawer.open();
          await cartDrawer.increaseItemQuantity(firstOptionSku);
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+         await cartDrawer.assertItemQuantity(firstOptionSku, 2);
 
          await cartDrawer.close();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
@@ -153,7 +146,7 @@ test.describe.serial('product page add to cart', () => {
 
          await cartDrawer.open();
          await cartDrawer.increaseItemQuantity(firstOptionSku);
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
+         await cartDrawer.assertItemQuantity(firstOptionSku, 3);
 
          await cartDrawer.close();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
@@ -170,26 +163,11 @@ test.describe.serial('product page add to cart', () => {
          ).not.toBeVisible();
          await productPage.addToCart();
 
-         await expect(
-            page
-               .getByRole('listitem')
-               .filter({ hasText: secondOptionSku })
-               .getByTestId('cart-drawer-quantity')
-         ).toHaveText('1');
-         await expect(
-            page
-               .getByRole('listitem')
-               .filter({ hasText: firstOptionSku })
-               .getByTestId('cart-drawer-quantity')
-         ).toHaveText('3');
+         await cartDrawer.assertItemQuantity(secondOptionSku, 1);
+         await cartDrawer.assertItemQuantity(firstOptionSku, 3);
 
          await cartDrawer.decreaseItemQuantity(firstOptionSku);
-         await expect(
-            page
-               .getByRole('listitem')
-               .filter({ hasText: firstOptionSku })
-               .getByTestId('cart-drawer-quantity')
-         ).toHaveText('2');
+         await cartDrawer.assertItemQuantity(firstOptionSku, 2);
 
          await cartDrawer.close();
          await productPage.switchSelectedVariant();
@@ -253,7 +231,7 @@ test.describe.serial('product page add to cart', () => {
          const partOnlySku = await productPage.getSku();
 
          await productPage.addToCart();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+         await cartDrawer.assertItemQuantity(partOnlySku, 1);
          await expect(
             page.getByTestId('cart-drawer-body').getByText(partOnlySku)
          ).toBeVisible();

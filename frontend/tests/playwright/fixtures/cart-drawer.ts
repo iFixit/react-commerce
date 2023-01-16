@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class CartDrawer {
    readonly page: Page;
@@ -18,6 +18,13 @@ export class CartDrawer {
    async getItem(sku: string): Promise<Locator> {
       const cartDrawer = this.page.getByTestId('cart-drawer');
       return cartDrawer.getByRole('listitem').filter({ hasText: sku });
+   }
+
+   async getItemQuantity(sku: string): Promise<number> {
+      const cartItemQuantity = (await this.getItem(sku)).getByTestId(
+         'cart-drawer-quantity'
+      );
+      return parseInt(await cartItemQuantity.innerText());
    }
 
    /**
@@ -45,5 +52,13 @@ export class CartDrawer {
       await (await this.getItem(sku))
          .getByTestId('cart-drawer-remove-item')
          .click();
+   }
+
+   /**
+    * @param sku The sku of the item to assert the quantity of.
+    * @param quantity The expected quantity of the item.
+    */
+   async assertItemQuantity(sku: string, quantity: number): Promise<void> {
+      expect(await this.getItemQuantity(sku)).toBe(quantity);
    }
 }
