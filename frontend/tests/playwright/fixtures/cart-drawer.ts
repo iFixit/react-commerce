@@ -37,4 +37,13 @@ export class CartDrawer {
          .getByTestId('cart-drawer-decrease-quantity')
          .click();
    }
+
+   /**
+    * @param sku The sku of the item to remove.
+    */
+   async removeItem(sku: string): Promise<void> {
+      await (await this.getItem(sku))
+         .getByTestId('cart-drawer-remove-item')
+         .click();
+   }
 }

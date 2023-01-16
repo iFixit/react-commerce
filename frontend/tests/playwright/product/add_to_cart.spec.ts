@@ -71,10 +71,13 @@ test.describe.serial('product page add to cart', () => {
       cartDrawer,
    }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
+      const sku = await productPage.getSku();
 
       await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
-      await page.getByTestId('cart-drawer-remove-item').click();
+
+      await cartDrawer.removeItem(sku);
+
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await cartDrawer.close();
@@ -82,8 +85,13 @@ test.describe.serial('product page add to cart', () => {
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
    });
 
-   test('Back to Shopping Button Works', async ({ page, productPage }) => {
+   test('Back to Shopping Button Works', async ({
+      page,
+      productPage,
+      cartDrawer,
+   }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
+      const sku = await productPage.getSku();
 
       await cartDrawer.open();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
@@ -96,7 +104,9 @@ test.describe.serial('product page add to cart', () => {
       await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
       await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
-      await page.getByTestId('cart-drawer-remove-item').click();
+
+      await cartDrawer.removeItem(sku);
+
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await page.getByTestId('back-to-shopping').click();
