@@ -13,10 +13,17 @@ export const IFIXIT_ORIGIN = requireEnvVariable(
    'NEXT_PUBLIC_IFIXIT_ORIGIN'
 );
 
+export const APP_ORIGIN = requireEnvVariable(
+   process.env.NEXT_PUBLIC_APP_ORIGIN,
+   'NEXT_PUBLIC_APP_ORIGIN'
+);
+
 export const STRAPI_ORIGIN = requireEnvVariable(
    process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
    'NEXT_PUBLIC_STRAPI_ORIGIN'
 );
+
+export const STATSD_HOST = process.env.STATSD_HOST;
 
 export const PIXEL_PING_URL = process.env.NEXT_PUBLIC_PIXEL_PING_URL;
 
@@ -46,6 +53,8 @@ export const DEFAULT_STORE_CODE = requireEnvVariable(
 export const POLYFILL_DOMAIN = process.env.NEXT_PUBLIC_POLYFILL_DOMAIN;
 
 export const CACHE_DISABLED = process.env.NEXT_PUBLIC_CACHE_DISABLED === 'true';
+
+export const REDIS_URL = process.env.REDIS_URL;
 
 function requireEnvVariable(
    env: string | null | undefined,

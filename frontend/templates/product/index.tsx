@@ -104,7 +104,11 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                internationalBuyBox={internationalBuyBox}
             />
             <ReplacementGuidesSection product={product} />
-            <ServiceValuePropositionSection selectedVariant={selectedVariant} />
+            {product.isEnabled && (
+               <ServiceValuePropositionSection
+                  selectedVariant={selectedVariant}
+               />
+            )}
             {isProductForSale && !internationalBuyBox && (
                <CrossSellSection
                   key={selectedVariant.id}

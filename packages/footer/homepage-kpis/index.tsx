@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-   Box,
-   SimpleGrid,
-   Stat,
-   StatHelpText,
-   StatNumber,
-} from '@chakra-ui/react';
+import { Box, SimpleGrid, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { PageContentWrapper } from '../components/PageContentWrapper';
 
 interface Stat {
@@ -68,17 +62,17 @@ function Stats({ number, helpText }: StatsProps) {
          sx={{
             dl: {
                display: 'flex',
-               flexDirection: 'column',
+               flexDirection: 'column-reverse',
                alignItems: 'center',
             },
          }}
       >
+         <StatLabel fontSize="md" m="0">
+            {helpText}
+         </StatLabel>
          <StatNumber color="blue.500" fontSize="4xl" m="0">
             {number}
          </StatNumber>
-         <StatHelpText fontSize="md" m="0">
-            {helpText}
-         </StatHelpText>
       </Stat>
    );
 }

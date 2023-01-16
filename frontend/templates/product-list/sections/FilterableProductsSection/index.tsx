@@ -18,7 +18,6 @@ import {
 import { Card } from '@components/ui';
 import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
-import { cypressReplace, cypressWindowLog } from '@helpers/test-helpers';
 import { useAppContext } from '@ifixit/app';
 import { useLocalPreference } from '@ifixit/ui';
 import {
@@ -52,8 +51,6 @@ export function FilterableProductsSection({ productList }: SectionProps) {
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
       ProductViewType.List
    );
-
-   cypressWindowLog({ filteredProducts: hits });
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
@@ -139,11 +136,9 @@ function useScrollIntoViewEffect(deps: React.DependencyList) {
    const ref = React.useRef<HTMLDivElement>(null);
    React.useEffect(() => {
       if (ref.current && ref.current.getBoundingClientRect().top < 0) {
-         // Scrolling doesn't work in cypress when the behavior is `smooth`.
-         const options = cypressReplace<
-            Parameters<Element['scrollIntoView']>[0]
-         >({ behavior: 'smooth' }, undefined);
-         ref.current.scrollIntoView(options);
+         ref.current.scrollIntoView({
+            behavior: 'smooth',
+         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, deps);

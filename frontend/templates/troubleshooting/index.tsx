@@ -14,49 +14,23 @@ import {
    Grid,
    Heading,
    Link,
-   ListIcon,
    ListItem,
    OrderedList,
 } from '@chakra-ui/react';
+import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
 
-type Problem = {
-   heading: string;
-   body: string;
-};
-
-type TroubleshootingData = {
-   title: string;
-   toc: string;
-   groups: Problem[];
-};
 const borderStyle: ChakraProps = {
    borderBottomStyle: 'solid',
    borderBottomColor: 'gray.300',
    borderBottomWidth: '1px',
-};
+}
 
-const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
+const Wiki: NextPageWithLayout<{
+   wikiData: TroubleshootingData;
+   layoutProps: DefaultLayoutProps;
+}> = ({ wikiData }) => {
    const appContext = useAppContext();
    const client = new IFixitAPIClient({ origin: appContext.ifixitOrigin });
-
-   const { wikiname } = useRouter().query;
-   const [wikiData, setWikiData] = React.useState<TroubleshootingData | null>(
-      null
-   );
-
-   React.useEffect(() => {
-      client
-         .get(`Troubleshooting/${wikiname}`, {
-            credentials: 'include',
-         })
-         .then((res: any) => {
-            setWikiData(res);
-         });
-   }, [wikiname]);
-
-   if (!wikiData) {
-      return <p>waiting</p>;
-   }
 
    const groups = wikiData.groups;
    const frontMatter =
@@ -105,7 +79,7 @@ const Wiki: NextPageWithLayout<{ layoutProps: DefaultLayoutProps }> = () => {
             </OrderedList>
          </Box>
          {problems.map((group, idx) => (
-            <ProblemCard problem={group} index={idx + 1} />
+            <ProblemCard problem={group} key={group.heading} index={idx + 1} />
          ))}
          {endMatterItems &&
             endMatterItems.map((item) => (

@@ -80,6 +80,7 @@ export function ProductSection({
                zIndex="1"
             >
                <ProductGallery
+                  data-testid="product-gallery-desktop"
                   product={product}
                   selectedVariant={selectedVariant}
                   selectedImageId={selectedImageId}
@@ -132,10 +133,13 @@ export function ProductSection({
                   />
                )}
 
+               {!product.isEnabled && <NotForSaleAlert />}
+
                {isForSale && <ProductRating product={product} />}
 
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
+                     data-testid="product-gallery-mobile"
                      product={product}
                      selectedVariant={selectedVariant}
                      selectedImageId={selectedImageId}
@@ -143,11 +147,13 @@ export function ProductSection({
                   />
                </Flex>
 
-               <ProductOptions
-                  product={product}
-                  selected={selectedVariant.id}
-                  onChange={handleVariantChange}
-               />
+               {product.isEnabled && (
+                  <ProductOptions
+                     product={product}
+                     selected={selectedVariant.id}
+                     onChange={handleVariantChange}
+                  />
+               )}
 
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&
@@ -159,9 +165,9 @@ export function ProductSection({
                         selectedVariant={selectedVariant}
                      />
                   ))
-               ) : (
-                  <NotForSaleAlert mt="4" />
-               )}
+               ) : product.isEnabled ? (
+                  <ProOnlyAlert mt="4" />
+               ) : null}
 
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
@@ -172,7 +178,7 @@ export function ProductSection({
                )}
 
                <Accordion
-                  defaultIndex={[0, 1]}
+                  defaultIndex={product.isEnabled ? [0, 1] : undefined}
                   allowMultiple
                   mt="10"
                   sx={{
@@ -318,7 +324,7 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
    );
 }
 
-function NotForSaleAlert(props: AlertProps) {
+function ProOnlyAlert(props: AlertProps) {
    return (
       <Alert
          status="warning"
@@ -353,6 +359,31 @@ function NotForSaleAlert(props: AlertProps) {
                </Link>
                .
             </p>
+         </Box>
+      </Alert>
+   );
+}
+
+function NotForSaleAlert(props: AlertProps) {
+   return (
+      <Alert
+         status="warning"
+         borderWidth={1}
+         borderColor="orange.300"
+         borderRadius="md"
+         alignItems="flex-start"
+         {...props}
+      >
+         <FaIcon
+            icon={faCircleExclamation}
+            h="4"
+            mt="0.5"
+            mr="2.5"
+            color="orange.500"
+         />
+
+         <Box fontSize="sm">
+            <p>Not for Sale.</p>
          </Box>
       </Alert>
    );

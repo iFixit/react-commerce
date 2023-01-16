@@ -8,6 +8,7 @@ import {
    getDiscountedProduct,
    getProductOfType,
    getProductWithWarranty,
+   mockResizeObserver,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 import { mockedLayoutProps } from '../__mocks__/products';
@@ -24,6 +25,7 @@ jest.mock('@templates/product/hooks/useProductTemplateProps', () => ({
 describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
+      mockResizeObserver();
    });
 
    describe('Product Description Tests', () => {
@@ -533,6 +535,35 @@ describe('ProductSection Tests', () => {
          (expect(notifyMeForm) as any).toBeInTheDocument();
          (expect(notifyMeForm?.textContent) as any).toEqual(
             'This item is currently Out of Stock'
+         );
+      });
+
+      test('Product with no image', async () => {
+         const product = getMockProduct({
+            images: [],
+            variants: [
+               getMockProductVariant({
+                  image: null,
+               }),
+            ],
+         });
+
+         renderWithAppContext(
+            <ProductSection
+               product={product}
+               selectedVariant={product.variants[0]}
+               onVariantChange={jest.fn()}
+               internationalBuyBox={null}
+            />
+         );
+
+         const imagePlaceholders = screen.queryAllByText(
+            /No photos available for this product/i
+         );
+         // We have 2 image placeholders in the dom where one of them is hidden
+         // and the other is visible (due to different viewports).
+         imagePlaceholders.forEach((el) =>
+            (expect(el) as any).toBeInTheDocument()
          );
       });
    });

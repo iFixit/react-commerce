@@ -4,54 +4,17 @@ on: [push]
 env:
    npm_config_userconfig: './.npmrc'
 jobs:
-   cypress-run:
-      runs-on: ubuntu-latest
-      steps:
-         - name: Checkout
-           uses: actions/checkout@v2
-         - name: Start strapi server
-           run: cd backend && docker-compose up -d
-           env:
-              JWT_SECRET: 'ci-secret'
-              API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
-         - name: Setup and cache pnpm
-           uses: ./.github/actions/pnpm-setup
-         - name: Install workspaces
-           env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
-           run: pnpm install
-         - name: Cache Cypress
-           id: cache-cypress
-           uses: actions/cache@v1
-           with:
-              path: ~/.cache/Cypress
-              key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-         # now let's install Cypress binary
-         - run: cd frontend && npm exec cypress install
-         - name: Cypress run
-           uses: cypress-io/github-action@v4.2.0
-           env:
-              NODE_ENV: test
-              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-           with:
-              working-directory: frontend
-              install: false
-              build: pnpm run build
-              start: pnpm start
-         # after the test run completes
-         # store videos and any screenshots
-         # NOTE: screenshots will be generated only if E2E test failed
-         # thus we store screenshots only on failures
-         # Alternative: create and commit an empty cypress/screenshots folder
-         # to always have something to upload
-         - uses: actions/upload-artifact@v2
-           if: failure()
-           with:
-              name: cypress-screenshots
-              path: frontend/test/cypress/screenshots
-
    playwright-run:
+      strategy:
+         fail-fast: false
+         matrix:
+            project:
+               [
+                  'Desktop Chrome',
+                  'Desktop Firefox',
+                  'Mobile Chrome',
+                  'Tablet Chrome',
+               ]
       runs-on: ubuntu-latest
       steps:
          - name: Checkout
@@ -88,7 +51,7 @@ jobs:
               NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-           run: cd frontend && pnpm playwright:run
+           run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}"
 
          - uses: actions/upload-artifact@v2
            if: failure()

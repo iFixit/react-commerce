@@ -5,8 +5,8 @@ import { getMockProduct } from '../utils';
 
 describe('CompatibleDevice', () => {
    it('renders and matches the snapshot', () => {
-      let product = getMockProduct();
-      let device = product!.compatibility!.devices[0];
+      const product = getMockProduct();
+      const device = product!.compatibility!.devices[0];
 
       // @ts-ignore
       const { asFragment } = renderWithAppContext(
@@ -20,8 +20,8 @@ describe('CompatibleDevice', () => {
    });
 
    it('renders and matches the snapshot with truncated variants', async () => {
-      let product = getMockProduct();
-      let device = product!.compatibility!.devices[0];
+      const product = getMockProduct();
+      const device = product!.compatibility!.devices[0];
 
       // @ts-ignore
       const { asFragment } = renderWithAppContext(
