@@ -13,12 +13,14 @@ import { UpsellProduct } from '@ifixit/cart-sdk/types';
 import { useCallback } from 'react';
 import { ProductVariantPrice, useUserPrice } from '../../commerce';
 import { CartLineItemImage } from './CartLineItemImage';
+import { useCartDrawer } from './hooks/useCartDrawer';
 
 export interface UpsellProps {
    item: UpsellProduct;
 }
 
 export function Upsell({ item }: UpsellProps) {
+   const { onClose } = useCartDrawer();
    const addToCart = useAddToCart();
    const userPrice = useUserPrice({
       price: item.price,
@@ -51,6 +53,7 @@ export function Upsell({ item }: UpsellProps) {
             borderWidth="1px"
             borderColor="brand.200"
             borderStyle="solid"
+            onClick={onClose}
          >
             <NextLink href={`/products/${item.handle}`} passHref>
                <LinkOverlay
