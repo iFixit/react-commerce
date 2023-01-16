@@ -64,7 +64,11 @@ export function Upsell({ item }: UpsellProps) {
                </LinkOverlay>
             </NextLink>
             <HStack mt="3" align="center" spacing="3">
-               <CartLineItemImage src={item.imageSrc} alt={item.name} />
+               <NextLink href={`/products/${item.handle}`} passHref>
+                  <LinkOverlay>
+                     <CartLineItemImage src={item.imageSrc} alt={item.name} />
+                  </LinkOverlay>
+               </NextLink>
                <Text fontSize="sm">{item.marketingBlurb}</Text>
             </HStack>
             <Flex mt="2" justify="flex-end">
