@@ -16,6 +16,7 @@ test.describe.serial('product page add to cart', () => {
    test('Clicking Add To Cart Adds Items To Cart', async ({
       page,
       productPage,
+      cartDrawer,
    }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
 
@@ -23,16 +24,17 @@ test.describe.serial('product page add to cart', () => {
          await productPage.addToCart();
          const quantity = page.getByTestId('cart-drawer-quantity');
          await expect(quantity).toHaveText(`${i}`);
-         await page.getByTestId('cart-drawer-close').click();
+         await cartDrawer.close();
       }
 
-      await page.getByTestId('cart-drawer-open').click();
+      await cartDrawer.open();
       await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('5');
    });
 
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
       page,
       productPage,
+      cartDrawer,
    }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
 
@@ -47,8 +49,8 @@ test.describe.serial('product page add to cart', () => {
          expect(quantity).toBe(`${i}`);
       }
 
-      await page.getByTestId('cart-drawer-close').click();
-      await page.getByTestId('cart-drawer-open').click();
+      await cartDrawer.close();
+      await cartDrawer.open();
 
       for (let i = 5; i > 1; i--) {
          await page.getByTestId('cart-drawer-decrease-quantity').click();
@@ -65,6 +67,7 @@ test.describe.serial('product page add to cart', () => {
    test('Item Can Be Added Again After Removing The Item', async ({
       page,
       productPage,
+      cartDrawer,
    }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
 
@@ -73,7 +76,7 @@ test.describe.serial('product page add to cart', () => {
       await page.getByTestId('cart-drawer-remove-item').click();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
-      await page.getByTestId('cart-drawer-close').click();
+      await cartDrawer.close();
       await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
    });
@@ -81,7 +84,7 @@ test.describe.serial('product page add to cart', () => {
    test('Back to Shopping Button Works', async ({ page, productPage }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
 
-      await page.getByTestId('cart-drawer-open').click();
+      await cartDrawer.open();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await page.getByTestId('back-to-shopping').click();
@@ -106,6 +109,7 @@ test.describe.serial('product page add to cart', () => {
       test('Low stocked product changes quantity', async ({
          page,
          productPage,
+         cartDrawer,
       }) => {
          await productPage.gotoProduct(
             'iphone-6s-plus-replacement-battery-low-stocked'
@@ -122,25 +126,25 @@ test.describe.serial('product page add to cart', () => {
          await productPage.addToCart();
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
 
-         await page.getByTestId('cart-drawer-close').click();
+         await cartDrawer.close();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'Only 2 left'
          );
 
-         await page.getByTestId('cart-drawer-open').click();
+         await cartDrawer.open();
          await page.getByTestId('cart-drawer-increase-quantity').click();
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
 
-         await page.getByTestId('cart-drawer-close').click();
+         await cartDrawer.close();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'Only 1 left'
          );
 
-         await page.getByTestId('cart-drawer-open').click();
+         await cartDrawer.open();
          await page.getByTestId('cart-drawer-increase-quantity').click();
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
 
-         await page.getByTestId('cart-drawer-close').click();
+         await cartDrawer.close();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'No more items available'
          );
@@ -180,7 +184,7 @@ test.describe.serial('product page add to cart', () => {
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('2');
 
-         await page.getByTestId('cart-drawer-close').click();
+         await cartDrawer.close();
          await productPage.switchSelectedVariant();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'Only 1 left'
@@ -190,6 +194,7 @@ test.describe.serial('product page add to cart', () => {
       test('Out of stock product cannot be added to cart', async ({
          page,
          productPage,
+         cartDrawer,
       }) => {
          await page.route(
             '**/api/2.0/cart/product/notifyWhenSkuInStock',
@@ -246,7 +251,7 @@ test.describe.serial('product page add to cart', () => {
             page.getByTestId('cart-drawer-body').getByText(partOnlySku)
          ).toBeVisible();
 
-         await page.getByTestId('cart-drawer-close').click();
+         await cartDrawer.close();
          await expect(productPage.addToCartButton).toBeEnabled();
          await expect(
             page.getByTestId('product-inventory-message')

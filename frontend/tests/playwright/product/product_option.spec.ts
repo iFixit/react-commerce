@@ -1,7 +1,7 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Product option test', () => {
-   test('Different styles', async ({ page, productPage }) => {
+   test('Different styles', async ({ page, productPage, cartDrawer }) => {
       await productPage.gotoProduct('repair-business-toolkit');
 
       await expect(page.getByText('Style')).toBeVisible();
@@ -17,7 +17,7 @@ test.describe('Product option test', () => {
 
       // Add the first product option to the cart
       await productPage.addToCart();
-      await page.getByTestId('cart-drawer-close').click();
+      await cartDrawer.close();
 
       // Switch to the second product option
       await page

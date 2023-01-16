@@ -6,4 +6,12 @@ export class CartDrawer {
    constructor(page: Page) {
       this.page = page;
    }
+
+   async close() {
+      await this.page.getByTestId('cart-drawer-close').click();
+   }
+
+   async open() {
+      await this.page.getByTestId('cart-drawer-open').click();
+   }
 }
