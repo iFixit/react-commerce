@@ -132,7 +132,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                fontSize={priceFontSize}
                fontWeight="semibold"
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
-               data-testid="product-price"
+               data-testid="current-price"
             >
                {showProBadge && !isRow && (
                   <FaIcon
@@ -151,6 +151,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                      fontSize={compareAtPriceFontSize}
                      color="gray.500"
                      textDecor="line-through"
+                     data-testid="compare-at-price"
                   >
                      {formattedCompareAtPrice}
                   </Text>
@@ -158,6 +159,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                      <IconBadge
                         icon={showProBadge ? faRectanglePro : undefined}
                         colorScheme={colorScheme}
+                        data-testid="product-discount"
                      >
                         {discountLabel}
                      </IconBadge>

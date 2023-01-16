@@ -7,7 +7,7 @@ test.describe('Pro user test', () => {
 
       // Get price from page
       const originalPriceString = await page
-         .getByTestId('product-price')
+         .getByTestId('current-price')
          .first()
          .innerText();
 
@@ -22,7 +22,7 @@ test.describe('Pro user test', () => {
 
       // Assert price on page is lower than step 1
       const proPriceString = await page
-         .getByTestId('product-price')
+         .getByTestId('current-price')
          .first()
          .innerText();
 

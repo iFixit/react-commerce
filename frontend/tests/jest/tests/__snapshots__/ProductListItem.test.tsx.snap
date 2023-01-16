@@ -173,7 +173,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             >
               <p
                 class="chakra-text css-15s1nop"
-                data-testid="product-price"
+                data-testid="current-price"
               >
                 $5.00
               </p>

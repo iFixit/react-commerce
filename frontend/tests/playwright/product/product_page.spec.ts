@@ -19,8 +19,8 @@ test.describe('Product page test', () => {
       await expect(page.getByTestId('product-sku')).toHaveText(/IF\d*\-\d*/g);
 
       // Get price from page
-      await expect(page.getByTestId('product-price').first()).toBeVisible();
-      await expect(page.getByTestId('product-price').first()).toHaveText(
+      await expect(page.getByTestId('current-price').first()).toBeVisible();
+      await expect(page.getByTestId('current-price').first()).toHaveText(
          /\$\d*\.\d*/g
       );
    });

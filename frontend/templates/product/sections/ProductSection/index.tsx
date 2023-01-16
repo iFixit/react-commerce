@@ -130,6 +130,7 @@ export function ProductSection({
                      price={selectedVariant.price}
                      compareAtPrice={selectedVariant.compareAtPrice}
                      proPricesByTier={selectedVariant.proPricesByTier}
+                     data-testid="product-price-section"
                   />
                )}
 

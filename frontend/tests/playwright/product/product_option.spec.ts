@@ -8,7 +8,7 @@ test.describe('Product option test', () => {
 
       // Get the price, sku, and name for the first product option
       const firstOptionPrice = await page
-         .getByTestId('product-price')
+         .getByTestId('current-price')
          .first()
          .innerText();
       const firstOptionSku = await productPage.getSku();
@@ -30,7 +30,7 @@ test.describe('Product option test', () => {
 
       // Get the price, sku, and name for the second product option
       const secondOptionPrice = await page
-         .getByTestId('product-price')
+         .getByTestId('current-price')
          .first()
          .innerText();
       const secondOptionSku = await productPage.getSku();
