@@ -148,7 +148,7 @@ test.describe.serial('product page add to cart', () => {
             page.getByTestId('product-add-to-cart-button')
          ).toBeDisabled();
 
-         await page.getByText('Part Only').first().click();
+         await productPage.switchSelectedVariant();
          const secondOptionSku = await productPage.getSku();
 
          await expect(
@@ -185,7 +185,7 @@ test.describe.serial('product page add to cart', () => {
          ).toHaveText('2');
 
          await page.getByTestId('cart-drawer-close').click();
-         await page.getByText('Fix Kit').nth(1).click();
+         await productPage.switchSelectedVariant();
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'Only 1 left'
          );
@@ -215,7 +215,7 @@ test.describe.serial('product page add to cart', () => {
             page.getByRole('img', { name: 'Part Only' }).first()
          ).toBeVisible();
 
-         await page.getByText('Fix Kit').nth(1).click();
+         await productPage.switchSelectedVariant();
 
          await expect(
             page.getByTestId('product-add-to-cart-button')

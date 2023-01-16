@@ -153,6 +153,7 @@ export function ProductSection({
                      product={product}
                      selected={selectedVariant.id}
                      onChange={handleVariantChange}
+                     data-testid="product-variants-selector"
                   />
                )}
 

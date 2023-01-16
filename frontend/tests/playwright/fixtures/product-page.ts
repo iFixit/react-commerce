@@ -61,4 +61,32 @@ export class ProductPage {
       expect(price).toMatch(/\$[0-9]+(\.[0-9]{1,2})?$/);
       return parseFloat(price!.slice(1)).toFixed(2);
    }
+
+   /**
+    * @note This is for the image based selector type.
+    * @description returns the locator for the currently selected variant shown on the product page.
+    */
+   async getActiveVariant(): Promise<Locator> {
+      return this.page
+         .getByTestId('product-variants-selector')
+         .locator('[aria-selected="true"]');
+   }
+
+   /**
+    * @note This is for the image based selector type. This is also under the assumption that there are only two variants.
+    * @description returns the locator for the other variant options in the product page.
+    */
+   async getInactiveVariant(): Promise<Locator> {
+      return this.page
+         .getByTestId('product-variants-selector')
+         .locator('[aria-selected="false"]');
+   }
+
+   /**
+    * @note This is for the image based selector type. This is also under the assumption that there are only two variants.
+    * @description switches the selected variant to the inactive variant.
+    */
+   async switchSelectedVariant(): Promise<void> {
+      await (await this.getInactiveVariant()).click();
+   }
 }

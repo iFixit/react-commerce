@@ -10,7 +10,7 @@ test.describe('Product option test', () => {
       const firstOptionPrice = await productPage.getCurrentPrice();
       const firstOptionSku = await productPage.getSku();
       const firstOptionName = await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .locator('option')
          .nth(0)
          .textContent();
@@ -21,7 +21,7 @@ test.describe('Product option test', () => {
 
       // Switch to the second product option
       await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .selectOption({ index: 1 });
       expect(await productPage.getSku()).not.toContain(firstOptionSku);
 
@@ -29,7 +29,7 @@ test.describe('Product option test', () => {
       const secondOptionPrice = await productPage.getCurrentPrice();
       const secondOptionSku = await productPage.getSku();
       const secondOptionName = await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .locator('option')
          .nth(1)
          .textContent();
