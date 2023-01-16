@@ -52,10 +52,14 @@ test.describe('Product option test', () => {
 
       // Assert that the cart drawer contains the prices of the added products
       await expect(
-         page.getByTestId('cart-drawer-body').getByText(firstOptionPrice)
+         page
+            .getByTestId('cart-drawer-body')
+            .getByText(firstOptionPrice.toFixed(2))
       ).toBeVisible();
       await expect(
-         page.getByTestId('cart-drawer-body').getByText(secondOptionPrice)
+         page
+            .getByTestId('cart-drawer-body')
+            .getByText(secondOptionPrice.toFixed(2))
       ).toBeVisible();
    });
 });
