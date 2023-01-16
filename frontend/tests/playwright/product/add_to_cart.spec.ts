@@ -144,16 +144,12 @@ test.describe.serial('product page add to cart', () => {
          await expect(page.getByTestId('product-inventory-message')).toHaveText(
             'No more items available'
          );
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeDisabled();
+         await expect(productPage.addToCartButton).toBeDisabled();
 
          await productPage.switchSelectedVariant();
          const secondOptionSku = await productPage.getSku();
 
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeVisible();
+         await expect(productPage.addToCartButton).toBeVisible();
          await expect(
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
@@ -217,9 +213,7 @@ test.describe.serial('product page add to cart', () => {
 
          await productPage.switchSelectedVariant();
 
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).not.toBeVisible();
+         await expect(productPage.addToCartButton).not.toBeVisible();
          await expect(
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
@@ -239,9 +233,7 @@ test.describe.serial('product page add to cart', () => {
          ).toBeVisible();
 
          await page.getByText('Part Only').first().click();
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeVisible();
+         await expect(productPage.addToCartButton).toBeVisible();
          await expect(
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
@@ -255,9 +247,7 @@ test.describe.serial('product page add to cart', () => {
          ).toBeVisible();
 
          await page.getByTestId('cart-drawer-close').click();
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeEnabled();
+         await expect(productPage.addToCartButton).toBeEnabled();
          await expect(
             page.getByTestId('product-inventory-message')
          ).not.toBeVisible();
