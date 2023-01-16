@@ -72,7 +72,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.removeItem(sku);
 
       await cartDrawer.assertCartTotalQuantity(0);
-      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await cartDrawer.assertItemIsNotPresent(sku);
       await cartDrawer.close();
       await productPage.addToCart();
       await cartDrawer.assertCartTotalQuantity(1);
@@ -88,7 +88,7 @@ test.describe.serial('product page add to cart', () => {
 
       await cartDrawer.open();
       await cartDrawer.assertCartTotalQuantity(0);
-      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
       await expect(
          page.getByTestId('cart-drawer-item-count')
@@ -101,7 +101,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.removeItem(sku);
 
       await cartDrawer.assertCartTotalQuantity(0);
-      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
       await expect(
          page.getByTestId('cart-drawer-item-count')
@@ -232,9 +232,7 @@ test.describe.serial('product page add to cart', () => {
 
          await productPage.addToCart();
          await cartDrawer.assertItemQuantity(partOnlySku, 1);
-         await expect(
-            page.getByTestId('cart-drawer-body').getByText(partOnlySku)
-         ).toBeVisible();
+         await cartDrawer.assertItemIsPresent(partOnlySku);
 
          await cartDrawer.close();
          await expect(productPage.addToCartButton).toBeEnabled();

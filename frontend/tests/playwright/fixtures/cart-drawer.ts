@@ -74,4 +74,12 @@ export class CartDrawer {
    async assertCartTotalQuantity(quantity: number): Promise<void> {
       expect(await this.getTotalQuantity()).toBe(quantity);
    }
+
+   async assertItemIsPresent(sku: string): Promise<void> {
+      expect(await this.getItem(sku)).toBeVisible();
+   }
+
+   async assertItemIsNotPresent(sku: string): Promise<void> {
+      expect(await this.getItem(sku)).not.toBeVisible();
+   }
 }

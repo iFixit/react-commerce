@@ -39,23 +39,16 @@ test.describe('Product option test', () => {
       // Add the second product option to the cart
       await productPage.addToCart();
 
-      // Assert that the cart drawer contains the skus and prices of the added products
-      await expect(page.getByTestId('cart-drawer-body')).toBeVisible();
-
       // Assert that the cart drawer contains the skus of the added products
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(firstOptionSku)
-      ).toBeVisible();
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(secondOptionSku)
-      ).toBeVisible();
+      await cartDrawer.assertItemIsPresent(firstOptionSku);
+      await cartDrawer.assertItemIsPresent(secondOptionSku);
 
       // Assert that the cart drawer contains the prices of the added products
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(firstOptionPrice)
-      ).toBeVisible();
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(secondOptionPrice)
-      ).toBeVisible();
+      expect(await cartDrawer.getItem(firstOptionSku)).toHaveText(
+         firstOptionPrice
+      );
+      expect(await cartDrawer.getItem(secondOptionSku)).toHaveText(
+         secondOptionPrice
+      );
    });
 });
