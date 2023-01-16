@@ -56,7 +56,6 @@ export function Upsell({ item }: UpsellProps) {
          >
             <NextLink href={`/products/${item.handle}`} passHref>
                <LinkOverlay
-                  id={item.handle}
                   fontWeight="semibold"
                   color="brand.500"
                   _groupHover={{ color: 'black' }}
