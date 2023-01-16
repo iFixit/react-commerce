@@ -55,7 +55,7 @@ export function withLogging<ARGS extends Array<any>, RETURN>(
    return (...args: ARGS) => {
       const done = time(name);
       return promiseFunction(...args).finally(done);
-   }
+   };
 }
 
 function noOp() {}
