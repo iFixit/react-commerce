@@ -7,10 +7,7 @@ test.describe('Product option test', () => {
       await expect(page.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
-      const firstOptionPrice = await page
-         .getByTestId('current-price')
-         .first()
-         .innerText();
+      const firstOptionPrice = await productPage.getCurrentPrice();
       const firstOptionSku = await productPage.getSku();
       const firstOptionName = await page
          .getByTestId('product-option-selector')
@@ -29,10 +26,7 @@ test.describe('Product option test', () => {
       expect(await productPage.getSku()).not.toContain(firstOptionSku);
 
       // Get the price, sku, and name for the second product option
-      const secondOptionPrice = await page
-         .getByTestId('current-price')
-         .first()
-         .innerText();
+      const secondOptionPrice = await productPage.getCurrentPrice();
       const secondOptionSku = await productPage.getSku();
       const secondOptionName = await page
          .getByTestId('product-option-selector')

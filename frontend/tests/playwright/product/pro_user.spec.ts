@@ -6,10 +6,7 @@ test.describe('Pro user test', () => {
       await productPage.gotoProduct('repair-business-toolkit');
 
       // Get price from page
-      const originalPriceString = await page
-         .getByTestId('current-price')
-         .first()
-         .innerText();
+      const originalPrice = await productPage.getCurrentPrice();
 
       // Login as pro and reload page
       await interceptLogin(page, {
@@ -21,13 +18,9 @@ test.describe('Pro user test', () => {
       await page.waitForSelector('.fa-rectangle-pro');
 
       // Assert price on page is lower than step 1
-      const proPriceString = await page
-         .getByTestId('current-price')
-         .first()
-         .innerText();
+      const proPrice = await productPage.getCurrentPrice();
 
-      expect(parseFloat(originalPriceString.replace('$', ''))).toBeGreaterThan(
-         parseFloat(proPriceString.replace('$', ''))
-      );
+      expect(proPrice).not.toEqual(originalPrice);
+      expect(parseFloat(proPrice)).toBeLessThan(parseFloat(originalPrice));
    });
 });
