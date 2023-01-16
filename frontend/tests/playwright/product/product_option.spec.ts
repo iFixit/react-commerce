@@ -7,13 +7,10 @@ test.describe('Product option test', () => {
       await expect(page.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
-      const firstOptionPrice = await page
-         .getByTestId('product-price')
-         .first()
-         .innerText();
+      const firstOptionPrice = await productPage.getCurrentPrice();
       const firstOptionSku = await productPage.getSku();
       const firstOptionName = await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .locator('option')
          .nth(0)
          .textContent();
@@ -24,18 +21,15 @@ test.describe('Product option test', () => {
 
       // Switch to the second product option
       await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .selectOption({ index: 1 });
       expect(await productPage.getSku()).not.toContain(firstOptionSku);
 
       // Get the price, sku, and name for the second product option
-      const secondOptionPrice = await page
-         .getByTestId('product-price')
-         .first()
-         .innerText();
+      const secondOptionPrice = await productPage.getCurrentPrice();
       const secondOptionSku = await productPage.getSku();
       const secondOptionName = await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .locator('option')
          .nth(1)
          .textContent();
@@ -58,10 +52,14 @@ test.describe('Product option test', () => {
 
       // Assert that the cart drawer contains the prices of the added products
       await expect(
-         page.getByTestId('cart-drawer-body').getByText(firstOptionPrice)
+         page
+            .getByTestId('cart-drawer-body')
+            .getByText(firstOptionPrice.toFixed(2))
       ).toBeVisible();
       await expect(
-         page.getByTestId('cart-drawer-body').getByText(secondOptionPrice)
+         page
+            .getByTestId('cart-drawer-body')
+            .getByText(secondOptionPrice.toFixed(2))
       ).toBeVisible();
    });
 });
