@@ -43,11 +43,8 @@ export async function findProductList(
    deviceItemType: string | null = null
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
-   const isPartsList =
-      productListType === ProductListType.AllParts ||
-      productListType === ProductListType.DeviceParts;
 
-   const [result, deviceWiki, devicesWithProducts] = await Promise.all([
+   const [result, deviceWiki] = await Promise.all([
       timeAsync('strapi.getProductList', () =>
          strapi.getProductList({ filters })
       ),
@@ -55,9 +52,6 @@ export async function findProductList(
          new IFixitAPIClient({ origin: ifixitOrigin }),
          filterDeviceTitle
       ),
-      isPartsList
-         ? findDescendantDevicesWithProducts(filterDeviceTitle)
-         : Promise.resolve(null),
    ]);
 
    const productList = result.productLists?.data?.[0]?.attributes;
@@ -84,6 +78,9 @@ export async function findProductList(
    );
 
    const ancestors = createProductListAncestors(parents);
+   const isPartsList =
+      productListType === ProductListType.AllParts ||
+      productListType === ProductListType.DeviceParts;
 
    const baseProductList: BaseProductList = {
       title,
@@ -101,7 +98,7 @@ export async function findProductList(
       // Strapi sort order is case sensitive, so we need to improve on it in memory
       children: await fillMissingImagesFromApi(
          sortProductListChildren(
-            filterDevicesWithNoProducts(
+            await filterDevicesWithNoProducts(
                filterNullableItems(
                   productList?.children?.data.map(
                      createProductListChild({
@@ -109,7 +106,7 @@ export async function findProductList(
                      })
                   )
                ),
-               devicesWithProducts
+               isPartsList
             )
          ),
          ifixitOrigin
@@ -148,13 +145,18 @@ export function getProductListType(
    }
 }
 
-function filterDevicesWithNoProducts(
+async function filterDevicesWithNoProducts(
    productListChildren: ProductListChild[],
-   devicesWithProducts: Record<string, number> | null
+   isPartsList: boolean
 ) {
-   if (devicesWithProducts == null) {
+   if (!isPartsList) {
       return productListChildren;
    }
+   const childDevices = productListChildren.reduce(
+      (acc, child) => (child.deviceTitle ? [...acc, child.deviceTitle] : acc),
+      [] as string[]
+   );
+   const devicesWithProducts = await findDevicesWithProducts(childDevices);
    return productListChildren.filter(
       (child) => child.deviceTitle && devicesWithProducts[child.deviceTitle] > 0
    );
@@ -423,7 +425,7 @@ function createPublicAlgoliaKey(appId: string, apiKey: string): string {
    return publicKey;
 }
 
-async function findDescendantDevicesWithProducts(device: string) {
+async function findDevicesWithProducts(devices: string[]) {
    return timeAsync('algolia.findDescendantDevicesWithProducts', async () => {
       const client = algoliasearch(
          ALGOLIA_APP_ID,
@@ -431,12 +433,15 @@ async function findDescendantDevicesWithProducts(device: string) {
          CLIENT_OPTIONS
       );
       const index = client.initIndex(ALGOLIA_PRODUCT_INDEX_NAME);
-      const deviceSuffix = device
-         ? ` AND device:"${escapeFilterValue(device)}"`
+      const deviceDisjunctiveFilters = devices
+         .map((device) => `device:"${escapeFilterValue(device)}"`)
+         .join(' OR ');
+      const deviceFilterSuffix = deviceDisjunctiveFilters
+         ? ` AND ${deviceDisjunctiveFilters}`
          : '';
       const { facets } = await index.search('', {
          facets: ['device'],
-         filters: `public = 1${deviceSuffix}`,
+         filters: `public = 1${deviceFilterSuffix}`,
          maxValuesPerFacet: 1000,
          hitsPerPage: 0,
       });
