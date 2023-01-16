@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 // Assert that when a user clicks the pagination buttons,
 // the page scrolls back up.
 

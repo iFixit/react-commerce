@@ -1,8 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product page test', () => {
-   test('Verify product title, price and sku are visible', async ({ page }) => {
-      await page.goto('/products/repair-business-toolkit');
+   test('Verify product title, price and sku are visible', async ({
+      page,
+      productPage,
+   }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
 
       // Assert product title is visible
       await expect(page.getByTestId('product-title')).toBeVisible();

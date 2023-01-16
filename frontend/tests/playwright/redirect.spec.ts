@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './test-fixtures';
 
 test.describe('/parts page', () => {
    test('Redirects to correct sitemap', async ({ page }) => {

@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 import { waitForAlgoliaSearch, resolvePath } from '../utils';
 
 // Check that the refinement value is in the current refinements.
