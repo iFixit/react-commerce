@@ -23,7 +23,7 @@ const borderStyle: ChakraProps = {
    borderBottomStyle: 'solid',
    borderBottomColor: 'gray.300',
    borderBottomWidth: '1px',
-}
+};
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
