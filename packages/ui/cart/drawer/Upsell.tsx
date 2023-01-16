@@ -53,7 +53,6 @@ export function Upsell({ item }: UpsellProps) {
             borderWidth="1px"
             borderColor="brand.200"
             borderStyle="solid"
-            onClick={onClose}
          >
             <NextLink href={`/products/${item.handle}`} passHref>
                <LinkOverlay
@@ -61,6 +60,7 @@ export function Upsell({ item }: UpsellProps) {
                   fontWeight="semibold"
                   color="brand.500"
                   _groupHover={{ color: 'black' }}
+                  onClick={onClose}
                >
                   {item.marketingTitle ?? item.name}
                   <Text>Add the product below to your order</Text>
@@ -68,7 +68,7 @@ export function Upsell({ item }: UpsellProps) {
             </NextLink>
             <HStack mt="3" align="center" spacing="3">
                <NextLink href={`/products/${item.handle}`} passHref>
-                  <LinkOverlay>
+                  <LinkOverlay onClick={onClose}>
                      <CartLineItemImage src={item.imageSrc} alt={item.name} />
                   </LinkOverlay>
                </NextLink>
