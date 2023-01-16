@@ -39,7 +39,7 @@ test.describe.serial('product page add to cart', () => {
 
       const sku = await productPage.getSku();
       await productPage.addToCart();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await cartDrawer.assertCartTotalQuantity(1);
 
       for (let i = 2; i <= 5; i++) {
          await cartDrawer.increaseItemQuantity(sku);
@@ -54,7 +54,7 @@ test.describe.serial('product page add to cart', () => {
          await cartDrawer.assertItemQuantity(sku, i - 1);
       }
 
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await cartDrawer.assertCartTotalQuantity(1);
       await cartDrawer.assertItemQuantity(sku, 1);
    });
 
@@ -67,15 +67,15 @@ test.describe.serial('product page add to cart', () => {
       const sku = await productPage.getSku();
 
       await productPage.addToCart();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await cartDrawer.assertCartTotalQuantity(1);
 
       await cartDrawer.removeItem(sku);
 
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
+      await cartDrawer.assertCartTotalQuantity(0);
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await cartDrawer.close();
       await productPage.addToCart();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await cartDrawer.assertCartTotalQuantity(1);
    });
 
    test('Back to Shopping Button Works', async ({
@@ -87,7 +87,7 @@ test.describe.serial('product page add to cart', () => {
       const sku = await productPage.getSku();
 
       await cartDrawer.open();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
+      await cartDrawer.assertCartTotalQuantity(0);
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await page.getByTestId('back-to-shopping').click();
       await expect(
@@ -95,12 +95,12 @@ test.describe.serial('product page add to cart', () => {
       ).not.toBeVisible();
 
       await productPage.addToCart();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await cartDrawer.assertCartTotalQuantity(1);
       await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
 
       await cartDrawer.removeItem(sku);
 
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
+      await cartDrawer.assertCartTotalQuantity(0);
       await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
       await page.getByTestId('back-to-shopping').click();
       await expect(

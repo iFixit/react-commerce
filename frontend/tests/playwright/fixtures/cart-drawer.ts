@@ -28,6 +28,15 @@ export class CartDrawer {
    }
 
    /**
+    *
+    * @returns The total number of items in the cart.
+    */
+   async getTotalQuantity(): Promise<number> {
+      const cartItemQuantity = this.page.getByTestId('cart-drawer-item-count');
+      return parseInt(await cartItemQuantity.innerText());
+   }
+
+   /**
     * @param sku The sku of the item to increase the quantity of.
     */
    async increaseItemQuantity(sku: string): Promise<void> {
@@ -60,5 +69,9 @@ export class CartDrawer {
     */
    async assertItemQuantity(sku: string, quantity: number): Promise<void> {
       expect(await this.getItemQuantity(sku)).toBe(quantity);
+   }
+
+   async assertCartTotalQuantity(quantity: number): Promise<void> {
+      expect(await this.getTotalQuantity()).toBe(quantity);
    }
 }
