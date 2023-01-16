@@ -152,10 +152,9 @@ async function filterDevicesWithNoProducts(
    if (!isPartsList) {
       return productListChildren;
    }
-   const childDevices = productListChildren.reduce(
-      (acc, child) => (child.deviceTitle ? [...acc, child.deviceTitle] : acc),
-      [] as string[]
-   );
+   const childDevices = productListChildren
+      .filter((child) => child.deviceTitle)
+      .map((child) => child.deviceTitle as string);
    const devicesWithProducts = await findDevicesWithProducts(childDevices);
    return productListChildren.filter(
       (child) => child.deviceTitle && devicesWithProducts[child.deviceTitle] > 0
