@@ -150,16 +150,13 @@ export function getProductListType(
 
 function filterDevicesWithNoProducts(
    productListChildren: ProductListChild[],
-   devicesWithProducts: string[] | null
+   devicesWithProducts: Record<string, number> | null
 ) {
    if (devicesWithProducts == null) {
       return productListChildren;
    }
-   if (devicesWithProducts.length === 0) {
-      return [];
-   }
-   return productListChildren.filter((child) =>
-      devicesWithProducts.some((device) => device === child.deviceTitle)
+   return productListChildren.filter(
+      (child) => child.deviceTitle && devicesWithProducts[child.deviceTitle] > 0
    );
 }
 
@@ -443,6 +440,6 @@ async function findDescendantDevicesWithProducts(device: string) {
          maxValuesPerFacet: 1000,
          hitsPerPage: 0,
       });
-      return facets?.device ? Object.keys(facets?.device) : [];
+      return facets?.device ? facets?.device : {};
    });
 }
