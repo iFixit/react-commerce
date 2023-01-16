@@ -437,7 +437,7 @@ async function findDevicesWithProducts(devices: string[]) {
          .map((device) => `device:"${escapeFilterValue(device)}"`)
          .join(' OR ');
       const deviceFilterSuffix = deviceDisjunctiveFilters
-         ? ` AND ${deviceDisjunctiveFilters}`
+         ? ` AND (${deviceDisjunctiveFilters})`
          : '';
       const { facets } = await index.search('', {
          facets: ['device'],
