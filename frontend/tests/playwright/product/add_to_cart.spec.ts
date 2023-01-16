@@ -38,11 +38,12 @@ test.describe.serial('product page add to cart', () => {
    }) => {
       await productPage.gotoProduct('spudger-retail-3-pack');
 
+      const sku = await productPage.getSku();
       await productPage.addToCart();
       await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
 
       for (let i = 2; i <= 5; i++) {
-         await page.getByTestId('cart-drawer-increase-quantity').click();
+         await cartDrawer.increaseItemQuantity(sku);
          const quantity = await page
             .getByTestId('cart-drawer-quantity')
             .textContent();
@@ -53,7 +54,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.open();
 
       for (let i = 5; i > 1; i--) {
-         await page.getByTestId('cart-drawer-decrease-quantity').click();
+         await cartDrawer.decreaseItemQuantity(sku);
          const quantity = await page
             .getByTestId('cart-drawer-quantity')
             .textContent();
@@ -132,7 +133,7 @@ test.describe.serial('product page add to cart', () => {
          );
 
          await cartDrawer.open();
-         await page.getByTestId('cart-drawer-increase-quantity').click();
+         await cartDrawer.increaseItemQuantity(firstOptionSku);
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
 
          await cartDrawer.close();
@@ -141,7 +142,7 @@ test.describe.serial('product page add to cart', () => {
          );
 
          await cartDrawer.open();
-         await page.getByTestId('cart-drawer-increase-quantity').click();
+         await cartDrawer.increaseItemQuantity(firstOptionSku);
          await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
 
          await cartDrawer.close();
@@ -172,11 +173,7 @@ test.describe.serial('product page add to cart', () => {
                .getByTestId('cart-drawer-quantity')
          ).toHaveText('3');
 
-         await page
-            .getByRole('listitem')
-            .filter({ hasText: firstOptionSku })
-            .getByTestId('cart-drawer-decrease-quantity')
-            .click();
+         await cartDrawer.decreaseItemQuantity(firstOptionSku);
          await expect(
             page
                .getByRole('listitem')
