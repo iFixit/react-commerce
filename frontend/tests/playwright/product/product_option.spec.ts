@@ -45,10 +45,10 @@ test.describe('Product option test', () => {
 
       // Assert that the cart drawer contains the prices of the added products
       expect(await cartDrawer.getItem(firstOptionSku)).toHaveText(
-         firstOptionPrice
+         firstOptionPrice.toFixed(2)
       );
       expect(await cartDrawer.getItem(secondOptionSku)).toHaveText(
-         secondOptionPrice
+         secondOptionPrice.toFixed(2)
       );
    });
 });

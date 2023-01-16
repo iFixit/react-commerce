@@ -39,27 +39,27 @@ export class ProductPage {
    /**
     * @description Locates and returns the current product price as a string with the format $###.## or $###
     */
-   async getCurrentPrice(): Promise<string> {
+   async getCurrentPrice(): Promise<number> {
       const price = await this.page
          .getByTestId('product-price-section')
          .getByTestId('current-price')
          .textContent();
       expect(price).not.toEqual('');
       expect(price).toMatch(/\$[0-9]+(\.[0-9]{1,2})?$/);
-      return parseFloat(price!.slice(1)).toFixed(2);
+      return parseFloat(price!.slice(1));
    }
 
    /**
     * @description Locates and returns the original product price as a string with the format $###.## or $###
     */
-   async getDiscountedPrice(): Promise<string> {
+   async getDiscountedPrice(): Promise<number> {
       const price = await this.page
          .getByTestId('product-price-section')
          .getByTestId('compare-at-price')
          .textContent();
       expect(price).not.toEqual('');
       expect(price).toMatch(/\$[0-9]+(\.[0-9]{1,2})?$/);
-      return parseFloat(price!.slice(1)).toFixed(2);
+      return parseFloat(price!.slice(1));
    }
 
    /**

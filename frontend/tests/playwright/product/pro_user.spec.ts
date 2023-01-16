@@ -20,7 +20,6 @@ test.describe('Pro user test', () => {
       // Assert price on page is lower than step 1
       const proPrice = await productPage.getCurrentPrice();
 
-      expect(proPrice).not.toEqual(originalPrice);
-      expect(parseFloat(proPrice)).toBeLessThan(parseFloat(originalPrice));
+      expect(proPrice).toBeLessThan(originalPrice);
    });
 });
