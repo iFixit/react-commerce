@@ -23,6 +23,8 @@
       "transform-svg": "cd frontend && pnpm run transform-svg",
       "lint": "cd frontend && npm run lint",
       "format": "prettier --write .",
+      "playwright:run": "cd frontend && pnpm playwright:run",
+      "playwright:debug": "cd frontend && pnpm playwright:debug",
       "type-check": "cross-env FORCE_COLOR=1 npm-run-all -l -p -c type-check:*",
       "type-check:backend": "cd backend && pnpm run type-check",
       "type-check:frontend": "pnpm run -r type-check",

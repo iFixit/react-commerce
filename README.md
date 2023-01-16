@@ -93,13 +93,34 @@ Here's an overview of the production setup (the focus is on Next.js, therefore d
 
 ![image](https://user-images.githubusercontent.com/4640135/203581627-82ab19ca-7de7-4343-ae05-2a4f6330f38a.png)
 
-### Test
+### Tests
 
-This command will run Playwright tests:
+We use Jest and Playwright (with MSW) to run our tests.
+
+You can use any of the following commands to run Playwright tests:
 
 ```sh
-cd frontend && pnpm run playwright:run
+pnpm run playwright:run       // Runs all tests for all projects
+pnpm run playwright:debug     // Runs all tests for desktop chrome in debug mode (see frontend/package.json for details)
 ```
+
+Also you can provide additional flags/options to run single/multiple tests and with different devices/projects:
+
+```sh
+pnpm run playwright:run --project="Desktop Chrome" fix_kit         // Runs fix_kit test for desktop chrome headless
+pnpm run playwright:run --project="Mobile Chrome" --headed fix_kit // Runs fix_kit test for mobile chrome headed
+```
+
+> ⚠️ We need to have the dev server running before we run the Playwright tests.
+> Luckily, Playwright webserver will start the app automatically if it's not running yet.
+
+This command will run Jest tests:
+
+```sh
+pnpm test
+```
+
+> ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
 ### Using SVG
 
