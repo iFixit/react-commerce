@@ -89,4 +89,19 @@ export class ProductPage {
    async switchSelectedVariant(): Promise<void> {
       await (await this.getInactiveVariant()).click();
    }
+
+   /**
+    * @description Will assert that the inventory message has the given message. If no message is given, it will assert that the inventory message is not visible.
+    */
+   async assertInventoryMessage(message: string | null = null): Promise<void> {
+      if (message === null) {
+         await expect(
+            this.page.getByTestId('product-inventory-message')
+         ).not.toBeVisible();
+      } else {
+         await expect(
+            this.page.getByTestId('product-inventory-message')
+         ).toHaveText(message);
+      }
+   }
 }
