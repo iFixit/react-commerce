@@ -1,4 +1,4 @@
-import type { ProductVariant } from '@models/product/server';
+import type { ProductVariant } from '@pages/api/nextjs/cache/product';
 import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { List, ListIcon, ListItem } from '@chakra-ui/react';

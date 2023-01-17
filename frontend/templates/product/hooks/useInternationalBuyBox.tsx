@@ -1,7 +1,7 @@
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useExpiringLocalPreference } from '@ifixit/ui';
 import { getBuyBoxForProduct } from '@lib/ifixit-api/international-buy-box';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import { useQuery } from '@tanstack/react-query';
 import { useSelectedVariant } from './useSelectedVariant';
 

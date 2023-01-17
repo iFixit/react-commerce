@@ -21,7 +21,7 @@ import {
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
 import { IconBadge, PageContentWrapper, ResponsiveImage } from '@ifixit/ui';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type ReplacementGuidesSectionProps = {
    product: Product;

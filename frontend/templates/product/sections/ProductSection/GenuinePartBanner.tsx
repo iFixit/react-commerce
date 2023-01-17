@@ -12,7 +12,7 @@ import {
    Vive,
 } from '@assets/svg/files/partners';
 import { Flex, Link, Text, useTheme } from '@chakra-ui/react';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import React from 'react';
 
 export type GenuinePartBannerProps = {
