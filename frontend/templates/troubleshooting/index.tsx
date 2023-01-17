@@ -70,6 +70,7 @@ const Wiki: NextPageWithLayout<{
                      color="blue.ifixit"
                      lineHeight="20px"
                      marginTop="2.5"
+                     key={group.heading}
                   >
                      <Link href={`#${idFromProblem(group)}`}>
                         {group.heading}
@@ -83,7 +84,7 @@ const Wiki: NextPageWithLayout<{
          ))}
          {endMatterItems &&
             endMatterItems.map((item) => (
-               <EndMatter paddingTop="6" paddingBottom="5" item={item} />
+               <EndMatter key={item.body} paddingTop="6" paddingBottom="5" item={item} />
             ))}
       </Container>
    );
