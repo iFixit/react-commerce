@@ -84,7 +84,12 @@ const Wiki: NextPageWithLayout<{
          ))}
          {endMatterItems &&
             endMatterItems.map((item) => (
-               <EndMatter key={item.body} paddingTop="6" paddingBottom="5" item={item} />
+               <EndMatter
+                  key={item.body}
+                  paddingTop="6"
+                  paddingBottom="5"
+                  item={item}
+               />
             ))}
       </Container>
    );
