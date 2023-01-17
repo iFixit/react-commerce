@@ -95,22 +95,12 @@ export async function findProductList(
       forceNoindex: productList?.forceNoindex ?? null,
       image: null,
       ancestors,
-      // Strapi sort order is case sensitive, so we need to improve on it in memory
-      children: await fillMissingImagesFromApi(
-         sortProductListChildren(
-            await filterDevicesWithNoProducts(
-               filterNullableItems(
-                  productList?.children?.data.map(
-                     createProductListChild({
-                        deviceWiki,
-                     })
-                  )
-               ),
-               isPartsList
-            )
-         ),
-         ifixitOrigin
-      ),
+      children: await getProductListChildren({
+         apiChildren: productList?.children?.data,
+         deviceWiki,
+         ifixitOrigin,
+         isPartsList,
+      }),
       childrenHeading: productList?.childrenHeading ?? null,
       sections: filterNullableItems(
          productList?.sections.map(createProductListSection)
@@ -145,6 +135,34 @@ export function getProductListType(
    }
 }
 
+type GetProductListChildrenProps = {
+   apiChildren: ApiProductListChild[] | undefined;
+   deviceWiki: DeviceWiki | null;
+   ifixitOrigin: string;
+   isPartsList: boolean;
+};
+
+async function getProductListChildren({
+   apiChildren,
+   deviceWiki,
+   ifixitOrigin,
+   isPartsList,
+}: GetProductListChildrenProps) {
+   const presentChildren = filterNullableItems(
+      apiChildren?.map(createProductListChild({ deviceWiki }))
+   );
+
+   const [fillerImages, childrenWithProducts] = await Promise.all([
+      fetchMissingImages(presentChildren, ifixitOrigin),
+      filterDevicesWithNoProducts(presentChildren, isPartsList),
+   ]);
+
+   // Strapi sort order is case sensitive, so we need to improve on it in memory
+   return sortProductListChildren(
+      fillMissingImages(childrenWithProducts, fillerImages)
+   );
+}
+
 async function filterDevicesWithNoProducts(
    productListChildren: ProductListChild[],
    isPartsList: boolean
@@ -161,36 +179,47 @@ async function filterDevicesWithNoProducts(
    );
 }
 
-async function fillMissingImagesFromApi(
+function fillMissingImages(
+   productListChildren: ProductListChild[],
+   fillerImages: Record<string, string>
+) {
+   return productListChildren.map((child) => {
+      const fillerImage = fillerImages[child.deviceTitle as string];
+      return fillerImage == null
+         ? child
+         : {
+              ...child,
+              image: {
+                 url: fillerImage,
+                 alternativeText: child.deviceTitle,
+              },
+           };
+   });
+}
+
+/**
+ * Returns a map of device title to image url.
+ */
+async function fetchMissingImages(
    productListChildren: ProductListChild[],
    ifixitOrigin: string
-): Promise<ProductListChild[]> {
+) {
    const childrenWithoutImages = productListChildren.filter(
       (child) => child.image == null && child.deviceTitle
    );
    if (childrenWithoutImages.length === 0) {
-      return productListChildren;
+      return {};
    }
    const deviceTitlesWithoutImages = childrenWithoutImages.map(
       (child) => child.deviceTitle
    ) as string[]; // cast is safe cause we filter nulls above,
    // typescript just doesn't understand
-   const imagesResponse = await fetchMultipleDeviceImages(
+   const { images } = await fetchMultipleDeviceImages(
       new IFixitAPIClient({ origin: ifixitOrigin }),
       deviceTitlesWithoutImages,
       'thumbnail'
    );
-   childrenWithoutImages.forEach((child) => {
-      const imageFromDevice =
-         imagesResponse.images[child.deviceTitle as string];
-      if (imageFromDevice != null) {
-         child.image = {
-            url: imageFromDevice,
-            alternativeText: child.deviceTitle,
-         };
-      }
-   });
-   return productListChildren;
+   return images;
 }
 
 function getChildDeviceImage(
