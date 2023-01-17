@@ -79,7 +79,7 @@ export function CartDrawer() {
                size="sm"
             >
                <DrawerOverlay />
-               <DrawerContent color="gray.800">
+               <DrawerContent color="gray.800" data-testid="cart-drawer">
                   <DrawerHeader borderBottomWidth="1px" position="relative">
                      <DrawerCloseButton
                         top="50%"

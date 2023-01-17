@@ -1,10 +1,13 @@
 import { test as base, expect, Page, Locator } from '@playwright/test';
-import { ProductFixtures, ProductPage } from './fixtures';
+import { ProductFixtures, ProductPage, CartDrawer } from './fixtures';
 import { format } from 'util';
 
 export const test = base.extend<ProductFixtures>({
    productPage: async ({ page }, use) => {
       await use(new ProductPage(page));
+   },
+   cartDrawer: async ({ page }, use) => {
+      await use(new CartDrawer(page));
    },
 });
 

@@ -1,7 +1,7 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Product option test', () => {
-   test('Different styles', async ({ page, productPage }) => {
+   test('Different styles', async ({ page, productPage, cartDrawer }) => {
       await productPage.gotoProduct('repair-business-toolkit');
 
       await expect(page.getByText('Style')).toBeVisible();
@@ -17,7 +17,7 @@ test.describe('Product option test', () => {
 
       // Add the first product option to the cart
       await productPage.addToCart();
-      await page.getByTestId('cart-drawer-close').click();
+      await cartDrawer.close();
 
       // Switch to the second product option
       await page
@@ -39,27 +39,16 @@ test.describe('Product option test', () => {
       // Add the second product option to the cart
       await productPage.addToCart();
 
-      // Assert that the cart drawer contains the skus and prices of the added products
-      await expect(page.getByTestId('cart-drawer-body')).toBeVisible();
-
       // Assert that the cart drawer contains the skus of the added products
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(firstOptionSku)
-      ).toBeVisible();
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(secondOptionSku)
-      ).toBeVisible();
+      await cartDrawer.assertItemIsPresent(firstOptionSku);
+      await cartDrawer.assertItemIsPresent(secondOptionSku);
 
       // Assert that the cart drawer contains the prices of the added products
-      await expect(
-         page
-            .getByTestId('cart-drawer-body')
-            .getByText(firstOptionPrice.toFixed(2))
-      ).toBeVisible();
-      await expect(
-         page
-            .getByTestId('cart-drawer-body')
-            .getByText(secondOptionPrice.toFixed(2))
-      ).toBeVisible();
+      expect(await cartDrawer.getItem(firstOptionSku)).toHaveText(
+         firstOptionPrice.toFixed(2)
+      );
+      expect(await cartDrawer.getItem(secondOptionSku)).toHaveText(
+         secondOptionPrice.toFixed(2)
+      );
    });
 });
