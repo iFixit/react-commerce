@@ -1,15 +1,26 @@
-import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
+import {
+   Box,
+   Button,
+   Flex,
+   HStack,
+   LinkBox,
+   LinkOverlay,
+   Text,
+} from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { UpsellProduct } from '@ifixit/cart-sdk/types';
 import { useCallback } from 'react';
 import { ProductVariantPrice, useUserPrice } from '../../commerce';
 import { CartLineItemImage } from './CartLineItemImage';
+import { useCartDrawer } from './hooks/useCartDrawer';
 
 export interface UpsellProps {
    item: UpsellProduct;
 }
 
 export function Upsell({ item }: UpsellProps) {
+   const { onClose } = useCartDrawer();
    const addToCart = useAddToCart();
    const userPrice = useUserPrice({
       price: item.price,
@@ -33,7 +44,8 @@ export function Upsell({ item }: UpsellProps) {
 
    return (
       <Box p="3">
-         <Box
+         <LinkBox
+            role="group"
             bgColor="brand.100"
             py="4"
             px="3"
@@ -42,12 +54,23 @@ export function Upsell({ item }: UpsellProps) {
             borderColor="brand.200"
             borderStyle="solid"
          >
-            <Text color="brand.500" fontWeight="semibold">
-               {item.marketingTitle ?? item.name}
-            </Text>
-            <Text color="brand.500">Add the product below to your order</Text>
+            <NextLink href={`/products/${item.handle}`} passHref>
+               <LinkOverlay
+                  fontWeight="semibold"
+                  color="brand.500"
+                  _groupHover={{ color: 'black' }}
+                  onClick={onClose}
+               >
+                  {item.marketingTitle ?? item.name}
+                  <Text>Add the product below to your order</Text>
+               </LinkOverlay>
+            </NextLink>
             <HStack mt="3" align="center" spacing="3">
-               <CartLineItemImage src={item.imageSrc} alt={item.name} />
+               <NextLink href={`/products/${item.handle}`} passHref>
+                  <LinkOverlay onClick={onClose}>
+                     <CartLineItemImage src={item.imageSrc} alt={item.name} />
+                  </LinkOverlay>
+               </NextLink>
                <Text fontSize="sm">{item.marketingBlurb}</Text>
             </HStack>
             <Flex mt="2" justify="flex-end">
@@ -68,7 +91,7 @@ export function Upsell({ item }: UpsellProps) {
             >
                Add to cart
             </Button>
-         </Box>
+         </LinkBox>
       </Box>
    );
 }
