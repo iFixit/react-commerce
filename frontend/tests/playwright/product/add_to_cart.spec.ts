@@ -90,9 +90,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      await expect(
-         page.getByTestId('cart-drawer-item-count')
-      ).not.toBeVisible();
+      expect(await cartDrawer.getDrawerStatus()).toBe('closed');
 
       await productPage.addToCart();
       await cartDrawer.assertCartTotalQuantity(1);
@@ -103,10 +101,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      await expect(
-         page.getByTestId('cart-drawer-item-count')
-      ).not.toBeVisible();
-      await expect(page.getByTestId('cart-drawer-close')).not.toBeVisible();
+      expect(await cartDrawer.getDrawerStatus()).toBe('closed');
    });
 
    test.describe('Product Stock Levels', () => {

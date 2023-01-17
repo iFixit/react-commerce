@@ -15,6 +15,13 @@ export class CartDrawer {
       await this.page.getByTestId('cart-drawer-open').click();
    }
 
+   async getDrawerStatus(): Promise<'open' | 'closed'> {
+      if (await this.page.getByTestId('cart-drawer-close').isVisible()) {
+         return 'open';
+      }
+      return 'closed';
+   }
+
    async getItem(sku: string): Promise<Locator> {
       const cartDrawer = this.page.getByTestId('cart-drawer');
       return cartDrawer.getByRole('listitem').filter({ hasText: sku });
