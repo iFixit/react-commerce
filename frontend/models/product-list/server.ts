@@ -39,7 +39,6 @@ import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
 export async function findProductList(
    filters: ProductListFiltersInput,
    ifixitOrigin: string,
-   productListType: ProductListType,
    deviceItemType: string | null = null
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
@@ -76,6 +75,7 @@ export async function findProductList(
    const algoliaApiKey = logSync('algolia:create key', () =>
       createPublicAlgoliaKey(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
    );
+   const productListType = getProductListType(productList?.type);
 
    const ancestors = createProductListAncestors(parents);
    const isPartsList =

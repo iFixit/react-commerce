@@ -49,11 +49,7 @@ export const getProductListServerSideProps = ({
       switch (productListType) {
          case ProductListType.AllParts: {
             productList = await logAsync('findProductList', () =>
-               findProductList(
-                  { handle: { eq: 'Parts' } },
-                  ifixitOrigin,
-                  productListType
-               )
+               findProductList({ handle: { eq: 'Parts' } }, ifixitOrigin)
             );
             break;
          }
@@ -86,7 +82,6 @@ export const getProductListServerSideProps = ({
                      },
                   },
                   ifixitOrigin,
-                  productListType,
                   itemType
                )
             );
@@ -104,11 +99,7 @@ export const getProductListServerSideProps = ({
          }
          case ProductListType.AllTools: {
             productList = await logAsync('findProductList', () =>
-               findProductList(
-                  { handle: { eq: 'Tools' } },
-                  ifixitOrigin,
-                  productListType
-               )
+               findProductList({ handle: { eq: 'Tools' } }, ifixitOrigin)
             );
             break;
          }
@@ -120,11 +111,7 @@ export const getProductListServerSideProps = ({
             );
 
             productList = await logAsync('findProductList', () =>
-               findProductList(
-                  { handle: { eqi: handle } },
-                  ifixitOrigin,
-                  productListType
-               )
+               findProductList({ handle: { eqi: handle } }, ifixitOrigin)
             );
 
             shouldRedirectToCanonical =
@@ -154,8 +141,7 @@ export const getProductListServerSideProps = ({
                         eq: 'marketing',
                      },
                   },
-                  ifixitOrigin,
-                  productListType
+                  ifixitOrigin
                )
             );
             shouldRedirectToCanonical =
