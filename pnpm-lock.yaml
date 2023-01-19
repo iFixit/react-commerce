@@ -57,7 +57,6 @@ importers:
       '@playwright/test': 1.29.1
       '@sentry/nextjs': 7.29.0
       '@sentry/tracing': 7.29.0
-      '@svgr/cli': 5.5.0
       '@svgr/webpack': 5.5.0
       '@tanstack/react-query': 4.14.5
       '@testing-library/dom': 8.19.0
@@ -180,7 +179,6 @@ importers:
       '@ifixit/tsconfig': link:../packages/tsconfig
       '@next/bundle-analyzer': 12.1.6
       '@playwright/test': 1.29.1
-      '@svgr/cli': 5.5.0
       '@svgr/webpack': 5.5.0
       '@testing-library/dom': 8.19.0
       '@testing-library/jest-dom': 5.16.1
@@ -7209,24 +7207,6 @@ packages:
       '@svgr/babel-plugin-transform-svg-component': 5.5.0
     dev: true
 
-  /@svgr/cli/5.5.0:
-    resolution: {integrity: sha512-KwEWi8olD7MpHR9pD5CrgsH7W8kQpzhSM0Ar3gGQyXqXdIuRYX5RgkWGm8Zi5ALZV9UhbPE+ObLhuSwEJxOzgA==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      '@svgr/core': 5.5.0
-      '@svgr/plugin-jsx': 5.5.0
-      '@svgr/plugin-prettier': 5.5.0
-      '@svgr/plugin-svgo': 5.5.0
-      camelcase: 6.3.0
-      chalk: 4.1.2
-      commander: 6.2.1
-      dashify: 2.0.0
-      glob: 7.2.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@svgr/core/5.5.0:
     resolution: {integrity: sha512-q52VOcsJPvV3jO1wkPtzTuKlvX7Y3xIcWRpCMtBF3MrteZJtBfQw/+u0B1BHy5ColpQc1/YVTrPEtSYIMNZlrQ==}
     engines: {node: '>=10'}
@@ -7255,14 +7235,6 @@ packages:
       svg-parser: 2.0.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@svgr/plugin-prettier/5.5.0:
-    resolution: {integrity: sha512-mVc+u+eKUmy8sW5UnFpes9NqVtizJfnhasF8Srbi3XdxVTWyU5lmhWlQAgHLhcrsZKowQ0b7xBa4qWHI5Ew/VQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      deepmerge: 4.2.2
-      prettier: 2.7.1
     dev: true
 
   /@svgr/plugin-svgo/5.5.0:
@@ -9580,11 +9552,6 @@ packages:
 
   /damerau-levenshtein/1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
-    dev: true
-
-  /dashify/2.0.0:
-    resolution: {integrity: sha512-hpA5C/YrPjucXypHPPc0oJ1l9Hf6wWbiOL7Ik42cxnsUOhWiCB/fylKbKqqJalW9FgkNQCw16YO8uW9Hs0Iy1A==}
-    engines: {node: '>=4'}
     dev: true
 
   /data-urls/3.0.2:

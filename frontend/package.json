@@ -20,8 +20,7 @@
       "test": "jest",
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "playwright:run": "NEXT_PUBLIC_MOCK_API=true playwright test",
-      "playwright:debug": "NEXT_PUBLIC_MOCK_API=true DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug",
-      "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
+      "playwright:debug": "NEXT_PUBLIC_MOCK_API=true DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug"
    },
    "dependencies": {
       "@chakra-ui/react": "2.4.8",
@@ -85,7 +84,6 @@
       "@ifixit/tsconfig": "workspace:*",
       "@next/bundle-analyzer": "12.1.6",
       "@playwright/test": "1.29.1",
-      "@svgr/cli": "5.5.0",
       "@svgr/webpack": "5.5.0",
       "@testing-library/dom": "8.19.0",
       "@testing-library/jest-dom": "5.16.1",
