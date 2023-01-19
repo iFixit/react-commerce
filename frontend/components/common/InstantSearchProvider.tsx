@@ -164,8 +164,8 @@ export function InstantSearchProvider({
                      );
                      path += `/${encodedItemType}`;
                   }
+                  delete filterCopy['facet_tags.Tool Category'];
                }
-               delete filterCopy['facet_tags.Tool Category'];
             }
 
             const { q, p, filter, ...otherParams } = qsModule.parse(

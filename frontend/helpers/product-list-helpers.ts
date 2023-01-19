@@ -23,7 +23,6 @@ export function computeProductListAlgoliaFilterPreset<
       deviceTitle &&
       deviceTitle.length > 0
    ) {
-      conditions.push(`'facet_tags.Main Category': 'Parts'`);
       conditions.push(`device:${JSON.stringify(deviceTitle)}`);
    } else if (type === ProductListType.ToolsCategory) {
       conditions.push(`'facet_tags.Main Category': 'Tools'`);
