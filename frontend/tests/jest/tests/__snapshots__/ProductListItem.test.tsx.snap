@@ -43,7 +43,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           class="css-1c6uy1d"
         >
           <h3
-            class="chakra-heading css-aoyw8b"
+            class="chakra-heading css-1sm1677"
             id="product-heading-galaxy-s9-plus-replacement-battery"
           >
             Galaxy S9+ Battery
@@ -187,7 +187,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               href="/products/galaxy-s9-plus-replacement-battery"
             >
               <div
-                class="chakra-button css-1f6b6qf"
+                class="chakra-button css-k7fdf3"
               >
                 View
               </div>
