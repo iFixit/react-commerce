@@ -1,14 +1,65 @@
+/**
+ * Playwright test fixtures are very powerful and can be used to create a custom
+ * test environment.
+ *
+ * Fixtures can be isolated to a test or a worker depending on the scope defined.
+ *
+ * In addition, fixtures can be lazily loaded, which means that the fixture will only be created where it is used. If a test scoped fixture is not used in a test, it will not be created. If a worker scoped fixture is not used in a worker, it will not be created, and if a worker scoped fixture is used in a test, then it will remain instantiated for the duration of the worker. Overall this a very powerful feature that can help with expensive setup and teardown.
+ * @see https://playwright.dev/docs/test-fixtures
+ */
+
 import { test as base, expect, Page, Locator } from '@playwright/test';
-import { ProductFixtures, ProductPage, CartDrawer } from './fixtures';
+import type { ProductFixtures, CustomNextjsServer } from './fixtures';
+import { ProductPage, CartDrawer, Server } from './fixtures';
 import { format } from 'util';
 
-export const test = base.extend<ProductFixtures>({
+export const test = base.extend<
+   ProductFixtures & CustomNextjsServer, // Test Fixture types are passed as the first template parameter
+   { customServer: CustomNextjsServer } // Worker Fixture types are passed as the second template parameter
+>({
+   customServer: [
+      // eslint-disable-next-line no-empty-pattern
+      async ({}, use) => {
+         const props: CustomNextjsServer = await Server();
+         await use(props);
+      },
+      {
+         /**
+          * Create a new server for each worker so that the server can be booted
+          * once per worker and only when it is used. After the worker is done,
+          * the server will remain to be reused in other tests if needed.
+          *
+          * @see https://playwright.dev/docs/test-fixtures#worker-scoped-fixtures
+          */
+         // @ts-ignore
+         scope: 'worker',
+      },
+   ],
    productPage: async ({ page }, use) => {
       await use(new ProductPage(page));
    },
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
    },
+   /**
+    * The following fixtures are dependent on the customServer fixture. By being
+    * dependent on the customServer fixture, Playwright will automatically
+    * instantiate the customServer fixture for the worker running the test.
+    * Therefore, we do not need to directly call the customServer fixture in the
+    * test to ensure the custom server is booted.
+    */
+   serverRequestInterceptor: [
+      async ({ customServer }, use) => {
+         await use(customServer.serverRequestInterceptor);
+      },
+      { scope: 'test' },
+   ],
+   port: [
+      async ({ customServer }, use) => {
+         await use(customServer.port);
+      },
+      { scope: 'test' },
+   ],
 });
 
 expect.extend({
