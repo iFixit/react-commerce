@@ -40,10 +40,9 @@ export const FooterLegalSection = forwardRef<StackProps, 'div'>(
 
 export const FooterCopyright = forwardRef<Omit<BoxProps, 'children'>, 'div'>(
    (props, ref) => {
-      const year = new Date().getFullYear();
       return (
          <Box ref={ref} fontSize="sm" {...props}>
-            &copy; {year} iFixit
+            &copy; iFixit
          </Box>
       );
    }
