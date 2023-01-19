@@ -14,13 +14,7 @@ export function CompatibilitySection({
    return compatibility && compatibility.devices.length > 0 ? (
       <Box id="compatibility" bg="gray.100" py="16" fontSize="sm">
          <PageContentWrapper>
-            <Heading
-               as="h2"
-               fontFamily="Archivo Black"
-               color="gray.700"
-               textAlign="center"
-               mb="12"
-            >
+            <Heading as="h2" color="gray.700" textAlign="center" mb="12">
                Compatibility
             </Heading>
             <SimpleGrid
