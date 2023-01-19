@@ -86,6 +86,7 @@
       "@next/bundle-analyzer": "12.1.6",
       "@playwright/test": "1.29.1",
       "@svgr/cli": "5.5.0",
+      "@svgr/webpack": "5.5.0",
       "@testing-library/dom": "8.19.0",
       "@testing-library/jest-dom": "5.16.1",
       "@testing-library/react": "13.4.0",
