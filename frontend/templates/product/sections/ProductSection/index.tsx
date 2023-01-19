@@ -1,4 +1,4 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import {
    Accordion,
    AccordionButton,

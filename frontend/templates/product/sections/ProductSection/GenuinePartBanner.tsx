@@ -1,8 +1,8 @@
-import { Crucial, Micron } from '@assets/svg/files/partners';
 import {
-   Google,
+   Crucial,
    Lenovo,
    Logitech,
+   Micron,
    Microsoft,
    Motorola,
    Samsung,
@@ -10,7 +10,7 @@ import {
    TeenageEngineering,
    Valve,
    Vive,
-} from '@assets/svg/partners';
+} from '@assets/svg/files/partners';
 import { Flex, Link, Text, useTheme } from '@chakra-ui/react';
 import type { Product } from '@models/product.server';
 import React from 'react';

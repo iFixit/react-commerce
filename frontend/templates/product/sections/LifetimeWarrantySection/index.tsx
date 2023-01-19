@@ -1,4 +1,4 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
