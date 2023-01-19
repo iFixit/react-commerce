@@ -1,3 +1,4 @@
+import { Crucial, Micron } from '@assets/svg/files/partners';
 import {
    Google,
    Lenovo,
@@ -21,9 +22,11 @@ export type GenuinePartBannerProps = {
 const partnerCodeToComponentMap: { [key: string]: React.FC } = {
    // Don't have permission yet
    // google_pixel: Google,
+   crucial: () => <Crucial px="2" />,
    htc_vive: Vive,
    lenovo: Lenovo,
    logitech: Logitech,
+   micron: () => <Micron px="2" />,
    microsoft_surface: Microsoft,
    microsoft_surface_tool: Microsoft,
    motorola: Motorola,
