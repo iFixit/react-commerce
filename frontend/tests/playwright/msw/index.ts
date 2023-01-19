@@ -1,3 +1,5 @@
+import bootstrapMockServer from './server';
+
 export const setupMocks = async () => {
    // Only setup mocks for the server and not the browser
 
@@ -15,7 +17,8 @@ export const setupMocks = async () => {
     * Therefore, we only set up MSW for the server, and not the browser.
     */
    if (typeof window === 'undefined') {
-      const { mswServer } = await import('./server');
+      const mswServer = bootstrapMockServer();
+
       mswServer.listen({
          onUnhandledRequest: process.env.CI ? 'bypass' : 'warn',
       });

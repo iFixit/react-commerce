@@ -2,4 +2,8 @@ import { setupServer } from 'msw/node';
 
 import { handlers } from './handlers';
 
-export const mswServer = setupServer(...handlers);
+function bootstrapMockServer() {
+   return setupServer(...handlers);
+}
+
+export default bootstrapMockServer;
