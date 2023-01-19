@@ -5,7 +5,7 @@ type PanelProps = PropsWithChildren<{
    isOpen: boolean;
 }>;
 
-export function Panel({ isOpen, children }: PanelProps) {
+export function Panel({ isOpen, children, ...otherProps }: PanelProps) {
    return (
       <Box
          position="absolute"
@@ -19,6 +19,7 @@ export function Panel({ isOpen, children }: PanelProps) {
          bg="white"
          shadow={isOpen ? 'lg' : 'none'}
          p="5"
+         {...otherProps}
       >
          <VStack align="stretch" spacing="3">
             {children}

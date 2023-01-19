@@ -1,116 +1,258 @@
-import { test, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 import { waitForAlgoliaSearch, resolvePath } from '../utils';
 
-test.describe('product list filters', () => {
-   test.skip(({ page }) => {
-      const viewPort = page.viewportSize();
-      return !viewPort || viewPort.width < 768;
-   }, 'Only run on desktop. Still need to rework this test for mobile.');
+// Check that the refinement value is in the current refinements.
+async function checkRefinementValue(
+   value: string | null | undefined,
+   page: Page
+) {
+   if (!value) {
+      throw new Error('Could not find ' + value);
+   }
+   await expect(page.getByTestId(`current-refinement-${value}`)).toBeVisible();
+}
 
+// Check that the refinement value is in the search results
+async function checkRefinementInSearchResult(
+   facetName: string | null,
+   facetOptionValue: string,
+   results: Array<any>
+) {
+   if (!facetName) {
+      throw new Error('Could not find first facet name');
+   }
+   // Reduce the search results to a single array of products.
+   const filteredProducts = results.reduce(
+      (products: [], searchResults: { hits: [] }) => {
+         return [...products, ...searchResults.hits];
+      },
+      []
+   );
+   filteredProducts.forEach((product: any) => {
+      expect(resolvePath(product, facetName)).toContain(facetOptionValue);
+   });
+}
+
+async function removeAndCheckRefinement(
+   facetOptionValue: string,
+   buttonText: string,
+   page: Page
+) {
+   // Remove the newest refinement.
+   await page
+      .getByTestId(`current-refinement-${facetOptionValue}`)
+      .getByRole('button', { name: new RegExp(buttonText, 'i') })
+      .click();
+
+   // Check that the refinement value is not in the current refinements.
+   await expect(
+      page.getByTestId(`current-refinement-${facetOptionValue}`)
+   ).not.toBeVisible();
+}
+
+async function resetAndCheckRefinements(buttonText: string, page: Page) {
+   // Reset the filters.
+   await page.getByRole('button', { name: buttonText, exact: true }).click();
+
+   // Check that the current refinements are empty
+   expect(
+      await page.locator('[data-testid^=current-refinement-]').count()
+   ).toBe(0);
+}
+
+test.describe('product list filters', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test('Should help user filter', async ({ page }) => {
-      const facetList = page
-         .getByTestId('facets-accordion')
-         .locator('[data-testid^=collapsed-facet-accordion-item-]');
+   test.describe('Desktop', () => {
+      test.skip(({ page }) => {
+         const viewPort = page.viewportSize();
+         return !viewPort || viewPort.width < 768;
+      }, 'Only run on desktop.');
 
-      const firstCollapsedAccordionItem = await facetList
-         .nth(0)
-         .elementHandle();
-      const secondCollapsedAccordionItem = await facetList
-         .nth(1)
-         .elementHandle();
+      test('Should help user filter', async ({ page }) => {
+         const facetList = page
+            .getByTestId('facets-accordion')
+            .locator('[data-testid^=collapsed-facet-accordion-item-]');
 
-      // Click the first facet accordion item.
-      if (!firstCollapsedAccordionItem) {
-         throw new Error('Could not find first collapsed accordion item');
-      }
-      await firstCollapsedAccordionItem.click();
+         const firstCollapsedAccordionItem = await facetList
+            .nth(0)
+            .elementHandle();
+         const secondCollapsedAccordionItem = await facetList
+            .nth(1)
+            .elementHandle();
 
-      // Define a Promise to wait for the search to be triggered and let the UI update.
-      const queryResponse = waitForAlgoliaSearch(page);
+         // Click the first facet accordion item.
+         if (!firstCollapsedAccordionItem) {
+            throw new Error('Could not find first collapsed accordion item');
+         }
+         await firstCollapsedAccordionItem.click();
 
-      // Click the first facet item
-      const firstFacetOption = await firstCollapsedAccordionItem.$(
-         'button[role="option"]'
-      );
-      await firstFacetOption?.click();
-      const { results } = await (await queryResponse).json();
+         // Define a Promise to wait for the search to be triggered and let the UI update.
+         const queryResponse = waitForAlgoliaSearch(page);
 
-      // Check that the refinement value is in the current refinements.
-      const firstFacetOptionValue = await firstFacetOption?.getAttribute(
-         'data-value'
-      );
-      if (!firstFacetOptionValue) {
-         throw new Error('Could not find first facet option value');
-      }
-      await expect(
-         page.getByTestId(`current-refinement-${firstFacetOptionValue}`)
-      ).toBeVisible();
-
-      // Reduce the search results to a single array of products.
-      const filteredProducts = results.reduce(
-         (products: [], searchResults: { hits: [] }) => {
-            return [...products, ...searchResults.hits];
-         },
-         []
-      );
-
-      // Check that the refinement value is in the search results.
-      const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
-         'data-facet-name'
-      );
-      if (!firstFacetName) {
-         throw new Error('Could not find first facet name');
-      }
-      filteredProducts.forEach((product: any) => {
-         expect(resolvePath(product, firstFacetName)).toContain(
-            firstFacetOptionValue
+         // Click the first facet item
+         const firstFacetOption = await firstCollapsedAccordionItem.$(
+            'button[role="option"]'
          );
+         await firstFacetOption?.click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await checkRefinementValue(firstFacetOptionValue, page);
+
+         // Check that the refinement value is in the search results.
+         const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
+            'data-facet-name'
+         );
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue!,
+            results
+         );
+
+         // Click the second facet accordion item.
+         if (!secondCollapsedAccordionItem) {
+            throw new Error('Could not find second collapsed accordion item');
+         }
+         await secondCollapsedAccordionItem.click();
+
+         // Click the second facet item
+         const secondFacetOption = await secondCollapsedAccordionItem.$(
+            '[role="option"]'
+         );
+         await secondFacetOption?.click();
+
+         // Check that the refinement value is in the current refinements.
+         const secondFacetOptionValue = await secondFacetOption?.getAttribute(
+            'data-value'
+         );
+         await checkRefinementValue(secondFacetOptionValue, page);
+         await removeAndCheckRefinement(
+            secondFacetOptionValue!,
+            'remove',
+            page
+         );
+         await resetAndCheckRefinements('Clear all filters', page);
+      });
+   });
+
+   test.describe('Mobile and Tablet', () => {
+      test.skip(({ page }) => {
+         const viewPort = page.viewportSize();
+         return !viewPort || viewPort.width > 768;
+      }, 'Only run on mobile and tablet.');
+
+      test('Should help user filter', async ({ page }) => {
+         // Select the first filter and close the drawer
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         const firstFacet = page.getByTestId('facets-drawer-list-item').nth(1);
+         const firstFacetName = await firstFacet?.getAttribute(
+            'data-drawer-list-item-name'
+         );
+         await firstFacet.click();
+
+         const queryResponse = waitForAlgoliaSearch(page);
+         const firstFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await firstFacetOption.click();
+         await page.getByRole('button', { name: 'Close' }).click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         await checkRefinementValue(firstFacetOptionValue, page);
+
+         // Check that the refinement value is in the search results.
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue!,
+            results
+         );
+
+         // Select the second filter and close the drawer
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         const secondFacet = page.getByTestId('facets-drawer-list-item').nth(2);
+         await secondFacet.click();
+         const secondFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const secondFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await secondFacetOption.click();
+         await page.getByRole('button', { name: 'Close' }).click();
+
+         // Check that the refinement value is in the current refinements.
+         await checkRefinementValue(secondFacetOptionValue, page);
+         await removeAndCheckRefinement(
+            secondFacetOptionValue!,
+            'remove',
+            page
+         );
+         await resetAndCheckRefinements('Clear all filters', page);
       });
 
-      // Click the second facet accordion item.
-      if (!secondCollapsedAccordionItem) {
-         throw new Error('Could not find second collapsed accordion item');
-      }
-      await secondCollapsedAccordionItem.click();
+      test('Apply and Clear all buttons work in Facet Drawer', async ({
+         page,
+      }) => {
+         // Select the first filter and click Apply button
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         await page.getByTestId('facets-drawer-list-item').nth(1).click();
+         const firstFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await firstFacetOption.click();
+         await page.getByRole('button', { name: 'Apply' }).click();
 
-      // Click the second facet item
-      const secondFacetOption = await secondCollapsedAccordionItem.$(
-         '[role="option"]'
-      );
-      await secondFacetOption?.click();
+         // Check that the refinement value is in the current refinements.
+         await checkRefinementValue(firstFacetOptionValue, page);
 
-      // Check that the refinement value is in the current refinements.
-      const secondFacetOptionValue = await secondFacetOption?.getAttribute(
-         'data-value'
-      );
-      if (!secondFacetOptionValue) {
-         throw new Error('Could not find second facet option value');
-      }
-      await expect(
-         page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-      ).toBeVisible();
+         // Select the second filter and click Apply button
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         await page.getByTestId('facets-drawer-list-item').nth(2).click();
+         const secondFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const secondFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await secondFacetOption.click();
+         await page
+            .getByRole('button', { name: 'Apply' })
+            .click({ clickCount: 2 });
 
-      // Remove the newest refinement.
-      await page
-         .getByTestId(`current-refinement-${secondFacetOptionValue}`)
-         .getByRole('button', { name: /remove/i })
-         .click();
+         // Check that the refinement value is in the current refinements.
+         await checkRefinementValue(secondFacetOptionValue, page);
 
-      // Check that the refinement value is not in the current refinements.
-      await expect(
-         page.getByTestId(`current-refinement-${secondFacetOptionValue}`)
-      ).not.toBeVisible();
-
-      // Reset the filters.
-      await page.getByRole('button', { name: /clear all filters/i }).click();
-
-      // Check that the current refinements are empty
-      expect(
-         await page.locator('[data-testid^=current-refinement-]').count()
-      ).toBe(0);
+         // Click "Clear all" button and check if refinements are empty.
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         await resetAndCheckRefinements('Clear all', page);
+      });
    });
 });

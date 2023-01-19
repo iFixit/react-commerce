@@ -1,5 +1,5 @@
 import { waitForAlgoliaSearch } from './../utils';
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 const NO_SEARCH_RESULT = 'No matching products found';
 const NO_SEARCH_RESULTS_DESC =

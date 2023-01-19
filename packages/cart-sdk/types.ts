@@ -59,6 +59,7 @@ export interface UpsellProduct {
    price: Money;
    compareAtPrice?: Money | null;
    proPricesByTier?: Record<string, Money> | null;
+   handle: string;
 }
 
 interface APIUpsellProduct {

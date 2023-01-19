@@ -193,7 +193,7 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const price = await screen.findByTestId('product-price');
+         const price = await screen.findByTestId('current-price');
 
          (expect(price) as any).toBeInTheDocument();
          (expect(price.textContent) as any).toBe('$29.99');
@@ -218,7 +218,7 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const price = await screen.findByTestId('product-price');
+         const price = await screen.findByTestId('current-price');
          (expect(price) as any).toBeInTheDocument();
          (expect(price.textContent) as any).toBe('$' + discountPrice);
 

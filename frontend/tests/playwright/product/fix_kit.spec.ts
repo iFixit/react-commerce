@@ -1,37 +1,34 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Fix Kit and Part Only test', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.goto('/products/iphone-6s-plus-replacement-battery');
+   test.beforeEach(async ({ productPage }) => {
+      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
    });
 
-   test('Kit contents and product skus', async ({ page }) => {
-      await page.getByText('Fix Kit').nth(1).click();
+   test('Kit contents and product skus', async ({ page, productPage }) => {
+      await expect(await productPage.getActiveVariant()).toHaveText('Fix Kit');
       await expect(page.getByText('Kit contents')).toBeVisible();
       await expect(page.getByText('Assembly contents')).not.toBeVisible();
 
-      await expect(page.getByTestId('product-sku')).toBeVisible();
-      const fixKitSku = await page.getByTestId('product-sku').textContent();
+      const fixKitSku = await productPage.getSku();
 
-      await page.getByText('Part Only').nth(0).click();
+      await productPage.switchSelectedVariant();
       await expect(page.getByText('Assembly contents')).toBeVisible();
       await expect(page.getByText('Kit contents')).not.toBeVisible();
 
-      await expect(page.getByTestId('product-sku')).toBeVisible();
-      const partOnlySku = await page.getByTestId('product-sku').textContent();
+      const partOnlySku = await productPage.getSku();
 
       expect(fixKitSku).not.toEqual(partOnlySku);
    });
 
-   test('Product image changes', async ({ page }) => {
-      await page.getByText('Fix Kit').nth(1).click();
-
+   test('Product image changes', async ({ page, productPage }) => {
+      await expect(await productPage.getActiveVariant()).toHaveText('Fix Kit');
       await expect(page.getByRole('img', { name: 'Fix Kit' })).toBeVisible();
       await expect(
          page.getByRole('img', { name: 'Part Only' }).first()
       ).not.toBeVisible();
 
-      await page.getByText('Part Only').nth(0).click();
+      await productPage.switchSelectedVariant();
       await expect(
          page.getByRole('img', { name: 'Part Only' }).first()
       ).toBeVisible();

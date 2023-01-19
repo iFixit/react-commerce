@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Cross-sell test', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.goto('/products/iphone-6s-plus-replacement-battery');
+   test.beforeEach(async ({ productPage }) => {
+      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
    });
 
    test('Current item from cross-sell can be added to cart', async ({
@@ -20,7 +20,7 @@ test.describe('Cross-sell test', () => {
             .isVisible();
          if (isCurrent) {
             currentProductPrice = await product
-               .getByTestId('product-price')
+               .getByTestId('current-price')
                .textContent();
             await expect(currentProductPrice).toMatch(/^\$[0-9]+(\.[0-9]{2})/);
             currentProductTitle = await product
@@ -65,7 +65,7 @@ test.describe('Cross-sell test', () => {
             await product.getByTestId('cross-sell-item-title').textContent()
          );
          const productPrice = await product
-            .getByTestId('product-price')
+            .getByTestId('current-price')
             .textContent();
          expectedTotalPrice += parseFloat(productPrice!.slice(1));
       }

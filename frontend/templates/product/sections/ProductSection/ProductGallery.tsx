@@ -37,6 +37,7 @@ export function ProductGallery({
    showThumbnails,
    enableZoom,
    onChangeImage,
+   ...otherProps
 }: ProductGalleryProps) {
    const galleryContainerRef = React.useRef<HTMLDivElement | null>(null);
    const variantImages = useVariantImages(product, selectedVariant.id);
@@ -107,6 +108,7 @@ export function ProductGallery({
             },
          }}
          w="full"
+         {...otherProps}
       >
          <Box ref={galleryContainerRef}>
             {variantImages.length > 1 ? (

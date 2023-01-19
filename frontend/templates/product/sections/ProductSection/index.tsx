@@ -80,6 +80,7 @@ export function ProductSection({
                zIndex="1"
             >
                <ProductGallery
+                  data-testid="product-gallery-desktop"
                   product={product}
                   selectedVariant={selectedVariant}
                   selectedImageId={selectedImageId}
@@ -129,6 +130,7 @@ export function ProductSection({
                      price={selectedVariant.price}
                      compareAtPrice={selectedVariant.compareAtPrice}
                      proPricesByTier={selectedVariant.proPricesByTier}
+                     data-testid="product-price-section"
                   />
                )}
 
@@ -138,6 +140,7 @@ export function ProductSection({
 
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
+                     data-testid="product-gallery-mobile"
                      product={product}
                      selectedVariant={selectedVariant}
                      selectedImageId={selectedImageId}
@@ -150,6 +153,7 @@ export function ProductSection({
                      product={product}
                      selected={selectedVariant.id}
                      onChange={handleVariantChange}
+                     data-testid="product-variants-selector"
                   />
                )}
 
