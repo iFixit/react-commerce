@@ -72,12 +72,12 @@ describe('Product Reviews Tests', () => {
    test('Product Section and Reviews Section review stars match', async () => {
       const reviewsResponseWithReviews = getReviewsResponse();
       const reviewsCount = reviewsResponseWithReviews.count; // 6
-      const ratingValue = reviewsResponseWithReviews.average; // 4.5
+      const ratingValue = reviewsResponseWithReviews.average!; // 4.5
 
       renderWithAppContext(
          <ProductRating
             product={getMockProduct({
-               rating: { value: ratingValue },
+               rating: { value: ratingValue, scale_min: 1, scale_max: 5 },
                reviewsCount: reviewsCount,
             })}
          />

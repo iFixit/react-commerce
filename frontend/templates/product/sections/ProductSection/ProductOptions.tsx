@@ -13,7 +13,7 @@ import {
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
-import type { Product } from '@models/product.server';
+import type { Product } from '@models/product/server';
 import * as React from 'react';
 
 export type ProductOptionsProps = {

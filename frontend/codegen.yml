@@ -28,3 +28,4 @@ generates:
          scalars:
             HTML: string
             URL: string
+            Decimal: string
