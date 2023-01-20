@@ -40,15 +40,13 @@ export function useProductSearchHitPricing(
 
    const proPricesByTier =
       product.price_tiers && !isEmpty(product.price_tiers)
-         ? Object.fromEntries(
-              Object.entries(product.price_tiers).map(([tier, price]) => [
-                 tier,
-                 {
-                    amount: price.default_variant_price,
-                    currencyCode: 'usd',
-                 },
-              ])
-           )
+         ? Object.entries(product.price_tiers).reduce((acc, [tier, price]) => {
+              acc[tier] = {
+                 amount: price.default_variant_price,
+                 currencyCode: 'usd',
+              };
+              return acc;
+           }, {} as Record<string, Money>)
          : undefined;
 
    return {
