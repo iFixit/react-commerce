@@ -46,6 +46,17 @@ jobs:
            if: steps.playwright-cache.outputs.cache-hit != 'true'
            run: cd frontend && npx playwright install
 
+         - name: Cache Next.js build
+           uses: actions/cache@v3
+           id: nextjs-cache
+           with:
+              path: frontend/.next
+              key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+         - name: Build Next.js
+           if: steps.nextjs-cache.outputs.cache-hit != 'true'
+           run: cd frontend && pnpm build
+
          - name: Run Playwright Tests
            env:
               NODE_ENV: test
