@@ -35,6 +35,8 @@ export const test = base.extend<
           */
          // @ts-ignore
          scope: 'worker',
+         auto: process.env.CI != null,
+         timeout: 60 * 2 * 1000,
       },
    ],
    productPage: async ({ page }, use) => {
