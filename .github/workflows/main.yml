@@ -55,6 +55,10 @@ jobs:
 
          - name: Build Next.js
            if: steps.nextjs-cache.outputs.cache-hit != 'true'
+           env:
+              NODE_ENV: test
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
            run: cd frontend && pnpm build
 
          - name: Run Playwright Tests
