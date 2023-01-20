@@ -130,6 +130,7 @@ export function ProductSection({
                      price={selectedVariant.price}
                      compareAtPrice={selectedVariant.compareAtPrice}
                      proPricesByTier={selectedVariant.proPricesByTier}
+                     data-testid="product-price-section"
                   />
                )}
 
@@ -152,6 +153,7 @@ export function ProductSection({
                      product={product}
                      selected={selectedVariant.id}
                      onChange={handleVariantChange}
+                     data-testid="product-variants-selector"
                   />
                )}
 
@@ -254,7 +256,7 @@ const ProductTitle = chakra(
             as="h1"
             className={className}
             size="xl"
-            fontFamily="Archivo Black"
+            fontWeight="medium"
             data-testid="product-title"
          >
             {children}

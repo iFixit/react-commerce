@@ -183,7 +183,6 @@ export function CrossSellSection({
          <PageContentWrapper>
             <Heading
                as="h2"
-               fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
                mb={{

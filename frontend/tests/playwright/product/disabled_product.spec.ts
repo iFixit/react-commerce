@@ -23,7 +23,7 @@ test.describe('Disabled Product Test', () => {
          page.getByText('Shipping restrictions apply')
       ).not.toBeVisible();
       await expect(
-         page.getByTestId('product-option-selector')
+         page.getByTestId('product-variants-selector')
       ).not.toBeVisible();
       await expect(page.getByText(/Buy from our Store in/i)).not.toBeVisible();
       await expect(page.getByText(/Buy from our US Store/i)).not.toBeVisible();

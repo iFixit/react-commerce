@@ -48,13 +48,7 @@ export function LifetimeWarrantySection({
                   }}
                >
                   <Box>
-                     <Heading
-                        as="h2"
-                        color="white"
-                        fontFamily="Archivo Black"
-                        letterSpacing="wide"
-                        mb="3"
-                     >
+                     <Heading as="h2" color="white" letterSpacing="wide" mb="3">
                         Lifetime Guarantee
                      </Heading>
                      <Text color="white">

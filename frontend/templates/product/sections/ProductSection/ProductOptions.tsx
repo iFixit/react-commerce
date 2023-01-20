@@ -26,6 +26,7 @@ export function ProductOptions({
    product,
    selected,
    onChange,
+   ...otherProps
 }: ProductOptionsProps) {
    const theme = useTheme();
    const selectedVariant = React.useMemo(() => {
@@ -59,7 +60,7 @@ export function ProductOptions({
                         onChange={(event) => {
                            onChange(event.target.value);
                         }}
-                        data-testid="product-option-selector"
+                        {...otherProps}
                      >
                         {option.values.map((value) => {
                            const { exact, variant } = findVariant(
@@ -84,7 +85,7 @@ export function ProductOptions({
                      </Select>
                   )}
                   {selectorType === SelectorType.IMAGE_RADIO && (
-                     <SimpleGrid columns={2} spacing="2">
+                     <SimpleGrid columns={2} spacing="2" {...otherProps}>
                         {option.values.map((value) => {
                            const { exact, variant } = findVariant(
                               product,
@@ -107,6 +108,7 @@ export function ProductOptions({
                                        onChange(variant.id);
                                     }
                                  }}
+                                 data-testid={variant?.sku}
                               />
                            );
                         })}
@@ -219,6 +221,7 @@ function ProductOptionValue({
    isActive,
    exactMatch,
    onClick,
+   ...otherProps
 }: ProductOptionProps) {
    return (
       <Box
@@ -232,6 +235,8 @@ function ProductOptionValue({
          cursor="pointer"
          textAlign="center"
          onClick={onClick}
+         aria-selected={isActive}
+         {...otherProps}
       >
          <ProductOptionImage image={image} exactMatch={exactMatch} />
          <Text fontSize="13px" color={exactMatch ? 'gray.800' : 'gray.400'}>
