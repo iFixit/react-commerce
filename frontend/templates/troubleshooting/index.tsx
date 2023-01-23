@@ -21,9 +21,6 @@ const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
-   const appContext = useAppContext();
-   const client = new IFixitAPIClient({ origin: appContext.ifixitOrigin });
-
    return (
       <Container sx={renderStyles}>
          <Head>
