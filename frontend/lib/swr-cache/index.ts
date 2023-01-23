@@ -10,7 +10,7 @@
  * 1) Define an operation endpoint in your API routes:
  *    e.g. `export default withCache({ ... })`
  * 2) Import the operation endpoint where you need to get the value:
- *    e.g. `import ProductList from '@pages/api/product-list';`
+ *    e.g. `import ProductList from '@pages/api/nextjs/cache/product-list';`
  * 3) Use the get function to get the cached value:
  *   e.g. `const productList = await ProductList.get({ ... })`
  */
@@ -26,6 +26,7 @@ import {
    createCacheKey,
    isStale,
    isValidCacheEntry,
+   printZodError,
    sleep,
 } from './utils';
 
@@ -58,6 +59,7 @@ export const withCache = <
 >({
    endpoint,
    variablesSchema,
+   valueSchema,
    getFreshValue,
    ttl,
    staleWhileRevalidate,
@@ -105,16 +107,24 @@ export const withCache = <
       }
       let elapsed = performance.now() - start;
       if (isValidCacheEntry(cachedEntry)) {
-         if (isStale(cachedEntry)) {
-            logger.info(
-               `[cache > start background revalidation]:  key: "${key}"`
+         const valueValidation = valueSchema.safeParse(cachedEntry.value);
+         if (valueValidation.success) {
+            if (isStale(cachedEntry)) {
+               logger.info(
+                  `[cache > start background revalidation]:  key: "${key}"`
+               );
+               await requestRevalidation(variables);
+            }
+            logger.success(
+               `[cache > hit]: (${elapsed.toFixed(2)}ms) key: "${key}"`
             );
-            await requestRevalidation(variables);
+            return valueValidation.data;
          }
-         logger.success(
-            `[cache > hit]: (${elapsed.toFixed(2)}ms) key: "${key}"`
+         logger.warning(
+            `[cache > get]: invalid value for key: "${key}"\n
+            If you've changed the value schema, this error is expected. We'll get a fresh value and update the cache.\n
+            ${printZodError(valueValidation.error)}`
          );
-         return cachedEntry.value as any;
       }
       start = performance.now();
       const value = await getFreshValue(variables);
