@@ -34,7 +34,10 @@ const Wiki: NextPageWithLayout<{
             <SolutionCard key={solution.heading} solution={solution} />
          ))}
          {wikiData.conclusion.map((conclusion) => (
-            <ConclusionSection key={conclusion.heading} conclusion={conclusion} />
+            <ConclusionSection
+               key={conclusion.heading}
+               conclusion={conclusion}
+            />
          ))}
       </Container>
    );
