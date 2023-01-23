@@ -27,9 +27,11 @@ const Wiki: NextPageWithLayout<{
             <meta name="robots" content="noindex" />
          </Head>
          <Heading as="h1">{wikiData.title}</Heading>
-         {wikiData.groups.map((group) => (
-            <ProblemCard key={group.heading} problem={group} />
+         {wikiData.introduction.map((intro) => (<ProblemCard key={intro.heading} problem={intro} />))}
+         {wikiData.solutions.map((solution) => (
+            <ProblemCard key={solution.heading} problem={solution} />
          ))}
+         {wikiData.conclusion.map((intro) => (<ProblemCard key={intro.heading} problem={intro} />))}
       </Container>
    );
 };
