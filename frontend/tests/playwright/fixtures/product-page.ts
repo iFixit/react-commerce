@@ -16,14 +16,16 @@ export class ProductPage {
    }
 
    /**
-    * @description Navigates to the product page of the product with the given product handle
+    * @description Navigates to the product page of the product with the given
+    * product handle
     */
    async gotoProduct(productHandle: string) {
       await this.page.goto(`/products/${productHandle}`);
    }
 
    /**
-    * @description Locates and returns the product sku as a string with the format IF###-###-## or IF###-###
+    * @description Locates and returns the product sku as a string with the
+    * format IF###-###-## or IF###-###
     */
    async getSku(): Promise<string> {
       const sku =
@@ -37,7 +39,8 @@ export class ProductPage {
    }
 
    /**
-    * @description Locates and returns the current product price as a string with the format $###.## or $###
+    * @description Locates and returns the current product price as a string
+    * with the format $###.## or $###
     */
    async getCurrentPrice(): Promise<number> {
       const price = await this.page
@@ -50,7 +53,8 @@ export class ProductPage {
    }
 
    /**
-    * @description Locates and returns the original product price as a string with the format $###.## or $###
+    * @description Locates and returns the original product price as a string
+    * with the format $###.## or $###
     */
    async getDiscountedPrice(): Promise<number> {
       const price = await this.page
@@ -64,7 +68,8 @@ export class ProductPage {
 
    /**
     * @note This is for the image based selector type.
-    * @description returns the locator for the currently selected variant shown on the product page.
+    * @description returns the locator for the currently selected variant
+    * shown on the product page.
     */
    async getActiveVariant(): Promise<Locator> {
       return this.page
@@ -73,8 +78,10 @@ export class ProductPage {
    }
 
    /**
-    * @note This is for the image based selector type. This is also under the assumption that there are only two variants.
-    * @description returns the locator for the other variant options in the product page.
+    * @note This is for the image based selector type. This is also under the
+    * assumption that there are only two variants.
+    * @description returns the locator for the other variant options in the
+    * product page.
     */
    async getInactiveVariant(): Promise<Locator> {
       return this.page
@@ -83,7 +90,8 @@ export class ProductPage {
    }
 
    /**
-    * @note This is for the image based selector type. This is also under the assumption that there are only two variants.
+    * @note This is for the image based selector type. This is also under the
+    * assumption that there are only two variants.
     * @description switches the selected variant to the inactive variant.
     */
    async switchSelectedVariant(): Promise<void> {
@@ -91,7 +99,9 @@ export class ProductPage {
    }
 
    /**
-    * @description Will assert that the inventory message has the given message. If no message is given, it will assert that the inventory message is not visible.
+    * @description Will assert that the inventory message has the given message.
+    * If no message is given, it will assert that the inventory message is
+    * not visible.
     */
    async assertInventoryMessage(message: string | null = null): Promise<void> {
       if (message === null) {
