@@ -89,4 +89,12 @@ export class CartDrawer {
    async assertItemIsNotPresent(sku: string): Promise<void> {
       expect(await this.getItem(sku)).not.toBeVisible();
    }
+
+   async assertDrawerIsOpen(): Promise<void> {
+      expect(await this.getDrawerStatus()).toBe('open');
+   }
+
+   async assertDrawerIsClosed(): Promise<void> {
+      expect(await this.getDrawerStatus()).toBe('closed');
+   }
 }

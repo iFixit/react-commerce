@@ -90,7 +90,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      expect(await cartDrawer.getDrawerStatus()).toBe('closed');
+      await cartDrawer.assertDrawerIsClosed();
 
       await productPage.addToCart();
       await cartDrawer.assertCartTotalQuantity(1);
@@ -101,7 +101,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      expect(await cartDrawer.getDrawerStatus()).toBe('closed');
+      await cartDrawer.assertDrawerIsClosed();
    });
 
    test.describe('Product Stock Levels', () => {
