@@ -23,7 +23,7 @@ loadEnvConfig('./', process.env.NODE_ENV !== 'production');
  * In which case, we will need to make sure to run `pnpm build` before
  * running the tests.
  */
-const isDev = process.env.NODE_ENV !== 'production' || process.env.CI != null;
+const isDev = process.env.NODE_ENV !== 'production' && process.env.CI == null;
 const hostname = 'localhost';
 
 // Create Next.js instance
