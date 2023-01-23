@@ -1,7 +1,7 @@
 import {
    ProductListEmptyStateIllustration,
    SearchEmptyStateIllustration,
-} from '@assets/svg';
+} from '@assets/svg/files';
 import {
    Box,
    BoxProps,
