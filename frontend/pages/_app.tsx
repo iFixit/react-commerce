@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
    return (
       <>
          <Script
-            src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en`}
+            src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en,Object.fromEntries`}
             strategy="beforeInteractive"
          />
          <ServerSidePropsProvider props={pageProps}>
