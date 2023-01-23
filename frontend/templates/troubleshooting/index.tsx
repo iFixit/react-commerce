@@ -28,23 +28,23 @@ const Wiki: NextPageWithLayout<{
          </Head>
          <Heading as="h1">{wikiData.title}</Heading>
          {wikiData.introduction.map((intro) => (
-            <IntroductionSection key={intro.heading} problem={intro} />
+            <IntroductionSection key={intro.heading} intro={intro} />
          ))}
          {wikiData.solutions.map((solution) => (
-            <ProblemCard key={solution.heading} problem={solution} />
+            <SolutionCard key={solution.heading} solution={solution} />
          ))}
-         {wikiData.conclusion.map((intro) => (
-            <ConclusionSection key={intro.heading} problem={intro} />
+         {wikiData.conclusion.map((conclusion) => (
+            <ConclusionSection key={conclusion.heading} conclusion={conclusion} />
          ))}
       </Container>
    );
 };
 
-function ProblemCard({ problem }: { problem: Problem }) {
+function SolutionCard({ solution }: { solution: Problem }) {
    return (
       <Box>
-         <Heading>{problem.heading}</Heading>
-         <Box dangerouslySetInnerHTML={{ __html: problem.body }} />
+         <Heading>{solution.heading}</Heading>
+         <Box dangerouslySetInnerHTML={{ __html: solution.body }} />
       </Box>
    );
 }
