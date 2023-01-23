@@ -8,10 +8,10 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
     role="group"
   >
     <div
-      class="css-1ej4wy2"
+      class="css-1cdzrb4"
     >
       <div
-        class="css-1upbq1w"
+        class="css-kot0bi"
       >
         <span
           style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
@@ -37,19 +37,19 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
         </span>
       </div>
       <div
-        class="chakra-stack css-mc053s"
+        class="chakra-stack css-uwaf50"
       >
         <div
           class="css-1c6uy1d"
         >
           <h3
-            class="chakra-heading css-yksz35"
+            class="chakra-heading css-1sm1677"
             id="product-heading-galaxy-s9-plus-replacement-battery"
           >
             Galaxy S9+ Battery
           </h3>
           <p
-            class="chakra-text css-1lwz3lo"
+            class="chakra-text css-1781se3"
           >
             Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.
           </p>
@@ -147,7 +147,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </svg>
             </div>
             <p
-              class="chakra-text css-1g5rt1e"
+              class="chakra-text css-psi6cs"
             >
               18
             </p>
@@ -163,10 +163,10 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           </div>
         </div>
         <div
-          class="chakra-stack css-1gv4c2h"
+          class="chakra-stack css-1p0brnv"
         >
           <div
-            class="chakra-stack css-1nrwugr"
+            class="chakra-stack css-1ducg4w"
           >
             <div
               class="css-14apnby"
@@ -180,14 +180,14 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             </div>
           </div>
           <div
-            class="chakra-stack css-oi2dk3"
+            class="chakra-stack css-1r1lvou"
           >
             <a
               class="chakra-linkbox__overlay css-1hnz6hu"
               href="/products/galaxy-s9-plus-replacement-battery"
             >
               <div
-                class="chakra-button css-1on59sn"
+                class="chakra-button css-k7fdf3"
               >
                 View
               </div>

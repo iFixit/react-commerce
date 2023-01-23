@@ -1,4 +1,4 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import {
    Accordion,
    AccordionButton,
@@ -256,7 +256,7 @@ const ProductTitle = chakra(
             as="h1"
             className={className}
             size="xl"
-            fontFamily="Archivo Black"
+            fontWeight="medium"
             data-testid="product-title"
          >
             {children}

@@ -87,3 +87,7 @@ const stableHash = (variables: unknown): string => {
          : val
    );
 };
+
+export const printZodError = (error: z.ZodError) => {
+   return JSON.stringify(error.format(), null, 2);
+};

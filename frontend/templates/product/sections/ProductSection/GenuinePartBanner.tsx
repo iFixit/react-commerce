@@ -1,7 +1,8 @@
 import {
-   Google,
+   Crucial,
    Lenovo,
    Logitech,
+   Micron,
    Microsoft,
    Motorola,
    Samsung,
@@ -9,7 +10,7 @@ import {
    TeenageEngineering,
    Valve,
    Vive,
-} from '@assets/svg/partners';
+} from '@assets/svg/files/partners';
 import { Flex, Link, Text, useTheme } from '@chakra-ui/react';
 import type { Product } from '@models/product.server';
 import React from 'react';
@@ -21,9 +22,11 @@ export type GenuinePartBannerProps = {
 const partnerCodeToComponentMap: { [key: string]: React.FC } = {
    // Don't have permission yet
    // google_pixel: Google,
+   crucial: () => <Crucial px="2" />,
    htc_vive: Vive,
    lenovo: Lenovo,
    logitech: Logitech,
+   micron: () => <Micron px="2" />,
    microsoft_surface: Microsoft,
    microsoft_surface_tool: Microsoft,
    motorola: Motorola,

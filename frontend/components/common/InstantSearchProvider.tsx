@@ -64,7 +64,10 @@ export function InstantSearchProvider({
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
          stateToRoute(uiState) {
-            const indexUiState = uiState[indexName];
+            const indexUiState = uiState['main-product-list-index'];
+            if (!indexUiState) {
+               return {};
+            }
             const routeState: RouteState = {};
             if (indexUiState.query) {
                routeState.q = indexUiState.query;
@@ -114,7 +117,7 @@ export function InstantSearchProvider({
                });
             }
             return {
-               [indexName]: stateObject,
+               ['main-product-list-index']: stateObject,
             };
          },
       },

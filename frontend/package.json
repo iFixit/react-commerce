@@ -20,12 +20,11 @@
       "test": "jest",
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
       "playwright:run": "playwright test",
-      "playwright:debug": "DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug",
-      "transform-svg": "npx @svgr/cli --typescript -d assets/svg assets/svg/files && prettier --write assets/svg"
+      "playwright:debug": "DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug"
    },
    "dependencies": {
       "@chakra-ui/react": "2.4.8",
-      "@core-ds/primitives": "2.4.5",
+      "@core-ds/primitives": "2.5.1",
       "@emotion/react": "11.10.5",
       "@emotion/styled": "11.10.5",
       "@fortawesome/fontawesome-svg-core": "6.2.1",
@@ -85,7 +84,7 @@
       "@ifixit/tsconfig": "workspace:*",
       "@next/bundle-analyzer": "12.1.6",
       "@playwright/test": "1.29.1",
-      "@svgr/cli": "5.5.0",
+      "@svgr/webpack": "6.5.1",
       "@testing-library/dom": "8.19.0",
       "@testing-library/jest-dom": "5.16.1",
       "@testing-library/react": "13.4.0",

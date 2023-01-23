@@ -132,6 +132,14 @@ const moduleExports = {
       locales: ['en-US'],
       defaultLocale: 'en-US',
    },
+   webpack(config) {
+      config.module.rules.push({
+         test: /\.svg$/i,
+         issuer: /\.tsx?$/,
+         use: ['@svgr/webpack'],
+      });
+      return config;
+   },
    ...(!SENTRY_AUTH_TOKEN && {
       sentry: {
          disableServerWebpackPlugin: true,

@@ -1,4 +1,4 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
@@ -48,13 +48,7 @@ export function LifetimeWarrantySection({
                   }}
                >
                   <Box>
-                     <Heading
-                        as="h2"
-                        color="white"
-                        fontFamily="Archivo Black"
-                        letterSpacing="wide"
-                        mb="3"
-                     >
+                     <Heading as="h2" color="white" letterSpacing="wide" mb="3">
                         Lifetime Guarantee
                      </Heading>
                      <Text color="white">
