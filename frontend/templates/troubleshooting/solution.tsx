@@ -78,18 +78,7 @@ const SolutionFooter = () => (
          alignSelf="stretch"
       >
          <Button variant="outline" size="sm" bgColor="white" textColor="gray">
-            <Icon /**iconName="square-arrow-up"*/ padding="square" scale="1x">
-               <Text
-                  fontFamily="Font Awesome 6 Pro"
-                  fontWeight="solid"
-                  fontSize="16px"
-                  color="gray.500"
-                  width="16px"
-                  textAlign="center"
-               >
-                  square-arrow-up
-               </Text>
-            </Icon>
+            <FaIcon icon={faSquareArrowUp} />
             <Text
                fontFamily="SF Pro"
                lineHeight="1.29"
@@ -120,21 +109,7 @@ const SolutionFooter = () => (
                   bgColor="white"
                   textColor="gray"
                >
-                  <Icon
-                     /*iconName="pen-to-square"*/ padding="square"
-                     scale="1x"
-                  >
-                     <Text
-                        fontFamily="Font Awesome 6 Pro"
-                        fontWeight="solid"
-                        fontSize="16px"
-                        color="gray.500"
-                        width="16px"
-                        textAlign="center"
-                     >
-                        pen-to-square
-                     </Text>
-                  </Icon>
+                  <FaIcon icon={faPenToSquare} />
                   <Text
                      fontFamily="SF Pro"
                      lineHeight="1.29"
@@ -152,18 +127,7 @@ const SolutionFooter = () => (
                   bgColor="white"
                   textColor="gray"
                >
-                  <Icon /*iconName="ellipsis"*/ padding="square" scale="1x">
-                     <Text
-                        fontFamily="Font Awesome 6 Pro"
-                        fontWeight="solid"
-                        fontSize="16px"
-                        color="gray.500"
-                        width="16px"
-                        textAlign="center"
-                     >
-                        ellipsis
-                     </Text>
-                  </Icon>
+                  <FaIcon icon={faEllipsis} />
                </Button>
             </Stack>
          </Stack>
