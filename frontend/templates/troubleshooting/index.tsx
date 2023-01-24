@@ -2,7 +2,13 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import { Box, chakra, Container, Heading } from '@chakra-ui/react';
+import {
+   Box,
+   chakra,
+   Container,
+   Heading,
+   SystemStyleObject,
+} from '@chakra-ui/react';
 import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
 
 const renderStyles = {
@@ -74,20 +80,28 @@ const Prerendered = chakra(function Prerendered({
    html: string;
    className?: string;
 }) {
-   const renderStyles = {
-      a: {
-         color: 'blue.500',
-      },
-      'ul, ol': {
-         paddingLeft: 4,
+   const renderStyles: SystemStyleObject = {
+      '.headerContainer': {
+         display: 'flex',
+         alignItems: 'baseline',
       },
 
-      p: {
-         marginBottom: '14px',
+      '.selfLink': {
+         display: 'none',
       },
 
-      'p:last-child': {
-         marginBottom: 0,
+      h3: {
+         fontSize: 'xl',
+         lineHeight: '1.2',
+      },
+
+      'h3,h4': {
+         fontWeight: 590,
+      },
+
+      'h4,h5': {
+         fontSize: 'md',
+         lineHeight: '1.25',
       },
    };
 
