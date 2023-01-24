@@ -40,7 +40,6 @@ const SolutionFooter = () => (
          alignSelf="stretch"
       >
          <Text
-            fontFamily="SF Pro"
             fontWeight="regular"
             fontSize="14px"
             color="gray.900"
@@ -52,7 +51,6 @@ const SolutionFooter = () => (
             <Box width="24px" height="24px" />
          </Avatar>
          <Text
-            fontFamily="SF Pro"
             fontWeight="semibold"
             fontSize="14px"
             color="brand.500"
@@ -80,7 +78,6 @@ const SolutionFooter = () => (
          <Button variant="outline" size="sm" bgColor="white" textColor="gray">
             <FaIcon icon={faSquareArrowUp} />
             <Text
-               fontFamily="SF Pro"
                lineHeight="1.29"
                fontWeight="semibold"
                fontSize="14px"
@@ -111,7 +108,6 @@ const SolutionFooter = () => (
                >
                   <FaIcon icon={faPenToSquare} />
                   <Text
-                     fontFamily="SF Pro"
                      lineHeight="1.29"
                      fontWeight="semibold"
                      fontSize="14px"
