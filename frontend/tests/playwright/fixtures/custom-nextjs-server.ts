@@ -12,6 +12,7 @@ import { createServer } from 'http';
 import next from 'next';
 import { parse } from 'node:url';
 import bootstrapMockServer from '../msw/server';
+import { SetupServerApi } from 'msw/node';
 
 // Load environment variables
 import { loadEnvConfig } from '@next/env';
@@ -31,7 +32,12 @@ const app = next({ dev: isDev, hostname, quiet: true });
 // The handle function will send our requests to the Next.js app
 const handle = app.getRequestHandler();
 
-async function bootstrap(): Promise<any> {
+export type CustomNextjsServer = {
+   serverRequestInterceptor: SetupServerApi;
+   port: number;
+};
+
+async function bootstrap(): Promise<CustomNextjsServer> {
    // eslint-disable-next-line no-async-promise-executor
    return new Promise(async (resolve) => {
       try {
