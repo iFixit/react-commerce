@@ -6,7 +6,7 @@ import {
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
-import { logSync, timeAsync } from '@ifixit/helpers';
+import { timeAsync } from '@ifixit/helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
@@ -71,9 +71,7 @@ export async function findProductList(
    const description =
       productList?.description ?? deviceWiki?.description ?? '';
 
-   const algoliaApiKey = logSync('algolia:create key', () =>
-      createPublicAlgoliaKey(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
-   );
+   const algoliaApiKey = createPublicAlgoliaKey(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
    const productListType = getProductListType(productList?.type);
 
    const ancestors = createProductListAncestors(parents);
