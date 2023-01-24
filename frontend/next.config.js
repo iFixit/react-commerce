@@ -17,7 +17,6 @@ const withTM = require('next-transpile-modules')([
    '@ifixit/ifixit-api-client',
    '@ifixit/shopify-storefront-client',
    '@ifixit/sentry',
-   '@ifixit/stats',
    '@ifixit/footer',
 ]);
 
