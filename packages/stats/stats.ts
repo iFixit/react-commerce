@@ -1,7 +1,5 @@
 import StatsD from 'hot-shots';
 
-import { withLogging } from '@ifixit/helpers';
-
 const STATSD_HOST = process.env.STATSD_HOST;
 
 export const stats = new StatsD({
@@ -40,5 +38,5 @@ export function withTiming<Args extends unknown[], Return>(
    statName: string,
    promiseFunc: (...args: Args) => Promise<Return>
 ) {
-   return withLogging(statName, stats.asyncTimer(promiseFunc, statName));
+   return stats.asyncTimer(promiseFunc, statName);
 }

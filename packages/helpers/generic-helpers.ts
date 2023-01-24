@@ -48,7 +48,7 @@ export function timeSync<T>(name: string, syncFunction: () => T): T {
    return response;
 }
 
-export function withLogging<ARGS extends Array<any>, RETURN>(
+export function withTiming<ARGS extends Array<any>, RETURN>(
    name: string,
    promiseFunction: (...args: ARGS) => Promise<RETURN>
 ) {

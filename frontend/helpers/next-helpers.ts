@@ -1,7 +1,7 @@
 import { PROD_USER_AGENT } from '@config/constants';
 import { CACHE_DISABLED } from '@config/env';
 import { setSentryPageContext } from '@ifixit/sentry';
-import { withTiming } from '@ifixit/stats';
+import { withTiming } from '@ifixit/helpers';
 import { clearCache } from '@lib/cache';
 import type { GetServerSidePropsMiddleware } from '@lib/next-middleware';
 import * as Sentry from '@sentry/nextjs';

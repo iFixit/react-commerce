@@ -5,8 +5,8 @@ import {
    invariant,
    Money,
    parseItemcode,
+   timeAsync,
 } from '@ifixit/helpers';
-import { timeAsync } from '@ifixit/stats';
 import {
    FindProductQuery,
    getServerShopifyStorefrontSdk,
