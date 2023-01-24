@@ -7,7 +7,16 @@ import {
    Button,
    Icon,
    Badge,
+   Square,
+   Flex,
 } from '@chakra-ui/react';
+import {
+   faCircleCheck,
+   faEllipsis,
+   faPenToSquare,
+   faSquareArrowUp,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FaIcon } from '@ifixit/icons';
 import { Problem } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 
@@ -162,11 +171,18 @@ const SolutionFooter = () => (
    </Stack>
 );
 
-const SolutionHeader = () => (
+const SolutionHeader = ({
+   index,
+   popularity,
+}: {
+   index: number;
+   popularity?: number;
+}) => (
    <Stack
       direction="row"
       justify="flex-start"
       align="flex-start"
+      alignContent="center"
       spacing="16px"
    >
       <Stack
@@ -176,71 +192,42 @@ const SolutionHeader = () => (
          spacing="10px"
          height="28px"
       >
-         <Stack
-            paddingX="6px"
-            paddingY="4px"
+         <Square
             borderRadius="4px"
-            direction="row"
-            justify="center"
-            align="center"
-            spacing="3px"
             borderColor="brand.700"
-            borderStartWidth="1px"
-            borderEndWidth="1px"
-            borderTopWidth="1px"
-            borderBottomWidth="1px"
-            width="40px"
-            height="40px"
-            background="brand.500"
+            borderWidth="1px"
+            size="40px"
+            bg="brand.500"
+            fontWeight="semibold"
+            fontSize="18px"
+            color="white"
          >
-            <Text
-               fontFamily="SF Pro"
-               fontWeight="semibold"
-               fontSize="18px"
-               color="white"
+            {index}
+         </Square>
+      </Stack>
+      {popularity !== undefined && (
+         <Stack direction="row" justify="flex-start" align="flex-start">
+            <Badge
+               title={`${popularity}%`}
+               w="fit-content"
+               color="Gray"
+               size="Base"
             >
-               1
-            </Text>
+               <FaIcon icon={faCircleCheck} />
+               <Stack justify="center" align="flex-start" spacing="10px">
+                  <Text fontWeight="semibold" fontSize="14px" color="gray.700">
+                     {popularity}%
+                  </Text>
+               </Stack>
+            </Badge>
          </Stack>
-      </Stack>
-      <Stack direction="row" justify="flex-start" align="flex-start">
-         <Badge title="11.5%" color="Gray" size="Base">
-            <Icon /*iconName="circle-check"*/ padding="square" scale="1x">
-               <Text
-                  fontFamily="Font Awesome 6 Pro"
-                  fontWeight="solid"
-                  fontSize="16px"
-                  color="gray.500"
-                  width="16px"
-                  textAlign="center"
-               >
-                  circle-check
-               </Text>
-            </Icon>
-            <Stack justify="center" align="flex-start" spacing="10px">
-               <Text
-                  fontFamily="SF Pro"
-                  fontWeight="semibold"
-                  fontSize="14px"
-                  color="gray.700"
-               >
-                  11.5%
-               </Text>
-            </Stack>
-         </Badge>
-      </Stack>
+      )}
    </Stack>
 );
 
 const SolutionTexts = ({ title, body }: { title: string; body: string }) => (
-   <Stack
-      justify="flex-start"
-      align="flex-start"
-      width="798.74px"
-      maxWidth="100%"
-   >
+   <Stack justify="flex-start" align="flex-start">
       <Heading
-         fontFamily="SF Pro"
          fontWeight="medium"
          fontSize="24px"
          color="gray.900"
@@ -249,22 +236,22 @@ const SolutionTexts = ({ title, body }: { title: string; body: string }) => (
          {title}
       </Heading>
       <Prerendered html={body} />
-      <Text
-         fontFamily="SF Pro"
-         lineHeight="1.38"
-         fontWeight="regular"
-         fontSize="16px"
-         color="gray.700"
-         alignSelf="stretch"
-      ></Text>
    </Stack>
 );
 
-export default function SolutionCard({ solution }: { solution: Problem }) {
+export default function SolutionCard({
+   index,
+   solution,
+}: {
+   index: number;
+   solution: Problem;
+}) {
    return (
-      <Box background="white">
-         <SolutionHeader />
-         <SolutionTexts title={solution.heading} body={solution.body} />
-      </Box>
+      <Flex background="white" borderRadius="4px" padding="24px 24px 12px 24px">
+         <Flex gap="24px" direction="column">
+            <SolutionHeader index={index} />
+            <SolutionTexts title={solution.heading} body={solution.body} />
+         </Flex>
+      </Flex>
    );
 }
