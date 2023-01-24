@@ -145,7 +145,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
          optionid,
          price: ProductVariantCardSchema.shape.price.parse(variant.price),
          compareAtPrice: ProductVariantCardSchema.shape.compareAtPrice.parse(
-            variant.price
+            variant.compareAtPrice
          ),
          image: variant.image
             ? formatImage(variant.image, shopifyProduct)
