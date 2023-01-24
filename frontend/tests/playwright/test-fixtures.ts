@@ -4,7 +4,14 @@
  *
  * Fixtures can be isolated to a test or a worker depending on the scope defined.
  *
- * In addition, fixtures can be lazily loaded, which means that the fixture will only be created where it is used. If a test scoped fixture is not used in a test, it will not be created. If a worker scoped fixture is not used in a worker, it will not be created, and if a worker scoped fixture is used in a test, then it will remain instantiated for the duration of the worker. Overall this a very powerful feature that can help with expensive setup and teardown.
+ * In addition, fixtures can be lazily loaded, which means that the fixture will
+ * only be created where it is used. If a test scoped fixture is not used in a
+ * test, it will not be created. If a worker scoped fixture is not used in a
+ * worker, it will not be created, and if a worker scoped fixture is used in a
+ * test, then it will remain instantiated for the duration of the worker.
+ * Overall this a very powerful feature that can help with expensive setup
+ * and teardown.
+ *
  * @see https://playwright.dev/docs/test-fixtures
  */
 
