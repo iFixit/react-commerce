@@ -1,5 +1,5 @@
 import LRU from 'lru-cache';
-import { logAsync } from '@ifixit/helpers';
+import { timeAsync } from '@ifixit/helpers';
 
 const cacheStore = new LRU({ max: 100 });
 
@@ -12,7 +12,7 @@ export function cache<T>(
    if (fromCache !== undefined) {
       return fromCache;
    }
-   const result = logAsync(`Cache miss for '${key}'`, getValue);
+   const result = timeAsync(`Cache miss for '${key}'`, getValue);
    cacheStore.set(key, result, { ttl: ttl * 1000 });
    return result;
 }

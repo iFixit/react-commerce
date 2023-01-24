@@ -8,7 +8,7 @@ import {
    stylizeDeviceItemType,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
-import { assertNever, invariant, logAsync } from '@ifixit/helpers';
+import { assertNever, invariant, timeAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
@@ -48,7 +48,7 @@ export const getProductListServerSideProps = ({
 
       switch (productListType) {
          case ProductListType.AllParts: {
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList({ handle: { eq: 'Parts' } }, ifixitOrigin)
             );
             break;
@@ -74,7 +74,7 @@ export const getProductListServerSideProps = ({
                ? destylizeDeviceItemType(itemTypeHandle)
                : null;
 
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList(
                   {
                      deviceTitle: {
@@ -98,7 +98,7 @@ export const getProductListServerSideProps = ({
             break;
          }
          case ProductListType.AllTools: {
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList({ handle: { eq: 'Tools' } }, ifixitOrigin)
             );
             break;
@@ -110,7 +110,7 @@ export const getProductListServerSideProps = ({
                'tools category handle is required'
             );
 
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList({ handle: { eqi: handle } }, ifixitOrigin)
             );
 
@@ -131,7 +131,7 @@ export const getProductListServerSideProps = ({
                'shop category handle is required'
             );
 
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList(
                   {
                      handle: {
@@ -190,7 +190,7 @@ export const getProductListServerSideProps = ({
          </AppProviders>
       );
 
-      const serverState = await logAsync('getServerState', () =>
+      const serverState = await timeAsync('getServerState', () =>
          getServerState(appMarkup, { renderToString })
       );
 

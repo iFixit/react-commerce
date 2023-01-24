@@ -1,6 +1,6 @@
 import StatsD from 'hot-shots';
 
-import { logAsync, withLogging } from '@ifixit/helpers';
+import { withLogging } from '@ifixit/helpers';
 
 const STATSD_HOST = process.env.STATSD_HOST;
 
