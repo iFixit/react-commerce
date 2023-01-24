@@ -71,7 +71,10 @@ export async function findProductList(
    const description =
       productList?.description ?? deviceWiki?.description ?? '';
 
-   const algoliaApiKey = createPublicAlgoliaKey(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+   const algoliaApiKey = createPublicAlgoliaKey(
+      ALGOLIA_APP_ID,
+      ALGOLIA_API_KEY
+   );
    const productListType = getProductListType(productList?.type);
 
    const ancestors = createProductListAncestors(parents);
