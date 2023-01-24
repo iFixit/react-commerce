@@ -5,6 +5,7 @@ env:
    npm_config_userconfig: './.npmrc'
 jobs:
    playwright-run:
+      timeout-minutes: 15
       strategy:
          fail-fast: false
          matrix:
