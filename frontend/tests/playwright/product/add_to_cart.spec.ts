@@ -90,9 +90,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      await expect(
-         page.getByTestId('cart-drawer-item-count')
-      ).not.toBeVisible();
+      await cartDrawer.assertDrawerIsClosed();
 
       await productPage.addToCart();
       await cartDrawer.assertCartTotalQuantity(1);
@@ -103,10 +101,7 @@ test.describe.serial('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      await expect(
-         page.getByTestId('cart-drawer-item-count')
-      ).not.toBeVisible();
-      await expect(page.getByTestId('cart-drawer-close')).not.toBeVisible();
+      await cartDrawer.assertDrawerIsClosed();
    });
 
    test.describe('Product Stock Levels', () => {
@@ -121,46 +116,33 @@ test.describe.serial('product page add to cart', () => {
 
          const firstOptionSku = await productPage.getSku();
 
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).toBeVisible();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 3 left'
-         );
+         await productPage.assertInventoryMessage('Only 3 left');
          await productPage.addToCart();
          await cartDrawer.assertItemQuantity(firstOptionSku, 1);
 
          await cartDrawer.close();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 2 left'
-         );
+         await productPage.assertInventoryMessage('Only 2 left');
 
          await cartDrawer.open();
          await cartDrawer.increaseItemQuantity(firstOptionSku);
          await cartDrawer.assertItemQuantity(firstOptionSku, 2);
 
          await cartDrawer.close();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 1 left'
-         );
+         await productPage.assertInventoryMessage('Only 1 left');
 
          await cartDrawer.open();
          await cartDrawer.increaseItemQuantity(firstOptionSku);
          await cartDrawer.assertItemQuantity(firstOptionSku, 3);
 
          await cartDrawer.close();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'No more items available'
-         );
+         await productPage.assertInventoryMessage('No more items available');
          await expect(productPage.addToCartButton).toBeDisabled();
 
          await productPage.switchSelectedVariant();
          const secondOptionSku = await productPage.getSku();
 
          await expect(productPage.addToCartButton).toBeVisible();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await productPage.assertInventoryMessage();
          await productPage.addToCart();
 
          await cartDrawer.assertItemQuantity(secondOptionSku, 1);
@@ -171,9 +153,7 @@ test.describe.serial('product page add to cart', () => {
 
          await cartDrawer.close();
          await productPage.switchSelectedVariant();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 1 left'
-         );
+         await productPage.assertInventoryMessage('Only 1 left');
       });
 
       test('Out of stock product cannot be added to cart', async ({
@@ -204,9 +184,7 @@ test.describe.serial('product page add to cart', () => {
          await productPage.switchSelectedVariant();
 
          await expect(productPage.addToCartButton).not.toBeVisible();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await productPage.assertInventoryMessage();
 
          const notifyMeForm = page.getByText(/this item is currently/i);
          await expect(notifyMeForm).toBeVisible();
@@ -224,9 +202,7 @@ test.describe.serial('product page add to cart', () => {
 
          await productPage.switchSelectedVariant();
          await expect(productPage.addToCartButton).toBeVisible();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await productPage.assertInventoryMessage();
 
          const partOnlySku = await productPage.getSku();
 
@@ -236,9 +212,7 @@ test.describe.serial('product page add to cart', () => {
 
          await cartDrawer.close();
          await expect(productPage.addToCartButton).toBeEnabled();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await productPage.assertInventoryMessage();
       });
    });
 });
