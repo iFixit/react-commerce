@@ -84,6 +84,7 @@ const Prerendered = chakra(function Prerendered({
       '.headerContainer': {
          display: 'flex',
          alignItems: 'baseline',
+         marginBottom: 2,
       },
 
       '.selfLink': {
