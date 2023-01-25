@@ -23,6 +23,7 @@ export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
                sm: 3,
                lg: 4,
             }}
+            templateColumns={"repeat(3, minmax(0, 210px)) auto"}
             spacing="4"
             px={{
                base: 5,
