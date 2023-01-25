@@ -39,7 +39,7 @@ const SolutionFooter = () => (
          >
             This solution was suggested by
          </Text>
-         <Avatar size="24x24" border placeholder={false}>
+         <Avatar size="24x24">
             <Box width="24px" height="24px" />
          </Avatar>
          <Text
@@ -68,16 +68,8 @@ const SolutionFooter = () => (
          borderTopWidth="1px"
          alignSelf="stretch"
       >
-         <Button
-            label="82"
-            rightIcon={false}
-            leftIcon
-            variant="outline"
-            size="sm"
-            bgColor="white"
-            textColor="gray"
-         >
-            <Icon iconName="square-arrow-up" padding="square" scale="1x">
+         <Button variant="outline" size="sm" bgColor="white" textColor="gray">
+            <Icon /**iconName="square-arrow-up"*/ padding="square" scale="1x">
                <Text
                   fontFamily="Font Awesome 6 Pro"
                   fontWeight="solid"
@@ -101,8 +93,6 @@ const SolutionFooter = () => (
             </Text>
          </Button>
          <Stack
-            showActionsPanel={false}
-            size="md"
             flex="1"
             alignSelf="stretch"
             justify="flex-start"
@@ -116,15 +106,15 @@ const SolutionFooter = () => (
                spacing="4px"
             >
                <Button
-                  label="Edit"
-                  rightIcon={false}
-                  leftIcon
                   variant="outline"
                   size="sm"
                   bgColor="white"
                   textColor="gray"
                >
-                  <Icon iconName="pen-to-square" padding="square" scale="1x">
+                  <Icon
+                     /*iconName="pen-to-square"*/ padding="square"
+                     scale="1x"
+                  >
                      <Text
                         fontFamily="Font Awesome 6 Pro"
                         fontWeight="solid"
@@ -148,15 +138,12 @@ const SolutionFooter = () => (
                   </Text>
                </Button>
                <Button
-                  label="Report"
-                  rightIcon={false}
-                  leftIcon
                   variant="outline"
                   size="sm"
                   bgColor="white"
                   textColor="gray"
                >
-                  <Icon iconName="ellipsis" padding="square" scale="1x">
+                  <Icon /*iconName="ellipsis"*/ padding="square" scale="1x">
                      <Text
                         fontFamily="Font Awesome 6 Pro"
                         fontWeight="solid"
@@ -217,8 +204,8 @@ const SolutionHeader = () => (
          </Stack>
       </Stack>
       <Stack direction="row" justify="flex-start" align="flex-start">
-         <Badge title="11.5%" showIcon color="Gray" size="Base">
-            <Icon iconName="circle-check" padding="square" scale="1x">
+         <Badge title="11.5%" color="Gray" size="Base">
+            <Icon /*iconName="circle-check"*/ padding="square" scale="1x">
                <Text
                   fontFamily="Font Awesome 6 Pro"
                   fontWeight="solid"
@@ -278,7 +265,6 @@ export default function SolutionCard({ solution }: { solution: Problem }) {
       <Box background="white">
          <SolutionHeader />
          <SolutionTexts title={solution.heading} body={solution.body} />
-         <SolutionFooter />
       </Box>
    );
 }
