@@ -55,7 +55,7 @@
       "ioredis": "5.2.4",
       "lodash": "4.17.21",
       "lru-cache": "7.10.1",
-      "next": "12.2.3",
+      "next": "12.2.4",
       "nextjs-progressbar": "0.0.14",
       "query-string": "7.0.1",
       "react": "18.2.0",
