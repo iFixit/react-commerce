@@ -42,14 +42,13 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    React.useEffect(() => {
       trackMatomoEcommerceView({
          productSku: selectedVariant.sku ?? selectedVariant.id,
-         productName:
-            selectedVariant.internalDisplayName?.value ?? product.title,
+         productName: selectedVariant.internalDisplayName ?? product.title,
          price: selectedVariant.price,
       });
       trackGoogleProductView({
          id: selectedVariant.sku ?? selectedVariant.id,
          name: product.title,
-         variant: selectedVariant.internalDisplayName?.value,
+         variant: selectedVariant.internalDisplayName ?? undefined,
          category: parseItemcode(selectedVariant.sku ?? '')?.category,
          price: moneyToNumber(selectedVariant.price).toFixed(2),
       });

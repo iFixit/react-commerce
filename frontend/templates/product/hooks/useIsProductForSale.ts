@@ -1,5 +1,5 @@
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import type { Product } from '@models/product.server';
+import type { Product } from '@models/product/server';
 
 export function useIsProductForSale(product: Product): boolean {
    const user = useAuthenticatedUser();
