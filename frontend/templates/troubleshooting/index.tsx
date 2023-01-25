@@ -5,6 +5,7 @@ import React from 'react';
 import { Box, Container, Heading } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import SolutionCard from './solution';
 
 const renderStyles = {
    a: {
@@ -40,15 +41,6 @@ const Wiki: NextPageWithLayout<{
       </Container>
    );
 };
-
-function SolutionCard({ solution }: { solution: Problem }) {
-   return (
-      <Box>
-         <Heading>{solution.heading}</Heading>
-         <Prerendered html={solution.body} />
-      </Box>
-   );
-}
 
 function IntroductionSection({ intro }: { intro: Problem }) {
    return (
