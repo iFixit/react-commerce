@@ -43,7 +43,6 @@
       "@ifixit/newsletter-sdk": "workspace:*",
       "@ifixit/sentry": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*",
-      "@ifixit/stats": "workspace:*",
       "@ifixit/ui": "workspace:*",
       "@sentry/nextjs": "7.29.0",
       "@sentry/tracing": "7.29.0",

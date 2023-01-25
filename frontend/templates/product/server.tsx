@@ -10,12 +10,8 @@ import compose from 'lodash/flowRight';
 import { GetServerSideProps } from 'next';
 import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
-const withNamedLogging = withLogging({
-   pageName: 'product',
-});
-
 const withMiddleware = compose(
-   withNamedLogging<ProductTemplateProps>,
+   withLogging<ProductTemplateProps>,
    withCacheLong<ProductTemplateProps>,
    withNoindexDevDomains<ProductTemplateProps>
 );

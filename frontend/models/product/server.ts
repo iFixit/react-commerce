@@ -3,8 +3,8 @@ import {
    computeDiscountPercentage,
    invariant,
    parseItemcode,
+   timeAsync,
 } from '@ifixit/helpers';
-import { timeAsync } from '@ifixit/stats';
 import {
    FindProductQuery,
    getServerShopifyStorefrontSdk,
