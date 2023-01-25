@@ -15,6 +15,13 @@ export class CartDrawer {
       await this.page.getByTestId('cart-drawer-open').click();
    }
 
+   async getDrawerStatus(): Promise<'open' | 'closed'> {
+      if (await this.page.getByTestId('cart-drawer-close').isVisible()) {
+         return 'open';
+      }
+      return 'closed';
+   }
+
    async getItem(sku: string): Promise<Locator> {
       const cartDrawer = this.page.getByTestId('cart-drawer');
       return cartDrawer.getByRole('listitem').filter({ hasText: sku });
@@ -81,5 +88,13 @@ export class CartDrawer {
 
    async assertItemIsNotPresent(sku: string): Promise<void> {
       expect(await this.getItem(sku)).not.toBeVisible();
+   }
+
+   async assertDrawerIsOpen(): Promise<void> {
+      expect(await this.getDrawerStatus()).toBe('open');
+   }
+
+   async assertDrawerIsClosed(): Promise<void> {
+      expect(await this.getDrawerStatus()).toBe('closed');
    }
 }

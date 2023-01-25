@@ -1,7 +1,7 @@
 import { Box, HStack, Link, Text } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { shouldShowProductRating } from '@ifixit/helpers';
-import type { Product } from '@models/product.server';
+import type { Product } from '@models/product/server';
 
 type ProductRatingProps = {
    product: Product;

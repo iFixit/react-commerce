@@ -1,9 +1,7 @@
 import { filterNullableItems } from '@helpers/application-helpers';
 import {
    computeDiscountPercentage,
-   formatMoney,
    invariant,
-   Money,
    parseItemcode,
    timeAsync,
 } from '@ifixit/helpers';
@@ -13,19 +11,36 @@ import {
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
 import shuffle from 'lodash/shuffle';
-import { RefinementCtx, z, ZodError } from 'zod';
-import { findStoreByCode } from './store';
+import { z, ZodError } from 'zod';
+import { findStoreByCode } from '../store';
+import {
+   Breadcrumb,
+   Product,
+   ProductSchema,
+   ProductVariant,
+   ProductVariantCard,
+   ProductVariantCardSchema,
+   ProductVariantImage,
+   ProductVariantSchema,
+   ProPriceTiers,
+} from './schema';
 
-export type Product = NonNullable<Awaited<ReturnType<typeof findProduct>>>;
-export type ProductVariant = ReturnType<typeof getVariants>[0];
-export type ProductImage = ReturnType<typeof getFormattedImages>[0];
+export type {
+   Product,
+   ProductImage,
+   ProductVariant,
+   ProductVariantImage,
+} from './schema';
 
 export type FindProductArgs = {
    handle: string;
    storeCode: string;
 };
 
-export async function findProduct({ handle, storeCode }: FindProductArgs) {
+export async function findProduct({
+   handle,
+   storeCode,
+}: FindProductArgs): Promise<Product | null> {
    const store = await findStoreByCode(storeCode);
    const { storefrontDomain, storefrontDelegateAccessToken } = store.shopify;
    invariant(
@@ -110,8 +125,8 @@ export async function findProduct({ handle, storeCode }: FindProductArgs) {
 
 type ShopifyApiProduct = NonNullable<FindProductQuery['product']>;
 
-function getVariants(shopifyProduct: ShopifyApiProduct) {
-   return shopifyProduct.variants.nodes.map((variant) => {
+function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
+   return shopifyProduct.variants.nodes.map((variant): ProductVariant => {
       const { crossSell, ...other } = variant;
       const isDiscounted =
          variant.compareAtPrice != null &&
@@ -128,6 +143,10 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          ...other,
          productcode,
          optionid,
+         price: ProductVariantCardSchema.shape.price.parse(variant.price),
+         compareAtPrice: ProductVariantCardSchema.shape.compareAtPrice.parse(
+            variant.compareAtPrice
+         ),
          image: variant.image
             ? formatImage(variant.image, shopifyProduct)
             : null,
@@ -151,6 +170,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct) {
          shippingRestrictions: parseShippingRestrictions(
             variant.shippingRestrictions?.value
          ),
+         internalDisplayName: variant.internalDisplayName?.value ?? null,
       };
    });
 }
@@ -174,7 +194,10 @@ function formatImage(image: ShopifyApiImage, product: ShopifyApiProduct) {
    return { ...image, altText, variantId: linkedVariant?.id ?? null };
 }
 
-function isActiveImage(image: ProductImage, activeVariants: ProductVariant[]) {
+function isActiveImage(
+   image: ProductVariantImage,
+   activeVariants: ProductVariant[]
+) {
    return (
       image.variantId == null ||
       activeVariants.some((variant) => variant.id === image.variantId)
@@ -206,20 +229,22 @@ function getOptions(
 
 function getCrossSellVariants(
    variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
-) {
+): ProductVariantCard[] {
    const products =
-      variant.crossSell?.references?.nodes.map((node) => {
-         if (node.__typename !== 'ProductVariant') {
+      variant.crossSell?.references?.nodes.map(
+         (node): ProductVariantCard | null => {
+            if (node.__typename !== 'ProductVariant') {
+               return null;
+            }
+            const variant = getProductVariantCard(node);
+            const quantity = variant.quantityAvailable ?? 0;
+
+            if (quantity > 0 && variant.enabled) {
+               return variant;
+            }
             return null;
          }
-         const variant = getProductVariantCard(node);
-         const quantity = variant.quantityAvailable ?? 0;
-
-         if (quantity > 0 && variant.enabled) {
-            return variant;
-         }
-         return null;
-      }) ?? [];
+      ) ?? [];
    return filterNullableItems(products);
 }
 
@@ -237,9 +262,15 @@ function getFeaturedProductVariants(
    return shuffle(featuredVariants).slice(0, 5);
 }
 
-function getProductVariantCard(fragment: ProductVariantCardFragment) {
+function getProductVariantCard(
+   fragment: ProductVariantCardFragment
+): ProductVariantCard {
    return {
       ...fragment,
+      price: ProductVariantCardSchema.shape.price.parse(fragment.price),
+      compareAtPrice: ProductVariantCardSchema.shape.compareAtPrice.parse(
+         fragment.price
+      ),
       product: {
          ...fragment.product,
          rating: parseRatingMetafieldValue(fragment.product.rating?.value),
@@ -249,10 +280,6 @@ function getProductVariantCard(fragment: ProductVariantCardFragment) {
          oemPartnership: fragment.product.oemPartnership?.value ?? null,
       },
       warranty: fragment.warranty?.value ?? null,
-      formattedPrice: formatMoney(fragment.price),
-      formattedCompareAtPrice: fragment.compareAtPrice
-         ? formatMoney(fragment.compareAtPrice)
-         : null,
       proPricesByTier: parsePriceTiersMetafieldValue(
          fragment.proPricesByTier?.value,
          fragment.price.currencyCode
@@ -284,23 +311,12 @@ function parseFaqs(value: string | null | undefined) {
    );
 }
 
-type Breadcrumbs = z.infer<typeof BreadcrumbsSchema>;
-
-const BreadcrumbsSchema = z.array(
-   z.object({
-      label: z.string(),
-      url: z.string(),
-   })
-);
-
-function parseBreadcrumbsMetafieldValue(
-   value: string | null | undefined
-): Breadcrumbs | null {
+function parseBreadcrumbsMetafieldValue(value: string | null | undefined) {
    if (typeof value !== 'string') {
       return null;
    }
    const json = JSON.parse(value);
-   const parsedValue = BreadcrumbsSchema.safeParse(json);
+   const parsedValue = ProductSchema.shape.breadcrumbs.safeParse(json);
    if (parsedValue.success) {
       return parsedValue.data;
    }
@@ -308,7 +324,7 @@ function parseBreadcrumbsMetafieldValue(
 }
 
 function breadcrumbsWithCurrentProductPage(
-   breadcrumbs: Breadcrumbs | null,
+   breadcrumbs: Breadcrumb[] | null,
    productTitle: string
 ) {
    if (breadcrumbs == null) {
@@ -328,37 +344,17 @@ function breadcrumbsWithCurrentProductPage(
    return breadcrumbs;
 }
 
-type ReplacementGuideMetafieldItem = z.infer<
-   typeof ReplacementGuideMetafieldItemSchema
->;
-
-const ReplacementGuideMetafieldItemSchema = z.object({
-   id: z.string(),
-   title: z.string(),
-   guide_url: z.string(),
-   image_url: z.string().optional().nullable(),
-   summary: z.preprocess(
-      (val) => (typeof val === 'string' ? val : null),
-      z.string().optional().nullable()
-   ),
-   difficulty: z.string().optional().nullable(),
-   time_required: z.string().optional().nullable(),
-});
-
-function parseReplacementGuides(
-   value: string | null | undefined
-): ReplacementGuideMetafieldItem[] {
+function parseReplacementGuides(value: string | null | undefined) {
    if (value == null) {
       return [];
    }
    const rawJson = JSON.parse(value);
-   if (rawJson == null) {
+   if (!Array.isArray(rawJson)) {
       return [];
    }
-   const guides = Object.keys(rawJson).map((id) => {
-      const item = rawJson[id];
-      const result = ReplacementGuideMetafieldItemSchema.safeParse({
-         id,
+   const guides = rawJson.map((item, index) => {
+      const result = ProductSchema.shape.replacementGuides.element.safeParse({
+         id: String(index),
          ...item,
       });
       if (result.success) {
@@ -370,26 +366,7 @@ function parseReplacementGuides(
    return filterNullableItems(guides);
 }
 
-type CompatibilityMetafield = z.infer<typeof CompatibilityMetafieldSchema>;
-
-const CompatibilityMetafieldSchema = z
-   .object({
-      devices: z.array(
-         z.object({
-            imageUrl: z.string(),
-            deviceUrl: z.string(),
-            deviceName: z.string(),
-            variants: z.array(z.string().nullable()),
-         })
-      ),
-      hasMoreDevices: z.boolean(),
-   })
-   .optional()
-   .nullable();
-
-function parseCompatibility(
-   value: string | null | undefined
-): CompatibilityMetafield {
+function parseCompatibility(value: string | null | undefined) {
    if (value == null) {
       return null;
    }
@@ -397,7 +374,7 @@ function parseCompatibility(
    if (rawJson == null) {
       return null;
    }
-   const result = CompatibilityMetafieldSchema.safeParse(rawJson);
+   const result = ProductSchema.shape.compatibility.safeParse(rawJson);
    if (result.success) {
       return result.data;
    }
@@ -405,20 +382,7 @@ function parseCompatibility(
    return null;
 }
 
-type OemPartnershipMetafield = z.infer<typeof OemPartnershipMetafieldSchema>;
-
-const OemPartnershipMetafieldSchema = z
-   .object({
-      text: z.string(),
-      code: z.string(),
-      url: z.string().optional().nullable(),
-   })
-   .optional()
-   .nullable();
-
-function parseOemPartnership(
-   value: string | null | undefined
-): OemPartnershipMetafield {
+function parseOemPartnership(value: string | null | undefined) {
    if (value == null) {
       return null;
    }
@@ -426,23 +390,13 @@ function parseOemPartnership(
    if (rawJson == null) {
       return null;
    }
-   const result = OemPartnershipMetafieldSchema.safeParse(rawJson);
+   const result = ProductSchema.shape.oemPartnership.safeParse(rawJson);
    if (result.success) {
       return result.data;
    }
    logParseErrors(result.error, 'oem partnership metafield');
    return null;
 }
-
-const EnabledDomainsSchema = z
-   .object({
-      code: z.string(),
-      domain: z.string().url(),
-      locales: z.string().array(),
-   })
-   .array()
-   .optional()
-   .nullable();
 
 function parseEnabledDomains(value: string | null | undefined) {
    if (value == null) {
@@ -452,7 +406,7 @@ function parseEnabledDomains(value: string | null | undefined) {
    if (rawJson == null) {
       return null;
    }
-   const result = EnabledDomainsSchema.safeParse(rawJson);
+   const result = ProductSchema.shape.enabledDomains.safeParse(rawJson);
    if (result.success) {
       return result.data;
    }
@@ -484,7 +438,7 @@ const PriceTiersMetafieldSchema = z.record(z.number());
 function parsePriceTiersMetafieldValue(
    value: string | null | undefined,
    currencyCode: string
-) {
+): ProPriceTiers | null {
    if (value == null) {
       return null;
    }
@@ -503,13 +457,11 @@ function parsePriceTiersMetafieldValue(
                currencyCode,
             },
          };
-      }, {} as Record<string, Money>);
+      }, {} as ProPriceTiers);
    }
    logParseErrors(result.error, 'price tiers metafield');
    return null;
 }
-
-const ShippingRestrictionsMetafieldSchema = z.array(z.string());
 
 function parseShippingRestrictions(value: string | null | undefined) {
    if (value == null) {
@@ -519,7 +471,8 @@ function parseShippingRestrictions(value: string | null | undefined) {
    if (json == null) {
       return null;
    }
-   const result = ShippingRestrictionsMetafieldSchema.safeParse(json);
+   const result =
+      ProductVariantSchema.shape.shippingRestrictions.safeParse(json);
    if (result.success) {
       return result.data;
    }
@@ -527,16 +480,7 @@ function parseShippingRestrictions(value: string | null | undefined) {
    return null;
 }
 
-type ProductVideoMetafield = z.infer<typeof ProductVideoMetafieldSchema>;
-
-const ProductVideoMetafieldSchema = z.object({
-   id: z.string(),
-   service: z.string(),
-});
-
-function parseVideosJson(
-   value: string | null | undefined
-): ProductVideoMetafield | null {
+function parseVideosJson(value: string | null | undefined) {
    if (value == null) {
       return null;
    }
@@ -544,7 +488,7 @@ function parseVideosJson(
    if (json == null) {
       return null;
    }
-   const result = ProductVideoMetafieldSchema.safeParse(json);
+   const result = ProductSchema.shape.productVideosJson.safeParse(json);
    if (result.success) {
       return result.data;
    }
@@ -552,27 +496,7 @@ function parseVideosJson(
    return null;
 }
 
-type RatingMetafield = z.infer<typeof RatingMetafieldSchema>;
-
-const stringNumberTransform = (val: string, ctx: RefinementCtx) => {
-   const parsed = parseFloat(val);
-   if (isNaN(parsed)) {
-      ctx.addIssue({
-         code: z.ZodIssueCode.custom,
-         message: 'Not a number',
-      });
-      return;
-   }
-   return parsed;
-};
-
-const RatingMetafieldSchema = z.object({
-   scale_min: z.string().transform(stringNumberTransform),
-   scale_max: z.string().transform(stringNumberTransform),
-   value: z.string().transform(stringNumberTransform),
-});
-
-function parseRating(value: string | null | undefined): RatingMetafield | null {
+function parseRating(value: string | null | undefined) {
    if (value == null) {
       return null;
    }
@@ -580,7 +504,7 @@ function parseRating(value: string | null | undefined): RatingMetafield | null {
    if (json == null) {
       return null;
    }
-   const result = RatingMetafieldSchema.safeParse(json);
+   const result = ProductSchema.shape.rating.safeParse(json);
    if (result.success) {
       return result.data;
    }

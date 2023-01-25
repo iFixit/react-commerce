@@ -29,8 +29,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
-import { MoneyV2 } from '@lib/shopify-storefront-sdk';
-import type { Product, ProductVariant } from '@models/product.server';
+import type { Product, ProductVariant } from '@models/product/server';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -65,13 +64,13 @@ export function CrossSellSection({
    const totalPrice = React.useMemo(() => {
       return selectedCrossSellVariantIds.reduce((acc, id) => {
          if (id === selectedVariant.id) {
-            return acc + parseFloat(selectedVariant.price.amount);
+            return acc + selectedVariant.price.amount;
          }
          const variant = crossSellVariantsForSale.find(
             (variant) => variant.id === id
          );
          if (variant) {
-            return acc + parseFloat(variant.price.amount);
+            return acc + variant.price.amount;
          }
          return acc;
       }, 0);
@@ -118,7 +117,7 @@ export function CrossSellSection({
                return {
                   name: product.title,
                   internalDisplayName:
-                     selectedVariant.internalDisplayName?.value,
+                     selectedVariant.internalDisplayName ?? undefined,
                   itemcode: selectedVariant.sku,
                   shopifyVariantId: selectedVariant.id,
                   quantity: 1,
@@ -299,8 +298,8 @@ type CrossSellProduct = {
 };
 
 type CrossSellProductVariant = {
-   price: MoneyV2;
-   compareAtPrice?: MoneyV2 | null;
+   price: Money;
+   compareAtPrice?: Money | null;
    proPricesByTier?: Record<string, Money> | null;
    image?: {
       altText?: string | null;
