@@ -68,11 +68,7 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             onClick={trackedOnClick}
             {...otherProps}
          >
-            <Text
-               fontSize={fontSize}
-               lineHeight="1em"
-               color="gray.300"
-            >
+            <Text fontSize={fontSize} lineHeight="1em" color="gray.300">
                {children}
             </Text>
             {icon && <Icon as={icon} boxSize="8" filter="opacity(0.5)" />}
