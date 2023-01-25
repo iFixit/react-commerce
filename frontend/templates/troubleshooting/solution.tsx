@@ -11,18 +11,6 @@ import {
 import { Problem } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 
-export default function SolutionCard({ solution }: { solution: Problem }) {
-   return (
-      <Box background="white">
-         <SolutionHeader />
-         <Heading>{solution.heading}</Heading>
-         <SolutionTexts />
-         <Prerendered html={solution.body} />
-         <SolutionFooter />
-      </Box>
-   );
-}
-
 const SolutionFooter = () => (
    <Stack
       justify="flex-start"
@@ -257,22 +245,22 @@ const SolutionHeader = () => (
    </Stack>
 );
 
-const SolutionTexts = () => (
+const SolutionTexts = ({ title }: { title: string }) => (
    <Stack
       justify="flex-start"
       align="flex-start"
       width="798.74px"
       maxWidth="100%"
    >
-      <Text
+      <Heading
          fontFamily="SF Pro"
          fontWeight="medium"
          fontSize="24px"
          color="gray.900"
          alignSelf="stretch"
       >
-         Google Pixel 7 will Not Charge
-      </Text>
+         {title}
+      </Heading>
       <Text
          fontFamily="SF Pro"
          lineHeight="1.38"
@@ -297,3 +285,14 @@ const SolutionTexts = () => (
       </Text>
    </Stack>
 );
+
+export default function SolutionCard({ solution }: { solution: Problem }) {
+   return (
+      <Box background="white">
+         <SolutionHeader />
+         <SolutionTexts title={solution.heading} />
+         <Prerendered html={solution.body} />
+         <SolutionFooter />
+      </Box>
+   );
+}
