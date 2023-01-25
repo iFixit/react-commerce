@@ -13,9 +13,12 @@ import Prerendered from './prerendered';
 
 export default function SolutionCard({ solution }: { solution: Problem }) {
    return (
-      <Box>
+      <Box background="white">
+         <SolutionHeader />
          <Heading>{solution.heading}</Heading>
+         <SolutionTexts />
          <Prerendered html={solution.body} />
+         <SolutionFooter />
       </Box>
    );
 }
