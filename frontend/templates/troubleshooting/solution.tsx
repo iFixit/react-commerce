@@ -245,7 +245,7 @@ const SolutionHeader = () => (
    </Stack>
 );
 
-const SolutionTexts = ({ title }: { title: string }) => (
+const SolutionTexts = ({ title, body }: { title: string; body: string }) => (
    <Stack
       justify="flex-start"
       align="flex-start"
@@ -261,6 +261,7 @@ const SolutionTexts = ({ title }: { title: string }) => (
       >
          {title}
       </Heading>
+      <Prerendered html={body} />
       <Text
          fontFamily="SF Pro"
          lineHeight="1.38"
@@ -268,21 +269,7 @@ const SolutionTexts = ({ title }: { title: string }) => (
          fontSize="16px"
          color="gray.700"
          alignSelf="stretch"
-      >
-         It's possible that your battery may not have enough charge to turn on.
-         Plug in your phone to charge it and try again. Note: make sure that
-         your outlet, charging block, and power cable are all functional to
-         ensure your phone is actually getting a charge
-      </Text>
-      <Text
-         fontFamily="SF Pro"
-         fontWeight="semibold"
-         fontSize="20px"
-         color="gray.900"
-         alignSelf="stretch"
-      >
-         Lorem ipsum dolor sit amet H3
-      </Text>
+      ></Text>
    </Stack>
 );
 
@@ -290,8 +277,7 @@ export default function SolutionCard({ solution }: { solution: Problem }) {
    return (
       <Box background="white">
          <SolutionHeader />
-         <SolutionTexts title={solution.heading} />
-         <Prerendered html={solution.body} />
+         <SolutionTexts title={solution.heading} body={solution.body} />
          <SolutionFooter />
       </Box>
    );

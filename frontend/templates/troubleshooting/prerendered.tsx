@@ -31,6 +31,14 @@ const Prerendered = chakra(function Prerendered({
          fontSize: 'md',
          lineHeight: '1.25',
       },
+
+      p: {
+         lineHeight: '1.38',
+         fontWeight: 'regular',
+         fontSize: '16px',
+         color: 'gray.700',
+         alignSelf: 'stretch',
+      },
    };
 
    return (
