@@ -33,7 +33,7 @@ export function isError(x: any): x is Error {
    return x instanceof Error;
 }
 
-export function logAsync<T>(
+export function timeAsync<T>(
    name: string,
    asyncFunction: () => Promise<T>
 ): Promise<T> {
@@ -41,14 +41,14 @@ export function logAsync<T>(
    return asyncFunction().finally(done);
 }
 
-export function logSync<T>(name: string, syncFunction: () => T): T {
+export function timeSync<T>(name: string, syncFunction: () => T): T {
    const done = time(name);
    const response = syncFunction();
    done();
    return response;
 }
 
-export function withLogging<ARGS extends Array<any>, RETURN>(
+export function withTiming<ARGS extends Array<any>, RETURN>(
    name: string,
    promiseFunction: (...args: ARGS) => Promise<RETURN>
 ) {

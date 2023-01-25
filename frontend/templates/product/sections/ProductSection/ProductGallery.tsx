@@ -7,7 +7,7 @@ import type {
    Product,
    ProductImage,
    ProductVariant,
-} from '@models/product.server';
+} from '@models/product/server';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
 import ReactDOM from 'react-dom';

@@ -5,7 +5,7 @@ import {
    faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import type { Product, ProductVariant } from '@models/product.server';
+import type { Product, ProductVariant } from '@models/product/server';
 
 export type ProductDescriptionProps = {
    product: Product;

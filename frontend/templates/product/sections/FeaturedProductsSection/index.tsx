@@ -23,7 +23,7 @@ import {
    ProductVariantPrice,
    ResponsiveImage,
 } from '@ifixit/ui';
-import type { Product } from '@models/product.server';
+import type { Product } from '@models/product/server';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
 import * as React from 'react';
