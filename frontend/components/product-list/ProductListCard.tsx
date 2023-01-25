@@ -92,7 +92,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   direction="column"
                   flexGrow={1}
                >
-                  <Heading as="span" fontSize="sm">
+                  <Heading as="span" fontSize="sm" fontWeight="medium">
                      {productList.title}
                   </Heading>
                   {variant === 'medium' && productList.description && (

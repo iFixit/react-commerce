@@ -27,12 +27,7 @@ export const StoreMenuButton = forwardRef<StoreMenuButtonProps, 'button'>(
             {...otherProps}
          >
             <HStack alignItems="center">
-               <Text
-                  color="inherit"
-                  fontSize="sm"
-                  lineHeight="1em"
-                  fontWeight="semibold"
-               >
+               <Text color="inherit" fontSize="sm" lineHeight="1em">
                   {children}
                </Text>
                <StoreFlagBackdrop>{icon}</StoreFlagBackdrop>

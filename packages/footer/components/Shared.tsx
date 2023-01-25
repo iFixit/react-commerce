@@ -71,7 +71,6 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             <Text
                fontSize={fontSize}
                lineHeight="1em"
-               fontWeight="semibold"
                color="gray.300"
             >
                {children}
