@@ -5,7 +5,7 @@ import {
 import { ProductList, ProductListType } from '@models/product-list';
 import { useCallback } from 'react';
 import { MenuFacet } from '../MenuFacet';
-import { useCreateItemTypeURL } from '../useCreateItemTypeURL';
+import { useItemURLFactory } from '../useItemURLFactory';
 import { useMenuFacet } from '../useMenuFacet';
 import { Panel } from './Panel';
 
@@ -25,13 +25,25 @@ export function MenuFacetPanel({
    const isDevicePartsItemType =
       attribute === 'facet_tags.Item Type' &&
       productList.type === ProductListType.DeviceParts;
+
+   const isToolsCategory =
+      attribute === 'facet_tags.Tool Category' &&
+      productList.type === ProductListType.ToolsCategory;
+
    const limit = isDevicePartsItemType
       ? PRODUCT_LIST_MAX_FACET_VALUES_COUNT
       : PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT;
    const canLoadMore = limit < PRODUCT_LIST_MAX_FACET_VALUES_COUNT;
 
    const menuFacet = useMenuFacet({ attribute, productList });
-   const createItemURL = useCreateItemTypeURL();
+
+   const { createItemTypeURL, createToolCategoryURL } = useItemURLFactory();
+   const createItemURL = isDevicePartsItemType
+      ? createItemTypeURL
+      : isToolsCategory
+      ? createToolCategoryURL
+      : undefined;
+
    const handleItemClick = useCallback(
       (value: string) => {
          menuFacet.refine(value);
@@ -52,8 +64,9 @@ export function MenuFacetPanel({
             }
             isShowingMore={canLoadMore ? menuFacet.isShowingMore : undefined}
             onShowMore={canLoadMore ? menuFacet.toggleShowMore : undefined}
-            createItemURL={isDevicePartsItemType ? createItemURL : undefined}
+            createItemURL={createItemURL}
             onItemClick={handleItemClick}
+            navigateOnClick={isToolsCategory}
          />
       </Panel>
    );

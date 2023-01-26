@@ -2,8 +2,7 @@ import { PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT } from '@config/constants';
 import { ProductList, ProductListType } from '@models/product-list';
 import { useCallback } from 'react';
 import { MenuFacet } from '../MenuFacet';
-import { useCreateItemTypeURL } from '../useCreateItemTypeURL';
-import { useCreateToolCategoryURL } from '../useCreateToolCategoryURL';
+import { useItemURLFactory } from '../useItemURLFactory';
 import { useMenuFacet } from '../useMenuFacet';
 import { FacetAccordionItem } from './FacetAccordionItem';
 import { useFacetAccordionItemState } from './useFacetAccordionItemState';
@@ -46,8 +45,8 @@ export function FacetMenuAccordionItem({
       hasApplicableRefinements,
       productList,
    });
-   const createItemTypeURL = useCreateItemTypeURL();
-   const createToolCategoryURL = useCreateToolCategoryURL();
+
+   const { createItemTypeURL, createToolCategoryURL } = useItemURLFactory();
    const createItemURL = isDevicePartsItemType
       ? createItemTypeURL
       : isToolsCategory
@@ -79,6 +78,7 @@ export function FacetMenuAccordionItem({
             onShowMore={canLoadMore ? toggleShowMore : undefined}
             createItemURL={createItemURL}
             onItemClick={handleItemClick}
+            navigateOnClick={isToolsCategory}
          />
       </FacetAccordionItem>
    );

@@ -8,6 +8,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { invariant } from '@helpers/application-helpers';
+import NextLink from 'next/link';
 import React, { MouseEventHandler } from 'react';
 import { ShowMoreButton } from './ShowMoreButton';
 import type { MenuFacetState } from './useMenuFacet';
@@ -22,6 +23,7 @@ export type MenuFacetProps = {
    isShowingMore?: boolean;
    onShowMore?: () => void;
    createItemURL?: (item: MenuItem) => string;
+   navigateOnClick?: boolean;
 };
 
 export function MenuFacet(props: MenuFacetProps) {
@@ -47,6 +49,7 @@ export function MenuFacet(props: MenuFacetProps) {
                   isRefined={item.isRefined}
                   url={props.createItemURL?.(item)}
                   onClick={props.onItemClick}
+                  navigateOnClick={props.navigateOnClick}
                />
             ))}
             <Box h={isShowingMore ? undefined : 0} overflow="hidden">
@@ -59,6 +62,7 @@ export function MenuFacet(props: MenuFacetProps) {
                      isRefined={item.isRefined}
                      url={props.createItemURL?.(item)}
                      onClick={props.onItemClick}
+                     navigateOnClick={props.navigateOnClick}
                   />
                ))}
             </Box>
@@ -102,6 +106,7 @@ type MenuListItemProps = {
    count: number;
    url?: string;
    onClick?: (value: string) => void;
+   navigateOnClick?: boolean;
 };
 
 function MenuListItem({
@@ -111,13 +116,16 @@ function MenuListItem({
    count,
    url,
    onClick,
+   navigateOnClick,
 }: MenuListItemProps) {
    const handleClick = React.useCallback<MouseEventHandler>(
       (event) => {
-         event.preventDefault();
-         onClick?.(value);
+         if (!navigateOnClick) {
+            event.preventDefault();
+            onClick?.(value);
+         }
       },
-      [onClick, value]
+      [navigateOnClick, onClick, value]
    );
 
    return (
@@ -127,14 +135,11 @@ function MenuListItem({
          fontWeight={isRefined ? 'bold' : 'inherit'}
       >
          {url ? (
-            <MenuItemLabel
-               as="a"
-               href={url}
-               value={value}
-               onClick={handleClick}
-            >
-               {label}
-            </MenuItemLabel>
+            <NextLink href={url} passHref>
+               <MenuItemLabel as="a" value={value} onClick={handleClick}>
+                  {label}
+               </MenuItemLabel>
+            </NextLink>
          ) : (
             <MenuItemLabel as="button" value={value} onClick={handleClick}>
                {label}
