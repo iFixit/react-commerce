@@ -9,7 +9,9 @@ export type Problem = {
 export type TroubleshootingData = {
    title: string;
    toc: string;
-   groups: Problem[];
+   introduction: Problem[];
+   solutions: Problem[];
+   conclusion: Problem[];
 };
 
 type TroubleshootingPageProps = {
