@@ -52,7 +52,10 @@ jobs:
            id: nextjs-cache
            with:
               path: frontend/.next
-              key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}
+              key: ${{ github.ref_name }}-nextjs-${{github.sha}}
+              restore-keys: |
+                 ${{ github.ref_name }}-nextjs-${{github.event.before}}
+                 ${{ github.ref_name }}-nextjs-
 
          - name: Build Next.js
            if: steps.nextjs-cache.outputs.cache-hit != 'true'
