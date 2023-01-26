@@ -1,10 +1,7 @@
-import { useRouter } from 'next/router';
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import React from 'react';
-import { useAppContext } from '@ifixit/app';
 import { Box, Container, Heading } from '@chakra-ui/react';
 import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
 
