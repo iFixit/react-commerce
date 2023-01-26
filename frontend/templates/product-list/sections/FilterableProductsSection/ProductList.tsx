@@ -197,7 +197,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         )}
                         {showLifetimeWarrantyBadge && (
                            <ProductListItemBadge colorScheme="blue">
-                              Lifetime Warranty
+                              Lifetime Guarantee
                            </ProductListItemBadge>
                         )}
                      </Flex>

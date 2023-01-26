@@ -179,7 +179,7 @@ function ProductGridItem({
                )}
                {hasLifetimeWarranty && (
                   <ProductGridItemBadge colorScheme="blue">
-                     Lifetime Warranty
+                     Lifetime Guarantee
                   </ProductGridItemBadge>
                )}
             </Flex>
