@@ -21,7 +21,7 @@ export interface UpsellProps {
 
 export function Upsell({ item }: UpsellProps) {
    const { onClose } = useCartDrawer();
-   const addToCart = useAddToCart("Cart Drawer");
+   const addToCart = useAddToCart('Cart Drawer');
    const userPrice = useUserPrice({
       price: item.price,
       compareAtPrice: item.compareAtPrice,

@@ -37,7 +37,8 @@ export function trackAddToCart(
    }
    trackMatomoCartChange(cart);
    trackGoogleAddToCart(addToCartInput);
-   const event = `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
+   const event =
+      `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
    const itemcodes =
       addToCartInput.type === 'product'
          ? addToCartInput.product.itemcode
