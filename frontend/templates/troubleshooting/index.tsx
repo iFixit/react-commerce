@@ -2,7 +2,13 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import { Box, Container, Heading } from '@chakra-ui/react';
+import {
+   Box,
+   chakra,
+   Container,
+   Heading,
+   SystemStyleObject,
+} from '@chakra-ui/react';
 import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
 
 const renderStyles = {
@@ -44,7 +50,7 @@ function SolutionCard({ solution }: { solution: Problem }) {
    return (
       <Box>
          <Heading>{solution.heading}</Heading>
-         <Box dangerouslySetInnerHTML={{ __html: solution.body }} />
+         <Prerendered html={solution.body} />
       </Box>
    );
 }
@@ -53,7 +59,7 @@ function IntroductionSection({ intro }: { intro: Problem }) {
    return (
       <Box>
          <Heading>{intro.heading}</Heading>
-         <Box dangerouslySetInnerHTML={{ __html: intro.body }} />
+         <Prerendered html={intro.body} />
       </Box>
    );
 }
@@ -62,10 +68,52 @@ function ConclusionSection({ conclusion }: { conclusion: Problem }) {
    return (
       <Box>
          <Heading>{conclusion.heading}</Heading>
-         <Box dangerouslySetInnerHTML={{ __html: conclusion.body }} />
+         <Prerendered html={conclusion.body} />
       </Box>
    );
 }
+
+const Prerendered = chakra(function Prerendered({
+   html,
+   className,
+}: {
+   html: string;
+   className?: string;
+}) {
+   const renderStyles: SystemStyleObject = {
+      '.headerContainer': {
+         display: 'flex',
+         alignItems: 'baseline',
+         marginBottom: 2,
+      },
+
+      '.selfLink': {
+         display: 'none',
+      },
+
+      h3: {
+         fontSize: 'xl',
+         lineHeight: '1.2',
+      },
+
+      'h3,h4': {
+         fontWeight: 590,
+      },
+
+      'h4,h5': {
+         fontSize: 'md',
+         lineHeight: '1.25',
+      },
+   };
+
+   return (
+      <Box
+         className={className}
+         sx={renderStyles}
+         dangerouslySetInnerHTML={{ __html: html }}
+      />
+   );
+});
 
 Wiki.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
