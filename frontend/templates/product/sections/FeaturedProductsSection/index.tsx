@@ -41,7 +41,14 @@ export function FeaturedProductsSection({
    return (
       <Box bg="white" pt="16" fontSize="sm">
          <PageContentWrapper>
-            <Heading as="h2" color="gray.700" textAlign="center" mb="12">
+            <Heading
+               as="h2"
+               color="gray.700"
+               textAlign="center"
+               mb="12"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
+            >
                Featured Products
             </Heading>
             <SimpleGrid

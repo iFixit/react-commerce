@@ -64,7 +64,7 @@ export function FacetAccordionItem({
                   : `Expand ${formattedFacetName}`
             }
          >
-            <Box flex="1" textAlign="left" fontWeight="bold">
+            <Box flex="1" textAlign="left" fontWeight="medium">
                {formattedFacetName}
             </Box>
             <HStack>

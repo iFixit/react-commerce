@@ -67,7 +67,7 @@ export const ProductCardBody = (props: StackProps) => {
 };
 
 export const ProductCardTitle = (props: HeadingProps) => {
-   return <Heading as="h3" fontSize="md" {...props} />;
+   return <Heading as="h3" fontSize="md" fontWeight="medium" {...props} />;
 };
 
 export type ProductCardRatingProps = StackProps & {

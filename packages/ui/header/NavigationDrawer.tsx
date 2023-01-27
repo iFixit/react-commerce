@@ -145,7 +145,7 @@ export const NavigationAccordionButton = forwardRef<
             bg: 'brand.400',
          }}
          fontSize="md"
-         fontWeight="semibold"
+         fontWeight="medium"
          display="flex"
          justifyContent="space-between"
          {...otherProps}
@@ -188,7 +188,6 @@ export const NavigationAccordionLink = forwardRef<FlexProps, 'a'>(
             w="full"
             pl="4"
             fontSize="md"
-            fontWeight="normal"
             _before={{
                content: '""',
                ml: '-4',
