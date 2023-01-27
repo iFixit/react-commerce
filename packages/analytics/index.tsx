@@ -30,21 +30,21 @@ export const trackInMatomoAndGA = (trackData: TrackEventMatomo) => {
 export function trackAddToCart(
    cart: CartLineItem[],
    addToCartInput: AddToCartInput,
-   message?: string
+   eventSpecification?: string
 ) {
    if (typeof window === 'undefined') {
       return;
    }
    trackMatomoCartChange(cart);
    trackGoogleAddToCart(addToCartInput);
-   const actionPrefix = message ? `${message} - ` : '';
+   const event = `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
    const itemcodes =
       addToCartInput.type === 'product'
          ? addToCartInput.product.itemcode
          : addToCartInput.bundle.items.map((item) => item.itemcode).join(', ');
    trackInMatomoAndGA({
-      eventCategory: 'Add to Cart',
-      eventAction: `${actionPrefix}${itemcodes}`,
+      eventCategory: event,
+      eventAction: `${event} - ${itemcodes}`,
       eventName: `${window.location.origin}${window.location.pathname}`,
    });
 }
