@@ -26,6 +26,7 @@ import {
    createCacheKey,
    isStale,
    isValidCacheEntry,
+   printError,
    printZodError,
    sleep,
 } from './utils';
@@ -71,21 +72,15 @@ export const withCache = <
    const logger: Logger = log ? defaultLog : nullLog;
    const cache = getCache();
 
-   const logError = (error: unknown) => {
-      if (error instanceof Error) {
-         logger.error(error.message);
-      } else {
-         logger.error('unknown error');
-      }
-   };
-
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
       fetch(`${APP_ORIGIN}/${endpoint}`, {
          method: 'POST',
          body: JSON.stringify(variables),
       }).catch((error) => {
          logger.error(
-            `[cache > start background revalidation]: unable to trigger revalidation\n${error}`
+            `${endpoint}.error: failed to trigger revalidation\n${printError(
+               error
+            )}`
          );
       });
       // We add a small delay to ensure the revalidation is triggered
@@ -97,39 +92,42 @@ export const withCache = <
       ValueSchema
    >['get'] = async (variables) => {
       const key = createCacheKey(endpoint, variables);
+      logger.info(`${endpoint}.key: "${key}"`);
       let start = performance.now();
       let cachedEntry: CacheEntry | null = null;
       try {
          cachedEntry = await cache.get(key);
       } catch (error) {
-         logError(error);
-         logger.warning(`[cache > get]: unable to get key: "${key}"`);
+         logger.warning(
+            `${endpoint}.error: unable to get entry with key. ${printError(
+               error
+            )}`
+         );
       }
       let elapsed = performance.now() - start;
       if (isValidCacheEntry(cachedEntry)) {
          const valueValidation = valueSchema.safeParse(cachedEntry.value);
          if (valueValidation.success) {
             if (isStale(cachedEntry)) {
-               logger.info(
-                  `[cache > start background revalidation]:  key: "${key}"`
+               logger.success(`${endpoint}.stale: 1`);
+               logger.success(
+                  `${endpoint}.time.stale: ${elapsed.toFixed(2)}ms`
                );
                await requestRevalidation(variables);
+            } else {
+               logger.success(`${endpoint}.hit: 1`);
+               logger.success(`${endpoint}.time.hit: ${elapsed.toFixed(2)}ms`);
             }
-            logger.success(
-               `[cache > hit]: (${elapsed.toFixed(2)}ms) key: "${key}"`
-            );
             return valueValidation.data;
          }
-         logger.warning(
-            `[cache > get]: invalid value for key: "${key}"\n
-            If you've changed the value schema, this error is expected. We'll get a fresh value and update the cache.\n
-            ${printZodError(valueValidation.error)}`
-         );
+         logger.warning(`${endpoint}.warning: Invalid value. If you've changed the value schema, this error is expected. We'll get a fresh value and update the cache.\n
+            ${printZodError(valueValidation.error)}`);
       }
       start = performance.now();
       const value = await getFreshValue(variables);
       elapsed = performance.now() - start;
-      logger.warning(`[cache > miss]: (${elapsed.toFixed(2)}ms) key: "${key}"`);
+      logger.warning(`${endpoint}.miss: 1`);
+      logger.warning(`${endpoint}.time.miss: ${elapsed.toFixed(2)}ms`);
       if (ttl != null && ttl > 0) {
          start = performance.now();
          const cacheEntry = createCacheEntry(value, {
@@ -139,12 +137,13 @@ export const withCache = <
          try {
             await cache.set(key, cacheEntry);
             elapsed = performance.now() - start;
-            logger.info(
-               `[cache > set]: (${elapsed.toFixed(2)}ms) key: "${key}"`
-            );
+            logger.info(`${endpoint}.time.set-entry: ${elapsed.toFixed(2)}ms`);
          } catch (error) {
-            logError(error);
-            logger.warning(`[cache > set]: unable to set key: "${key}"`);
+            logger.warning(
+               `${endpoint}.warning: unable to set entry with key. ${printError(
+                  error
+               )}`
+            );
          }
       }
       return value;
