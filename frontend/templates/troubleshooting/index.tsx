@@ -4,7 +4,7 @@ import Head from 'next/head';
 import React from 'react';
 import { Box, Container, Flex, Heading } from '@chakra-ui/react';
 import Prerendered from './prerendered';
-import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
 
 const Wiki: NextPageWithLayout<{
@@ -46,7 +46,7 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function IntroductionSection({ intro }: { intro: Problem }) {
+function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
          <Heading>{intro.heading}</Heading>
@@ -55,7 +55,7 @@ function IntroductionSection({ intro }: { intro: Problem }) {
    );
 }
 
-function ConclusionSection({ conclusion }: { conclusion: Problem }) {
+function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
          <Heading>{conclusion.heading}</Heading>

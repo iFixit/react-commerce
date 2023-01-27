@@ -17,7 +17,7 @@ import {
    faSquareArrowUp,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { Problem } from './hooks/useTroubleshootingProps';
+import { Section } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 
 const SolutionFooter = () => (
@@ -204,7 +204,7 @@ export default function SolutionCard({
    solution,
 }: {
    index: number;
-   solution: Problem;
+   solution: Section;
 }) {
    return (
       <Flex background="white" borderRadius="4px" padding="24px 24px 12px 24px">
