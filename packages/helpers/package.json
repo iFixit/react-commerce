@@ -6,6 +6,7 @@
    "license": "MIT",
    "exports": {
       ".": "./index.ts",
+      "./logger": "./logger.ts",
       "./nextjs": "./nextjs.tsx"
    },
    "devDependencies": {
