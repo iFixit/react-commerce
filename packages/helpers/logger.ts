@@ -12,7 +12,8 @@ export const log: Logger = {
    success: (message) => console.log(`\x1b[32m${message}\x1b[0m`),
    warning: (message) => console.log(`\x1b[33m${message}\x1b[0m`),
    error: (message) => console.log(`\x1b[31m${message}\x1b[0m`),
-   timing: (statName: string, ms: number) => console.log(`event ${statName} => ${ms.toFixed(2)}ms`),
+   timing: (statName: string, ms: number) =>
+      console.log(`event ${statName} => ${ms.toFixed(2)}ms`),
    event: (eventName: string) => console.log(`${eventName} -> 1`),
 };
 
