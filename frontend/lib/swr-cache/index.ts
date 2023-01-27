@@ -36,6 +36,7 @@ interface CacheOptions<
    ValueSchema extends z.ZodTypeAny
 > {
    endpoint: string;
+   statName: string;
    variablesSchema: VariablesSchema;
    valueSchema: ValueSchema;
    getFreshValue: (
@@ -59,6 +60,7 @@ export const withCache = <
    ValueSchema extends z.ZodTypeAny
 >({
    endpoint,
+   statName,
    variablesSchema,
    valueSchema,
    getFreshValue,
@@ -109,14 +111,12 @@ export const withCache = <
          const valueValidation = valueSchema.safeParse(cachedEntry.value);
          if (valueValidation.success) {
             if (isStale(cachedEntry)) {
-               logger.success(`${endpoint}.stale: 1`);
-               logger.success(
-                  `${endpoint}.time.stale: ${elapsed.toFixed(2)}ms`
-               );
+               logger.event(`${statName}.stale`);
+               logger.timing(`${statName}.stale`, elapsed);
                await requestRevalidation(variables);
             } else {
-               logger.success(`${endpoint}.hit: 1`);
-               logger.success(`${endpoint}.time.hit: ${elapsed.toFixed(2)}ms`);
+               logger.event(`${statName}.hit`);
+               logger.timing(`${statName}.hit`, elapsed);
             }
             return valueValidation.data;
          }
@@ -126,8 +126,8 @@ export const withCache = <
       start = performance.now();
       const value = await getFreshValue(variables);
       elapsed = performance.now() - start;
-      logger.warning(`${endpoint}.miss: 1`);
-      logger.warning(`${endpoint}.time.miss: ${elapsed.toFixed(2)}ms`);
+      logger.event(`${statName}.miss`);
+      logger.timing(`${statName}.miss`, elapsed);
       if (ttl != null && ttl > 0) {
          start = performance.now();
          const cacheEntry = createCacheEntry(value, {
@@ -137,7 +137,7 @@ export const withCache = <
          try {
             await cache.set(key, cacheEntry);
             elapsed = performance.now() - start;
-            logger.info(`${endpoint}.time.set-entry: ${elapsed.toFixed(2)}ms`);
+            logger.timing(`${statName}.set`, elapsed);
          } catch (error) {
             logger.warning(
                `${endpoint}.warning: unable to set entry with key. ${printError(

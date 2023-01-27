@@ -3,6 +3,8 @@ export interface Logger {
    success: (message: string) => void;
    warning: (message: string) => void;
    error: (message: string) => void;
+   timing: (statName: string, ms: number) => void;
+   event: (statName: string) => void;
 }
 
 export const log: Logger = {
@@ -10,6 +12,8 @@ export const log: Logger = {
    success: (message) => console.log(`\x1b[32m${message}\x1b[0m`),
    warning: (message) => console.log(`\x1b[33m${message}\x1b[0m`),
    error: (message) => console.log(`\x1b[31m${message}\x1b[0m`),
+   timing: (statName: string, ms: number) => console.log(`event ${statName} => ${ms.toFixed(2)}ms`),
+   event: (eventName: string) => console.log(`${eventName} -> 1`),
 };
 
 export const nullLog: Logger = {
@@ -17,4 +21,6 @@ export const nullLog: Logger = {
    success: () => {},
    warning: () => {},
    error: () => {},
+   timing: () => {},
+   event: () => {},
 };

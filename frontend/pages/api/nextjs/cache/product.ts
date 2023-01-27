@@ -13,6 +13,7 @@ export type {
 
 export default withCache({
    endpoint: 'api/nextjs/cache/product',
+   statName: 'cache.findProduct',
    variablesSchema: z.object({
       handle: z.string(),
       storeCode: z.string(),
