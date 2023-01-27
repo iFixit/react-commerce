@@ -2692,6 +2692,7 @@ export type GetProductListQuery = {
             description: string;
             metaDescription?: string | null;
             metaTitle?: string | null;
+            defaultShowAllChildrenOnLgSizes?: boolean | null;
             filters?: string | null;
             forceNoindex?: boolean | null;
             childrenHeading?: string | null;
@@ -3169,6 +3170,7 @@ export const GetProductListDocument = `
         description
         metaDescription
         metaTitle
+        defaultShowAllChildrenOnLgSizes
         filters
         forceNoindex
         image {
