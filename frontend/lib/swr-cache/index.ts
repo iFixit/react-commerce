@@ -111,9 +111,9 @@ export const withCache = <
          const valueValidation = valueSchema.safeParse(cachedEntry.value);
          if (valueValidation.success) {
             if (isStale(cachedEntry)) {
+               await requestRevalidation(variables);
                logger.event(`${statName}.stale`);
                logger.timing(`${statName}.stale`, elapsed);
-               await requestRevalidation(variables);
             } else {
                logger.event(`${statName}.hit`);
                logger.timing(`${statName}.hit`, elapsed);
@@ -135,6 +135,7 @@ export const withCache = <
             staleWhileRevalidate,
          });
          try {
+            start = performance.now();
             await cache.set(key, cacheEntry);
             elapsed = performance.now() - start;
             logger.timing(`${statName}.set`, elapsed);
