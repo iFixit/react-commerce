@@ -43,6 +43,10 @@ const Prerendered = chakra(function Prerendered({
       'ul,ol': {
          paddingLeft: 4,
       },
+
+      a: {
+         color: 'brand.500',
+      },
    };
 
    return (
