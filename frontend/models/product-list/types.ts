@@ -65,7 +65,6 @@ export interface BaseProductList {
    description: string;
    metaDescription: string | null;
    metaTitle: string | null;
-   defaultShowAllChildrenOnLgSizes: boolean | null;
    filters: string | null;
    forceNoindex: boolean | null;
    image: ProductListImage | null;
