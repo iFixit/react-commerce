@@ -16,7 +16,7 @@
  */
 
 import { APP_ORIGIN } from '@config/env';
-import { log as defaultLog, Logger, nullLog } from '@ifixit/helpers';
+import { log as defaultLog, Logger } from '@ifixit/helpers';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { getCache } from './adapters';
@@ -44,7 +44,6 @@ interface CacheOptions<
    ) => Promise<z.infer<ValueSchema>>;
    ttl?: number;
    staleWhileRevalidate?: number;
-   log?: boolean;
 }
 
 type NextApiHandlerWithProps<
@@ -66,12 +65,11 @@ export const withCache = <
    getFreshValue,
    ttl,
    staleWhileRevalidate,
-   log = false,
 }: CacheOptions<VariablesSchema, ValueSchema>): NextApiHandlerWithProps<
    z.infer<VariablesSchema>,
    z.infer<ValueSchema>
 > => {
-   const logger: Logger = log ? defaultLog : nullLog;
+   const logger: Logger = defaultLog;
    const cache = getCache();
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {

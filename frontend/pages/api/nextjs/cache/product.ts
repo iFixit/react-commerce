@@ -27,5 +27,4 @@ export default withCache({
    },
    ttl: Duration(1).minute,
    staleWhileRevalidate: Duration(1).day,
-   log: true,
 });
