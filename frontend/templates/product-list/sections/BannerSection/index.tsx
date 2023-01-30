@@ -1,5 +1,5 @@
 import { QualityGuarantee } from '@assets/svg/files';
-import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
 import NextLink from 'next/link';
 import backgroundImage from './lifetime-guarantee-background.jpg';
@@ -58,9 +58,16 @@ export function BannerSection({
                   }}
                   mb="10"
                />
-               <Text as="h2" fontSize="4xl" color="white" mb={2}>
+               <Heading
+                  as="h2"
+                  color="white"
+                  mb="3"
+                  fontSize={{ base: '2xl', md: '3xl' }}
+                  fontWeight="medium"
+               >
                   {title}
-               </Text>
+               </Heading>
+
                <Text
                   color="white"
                   maxW="500px"
@@ -80,7 +87,7 @@ export function BannerSection({
             </Flex>
             <Icon
                as={QualityGuarantee}
-               boxSize={{ base: '130px', md: '160px', lg: '190px' }}
+               boxSize={{ base: '130px', md: '160px' }}
                color="white"
                display={{
                   base: 'none',

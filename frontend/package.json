@@ -19,8 +19,8 @@
       "lint": "eslint . --ext ts --ext tsx --ext js",
       "test": "jest",
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
-      "playwright:run": "NEXT_PUBLIC_MOCK_API=true playwright test",
-      "playwright:debug": "NEXT_PUBLIC_MOCK_API=true DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug"
+      "playwright:run": "playwright test",
+      "playwright:debug": "DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug"
    },
    "dependencies": {
       "@chakra-ui/react": "2.4.8",

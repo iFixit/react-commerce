@@ -255,9 +255,9 @@ const ProductTitle = chakra(
          <Heading
             as="h1"
             className={className}
-            size="xl"
-            fontWeight="medium"
             data-testid="product-title"
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
          >
             {children}
          </Heading>
@@ -274,7 +274,7 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
             flex="1"
             textAlign="left"
             color="gray.800"
-            fontWeight="bold"
+            fontWeight="semibold"
             fontSize="sm"
          >
             {children}
@@ -421,7 +421,7 @@ function WikiHtmlAccordianItem({
                         },
                      },
                      a: {
-                        fontWeight: 'bold',
+                        fontWeight: 'medium',
                         transition: 'all 300ms',
                         color: 'brand.500',
                      },

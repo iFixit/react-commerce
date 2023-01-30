@@ -7,7 +7,7 @@ const Badge: ComponentStyleConfig = {
       fontWeight: 'semibold',
       fontSize: 'sm',
       lineHeight: '1em',
-      borderRadius: 'md',
+      borderRadius: 'base',
       textTransform: 'none',
    },
    variants: {

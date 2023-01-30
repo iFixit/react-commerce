@@ -62,7 +62,7 @@ export const NavigationMenuButton = forwardRef<FlexProps, 'button'>(
             cursor="pointer"
             tabIndex={0}
             fontSize="sm"
-            fontWeight="bold"
+            fontWeight="semibold"
             borderRadius="md"
             _focus={{
                boxShadow: 'outline',
@@ -172,7 +172,7 @@ export const NavigationSubmenuLink = forwardRef<
 
 export const NavigationSubmenuName = forwardRef<BoxProps, 'span'>(
    (props, ref) => {
-      return <Box ref={ref} as="span" fontWeight="bold" {...props} />;
+      return <Box ref={ref} as="span" fontWeight="semibold" {...props} />;
    }
 );
 
@@ -188,7 +188,7 @@ export const NavigationSubmenuDescription = forwardRef<
       <Box
          ref={ref}
          as="p"
-         fontWeight="bold"
+         fontWeight="medium"
          fontSize="sm"
          color="gray.400"
          dangerouslySetInnerHTML={{

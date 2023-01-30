@@ -106,7 +106,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
          discountLabel,
          showDiscountLabel = true,
          showProBadge = false,
-         size = 'large',
+         size = 'medium',
          colorScheme = 'red',
          direction = 'row',
          ...other
