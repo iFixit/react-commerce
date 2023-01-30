@@ -16,7 +16,7 @@
  */
 
 import { APP_ORIGIN } from '@config/env';
-import { log as defaultLog, Logger, nullLog } from '@ifixit/helpers/logger';
+import { log as defaultLog, Logger, nullLog } from '@ifixit/helpers';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { getCache } from './adapters';
