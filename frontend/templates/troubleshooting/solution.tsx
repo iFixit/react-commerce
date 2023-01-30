@@ -25,7 +25,7 @@ const SolutionFooter = () => (
       justify="flex-start"
       align="flex-start"
       spacing="4px"
-      width="798.74px"
+      width="800px"
       maxWidth="100%"
    >
       <Stack
