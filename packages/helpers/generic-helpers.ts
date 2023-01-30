@@ -69,7 +69,7 @@ const loggingTimer = (timerName: string) => {
    const t = performance.now();
    return () => {
       const taken = performance.now() - t;
-      log.timing(timerName, taken);
+      log.info.timing(timerName, taken);
    };
 };
 
