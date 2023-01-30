@@ -110,12 +110,12 @@ export const withCache = <
             if (isStale(cachedEntry)) {
                await requestRevalidation(variables);
                const elapsed = performance.now() - start;
-               logger.event(`${statName}.stale`);
-               logger.timing(`${statName}.stale`, elapsed);
+               logger.success.event(`${statName}.stale`);
+               logger.success.timing(`${statName}.stale`, elapsed);
             } else {
                const elapsed = performance.now() - start;
-               logger.event(`${statName}.hit`);
-               logger.timing(`${statName}.hit`, elapsed);
+               logger.success.event(`${statName}.hit`);
+               logger.success.timing(`${statName}.hit`, elapsed);
             }
             return valueValidation.data;
          }
@@ -125,8 +125,8 @@ export const withCache = <
       start = performance.now();
       const value = await getFreshValue(variables);
       let elapsed = performance.now() - start;
-      logger.event(`${statName}.miss`);
-      logger.timing(`${statName}.miss`, elapsed);
+      logger.warning.event(`${statName}.miss`);
+      logger.warning.timing(`${statName}.miss`, elapsed);
       if (ttl != null && ttl > 0) {
          start = performance.now();
          const cacheEntry = createCacheEntry(value, {
@@ -137,7 +137,7 @@ export const withCache = <
             start = performance.now();
             await cache.set(key, cacheEntry);
             elapsed = performance.now() - start;
-            logger.timing(`${statName}.set`, elapsed);
+            logger.info.timing(`${statName}.set`, elapsed);
          } catch (error) {
             logger.warning(
                `${endpoint}.warning: unable to set entry with key. ${printError(
