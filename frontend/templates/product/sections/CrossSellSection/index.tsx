@@ -206,6 +206,7 @@ export function CrossSellSection({
                <VStack
                   spacing="6"
                   align="stretch"
+                  w="full"
                   divider={<Divider borderColor="gray.300" />}
                >
                   <Stack
