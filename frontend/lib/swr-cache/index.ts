@@ -106,15 +106,16 @@ export const withCache = <
             )}`
          );
       }
-      let elapsed = performance.now() - start;
       if (isValidCacheEntry(cachedEntry)) {
          const valueValidation = valueSchema.safeParse(cachedEntry.value);
          if (valueValidation.success) {
             if (isStale(cachedEntry)) {
                await requestRevalidation(variables);
+               const elapsed = performance.now() - start;
                logger.event(`${statName}.stale`);
                logger.timing(`${statName}.stale`, elapsed);
             } else {
+               const elapsed = performance.now() - start;
                logger.event(`${statName}.hit`);
                logger.timing(`${statName}.hit`, elapsed);
             }
@@ -125,7 +126,7 @@ export const withCache = <
       }
       start = performance.now();
       const value = await getFreshValue(variables);
-      elapsed = performance.now() - start;
+      let elapsed = performance.now() - start;
       logger.event(`${statName}.miss`);
       logger.timing(`${statName}.miss`, elapsed);
       if (ttl != null && ttl > 0) {
