@@ -2,7 +2,7 @@ type Log = (message: string) => void;
 type ExtendedLog = Log & {
    timing: (statName: string, ms: number) => void;
    event: (statName: string) => void;
-}
+};
 
 export interface Logger {
    info: ExtendedLog;
@@ -13,9 +13,15 @@ export interface Logger {
 
 export const log: Logger = {
    info: withExtensions((message: string) => console.log(message)),
-   success: withExtensions((message: string) => console.log(`\x1b[32m${message}\x1b[0m`)),
-   warning: withExtensions((message: string) => console.log(`\x1b[33m${message}\x1b[0m`)),
-   error: withExtensions((message: string) => console.log(`\x1b[31m${message}\x1b[0m`)),
+   success: withExtensions((message: string) =>
+      console.log(`\x1b[32m${message}\x1b[0m`)
+   ),
+   warning: withExtensions((message: string) =>
+      console.log(`\x1b[33m${message}\x1b[0m`)
+   ),
+   error: withExtensions((message: string) =>
+      console.log(`\x1b[31m${message}\x1b[0m`)
+   ),
 };
 
 function withExtensions(logger: Log): ExtendedLog {
