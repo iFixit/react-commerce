@@ -29,7 +29,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@models/product/server';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 import React from 'react';
 

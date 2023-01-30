@@ -139,12 +139,13 @@ const moduleExports = {
       });
       return config;
    },
-   ...(!SENTRY_AUTH_TOKEN && {
-      sentry: {
+   sentry: {
+      ...(!SENTRY_AUTH_TOKEN && {
          disableServerWebpackPlugin: true,
          disableClientWebpackPlugin: true,
-      },
-   }),
+      }),
+      autoInstrumentServerFunctions: false,
+   },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
