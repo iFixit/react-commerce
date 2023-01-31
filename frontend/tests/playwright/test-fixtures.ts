@@ -22,6 +22,7 @@ import { ProductPage, CartDrawer, Server } from './fixtures';
 import type { MockServiceWorker } from 'playwright-msw';
 import { createWorkerFixture } from 'playwright-msw';
 import { format } from 'util';
+import { handlers } from './msw/handlers';
 
 export const test = base.extend<
    ProductFixtures &
@@ -60,7 +61,7 @@ export const test = base.extend<
    },
    graphql,
    rest,
-   clientRequestHandler: createWorkerFixture(),
+   clientRequestHandler: createWorkerFixture(handlers),
    /**
     * The following fixtures are dependent on the customServer fixture. By being
     * dependent on the customServer fixture, Playwright will automatically

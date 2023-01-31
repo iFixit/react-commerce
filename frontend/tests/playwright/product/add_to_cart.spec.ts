@@ -3,17 +3,6 @@ import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
 
 test.describe('product page add to cart', () => {
-   test.beforeEach(async ({ clientRequestHandler, rest }) => {
-      clientRequestHandler.use(
-         rest.post(
-            '/api/2.0/internal/international_store_promotion/buybox',
-            (req, res, ctx) => {
-               return res(ctx.status(200), ctx.json({}));
-            }
-         )
-      );
-   });
-
    test('Clicking Add To Cart Adds Items To Cart', async ({
       productPage,
       cartDrawer,
