@@ -13,6 +13,7 @@ import {
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { useSearchQueryContext } from '@templates/product-list/hooks/useSearchQuery';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { useSearchBox } from 'react-instantsearch-hooks-web';
@@ -26,15 +27,15 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    const { query, refine, clear } = useSearchBox({
       queryHook: debouncedQueryHook,
    });
+   const { searchQuery, setSearchQuery } = useSearchQueryContext();
+
    const inputRef = React.useRef<HTMLInputElement>(null);
 
    const clearSearch = React.useCallback(() => {
-      if (inputRef.current) {
-         clear();
-         inputRef.current.value = '';
-         inputRef.current.focus();
-      }
-   }, [clear]);
+      setSearchQuery('');
+      clear();
+      inputRef.current?.focus();
+   }, [setSearchQuery, clear]);
 
    return (
       <InputGroup ref={ref} {...props}>
@@ -51,8 +52,11 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             }}
             placeholder={props.placeholder}
             tabIndex={0}
-            onChange={(event) => refine(event.currentTarget.value)}
-            defaultValue={query}
+            onChange={(event) => {
+               refine(event.currentTarget.value);
+               setSearchQuery(event.currentTarget.value);
+            }}
+            value={searchQuery}
             maxLength={MAX_SEARCH_QUERY_LENGTH}
          />
          <InputRightElement
