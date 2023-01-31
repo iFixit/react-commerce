@@ -77,7 +77,7 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
             showDiscountLabel={showDiscountLabel}
             showProBadge={userPrice.isProPrice && isDiscounted}
             size={size}
-            colorScheme={userPrice.isProPrice ? 'orange' : 'red'}
+            colorScheme={userPrice.isProPrice ? 'amber' : 'red'}
             direction={direction}
             {...other}
          />
