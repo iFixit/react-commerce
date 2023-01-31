@@ -11,18 +11,31 @@ export interface Logger {
    error: ExtendedLog;
 }
 
-export const log: Logger = {
-   info: withExtensions((message: string) => console.log(message)),
-   success: withExtensions((message: string) =>
-      console.log(`\x1b[32m${message}\x1b[0m`)
-   ),
-   warning: withExtensions((message: string) =>
-      console.log(`\x1b[33m${message}\x1b[0m`)
-   ),
-   error: withExtensions((message: string) =>
-      console.log(`\x1b[31m${message}\x1b[0m`)
-   ),
-};
+const colorless = Boolean(process.env.COLORLESS_LOGS);
+
+const colorlessLogger = withExtensions((message: string) =>
+   console.log(message)
+);
+
+export const log: Logger = colorless
+   ? {
+        info: colorlessLogger,
+        success: colorlessLogger,
+        warning: colorlessLogger,
+        error: colorlessLogger,
+     }
+   : {
+        info: colorlessLogger,
+        success: withExtensions((message: string) =>
+           console.log(`\x1b[32m${message} \x1b[0m`)
+        ),
+        warning: withExtensions((message: string) =>
+           console.log(`\x1b[33m${message} \x1b[0m`)
+        ),
+        error: withExtensions((message: string) =>
+           console.log(`\x1b[31m${message} \x1b[0m`)
+        ),
+     };
 
 function withExtensions(logger: Log): ExtendedLog {
    const extendedLog = (message: string) => logger(message);
