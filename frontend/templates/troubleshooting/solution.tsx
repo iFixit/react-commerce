@@ -207,7 +207,14 @@ export default function SolutionCard({
    solution: Section;
 }) {
    return (
-      <Flex background="white" borderRadius="4px" padding="24px 24px 12px 24px">
+      <Flex
+         background="white"
+         borderRadius="4px"
+         borderColor="gray.300"
+         borderStyle="solid"
+         borderWidth="1px"
+         padding="24px 24px 12px 24px"
+      >
          <Flex gap="24px" direction="column">
             <SolutionHeader index={index} />
             <SolutionTexts title={solution.heading} body={solution.body} />
