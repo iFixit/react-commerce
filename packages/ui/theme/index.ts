@@ -6,6 +6,8 @@ import Pagination from './components/pagination';
 import { breakpoints } from './foundations/breakpoints';
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
+import { sizes } from './foundations/sizes';
+import { zIndices } from './foundations/zIndices';
 import { styles } from './styles';
 
 export const theme: ThemeOverride = {
@@ -13,6 +15,8 @@ export const theme: ThemeOverride = {
    breakpoints,
    fonts,
    styles,
+   zIndices,
+   sizes,
    components: {
       Pagination,
       Badge,
