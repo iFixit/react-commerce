@@ -13,7 +13,7 @@ const Wiki: NextPageWithLayout<{
 }> = ({ wikiData }) => {
    return (
       <Flex
-         direction="column"
+         direction="row"
          justifyContent="center"
          width="100%"
          fontSize="16px"
