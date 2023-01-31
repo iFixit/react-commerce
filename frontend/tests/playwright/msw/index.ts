@@ -11,7 +11,7 @@ export const setupMocks = async () => {
    } else {
       const mswWorker = bootstrapMockWorker();
 
-      mswWorker.start({
+      await mswWorker.start({
          onUnhandledRequest: process.env.CI ? 'bypass' : 'warn',
       });
    }
