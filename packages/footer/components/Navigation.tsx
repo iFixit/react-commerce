@@ -59,15 +59,7 @@ export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
 );
 
 export const FooterNavigationItem = (props: ListItemProps) => {
-   return (
-      <ListItem
-         py="1"
-         fontSize="sm"
-         fontWeight="black"
-         color="gray.300"
-         {...props}
-      />
-   );
+   return <ListItem py="1" fontSize="sm" color="gray.300" {...props} />;
 };
 
 type FooterNavigationLinkProps = BoxProps & {
