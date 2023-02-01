@@ -2,60 +2,51 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import {
-   Box,
-   chakra,
-   Container,
-   Heading,
-   SystemStyleObject,
-} from '@chakra-ui/react';
-import { Problem, TroubleshootingData } from './hooks/useTroubleshootingProps';
-
-const renderStyles = {
-   a: {
-      color: 'blue.500',
-   },
-   'ul, ol': {
-      paddingLeft: 4,
-   },
-};
+import { Box, Flex, Heading } from '@chakra-ui/react';
+import Prerendered from './prerendered';
+import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import SolutionCard from './solution';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    return (
-      <Container sx={renderStyles}>
-         <Head>
-            <meta name="robots" content="noindex" />
-         </Head>
-         <Heading as="h1">{wikiData.title}</Heading>
-         {wikiData.introduction.map((intro) => (
-            <IntroductionSection key={intro.heading} intro={intro} />
-         ))}
-         {wikiData.solutions.map((solution) => (
-            <SolutionCard key={solution.heading} solution={solution} />
-         ))}
-         {wikiData.conclusion.map((conclusion) => (
-            <ConclusionSection
-               key={conclusion.heading}
-               conclusion={conclusion}
-            />
-         ))}
-      </Container>
+      <Flex
+         direction="row"
+         justifyContent="center"
+         width="100%"
+         fontSize="16px"
+      >
+         <Flex padding="0px 32px 32px" gap="48px" maxW="1280px" id="wrapper">
+            <Flex gap="16px" direction="column" id="main">
+               <Head>
+                  <meta name="robots" content="noindex" />
+               </Head>
+               <Heading as="h1">{wikiData.title}</Heading>
+               {wikiData.introduction.map((intro) => (
+                  <IntroductionSection key={intro.heading} intro={intro} />
+               ))}
+               {wikiData.solutions.map((solution, index) => (
+                  <SolutionCard
+                     key={solution.heading}
+                     index={index + 1}
+                     solution={solution}
+                  />
+               ))}
+               {wikiData.conclusion.map((conclusion) => (
+                  <ConclusionSection
+                     key={conclusion.heading}
+                     conclusion={conclusion}
+                  />
+               ))}
+            </Flex>
+         </Flex>
+      </Flex>
    );
 };
 
-function SolutionCard({ solution }: { solution: Problem }) {
-   return (
-      <Box>
-         <Heading>{solution.heading}</Heading>
-         <Prerendered html={solution.body} />
-      </Box>
-   );
-}
-
-function IntroductionSection({ intro }: { intro: Problem }) {
+function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
          <Heading>{intro.heading}</Heading>
@@ -64,7 +55,7 @@ function IntroductionSection({ intro }: { intro: Problem }) {
    );
 }
 
-function ConclusionSection({ conclusion }: { conclusion: Problem }) {
+function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
          <Heading>{conclusion.heading}</Heading>
@@ -72,48 +63,6 @@ function ConclusionSection({ conclusion }: { conclusion: Problem }) {
       </Box>
    );
 }
-
-const Prerendered = chakra(function Prerendered({
-   html,
-   className,
-}: {
-   html: string;
-   className?: string;
-}) {
-   const renderStyles: SystemStyleObject = {
-      '.headerContainer': {
-         display: 'flex',
-         alignItems: 'baseline',
-         marginBottom: 2,
-      },
-
-      '.selfLink': {
-         display: 'none',
-      },
-
-      h3: {
-         fontSize: 'xl',
-         lineHeight: '1.2',
-      },
-
-      'h3,h4': {
-         fontWeight: 590,
-      },
-
-      'h4,h5': {
-         fontSize: 'md',
-         lineHeight: '1.25',
-      },
-   };
-
-   return (
-      <Box
-         className={className}
-         sx={renderStyles}
-         dangerouslySetInnerHTML={{ __html: html }}
-      />
-   );
-});
 
 Wiki.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
