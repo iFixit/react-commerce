@@ -1,12 +1,28 @@
 import { test, expect } from '../test-fixtures';
+import { mockedProductQuery } from '@tests/jest/__mocks__/products';
+import { cloneDeep } from 'lodash';
 
 test.describe('Disabled Product Test', () => {
    test('Not for Sale text renders and noindexed', async ({
       page,
-      productPage,
+      serverRequestInterceptor,
+      port,
+      graphql,
    }) => {
-      await productPage.gotoProduct(
-         'iphone-6s-plus-replacement-battery-disabled'
+      serverRequestInterceptor.use(
+         graphql.query('findProduct', async (req, res, ctx) => {
+            const disabledProduct = cloneDeep(mockedProductQuery);
+            if (disabledProduct.product) {
+               disabledProduct.product.variants.nodes.forEach((variant) => {
+                  variant.enabled = null;
+               });
+            }
+            return res(ctx.data(disabledProduct));
+         })
+      );
+
+      await page.goto(
+         `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-disabled`
       );
 
       await expect(page.getByText('Not for Sale')).toBeVisible();

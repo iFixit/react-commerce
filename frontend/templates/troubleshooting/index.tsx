@@ -2,7 +2,7 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import { Box, Container, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';

@@ -189,6 +189,8 @@ export function CrossSellSection({
                   md: 16,
                }}
                size="lg"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
             >
                Frequently Bought Together
             </Heading>

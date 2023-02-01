@@ -35,7 +35,7 @@ export function CompatibleDevice({
             borderWidth="1px"
             borderStyle="solid"
             borderColor="gray.300"
-            borderRadius="4px"
+            borderRadius="base"
          />
          <Flex
             minH="12"

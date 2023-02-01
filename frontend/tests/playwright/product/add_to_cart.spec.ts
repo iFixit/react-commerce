@@ -1,6 +1,8 @@
 import { test, expect } from '../test-fixtures';
+import { mockedProductQuery } from '@tests/jest/__mocks__/products';
+import { cloneDeep } from 'lodash';
 
-test.describe.serial('product page add to cart', () => {
+test.describe('product page add to cart', () => {
    test.beforeEach(async ({ page }) => {
       await page.route(
          '**/api/2.0/internal/international_store_promotion/buybox*',
@@ -109,9 +111,22 @@ test.describe.serial('product page add to cart', () => {
          page,
          productPage,
          cartDrawer,
+         serverRequestInterceptor,
+         port,
+         graphql,
       }) => {
-         await productPage.gotoProduct(
-            'iphone-6s-plus-replacement-battery-low-stocked'
+         serverRequestInterceptor.use(
+            graphql.query('findProduct', async (req, res, ctx) => {
+               const lowStockedProduct = cloneDeep(mockedProductQuery);
+               if (lowStockedProduct.product) {
+                  lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
+               }
+               return res(ctx.data(lowStockedProduct));
+            })
+         );
+
+         await page.goto(
+            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-low-stocked`
          );
 
          const firstOptionSku = await productPage.getSku();
@@ -160,6 +175,9 @@ test.describe.serial('product page add to cart', () => {
          page,
          productPage,
          cartDrawer,
+         serverRequestInterceptor,
+         port,
+         graphql,
       }) => {
          await page.route(
             '**/api/2.0/cart/product/notifyWhenSkuInStock',
@@ -171,9 +189,20 @@ test.describe.serial('product page add to cart', () => {
             }
          );
 
-         await productPage.gotoProduct(
-            'iphone-6s-plus-replacement-battery-out-of-stock'
+         serverRequestInterceptor.use(
+            graphql.query('findProduct', async (req, res, ctx) => {
+               const outOfStockProduct = cloneDeep(mockedProductQuery);
+               if (outOfStockProduct.product) {
+                  outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
+               }
+               return res(ctx.data(outOfStockProduct));
+            })
          );
+
+         await page.goto(
+            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-out-of-stock`
+         );
+
          await expect(
             page.getByRole('img', { name: 'Fix Kit' })
          ).not.toBeVisible();

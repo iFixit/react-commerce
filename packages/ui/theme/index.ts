@@ -1,6 +1,7 @@
 import { ThemeOverride } from '@chakra-ui/react';
 import Alert from './components/alert';
 import Badge from './components/badge';
+import Button from './components/button';
 import Pagination from './components/pagination';
 import { breakpoints } from './foundations/breakpoints';
 import { colors } from './foundations/colors';
@@ -16,5 +17,6 @@ export const theme: ThemeOverride = {
       Pagination,
       Badge,
       Alert,
+      Button,
    },
 };

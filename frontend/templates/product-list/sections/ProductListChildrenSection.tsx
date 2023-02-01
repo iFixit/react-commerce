@@ -66,7 +66,7 @@ export function ProductListChildrenSection({
             sm: 0,
          }}
       >
-         <Text fontSize="lg" fontWeight="bold" mb="4">
+         <Text fontWeight="medium" mb="4">
             {heading}
          </Text>
          <Box
