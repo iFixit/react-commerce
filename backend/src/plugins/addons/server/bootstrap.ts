@@ -1,10 +1,13 @@
-import '@strapi/strapi';
+import type { Strapi } from '@strapi/strapi';
+import { getAddonsService } from './services';
 
-export default async ({ strapi }: { strapi: Strapi.Strapi }) => {
-   const shouldSeed = process.env.SEED_DB === 'true';
+export default async ({ strapi }: { strapi: Strapi }) => {
+   const isSeedingEnabled = process.env.SEED_DB === 'true';
+   const shouldSeed = isSeedingEnabled;
+
    if (shouldSeed) {
       try {
-         const seedService = strapi.plugin('addons').service('seed');
+         const seedService = getAddonsService(strapi, 'seed');
          await seedService.createAdminUser();
          await seedService.importContentTypes({
             canDeleteExistingContent: false,
