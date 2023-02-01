@@ -1,3 +1,5 @@
+import { log } from './logger';
+
 export function assertNever(x: never): never {
    throw new Error('Unexpected object: ' + x);
 }
@@ -64,10 +66,10 @@ const silentTimer = function (timerName: string) {
 };
 
 const loggingTimer = (timerName: string) => {
-   const t = Date.now();
+   const t = performance.now();
    return () => {
-      const taken = Date.now() - t;
-      console.log(`${timerName}: ${taken}ms`);
+      const taken = performance.now() - t;
+      log.info.timing(timerName, taken);
    };
 };
 

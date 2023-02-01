@@ -139,12 +139,16 @@ const moduleExports = {
       });
       return config;
    },
-   ...(!SENTRY_AUTH_TOKEN && {
-      sentry: {
+   sentry: {
+      autoInstrumentServerFunctions: false,
+      // Upload artifacts in dist/framework as well; this includes sourcemaps
+      // for react and other next.js code
+      widenClientFileUpload: true,
+      ...(!SENTRY_AUTH_TOKEN && {
          disableServerWebpackPlugin: true,
          disableClientWebpackPlugin: true,
-      },
-   }),
+      }),
+   },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
