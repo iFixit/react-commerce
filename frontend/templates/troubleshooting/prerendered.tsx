@@ -32,6 +32,10 @@ const renderStyles: SystemStyleObject = {
       color: 'gray.700',
       alignSelf: 'stretch',
    },
+
+   'ul,ol': {
+      paddingLeft: 4,
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
