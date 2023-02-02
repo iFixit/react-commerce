@@ -281,6 +281,17 @@ importers:
       ts-node: 10.9.1_cj5mtiz27ejqqym7lopgjtf5ya
       typescript: 4.8.4
 
+  packages/breadcrumbs:
+    specifiers:
+      '@ifixit/icons': workspace:*
+      '@ifixit/tsconfig': workspace:*
+      typescript: 4.8.4
+    dependencies:
+      '@ifixit/icons': link:../icons
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      typescript: 4.8.4
+
   packages/cart-sdk:
     specifiers:
       '@ifixit/analytics': workspace:*
