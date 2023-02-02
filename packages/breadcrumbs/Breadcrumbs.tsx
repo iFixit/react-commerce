@@ -14,25 +14,24 @@ import {
    LinkProps,
 } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
-import { faEllipsis } from '@fortawesome/pro-regular-svg-icons';
-import { faChevronRight } from '@fortawesome/pro-solid-svg-icons';
+import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
 import { memo, useState, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 import { HiddenWrapEffect, useHiddenWrap } from './FlexHiddenWrap';
 
-export interface BreadcrumbData {
-   name: string;
+export type BreadcrumbItem = {
+   label: string;
    url: string;
-}
+};
 
 export interface BreadCrumbsProps {
-   breadCrumbs: BreadcrumbData[];
+   breadCrumbs: BreadcrumbItem[];
    breadcrumbsToShow?: number;
    breadcrumbIcon?: JSX.Element;
    usePlaceHolder?: boolean;
 }
 
-type IFixitBreadcrumbItemProps = BreadcrumbData & {
+type IFixitBreadcrumbItemProps = BreadcrumbItem & {
    isLast: boolean;
 } & BreadcrumbItemProps;
 
@@ -42,10 +41,12 @@ export const BreadCrumbs = memo(function DynamicBreadCrumbs({
    breadcrumbIcon = <DefaultBreadcrumbIcon />,
 }: BreadCrumbsProps) {
    if (breadcrumbsToShow != undefined && breadcrumbsToShow <= 0) {
-      throw new Error('breadcrumbsToShow can only be undefined or must be greater than 0');
+      throw new Error(
+         'breadcrumbsToShow can only be undefined or must be greater than 0'
+      );
    }
 
-   const isStatic = breadcrumbsToShow > 0;
+   const isStatic = !!breadcrumbsToShow;
 
    const visibleBreadCrumbs = isStatic
       ? breadCrumbs.slice(breadCrumbs.length - breadcrumbsToShow)
@@ -56,22 +57,30 @@ export const BreadCrumbs = memo(function DynamicBreadCrumbs({
       : [];
 
    const [wrappedBreadcrumbs, setWrappedBreadcrumbs] =
-      useState<BreadcrumbData[]>(hiddenBreadCrumbs);
+      useState<BreadcrumbItem[]>(hiddenBreadCrumbs);
 
    const wrappedChildrenEffect = useCallback(
       (children: HTMLElement[]) => {
          if (isStatic) {
             return;
          }
-         const wrappedNames = new Set(children.map(c => c.getAttribute('data-name')));
-         const wrapped = breadCrumbs.filter(b => wrappedNames.has(b.name));
+         const wrappedNames = new Set(
+            children.map((c) => c.getAttribute('data-name'))
+         );
+         const wrapped = breadCrumbs.filter((b) => wrappedNames.has(b.label));
          setWrappedBreadcrumbs(() => wrapped);
       },
       [breadCrumbs, isStatic]
    );
 
    return (
-      <Flex display="flex" flexShrink={1} flexGrow={1} alignItems="center" gap="6px">
+      <Flex
+         display="flex"
+         flexShrink={1}
+         flexGrow={1}
+         alignItems="center"
+         gap="6px"
+      >
          <IFixitCollapsedBreadcrumb
             breadCrumbs={wrappedBreadcrumbs}
             breadcrumbIcon={breadcrumbIcon}
@@ -88,7 +97,13 @@ export const BreadCrumbs = memo(function DynamicBreadCrumbs({
 function DefaultBreadcrumbIcon() {
    return (
       <Flex>
-         <FaIcon icon={faChevronRight} h="2.5" display="flex" color="gray.400" mt="1px" />
+         <FaIcon
+            icon={faChevronRight}
+            h="2.5"
+            display="flex"
+            color="gray.400"
+            mt="1px"
+         />
       </Flex>
    );
 }
@@ -105,7 +120,7 @@ const IFixitBreadcrumb = memo(function IFixitBreadcrumb({
       const isLastBreadCrumb = index === 0;
       return (
          <IFixitBreadcrumbItem
-            key={props.name}
+            key={props.label}
             spacing="6px"
             {...props}
             isLast={isLastBreadCrumb}
@@ -133,14 +148,18 @@ const IFixitBreadcrumb = memo(function IFixitBreadcrumb({
 
 const IFixitBreadcrumbItem = memo(function IFixitBreadcrumbItem({
    url,
-   name,
+   label: name,
    isLast,
    ...breadcrumbItemProps
 }: IFixitBreadcrumbItemProps) {
    const color = isLast ? 'gray.900' : 'gray.500';
 
    return (
-      <BreadcrumbItem {...breadcrumbItemProps} isLastChild={isLast} data-name={name}>
+      <BreadcrumbItem
+         {...breadcrumbItemProps}
+         isLastChild={isLast}
+         data-name={name}
+      >
          <Text
             as={Link}
             noOfLines={1}
@@ -164,8 +183,10 @@ const IFixitCollapsedBreadcrumb = memo(function IFixitCollapsedBreadcrumb({
       return null;
    }
 
-   const CollapsedBreadCrumbItems = breadCrumbs.map(({ name, url }) => {
-      return <IFixitCollapsedBreadcrumbItem url={url} name={name} key={name} />;
+   const CollapsedBreadCrumbItems = breadCrumbs.map(({ label: name, url }) => {
+      return (
+         <IFixitCollapsedBreadcrumbItem url={url} label={name} key={name} />
+      );
    });
 
    return (
@@ -192,9 +213,9 @@ isEqual);
 
 function IFixitCollapsedBreadcrumbItem({
    url,
-   name,
+   label: name,
    ...menuItemProps
-}: BreadcrumbData & MenuItemProps & LinkProps) {
+}: BreadcrumbItem & MenuItemProps & LinkProps) {
    return (
       <MenuItem
          as={Link}

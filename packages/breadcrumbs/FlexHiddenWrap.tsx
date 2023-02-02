@@ -1,7 +1,10 @@
 import { SystemProps } from '@chakra-ui/react';
 import { useRef, useLayoutEffect, ReactNode, RefObject } from 'react';
 
-export type HiddenWrapEffect = (_children: HTMLElement[], _container: HTMLElement) => void;
+export type HiddenWrapEffect = (
+   _children: HTMLElement[],
+   _container: HTMLElement
+) => void;
 export function useHiddenWrap<T extends HTMLElement>({
    wrappedChildrenEffect,
    shownChildrenEffect,
@@ -9,7 +12,7 @@ export function useHiddenWrap<T extends HTMLElement>({
    wrappedChildrenEffect?: HiddenWrapEffect;
    shownChildrenEffect?: HiddenWrapEffect;
 }): {
-   ref: RefObject<T>;
+   ref: RefObject<T | undefined>;
    display: SystemProps['display'];
    flexWrap: SystemProps['flexWrap'];
    overflow: SystemProps['overflow'];
@@ -22,7 +25,13 @@ export function useHiddenWrap<T extends HTMLElement>({
       }
 
       const measure = () => {
-         onBrowserRender(ref.current, wrappedChildrenEffect, shownChildrenEffect);
+         if (ref.current) {
+            onBrowserRender(
+               ref.current,
+               wrappedChildrenEffect,
+               shownChildrenEffect
+            );
+         }
       };
 
       measure();
@@ -36,14 +45,18 @@ export function useHiddenWrap<T extends HTMLElement>({
 
 function onBrowserRender<T extends HTMLElement>(
    container: T,
-   wrappedEffect: HiddenWrapEffect,
-   shownEffect: HiddenWrapEffect
+   wrappedEffect: undefined | HiddenWrapEffect,
+   shownEffect: undefined | HiddenWrapEffect
 ) {
    const containerStart = container.offsetTop;
    const children = Array.from(container.children) as HTMLElement[];
 
-   const wrappedChildren = children.filter(child => child.offsetTop > containerStart);
-   const shownChildren = children.filter(child => child.offsetTop <= containerStart);
+   const wrappedChildren = children.filter(
+      (child) => child.offsetTop > containerStart
+   );
+   const shownChildren = children.filter(
+      (child) => child.offsetTop <= containerStart
+   );
    wrappedEffect?.(wrappedChildren, container);
    shownEffect?.(shownChildren, container);
 }

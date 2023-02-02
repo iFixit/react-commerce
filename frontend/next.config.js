@@ -8,16 +8,17 @@ const {
 const withTM = require('next-transpile-modules')([
    '@ifixit/analytics',
    '@ifixit/app',
-   '@ifixit/ui',
-   '@ifixit/icons',
    '@ifixit/auth-sdk',
+   '@ifixit/breadcrumbs',
    '@ifixit/cart-sdk',
-   '@ifixit/newsletter-sdk',
-   '@ifixit/helpers',
-   '@ifixit/ifixit-api-client',
-   '@ifixit/shopify-storefront-client',
-   '@ifixit/sentry',
    '@ifixit/footer',
+   '@ifixit/helpers',
+   '@ifixit/icons',
+   '@ifixit/ifixit-api-client',
+   '@ifixit/newsletter-sdk',
+   '@ifixit/sentry',
+   '@ifixit/shopify-storefront-client',
+   '@ifixit/ui',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
