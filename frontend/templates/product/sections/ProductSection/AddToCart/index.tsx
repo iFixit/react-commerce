@@ -1,4 +1,5 @@
 import {
+   Alert,
    Box,
    Button,
    Flex,
@@ -15,6 +16,7 @@ import {
 import {
    faCircleExclamation,
    faCircleInfo,
+   faExclamationCircle,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
@@ -113,6 +115,17 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                      align="flex-start"
                   />
                )}
+               <Alert status="warning" mb="3">
+                  <FaIcon
+                     icon={faExclamationCircle}
+                     h="5"
+                     mr="2"
+                     color="amber.600"
+                  />
+                  <span>
+                     This item is currently <strong>Out of Stock</strong>.
+                  </span>
+               </Alert>
                <NotifyMeForm sku={selectedVariant.sku} />
             </>
          )}

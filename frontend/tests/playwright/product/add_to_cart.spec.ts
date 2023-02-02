@@ -218,7 +218,7 @@ test.describe('product page add to cart', () => {
          const notifyMeForm = page.getByText(/this item is currently/i);
          await expect(notifyMeForm).toBeVisible();
          await expect(notifyMeForm).toHaveText(
-            'This item is currently Out of Stock'
+            'This item is currently Out of Stock.'
          );
 
          await page.getByLabel('Email address').fill('test@example.com');
