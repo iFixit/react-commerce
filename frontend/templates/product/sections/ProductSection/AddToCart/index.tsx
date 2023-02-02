@@ -123,7 +123,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                      color="amber.600"
                   />
                   <span>
-                     This item is currently <strong>Out of Stock</strong>
+                     This item is currently <strong>Out of Stock</strong>.
                   </span>
                </Alert>
                <NotifyMeForm sku={selectedVariant.sku} />

@@ -534,7 +534,7 @@ describe('ProductSection Tests', () => {
          const notifyMeForm = screen.queryByText(/this item is currently/i);
          (expect(notifyMeForm) as any).toBeInTheDocument();
          (expect(notifyMeForm?.textContent) as any).toEqual(
-            'This item is currently Out of Stock'
+            'This item is currently Out of Stock.'
          );
       });
 

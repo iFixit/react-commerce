@@ -84,7 +84,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
                Notify me when it is back in stock!
             </Text>
             <Text>
-               Enter your email address below and we will notify you when this
+               Enter your email address below, and we will notify you when this
                product is back in stock.
             </Text>
             <Flex mt="2.5" align="flex-start">
