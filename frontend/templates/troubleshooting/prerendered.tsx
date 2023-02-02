@@ -40,6 +40,10 @@ const renderStyles: SystemStyleObject = {
    a: {
       color: 'brand.500',
    },
+
+   'a:hover': {
+      textDecoration: 'underline',
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
