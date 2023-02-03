@@ -28,7 +28,8 @@ export const test = base.extend<
 >({
    customServer: [
       // eslint-disable-next-line no-empty-pattern
-      async ({}, use) => {
+      async ({}, use, workerInfo) => {
+         process.env.NEXT_DIST_DIR = `./.next-worker-${workerInfo.workerIndex}`;
          const props: CustomNextjsServer = await Server();
          await use(props);
       },
