@@ -20,6 +20,7 @@ import { graphql, rest } from 'msw';
 import type { ProductFixtures, CustomNextjsServer } from './fixtures';
 import { ProductPage, CartDrawer, Server } from './fixtures';
 import { format } from 'util';
+import { exec } from 'node:child_process';
 
 export const test = base.extend<
    ProductFixtures &
@@ -32,6 +33,8 @@ export const test = base.extend<
          process.env.NEXT_DIST_DIR = `./.next-worker-${workerInfo.workerIndex}`;
          const props: CustomNextjsServer = await Server();
          await use(props);
+         // Clean up the dist directory after the worker is done.
+         exec('rm -rf .next-worker-*');
       },
       {
          /**
