@@ -31,6 +31,7 @@ const renderStyles: SystemStyleObject = {
       fontSize: '16px',
       color: 'gray.700',
       alignSelf: 'stretch',
+      paddingBottom: 6,
    },
 
    'ul,ol': {
