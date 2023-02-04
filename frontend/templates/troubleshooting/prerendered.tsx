@@ -44,6 +44,15 @@ const renderStyles: SystemStyleObject = {
    'a:hover': {
       textDecoration: 'underline',
    },
+
+   blockquote: {
+      margin: '20px 0px',
+      //borderLeft: '5px solid #e5e7eb',
+      borderLeftColor: 'gray.200',
+      borderLeftWidth: '5px',
+      borderLeftStyle: 'solid',
+      padding: '2px 8px 2px 12px',
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
