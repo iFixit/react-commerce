@@ -19,12 +19,19 @@ import { test as base, expect, Page, Locator } from '@playwright/test';
 import { graphql, rest } from 'msw';
 import type { ProductFixtures, CustomNextjsServer } from './fixtures';
 import { ProductPage, CartDrawer, Server } from './fixtures';
+import type { MockServiceWorker } from 'playwright-msw';
+import { createWorkerFixture } from 'playwright-msw';
 import { format } from 'util';
+import { handlers } from './msw/handlers';
 import { exec } from 'node:child_process';
 
 export const test = base.extend<
    ProductFixtures &
-      CustomNextjsServer & { graphql: typeof graphql; rest: typeof rest }, // Test Fixture types are passed as the first template parameter
+      CustomNextjsServer & {
+         clientRequestHandler: MockServiceWorker;
+         graphql: typeof graphql;
+         rest: typeof rest;
+      }, // Test Fixture types are passed as the first template parameter
    { customServer: CustomNextjsServer } // Worker Fixture types are passed as the second template parameter
 >({
    customServer: [
@@ -60,6 +67,7 @@ export const test = base.extend<
    },
    graphql,
    rest,
+   clientRequestHandler: createWorkerFixture(handlers),
    /**
     * The following fixtures are dependent on the customServer fixture. By being
     * dependent on the customServer fixture, Playwright will automatically
