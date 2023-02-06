@@ -1,16 +1,9 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
-import { memo } from 'react';
 import { Menu, MenuList, HStack } from '@chakra-ui/react';
 import {
-   FacebookLogo,
    Flag,
    FlagCountryCode,
    Language,
-   InstagramLogo,
-   RepairOrgLogo,
-   TwitterLogo,
-   TiktokLogo,
-   YoutubeLogo,
 } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
 import { ResponsiveImage } from '@ifixit/ui';
@@ -18,6 +11,7 @@ import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
 import { NewsletterForm } from './Newsletter';
+import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
    FooterNavigationItem,
    FooterNavigationList,
@@ -39,15 +33,6 @@ import {
    EventTracker,
 } from '@ifixit/footer';
 
-interface SocialMediaAccounts {
-   twitter: string | null;
-   tiktok: string | null;
-   facebook: string | null;
-   instagram: string | null;
-   youtube: string | null;
-   repairOrg: string | null;
-}
-
 interface FooterProps {
    stores: StoreListItem[];
    menu1: Store['footer']['menu1'];
@@ -57,42 +42,6 @@ interface FooterProps {
    socialMediaAccounts: Store['socialMediaAccounts'];
    globalSettings: GlobalSettings;
 }
-
-const SocialMediaSection = memo(function SocialMediaSection({
-   accounts,
-}: {
-   accounts: SocialMediaAccounts;
-}) {
-   if (!accounts) {
-      return null;
-   }
-   return (
-      <HStack spacing={4} justify={{ base: 'space-between', sm: 'center' }}>
-         {accounts.tiktok && (
-            <FooterLink aria-label="TikTok" href={accounts.tiktok} icon={TiktokLogo} />
-         )}
-         {accounts.facebook && (
-            <FooterLink aria-label="Facebook" href={accounts.facebook} icon={FacebookLogo} />
-         )}
-         {accounts.twitter && (
-            <FooterLink aria-label="Twitter" href={accounts.twitter} icon={TwitterLogo} />
-         )}
-         {accounts.instagram && (
-            <FooterLink aria-label="Instagram" href={accounts.instagram} icon={InstagramLogo} />
-         )}
-         {accounts.youtube && (
-            <FooterLink aria-label="YouTube" href={accounts.youtube} icon={YoutubeLogo} />
-         )}
-         {accounts.repairOrg && (
-            <FooterLink
-               aria-label="The Repair Association"
-               href={accounts.repairOrg}
-               icon={RepairOrgLogo}
-            />
-         )}
-      </HStack>
-   );
-});
 
 export function CartFooter({
    stores,
