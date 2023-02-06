@@ -14,7 +14,8 @@ import {
    LinkProps,
 } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
-import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/pro-solid-svg-icons/faChevronRight';
+import { faEllipsis } from '@fortawesome/pro-solid-svg-icons/faEllipsis';
 import { memo, useState, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 import { HiddenWrapEffect, useHiddenWrap } from './FlexHiddenWrap';
