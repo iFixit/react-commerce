@@ -150,40 +150,12 @@ export function CartFooter({
                      </FooterNavigationItem>
                   )}
                </FooterNavigationList>
-               {partners && (
-                  <FooterPartners>
-                     {partners.items.map((partner) => {
-                        if (partner.type === MenuItemType.ImageLink) {
-                           return (
-                              <FooterPartnerLink
-                                 key={partner.name}
-                                 href={partner.url}
-                                 position="relative"
-                                 p="0"
-                              >
-                                 {partner.image?.url ? (
-                                    <ResponsiveImage
-                                       layout="fill"
-                                       objectFit="contain"
-                                       src={partner.image.url}
-                                       alt={
-                                          partner.image?.alternativeText ||
-                                          `${partner.name} logo`
-                                       }
-                                    />
-                                 ) : (
-                                    <ResponsiveImage
-                                       layout="fill"
-                                       objectFit="contain"
-                                       src={noImageFixie}
-                                    />
-                                 )}
-                              </FooterPartnerLink>
-                           );
-                        }
-                     })}
-                  </FooterPartners>
-               )}
+               <NewsletterForm
+                  title={newsletterForm.title}
+                  description={newsletterForm.subtitle}
+                  subscribeLabel={newsletterForm.callToActionButtonTitle}
+                  emailPlaceholder={newsletterForm.inputPlaceholder}
+               />
             </FooterNavigationSection>
 
             <FooterDivider />
@@ -226,15 +198,46 @@ export function CartFooter({
                      Help translate
                   </FooterLink>
                </FooterSettings>
-               <NewsletterForm
-                  title={newsletterForm.title}
-                  description={newsletterForm.subtitle}
-                  subscribeLabel={newsletterForm.callToActionButtonTitle}
-                  emailPlaceholder={newsletterForm.inputPlaceholder}
-               />
             </FooterSettingsSection>
 
             <FooterDivider />
+
+            <FooterNavigationSection>
+               {partners && (
+                  <FooterPartners>
+                     {partners.items.map((partner) => {
+                        if (partner.type === MenuItemType.ImageLink) {
+                           return (
+                              <FooterPartnerLink
+                                 key={partner.name}
+                                 href={partner.url}
+                                 position="relative"
+                                 p="0"
+                              >
+                                 {partner.image?.url ? (
+                                    <ResponsiveImage
+                                       layout="fill"
+                                       objectFit="contain"
+                                       src={partner.image.url}
+                                       alt={
+                                          partner.image?.alternativeText ||
+                                          `${partner.name} logo`
+                                       }
+                                    />
+                                 ) : (
+                                    <ResponsiveImage
+                                       layout="fill"
+                                       objectFit="contain"
+                                       src={noImageFixie}
+                                    />
+                                 )}
+                              </FooterPartnerLink>
+                           );
+                        }
+                     })}
+                  </FooterPartners>
+               )}
+            </FooterNavigationSection>
 
             <FooterLegalSection>
                <FooterCopyright />
