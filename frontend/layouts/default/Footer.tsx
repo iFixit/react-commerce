@@ -1,5 +1,6 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
-import { Menu, MenuList } from '@chakra-ui/react';
+import { memo } from 'react';
+import { Menu, MenuList, HStack } from '@chakra-ui/react';
 import {
    FacebookLogo,
    Flag,
@@ -38,6 +39,15 @@ import {
    EventTracker,
 } from '@ifixit/footer';
 
+interface SocialMediaAccounts {
+   twitter: string | null;
+   tiktok: string | null;
+   facebook: string | null;
+   instagram: string | null;
+   youtube: string | null;
+   repairOrg: string | null;
+}
+
 interface FooterProps {
    stores: StoreListItem[];
    menu1: Store['footer']['menu1'];
@@ -47,6 +57,42 @@ interface FooterProps {
    socialMediaAccounts: Store['socialMediaAccounts'];
    globalSettings: GlobalSettings;
 }
+
+const SocialMediaSection = memo(function SocialMediaSection({
+   accounts,
+}: {
+   accounts: SocialMediaAccounts;
+}) {
+   if (!accounts) {
+      return null;
+   }
+   return (
+      <HStack spacing={4} justify={{ base: 'space-between', sm: 'center' }}>
+         {accounts.tiktok && (
+            <FooterLink aria-label="TikTok" href={accounts.tiktok} icon={TiktokLogo} />
+         )}
+         {accounts.facebook && (
+            <FooterLink aria-label="Facebook" href={accounts.facebook} icon={FacebookLogo} />
+         )}
+         {accounts.twitter && (
+            <FooterLink aria-label="Twitter" href={accounts.twitter} icon={TwitterLogo} />
+         )}
+         {accounts.instagram && (
+            <FooterLink aria-label="Instagram" href={accounts.instagram} icon={InstagramLogo} />
+         )}
+         {accounts.youtube && (
+            <FooterLink aria-label="YouTube" href={accounts.youtube} icon={YoutubeLogo} />
+         )}
+         {accounts.repairOrg && (
+            <FooterLink
+               aria-label="The Repair Association"
+               href={accounts.repairOrg}
+               icon={RepairOrgLogo}
+            />
+         )}
+      </HStack>
+   );
+});
 
 export function CartFooter({
    stores,
@@ -87,68 +133,6 @@ export function CartFooter({
                         );
                      }
                   })}
-               </FooterNavigationList>
-               <FooterNavigationList>
-                  {socialMediaAccounts.tiktok && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.tiktok}
-                           icon={TiktokLogo}
-                        >
-                           TikTok
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.facebook && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.facebook}
-                           icon={FacebookLogo}
-                        >
-                           Facebook
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.twitter && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.twitter}
-                           icon={TwitterLogo}
-                        >
-                           Twitter
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.instagram && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.instagram}
-                           icon={InstagramLogo}
-                        >
-                           Instagram
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.youtube && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.youtube}
-                           icon={YoutubeLogo}
-                        >
-                           YouTube
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.repairOrg && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.repairOrg}
-                           icon={RepairOrgLogo}
-                        >
-                           Repair.org
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
                </FooterNavigationList>
                <NewsletterForm
                   title={newsletterForm.title}
@@ -198,6 +182,7 @@ export function CartFooter({
                      Help translate
                   </FooterLink>
                </FooterSettings>
+               <SocialMediaSection accounts={socialMediaAccounts} />
             </FooterSettingsSection>
 
             <FooterDivider />

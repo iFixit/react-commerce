@@ -71,7 +71,7 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             <Text fontSize={fontSize} lineHeight="1em" color="gray.300">
                {children}
             </Text>
-            {icon && <Icon as={icon} boxSize="8" filter="opacity(0.5)" />}
+            {icon && <Icon as={icon} boxSize="6" filter="opacity(0.5)" />}
          </HStack>
       );
    }
