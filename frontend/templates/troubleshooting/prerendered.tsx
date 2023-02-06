@@ -44,6 +44,13 @@ const renderStyles: SystemStyleObject = {
    'a:hover': {
       textDecoration: 'underline',
    },
+
+   'code, pre': {
+      backgroundColor: 'gray.200',
+      borderRadius: '4px',
+      color: 'coolGray.600',
+      padding: '2px 4px',
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
