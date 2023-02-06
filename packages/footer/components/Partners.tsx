@@ -1,26 +1,21 @@
-import { Box, BoxProps, forwardRef, SimpleGrid } from '@chakra-ui/react';
+import { Box, BoxProps, forwardRef, Flex } from '@chakra-ui/react';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 export const FooterPartners = forwardRef<BoxProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
       return (
-         <Box
+         <Flex
             ref={ref}
-            mt={{
-               base: 2,
-               sm: 6,
-               lg: 0,
-            }}
-            gridColumnEnd={{
-               sm: 'span 3',
-               lg: 'auto',
-            }}
+            mt="7"
+            alignItems="center"
+            justifyContent="center"
+            flexWrap="wrap"
+            paddingLeft="4"
+            paddingRight="4"
             {...otherProps}
          >
-            <SimpleGrid columns={3} spacing="4">
-               {children}
-            </SimpleGrid>
-         </Box>
+            {children}
+         </Flex>
       );
    }
 );
@@ -33,11 +28,16 @@ export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
             ref={ref}
             as="a"
             onClick={trackedOnClick}
+            flex="none"
+            order="1"
+            flexGrow="0"
             bg="gray.800"
             opacity="0.5"
-            h="48px"
+            h="62px"
+            w="92px"
             p="4"
-            borderRadius="md"
+            m="6px"
+            borderRadius="4px"
             cursor="pointer"
             transition="all 400ms"
             _hover={{
