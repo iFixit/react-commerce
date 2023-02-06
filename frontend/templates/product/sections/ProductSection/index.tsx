@@ -368,25 +368,9 @@ function ProOnlyAlert(props: AlertProps) {
 
 function NotForSaleAlert(props: AlertProps) {
    return (
-      <Alert
-         status="warning"
-         borderWidth={1}
-         borderColor="orange.300"
-         borderRadius="md"
-         alignItems="flex-start"
-         {...props}
-      >
-         <FaIcon
-            icon={faCircleExclamation}
-            h="4"
-            mt="0.5"
-            mr="2.5"
-            color="orange.500"
-         />
-
-         <Box fontSize="sm">
-            <p>Not for Sale.</p>
-         </Box>
+      <Alert status="warning" {...props}>
+         <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
+         <span>Not for Sale.</span>
       </Alert>
    );
 }

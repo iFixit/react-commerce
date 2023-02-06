@@ -3,18 +3,6 @@ import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
 
 test.describe('product page add to cart', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.route(
-         '**/api/2.0/internal/international_store_promotion/buybox*',
-         (route) => {
-            route.fulfill({
-               status: 200,
-               body: '',
-            });
-         }
-      );
-   });
-
    test('Clicking Add To Cart Adds Items To Cart', async ({
       productPage,
       cartDrawer,
@@ -176,17 +164,18 @@ test.describe('product page add to cart', () => {
          productPage,
          cartDrawer,
          serverRequestInterceptor,
+         clientRequestHandler,
          port,
          graphql,
+         rest,
       }) => {
-         await page.route(
-            '**/api/2.0/cart/product/notifyWhenSkuInStock',
-            (route) => {
-               route.fulfill({
-                  status: 200,
-                  body: '',
-               });
-            }
+         clientRequestHandler.use(
+            rest.post(
+               '/api/2.0/cart/product/notifyWhenSkuInStock',
+               (req, res, ctx) => {
+                  return res(ctx.status(200));
+               }
+            )
          );
 
          serverRequestInterceptor.use(

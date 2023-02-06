@@ -36,6 +36,14 @@ const renderStyles: SystemStyleObject = {
    'ul,ol': {
       paddingLeft: 4,
    },
+
+   a: {
+      color: 'brand.500',
+   },
+
+   'a:hover': {
+      textDecoration: 'underline',
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
