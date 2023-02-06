@@ -48,6 +48,7 @@ console.log('Strapi API: ' + process.env.NEXT_PUBLIC_STRAPI_ORIGIN);
 console.log('iFixit API: ' + process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
 
 const moduleExports = {
+   distDir: process.env.NEXT_DIST_DIR ?? '.next',
    env: {
       ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
       NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
