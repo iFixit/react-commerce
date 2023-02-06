@@ -146,7 +146,7 @@ const IFixitBreadcrumb = memo(function IFixitBreadcrumb({
    );
 }, isEqual);
 
-const IFixitBreadcrumbItem = memo(function IFixitBreadcrumbItem({
+const IFixitBreadcrumbItem = function IFixitBreadcrumbItem({
    url,
    label: name,
    isLast,
@@ -172,10 +172,9 @@ const IFixitBreadcrumbItem = memo(function IFixitBreadcrumbItem({
          </Text>
       </BreadcrumbItem>
    );
-},
-isEqual);
+};
 
-const IFixitCollapsedBreadcrumb = memo(function IFixitCollapsedBreadcrumb({
+const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
    breadCrumbs,
    breadcrumbIcon,
 }: Pick<BreadCrumbsProps, 'breadCrumbs' | 'breadcrumbIcon'>) {
@@ -208,8 +207,7 @@ const IFixitCollapsedBreadcrumb = memo(function IFixitCollapsedBreadcrumb({
          {breadcrumbIcon}
       </>
    );
-},
-isEqual);
+};
 
 function IFixitCollapsedBreadcrumbItem({
    url,
