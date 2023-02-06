@@ -6,7 +6,7 @@ import type {
    Product,
    ProductVariant,
    ProductVariantImage,
-} from '@models/product/server';
+} from '@pages/api/nextjs/cache/product';
 import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 
 const productImages: ProductVariantImage[] = [

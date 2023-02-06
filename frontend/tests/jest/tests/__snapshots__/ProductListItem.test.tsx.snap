@@ -43,13 +43,13 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           class="css-1c6uy1d"
         >
           <h3
-            class="chakra-heading css-1sm1677"
+            class="chakra-heading css-1cccuo6"
             id="product-heading-galaxy-s9-plus-replacement-battery"
           >
             Galaxy S9+ Battery
           </h3>
           <p
-            class="chakra-text css-1781se3"
+            class="chakra-text css-a5lz3x"
           >
             Replace a dead or malfunctioning model EB-BG96aasd5ABE battery in a Samsung Galaxy S9 Plus smartphone.
           </p>
@@ -156,7 +156,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             class="css-tnmkqf"
           >
             <span
-              class="chakra-badge css-1g88g3j"
+              class="chakra-badge css-1ef520z"
             >
               5% Off
             </span>
@@ -172,7 +172,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               class="css-14apnby"
             >
               <p
-                class="chakra-text css-15s1nop"
+                class="chakra-text css-1trxdwa"
                 data-testid="current-price"
               >
                 $5.00
@@ -187,7 +187,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               href="/products/galaxy-s9-plus-replacement-battery"
             >
               <div
-                class="chakra-button css-k7fdf3"
+                class="chakra-button css-1m796ac"
               >
                 View
               </div>

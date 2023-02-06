@@ -23,7 +23,7 @@ import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@models/product/server';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
@@ -255,9 +255,9 @@ const ProductTitle = chakra(
          <Heading
             as="h1"
             className={className}
-            size="xl"
-            fontWeight="medium"
             data-testid="product-title"
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
          >
             {children}
          </Heading>
@@ -274,7 +274,7 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
             flex="1"
             textAlign="left"
             color="gray.800"
-            fontWeight="bold"
+            fontWeight="semibold"
             fontSize="sm"
          >
             {children}
@@ -368,25 +368,9 @@ function ProOnlyAlert(props: AlertProps) {
 
 function NotForSaleAlert(props: AlertProps) {
    return (
-      <Alert
-         status="warning"
-         borderWidth={1}
-         borderColor="orange.300"
-         borderRadius="md"
-         alignItems="flex-start"
-         {...props}
-      >
-         <FaIcon
-            icon={faCircleExclamation}
-            h="4"
-            mt="0.5"
-            mr="2.5"
-            color="orange.500"
-         />
-
-         <Box fontSize="sm">
-            <p>Not for Sale.</p>
-         </Box>
+      <Alert status="warning" {...props}>
+         <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
+         <span>Not for Sale.</span>
       </Alert>
    );
 }
@@ -421,7 +405,7 @@ function WikiHtmlAccordianItem({
                         },
                      },
                      a: {
-                        fontWeight: 'bold',
+                        fontWeight: 'medium',
                         transition: 'all 300ms',
                         color: 'brand.500',
                      },

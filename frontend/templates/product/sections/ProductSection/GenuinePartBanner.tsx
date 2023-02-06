@@ -12,8 +12,10 @@ import {
    Vive,
 } from '@assets/svg/files/partners';
 import { Flex, Link, Text, useTheme } from '@chakra-ui/react';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import React from 'react';
+import { faBadgeCheck } from '@fortawesome/pro-duotone-svg-icons';
+import { FaIcon } from '@ifixit/icons';
 
 export type GenuinePartBannerProps = {
    oemPartnership: NonNullable<Product['oemPartnership']>;
@@ -45,17 +47,13 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
    );
    const theme = useTheme();
 
+   const hasPartnerLogo = partnerCodeToComponentMap[code] !== undefined;
    const PartnerLogo = partnerCodeToComponentMap[code];
-
-   if (!PartnerLogo) {
-      return null;
-   }
 
    return (
       <Flex
          mt="4"
          minH="16"
-         align="center"
          borderWidth="1px"
          borderStyle="solid"
          borderColor="brand.500"
@@ -65,14 +63,19 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
       >
          <Flex
             w="24"
-            h="full"
+            flex="none"
             borderRightWidth="1px"
             borderRightStyle="solid"
-            borderRightColor="gray.200"
-            bg="gray.100"
+            borderRightColor={hasPartnerLogo ? 'gray.200' : 'brand.200'}
+            bg={hasPartnerLogo ? 'gray.100' : 'brand.100'}
             alignItems="center"
+            justifyContent="center"
          >
-            <PartnerLogo />
+            {hasPartnerLogo ? (
+               <PartnerLogo />
+            ) : (
+               <FaIcon icon={faBadgeCheck} color="brand.500" h="8" />
+            )}
          </Flex>
          <Flex
             direction="column"
@@ -81,6 +84,7 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
             py="2"
             fontWeight="medium"
             lineHeight="short"
+            justify="center"
          >
             <Text lineHeight="shorter">This is a {lowerCaseText}.</Text>
             {url && (

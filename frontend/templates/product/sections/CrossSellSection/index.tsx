@@ -29,7 +29,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@models/product/server';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -189,6 +189,8 @@ export function CrossSellSection({
                   md: 16,
                }}
                size="lg"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
             >
                Frequently Bought Together
             </Heading>
@@ -204,6 +206,7 @@ export function CrossSellSection({
                <VStack
                   spacing="6"
                   align="stretch"
+                  w="full"
                   divider={<Divider borderColor="gray.300" />}
                >
                   <Stack

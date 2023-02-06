@@ -1,5 +1,5 @@
 import { Flex, Img, Text } from '@chakra-ui/react';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
 
 export type CompatibleDeviceProps = {
@@ -35,7 +35,7 @@ export function CompatibleDevice({
             borderWidth="1px"
             borderStyle="solid"
             borderColor="gray.300"
-            borderRadius="4px"
+            borderRadius="base"
          />
          <Flex
             minH="12"

@@ -13,7 +13,7 @@ import {
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
 
 export type ProductOptionsProps = {
@@ -47,7 +47,7 @@ export function ProductOptions({
             return (
                <VStack align="stretch" key={option.id}>
                   <HStack>
-                     <Text fontWeight="bold" color="gray.800">
+                     <Text fontWeight="medium" color="gray.800">
                         {option.name}
                         {selectorType === SelectorType.SINGLE &&
                            `: ${option.values[0]}`}
@@ -60,6 +60,7 @@ export function ProductOptions({
                         onChange={(event) => {
                            onChange(event.target.value);
                         }}
+                        borderRadius="base"
                         {...otherProps}
                      >
                         {option.values.map((value) => {
@@ -229,7 +230,7 @@ function ProductOptionValue({
          borderWidth={isActive ? 2 : 1}
          borderColor={isActive ? 'brand.500' : 'gray.200'}
          boxSizing="border-box"
-         borderRadius="md"
+         borderRadius="base"
          px={2.5}
          py={2.5}
          cursor="pointer"

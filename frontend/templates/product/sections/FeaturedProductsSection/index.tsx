@@ -23,7 +23,7 @@ import {
    ProductVariantPrice,
    ResponsiveImage,
 } from '@ifixit/ui';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -41,7 +41,14 @@ export function FeaturedProductsSection({
    return (
       <Box bg="white" pt="16" fontSize="sm">
          <PageContentWrapper>
-            <Heading as="h2" color="gray.700" textAlign="center" mb="12">
+            <Heading
+               as="h2"
+               color="gray.700"
+               textAlign="center"
+               mb="12"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
+            >
                Featured Products
             </Heading>
             <SimpleGrid
@@ -179,7 +186,7 @@ function ProductGridItem({
                )}
                {hasLifetimeWarranty && (
                   <ProductGridItemBadge colorScheme="blue">
-                     Lifetime Warranty
+                     Lifetime Guarantee
                   </ProductGridItemBadge>
                )}
             </Flex>

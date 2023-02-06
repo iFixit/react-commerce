@@ -91,3 +91,13 @@ const stableHash = (variables: unknown): string => {
 export const printZodError = (error: z.ZodError) => {
    return JSON.stringify(error.format(), null, 2);
 };
+
+export const printError = (error: unknown) => {
+   if (error instanceof z.ZodError) {
+      return printZodError(error);
+   }
+   if (error instanceof Error) {
+      return error.message;
+   }
+   return 'unknown error';
+};

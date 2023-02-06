@@ -22,11 +22,15 @@ const withTM = require('next-transpile-modules')([
 
 const { withSentryConfig } = require('@sentry/nextjs');
 
+const withBundleStats =
+   process.env.ANALYZE === 'true'
+      ? require('next-plugin-bundle-stats')()
+      : (arg) => arg;
+
 const withBundleAnalyzer =
    process.env.ANALYZE === 'true'
       ? require('@next/bundle-analyzer')()
       : (arg) => arg;
-
 const sentryWebpackPluginOptions = {
    // Additional config options for the Sentry Webpack plugin. Keep in mind that
    // the following options are set automatically, and overriding them is not
@@ -139,17 +143,21 @@ const moduleExports = {
       });
       return config;
    },
-   ...(!SENTRY_AUTH_TOKEN && {
-      sentry: {
+   sentry: {
+      autoInstrumentServerFunctions: false,
+      // Upload artifacts in dist/framework as well; this includes sourcemaps
+      // for react and other next.js code
+      widenClientFileUpload: true,
+      ...(!SENTRY_AUTH_TOKEN && {
          disableServerWebpackPlugin: true,
          disableClientWebpackPlugin: true,
-      },
-   }),
+      }),
+   },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(
-   withBundleAnalyzer(withTM(moduleExports)),
+   withBundleStats(withBundleAnalyzer(withTM(moduleExports))),
    SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );

@@ -1,7 +1,7 @@
 import { Box, chakra, Heading, SimpleGrid } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common/CompatibleDevice';
 import { PageContentWrapper } from '@ifixit/ui';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 
 export type CompatibilitySectionProps = {
@@ -14,7 +14,14 @@ export function CompatibilitySection({
    return compatibility && compatibility.devices.length > 0 ? (
       <Box id="compatibility" bg="gray.100" py="16" fontSize="sm">
          <PageContentWrapper>
-            <Heading as="h2" color="gray.700" textAlign="center" mb="12">
+            <Heading
+               as="h2"
+               color="gray.700"
+               textAlign="center"
+               mb="12"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
+            >
                Compatibility
             </Heading>
             <SimpleGrid
@@ -31,7 +38,7 @@ export function CompatibilitySection({
                         borderWidth="1px"
                         borderStyle="solid"
                         borderColor="gray.300"
-                        borderRadius="4px"
+                        borderRadius="base"
                         transition="all 300ms"
                         _hover={{
                            boxShadow: 'md',

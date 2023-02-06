@@ -112,7 +112,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                )}
                {showLifetimeWarrantyBadge && (
                   <ProductCardBadge colorScheme="blue">
-                     Lifetime Warranty
+                     Lifetime Guarantee
                   </ProductCardBadge>
                )}
             </ProductCardBadgeList>

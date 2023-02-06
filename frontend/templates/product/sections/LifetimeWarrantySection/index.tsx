@@ -3,7 +3,7 @@ import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { PageContentWrapper } from '@ifixit/ui';
-import type { ProductVariant } from '@models/product/server';
+import type { ProductVariant } from '@pages/api/nextjs/cache/product';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
 import Image from 'next/image';
 
@@ -48,7 +48,13 @@ export function LifetimeWarrantySection({
                   }}
                >
                   <Box>
-                     <Heading as="h2" color="white" letterSpacing="wide" mb="3">
+                     <Heading
+                        as="h2"
+                        color="white"
+                        mb="3"
+                        fontSize={{ base: '2xl', md: '3xl' }}
+                        fontWeight="medium"
+                     >
                         Lifetime Guarantee
                      </Heading>
                      <Text color="white">
@@ -67,9 +73,8 @@ export function LifetimeWarrantySection({
                   </Box>
                   <Icon
                      as={QualityGuarantee}
-                     boxSize="160px"
+                     boxSize={{ base: '130px', md: '160px' }}
                      color="white"
-                     borderRadius="full"
                      ml={{
                         base: 0,
                         md: 8,

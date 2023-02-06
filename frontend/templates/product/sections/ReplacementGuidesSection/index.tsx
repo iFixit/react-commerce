@@ -21,7 +21,7 @@ import {
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
 import { IconBadge, PageContentWrapper, ResponsiveImage } from '@ifixit/ui';
-import type { Product } from '@models/product/server';
+import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type ReplacementGuidesSectionProps = {
    product: Product;
@@ -54,7 +54,8 @@ export function ReplacementGuidesSection({
                   base: 6,
                   md: 16,
                }}
-               size="lg"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
             >
                Replacement Guides
             </Heading>
@@ -153,7 +154,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
             <LinkOverlay
                href={guide.guide_url}
                target="_blank"
-               fontWeight="bold"
+               fontWeight="semibold"
                fontSize="sm"
                lineHeight="short"
                noOfLines={3}

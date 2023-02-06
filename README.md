@@ -114,6 +114,15 @@ pnpm run playwright:run --project="Mobile Chrome" --headed fix_kit // Runs fix_k
 > ⚠️ We need to have the dev server running before we run the Playwright tests.
 > Luckily, Playwright webserver will start the app automatically if it's not running yet.
 
+If you are trying to experiment with the MSW handlers, you can use the following command to instantiate the Next.js server
+with the MSW handlers integrated. You can then add or remove handlers from
+`frontend/tests/playwright/msw/handlers.ts` and see the changes. If you do make
+any changes, make sure to restart the server.
+
+```sh
+NEXT_PUBLIC_MOCK_API=true pnpm dev
+```
+
 This command will run Jest tests:
 
 ```sh

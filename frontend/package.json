@@ -19,8 +19,8 @@
       "lint": "eslint . --ext ts --ext tsx --ext js",
       "test": "jest",
       "test-all": "pnpm run lint && pnpm run type-check && pnpm run test",
-      "playwright:run": "NEXT_PUBLIC_MOCK_API=true playwright test",
-      "playwright:debug": "NEXT_PUBLIC_MOCK_API=true DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug"
+      "playwright:run": "playwright test",
+      "playwright:debug": "DEBUG=pw:api playwright test --project=\"Desktop Chrome\" --debug"
    },
    "dependencies": {
       "@chakra-ui/react": "2.4.8",
@@ -112,7 +112,9 @@
       "jest-environment-jsdom": "28.1.2",
       "jest-watch-typeahead": "1.1.0",
       "msw": "0.49.2",
+      "next-plugin-bundle-stats": "^4.1.11",
       "next-transpile-modules": "9.0.0",
+      "playwright-msw": "2.1.0",
       "prettier": "2.7.1",
       "typescript": "4.8.4",
       "webpack": "5.73.0"

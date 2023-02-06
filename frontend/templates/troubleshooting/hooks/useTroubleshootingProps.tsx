@@ -1,7 +1,7 @@
 import { WithProvidersProps } from '@components/common';
 import type { WithLayoutProps } from '@layouts/default/server';
 
-export type Problem = {
+export type Section = {
    heading: string;
    body: string;
 };
@@ -9,9 +9,9 @@ export type Problem = {
 export type TroubleshootingData = {
    title: string;
    toc: string;
-   introduction: Problem[];
-   solutions: Problem[];
-   conclusion: Problem[];
+   introduction: Section[];
+   solutions: Section[];
+   conclusion: Section[];
 };
 
 type TroubleshootingPageProps = {
