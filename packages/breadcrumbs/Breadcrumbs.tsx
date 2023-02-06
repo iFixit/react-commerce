@@ -29,7 +29,6 @@ export interface BreadCrumbsProps {
    breadCrumbs: BreadcrumbItem[];
    breadcrumbsToShow?: number;
    breadcrumbIcon?: JSX.Element;
-   usePlaceHolder?: boolean;
 }
 
 type IFixitBreadcrumbItemProps = BreadcrumbItem & {
