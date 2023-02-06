@@ -112,6 +112,7 @@
       "jest-environment-jsdom": "28.1.2",
       "jest-watch-typeahead": "1.1.0",
       "msw": "0.49.2",
+      "next-plugin-bundle-stats": "^4.1.11",
       "next-transpile-modules": "9.0.0",
       "playwright-msw": "2.1.0",
       "prettier": "2.7.1",
