@@ -4,12 +4,19 @@ import { REDIS_URL } from '@config/env';
 import { nullAdapter } from './null-adapter';
 
 export const getCache = () => {
-   if (REDIS_URL === undefined) {
-      return nullAdapter();
+   const nullCacheAdapter = nullAdapter();
+   if (REDIS_URL) {
+      const redisClient = getRedisClient(REDIS_URL);
+      const redisCacheAdapter = redisAdapter(redisClient);
+      return () => redisClient.status == "ready" ? redisCacheAdapter : nullCacheAdapter;
+   } else {
+      return () => nullCacheAdapter;
    }
+};
 
-   const client = new Redis(REDIS_URL, {
-      connectTimeout: 500,
+function getRedisClient(redisUrl: string) {
+   return new Redis(redisUrl, {
+      connectTimeout: 10000,
       // Retry, connect every once in a while as cache misses / failures are OK
       retryStrategy: (times) => Math.min(times * 5000, 10 * 60 * 1000),
       maxRetriesPerRequest: 0,
@@ -20,5 +27,4 @@ export const getCache = () => {
       // queue
       enableOfflineQueue: false,
    });
-   return redisAdapter(client);
-};
+}

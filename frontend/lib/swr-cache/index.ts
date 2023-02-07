@@ -96,7 +96,7 @@ export const withCache = <
       let start = performance.now();
       let cachedEntry: CacheEntry | null = null;
       try {
-         cachedEntry = await cache.get(key);
+         cachedEntry = await cache().get(key);
       } catch (error) {
          logger.warning(
             `${endpoint}.error: unable to get entry with key. ${printError(
@@ -135,7 +135,7 @@ export const withCache = <
          });
          try {
             start = performance.now();
-            await cache.set(key, cacheEntry);
+            await cache().set(key, cacheEntry);
             elapsed = performance.now() - start;
             logger.info.timing(`${statName}.set`, elapsed);
          } catch (error) {
@@ -161,7 +161,7 @@ export const withCache = <
             staleWhileRevalidate,
          });
          const key = createCacheKey(endpoint, variables);
-         await cache.set(key, cacheEntry);
+         await cache().set(key, cacheEntry);
          return res.status(200).json({ success: true });
       } catch (error) {
          logger.error(printError(error));
