@@ -25,7 +25,13 @@ export type NewsletterFormProps = {
    callToActionButtonTitle: string;
 };
 
-const NewsletterInput = ({ placeholder, onSubmit }: { placeholder: string; onSubmit: (event: React.FormEvent<HTMLDivElement>) => Promise<void> }) => {
+const NewsletterInput = ({
+   placeholder,
+   onSubmit,
+}: {
+   placeholder: string;
+   onSubmit: (event: React.FormEvent<HTMLDivElement>) => Promise<void>;
+}) => {
    return (
       <FormControl w="full">
          <Input
@@ -45,7 +51,13 @@ const NewsletterInput = ({ placeholder, onSubmit }: { placeholder: string; onSub
    );
 };
 
-const NewsletterHeader = ({ title, subtitle }: { title: string; subtitle: string }) => {
+const NewsletterHeader = ({
+   title,
+   subtitle,
+}: {
+   title: string;
+   subtitle: string;
+}) => {
    return (
       <Box textAlign="left">
          <Text fontWeight="bold" fontSize="lg" color="white" my={2}>
@@ -86,7 +98,7 @@ const NewsletterForm = ({
          }}
          align="flex-start"
       >
-         <NewsletterInput placeholder={placeholder} onSubmit={onSubmit}/>
+         <NewsletterInput placeholder={placeholder} onSubmit={onSubmit} />
          <Button
             onSubmit={onSubmit}
             type="submit"
@@ -102,7 +114,7 @@ const NewsletterForm = ({
    );
 };
 
-const NewsletterSubscribed = ({isSubscribed}: {isSubscribed: boolean}) => {
+const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
    if (!isSubscribed) {
       return null;
    }
@@ -129,7 +141,7 @@ const NewsletterSubscribed = ({isSubscribed}: {isSubscribed: boolean}) => {
    );
 };
 
-const NewsletterLink = ({isSubscribed}: {isSubscribed: boolean}) => {
+const NewsletterLink = ({ isSubscribed }: { isSubscribed: boolean }) => {
    const message = isSubscribed ? 'Let me read it!' : 'Let me read it first!';
    return (
       <Link
@@ -146,7 +158,7 @@ const NewsletterLink = ({isSubscribed}: {isSubscribed: boolean}) => {
    );
 };
 
-export function NewsletterComponent ({
+export function NewsletterComponent({
    newsletterForm,
 }: {
    newsletterForm: NewsletterFormProps;
@@ -190,7 +202,10 @@ export function NewsletterComponent ({
          justify="flex-start"
          w="auto"
       >
-         <NewsletterHeader title={newsletterForm.title} subtitle={newsletterForm.subtitle} />
+         <NewsletterHeader
+            title={newsletterForm.title}
+            subtitle={newsletterForm.subtitle}
+         />
          <NewsletterForm
             placeholder={newsletterForm.inputPlaceholder}
             buttonText={newsletterForm.callToActionButtonTitle}

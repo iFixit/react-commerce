@@ -23,7 +23,12 @@ type NavSectionProps = {
    newsletterForm: NewsletterFormProps;
 };
 
-export const NavigationSection = ({ menu1, menu2, menu3, newsletterForm }: NavSectionProps) => {
+export const NavigationSection = ({
+   menu1,
+   menu2,
+   menu3,
+   newsletterForm,
+}: NavSectionProps) => {
    return (
       <FooterNavigationSection p={5}>
          <FooterNavigationList pl={-5}>
@@ -58,7 +63,7 @@ const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
 
 const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
    const listItems = menu.items.map((item: MenuItem, index: number) => {
-      console.log("Item: ", item);
+      console.log('Item: ', item);
       if (item.type !== 'link') {
          return null;
       }
