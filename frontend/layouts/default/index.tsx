@@ -283,8 +283,6 @@ export function DefaultLayout({
                </Header>
                {children}
                <CartFooter
-                  menu1={currentStore.footer.menu1}
-                  menu2={currentStore.footer.menu2}
                   partners={currentStore.footer.partners}
                   bottomMenu={currentStore.footer.bottomMenu}
                   socialMediaAccounts={currentStore.socialMediaAccounts}

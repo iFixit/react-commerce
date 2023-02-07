@@ -1,5 +1,5 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
-import { Menu, MenuList, HStack } from '@chakra-ui/react';
+import { Menu, MenuList } from '@chakra-ui/react';
 import {
    Flag,
    FlagCountryCode,
@@ -10,13 +10,8 @@ import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem, getSupportUrlFromStoreCode } from '@models/store';
-import { NewsletterComponent } from './Newsletter';
 import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
-   FooterNavigationItem,
-   FooterNavigationList,
-   FooterNavigationLink,
-   FooterNavigationSection,
    FooterCopyright,
    FooterLegalLink,
    FooterLegalLinkList,
@@ -38,8 +33,6 @@ import { CountryCode } from '@lib/shopify-storefront-sdk';
 
 interface FooterProps {
    stores: StoreListItem[];
-   menu1: Store['footer']['menu1'];
-   menu2: Store['footer']['menu2'];
    partners: Store['footer']['partners'];
    bottomMenu: Store['footer']['bottomMenu'];
    socialMediaAccounts: Store['socialMediaAccounts'];
