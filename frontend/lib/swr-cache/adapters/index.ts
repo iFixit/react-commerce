@@ -8,7 +8,8 @@ export const getCache = () => {
    if (REDIS_URL) {
       const redisClient = getRedisClient(REDIS_URL);
       const redisCacheAdapter = redisAdapter(redisClient);
-      return () => redisClient.status == "ready" ? redisCacheAdapter : nullCacheAdapter;
+      return () =>
+         redisClient.status == 'ready' ? redisCacheAdapter : nullCacheAdapter;
    } else {
       return () => nullCacheAdapter;
    }
