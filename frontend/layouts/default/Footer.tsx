@@ -1,15 +1,15 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { Menu, MenuList } from '@chakra-ui/react';
-import {
-   Flag,
-   FlagCountryCode,
-   Language,
-} from '@ifixit/icons';
+import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
 import { MenuItemType } from '@models/menu';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
-import { Store, StoreListItem, getSupportUrlFromStoreCode } from '@models/store';
+import {
+   Store,
+   StoreListItem,
+   getSupportUrlFromStoreCode,
+} from '@models/store';
 import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
    FooterCopyright,
@@ -47,7 +47,9 @@ export function CartFooter({
    globalSettings,
 }: FooterProps) {
    const { newsletterForm } = globalSettings;
-   const { menu1, menu2, menu3 } = getGuideFooterMenus(getSupportUrlFromStoreCode(CountryCode.Us));
+   const { menu1, menu2, menu3 } = getGuideFooterMenus(
+      getSupportUrlFromStoreCode(CountryCode.Us)
+   );
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
          <Footer>

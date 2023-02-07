@@ -1,6 +1,4 @@
-import {
-   HStack,
-} from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import {
    FacebookLogo,
    InstagramLogo,
@@ -10,9 +8,7 @@ import {
    YoutubeLogo,
 } from '../../icons';
 import { memo } from 'react';
-import {
-   FooterLink,
-} from './Shared';
+import { FooterLink } from './Shared';
 
 export interface SocialMediaAccounts {
    twitter: string | null;
@@ -34,19 +30,39 @@ export const SocialMediaSection = memo(function SocialMediaSection({
    return (
       <HStack spacing={4} justify={{ base: 'space-between', sm: 'center' }}>
          {accounts.tiktok && (
-            <FooterLink aria-label="TikTok" href={accounts.tiktok} icon={TiktokLogo} />
+            <FooterLink
+               aria-label="TikTok"
+               href={accounts.tiktok}
+               icon={TiktokLogo}
+            />
          )}
          {accounts.facebook && (
-            <FooterLink aria-label="Facebook" href={accounts.facebook} icon={FacebookLogo} />
+            <FooterLink
+               aria-label="Facebook"
+               href={accounts.facebook}
+               icon={FacebookLogo}
+            />
          )}
          {accounts.twitter && (
-            <FooterLink aria-label="Twitter" href={accounts.twitter} icon={TwitterLogo} />
+            <FooterLink
+               aria-label="Twitter"
+               href={accounts.twitter}
+               icon={TwitterLogo}
+            />
          )}
          {accounts.instagram && (
-            <FooterLink aria-label="Instagram" href={accounts.instagram} icon={InstagramLogo} />
+            <FooterLink
+               aria-label="Instagram"
+               href={accounts.instagram}
+               icon={InstagramLogo}
+            />
          )}
          {accounts.youtube && (
-            <FooterLink aria-label="YouTube" href={accounts.youtube} icon={YoutubeLogo} />
+            <FooterLink
+               aria-label="YouTube"
+               href={accounts.youtube}
+               icon={YoutubeLogo}
+            />
          )}
          {accounts.repairOrg && (
             <FooterLink
