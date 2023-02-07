@@ -48,14 +48,15 @@ function onBrowserRender<T extends HTMLElement>(
    wrappedEffect: undefined | HiddenWrapEffect,
    shownEffect: undefined | HiddenWrapEffect
 ) {
-   const containerStart = container.offsetTop;
+   const buffer = container.offsetHeight / 2;
+   const wrappedPX = container.offsetTop + buffer;
    const children = Array.from(container.children) as HTMLElement[];
 
    const wrappedChildren = children.filter(
-      (child) => child.offsetTop > containerStart
+      (child) => child.offsetTop > wrappedPX
    );
    const shownChildren = children.filter(
-      (child) => child.offsetTop <= containerStart
+      (child) => child.offsetTop <= wrappedPX
    );
    wrappedEffect?.(wrappedChildren, container);
    shownEffect?.(shownChildren, container);
