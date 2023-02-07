@@ -42,6 +42,7 @@ importers:
       '@ifixit/analytics': workspace:*
       '@ifixit/app': workspace:*
       '@ifixit/auth-sdk': workspace:*
+      '@ifixit/breadcrumbs': workspace:*
       '@ifixit/cart-sdk': workspace:*
       '@ifixit/footer': workspace:*
       '@ifixit/helpers': workspace:*
@@ -129,6 +130,7 @@ importers:
       '@ifixit/analytics': link:../packages/analytics
       '@ifixit/app': link:../packages/app
       '@ifixit/auth-sdk': link:../packages/auth-sdk
+      '@ifixit/breadcrumbs': link:../packages/breadcrumbs
       '@ifixit/cart-sdk': link:../packages/cart-sdk
       '@ifixit/footer': link:../packages/footer
       '@ifixit/helpers': link:../packages/helpers
@@ -283,6 +285,23 @@ importers:
       '@types/prompts': 2.4.1
       '@types/yargs': 17.0.13
       ts-node: 10.9.1_cj5mtiz27ejqqym7lopgjtf5ya
+      typescript: 4.8.4
+
+  packages/breadcrumbs:
+    specifiers:
+      '@ifixit/icons': workspace:*
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 18.0.24
+      '@types/react-dom': 18.0.8
+      react: '>=18.2.0'
+      typescript: 4.8.4
+    dependencies:
+      '@ifixit/icons': link:../icons
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 18.0.24
+      '@types/react-dom': 18.0.8
+      react: 18.2.0
       typescript: 4.8.4
 
   packages/cart-sdk:
