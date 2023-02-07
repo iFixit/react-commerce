@@ -289,11 +289,17 @@ importers:
     specifiers:
       '@ifixit/icons': workspace:*
       '@ifixit/tsconfig': workspace:*
+      '@types/react': 18.0.24
+      '@types/react-dom': 18.0.8
+      react: '>=18.2.0'
       typescript: 4.8.4
     dependencies:
       '@ifixit/icons': link:../icons
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 18.0.24
+      '@types/react-dom': 18.0.8
+      react: 18.2.0
       typescript: 4.8.4
 
   packages/cart-sdk:
