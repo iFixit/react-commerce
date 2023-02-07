@@ -218,7 +218,7 @@ type ClearAllButtonProps = {
 };
 
 function ClearAllButton({ isVisible }: ClearAllButtonProps) {
-   const { refine } = useClearRefinements({});
+   const { refine } = useClearRefinements();
    if (!isVisible) {
       return null;
    }
