@@ -42,6 +42,7 @@ importers:
       '@ifixit/analytics': workspace:*
       '@ifixit/app': workspace:*
       '@ifixit/auth-sdk': workspace:*
+      '@ifixit/breadcrumbs': workspace:*
       '@ifixit/cart-sdk': workspace:*
       '@ifixit/footer': workspace:*
       '@ifixit/helpers': workspace:*
@@ -129,6 +130,7 @@ importers:
       '@ifixit/analytics': link:../packages/analytics
       '@ifixit/app': link:../packages/app
       '@ifixit/auth-sdk': link:../packages/auth-sdk
+      '@ifixit/breadcrumbs': link:../packages/breadcrumbs
       '@ifixit/cart-sdk': link:../packages/cart-sdk
       '@ifixit/footer': link:../packages/footer
       '@ifixit/helpers': link:../packages/helpers
