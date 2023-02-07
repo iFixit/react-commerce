@@ -11,7 +11,10 @@ export const getCache = () => {
    const client = new Redis(REDIS_URL, {
       connectTimeout: 500,
       // Retry, connect every once in a while as cache misses / failures are OK
-      retryStrategy: (times) => Math.min(times * 5000, 10 * 60 * 1000),
+      retryStrategy: (times) => {
+         times = Math.min(20, times);
+         return Math.min(50 + 2 ^ (times + 3), 10 * 60 * 1000);
+      },
       maxRetriesPerRequest: 0,
       // Always try re-connecting since one instance is shared across the whole
       // process
