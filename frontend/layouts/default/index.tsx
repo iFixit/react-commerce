@@ -61,6 +61,8 @@ import * as React from 'react';
 import type { DefaultLayoutProps } from './server';
 import { CartFooter } from './Footer';
 
+export * from './Newsletter';
+
 export function DefaultLayout({
    stores,
    currentStore,

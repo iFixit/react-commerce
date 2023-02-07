@@ -9,7 +9,7 @@ import { MenuItemType } from '@models/menu';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
-import { Store, StoreListItem } from '@models/store';
+import { Store, StoreListItem, getSupportUrlFromStoreCode } from '@models/store';
 import { NewsletterComponent } from './Newsletter';
 import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
@@ -31,7 +31,10 @@ import {
    FooterLink,
    FooterDivider,
    EventTracker,
+   NavigationSection,
+   getGuideFooterMenus,
 } from '@ifixit/footer';
+import { CountryCode } from '@lib/shopify-storefront-sdk';
 
 interface FooterProps {
    stores: StoreListItem[];
@@ -45,48 +48,22 @@ interface FooterProps {
 
 export function CartFooter({
    stores,
-   menu1,
-   menu2,
    partners,
    bottomMenu,
    socialMediaAccounts,
    globalSettings,
 }: FooterProps) {
    const { newsletterForm } = globalSettings;
+   const { menu1, menu2, menu3 } = getGuideFooterMenus(getSupportUrlFromStoreCode(CountryCode.Us));
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
          <Footer>
-            <FooterNavigationSection>
-               <FooterNavigationList>
-                  {menu1?.items.map((item, index) => {
-                     if (item.type === 'link') {
-                        return (
-                           <FooterNavigationItem key={index}>
-                              <FooterNavigationLink href={item.url}>
-                                 {item.name}
-                              </FooterNavigationLink>
-                           </FooterNavigationItem>
-                        );
-                     }
-                  })}
-               </FooterNavigationList>
-               <FooterNavigationList>
-                  {menu2?.items.map((item, index) => {
-                     if (item.type === 'link') {
-                        return (
-                           <FooterNavigationItem key={index}>
-                              <FooterNavigationLink href={item.url}>
-                                 {item.name}
-                              </FooterNavigationLink>
-                           </FooterNavigationItem>
-                        );
-                     }
-                  })}
-               </FooterNavigationList>
-               <NewsletterComponent
-                  newsletterForm={newsletterForm}
-               />
-            </FooterNavigationSection>
+            <NavigationSection
+               menu1={menu1}
+               menu2={menu2}
+               menu3={menu3}
+               newsletterForm={newsletterForm}
+            />
 
             <FooterDivider />
 

@@ -10,8 +10,84 @@ import {
    ListProps,
    SimpleGrid,
    SimpleGridProps,
+   Text,
 } from '@chakra-ui/react';
+import { NewsletterComponent, NewsletterFormProps } from '@layouts/default';
+import { Menu as MenuType, MenuItem } from '@models/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+
+type NavSectionProps = {
+   menu1: MenuType | null;
+   menu2: MenuType | null;
+   menu3: MenuType | null;
+   newsletterForm: NewsletterFormProps;
+};
+
+export const NavigationSection = ({ menu1, menu2, menu3, newsletterForm }: NavSectionProps) => {
+   return (
+      <FooterNavigationSection p={5}>
+         <FooterNavigationList pl={-5}>
+            <NavigationColumn menu={menu1} />
+         </FooterNavigationList>
+         <FooterNavigationList pl={-5}>
+            <NavigationColumn menu={menu2} />
+         </FooterNavigationList>
+         <FooterNavigationList pl={-5}>
+            <NavigationColumn menu={menu3} />
+         </FooterNavigationList>
+         <NewsletterComponent newsletterForm={newsletterForm} />
+      </FooterNavigationSection>
+   );
+};
+
+const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
+   console.log('Menu: ', menu);
+
+   if (!menu) {
+      return null;
+   }
+   return (
+      <>
+         <Text fontSize="lg" fontWeight="bold" color="white" my={2}>
+            {menu.title}
+         </Text>
+         <FooterNavigationListItems menu={menu} />
+      </>
+   );
+};
+
+const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
+   const listItems = menu.items.map((item: MenuItem, index: number) => {
+      console.log("Item: ", item);
+      if (item.type !== 'link') {
+         return null;
+      }
+
+      return (
+         <FooterNavigationItem key={index}>
+            <FooterNavigationLink
+               fontSize="md"
+               fontWeight="normal"
+               m={0}
+               p={0}
+               color="gray.300"
+               _visited={{ color: 'gray.300' }}
+               _hover={{ color: 'white', textDecoration: 'none' }}
+               sx={{
+                  '&:visited:hover': {
+                     color: 'white',
+                  },
+               }}
+               href={item.url}
+            >
+               {item.name}
+            </FooterNavigationLink>
+         </FooterNavigationItem>
+      );
+   });
+
+   return <>{listItems}</>;
+};
 
 export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
    (props, ref) => {

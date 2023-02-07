@@ -9,8 +9,17 @@ import {
    StackProps,
    Text,
 } from '@chakra-ui/react';
+import { Menu } from '@models/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 import { PageContentWrapper } from './PageContentWrapper';
+
+export interface FooterType {
+   menu1: Menu | null;
+   menu2: Menu | null;
+   menu3?: Menu | null;
+   partners: Menu | null;
+   bottomMenu: Menu | null;
+}
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {

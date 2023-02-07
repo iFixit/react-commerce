@@ -1,6 +1,7 @@
 import { filterNullableItems, Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
 import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
+import { lowerCase } from 'lodash';
 import {
    ImageLinkMenuItem,
    LinkMenuItem,
@@ -73,6 +74,7 @@ export interface StoreListItem {
    name: string;
    url: string;
    currency: string;
+   supportUrl: string;
 }
 
 /**
@@ -97,9 +99,32 @@ async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
             name: attributes.name,
             url: attributes.url,
             currency: attributes.currency,
+            supportUrl: getSupportUrlFromStoreCode(attributes.code),
          };
       })
    );
+}
+
+export function getSupportUrlFromStoreCode(code: string): string {
+   switch (lowerCase(code)) {
+      case 'eu_pro':
+      case 'eu_pro_test':
+      case 'eu_test':
+      case 'it':
+      case 'eu':
+      case 'uk':
+         return 'https://ifixit-eu-en.helpscoutdocs.com/';
+      case 'de':
+         return 'https://ifixit-eu-de.helpscoutdocs.com/';
+      case 'fr':
+         return 'https://ifixit-eu-fr.helpscoutdocs.com/';
+      case 'au':
+         return 'https://au-ifixit-support.helpscoutdocs.com/';
+      case 'ca':
+         return 'https://ca-ifixit-support.helpscoutdocs.com/';
+      default:
+         return 'https://help.ifixit.com/';
+   }
 }
 
 type ApiStore = NonNullable<
