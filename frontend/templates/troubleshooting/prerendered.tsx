@@ -49,7 +49,13 @@ const renderStyles: SystemStyleObject = {
       backgroundColor: 'gray.200',
       borderRadius: '4px',
       color: 'coolGray.600',
+      borderStyle: 'none',
+   },
+
+   pre: {
       padding: '2px 4px',
+      maxWidth: '100%',
+      overflow: 'auto',
    },
 };
 
