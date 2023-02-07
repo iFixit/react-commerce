@@ -15,8 +15,11 @@ import {
    StackProps,
    Text,
    TextProps,
+   Flex,
+   Link,
 } from '@chakra-ui/react';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
+import { faEye } from '@fortawesome/pro-solid-svg-icons/faEye';
 import {
    SubscriptionStatus,
    useSubscribeToNewsletter,
@@ -24,65 +27,63 @@ import {
 import React from 'react';
 import { FaIcon } from '@ifixit/icons';
 
-const FooterNewsletter = forwardRef<StackProps, 'div'>((props, ref) => {
+export type NewsletterFormProps = {
+   title: string;
+   subtitle: string;
+   inputPlaceholder: string;
+   callToActionButtonTitle: string;
+};
+
+const NewsletterInput = ({ placeholder, onSubmit }: { placeholder: string; onSubmit: (event: React.FormEvent<HTMLDivElement>) => Promise<void> }) => {
    return (
-      <Stack
-         ref={ref}
-         direction={{
-            base: 'column',
-            xl: 'row',
-         }}
-         spacing={{
-            base: 6,
-            xl: 8,
-         }}
-         align="center"
-         justify={{
-            base: 'center',
-            md: 'flex-end',
-         }}
-         w={{
-            base: 'full',
-            md: 'auto',
-         }}
-         px={{
-            base: 5,
-            sm: 0,
-         }}
-         {...props}
-      />
+      <FormControl w="full">
+         <Input
+            onSubmit={onSubmit}
+            type="email"
+            variant="filled"
+            bg="white"
+            color="gray.900"
+            fontSize="sm"
+            _focus={{
+               bg: 'white',
+               boxShadow: 'outline',
+            }}
+            placeholder={placeholder}
+         />
+      </FormControl>
    );
-});
+};
 
-const FooterNewsletterCopy = forwardRef<BoxProps, 'div'>((props, ref) => {
+const NewsletterHeader = ({ title, subtitle }: { title: string; subtitle: string }) => {
    return (
-      <Box
-         ref={ref}
-         textAlign={{
-            base: 'center',
-            xl: 'left',
-         }}
-         {...props}
-      />
+      <Box textAlign="left">
+         <Text fontWeight="bold" fontSize="lg" color="white" my={2}>
+            {title}
+         </Text>
+         <Text color="gray.300" fontSize="md" fontWeight="normal" mt={3}>
+            {subtitle}
+         </Text>
+      </Box>
    );
-});
+};
 
-const FooterNewsletterTitle = forwardRef<TextProps, 'div'>((props, ref) => {
-   return <Text ref={ref} fontSize="sm" fontWeight="semibold" {...props} />;
-});
-
-const FooterNewsletterDescription = forwardRef<TextProps, 'div'>(
-   (props, ref) => {
-      return <Text ref={ref} fontSize="sm" color="gray.200" {...props} />;
+const NewsletterForm = ({
+   placeholder,
+   buttonText,
+   isSubscribed,
+   onSubmit,
+}: {
+   placeholder: string;
+   buttonText: string;
+   isSubscribed: boolean;
+   onSubmit: (event: React.FormEvent<HTMLDivElement>) => Promise<void>;
+}) => {
+   if (isSubscribed) {
+      return null;
    }
-);
-
-const FooterNewsletterForm = forwardRef<StackProps, 'form'>((props, ref) => {
    return (
       <HStack
-         ref={ref}
          as="form"
-         data-testid="footer-newsletter-form"
          spacing="3"
          w={{
             base: 'full',
@@ -93,78 +94,73 @@ const FooterNewsletterForm = forwardRef<StackProps, 'form'>((props, ref) => {
             md: 'flex-end',
          }}
          align="flex-start"
-         {...props}
-      />
+      >
+         <NewsletterInput placeholder={placeholder} onSubmit={onSubmit}/>
+         <Button
+            onSubmit={onSubmit}
+            type="submit"
+            bg="blue.ifixit"
+            color="white"
+            border="none"
+            fontWeight="bold"
+            _hover={{ bg: 'blue.ifixit', boxShadow: '0 0 5px gray' }}
+         >
+            {buttonText}
+         </Button>
+      </HStack>
    );
-});
+};
 
-const FooterNewsletterFormControl = forwardRef<FormControlProps, 'div'>(
-   (props, ref) => {
-      return (
-         <FormControl
-            ref={ref}
-            w={{
-               base: 'full',
-               sm: 96,
-            }}
-            maxW={{
-               base: 'full',
-               sm: 96,
-               xl: 64,
-            }}
-            {...props}
-         />
-      );
+const NewsletterSubscribed = ({isSubscribed}: {isSubscribed: boolean}) => {
+   if (!isSubscribed) {
+      return null;
    }
-);
+   return (
+      <Flex
+         height="42px"
+         flexDirection="row"
+         alignItems="center"
+         padding="12px"
+         gap="8px"
+         w="100%"
+         backgroundColor="#EDF6FF"
+         border="1px"
+         borderColor="#77B5FF"
+         borderStyle="solid"
+         borderRadius="4px"
+         mt="0px !important"
+      >
+         <FaIcon icon={faCircleCheck} color="#1975F1" />
+         <Text color="gray.900" m={0} fontSize="16px">
+            Subscribed!
+         </Text>
+      </Flex>
+   );
+};
 
-const FooterNewsletterEmailLabel = forwardRef<FormLabelProps, 'label'>(
-   (props, ref) => {
-      return (
-         <FormLabel
-            ref={ref}
-            htmlFor="newsletter-email-input"
-            srOnly
-            {...props}
-         />
-      );
-   }
-);
+const NewsletterLink = ({isSubscribed}: {isSubscribed: boolean}) => {
+   const message = isSubscribed ? 'Let me read it!' : 'Let me read it first!';
+   return (
+      <Link
+         href="/Newsletter"
+         color="gray.300"
+         marginTop={2}
+         textDecoration="underline"
+         _hover={{ color: 'white' }}
+         _visited={{ color: 'gray.300' }}
+      >
+         <FaIcon icon={faEye} display="inline" mr={1} verticalAlign="-3px" />
+         {message}
+      </Link>
+   );
+};
 
-const FooterNewsletterEmailInput = forwardRef<InputProps, 'input'>(
-   (props, ref) => {
-      return (
-         <Input
-            ref={ref}
-            id="newsletter-email-input"
-            type="email"
-            variant="filled"
-            bg="white"
-            color="gray.900"
-            fontSize="sm"
-            _focus={{
-               bg: 'white',
-               boxShadow: 'outline',
-            }}
-            {...props}
-         />
-      );
-   }
-);
-
-interface NewsletterFormProps {
-   title: string;
-   description: string;
-   emailPlaceholder?: string;
-   subscribeLabel: string;
-}
-
-export function NewsletterForm({
-   title,
-   description,
-   emailPlaceholder,
-   subscribeLabel,
-}: NewsletterFormProps) {
+export function NewsletterComponent ({
+   newsletterForm,
+}: {
+   newsletterForm: NewsletterFormProps;
+}) {
+   const ref = React.useRef();
    const inputRef = React.useRef<HTMLInputElement>(null);
    const [subscription, subscribe] = useSubscribeToNewsletter();
 
@@ -182,53 +178,36 @@ export function NewsletterForm({
    const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
 
    return (
-      <FooterNewsletter>
-         <FooterNewsletterCopy>
-            <FooterNewsletterTitle>{title}</FooterNewsletterTitle>
-            <FooterNewsletterDescription>
-               {description}
-            </FooterNewsletterDescription>
-         </FooterNewsletterCopy>
-         <FooterNewsletterForm onSubmit={onSubscribe} position="relative">
-            <FooterNewsletterFormControl isInvalid={subscription.error != null}>
-               <FooterNewsletterEmailLabel>
-                  Enter your email
-               </FooterNewsletterEmailLabel>
-               <FooterNewsletterEmailInput
-                  ref={inputRef}
-                  disabled={subscription.status !== SubscriptionStatus.Idle}
-                  placeholder={emailPlaceholder}
-                  visibility={isSubscribed ? 'hidden' : 'visible'}
-               />
-               <FormErrorMessage>{subscription.error}</FormErrorMessage>
-            </FooterNewsletterFormControl>
-            <Button
-               type="submit"
-               data-testid="footer-newsletter-subscribe-button"
-               isLoading={
-                  subscription.status === SubscriptionStatus.Subscribing
-               }
-               disabled={subscription.status !== SubscriptionStatus.Idle}
-               colorScheme="brand"
-               visibility={isSubscribed ? 'hidden' : undefined}
-            >
-               {subscribeLabel}
-            </Button>
-            {isSubscribed && (
-               <Text
-                  align="center"
-                  position={'absolute'}
-                  top="0"
-                  left="0"
-                  right="5"
-                  bottom="0"
-                  lineHeight="10"
-               >
-                  <FaIcon icon={faCircleCheck} h="4" mr="1.5" color="white" />
-                  Subscribed!
-               </Text>
-            )}
-         </FooterNewsletterForm>
-      </FooterNewsletter>
+      <Stack
+         ref={ref}
+         direction="column"
+         ml={{
+            base: 0,
+            // since the legal column is skinny, let's scoot the newsletter over
+            lg: -20,
+         }}
+         pr={0}
+         mt={{
+            base: 0,
+            sm: 10,
+            lg: 3,
+         }}
+         gridColumnEnd={{
+            sm: 'span 3',
+            lg: 'auto',
+         }}
+         justify="flex-start"
+         w="auto"
+      >
+         <NewsletterHeader title={newsletterForm.title} subtitle={newsletterForm.subtitle} />
+         <NewsletterForm
+            placeholder={newsletterForm.inputPlaceholder}
+            buttonText={newsletterForm.callToActionButtonTitle}
+            isSubscribed={isSubscribed}
+            onSubmit={onSubscribe}
+         />
+         <NewsletterSubscribed isSubscribed={isSubscribed} />
+         <NewsletterLink isSubscribed={isSubscribed} />
+      </Stack>
    );
-}
+};

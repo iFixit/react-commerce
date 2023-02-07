@@ -10,7 +10,7 @@ import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
 import { Store, StoreListItem } from '@models/store';
-import { NewsletterForm } from './Newsletter';
+import { NewsletterComponent } from './Newsletter';
 import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
    FooterNavigationItem,
@@ -83,11 +83,8 @@ export function CartFooter({
                      }
                   })}
                </FooterNavigationList>
-               <NewsletterForm
-                  title={newsletterForm.title}
-                  description={newsletterForm.subtitle}
-                  subscribeLabel={newsletterForm.callToActionButtonTitle}
-                  emailPlaceholder={newsletterForm.inputPlaceholder}
+               <NewsletterComponent
+                  newsletterForm={newsletterForm}
                />
             </FooterNavigationSection>
 
