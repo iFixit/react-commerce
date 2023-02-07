@@ -35,6 +35,7 @@
       "@ifixit/analytics": "workspace:*",
       "@ifixit/app": "workspace:*",
       "@ifixit/auth-sdk": "workspace:*",
+      "@ifixit/breadcrumbs": "workspace:*",
       "@ifixit/cart-sdk": "workspace:*",
       "@ifixit/footer": "workspace:*",
       "@ifixit/helpers": "workspace:*",
