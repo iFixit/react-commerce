@@ -201,4 +201,4 @@ export function NewsletterComponent ({
          <NewsletterLink isSubscribed={isSubscribed} />
       </Stack>
    );
-};
+}
