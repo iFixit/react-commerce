@@ -2703,7 +2703,31 @@ export type GetProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             childrenHeading?: string | null;
+            heroImage?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
             image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            brandLogo?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
                   __typename?: 'UploadFileEntity';
@@ -3180,7 +3204,25 @@ export const GetProductListDocument = `
         defaultShowAllChildrenOnLgSizes
         filters
         forceNoindex
+        heroImage {
+          data {
+            attributes {
+              alternativeText
+              url
+              formats
+            }
+          }
+        }
         image {
+          data {
+            attributes {
+              alternativeText
+              url
+              formats
+            }
+          }
+        }
+        brandLogo {
           data {
             attributes {
               alternativeText

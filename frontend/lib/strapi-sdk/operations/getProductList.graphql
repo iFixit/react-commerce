@@ -18,7 +18,25 @@ query getProductList($filters: ProductListFiltersInput) {
             defaultShowAllChildrenOnLgSizes
             filters
             forceNoindex
+            heroImage {
+               data {
+                  attributes {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+            }
             image {
+               data {
+                  attributes {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+            }
+            brandLogo {
                data {
                   attributes {
                      alternativeText

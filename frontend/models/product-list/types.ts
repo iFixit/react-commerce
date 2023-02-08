@@ -68,7 +68,9 @@ export interface BaseProductList {
    defaultShowAllChildrenOnLgSizes: boolean | null;
    filters: string | null;
    forceNoindex: boolean | null;
+   heroImage: ProductListImage | null;
    image: ProductListImage | null;
+   brandLogo: ProductListImage | null;
    ancestors: ProductListAncestor[];
    children: ProductListChild[];
    childrenHeading: string | null;
