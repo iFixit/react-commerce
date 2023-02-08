@@ -93,6 +93,37 @@ export type HandlerOptions = {
 };
 
 export default class Handler {
+   /**
+    * Creates a new GraphQL handler.
+    */
+   static create({
+      request,
+      response,
+      options,
+   }: {
+      request: Omit<RequestInfo, 'method'> & { method: GraphQLMethods };
+      response: Omit<
+         MockedResponseInfo,
+         'headers' | 'body' | 'responseType'
+      > & {
+         body: Record<string, any>;
+      };
+      options?: HandlerOptions;
+   }): GraphQLHandler;
+
+   /**
+    * Creates a new Rest Handler.
+    */
+   static create({
+      request,
+      response,
+      options,
+   }: {
+      request: Omit<RequestInfo, 'method'> & { method: RestMethods };
+      response: MockedResponseInfo;
+      options?: HandlerOptions;
+   }): RestHandler;
+
    static create({
       request,
       response,
