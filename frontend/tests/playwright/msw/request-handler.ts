@@ -45,13 +45,28 @@ export type MockedResponseInfo = {
    responseType?: 'json' | 'text' | 'xml' | 'raw';
 };
 
+/**
+ * These are some options that can be passed to configure the request handler.
+ * @property `once` - If true, the handler will only be used once.
+ * @see https://mswjs.io/docs/api/response/once
+ * @property `passthrough` - If true, the request will be bypassed and performed
+ * as-is.
+ * @see https://mswjs.io/docs/api/request/passthrough
+ */
+export type HandlerOptions = {
+   once: boolean;
+   passthrough: boolean;
+};
+
 export default class Handler {
    static create(
       request: RequestInfo,
-      response: MockedResponseInfo
+      response: MockedResponseInfo,
+      options: HandlerOptions = { once: false, passthrough: false }
    ): RequestHandler {
       const { endpoint, method } = request;
       const { status, body, responseType } = response;
+      const { once, passthrough } = options;
 
       if (isGraphQLMethod(method)) {
          if (!isRecord(body)) {
@@ -68,11 +83,16 @@ export default class Handler {
              */
             '*',
             (req, res, ctx) => {
+               if (passthrough) return req.passthrough();
+               if (once) return res.once(ctx.status(status), ctx.data(body));
+
                return res(ctx.status(status), ctx.data(body));
             }
          );
       } else if (isRestMethod(method)) {
          return new RestHandler(method, endpoint, (req, res, ctx) => {
+            if (passthrough) return req.passthrough();
+
             const transformers = [ctx.status(status)];
 
             // Only transform the body if it and the response type are defined
@@ -88,6 +108,8 @@ export default class Handler {
                   ctx[responseType === 'raw' ? 'body' : responseType](body)
                );
             }
+
+            if (once) return res.once(...transformers);
 
             return res(...transformers);
          });
