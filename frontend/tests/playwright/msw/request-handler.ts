@@ -1,3 +1,4 @@
+import { isRecord } from '@ifixit/helpers';
 import { GraphQLHandler, RestHandler, RequestHandler } from 'msw';
 
 /**
@@ -53,6 +54,10 @@ export default class Handler {
       const { status, body, responseType } = response;
 
       if (isGraphQLMethod(method)) {
+         if (!isRecord(body)) {
+            throw new Error(`Invalid GraphQL body ${body}. Must be an object`);
+         }
+
          return new GraphQLHandler(
             method,
             endpoint,
