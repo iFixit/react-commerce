@@ -1,24 +1,32 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
+import Handler from '../msw/request-handler';
 
 test.describe('Disabled Product Test', () => {
    test('Not for Sale text renders and noindexed', async ({
       page,
       serverRequestInterceptor,
       port,
-      graphql,
    }) => {
+      const disabledProduct = cloneDeep(mockedProductQuery);
+      if (disabledProduct.product) {
+         disabledProduct.product.variants.nodes.forEach((variant) => {
+            variant.enabled = null;
+         });
+      }
+
       serverRequestInterceptor.use(
-         graphql.query('findProduct', async (req, res, ctx) => {
-            const disabledProduct = cloneDeep(mockedProductQuery);
-            if (disabledProduct.product) {
-               disabledProduct.product.variants.nodes.forEach((variant) => {
-                  variant.enabled = null;
-               });
+         Handler.create(
+            {
+               endpoint: 'findProduct',
+               method: 'query',
+            },
+            {
+               status: 200,
+               body: disabledProduct,
             }
-            return res(ctx.data(disabledProduct));
-         })
+         )
       );
 
       await page.goto(

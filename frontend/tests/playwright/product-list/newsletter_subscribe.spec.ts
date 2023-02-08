@@ -1,4 +1,5 @@
 import { test, expect } from '../test-fixtures';
+import Handler from '../msw/request-handler';
 
 test.describe('Subscribe to newsletter', () => {
    test.beforeEach(async ({ page }) => {
@@ -36,12 +37,17 @@ test.describe('Subscribe to newsletter', () => {
    test('Shows confirmation when email is subscribed', async ({
       page,
       clientRequestHandler,
-      rest,
    }) => {
       clientRequestHandler.use(
-         rest.post('/api/2.0/cart/newsletter/subscribe', (req, res, ctx) => {
-            return res(ctx.status(200));
-         })
+         Handler.create(
+            {
+               endpoint: '/api/2.0/cart/newsletter/subscribe',
+               method: 'post',
+            },
+            {
+               status: 200,
+            }
+         )
       );
 
       await page.getByLabel(/enter your email/i).fill('test@example.com');
@@ -58,12 +64,17 @@ test.describe('Subscribe to newsletter', () => {
    test('Shows an error when server request fails', async ({
       page,
       clientRequestHandler,
-      rest,
    }) => {
       clientRequestHandler.use(
-         rest.post('/api/2.0/cart/newsletter/subscribe', (req, res, ctx) => {
-            return res(ctx.status(500));
-         })
+         Handler.create(
+            {
+               endpoint: '/api/2.0/cart/newsletter/subscribe',
+               method: 'post',
+            },
+            {
+               status: 500,
+            }
+         )
       );
 
       await page.getByLabel(/enter your email/i).fill('test@example.com');
