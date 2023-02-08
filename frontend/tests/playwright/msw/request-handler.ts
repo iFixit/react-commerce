@@ -1,5 +1,17 @@
 import { isRecord } from '@ifixit/helpers';
-import { GraphQLHandler, RestHandler, RequestHandler } from 'msw';
+import {
+   GraphQLHandler,
+   RestHandler,
+   RequestHandler,
+   DefaultBodyType,
+   GraphQLContext,
+   GraphQLRequest,
+   GraphQLVariables,
+   PathParams,
+   ResponseResolver,
+   RestContext,
+   RestRequest,
+} from 'msw';
 
 /**
  * These methods are a subset of the GraphQL operational methods that are
@@ -9,7 +21,16 @@ import { GraphQLHandler, RestHandler, RequestHandler } from 'msw';
  * @see https://mswjs.io/docs/api/graphql#operation-kind
  */
 export type GraphQLMethods = 'mutation' | 'query';
-
+/**
+ * This is the type of the resolver that is used by the `graphql` handler.
+ * The resolver is a function that accepts a captured request and may return
+ * a mocked response.
+ * @see https://mswjs.io/docs/basics/response-resolver
+ */
+export type GraphQLResolver = ResponseResolver<
+   GraphQLRequest<GraphQLVariables>,
+   GraphQLContext<Record<string, any>>
+>;
 /**
  * These methods are a subset of the REST methods that are
  * supported by MSW's `rest` handler - _with the exception of
@@ -18,6 +39,17 @@ export type GraphQLMethods = 'mutation' | 'query';
  * @see https://mswjs.io/docs/api/rest#methods
  */
 export type RestMethods = 'all' | 'get' | 'post' | 'put' | 'patch' | 'delete';
+/**
+ * This is the type of the resolver that is used by the `rest` handler.
+ * The resolver is a function that accepts a captured request and may return
+ * a mocked response.
+ * @see https://mswjs.io/docs/basics/response-resolver
+ */
+export type RestResolver = ResponseResolver<
+   RestRequest<DefaultBodyType, PathParams<string>>,
+   RestContext,
+   DefaultBodyType
+>;
 
 export type RequestInfo = {
    endpoint: string;
@@ -56,6 +88,7 @@ export type MockedResponseInfo = {
 export type HandlerOptions = {
    once: boolean;
    passthrough: boolean;
+   customResolver?: GraphQLResolver | RestResolver;
 };
 
 export default class Handler {
@@ -66,7 +99,7 @@ export default class Handler {
    ): RequestHandler {
       const { endpoint, method } = request;
       const { status, body, responseType } = response;
-      const { once, passthrough } = options;
+      const { once, passthrough, customResolver } = options;
 
       if (isGraphQLMethod(method)) {
          if (!isRecord(body)) {
@@ -82,37 +115,45 @@ export default class Handler {
              * regardless of location the request is made from.
              */
             '*',
-            (req, res, ctx) => {
-               if (passthrough) return req.passthrough();
-               if (once) return res.once(ctx.status(status), ctx.data(body));
+            customResolver ??
+               ((req, res, ctx) => {
+                  if (passthrough) return req.passthrough();
+                  if (once) return res.once(ctx.status(status), ctx.data(body));
 
-               return res(ctx.status(status), ctx.data(body));
-            }
+                  return res(ctx.status(status), ctx.data(body));
+               })
          );
       } else if (isRestMethod(method)) {
-         return new RestHandler(method, endpoint, (req, res, ctx) => {
-            if (passthrough) return req.passthrough();
+         return new RestHandler(
+            method,
+            endpoint,
+            customResolver ??
+               ((req, res, ctx) => {
+                  if (passthrough) return req.passthrough();
 
-            const transformers = [ctx.status(status)];
+                  const transformers = [ctx.status(status)];
 
-            // Only transform the body if it and the response type are defined
-            if (body && responseType) {
-               /**
-                * `raw` is for our own naming convention, but the actual
-                * transformer method is called `body`. This can be confusing
-                * so we are using our own naming convention to make it
-                * clearer what response type we will be using.
-                * @see https://mswjs.io/docs/api/context/body
-                */
-               transformers.push(
-                  ctx[responseType === 'raw' ? 'body' : responseType](body)
-               );
-            }
+                  // Only transform the body if it and the response type are defined
+                  if (body && responseType) {
+                     /**
+                      * `raw` is for our own naming convention, but the actual
+                      * transformer method is called `body`. This can be confusing
+                      * so we are using our own naming convention to make it
+                      * clearer what response type we will be using.
+                      * @see https://mswjs.io/docs/api/context/body
+                      */
+                     transformers.push(
+                        ctx[responseType === 'raw' ? 'body' : responseType](
+                           body
+                        )
+                     );
+                  }
 
-            if (once) return res.once(...transformers);
+                  if (once) return res.once(...transformers);
 
-            return res(...transformers);
-         });
+                  return res(...transformers);
+               })
+         );
       } else {
          throw new Error(
             `Invalid method ${method}. Must be 'mutation', 'query', 'all', 'get', 'post', 'put', 'patch', or 'delete'.`
