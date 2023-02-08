@@ -1,4 +1,4 @@
-import { RequestHandler } from 'msw';
+import { GraphQLHandler, RestHandler, RequestHandler } from 'msw';
 
 /**
  * These methods are a subset of the GraphQL operational methods that are
@@ -53,9 +53,33 @@ export default class Handler {
       const { status, body, responseType } = response;
 
       if (isGraphQLMethod(method)) {
-         // return GraphQLHandler
+         return new GraphQLHandler(
+            method,
+            endpoint,
+            /**
+             * This refers to the Path,or location, of the endpoint. By using a
+             * wildcard, we are saying that we want to match any endpoint
+             * regardless of location the request is made from.
+             */
+            '*',
+            (req, res, ctx) => {
+               return res(ctx.status(status), ctx.data(body));
+            }
+         );
       } else if (isRestMethod(method)) {
-         // return RestHandler
+         return new RestHandler(method, endpoint, (req, res, ctx) => {
+            return res(
+               ctx.status(status),
+               /**
+                * `raw` is for our own naming convention, but the actual
+                * transformer method is called `body`. This can be confusing
+                * so we are using our own naming convention to make it
+                * clearer what response type we will be using.
+                * @see https://mswjs.io/docs/api/context/body
+                */
+               ctx[responseType === 'raw' ? 'body' : responseType](body)
+            );
+         });
       } else {
          throw new Error(
             `Invalid method ${method}. Must be 'mutation', 'query', 'all', 'get', 'post', 'put', 'patch', or 'delete'.`
