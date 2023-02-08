@@ -73,8 +73,10 @@ export default class Handler {
          );
       } else if (isRestMethod(method)) {
          return new RestHandler(method, endpoint, (req, res, ctx) => {
-            return res(
-               ctx.status(status),
+            const transformers = [ctx.status(status)];
+
+            // Only transform the body if it and the response type are defined
+            if (body && responseType) {
                /**
                 * `raw` is for our own naming convention, but the actual
                 * transformer method is called `body`. This can be confusing
@@ -82,8 +84,12 @@ export default class Handler {
                 * clearer what response type we will be using.
                 * @see https://mswjs.io/docs/api/context/body
                 */
-               ctx[responseType === 'raw' ? 'body' : responseType](body)
-            );
+               transformers.push(
+                  ctx[responseType === 'raw' ? 'body' : responseType](body)
+               );
+            }
+
+            return res(...transformers);
          });
       } else {
          throw new Error(
