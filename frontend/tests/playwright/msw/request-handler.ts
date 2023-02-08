@@ -23,9 +23,34 @@ export type RequestInfo = {
    method: GraphQLMethods | RestMethods;
 };
 
+/**
+ * This type represents the options that can be passed to the handler
+ * to configure what the response should return if the request is matched.
+ *
+ * @property `status` - The HTTP status code to return
+ * @property `body` - The body of the response.
+ * @property `responseType` - This the kind of transformation to apply to the
+ * body when it will be returned. This is only applicable to REST requests
+ * since GraphQL responses will only use a `data` transformer.
+ *
+ * @see https://mswjs.io/docs/basics/response-transformer#standards-transformers
+ * @see https://mswjs.io/docs/api/context
+ * @see https://mswjs.io/docs/api/response
+ *
+ */
+export type MockedResponseInfo = {
+   status: number;
+   body?: Record<string, any> | string | number | boolean | null;
+   responseType?: 'json' | 'text' | 'xml' | 'raw';
+};
+
 export default class Handler {
-   static create(request: RequestInfo): RequestHandler {
+   static create(
+      request: RequestInfo,
+      response: MockedResponseInfo
+   ): RequestHandler {
       const { endpoint, method } = request;
+      const { status, body, responseType } = response;
 
       if (isGraphQLMethod(method)) {
          // return GraphQLHandler
