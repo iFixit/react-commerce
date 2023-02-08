@@ -17,16 +17,16 @@ test.describe('Disabled Product Test', () => {
       }
 
       serverRequestInterceptor.use(
-         Handler.create(
-            {
+         Handler.create({
+            request: {
                endpoint: 'findProduct',
                method: 'query',
             },
-            {
+            response: {
                status: 200,
                body: disabledProduct,
-            }
-         )
+            },
+         })
       );
 
       await page.goto(

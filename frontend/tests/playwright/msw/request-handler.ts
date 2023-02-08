@@ -93,11 +93,15 @@ export type HandlerOptions = {
 };
 
 export default class Handler {
-   static create(
-      request: RequestInfo,
-      response: MockedResponseInfo,
-      options: HandlerOptions = { once: false, passthrough: false }
-   ): RequestHandler {
+   static create({
+      request,
+      response,
+      options = { once: false, passthrough: false },
+   }: {
+      request: RequestInfo;
+      response: MockedResponseInfo;
+      options?: HandlerOptions;
+   }): RequestHandler {
       const { endpoint, method } = request;
       const { status, headers, body, responseType } = response;
       const { once, passthrough, customResolver } = options;

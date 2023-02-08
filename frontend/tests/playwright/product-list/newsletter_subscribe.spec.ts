@@ -39,15 +39,15 @@ test.describe('Subscribe to newsletter', () => {
       clientRequestHandler,
    }) => {
       clientRequestHandler.use(
-         Handler.create(
-            {
+         Handler.create({
+            request: {
                endpoint: '/api/2.0/cart/newsletter/subscribe',
                method: 'post',
             },
-            {
+            response: {
                status: 200,
-            }
-         )
+            },
+         })
       );
 
       await page.getByLabel(/enter your email/i).fill('test@example.com');
@@ -66,15 +66,15 @@ test.describe('Subscribe to newsletter', () => {
       clientRequestHandler,
    }) => {
       clientRequestHandler.use(
-         Handler.create(
-            {
+         Handler.create({
+            request: {
                endpoint: '/api/2.0/cart/newsletter/subscribe',
                method: 'post',
             },
-            {
+            response: {
                status: 500,
-            }
-         )
+            },
+         })
       );
 
       await page.getByLabel(/enter your email/i).fill('test@example.com');

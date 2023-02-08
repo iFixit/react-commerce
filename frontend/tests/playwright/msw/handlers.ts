@@ -11,13 +11,13 @@ export const handlers: RequestHandler[] = [
     * Prepending the wildcard to the path would capture requests regardless of
     * origin. Therefore, API requests to Cominor will also be matched against.
     */
-   Handler.create(
-      {
+   Handler.create({
+      request: {
          endpoint: '*/api/2.0/internal/international_store_promotion/buybox',
          method: 'get',
       },
-      {
+      response: {
          status: 200,
-      }
-   ),
+      },
+   }),
 ];

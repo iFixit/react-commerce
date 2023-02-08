@@ -109,16 +109,16 @@ test.describe('product page add to cart', () => {
          }
 
          serverRequestInterceptor.use(
-            Handler.create(
-               {
+            Handler.create({
+               request: {
                   endpoint: 'findProduct',
                   method: 'query',
                },
-               {
+               response: {
                   status: 200,
                   body: lowStockedProduct,
-               }
-            )
+               },
+            })
          );
 
          await page.goto(
@@ -176,15 +176,15 @@ test.describe('product page add to cart', () => {
          port,
       }) => {
          clientRequestHandler.use(
-            Handler.create(
-               {
+            Handler.create({
+               request: {
                   endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
                   method: 'post',
                },
-               {
+               response: {
                   status: 200,
-               }
-            )
+               },
+            })
          );
 
          const outOfStockProduct = cloneDeep(mockedProductQuery);
@@ -193,16 +193,16 @@ test.describe('product page add to cart', () => {
          }
 
          serverRequestInterceptor.use(
-            Handler.create(
-               {
+            Handler.create({
+               request: {
                   endpoint: 'findProduct',
                   method: 'query',
                },
-               {
+               response: {
                   status: 200,
                   body: outOfStockProduct,
-               }
-            )
+               },
+            })
          );
 
          await page.goto(
