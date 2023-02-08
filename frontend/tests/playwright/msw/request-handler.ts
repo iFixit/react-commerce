@@ -73,6 +73,7 @@ export type RequestInfo = {
  */
 export type MockedResponseInfo = {
    status: number;
+   headers?: Record<string, string | string[]>;
    body?: Record<string, any> | string | number | boolean | null;
    responseType?: 'json' | 'text' | 'xml' | 'raw';
 };
@@ -98,7 +99,7 @@ export default class Handler {
       options: HandlerOptions = { once: false, passthrough: false }
    ): RequestHandler {
       const { endpoint, method } = request;
-      const { status, body, responseType } = response;
+      const { status, headers, body, responseType } = response;
       const { once, passthrough, customResolver } = options;
 
       if (isGraphQLMethod(method)) {
@@ -132,6 +133,10 @@ export default class Handler {
                   if (passthrough) return req.passthrough();
 
                   const transformers = [ctx.status(status)];
+
+                  if (headers) {
+                     transformers.push(ctx.set(headers));
+                  }
 
                   // Only transform the body if it and the response type are defined
                   if (body && responseType) {
