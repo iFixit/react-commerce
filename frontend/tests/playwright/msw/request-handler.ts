@@ -61,6 +61,7 @@ export type RequestInfo = {
  * to configure what the response should return if the request is matched.
  *
  * @property `status` - The HTTP status code to return
+ * @property `headers` - The headers to return with the response
  * @property `body` - The body of the response.
  * @property `responseType` - This the kind of transformation to apply to the
  * body when it will be returned. This is only applicable to REST requests
@@ -85,6 +86,10 @@ export type MockedResponseInfo = {
  * @property `passthrough` - If true, the request will be bypassed and performed
  * as-is.
  * @see https://mswjs.io/docs/api/request/passthrough
+ * @property `customResolver` - If provided, this will be used as the resolver
+ * for the handler. This is useful if you want to do something more complex than
+ * just returning a static response.
+ * @see https://mswjs.io/docs/basics/response-resolver
  */
 export type HandlerOptions = {
    once: boolean;
