@@ -19,7 +19,7 @@ import { APP_ORIGIN } from '@config/env';
 import { log as defaultLog, Logger } from '@ifixit/helpers';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
-import { getCache } from './adapters';
+import { cache } from './adapters';
 import {
    CacheEntry,
    createCacheEntry,
@@ -70,7 +70,6 @@ export const withCache = <
    z.infer<ValueSchema>
 > => {
    const logger: Logger = defaultLog;
-   const cache = getCache();
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
       fetch(`${APP_ORIGIN}/${endpoint}`, {

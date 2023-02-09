@@ -1,6 +1,12 @@
-import { UploadFile } from '@lib/strapi-sdk';
+import type { UploadFile } from '@lib/strapi-sdk';
 
 export type StrapiImageFormat = 'large' | 'medium' | 'small' | 'thumbnail';
+
+interface Image {
+   url: string;
+   alternativeText: string | null;
+   formats: Record<string, { url: string }>;
+}
 
 export function getImageFromStrapiImage(
    image: Pick<UploadFile, 'formats' | 'alternativeText' | 'url'>,
@@ -20,10 +26,4 @@ export function getImageFromStrapiImage(
    }
 
    return result;
-}
-
-export interface Image {
-   url: string;
-   alternativeText: string | null;
-   formats: Record<string, { url: string }>;
 }
