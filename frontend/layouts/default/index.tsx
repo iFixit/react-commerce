@@ -402,7 +402,7 @@ function HeaderUserMenu() {
                   >
                      View Profile
                   </UserMenuLink>
-                  {user.data.isAdmin && user.data.teams.length > 0 && (
+                  {user.data.teams.length > 0 && (
                      <UserMenuLink href={`${appContext.ifixitOrigin}/Team`}>
                         My Team
                      </UserMenuLink>
@@ -410,7 +410,7 @@ function HeaderUserMenu() {
                   <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
                      Orders
                   </UserMenuLink>
-                  {user.data.isAdmin && user.data.links.manage && (
+                  {user.data.links.manage && (
                      <UserMenuLink
                         href={`${appContext.ifixitOrigin}${user.data.links.manage}`}
                      >
