@@ -212,7 +212,7 @@ export function CartDrawer() {
                                  variant="outline"
                                  onClick={onViewCart}
                               >
-                                 View cart
+                                 View Cart
                               </Button>
                               <Button
                                  colorScheme="blue"
@@ -220,7 +220,7 @@ export function CartDrawer() {
                                  isLoading={checkout.isRedirecting}
                                  onClick={checkout.redirectToCheckout}
                               >
-                                 Checkout
+                                 Check Out
                               </Button>
                            </SimpleGrid>
                         </Box>
