@@ -58,7 +58,7 @@ const renderStyles: SystemStyleObject = {
       maxWidth: '100%',
       overflow: 'auto',
    },
-  
+
    blockquote: {
       margin: '20px 0px',
       borderLeftColor: 'gray.200',
