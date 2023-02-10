@@ -10,11 +10,11 @@ export const withCacheControl =
    (options: CacheControlOptions): GetServerSidePropsMiddleware =>
    (next) =>
    (context) => {
-      const sMaxAgeSeconds = options.sMaxAge / 1000;
+      const maxAgeSeconds = options.sMaxAge / 1000;
       const staleWhileRevalidateSeconds = options.staleWhileRevalidate / 1000;
       context.res.setHeader(
          'Cache-Control',
-         `public, s-maxage=${sMaxAgeSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
+         `public, s-maxage=${maxAgeSeconds}, max-age=${maxAgeSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
       );
       return next(context);
    };
