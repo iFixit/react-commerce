@@ -7,7 +7,6 @@ test.describe('Disabled Product Test', () => {
    test('Not for Sale text renders and noindexed', async ({
       productPage,
       serverRequestInterceptor,
-      port,
    }) => {
       const disabledProduct = cloneDeep(mockedProductQuery);
       if (disabledProduct.product) {
@@ -29,8 +28,8 @@ test.describe('Disabled Product Test', () => {
          })
       );
 
-      await productPage.page.goto(
-         `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-disabled`
+      await productPage.gotoProduct(
+         'iphone-6s-plus-replacement-battery-disabled'
       );
 
       await expect(productPage.page.getByText('Not for Sale')).toBeVisible();

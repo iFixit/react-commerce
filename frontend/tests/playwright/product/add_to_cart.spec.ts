@@ -100,7 +100,6 @@ test.describe('product page add to cart', () => {
          productPage,
          cartDrawer,
          serverRequestInterceptor,
-         port,
       }) => {
          const lowStockedProduct = cloneDeep(mockedProductQuery);
          if (lowStockedProduct.product) {
@@ -120,8 +119,8 @@ test.describe('product page add to cart', () => {
             })
          );
 
-         await productPage.page.goto(
-            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-low-stocked`
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-low-stocked'
          );
 
          const firstOptionSku = await productPage.getSku();
@@ -171,7 +170,6 @@ test.describe('product page add to cart', () => {
          cartDrawer,
          serverRequestInterceptor,
          clientRequestHandler,
-         port,
       }) => {
          clientRequestHandler.use(
             Handler.create({
@@ -203,8 +201,8 @@ test.describe('product page add to cart', () => {
             })
          );
 
-         await productPage.page.goto(
-            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-out-of-stock`
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-out-of-stock'
          );
 
          await expect(
