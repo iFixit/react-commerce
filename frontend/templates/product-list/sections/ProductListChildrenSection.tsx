@@ -14,49 +14,18 @@ export type ProductListChildrenSectionProps = {
 export function ProductListChildrenSection({
    productList,
 }: ProductListChildrenSectionProps) {
-   const {
-      deviceTitle,
-      childrenHeading,
-      children: productListChildren,
-   } = productList;
-   const [isShowingMore, setShowingMore] = React.useState(false);
+   const { children: productListChildren, defaultShowAllChildrenOnLgSizes } =
+      productList;
 
-   const gridRef = React.useRef<HTMLDivElement>(null);
-   const maskMaxHeight = React.useMemo(
-      () =>
-         computeMaskMaxHeight(
-            60,
-            16,
-            isShowingMore,
-            gridRef.current?.clientHeight,
-            productList.defaultShowAllChildrenOnLgSizes
-         ),
-      [isShowingMore, productList]
+   const [showAll, setShowAll] = React.useState(
+      defaultShowAllChildrenOnLgSizes ?? false
    );
-
-   const showMoreVisibility = React.useMemo(
-      () =>
-         computeShowMoreVisibility(
-            productListChildren.length,
-            productList.defaultShowAllChildrenOnLgSizes
-         ),
-      [productListChildren, productList]
-   );
-
-   const onToggle = React.useCallback(() => {
-      setShowingMore((current) => !current);
-   }, []);
-
-   let heading = 'Choose a model';
-   if (childrenHeading && childrenHeading.length > 0) {
-      heading = childrenHeading;
-   } else if (deviceTitle && deviceTitle.length > 0) {
-      heading = `Choose a model of ${deviceTitle}`;
-   }
 
    const { items } = useCurrentRefinements();
    const { hits } = useHits();
    const itemType = useDevicePartsItemType(productList);
+
+   const childrenCount = productListChildren.length;
    const isUnfilteredItemTypeWithNoHits = React.useMemo(() => {
       const nonItemTypeRefinements = items.filter(
          (item) => item.attribute !== 'facet_tags.Item Type'
@@ -66,33 +35,29 @@ export function ProductListChildrenSection({
 
    return isUnfilteredItemTypeWithNoHits ? null : (
       <Box>
-         <Text fontWeight="medium" mb="4">
-            {heading}
-         </Text>
-         <Box
-            mx={-1}
-            px={1}
-            pb={1}
-            maxH={maskMaxHeight}
-            overflowY="hidden"
-            transition="all 300ms"
+         <SimpleGrid
+            data-testid="product-list-children"
+            columns={{
+               base: 1,
+               sm: 2,
+               md: 3,
+               lg: 4,
+               xl: 5,
+            }}
+            spacing="2"
+            pt={1}
          >
-            <SimpleGrid
-               ref={gridRef}
-               data-testid="product-list-children"
-               columns={{
-                  base: 1,
-                  sm: 2,
-                  md: 3,
-                  lg: 4,
-               }}
-               spacing="3"
-               pt={1}
-            >
-               {productListChildren.map((child) => {
-                  return (
+            {productListChildren.map((child, index) => {
+               return (
+                  <Box
+                     key={child.handle}
+                     display={computeChildVisibility(
+                        index,
+                        childrenCount,
+                        showAll
+                     )}
+                  >
                      <NextLink
-                        key={child.handle}
                         href={productListPath({
                            deviceTitle: child.deviceTitle,
                            handle: child.handle,
@@ -108,55 +73,79 @@ export function ProductListChildrenSection({
                            }}
                         />
                      </NextLink>
-                  );
-               })}
-            </SimpleGrid>
-         </Box>
-         <Box mt="2" display={showMoreVisibility}>
-            <Button
-               variant="link"
-               size="sm"
-               onClick={onToggle}
-               mt="1"
-               pl="2"
-               pr="2"
-               py="1"
-               ml="-8px"
-               display="block"
-            >
-               {isShowingMore ? 'Show less' : 'Show more'}
-            </Button>
-         </Box>
+                  </Box>
+               );
+            })}
+            {!showAll && (
+               <Button
+                  fontSize="sm"
+                  backgroundColor="transparent"
+                  transition="all 300ms"
+                  outline="none"
+                  overflow="hidden"
+                  _focus={{
+                     boxShadow: 'outline',
+                  }}
+                  _hover={{
+                     borderColor: 'brand.300',
+                     bgColor: 'brand.100',
+                  }}
+                  borderWidth="1px"
+                  borderColor="gray.300"
+                  borderRadius="base"
+                  borderStyle="solid"
+                  p="2"
+                  color="gray.500"
+                  display={computeButtonVisibility(childrenCount)}
+                  justifyContent={{ base: 'center', sm: 'flex-start' }}
+                  h="full"
+                  onClick={() => setShowAll(true)}
+                  fontWeight="semibold"
+               >
+                  <Text
+                     _before={{
+                        color: 'gray.900',
+                        content: {
+                           base: `'+${childrenCount - 5} '`,
+                           sm: `'+${childrenCount - 7} '`,
+                           md: `'+${childrenCount - 8} '`,
+                           lg: `'+${childrenCount - 7} '`,
+                           xl: `'+${childrenCount - 9} '`,
+                        },
+                     }}
+                  >
+                     more to show
+                  </Text>
+               </Button>
+            )}
+         </SimpleGrid>
       </Box>
    );
 }
 
-const computeMaskMaxHeight = (
-   pixelLinkHeight: number,
-   pixelGap: number,
-   isShowingMore: boolean,
-   maxHeight = 10000,
-   defaultShowAllChildrenOnLgSizes: boolean | null = false
+const computeChildVisibility = (
+   position: number,
+   totalCount: number,
+   isShowingMore: boolean
 ) => {
-   const shadowMargin = 4;
    if (isShowingMore) {
-      return `${maxHeight + shadowMargin}px`;
+      return 'block';
    }
    return {
-      base: `${4 * pixelLinkHeight + 3 * pixelGap + shadowMargin}px`,
-      sm: `${3 * pixelLinkHeight + 2 * pixelGap + shadowMargin}px`,
-      lg: defaultShowAllChildrenOnLgSizes
-         ? `${maxHeight + shadowMargin}px`
-         : undefined,
+      base: totalCount <= 5 ? 'block' : position < 5 ? 'block' : 'none',
+      sm: totalCount <= 8 ? 'block' : position < 7 ? 'block' : 'none',
+      md: totalCount <= 9 ? 'block' : position < 8 ? 'block' : 'none',
+      lg: totalCount <= 8 ? 'block' : position < 7 ? 'block' : 'none',
+      xl: totalCount <= 10 ? 'block' : position < 9 ? 'block' : 'none',
    };
 };
 
-const computeShowMoreVisibility = (
-   itemCount: number,
-   defaultShowAllChildrenOnLgSizes: boolean | null
-) => ({
-   base: itemCount > 4 ? 'block' : 'none',
-   sm: itemCount > 6 ? 'block' : 'none',
-   md: itemCount > 9 ? 'block' : 'none',
-   lg: itemCount > 12 && !defaultShowAllChildrenOnLgSizes ? 'block' : 'none',
-});
+const computeButtonVisibility = (totalCount: number) => {
+   return {
+      base: totalCount > 5 ? 'flex' : 'none',
+      sm: totalCount > 8 ? 'flex' : 'none',
+      md: totalCount > 9 ? 'flex' : 'none',
+      lg: totalCount > 8 ? 'flex' : 'none',
+      xl: totalCount > 10 ? 'flex' : 'none',
+   };
+};
