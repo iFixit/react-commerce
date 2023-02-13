@@ -2,16 +2,27 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import {
+   Text,
+   Box,
+   Button,
+   Flex,
+   Heading,
+   HStack,
+   Spacer,
+} from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
+import { FaIcon } from '@ifixit/icons';
+import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    return (
+         <NavBar />
       <Flex
          direction="row"
          justifyContent="center"
@@ -45,6 +56,51 @@ const Wiki: NextPageWithLayout<{
       </Flex>
    );
 };
+
+function NavBar() {
+   return (
+      <Flex
+         w="100%"
+         h="48px"
+         backgroundColor="white"
+         borderBottomColor="gray.200"
+         borderBottomWidth="1px"
+         justify="center"
+      >
+         <Flex maxW="1280px" flexGrow="1">
+            <Box flexGrow="1">Breadcrumbs</Box>
+            <Box>Parts/Guide/Answers</Box>
+            <EditButton />
+         </Flex>
+      </Flex>
+   );
+}
+
+function EditButton() {
+   return (
+      <Button
+         leftIcon={<FaIcon icon={faPenToSquare} />}
+         variant="link"
+         bgColor="transparent"
+         textColor="brand"
+         borderLeftColor="gray.200"
+         borderLeftWidth="1px"
+         borderRadius="0px"
+         padding="9px, 16px, 9px, 16px"
+      >
+         <Text
+            fontFamily="SF Pro"
+            lineHeight="1.29"
+            fontWeight="semibold"
+            fontSize="14px"
+            color="brand.500"
+            textAlign="center"
+         >
+            Edit
+         </Text>
+      </Button>
+   );
+}
 
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
