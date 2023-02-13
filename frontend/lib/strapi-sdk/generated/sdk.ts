@@ -2702,7 +2702,6 @@ export type GetProductListQuery = {
             defaultShowAllChildrenOnLgSizes?: boolean | null;
             filters?: string | null;
             forceNoindex?: boolean | null;
-            childrenHeading?: string | null;
             image?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3273,7 +3272,6 @@ export const GetProductListDocument = `
             }
           }
         }
-        childrenHeading
         sections {
           __typename
           ... on ComponentProductListBanner {
