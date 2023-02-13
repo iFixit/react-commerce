@@ -87,6 +87,7 @@ const NewsletterForm = ({
    return (
       <HStack
          as="form"
+         data-testid="footer-newsletter-form"
          spacing="3"
          w={{
             base: 'full',
@@ -102,6 +103,7 @@ const NewsletterForm = ({
          <Button
             onSubmit={onSubmit}
             type="submit"
+            data-testid="footer-newsletter-subscribe-button"
             bg="blue.ifixit"
             color="white"
             border="none"
