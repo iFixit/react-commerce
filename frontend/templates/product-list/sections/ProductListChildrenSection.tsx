@@ -65,12 +65,7 @@ export function ProductListChildrenSection({
    }, [items, itemType, hits]);
 
    return isUnfilteredItemTypeWithNoHits ? null : (
-      <Box
-         px={{
-            base: 6,
-            sm: 0,
-         }}
-      >
+      <Box>
          <Text fontWeight="medium" mb="4">
             {heading}
          </Text>

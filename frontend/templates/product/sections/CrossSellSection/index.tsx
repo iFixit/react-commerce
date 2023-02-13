@@ -23,7 +23,7 @@ import { CartLineItem, useAddToCart } from '@ifixit/cart-sdk';
 import { formatMoney, isPresent, Money } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import {
-   PageContentWrapper,
+   Wrapper,
    ProductVariantPrice,
    ResponsiveImage,
    useCartDrawer,
@@ -172,14 +172,8 @@ export function CrossSellSection({
    }
 
    return (
-      <Box
-         my="16"
-         px={{
-            base: 5,
-            sm: 0,
-         }}
-      >
-         <PageContentWrapper>
+      <Box my="16">
+         <Wrapper>
             <Heading
                as="h2"
                color="gray.700"
@@ -280,7 +274,7 @@ export function CrossSellSection({
                   </Flex>
                </VStack>
             </Flex>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
