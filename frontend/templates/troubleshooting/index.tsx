@@ -22,36 +22,37 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    return (
+      <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar />
-      <Flex
-         direction="row"
-         justifyContent="center"
-         width="100%"
-         fontSize="16px"
-      >
-         <Flex padding="0px 32px 32px" gap="48px" maxW="1280px" id="wrapper">
-            <Flex gap="16px" direction="column" id="main">
-               <Head>
-                  <meta name="robots" content="noindex" />
-               </Head>
-               <Heading as="h1">{wikiData.title}</Heading>
-               {wikiData.introduction.map((intro) => (
-                  <IntroductionSection key={intro.heading} intro={intro} />
-               ))}
-               {wikiData.solutions.map((solution, index) => (
-                  <SolutionCard
-                     key={solution.heading}
-                     index={index + 1}
-                     solution={solution}
-                  />
-               ))}
-               {wikiData.conclusion.map((conclusion) => (
-                  <ConclusionSection
-                     key={conclusion.heading}
-                     conclusion={conclusion}
-                  />
-               ))}
-            </Flex>
+         <Flex
+            padding="0px 32px 32px"
+            paddingLeft="48px"
+            paddingRight="48px"
+            gap="16px"
+            maxW="1280px"
+            direction="column"
+            id="main"
+         >
+            <Head>
+               <meta name="robots" content="noindex" />
+            </Head>
+            <Heading as="h1">{wikiData.title}</Heading>
+            {wikiData.introduction.map((intro) => (
+               <IntroductionSection key={intro.heading} intro={intro} />
+            ))}
+            {wikiData.solutions.map((solution, index) => (
+               <SolutionCard
+                  key={solution.heading}
+                  index={index + 1}
+                  solution={solution}
+               />
+            ))}
+            {wikiData.conclusion.map((conclusion) => (
+               <ConclusionSection
+                  key={conclusion.heading}
+                  conclusion={conclusion}
+               />
+            ))}
          </Flex>
       </Flex>
    );
