@@ -30,7 +30,7 @@ const NewsletterInput = ({
    onSubmit,
 }: {
    placeholder: string;
-   onSubmit: (event: React.FormEvent<HTMLDivElement>) => Promise<void>;
+   onSubmit: (event: React.FormEvent<HTMLElement>) => Promise<void>;
 }) => {
    return (
       <FormControl w="full">
@@ -79,7 +79,7 @@ const NewsletterForm = ({
    placeholder: string;
    buttonText: string;
    isSubscribed: boolean;
-   onSubmit: (event: React.FormEvent<HTMLDivElement>) => Promise<void>;
+   onSubmit: (event: React.FormEvent<HTMLElement>) => Promise<void>;
 }) => {
    if (isSubscribed) {
       return null;
@@ -163,12 +163,12 @@ export function NewsletterComponent({
 }: {
    newsletterForm: NewsletterFormProps;
 }) {
-   const ref = React.useRef();
+   const ref = React.useRef(null);
    const inputRef = React.useRef<HTMLInputElement>(null);
    const [subscription, subscribe] = useSubscribeToNewsletter();
 
    const onSubscribe = React.useCallback(
-      async (event: React.FormEvent<HTMLDivElement>) => {
+      async (event: React.FormEvent<HTMLElement>) => {
          event.preventDefault();
          if (inputRef.current) {
             const email = inputRef.current.value;
