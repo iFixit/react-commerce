@@ -27,7 +27,7 @@ export interface LinkMenuItem {
 type TrackingData = {
    eventCategory: string;
    eventAction: string;
-}
+};
 
 export interface ImageLinkMenuItem {
    type: MenuItemType.ImageLink;
