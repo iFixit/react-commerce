@@ -26,7 +26,7 @@ test.describe('Subscribe to newsletter', () => {
          page.getByText(/please insert a valid email/i)
       ).not.toBeVisible();
 
-      await page.getByLabel(/enter your email/i).fill('test@example');
+      await page.getByTestId('newsletter-email-input').fill('test@example');
       await page.getByRole('button', { name: /subscribe|join/i }).click();
       await expect(
          page.getByText(/please insert a valid email/i)
@@ -44,7 +44,7 @@ test.describe('Subscribe to newsletter', () => {
          })
       );
 
-      await page.getByLabel(/enter your email/i).fill('test@example.com');
+      await page.getByTestId('newsletter-email-input').fill('test@example.com');
       await page.getByRole('button', { name: /subscribe|join/i }).click();
       await expect(page.getByText('Subscribed!')).toBeVisible();
       await expect(
@@ -66,7 +66,7 @@ test.describe('Subscribe to newsletter', () => {
          })
       );
 
-      await page.getByLabel(/enter your email/i).fill('test@example.com');
+      await page.getByTestId('newsletter-email-input').fill('test@example.com');
 
       await page.getByRole('button', { name: /subscribe|join/i }).click();
 

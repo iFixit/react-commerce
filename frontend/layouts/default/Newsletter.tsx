@@ -37,6 +37,7 @@ const NewsletterInput = ({
          <Input
             onSubmit={onSubmit}
             type="email"
+            data-testid="newsletter-email-input"
             variant="filled"
             bg="white"
             color="gray.900"
