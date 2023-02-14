@@ -205,9 +205,7 @@ test.describe('product page add to cart', () => {
          await productPage.assertInventoryMessage();
 
          await expect(
-            page.getByText(
-               /This item is currently Out of Stock./i
-            )
+            page.getByText(/This item is currently Out of Stock./i)
          ).toBeVisible();
 
          await page.getByLabel('Email address').fill('test@example.com');
