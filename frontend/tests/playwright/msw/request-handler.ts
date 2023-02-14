@@ -11,6 +11,8 @@ import {
    ResponseResolver,
    RestContext,
    RestRequest,
+   rest,
+   graphql,
 } from 'msw';
 
 /**
@@ -20,7 +22,8 @@ import {
  *
  * @see https://mswjs.io/docs/api/graphql#operation-kind
  */
-export type GraphQLMethods = 'mutation' | 'query';
+export type GraphQLMethods = keyof Pick<typeof graphql, 'mutation' | 'query'>;
+
 /**
  * This is the type of the resolver that is used by the `graphql` handler.
  * The resolver is a function that accepts a captured request and may return
@@ -31,6 +34,7 @@ export type GraphQLResolver = ResponseResolver<
    GraphQLRequest<GraphQLVariables>,
    GraphQLContext<Record<string, any>>
 >;
+
 /**
  * These methods are a subset of the REST methods that are
  * supported by MSW's `rest` handler - _with the exception of
@@ -38,7 +42,8 @@ export type GraphQLResolver = ResponseResolver<
  *
  * @see https://mswjs.io/docs/api/rest#methods
  */
-export type RestMethods = 'all' | 'get' | 'post' | 'put' | 'patch' | 'delete';
+export type RestMethods = keyof Omit<typeof rest, 'options'>;
+
 /**
  * This is the type of the resolver that is used by the `rest` handler.
  * The resolver is a function that accepts a captured request and may return
