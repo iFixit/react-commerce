@@ -289,27 +289,27 @@ importers:
 
   packages/breadcrumbs:
     specifiers:
-      '@babel/core': ^7.20.2
-      '@chakra-ui/react': ^2.3.6
-      '@emotion/react': ^11.8.1
-      '@emotion/styled': ^11.8.1
-      '@fortawesome/pro-solid-svg-icons': ^6.2.1
+      '@babel/core': 7.20.2
+      '@chakra-ui/react': 2.4.8
+      '@emotion/react': 11.10.5
+      '@emotion/styled': 11.10.5
+      '@fortawesome/pro-solid-svg-icons': 6.2.1
       '@ifixit/icons': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
-      framer-motion: ~6.2.8
-      lodash: ^4.17.21
+      framer-motion: 6.2.10
+      lodash: 4.17.21
       react: '>=18.2.0'
-      react-dom: ^18.2.0
+      react-dom: 18.2.0
       typescript: 4.8.4
     dependencies:
       '@ifixit/icons': link:../icons
     devDependencies:
-      '@babel/core': 7.20.12
+      '@babel/core': 7.20.2
       '@chakra-ui/react': 2.4.8_fm4oqvvlgtwra3ysov75eho5wa
-      '@emotion/react': 11.10.5_h5qxuzhtugb7jj2sdb3n6tzode
-      '@emotion/styled': 11.10.5_ruvvq3jonop7ma7uw65funvlvy
+      '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
+      '@emotion/styled': 11.10.5_vo4mm5uuvd7m7z6274mrigmkwu
       '@fortawesome/pro-solid-svg-icons': 6.2.1
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
@@ -1553,6 +1553,29 @@ packages:
       semver: 6.3.0
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@babel/core/7.20.2:
+    resolution: {integrity: sha512-w7DbG8DtMrJcFOi4VrLm+8QM4az8Mo+PuLBKLp2zrYRCow8W/f9xiXm5sN53C8HksCyDQwCKha9JiDoIyPjT2g==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@ampproject/remapping': 2.2.0
+      '@babel/code-frame': 7.18.6
+      '@babel/generator': 7.20.7
+      '@babel/helper-compilation-targets': 7.20.7_@babel+core@7.20.2
+      '@babel/helper-module-transforms': 7.20.11
+      '@babel/helpers': 7.20.7
+      '@babel/parser': 7.20.7
+      '@babel/template': 7.20.7
+      '@babel/traverse': 7.20.12
+      '@babel/types': 7.20.7
+      convert-source-map: 1.8.0
+      debug: 4.3.4
+      gensync: 1.0.0-beta.2
+      json5: 2.2.3
+      semver: 6.3.0
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/generator/7.18.7:
     resolution: {integrity: sha512-shck+7VLlY72a2w9c3zYWuE1pwOKEiQHV7GTUbSnhyl5eu3i04t30tBY82ZRWrDfo3gkakCFtevExnxbkf2a3A==}
@@ -1631,6 +1654,20 @@ packages:
     dependencies:
       '@babel/compat-data': 7.20.10
       '@babel/core': 7.20.12
+      '@babel/helper-validator-option': 7.18.6
+      browserslist: 4.21.4
+      lru-cache: 5.1.1
+      semver: 6.3.0
+    dev: true
+
+  /@babel/helper-compilation-targets/7.20.7_@babel+core@7.20.2:
+    resolution: {integrity: sha512-4tGORmfQcrc+bvrjb5y3dG9Mx1IOZjsHqQVUz7XCNHO+iTmqxWnVg3KRygjGmpRLJGdQSKuvFinbIb0CnZwHAQ==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/compat-data': 7.20.10
+      '@babel/core': 7.20.2
       '@babel/helper-validator-option': 7.18.6
       browserslist: 4.21.4
       lru-cache: 5.1.1
@@ -2653,6 +2690,16 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.20.12
+      '@babel/helper-plugin-utils': 7.20.2
+    dev: true
+
+  /@babel/plugin-syntax-jsx/7.18.6_@babel+core@7.20.2:
+    resolution: {integrity: sha512-6mmljtAedFGTWu2p/8WIORGwy+61PLgOMPOdazc7YoJ9ZCWUyFy3A6CpPkRKLKD1ToAesxX8KGEViAiLo9N+7Q==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.20.2
       '@babel/helper-plugin-utils': 7.20.2
 
   /@babel/plugin-syntax-logical-assignment-operators/7.10.4_@babel+core@7.17.9:
@@ -4207,7 +4254,7 @@ packages:
       '@emotion/react': '>=10.0.35'
       react: '>=18'
     dependencies:
-      '@emotion/react': 11.10.5_h5qxuzhtugb7jj2sdb3n6tzode
+      '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
       react: 18.2.0
 
   /@chakra-ui/descendant/3.0.13_react@18.2.0:
@@ -4589,8 +4636,8 @@ packages:
       '@chakra-ui/react-env': 2.0.13_react@18.2.0
       '@chakra-ui/system': 2.4.0_dovxhg2tvkkxkdnqyoum6wzcxm
       '@chakra-ui/utils': 2.0.15
-      '@emotion/react': 11.10.5_h5qxuzhtugb7jj2sdb3n6tzode
-      '@emotion/styled': 11.10.5_ruvvq3jonop7ma7uw65funvlvy
+      '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
+      '@emotion/styled': 11.10.5_vo4mm5uuvd7m7z6274mrigmkwu
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
 
@@ -4908,8 +4955,8 @@ packages:
       '@chakra-ui/transition': 2.0.14_y2cpnou5cdbyg4px5kexiw63xe
       '@chakra-ui/utils': 2.0.15
       '@chakra-ui/visually-hidden': 2.0.15_ublygk26yvqigtycgan52uuiea
-      '@emotion/react': 11.10.5_h5qxuzhtugb7jj2sdb3n6tzode
-      '@emotion/styled': 11.10.5_ruvvq3jonop7ma7uw65funvlvy
+      '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
+      '@emotion/styled': 11.10.5_vo4mm5uuvd7m7z6274mrigmkwu
       framer-motion: 6.2.10_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -5032,8 +5079,8 @@ packages:
       '@chakra-ui/styled-system': 2.5.2
       '@chakra-ui/theme-utils': 2.0.9
       '@chakra-ui/utils': 2.0.15
-      '@emotion/react': 11.10.5_h5qxuzhtugb7jj2sdb3n6tzode
-      '@emotion/styled': 11.10.5_ruvvq3jonop7ma7uw65funvlvy
+      '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
+      '@emotion/styled': 11.10.5_vo4mm5uuvd7m7z6274mrigmkwu
       react: 18.2.0
       react-fast-compare: 3.2.0
 
@@ -5305,14 +5352,14 @@ packages:
       stylis: 4.1.3
     dev: true
 
-  /@emotion/babel-plugin/11.10.5_@babel+core@7.20.12:
+  /@emotion/babel-plugin/11.10.5_@babel+core@7.20.2:
     resolution: {integrity: sha512-xE7/hyLHJac7D2Ve9dKroBBZqBT7WuPQmWcq7HSGb84sUuP4mlOWoB8dvVfD9yk5DHkU1m6RW7xSoDtnQHNQeA==}
     peerDependencies:
       '@babel/core': ^7.0.0
     dependencies:
-      '@babel/core': 7.20.12
+      '@babel/core': 7.20.2
       '@babel/helper-module-imports': 7.18.6
-      '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.20.12
+      '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.20.2
       '@babel/runtime': 7.20.6
       '@emotion/hash': 0.9.0
       '@emotion/memoize': 0.8.0
@@ -5424,7 +5471,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react/11.10.5_h5qxuzhtugb7jj2sdb3n6tzode:
+  /@emotion/react/11.10.5_kepzycimjzwwru3yrovpoz46x4:
     resolution: {integrity: sha512-TZs6235tCJ/7iF6/rvTaOH4oxQg2gMAcdHemjwLKIjKz4rRuYe1HJ2TQJKnAcRAfOUDdU8XoDadCe1rl72iv8A==}
     peerDependencies:
       '@babel/core': ^7.0.0
@@ -5436,9 +5483,9 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/core': 7.20.12
+      '@babel/core': 7.20.2
       '@babel/runtime': 7.20.6
-      '@emotion/babel-plugin': 11.10.5_@babel+core@7.20.12
+      '@emotion/babel-plugin': 11.10.5_@babel+core@7.20.2
       '@emotion/cache': 11.10.5
       '@emotion/serialize': 1.1.1
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0_react@18.2.0
@@ -5523,7 +5570,7 @@ packages:
   /@emotion/sheet/1.2.1:
     resolution: {integrity: sha512-zxRBwl93sHMsOj4zs+OslQKg/uhF38MB+OMKoCrVuS0nyTkqnau+BM3WGEoOptg9Oz45T/aIGs1qbVAsEFo3nA==}
 
-  /@emotion/styled/11.10.5_ruvvq3jonop7ma7uw65funvlvy:
+  /@emotion/styled/11.10.5_vo4mm5uuvd7m7z6274mrigmkwu:
     resolution: {integrity: sha512-8EP6dD7dMkdku2foLoruPCNkRevzdcBaY6q0l0OsbyJK+x8D9HWjX27ARiSIKNF634hY9Zdoedh8bJCiva8yZw==}
     peerDependencies:
       '@babel/core': ^7.0.0
@@ -5536,11 +5583,11 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/core': 7.20.12
+      '@babel/core': 7.20.2
       '@babel/runtime': 7.20.6
-      '@emotion/babel-plugin': 11.10.5_@babel+core@7.20.12
+      '@emotion/babel-plugin': 11.10.5_@babel+core@7.20.2
       '@emotion/is-prop-valid': 1.2.0
-      '@emotion/react': 11.10.5_h5qxuzhtugb7jj2sdb3n6tzode
+      '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
       '@emotion/serialize': 1.1.1
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0_react@18.2.0
       '@emotion/utils': 1.2.0
