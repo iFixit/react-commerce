@@ -99,7 +99,8 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            fontSize="sm"
                            borderRadius="sm"
                         >
-                           {lineItem.name}  {lineItem.variant && (`| ${lineItem.variant}`)}
+                           {lineItem.name}{' '}
+                           {lineItem.variant && `| ${lineItem.variant}`}
                         </Link>
                         <Text color="gray.500" fontSize="sm">
                            {lineItem.itemcode}
