@@ -106,7 +106,7 @@ const productVariants: ProductVariant[] = [
       optionid: '10',
       isDiscounted: true,
       discountPercentage: 20,
-      title: "New / Fix Kit",
+      title: 'New / Fix Kit',
       crossSellVariants: [
          {
             id: 'gid://shopify/ProductVariant/32965720473690',
@@ -304,7 +304,7 @@ const productVariants: ProductVariant[] = [
       optionid: '9',
       isDiscounted: false,
       discountPercentage: 0,
-      title: "New / Part Only",
+      title: 'New / Part Only',
       crossSellVariants: [
          {
             id: 'gid://shopify/ProductVariant/39333786746970',
@@ -945,7 +945,7 @@ export const mockedProductVariant: ProductVariant = {
    optionid: '10',
    isDiscounted: true,
    discountPercentage: 20,
-   title: "New / Fix Kit",
+   title: 'New / Fix Kit',
    crossSellVariants: [
       {
          id: 'gid://shopify/ProductVariant/32965720473690',
@@ -1416,7 +1416,7 @@ const batteryProductVariants: ProductVariant[] = [
       optionid: '1',
       isDiscounted: false,
       discountPercentage: 0,
-      title: "New",
+      title: 'New',
       crossSellVariants: [],
    },
 ];
@@ -1857,7 +1857,7 @@ const toolProductVariants: ProductVariant[] = [
       optionid: '1',
       isDiscounted: false,
       discountPercentage: 0,
-      title: "New",
+      title: 'New',
       crossSellVariants: [
          {
             id: 'gid://shopify/ProductVariant/39333789794394',
@@ -2305,7 +2305,7 @@ const partProductVariants: ProductVariant[] = [
       optionid: '1',
       isDiscounted: false,
       discountPercentage: 0,
-      title: "New / Part Only",
+      title: 'New / Part Only',
       crossSellVariants: [],
    },
 ];
