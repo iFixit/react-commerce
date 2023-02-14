@@ -204,11 +204,11 @@ test.describe('product page add to cart', () => {
          await expect(productPage.addToCartButton).not.toBeVisible();
          await productPage.assertInventoryMessage();
 
-         const notifyMeForm = page.getByText(/this item is currently/i);
-         await expect(notifyMeForm).toBeVisible();
-         await expect(notifyMeForm).toHaveText(
-            'This item is currently Out of Stock.'
-         );
+         await expect(
+            page.getByText(
+               /This item is currently Out of Stock./i
+            )
+         ).toBeVisible();
 
          await page.getByLabel('Email address').fill('test@example.com');
          await page.getByRole('button', { name: 'Notify me' }).click();
