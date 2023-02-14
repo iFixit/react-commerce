@@ -203,7 +203,13 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
                marginRight="1"
                minHeight={{ base: '20px', sm: '24px' }}
                minWidth={{ base: '26px', sm: '32px' }}
-               icon={<FaIcon icon={faEllipsis} fontSize={iconSize} color="gray.500" />}
+               icon={
+                  <FaIcon
+                     icon={faEllipsis}
+                     fontSize={iconSize}
+                     color="gray.500"
+                  />
+               }
             />
             <MenuList zIndex={3}>{CollapsedBreadCrumbItems.reverse()}</MenuList>
          </Menu>
