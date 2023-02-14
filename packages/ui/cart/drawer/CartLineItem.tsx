@@ -105,7 +105,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                            {lineItem.itemcode}
                         </Text>
                         <Text color="gray.500" fontSize="sm">
-                           {lineItem.variant}
+                           {lineItem.variantTitle}
                         </Text>
                      </Flex>
                      <HStack

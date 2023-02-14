@@ -18,7 +18,7 @@ export interface Cart {
 
 export interface CartLineItem {
    itemcode: string;
-   variant?: string;
+   variantTitle: string;
    shopifyVariantId: string;
    name: string;
    internalDisplayName?: string;

@@ -53,6 +53,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
          type: 'product',
          product: {
             name: product.title,
+            variantTitle: selectedVariant.title,
             internalDisplayName:
                selectedVariant.internalDisplayName ?? undefined,
             itemcode: selectedVariant.sku,
