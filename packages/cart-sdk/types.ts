@@ -18,6 +18,7 @@ export interface Cart {
 
 export interface CartLineItem {
    itemcode: string;
+   variant: string | null;
    shopifyVariantId: string;
    name: string;
    internalDisplayName?: string;
@@ -94,6 +95,7 @@ export interface APICartProduct {
    subPriceStr: string;
    subTotal: string;
    subTotalStr: string;
+   variant: string;
 }
 
 export interface MiniCartProduct {
