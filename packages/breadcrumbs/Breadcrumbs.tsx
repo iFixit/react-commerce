@@ -164,6 +164,7 @@ const IFixitBreadcrumbItem = function IFixitBreadcrumbItem({
             as={Link}
             noOfLines={1}
             href={url}
+            fontWeight={isLast ? 500 : 400}
             color={color}
             _visited={{ color: color }}
             _hover={{ textDecoration: 'none' }}
@@ -200,9 +201,11 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
                size="xs"
                marginLeft={{ base: 3, sm: 1 }}
                marginRight="1"
-               icon={<FaIcon icon={faEllipsis} h="3" color="gray.500" />}
+               minHeight={{ base: '20px', sm: '24px' }}
+               minWidth={{ base: '26px', sm: '32px' }}
+               icon={<FaIcon icon={faEllipsis} fontSize={iconSize} color="gray.500" />}
             />
-            <MenuList>{CollapsedBreadCrumbItems.reverse()}</MenuList>
+            <MenuList zIndex={3}>{CollapsedBreadCrumbItems.reverse()}</MenuList>
          </Menu>
          {breadcrumbIcon}
       </>
