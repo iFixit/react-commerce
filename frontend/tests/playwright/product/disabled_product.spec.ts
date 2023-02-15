@@ -25,24 +25,33 @@ test.describe('Disabled Product Test', () => {
          `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-disabled`
       );
 
-      await expect(page.getByText('Not for Sale')).toBeVisible();
-      await expect(page.getByText('Description')).toBeVisible();
+      await expect(page.getByTestId('not-for-sale-alert')).toBeVisible();
+
+      const productInfoSection = page.getByTestId('product-info-section');
+      await expect(productInfoSection.getByText('Description')).toBeVisible();
       await expect(
-         page.getByRole('link', { name: 'One year warranty' })
+         productInfoSection.getByRole('link', { name: 'One year warranty' })
       ).toHaveAttribute('href', 'https://www.cominor.com/Info/Warranty');
 
       // Assert the following to be not visible
-      await expect(page.getByText('Add to Cart')).not.toBeVisible();
-      await expect(page.getByText(/Only \d left/i)).not.toBeVisible();
-      await expect(page.getByText('Notify me')).not.toBeVisible();
       await expect(
-         page.getByText('Shipping restrictions apply')
+         productInfoSection.getByTestId('product-add-to-cart-button')
       ).not.toBeVisible();
       await expect(
-         page.getByTestId('product-variants-selector')
+         productInfoSection.getByTestId('product-inventory-message')
       ).not.toBeVisible();
-      await expect(page.getByText(/Buy from our Store in/i)).not.toBeVisible();
-      await expect(page.getByText(/Buy from our US Store/i)).not.toBeVisible();
+      await expect(
+         productInfoSection.getByTestId('notify-me-form')
+      ).not.toBeVisible();
+      await expect(
+         productInfoSection.getByText('Shipping restrictions apply')
+      ).not.toBeVisible();
+      await expect(
+         productInfoSection.getByTestId('product-variants-selector')
+      ).not.toBeVisible();
+      await expect(
+         productInfoSection.getByTestId('international-buy-box')
+      ).not.toBeVisible();
 
       // Assert that we noindex disabled product pages
       const metaRobots = page.locator('meta[name="robots"]');

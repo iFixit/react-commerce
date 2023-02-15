@@ -3,8 +3,9 @@ import { test, expect } from '../test-fixtures';
 test.describe('Product option test', () => {
    test('Different styles', async ({ page, productPage, cartDrawer }) => {
       await productPage.gotoProduct('repair-business-toolkit');
+      const productInfoSection = page.getByTestId('product-info-section');
 
-      await expect(page.getByText('Style')).toBeVisible();
+      await expect(productInfoSection.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
       const firstOptionPrice = await productPage.getCurrentPrice();

@@ -9,14 +9,23 @@ test.describe('Fix Kit and Part Only test', () => {
       await expect(await productPage.getActiveVariant()).toContainText(
          'Fix Kit'
       );
-      await expect(page.getByText('Kit contents')).toBeVisible();
-      await expect(page.getByText('Assembly contents')).not.toBeVisible();
+
+      const productInfoSection = page.getByTestId('product-info-section');
+
+      await expect(productInfoSection.getByText('Kit contents')).toBeVisible();
+      await expect(
+         productInfoSection.getByText('Assembly contents')
+      ).not.toBeVisible();
 
       const fixKitSku = await productPage.getSku();
 
       await productPage.switchSelectedVariant();
-      await expect(page.getByText('Assembly contents')).toBeVisible();
-      await expect(page.getByText('Kit contents')).not.toBeVisible();
+      await expect(
+         productInfoSection.getByText('Assembly contents')
+      ).toBeVisible();
+      await expect(
+         productInfoSection.getByText('Kit contents')
+      ).not.toBeVisible();
 
       const partOnlySku = await productPage.getSku();
 
