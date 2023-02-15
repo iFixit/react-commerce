@@ -177,6 +177,7 @@ const NewsletterLink = ({ isSubscribed }: { isSubscribed: boolean }) => {
    );
 };
 
+//Alex testing gpg signing
 export function NewsletterComponent({
    newsletterForm,
 }: {
