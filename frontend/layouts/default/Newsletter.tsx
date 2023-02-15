@@ -111,13 +111,15 @@ const NewsletterForm = ({
          }}
          align="flex-start"
       >
-         <NewsletterInput inputRef={inputRef} placeholder={placeholder} subscription={subscription} />
+         <NewsletterInput
+            inputRef={inputRef}
+            placeholder={placeholder}
+            subscription={subscription}
+         />
          <Button
             type="submit"
             data-testid="footer-newsletter-subscribe-button"
-            isLoading={
-               subscription.status === SubscriptionStatus.Subscribing
-            }
+            isLoading={subscription.status === SubscriptionStatus.Subscribing}
             disabled={subscription.status !== SubscriptionStatus.Idle}
             bg="blue.ifixit"
             color="white"
