@@ -2,6 +2,7 @@ import {
    Box,
    Button,
    FormControl,
+   FormErrorMessage,
    HStack,
    Input,
    Stack,
@@ -12,6 +13,7 @@ import {
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { faEye } from '@fortawesome/pro-solid-svg-icons/faEye';
 import {
+   Subscription,
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';
@@ -28,15 +30,18 @@ export type NewsletterFormProps = {
 const NewsletterInput = ({
    inputRef,
    placeholder,
+   subscription,
 }: {
    inputRef: React.RefObject<HTMLInputElement>;
    placeholder: string;
+   subscription: Subscription;
 }) => {
    return (
-      <FormControl w="full">
+      <FormControl w="full" isInvalid={subscription.error != null}>
          <Input
             ref={inputRef}
             type="email"
+            disabled={subscription.status !== SubscriptionStatus.Idle}
             data-testid="newsletter-email-input"
             variant="filled"
             bg="white"
@@ -48,6 +53,7 @@ const NewsletterInput = ({
             }}
             placeholder={placeholder}
          />
+         <FormErrorMessage>{subscription.error}</FormErrorMessage>
       </FormControl>
    );
 };
@@ -76,12 +82,14 @@ const NewsletterForm = ({
    placeholder,
    buttonText,
    isSubscribed,
+   subscription,
    onSubmit,
 }: {
    inputRef: React.RefObject<HTMLInputElement>;
    placeholder: string;
    buttonText: string;
    isSubscribed: boolean;
+   subscription: Subscription;
    onSubmit: (event: React.FormEvent<HTMLElement>) => Promise<void>;
 }) => {
    if (isSubscribed) {
@@ -103,10 +111,14 @@ const NewsletterForm = ({
          }}
          align="flex-start"
       >
-         <NewsletterInput inputRef={inputRef} placeholder={placeholder} />
+         <NewsletterInput inputRef={inputRef} placeholder={placeholder} subscription={subscription} />
          <Button
             type="submit"
             data-testid="footer-newsletter-subscribe-button"
+            isLoading={
+               subscription.status === SubscriptionStatus.Subscribing
+            }
+            disabled={subscription.status !== SubscriptionStatus.Idle}
             bg="blue.ifixit"
             color="white"
             border="none"
@@ -216,6 +228,7 @@ export function NewsletterComponent({
             placeholder={newsletterForm.inputPlaceholder}
             buttonText={newsletterForm.callToActionButtonTitle}
             isSubscribed={isSubscribed}
+            subscription={subscription}
             onSubmit={onSubscribe}
          />
          <NewsletterSubscribed isSubscribed={isSubscribed} />
