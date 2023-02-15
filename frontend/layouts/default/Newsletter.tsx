@@ -26,9 +26,11 @@ export type NewsletterFormProps = {
 };
 
 const NewsletterInput = ({
+   inputRef,
    placeholder,
    onSubmit,
 }: {
+   inputRef: React.RefObject<HTMLInputElement>;
    placeholder: string;
    onSubmit: (event: React.FormEvent<HTMLElement>) => Promise<void>;
 }) => {
@@ -36,6 +38,7 @@ const NewsletterInput = ({
       <FormControl w="full">
          <Input
             onSubmit={onSubmit}
+            ref={inputRef}
             type="email"
             data-testid="newsletter-email-input"
             variant="filled"
@@ -72,11 +75,13 @@ const NewsletterHeader = ({
 };
 
 const NewsletterForm = ({
+   inputRef,
    placeholder,
    buttonText,
    isSubscribed,
    onSubmit,
 }: {
+   inputRef: React.RefObject<HTMLInputElement>;
    placeholder: string;
    buttonText: string;
    isSubscribed: boolean;
@@ -100,7 +105,7 @@ const NewsletterForm = ({
          }}
          align="flex-start"
       >
-         <NewsletterInput placeholder={placeholder} onSubmit={onSubmit} />
+         <NewsletterInput inputRef={inputRef} placeholder={placeholder} onSubmit={onSubmit} />
          <Button
             onSubmit={onSubmit}
             type="submit"
@@ -210,6 +215,7 @@ export function NewsletterComponent({
             subtitle={newsletterForm.subtitle}
          />
          <NewsletterForm
+            inputRef={inputRef}
             placeholder={newsletterForm.inputPlaceholder}
             buttonText={newsletterForm.callToActionButtonTitle}
             isSubscribed={isSubscribed}
