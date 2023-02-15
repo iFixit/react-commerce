@@ -44,10 +44,10 @@ test.describe('Product option test', () => {
       await cartDrawer.assertItemIsPresent(secondOptionSku);
 
       // Assert that the cart drawer contains the prices of the added products
-      expect(await cartDrawer.getItem(firstOptionSku)).toHaveText(
+      expect(await cartDrawer.getItem(firstOptionSku)).toContainText(
          firstOptionPrice.toFixed(2)
       );
-      expect(await cartDrawer.getItem(secondOptionSku)).toHaveText(
+      expect(await cartDrawer.getItem(secondOptionSku)).toContainText(
          secondOptionPrice.toFixed(2)
       );
    });

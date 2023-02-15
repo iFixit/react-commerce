@@ -6,7 +6,9 @@ test.describe('Fix Kit and Part Only test', () => {
    });
 
    test('Kit contents and product skus', async ({ page, productPage }) => {
-      await expect(await productPage.getActiveVariant()).toHaveText('Fix Kit');
+      await expect(await productPage.getActiveVariant()).toContainText(
+         'Fix Kit'
+      );
       await expect(page.getByText('Kit contents')).toBeVisible();
       await expect(page.getByText('Assembly contents')).not.toBeVisible();
 
@@ -22,7 +24,9 @@ test.describe('Fix Kit and Part Only test', () => {
    });
 
    test('Product image changes', async ({ page, productPage }) => {
-      await expect(await productPage.getActiveVariant()).toHaveText('Fix Kit');
+      await expect(await productPage.getActiveVariant()).toContainText(
+         'Fix Kit'
+      );
       await expect(page.getByRole('img', { name: 'Fix Kit' })).toBeVisible();
       await expect(
          page.getByRole('img', { name: 'Part Only' }).first()

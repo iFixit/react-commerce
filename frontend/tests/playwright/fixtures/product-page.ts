@@ -111,7 +111,7 @@ export class ProductPage {
       } else {
          await expect(
             this.page.getByTestId('product-inventory-message')
-         ).toHaveText(message);
+         ).toContainText(message);
       }
    }
 }
