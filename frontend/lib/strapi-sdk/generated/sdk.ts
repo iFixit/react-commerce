@@ -971,6 +971,7 @@ export type PaginationArg = {
 
 export type ProductList = {
    __typename?: 'ProductList';
+   brandLogo?: Maybe<UploadFileEntityResponse>;
    children?: Maybe<ProductListRelationResponseCollection>;
    childrenHeading?: Maybe<Scalars['String']>;
    createdAt?: Maybe<Scalars['DateTime']>;
@@ -981,6 +982,7 @@ export type ProductList = {
    filters?: Maybe<Scalars['String']>;
    forceNoindex?: Maybe<Scalars['Boolean']>;
    handle: Scalars['String'];
+   heroImage?: Maybe<UploadFileEntityResponse>;
    image?: Maybe<UploadFileEntityResponse>;
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
@@ -1060,6 +1062,7 @@ export type ProductListFiltersInput = {
 };
 
 export type ProductListInput = {
+   brandLogo?: InputMaybe<Scalars['ID']>;
    children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
    childrenHeading?: InputMaybe<Scalars['String']>;
    defaultShowAllChildrenOnLgSizes?: InputMaybe<Scalars['Boolean']>;
@@ -1069,6 +1072,7 @@ export type ProductListInput = {
    filters?: InputMaybe<Scalars['String']>;
    forceNoindex?: InputMaybe<Scalars['Boolean']>;
    handle?: InputMaybe<Scalars['String']>;
+   heroImage?: InputMaybe<Scalars['ID']>;
    image?: InputMaybe<Scalars['ID']>;
    legacyDescription?: InputMaybe<Scalars['String']>;
    legacyPageId?: InputMaybe<Scalars['Int']>;
