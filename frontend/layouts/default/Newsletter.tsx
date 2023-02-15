@@ -28,16 +28,13 @@ export type NewsletterFormProps = {
 const NewsletterInput = ({
    inputRef,
    placeholder,
-   onSubmit,
 }: {
    inputRef: React.RefObject<HTMLInputElement>;
    placeholder: string;
-   onSubmit: (event: React.FormEvent<HTMLElement>) => Promise<void>;
 }) => {
    return (
       <FormControl w="full">
          <Input
-            onSubmit={onSubmit}
             ref={inputRef}
             type="email"
             data-testid="newsletter-email-input"
@@ -93,6 +90,7 @@ const NewsletterForm = ({
    return (
       <HStack
          as="form"
+         onSubmit={onSubmit}
          data-testid="footer-newsletter-form"
          spacing="3"
          w={{
@@ -105,9 +103,8 @@ const NewsletterForm = ({
          }}
          align="flex-start"
       >
-         <NewsletterInput inputRef={inputRef} placeholder={placeholder} onSubmit={onSubmit} />
+         <NewsletterInput inputRef={inputRef} placeholder={placeholder} />
          <Button
-            onSubmit={onSubmit}
             type="submit"
             data-testid="footer-newsletter-subscribe-button"
             bg="blue.ifixit"
