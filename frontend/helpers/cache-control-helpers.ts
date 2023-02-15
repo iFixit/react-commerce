@@ -25,6 +25,6 @@ export const withCacheShort = withCacheControl({
 });
 
 export const withCacheLong = withCacheControl({
-   sMaxAge: Duration(1).minute,
+   sMaxAge: Duration(5).minutes,
    staleWhileRevalidate: Duration(1).day,
 });
