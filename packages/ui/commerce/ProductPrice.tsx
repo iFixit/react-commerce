@@ -128,7 +128,6 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             {...other}
          >
             <Text
-               mr={isHorizontal ? 1 : 0}
                fontSize={priceFontSize}
                fontWeight="semibold"
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
@@ -148,7 +147,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             {isDiscounted && (
                <>
                   <Text
-                     mr={isHorizontal ? '10px' : 0}
+                     ml={isHorizontal ? 1 : 0}
                      fontSize={compareAtPriceFontSize}
                      color="gray.500"
                      textDecor="line-through"
@@ -158,6 +157,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                   </Text>
                   {isDiscounted && showDiscountLabel && isHorizontal && (
                      <IconBadge
+                        ml={isHorizontal ? '10px' : 0}
                         icon={showProBadge ? faRectanglePro : undefined}
                         colorScheme={colorScheme}
                         data-testid="product-discount"
