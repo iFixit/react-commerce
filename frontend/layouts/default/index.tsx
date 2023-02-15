@@ -53,15 +53,13 @@ import {
    Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
-import { Menu } from '@models/menu';
+import { Menu } from '@ifixit/ui/menu';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import type { DefaultLayoutProps } from './server';
 import { CartFooter } from './Footer';
-
-export * from './Newsletter';
 
 export function DefaultLayout({
    stores,
