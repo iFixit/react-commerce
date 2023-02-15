@@ -1,5 +1,5 @@
-import { FooterType } from '@ifixit/footer';
-import { MenuItemType } from '@models/menu';
+import { FooterType } from './Shared';
+import { MenuItemType } from '../../ui/menu';
 
 export const getGuideFooterMenus = (supportUrl: string): FooterType => {
    return {
