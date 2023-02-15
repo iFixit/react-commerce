@@ -12,6 +12,7 @@ import {
    Text,
    BreadcrumbItemProps,
    LinkProps,
+   useBreakpointValue,
 } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faChevronRight } from '@fortawesome/pro-solid-svg-icons/faChevronRight';
