@@ -115,7 +115,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                      align="flex-start"
                   />
                )}
-               <Alert status="warning" mb="3">
+               <Alert status="warning" mb="3" data-testid='out-of-stock-alert'>
                   <FaIcon
                      icon={faExclamationCircle}
                      h="5"

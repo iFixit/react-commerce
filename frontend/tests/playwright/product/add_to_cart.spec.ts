@@ -205,15 +205,16 @@ test.describe('product page add to cart', () => {
          await productPage.assertInventoryMessage();
 
          await expect(
-            page.getByText(/This item is currently Out of Stock./i)
+            page.getByTestId('out-of-stock-alert')
          ).toBeVisible();
 
-         await page.getByLabel('Email address').fill('test@example.com');
-         await page.getByRole('button', { name: 'Notify me' }).click();
+         const notifyMeForm = page.getByTestId('notify-me-form');
+         await expect(notifyMeForm).toBeVisible();
+
+         await notifyMeForm.getByLabel('Email address').fill('test@example.com');
+         await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
          await expect(
-            page.getByText(
-               'You will be notified when this product is back in stock.'
-            )
+            page.getByTestId('notify-me-form-successful')
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();
