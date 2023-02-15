@@ -6,10 +6,11 @@ import {
    Box,
    BoxProps,
    Button,
+   Collapse,
+   Divider,
    Flex,
    forwardRef,
    Heading,
-   HStack,
    Icon,
    Link,
    Text,
@@ -31,13 +32,13 @@ import {
    useHits,
    useSearchBox,
 } from 'react-instantsearch-hooks-web';
+import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
 import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
-import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import {
    SearchQueryProvider,
    useSearchQueryContext,
@@ -51,6 +52,7 @@ type SectionProps = {
 
 export function FilterableProductsSection({ productList }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
+   const currentRefinements = useCurrentRefinements();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
       ProductViewType.List
@@ -73,71 +75,91 @@ export function FilterableProductsSection({ productList }: SectionProps) {
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products
          </Heading>
+
          <SearchQueryProvider>
-            <Toolbar
-               viewType={viewType}
-               productList={productList}
-               onViewTypeChange={setViewType}
-            />
-            <CurrentRefinements />
-            <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
-               <FacetCard>
+            <Flex mt="4">
+               <Flex
+                  bg="white"
+                  borderWidth="1px"
+                  borderStyle="solid"
+                  borderColor="gray.300"
+                  borderRadius="base"
+                  px="3"
+                  py="1.5"
+                  mr="4"
+                  w="64"
+                  maxH="calc(100vh - var(--chakra-space-4) * 2)"
+                  overflow="auto"
+                  display={{
+                     base: 'none',
+                     md: 'block',
+                  }}
+                  position="sticky"
+                  top="4"
+                  flexGrow="0"
+               >
+                  <Collapse
+                     in={currentRefinements.items.length > 0}
+                     animateOpacity
+                     data-testid="current-refinements"
+                  >
+                     <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
+                        <CurrentRefinements />
+                     </Flex>
+                     <Divider borderColor="gray.300" opacity="1" />
+                  </Collapse>
                   <FacetsAccordion productList={productList} />
-               </FacetCard>
-               <Card flex={1} overflow="hidden">
-                  <ProductListEmptyState
+               </Flex>
+               <Flex direction="column" flex="1">
+                  <Toolbar
+                     viewType={viewType}
                      productList={productList}
-                     hidden={!isEmpty}
+                     onViewTypeChange={setViewType}
                   />
-                  {!isEmpty && viewType === ProductViewType.Grid && (
-                     <ProductGrid>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductGridItem key={hit.handle} product={hit} />
-                           );
-                        })}
-                     </ProductGrid>
-                  )}
-                  {!isEmpty && viewType === ProductViewType.List && (
-                     <ProductList>
-                        {hits.map((hit) => {
-                           return (
-                              <ProductListItem
-                                 key={hit.objectID}
-                                 product={hit}
-                              />
-                           );
-                        })}
-                     </ProductList>
-                  )}
-                  <Pagination />
-               </Card>
-            </HStack>
+                  <Flex
+                     bg="white"
+                     direction="column"
+                     mt="2"
+                     overflow="hidden"
+                     borderWidth="1px"
+                     borderStyle="solid"
+                     borderColor="gray.300"
+                     borderRadius="base"
+                  >
+                     <ProductListEmptyState
+                        productList={productList}
+                        hidden={!isEmpty}
+                     />
+                     {!isEmpty && viewType === ProductViewType.Grid && (
+                        <ProductGrid>
+                           {hits.map((hit) => {
+                              return (
+                                 <ProductGridItem
+                                    key={hit.handle}
+                                    product={hit}
+                                 />
+                              );
+                           })}
+                        </ProductGrid>
+                     )}
+                     {!isEmpty && viewType === ProductViewType.List && (
+                        <ProductList>
+                           {hits.map((hit) => {
+                              return (
+                                 <ProductListItem
+                                    key={hit.objectID}
+                                    product={hit}
+                                 />
+                              );
+                           })}
+                        </ProductList>
+                     )}
+                     <Pagination />
+                  </Flex>
+               </Flex>
+            </Flex>
          </SearchQueryProvider>
       </Flex>
-   );
-}
-
-type FacetCardProps = React.PropsWithChildren<{}>;
-
-function FacetCard({ children }: FacetCardProps) {
-   return (
-      <Card
-         py="1.5"
-         px="3"
-         w="250px"
-         boxShadow="md"
-         maxH="calc(100vh - var(--chakra-space-4) * 2)"
-         overflow="auto"
-         display={{
-            base: 'none',
-            md: 'block',
-         }}
-         position="sticky"
-         top="4"
-      >
-         {children}
-      </Card>
    );
 }
 
