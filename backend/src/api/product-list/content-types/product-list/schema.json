@@ -87,6 +87,14 @@
             }
          }
       },
+      "brandLogoWidth": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "integer"
+      },
       "filters": {
          "pluginOptions": {
             "i18n": {
