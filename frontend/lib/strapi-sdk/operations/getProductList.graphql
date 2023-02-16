@@ -45,6 +45,7 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
+            brandLogoWidth
             parent {
                data {
                   attributes {

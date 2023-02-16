@@ -24,7 +24,10 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
    const itemType = useDevicePartsItemType(productList);
-   const hasBrandImage = productList.brandLogo;
+   const hasBrandImage =
+      productList.brandLogo &&
+      productList.brandLogoWidth &&
+      productList.brandLogoWidth > 0;
    const hasDescription =
       productList.description != null &&
       productList.description.length > 0 &&
@@ -76,9 +79,8 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
                <Image
                   src={productList.brandLogo!.url}
                   alt={productList.brandLogo!.alternativeText ?? ''}
-                  maxH={{ base: 5, md: 6 }}
+                  width={productList.brandLogoWidth!}
                   mb="4"
-                  width="fit-content"
                />
             )}
             <HeroTitle>

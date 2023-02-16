@@ -2702,6 +2702,7 @@ export type GetProductListQuery = {
             defaultShowAllChildrenOnLgSizes?: boolean | null;
             filters?: string | null;
             forceNoindex?: boolean | null;
+            brandLogoWidth?: number | null;
             childrenHeading?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
@@ -3231,6 +3232,7 @@ export const GetProductListDocument = `
             }
           }
         }
+        brandLogoWidth
         parent {
           data {
             attributes {

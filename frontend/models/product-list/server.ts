@@ -108,6 +108,7 @@ export async function findProductList(
               'large'
            )
          : null,
+      brandLogoWidth: productList?.brandLogoWidth ?? null,
       ancestors,
       children: await getProductListChildren({
          apiChildren: productList?.children?.data,

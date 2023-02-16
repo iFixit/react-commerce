@@ -71,6 +71,7 @@ export interface BaseProductList {
    heroImage: ProductListImage | null;
    image: ProductListImage | null;
    brandLogo: ProductListImage | null;
+   brandLogoWidth: number | null;
    ancestors: ProductListAncestor[];
    children: ProductListChild[];
    childrenHeading: string | null;
