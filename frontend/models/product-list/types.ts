@@ -71,7 +71,6 @@ export interface BaseProductList {
    image: ProductListImage | null;
    ancestors: ProductListAncestor[];
    children: ProductListChild[];
-   childrenHeading: string | null;
    sections: ProductListSection[];
    algolia: {
       apiKey: string;

@@ -5,7 +5,7 @@ import {
    StatHelpText,
    StatNumber,
 } from '@chakra-ui/react';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import { GetSection } from '@models/page';
 
 export interface StatsSectionProps {
@@ -23,7 +23,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
          borderColor="brand.200"
          mb={-10}
       >
-         <PageContentWrapper isResponsive>
+         <Wrapper>
             <SimpleGrid
                minChildWidth="200px"
                spacing={{ base: 9, lg: 10 }}
@@ -33,7 +33,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
                   <Stats key={index} value={stat.value} label={stat.label} />
                ))}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }

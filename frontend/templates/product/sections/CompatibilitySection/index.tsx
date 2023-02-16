@@ -1,6 +1,6 @@
 import { Box, chakra, Heading, SimpleGrid } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common/CompatibleDevice';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 
@@ -13,7 +13,7 @@ export function CompatibilitySection({
 }: CompatibilitySectionProps) {
    return compatibility && compatibility.devices.length > 0 ? (
       <Box id="compatibility" bg="gray.100" py="16" fontSize="sm">
-         <PageContentWrapper>
+         <Wrapper>
             <Heading
                as="h2"
                color="gray.700"
@@ -55,7 +55,7 @@ export function CompatibilitySection({
                   </NextLink>
                ))}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    ) : null;
 }
