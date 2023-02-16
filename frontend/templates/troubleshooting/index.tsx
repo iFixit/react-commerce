@@ -2,16 +2,7 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import {
-   Text,
-   Box,
-   Button,
-   Flex,
-   Heading,
-   HStack,
-   Spacer,
-   Link,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Link } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
@@ -70,12 +61,20 @@ function NavBar({ editUrl }: { editUrl: string }) {
          justify="center"
       >
          <Flex maxW="1280px" flexGrow="1">
-            <Box flexGrow="1">Breadcrumbs</Box>
-            <Box>Parts/Guide/Answers</Box>
+            <Breadcrumbs />
+            <AreaLinks />
             <EditButton editUrl={editUrl} />
          </Flex>
       </Flex>
    );
+}
+
+function Breadcrumbs() {
+   return <Box flexGrow="1"></Box>;
+}
+
+function AreaLinks() {
+   return <> </>;
 }
 
 function EditButton({ editUrl }: { editUrl: string }) {
@@ -88,6 +87,8 @@ function EditButton({ editUrl }: { editUrl: string }) {
          textColor="brand"
          borderLeftColor="gray.200"
          borderLeftWidth="1px"
+         borderRightColor="gray.200"
+         borderRightWidth="1px"
          borderRadius="0px"
          padding="9px, 16px, 9px, 16px"
          fontFamily="heading"
