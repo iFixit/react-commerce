@@ -10,6 +10,7 @@ import {
    Heading,
    HStack,
    Spacer,
+   Link,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
@@ -23,7 +24,7 @@ const Wiki: NextPageWithLayout<{
 }> = ({ wikiData }) => {
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
-         <NavBar />
+         <NavBar editUrl={wikiData.editUrl} />
          <Flex
             padding="0px 32px 32px"
             paddingLeft="48px"
@@ -58,7 +59,7 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function NavBar() {
+function NavBar({ editUrl }: { editUrl: string }) {
    return (
       <Flex
          w="100%"
@@ -71,34 +72,33 @@ function NavBar() {
          <Flex maxW="1280px" flexGrow="1">
             <Box flexGrow="1">Breadcrumbs</Box>
             <Box>Parts/Guide/Answers</Box>
-            <EditButton />
+            <EditButton editUrl={editUrl} />
          </Flex>
       </Flex>
    );
 }
 
-function EditButton() {
+function EditButton({ editUrl }: { editUrl: string }) {
    return (
       <Button
          leftIcon={<FaIcon icon={faPenToSquare} />}
          variant="link"
+         as={Link}
          bgColor="transparent"
          textColor="brand"
          borderLeftColor="gray.200"
          borderLeftWidth="1px"
          borderRadius="0px"
          padding="9px, 16px, 9px, 16px"
+         fontFamily="heading"
+         lineHeight="1.29"
+         fontWeight="semibold"
+         fontSize="14px"
+         color="brand.500"
+         textAlign="center"
+         href={editUrl}
       >
-         <Text
-            fontFamily="SF Pro"
-            lineHeight="1.29"
-            fontWeight="semibold"
-            fontSize="14px"
-            color="brand.500"
-            textAlign="center"
-         >
-            Edit
-         </Text>
+         Edit
       </Button>
    );
 }
