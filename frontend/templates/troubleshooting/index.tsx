@@ -18,8 +18,6 @@ const Wiki: NextPageWithLayout<{
          <NavBar editUrl={wikiData.editUrl} />
          <Flex
             padding="0px 32px 32px"
-            paddingLeft="48px"
-            paddingRight="48px"
             gap="16px"
             maxW="1280px"
             direction="column"
