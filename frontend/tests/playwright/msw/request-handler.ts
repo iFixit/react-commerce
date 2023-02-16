@@ -112,15 +112,32 @@ type RestBodyInfo = {
  * @property `passthrough` - If true, the request will be bypassed and performed
  * as-is.
  * @see https://mswjs.io/docs/api/request/passthrough
+ */
+type HandlerOptions = {
+   once?: boolean;
+   passthrough?: boolean;
+};
+
+/**
  * @property `customResolver` - If provided, this will be used as the resolver
  * for the handler. This is useful if you want to do something more complex than
  * just returning a static response.
  * @see https://mswjs.io/docs/basics/response-resolver
  */
-export type HandlerOptions = {
-   once: boolean;
-   passthrough: boolean;
-   customResolver?: GraphQLResolver | RestResolver;
+export type GraphQLHandlerOptions =
+   | HandlerOptions
+   | { customResolver: GraphQLResolver };
+
+/**
+ * @property `customResolver` - If provided, this will be used as the resolver
+ * for the handler. This is useful if you want to do something more complex than
+ * just returning a static response.
+ * @see https://mswjs.io/docs/basics/response-resolver
+ */
+export type RestHandlerOptions =
+   | HandlerOptions
+   | { customResolver: RestResolver };
+
 };
 
 export default class Handler {
