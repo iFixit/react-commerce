@@ -29,8 +29,8 @@ export function ProductListView({
    return (
       <>
          <SecondaryNavigation productList={productList} />
-         <Wrapper py={{ base: 4, md: '6' }}>
-            <VStack align="stretch" spacing="12">
+         <Wrapper py={{ base: 4, md: 6 }}>
+            <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
                <Index indexName={indexName} indexId="main-product-list-index">
                   <Configure filters={filters} hitsPerPage={18} />
                   <MetaTags productList={productList} />
