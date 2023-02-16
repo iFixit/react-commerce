@@ -10,7 +10,7 @@ import {
    MenuItemType,
    ProductListLinkMenuItem,
    SubmenuMenuItem,
-} from './menu';
+} from '@ifixit/ui/menu';
 
 export type Store = Awaited<ReturnType<typeof findStoreByCode>>;
 
@@ -74,7 +74,7 @@ export interface StoreListItem {
    name: string;
    url: string;
    currency: string;
-   supportUrl: string;
+   supportUrl?: string;
 }
 
 /**

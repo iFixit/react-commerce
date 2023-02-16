@@ -1,7 +1,7 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { Menu, MenuList } from '@chakra-ui/react';
 import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
-import { MenuItemType } from '@ifixit/ui/menu';
+import { MenuItem, MenuItemType } from '@ifixit/ui/menu';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
@@ -107,7 +107,7 @@ export function CartFooter({
 
             {partners && (
                <FooterPartners>
-                  {partners.items.map((partner) => {
+                  {partners.items.map((partner: MenuItem) => {
                      if (partner.type === MenuItemType.ImageLink) {
                         return (
                            <FooterPartnerLink
