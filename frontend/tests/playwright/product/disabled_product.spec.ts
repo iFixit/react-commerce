@@ -1,7 +1,7 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
-import Handler from '../msw/request-handler';
+import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Disabled Product Test', () => {
    test('Not for Sale text renders and noindexed', async ({
@@ -17,7 +17,7 @@ test.describe('Disabled Product Test', () => {
       }
 
       serverRequestInterceptor.use(
-         Handler.create({
+         createGraphQLHandler({
             request: {
                endpoint: 'findProduct',
                method: 'query',

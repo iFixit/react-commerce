@@ -1,7 +1,10 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
-import Handler from '../msw/request-handler';
+import {
+   createGraphQLHandler,
+   createRestHandler,
+} from './../msw/request-handler';
 
 test.describe('product page add to cart', () => {
    test('Clicking Add To Cart Adds Items To Cart', async ({
@@ -109,7 +112,7 @@ test.describe('product page add to cart', () => {
          }
 
          serverRequestInterceptor.use(
-            Handler.create({
+            createGraphQLHandler({
                request: {
                   endpoint: 'findProduct',
                   method: 'query',
@@ -176,7 +179,7 @@ test.describe('product page add to cart', () => {
          port,
       }) => {
          clientRequestHandler.use(
-            Handler.create({
+            createRestHandler({
                request: {
                   endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
                   method: 'post',
@@ -193,7 +196,7 @@ test.describe('product page add to cart', () => {
          }
 
          serverRequestInterceptor.use(
-            Handler.create({
+            createGraphQLHandler({
                request: {
                   endpoint: 'findProduct',
                   method: 'query',

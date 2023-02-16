@@ -1,5 +1,5 @@
 import { test, expect } from '../test-fixtures';
-import Handler from '../msw/request-handler';
+import { createRestHandler } from './../msw/request-handler';
 
 test.describe('Subscribe to newsletter', () => {
    test.beforeEach(async ({ page }) => {
@@ -39,7 +39,7 @@ test.describe('Subscribe to newsletter', () => {
       clientRequestHandler,
    }) => {
       clientRequestHandler.use(
-         Handler.create({
+         createRestHandler({
             request: {
                endpoint: '/api/2.0/cart/newsletter/subscribe',
                method: 'post',
@@ -66,7 +66,7 @@ test.describe('Subscribe to newsletter', () => {
       clientRequestHandler,
    }) => {
       clientRequestHandler.use(
-         Handler.create({
+         createRestHandler({
             request: {
                endpoint: '/api/2.0/cart/newsletter/subscribe',
                method: 'post',
