@@ -1,8 +1,6 @@
-import { isRecord } from '@ifixit/helpers';
 import {
    GraphQLHandler,
    RestHandler,
-   RequestHandler,
    DefaultBodyType,
    GraphQLContext,
    GraphQLRequest,
@@ -138,139 +136,95 @@ export type RestHandlerOptions =
    | HandlerOptions
    | { customResolver: RestResolver };
 
+/**
+ * Create a new GraphQL handler.
+ */
+export const createGraphQLHandler = ({
+   request,
+   response,
+   options,
+}: {
+   request: GraphQLRequestInfo;
+   response: GraphQLResponseInfo;
+   options?: GraphQLHandlerOptions;
+}): GraphQLHandler => {
+   const { endpoint, method } = request;
+   const { status, body } = response;
+
+   const customResolver =
+      typeof options === 'function' ? (options as GraphQLResolver) : null;
+   const { once = false, passthrough = false } =
+      typeof options === 'object' ? (options as HandlerOptions) : {};
+
+   return new GraphQLHandler(
+      method,
+      endpoint,
+      /**
+       * This refers to the Path,or location, of the endpoint. By using a
+       * wildcard, we are saying that we want to match any endpoint
+       * regardless of location the request is made from.
+       */
+      '*',
+      customResolver ??
+         ((req, res, ctx) => {
+            if (passthrough) return req.passthrough();
+            if (once) return res.once(ctx.status(status), ctx.data(body));
+
+            return res(ctx.status(status), ctx.data(body));
+         })
+   );
 };
 
-export default class Handler {
-   /**
-    * Creates a new GraphQL handler.
-    */
-   static create({
-      request,
-      response,
-      options,
-   }: {
-      request: Omit<RequestInfo, 'method'> & { method: GraphQLMethods };
-      response: Omit<
-         MockedResponseInfo,
-         'headers' | 'body' | 'responseType'
-      > & {
-         body: Record<string, any>;
-      };
-      options?: HandlerOptions;
-   }): GraphQLHandler;
-
-   /**
-    * Creates a new Rest Handler.
-    */
-   static create({
-      request,
-      response,
-      options,
-   }: {
-      request: Omit<RequestInfo, 'method'> & { method: RestMethods };
-      response: MockedResponseInfo;
-      options?: HandlerOptions;
-   }): RestHandler;
-
-   static create({
-      request,
-      response,
-      options = { once: false, passthrough: false },
-   }: {
-      request: RequestInfo;
-      response: MockedResponseInfo;
-      options?: HandlerOptions;
-   }): RequestHandler {
-      const { endpoint, method } = request;
-      const { status, headers, body, responseType } = response;
-      const { once, passthrough, customResolver } = options;
-
-      if (isGraphQLMethod(method)) {
-         if (!isRecord(body)) {
-            throw new Error(`Invalid GraphQL body ${body}. Must be an object`);
-         }
-
-         return new GraphQLHandler(
-            method,
-            endpoint,
-            /**
-             * This refers to the Path,or location, of the endpoint. By using a
-             * wildcard, we are saying that we want to match any endpoint
-             * regardless of location the request is made from.
-             */
-            '*',
-            customResolver ??
-               ((req, res, ctx) => {
-                  if (passthrough) return req.passthrough();
-                  if (once) return res.once(ctx.status(status), ctx.data(body));
-
-                  return res(ctx.status(status), ctx.data(body));
-               })
-         );
-      } else if (isRestMethod(method)) {
-         return new RestHandler(
-            method,
-            endpoint,
-            customResolver ??
-               ((req, res, ctx) => {
-                  if (passthrough) return req.passthrough();
-
-                  const transformers = [ctx.status(status)];
-
-                  if (headers) {
-                     transformers.push(ctx.set(headers));
-                  }
-
-                  // Only transform the body if it and the response type are defined
-                  if (body && responseType) {
-                     /**
-                      * `raw` is for our own naming convention, but the actual
-                      * transformer method is called `body`. This can be confusing
-                      * so we are using our own naming convention to make it
-                      * clearer what response type we will be using.
-                      * @see https://mswjs.io/docs/api/context/body
-                      */
-                     transformers.push(
-                        ctx[responseType === 'raw' ? 'body' : responseType](
-                           body
-                        )
-                     );
-                  }
-
-                  if (once) return res.once(...transformers);
-
-                  return res(...transformers);
-               })
-         );
-      } else {
-         throw new Error(
-            `Invalid method ${method}. Must be 'mutation', 'query', 'all', 'get', 'post', 'put', 'patch', or 'delete'.`
-         );
-      }
-   }
-}
-
 /**
- * This is a type guard to ensure that the `method` is a valid GraphQLMethod
- * by using Typescript Predicate Return Types.
- * @see https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards
+ * Create a new REST handler.
  */
-function isGraphQLMethod(method: string): method is GraphQLMethods {
-   return method === 'mutation' || method === 'query';
-}
+export const createRestHandler = ({
+   request,
+   response,
+   options,
+}: {
+   request: RestRequestInfo;
+   response: RestResponseInfo;
+   options?: RestHandlerOptions;
+}): RestHandler => {
+   const { endpoint, method } = request;
+   const { status, headers } = response;
 
-/**
- * This is a type guard to ensure that the `method` is a valid RestMethod
- * by using Typescript Predicate Return Types.
- * @see https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards
- */
-function isRestMethod(method: string): method is RestMethods {
-   return (
-      method === 'all' ||
-      method === 'get' ||
-      method === 'post' ||
-      method === 'put' ||
-      method === 'patch' ||
-      method === 'delete'
+   const customResolver =
+      typeof options === 'function' ? (options as RestResolver) : null;
+   const { once = false, passthrough = false } =
+      typeof options === 'object' ? (options as HandlerOptions) : {};
+
+   return new RestHandler(
+      method,
+      endpoint,
+      customResolver ??
+         ((req, res, ctx) => {
+            if (passthrough) return req.passthrough();
+
+            const transformers = [ctx.status(status)];
+
+            if (headers) {
+               transformers.push(ctx.set(headers));
+            }
+
+            if ('body' in response) {
+               const { body, responseType } = response;
+               /**
+                * `raw` is for our own naming convention, but the actual
+                * transformer method is called `body`. This can be confusing
+                * so we are using our own naming convention to make it
+                * clearer what response type we will be using.
+                * @see https://mswjs.io/docs/api/context/body
+                */
+               transformers.push(
+                  ctx[responseType === 'raw' ? 'body' : responseType](body)
+               );
+            }
+
+            if (once) return res.once(...transformers);
+
+            return res(...transformers);
+         })
    );
-}
+};
