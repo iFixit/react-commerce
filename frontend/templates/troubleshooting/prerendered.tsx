@@ -46,9 +46,21 @@ const renderStyles: SystemStyleObject = {
       textDecoration: 'underline',
    },
 
+   'code, pre': {
+      backgroundColor: 'gray.200',
+      borderRadius: '4px',
+      color: 'coolGray.600',
+      borderStyle: 'none',
+   },
+
+   pre: {
+      padding: '2px 4px',
+      maxWidth: '100%',
+      overflow: 'auto',
+   },
+
    blockquote: {
       margin: '20px 0px',
-      //borderLeft: '5px solid #e5e7eb',
       borderLeftColor: 'gray.200',
       borderLeftWidth: '5px',
       borderLeftStyle: 'solid',

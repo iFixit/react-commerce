@@ -11,7 +11,7 @@ test.describe('Product Page Reviews test', () => {
          .getByTestId('product-review-line-item')
          .count();
 
-      await page.getByText('see more reviews').click();
+      await page.getByRole('button', { name: /see more reviews/gi }).click();
 
       const reviewsAfter = page.getByTestId('product-review-line-item');
       const reviewsCountAfter = await reviewsAfter.count();
