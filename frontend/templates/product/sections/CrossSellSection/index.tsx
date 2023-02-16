@@ -256,6 +256,7 @@ export function CrossSellSection({
                            base: 6,
                            sm: 0,
                         }}
+                        data-testid="cross-sell-total-price"
                      >
                         Total price:{' '}
                         <Box as="span" fontWeight="semibold">
