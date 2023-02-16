@@ -204,14 +204,14 @@ test.describe('product page add to cart', () => {
          await expect(productPage.addToCartButton).not.toBeVisible();
          await productPage.assertInventoryMessage();
 
-         await expect(
-            page.getByTestId('out-of-stock-alert')
-         ).toBeVisible();
+         await expect(page.getByTestId('out-of-stock-alert')).toBeVisible();
 
          const notifyMeForm = page.getByTestId('notify-me-form');
          await expect(notifyMeForm).toBeVisible();
 
-         await notifyMeForm.getByLabel('Email address').fill('test@example.com');
+         await notifyMeForm
+            .getByLabel('Email address')
+            .fill('test@example.com');
          await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
          await expect(
             page.getByTestId('notify-me-form-successful')
