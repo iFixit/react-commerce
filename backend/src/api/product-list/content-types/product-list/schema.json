@@ -209,14 +209,6 @@
          },
          "type": "richtext"
       },
-      "childrenHeading": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string"
-      },
       "defaultShowAllChildrenOnLgSizes": {
          "pluginOptions": {
             "i18n": {
