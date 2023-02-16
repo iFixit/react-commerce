@@ -189,6 +189,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                px="2"
                textAlign="center"
                {...otherProps}
+               data-testid="product-list-no-results"
             >
                <Icon
                   as={SearchEmptyStateIllustration}

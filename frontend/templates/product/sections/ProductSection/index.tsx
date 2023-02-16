@@ -116,6 +116,7 @@ export function ProductSection({
                }}
                fontSize="sm"
                position="relative"
+               data-testid="product-info-section"
             >
                {selectedVariant.sku && (
                   <Text color="gray.500" data-testid="product-sku">
@@ -368,7 +369,7 @@ function ProOnlyAlert(props: AlertProps) {
 
 function NotForSaleAlert(props: AlertProps) {
    return (
-      <Alert status="warning" {...props}>
+      <Alert status="warning" {...props} data-testid="not-for-sale-alert">
          <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
          <span>Not for Sale.</span>
       </Alert>
