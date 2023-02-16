@@ -56,9 +56,18 @@ export type RestResolver = ResponseResolver<
    DefaultBodyType
 >;
 
-export type RequestInfo = {
+/**
+ * The `RequestInfo` type represents the information that is needed to
+ * understand which request we are trying to mock.
+ */
+type RequestInfo = {
    endpoint: string;
-   method: GraphQLMethods | RestMethods;
+};
+export type GraphQLRequestInfo = RequestInfo & {
+   method: GraphQLMethods;
+};
+export type RestRequestInfo = RequestInfo & {
+   method: RestMethods;
 };
 
 /**
