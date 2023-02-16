@@ -10,8 +10,7 @@ import {
    Flex,
    Link,
 } from '@chakra-ui/react';
-import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
-import { faEye } from '@fortawesome/pro-solid-svg-icons/faEye';
+import { faCircleCheck, faEye } from '@fortawesome/pro-solid-svg-icons';
 import {
    Subscription,
    SubscriptionStatus,
