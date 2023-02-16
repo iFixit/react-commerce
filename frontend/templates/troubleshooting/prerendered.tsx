@@ -31,6 +31,7 @@ const renderStyles: SystemStyleObject = {
       fontSize: '16px',
       color: 'gray.700',
       alignSelf: 'stretch',
+      paddingBottom: 6,
    },
 
    'ul,ol': {
@@ -43,6 +44,27 @@ const renderStyles: SystemStyleObject = {
 
    'a:hover': {
       textDecoration: 'underline',
+   },
+
+   'code, pre': {
+      backgroundColor: 'gray.200',
+      borderRadius: '4px',
+      color: 'coolGray.600',
+      borderStyle: 'none',
+   },
+
+   pre: {
+      padding: '2px 4px',
+      maxWidth: '100%',
+      overflow: 'auto',
+   },
+
+   blockquote: {
+      margin: '20px 0px',
+      borderLeftColor: 'gray.200',
+      borderLeftWidth: '5px',
+      borderLeftStyle: 'solid',
+      padding: '2px 8px 2px 12px',
    },
 };
 

@@ -1,0 +1,25 @@
+{
+   "name": "@ifixit/breadcrumbs",
+   "version": "0.0.0",
+   "main": "./Breadcrumbs.tsx",
+   "types": "./Breadcrumbs.tsx",
+   "license": "MIT",
+   "dependencies": {
+      "@ifixit/icons": "workspace:*"
+   },
+   "peerDependencies": {
+      "@fortawesome/pro-solid-svg-icons": "*"
+   },
+   "devDependencies": {
+      "@ifixit/tsconfig": "workspace:*",
+      "@types/react-dom": "18.0.8",
+      "@types/react": "18.0.24",
+      "react": ">=18.2.0",
+      "typescript": "4.8.4"
+   },
+   "scripts": {
+      "build": "",
+      "clean": "",
+      "type-check": "tsc --pretty --noEmit"
+   }
+}
