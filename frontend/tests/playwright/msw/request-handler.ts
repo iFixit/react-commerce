@@ -70,11 +70,22 @@ export type RestRequestInfo = RequestInfo & {
    method: RestMethods;
 };
 
+/*
+ * These types represent the response options that can be passed to each respective
+ * handler to configure what the response should return if the request is matched.
+ */
+type MockedResponseInfo = {
+   status: number;
+};
+
+export type GraphQLResponseInfo = MockedResponseInfo & {
+   body: Record<string, any>;
+};
+
 /**
- * This type represents the options that can be passed to the handler
- * to configure what the response should return if the request is matched.
+ * The response for a Rest request can be configured in a more ways than
+ * compared to a response for GraphQL request.
  *
- * @property `status` - The HTTP status code to return
  * @property `headers` - The headers to return with the response
  * @property `body` - The body of the response.
  * @property `responseType` - This the kind of transformation to apply to the
@@ -86,11 +97,12 @@ export type RestRequestInfo = RequestInfo & {
  * @see https://mswjs.io/docs/api/response
  *
  */
-export type MockedResponseInfo = {
-   status: number;
+export type RestResponseInfo = MockedResponseInfo & {
    headers?: Record<string, string | string[]>;
-   body?: Record<string, any> | string | number | boolean | null;
-   responseType?: 'json' | 'text' | 'xml' | 'raw';
+} & (RestBodyInfo | {});
+type RestBodyInfo = {
+   body: Record<string, any> | string | number | boolean | null;
+   responseType: 'json' | 'text' | 'xml' | 'raw';
 };
 
 /**
