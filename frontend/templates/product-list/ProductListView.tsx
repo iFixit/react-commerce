@@ -14,6 +14,7 @@ import {
    ProductListSetSection,
    RelatedPostsSection,
 } from './sections';
+import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -34,7 +35,11 @@ export function ProductListView({
                <Index indexName={indexName} indexId="main-product-list-index">
                   <Configure filters={filters} hitsPerPage={18} />
                   <MetaTags productList={productList} />
-                  <HeroSection productList={productList} />
+                  {productList.heroImage ? (
+                     <HeroWithBackgroundSection productList={productList} />
+                  ) : (
+                     <HeroSection productList={productList} />
+                  )}
                   {productList.children.length > 0 && (
                      <ProductListChildrenSection productList={productList} />
                   )}

@@ -18,6 +18,15 @@ query getProductList($filters: ProductListFiltersInput) {
             defaultShowAllChildrenOnLgSizes
             filters
             forceNoindex
+            heroImage {
+               data {
+                  attributes {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+            }
             image {
                data {
                   attributes {
@@ -27,6 +36,16 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
+            brandLogo {
+               data {
+                  attributes {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+            }
+            brandLogoWidth
             parent {
                data {
                   attributes {
