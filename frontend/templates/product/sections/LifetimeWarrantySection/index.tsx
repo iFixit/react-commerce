@@ -2,7 +2,7 @@ import { QualityGuarantee } from '@assets/svg/files';
 import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import type { ProductVariant } from '@pages/api/nextjs/cache/product';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
 import Image from 'next/image';
@@ -38,7 +38,7 @@ export function LifetimeWarrantySection({
             }}
          ></Box>
          <Box position="relative">
-            <PageContentWrapper>
+            <Wrapper>
                <Flex
                   justify="space-between"
                   direction={{ base: 'column-reverse', md: 'row' }}
@@ -85,7 +85,7 @@ export function LifetimeWarrantySection({
                      }}
                   />
                </Flex>
-            </PageContentWrapper>
+            </Wrapper>
          </Box>
       </Box>
    );

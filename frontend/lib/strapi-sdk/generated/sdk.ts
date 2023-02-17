@@ -974,7 +974,6 @@ export type ProductList = {
    brandLogo?: Maybe<UploadFileEntityResponse>;
    brandLogoWidth?: Maybe<Scalars['Int']>;
    children?: Maybe<ProductListRelationResponseCollection>;
-   childrenHeading?: Maybe<Scalars['String']>;
    createdAt?: Maybe<Scalars['DateTime']>;
    defaultShowAllChildrenOnLgSizes?: Maybe<Scalars['Boolean']>;
    description: Scalars['String'];
@@ -1036,7 +1035,6 @@ export type ProductListFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
    brandLogoWidth?: InputMaybe<IntFilterInput>;
    children?: InputMaybe<ProductListFiltersInput>;
-   childrenHeading?: InputMaybe<StringFilterInput>;
    createdAt?: InputMaybe<DateTimeFilterInput>;
    defaultShowAllChildrenOnLgSizes?: InputMaybe<BooleanFilterInput>;
    description?: InputMaybe<StringFilterInput>;
@@ -1067,7 +1065,6 @@ export type ProductListInput = {
    brandLogo?: InputMaybe<Scalars['ID']>;
    brandLogoWidth?: InputMaybe<Scalars['Int']>;
    children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-   childrenHeading?: InputMaybe<Scalars['String']>;
    defaultShowAllChildrenOnLgSizes?: InputMaybe<Scalars['Boolean']>;
    description?: InputMaybe<Scalars['String']>;
    deviceTitle?: InputMaybe<Scalars['String']>;
@@ -2703,7 +2700,6 @@ export type GetProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             brandLogoWidth?: number | null;
-            childrenHeading?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3317,7 +3313,6 @@ export const GetProductListDocument = `
             }
           }
         }
-        childrenHeading
         sections {
           __typename
           ... on ComponentProductListBanner {

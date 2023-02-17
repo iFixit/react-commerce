@@ -26,7 +26,7 @@ export function InternationalBuyBox({
       });
    }, [selectedVariant, store]);
    return (
-      <Box textAlign="center">
+      <Box textAlign="center" data-testid="international-buy-box">
          <Button
             mt={3}
             variant="outline"

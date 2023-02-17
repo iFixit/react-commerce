@@ -116,7 +116,6 @@ export async function findProductList(
          ifixitOrigin,
          isPartsList,
       }),
-      childrenHeading: productList?.childrenHeading ?? null,
       sections: filterNullableItems(
          productList?.sections.map(createProductListSection)
       ),

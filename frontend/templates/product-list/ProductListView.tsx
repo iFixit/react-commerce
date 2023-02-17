@@ -1,6 +1,6 @@
 import { VStack } from '@chakra-ui/react';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListSectionType } from '@models/product-list';
 import { Configure, Index } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
@@ -30,8 +30,8 @@ export function ProductListView({
    return (
       <>
          <SecondaryNavigation productList={productList} />
-         <PageContentWrapper py="10">
-            <VStack align="stretch" spacing="12">
+         <Wrapper py={{ base: 4, md: 6 }}>
+            <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
                <Index indexName={indexName} indexId="main-product-list-index">
                   <Configure filters={filters} hitsPerPage={18} />
                   <MetaTags productList={productList} />
@@ -102,7 +102,7 @@ export function ProductListView({
                   }
                })}
             </VStack>
-         </PageContentWrapper>
+         </Wrapper>
       </>
    );
 }
