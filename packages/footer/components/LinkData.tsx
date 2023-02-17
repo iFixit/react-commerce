@@ -1,5 +1,5 @@
-import { FooterType } from './Shared';
-import { MenuItemType } from '../../ui/menu';
+import type { FooterType } from './Shared';
+import type { MenuItemType } from '../../ui/menu';
 
 export const getGuideFooterMenus = (supportUrl: string): FooterType => {
    return {

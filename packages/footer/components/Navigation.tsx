@@ -13,7 +13,7 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { NewsletterComponent, NewsletterFormProps } from './Newsletter';
-import { Menu as MenuType, MenuItem } from '../../ui/menu/menu';
+import type { Menu as MenuType, MenuItem } from '../../ui/menu/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 type NavSectionProps = {

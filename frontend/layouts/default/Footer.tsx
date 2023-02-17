@@ -1,7 +1,7 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { Menu, MenuList } from '@chakra-ui/react';
 import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
-import { MenuItem, MenuItemType } from '@ifixit/ui/menu';
+import type { MenuItem, MenuItemType } from '@ifixit/ui/menu';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { GlobalSettings } from '@models/global-settings';
