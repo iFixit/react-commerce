@@ -29,7 +29,7 @@ export function CurrentRefinements() {
          animateOpacity
          data-testid="current-refinements"
       >
-         <Flex pt="3" wrap="wrap" px={{ base: 6, sm: 0 }}>
+         <Flex pt="3" wrap="wrap">
             {currentRefinements.items.map((item, index) => {
                return (
                   <React.Fragment key={item.label}>

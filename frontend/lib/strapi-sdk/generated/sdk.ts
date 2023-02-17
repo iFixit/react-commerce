@@ -972,8 +972,8 @@ export type PaginationArg = {
 export type ProductList = {
    __typename?: 'ProductList';
    brandLogo?: Maybe<UploadFileEntityResponse>;
+   brandLogoWidth?: Maybe<Scalars['Int']>;
    children?: Maybe<ProductListRelationResponseCollection>;
-   childrenHeading?: Maybe<Scalars['String']>;
    createdAt?: Maybe<Scalars['DateTime']>;
    defaultShowAllChildrenOnLgSizes?: Maybe<Scalars['Boolean']>;
    description: Scalars['String'];
@@ -1033,8 +1033,8 @@ export type ProductListEntityResponseCollection = {
 
 export type ProductListFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
+   brandLogoWidth?: InputMaybe<IntFilterInput>;
    children?: InputMaybe<ProductListFiltersInput>;
-   childrenHeading?: InputMaybe<StringFilterInput>;
    createdAt?: InputMaybe<DateTimeFilterInput>;
    defaultShowAllChildrenOnLgSizes?: InputMaybe<BooleanFilterInput>;
    description?: InputMaybe<StringFilterInput>;
@@ -1063,8 +1063,8 @@ export type ProductListFiltersInput = {
 
 export type ProductListInput = {
    brandLogo?: InputMaybe<Scalars['ID']>;
+   brandLogoWidth?: InputMaybe<Scalars['Int']>;
    children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-   childrenHeading?: InputMaybe<Scalars['String']>;
    defaultShowAllChildrenOnLgSizes?: InputMaybe<Scalars['Boolean']>;
    description?: InputMaybe<Scalars['String']>;
    deviceTitle?: InputMaybe<Scalars['String']>;
@@ -2699,8 +2699,32 @@ export type GetProductListQuery = {
             defaultShowAllChildrenOnLgSizes?: boolean | null;
             filters?: string | null;
             forceNoindex?: boolean | null;
-            childrenHeading?: string | null;
+            brandLogoWidth?: number | null;
+            heroImage?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
             image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            brandLogo?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
                   __typename?: 'UploadFileEntity';
@@ -3177,6 +3201,15 @@ export const GetProductListDocument = `
         defaultShowAllChildrenOnLgSizes
         filters
         forceNoindex
+        heroImage {
+          data {
+            attributes {
+              alternativeText
+              url
+              formats
+            }
+          }
+        }
         image {
           data {
             attributes {
@@ -3186,6 +3219,16 @@ export const GetProductListDocument = `
             }
           }
         }
+        brandLogo {
+          data {
+            attributes {
+              alternativeText
+              url
+              formats
+            }
+          }
+        }
+        brandLogoWidth
         parent {
           data {
             attributes {
@@ -3270,7 +3313,6 @@ export const GetProductListDocument = `
             }
           }
         }
-        childrenHeading
         sections {
           __typename
           ... on ComponentProductListBanner {

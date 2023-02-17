@@ -20,7 +20,7 @@ import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import type { ProductReview } from '@models/product/reviews';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
@@ -78,14 +78,8 @@ export function ReviewsSection({
       (reviewsData.average >= 4 || reviewsData.count > 10);
 
    return (
-      <Box
-         id="reviews"
-         bg="white"
-         px={{ base: 5, sm: 0 }}
-         py="16"
-         fontSize="sm"
-      >
-         <PageContentWrapper>
+      <Box id="reviews" bg="white" py="16" fontSize="sm">
+         <Wrapper>
             <Heading
                as="h2"
                color="gray.700"
@@ -144,7 +138,7 @@ export function ReviewsSection({
                   <WriteReviewButton variantSku={selectedVariant.sku} />
                </VStack>
             )}
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }

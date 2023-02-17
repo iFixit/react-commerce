@@ -87,6 +87,14 @@
             }
          }
       },
+      "brandLogoWidth": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "integer"
+      },
       "filters": {
          "pluginOptions": {
             "i18n": {
@@ -200,14 +208,6 @@
             }
          },
          "type": "richtext"
-      },
-      "childrenHeading": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string"
       },
       "defaultShowAllChildrenOnLgSizes": {
          "pluginOptions": {
