@@ -1,6 +1,10 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
+import {
+   createGraphQLHandler,
+   createRestHandler,
+} from './../msw/request-handler';
 
 test.describe('product page add to cart', () => {
    test('Clicking Add To Cart Adds Items To Cart', async ({
@@ -101,15 +105,22 @@ test.describe('product page add to cart', () => {
          cartDrawer,
          serverRequestInterceptor,
          port,
-         graphql,
       }) => {
+         const lowStockedProduct = cloneDeep(mockedProductQuery);
+         if (lowStockedProduct.product) {
+            lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
+         }
+
          serverRequestInterceptor.use(
-            graphql.query('findProduct', async (req, res, ctx) => {
-               const lowStockedProduct = cloneDeep(mockedProductQuery);
-               if (lowStockedProduct.product) {
-                  lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
-               }
-               return res(ctx.data(lowStockedProduct));
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: lowStockedProduct,
+               },
             })
          );
 
@@ -166,25 +177,34 @@ test.describe('product page add to cart', () => {
          serverRequestInterceptor,
          clientRequestHandler,
          port,
-         graphql,
-         rest,
       }) => {
          clientRequestHandler.use(
-            rest.post(
-               '/api/2.0/cart/product/notifyWhenSkuInStock',
-               (req, res, ctx) => {
-                  return res(ctx.status(200));
-               }
-            )
+            createRestHandler({
+               request: {
+                  endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
+                  method: 'post',
+               },
+               response: {
+                  status: 200,
+               },
+            })
          );
 
+         const outOfStockProduct = cloneDeep(mockedProductQuery);
+         if (outOfStockProduct.product) {
+            outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
+         }
+
          serverRequestInterceptor.use(
-            graphql.query('findProduct', async (req, res, ctx) => {
-               const outOfStockProduct = cloneDeep(mockedProductQuery);
-               if (outOfStockProduct.product) {
-                  outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
-               }
-               return res(ctx.data(outOfStockProduct));
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: outOfStockProduct,
+               },
             })
          );
 
