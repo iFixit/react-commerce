@@ -1,7 +1,7 @@
 import { filterNullableItems, Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
 import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
-import type {
+import {
    ImageLinkMenuItem,
    LinkMenuItem,
    Menu,
