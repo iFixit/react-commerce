@@ -30,11 +30,11 @@ test.describe('Subscribe to newsletter', () => {
       ).not.toBeVisible();
 
       await footerNewsletterForm
-          .getByTestId('newsletter-email-input')
-          .fill('test@example');
+         .getByTestId('newsletter-email-input')
+         .fill('test@example');
       await footerNewsletterForm
-          .getByRole('button', { name: /subscribe|join/i })
-          .click();
+         .getByRole('button', { name: /subscribe|join/i })
+         .click();
       await expect(
          footerNewsletterForm.getByText(/please insert a valid email/i)
       ).toBeVisible();
@@ -57,16 +57,14 @@ test.describe('Subscribe to newsletter', () => {
       );
 
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
-      
+
       await footerNewsletterForm
-          .getByTestId('newsletter-email-input')
-          .fill('test@example.com');
+         .getByTestId('newsletter-email-input')
+         .fill('test@example.com');
       await footerNewsletterForm
-          .getByRole('button', { name: /subscribe|join/i })
-          .click();
-      await expect(footerNewsletterForm
-          .getByText('Subscribed!'))
-          .toBeVisible();
+         .getByRole('button', { name: /subscribe|join/i })
+         .click();
+      await expect(footerNewsletterForm.getByText('Subscribed!')).toBeVisible();
       await expect(
          footerNewsletterForm.getByTestId('footer-newsletter-subscribe-button')
       ).not.toBeVisible();
@@ -93,7 +91,9 @@ test.describe('Subscribe to newsletter', () => {
 
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
 
-      await footerNewsletterForm.getByTestId('newsletter-email-input').fill('test@example.com');
+      await footerNewsletterForm
+         .getByTestId('newsletter-email-input')
+         .fill('test@example.com');
 
       await footerNewsletterForm
          .getByRole('button', { name: /subscribe|join/i })
