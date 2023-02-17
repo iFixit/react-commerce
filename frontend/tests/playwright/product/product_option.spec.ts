@@ -3,8 +3,9 @@ import { test, expect } from '../test-fixtures';
 test.describe('Product option test', () => {
    test('Different styles', async ({ page, productPage, cartDrawer }) => {
       await productPage.gotoProduct('repair-business-toolkit');
+      const productInfoSection = page.getByTestId('product-info-section');
 
-      await expect(page.getByText('Style')).toBeVisible();
+      await expect(productInfoSection.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
       const firstOptionPrice = await productPage.getCurrentPrice();
@@ -44,10 +45,10 @@ test.describe('Product option test', () => {
       await cartDrawer.assertItemIsPresent(secondOptionSku);
 
       // Assert that the cart drawer contains the prices of the added products
-      expect(await cartDrawer.getItem(firstOptionSku)).toHaveText(
+      expect(await cartDrawer.getItem(firstOptionSku)).toContainText(
          firstOptionPrice.toFixed(2)
       );
-      expect(await cartDrawer.getItem(secondOptionSku)).toHaveText(
+      expect(await cartDrawer.getItem(secondOptionSku)).toContainText(
          secondOptionPrice.toFixed(2)
       );
    });

@@ -2,49 +2,105 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Link } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
+import { FaIcon } from '@ifixit/icons';
+import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    return (
-      <Flex
-         direction="row"
-         justifyContent="center"
-         width="100%"
-         fontSize="16px"
-      >
-         <Flex padding="0px 32px 32px" gap="48px" maxW="1280px" id="wrapper">
-            <Flex gap="16px" direction="column" id="main">
-               <Head>
-                  <meta name="robots" content="noindex" />
-               </Head>
-               <Heading as="h1">{wikiData.title}</Heading>
-               {wikiData.introduction.map((intro) => (
-                  <IntroductionSection key={intro.heading} intro={intro} />
-               ))}
-               {wikiData.solutions.map((solution, index) => (
-                  <SolutionCard
-                     key={solution.heading}
-                     index={index + 1}
-                     solution={solution}
-                  />
-               ))}
-               {wikiData.conclusion.map((conclusion) => (
-                  <ConclusionSection
-                     key={conclusion.heading}
-                     conclusion={conclusion}
-                  />
-               ))}
-            </Flex>
+      <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
+         <NavBar editUrl={wikiData.editUrl} />
+         <Flex
+            padding="0px 32px 32px"
+            gap="16px"
+            maxW="1280px"
+            direction="column"
+            id="main"
+         >
+            <Head>
+               <meta name="robots" content="noindex" />
+            </Head>
+            <Heading as="h1">{wikiData.title}</Heading>
+            {wikiData.introduction.map((intro) => (
+               <IntroductionSection key={intro.heading} intro={intro} />
+            ))}
+            {wikiData.solutions.map((solution, index) => (
+               <SolutionCard
+                  key={solution.heading}
+                  index={index + 1}
+                  solution={solution}
+               />
+            ))}
+            {wikiData.conclusion.map((conclusion) => (
+               <ConclusionSection
+                  key={conclusion.heading}
+                  conclusion={conclusion}
+               />
+            ))}
          </Flex>
       </Flex>
    );
 };
+
+function NavBar({ editUrl }: { editUrl: string }) {
+   return (
+      <Flex
+         w="100%"
+         h="48px"
+         backgroundColor="white"
+         borderBottomColor="gray.200"
+         borderBottomWidth="1px"
+         justify="center"
+      >
+         <Flex maxW="1280px" flexGrow="1">
+            <Breadcrumbs />
+            <AreaLinks />
+            <EditButton editUrl={editUrl} />
+         </Flex>
+      </Flex>
+   );
+}
+
+function Breadcrumbs() {
+   return <Box flexGrow="1"></Box>;
+}
+
+function AreaLinks() {
+   return <> </>;
+}
+
+function EditButton({ editUrl }: { editUrl: string }) {
+   return (
+      <Button
+         leftIcon={<FaIcon icon={faPenToSquare} />}
+         variant="link"
+         as={Link}
+         bgColor="transparent"
+         textColor="brand"
+         borderLeftColor="gray.200"
+         borderLeftWidth="1px"
+         borderRightColor="gray.200"
+         borderRightWidth="1px"
+         borderRadius="0px"
+         padding="9px, 16px, 9px, 16px"
+         fontFamily="heading"
+         lineHeight="1.29"
+         fontWeight="semibold"
+         fontSize="14px"
+         color="brand.500"
+         textAlign="center"
+         href={editUrl}
+      >
+         Edit
+      </Button>
+   );
+}
 
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
