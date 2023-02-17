@@ -72,7 +72,7 @@ export function ListItem({
                   return (
                      <Flex
                         key={refinement.label}
-                        data-testid={`current-refinement-${refinement.value}`}
+                        data-testid={`current-refinement-drawer-${refinement.value}`}
                         bgColor="brand.100"
                         borderColor="brand.300"
                         borderWidth="1px"

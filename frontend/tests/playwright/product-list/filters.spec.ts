@@ -5,12 +5,21 @@ import { waitForAlgoliaSearch, resolvePath } from '../utils';
 // Check that the refinement value is in the current refinements.
 async function checkRefinementValue(
    value: string | null | undefined,
-   page: Page
+   page: Page,
+   layout: 'desktop' | 'mobile'
 ) {
    if (!value) {
       throw new Error('Could not find ' + value);
    }
-   await expect(page.getByTestId(`current-refinement-${value}`)).toBeVisible();
+   if (layout === 'desktop') {
+      await expect(
+         page.getByTestId(`current-refinement-${value}`).first()
+      ).toBeVisible();
+   } else {
+      await expect(
+         page.getByTestId(`current-refinement-${value}`).last()
+      ).toBeVisible();
+   }
 }
 
 // Check that the refinement value is in the search results
@@ -104,7 +113,7 @@ test.describe('product list filters', () => {
          const firstFacetOptionValue = await firstFacetOption?.getAttribute(
             'data-value'
          );
-         await checkRefinementValue(firstFacetOptionValue, page);
+         await checkRefinementValue(firstFacetOptionValue, page, 'desktop');
 
          // Check that the refinement value is in the search results.
          const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
@@ -132,7 +141,7 @@ test.describe('product list filters', () => {
          const secondFacetOptionValue = await secondFacetOption?.getAttribute(
             'data-value'
          );
-         await checkRefinementValue(secondFacetOptionValue, page);
+         await checkRefinementValue(secondFacetOptionValue, page, 'desktop');
          await removeAndCheckRefinement(
             secondFacetOptionValue!,
             'remove',
@@ -172,7 +181,7 @@ test.describe('product list filters', () => {
          const { results } = await (await queryResponse).json();
 
          // Check that the refinement value is in the current refinements.
-         await checkRefinementValue(firstFacetOptionValue, page);
+         await checkRefinementValue(firstFacetOptionValue, page, 'mobile');
 
          // Check that the refinement value is in the search results.
          await checkRefinementInSearchResult(
@@ -198,7 +207,7 @@ test.describe('product list filters', () => {
          await page.getByRole('button', { name: 'Close' }).click();
 
          // Check that the refinement value is in the current refinements.
-         await checkRefinementValue(secondFacetOptionValue, page);
+         await checkRefinementValue(secondFacetOptionValue, page, 'mobile');
          await removeAndCheckRefinement(
             secondFacetOptionValue!,
             'remove',
@@ -226,7 +235,7 @@ test.describe('product list filters', () => {
          await page.getByRole('button', { name: 'Apply' }).click();
 
          // Check that the refinement value is in the current refinements.
-         await checkRefinementValue(firstFacetOptionValue, page);
+         await checkRefinementValue(firstFacetOptionValue, page, 'mobile');
 
          // Select the second filter and click Apply button
          await page
@@ -246,7 +255,7 @@ test.describe('product list filters', () => {
             .click({ clickCount: 2 });
 
          // Check that the refinement value is in the current refinements.
-         await checkRefinementValue(secondFacetOptionValue, page);
+         await checkRefinementValue(secondFacetOptionValue, page, 'mobile');
 
          // Click "Clear all" button and check if refinements are empty.
          await page
