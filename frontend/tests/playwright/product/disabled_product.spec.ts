@@ -1,7 +1,7 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
-import Handler from '../msw/request-handler';
+import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Disabled Product Test', () => {
    test('Not for Sale text renders and noindexed', async ({
@@ -16,7 +16,7 @@ test.describe('Disabled Product Test', () => {
       }
 
       serverRequestInterceptor.use(
-         Handler.create({
+         createGraphQLHandler({
             request: {
                endpoint: 'findProduct',
                method: 'query',
@@ -32,29 +32,36 @@ test.describe('Disabled Product Test', () => {
          'iphone-6s-plus-replacement-battery-disabled'
       );
 
-      await expect(productPage.page.getByText('Not for Sale')).toBeVisible();
-      await expect(productPage.page.getByText('Description')).toBeVisible();
       await expect(
-         productPage.page.getByRole('link', { name: 'One year warranty' })
+         productPage.page.getByTestId('not-for-sale-alert')
+      ).toBeVisible();
+
+      const productInfoSection = productPage.page.getByTestId(
+         'product-info-section'
+      );
+      await expect(productInfoSection.getByText('Description')).toBeVisible();
+      await expect(
+         productInfoSection.getByRole('link', { name: 'One year warranty' })
       ).toHaveAttribute('href', 'https://www.cominor.com/Info/Warranty');
 
       // Assert the following to be not visible
-      await expect(productPage.page.getByText('Add to Cart')).not.toBeVisible();
       await expect(
-         productPage.page.getByText(/Only \d left/i)
-      ).not.toBeVisible();
-      await expect(productPage.page.getByText('Notify me')).not.toBeVisible();
-      await expect(
-         productPage.page.getByText('Shipping restrictions apply')
+         productInfoSection.getByTestId('product-add-to-cart-button')
       ).not.toBeVisible();
       await expect(
-         productPage.page.getByTestId('product-variants-selector')
+         productInfoSection.getByTestId('product-inventory-message')
       ).not.toBeVisible();
       await expect(
-         productPage.page.getByText(/Buy from our Store in/i)
+         productInfoSection.getByTestId('notify-me-form')
       ).not.toBeVisible();
       await expect(
-         productPage.page.getByText(/Buy from our US Store/i)
+         productInfoSection.getByText('Shipping restrictions apply')
+      ).not.toBeVisible();
+      await expect(
+         productInfoSection.getByTestId('product-variants-selector')
+      ).not.toBeVisible();
+      await expect(
+         productInfoSection.getByTestId('international-buy-box')
       ).not.toBeVisible();
 
       // Assert that we noindex disabled product pages

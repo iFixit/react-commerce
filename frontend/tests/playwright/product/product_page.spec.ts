@@ -8,14 +8,14 @@ test.describe('Product page test', () => {
 
       // Assert product title is visible
       await expect(productPage.page.getByTestId('product-title')).toBeVisible();
-      await expect(productPage.page.getByTestId('product-title')).toHaveText(
+      await expect(productPage.page.getByTestId('product-title')).toContainText(
          'Repair Business Toolkit'
       );
 
       // Assert product sku is visible
       await expect(productPage.page.getByTestId('product-sku')).toBeVisible();
       /* eslint-disable no-useless-escape */
-      await expect(productPage.page.getByTestId('product-sku')).toHaveText(
+      await expect(productPage.page.getByTestId('product-sku')).toContainText(
          /IF\d*\-\d*/g
       );
 
@@ -25,6 +25,6 @@ test.describe('Product page test', () => {
       ).toBeVisible();
       await expect(
          productPage.page.getByTestId('current-price').first()
-      ).toHaveText(/\$\d*\.\d*/g);
+      ).toContainText(/\$\d*\.\d*/g);
    });
 });

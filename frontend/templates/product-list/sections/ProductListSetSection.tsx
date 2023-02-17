@@ -23,14 +23,7 @@ export function ProductListSetSection({
    productLists,
 }: ProductListSetSectionProps) {
    return (
-      <VStack
-         spacing="6"
-         align="stretch"
-         px={{
-            base: 6,
-            sm: 0,
-         }}
-      >
+      <VStack spacing="6" align="stretch">
          <Heading size="lg">{title}</Heading>
          <SimpleGrid
             columns={{

@@ -34,9 +34,12 @@ test.describe('Cross-sell test', () => {
       }
 
       // Assert total price matches price of product as it's the only one selected
-      await expect(
-         productPage.page.getByText('Total Price: ' + currentProductPrice)
-      ).toBeVisible();
+      expect(currentProductPrice).not.toBeNull();
+      expect(
+         await productPage.page
+            .getByTestId('cross-sell-total-price')
+            .textContent()
+      ).toContain(currentProductPrice!);
 
       // Assert adding to cart only adds current product
       await productPage.page
@@ -71,11 +74,11 @@ test.describe('Cross-sell test', () => {
       }
 
       // Assert total price matches the sum of all products
-      await expect(
-         productPage.page.getByText(
-            'Total Price: $' + expectedTotalPrice.toFixed(2)
-         )
-      ).toBeVisible();
+      expect(
+         await productPage.page
+            .getByTestId('cross-sell-total-price')
+            .textContent()
+      ).toContain(expectedTotalPrice.toFixed(2));
 
       // Assert adding to cart adds all products
       await productPage.page

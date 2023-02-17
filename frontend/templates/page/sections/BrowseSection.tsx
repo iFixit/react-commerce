@@ -13,7 +13,7 @@ import {
 import { ProductListCard } from '@components/product-list/ProductListCard';
 import { productListPath } from '@helpers/path-helpers';
 import { useAppContext } from '@ifixit/app';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import { GetSection } from '@models/page';
 import Image from 'next/image';
 import NextLink from 'next/link';
@@ -33,7 +33,7 @@ export function BrowseSection({
       <Box as="section" mb="16">
          <Box position="relative" w="full">
             <HeadingBackground image={image} />
-            <PageContentWrapper py="16" textAlign="center" isResponsive>
+            <Wrapper py="16" textAlign="center">
                {title && (
                   <SectionHeading color="white" mb="6">
                      {title}
@@ -42,15 +42,15 @@ export function BrowseSection({
                {description && (
                   <SectionDescription richText={description} color="gray.100" />
                )}
-            </PageContentWrapper>
+            </Wrapper>
          </Box>
-         <PageContentWrapper isResponsive>
+         <Wrapper>
             <VStack spacing="0">
                <SearchBox />
                <Text>or explore by category</Text>
             </VStack>
             <FeaturedCategories categories={categories} />
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }

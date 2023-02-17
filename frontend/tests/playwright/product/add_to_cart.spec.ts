@@ -1,7 +1,10 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
-import Handler from '../msw/request-handler';
+import {
+   createGraphQLHandler,
+   createRestHandler,
+} from './../msw/request-handler';
 
 test.describe('product page add to cart', () => {
    test('Clicking Add To Cart Adds Items To Cart', async ({
@@ -107,7 +110,7 @@ test.describe('product page add to cart', () => {
          }
 
          serverRequestInterceptor.use(
-            Handler.create({
+            createGraphQLHandler({
                request: {
                   endpoint: 'findProduct',
                   method: 'query',
@@ -172,7 +175,7 @@ test.describe('product page add to cart', () => {
          clientRequestHandler,
       }) => {
          clientRequestHandler.use(
-            Handler.create({
+            createRestHandler({
                request: {
                   endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
                   method: 'post',
@@ -189,7 +192,7 @@ test.describe('product page add to cart', () => {
          }
 
          serverRequestInterceptor.use(
-            Handler.create({
+            createGraphQLHandler({
                request: {
                   endpoint: 'findProduct',
                   method: 'query',
@@ -217,24 +220,19 @@ test.describe('product page add to cart', () => {
          await expect(productPage.addToCartButton).not.toBeVisible();
          await productPage.assertInventoryMessage();
 
-         const notifyMeForm = productPage.page.getByText(
-            /this item is currently/i
-         );
-         await expect(notifyMeForm).toBeVisible();
-         await expect(notifyMeForm).toHaveText(
-            'This item is currently Out of Stock.'
-         );
+         await expect(
+            productPage.page.getByTestId('out-of-stock-alert')
+         ).toBeVisible();
 
-         await productPage.page
+         const notifyMeForm = productPage.page.getByTestId('notify-me-form');
+         await expect(notifyMeForm).toBeVisible();
+
+         await notifyMeForm
             .getByLabel('Email address')
             .fill('test@example.com');
-         await productPage.page
-            .getByRole('button', { name: 'Notify me' })
-            .click();
+         await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
          await expect(
-            productPage.page.getByText(
-               'You will be notified when this product is back in stock.'
-            )
+            productPage.page.getByTestId('notify-me-form-successful')
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();

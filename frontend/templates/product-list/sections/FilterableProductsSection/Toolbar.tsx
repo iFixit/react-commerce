@@ -60,12 +60,7 @@ export function Toolbar(props: ToolbarProps) {
             direction={{ base: 'column', md: 'row' }}
          >
             <NumberOfHits />
-            <Flex
-               wrap="wrap"
-               flexGrow={1}
-               justify="flex-end"
-               px={{ base: 6, sm: 0 }}
-            >
+            <Flex wrap="wrap" flexGrow={1} justify="flex-end">
                <OpenFiltersButton onClick={drawer.onOpen}>
                   Filters
                </OpenFiltersButton>

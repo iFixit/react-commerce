@@ -1,6 +1,7 @@
 import { AppProviders, AppProvidersProps } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
-import { noindexDevDomains } from '@helpers/next-helpers';
+import { withCacheLong } from '@helpers/cache-control-helpers';
+import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
@@ -14,6 +15,7 @@ import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ProductList, ProductListType } from '@models/product-list';
 import { findProductList } from '@models/product-list/server';
+import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { renderToString } from 'react-dom/server';
@@ -21,20 +23,20 @@ import { getServerState } from 'react-instantsearch-hooks-server';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
 
+const withMiddleware = compose(
+   withLogging<ProductListTemplateProps>,
+   withCacheLong<ProductListTemplateProps>,
+   withNoindexDevDomains<ProductListTemplateProps>
+);
+
 type GetProductListServerSidePropsOptions = {
    productListType: ProductListType;
 };
 
 export const getProductListServerSideProps = ({
    productListType,
-}: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
-   return async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=10, stale-while-revalidate=600'
-      );
-      noindexDevDomains(context);
-
+}: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> =>
+   withMiddleware(async (context) => {
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
       const layoutProps: Promise<DefaultLayoutProps> = getLayoutServerSideProps(
          {
@@ -212,8 +214,7 @@ export const getProductListServerSideProps = ({
       return {
          props: pageProps,
       };
-   };
-};
+   });
 
 function getDevicePathSegments(
    context: GetServerSidePropsContext<ParsedUrlQuery>

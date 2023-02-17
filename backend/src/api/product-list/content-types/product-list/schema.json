@@ -54,6 +54,17 @@
          "type": "richtext",
          "required": true
       },
+      "heroImage": {
+         "type": "media",
+         "multiple": false,
+         "required": false,
+         "allowedTypes": ["images"],
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         }
+      },
       "image": {
          "type": "media",
          "multiple": false,
@@ -64,6 +75,25 @@
                "localized": false
             }
          }
+      },
+      "brandLogo": {
+         "type": "media",
+         "multiple": false,
+         "required": false,
+         "allowedTypes": ["images"],
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         }
+      },
+      "brandLogoWidth": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "integer"
       },
       "filters": {
          "pluginOptions": {
@@ -178,14 +208,6 @@
             }
          },
          "type": "richtext"
-      },
-      "childrenHeading": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string"
       },
       "defaultShowAllChildrenOnLgSizes": {
          "pluginOptions": {
