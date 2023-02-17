@@ -52,7 +52,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Item Can Be Added Again After Removing The Item', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
