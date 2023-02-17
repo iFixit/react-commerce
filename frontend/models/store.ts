@@ -1,7 +1,6 @@
 import { filterNullableItems, Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
 import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
-import { lowerCase } from 'lodash';
 import {
    ImageLinkMenuItem,
    LinkMenuItem,
@@ -106,7 +105,7 @@ async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
 }
 
 export function getSupportUrlFromStoreCode(code: string): string {
-   switch (lowerCase(code)) {
+   switch (code.toLowerCase()) {
       case 'eu_pro':
       case 'eu_pro_test':
       case 'eu_test':
