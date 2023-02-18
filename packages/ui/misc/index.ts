@@ -1,4 +1,4 @@
 export * from './Wordmark';
-export * from './PageContentWrapper';
+export * from './Wrapper';
 export * from './ResponsiveImage';
 export * from './IconBadge';

@@ -1,5 +1,5 @@
 import { Box, Button } from '@chakra-ui/react';
-import { PageContentWrapper } from '@ifixit/ui';
+import { Wrapper } from '@ifixit/ui';
 import { GetSection } from '@models/page';
 import Image from 'next/image';
 import NextLink from 'next/link';
@@ -33,14 +33,7 @@ export function HeroSection({
             w="full"
             h="full"
          />
-         <PageContentWrapper
-            pt="200px"
-            pb="16"
-            px={{
-               base: 4,
-               md: 0,
-            }}
-         >
+         <Wrapper pt="200px" pb="16">
             <Box textAlign="center">
                {title && (
                   <SectionHeading color="white" mb="3">
@@ -58,7 +51,7 @@ export function HeroSection({
                   </NextLink>
                )}
             </Box>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }

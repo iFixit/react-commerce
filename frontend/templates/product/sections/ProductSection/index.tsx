@@ -22,7 +22,7 @@ import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
+import { Wrapper, ProductVariantPrice } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
@@ -66,8 +66,8 @@ export function ProductSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <PageContentWrapper as="section">
-         <Flex px={{ base: 5, sm: 0 }}>
+      <Wrapper as="section">
+         <Flex>
             <Flex
                position="sticky"
                alignSelf="flex-start"
@@ -116,6 +116,7 @@ export function ProductSection({
                }}
                fontSize="sm"
                position="relative"
+               data-testid="product-info-section"
             >
                {selectedVariant.sku && (
                   <Text color="gray.500" data-testid="product-sku">
@@ -242,7 +243,7 @@ export function ProductSection({
                </VStack>
             </Box>
          </Flex>
-      </PageContentWrapper>
+      </Wrapper>
    );
 }
 
@@ -368,7 +369,7 @@ function ProOnlyAlert(props: AlertProps) {
 
 function NotForSaleAlert(props: AlertProps) {
    return (
-      <Alert status="warning" {...props}>
+      <Alert status="warning" {...props} data-testid="not-for-sale-alert">
          <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
          <span>Not for Sale.</span>
       </Alert>

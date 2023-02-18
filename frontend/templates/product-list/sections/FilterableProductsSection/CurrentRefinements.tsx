@@ -7,6 +7,7 @@ import {
    TagLabel,
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { useSearchQueryContext } from '@templates/product-list/hooks/useSearchQuery';
 import * as React from 'react';
 import {
    useClearRefinements,
@@ -15,8 +16,11 @@ import {
 } from 'react-instantsearch-hooks-web';
 
 export function CurrentRefinements() {
+   const { setSearchQuery } = useSearchQueryContext();
    const currentRefinements = useCurrentRefinements();
-   const clearRefinements = useClearRefinements();
+   const clearRefinements = useClearRefinements({
+      excludedAttributes: [],
+   });
    const pagination = usePagination();
 
    return (
@@ -25,7 +29,7 @@ export function CurrentRefinements() {
          animateOpacity
          data-testid="current-refinements"
       >
-         <Flex pt="3" wrap="wrap" px={{ base: 6, sm: 0 }}>
+         <Flex pt="3" wrap="wrap">
             {currentRefinements.items.map((item, index) => {
                return (
                   <React.Fragment key={item.label}>
@@ -59,7 +63,10 @@ export function CurrentRefinements() {
                );
             })}
             <Button
-               onClick={() => clearRefinements.refine()}
+               onClick={() => {
+                  setSearchQuery('');
+                  clearRefinements.refine();
+               }}
                my="1"
                mr="2"
                size="xs"

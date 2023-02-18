@@ -45,8 +45,8 @@ export function Prop65Warning({ type, chemicals }: Prop65WarningProps) {
             </PopoverTrigger>
             <PopoverContent
                maxW={{
-                  base: '260px',
-                  sm: 'unset',
+                  base: '180px',
+                  sm: '240px',
                }}
                mx={{
                   base: '5',
