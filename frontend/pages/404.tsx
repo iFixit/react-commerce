@@ -1,10 +1,8 @@
-import { Center, Divider, Text, VStack } from '@chakra-ui/react';
+import { Center, Divider, Heading, Text, VStack } from '@chakra-ui/react';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import {
-   DefaultLayout,
-   getLayoutServerSideProps,
-   WithLayoutProps,
-} from '@layouts/default';
+import { DefaultLayout } from '@layouts/default';
+import type { WithLayoutProps } from '@layouts/default/server';
+import { getLayoutServerSideProps } from '@layouts/default/server';
 import { GetStaticProps } from 'next';
 
 type Custom404Props = WithLayoutProps<{}>;
@@ -19,25 +17,18 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
          paddingRight="20px"
       >
          <VStack>
-            <Text fontSize={50} fontWeight="bold">
-               404
-            </Text>
-            <Text
-               fontSize={20}
-               fontWeight="semibold"
-               paddingBottom="24px"
-               textTransform="uppercase"
+            <Heading
+               as="h2"
+               fontSize={{ base: '4xl', md: '5xl' }}
+               fontWeight="medium"
             >
+               404
+            </Heading>
+            <Text fontWeight="medium" pb="3" textTransform="uppercase">
                Page not found
             </Text>
             <Divider borderWidth="1px" borderColor="red.500" width="50px" />
-            <Text
-               fontSize={18}
-               paddingTop="24px"
-               overflowWrap="break-word"
-               align="center"
-               maxW="360px"
-            >
+            <Text pt="3" overflowWrap="break-word" align="center" maxW="360px">
                We can&apos;t find the page you&apos;re looking for. Whoops.
             </Text>
          </VStack>

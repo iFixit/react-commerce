@@ -1,7 +1,6 @@
 import {
    Alert,
    Box,
-   Center,
    Collapse,
    Flex,
    HStack,
@@ -12,7 +11,6 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react';
-import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import {
    faCircleExclamation,
    faCircleMinus,
@@ -30,7 +28,7 @@ import { FaIcon } from '@ifixit/icons';
 import { motion } from 'framer-motion';
 import * as React from 'react';
 import { ProductVariantPrice } from '../../commerce';
-import { ResponsiveImage } from '../../misc';
+import { CartLineItemImage } from './CartLineItemImage';
 
 interface CartLineItemProps {
    lineItem: LineItem;
@@ -90,7 +88,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       <Flex direction="column" w="full" p="3">
          <Flex w="full" justify="space-between" align="flex-start">
             <HStack spacing="3" align="flex-start">
-               <LineItemImage lineItem={lineItem} />
+               <CartLineItemImage src={lineItem.imageSrc} alt={lineItem.name} />
                <Box>
                   <VStack align="flex-start" pt="1">
                      <Flex direction="column">
@@ -215,39 +213,3 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
 }
 
 const MotionIconButton = motion<IconButtonProps>(IconButton);
-
-type LineItemImageProps = {
-   lineItem: LineItem;
-};
-
-function LineItemImage({ lineItem }: LineItemImageProps) {
-   return (
-      <Box
-         boxSize="16"
-         position="relative"
-         borderColor="gray.300"
-         borderWidth="1px"
-         borderRadius="md"
-         overflow="hidden"
-      >
-         {lineItem.imageSrc ? (
-            <ResponsiveImage
-               src={lineItem.imageSrc}
-               alt={lineItem.name}
-               priority
-               layout="fill"
-               objectFit="cover"
-            />
-         ) : (
-            <Center bgColor="gray.100" h="full">
-               <FaIcon
-                  icon={faImage}
-                  color="gray.500"
-                  h="6"
-                  transition="color 300ms"
-               />
-            </Center>
-         )}
-      </Box>
-   );
-}

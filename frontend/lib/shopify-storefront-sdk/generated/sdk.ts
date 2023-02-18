@@ -33,7 +33,7 @@ export type Scalars = {
     *
     * Example values: `"29.99"`, `"29.999"`.
     */
-   Decimal: any;
+   Decimal: string;
    /**
     * A string containing HTML code. Refer to the [HTML spec](https://html.spec.whatwg.org/#elements-3) for a
     * complete list of HTML elements.
@@ -6320,6 +6320,7 @@ export type FindProductQuery = {
    __typename?: 'QueryRoot';
    product?: {
       __typename?: 'Product';
+      id: string;
       title: string;
       handle: string;
       descriptionHtml: string;
@@ -6378,12 +6379,12 @@ export type FindProductQuery = {
                     } | null;
                     price: {
                        __typename?: 'MoneyV2';
-                       amount: any;
+                       amount: string;
                        currencyCode: CurrencyCode;
                     };
                     compareAtPrice?: {
                        __typename?: 'MoneyV2';
-                       amount: any;
+                       amount: string;
                        currencyCode: CurrencyCode;
                     } | null;
                     proPricesByTier?: {
@@ -6408,7 +6409,6 @@ export type FindProductQuery = {
       shortDescription?: { __typename?: 'Metafield'; value: string } | null;
       oemPartnership?: { __typename?: 'Metafield'; value: string } | null;
       enabledDomains?: { __typename?: 'Metafield'; value: string } | null;
-      featuredImage?: { __typename?: 'Image'; id?: string | null } | null;
       images: {
          __typename?: 'ImageConnection';
          nodes: Array<{
@@ -6444,12 +6444,12 @@ export type FindProductQuery = {
             } | null;
             price: {
                __typename?: 'MoneyV2';
-               amount: any;
+               amount: string;
                currencyCode: CurrencyCode;
             };
             compareAtPrice?: {
                __typename?: 'MoneyV2';
-               amount: any;
+               amount: string;
                currencyCode: CurrencyCode;
             } | null;
             proPricesByTier?: {
@@ -6517,12 +6517,12 @@ export type FindProductQuery = {
                           } | null;
                           price: {
                              __typename?: 'MoneyV2';
-                             amount: any;
+                             amount: string;
                              currencyCode: CurrencyCode;
                           };
                           compareAtPrice?: {
                              __typename?: 'MoneyV2';
-                             amount: any;
+                             amount: string;
                              currencyCode: CurrencyCode;
                           } | null;
                           proPricesByTier?: {
@@ -6577,10 +6577,14 @@ export type ProductVariantCardFragment = {
       width?: number | null;
       url: string;
    } | null;
-   price: { __typename?: 'MoneyV2'; amount: any; currencyCode: CurrencyCode };
+   price: {
+      __typename?: 'MoneyV2';
+      amount: string;
+      currencyCode: CurrencyCode;
+   };
    compareAtPrice?: {
       __typename?: 'MoneyV2';
-      amount: any;
+      amount: string;
       currencyCode: CurrencyCode;
    } | null;
    proPricesByTier?: { __typename?: 'Metafield'; value: string } | null;
@@ -6636,6 +6640,7 @@ export const ProductVariantCardFragmentDoc = `
 export const FindProductDocument = `
     query findProduct($handle: String) {
   product(handle: $handle) {
+    id
     title
     handle
     descriptionHtml
@@ -6695,9 +6700,6 @@ export const FindProductDocument = `
     }
     enabledDomains: metafield(namespace: "ifixit", key: "enabled_domains") {
       value
-    }
-    featuredImage {
-      id
     }
     images(first: 250) {
       nodes {

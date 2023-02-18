@@ -30,6 +30,22 @@ export function FacetAccordionItem({
    children,
 }: FacetAccordionItemProps) {
    const formattedFacetName = formatFacetName(attribute);
+   const accordionItemRef = React.useRef<HTMLDivElement>(null);
+
+   React.useEffect(() => {
+      if (isExpanded) {
+         setTimeout(
+            () =>
+               accordionItemRef.current?.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'nearest',
+               }),
+            // We have to wait for the transition to complete
+            200
+         );
+      }
+   }, [isExpanded]);
+
    return (
       <AccordionItem
          hidden={isHidden}
@@ -39,6 +55,7 @@ export function FacetAccordionItem({
          }-facet-accordion-item-${attribute}`}
          data-facet-name={attribute}
          className={isHidden ? 'hidden' : 'visible'}
+         ref={accordionItemRef}
       >
          <AccordionButton
             aria-label={
@@ -47,7 +64,7 @@ export function FacetAccordionItem({
                   : `Expand ${formattedFacetName}`
             }
          >
-            <Box flex="1" textAlign="left" fontWeight="bold">
+            <Box flex="1" textAlign="left" fontWeight="medium">
                {formattedFacetName}
             </Box>
             <HStack>

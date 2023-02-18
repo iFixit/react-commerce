@@ -1,14 +1,14 @@
-import { Product } from '@models/product';
-import NextLink from 'next/link';
-import { CompatibleDevice } from '@components/common';
 import { chakra, Link } from '@chakra-ui/react';
+import { CompatibleDevice } from '@components/common';
+import type { Product } from '@pages/api/nextjs/cache/product';
+import NextLink from 'next/link';
 
 export type CompatibleDevicesProps = {
    product: Product;
 };
 
 const MAX_VISIBLE_DEVICES = 3;
-const MAX_VISIBLE_MODELS_PER_DEVICE = 4;
+const MAX_MODEL_LINES_PER_DEVICE = 4;
 
 export function CompatibleDevices({ product }: CompatibleDevicesProps) {
    const devices = product.compatibility?.devices ?? [];
@@ -16,7 +16,7 @@ export function CompatibleDevices({ product }: CompatibleDevicesProps) {
    const hasMoreToShow =
       devices.length > MAX_VISIBLE_DEVICES ||
       devices.some(
-         (device) => device.variants.length > MAX_VISIBLE_MODELS_PER_DEVICE
+         (device) => device.variants.length > MAX_MODEL_LINES_PER_DEVICE
       );
 
    return (
@@ -32,7 +32,7 @@ export function CompatibleDevices({ product }: CompatibleDevicesProps) {
                >
                   <CompatibleDevice
                      device={device}
-                     truncate={MAX_VISIBLE_MODELS_PER_DEVICE}
+                     maxModelLines={MAX_MODEL_LINES_PER_DEVICE}
                   />
                </chakra.a>
             </NextLink>

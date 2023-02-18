@@ -1,15 +1,14 @@
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { logAsync } from '@ifixit/helpers';
-import { setSentryPageContext } from '@ifixit/sentry';
-import * as Sentry from '@sentry/nextjs';
 import { PROD_USER_AGENT } from '@config/constants';
-import { clearCache } from '@lib/cache';
 import { CACHE_DISABLED } from '@config/env';
+import { setSentryPageContext } from '@ifixit/sentry';
+import { withTiming } from '@ifixit/helpers';
+import { clearCache } from '@lib/cache';
+import type { GetServerSidePropsMiddleware } from '@lib/next-middleware';
+import * as Sentry from '@sentry/nextjs';
+import { GetServerSidePropsContext } from 'next';
 
-export function serverSidePropsWrapper<T extends { [key: string]: any }>(
-   getServerSidePropsInternal: GetServerSideProps<T>
-): GetServerSideProps<T> {
-   return async (context) => {
+export const withLogging: GetServerSidePropsMiddleware = (next) => {
+   return withTiming(`server_side_props`, async (context) => {
       console.log('context.resolvedUrl', context.resolvedUrl);
       console.log('context.req.url', context.req.url);
       Sentry.setContext('Extra Info', {
@@ -25,9 +24,7 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
       if (isCacheDisabled) {
          clearCache();
       }
-      return logAsync('getServerSideProps', () =>
-         getServerSidePropsInternal(context)
-      )
+      return next(context)
          .then((result) => {
             if (isCacheDisabled) {
                context.res.setHeader(
@@ -42,11 +39,19 @@ export function serverSidePropsWrapper<T extends { [key: string]: any }>(
             setSentryPageContext(context);
             throw err;
          });
-   };
-}
+   });
+};
 
 export function noindexDevDomains(context: GetServerSidePropsContext) {
    if (context.req.headers['user-agent'] !== PROD_USER_AGENT) {
       context.res.setHeader('X-Robots-Tag', 'noindex, nofollow');
    }
 }
+
+export const withNoindexDevDomains: GetServerSidePropsMiddleware = (next) => {
+   return (context) => {
+      const result = next(context);
+      noindexDevDomains(context);
+      return result;
+   };
+};

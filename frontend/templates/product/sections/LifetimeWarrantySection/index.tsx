@@ -1,9 +1,9 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
-import { PageContentWrapper } from '@ifixit/ui';
-import { ProductVariant } from '@models/product';
+import { Wrapper } from '@ifixit/ui';
+import type { ProductVariant } from '@pages/api/nextjs/cache/product';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
 import Image from 'next/image';
 
@@ -38,7 +38,7 @@ export function LifetimeWarrantySection({
             }}
          ></Box>
          <Box position="relative">
-            <PageContentWrapper>
+            <Wrapper>
                <Flex
                   justify="space-between"
                   direction={{ base: 'column-reverse', md: 'row' }}
@@ -51,9 +51,9 @@ export function LifetimeWarrantySection({
                      <Heading
                         as="h2"
                         color="white"
-                        fontFamily="Archivo Black"
-                        letterSpacing="wide"
                         mb="3"
+                        fontSize={{ base: '2xl', md: '3xl' }}
+                        fontWeight="medium"
                      >
                         Lifetime Guarantee
                      </Heading>
@@ -73,9 +73,8 @@ export function LifetimeWarrantySection({
                   </Box>
                   <Icon
                      as={QualityGuarantee}
-                     boxSize="160px"
+                     boxSize={{ base: '130px', md: '160px' }}
                      color="white"
-                     borderRadius="full"
                      ml={{
                         base: 0,
                         md: 8,
@@ -86,7 +85,7 @@ export function LifetimeWarrantySection({
                      }}
                   />
                </Flex>
-            </PageContentWrapper>
+            </Wrapper>
          </Box>
       </Box>
    );

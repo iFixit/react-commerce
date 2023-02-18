@@ -1,4 +1,5 @@
 import {
+   Alert,
    Box,
    Button,
    Flex,
@@ -15,11 +16,12 @@ import {
 import {
    faCircleExclamation,
    faCircleInfo,
+   faExclamationCircle,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { useCartDrawer, useUserPrice } from '@ifixit/ui';
-import { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
 import { NotifyMeForm } from './NotifyMeForm';
 
@@ -51,7 +53,8 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
          type: 'product',
          product: {
             name: product.title,
-            internalDisplayName: selectedVariant.internalDisplayName?.value,
+            internalDisplayName:
+               selectedVariant.internalDisplayName ?? undefined,
             itemcode: selectedVariant.sku,
             shopifyVariantId: selectedVariant.id,
             quantity: 1,
@@ -67,7 +70,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       selectedVariant.image?.url,
       addToCart,
       product.title,
-      selectedVariant.internalDisplayName?.value,
+      selectedVariant.internalDisplayName,
       product.images,
       userPrice.price,
       userPrice.compareAtPrice,
@@ -112,6 +115,17 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                      align="flex-start"
                   />
                )}
+               <Alert status="warning" mb="3" data-testid="out-of-stock-alert">
+                  <FaIcon
+                     icon={faExclamationCircle}
+                     h="5"
+                     mr="2"
+                     color="amber.600"
+                  />
+                  <span>
+                     This item is currently <strong>Out of Stock</strong>.
+                  </span>
+               </Alert>
                <NotifyMeForm sku={selectedVariant.sku} />
             </>
          )}
@@ -261,6 +275,7 @@ function InventoryMessage({
          fontSize="sm"
          align="center"
          justify="center"
+         data-testid="product-inventory-message"
       >
          <FaIcon
             icon={faCircleExclamation}
@@ -289,10 +304,10 @@ function useVariantInventory(variant: ProductVariantWithSku) {
    const cartMaxToAdd = cartLineItem.data?.maxToAdd ?? undefined;
    const addedToCart = cartLineItem.data?.quantity ?? undefined;
    const remaining =
-      cartMaxToAdd != null && addedToCart != null
-         ? Math.max(0, cartMaxToAdd - addedToCart)
+      variant.quantityAvailable != null && addedToCart != null
+         ? Math.max(0, variant.quantityAvailable - addedToCart)
          : undefined;
-   const maxToBeAdded = cartMaxToAdd ?? variant.quantityAvailable ?? undefined;
+   const maxToBeAdded = variant.quantityAvailable ?? cartMaxToAdd ?? undefined;
    return {
       maxToBeAdded,
       addedToCart,

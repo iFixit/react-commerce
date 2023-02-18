@@ -1,10 +1,10 @@
-import { Money } from '@ifixit/helpers';
+import type { Money } from '@ifixit/helpers';
 
-export type CartAPIResponse = {
+export interface CartAPIResponse {
    cart: APICart;
-};
+}
 
-export type Cart = {
+export interface Cart {
    hasItemsInCart: boolean;
    lineItems: CartLineItem[];
    totals: {
@@ -13,9 +13,10 @@ export type Cart = {
       price: Money;
       compareAtPrice?: Money | null | undefined;
    };
-};
+   upsellProducts: UpsellProduct[];
+}
 
-export type CartLineItem = {
+export interface CartLineItem {
    itemcode: string;
    shopifyVariantId: string;
    name: string;
@@ -25,9 +26,9 @@ export type CartLineItem = {
    maxToAdd?: number;
    price: Money;
    compareAtPrice?: Money | null;
-};
+}
 
-export type APICart = {
+export interface APICart {
    couponName: string;
    hasCoupon: boolean;
    hasCustomer: boolean;
@@ -46,15 +47,43 @@ export type APICart = {
    miniCart: {
       products: MiniCartProduct[];
    };
-};
+   upsellProducts: APIUpsellProduct[];
+}
+export interface UpsellProduct {
+   marketingTitle: string | null;
+   marketingBlurb: string | null;
+   itemcode: string;
+   shopifyVariantId: string;
+   name: string;
+   imageSrc?: string | null;
+   price: Money;
+   compareAtPrice?: Money | null;
+   proPricesByTier?: Record<string, Money> | null;
+   handle: string;
+}
 
-type APIPriceItem = {
+interface APIUpsellProduct {
+   compare_at_price: string | null;
+   handle: string;
+   imageSrc: string | null;
+   itemcode: string;
+   marketing_heading: string | null;
+   marketing_title: string | null;
+   name: string;
+   price_tiers: Record<string, number> | null;
+   product_blurb: string | null;
+   subPrice: string | null;
+   url: string | null;
+   variant_id: number;
+}
+
+interface APIPriceItem {
    name: string;
    amount: string;
    amountStr: string;
-};
+}
 
-export type APICartProduct = {
+export interface APICartProduct {
    discount: string;
    imageSrc: string;
    itemcode: string;
@@ -65,9 +94,9 @@ export type APICartProduct = {
    subPriceStr: string;
    subTotal: string;
    subTotalStr: string;
-};
+}
 
-export type MiniCartProduct = {
+export interface MiniCartProduct {
    displayName: string;
    imageUrl: string;
    price: number;
@@ -77,4 +106,4 @@ export type MiniCartProduct = {
    sku: string;
    url: string;
    variantId: string;
-};
+}

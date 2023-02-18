@@ -1,7 +1,7 @@
 import { Box, HStack, Link, Text } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { shouldShowProductRating } from '@ifixit/helpers';
-import { Product } from '@models/product';
+import type { Product } from '@pages/api/nextjs/cache/product';
 
 type ProductRatingProps = {
    product: Product;

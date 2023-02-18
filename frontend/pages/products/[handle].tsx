@@ -1,4 +1,2 @@
-export {
-   ProductTemplate as default,
-   getServerSideProps,
-} from '@templates/product';
+export { default } from '@templates/product';
+export { getServerSideProps } from '@templates/product/server';

@@ -15,8 +15,18 @@ query getProductList($filters: ProductListFiltersInput) {
             description
             metaDescription
             metaTitle
+            defaultShowAllChildrenOnLgSizes
             filters
             forceNoindex
+            heroImage {
+               data {
+                  attributes {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+            }
             image {
                data {
                   attributes {
@@ -26,6 +36,16 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
+            brandLogo {
+               data {
+                  attributes {
+                     alternativeText
+                     url
+                     formats
+                  }
+               }
+            }
+            brandLogoWidth
             parent {
                data {
                   attributes {
@@ -110,7 +130,6 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
-            childrenHeading
             sections {
                __typename
                ... on ComponentProductListBanner {

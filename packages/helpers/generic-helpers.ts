@@ -1,3 +1,5 @@
+import { log } from './logger';
+
 export function assertNever(x: never): never {
    throw new Error('Unexpected object: ' + x);
 }
@@ -33,7 +35,7 @@ export function isError(x: any): x is Error {
    return x instanceof Error;
 }
 
-export function logAsync<T>(
+export function timeAsync<T>(
    name: string,
    asyncFunction: () => Promise<T>
 ): Promise<T> {
@@ -41,11 +43,21 @@ export function logAsync<T>(
    return asyncFunction().finally(done);
 }
 
-export function logSync<T>(name: string, syncFunction: () => T): T {
+export function timeSync<T>(name: string, syncFunction: () => T): T {
    const done = time(name);
    const response = syncFunction();
    done();
    return response;
+}
+
+export function withTiming<ARGS extends Array<any>, RETURN>(
+   name: string,
+   promiseFunction: (...args: ARGS) => Promise<RETURN>
+) {
+   return (...args: ARGS) => {
+      const done = time(name);
+      return promiseFunction(...args).finally(done);
+   };
 }
 
 function noOp() {}
@@ -54,10 +66,10 @@ const silentTimer = function (timerName: string) {
 };
 
 const loggingTimer = (timerName: string) => {
-   const t = Date.now();
+   const t = performance.now();
    return () => {
-      const taken = Date.now() - t;
-      console.log(`${timerName}: ${taken}ms`);
+      const taken = performance.now() - t;
+      log.info.timing(timerName, taken);
    };
 };
 
@@ -66,4 +78,10 @@ const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
 
 export function isPresent(text: string | null | undefined): text is string {
    return typeof text === 'string' && text.length > 0;
+}
+
+export function filterNullableItems<I>(
+   items?: I[] | undefined | null
+): NonNullable<I>[] {
+   return (items?.filter((item) => item != null) as any) || [];
 }

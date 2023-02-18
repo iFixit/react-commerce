@@ -23,3 +23,10 @@ export function formatFacetName(algoliaName: string): string {
    }
    return FACETS_NAME_OVERRIDES[algoliaName];
 }
+
+/**
+ * https://www.algolia.com/doc/api-reference/api-parameters/filters/#usage-notes
+ */
+export function escapeFilterValue(value: string) {
+   return value.replaceAll("'", "\\'").replaceAll('"', '\\"');
+}

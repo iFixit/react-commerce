@@ -1,5 +1,6 @@
 query findProduct($handle: String) {
    product(handle: $handle) {
+      id
       title
       handle
       descriptionHtml
@@ -77,9 +78,6 @@ query findProduct($handle: String) {
       }
       enabledDomains: metafield(namespace: "ifixit", key: "enabled_domains") {
          value
-      }
-      featuredImage {
-         id
       }
       images(first: 250) {
          nodes {

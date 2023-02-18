@@ -1,4 +1,4 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import {
    Accordion,
    AccordionButton,
@@ -22,8 +22,8 @@ import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
-import { Product, ProductVariant } from '@models/product';
+import { Wrapper, ProductVariantPrice } from '@ifixit/ui';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
@@ -66,8 +66,8 @@ export function ProductSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <PageContentWrapper as="section">
-         <Flex px={{ base: 5, sm: 0 }}>
+      <Wrapper as="section">
+         <Flex>
             <Flex
                position="sticky"
                alignSelf="flex-start"
@@ -80,6 +80,7 @@ export function ProductSection({
                zIndex="1"
             >
                <ProductGallery
+                  data-testid="product-gallery-desktop"
                   product={product}
                   selectedVariant={selectedVariant}
                   selectedImageId={selectedImageId}
@@ -115,6 +116,7 @@ export function ProductSection({
                }}
                fontSize="sm"
                position="relative"
+               data-testid="product-info-section"
             >
                {selectedVariant.sku && (
                   <Text color="gray.500" data-testid="product-sku">
@@ -129,13 +131,17 @@ export function ProductSection({
                      price={selectedVariant.price}
                      compareAtPrice={selectedVariant.compareAtPrice}
                      proPricesByTier={selectedVariant.proPricesByTier}
+                     data-testid="product-price-section"
                   />
                )}
+
+               {!product.isEnabled && <NotForSaleAlert />}
 
                {isForSale && <ProductRating product={product} />}
 
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
+                     data-testid="product-gallery-mobile"
                      product={product}
                      selectedVariant={selectedVariant}
                      selectedImageId={selectedImageId}
@@ -143,11 +149,14 @@ export function ProductSection({
                   />
                </Flex>
 
-               <ProductOptions
-                  product={product}
-                  selected={selectedVariant.id}
-                  onChange={handleVariantChange}
-               />
+               {product.isEnabled && (
+                  <ProductOptions
+                     product={product}
+                     selected={selectedVariant.id}
+                     onChange={handleVariantChange}
+                     data-testid="product-variants-selector"
+                  />
+               )}
 
                {isForSale ? (
                   isVariantWithSku(selectedVariant) &&
@@ -159,9 +168,9 @@ export function ProductSection({
                         selectedVariant={selectedVariant}
                      />
                   ))
-               ) : (
-                  <NotForSaleAlert mt="4" />
-               )}
+               ) : product.isEnabled ? (
+                  <ProOnlyAlert mt="4" />
+               ) : null}
 
                {product.oemPartnership && (
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
@@ -172,7 +181,7 @@ export function ProductSection({
                )}
 
                <Accordion
-                  defaultIndex={[0, 1]}
+                  defaultIndex={product.isEnabled ? [0, 1] : undefined}
                   allowMultiple
                   mt="10"
                   sx={{
@@ -210,7 +219,7 @@ export function ProductSection({
                      <CustomAccordionButton>
                         Compatibility
                      </CustomAccordionButton>
-                     <CustomAccordionPanel>
+                     <CustomAccordionPanel data-testid="product-compatibility-dropdown">
                         <CompatibleDevices product={product} />
                      </CustomAccordionPanel>
                   </AccordionItem>
@@ -234,7 +243,7 @@ export function ProductSection({
                </VStack>
             </Box>
          </Flex>
-      </PageContentWrapper>
+      </Wrapper>
    );
 }
 
@@ -247,9 +256,9 @@ const ProductTitle = chakra(
          <Heading
             as="h1"
             className={className}
-            size="xl"
-            fontFamily="Archivo Black"
             data-testid="product-title"
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
          >
             {children}
          </Heading>
@@ -266,7 +275,7 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
             flex="1"
             textAlign="left"
             color="gray.800"
-            fontWeight="bold"
+            fontWeight="semibold"
             fontSize="sm"
          >
             {children}
@@ -278,9 +287,12 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
 
 type CustomAccordionPanelProps = React.PropsWithChildren<{}>;
 
-function CustomAccordionPanel({ children }: CustomAccordionPanelProps) {
+function CustomAccordionPanel({
+   children,
+   ...other
+}: CustomAccordionPanelProps) {
    return (
-      <AccordionPanel pb={4} px="1.5">
+      <AccordionPanel pb={4} px="1.5" {...other}>
          {children}
       </AccordionPanel>
    );
@@ -303,6 +315,7 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
       >
          {isLifetimeWarranty(variant.warranty ?? '') && (
             <Icon
+               data-testid="quality-guarantee-icon"
                as={QualityGuarantee}
                boxSize="50px"
                color="brand.500"
@@ -314,7 +327,7 @@ function VariantWarranty({ variant, ...other }: VariantWarrantyProps) {
    );
 }
 
-function NotForSaleAlert(props: AlertProps) {
+function ProOnlyAlert(props: AlertProps) {
    return (
       <Alert
          status="warning"
@@ -354,6 +367,15 @@ function NotForSaleAlert(props: AlertProps) {
    );
 }
 
+function NotForSaleAlert(props: AlertProps) {
+   return (
+      <Alert status="warning" {...props} data-testid="not-for-sale-alert">
+         <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
+         <span>Not for Sale.</span>
+      </Alert>
+   );
+}
+
 interface WikiHtmlAccordianItemProps {
    title: string;
    children: string | null | undefined;
@@ -384,7 +406,7 @@ function WikiHtmlAccordianItem({
                         },
                      },
                      a: {
-                        fontWeight: 'bold',
+                        fontWeight: 'medium',
                         transition: 'all 300ms',
                         color: 'brand.500',
                      },

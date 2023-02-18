@@ -3,6 +3,7 @@
    "compilerOptions": {
       "baseUrl": ".",
       "paths": {
+         "@tests/*": ["tests/*"],
          "@config/*": ["config/*"],
          "@assets/*": ["assets/*"],
          "@lib/*": ["lib/*"],
@@ -11,9 +12,9 @@
          "@components/*": ["components/*"],
          "@templates/*": ["templates/*"],
          "@layouts/*": ["layouts/*"],
-         "@public/*": ["public/*"]
+         "@public/*": ["public/*"],
+         "@pages/*": ["pages/*"]
       },
-      "types": ["cypress", "@testing-library/cypress"],
       "preserveSymlinks": true
    },
    "include": [

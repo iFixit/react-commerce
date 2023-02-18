@@ -14,7 +14,10 @@ export function RefinementListFacetPanel({
    const { items, refine, canToggleShowMore, isShowingMore, toggleShowMore } =
       useRefinementListFacet({ attribute });
    return (
-      <Panel isOpen={isOpen}>
+      <Panel
+         isOpen={isOpen}
+         data-testid={`facet-panel${isOpen ? '-open' : ''}`}
+      >
          <RefinementListFacet
             items={items}
             refine={refine}

@@ -11,10 +11,10 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
-import type { Product } from '@models/product';
-import * as React from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
+import type { Product } from '@pages/api/nextjs/cache/product';
+import * as React from 'react';
 
 export type ProductOptionsProps = {
    product: Product;
@@ -26,6 +26,7 @@ export function ProductOptions({
    product,
    selected,
    onChange,
+   ...otherProps
 }: ProductOptionsProps) {
    const theme = useTheme();
    const selectedVariant = React.useMemo(() => {
@@ -46,7 +47,7 @@ export function ProductOptions({
             return (
                <VStack align="stretch" key={option.id}>
                   <HStack>
-                     <Text fontWeight="bold" color="gray.800">
+                     <Text fontWeight="medium" color="gray.800">
                         {option.name}
                         {selectorType === SelectorType.SINGLE &&
                            `: ${option.values[0]}`}
@@ -59,7 +60,8 @@ export function ProductOptions({
                         onChange={(event) => {
                            onChange(event.target.value);
                         }}
-                        data-testid="product-option-selector"
+                        borderRadius="base"
+                        {...otherProps}
                      >
                         {option.values.map((value) => {
                            const { exact, variant } = findVariant(
@@ -84,7 +86,7 @@ export function ProductOptions({
                      </Select>
                   )}
                   {selectorType === SelectorType.IMAGE_RADIO && (
-                     <SimpleGrid columns={2} spacing="2">
+                     <SimpleGrid columns={2} spacing="2" {...otherProps}>
                         {option.values.map((value) => {
                            const { exact, variant } = findVariant(
                               product,
@@ -107,6 +109,7 @@ export function ProductOptions({
                                        onChange(variant.id);
                                     }
                                  }}
+                                 data-testid={variant?.sku}
                               />
                            );
                         })}
@@ -219,6 +222,7 @@ function ProductOptionValue({
    isActive,
    exactMatch,
    onClick,
+   ...otherProps
 }: ProductOptionProps) {
    return (
       <Box
@@ -226,12 +230,14 @@ function ProductOptionValue({
          borderWidth={isActive ? 2 : 1}
          borderColor={isActive ? 'brand.500' : 'gray.200'}
          boxSizing="border-box"
-         borderRadius="md"
+         borderRadius="base"
          px={2.5}
          py={2.5}
          cursor="pointer"
          textAlign="center"
          onClick={onClick}
+         aria-selected={isActive}
+         {...otherProps}
       >
          <ProductOptionImage image={image} exactMatch={exactMatch} />
          <Text fontSize="13px" color={exactMatch ? 'gray.800' : 'gray.400'}>

@@ -1,4 +1,4 @@
-import { ProductVariant } from '@models/product';
+import type { ProductVariant } from '@pages/api/nextjs/cache/product';
 import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { List, ListIcon, ListItem } from '@chakra-ui/react';
@@ -50,7 +50,7 @@ export function ServiceValuePropositionSection({
          >
             <ValueProposition>
                <ValuePropositionIcon icon={faBoxCircleCheckDuo} />
-               <Text fontWeight="bold">Purchase with purpose</Text>
+               <Text fontWeight="semibold">Purchase with purpose</Text>
                <Text>
                   Repair makes a global impact, reduces e-waste, and saves you
                   money.
@@ -58,7 +58,7 @@ export function ServiceValuePropositionSection({
             </ValueProposition>
             <ValueProposition>
                <ValuePropositionIcon icon={faShieldCheckDuo} />
-               <Text fontWeight="bold">Repair with confidence</Text>
+               <Text fontWeight="semibold">Repair with confidence</Text>
                <Text>
                   All our products meet rigorous quality standards and are
                   backed by industry-leading guarantees.
@@ -67,7 +67,7 @@ export function ServiceValuePropositionSection({
             {!isDropshipped(selectedVariant) && (
                <ValueProposition>
                   <ValuePropositionIcon icon={faRocketDuo} />
-                  <Text fontWeight="bold">Fast shipping</Text>
+                  <Text fontWeight="semibold">Fast shipping</Text>
                   <Text>Same day shipping if ordered by 1PM Pacific.</Text>
                </ValueProposition>
             )}

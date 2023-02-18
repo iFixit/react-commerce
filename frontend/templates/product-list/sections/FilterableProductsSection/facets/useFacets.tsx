@@ -59,7 +59,10 @@ export function useFilteredFacets(productList: ProductList) {
       return facets.filter((facet) => !excludedToolsFacets.includes(facet));
    }
 
-   return usefulFacets;
+   const excludedPartsAndMarketingFacets = ['price_range'];
+   return usefulFacets.filter(
+      (facet) => !excludedPartsAndMarketingFacets.includes(facet)
+   );
 }
 
 // Higher number == closer to top, default is 0

@@ -63,6 +63,26 @@ export function sumMoney(moneys: Money[]): Money {
    };
 }
 
+export function parseMoney(
+   amount: string | number,
+   currencyCode: string = 'usd'
+): Money {
+   let numericAmount: number;
+
+   // Parse the input amount to a numeric value, even if it contains a symbol prefix
+   if (typeof amount === 'string') {
+      const strippedAmount = amount.replace(/[^0-9.]/g, '');
+      numericAmount = parseFloat(strippedAmount);
+   } else {
+      numericAmount = amount;
+   }
+
+   return {
+      amount: numericAmount,
+      currencyCode: currencyCode,
+   };
+}
+
 export function lessThan(a: Money, b: Money): boolean {
    return convertMoneyToCents(a) < convertMoneyToCents(b);
 }

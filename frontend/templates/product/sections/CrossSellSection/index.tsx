@@ -23,14 +23,13 @@ import { CartLineItem, useAddToCart } from '@ifixit/cart-sdk';
 import { formatMoney, isPresent, Money } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import {
-   ResponsiveImage,
-   PageContentWrapper,
+   Wrapper,
    ProductVariantPrice,
+   ResponsiveImage,
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
-import { MoneyV2 } from '@lib/shopify-storefront-sdk';
-import { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -65,13 +64,13 @@ export function CrossSellSection({
    const totalPrice = React.useMemo(() => {
       return selectedCrossSellVariantIds.reduce((acc, id) => {
          if (id === selectedVariant.id) {
-            return acc + parseFloat(selectedVariant.price.amount);
+            return acc + selectedVariant.price.amount;
          }
          const variant = crossSellVariantsForSale.find(
             (variant) => variant.id === id
          );
          if (variant) {
-            return acc + parseFloat(variant.price.amount);
+            return acc + variant.price.amount;
          }
          return acc;
       }, 0);
@@ -118,7 +117,7 @@ export function CrossSellSection({
                return {
                   name: product.title,
                   internalDisplayName:
-                     selectedVariant.internalDisplayName?.value,
+                     selectedVariant.internalDisplayName ?? undefined,
                   itemcode: selectedVariant.sku,
                   shopifyVariantId: selectedVariant.id,
                   quantity: 1,
@@ -173,17 +172,10 @@ export function CrossSellSection({
    }
 
    return (
-      <Box
-         my="16"
-         px={{
-            base: 5,
-            sm: 0,
-         }}
-      >
-         <PageContentWrapper>
+      <Box my="16">
+         <Wrapper>
             <Heading
                as="h2"
-               fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
                mb={{
@@ -191,6 +183,8 @@ export function CrossSellSection({
                   md: 16,
                }}
                size="lg"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
             >
                Frequently Bought Together
             </Heading>
@@ -206,6 +200,7 @@ export function CrossSellSection({
                <VStack
                   spacing="6"
                   align="stretch"
+                  w="full"
                   divider={<Divider borderColor="gray.300" />}
                >
                   <Stack
@@ -261,6 +256,7 @@ export function CrossSellSection({
                            base: 6,
                            sm: 0,
                         }}
+                        data-testid="cross-sell-total-price"
                      >
                         Total price:{' '}
                         <Box as="span" fontWeight="semibold">
@@ -268,6 +264,7 @@ export function CrossSellSection({
                         </Box>
                      </Box>
                      <Button
+                        data-testid="cross-sell-add-to-cart-button"
                         disabled={!selectedCrossSellVariantIds.length}
                         colorScheme="brand"
                         minW="240px"
@@ -278,7 +275,7 @@ export function CrossSellSection({
                   </Flex>
                </VStack>
             </Flex>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
@@ -299,8 +296,8 @@ type CrossSellProduct = {
 };
 
 type CrossSellProductVariant = {
-   price: MoneyV2;
-   compareAtPrice?: MoneyV2 | null;
+   price: Money;
+   compareAtPrice?: Money | null;
    proPricesByTier?: Record<string, Money> | null;
    image?: {
       altText?: string | null;
@@ -318,6 +315,7 @@ function CrossSellItem({
    return (
       <NextLink href={`/products/${product.handle}`} passHref legacyBehavior>
          <Card
+            data-testid="cross-sell-item"
             as="a"
             overflow="hidden"
             flexBasis={{
@@ -390,6 +388,7 @@ function CrossSellItem({
                         )}
                         <Flex direction="column" h="full" align="flex-start">
                            <Text
+                              data-testid="cross-sell-item-title"
                               fontSize="md"
                               mb="2"
                               _groupHover={{ color: 'brand.500' }}
@@ -433,6 +432,7 @@ function CrossSellItem({
                                  event.stopPropagation();
                               }
                            }}
+                           data-testid="cross-sell-item-select"
                            tabIndex={0}
                            outline="none"
                            _focus={{

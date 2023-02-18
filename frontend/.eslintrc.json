@@ -1,18 +1,16 @@
 {
    "parser": "@typescript-eslint/parser",
-   "plugins": ["@typescript-eslint", "eslint-plugin-cypress"],
+   "plugins": ["@typescript-eslint", "jest"],
    "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
-      "plugin:cypress/recommended",
       "next"
    ],
    "env": {
       "es6": true,
       "browser": true,
       "jest": true,
-      "node": true,
-      "cypress/globals": true
+      "node": true
    },
    "settings": {
       "react": {
@@ -20,6 +18,7 @@
       }
    },
    "rules": {
+      "jest/no-focused-tests": "error",
       "no-console": "off",
       "react/display-name": 0,
       "@typescript-eslint/explicit-function-return-type": 0,

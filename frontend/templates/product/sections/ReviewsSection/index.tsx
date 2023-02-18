@@ -20,9 +20,9 @@ import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper } from '@ifixit/ui';
-import { Product, ProductReview } from '@models/product';
-import { ProductVariant } from '@models/product';
+import { Wrapper } from '@ifixit/ui';
+import type { ProductReview } from '@models/product/reviews';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
 import React from 'react';
 
@@ -59,43 +59,41 @@ export function ReviewsSection({
       return reviewsCount;
    }, [reviewsData?.groupedReviews]);
 
-   const allReviews = reviewsData?.reviews ?? [];
-   const visibleReviews = allReviews.slice(0, visibleReviewsCount) ?? [];
-   const hasMoreReviews = visibleReviewsCount < allReviews.length;
+   const allReviewsWithBody =
+      reviewsData?.reviews?.filter((review) => review.body) ?? [];
+   const visibleReviews =
+      allReviewsWithBody.slice(0, visibleReviewsCount) ?? [];
+   const hasMoreReviews = visibleReviewsCount < allReviewsWithBody.length;
 
    const showMoreReviews = () => {
       setVisibleReviewsCount(
-         Math.min(allReviews.length, visibleReviewsCount + 20)
+         Math.min(allReviewsWithBody.length, visibleReviewsCount + 20)
       );
    };
 
-   const hasReview =
+   const canShowReviews =
       reviewsData != null &&
-      reviewsData.reviews != null &&
-      reviewsData.reviews.length > 0;
+      reviewsData.count &&
+      reviewsData.average &&
+      (reviewsData.average >= 4 || reviewsData.count > 10);
 
    return (
-      <Box
-         id="reviews"
-         bg="white"
-         px={{ base: 5, sm: 0 }}
-         py="16"
-         fontSize="sm"
-      >
-         <PageContentWrapper>
+      <Box id="reviews" bg="white" py="16" fontSize="sm">
+         <Wrapper>
             <Heading
                as="h2"
-               fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
                mb={{
                   base: 8,
                   md: 16,
                }}
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
             >
                Customer Reviews
             </Heading>
-            {hasReview ? (
+            {canShowReviews ? (
                <>
                   <ReviewsStats
                      ratingsCounts={reviewCountsByRating}
@@ -140,7 +138,7 @@ export function ReviewsSection({
                   <WriteReviewButton variantSku={selectedVariant.sku} />
                </VStack>
             )}
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
@@ -218,7 +216,12 @@ type ProductReviewLineItemProps = {
 };
 function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
    return (
-      <Box py="6" borderBottomWidth="1px" borderColor="gray.200">
+      <Box
+         py="6"
+         borderBottomWidth="1px"
+         borderColor="gray.200"
+         data-testid="product-review-line-item"
+      >
          {review.author && (
             <HStack>
                <Avatar
@@ -229,12 +232,12 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
                   size="md"
                />
                <VStack align="flex-start" spacing="0">
-                  <Link href={review.author.url} fontWeight="bold">
+                  <Link href={review.author.url} fontWeight="semibold">
                      {review.author.name}
                   </Link>
                   <HStack spacing="1" color="green.500">
                      <FaIcon icon={faShieldCheck} h="4" color="green.500" />
-                     <Text fontWeight="bold" color="green.600">
+                     <Text fontWeight="medium" color="green.600">
                         Verified buyer
                      </Text>
                   </HStack>
@@ -244,12 +247,12 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
          <HStack my="4">
             <Rating value={review.rating} />
             {review.created_date && (
-               <Text mt="4" fontWeight="bold" color="gray.500">
+               <Text mt="4" color="gray.500">
                   {formatReviewDate(review.created_date)}
                </Text>
             )}
          </HStack>
-         <Text fontWeight="bold" my="4">
+         <Text fontWeight="semibold" my="4">
             {review.productName} | {review.productVariantName}
          </Text>
          {review.body && (

@@ -1,5 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -13,13 +12,13 @@ import { devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
    testDir: './tests/playwright',
    /* Maximum time one test can run for. */
-   timeout: 30 * 1000,
+   timeout: 60 * 1000,
    expect: {
       /**
        * Maximum time expect() should wait for the condition to be met.
        * For example in `await expect(locator).toHaveText();`
        */
-      timeout: 5000,
+      timeout: 10000,
    },
    /* Run tests in files in parallel */
    fullyParallel: true,
@@ -28,16 +27,18 @@ const config: PlaywrightTestConfig = {
    /* Retry on CI only */
    retries: process.env.CI ? 2 : 0,
    /* Opt out of parallel tests on CI. */
-   workers: process.env.CI ? 1 : undefined,
+   workers: process.env.CI ? '100%' : '25%',
    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
    reporter: [
-      [
-         'html',
-         {
-            open: 'never', // will not try to automatically open the report in the browser if test fails
-            outputFolder: 'tests/playwright/test-results/reports/',
-         },
-      ],
+      process.env.CI
+         ? ['list']
+         : [
+              'html',
+              {
+                 open: 'never', // will not try to automatically open the report in the browser if test fails
+                 outputFolder: 'tests/playwright/test-results/reports/',
+              },
+           ],
    ],
    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
    use: {
@@ -50,44 +51,40 @@ const config: PlaywrightTestConfig = {
       trace: 'on-first-retry',
 
       viewport: { width: 1400, height: 1000 },
+      launchOptions: {
+         slowMo: 1000,
+      },
    },
 
    /* Configure projects for major browsers */
    projects: [
       {
-         name: 'chromium',
+         name: 'Desktop Chrome',
          use: {
             ...devices['Desktop Chrome'],
          },
       },
 
       {
-         name: 'firefox',
+         name: 'Desktop Firefox',
          use: {
             ...devices['Desktop Firefox'],
          },
       },
 
+      /* Test against mobile viewports. */
       {
-         name: 'webkit',
+         name: 'Mobile Chrome',
          use: {
-            ...devices['Desktop Safari'],
+            ...devices['Pixel 5'],
          },
       },
-
-      /* Test against mobile viewports. */
-      // {
-      //   name: 'Mobile Chrome',
-      //   use: {
-      //     ...devices['Pixel 5'],
-      //   },
-      // },
-      // {
-      //   name: 'Mobile Safari',
-      //   use: {
-      //     ...devices['iPhone 12'],
-      //   },
-      // },
+      {
+         name: 'Tablet Chrome',
+         use: {
+            ...devices['Galaxy Tab S4'],
+         },
+      },
 
       /* Test against branded browsers. */
       // {
@@ -109,8 +106,8 @@ const config: PlaywrightTestConfig = {
 
    /* Run your local dev server before starting the tests */
    webServer: {
-      cwd: '../',
-      command: 'pnpm run dev',
+      cwd: process.env.CI ? './' : '../',
+      command: process.env.CI ? 'pnpm run start' : 'pnpm run dev',
       port: 3000,
       timeout: 120 * 1000,
       /* Reuse the same server if on local dev */
