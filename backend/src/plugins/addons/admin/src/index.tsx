@@ -3,7 +3,7 @@ import { prefixPluginTranslations } from '@strapi/helper-plugin';
 import pluginPkg from '../../package.json';
 import pluginId from './pluginId';
 import Initializer from './components/Initializer';
-import Puzzle from '@strapi/icons/Puzzle';
+import { Puzzle } from '@strapi/icons';
 
 const name = pluginPkg.strapi.name;
 

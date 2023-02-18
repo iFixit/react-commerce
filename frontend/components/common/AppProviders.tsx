@@ -2,7 +2,6 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
 import { CartDrawerProvider, theme } from '@ifixit/ui';
-import * as React from 'react';
 import * as Sentry from '@sentry/nextjs';
 import {
    MutationCache,
@@ -10,19 +9,10 @@ import {
    QueryClient,
    QueryClientProvider,
 } from '@tanstack/react-query';
+import * as React from 'react';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
 
-const customTheme = extendTheme({
-   ...theme,
-   sizes: {
-      ...theme.sizes,
-      header: '68px',
-   },
-   zIndices: {
-      ...theme.zIndices,
-      header: 2000,
-   },
-});
+const customTheme = extendTheme(theme);
 
 const shouldIgnoreUserAgent =
    typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);

@@ -1,45 +1,36 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product option test', () => {
-   test('Different styles', async ({ page }) => {
-      await page.goto('/products/repair-business-toolkit');
+   test('Different styles', async ({ page, productPage, cartDrawer }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
+      const productInfoSection = page.getByTestId('product-info-section');
 
-      await expect(page.getByText('Style')).toBeVisible();
+      await expect(productInfoSection.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
-      const firstOptionPrice = await page
-         .getByTestId('product-price')
-         .first()
-         .innerText();
-      const firstOptionSku = await page
-         .getByTestId('product-sku')
-         .textContent();
+      const firstOptionPrice = await productPage.getCurrentPrice();
+      const firstOptionSku = await productPage.getSku();
       const firstOptionName = await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .locator('option')
          .nth(0)
          .textContent();
 
       // Add the first product option to the cart
-      await page.getByTestId('product-add-to-cart-button').click();
-      await page.getByTestId('cart-drawer-close').click();
+      await productPage.addToCart();
+      await cartDrawer.close();
 
       // Switch to the second product option
       await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .selectOption({ index: 1 });
-      expect(page.getByTestId('product-sku')).not.toContain(firstOptionSku);
+      expect(await productPage.getSku()).not.toContain(firstOptionSku);
 
       // Get the price, sku, and name for the second product option
-      const secondOptionPrice = await page
-         .getByTestId('product-price')
-         .first()
-         .innerText();
-      const secondOptionSku = await page
-         .getByTestId('product-sku')
-         .textContent();
+      const secondOptionPrice = await productPage.getCurrentPrice();
+      const secondOptionSku = await productPage.getSku();
       const secondOptionName = await page
-         .getByTestId('product-option-selector')
+         .getByTestId('product-variants-selector')
          .locator('option')
          .nth(1)
          .textContent();
@@ -47,31 +38,18 @@ test.describe('Product option test', () => {
       expect(firstOptionName).not.toEqual(secondOptionName);
 
       // Add the second product option to the cart
-      await page.getByTestId('product-add-to-cart-button').click();
-
-      // Assert that the cart drawer contains the skus and prices of the added products
-      await expect(page.getByTestId('cart-drawer-body')).toBeVisible();
-
-      // Parse out the skus from the skuTexts which are in form of "Item # IF145-278-14"
-      const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
-      const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
-      expect(sku1).not.toEqual('');
-      expect(sku2).not.toEqual('');
+      await productPage.addToCart();
 
       // Assert that the cart drawer contains the skus of the added products
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(sku1)
-      ).toBeVisible();
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(sku2)
-      ).toBeVisible();
+      await cartDrawer.assertItemIsPresent(firstOptionSku);
+      await cartDrawer.assertItemIsPresent(secondOptionSku);
 
       // Assert that the cart drawer contains the prices of the added products
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(firstOptionPrice)
-      ).toBeVisible();
-      await expect(
-         page.getByTestId('cart-drawer-body').getByText(secondOptionPrice)
-      ).toBeVisible();
+      expect(await cartDrawer.getItem(firstOptionSku)).toContainText(
+         firstOptionPrice.toFixed(2)
+      );
+      expect(await cartDrawer.getItem(secondOptionSku)).toContainText(
+         secondOptionPrice.toFixed(2)
+      );
    });
 });

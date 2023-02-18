@@ -18,12 +18,8 @@ import {
    isPresent,
    Money,
 } from '@ifixit/helpers';
-import {
-   PageContentWrapper,
-   ProductVariantPrice,
-   ResponsiveImage,
-} from '@ifixit/ui';
-import type { Product } from '@models/product.server';
+import { Wrapper, ProductVariantPrice, ResponsiveImage } from '@ifixit/ui';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
 import * as React from 'react';
@@ -40,13 +36,14 @@ export function FeaturedProductsSection({
    }
    return (
       <Box bg="white" pt="16" fontSize="sm">
-         <PageContentWrapper>
+         <Wrapper>
             <Heading
                as="h2"
-               fontFamily="Archivo Black"
                color="gray.700"
                textAlign="center"
                mb="12"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
             >
                Featured Products
             </Heading>
@@ -78,7 +75,7 @@ export function FeaturedProductsSection({
                   );
                })}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
@@ -185,7 +182,7 @@ function ProductGridItem({
                )}
                {hasLifetimeWarranty && (
                   <ProductGridItemBadge colorScheme="blue">
-                     Lifetime Warranty
+                     Lifetime Guarantee
                   </ProductGridItemBadge>
                )}
             </Flex>

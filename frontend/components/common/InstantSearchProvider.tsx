@@ -7,7 +7,6 @@ import {
    isValidRefinementListValue,
    stylizeDeviceItemType,
 } from '@helpers/product-list-helpers';
-import { cypressWindowLog } from '@helpers/test-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
@@ -51,7 +50,6 @@ export function InstantSearchProvider({
    apiKey,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
-   cypressWindowLog({ userLoaded: user.isFetched });
 
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);
@@ -66,7 +64,10 @@ export function InstantSearchProvider({
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
          stateToRoute(uiState) {
-            const indexUiState = uiState[indexName];
+            const indexUiState = uiState['main-product-list-index'];
+            if (!indexUiState) {
+               return {};
+            }
             const routeState: RouteState = {};
             if (indexUiState.query) {
                routeState.q = indexUiState.query;
@@ -116,7 +117,7 @@ export function InstantSearchProvider({
                });
             }
             return {
-               [indexName]: stateObject,
+               ['main-product-list-index']: stateObject,
             };
          },
       },

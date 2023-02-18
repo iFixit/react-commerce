@@ -98,12 +98,8 @@ export function FeaturedProductListSection({
                      spacing="4"
                   >
                      <Heading
-                        fontSize={{
-                           base: productList.title.length > 40 ? 'xl' : '2xl',
-                           sm: productList.title.length > 30 ? 'lg' : '2xl',
-                           lg: productList.title.length > 40 ? '2xl' : '3xl',
-                        }}
-                        fontFamily="Archivo Black"
+                        fontSize={{ base: '2xl', md: '3xl' }}
+                        fontWeight="medium"
                         color="white"
                         noOfLines={3}
                      >
@@ -129,7 +125,7 @@ export function FeaturedProductListSection({
             <Box flexGrow={1}>
                <Index
                   indexName={productList.algolia.indexName}
-                  indexId={`feature-product-list-${index}`}
+                  indexId={`featured-product-list-${index}`}
                >
                   <Configure hitsPerPage={3} filters={filters} />
                   <ProductGrid />

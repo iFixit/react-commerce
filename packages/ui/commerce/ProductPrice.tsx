@@ -77,7 +77,7 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
             showDiscountLabel={showDiscountLabel}
             showProBadge={userPrice.isProPrice && isDiscounted}
             size={size}
-            colorScheme={userPrice.isProPrice ? 'orange' : 'red'}
+            colorScheme={userPrice.isProPrice ? 'amber' : 'red'}
             direction={direction}
             {...other}
          />
@@ -106,7 +106,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
          discountLabel,
          showDiscountLabel = true,
          showProBadge = false,
-         size = 'large',
+         size = 'medium',
          colorScheme = 'red',
          direction = 'row',
          ...other
@@ -116,7 +116,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
       const priceFontSize =
          size === 'large' ? 'xl' : size === 'medium' ? 'md' : 'sm';
       const compareAtPriceFontSize = size === 'large' ? 'md' : 'sm';
-      const isRow = direction === 'row' || direction === 'row-reverse';
+      const isHorizontal = direction === 'row' || direction === 'row-reverse';
 
       return (
          <Box
@@ -124,22 +124,23 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             display="flex"
             flexDir={direction}
             alignSelf="flex-start"
-            alignItems={isRow ? 'center' : 'flex-end'}
+            alignItems={isHorizontal ? 'center' : 'flex-end'}
             {...other}
          >
             <Text
-               mr={isRow ? 1 : 0}
+               mr={isHorizontal ? 1 : 0}
                fontSize={priceFontSize}
                fontWeight="semibold"
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
-               data-testid="product-price"
+               data-testid="current-price"
             >
-               {showProBadge && !isRow && (
+               {showProBadge && !isHorizontal && (
                   <FaIcon
                      icon={faRectanglePro}
                      h="4"
                      mr="1.5"
                      color={`${colorScheme}.500`}
+                     display="inline-block"
                   />
                )}
                {formattedPrice}
@@ -147,17 +148,19 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             {isDiscounted && (
                <>
                   <Text
-                     mr={isRow ? '10px' : 0}
+                     mr={isHorizontal ? '10px' : 0}
                      fontSize={compareAtPriceFontSize}
                      color="gray.500"
                      textDecor="line-through"
+                     data-testid="compare-at-price"
                   >
                      {formattedCompareAtPrice}
                   </Text>
-                  {isDiscounted && showDiscountLabel && isRow && (
+                  {isDiscounted && showDiscountLabel && isHorizontal && (
                      <IconBadge
                         icon={showProBadge ? faRectanglePro : undefined}
                         colorScheme={colorScheme}
+                        data-testid="product-discount"
                      >
                         {discountLabel}
                      </IconBadge>

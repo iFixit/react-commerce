@@ -1,15 +1,15 @@
+import { CurrencyCode, FindProductQuery } from '@lib/shopify-storefront-sdk';
 import { MenuItemType } from '@models/menu';
-import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 import { ProductSearchHit } from '@models/product-list';
-import { ProductReview } from '@models/product';
+import { ProductReview } from '@models/product/reviews';
 import type {
    Product,
-   ProductImage,
    ProductVariant,
-} from '@models/product.server';
-import { CurrencyCode, FindProductQuery } from '@lib/shopify-storefront-sdk';
+   ProductVariantImage,
+} from '@pages/api/nextjs/cache/product';
+import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 
-const productImages: ProductImage[] = [
+const productImages: ProductVariantImage[] = [
    {
       id: 'gid://shopify/ProductImage/31263941197914',
       altText: 'iPhone 6s Plus Battery New Fix Kit',
@@ -39,7 +39,6 @@ const productImages: ProductImage[] = [
 const productVariants: ProductVariant[] = [
    {
       id: 'gid://shopify/ProductVariant/32965718147162',
-      title: 'New / Fix Kit',
       sku: 'IF315-007-10',
       quantityAvailable: 63,
       image: {
@@ -51,11 +50,11 @@ const productVariants: ProductVariant[] = [
          variantId: 'gid://shopify/ProductVariant/32965718147162',
       },
       price: {
-         amount: '23.99',
+         amount: 23.99,
          currencyCode: CurrencyCode.Usd,
       },
       compareAtPrice: {
-         amount: '29.99',
+         amount: 29.99,
          currencyCode: CurrencyCode.Usd,
       },
       proPricesByTier: {
@@ -101,9 +100,7 @@ const productVariants: ProductVariant[] = [
       warranty: 'One year warranty',
       enabled: true,
       disableWhenOOS: false,
-      internalDisplayName: {
-         value: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
-      },
+      internalDisplayName: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
       shippingRestrictions: ['is_battery'],
       productcode: '315007',
       optionid: '10',
@@ -111,7 +108,6 @@ const productVariants: ProductVariant[] = [
       discountPercentage: 20,
       crossSellVariants: [
          {
-            __typename: 'ProductVariant',
             id: 'gid://shopify/ProductVariant/32965720473690',
             sku: 'IF145-257-1',
             quantityAvailable: 186,
@@ -141,7 +137,7 @@ const productVariants: ProductVariant[] = [
                url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/xe2tWdmD14WfKdFS.jpg?v=1642620899',
             },
             price: {
-               amount: '4.99',
+               amount: 4.99,
                currencyCode: CurrencyCode.Usd,
             },
             compareAtPrice: null,
@@ -165,11 +161,8 @@ const productVariants: ProductVariant[] = [
             },
             warranty: 'Lifetime Guarantee',
             enabled: true,
-            formattedPrice: '$4.99',
-            formattedCompareAtPrice: null,
          },
          {
-            __typename: 'ProductVariant',
             id: 'gid://shopify/ProductVariant/32965720178778',
             sku: 'IF145-307-4',
             quantityAvailable: 607,
@@ -218,7 +211,7 @@ const productVariants: ProductVariant[] = [
                url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_0b395d12-94a4-40b6-932e-3cbc60cef003.jpg?v=1660832943',
             },
             price: {
-               amount: '74.99',
+               amount: 74.99,
                currencyCode: CurrencyCode.Usd,
             },
             compareAtPrice: null,
@@ -242,14 +235,11 @@ const productVariants: ProductVariant[] = [
             },
             warranty: 'Lifetime Guarantee',
             enabled: true,
-            formattedPrice: '$74.99',
-            formattedCompareAtPrice: null,
          },
       ],
    },
    {
       id: 'gid://shopify/ProductVariant/32965718179930',
-      title: 'New / Part Only',
       sku: 'IF315-007-9',
       quantityAvailable: 42,
       image: {
@@ -261,7 +251,7 @@ const productVariants: ProductVariant[] = [
          variantId: 'gid://shopify/ProductVariant/32965718179930',
       },
       price: {
-         amount: '24.99',
+         amount: 24.99,
          currencyCode: CurrencyCode.Usd,
       },
       compareAtPrice: null,
@@ -307,9 +297,7 @@ const productVariants: ProductVariant[] = [
       warranty: 'One year warranty',
       enabled: true,
       disableWhenOOS: false,
-      internalDisplayName: {
-         value: 'iPhone 6s Plus Battery / Part and Adhesive',
-      },
+      internalDisplayName: 'iPhone 6s Plus Battery / Part and Adhesive',
       shippingRestrictions: ['is_battery'],
       productcode: '315007',
       optionid: '9',
@@ -317,7 +305,6 @@ const productVariants: ProductVariant[] = [
       discountPercentage: 0,
       crossSellVariants: [
          {
-            __typename: 'ProductVariant',
             id: 'gid://shopify/ProductVariant/39333786746970',
             sku: 'IF315-038-1',
             quantityAvailable: 25,
@@ -357,7 +344,7 @@ const productVariants: ProductVariant[] = [
                url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5VOJlrQqeBjCF3nF.jpg?v=1656622264',
             },
             price: {
-               amount: '59.99',
+               amount: 59.99,
                currencyCode: CurrencyCode.Usd,
             },
             compareAtPrice: null,
@@ -381,11 +368,8 @@ const productVariants: ProductVariant[] = [
             },
             warranty: 'Lifetime Warranty',
             enabled: true,
-            formattedPrice: '$59.99',
-            formattedCompareAtPrice: null,
          },
          {
-            __typename: 'ProductVariant',
             id: 'gid://shopify/ProductVariant/39333786583130',
             sku: 'IF315-049-2',
             quantityAvailable: 46,
@@ -423,7 +407,7 @@ const productVariants: ProductVariant[] = [
                url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/BBYFChBH3BMOwJvp_6d0c34d9-eb5f-49e8-8c43-3a443b66fa14.jpg?v=1642621670',
             },
             price: {
-               amount: '4.99',
+               amount: 4.99,
                currencyCode: CurrencyCode.Usd,
             },
             compareAtPrice: null,
@@ -447,8 +431,6 @@ const productVariants: ProductVariant[] = [
             },
             warranty: 'Sold as-is; no refunds or returns',
             enabled: true,
-            formattedPrice: '$4.99',
-            formattedCompareAtPrice: null,
          },
       ],
    },
@@ -533,7 +515,6 @@ export const mockedProduct: Product = {
    ],
    featuredProductVariants: [
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965720178778',
          sku: 'IF145-307-4',
          quantityAvailable: 607,
@@ -582,7 +563,7 @@ export const mockedProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_0b395d12-94a4-40b6-932e-3cbc60cef003.jpg?v=1660832943',
          },
          price: {
-            amount: '74.99',
+            amount: 74.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -606,11 +587,8 @@ export const mockedProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$74.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/39443942670426',
          sku: 'IF145-348-5',
          quantityAvailable: 461,
@@ -640,18 +618,15 @@ export const mockedProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/6JwXuUWvBHYYrIRj_e1a5b3b5-3158-4bf2-bb38-85c53c6c9959.jpg?v=1629216720',
          },
          price: {
-            amount: '24.99',
+            amount: 24.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
          proPricesByTier: null,
          warranty: 'Lifetime Warranty',
          enabled: false,
-         formattedPrice: '$24.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965718147162',
          sku: 'IF315-007-10',
          quantityAvailable: 63,
@@ -692,11 +667,11 @@ export const mockedProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
          },
          price: {
-            amount: '23.99',
+            amount: 23.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: {
-            amount: '29.99',
+            amount: 29.99,
             currencyCode: CurrencyCode.Usd,
          },
          proPricesByTier: {
@@ -719,11 +694,8 @@ export const mockedProduct: Product = {
          },
          warranty: 'One year warranty',
          enabled: true,
-         formattedPrice: '$23.99',
-         formattedCompareAtPrice: '$29.99',
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965713363034',
          sku: 'IF315-038-5',
          quantityAvailable: 20,
@@ -763,7 +735,7 @@ export const mockedProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/uvAlGKEBunYYDr3d_64fffe8c-26c4-4ece-ba71-9ee691281f23.jpg?v=1656622264',
          },
          price: {
-            amount: '64.99',
+            amount: 64.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -787,11 +759,8 @@ export const mockedProduct: Product = {
          },
          warranty: 'Lifetime Warranty',
          enabled: true,
-         formattedPrice: '$64.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965719359578',
          sku: 'IF315-001-10',
          quantityAvailable: 24,
@@ -834,7 +803,7 @@ export const mockedProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/YxAoEm2PB226SQqA.jpg?v=1642621510',
          },
          price: {
-            amount: '29.99',
+            amount: 29.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -858,8 +827,6 @@ export const mockedProduct: Product = {
          },
          warranty: 'Lifetime Warranty',
          enabled: true,
-         formattedPrice: '$29.99',
-         formattedCompareAtPrice: null,
       },
    ],
    compatibility: {
@@ -882,9 +849,6 @@ export const mockedProduct: Product = {
    shortDescription:
       'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',
    oemPartnership: null,
-   featuredImage: {
-      id: 'gid://shopify/ProductImage/31263941197914',
-   },
    images: productImages,
    allImages: productImages,
    options: [
@@ -912,7 +876,6 @@ export const mockedProduct: Product = {
 
 export const mockedProductVariant: ProductVariant = {
    id: 'gid://shopify/ProductVariant/32965718147162',
-   title: 'New / Fix Kit',
    sku: 'IF315-007-10',
    quantityAvailable: 63,
    image: {
@@ -924,11 +887,11 @@ export const mockedProductVariant: ProductVariant = {
       variantId: 'gid://shopify/ProductVariant/32965718147162',
    },
    price: {
-      amount: '23.99',
+      amount: 23.99,
       currencyCode: CurrencyCode.Usd,
    },
    compareAtPrice: {
-      amount: '29.99',
+      amount: 29.99,
       currencyCode: CurrencyCode.Usd,
    },
    proPricesByTier: {
@@ -974,9 +937,7 @@ export const mockedProductVariant: ProductVariant = {
    warranty: 'One year warranty',
    enabled: true,
    disableWhenOOS: false,
-   internalDisplayName: {
-      value: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
-   },
+   internalDisplayName: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
    shippingRestrictions: ['is_battery'],
    productcode: '315007',
    optionid: '10',
@@ -984,7 +945,6 @@ export const mockedProductVariant: ProductVariant = {
    discountPercentage: 20,
    crossSellVariants: [
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965720473690',
          sku: 'IF145-257-1',
          quantityAvailable: 186,
@@ -1014,7 +974,7 @@ export const mockedProductVariant: ProductVariant = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/xe2tWdmD14WfKdFS.jpg?v=1642620899',
          },
          price: {
-            amount: '4.99',
+            amount: 4.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -1038,11 +998,8 @@ export const mockedProductVariant: ProductVariant = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$4.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965720178778',
          sku: 'IF145-307-4',
          quantityAvailable: 607,
@@ -1091,7 +1048,7 @@ export const mockedProductVariant: ProductVariant = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_0b395d12-94a4-40b6-932e-3cbc60cef003.jpg?v=1660832943',
          },
          price: {
-            amount: '74.99',
+            amount: 74.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -1115,8 +1072,6 @@ export const mockedProductVariant: ProductVariant = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$74.99',
-         formattedCompareAtPrice: null,
       },
    ],
 };
@@ -1378,7 +1333,7 @@ export const mockedProductSearchHit: ProductSearchHit = {
    __position: 121,
 };
 
-const batteryProductImages: ProductImage[] = [
+const batteryProductImages: ProductVariantImage[] = [
    {
       id: 'gid://shopify/ProductImage/31667478593626',
       altText: 'Moto G7 Play Battery New',
@@ -1400,7 +1355,6 @@ const batteryProductImages: ProductImage[] = [
 const batteryProductVariants: ProductVariant[] = [
    {
       id: 'gid://shopify/ProductVariant/39333868634202',
-      title: 'New',
       sku: 'IF390-042-1',
       quantityAvailable: 462,
       image: {
@@ -1412,7 +1366,7 @@ const batteryProductVariants: ProductVariant[] = [
          variantId: 'gid://shopify/ProductVariant/39333868634202',
       },
       price: {
-         amount: '32.99',
+         amount: 32.99,
          currencyCode: CurrencyCode.Usd,
       },
       compareAtPrice: null,
@@ -1453,9 +1407,7 @@ const batteryProductVariants: ProductVariant[] = [
       warranty: 'One year warranty',
       enabled: true,
       disableWhenOOS: false,
-      internalDisplayName: {
-         value: 'Moto G7 Play Battery / Part Only',
-      },
+      internalDisplayName: 'Moto G7 Play Battery / Part Only',
       shippingRestrictions: ['is_battery'],
       productcode: '390042',
       optionid: '1',
@@ -1542,7 +1494,6 @@ export const mockedBatteryProduct: Product = {
    ],
    featuredProductVariants: [
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965709037658',
          sku: 'IF145-475-1',
          quantityAvailable: 3493,
@@ -1584,7 +1535,7 @@ export const mockedBatteryProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/GdLBXgihLH5iFnHZ.jpg?v=1642620989',
          },
          price: {
-            amount: '19.99',
+            amount: 19.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -1608,11 +1559,8 @@ export const mockedBatteryProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$19.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/39443942670426',
          sku: 'IF145-348-5',
          quantityAvailable: 461,
@@ -1642,18 +1590,15 @@ export const mockedBatteryProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/6JwXuUWvBHYYrIRj_e1a5b3b5-3158-4bf2-bb38-85c53c6c9959.jpg?v=1629216720',
          },
          price: {
-            amount: '24.99',
+            amount: 24.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
          proPricesByTier: null,
          warranty: 'Lifetime Warranty',
          enabled: false,
-         formattedPrice: '$24.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965709070426',
          sku: 'IF145-474-1',
          quantityAvailable: 354,
@@ -1691,7 +1636,7 @@ export const mockedBatteryProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5lpZ4dPTlPLT1QrK.jpg?v=1642620980',
          },
          price: {
-            amount: '14.99',
+            amount: 14.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -1715,11 +1660,8 @@ export const mockedBatteryProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$14.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965714182234',
          sku: 'IF145-299-4',
          quantityAvailable: 1882,
@@ -1768,11 +1710,11 @@ export const mockedBatteryProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/PO4uhbYhRmOcWPNV_f3088c21-0731-47f8-8ec6-88e40e7bf9a5.jpg?v=1669759131',
          },
          price: {
-            amount: '5.0',
+            amount: 5.0,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: {
-            amount: '55.0',
+            amount: 55.0,
             currencyCode: CurrencyCode.Usd,
          },
          proPricesByTier: {
@@ -1795,8 +1737,6 @@ export const mockedBatteryProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$5.00',
-         formattedCompareAtPrice: '$55.00',
       },
    ],
    compatibility: {
@@ -1825,9 +1765,6 @@ export const mockedBatteryProduct: Product = {
          locales: ['en-US'],
       },
    ],
-   featuredImage: {
-      id: 'gid://shopify/ProductImage/31667478593626',
-   },
    images: batteryProductImages,
    allImages: batteryProductImages,
    options: [
@@ -1846,7 +1783,7 @@ export const mockedBatteryProduct: Product = {
    vendor: '',
 };
 
-const toolProductImages: ProductImage[] = [
+const toolProductImages: ProductVariantImage[] = [
    {
       id: 'gid://shopify/ProductImage/31648428556378',
       altText: 'Hakko 5B SA Curved Tweezers New',
@@ -1860,7 +1797,6 @@ const toolProductImages: ProductImage[] = [
 const toolProductVariants: ProductVariant[] = [
    {
       id: 'gid://shopify/ProductVariant/39333789761626',
-      title: 'New',
       sku: 'IF317-048-1',
       quantityAvailable: 13,
       image: {
@@ -1872,7 +1808,7 @@ const toolProductVariants: ProductVariant[] = [
          variantId: 'gid://shopify/ProductVariant/39333789761626',
       },
       price: {
-         amount: '9.99',
+         amount: 9.99,
          currencyCode: CurrencyCode.Usd,
       },
       compareAtPrice: null,
@@ -1911,9 +1847,7 @@ const toolProductVariants: ProductVariant[] = [
       warranty: 'One year warranty',
       enabled: true,
       disableWhenOOS: false,
-      internalDisplayName: {
-         value: 'Hakko 5B SA Curved Tweezers',
-      },
+      internalDisplayName: 'Hakko 5B SA Curved Tweezers',
       shippingRestrictions: null,
       productcode: '317048',
       optionid: '1',
@@ -1921,7 +1855,6 @@ const toolProductVariants: ProductVariant[] = [
       discountPercentage: 0,
       crossSellVariants: [
          {
-            __typename: 'ProductVariant',
             id: 'gid://shopify/ProductVariant/39333789794394',
             sku: 'IF317-047-1',
             quantityAvailable: 31,
@@ -1945,7 +1878,7 @@ const toolProductVariants: ProductVariant[] = [
                url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/NHvasuuucgWNLOiK_5fe4cc71-1a6d-4718-b654-3f4cde68dbec.jpg?v=1667585988',
             },
             price: {
-               amount: '9.99',
+               amount: 9.99,
                currencyCode: CurrencyCode.Usd,
             },
             compareAtPrice: null,
@@ -1969,8 +1902,6 @@ const toolProductVariants: ProductVariant[] = [
             },
             warranty: 'One year warranty',
             enabled: true,
-            formattedPrice: '$9.99',
-            formattedCompareAtPrice: null,
          },
       ],
    },
@@ -2011,7 +1942,6 @@ export const mockedToolProduct: Product = {
    replacementGuides: [],
    featuredProductVariants: [
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/39443942670426',
          sku: 'IF145-348-5',
          quantityAvailable: 461,
@@ -2041,18 +1971,15 @@ export const mockedToolProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/6JwXuUWvBHYYrIRj_e1a5b3b5-3158-4bf2-bb38-85c53c6c9959.jpg?v=1629216720',
          },
          price: {
-            amount: '24.99',
+            amount: 24.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
          proPricesByTier: null,
          warranty: 'Lifetime Warranty',
          enabled: false,
-         formattedPrice: '$24.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965709037658',
          sku: 'IF145-475-1',
          quantityAvailable: 3493,
@@ -2094,7 +2021,7 @@ export const mockedToolProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/GdLBXgihLH5iFnHZ.jpg?v=1642620989',
          },
          price: {
-            amount: '19.99',
+            amount: 19.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -2118,11 +2045,8 @@ export const mockedToolProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$19.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965714182234',
          sku: 'IF145-299-4',
          quantityAvailable: 1882,
@@ -2171,11 +2095,11 @@ export const mockedToolProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/PO4uhbYhRmOcWPNV_f3088c21-0731-47f8-8ec6-88e40e7bf9a5.jpg?v=1669759131',
          },
          price: {
-            amount: '5.0',
+            amount: 5.0,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: {
-            amount: '55.0',
+            amount: 55.0,
             currencyCode: CurrencyCode.Usd,
          },
          proPricesByTier: {
@@ -2198,11 +2122,8 @@ export const mockedToolProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$5.00',
-         formattedCompareAtPrice: '$55.00',
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965709070426',
          sku: 'IF145-474-1',
          quantityAvailable: 354,
@@ -2240,7 +2161,7 @@ export const mockedToolProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5lpZ4dPTlPLT1QrK.jpg?v=1642620980',
          },
          price: {
-            amount: '14.99',
+            amount: 14.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -2264,8 +2185,6 @@ export const mockedToolProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$14.99',
-         formattedCompareAtPrice: null,
       },
    ],
    compatibility: null,
@@ -2279,9 +2198,6 @@ export const mockedToolProduct: Product = {
          locales: ['en-US'],
       },
    ],
-   featuredImage: {
-      id: 'gid://shopify/ProductImage/31648428556378',
-   },
    images: toolProductImages,
    allImages: toolProductImages,
    options: [
@@ -2300,7 +2216,7 @@ export const mockedToolProduct: Product = {
    vendor: '',
 };
 
-const partProductImages: ProductImage[] = [
+const partProductImages: ProductVariantImage[] = [
    {
       id: 'gid://shopify/ProductImage/31667549864026',
       altText: 'Galaxy A51 Screen New Part Only',
@@ -2322,7 +2238,6 @@ const partProductImages: ProductImage[] = [
 const partProductVariants: ProductVariant[] = [
    {
       id: 'gid://shopify/ProductVariant/39425225392218',
-      title: 'New / Part Only',
       sku: 'IF457-000-1',
       quantityAvailable: 360,
       image: {
@@ -2334,7 +2249,7 @@ const partProductVariants: ProductVariant[] = [
          variantId: 'gid://shopify/ProductVariant/39425225392218',
       },
       price: {
-         amount: '119.99',
+         amount: 119.99,
          currencyCode: CurrencyCode.Usd,
       },
       compareAtPrice: null,
@@ -2379,9 +2294,7 @@ const partProductVariants: ProductVariant[] = [
       warranty: 'Lifetime Guarantee',
       enabled: true,
       disableWhenOOS: false,
-      internalDisplayName: {
-         value: 'Galaxy A51 Screen / New / Part Only',
-      },
+      internalDisplayName: 'Galaxy A51 Screen / New / Part Only',
       shippingRestrictions: null,
       productcode: '457000',
       optionid: '1',
@@ -2466,7 +2379,6 @@ export const mockedPartProduct: Product = {
    ],
    featuredProductVariants: [
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/39443942670426',
          sku: 'IF145-348-5',
          quantityAvailable: 461,
@@ -2496,18 +2408,15 @@ export const mockedPartProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/6JwXuUWvBHYYrIRj_e1a5b3b5-3158-4bf2-bb38-85c53c6c9959.jpg?v=1629216720',
          },
          price: {
-            amount: '24.99',
+            amount: 24.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
          proPricesByTier: null,
          warranty: 'Lifetime Warranty',
          enabled: false,
-         formattedPrice: '$24.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965709070426',
          sku: 'IF145-474-1',
          quantityAvailable: 354,
@@ -2545,7 +2454,7 @@ export const mockedPartProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5lpZ4dPTlPLT1QrK.jpg?v=1642620980',
          },
          price: {
-            amount: '14.99',
+            amount: 14.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -2569,11 +2478,8 @@ export const mockedPartProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$14.99',
-         formattedCompareAtPrice: null,
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965714182234',
          sku: 'IF145-299-4',
          quantityAvailable: 1882,
@@ -2622,11 +2528,11 @@ export const mockedPartProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/PO4uhbYhRmOcWPNV_f3088c21-0731-47f8-8ec6-88e40e7bf9a5.jpg?v=1669759131',
          },
          price: {
-            amount: '5.0',
+            amount: 5.0,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: {
-            amount: '55.0',
+            amount: 55.0,
             currencyCode: CurrencyCode.Usd,
          },
          proPricesByTier: {
@@ -2649,11 +2555,8 @@ export const mockedPartProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$5.00',
-         formattedCompareAtPrice: '$55.00',
       },
       {
-         __typename: 'ProductVariant',
          id: 'gid://shopify/ProductVariant/32965709037658',
          sku: 'IF145-475-1',
          quantityAvailable: 3493,
@@ -2695,7 +2598,7 @@ export const mockedPartProduct: Product = {
             url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/GdLBXgihLH5iFnHZ.jpg?v=1642620989',
          },
          price: {
-            amount: '19.99',
+            amount: 19.99,
             currencyCode: CurrencyCode.Usd,
          },
          compareAtPrice: null,
@@ -2719,8 +2622,6 @@ export const mockedPartProduct: Product = {
          },
          warranty: 'Lifetime Guarantee',
          enabled: true,
-         formattedPrice: '$19.99',
-         formattedCompareAtPrice: null,
       },
    ],
    compatibility: {
@@ -2752,9 +2653,6 @@ export const mockedPartProduct: Product = {
          locales: ['en-US'],
       },
    ],
-   featuredImage: {
-      id: 'gid://shopify/ProductImage/31667549864026',
-   },
    images: partProductImages,
    allImages: partProductImages,
    options: [
@@ -2995,13 +2893,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Apple_pay_f3880a8a06.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Apple_pay_f3880a8a06.png',
-                              hash: 'thumbnail_Apple_pay_f3880a8a06',
-                              mime: 'image/png',
                               name: 'thumbnail_Apple pay.png',
-                              path: null,
-                              size: 4.51,
                               width: 245,
                               height: 98,
                            },
@@ -3017,13 +2910,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Google_pay_32cd2d40ef.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Google_pay_32cd2d40ef.png',
-                              hash: 'thumbnail_Google_pay_32cd2d40ef',
-                              mime: 'image/png',
                               name: 'thumbnail_Google pay.png',
-                              path: null,
-                              size: 10.81,
                               width: 245,
                               height: 98,
                            },
@@ -3039,13 +2927,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Paypal_ae2326b8cd.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Paypal_ae2326b8cd.png',
-                              hash: 'thumbnail_Paypal_ae2326b8cd',
-                              mime: 'image/png',
                               name: 'thumbnail_Paypal.png',
-                              path: null,
-                              size: 12.77,
                               width: 245,
                               height: 98,
                            },
@@ -3061,13 +2944,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Visa_8931a93403.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Visa_8931a93403.png',
-                              hash: 'thumbnail_Visa_8931a93403',
-                              mime: 'image/png',
                               name: 'thumbnail_Visa.png',
-                              path: null,
-                              size: 7.11,
                               width: 245,
                               height: 98,
                            },
@@ -3083,13 +2961,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Mastercard_bd10aef2e0.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Mastercard_bd10aef2e0.png',
-                              hash: 'thumbnail_Mastercard_bd10aef2e0',
-                              mime: 'image/png',
                               name: 'thumbnail_Mastercard.png',
-                              path: null,
-                              size: 10.29,
                               width: 245,
                               height: 98,
                            },
@@ -3105,13 +2978,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Discover_d997b5ef1e.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Discover_d997b5ef1e.png',
-                              hash: 'thumbnail_Discover_d997b5ef1e',
-                              mime: 'image/png',
                               name: 'thumbnail_Discover.png',
-                              path: null,
-                              size: 13.74,
                               width: 245,
                               height: 98,
                            },
@@ -3127,13 +2995,8 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                         url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/Amex_34591009eb.png',
                         formats: {
                            thumbnail: {
-                              ext: '.png',
                               url: 'https://ifixit-strapi-uploads.s3.amazonaws.com/thumbnail_Amex_34591009eb.png',
-                              hash: 'thumbnail_Amex_34591009eb',
-                              mime: 'image/png',
                               name: 'thumbnail_Amex.png',
-                              path: null,
-                              size: 6.69,
                               width: 245,
                               height: 98,
                            },
@@ -3730,7 +3593,7 @@ export const mockedProductQuery: FindProductQuery = {
                      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/YxAoEm2PB226SQqA.jpg?v=1642621510',
                   },
                   price: {
-                     amount: '29.99',
+                     amount: ' 29.99',
                      currencyCode: CurrencyCode.Usd,
                   },
                   compareAtPrice: null,
@@ -3879,9 +3742,6 @@ export const mockedProductQuery: FindProductQuery = {
          value: 'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',
       },
       oemPartnership: null,
-      featuredImage: {
-         id: 'gid://shopify/ProductImage/31263941197914',
-      },
       images: {
          nodes: [
             {

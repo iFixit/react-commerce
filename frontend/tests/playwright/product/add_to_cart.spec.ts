@@ -1,207 +1,217 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
+import { mockedProductQuery } from '@tests/jest/__mocks__/products';
+import { cloneDeep } from 'lodash';
+import {
+   createGraphQLHandler,
+   createRestHandler,
+} from './../msw/request-handler';
 
-test.describe.serial('product page add to cart', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.route(
-         '**/api/2.0/internal/international_store_promotion/buybox*',
-         (route) => {
-            route.fulfill({
-               status: 200,
-               body: '',
-            });
-         }
-      );
-   });
+test.describe('product page add to cart', () => {
+   test('Clicking Add To Cart Adds Items To Cart', async ({
+      productPage,
+      cartDrawer,
+   }) => {
+      await productPage.gotoProduct('spudger-retail-3-pack');
 
-   test('Clicking Add To Cart Adds Items To Cart', async ({ page }) => {
-      await page.goto('/products/spudger-retail-3-pack');
-
+      const sku = await productPage.getSku();
       for (let i = 1; i <= 5; i++) {
-         await page.getByTestId('product-add-to-cart-button').click();
-         const quantity = page.getByTestId('cart-drawer-quantity');
-         await expect(quantity).toHaveText(`${i}`);
-         await page.getByTestId('cart-drawer-close').click();
+         await productPage.addToCart();
+         await cartDrawer.assertItemQuantity(sku, i);
+         await cartDrawer.close();
       }
 
-      await page.getByTestId('cart-drawer-open').click();
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('5');
+      await cartDrawer.open();
+      await cartDrawer.assertItemQuantity(sku, 5);
    });
 
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
       page,
+      productPage,
+      cartDrawer,
    }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+      await productPage.gotoProduct('spudger-retail-3-pack');
 
-      await page.getByTestId('product-add-to-cart-button').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      const sku = await productPage.getSku();
+      await productPage.addToCart();
+      await cartDrawer.assertCartTotalQuantity(1);
 
       for (let i = 2; i <= 5; i++) {
-         await page.getByTestId('cart-drawer-increase-quantity').click();
-         const quantity = await page
-            .getByTestId('cart-drawer-quantity')
-            .textContent();
-         expect(quantity).toBe(`${i}`);
+         await cartDrawer.increaseItemQuantity(sku);
+         await cartDrawer.assertItemQuantity(sku, i);
       }
 
-      await page.getByTestId('cart-drawer-close').click();
-      await page.getByTestId('cart-drawer-open').click();
+      await cartDrawer.close();
+      await cartDrawer.open();
 
       for (let i = 5; i > 1; i--) {
-         await page.getByTestId('cart-drawer-decrease-quantity').click();
-         const quantity = await page
-            .getByTestId('cart-drawer-quantity')
-            .textContent();
-         expect(quantity).toBe(`${i - 1}`);
+         await cartDrawer.decreaseItemQuantity(sku);
+         await cartDrawer.assertItemQuantity(sku, i - 1);
       }
 
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
-      await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+      await cartDrawer.assertCartTotalQuantity(1);
+      await cartDrawer.assertItemQuantity(sku, 1);
    });
 
-   test('Item Can Be Added Again After Removing The Item', async ({ page }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+   test('Item Can Be Added Again After Removing The Item', async ({
+      page,
+      productPage,
+      cartDrawer,
+   }) => {
+      await productPage.gotoProduct('spudger-retail-3-pack');
+      const sku = await productPage.getSku();
 
-      await page.getByTestId('product-add-to-cart-button').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
-      await page.getByTestId('cart-drawer-remove-item').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
-      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
-      await page.getByTestId('cart-drawer-close').click();
-      await page.getByTestId('product-add-to-cart-button').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await productPage.addToCart();
+      await cartDrawer.assertCartTotalQuantity(1);
+
+      await cartDrawer.removeItem(sku);
+
+      await cartDrawer.assertCartTotalQuantity(0);
+      await cartDrawer.assertItemIsNotPresent(sku);
+      await cartDrawer.close();
+      await productPage.addToCart();
+      await cartDrawer.assertCartTotalQuantity(1);
    });
 
-   test('Back to Shopping Button Works', async ({ page }) => {
-      await page.goto('/products/spudger-retail-3-pack');
+   test('Back to Shopping Button Works', async ({
+      page,
+      productPage,
+      cartDrawer,
+   }) => {
+      await productPage.gotoProduct('spudger-retail-3-pack');
+      const sku = await productPage.getSku();
 
-      await page.getByTestId('cart-drawer-open').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
-      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+      await cartDrawer.open();
+      await cartDrawer.assertCartTotalQuantity(0);
+      await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      await expect(
-         page.getByTestId('cart-drawer-item-count')
-      ).not.toBeVisible();
+      await cartDrawer.assertDrawerIsClosed();
 
-      await page.getByTestId('product-add-to-cart-button').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('1');
+      await productPage.addToCart();
+      await cartDrawer.assertCartTotalQuantity(1);
       await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
-      await page.getByTestId('cart-drawer-remove-item').click();
-      await expect(page.getByTestId('cart-drawer-item-count')).toHaveText('0');
-      await expect(page.getByTestId('cart-drawer-quantity')).not.toBeVisible();
+
+      await cartDrawer.removeItem(sku);
+
+      await cartDrawer.assertCartTotalQuantity(0);
+      await cartDrawer.assertItemIsNotPresent(sku);
       await page.getByTestId('back-to-shopping').click();
-      await expect(
-         page.getByTestId('cart-drawer-item-count')
-      ).not.toBeVisible();
-      await expect(page.getByTestId('cart-drawer-close')).not.toBeVisible();
+      await cartDrawer.assertDrawerIsClosed();
    });
 
    test.describe('Product Stock Levels', () => {
-      test('Low stocked product changes quantity', async ({ page }) => {
+      test('Low stocked product changes quantity', async ({
+         page,
+         productPage,
+         cartDrawer,
+         serverRequestInterceptor,
+         port,
+      }) => {
+         const lowStockedProduct = cloneDeep(mockedProductQuery);
+         if (lowStockedProduct.product) {
+            lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
+         }
+
+         serverRequestInterceptor.use(
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: lowStockedProduct,
+               },
+            })
+         );
+
          await page.goto(
-            '/products/iphone-6s-plus-replacement-battery-low-stocked'
+            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-low-stocked`
          );
 
-         const firstOptionSku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku1 = firstOptionSku?.replace('Item # ', '') ?? '';
-         expect(sku1).not.toEqual('');
+         const firstOptionSku = await productPage.getSku();
 
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).toBeVisible();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 3 left'
-         );
-         await page.getByTestId('product-add-to-cart-button').click();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
+         await productPage.assertInventoryMessage('Only 3 left');
+         await productPage.addToCart();
+         await cartDrawer.assertItemQuantity(firstOptionSku, 1);
 
-         await page.getByTestId('cart-drawer-close').click();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 2 left'
-         );
+         await cartDrawer.close();
+         await productPage.assertInventoryMessage('Only 2 left');
 
-         await page.getByTestId('cart-drawer-open').click();
-         await page.getByTestId('cart-drawer-increase-quantity').click();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('2');
+         await cartDrawer.open();
+         await cartDrawer.increaseItemQuantity(firstOptionSku);
+         await cartDrawer.assertItemQuantity(firstOptionSku, 2);
 
-         await page.getByTestId('cart-drawer-close').click();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 1 left'
-         );
+         await cartDrawer.close();
+         await productPage.assertInventoryMessage('Only 1 left');
 
-         await page.getByTestId('cart-drawer-open').click();
-         await page.getByTestId('cart-drawer-increase-quantity').click();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('3');
+         await cartDrawer.open();
+         await cartDrawer.increaseItemQuantity(firstOptionSku);
+         await cartDrawer.assertItemQuantity(firstOptionSku, 3);
 
-         await page.getByTestId('cart-drawer-close').click();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'No more items available'
-         );
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeDisabled();
+         await cartDrawer.close();
+         await productPage.assertInventoryMessage('No more items available');
+         await expect(productPage.addToCartButton).toBeDisabled();
 
-         await page.getByText('Part Only').first().click();
-         const secondOptionSku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku2 = secondOptionSku?.replace('Item # ', '') ?? '';
-         expect(sku2).not.toEqual('');
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeVisible();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
-         await page.getByTestId('product-add-to-cart-button').click();
+         await productPage.switchSelectedVariant();
+         const secondOptionSku = await productPage.getSku();
 
-         await expect(
-            page
-               .getByRole('listitem')
-               .filter({ hasText: sku2 })
-               .getByTestId('cart-drawer-quantity')
-         ).toHaveText('1');
-         await expect(
-            page
-               .getByRole('listitem')
-               .filter({ hasText: sku1 })
-               .getByTestId('cart-drawer-quantity')
-         ).toHaveText('3');
+         await expect(productPage.addToCartButton).toBeVisible();
+         await productPage.assertInventoryMessage();
+         await productPage.addToCart();
 
-         await page
-            .getByRole('listitem')
-            .filter({ hasText: sku1 })
-            .getByTestId('cart-drawer-decrease-quantity')
-            .click();
-         await expect(
-            page
-               .getByRole('listitem')
-               .filter({ hasText: sku1 })
-               .getByTestId('cart-drawer-quantity')
-         ).toHaveText('2');
+         await cartDrawer.assertItemQuantity(secondOptionSku, 1);
+         await cartDrawer.assertItemQuantity(firstOptionSku, 3);
 
-         await page.getByTestId('cart-drawer-close').click();
-         await page.getByText('Fix Kit').nth(1).click();
-         await expect(page.getByTestId('product-inventory-message')).toHaveText(
-            'Only 1 left'
-         );
+         await cartDrawer.decreaseItemQuantity(firstOptionSku);
+         await cartDrawer.assertItemQuantity(firstOptionSku, 2);
+
+         await cartDrawer.close();
+         await productPage.switchSelectedVariant();
+         await productPage.assertInventoryMessage('Only 1 left');
       });
 
-      test('Out of stock product cannot be added to cart', async ({ page }) => {
-         await page.route(
-            '**/api/2.0/cart/product/notifyWhenSkuInStock',
-            (route) => {
-               route.fulfill({
+      test('Out of stock product cannot be added to cart', async ({
+         page,
+         productPage,
+         cartDrawer,
+         serverRequestInterceptor,
+         clientRequestHandler,
+         port,
+      }) => {
+         clientRequestHandler.use(
+            createRestHandler({
+               request: {
+                  endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
+                  method: 'post',
+               },
+               response: {
                   status: 200,
-                  body: '',
-               });
-            }
+               },
+            })
+         );
+
+         const outOfStockProduct = cloneDeep(mockedProductQuery);
+         if (outOfStockProduct.product) {
+            outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
+         }
+
+         serverRequestInterceptor.use(
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: outOfStockProduct,
+               },
+            })
          );
 
          await page.goto(
-            '/products/iphone-6s-plus-replacement-battery-out-of-stock'
+            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-out-of-stock`
          );
+
          await expect(
             page.getByRole('img', { name: 'Fix Kit' })
          ).not.toBeVisible();
@@ -209,56 +219,37 @@ test.describe.serial('product page add to cart', () => {
             page.getByRole('img', { name: 'Part Only' }).first()
          ).toBeVisible();
 
-         await page.getByText('Fix Kit').nth(1).click();
+         await productPage.switchSelectedVariant();
 
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).not.toBeVisible();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await expect(productPage.addToCartButton).not.toBeVisible();
+         await productPage.assertInventoryMessage();
 
-         const notifyMeForm = page.getByText(/this item is currently/i);
+         await expect(page.getByTestId('out-of-stock-alert')).toBeVisible();
+
+         const notifyMeForm = page.getByTestId('notify-me-form');
          await expect(notifyMeForm).toBeVisible();
-         await expect(notifyMeForm).toHaveText(
-            'This item is currently Out of Stock'
-         );
 
-         await page.getByLabel('Email address').fill('test@example.com');
-         await page.getByRole('button', { name: 'Notify me' }).click();
+         await notifyMeForm
+            .getByLabel('Email address')
+            .fill('test@example.com');
+         await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
          await expect(
-            page.getByText(
-               'You will be notified when this product is back in stock.'
-            )
+            page.getByTestId('notify-me-form-successful')
          ).toBeVisible();
 
-         await page.getByText('Part Only').first().click();
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeVisible();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await productPage.switchSelectedVariant();
+         await expect(productPage.addToCartButton).toBeVisible();
+         await productPage.assertInventoryMessage();
 
-         const partOnlySku = await page
-            .getByTestId('product-sku')
-            .textContent();
-         const sku = partOnlySku?.replace('Item # ', '') ?? '';
-         expect(sku).not.toEqual('');
+         const partOnlySku = await productPage.getSku();
 
-         await page.getByTestId('product-add-to-cart-button').click();
-         await expect(page.getByTestId('cart-drawer-quantity')).toHaveText('1');
-         await expect(
-            page.getByTestId('cart-drawer-body').getByText(sku)
-         ).toBeVisible();
+         await productPage.addToCart();
+         await cartDrawer.assertItemQuantity(partOnlySku, 1);
+         await cartDrawer.assertItemIsPresent(partOnlySku);
 
-         await page.getByTestId('cart-drawer-close').click();
-         await expect(
-            page.getByTestId('product-add-to-cart-button')
-         ).toBeEnabled();
-         await expect(
-            page.getByTestId('product-inventory-message')
-         ).not.toBeVisible();
+         await cartDrawer.close();
+         await expect(productPage.addToCartButton).toBeEnabled();
+         await productPage.assertInventoryMessage();
       });
    });
 });

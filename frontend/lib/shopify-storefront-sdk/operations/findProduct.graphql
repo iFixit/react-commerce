@@ -79,9 +79,6 @@ query findProduct($handle: String) {
       enabledDomains: metafield(namespace: "ifixit", key: "enabled_domains") {
          value
       }
-      featuredImage {
-         id
-      }
       images(first: 250) {
          nodes {
             id

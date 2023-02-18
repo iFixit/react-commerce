@@ -1,14 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('Product Page Reviews test', () => {
-   test('see more reviews button displays more reviews', async ({ page }) => {
-      await page.goto('products/repair-business-toolkit');
+   test('see more reviews button displays more reviews', async ({
+      page,
+      productPage,
+   }) => {
+      await productPage.gotoProduct('repair-business-toolkit');
 
       const reviewsCountBefore = await page
          .getByTestId('product-review-line-item')
          .count();
 
-      await page.getByText('see more reviews').click();
+      await page.getByRole('button', { name: /see more reviews/gi }).click();
 
       const reviewsAfter = page.getByTestId('product-review-line-item');
       const reviewsCountAfter = await reviewsAfter.count();

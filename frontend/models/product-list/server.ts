@@ -6,8 +6,7 @@ import {
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
-import { logSync } from '@ifixit/helpers';
-import { timeAsync } from '@ifixit/stats';
+import { timeAsync } from '@ifixit/helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
@@ -31,7 +30,7 @@ import {
    ProductListSectionType,
    ProductListType,
 } from './types';
-import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
+import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
 
 /**
  * Get the product list data from the API
@@ -72,40 +71,51 @@ export async function findProductList(
    const description =
       productList?.description ?? deviceWiki?.description ?? '';
 
-   const algoliaApiKey = logSync('algolia:create key', () =>
-      createPublicAlgoliaKey(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
+   const algoliaApiKey = createPublicAlgoliaKey(
+      ALGOLIA_APP_ID,
+      ALGOLIA_API_KEY
    );
    const productListType = getProductListType(productList?.type);
 
    const ancestors = createProductListAncestors(parents);
+   const isPartsList =
+      productListType === ProductListType.AllParts ||
+      productListType === ProductListType.DeviceParts;
 
    const baseProductList: BaseProductList = {
-      title: title,
-      handle: handle,
-      deviceTitle: deviceTitle,
-      deviceItemType: deviceItemType,
+      title,
+      handle,
+      deviceTitle,
+      deviceItemType,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
       metaTitle: productList?.metaTitle ?? null,
+      defaultShowAllChildrenOnLgSizes:
+         productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
+      heroImage: productList?.heroImage?.data?.attributes
+         ? getImageFromStrapiImage(
+              productList.heroImage.data.attributes,
+              'large'
+           )
+         : null,
       image: null,
+      brandLogo: productList?.brandLogo?.data?.attributes
+         ? getImageFromStrapiImage(
+              productList.brandLogo.data.attributes,
+              'large'
+           )
+         : null,
+      brandLogoWidth: productList?.brandLogoWidth ?? null,
       ancestors,
-      // Strapi sort order is case sensitive, so we need to improve on it in memory
-      children: await fillMissingImagesFromApi(
-         sortProductListChildren(
-            filterNullableItems(
-               productList?.children?.data.map(
-                  createProductListChild({
-                     deviceWiki,
-                  })
-               )
-            )
-         ),
-         ifixitOrigin
-      ),
-      childrenHeading: productList?.childrenHeading ?? null,
+      children: await getProductListChildren({
+         apiChildren: productList?.children?.data,
+         deviceWiki,
+         ifixitOrigin,
+         isPartsList,
+      }),
       sections: filterNullableItems(
          productList?.sections.map(createProductListSection)
       ),
@@ -139,36 +149,91 @@ export function getProductListType(
    }
 }
 
-async function fillMissingImagesFromApi(
+type GetProductListChildrenProps = {
+   apiChildren: ApiProductListChild[] | undefined;
+   deviceWiki: DeviceWiki | null;
+   ifixitOrigin: string;
+   isPartsList: boolean;
+};
+
+async function getProductListChildren({
+   apiChildren,
+   deviceWiki,
+   ifixitOrigin,
+   isPartsList,
+}: GetProductListChildrenProps) {
+   const presentChildren = filterNullableItems(
+      apiChildren?.map(createProductListChild({ deviceWiki }))
+   );
+
+   const [fillerImages, childrenWithProducts] = await Promise.all([
+      fetchMissingImages(presentChildren, ifixitOrigin),
+      filterDevicesWithNoProducts(presentChildren, isPartsList),
+   ]);
+
+   // Strapi sort order is case sensitive, so we need to improve on it in memory
+   return sortProductListChildren(
+      fillMissingImages(childrenWithProducts, fillerImages)
+   );
+}
+
+async function filterDevicesWithNoProducts(
+   productListChildren: ProductListChild[],
+   isPartsList: boolean
+) {
+   if (!isPartsList) {
+      return productListChildren;
+   }
+   const childDevices = productListChildren
+      .filter((child) => child.deviceTitle)
+      .map((child) => child.deviceTitle as string);
+   const devicesWithProducts = await findDevicesWithProducts(childDevices);
+   return productListChildren.filter(
+      (child) => child.deviceTitle && devicesWithProducts[child.deviceTitle] > 0
+   );
+}
+
+function fillMissingImages(
+   productListChildren: ProductListChild[],
+   fillerImages: Record<string, string>
+) {
+   return productListChildren.map((child) => {
+      const fillerImage = fillerImages[child.deviceTitle as string];
+      return fillerImage == null
+         ? child
+         : {
+              ...child,
+              image: {
+                 url: fillerImage,
+                 alternativeText: child.deviceTitle,
+              },
+           };
+   });
+}
+
+/**
+ * Returns a map of device title to image url.
+ */
+async function fetchMissingImages(
    productListChildren: ProductListChild[],
    ifixitOrigin: string
-): Promise<ProductListChild[]> {
+) {
    const childrenWithoutImages = productListChildren.filter(
       (child) => child.image == null && child.deviceTitle
    );
    if (childrenWithoutImages.length === 0) {
-      return productListChildren;
+      return {};
    }
    const deviceTitlesWithoutImages = childrenWithoutImages.map(
       (child) => child.deviceTitle
    ) as string[]; // cast is safe cause we filter nulls above,
    // typescript just doesn't understand
-   const imagesResponse = await fetchMultipleDeviceImages(
+   const { images } = await fetchMultipleDeviceImages(
       new IFixitAPIClient({ origin: ifixitOrigin }),
       deviceTitlesWithoutImages,
       'thumbnail'
    );
-   childrenWithoutImages.forEach((child) => {
-      const imageFromDevice =
-         imagesResponse.images[child.deviceTitle as string];
-      if (imageFromDevice != null) {
-         child.image = {
-            url: imageFromDevice,
-            alternativeText: child.deviceTitle,
-         };
-      }
-   });
-   return productListChildren;
+   return images;
 }
 
 function getChildDeviceImage(
@@ -400,4 +465,28 @@ function createPublicAlgoliaKey(appId: string, apiKey: string): string {
       filters: 'public=1 AND is_pro!=1',
    });
    return publicKey;
+}
+
+async function findDevicesWithProducts(devices: string[]) {
+   return timeAsync('algolia.findDescendantDevicesWithProducts', async () => {
+      const client = algoliasearch(
+         ALGOLIA_APP_ID,
+         ALGOLIA_API_KEY,
+         CLIENT_OPTIONS
+      );
+      const index = client.initIndex(ALGOLIA_PRODUCT_INDEX_NAME);
+      const deviceDisjunctiveFilters = devices
+         .map((device) => `device:"${escapeFilterValue(device)}"`)
+         .join(' OR ');
+      const deviceFilterSuffix = deviceDisjunctiveFilters
+         ? ` AND (${deviceDisjunctiveFilters})`
+         : '';
+      const { facets } = await index.search('', {
+         facets: ['device'],
+         filters: `public = 1${deviceFilterSuffix}`,
+         maxValuesPerFacet: 1000,
+         hitsPerPage: 0,
+      });
+      return facets?.device ? facets?.device : {};
+   });
 }

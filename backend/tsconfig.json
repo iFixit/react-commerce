@@ -2,7 +2,9 @@
    "extends": "@strapi/typescript-utils/tsconfigs/server",
    "compilerOptions": {
       "outDir": "dist",
-      "rootDir": "."
+      "rootDir": ".",
+      "jsx": "react",
+      "lib": ["ES2020", "DOM"]
    },
    "include": ["./", "src/**/*.json"],
    "exclude": [

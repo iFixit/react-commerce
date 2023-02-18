@@ -7,7 +7,7 @@ import type {
    Product,
    ProductImage,
    ProductVariant,
-} from '@models/product.server';
+} from '@pages/api/nextjs/cache/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -37,6 +37,7 @@ export function ProductGallery({
    showThumbnails,
    enableZoom,
    onChangeImage,
+   ...otherProps
 }: ProductGalleryProps) {
    const galleryContainerRef = React.useRef<HTMLDivElement | null>(null);
    const variantImages = useVariantImages(product, selectedVariant.id);
@@ -107,6 +108,7 @@ export function ProductGallery({
             },
          }}
          w="full"
+         {...otherProps}
       >
          <Box ref={galleryContainerRef}>
             {variantImages.length > 1 ? (
@@ -407,16 +409,24 @@ function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
 
    return (
       <Flex
-         borderColor="gray.200"
-         borderWidth={1}
+         bg="white"
          borderRadius="md"
          overflow="hidden"
          justify="center"
-         bg="white"
          position="relative"
          h="0"
          pb="100%"
       >
+         <Box
+            position="absolute"
+            top="0"
+            width="100%"
+            height="100%"
+            borderColor="gray.200"
+            borderWidth={1}
+            borderRadius="md"
+            pointerEvents="none"
+         />
          <Flex
             position="absolute"
             alignItems="center"

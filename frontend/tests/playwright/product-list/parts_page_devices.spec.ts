@@ -1,21 +1,25 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('parts page devices', () => {
-   test.skip(({ page }) => {
-      const viewPort = page.viewportSize();
-      return !viewPort || viewPort.width < 768;
-   }, 'Only run on desktop. Still need to rework this test for mobile.');
-
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
    test('Should navigate until the last device page', async ({ page }) => {
+      const viewPort = page.viewportSize();
+
       await expect(
          page.getByTestId('filterable-products-section')
       ).toBeVisible();
-      await page.getByTestId('facets-accordion').scrollIntoViewIfNeeded();
-      await expect(page.getByTestId('facets-accordion')).toBeVisible();
+
+      if (viewPort!.width > 768) {
+         await page.getByTestId('facets-accordion').scrollIntoViewIfNeeded();
+         await expect(page.getByTestId('facets-accordion')).toBeVisible();
+      } else {
+         await expect(
+            page.getByRole('button', { name: 'Filters' })
+         ).toBeVisible();
+      }
 
       // Makes sure there is at least 1 product available
       expect(

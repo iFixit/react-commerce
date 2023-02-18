@@ -128,10 +128,8 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   <Heading
                      id={productHeadingId}
                      as="h3"
-                     fontSize={{
-                        base: 'md',
-                        lg: 'lg',
-                     }}
+                     fontSize="md"
+                     fontWeight="medium"
                      mb={{
                         base: 2,
                         xl: 4,
@@ -142,15 +140,11 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   </Heading>
                   <Text
                      noOfLines={3}
-                     fontSize={{
-                        base: 'sm',
-                        sm: 'sm',
-                        lg: 'md',
-                     }}
                      mb={{
                         base: 2,
                         xl: 4,
                      }}
+                     lineHeight="short"
                   >
                      {product.short_description}
                   </Text>
@@ -197,7 +191,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         )}
                         {showLifetimeWarrantyBadge && (
                            <ProductListItemBadge colorScheme="blue">
-                              Lifetime Warranty
+                              Lifetime Guarantee
                            </ProductListItemBadge>
                         )}
                      </Flex>

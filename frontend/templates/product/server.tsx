@@ -5,17 +5,13 @@ import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getLayoutServerSideProps } from '@layouts/default/server';
-import { findProduct } from '@models/product.server';
+import Product from '@pages/api/nextjs/cache/product';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps } from 'next';
 import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
-const withNamedLogging = withLogging({
-   pageName: 'product',
-});
-
 const withMiddleware = compose(
-   withNamedLogging<ProductTemplateProps>,
+   withLogging<ProductTemplateProps>,
    withCacheLong<ProductTemplateProps>,
    withNoindexDevDomains<ProductTemplateProps>
 );
@@ -27,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
       });
-      const product = await findProduct({
+      const product = await Product.get({
          handle,
          storeCode: DEFAULT_STORE_CODE,
       });

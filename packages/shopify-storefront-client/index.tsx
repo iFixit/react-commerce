@@ -39,11 +39,15 @@ export class ShopifyStorefrontClient {
       if (json.errors) {
          const msg = 'Shopify Storefront API error';
          console.error(msg, json.errors);
-         reportException(new Error(msg), {
-            errors: json.errors,
-            response,
-            query,
-            variables: JSON.stringify(variables, null, 2),
+         // Current typescript target doesn't know about second argument to Error
+         // @ts-ignore
+         throw new Error(msg, {
+            cause: {
+               errors: json.errors,
+               response: json,
+               query,
+               variables: JSON.stringify(variables, null, 2),
+            },
          });
       }
       return json.data;

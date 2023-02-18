@@ -1,6 +1,4 @@
-import type { Locator, PlaywrightTestConfig } from '@playwright/test';
-import { expect, devices } from '@playwright/test';
-import { format } from 'util';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -29,7 +27,7 @@ const config: PlaywrightTestConfig = {
    /* Retry on CI only */
    retries: process.env.CI ? 2 : 0,
    /* Opt out of parallel tests on CI. */
-   workers: process.env.CI ? '100%' : undefined,
+   workers: process.env.CI ? '100%' : '25%',
    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
    reporter: [
       process.env.CI
@@ -109,62 +107,12 @@ const config: PlaywrightTestConfig = {
    /* Run your local dev server before starting the tests */
    webServer: {
       cwd: process.env.CI ? './' : '../',
-      command: process.env.CI
-         ? 'pnpm run build && pnpm run start'
-         : 'pnpm run dev',
+      command: process.env.CI ? 'pnpm run start' : 'pnpm run dev',
       port: 3000,
       timeout: 120 * 1000,
       /* Reuse the same server if on local dev */
       reuseExistingServer: !process.env.CI,
    },
 };
-
-expect.extend({
-   async toBeWithinViewport(
-      element: Locator,
-      viewportSize: { width: number; height: number } | null
-   ) {
-      if (!viewportSize) {
-         throw new Error('Viewport size was null.');
-      }
-
-      const boundingBox = await element.boundingBox();
-      if (!boundingBox) {
-         return {
-            message: () => 'Element is not visible.',
-            pass: false,
-         };
-      }
-
-      const { x, y, width, height } = boundingBox;
-      const { width: viewportWidth, height: viewportHeight } = viewportSize;
-
-      if (
-         x < 0 ||
-         y < 0 ||
-         x + width > viewportWidth ||
-         y + height > viewportHeight
-      ) {
-         return {
-            message: () =>
-               format(
-                  'Element is not within viewport. Element: %o, Viewport: %o',
-                  boundingBox,
-                  viewportSize
-               ),
-            pass: false,
-         };
-      }
-      return {
-         message: () =>
-            format(
-               'Element is within viewport. Element: %o, Viewport: %o',
-               boundingBox,
-               viewportSize
-            ),
-         pass: true,
-      };
-   },
-});
 
 export default config;

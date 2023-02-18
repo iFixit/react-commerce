@@ -1,12 +1,13 @@
-import { redisAdapter } from './redis-adapter';
-import Redis from 'ioredis';
-import { REDIS_URL } from '@config/env';
+import { client } from '@lib/redis';
 import { nullAdapter } from './null-adapter';
+import { redisAdapter } from './redis-adapter';
 
-export const getCache = () => {
-   if (REDIS_URL === undefined) {
+const getCache = () => {
+   if (client == null) {
       return nullAdapter();
    }
-   const client = new Redis(REDIS_URL);
+
    return redisAdapter(client);
 };
+
+export const cache = getCache();

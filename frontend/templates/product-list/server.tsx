@@ -1,6 +1,7 @@
 import { AppProviders, AppProvidersProps } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
-import { noindexDevDomains } from '@helpers/next-helpers';
+import { withCacheLong } from '@helpers/cache-control-helpers';
+import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
@@ -8,12 +9,13 @@ import {
    stylizeDeviceItemType,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
-import { assertNever, invariant, logAsync } from '@ifixit/helpers';
+import { assertNever, invariant, timeAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ProductList, ProductListType } from '@models/product-list';
 import { findProductList } from '@models/product-list/server';
+import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { renderToString } from 'react-dom/server';
@@ -21,20 +23,20 @@ import { getServerState } from 'react-instantsearch-hooks-server';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
 
+const withMiddleware = compose(
+   withLogging<ProductListTemplateProps>,
+   withCacheLong<ProductListTemplateProps>,
+   withNoindexDevDomains<ProductListTemplateProps>
+);
+
 type GetProductListServerSidePropsOptions = {
    productListType: ProductListType;
 };
 
 export const getProductListServerSideProps = ({
    productListType,
-}: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> => {
-   return async (context) => {
-      context.res.setHeader(
-         'Cache-Control',
-         'public, s-maxage=10, stale-while-revalidate=600'
-      );
-      noindexDevDomains(context);
-
+}: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> =>
+   withMiddleware(async (context) => {
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
       const layoutProps: Promise<DefaultLayoutProps> = getLayoutServerSideProps(
          {
@@ -48,7 +50,7 @@ export const getProductListServerSideProps = ({
 
       switch (productListType) {
          case ProductListType.AllParts: {
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList({ handle: { eq: 'Parts' } }, ifixitOrigin)
             );
             break;
@@ -74,7 +76,7 @@ export const getProductListServerSideProps = ({
                ? destylizeDeviceItemType(itemTypeHandle)
                : null;
 
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList(
                   {
                      deviceTitle: {
@@ -98,7 +100,7 @@ export const getProductListServerSideProps = ({
             break;
          }
          case ProductListType.AllTools: {
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList({ handle: { eq: 'Tools' } }, ifixitOrigin)
             );
             break;
@@ -110,7 +112,7 @@ export const getProductListServerSideProps = ({
                'tools category handle is required'
             );
 
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList({ handle: { eqi: handle } }, ifixitOrigin)
             );
 
@@ -131,7 +133,7 @@ export const getProductListServerSideProps = ({
                'shop category handle is required'
             );
 
-            productList = await logAsync('findProductList', () =>
+            productList = await timeAsync('findProductList', () =>
                findProductList(
                   {
                      handle: {
@@ -190,7 +192,7 @@ export const getProductListServerSideProps = ({
          </AppProviders>
       );
 
-      const serverState = await logAsync('getServerState', () =>
+      const serverState = await timeAsync('getServerState', () =>
          getServerState(appMarkup, { renderToString })
       );
 
@@ -212,8 +214,7 @@ export const getProductListServerSideProps = ({
       return {
          props: pageProps,
       };
-   };
-};
+   });
 
 function getDevicePathSegments(
    context: GetServerSidePropsContext<ParsedUrlQuery>

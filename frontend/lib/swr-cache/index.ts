@@ -10,21 +10,24 @@
  * 1) Define an operation endpoint in your API routes:
  *    e.g. `export default withCache({ ... })`
  * 2) Import the operation endpoint where you need to get the value:
- *    e.g. `import ProductList from '@pages/api/product-list';`
+ *    e.g. `import ProductList from '@pages/api/nextjs/cache/product-list';`
  * 3) Use the get function to get the cached value:
  *   e.g. `const productList = await ProductList.get({ ... })`
  */
 
 import { APP_ORIGIN } from '@config/env';
-import { log as defaultLog, Logger, nullLog } from '@lib/logger';
+import { log as defaultLog, Logger } from '@ifixit/helpers';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
-import { getCache } from './adapters';
+import { cache } from './adapters';
 import {
+   CacheEntry,
    createCacheEntry,
    createCacheKey,
    isStale,
    isValidCacheEntry,
+   printError,
+   printZodError,
    sleep,
 } from './utils';
 
@@ -33,6 +36,7 @@ interface CacheOptions<
    ValueSchema extends z.ZodTypeAny
 > {
    endpoint: string;
+   statName: string;
    variablesSchema: VariablesSchema;
    valueSchema: ValueSchema;
    getFreshValue: (
@@ -40,7 +44,6 @@ interface CacheOptions<
    ) => Promise<z.infer<ValueSchema>>;
    ttl?: number;
    staleWhileRevalidate?: number;
-   log?: boolean;
 }
 
 type NextApiHandlerWithProps<
@@ -56,17 +59,17 @@ export const withCache = <
    ValueSchema extends z.ZodTypeAny
 >({
    endpoint,
+   statName,
    variablesSchema,
+   valueSchema,
    getFreshValue,
    ttl,
    staleWhileRevalidate,
-   log = false,
 }: CacheOptions<VariablesSchema, ValueSchema>): NextApiHandlerWithProps<
    z.infer<VariablesSchema>,
    z.infer<ValueSchema>
 > => {
-   const logger: Logger = log ? defaultLog : nullLog;
-   const cache = getCache();
+   const logger: Logger = defaultLog;
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
       fetch(`${APP_ORIGIN}/${endpoint}`, {
@@ -74,7 +77,9 @@ export const withCache = <
          body: JSON.stringify(variables),
       }).catch((error) => {
          logger.error(
-            `[cache > start background revalidation]: unable to trigger revalidation\n${error}`
+            `${endpoint}.error: failed to trigger revalidation\n${printError(
+               error
+            )}`
          );
       });
       // We add a small delay to ensure the revalidation is triggered
@@ -86,34 +91,59 @@ export const withCache = <
       ValueSchema
    >['get'] = async (variables) => {
       const key = createCacheKey(endpoint, variables);
+      logger.info(`${endpoint}.key: "${key}"`);
       let start = performance.now();
-      const cachedEntry = await cache.get(key);
-      let elapsed = performance.now() - start;
-      if (isValidCacheEntry(cachedEntry)) {
-         if (isStale(cachedEntry)) {
-            logger.info(
-               `[cache > start background revalidation]:  key: "${key}"`
-            );
-            await requestRevalidation(variables);
-         }
-         logger.success(
-            `[cache > hit]: (${elapsed.toFixed(2)}ms) key: "${key}"`
+      let cachedEntry: CacheEntry | null = null;
+      try {
+         cachedEntry = await cache.get(key);
+      } catch (error) {
+         logger.warning(
+            `${endpoint}.error: unable to get entry with key. ${printError(
+               error
+            )}`
          );
-         return cachedEntry.value as any;
+      }
+      if (isValidCacheEntry(cachedEntry)) {
+         const valueValidation = valueSchema.safeParse(cachedEntry.value);
+         if (valueValidation.success) {
+            if (isStale(cachedEntry)) {
+               await requestRevalidation(variables);
+               const elapsed = performance.now() - start;
+               logger.success.event(`${statName}.stale`);
+               logger.success.timing(`${statName}.stale`, elapsed);
+            } else {
+               const elapsed = performance.now() - start;
+               logger.success.event(`${statName}.hit`);
+               logger.success.timing(`${statName}.hit`, elapsed);
+            }
+            return valueValidation.data;
+         }
+         logger.warning(`${endpoint}.warning: Invalid value. If you've changed the value schema, this error is expected. We'll get a fresh value and update the cache.\n
+            ${printZodError(valueValidation.error)}`);
       }
       start = performance.now();
       const value = await getFreshValue(variables);
-      elapsed = performance.now() - start;
-      logger.warning(`[cache > miss]: (${elapsed.toFixed(2)}ms) key: "${key}"`);
+      let elapsed = performance.now() - start;
+      logger.warning.event(`${statName}.miss`);
+      logger.warning.timing(`${statName}.miss`, elapsed);
       if (ttl != null && ttl > 0) {
          start = performance.now();
          const cacheEntry = createCacheEntry(value, {
             ttl,
             staleWhileRevalidate,
          });
-         await cache.set(key, cacheEntry);
-         elapsed = performance.now() - start;
-         logger.info(`[cache > set]: (${elapsed.toFixed(2)}ms) key: "${key}"`);
+         try {
+            start = performance.now();
+            await cache.set(key, cacheEntry);
+            elapsed = performance.now() - start;
+            logger.info.timing(`${statName}.set`, elapsed);
+         } catch (error) {
+            logger.warning(
+               `${endpoint}.warning: unable to set entry with key. ${printError(
+                  error
+               )}`
+            );
+         }
       }
       return value;
    };
@@ -133,6 +163,7 @@ export const withCache = <
          await cache.set(key, cacheEntry);
          return res.status(200).json({ success: true });
       } catch (error) {
+         logger.error(printError(error));
          return res.status(500).json({ success: false });
       }
    };

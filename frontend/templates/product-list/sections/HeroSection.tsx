@@ -3,6 +3,7 @@ import {
    BoxProps,
    Button,
    chakra,
+   Flex,
    forwardRef,
    Heading,
    Text,
@@ -40,25 +41,20 @@ export function HeroSection({ productList }: HeroSectionProps) {
    const title = getProductListTitle(productList, itemType);
 
    return (
-      <VStack flex={1} align="flex-start">
+      <Flex direction="column">
          <HeroTitle>
             {title}
             {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
          {hasTagline && (
-            <Text
-               as="h2"
-               fontWeight="bold"
-               fontSize="xl"
-               px={{ base: 6, sm: 0 }}
-            >
+            <Text as="h2" fontWeight="medium">
                {productList.tagline}
             </Text>
          )}
          {hasDescription && (
             <HeroDescription>{productList.description}</HeroDescription>
          )}
-      </VStack>
+      </Flex>
    );
 }
 
@@ -72,8 +68,8 @@ const HeroTitle = chakra(
             as="h1"
             className={className}
             size="xl"
-            fontFamily="Archivo Black"
-            px={{ base: 6, sm: 0 }}
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
          >
             {children}
          </Heading>
@@ -102,7 +98,7 @@ function HeroDescription({ children }: HeroDescriptionProps) {
    const isShowMoreVisible = textHeight > VISIBLE_HEIGHT;
 
    return (
-      <Box px={{ base: 6, sm: 0 }}>
+      <Box mt="4">
          <Box
             maxH={isOpen ? textHeight : VISIBLE_HEIGHT}
             overflow="hidden"

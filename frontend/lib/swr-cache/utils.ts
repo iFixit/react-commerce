@@ -17,7 +17,7 @@ const CacheEntrySchema = z.object({
    value: z.unknown(),
 });
 
-type CacheEntry = z.infer<typeof CacheEntrySchema>;
+export type CacheEntry = z.infer<typeof CacheEntrySchema>;
 
 interface CreateCacheEntryOptions {
    ttl?: number;
@@ -86,4 +86,18 @@ const stableHash = (variables: unknown): string => {
               }, {} as any)
          : val
    );
+};
+
+export const printZodError = (error: z.ZodError) => {
+   return JSON.stringify(error.format(), null, 2);
+};
+
+export const printError = (error: unknown) => {
+   if (error instanceof z.ZodError) {
+      return printZodError(error);
+   }
+   if (error instanceof Error) {
+      return error.message;
+   }
+   return 'unknown error';
 };

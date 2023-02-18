@@ -1,6 +1,6 @@
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { fetchProductReviews } from '@models/product';
-import type { Product } from '@models/product.server';
+import { fetchProductReviews } from '@models/product/reviews';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import { useQuery } from '@tanstack/react-query';
 
 const productReviewsKeys = {

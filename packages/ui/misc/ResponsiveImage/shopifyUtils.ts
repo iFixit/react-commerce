@@ -10,10 +10,14 @@ const CDN_HOSTNAMES = [
 const BASE_IMAGE_SIZE = 352;
 
 export function isShopifyImage(src: string) {
-   const newSrc = new URL(src);
-   return CDN_HOSTNAMES.some((allowedHostname) =>
-      newSrc.hostname.endsWith(allowedHostname)
-   );
+   try {
+      const url = new URL(src);
+      return CDN_HOSTNAMES.some((allowedHostname) =>
+         url.hostname.endsWith(allowedHostname)
+      );
+   } catch (e) {
+      return false;
+   }
 }
 
 export function getShopifyImageLoader() {

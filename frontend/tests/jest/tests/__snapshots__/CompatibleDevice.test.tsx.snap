@@ -4,11 +4,11 @@ exports[`CompatibleDevice renders and matches the snapshot 1`] = `
 <DocumentFragment>
   <img
     alt="iPhone 6s Plus"
-    class="chakra-image css-yqon05"
+    class="chakra-image css-ky1liq"
     src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
   />
   <div
-    class="css-gislc8"
+    class="css-qi8j5b"
   >
     <p
       class="chakra-text css-1h9z0di"
@@ -46,11 +46,11 @@ exports[`CompatibleDevice renders and matches the snapshot with truncated varian
 <DocumentFragment>
   <img
     alt="iPhone 6s Plus"
-    class="chakra-image css-yqon05"
+    class="chakra-image css-ky1liq"
     src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
   />
   <div
-    class="css-gislc8"
+    class="css-qi8j5b"
   >
     <p
       class="chakra-text css-1h9z0di"

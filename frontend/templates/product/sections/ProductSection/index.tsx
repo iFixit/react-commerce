@@ -1,4 +1,4 @@
-import { QualityGuarantee } from '@assets/svg';
+import { QualityGuarantee } from '@assets/svg/files';
 import {
    Accordion,
    AccordionButton,
@@ -22,8 +22,8 @@ import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@models/product.server';
+import { Wrapper, ProductVariantPrice } from '@ifixit/ui';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
@@ -66,8 +66,8 @@ export function ProductSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <PageContentWrapper as="section">
-         <Flex px={{ base: 5, sm: 0 }}>
+      <Wrapper as="section">
+         <Flex>
             <Flex
                position="sticky"
                alignSelf="flex-start"
@@ -80,6 +80,7 @@ export function ProductSection({
                zIndex="1"
             >
                <ProductGallery
+                  data-testid="product-gallery-desktop"
                   product={product}
                   selectedVariant={selectedVariant}
                   selectedImageId={selectedImageId}
@@ -115,6 +116,7 @@ export function ProductSection({
                }}
                fontSize="sm"
                position="relative"
+               data-testid="product-info-section"
             >
                {selectedVariant.sku && (
                   <Text color="gray.500" data-testid="product-sku">
@@ -129,6 +131,7 @@ export function ProductSection({
                      price={selectedVariant.price}
                      compareAtPrice={selectedVariant.compareAtPrice}
                      proPricesByTier={selectedVariant.proPricesByTier}
+                     data-testid="product-price-section"
                   />
                )}
 
@@ -138,6 +141,7 @@ export function ProductSection({
 
                <Flex display={{ base: 'flex', md: 'none' }} w="full" pt="6">
                   <ProductGallery
+                     data-testid="product-gallery-mobile"
                      product={product}
                      selectedVariant={selectedVariant}
                      selectedImageId={selectedImageId}
@@ -150,6 +154,7 @@ export function ProductSection({
                      product={product}
                      selected={selectedVariant.id}
                      onChange={handleVariantChange}
+                     data-testid="product-variants-selector"
                   />
                )}
 
@@ -238,7 +243,7 @@ export function ProductSection({
                </VStack>
             </Box>
          </Flex>
-      </PageContentWrapper>
+      </Wrapper>
    );
 }
 
@@ -251,9 +256,9 @@ const ProductTitle = chakra(
          <Heading
             as="h1"
             className={className}
-            size="xl"
-            fontFamily="Archivo Black"
             data-testid="product-title"
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
          >
             {children}
          </Heading>
@@ -270,7 +275,7 @@ function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
             flex="1"
             textAlign="left"
             color="gray.800"
-            fontWeight="bold"
+            fontWeight="semibold"
             fontSize="sm"
          >
             {children}
@@ -364,25 +369,9 @@ function ProOnlyAlert(props: AlertProps) {
 
 function NotForSaleAlert(props: AlertProps) {
    return (
-      <Alert
-         status="warning"
-         borderWidth={1}
-         borderColor="orange.300"
-         borderRadius="md"
-         alignItems="flex-start"
-         {...props}
-      >
-         <FaIcon
-            icon={faCircleExclamation}
-            h="4"
-            mt="0.5"
-            mr="2.5"
-            color="orange.500"
-         />
-
-         <Box fontSize="sm">
-            <p>Not for Sale.</p>
-         </Box>
+      <Alert status="warning" {...props} data-testid="not-for-sale-alert">
+         <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
+         <span>Not for Sale.</span>
       </Alert>
    );
 }
@@ -417,7 +406,7 @@ function WikiHtmlAccordianItem({
                         },
                      },
                      a: {
-                        fontWeight: 'bold',
+                        fontWeight: 'medium',
                         transition: 'all 300ms',
                         color: 'brand.500',
                      },

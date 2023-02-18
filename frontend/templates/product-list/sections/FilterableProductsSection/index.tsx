@@ -1,7 +1,7 @@
 import {
    ProductListEmptyStateIllustration,
    SearchEmptyStateIllustration,
-} from '@assets/svg';
+} from '@assets/svg/files';
 import {
    Box,
    BoxProps,
@@ -18,7 +18,6 @@ import {
 import { Card } from '@components/ui';
 import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
-import { cypressReplace, cypressWindowLog } from '@helpers/test-helpers';
 import { useAppContext } from '@ifixit/app';
 import { useLocalPreference } from '@ifixit/ui';
 import {
@@ -39,6 +38,10 @@ import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
 import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
+import {
+   SearchQueryProvider,
+   useSearchQueryContext,
+} from '@templates/product-list/hooks/useSearchQuery';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -52,8 +55,6 @@ export function FilterableProductsSection({ productList }: SectionProps) {
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
       ProductViewType.List
    );
-
-   cypressWindowLog({ filteredProducts: hits });
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
@@ -72,42 +73,47 @@ export function FilterableProductsSection({ productList }: SectionProps) {
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products
          </Heading>
-         <Toolbar
-            viewType={viewType}
-            productList={productList}
-            onViewTypeChange={setViewType}
-         />
-         <CurrentRefinements />
-         <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
-            <FacetCard>
-               <FacetsAccordion productList={productList} />
-            </FacetCard>
-            <Card flex={1} overflow="hidden">
-               <ProductListEmptyState
-                  productList={productList}
-                  hidden={!isEmpty}
-               />
-               {!isEmpty && viewType === ProductViewType.Grid && (
-                  <ProductGrid>
-                     {hits.map((hit) => {
-                        return (
-                           <ProductGridItem key={hit.handle} product={hit} />
-                        );
-                     })}
-                  </ProductGrid>
-               )}
-               {!isEmpty && viewType === ProductViewType.List && (
-                  <ProductList>
-                     {hits.map((hit) => {
-                        return (
-                           <ProductListItem key={hit.objectID} product={hit} />
-                        );
-                     })}
-                  </ProductList>
-               )}
-               <Pagination />
-            </Card>
-         </HStack>
+         <SearchQueryProvider>
+            <Toolbar
+               viewType={viewType}
+               productList={productList}
+               onViewTypeChange={setViewType}
+            />
+            <CurrentRefinements />
+            <HStack mt="4" align="flex-start" spacing={{ base: 0, md: 4 }}>
+               <FacetCard>
+                  <FacetsAccordion productList={productList} />
+               </FacetCard>
+               <Card flex={1} overflow="hidden">
+                  <ProductListEmptyState
+                     productList={productList}
+                     hidden={!isEmpty}
+                  />
+                  {!isEmpty && viewType === ProductViewType.Grid && (
+                     <ProductGrid>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductGridItem key={hit.handle} product={hit} />
+                           );
+                        })}
+                     </ProductGrid>
+                  )}
+                  {!isEmpty && viewType === ProductViewType.List && (
+                     <ProductList>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductListItem
+                                 key={hit.objectID}
+                                 product={hit}
+                              />
+                           );
+                        })}
+                     </ProductList>
+                  )}
+                  <Pagination />
+               </Card>
+            </HStack>
+         </SearchQueryProvider>
       </Flex>
    );
 }
@@ -139,11 +145,9 @@ function useScrollIntoViewEffect(deps: React.DependencyList) {
    const ref = React.useRef<HTMLDivElement>(null);
    React.useEffect(() => {
       if (ref.current && ref.current.getBoundingClientRect().top < 0) {
-         // Scrolling doesn't work in cypress when the behavior is `smooth`.
-         const options = cypressReplace<
-            Parameters<Element['scrollIntoView']>[0]
-         >({ behavior: 'smooth' }, undefined);
-         ref.current.scrollIntoView(options);
+         ref.current.scrollIntoView({
+            behavior: 'smooth',
+         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, deps);
@@ -156,7 +160,8 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
-      const clearRefinements = useClearRefinements();
+      const { setSearchQuery } = useSearchQueryContext();
+      const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
       const currentRefinements = useCurrentRefinements();
       const hasRefinements = currentRefinements.items.length > 0;
@@ -184,6 +189,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                px="2"
                textAlign="center"
                {...otherProps}
+               data-testid="product-list-no-results"
             >
                <Icon
                   as={SearchEmptyStateIllustration}
@@ -211,7 +217,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                   <Button
                      colorScheme="brand"
                      onClick={() => {
-                        searchBox.clear();
+                        setSearchQuery('');
                         clearRefinements.refine();
                      }}
                   >

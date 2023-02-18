@@ -1,9 +1,5 @@
 import { waitForAlgoliaSearch } from './../utils';
-import { test, expect } from '@playwright/test';
-
-const NO_SEARCH_RESULT = 'No matching products found';
-const NO_SEARCH_RESULTS_DESC =
-   "Try adjusting your search or filter to find what you're looking for";
+import { test, expect } from '../test-fixtures';
 
 test.describe('parts page search', () => {
    test.beforeEach(async ({ page }) => {
@@ -55,7 +51,6 @@ test.describe('parts page search', () => {
       expect(page.url()).toContain('?q=');
 
       await expect(page.getByTestId('list-view-products')).not.toBeVisible();
-      await expect(page.getByText(NO_SEARCH_RESULT)).toBeVisible();
-      await expect(page.getByText(NO_SEARCH_RESULTS_DESC)).toBeVisible();
+      await expect(page.getByTestId('product-list-no-results')).toBeVisible();
    });
 });

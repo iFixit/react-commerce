@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test-fixtures';
 
 test.describe('parts page results view', () => {
    test.beforeEach(async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('parts page results view', () => {
 
       for (let i = 0; i < productCount; i++) {
          const product = products.nth(i);
-         await expect(product.getByTestId('product-price')).toBeVisible();
+         await expect(product.getByTestId('current-price')).toBeVisible();
       }
    });
 

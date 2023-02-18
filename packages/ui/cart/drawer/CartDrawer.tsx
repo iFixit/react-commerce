@@ -79,7 +79,7 @@ export function CartDrawer() {
                size="sm"
             >
                <DrawerOverlay />
-               <DrawerContent color="gray.800">
+               <DrawerContent color="gray.800" data-testid="cart-drawer">
                   <DrawerHeader borderBottomWidth="1px" position="relative">
                      <DrawerCloseButton
                         top="50%"
@@ -87,12 +87,7 @@ export function CartDrawer() {
                         data-testid="cart-drawer-close"
                      />
                      <HStack align="center">
-                        <Heading
-                           size="xs"
-                           lineHeight="normal"
-                           letterSpacing="wider"
-                           textTransform="uppercase"
-                        >
+                        <Heading size="sm" lineHeight="normal">
                            Cart
                         </Heading>
                         {(cart.data != null || !cart.isError) && (
