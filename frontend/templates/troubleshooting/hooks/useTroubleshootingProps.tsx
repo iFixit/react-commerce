@@ -12,6 +12,7 @@ export type TroubleshootingData = {
    introduction: Section[];
    solutions: Section[];
    conclusion: Section[];
+   editUrl: string;
 };
 
 type TroubleshootingPageProps = {

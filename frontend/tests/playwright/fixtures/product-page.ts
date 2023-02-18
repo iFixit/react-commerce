@@ -103,7 +103,9 @@ export class ProductPage {
     * If no message is given, it will assert that the inventory message is
     * not visible.
     */
-   async assertInventoryMessage(message: string | null = null): Promise<void> {
+   async assertInventoryMessage(
+      message: string | RegExp | null = null
+   ): Promise<void> {
       if (message === null) {
          await expect(
             this.page.getByTestId('product-inventory-message')
@@ -111,7 +113,7 @@ export class ProductPage {
       } else {
          await expect(
             this.page.getByTestId('product-inventory-message')
-         ).toHaveText(message);
+         ).toContainText(message);
       }
    }
 }

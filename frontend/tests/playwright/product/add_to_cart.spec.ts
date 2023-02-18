@@ -1,6 +1,10 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
+import {
+   createGraphQLHandler,
+   createRestHandler,
+} from './../msw/request-handler';
 
 test.describe('product page add to cart', () => {
    test('Clicking Add To Cart Adds Items To Cart', async ({
@@ -101,15 +105,22 @@ test.describe('product page add to cart', () => {
          cartDrawer,
          serverRequestInterceptor,
          port,
-         graphql,
       }) => {
+         const lowStockedProduct = cloneDeep(mockedProductQuery);
+         if (lowStockedProduct.product) {
+            lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
+         }
+
          serverRequestInterceptor.use(
-            graphql.query('findProduct', async (req, res, ctx) => {
-               const lowStockedProduct = cloneDeep(mockedProductQuery);
-               if (lowStockedProduct.product) {
-                  lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
-               }
-               return res(ctx.data(lowStockedProduct));
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: lowStockedProduct,
+               },
             })
          );
 
@@ -166,25 +177,34 @@ test.describe('product page add to cart', () => {
          serverRequestInterceptor,
          clientRequestHandler,
          port,
-         graphql,
-         rest,
       }) => {
          clientRequestHandler.use(
-            rest.post(
-               '/api/2.0/cart/product/notifyWhenSkuInStock',
-               (req, res, ctx) => {
-                  return res(ctx.status(200));
-               }
-            )
+            createRestHandler({
+               request: {
+                  endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
+                  method: 'post',
+               },
+               response: {
+                  status: 200,
+               },
+            })
          );
 
+         const outOfStockProduct = cloneDeep(mockedProductQuery);
+         if (outOfStockProduct.product) {
+            outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
+         }
+
          serverRequestInterceptor.use(
-            graphql.query('findProduct', async (req, res, ctx) => {
-               const outOfStockProduct = cloneDeep(mockedProductQuery);
-               if (outOfStockProduct.product) {
-                  outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
-               }
-               return res(ctx.data(outOfStockProduct));
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: outOfStockProduct,
+               },
             })
          );
 
@@ -204,16 +224,17 @@ test.describe('product page add to cart', () => {
          await expect(productPage.addToCartButton).not.toBeVisible();
          await productPage.assertInventoryMessage();
 
-         await expect(
-            page.getByText(/This item is currently Out of Stock./i)
-         ).toBeVisible();
+         await expect(page.getByTestId('out-of-stock-alert')).toBeVisible();
 
-         await page.getByLabel('Email address').fill('test@example.com');
-         await page.getByRole('button', { name: 'Notify me' }).click();
+         const notifyMeForm = page.getByTestId('notify-me-form');
+         await expect(notifyMeForm).toBeVisible();
+
+         await notifyMeForm
+            .getByLabel('Email address')
+            .fill('test@example.com');
+         await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
          await expect(
-            page.getByText(
-               'You will be notified when this product is back in stock.'
-            )
+            page.getByTestId('notify-me-form-successful')
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();

@@ -20,7 +20,7 @@ import {
    faGaugeMax,
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
-import { IconBadge, PageContentWrapper, ResponsiveImage } from '@ifixit/ui';
+import { IconBadge, Wrapper, ResponsiveImage } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type ReplacementGuidesSectionProps = {
@@ -37,14 +37,8 @@ export function ReplacementGuidesSection({
    }
 
    return (
-      <Box
-         my="16"
-         px={{
-            base: 5,
-            sm: 0,
-         }}
-      >
-         <PageContentWrapper>
+      <Box my="16">
+         <Wrapper>
             <Heading
                as="h2"
                id="guides"
@@ -70,7 +64,7 @@ export function ReplacementGuidesSection({
                   return <ReplacementGuideCard key={guide.id} guide={guide} />;
                })}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
