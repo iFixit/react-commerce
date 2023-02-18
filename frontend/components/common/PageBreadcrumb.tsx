@@ -41,10 +41,6 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
          spacing={1}
          separator={<BreadcrumbIcon />}
          py="3"
-         px={{
-            base: 4,
-            sm: 0,
-         }}
          sx={{
             '& > :not(style)': {
                display: 'flex',

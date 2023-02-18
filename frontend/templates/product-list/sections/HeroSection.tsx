@@ -47,7 +47,7 @@ export function HeroSection({ productList }: HeroSectionProps) {
             {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
          {hasTagline && (
-            <Text as="h2" fontWeight="medium" px={{ base: 6, sm: 0 }}>
+            <Text as="h2" fontWeight="medium">
                {productList.tagline}
             </Text>
          )}
@@ -70,7 +70,6 @@ const HeroTitle = chakra(
             size="xl"
             fontSize={{ base: '2xl', md: '3xl' }}
             fontWeight="medium"
-            px={{ base: 6, sm: 0 }}
          >
             {children}
          </Heading>
@@ -99,7 +98,7 @@ function HeroDescription({ children }: HeroDescriptionProps) {
    const isShowMoreVisible = textHeight > VISIBLE_HEIGHT;
 
    return (
-      <Box px={{ base: 6, sm: 0 }} mt="4">
+      <Box mt="4">
          <Box
             maxH={isOpen ? textHeight : VISIBLE_HEIGHT}
             overflow="hidden"

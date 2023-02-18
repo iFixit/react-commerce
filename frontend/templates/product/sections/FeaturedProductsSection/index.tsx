@@ -18,11 +18,7 @@ import {
    isPresent,
    Money,
 } from '@ifixit/helpers';
-import {
-   PageContentWrapper,
-   ProductVariantPrice,
-   ResponsiveImage,
-} from '@ifixit/ui';
+import { Wrapper, ProductVariantPrice, ResponsiveImage } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 import { ImagePlaceholder } from '@templates/product/components/ImagePlaceholder';
 import NextLink from 'next/link';
@@ -40,7 +36,7 @@ export function FeaturedProductsSection({
    }
    return (
       <Box bg="white" pt="16" fontSize="sm">
-         <PageContentWrapper>
+         <Wrapper>
             <Heading
                as="h2"
                color="gray.700"
@@ -79,7 +75,7 @@ export function FeaturedProductsSection({
                   );
                })}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
