@@ -15,9 +15,9 @@ import {
    Subscription,
    SubscriptionStatus,
    useSubscribeToNewsletter,
-} from '../../newsletter-sdk';
+} from '@ifixit/newsletter-sdk';
 import React from 'react';
-import { FaIcon } from '../../icons';
+import { FaIcon } from '@ifixit/icons';
 
 export type NewsletterFormProps = {
    title: string;

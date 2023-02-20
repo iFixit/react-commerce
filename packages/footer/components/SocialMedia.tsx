@@ -6,7 +6,7 @@ import {
    TwitterLogo,
    TiktokLogo,
    YoutubeLogo,
-} from '../../icons';
+} from '@ifixit/icons';
 import { memo } from 'react';
 import { FooterLink } from './Shared';
 

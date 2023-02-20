@@ -9,7 +9,7 @@ import {
    StackProps,
    Text,
 } from '@chakra-ui/react';
-import type { Menu } from '../../ui/menu';
+import type { Menu } from '@ifixit/ui';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 import { PageContentWrapper } from './PageContentWrapper';
 
