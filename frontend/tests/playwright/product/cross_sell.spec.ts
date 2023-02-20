@@ -45,14 +45,14 @@ test.describe('Cross-sell test', () => {
       // Assert adding to cart only adds current product
       await page.getByTestId('cross-sell-add-to-cart-button').click();
 
-      const cartDrawerText = await page
+      const cartDrawerItems = await page
          .getByTestId('cart-drawer-body')
-         .textContent();
+         .locator('li');
 
       otherProductTitles.forEach((otherProductTitle) => {
-         expect(cartDrawerText).not.toContain(otherProductTitle);
+         expect(cartDrawerItems).not.toContainText(otherProductTitle);
       });
-      expect(cartDrawerText).toContain(currentProductTitle);
+      expect(cartDrawerItems).toContainText(currentProductTitle);
    });
 
    test('Cross-sell products can be added to cart', async ({ page }) => {
@@ -79,12 +79,12 @@ test.describe('Cross-sell test', () => {
       // Assert adding to cart adds all products
       await page.getByTestId('cross-sell-add-to-cart-button').click();
 
-      const cartDrawerText = await page
+      const cartDrawerItems = await page
          .getByTestId('cart-drawer-body')
-         .textContent();
+         .locator('li');
 
       allProductTitles.forEach((productTitle) => {
-         expect(cartDrawerText).toContain(productTitle);
+         expect(cartDrawerItems).toContainText(productTitle);
       });
    });
 });
