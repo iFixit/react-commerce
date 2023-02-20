@@ -30,9 +30,11 @@ test.describe('Cross-sell test', () => {
          }
 
          // Deselect other cross-sell products
-         otherProductTitles.push(
-            await product.getByTestId('cross-sell-item-title').textContent()
-         );
+         const productTitle = await product
+            .getByTestId('cross-sell-item-title')
+            .textContent();
+         expect(productTitle).not.toBeNull();
+         otherProductTitles.push(productTitle!);
          await product.getByTestId('cross-sell-item-select').click();
       }
 
@@ -52,7 +54,8 @@ test.describe('Cross-sell test', () => {
       otherProductTitles.forEach((otherProductTitle) => {
          expect(cartDrawerItems).not.toContainText(otherProductTitle);
       });
-      expect(cartDrawerItems).toContainText(currentProductTitle);
+      expect(currentProductTitle).not.toBeNull();
+      expect(cartDrawerItems).toContainText(currentProductTitle!);
    });
 
    test('Cross-sell products can be added to cart', async ({ page }) => {
@@ -84,7 +87,7 @@ test.describe('Cross-sell test', () => {
          .locator('li');
 
       allProductTitles.forEach((productTitle) => {
-         expect(cartDrawerItems).toContainText(productTitle);
+         expect(cartDrawerItems).toContainText(productTitle!);
       });
    });
 });
