@@ -15,7 +15,7 @@ test.describe('Cross-sell test', () => {
       const otherProductTitles = [];
 
       for (const product of await products.all()) {
-         await product.scrollIntoViewIfNeeded()
+         await product.scrollIntoViewIfNeeded();
 
          const isCurrent = await product
             .locator('span', { hasText: 'Current item' })
@@ -67,7 +67,7 @@ test.describe('Cross-sell test', () => {
       let expectedTotalPrice = 0;
 
       for (const product of await products.all()) {
-         await product.scrollIntoViewIfNeeded()
+         await product.scrollIntoViewIfNeeded();
 
          allProductTitles.push(
             await product.getByTestId('cross-sell-item-title').textContent()
