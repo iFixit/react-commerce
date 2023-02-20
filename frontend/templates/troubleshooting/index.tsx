@@ -147,6 +147,7 @@ function ActionsMenu({ historyUrl }: { historyUrl: string }) {
                   <MenuList>
                      <MenuItem
                         as={Link}
+                        _hover={{ textDecoration: 'none' }}
                         href={historyUrl}
                         icon={<FaIcon icon={faClockRotateLeft} />}
                      >
