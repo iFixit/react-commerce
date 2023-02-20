@@ -127,24 +127,35 @@ function EditButton({ editUrl }: { editUrl: string }) {
 function ActionsMenu({ historyUrl }: { historyUrl: string }) {
    return (
       <Menu>
-         <MenuButton
-            as={IconButton}
-            aria-label="Options"
-            icon={<FaIcon icon={faAngleDown} />}
-            variant="link"
-            borderRightColor="gray.200"
-            borderRightWidth={1}
-            borderRightRadius={0}
-         />
-         <MenuList>
-            <MenuItem
-               as={Link}
-               href={historyUrl}
-               icon={<FaIcon icon={faClockRotateLeft} />}
-            >
-               History
-            </MenuItem>
-         </MenuList>
+         {({ isOpen }) => {
+            return (
+               <>
+                  <MenuButton
+                     as={IconButton}
+                     aria-label="Options"
+                     icon={
+                        <FaIcon
+                           color={isOpen ? 'brand.500' : 'gray.500'}
+                           icon={faAngleDown}
+                        />
+                     }
+                     variant="link"
+                     borderRightColor="gray.200"
+                     borderRightWidth={1}
+                     borderRightRadius={0}
+                  />
+                  <MenuList>
+                     <MenuItem
+                        as={Link}
+                        href={historyUrl}
+                        icon={<FaIcon icon={faClockRotateLeft} />}
+                     >
+                        History
+                     </MenuItem>
+                  </MenuList>
+               </>
+            );
+         }}
       </Menu>
    );
 }
