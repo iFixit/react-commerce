@@ -8,7 +8,7 @@ test.describe('Cross-sell test', () => {
    test('Current item from cross-sell can be added to cart', async ({
       page,
    }) => {
-      const products = await page.getByTestId('cross-sell-item');
+      const products = page.getByTestId('cross-sell-item');
 
       let currentProductTitle = null;
       let currentProductPrice = null;
@@ -22,7 +22,7 @@ test.describe('Cross-sell test', () => {
             currentProductPrice = await product
                .getByTestId('current-price')
                .textContent();
-            await expect(currentProductPrice).toMatch(/^\$[0-9]+(\.[0-9]{2})/);
+            expect(currentProductPrice).toMatch(/^\$[0-9]+(\.[0-9]{2})/);
             currentProductTitle = await product
                .getByTestId('cross-sell-item-title')
                .textContent();
@@ -47,7 +47,7 @@ test.describe('Cross-sell test', () => {
       // Assert adding to cart only adds current product
       await page.getByTestId('cross-sell-add-to-cart-button').click();
 
-      const cartDrawerItems = await page
+      const cartDrawerItems = page
          .getByTestId('cart-drawer-body')
          .locator('li');
 
@@ -59,7 +59,7 @@ test.describe('Cross-sell test', () => {
    });
 
    test('Cross-sell products can be added to cart', async ({ page }) => {
-      const products = await page.getByTestId('cross-sell-item');
+      const products = page.getByTestId('cross-sell-item');
 
       const allProductTitles = [];
       let expectedTotalPrice = 0;
