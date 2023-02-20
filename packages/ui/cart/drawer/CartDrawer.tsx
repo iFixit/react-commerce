@@ -141,7 +141,7 @@ export function CartDrawer() {
                      <ScaleFade
                         in={cart.data != null && cart.data.hasItemsInCart}
                      >
-                        <Box as="ul">
+                        <Box as="ul" data-testid="cart-drawer-line-items">
                            <AnimatePresence>
                               {cart.data?.lineItems.map((lineItem) => {
                                  return (
@@ -152,8 +152,8 @@ export function CartDrawer() {
                                  );
                               })}
                            </AnimatePresence>
-                           {upsellItem && <Upsell item={upsellItem} />}
                         </Box>
+                        {upsellItem && <Upsell item={upsellItem} />}
                      </ScaleFade>
                      <Collapse
                         animateOpacity
