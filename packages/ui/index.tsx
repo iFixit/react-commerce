@@ -5,3 +5,4 @@ export * from './misc';
 export * from './theme';
 export * from './cart';
 export * from './commerce';
+export * from './menu';

@@ -53,7 +53,7 @@ import {
    Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
-import type { Menu } from '@ifixit/ui/menu';
+import type { Menu } from '@ifixit/ui';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
