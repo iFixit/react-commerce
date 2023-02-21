@@ -152,8 +152,8 @@ export function CartDrawer() {
                                  );
                               })}
                            </AnimatePresence>
-                           {upsellItem && <Upsell item={upsellItem} />}
                         </Box>
+                        {upsellItem && <Upsell item={upsellItem} />}
                      </ScaleFade>
                      <Collapse
                         animateOpacity
