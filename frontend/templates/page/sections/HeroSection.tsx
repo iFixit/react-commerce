@@ -1,13 +1,13 @@
 import { Box, Button } from '@chakra-ui/react';
+import { SectionDescription } from '@components/sections/SectionDescription';
+import { SectionHeading } from '@components/sections/SectionHeading';
 import { Wrapper } from '@ifixit/ui';
-import { GetSection } from '@models/page';
+import type { HeroSection } from '@models/page/sections/hero-section';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { SectionDescription } from '../components/SectionDescription';
-import { SectionHeading } from '../components/SectionHeading';
 
 export interface HeroSectionProps {
-   data: GetSection<'ComponentPageHero'>;
+   data: HeroSection;
 }
 
 export function HeroSection({
