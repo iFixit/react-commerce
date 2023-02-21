@@ -46,7 +46,7 @@ test.describe('Cross-sell test', () => {
       await page.getByTestId('cross-sell-add-to-cart-button').click();
 
       const cartDrawerText = await page
-         .getByTestId('cart-drawer-body')
+         .getByTestId('cart-drawer-line-items')
          .textContent();
 
       otherProductTitles.forEach((otherProductTitle) => {
@@ -80,7 +80,7 @@ test.describe('Cross-sell test', () => {
       await page.getByTestId('cross-sell-add-to-cart-button').click();
 
       const cartDrawerText = await page
-         .getByTestId('cart-drawer-body')
+         .getByTestId('cart-drawer-line-items')
          .textContent();
 
       allProductTitles.forEach((productTitle) => {
