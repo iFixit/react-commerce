@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
 import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import {
@@ -7,22 +8,21 @@ import {
 } from './hooks/usePageTemplateProps';
 import { BrowseSection } from './sections/BrowseSection';
 import { HeroSection } from './sections/HeroSection';
-import { StatsSection } from './sections/StatsSection';
 
 const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
    const { page } = usePageTemplateProps();
    return (
       <Box>
          {page.sections.map((section) => {
-            switch (section.__typename) {
-               case 'ComponentPageHero': {
+            switch (section.type) {
+               case 'Hero': {
                   return <HeroSection key={section.id} data={section} />;
                }
-               case 'ComponentPageBrowse': {
+               case 'Browse': {
                   return <BrowseSection key={section.id} data={section} />;
                }
-               case 'ComponentPageStats': {
-                  return <StatsSection key={section.id} data={section} />;
+               case 'IFixitStats': {
+                  return <IFixitStatsSection key={section.id} data={section} />;
                }
                default:
                   return assertNever(section);
