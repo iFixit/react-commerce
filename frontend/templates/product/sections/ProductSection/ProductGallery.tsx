@@ -59,7 +59,7 @@ export function ProductGallery({
                ({ width, height }) =>
                   !width ||
                   !height ||
-                  width * height < containerWidth * containerHeight
+                  width * height < containerWidth * containerHeight * 1.5
             )
          );
       };

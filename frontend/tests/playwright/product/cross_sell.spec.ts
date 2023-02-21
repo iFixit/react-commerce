@@ -47,7 +47,7 @@ test.describe('Cross-sell test', () => {
          .click();
 
       const cartDrawerText = await productPage.page
-         .getByTestId('cart-drawer-body')
+         .getByTestId('cart-drawer-line-items')
          .textContent();
 
       otherProductTitles.forEach((otherProductTitle) => {
@@ -86,7 +86,7 @@ test.describe('Cross-sell test', () => {
          .click();
 
       const cartDrawerText = await productPage.page
-         .getByTestId('cart-drawer-body')
+         .getByTestId('cart-drawer-line-items')
          .textContent();
 
       allProductTitles.forEach((productTitle) => {
