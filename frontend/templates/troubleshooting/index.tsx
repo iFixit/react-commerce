@@ -2,12 +2,27 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
-import { Box, Button, Flex, Heading, Link } from '@chakra-ui/react';
+import {
+   Box,
+   Button,
+   Flex,
+   Heading,
+   IconButton,
+   Link,
+   Menu,
+   MenuButton,
+   MenuItem,
+   MenuList,
+} from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
-import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
+import {
+   faAngleDown,
+   faClockRotateLeft,
+   faPenToSquare,
+} from '@fortawesome/pro-solid-svg-icons';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -15,7 +30,7 @@ const Wiki: NextPageWithLayout<{
 }> = ({ wikiData }) => {
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
-         <NavBar editUrl={wikiData.editUrl} />
+         <NavBar editUrl={wikiData.editUrl} historyUrl={wikiData.historyUrl} />
          <Flex
             padding="0px 32px 32px"
             gap="16px"
@@ -48,7 +63,13 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function NavBar({ editUrl }: { editUrl: string }) {
+function NavBar({
+   editUrl,
+   historyUrl,
+}: {
+   editUrl: string;
+   historyUrl: string;
+}) {
    return (
       <Flex
          w="100%"
@@ -62,6 +83,7 @@ function NavBar({ editUrl }: { editUrl: string }) {
             <Breadcrumbs />
             <AreaLinks />
             <EditButton editUrl={editUrl} />
+            <ActionsMenu historyUrl={historyUrl} />
          </Flex>
       </Flex>
    );
@@ -99,6 +121,43 @@ function EditButton({ editUrl }: { editUrl: string }) {
       >
          Edit
       </Button>
+   );
+}
+
+function ActionsMenu({ historyUrl }: { historyUrl: string }) {
+   return (
+      <Menu>
+         {({ isOpen }) => {
+            return (
+               <>
+                  <MenuButton
+                     as={IconButton}
+                     aria-label="Options"
+                     icon={
+                        <FaIcon
+                           color={isOpen ? 'brand.500' : 'gray.500'}
+                           icon={faAngleDown}
+                        />
+                     }
+                     variant="link"
+                     borderRightColor="gray.200"
+                     borderRightWidth={1}
+                     borderRightRadius={0}
+                  />
+                  <MenuList>
+                     <MenuItem
+                        as={Link}
+                        _hover={{ textDecoration: 'none' }}
+                        href={historyUrl}
+                        icon={<FaIcon icon={faClockRotateLeft} />}
+                     >
+                        History
+                     </MenuItem>
+                  </MenuList>
+               </>
+            );
+         }}
+      </Menu>
    );
 }
 
