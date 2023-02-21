@@ -13,6 +13,7 @@ export type TroubleshootingData = {
    solutions: Section[];
    conclusion: Section[];
    editUrl: string;
+   historyUrl: string;
 };
 
 type TroubleshootingPageProps = {
