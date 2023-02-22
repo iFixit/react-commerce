@@ -1,0 +1,32 @@
+{
+   "collectionName": "components_page_split_with_images",
+   "info": {
+      "displayName": "Split with Image",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "callToAction": {
+         "type": "component",
+         "repeatable": false,
+         "component": "page.call-to-action"
+      },
+      "imagePosition": {
+         "type": "enumeration",
+         "enum": ["Left", "Right"],
+         "default": "Right"
+      },
+      "image": {
+         "type": "media",
+         "multiple": false,
+         "required": false,
+         "allowedTypes": ["images"]
+      }
+   }
+}

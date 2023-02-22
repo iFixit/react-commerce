@@ -5,8 +5,9 @@ import {
 import { assertNever } from '@ifixit/helpers';
 import { CategoryFieldsFragment, strapi } from '@lib/strapi-sdk';
 import { imageFromStrapi } from '@models/shared/components/image';
-import type { Page, PageSection } from '.';
+import { imagePositionFromStrapi } from '@models/shared/sections/split-with-image-section';
 import { getProductListType } from '../product-list/server';
+import type { Page, PageSection } from '.';
 import type { BrowseCategory } from './sections/browse-section';
 
 interface FindPageArgs {
@@ -65,6 +66,18 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                   type: 'IFixitStats',
                   id: `${section.__typename}-${index}`,
                   stats,
+               };
+            }
+            case 'ComponentPageSplitWithImage': {
+               return {
+                  type: 'SplitWithImage',
+                  id: `${section.__typename}-${index}`,
+                  title: section.title ?? null,
+                  description: section.description ?? null,
+                  image: imageFromStrapi(section.image),
+                  imagePosition:
+                     imagePositionFromStrapi(section.imagePosition) ?? 'right',
+                  callToAction: section.callToAction ?? null,
                };
             }
             case 'Error': {

@@ -144,6 +144,16 @@ export type ComponentPageHero = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentPageSplitWithImage = {
+   __typename?: 'ComponentPageSplitWithImage';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   imagePosition?: Maybe<Enum_Componentpagesplitwithimage_Imageposition>;
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentPageStatItem = {
    __typename?: 'ComponentPageStatItem';
    id: Scalars['ID'];
@@ -340,6 +350,11 @@ export type DateTimeFilterInput = {
    startsWith?: InputMaybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Componentpagesplitwithimage_Imageposition {
+   Left = 'Left',
+   Right = 'Right',
+}
+
 export enum Enum_Productlist_Type {
    AllParts = 'all_parts',
    AllTools = 'all_tools',
@@ -402,6 +417,7 @@ export type GenericMorph =
    | ComponentPageCallToAction
    | ComponentPageCategory
    | ComponentPageHero
+   | ComponentPageSplitWithImage
    | ComponentPageStatItem
    | ComponentPageStats
    | ComponentProductListBanner
@@ -951,6 +967,7 @@ export type PageRelationResponseCollection = {
 export type PageSectionsDynamicZone =
    | ComponentPageBrowse
    | ComponentPageHero
+   | ComponentPageSplitWithImage
    | ComponentPageStats
    | Error;
 
@@ -1800,6 +1817,30 @@ export type FindPageQuery = {
                     id: string;
                     title?: string | null;
                     description?: string | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
                     callToAction?: {
                        __typename?: 'ComponentPageCallToAction';
                        title: string;
@@ -3151,6 +3192,18 @@ export const FindPageDocument = `
               id
               label
               value
+            }
+          }
+          ... on ComponentPageSplitWithImage {
+            id
+            title
+            description
+            callToAction {
+              ...CallToActionFields
+            }
+            imagePosition
+            image {
+              ...ImageFields
             }
           }
         }
