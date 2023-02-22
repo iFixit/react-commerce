@@ -1,15 +1,15 @@
 import { filterNullableItems, Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
 import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
-import {
+import type {
    ImageLinkMenuItem,
    LinkMenuItem,
    Menu,
    MenuItem,
-   MenuItemType,
    ProductListLinkMenuItem,
    SubmenuMenuItem,
 } from '@ifixit/ui';
+import { MenuItemType } from '@ifixit/ui';
 
 export type Store = Awaited<ReturnType<typeof findStoreByCode>>;
 
