@@ -95,8 +95,8 @@ export function ProductSection({
                   top="0"
                   w={{
                      md: '320px',
-                     lg: 'calc(400px + 16px + ((100vw - 960px) / 2 - 24px))',
-                     xl: 'calc(400px + 16px + ((100vw - 1100px) / 2 - 24px))',
+                     lg: 'calc(16px + 400px + 32px - 24px)',
+                     xl: 'calc(16px + 400px + 32px + (100vw - 1280px) / 2 - 24px)',
                   }}
                   left="calc(100% + 24px)"
                   boxShadow="md"
