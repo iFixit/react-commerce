@@ -9,7 +9,11 @@ import {
    SimpleGrid,
    Text,
 } from '@chakra-ui/react';
-import type { BoxProps, ListItemProps, SimpleGridProps } from '@chakra-ui/react';
+import type {
+   BoxProps,
+   ListItemProps,
+   SimpleGridProps,
+} from '@chakra-ui/react';
 import { NewsletterComponent } from './Newsletter';
 import type { NewsletterFormProps } from './Newsletter';
 import type { Menu as MenuType, MenuItem } from '@ifixit/ui';
