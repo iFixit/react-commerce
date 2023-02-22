@@ -66,6 +66,12 @@ const renderStyles: SystemStyleObject = {
       borderLeftStyle: 'solid',
       padding: '2px 8px 2px 12px',
    },
+
+   td: {
+      border: '1px solid',
+      borderColor: 'gray.300',
+      padding: '4px',
+   },
 };
 
 const Prerendered = chakra(function Prerendered({

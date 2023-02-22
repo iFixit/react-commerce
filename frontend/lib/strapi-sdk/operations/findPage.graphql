@@ -33,12 +33,7 @@ query findPage(
                      ...ImageFields
                   }
                   categories(pagination: { limit: 100 }) {
-                     id
-                     productList {
-                        data {
-                           ...ProductListFields
-                        }
-                     }
+                     ...CategoryFields
                   }
                }
                ... on ComponentPageStats {
@@ -47,6 +42,18 @@ query findPage(
                      id
                      label
                      value
+                  }
+               }
+               ... on ComponentPageSplitWithImage {
+                  id
+                  title
+                  description
+                  callToAction {
+                     ...CallToActionFields
+                  }
+                  imagePosition
+                  image {
+                     ...ImageFields
                   }
                }
             }
@@ -58,4 +65,13 @@ query findPage(
 fragment CallToActionFields on ComponentPageCallToAction {
    title
    url
+}
+
+fragment CategoryFields on ComponentPageCategory {
+   id
+   productList {
+      data {
+         ...ProductListFields
+      }
+   }
 }

@@ -144,6 +144,16 @@ export type ComponentPageHero = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentPageSplitWithImage = {
+   __typename?: 'ComponentPageSplitWithImage';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   imagePosition?: Maybe<Enum_Componentpagesplitwithimage_Imageposition>;
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentPageStatItem = {
    __typename?: 'ComponentPageStatItem';
    id: Scalars['ID'];
@@ -340,6 +350,11 @@ export type DateTimeFilterInput = {
    startsWith?: InputMaybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Componentpagesplitwithimage_Imageposition {
+   Left = 'Left',
+   Right = 'Right',
+}
+
 export enum Enum_Productlist_Type {
    AllParts = 'all_parts',
    AllTools = 'all_tools',
@@ -402,6 +417,7 @@ export type GenericMorph =
    | ComponentPageCallToAction
    | ComponentPageCategory
    | ComponentPageHero
+   | ComponentPageSplitWithImage
    | ComponentPageStatItem
    | ComponentPageStats
    | ComponentProductListBanner
@@ -951,6 +967,7 @@ export type PageRelationResponseCollection = {
 export type PageSectionsDynamicZone =
    | ComponentPageBrowse
    | ComponentPageHero
+   | ComponentPageSplitWithImage
    | ComponentPageStats
    | Error;
 
@@ -1819,6 +1836,30 @@ export type FindPageQuery = {
                     } | null;
                  }
                | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
                     __typename: 'ComponentPageStats';
                     id: string;
                     stats: Array<{
@@ -1840,6 +1881,37 @@ export type CallToActionFieldsFragment = {
    __typename?: 'ComponentPageCallToAction';
    title: string;
    url: string;
+};
+
+export type CategoryFieldsFragment = {
+   __typename?: 'ComponentPageCategory';
+   id: string;
+   productList?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            handle: string;
+            deviceTitle?: string | null;
+            title: string;
+            metaDescription?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
 };
 
 export type FindStoreQueryVariables = Exact<{
@@ -2948,6 +3020,12 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
 export const ImageFieldsFragmentDoc = `
     fragment ImageFields on UploadFileEntityResponse {
   data {
@@ -2973,10 +3051,14 @@ export const ProductListFieldsFragmentDoc = `
   }
 }
     `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
+export const CategoryFieldsFragmentDoc = `
+    fragment CategoryFields on ComponentPageCategory {
+  id
+  productList {
+    data {
+      ...ProductListFields
+    }
+  }
 }
     `;
 export const MenuPropsFragmentDoc = `
@@ -3101,12 +3183,7 @@ export const FindPageDocument = `
               ...ImageFields
             }
             categories(pagination: {limit: 100}) {
-              id
-              productList {
-                data {
-                  ...ProductListFields
-                }
-              }
+              ...CategoryFields
             }
           }
           ... on ComponentPageStats {
@@ -3117,6 +3194,18 @@ export const FindPageDocument = `
               value
             }
           }
+          ... on ComponentPageSplitWithImage {
+            id
+            title
+            description
+            callToAction {
+              ...CallToActionFields
+            }
+            imagePosition
+            image {
+              ...ImageFields
+            }
+          }
         }
       }
     }
@@ -3124,6 +3213,7 @@ export const FindPageDocument = `
 }
     ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
+${CategoryFieldsFragmentDoc}
 ${ProductListFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
