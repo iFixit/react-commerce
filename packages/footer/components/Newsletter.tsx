@@ -144,14 +144,14 @@ const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
          padding="12px"
          gap="8px"
          w="100%"
-         backgroundColor="#EDF6FF"
+         backgroundColor="brand.100"
          border="1px"
-         borderColor="#77B5FF"
+         borderColor='brand.300'
          borderStyle="solid"
          borderRadius="4px"
          mt="0px !important"
       >
-         <FaIcon icon={faCircleCheck} color="#1975F1" />
+         <FaIcon icon={faCircleCheck} color="brand.500" />
          <Text color="gray.900" m={0} fontSize="16px">
             Subscribed!
          </Text>
