@@ -158,7 +158,7 @@ const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
          w="100%"
          backgroundColor="brand.100"
          border="1px"
-         borderColor='brand.300'
+         borderColor="brand.300"
          borderStyle="solid"
          borderRadius="4px"
          mt="6px !important"
