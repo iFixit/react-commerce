@@ -77,27 +77,39 @@ const NewsletterHeader = ({
 };
 
 const NewsletterForm = ({
-   inputRef,
    placeholder,
    buttonText,
    isSubscribed,
    subscription,
-   onSubmit,
+   subscribe,
 }: {
-   inputRef: React.RefObject<HTMLInputElement>;
    placeholder: string;
    buttonText: string;
    isSubscribed: boolean;
    subscription: Subscription;
-   onSubmit: (event: React.FormEvent<HTMLElement>) => Promise<void>;
+   subscribe: (email: string) => void;
 }) => {
    if (isSubscribed) {
       return null;
    }
+
+   const inputRef = React.useRef<HTMLInputElement>(null);
+
+   const onSubscribe = React.useCallback(
+      async (event: React.FormEvent<HTMLElement>) => {
+         event.preventDefault();
+         if (inputRef.current) {
+            const email = inputRef.current.value;
+            subscribe(email);
+         }
+      },
+      [subscribe]
+   );
+
    return (
       <HStack
          as="form"
-         onSubmit={onSubmit}
+         onSubmit={onSubscribe}
          data-testid="footer-newsletter-form"
          spacing="3"
          w={{
@@ -182,19 +194,7 @@ export function NewsletterComponent({
    newsletterForm: NewsletterFormProps;
 }) {
    const ref = React.useRef(null);
-   const inputRef = React.useRef<HTMLInputElement>(null);
    const [subscription, subscribe] = useSubscribeToNewsletter();
-
-   const onSubscribe = React.useCallback(
-      async (event: React.FormEvent<HTMLElement>) => {
-         event.preventDefault();
-         if (inputRef.current) {
-            const email = inputRef.current.value;
-            subscribe(email);
-         }
-      },
-      [subscribe]
-   );
 
    const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
 
@@ -225,12 +225,11 @@ export function NewsletterComponent({
             subtitle={newsletterForm.subtitle}
          />
          <NewsletterForm
-            inputRef={inputRef}
             placeholder={newsletterForm.inputPlaceholder}
             buttonText={newsletterForm.callToActionButtonTitle}
             isSubscribed={isSubscribed}
             subscription={subscription}
-            onSubmit={onSubscribe}
+            subscribe={subscribe}
          />
          <NewsletterSubscribed isSubscribed={isSubscribed} />
          <NewsletterLink isSubscribed={isSubscribed} />
