@@ -2,13 +2,15 @@ import {
    filterFalsyItems,
    filterNullableItems,
 } from '@helpers/application-helpers';
+import { createSectionId } from '@helpers/strapi-helpers';
 import { assertNever } from '@ifixit/helpers';
 import { CategoryFieldsFragment, strapi } from '@lib/strapi-sdk';
 import { imageFromStrapi } from '@models/shared/components/image';
 import { imagePositionFromStrapi } from '@models/shared/sections/split-with-image-section';
-import { getProductListType } from '../product-list/server';
 import type { Page, PageSection } from '.';
+import { getProductListType } from '../product-list/server';
 import type { BrowseCategory } from './sections/browse-section';
+import { pressQuotesSectionFromStrapi } from './sections/press-quotes-section';
 
 interface FindPageArgs {
    path: string;
@@ -36,7 +38,7 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
             case 'ComponentPageHero': {
                return {
                   type: 'Hero',
-                  id: `${section.__typename}-${index}`,
+                  id: createSectionId(section, index),
                   title: section.title ?? null,
                   description: section.description ?? null,
                   callToAction: section.callToAction ?? null,
@@ -49,7 +51,7 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                );
                return {
                   type: 'Browse',
-                  id: `${section.__typename}-${index}`,
+                  id: createSectionId(section, index),
                   title: section.title ?? null,
                   description: section.description ?? null,
                   image: imageFromStrapi(section.image),
@@ -64,7 +66,7 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                );
                return {
                   type: 'IFixitStats',
-                  id: `${section.__typename}-${index}`,
+                  id: createSectionId(section, index),
                   stats,
                };
             }
@@ -79,6 +81,9 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                      imagePositionFromStrapi(section.imagePosition) ?? 'right',
                   callToAction: section.callToAction ?? null,
                };
+            }
+            case 'ComponentPagePress': {
+               return pressQuotesSectionFromStrapi(section, index);
             }
             case 'Error': {
                console.error('Failed to parse page section:', section);

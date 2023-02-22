@@ -1816,6 +1816,27 @@ export type UsersPermissionsUserRelationResponseCollection = {
    data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CompanyFieldsFragment = {
+   __typename?: 'CompanyEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'Company';
+      name: string;
+      logo?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: {
@@ -1941,7 +1962,40 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
-               | { __typename: 'ComponentPagePress' }
+               | {
+                    __typename: 'ComponentPagePress';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentPagePressQuote';
+                       id: string;
+                       text: string;
+                       company?: {
+                          __typename?: 'CompanyEntityResponse';
+                          data?: {
+                             __typename?: 'CompanyEntity';
+                             id?: string | null;
+                             attributes?: {
+                                __typename?: 'Company';
+                                name: string;
+                                logo?: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                 }
                | {
                     __typename: 'ComponentPageSplitWithImage';
                     id: string;
@@ -2005,6 +2059,35 @@ export type CategoryFieldsFragment = {
             title: string;
             metaDescription?: string | null;
             image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type PressQuoteFieldsFragment = {
+   __typename?: 'ComponentPagePressQuote';
+   id: string;
+   text: string;
+   company?: {
+      __typename?: 'CompanyEntityResponse';
+      data?: {
+         __typename?: 'CompanyEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Company';
+            name: string;
+            logo?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
                   __typename?: 'UploadFileEntity';
@@ -3127,6 +3210,41 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export type PressQuotesSectionFieldsFragment = {
+   __typename?: 'ComponentPagePress';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   quotes?: Array<{
+      __typename?: 'ComponentPagePressQuote';
+      id: string;
+      text: string;
+      company?: {
+         __typename?: 'CompanyEntityResponse';
+         data?: {
+            __typename?: 'CompanyEntity';
+            id?: string | null;
+            attributes?: {
+               __typename?: 'Company';
+               name: string;
+               logo?: {
+                  __typename?: 'UploadFileEntityResponse';
+                  data?: {
+                     __typename?: 'UploadFileEntity';
+                     attributes?: {
+                        __typename?: 'UploadFile';
+                        alternativeText?: string | null;
+                        url: string;
+                        formats?: any | null;
+                     } | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null> | null;
+};
+
 export const CallToActionFieldsFragmentDoc = `
     fragment CallToActionFields on ComponentPageCallToAction {
   title
@@ -3257,6 +3375,38 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     `;
+export const CompanyFieldsFragmentDoc = `
+    fragment CompanyFields on CompanyEntity {
+  id
+  attributes {
+    name
+    logo {
+      ...ImageFields
+    }
+  }
+}
+    `;
+export const PressQuoteFieldsFragmentDoc = `
+    fragment PressQuoteFields on ComponentPagePressQuote {
+  id
+  company {
+    data {
+      ...CompanyFields
+    }
+  }
+  text
+}
+    `;
+export const PressQuotesSectionFieldsFragmentDoc = `
+    fragment PressQuotesSectionFields on ComponentPagePress {
+  id
+  title
+  description
+  quotes {
+    ...PressQuoteFields
+  }
+}
+    `;
 export const FindPageDocument = `
     query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
   pages(
@@ -3313,6 +3463,9 @@ export const FindPageDocument = `
               ...ImageFields
             }
           }
+          ... on ComponentPagePress {
+            ...PressQuotesSectionFields
+          }
         }
       }
     }
@@ -3321,7 +3474,10 @@ export const FindPageDocument = `
     ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${CategoryFieldsFragmentDoc}
-${ProductListFieldsFragmentDoc}`;
+${ProductListFieldsFragmentDoc}
+${PressQuotesSectionFieldsFragmentDoc}
+${PressQuoteFieldsFragmentDoc}
+${CompanyFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

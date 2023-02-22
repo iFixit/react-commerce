@@ -56,6 +56,9 @@ query findPage(
                      ...ImageFields
                   }
                }
+               ... on ComponentPagePress {
+                  ...PressQuotesSectionFields
+               }
             }
          }
       }
@@ -74,4 +77,14 @@ fragment CategoryFields on ComponentPageCategory {
          ...ProductListFields
       }
    }
+}
+
+fragment PressQuoteFields on ComponentPagePressQuote {
+   id
+   company {
+      data {
+         ...CompanyFields
+      }
+   }
+   text
 }

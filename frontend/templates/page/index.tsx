@@ -33,6 +33,9 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                      />
                   );
                }
+               case 'PressQuotes': {
+                  return <div key={section.id}>press quotes</div>;
+               }
                default:
                   return assertNever(section);
             }
