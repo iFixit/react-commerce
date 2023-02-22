@@ -96,7 +96,7 @@ const NewsletterForm = ({
    const inputRef = React.useRef<HTMLInputElement>(null);
 
    const onSubscribe = React.useCallback(
-      async (event: React.FormEvent<HTMLElement>) => {
+      (event: React.FormEvent<HTMLElement>) => {
          event.preventDefault();
          if (inputRef.current) {
             const email = inputRef.current.value;
