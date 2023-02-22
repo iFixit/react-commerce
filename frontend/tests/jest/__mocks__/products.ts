@@ -1,13 +1,14 @@
-import { CurrencyCode, FindProductQuery } from '@lib/shopify-storefront-sdk';
+import { CurrencyCode } from '@lib/shopify-storefront-sdk';
+import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
 import { MenuItemType } from '@ifixit/ui/menu';
-import { ProductSearchHit } from '@models/product-list';
-import { ProductReview } from '@models/product/reviews';
+import type { ProductSearchHit } from '@models/product-list';
+import type { ProductReview } from '@models/product/reviews';
 import type {
    Product,
    ProductVariant,
    ProductVariantImage,
 } from '@pages/api/nextjs/cache/product';
-import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
+import type { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 
 const productImages: ProductVariantImage[] = [
    {

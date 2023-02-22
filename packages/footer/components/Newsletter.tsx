@@ -11,8 +11,8 @@ import {
    Link,
 } from '@chakra-ui/react';
 import { faCircleCheck, faEye } from '@fortawesome/pro-solid-svg-icons';
+import type { Subscription } from '@ifixit/newsletter-sdk';
 import {
-   Subscription,
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';

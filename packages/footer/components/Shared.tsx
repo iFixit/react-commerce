@@ -1,14 +1,12 @@
 import {
    Divider,
-   DividerProps,
    Flex,
-   FlexProps,
    forwardRef,
    HStack,
    Icon,
-   StackProps,
    Text,
 } from '@chakra-ui/react';
+import type { DividerProps, FlexProps, StackProps } from '@chakra-ui/react';
 import type { Menu } from '@ifixit/ui';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 import { PageContentWrapper } from './PageContentWrapper';

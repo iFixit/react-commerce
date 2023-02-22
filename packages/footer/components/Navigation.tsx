@@ -1,18 +1,17 @@
 import * as React from 'react';
 import {
    Box,
-   BoxProps,
    forwardRef,
    List,
    ListIcon,
    ListItem,
-   ListItemProps,
    ListProps,
    SimpleGrid,
-   SimpleGridProps,
    Text,
 } from '@chakra-ui/react';
-import { NewsletterComponent, NewsletterFormProps } from './Newsletter';
+import type { BoxProps, ListItemProps, SimpleGridProps } from '@chakra-ui/react';
+import { NewsletterComponent } from './Newsletter';
+import type { NewsletterFormProps } from './Newsletter';
 import type { Menu as MenuType, MenuItem } from '@ifixit/ui';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 

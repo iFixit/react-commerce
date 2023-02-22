@@ -5,12 +5,9 @@ import type { MenuItem } from '@ifixit/ui';
 import { MenuItemType } from '@ifixit/ui';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
-import { GlobalSettings } from '@models/global-settings';
-import {
-   Store,
-   StoreListItem,
-   getSupportUrlFromStoreCode,
-} from '@models/store';
+import type { GlobalSettings } from '@models/global-settings';
+import type { Store, StoreListItem } from '@models/store';
+import { getSupportUrlFromStoreCode } from '@models/store';
 import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
    FooterCopyright,
