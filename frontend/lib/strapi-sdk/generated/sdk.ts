@@ -53,6 +53,49 @@ export type BooleanFilterInput = {
    startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type Company = {
+   __typename?: 'Company';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   logo?: Maybe<UploadFileEntityResponse>;
+   name: Scalars['String'];
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type CompanyEntity = {
+   __typename?: 'CompanyEntity';
+   attributes?: Maybe<Company>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type CompanyEntityResponse = {
+   __typename?: 'CompanyEntityResponse';
+   data?: Maybe<CompanyEntity>;
+};
+
+export type CompanyEntityResponseCollection = {
+   __typename?: 'CompanyEntityResponseCollection';
+   data: Array<CompanyEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type CompanyFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<CompanyFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<CompanyFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<CompanyFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type CompanyInput = {
+   logo?: InputMaybe<Scalars['ID']>;
+   name?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type ComponentGlobalNewsletterForm = {
    __typename?: 'ComponentGlobalNewsletterForm';
    callToActionButtonTitle: Scalars['String'];
@@ -142,6 +185,36 @@ export type ComponentPageHero = {
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
    title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPagePress = {
+   __typename?: 'ComponentPagePress';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   quotes?: Maybe<Array<Maybe<ComponentPagePressQuote>>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPagePressQuotesArgs = {
+   filters?: InputMaybe<ComponentPagePressQuoteFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ComponentPagePressQuote = {
+   __typename?: 'ComponentPagePressQuote';
+   company?: Maybe<CompanyEntityResponse>;
+   id: Scalars['ID'];
+   text: Scalars['String'];
+};
+
+export type ComponentPagePressQuoteFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentPagePressQuoteFiltersInput>>>;
+   company?: InputMaybe<CompanyFiltersInput>;
+   not?: InputMaybe<ComponentPagePressQuoteFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentPagePressQuoteFiltersInput>>>;
+   text?: InputMaybe<StringFilterInput>;
 };
 
 export type ComponentPageSplitWithImage = {
@@ -408,6 +481,7 @@ export type FloatFilterInput = {
 };
 
 export type GenericMorph =
+   | Company
    | ComponentGlobalNewsletterForm
    | ComponentMenuLink
    | ComponentMenuLinkWithImage
@@ -417,6 +491,8 @@ export type GenericMorph =
    | ComponentPageCallToAction
    | ComponentPageCategory
    | ComponentPageHero
+   | ComponentPagePress
+   | ComponentPagePressQuote
    | ComponentPageSplitWithImage
    | ComponentPageStatItem
    | ComponentPageStats
@@ -653,6 +729,7 @@ export type Mutation = {
    __typename?: 'Mutation';
    /** Change user password. Confirm with the current password. */
    changePassword?: Maybe<UsersPermissionsLoginPayload>;
+   createCompany?: Maybe<CompanyEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
@@ -667,6 +744,7 @@ export type Mutation = {
    createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
    /** Create a new user */
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+   deleteCompany?: Maybe<CompanyEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
@@ -689,6 +767,7 @@ export type Mutation = {
    removeFile?: Maybe<UploadFileEntityResponse>;
    /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
    resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+   updateCompany?: Maybe<CompanyEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
@@ -708,6 +787,10 @@ export type MutationChangePasswordArgs = {
    currentPassword: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationCreateCompanyArgs = {
+   data: CompanyInput;
 };
 
 export type MutationCreateGlobalLocalizationArgs = {
@@ -767,6 +850,10 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
    data: UsersPermissionsUserInput;
+};
+
+export type MutationDeleteCompanyArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteGlobalArgs = {
@@ -839,6 +926,11 @@ export type MutationResetPasswordArgs = {
    code: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationUpdateCompanyArgs = {
+   data: CompanyInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateFileInfoArgs = {
@@ -967,6 +1059,7 @@ export type PageRelationResponseCollection = {
 export type PageSectionsDynamicZone =
    | ComponentPageBrowse
    | ComponentPageHero
+   | ComponentPagePress
    | ComponentPageSplitWithImage
    | ComponentPageStats
    | Error;
@@ -1123,6 +1216,8 @@ export enum PublicationState {
 
 export type Query = {
    __typename?: 'Query';
+   companies?: Maybe<CompanyEntityResponseCollection>;
+   company?: Maybe<CompanyEntityResponse>;
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
@@ -1143,6 +1238,17 @@ export type Query = {
    usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
    usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
    usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+export type QueryCompaniesArgs = {
+   filters?: InputMaybe<CompanyFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryCompanyArgs = {
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryGlobalArgs = {
@@ -1835,6 +1941,7 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
+               | { __typename: 'ComponentPagePress' }
                | {
                     __typename: 'ComponentPageSplitWithImage';
                     id: string;
