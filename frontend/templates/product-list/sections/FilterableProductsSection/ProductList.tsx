@@ -228,7 +228,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                               : `${appContext.ifixitOrigin}${product.url}`
                         }
                      >
-                        <Button as="div" minW="24" colorScheme="brand">
+                        <Button as="div" minW="20" colorScheme="brand">
                            View
                         </Button>
                      </LinkOverlay>
