@@ -67,6 +67,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       onOpen();
    }, [
       selectedVariant.sku,
+      selectedVariant.title,
       selectedVariant.id,
       selectedVariant.image?.url,
       addToCart,
