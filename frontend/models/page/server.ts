@@ -5,6 +5,7 @@ import {
 import { createSectionId } from '@helpers/strapi-helpers';
 import { assertNever } from '@ifixit/helpers';
 import { CategoryFieldsFragment, strapi } from '@lib/strapi-sdk';
+import { callToActionFromStrapi } from '@models/shared/components/call-to-action';
 import { imageFromStrapi } from '@models/shared/components/image';
 import { imagePositionFromStrapi } from '@models/shared/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
@@ -41,7 +42,7 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                   id: createSectionId(section, index),
                   title: section.title ?? null,
                   description: section.description ?? null,
-                  callToAction: section.callToAction ?? null,
+                  callToAction: callToActionFromStrapi(section.callToAction),
                   image: imageFromStrapi(section.image),
                };
             }

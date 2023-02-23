@@ -1995,6 +1995,11 @@ export type FindPageQuery = {
                           } | null;
                        } | null;
                     } | null> | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
                  }
                | {
                     __typename: 'ComponentPageSplitWithImage';
@@ -3243,14 +3248,13 @@ export type PressQuotesSectionFieldsFragment = {
          } | null;
       } | null;
    } | null> | null;
+   callToAction?: {
+      __typename?: 'ComponentPageCallToAction';
+      title: string;
+      url: string;
+   } | null;
 };
 
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
-}
-    `;
 export const ImageFieldsFragmentDoc = `
     fragment ImageFields on UploadFileEntityResponse {
   data {
@@ -3397,6 +3401,12 @@ export const PressQuoteFieldsFragmentDoc = `
   text
 }
     `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
 export const PressQuotesSectionFieldsFragmentDoc = `
     fragment PressQuotesSectionFields on ComponentPagePress {
   id
@@ -3404,6 +3414,9 @@ export const PressQuotesSectionFieldsFragmentDoc = `
   description
   quotes {
     ...PressQuoteFields
+  }
+  callToAction {
+    ...CallToActionFields
   }
 }
     `;

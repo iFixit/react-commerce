@@ -9,6 +9,7 @@ import {
 } from './hooks/usePageTemplateProps';
 import { BrowseSection } from './sections/BrowseSection';
 import { HeroSection } from './sections/HeroSection';
+import { PressQuotesSection } from './sections/PressQuotesSection';
 
 const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
    const { page } = usePageTemplateProps();
@@ -34,7 +35,7 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   );
                }
                case 'PressQuotes': {
-                  return <div key={section.id}>press quotes</div>;
+                  return <PressQuotesSection key={section.id} data={section} />;
                }
                default:
                   return assertNever(section);

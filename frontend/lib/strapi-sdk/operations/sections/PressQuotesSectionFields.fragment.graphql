@@ -5,4 +5,7 @@ fragment PressQuotesSectionFields on ComponentPagePress {
    quotes {
       ...PressQuoteFields
    }
+   callToAction {
+      ...CallToActionFields
+   }
 }
