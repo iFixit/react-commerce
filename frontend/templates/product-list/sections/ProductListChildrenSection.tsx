@@ -138,11 +138,7 @@ const computeChildVisibility = (
       base: totalCount <= 5 ? 'block' : position < 5 ? 'block' : 'none',
       sm: totalCount <= 8 ? 'block' : position < 7 ? 'block' : 'none',
       md: totalCount <= 9 ? 'block' : position < 8 ? 'block' : 'none',
-      lg: defaultShowAllChildrenOnLgSizes
-         ? 'block'
-         : totalCount <= 8
-         ? 'block'
-         : position < 7
+      lg: defaultShowAllChildrenOnLgSizes || totalCount <= 8 || position < 7
          ? 'block'
          : 'none',
       xl: defaultShowAllChildrenOnLgSizes
