@@ -1,16 +1,18 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Product option test', () => {
-   test('Different styles', async ({ page, productPage, cartDrawer }) => {
+   test('Different styles', async ({ productPage, cartDrawer }) => {
       await productPage.gotoProduct('repair-business-toolkit');
-      const productInfoSection = page.getByTestId('product-info-section');
+      const productInfoSection = productPage.page.getByTestId(
+         'product-info-section'
+      );
 
       await expect(productInfoSection.getByText('Style')).toBeVisible();
 
       // Get the price, sku, and name for the first product option
       const firstOptionPrice = await productPage.getCurrentPrice();
       const firstOptionSku = await productPage.getSku();
-      const firstOptionName = await page
+      const firstOptionName = await productPage.page
          .getByTestId('product-variants-selector')
          .locator('option')
          .nth(0)
@@ -21,7 +23,7 @@ test.describe('Product option test', () => {
       await cartDrawer.close();
 
       // Switch to the second product option
-      await page
+      await productPage.page
          .getByTestId('product-variants-selector')
          .selectOption({ index: 1 });
       expect(await productPage.getSku()).not.toContain(firstOptionSku);
@@ -29,7 +31,7 @@ test.describe('Product option test', () => {
       // Get the price, sku, and name for the second product option
       const secondOptionPrice = await productPage.getCurrentPrice();
       const secondOptionSku = await productPage.getSku();
-      const secondOptionName = await page
+      const secondOptionName = await productPage.page
          .getByTestId('product-variants-selector')
          .locator('option')
          .nth(1)
