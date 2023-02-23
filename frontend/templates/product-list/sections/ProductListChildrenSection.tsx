@@ -17,9 +17,7 @@ export function ProductListChildrenSection({
    const { children: productListChildren, defaultShowAllChildrenOnLgSizes } =
       productList;
 
-   const [showAll, setShowAll] = React.useState(
-      defaultShowAllChildrenOnLgSizes ?? false
-   );
+   const [showAll, setShowAll] = React.useState(false);
 
    const { items } = useCurrentRefinements();
    const { hits } = useHits();
@@ -54,7 +52,8 @@ export function ProductListChildrenSection({
                      display={computeChildVisibility(
                         index,
                         childrenCount,
-                        showAll
+                        showAll,
+                        defaultShowAllChildrenOnLgSizes
                      )}
                   >
                      <NextLink
@@ -96,7 +95,10 @@ export function ProductListChildrenSection({
                   borderStyle="solid"
                   p="2"
                   color="gray.500"
-                  display={computeButtonVisibility(childrenCount)}
+                  display={computeButtonVisibility(
+                     childrenCount,
+                     defaultShowAllChildrenOnLgSizes
+                  )}
                   justifyContent={{ base: 'center', sm: 'flex-start' }}
                   h="full"
                   onClick={() => setShowAll(true)}
@@ -126,7 +128,8 @@ export function ProductListChildrenSection({
 const computeChildVisibility = (
    position: number,
    totalCount: number,
-   isShowingMore: boolean
+   isShowingMore: boolean,
+   defaultShowAllChildrenOnLgSizes: boolean | null = false
 ) => {
    if (isShowingMore) {
       return 'block';
@@ -135,17 +138,26 @@ const computeChildVisibility = (
       base: totalCount <= 5 ? 'block' : position < 5 ? 'block' : 'none',
       sm: totalCount <= 8 ? 'block' : position < 7 ? 'block' : 'none',
       md: totalCount <= 9 ? 'block' : position < 8 ? 'block' : 'none',
-      lg: totalCount <= 8 ? 'block' : position < 7 ? 'block' : 'none',
-      xl: totalCount <= 10 ? 'block' : position < 9 ? 'block' : 'none',
+      lg:
+         defaultShowAllChildrenOnLgSizes || totalCount <= 8 || position < 7
+            ? 'block'
+            : 'none',
+      xl:
+         defaultShowAllChildrenOnLgSizes || totalCount <= 10 || position < 9
+            ? 'block'
+            : 'none',
    };
 };
 
-const computeButtonVisibility = (totalCount: number) => {
+const computeButtonVisibility = (
+   totalCount: number,
+   defaultShowAllChildrenOnLgSizes: boolean | null = false
+) => {
    return {
       base: totalCount > 5 ? 'flex' : 'none',
       sm: totalCount > 8 ? 'flex' : 'none',
       md: totalCount > 9 ? 'flex' : 'none',
-      lg: totalCount > 8 ? 'flex' : 'none',
-      xl: totalCount > 10 ? 'flex' : 'none',
+      lg: totalCount > 8 && !defaultShowAllChildrenOnLgSizes ? 'flex' : 'none',
+      xl: totalCount > 10 && !defaultShowAllChildrenOnLgSizes ? 'flex' : 'none',
    };
 };
