@@ -45,6 +45,15 @@
          "type": "string",
          "required": true
       },
+      "h1": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "string",
+         "required": false
+      },
       "description": {
          "pluginOptions": {
             "i18n": {
