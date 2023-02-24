@@ -1,0 +1,9 @@
+fragment CompanyFields on CompanyEntity {
+   id
+   attributes {
+      name
+      logo {
+         ...ImageFields
+      }
+   }
+}

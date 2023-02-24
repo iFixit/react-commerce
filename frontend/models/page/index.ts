@@ -3,6 +3,7 @@ import { SplitWithImageSectionSchema } from '@models/shared/sections/split-with-
 import { z } from 'zod';
 import { BrowseSectionSchema } from './sections/browse-section';
 import { HeroSectionSchema } from './sections/hero-section';
+import { PressQuotesSectionSchema } from './sections/press-quotes-section';
 
 export type PageSection = z.infer<typeof PageSectionSchema>;
 
@@ -11,6 +12,7 @@ export const PageSectionSchema = z.union([
    BrowseSectionSchema,
    IFixitStatsSectionSchema,
    SplitWithImageSectionSchema,
+   PressQuotesSectionSchema,
 ]);
 
 export type Page = z.infer<typeof PageSchema>;

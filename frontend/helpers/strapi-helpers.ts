@@ -27,3 +27,20 @@ export function getImageFromStrapiImage(
 
    return result;
 }
+
+export function createSectionId<T extends { __typename: string }>(
+   section: T,
+   index: number
+): string;
+export function createSectionId<T extends { __typename?: string | null }>(
+   section: T | null | undefined,
+   index: number
+): string | null;
+export function createSectionId<T extends { __typename?: string | null }>(
+   section: T | null | undefined,
+   index: number
+): string | null {
+   if (section == null) return null;
+
+   return `${section.__typename}-${index}`;
+}
