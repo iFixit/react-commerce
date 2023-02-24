@@ -55,6 +55,7 @@ export function stylizeDeviceTitle(deviceTitle: string): string {
 type ProductListTitleAttributes = {
    type: ProductListType;
    title: string;
+   h1?: string | null;
 };
 
 export function getProductListTitle(
@@ -64,7 +65,7 @@ export function getProductListTitle(
    if (productList.type === ProductListType.DeviceParts && itemType) {
       return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
    }
-   return productList.title;
+   return productList.h1 ?? productList.title;
 }
 
 const facetWidgetTypeMap: Record<string, FacetWidgetType> = {
