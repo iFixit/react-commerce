@@ -5,9 +5,8 @@ import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Disabled Product Test', () => {
    test('Not for Sale text renders and noindexed', async ({
-      page,
+      productPage,
       serverRequestInterceptor,
-      port,
    }) => {
       const disabledProduct = cloneDeep(mockedProductQuery);
       if (disabledProduct.product) {
@@ -29,13 +28,17 @@ test.describe('Disabled Product Test', () => {
          })
       );
 
-      await page.goto(
-         `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-disabled`
+      await productPage.gotoProduct(
+         'iphone-6s-plus-replacement-battery-disabled'
       );
 
-      await expect(page.getByTestId('not-for-sale-alert')).toBeVisible();
+      await expect(
+         productPage.page.getByTestId('not-for-sale-alert')
+      ).toBeVisible();
 
-      const productInfoSection = page.getByTestId('product-info-section');
+      const productInfoSection = productPage.page.getByTestId(
+         'product-info-section'
+      );
       await expect(productInfoSection.getByText('Description')).toBeVisible();
       await expect(
          productInfoSection.getByRole('link', { name: 'One year warranty' })
@@ -62,7 +65,7 @@ test.describe('Disabled Product Test', () => {
       ).not.toBeVisible();
 
       // Assert that we noindex disabled product pages
-      const metaRobots = page.locator('meta[name="robots"]');
+      const metaRobots = productPage.page.locator('meta[name="robots"]');
       await expect(metaRobots).toHaveAttribute('content', 'noindex,nofollow');
    });
 });

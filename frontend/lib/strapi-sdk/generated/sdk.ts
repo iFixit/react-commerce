@@ -53,6 +53,49 @@ export type BooleanFilterInput = {
    startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type Company = {
+   __typename?: 'Company';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   logo?: Maybe<UploadFileEntityResponse>;
+   name: Scalars['String'];
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type CompanyEntity = {
+   __typename?: 'CompanyEntity';
+   attributes?: Maybe<Company>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type CompanyEntityResponse = {
+   __typename?: 'CompanyEntityResponse';
+   data?: Maybe<CompanyEntity>;
+};
+
+export type CompanyEntityResponseCollection = {
+   __typename?: 'CompanyEntityResponseCollection';
+   data: Array<CompanyEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type CompanyFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<CompanyFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<CompanyFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<CompanyFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type CompanyInput = {
+   logo?: InputMaybe<Scalars['ID']>;
+   name?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type ComponentGlobalNewsletterForm = {
    __typename?: 'ComponentGlobalNewsletterForm';
    callToActionButtonTitle: Scalars['String'];
@@ -141,6 +184,46 @@ export type ComponentPageHero = {
    description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPagePress = {
+   __typename?: 'ComponentPagePress';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   quotes?: Maybe<Array<Maybe<ComponentPagePressQuote>>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentPagePressQuotesArgs = {
+   filters?: InputMaybe<ComponentPagePressQuoteFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ComponentPagePressQuote = {
+   __typename?: 'ComponentPagePressQuote';
+   company?: Maybe<CompanyEntityResponse>;
+   id: Scalars['ID'];
+   text: Scalars['String'];
+};
+
+export type ComponentPagePressQuoteFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentPagePressQuoteFiltersInput>>>;
+   company?: InputMaybe<CompanyFiltersInput>;
+   not?: InputMaybe<ComponentPagePressQuoteFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentPagePressQuoteFiltersInput>>>;
+   text?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentPageSplitWithImage = {
+   __typename?: 'ComponentPageSplitWithImage';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   imagePosition?: Maybe<Enum_Componentpagesplitwithimage_Imageposition>;
    title?: Maybe<Scalars['String']>;
 };
 
@@ -340,6 +423,11 @@ export type DateTimeFilterInput = {
    startsWith?: InputMaybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Componentpagesplitwithimage_Imageposition {
+   Left = 'Left',
+   Right = 'Right',
+}
+
 export enum Enum_Productlist_Type {
    AllParts = 'all_parts',
    AllTools = 'all_tools',
@@ -393,6 +481,7 @@ export type FloatFilterInput = {
 };
 
 export type GenericMorph =
+   | Company
    | ComponentGlobalNewsletterForm
    | ComponentMenuLink
    | ComponentMenuLinkWithImage
@@ -402,6 +491,9 @@ export type GenericMorph =
    | ComponentPageCallToAction
    | ComponentPageCategory
    | ComponentPageHero
+   | ComponentPagePress
+   | ComponentPagePressQuote
+   | ComponentPageSplitWithImage
    | ComponentPageStatItem
    | ComponentPageStats
    | ComponentProductListBanner
@@ -637,6 +729,7 @@ export type Mutation = {
    __typename?: 'Mutation';
    /** Change user password. Confirm with the current password. */
    changePassword?: Maybe<UsersPermissionsLoginPayload>;
+   createCompany?: Maybe<CompanyEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
@@ -651,6 +744,7 @@ export type Mutation = {
    createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
    /** Create a new user */
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+   deleteCompany?: Maybe<CompanyEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
@@ -673,6 +767,7 @@ export type Mutation = {
    removeFile?: Maybe<UploadFileEntityResponse>;
    /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
    resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+   updateCompany?: Maybe<CompanyEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
@@ -692,6 +787,10 @@ export type MutationChangePasswordArgs = {
    currentPassword: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationCreateCompanyArgs = {
+   data: CompanyInput;
 };
 
 export type MutationCreateGlobalLocalizationArgs = {
@@ -751,6 +850,10 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
    data: UsersPermissionsUserInput;
+};
+
+export type MutationDeleteCompanyArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteGlobalArgs = {
@@ -823,6 +926,11 @@ export type MutationResetPasswordArgs = {
    code: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationUpdateCompanyArgs = {
+   data: CompanyInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateFileInfoArgs = {
@@ -951,6 +1059,8 @@ export type PageRelationResponseCollection = {
 export type PageSectionsDynamicZone =
    | ComponentPageBrowse
    | ComponentPageHero
+   | ComponentPagePress
+   | ComponentPageSplitWithImage
    | ComponentPageStats
    | Error;
 
@@ -1106,6 +1216,8 @@ export enum PublicationState {
 
 export type Query = {
    __typename?: 'Query';
+   companies?: Maybe<CompanyEntityResponseCollection>;
+   company?: Maybe<CompanyEntityResponse>;
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
@@ -1126,6 +1238,17 @@ export type Query = {
    usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
    usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
    usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+export type QueryCompaniesArgs = {
+   filters?: InputMaybe<CompanyFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryCompanyArgs = {
+   id?: InputMaybe<Scalars['ID']>;
 };
 
 export type QueryGlobalArgs = {
@@ -1693,6 +1816,27 @@ export type UsersPermissionsUserRelationResponseCollection = {
    data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CompanyFieldsFragment = {
+   __typename?: 'CompanyEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'Company';
+      name: string;
+      logo?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: {
@@ -1819,6 +1963,69 @@ export type FindPageQuery = {
                     } | null;
                  }
                | {
+                    __typename: 'ComponentPagePress';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentPagePressQuote';
+                       id: string;
+                       text: string;
+                       company?: {
+                          __typename?: 'CompanyEntityResponse';
+                          data?: {
+                             __typename?: 'CompanyEntity';
+                             id?: string | null;
+                             attributes?: {
+                                __typename?: 'Company';
+                                name: string;
+                                logo?: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
                     __typename: 'ComponentPageStats';
                     id: string;
                     stats: Array<{
@@ -1840,6 +2047,66 @@ export type CallToActionFieldsFragment = {
    __typename?: 'ComponentPageCallToAction';
    title: string;
    url: string;
+};
+
+export type CategoryFieldsFragment = {
+   __typename?: 'ComponentPageCategory';
+   id: string;
+   productList?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            handle: string;
+            deviceTitle?: string | null;
+            title: string;
+            metaDescription?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type PressQuoteFieldsFragment = {
+   __typename?: 'ComponentPagePressQuote';
+   id: string;
+   text: string;
+   company?: {
+      __typename?: 'CompanyEntityResponse';
+      data?: {
+         __typename?: 'CompanyEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Company';
+            name: string;
+            logo?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
 };
 
 export type FindStoreQueryVariables = Exact<{
@@ -2948,6 +3215,46 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export type PressQuotesSectionFieldsFragment = {
+   __typename?: 'ComponentPagePress';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   quotes?: Array<{
+      __typename?: 'ComponentPagePressQuote';
+      id: string;
+      text: string;
+      company?: {
+         __typename?: 'CompanyEntityResponse';
+         data?: {
+            __typename?: 'CompanyEntity';
+            id?: string | null;
+            attributes?: {
+               __typename?: 'Company';
+               name: string;
+               logo?: {
+                  __typename?: 'UploadFileEntityResponse';
+                  data?: {
+                     __typename?: 'UploadFileEntity';
+                     attributes?: {
+                        __typename?: 'UploadFile';
+                        alternativeText?: string | null;
+                        url: string;
+                        formats?: any | null;
+                     } | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null> | null;
+   callToAction?: {
+      __typename?: 'ComponentPageCallToAction';
+      title: string;
+      url: string;
+   } | null;
+};
+
 export const ImageFieldsFragmentDoc = `
     fragment ImageFields on UploadFileEntityResponse {
   data {
@@ -2973,10 +3280,14 @@ export const ProductListFieldsFragmentDoc = `
   }
 }
     `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
+export const CategoryFieldsFragmentDoc = `
+    fragment CategoryFields on ComponentPageCategory {
+  id
+  productList {
+    data {
+      ...ProductListFields
+    }
+  }
 }
     `;
 export const MenuPropsFragmentDoc = `
@@ -3068,6 +3379,47 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     `;
+export const CompanyFieldsFragmentDoc = `
+    fragment CompanyFields on CompanyEntity {
+  id
+  attributes {
+    name
+    logo {
+      ...ImageFields
+    }
+  }
+}
+    `;
+export const PressQuoteFieldsFragmentDoc = `
+    fragment PressQuoteFields on ComponentPagePressQuote {
+  id
+  company {
+    data {
+      ...CompanyFields
+    }
+  }
+  text
+}
+    `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const PressQuotesSectionFieldsFragmentDoc = `
+    fragment PressQuotesSectionFields on ComponentPagePress {
+  id
+  title
+  description
+  quotes {
+    ...PressQuoteFields
+  }
+  callToAction {
+    ...CallToActionFields
+  }
+}
+    `;
 export const FindPageDocument = `
     query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
   pages(
@@ -3101,12 +3453,7 @@ export const FindPageDocument = `
               ...ImageFields
             }
             categories(pagination: {limit: 100}) {
-              id
-              productList {
-                data {
-                  ...ProductListFields
-                }
-              }
+              ...CategoryFields
             }
           }
           ... on ComponentPageStats {
@@ -3117,6 +3464,21 @@ export const FindPageDocument = `
               value
             }
           }
+          ... on ComponentPageSplitWithImage {
+            id
+            title
+            description
+            callToAction {
+              ...CallToActionFields
+            }
+            imagePosition
+            image {
+              ...ImageFields
+            }
+          }
+          ... on ComponentPagePress {
+            ...PressQuotesSectionFields
+          }
         }
       }
     }
@@ -3124,7 +3486,11 @@ export const FindPageDocument = `
 }
     ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
-${ProductListFieldsFragmentDoc}`;
+${CategoryFieldsFragmentDoc}
+${ProductListFieldsFragmentDoc}
+${PressQuotesSectionFieldsFragmentDoc}
+${PressQuoteFieldsFragmentDoc}
+${CompanyFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

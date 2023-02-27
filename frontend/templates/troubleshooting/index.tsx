@@ -40,6 +40,7 @@ const Wiki: NextPageWithLayout<{
          >
             <Head>
                <meta name="robots" content="noindex" />
+               <link rel="canonical" href={wikiData.canonicalUrl} />
             </Head>
             <Heading as="h1">{wikiData.title}</Heading>
             {wikiData.introduction.map((intro) => (

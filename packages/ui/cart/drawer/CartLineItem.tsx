@@ -90,7 +90,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
             <HStack spacing="3" align="flex-start">
                <CartLineItemImage src={lineItem.imageSrc} alt={lineItem.name} />
                <Box>
-                  <VStack align="flex-start" pt="1">
+                  <VStack align="flex-start">
                      <Flex direction="column">
                         <Link
                            href={`${appContext.ifixitOrigin}/Store/Product/${lineItem.itemcode}`}
@@ -103,6 +103,9 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                         </Link>
                         <Text color="gray.500" fontSize="sm">
                            {lineItem.itemcode}
+                        </Text>
+                        <Text color="gray.500" fontSize="sm">
+                           {lineItem.variantTitle}
                         </Text>
                      </Flex>
                      <HStack

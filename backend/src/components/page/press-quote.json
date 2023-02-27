@@ -1,0 +1,18 @@
+{
+   "collectionName": "components_page_press_quotes",
+   "info": {
+      "displayName": "Press Quote"
+   },
+   "options": {},
+   "attributes": {
+      "company": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::company.company"
+      },
+      "text": {
+         "type": "richtext",
+         "required": true
+      }
+   }
+}
