@@ -64,7 +64,7 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
          eventCategory,
          eventAction,
       });
-      console.log("custom color: ", customColor);
+      console.log('custom color: ', customColor);
       return (
          <HStack
             ref={ref}
