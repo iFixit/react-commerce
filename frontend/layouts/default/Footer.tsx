@@ -66,6 +66,7 @@ export function CartFooter({
                      <Menu isLazy lazyBehavior="keepMounted">
                         <StoreMenuButton
                            icon={<Flag code={FlagCountryCode.US} />}
+                           color="white"
                         >
                            Region
                         </StoreMenuButton>

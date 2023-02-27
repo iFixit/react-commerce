@@ -34,6 +34,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
                aria-label="TikTok"
                href={accounts.tiktok}
                icon={TiktokLogo}
+               customColor={'gray.400'}
             />
          )}
          {accounts.facebook && (
@@ -41,6 +42,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
                aria-label="Facebook"
                href={accounts.facebook}
                icon={FacebookLogo}
+               customColor={'gray.400'}
             />
          )}
          {accounts.twitter && (
@@ -48,6 +50,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
                aria-label="Twitter"
                href={accounts.twitter}
                icon={TwitterLogo}
+               customColor={'gray.400'}
             />
          )}
          {accounts.instagram && (
@@ -55,6 +58,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
                aria-label="Instagram"
                href={accounts.instagram}
                icon={InstagramLogo}
+               customColor={'gray.400'}
             />
          )}
          {accounts.youtube && (
@@ -62,6 +66,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
                aria-label="YouTube"
                href={accounts.youtube}
                icon={YoutubeLogo}
+               customColor={'gray.400'}
             />
          )}
          {accounts.repairOrg && (
@@ -69,6 +74,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
                aria-label="The Repair Association"
                href={accounts.repairOrg}
                icon={RepairOrgLogo}
+               customColor={'gray.400'}
             />
          )}
       </HStack>

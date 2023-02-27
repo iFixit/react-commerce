@@ -40,6 +40,7 @@ type FooterLinkProps = StackProps & {
    icon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
    eventCategory?: string;
    eventAction?: string;
+   customColor?: string;
 };
 
 export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
@@ -52,6 +53,7 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
          onClick,
          eventCategory,
          eventAction,
+         customColor = 'white',
          ...otherProps
       },
       ref
@@ -62,23 +64,24 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
          eventCategory,
          eventAction,
       });
+      console.log("custom color: ", customColor);
       return (
          <HStack
             ref={ref}
             as="a"
             align="center"
-            color="gray.300"
+            color={customColor}
             transition="color 300ms"
-            _visited={{ color: 'gray.300' }}
+            _visited={{ color: customColor }}
             _hover={{ color: 'white', textDecoration: 'none' }}
             href={href}
             onClick={trackedOnClick}
             {...otherProps}
          >
-            <Text fontSize={fontSize} lineHeight="1em" color="gray.300">
+            <Text fontSize={fontSize} lineHeight="1em">
                {children}
             </Text>
-            {icon && <Icon as={icon} boxSize="6" filter="opacity(0.5)" />}
+            {icon && <Icon as={icon} boxSize="6" />}
          </HStack>
       );
    }
