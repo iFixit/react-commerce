@@ -213,7 +213,7 @@ export function NewsletterComponent({
          mt={{
             base: 0,
             sm: 10,
-            lg: 3,
+            lg: "-2px",
          }}
          gridColumnEnd={{
             sm: 'span 3',
