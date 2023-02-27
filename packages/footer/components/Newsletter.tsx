@@ -45,7 +45,7 @@ const NewsletterInput = ({
             variant="filled"
             bg="white"
             color="gray.900"
-            fontSize="sm"
+            fontSize="14px"
             _focus={{
                bg: 'white',
                boxShadow: 'outline',
@@ -66,10 +66,10 @@ const NewsletterHeader = ({
 }) => {
    return (
       <Box textAlign="left">
-         <Text fontWeight="bold" fontSize="lg" color="white" my={2}>
+         <Text fontWeight="bold" fontSize="16px" color="white" my={2}>
             {title}
          </Text>
-         <Text color="gray.300" fontSize="md" fontWeight="normal" mt={3}>
+         <Text color="gray.300" fontSize="14px" fontWeight="normal" mt={3}>
             {subtitle}
          </Text>
       </Box>
@@ -136,6 +136,7 @@ const NewsletterForm = ({
             color="white"
             border="none"
             fontWeight="bold"
+            fontSize="14px"
             _hover={{ bg: 'blue.ifixit', boxShadow: '0 0 5px gray' }}
          >
             {buttonText}
@@ -179,6 +180,7 @@ const NewsletterLink = ({ isSubscribed }: { isSubscribed: boolean }) => {
          color="gray.300"
          marginTop={2}
          textDecoration="underline"
+         fontSize="14px"
          _hover={{ color: 'white' }}
          _visited={{ color: 'gray.300' }}
       >
