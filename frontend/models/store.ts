@@ -48,8 +48,6 @@ async function findStoreByCodeFromStrapi(code: string) {
          menu: createMenu(store.header.menu),
       },
       footer: {
-         menu1: createMenu(store.footer.menu1),
-         menu2: createMenu(store.footer.menu2),
          partners: createMenu(store.footer.partners),
          bottomMenu: createMenu(store.footer.bottomMenu),
       },

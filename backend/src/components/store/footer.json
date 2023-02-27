@@ -6,16 +6,6 @@
    },
    "options": {},
    "attributes": {
-      "menu1": {
-         "type": "relation",
-         "relation": "oneToOne",
-         "target": "api::menu.menu"
-      },
-      "menu2": {
-         "type": "relation",
-         "relation": "oneToOne",
-         "target": "api::menu.menu"
-      },
       "bottomMenu": {
          "type": "relation",
          "relation": "oneToOne",
