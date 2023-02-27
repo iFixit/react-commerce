@@ -1,5 +1,10 @@
-import { CallToActionSchema } from '@models/shared/components/call-to-action';
-import { ImageSchema } from '@models/shared/components/image';
+import { createSectionId } from '@helpers/strapi-helpers';
+import type { HeroSectionFieldsFragment } from '@lib/strapi-sdk';
+import {
+   callToActionFromStrapi,
+   CallToActionSchema,
+} from '@models/shared/components/call-to-action';
+import { imageFromStrapi, ImageSchema } from '@models/shared/components/image';
 import { z } from 'zod';
 
 export type HeroSection = z.infer<typeof HeroSectionSchema>;
@@ -12,3 +17,23 @@ export const HeroSectionSchema = z.object({
    image: ImageSchema.nullable(),
    callToAction: CallToActionSchema.nullable(),
 });
+
+export function heroSectionFromStrapi(
+   fragment: HeroSectionFieldsFragment | null | undefined,
+   index: number
+): HeroSection | null {
+   const id = createSectionId(fragment, index);
+   const title = fragment?.title ?? null;
+   const description = fragment?.description ?? null;
+
+   if (id == null) return null;
+
+   return {
+      type: 'Hero',
+      id,
+      title,
+      description,
+      image: imageFromStrapi(fragment?.image),
+      callToAction: callToActionFromStrapi(fragment?.callToAction),
+   };
+}

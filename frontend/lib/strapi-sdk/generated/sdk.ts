@@ -2049,66 +2049,6 @@ export type CallToActionFieldsFragment = {
    url: string;
 };
 
-export type CategoryFieldsFragment = {
-   __typename?: 'ComponentPageCategory';
-   id: string;
-   productList?: {
-      __typename?: 'ProductListEntityResponse';
-      data?: {
-         __typename?: 'ProductListEntity';
-         attributes?: {
-            __typename?: 'ProductList';
-            type?: Enum_Productlist_Type | null;
-            handle: string;
-            deviceTitle?: string | null;
-            title: string;
-            metaDescription?: string | null;
-            image?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
-         } | null;
-      } | null;
-   } | null;
-};
-
-export type PressQuoteFieldsFragment = {
-   __typename?: 'ComponentPagePressQuote';
-   id: string;
-   text: string;
-   company?: {
-      __typename?: 'CompanyEntityResponse';
-      data?: {
-         __typename?: 'CompanyEntity';
-         id?: string | null;
-         attributes?: {
-            __typename?: 'Company';
-            name: string;
-            logo?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
-         } | null;
-      } | null;
-   } | null;
-};
-
 export type FindStoreQueryVariables = Exact<{
    filters?: InputMaybe<StoreFiltersInput>;
 }>;
@@ -3215,6 +3155,110 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export type BrowseSectionFieldsFragment = {
+   __typename?: 'ComponentPageBrowse';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+   categories?: Array<{
+      __typename?: 'ComponentPageCategory';
+      id: string;
+      productList?: {
+         __typename?: 'ProductListEntityResponse';
+         data?: {
+            __typename?: 'ProductListEntity';
+            attributes?: {
+               __typename?: 'ProductList';
+               type?: Enum_Productlist_Type | null;
+               handle: string;
+               deviceTitle?: string | null;
+               title: string;
+               metaDescription?: string | null;
+               image?: {
+                  __typename?: 'UploadFileEntityResponse';
+                  data?: {
+                     __typename?: 'UploadFileEntity';
+                     attributes?: {
+                        __typename?: 'UploadFile';
+                        alternativeText?: string | null;
+                        url: string;
+                        formats?: any | null;
+                     } | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null> | null;
+};
+
+export type CategoryFieldsFragment = {
+   __typename?: 'ComponentPageCategory';
+   id: string;
+   productList?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            handle: string;
+            deviceTitle?: string | null;
+            title: string;
+            metaDescription?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type HeroSectionFieldsFragment = {
+   __typename?: 'ComponentPageHero';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   callToAction?: {
+      __typename?: 'ComponentPageCallToAction';
+      title: string;
+      url: string;
+   } | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type PressQuotesSectionFieldsFragment = {
    __typename?: 'ComponentPagePress';
    id: string;
@@ -3255,41 +3299,71 @@ export type PressQuotesSectionFieldsFragment = {
    } | null;
 };
 
-export const ImageFieldsFragmentDoc = `
-    fragment ImageFields on UploadFileEntityResponse {
-  data {
-    attributes {
-      alternativeText
-      url
-      formats
-    }
-  }
-}
-    `;
-export const ProductListFieldsFragmentDoc = `
-    fragment ProductListFields on ProductListEntity {
-  attributes {
-    type
-    handle
-    deviceTitle
-    title
-    metaDescription
-    image {
-      ...ImageFields
-    }
-  }
-}
-    `;
-export const CategoryFieldsFragmentDoc = `
-    fragment CategoryFields on ComponentPageCategory {
-  id
-  productList {
-    data {
-      ...ProductListFields
-    }
-  }
-}
-    `;
+export type PressQuoteFieldsFragment = {
+   __typename?: 'ComponentPagePressQuote';
+   id: string;
+   text: string;
+   company?: {
+      __typename?: 'CompanyEntityResponse';
+      data?: {
+         __typename?: 'CompanyEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Company';
+            name: string;
+            logo?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type SplitWithImageSectionFieldsFragment = {
+   __typename?: 'ComponentPageSplitWithImage';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+   callToAction?: {
+      __typename?: 'ComponentPageCallToAction';
+      title: string;
+      url: string;
+   } | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type StatsSectionFieldsFragment = {
+   __typename?: 'ComponentPageStats';
+   id: string;
+   stats: Array<{
+      __typename?: 'ComponentPageStatItem';
+      id: string;
+      label: string;
+      value: string;
+   } | null>;
+};
+
 export const MenuPropsFragmentDoc = `
     fragment MenuProps on Menu {
   title
@@ -3379,6 +3453,73 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     `;
+export const ImageFieldsFragmentDoc = `
+    fragment ImageFields on UploadFileEntityResponse {
+  data {
+    attributes {
+      alternativeText
+      url
+      formats
+    }
+  }
+}
+    `;
+export const ProductListFieldsFragmentDoc = `
+    fragment ProductListFields on ProductListEntity {
+  attributes {
+    type
+    handle
+    deviceTitle
+    title
+    metaDescription
+    image {
+      ...ImageFields
+    }
+  }
+}
+    `;
+export const CategoryFieldsFragmentDoc = `
+    fragment CategoryFields on ComponentPageCategory {
+  id
+  productList {
+    data {
+      ...ProductListFields
+    }
+  }
+}
+    `;
+export const BrowseSectionFieldsFragmentDoc = `
+    fragment BrowseSectionFields on ComponentPageBrowse {
+  id
+  title
+  description
+  image {
+    ...ImageFields
+  }
+  categories(pagination: {limit: 100}) {
+    ...CategoryFields
+  }
+}
+    `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const HeroSectionFieldsFragmentDoc = `
+    fragment HeroSectionFields on ComponentPageHero {
+  id
+  title
+  description
+  callToAction {
+    ...CallToActionFields
+  }
+  image {
+    ...ImageFields
+  }
+}
+    `;
 export const CompanyFieldsFragmentDoc = `
     fragment CompanyFields on CompanyEntity {
   id
@@ -3401,12 +3542,6 @@ export const PressQuoteFieldsFragmentDoc = `
   text
 }
     `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
-}
-    `;
 export const PressQuotesSectionFieldsFragmentDoc = `
     fragment PressQuotesSectionFields on ComponentPagePress {
   id
@@ -3417,6 +3552,30 @@ export const PressQuotesSectionFieldsFragmentDoc = `
   }
   callToAction {
     ...CallToActionFields
+  }
+}
+    `;
+export const SplitWithImageSectionFieldsFragmentDoc = `
+    fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
+  id
+  title
+  description
+  callToAction {
+    ...CallToActionFields
+  }
+  imagePosition
+  image {
+    ...ImageFields
+  }
+}
+    `;
+export const StatsSectionFieldsFragmentDoc = `
+    fragment StatsSectionFields on ComponentPageStats {
+  id
+  stats {
+    id
+    label
+    value
   }
 }
     `;
@@ -3434,60 +3593,24 @@ export const FindPageDocument = `
         title
         sections {
           __typename
-          ... on ComponentPageHero {
-            id
-            title
-            description
-            callToAction {
-              ...CallToActionFields
-            }
-            image {
-              ...ImageFields
-            }
-          }
-          ... on ComponentPageBrowse {
-            id
-            title
-            description
-            image {
-              ...ImageFields
-            }
-            categories(pagination: {limit: 100}) {
-              ...CategoryFields
-            }
-          }
-          ... on ComponentPageStats {
-            id
-            stats {
-              id
-              label
-              value
-            }
-          }
-          ... on ComponentPageSplitWithImage {
-            id
-            title
-            description
-            callToAction {
-              ...CallToActionFields
-            }
-            imagePosition
-            image {
-              ...ImageFields
-            }
-          }
-          ... on ComponentPagePress {
-            ...PressQuotesSectionFields
-          }
+          ...HeroSectionFields
+          ...BrowseSectionFields
+          ...StatsSectionFields
+          ...SplitWithImageSectionFields
+          ...PressQuotesSectionFields
         }
       }
     }
   }
 }
-    ${CallToActionFieldsFragmentDoc}
+    ${HeroSectionFieldsFragmentDoc}
+${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
+${BrowseSectionFieldsFragmentDoc}
 ${CategoryFieldsFragmentDoc}
 ${ProductListFieldsFragmentDoc}
+${StatsSectionFieldsFragmentDoc}
+${SplitWithImageSectionFieldsFragmentDoc}
 ${PressQuotesSectionFieldsFragmentDoc}
 ${PressQuoteFieldsFragmentDoc}
 ${CompanyFieldsFragmentDoc}`;

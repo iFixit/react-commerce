@@ -9,3 +9,13 @@ fragment PressQuotesSectionFields on ComponentPagePress {
       ...CallToActionFields
    }
 }
+
+fragment PressQuoteFields on ComponentPagePressQuote {
+   id
+   company {
+      data {
+         ...CompanyFields
+      }
+   }
+   text
+}
