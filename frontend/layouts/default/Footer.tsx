@@ -124,12 +124,14 @@ export function CartFooter({
                                        partner.image?.alternativeText ||
                                        `${partner.name} logo`
                                     }
+                                    style={{ filter: 'grayscale(100%)' }}
                                  />
                               ) : (
                                  <ResponsiveImage
                                     layout="fill"
                                     objectFit="contain"
                                     src={noImageFixie}
+                                    style={{ filter: 'grayscale(100%)' }}
                                  />
                               )}
                            </FooterPartnerLink>
