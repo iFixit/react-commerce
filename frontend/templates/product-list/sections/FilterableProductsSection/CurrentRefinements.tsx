@@ -47,7 +47,7 @@ export function CurrentRefinements() {
                            flexShrink={0}
                            maxW="full"
                         >
-                           <Box noOfLines={1}>
+                           <Box noOfLines={1} wordBreak="break-all">
                               {formattedFacetName}: {refinement.label}
                            </Box>
 
