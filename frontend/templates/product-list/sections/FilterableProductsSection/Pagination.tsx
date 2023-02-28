@@ -48,6 +48,7 @@ export function Pagination(props: PaginationProps) {
             onChange={(page) => refine(page - 1)}
             pt="10"
             pb="8"
+            size={{ base: 'sm', md: 'md' }}
             visibleNumberOfPages={visibleNumberOfPages}
          >
             {(pagination) => (

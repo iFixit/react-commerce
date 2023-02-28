@@ -14,7 +14,12 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { ResponsiveImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
+import {
+   ResponsiveImage,
+   ProductVariantPrice,
+   useUserPrice,
+   IconBadge,
+} from '@ifixit/ui';
 import { Rating } from '@components/ui';
 import { flags } from '@config/flags';
 import { useAppContext } from '@ifixit/app';
@@ -80,20 +85,18 @@ export function ProductListItem({ product }: ProductListItemProps) {
       <LinkBox as="article" aria-labelledby={productHeadingId} role="group">
          <Flex
             align="flex-start"
-            py={{
-               base: 4,
-               xl: 7,
+            p={{
+               base: 3,
+               xl: 4,
             }}
-            px="4"
          >
             <Box
                flexGrow={0}
                flexShrink={0}
                w={{
-                  base: '100px',
-                  sm: '160px',
-                  md: '140px',
-                  lg: '160px',
+                  base: 24,
+                  sm: 32,
+                  lg: 40,
                }}
             >
                {product.image_url ? (
@@ -101,14 +104,14 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      src={product.image_url}
                      alt={product.title}
                      objectFit="contain"
-                     width="180px"
-                     height="180px"
+                     width="320px"
+                     height="320px"
                   />
                ) : (
                   <ResponsiveImage
                      src={placeholderImageUrl}
                      alt={product.title}
-                     sizes="180px"
+                     sizes="320px"
                   />
                )}
             </Box>
@@ -118,131 +121,106 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   xl: 'row',
                }}
                spacing={{
-                  base: 1,
-                  xl: 2,
+                  base: 3,
+                  sm: 4,
+                  xl: 6,
                }}
                flexGrow={1}
-               ml="4"
+               ml={{ base: 3, xl: 4 }}
             >
                <Box flexShrink={1} w="full">
-                  <Heading
-                     id={productHeadingId}
-                     as="h3"
-                     fontSize="md"
-                     fontWeight="medium"
-                     mb={{
-                        base: 2,
-                        xl: 4,
-                     }}
-                     _groupHover={{ color: 'brand.500' }}
-                  >
-                     {product.title}
-                  </Heading>
-                  <Text
-                     noOfLines={3}
-                     mb={{
-                        base: 2,
-                        xl: 4,
-                     }}
-                     lineHeight="short"
-                  >
-                     {product.short_description}
-                  </Text>
-                  {(product.rating >= 4 || product.rating_count > 10) && (
-                     <HStack align="center" data-testid="reviewStars">
-                        <Rating value={product.rating} />
-                        <Text
-                           fontSize={{
-                              base: 'sm',
-                              lg: 'md',
+                  <VStack spacing={{ base: 3, sm: 4 }} align="flex-start">
+                     <Flex direction="column">
+                        <Heading
+                           id={productHeadingId}
+                           as="h3"
+                           fontSize="md"
+                           fontWeight="medium"
+                           lineHeight="shorter"
+                           mb="1.5"
+                           _groupHover={{ color: 'brand.500' }}
+                        >
+                           {product.title}
+                        </Heading>
+                        <Text noOfLines={3} lineHeight="shorter">
+                           {product.short_description}
+                        </Text>
+                     </Flex>
+                     {(product.rating >= 4 || product.rating_count > 10) && (
+                        <HStack align="center" data-testid="reviewStars">
+                           <Rating value={product.rating} />
+                           <Text fontSize="sm">{product.rating_count}</Text>
+                        </HStack>
+                     )}
+                     {showBadges && (
+                        <Flex
+                           wrap="wrap"
+                           mb="-1.5"
+                           sx={{
+                              '& > *': {
+                                 mr: 1.5,
+                                 mb: 1.5,
+                              },
                            }}
                         >
-                           {product.rating_count}
-                        </Text>
-                     </HStack>
-                  )}
-                  {showBadges && (
-                     <Flex
-                        wrap="wrap"
-                        mt="2"
-                        sx={{
-                           '& > *': {
-                              mr: 1,
-                              mt: 1,
-                           },
-                        }}
-                     >
-                        {showProBadge && (
-                           <ProductListItemBadge colorScheme="orange">
-                              iFixit Pro
-                           </ProductListItemBadge>
-                        )}
-                        {showDiscountBadge && (
-                           <ProductListItemBadge
-                              colorScheme={isProPrice ? 'orange' : 'red'}
-                           >
-                              {percentage}% Off
-                           </ProductListItemBadge>
-                        )}
-                        {showOemPartnershipBadge && (
-                           <ProductListItemBadge colorScheme="green">
-                              {product.oem_partnership}
-                           </ProductListItemBadge>
-                        )}
-                        {showLifetimeWarrantyBadge && (
-                           <ProductListItemBadge colorScheme="blue">
-                              Lifetime Guarantee
-                           </ProductListItemBadge>
-                        )}
-                     </Flex>
-                  )}
+                           {showProBadge && (
+                              <IconBadge colorScheme="orange">
+                                 iFixit Pro
+                              </IconBadge>
+                           )}
+                           {showDiscountBadge && (
+                              <IconBadge
+                                 colorScheme={isProPrice ? 'orange' : 'red'}
+                              >
+                                 {percentage}% Off
+                              </IconBadge>
+                           )}
+                           {showOemPartnershipBadge && (
+                              <IconBadge colorScheme="green">
+                                 {product.oem_partnership}
+                              </IconBadge>
+                           )}
+                           {showLifetimeWarrantyBadge && (
+                              <IconBadge colorScheme="blue">
+                                 Lifetime Guarantee
+                              </IconBadge>
+                           )}
+                        </Flex>
+                     )}
+                  </VStack>
                </Box>
                <VStack
                   flexShrink={0}
-                  align="flex-end"
+                  justifyContent="flex-end"
                   alignSelf={{
                      base: 'flex-end',
                      xl: 'flex-start',
                   }}
                >
                   {price != null && (
-                     <VStack
-                        align="flex-end"
-                        spacing="0"
-                        mt={{
-                           base: 2,
-                           sm: 0,
-                           md: 2,
-                           lg: 0,
-                        }}
-                     >
-                        <ProductVariantPrice
-                           price={price}
-                           compareAtPrice={compareAtPrice}
-                           proPricesByTier={proPricesByTier}
-                           showDiscountLabel={false}
-                           direction="column"
-                        />
-                     </VStack>
+                     <ProductVariantPrice
+                        price={price}
+                        compareAtPrice={compareAtPrice}
+                        proPricesByTier={proPricesByTier}
+                        showDiscountLabel={false}
+                        direction="column"
+                        alignSelf="flex-end"
+                     />
                   )}
                   <Stack
-                     direction={{
-                        base: 'row-reverse',
-                        sm: 'column',
-                        md: 'row-reverse',
-                        lg: 'column',
-                     }}
-                     align={{
-                        base: 'center',
-                        sm: 'flex-end',
-                        md: 'center',
-                        lg: 'flex-end',
-                     }}
-                     spacing={{
-                        base: 3,
-                        sm: 2,
-                     }}
+                     direction={{ base: 'row', xl: 'column-reverse' }}
+                     align={{ base: 'center', xl: 'flex-end' }}
+                     spacing="2"
                   >
+                     {quantityAvailable < 10 && quantityAvailable > 0 && (
+                        <Text
+                           color="gray.500"
+                           fontSize="sm"
+                           ml={{ base: -24, xl: 0 }}
+                        >
+                           Only {quantityAvailable} left in stock
+                        </Text>
+                     )}
                      <LinkOverlay
                         href={
                            flags.PRODUCT_PAGE_ENABLED
@@ -250,44 +228,14 @@ export function ProductListItem({ product }: ProductListItemProps) {
                               : `${appContext.ifixitOrigin}${product.url}`
                         }
                      >
-                        <Button
-                           as="div"
-                           minW={{
-                              base: '100px',
-                              sm: '60px',
-                              md: '100px',
-                              lg: '60px',
-                           }}
-                           colorScheme="brand"
-                        >
+                        <Button as="div" minW="20" colorScheme="brand">
                            View
                         </Button>
                      </LinkOverlay>
-                     {quantityAvailable < 10 && quantityAvailable > 0 && (
-                        <Text color="gray.500" fontSize="14px">
-                           Only {quantityAvailable} left in stock
-                        </Text>
-                     )}
                   </Stack>
                </VStack>
             </Stack>
          </Flex>
       </LinkBox>
-   );
-}
-
-function ProductListItemBadge(props: BadgeProps) {
-   return (
-      <Badge
-         fontSize={{
-            base: 'xs',
-            sm: 'sm',
-         }}
-         maxW="full"
-         overflow="hidden"
-         noOfLines={1}
-         display="inline-block"
-         {...props}
-      />
    );
 }
