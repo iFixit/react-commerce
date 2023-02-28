@@ -1,0 +1,14 @@
+fragment FeaturedProductsSectionFields on ComponentSectionFeaturedProducts {
+   id
+   title
+   description
+   productList {
+      data {
+         id
+         attributes {
+            filters
+            deviceTitle
+         }
+      }
+   }
+}

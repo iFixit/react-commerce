@@ -1,3 +1,7 @@
+import { toNumber } from '@helpers/zod-helpers';
+import { ImageSchema } from '@models/shared/components/image';
+import { MoneySchema } from '@models/shared/components/money';
+import { ProPriceTiersSchema } from '@models/shared/components/pro-price-tiers';
 import { z } from 'zod';
 
 const BreadcrumbSchema = z.object({
@@ -6,14 +10,6 @@ const BreadcrumbSchema = z.object({
 });
 
 export type Breadcrumb = z.infer<typeof BreadcrumbSchema>;
-
-const ImageSchema = z.object({
-   id: z.string().nullable().optional(),
-   altText: z.string().nullable().optional(),
-   height: z.number().nullable().optional(),
-   width: z.number().nullable().optional(),
-   url: z.string(),
-});
 
 export type ProductImage = z.infer<typeof ImageSchema>;
 
@@ -28,30 +24,6 @@ const ProductOptionSchema = z.object({
    id: z.string(),
    name: z.string(),
 });
-
-const MoneySchema = z.object({
-   amount: z.preprocess(toNumber, z.number()),
-   currencyCode: z.string(),
-});
-
-export type Money = z.infer<typeof MoneySchema>;
-
-function toNumber(value: unknown): number | null {
-   if (typeof value === 'number') {
-      return value;
-   }
-   if (typeof value === 'string') {
-      const parsedValue = parseFloat(value);
-      if (!isNaN(parsedValue)) {
-         return parsedValue;
-      }
-   }
-   return null;
-}
-
-export const ProPriceTiersSchema = z.record(MoneySchema);
-
-export type ProPriceTiers = z.infer<typeof ProPriceTiersSchema>;
 
 export const ProductVariantCardSchema = z.object({
    id: z.string(),

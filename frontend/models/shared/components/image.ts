@@ -23,3 +23,8 @@ export function imageFromStrapi(
       altText: attributes.alternativeText,
    };
 }
+
+export function imageFromUrl(url: string | null | undefined): Image | null {
+   if (url == null) return null;
+   return { url };
+}

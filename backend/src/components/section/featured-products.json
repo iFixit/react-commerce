@@ -1,21 +1,21 @@
 {
-  "collectionName": "components_section_featured_products",
-  "info": {
-    "displayName": "featured products",
-    "description": ""
-  },
-  "options": {},
-  "attributes": {
-    "title": {
-      "type": "string"
-    },
-    "description": {
-      "type": "richtext"
-    },
-    "productList": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product-list.product-list"
-    }
-  }
+   "collectionName": "components_section_featured_products",
+   "info": {
+      "displayName": "featured products",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "productList": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::product-list.product-list"
+      }
+   }
 }
