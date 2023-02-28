@@ -56,7 +56,7 @@ const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
    }
    return (
       <>
-         <Text fontSize="14px" fontWeight="bold" color="white" my={2}>
+         <Text fontSize="16px" fontWeight="bold" color="white" my={2}>
             {menu.title}
          </Text>
          <FooterNavigationListItems menu={menu} />
