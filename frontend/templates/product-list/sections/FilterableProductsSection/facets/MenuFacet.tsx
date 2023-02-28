@@ -54,6 +54,7 @@ export function MenuFacet(props: MenuFacetProps) {
                spacing="2"
                role="listbox"
                overflow="hidden"
+               h={isShowingMore ? undefined : 0}
             >
                {additionalItems.map((item) => (
                   <MenuListItem

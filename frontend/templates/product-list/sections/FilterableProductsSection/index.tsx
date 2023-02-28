@@ -77,7 +77,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
          </Heading>
 
          <SearchQueryProvider>
-            <Flex mt="4">
+            <Flex mt="4" align="flex-start">
                <Flex
                   bg="white"
                   borderWidth="1px"
