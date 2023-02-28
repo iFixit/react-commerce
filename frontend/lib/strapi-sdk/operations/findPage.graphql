@@ -14,51 +14,11 @@ query findPage(
             title
             sections {
                __typename
-               ... on ComponentPageHero {
-                  id
-                  title
-                  description
-                  callToAction {
-                     ...CallToActionFields
-                  }
-                  image {
-                     ...ImageFields
-                  }
-               }
-               ... on ComponentPageBrowse {
-                  id
-                  title
-                  description
-                  image {
-                     ...ImageFields
-                  }
-                  categories(pagination: { limit: 100 }) {
-                     ...CategoryFields
-                  }
-               }
-               ... on ComponentPageStats {
-                  id
-                  stats {
-                     id
-                     label
-                     value
-                  }
-               }
-               ... on ComponentPageSplitWithImage {
-                  id
-                  title
-                  description
-                  callToAction {
-                     ...CallToActionFields
-                  }
-                  imagePosition
-                  image {
-                     ...ImageFields
-                  }
-               }
-               ... on ComponentPagePress {
-                  ...PressQuotesSectionFields
-               }
+               ...HeroSectionFields
+               ...BrowseSectionFields
+               ...StatsSectionFields
+               ...SplitWithImageSectionFields
+               ...PressQuotesSectionFields
             }
          }
       }
@@ -68,23 +28,4 @@ query findPage(
 fragment CallToActionFields on ComponentPageCallToAction {
    title
    url
-}
-
-fragment CategoryFields on ComponentPageCategory {
-   id
-   productList {
-      data {
-         ...ProductListFields
-      }
-   }
-}
-
-fragment PressQuoteFields on ComponentPagePressQuote {
-   id
-   company {
-      data {
-         ...CompanyFields
-      }
-   }
-   text
 }

@@ -1,16 +1,11 @@
-import {
-   filterFalsyItems,
-   filterNullableItems,
-} from '@helpers/application-helpers';
-import { createSectionId } from '@helpers/strapi-helpers';
+import { filterNullableItems } from '@helpers/application-helpers';
 import { assertNever } from '@ifixit/helpers';
-import { CategoryFieldsFragment, strapi } from '@lib/strapi-sdk';
-import { callToActionFromStrapi } from '@models/shared/components/call-to-action';
-import { imageFromStrapi } from '@models/shared/components/image';
-import { imagePositionFromStrapi } from '@models/shared/sections/split-with-image-section';
+import { FindPageQuery, strapi } from '@lib/strapi-sdk';
+import { iFixitStatsSectionFromStrapi } from '@models/shared/sections/ifixit-stats-section';
+import { splitWithImageSectionFromStrapi } from '@models/shared/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
-import { getProductListType } from '../product-list/server';
-import type { BrowseCategory } from './sections/browse-section';
+import { browseSectionFromStrapi } from './sections/browse-section';
+import { heroSectionFromStrapi } from './sections/hero-section';
 import { pressQuotesSectionFromStrapi } from './sections/press-quotes-section';
 
 interface FindPageArgs {
@@ -25,77 +20,38 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
          },
       },
    });
-   const page = response.pages?.data[0]?.attributes;
+   const page = pageFromStrapi(response);
+
    if (page == null) {
       return null;
    }
 
-   const sections = filterNullableItems(
-      page.sections?.map((section, index): PageSection | null => {
-         if (section == null) {
+   const sections = sectionsFromStrapi(page.sections, (section, index) => {
+      switch (section.__typename) {
+         case 'ComponentPageHero': {
+            return heroSectionFromStrapi(section, index);
+         }
+         case 'ComponentPageBrowse': {
+            return browseSectionFromStrapi(section, index);
+         }
+         case 'ComponentPageStats': {
+            return iFixitStatsSectionFromStrapi(section, index);
+         }
+         case 'ComponentPageSplitWithImage': {
+            return splitWithImageSectionFromStrapi(section, index);
+         }
+         case 'ComponentPagePress': {
+            return pressQuotesSectionFromStrapi(section, index);
+         }
+         case 'Error': {
+            console.error('Failed to parse page section:', section);
             return null;
          }
-         switch (section?.__typename) {
-            case 'ComponentPageHero': {
-               return {
-                  type: 'Hero',
-                  id: createSectionId(section, index),
-                  title: section.title ?? null,
-                  description: section.description ?? null,
-                  callToAction: callToActionFromStrapi(section.callToAction),
-                  image: imageFromStrapi(section.image),
-               };
-            }
-            case 'ComponentPageBrowse': {
-               const categories: BrowseCategory[] = filterFalsyItems(
-                  section.categories?.map(processStrapiProductList)
-               );
-               return {
-                  type: 'Browse',
-                  id: createSectionId(section, index),
-                  title: section.title ?? null,
-                  description: section.description ?? null,
-                  image: imageFromStrapi(section.image),
-                  categories,
-               };
-            }
-            case 'ComponentPageStats': {
-               const stats = filterFalsyItems(section.stats).map(
-                  ({ id, label, value }) => {
-                     return { id, label, value };
-                  }
-               );
-               return {
-                  type: 'IFixitStats',
-                  id: createSectionId(section, index),
-                  stats,
-               };
-            }
-            case 'ComponentPageSplitWithImage': {
-               return {
-                  type: 'SplitWithImage',
-                  id: `${section.__typename}-${index}`,
-                  title: section.title ?? null,
-                  description: section.description ?? null,
-                  image: imageFromStrapi(section.image),
-                  imagePosition:
-                     imagePositionFromStrapi(section.imagePosition) ?? 'right',
-                  callToAction: section.callToAction ?? null,
-               };
-            }
-            case 'ComponentPagePress': {
-               return pressQuotesSectionFromStrapi(section, index);
-            }
-            case 'Error': {
-               console.error('Failed to parse page section:', section);
-               return null;
-            }
-            default: {
-               return assertNever(section);
-            }
+         default: {
+            return assertNever(section);
          }
-      }) ?? []
-   );
+      }
+   });
 
    return {
       path: page.path,
@@ -104,21 +60,21 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
    };
 }
 
-function processStrapiProductList(
-   categoryFragment: CategoryFieldsFragment | null | undefined
-): BrowseCategory | null {
-   const id = categoryFragment?.id;
-   const attributes = categoryFragment?.productList?.data?.attributes;
-   if (id == null || attributes == null) {
-      return null;
-   }
-   return {
-      id,
-      type: getProductListType(attributes.type),
-      handle: attributes.handle,
-      title: attributes.title,
-      deviceTitle: attributes.deviceTitle ?? null,
-      metaDescription: attributes.metaDescription ?? null,
-      image: imageFromStrapi(attributes.image),
-   };
+type StrapiPage = NonNullable<ReturnType<typeof pageFromStrapi>>;
+
+function pageFromStrapi(response: FindPageQuery) {
+   return response.pages?.data[0]?.attributes ?? null;
+}
+
+type StrapiSection = NonNullable<StrapiPage['sections'][0]>;
+
+function sectionsFromStrapi(
+   sections: StrapiPage['sections'],
+   fn: (section: StrapiSection, index: number) => PageSection | null
+) {
+   return filterNullableItems(
+      sections?.map((section, index) =>
+         section == null ? null : fn(section, index)
+      ) ?? []
+   );
 }

@@ -1,8 +1,15 @@
+import { createSectionId } from '@helpers/strapi-helpers';
 import { assertNever } from '@ifixit/helpers';
-import { Enum_Componentpagesplitwithimage_Imageposition } from '@lib/strapi-sdk';
+import {
+   Enum_Componentpagesplitwithimage_Imageposition,
+   SplitWithImageSectionFieldsFragment,
+} from '@lib/strapi-sdk';
 import { z } from 'zod';
-import { CallToActionSchema } from '../components/call-to-action';
-import { ImageSchema } from '../components/image';
+import {
+   callToActionFromStrapi,
+   CallToActionSchema,
+} from '../components/call-to-action';
+import { imageFromStrapi, ImageSchema } from '../components/image';
 
 export type SplitWithImageSection = z.infer<typeof SplitWithImageSectionSchema>;
 
@@ -16,7 +23,29 @@ export const SplitWithImageSectionSchema = z.object({
    callToAction: CallToActionSchema.nullable(),
 });
 
-export function imagePositionFromStrapi(
+export function splitWithImageSectionFromStrapi(
+   fragment: SplitWithImageSectionFieldsFragment | null | undefined,
+   index: number
+): SplitWithImageSection | null {
+   const id = createSectionId(fragment, index);
+   const title = fragment?.title ?? null;
+   const description = fragment?.description ?? null;
+
+   if (id == null) return null;
+
+   return {
+      type: 'SplitWithImage',
+      id,
+      title,
+      description,
+      image: imageFromStrapi(fragment?.image),
+      imagePosition:
+         imagePositionFromStrapi(fragment?.imagePosition) ?? 'right',
+      callToAction: callToActionFromStrapi(fragment?.callToAction),
+   };
+}
+
+function imagePositionFromStrapi(
    position: Enum_Componentpagesplitwithimage_Imageposition | null | undefined
 ): SplitWithImageSection['imagePosition'] | null {
    if (position == null) return null;

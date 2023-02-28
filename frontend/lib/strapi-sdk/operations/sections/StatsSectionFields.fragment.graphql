@@ -1,0 +1,8 @@
+fragment StatsSectionFields on ComponentPageStats {
+   id
+   stats {
+      id
+      label
+      value
+   }
+}
