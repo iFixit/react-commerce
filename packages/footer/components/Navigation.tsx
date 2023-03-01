@@ -49,8 +49,6 @@ export const NavigationSection = ({
 };
 
 const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
-   console.log('Menu: ', menu);
-
    if (!menu) {
       return null;
    }
@@ -66,7 +64,6 @@ const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
 
 const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
    const listItems = menu.items.map((item: MenuItem, index: number) => {
-      console.log('Item: ', item);
       if (item.type !== 'link') {
          return null;
       }
