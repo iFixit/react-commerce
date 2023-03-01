@@ -1,5 +1,4 @@
 export * from './components/Legal';
-export * from './components/LinkData';
 export * from './components/Navigation';
 export * from './components/Partners';
 export * from './components/Settings';

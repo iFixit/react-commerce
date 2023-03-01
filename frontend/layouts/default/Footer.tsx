@@ -25,7 +25,6 @@ import {
    FooterDivider,
    EventTracker,
    NavigationSection,
-   getGuideFooterMenus,
 } from '@ifixit/footer';
 import { CountryCode } from '@lib/shopify-storefront-sdk';
 
