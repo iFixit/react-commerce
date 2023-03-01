@@ -24,7 +24,7 @@ export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {
          position="relative"
          direction="column"
          spacing={{ base: 3, md: 4 }}
-         align="stretch"
+         align="center"
          p={{ base: 3, md: 4 }}
          {...props}
       />
@@ -32,14 +32,21 @@ export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {
 });
 
 export interface ProductCardImageProps {
-   src: string;
+   src: string | null | undefined;
    alt?: string;
 }
 
 export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    if (src == null) {
       return (
-         <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
+         <AspectRatio
+            ratio={1}
+            flexGrow={0}
+            flexShrink={0}
+            position="relative"
+            maxW="96"
+            w="full"
+         >
             <ResponsiveImage
                sizes="30vw"
                layout="fill"
@@ -50,7 +57,14 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
       );
    }
    return (
-      <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
+      <AspectRatio
+         ratio={1}
+         flexGrow={0}
+         flexShrink={0}
+         position="relative"
+         maxW="80"
+         w="full"
+      >
          <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
             layout="fill"
@@ -66,6 +80,7 @@ export const ProductCardBody = (props: StackProps) => {
    return (
       <VStack
          h="full"
+         w="full"
          spacing={{ base: 3, md: 4 }}
          align="flex-start"
          {...props}

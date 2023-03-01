@@ -5,7 +5,7 @@ export type ProductReviews = z.infer<typeof ProductReviewsSchema>;
 
 export const ProductReviewsSchema = z.object({
    rating: z.number(),
-   count: z.number().nullable(),
+   count: z.number(),
 });
 
 export function productReviewsFromAlgoliaProductHit(

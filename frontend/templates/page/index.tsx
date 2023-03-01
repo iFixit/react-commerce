@@ -40,7 +40,12 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                }
                case 'FeaturedProducts': {
                   return (
-                     <FeaturedProductsSection key={section.id} data={section} />
+                     <FeaturedProductsSection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
+                        products={section.products}
+                     />
                   );
                }
                default:
