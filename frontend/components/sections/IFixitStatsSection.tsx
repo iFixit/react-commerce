@@ -6,13 +6,15 @@ import {
    StatNumber,
 } from '@chakra-ui/react';
 import { Wrapper } from '@ifixit/ui';
-import { GetSection } from '@models/page';
+import type { IFixitStatsSection } from '@models/shared/sections/ifixit-stats-section';
 
-export interface StatsSectionProps {
-   data: GetSection<'ComponentPageStats'>;
+export interface IFixitStatsSectionProps {
+   data: IFixitStatsSection;
 }
 
-export function StatsSection({ data: { stats } }: StatsSectionProps) {
+export function IFixitStatsSection({
+   data: { stats },
+}: IFixitStatsSectionProps) {
    return (
       <Box
          as="section"
@@ -21,7 +23,6 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
          bg="brand.100"
          borderWidth={1}
          borderColor="brand.200"
-         mb={-10}
       >
          <Wrapper>
             <SimpleGrid

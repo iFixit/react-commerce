@@ -37,7 +37,7 @@ export function MenuFacet(props: MenuFacetProps) {
 
    return (
       <Box>
-         <VStack align="stretch" spacing="1" role="listbox">
+         <VStack align="stretch" spacing="2" role="listbox">
             {firstItems.map((item) => (
                <MenuListItem
                   key={item.label}
@@ -49,7 +49,13 @@ export function MenuFacet(props: MenuFacetProps) {
                   onClick={props.onItemClick}
                />
             ))}
-            <Box h={isShowingMore ? undefined : 0} overflow="hidden">
+            <VStack
+               align="stretch"
+               spacing="2"
+               role="listbox"
+               overflow="hidden"
+               h={isShowingMore ? undefined : 0}
+            >
                {additionalItems.map((item) => (
                   <MenuListItem
                      key={item.label}
@@ -61,7 +67,7 @@ export function MenuFacet(props: MenuFacetProps) {
                      onClick={props.onItemClick}
                   />
                ))}
-            </Box>
+            </VStack>
          </VStack>
          {canToggleShowMore && (
             <ShowMoreButton
@@ -124,7 +130,7 @@ function MenuListItem({
       <HStack
          justify="space-between"
          color={isRefined ? 'brand.500' : 'inherit'}
-         fontWeight={isRefined ? 'bold' : 'inherit'}
+         fontWeight={isRefined ? 'semibold' : 'inherit'}
       >
          {url ? (
             <MenuItemLabel
@@ -136,7 +142,12 @@ function MenuListItem({
                {label}
             </MenuItemLabel>
          ) : (
-            <MenuItemLabel as="button" value={value} onClick={handleClick}>
+            <MenuItemLabel
+               as="button"
+               value={value}
+               onClick={handleClick}
+               fontWeight={isRefined ? 'semibold' : 'inherit'}
+            >
                {label}
             </MenuItemLabel>
          )}

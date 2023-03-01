@@ -9,7 +9,7 @@ export function SectionDescription({
 }: SectionDescriptionProps) {
    return (
       <Box
-         color="gray.600"
+         color="gray.700"
          {...otherProps}
          dangerouslySetInnerHTML={{
             __html: richText,

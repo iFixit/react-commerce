@@ -1,0 +1,21 @@
+fragment PressQuotesSectionFields on ComponentPagePress {
+   id
+   title
+   description
+   quotes {
+      ...PressQuoteFields
+   }
+   callToAction {
+      ...CallToActionFields
+   }
+}
+
+fragment PressQuoteFields on ComponentPagePressQuote {
+   id
+   company {
+      data {
+         ...CompanyFields
+      }
+   }
+   text
+}

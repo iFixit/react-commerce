@@ -14,6 +14,7 @@ export type TroubleshootingData = {
    conclusion: Section[];
    editUrl: string;
    historyUrl: string;
+   canonicalUrl: string;
 };
 
 type TroubleshootingPageProps = {
