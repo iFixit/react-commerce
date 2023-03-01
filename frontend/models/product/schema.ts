@@ -106,6 +106,7 @@ export const ProductVariantSchema = z.object({
    quantityAvailable: z.number().nullable().optional(),
    internalDisplayName: z.string().nullable(),
    selectedOptions: z.array(SelectedOptionSchema),
+   title: z.string(),
 });
 
 export type ProductVariant = z.infer<typeof ProductVariantSchema>;
