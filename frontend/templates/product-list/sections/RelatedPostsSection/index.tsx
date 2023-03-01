@@ -20,8 +20,15 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    }
 
    return (
-      <VStack align="stretch" spacing="6">
-         <Heading size="lg">Related News Stories</Heading>
+      <VStack align="stretch" spacing="4">
+         <Heading
+            as="h2"
+            color="gray.700"
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
+         >
+            Related News Stories
+         </Heading>
          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
             {posts.map((post) => (
                <PostCard
