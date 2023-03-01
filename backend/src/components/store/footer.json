@@ -1,20 +1,36 @@
 {
-   "collectionName": "components_store_footers",
-   "info": {
-      "displayName": "footer",
-      "icon": "shoe-prints"
-   },
-   "options": {},
-   "attributes": {
-      "bottomMenu": {
-         "type": "relation",
-         "relation": "oneToOne",
-         "target": "api::menu.menu"
-      },
-      "partners": {
-         "type": "relation",
-         "relation": "oneToOne",
-         "target": "api::menu.menu"
-      }
-   }
+  "collectionName": "components_store_footers",
+  "info": {
+    "displayName": "footer",
+    "icon": "shoe-prints",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "bottomMenu": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    },
+    "partners": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    },
+    "menu1": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    },
+    "menu2": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    },
+    "menu3": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::menu.menu"
+    }
+  }
 }

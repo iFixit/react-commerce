@@ -14,6 +14,15 @@ query findStore($filters: StoreFiltersInput) {
                bottomMenu {
                   ...MenuEntityResponseProps
                }
+               menu1 {
+                  ...MenuEntityResponseProps
+               }
+               menu2 {
+                  ...MenuEntityResponseProps
+               }
+               menu3 {
+                  ...MenuEntityResponseProps
+               }
             }
             socialMediaAccounts {
                twitter

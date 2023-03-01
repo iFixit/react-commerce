@@ -210,12 +210,18 @@ export type ComponentStoreFooter = {
    __typename?: 'ComponentStoreFooter';
    bottomMenu?: Maybe<MenuEntityResponse>;
    id: Scalars['ID'];
+   menu1?: Maybe<MenuEntityResponse>;
+   menu2?: Maybe<MenuEntityResponse>;
+   menu3?: Maybe<MenuEntityResponse>;
    partners?: Maybe<MenuEntityResponse>;
 };
 
 export type ComponentStoreFooterFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ComponentStoreFooterFiltersInput>>>;
    bottomMenu?: InputMaybe<MenuFiltersInput>;
+   menu1?: InputMaybe<MenuFiltersInput>;
+   menu2?: InputMaybe<MenuFiltersInput>;
+   menu3?: InputMaybe<MenuFiltersInput>;
    not?: InputMaybe<ComponentStoreFooterFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<ComponentStoreFooterFiltersInput>>>;
    partners?: InputMaybe<MenuFiltersInput>;
@@ -224,6 +230,9 @@ export type ComponentStoreFooterFiltersInput = {
 export type ComponentStoreFooterInput = {
    bottomMenu?: InputMaybe<Scalars['ID']>;
    id?: InputMaybe<Scalars['ID']>;
+   menu1?: InputMaybe<Scalars['ID']>;
+   menu2?: InputMaybe<Scalars['ID']>;
+   menu3?: InputMaybe<Scalars['ID']>;
    partners?: InputMaybe<Scalars['ID']>;
 };
 
@@ -2189,6 +2198,342 @@ export type FindStoreQuery = {
                      } | null;
                   } | null;
                } | null;
+               menu1?: {
+                  __typename?: 'MenuEntityResponse';
+                  data?: {
+                     __typename?: 'MenuEntity';
+                     attributes?: {
+                        __typename?: 'Menu';
+                        title: string;
+                        items: Array<
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
+                        >;
+                     } | null;
+                  } | null;
+               } | null;
+               menu2?: {
+                  __typename?: 'MenuEntityResponse';
+                  data?: {
+                     __typename?: 'MenuEntity';
+                     attributes?: {
+                        __typename?: 'Menu';
+                        title: string;
+                        items: Array<
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
+                        >;
+                     } | null;
+                  } | null;
+               } | null;
+               menu3?: {
+                  __typename?: 'MenuEntityResponse';
+                  data?: {
+                     __typename?: 'MenuEntity';
+                     attributes?: {
+                        __typename?: 'Menu';
+                        title: string;
+                        items: Array<
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
+                        >;
+                     } | null;
+                  } | null;
+               } | null;
             };
             socialMediaAccounts: {
                __typename?: 'ComponentStoreSocialMediaAccounts';
@@ -2910,6 +3255,15 @@ export const FindStoreDocument = `
             ...MenuEntityResponseProps
           }
           bottomMenu {
+            ...MenuEntityResponseProps
+          }
+          menu1 {
+            ...MenuEntityResponseProps
+          }
+          menu2 {
+            ...MenuEntityResponseProps
+          }
+          menu3 {
             ...MenuEntityResponseProps
           }
         }

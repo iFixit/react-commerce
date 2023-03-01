@@ -34,6 +34,9 @@ interface FooterProps {
    partners: Store['footer']['partners'];
    bottomMenu: Store['footer']['bottomMenu'];
    socialMediaAccounts: Store['socialMediaAccounts'];
+   menu1: Store['footer']['menu1'];
+   menu2: Store['footer']['menu2'];
+   menu3: Store['footer']['menu3'];
    globalSettings: GlobalSettings;
 }
 
@@ -42,12 +45,12 @@ export function CartFooter({
    partners,
    bottomMenu,
    socialMediaAccounts,
+   menu1,
+   menu2,
+   menu3,
    globalSettings,
 }: FooterProps) {
    const { newsletterForm } = globalSettings;
-   const { menu1, menu2, menu3 } = getGuideFooterMenus(
-      getSupportUrlFromStoreCode(CountryCode.Us)
-   );
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
          <Footer>

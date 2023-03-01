@@ -50,6 +50,9 @@ async function findStoreByCodeFromStrapi(code: string) {
       footer: {
          partners: createMenu(store.footer.partners),
          bottomMenu: createMenu(store.footer.bottomMenu),
+         menu1: createMenu(store.footer.menu1),
+         menu2: createMenu(store.footer.menu2),
+         menu3: createMenu(store.footer.menu3),
       },
       socialMediaAccounts: {
          twitter: store.socialMediaAccounts.twitter || null,

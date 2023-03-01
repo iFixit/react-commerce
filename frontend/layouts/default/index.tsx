@@ -284,6 +284,9 @@ export function DefaultLayout({
                   partners={currentStore.footer.partners}
                   bottomMenu={currentStore.footer.bottomMenu}
                   socialMediaAccounts={currentStore.socialMediaAccounts}
+                  menu1={currentStore.footer.menu1}
+                  menu2={currentStore.footer.menu2}
+                  menu3={currentStore.footer.menu3}
                   stores={stores}
                   globalSettings={globalSettings}
                />
