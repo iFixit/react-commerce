@@ -1,13 +1,8 @@
-import {
-   Button,
-   Collapse,
-   Flex,
-   Tag,
-   TagCloseButton,
-   TagLabel,
-} from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
+import { faClose } from '@fortawesome/pro-solid-svg-icons';
 import { formatFacetName } from '@helpers/algolia-helpers';
 import { useSearchQueryContext } from '@templates/product-list/hooks/useSearchQuery';
+import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
 import {
    useClearRefinements,
@@ -24,61 +19,91 @@ export function CurrentRefinements() {
    const pagination = usePagination();
 
    return (
-      <Collapse
-         in={currentRefinements.items.length > 0}
-         animateOpacity
-         data-testid="current-refinements"
-      >
-         <Flex pt="3" wrap="wrap">
-            {currentRefinements.items.map((item, index) => {
-               return (
-                  <React.Fragment key={item.label}>
-                     {item.refinements.map((refinement) => {
-                        const formattedFacetName = formatFacetName(
-                           refinement.attribute
-                        );
-                        return (
-                           <Tag
-                              my="1"
-                              mr="2"
-                              key={refinement.label}
-                              variant="subtle"
-                              colorScheme="blue"
-                              data-testid={`current-refinement-${refinement.value}`}
+      <>
+         {currentRefinements.items.map((item) => {
+            return (
+               <React.Fragment key={item.label}>
+                  {item.refinements.map((refinement) => {
+                     const formattedFacetName = formatFacetName(
+                        refinement.attribute
+                     );
+                     return (
+                        <Flex
+                           key={refinement.label}
+                           data-testid={`current-refinement-${refinement.value}`}
+                           bgColor="brand.100"
+                           borderColor="brand.300"
+                           borderWidth="1px"
+                           py="1"
+                           px="1.5"
+                           mr="1.5"
+                           mb="1.5"
+                           fontWeight="semibold"
+                           fontSize="sm"
+                           lineHeight="1em"
+                           color="brand.700"
+                           alignItems="center"
+                           borderRadius="base"
+                           flexShrink={0}
+                           maxW="full"
+                        >
+                           <Box noOfLines={1} wordBreak="break-all">
+                              {formattedFacetName}: {refinement.label}
+                           </Box>
+
+                           <Button
+                              variant="unstyled"
+                              ml="1"
+                              w="4"
+                              h="4"
+                              my="-1px"
+                              minW="4"
+                              display="flex"
+                              aria-label={`Remove ${formattedFacetName}: ${refinement.label}`}
+                              onClick={() => {
+                                 item.refine(refinement);
+                                 pagination.refine(0);
+                              }}
                            >
-                              <TagLabel>
-                                 {formattedFacetName}: {refinement.label}
-                              </TagLabel>
-                              <TagCloseButton
-                                 aria-label={`Remove ${formattedFacetName}: ${refinement.label}`}
-                                 onClick={() => {
-                                    item.refine(refinement);
-                                    pagination.refine(0);
+                              <FaIcon
+                                 display="block"
+                                 icon={faClose}
+                                 h="4"
+                                 color="brand.300"
+                                 transition="all 300ms"
+                                 _hover={{
+                                    color: 'brand.700',
                                  }}
                               />
-                           </Tag>
-                        );
-                     })}
-                  </React.Fragment>
-               );
-            })}
-            <Button
-               onClick={() => {
-                  setSearchQuery('');
-                  clearRefinements.refine();
-               }}
-               my="1"
-               mr="2"
-               size="xs"
-               colorScheme="blue"
-               variant="outline"
-               bgColor="brand.100"
-               fontSize="sm"
-               fontWeight="normal"
-            >
-               Clear all filters
-            </Button>
-         </Flex>
-      </Collapse>
+                           </Button>
+                        </Flex>
+                     );
+                  })}
+               </React.Fragment>
+            );
+         })}
+         <Button
+            onClick={() => {
+               setSearchQuery('');
+               clearRefinements.refine();
+            }}
+            size="xs"
+            variant="outline"
+            bgColor="gray.100"
+            borderColor="gray.300"
+            color="gray.700"
+            fontSize="sm"
+            fontWeight="normal"
+            borderRadius="base"
+            transition="all 300ms"
+            _hover={{
+               bgColor: 'gray.200',
+               color: 'gray.900',
+               borderColor: 'gray.400',
+            }}
+         >
+            Clear all filters
+         </Button>
+      </>
    );
 }

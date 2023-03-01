@@ -30,22 +30,25 @@ export const cartImageSizeMap: SizeMap = [
    { name: 'large', width: 3000 },
 ];
 
+const guideImageRegExp = new RegExp(
+   /^https:\/\/(guide-images\.cdn\.ifixit\.com|([^\/]+\.(ubreakit|cominor)\.com\/igi))\//
+);
 export function isGuideImage(src: string) {
-   return src.match(
-      /^https:\/\/(guide-images\.cdn\.ifixit\.com|([^/]+\.(ubreakit|cominor)\.com\/igi))\//
-   );
+   return guideImageRegExp.test(src);
 }
 
+const cartImageRegExp = new RegExp(
+   /^https:\/\/(cart-products\.cdn\.ifixit\.com|([^\/]+\.(ubreakit|cominor)\.com\/cart-products))\//
+);
 export function isCartImage(src: string) {
-   return src.match(
-      /^https:\/\/(cart-products\.cdn\.ifixit\.com|([^/]+\.(ubreakit|cominor)\.com\/cart-products))\//
-   );
+   return cartImageRegExp.test(src);
 }
 
+const strapiImageRegExp = new RegExp(
+   /^https:\/\/ifixit-(dev-)?strapi-uploads\.s3\.amazonaws\.com\/|^\/uploads\//
+);
 export function isStrapiImage(src: string) {
-   return src.match(
-      /^https:\/\/ifixit-(dev-)?strapi-uploads.s3.amazonaws.com\//
-   );
+   return strapiImageRegExp.test(src);
 }
 
 export function getIFixitImageLoader(

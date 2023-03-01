@@ -12,21 +12,20 @@ test.describe('Product breadcrumb test', () => {
        * regardless of the number of breadcrumb links. Everything else is collapsed in
        * the breadcrumb menu.
        */
-      test('with number of any breadcrumb links', async ({
-         page,
-         productPage,
-      }) => {
+      test('with number of any breadcrumb links', async ({ productPage }) => {
          await productPage.gotoProduct('iflex-opening-tool');
 
          // Last child breadcrumb is visible on both mobile and desktop
          await expect(
-            page.getByTestId('breadcrumb-last-child-link')
+            productPage.page.getByTestId('breadcrumb-last-child-link')
          ).toBeVisible();
 
-         await expect(page.getByTestId('breadcrumb-menu-mobile')).toBeVisible();
+         await expect(
+            productPage.page.getByTestId('breadcrumb-menu-mobile')
+         ).toBeVisible();
 
          // Assert that the ancestor breadcrumb links are not visible on mobile
-         const desktopBreadcrumbAncestorLinks = page.getByTestId(
+         const desktopBreadcrumbAncestorLinks = productPage.page.getByTestId(
             'breadcrumb-ancestor-link-desktop'
          );
          const count = await desktopBreadcrumbAncestorLinks.count();
@@ -49,16 +48,15 @@ test.describe('Product breadcrumb test', () => {
        * and the breadcrumb menu is not visible.
        */
       test('with less than or equal to 3 breacrumb links', async ({
-         page,
          productPage,
       }) => {
          await productPage.gotoProduct('iflex-opening-tool');
 
          await expect(
-            page.getByTestId('breadcrumb-last-child-link')
+            productPage.page.getByTestId('breadcrumb-last-child-link')
          ).toBeVisible();
 
-         const desktopBreadcrumbAncestorLinks = page.getByTestId(
+         const desktopBreadcrumbAncestorLinks = productPage.page.getByTestId(
             'breadcrumb-ancestor-link-desktop'
          );
          const ancestorLinksCount =
@@ -74,28 +72,25 @@ test.describe('Product breadcrumb test', () => {
 
          // If the product has less than or equal to 3 breadcrumb links, we don't display the breadcrumb menu
          await expect(
-            page.getByTestId('breadcrumb-menu-desktop')
+            productPage.page.getByTestId('breadcrumb-menu-desktop')
          ).not.toBeVisible();
 
          await expect(
-            page.getByTestId('breadcrumb-menu-mobile')
+            productPage.page.getByTestId('breadcrumb-menu-mobile')
          ).not.toBeVisible();
       });
 
       /*
        * Same as the test above, but checks that the desktop breadcrumb menu is visible.
        */
-      test('with more than 3 breacrumb links', async ({
-         page,
-         productPage,
-      }) => {
+      test('with more than 3 breacrumb links', async ({ productPage }) => {
          await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
 
          await expect(
-            page.getByTestId('breadcrumb-last-child-link')
+            productPage.page.getByTestId('breadcrumb-last-child-link')
          ).toBeVisible();
 
-         const desktopBreadcrumbAncestorLinks = page.getByTestId(
+         const desktopBreadcrumbAncestorLinks = productPage.page.getByTestId(
             'breadcrumb-ancestor-link-desktop'
          );
          const ancestorLinksCount =
@@ -109,11 +104,11 @@ test.describe('Product breadcrumb test', () => {
          expect(ancestorLinksCount).toBeLessThanOrEqual(2);
 
          await expect(
-            page.getByTestId('breadcrumb-menu-desktop')
+            productPage.page.getByTestId('breadcrumb-menu-desktop')
          ).toBeVisible();
 
          await expect(
-            page.getByTestId('breadcrumb-menu-mobile')
+            productPage.page.getByTestId('breadcrumb-menu-mobile')
          ).not.toBeVisible();
       });
    });

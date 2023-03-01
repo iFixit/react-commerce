@@ -2,7 +2,6 @@ import { PROD_USER_AGENT } from '@config/constants';
 import { CACHE_DISABLED } from '@config/env';
 import { setSentryPageContext } from '@ifixit/sentry';
 import { withTiming } from '@ifixit/helpers';
-import { clearCache } from '@lib/cache';
 import type { GetServerSidePropsMiddleware } from '@lib/next-middleware';
 import * as Sentry from '@sentry/nextjs';
 import { GetServerSidePropsContext } from 'next';
@@ -21,9 +20,6 @@ export const withLogging: GetServerSidePropsMiddleware = (next) => {
       });
       const isCacheDisabled =
          CACHE_DISABLED || context.query._vercel_no_cache === '1';
-      if (isCacheDisabled) {
-         clearCache();
-      }
       return next(context)
          .then((result) => {
             if (isCacheDisabled) {
@@ -31,7 +27,6 @@ export const withLogging: GetServerSidePropsMiddleware = (next) => {
                   'Cache-Control',
                   'no-store, no-cache, must-revalidate, stale-if-error=0'
                );
-               clearCache();
             }
             return result;
          })

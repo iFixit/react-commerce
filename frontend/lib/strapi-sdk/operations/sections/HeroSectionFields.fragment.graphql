@@ -1,0 +1,11 @@
+fragment HeroSectionFields on ComponentPageHero {
+   id
+   title
+   description
+   callToAction {
+      ...CallToActionFields
+   }
+   image {
+      ...ImageFields
+   }
+}

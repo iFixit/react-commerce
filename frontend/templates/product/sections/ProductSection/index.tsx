@@ -93,10 +93,11 @@ export function ProductSection({
                   id="zoom-container"
                   position="absolute"
                   top="0"
+                  // Calculation description: https://github.com/iFixit/react-commerce/pull/1398#issuecomment-1440432678
                   w={{
                      md: '320px',
-                     lg: 'calc(400px + 16px + ((100vw - 960px) / 2 - 24px))',
-                     xl: 'calc(400px + 16px + ((100vw - 1100px) / 2 - 24px))',
+                     lg: 'calc(16px + 400px + 32px - 24px)',
+                     xl: 'calc(16px + 400px + 32px + (100vw - 1280px) / 2 - 24px)',
                   }}
                   left="calc(100% + 24px)"
                   boxShadow="md"

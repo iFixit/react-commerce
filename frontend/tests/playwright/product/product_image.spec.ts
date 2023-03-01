@@ -1,20 +1,20 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Product image test', () => {
-   test('product with a single image ', async ({ page, productPage }) => {
+   test('product with a single image ', async ({ productPage }) => {
       await productPage.gotoProduct('iflex-opening-tool');
 
-      const image = page
+      const image = productPage.page
          .getByRole('img', { name: 'iFlex Opening Tool' })
          .first();
       expect(image).toBeVisible;
    });
 
-   test('product with multiple images ', async ({ page, productPage }) => {
+   test('product with multiple images ', async ({ productPage }) => {
       await productPage.gotoProduct('repair-business-toolkit');
-      const viewPort = page.viewportSize();
+      const viewPort = productPage.page.viewportSize();
 
-      const firstImageSrc = await page
+      const firstImageSrc = await productPage.page
          .locator('.swiper-slide.swiper-slide-active')
          .getByRole('img')
          .first()
@@ -22,11 +22,11 @@ test.describe('Product image test', () => {
 
       const firstImage =
          viewPort!.width > 768
-            ? page
+            ? productPage.page
                  .getByTestId('product-gallery-desktop')
                  .locator(`img[src="${firstImageSrc}"]`)
                  .first()
-            : page
+            : productPage.page
                  .getByTestId('product-gallery-mobile')
                  .locator(`img[src="${firstImageSrc}"]`)
                  .first();
@@ -35,23 +35,25 @@ test.describe('Product image test', () => {
 
       // Click on the arrow for the next image
       if (viewPort!.width > 768) {
-         await page
+         await productPage.page
             .getByTestId('product-gallery-desktop')
             .getByTestId('swiper-next-image')
             .click();
       } else {
-         await page
+         await productPage.page
             .getByTestId('product-gallery-mobile')
             .getByTestId('swiper-next-image')
             .click();
       }
 
-      const secondImageSrc = await page
+      const secondImageSrc = await productPage.page
          .locator('.swiper-slide.swiper-slide-active')
          .getByRole('img')
          .first()
          .getAttribute('src');
-      const secondImage = page.locator(`img[src="${secondImageSrc}"]`).first();
+      const secondImage = productPage.page
+         .locator(`img[src="${secondImageSrc}"]`)
+         .first();
       await expect(secondImage).toBeVisible();
 
       // Assert that currently active image has different src than the first one

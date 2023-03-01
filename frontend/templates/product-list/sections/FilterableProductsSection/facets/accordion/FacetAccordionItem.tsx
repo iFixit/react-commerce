@@ -58,6 +58,9 @@ export function FacetAccordionItem({
          ref={accordionItemRef}
       >
          <AccordionButton
+            my="2"
+            px="1.5"
+            borderRadius="base"
             aria-label={
                isExpanded
                   ? `Collapse ${formattedFacetName}`
@@ -76,8 +79,9 @@ export function FacetAccordionItem({
                      rounded="full"
                      bg="gray.600"
                      color="white"
-                     px="1.5"
+                     px="2"
                      fontSize="xs"
+                     fontWeight="semibold"
                   >
                      {refinedCount}
                   </Text>
@@ -85,7 +89,12 @@ export function FacetAccordionItem({
                <AccordionIcon />
             </HStack>
          </AccordionButton>
-         <AccordionPanel pb={4} display={isDisabled ? 'none' : 'block'}>
+         <AccordionPanel
+            pt="0"
+            pb="4"
+            px="1.5"
+            display={isDisabled ? 'none' : 'block'}
+         >
             <VStack align="stretch" spacing="3">
                {children}
             </VStack>

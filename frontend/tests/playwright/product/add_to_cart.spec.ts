@@ -25,7 +25,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
@@ -53,7 +52,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Item Can Be Added Again After Removing The Item', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
@@ -73,7 +71,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Back to Shopping Button Works', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
@@ -83,28 +80,28 @@ test.describe('product page add to cart', () => {
       await cartDrawer.open();
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
-      await page.getByTestId('back-to-shopping').click();
+      await productPage.page.getByTestId('back-to-shopping').click();
       await cartDrawer.assertDrawerIsClosed();
 
       await productPage.addToCart();
       await cartDrawer.assertCartTotalQuantity(1);
-      await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
+      await expect(
+         productPage.page.getByTestId('back-to-shopping')
+      ).not.toBeVisible();
 
       await cartDrawer.removeItem(sku);
 
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
-      await page.getByTestId('back-to-shopping').click();
+      await productPage.page.getByTestId('back-to-shopping').click();
       await cartDrawer.assertDrawerIsClosed();
    });
 
    test.describe('Product Stock Levels', () => {
       test('Low stocked product changes quantity', async ({
-         page,
          productPage,
          cartDrawer,
          serverRequestInterceptor,
-         port,
       }) => {
          const lowStockedProduct = cloneDeep(mockedProductQuery);
          if (lowStockedProduct.product) {
@@ -124,8 +121,8 @@ test.describe('product page add to cart', () => {
             })
          );
 
-         await page.goto(
-            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-low-stocked`
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-low-stocked'
          );
 
          const firstOptionSku = await productPage.getSku();
@@ -171,12 +168,10 @@ test.describe('product page add to cart', () => {
       });
 
       test('Out of stock product cannot be added to cart', async ({
-         page,
          productPage,
          cartDrawer,
          serverRequestInterceptor,
          clientRequestHandler,
-         port,
       }) => {
          clientRequestHandler.use(
             createRestHandler({
@@ -208,15 +203,15 @@ test.describe('product page add to cart', () => {
             })
          );
 
-         await page.goto(
-            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-out-of-stock`
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-out-of-stock'
          );
 
          await expect(
-            page.getByRole('img', { name: 'Fix Kit' })
+            productPage.page.getByRole('img', { name: 'Fix Kit' })
          ).not.toBeVisible();
          await expect(
-            page.getByRole('img', { name: 'Part Only' }).first()
+            productPage.page.getByRole('img', { name: 'Part Only' }).first()
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();
@@ -224,9 +219,11 @@ test.describe('product page add to cart', () => {
          await expect(productPage.addToCartButton).not.toBeVisible();
          await productPage.assertInventoryMessage();
 
-         await expect(page.getByTestId('out-of-stock-alert')).toBeVisible();
+         await expect(
+            productPage.page.getByTestId('out-of-stock-alert')
+         ).toBeVisible();
 
-         const notifyMeForm = page.getByTestId('notify-me-form');
+         const notifyMeForm = productPage.page.getByTestId('notify-me-form');
          await expect(notifyMeForm).toBeVisible();
 
          await notifyMeForm
@@ -234,7 +231,7 @@ test.describe('product page add to cart', () => {
             .fill('test@example.com');
          await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
          await expect(
-            page.getByTestId('notify-me-form-successful')
+            productPage.page.getByTestId('notify-me-form-successful')
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();

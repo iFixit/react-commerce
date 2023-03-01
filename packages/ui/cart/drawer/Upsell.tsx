@@ -32,6 +32,7 @@ export function Upsell({ item }: UpsellProps) {
          type: 'product',
          product: {
             name: item.name,
+            variantTitle: 'New',
             itemcode: item.itemcode,
             shopifyVariantId: item.shopifyVariantId,
             quantity: 1,
