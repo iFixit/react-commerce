@@ -33,25 +33,22 @@ async function checkRefinementInSearchResult(
    }
 
    let filteredProducts: any = [];
-   let foundAssociatedResults = false;
 
    results.forEach((result: any) => {
       const decodedParams = decodeURIComponent(result.params);
 
       if (decodedParams.includes(facetOptionValue)) {
-         filteredProducts = [...filteredProducts, ...result.hits];
-
-         if (!foundAssociatedResults) {
-            foundAssociatedResults = true;
-         } else {
+         if (filteredProducts.length) {
             throw new Error(
                `Found multiple associated results for "${facetOptionValue}".\n\nThe Algolia search results may have changed in a way that is no longer compatible with this test.\nDouble check the search results structure and update the test accordingly if necessary.`
             );
          }
+
+         filteredProducts = result.hits;
       }
    });
 
-   if (!foundAssociatedResults) {
+   if (!filteredProducts.length) {
       throw new Error(
          `Could not find associated results where facet option "${facetOptionValue}" is included in the params.`
       );
