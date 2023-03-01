@@ -23,7 +23,7 @@ export function RefinementListFacet({
 }: RefinementListFacetProps) {
    return (
       <Box>
-         <VStack align="stretch" spacing="1" role="listbox">
+         <VStack align="stretch" spacing="2" role="listbox">
             {items.map((item) => {
                return (
                   <RefinementListItem
@@ -66,6 +66,7 @@ const RefinementListItem = React.memo(function RefinementListItem({
                refine(item.value);
             }}
             data-value={item.value}
+            fontWeight={isRefined ? 'semibold' : 'inherit'}
          >
             {item.label}
          </Checkbox>
@@ -73,7 +74,7 @@ const RefinementListItem = React.memo(function RefinementListItem({
             size="sm"
             fontFamily="sans-serif"
             color="gray.500"
-            fontWeight={isRefined ? 'bold' : 'inherit'}
+            fontWeight={isRefined ? 'semibold' : 'inherit'}
          >
             {item.count}
          </Text>

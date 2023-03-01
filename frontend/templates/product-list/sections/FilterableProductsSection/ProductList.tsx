@@ -40,8 +40,8 @@ export function ProductList({ children }: ProductListProps) {
          boxSizing="border-box"
          divider={
             <Divider
-               mt="0"
-               borderColor="gray.200"
+               borderColor="gray.300"
+               opacity="1"
                style={{ marginTop: 0, marginBottom: 0 }}
             />
          }

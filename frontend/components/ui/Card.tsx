@@ -12,7 +12,7 @@ export const Card = forwardRef<CardProps, 'div'>(
             className={className}
             bg="white"
             boxShadow="base"
-            borderRadius="lg"
+            borderRadius="base"
             direction="column"
             {...otherProps}
          >

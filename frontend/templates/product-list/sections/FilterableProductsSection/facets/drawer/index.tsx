@@ -116,7 +116,7 @@ export function FacetsDrawer({
                   </Fade>
                   <CloseButton order={3} onClick={onClose} boxSize="10" />
                </Flex>
-               <Divider borderColor="gray.300" />
+               <Divider borderColor="gray.300" opacity="1" />
                <Box flexGrow={1} overflow="hidden" position="relative">
                   <Box height="100%" overflowY="scroll">
                      {facets.map((facet) => {
@@ -145,7 +145,7 @@ export function FacetsDrawer({
                   })}
                </Box>
                <Box>
-                  <Divider borderColor="gray.300" />
+                  <Divider borderColor="gray.300" opacity="1" />
                   <HStack p="2">
                      {facets.map((facet) => {
                         return (

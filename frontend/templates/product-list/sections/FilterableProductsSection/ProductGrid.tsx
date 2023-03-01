@@ -40,7 +40,7 @@ export function ProductGrid({ children }: ProductGridProps) {
             xl: 4,
          }}
          spacing="1px"
-         bg="gray.100"
+         bg="gray.300"
          _after={{
             content: `""`,
             bg: 'white',

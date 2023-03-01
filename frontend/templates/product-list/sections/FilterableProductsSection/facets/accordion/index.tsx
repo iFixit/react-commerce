@@ -37,7 +37,7 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
          data-testid="facets-accordion"
          sx={{
             '> :not(style)': {
-               borderColor: 'gray.200',
+               borderColor: 'gray.300',
             },
             '> .visible': {
                borderTopWidth: '0px',
