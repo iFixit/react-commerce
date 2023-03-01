@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
+import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import {
@@ -8,6 +9,7 @@ import {
 } from './hooks/usePageTemplateProps';
 import { BrowseSection } from './sections/BrowseSection';
 import { HeroSection } from './sections/HeroSection';
+import { PressQuotesSection } from './sections/PressQuotesSection';
 
 const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
    const { page } = usePageTemplateProps();
@@ -23,6 +25,17 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                }
                case 'IFixitStats': {
                   return <IFixitStatsSection key={section.id} data={section} />;
+               }
+               case 'SplitWithImage': {
+                  return (
+                     <SplitWithImageContentSection
+                        key={section.id}
+                        data={section}
+                     />
+                  );
+               }
+               case 'PressQuotes': {
+                  return <PressQuotesSection key={section.id} data={section} />;
                }
                default:
                   return assertNever(section);

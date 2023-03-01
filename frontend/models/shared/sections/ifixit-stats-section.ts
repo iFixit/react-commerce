@@ -1,3 +1,6 @@
+import { filterFalsyItems } from '@helpers/application-helpers';
+import { createSectionId } from '@helpers/strapi-helpers';
+import { StatsSectionFieldsFragment } from '@lib/strapi-sdk';
 import { z } from 'zod';
 
 export type IFixitStat = z.infer<typeof IFixitStatSchema>;
@@ -15,3 +18,21 @@ export const IFixitStatsSectionSchema = z.object({
    id: z.string(),
    stats: z.array(IFixitStatSchema),
 });
+
+export function iFixitStatsSectionFromStrapi(
+   fragment: StatsSectionFieldsFragment | null | undefined,
+   index: number
+): IFixitStatsSection | null {
+   const id = createSectionId(fragment, index);
+   const stats = filterFalsyItems(fragment?.stats).map(
+      ({ id, label, value }) => ({ id, label, value })
+   );
+
+   if (id == null || stats == null) return null;
+
+   return {
+      type: 'IFixitStats',
+      id,
+      stats,
+   };
+}

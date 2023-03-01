@@ -27,7 +27,6 @@ import { FeaturedProductList, ProductSearchHit } from '@models/product-list';
 import { ResponsiveImage, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import NextLink from 'next/link';
 import { Configure, Index, useHits } from 'react-instantsearch-hooks-web';
-import { computeDiscountPercentage } from '@ifixit/helpers';
 import { productListPath } from '@helpers/path-helpers';
 import { useProductSearchHitPricing } from './FilterableProductsSection/useProductSearchHitPricing';
 

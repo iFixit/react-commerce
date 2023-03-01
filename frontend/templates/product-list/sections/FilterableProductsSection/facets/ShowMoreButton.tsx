@@ -16,7 +16,6 @@ export function ShowMoreButton({
          variant="ghost"
          fontWeight="normal"
          leftIcon={<FaIcon icon={faSort} h="4" ml="1" color="gray.400" />}
-         mt="3"
          p="0"
          w="full"
          justifyContent="flex-start"

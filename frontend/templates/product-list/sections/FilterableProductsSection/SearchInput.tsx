@@ -46,7 +46,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             ref={inputRef}
             data-testid="collections-search-box"
             bg="white"
-            borderColor="gray.200"
+            borderColor="gray.300"
             _placeholder={{
                color: 'gray.400',
             }}
@@ -58,6 +58,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             }}
             value={searchQuery}
             maxLength={MAX_SEARCH_QUERY_LENGTH}
+            borderRadius="base"
          />
          <InputRightElement
             opacity={query.length > 0 ? 1 : 0}

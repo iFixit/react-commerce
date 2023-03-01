@@ -16,7 +16,3 @@ export function cache<T>(
    cacheStore.set(key, result, { ttl: ttl * 1000 });
    return result;
 }
-
-export function clearCache(): void {
-   cacheStore.clear();
-}

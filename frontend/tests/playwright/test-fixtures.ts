@@ -59,8 +59,8 @@ export const test = base.extend<
          timeout: 60 * 2 * 1000,
       },
    ],
-   productPage: async ({ page }, use) => {
-      await use(new ProductPage(page));
+   productPage: async ({ page, baseURL }, use) => {
+      await use(new ProductPage(page, baseURL ?? 'http://localhost:3000'));
    },
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
@@ -76,7 +76,8 @@ export const test = base.extend<
     * test to ensure the custom server is booted.
     */
    serverRequestInterceptor: [
-      async ({ customServer }, use) => {
+      async ({ customServer, productPage }, use) => {
+         productPage.updateBaseURL(`http://localhost:${customServer.port}`);
          await use(customServer.serverRequestInterceptor);
       },
       { scope: 'test' },

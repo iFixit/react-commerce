@@ -14,36 +14,11 @@ query findPage(
             title
             sections {
                __typename
-               ... on ComponentPageHero {
-                  id
-                  title
-                  description
-                  callToAction {
-                     ...CallToActionFields
-                  }
-                  image {
-                     ...ImageFields
-                  }
-               }
-               ... on ComponentPageBrowse {
-                  id
-                  title
-                  description
-                  image {
-                     ...ImageFields
-                  }
-                  categories(pagination: { limit: 100 }) {
-                     ...CategoryFields
-                  }
-               }
-               ... on ComponentPageStats {
-                  id
-                  stats {
-                     id
-                     label
-                     value
-                  }
-               }
+               ...HeroSectionFields
+               ...BrowseSectionFields
+               ...StatsSectionFields
+               ...SplitWithImageSectionFields
+               ...PressQuotesSectionFields
             }
          }
       }
@@ -53,13 +28,4 @@ query findPage(
 fragment CallToActionFields on ComponentPageCallToAction {
    title
    url
-}
-
-fragment CategoryFields on ComponentPageCategory {
-   id
-   productList {
-      data {
-         ...ProductListFields
-      }
-   }
 }
