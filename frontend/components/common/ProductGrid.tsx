@@ -40,8 +40,10 @@ export function ProductGrid({ children, columns, ...other }: ProductGridProps) {
 
    return (
       <SimpleGrid
-         {...other}
          columns={columns}
+         bg="gray.300"
+         borderColor="gray.300"
+         spacing="1px"
          _after={{
             content: `""`,
             display,
@@ -50,6 +52,7 @@ export function ProductGrid({ children, columns, ...other }: ProductGridProps) {
             gridColumnStart,
             gridColumnEnd,
          }}
+         {...other}
       >
          {children}
       </SimpleGrid>

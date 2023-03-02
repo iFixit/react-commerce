@@ -6,7 +6,7 @@ import {
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
-import { FeaturedProductsSectionFieldsFragment } from '@lib/strapi-sdk';
+import type { FeaturedProductsSectionFieldsFragment } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch/lite';
 import { z } from 'zod';
 import {

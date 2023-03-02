@@ -1,4 +1,4 @@
-import { printZodError } from '@lib/swr-cache/utils';
+import { printZodError } from '@helpers/zod-helpers';
 import { z } from 'zod';
 import { AlgoliaProductHitSchema } from './algolia-product-hit';
 import { imageFromUrl, ImageSchema } from './image';

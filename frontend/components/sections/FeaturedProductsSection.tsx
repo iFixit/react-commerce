@@ -45,7 +45,6 @@ export function FeaturedProductsSection({
             </SectionHeaderWrapper>
             <Box w="full">
                <ProductGrid
-                  borderBottomColor="gray.100"
                   borderTopWidth="1px"
                   borderBottomWidth="1px"
                   columns={{
@@ -55,8 +54,6 @@ export function FeaturedProductsSection({
                      lg: 5,
                      xl: 6,
                   }}
-                  spacing="1px"
-                  bg="gray.100"
                >
                   {products.map((product) => (
                      <ProductGridItem key={product.id} product={product} />
