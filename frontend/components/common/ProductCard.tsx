@@ -112,7 +112,9 @@ export const ProductCardRating = ({
    return (
       <HStack {...stackProps} align="flex-end">
          <Rating value={rating} />
-         <Text lineHeight="1em">{count}</Text>
+         <Text lineHeight="1em" color="gray.600" fontSize="sm">
+            {count}
+         </Text>
       </HStack>
    );
 };
