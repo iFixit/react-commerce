@@ -16,7 +16,7 @@ export const NavigationMenu = forwardRef<BoxProps, 'nav'>(
             as="nav"
             h="full"
             ml="6"
-            display={{ base: 'none', xl: 'block' }}
+            display={{ base: 'none', lg: 'block' }}
             {...otherProps}
          >
             <Flex as="ul" role="menubar" h="full" position="relative">
