@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { ProductGrid } from '@components/common/ProductGrid';
 import { ProductGridItem } from '@components/common/ProductGridItem';
-import type { ProductCard } from '@models/shared/components/product-card';
+import type { ProductPreview } from '@models/shared/components/product-preview';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeaderWrapper } from './SectionHeaderWrapper';
 import { SectionHeading } from './SectionHeading';
@@ -9,7 +9,7 @@ import { SectionHeading } from './SectionHeading';
 export interface FeaturedProductsSectionProps {
    title?: string | null;
    description?: string | null;
-   products: ProductCard[];
+   products: ProductPreview[];
 }
 
 export function FeaturedProductsSection({

@@ -1,6 +1,6 @@
 import { HStack, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import {
-   ProductCard as ProductCardContainer,
+   ProductCard,
    ProductCardBadgeList,
    ProductCardBody,
    ProductCardImage,
@@ -13,10 +13,10 @@ import {
    shouldShowProductRating,
 } from '@ifixit/helpers';
 import { IconBadge, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
-import type { ProductCard } from '@models/shared/components/product-card';
+import type { ProductPreview } from '@models/shared/components/product-preview';
 
 export interface ProductGridItemProps {
-   product: ProductCard;
+   product: ProductPreview;
 }
 
 export function ProductGridItem({ product }: ProductGridItemProps) {
@@ -56,7 +56,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                <IconBadge colorScheme="blue">Lifetime Guarantee</IconBadge>
             )}
          </ProductCardBadgeList>
-         <ProductCardContainer h="full">
+         <ProductCard h="full">
             <ProductCardImage src={product.image?.url} alt={product.title} />
             <ProductCardBody>
                <LinkOverlay href={getProductPath(product.handle)}>
@@ -81,7 +81,7 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
                   />
                </HStack>
             </ProductCardBody>
-         </ProductCardContainer>
+         </ProductCard>
       </LinkBox>
    );
 }

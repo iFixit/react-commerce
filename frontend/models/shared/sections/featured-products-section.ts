@@ -9,9 +9,9 @@ import { FeaturedProductsSectionFieldsFragment } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch/lite';
 import { z } from 'zod';
 import {
-   productCardFromAlgoliaHit,
-   ProductCardSchema,
-} from '../components/product-card';
+   productPreviewFromAlgoliaHit,
+   ProductPreviewSchema,
+} from '../components/product-preview';
 
 export type FeaturedProductsSection = z.infer<
    typeof FeaturedProductsSectionSchema
@@ -22,7 +22,7 @@ export const FeaturedProductsSectionSchema = z.object({
    id: z.string(),
    title: z.string().nullable(),
    description: z.string().nullable(),
-   products: z.array(ProductCardSchema),
+   products: z.array(ProductPreviewSchema),
 });
 
 const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
@@ -41,7 +41,7 @@ export async function featuredProductsSectionFromStrapi(
    });
 
    const products = filterFalsyItems(
-      response.hits.map(productCardFromAlgoliaHit)
+      response.hits.map(productPreviewFromAlgoliaHit)
    );
 
    return {

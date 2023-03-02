@@ -12,9 +12,9 @@ import {
    ProductReviewsSchema,
 } from './product-reviews';
 
-export type ProductCard = z.infer<typeof ProductCardSchema>;
+export type ProductPreview = z.infer<typeof ProductPreviewSchema>;
 
-export const ProductCardSchema = z.object({
+export const ProductPreviewSchema = z.object({
    id: z.string(),
    handle: z.string(),
    title: z.string(),
@@ -28,7 +28,9 @@ export const ProductCardSchema = z.object({
    hasLifetimeWarranty: z.boolean(),
 });
 
-export function productCardFromAlgoliaHit(hit: unknown): ProductCard | null {
+export function productPreviewFromAlgoliaHit(
+   hit: unknown
+): ProductPreview | null {
    const validation = AlgoliaProductHitSchema.safeParse(hit);
    if (!validation.success) {
       const hitId = (hit as any)?.objectID;
@@ -40,7 +42,7 @@ export function productCardFromAlgoliaHit(hit: unknown): ProductCard | null {
    }
    const product = validation.data;
    return {
-      id: product.objectID,
+      id: product.productid,
       handle: product.handle,
       title: product.title,
       image: imageFromUrl(product.image_url),
