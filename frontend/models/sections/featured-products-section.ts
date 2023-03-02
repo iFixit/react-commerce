@@ -18,11 +18,14 @@ export type FeaturedProductsSection = z.infer<
    typeof FeaturedProductsSectionSchema
 >;
 
+const BackgroundColorSchema = z.enum(['transparent', 'white']);
+
 export const FeaturedProductsSectionSchema = z.object({
    type: z.literal('FeaturedProducts'),
    id: z.string(),
    title: z.string().nullable(),
    description: z.string().nullable(),
+   background: BackgroundColorSchema.nullable(),
    products: z.array(ProductPreviewSchema),
 });
 
@@ -53,11 +56,18 @@ export async function featuredProductsSectionFromStrapi(
       response.hits.map(productPreviewFromAlgoliaHit)
    );
 
+   const backgroundValidation = BackgroundColorSchema.safeParse(
+      fragment?.background
+   );
+
    return {
       type: 'FeaturedProducts',
       id,
       title: fragment?.title ?? null,
       description: fragment?.description ?? null,
+      background: backgroundValidation.success
+         ? backgroundValidation.data
+         : null,
       products,
    };
 }

@@ -44,6 +44,7 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                         key={section.id}
                         title={section.title}
                         description={section.description}
+                        background={section.background}
                         products={section.products}
                      />
                   );

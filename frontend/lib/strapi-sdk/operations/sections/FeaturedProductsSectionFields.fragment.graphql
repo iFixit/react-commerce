@@ -2,6 +2,7 @@ fragment FeaturedProductsSectionFields on ComponentSectionFeaturedProducts {
    id
    title
    description
+   background
    productList {
       data {
          id

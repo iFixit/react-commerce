@@ -9,17 +9,25 @@ import { SectionHeading } from './SectionHeading';
 export interface FeaturedProductsSectionProps {
    title?: string | null;
    description?: string | null;
+   background?: BackgroundColor | null;
    products: ProductPreview[];
 }
+
+type BackgroundColor = 'transparent' | 'white';
 
 export function FeaturedProductsSection({
    title,
    description,
+   background,
    products,
 }: FeaturedProductsSectionProps) {
-   // products = products.slice(0, 10);
    return (
-      <Box as="section" position="relative" w="full" bg="white">
+      <Box
+         as="section"
+         position="relative"
+         w="full"
+         bg={background ?? 'transparent'}
+      >
          <Flex direction="column" alignItems="center">
             <SectionHeaderWrapper
                textAlign="center"

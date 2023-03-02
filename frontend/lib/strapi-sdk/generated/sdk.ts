@@ -291,6 +291,7 @@ export type ComponentProductListRelatedPosts = {
 
 export type ComponentSectionFeaturedProducts = {
    __typename?: 'ComponentSectionFeaturedProducts';
+   background?: Maybe<Enum_Componentsectionfeaturedproducts_Background>;
    description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    productList?: Maybe<ProductListEntityResponse>;
@@ -434,6 +435,11 @@ export type DateTimeFilterInput = {
 export enum Enum_Componentpagesplitwithimage_Imageposition {
    Left = 'Left',
    Right = 'Right',
+}
+
+export enum Enum_Componentsectionfeaturedproducts_Background {
+   Transparent = 'transparent',
+   White = 'white',
 }
 
 export enum Enum_Productlist_Type {
@@ -2050,6 +2056,7 @@ export type FindPageQuery = {
                     id: string;
                     title?: string | null;
                     description?: string | null;
+                    background?: Enum_Componentsectionfeaturedproducts_Background | null;
                     productList?: {
                        __typename?: 'ProductListEntityResponse';
                        data?: {
@@ -3268,6 +3275,7 @@ export type FeaturedProductsSectionFieldsFragment = {
    id: string;
    title?: string | null;
    description?: string | null;
+   background?: Enum_Componentsectionfeaturedproducts_Background | null;
    productList?: {
       __typename?: 'ProductListEntityResponse';
       data?: {
@@ -3553,6 +3561,7 @@ export const FeaturedProductsSectionFieldsFragmentDoc = `
   id
   title
   description
+  background
   productList {
     data {
       id
