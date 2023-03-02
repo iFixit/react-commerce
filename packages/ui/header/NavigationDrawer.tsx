@@ -72,7 +72,7 @@ export const HeaderNavigationToggleButton = forwardRef<
          }}
          display={{
             base: 'block',
-            xl: 'none',
+            lg: 'none',
          }}
          icon={
             <Icon
