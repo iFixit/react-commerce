@@ -31,10 +31,10 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
       <LinkBox as="article" display="block" w="full" role="group">
          <ProductCardBadgeList
             sx={{
-               '& > :first-of-type': {
+               '& > div:first-of-type': {
                   display: 'block',
                },
-               '& > :not(:first-of-type)': {
+               '& > div:not(:first-of-type)': {
                   display: 'none',
                },
             }}
