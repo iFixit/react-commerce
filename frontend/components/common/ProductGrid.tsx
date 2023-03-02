@@ -38,15 +38,6 @@ export function ProductGrid({ children, columns, ...other }: ProductGridProps) {
       {} as Record<string, string>
    );
 
-   console.log({
-      childrenCount,
-      columns,
-      gridRow,
-      gridColumnStart,
-      gridColumnEnd,
-      display,
-   });
-
    return (
       <SimpleGrid
          {...other}

@@ -4,6 +4,7 @@ import {
    ALGOLIA_PRODUCT_INDEX_NAME,
 } from '@config/env';
 import { filterFalsyItems } from '@helpers/application-helpers';
+import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
 import { FeaturedProductsSectionFieldsFragment } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch/lite';
@@ -36,8 +37,16 @@ export async function featuredProductsSectionFromStrapi(
 
    if (id == null) return null;
 
+   const productList = fragment?.productList?.data?.attributes ?? null;
+
+   const filters = computeProductListAlgoliaFilterPreset({
+      deviceTitle: productList?.deviceTitle ?? null,
+      filters: productList?.filters ?? null,
+   });
+
    const response = await searchIndex.search('', {
       hitsPerPage: 12,
+      filters,
    });
 
    const products = filterFalsyItems(

@@ -42,7 +42,7 @@ export function productPreviewFromAlgoliaHit(
    }
    const product = validation.data;
    return {
-      id: product.productid,
+      id: String(product.productid),
       handle: product.handle,
       title: product.title,
       image: imageFromUrl(product.image_url),
