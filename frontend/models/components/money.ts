@@ -1,4 +1,4 @@
-import { toNumber } from '@helpers/zod-helpers';
+import { printZodError, toNumber } from '@helpers/zod-helpers';
 import { z } from 'zod';
 
 export type CurrencyCode = z.infer<typeof CurrencyCodeSchema>;
@@ -26,4 +26,13 @@ export function moneyFromAmount(
       amount,
       currencyCode: code,
    };
+}
+
+export function getCurrencyCode(code: unknown): CurrencyCode | null {
+   const validation = CurrencyCodeSchema.safeParse(code);
+   if (!validation.success) {
+      console.error(`Invalid currency code:`, printZodError(validation.error));
+      return null;
+   }
+   return validation.data;
 }

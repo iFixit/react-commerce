@@ -10,7 +10,11 @@ import {
    getServerShopifyStorefrontSdk,
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
-import type { ProPriceTiers } from '@models/components/pro-price-tiers';
+import { getCurrencyCode } from '@models/components/money';
+import {
+   ProPriceTiers,
+   proPriceTiersFromPriceTiersMetafield,
+} from '@models/components/pro-price-tiers';
 import shuffle from 'lodash/shuffle';
 import { z, ZodError } from 'zod';
 import { findStoreByCode } from '../store';
@@ -139,6 +143,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
            )
          : 0;
       const { productcode, optionid } = parseItemcode(String(variant.sku));
+      const currencyCode = getCurrencyCode(variant.price.currencyCode);
       return {
          ...other,
          productcode,
@@ -150,10 +155,12 @@ function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
          image: variant.image
             ? formatImage(variant.image, shopifyProduct)
             : null,
-         proPricesByTier: parsePriceTiersMetafieldValue(
-            variant.proPricesByTier?.value,
-            variant.price.currencyCode
-         ),
+         proPricesByTier: currencyCode
+            ? proPriceTiersFromPriceTiersMetafield(
+                 variant.proPricesByTier?.value,
+                 currencyCode
+              )
+            : null,
          isDiscounted,
          discountPercentage,
          description: variant.description?.value ?? null,
@@ -265,6 +272,7 @@ function getFeaturedProductVariants(
 function getProductVariantCard(
    fragment: ProductVariantCardFragment
 ): ProductVariantCard {
+   const currencyCode = getCurrencyCode(fragment.price.currencyCode);
    return {
       ...fragment,
       price: ProductVariantCardSchema.shape.price.parse(fragment.price),
@@ -280,10 +288,12 @@ function getProductVariantCard(
          oemPartnership: fragment.product.oemPartnership?.value ?? null,
       },
       warranty: fragment.warranty?.value ?? null,
-      proPricesByTier: parsePriceTiersMetafieldValue(
-         fragment.proPricesByTier?.value,
-         fragment.price.currencyCode
-      ),
+      proPricesByTier: currencyCode
+         ? proPriceTiersFromPriceTiersMetafield(
+              fragment.proPricesByTier?.value,
+              currencyCode
+           )
+         : null,
       enabled: fragment.enabled?.value === 'true',
    };
 }
@@ -431,36 +441,6 @@ function parseNumericMetafieldValue(value: string | null | undefined) {
       return null;
    }
    return value != null ? parseFloat(value) : null;
-}
-
-const PriceTiersMetafieldSchema = z.record(z.number());
-
-function parsePriceTiersMetafieldValue(
-   value: string | null | undefined,
-   currencyCode: string
-): ProPriceTiers | null {
-   if (value == null) {
-      return null;
-   }
-   const json: unknown = JSON.parse(value);
-   if (json == null) {
-      return null;
-   }
-   const result = PriceTiersMetafieldSchema.safeParse(json);
-   if (result.success) {
-      return Object.keys(result.data).reduce((acc, key) => {
-         const amount = result.data[key];
-         return {
-            ...acc,
-            [key]: {
-               amount,
-               currencyCode,
-            },
-         };
-      }, {} as ProPriceTiers);
-   }
-   logParseErrors(result.error, 'price tiers metafield');
-   return null;
 }
 
 function parseShippingRestrictions(value: string | null | undefined) {
