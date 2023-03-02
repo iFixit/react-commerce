@@ -13,7 +13,7 @@ import {
    shouldShowProductRating,
 } from '@ifixit/helpers';
 import { IconBadge, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
-import type { ProductPreview } from '@models/shared/components/product-preview';
+import type { ProductPreview } from '@models/components/product-preview';
 
 export interface ProductGridItemProps {
    product: ProductPreview;

@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { ProductGrid } from '@components/common/ProductGrid';
 import { ProductGridItem } from '@components/common/ProductGridItem';
-import type { ProductPreview } from '@models/shared/components/product-preview';
+import type { ProductPreview } from '@models/components/product-preview';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeaderWrapper } from './SectionHeaderWrapper';
 import { SectionHeading } from './SectionHeading';

@@ -1,7 +1,7 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
 import { BrowseSectionFieldsFragment } from '@lib/strapi-sdk';
-import { imageFromStrapi, ImageSchema } from '@models/shared/components/image';
+import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import {
    BrowseCategory,

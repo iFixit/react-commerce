@@ -1,9 +1,9 @@
 import { filterNullableItems } from '@helpers/application-helpers';
 import { assertNever } from '@ifixit/helpers';
 import { FindPageQuery, strapi } from '@lib/strapi-sdk';
-import { featuredProductsSectionFromStrapi } from '@models/shared/sections/featured-products-section';
-import { iFixitStatsSectionFromStrapi } from '@models/shared/sections/ifixit-stats-section';
-import { splitWithImageSectionFromStrapi } from '@models/shared/sections/split-with-image-section';
+import { featuredProductsSectionFromStrapi } from '@models/sections/featured-products-section';
+import { iFixitStatsSectionFromStrapi } from '@models/sections/ifixit-stats-section';
+import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
 import { browseSectionFromStrapi } from './sections/browse-section';
 import { heroSectionFromStrapi } from './sections/hero-section';

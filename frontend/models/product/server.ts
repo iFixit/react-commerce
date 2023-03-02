@@ -10,7 +10,7 @@ import {
    getServerShopifyStorefrontSdk,
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
-import type { ProPriceTiers } from '@models/shared/components/pro-price-tiers';
+import type { ProPriceTiers } from '@models/components/pro-price-tiers';
 import shuffle from 'lodash/shuffle';
 import { z, ZodError } from 'zod';
 import { findStoreByCode } from '../store';

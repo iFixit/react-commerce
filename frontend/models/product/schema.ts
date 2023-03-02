@@ -1,7 +1,7 @@
 import { toNumber } from '@helpers/zod-helpers';
-import { ImageSchema } from '@models/shared/components/image';
-import { MoneySchema } from '@models/shared/components/money';
-import { ProPriceTiersSchema } from '@models/shared/components/pro-price-tiers';
+import { ImageSchema } from '@models/components/image';
+import { MoneySchema } from '@models/components/money';
+import { ProPriceTiersSchema } from '@models/components/pro-price-tiers';
 import { z } from 'zod';
 
 const BreadcrumbSchema = z.object({
