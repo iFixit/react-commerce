@@ -94,6 +94,7 @@ importers:
       jest-css-modules-transform: ^4.4.2
       jest-environment-jsdom: 28.1.2
       jest-watch-typeahead: 1.1.0
+      lite-youtube-embed: ^0.2.0
       lodash: 4.17.21
       lru-cache: 7.10.1
       msw: 0.49.2
@@ -149,6 +150,7 @@ importers:
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       graphql: 15.5.3
       ioredis: 5.2.4
+      lite-youtube-embed: 0.2.0
       lodash: 4.17.21
       lru-cache: 7.10.1
       next: 12.2.3_t7ss3ubh4wigfvyfclbvqff3gm
@@ -12763,6 +12765,10 @@ packages:
       - zen-observable
       - zenObservable
     dev: true
+
+  /lite-youtube-embed/0.2.0:
+    resolution: {integrity: sha512-XXXAk5sbvtjjwbie3XG+6HppgTm1HTGL/Uk9z9NkJH53o7puZLur434heHzAjkS60hZB3vT4ls25zl5rMiX4EA==}
+    dev: false
 
   /load-json-file/4.0.0:
     resolution: {integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs=}

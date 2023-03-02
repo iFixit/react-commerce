@@ -1,5 +1,10 @@
 import { Box, chakra, SystemStyleObject } from '@chakra-ui/react';
 
+import 'lite-youtube-embed/src/lite-yt-embed.css';
+
+// Dynamically import `lite-youtube-embed` to ensure it's not run server-side.
+import('lite-youtube-embed');
+
 const renderStyles: SystemStyleObject = {
    '.headerContainer': {
       display: 'flex',
