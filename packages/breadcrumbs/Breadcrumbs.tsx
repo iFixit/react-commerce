@@ -1,5 +1,6 @@
 import {
    Flex,
+   FlexProps,
    Link,
    Breadcrumb,
    BreadcrumbItem,
@@ -40,7 +41,8 @@ export const BreadCrumbs = memo(function DynamicBreadCrumbs({
    breadCrumbs,
    breadcrumbsToShow,
    breadcrumbIcon = <DefaultBreadcrumbIcon />,
-}: BreadCrumbsProps) {
+   ...flexProps
+}: BreadCrumbsProps & FlexProps) {
    if (breadcrumbsToShow != undefined && breadcrumbsToShow <= 0) {
       throw new Error(
          'breadcrumbsToShow can only be undefined or must be greater than 0'
@@ -81,6 +83,7 @@ export const BreadCrumbs = memo(function DynamicBreadCrumbs({
          flexGrow={1}
          alignItems="center"
          gap="6px"
+         {...flexProps}
       >
          <IFixitCollapsedBreadcrumb
             breadCrumbs={wrappedBreadcrumbs}
@@ -205,7 +208,6 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
                background="gray.300"
                variant="solid"
                size="xs"
-               marginLeft={{ base: 3, sm: 1 }}
                marginRight="1"
                minHeight={{ base: '20px', sm: '24px' }}
                minWidth={{ base: '26px', sm: '32px' }}
