@@ -33,7 +33,7 @@ export function ProductListView({
          <Wrapper py={{ base: 4, md: 6 }}>
             <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
                <Index indexName={indexName} indexId="main-product-list-index">
-                  <Configure filters={filters} hitsPerPage={18} />
+                  <Configure filters={filters} hitsPerPage={24} />
                   <MetaTags productList={productList} />
                   {productList.heroImage ? (
                      <HeroWithBackgroundSection productList={productList} />
