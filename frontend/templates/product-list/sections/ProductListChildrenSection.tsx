@@ -43,7 +43,6 @@ export function ProductListChildrenSection({
                xl: 5,
             }}
             spacing="2"
-            pt={1}
          >
             {productListChildren.map((child, index) => {
                return (

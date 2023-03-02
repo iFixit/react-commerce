@@ -41,13 +41,7 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
 
    const title = getProductListTitle(productList, itemType);
    return (
-      <Flex
-         pos="relative"
-         mx={{ base: 6, sm: 0 }}
-         minH="96"
-         borderRadius="base"
-         overflow="hidden"
-      >
+      <Flex pos="relative" minH="96" borderRadius="base" overflow="hidden">
          <ResponsiveImage
             priority
             layout="fill"
