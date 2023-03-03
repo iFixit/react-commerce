@@ -17,6 +17,12 @@ export type TroubleshootingData = {
    deviceGuideUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
+   breadcrumbs: BreadcrumbEntry[];
+};
+
+export type BreadcrumbEntry = {
+   title: string;
+   url: string;
 };
 
 type TroubleshootingPageProps = {
