@@ -72,6 +72,34 @@ const renderStyles: SystemStyleObject = {
       borderColor: 'gray.300',
       padding: '4px',
    },
+
+   '.imageBox_left': {
+      clear: 'left',
+      float: 'left',
+      marginRight: '30px',
+      '> img': {
+         clear: 'left',
+      },
+   },
+
+   '.imageBox_right': {
+      clear: 'right',
+      float: 'right',
+      marginLeft: '30px',
+      '>img': {
+         clear: 'right',
+      },
+   },
+
+   '.imageBox_center': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      '>img': {
+         //margin: '0 auto',
+         clear: 'both',
+      },
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
