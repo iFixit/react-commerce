@@ -73,6 +73,13 @@ const renderStyles: SystemStyleObject = {
       padding: '4px',
    },
 
+   '.videoBox_center': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      clear: 'both',
+   },
+
    '.imageBox_left': {
       clear: 'left',
       float: 'left',
