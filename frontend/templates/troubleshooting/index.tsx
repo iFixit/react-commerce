@@ -17,7 +17,11 @@ import {
    MenuList,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
-import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import {
+   BreadcrumbEntry,
+   Section,
+   TroubleshootingData,
+} from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
@@ -25,6 +29,7 @@ import {
    faClockRotateLeft,
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
+import { BreadCrumbs } from '@ifixit/breadcrumbs';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -37,6 +42,7 @@ const Wiki: NextPageWithLayout<{
             historyUrl={wikiData.historyUrl}
             deviceGuideUrl={wikiData.deviceGuideUrl}
             devicePartsUrl={wikiData.devicePartsUrl}
+            breadcrumbs={wikiData.breadcrumbs}
          />
          <Flex
             padding="0px 32px 32px"
@@ -76,9 +82,11 @@ function NavBar({
    historyUrl,
    deviceGuideUrl,
    devicePartsUrl,
+   breadcrumbs,
 }: {
    editUrl: string;
    historyUrl: string;
+   breadcrumbs: BreadcrumbEntry[];
 } & NavTabsProps) {
    return (
       <Flex
@@ -90,7 +98,7 @@ function NavBar({
          justify="center"
       >
          <Flex maxW="1280px" flexGrow="1">
-            <Breadcrumbs />
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
             <NavTabs
                deviceGuideUrl={deviceGuideUrl}
                devicePartsUrl={devicePartsUrl}
@@ -102,8 +110,12 @@ function NavBar({
    );
 }
 
-function Breadcrumbs() {
-   return <Box flexGrow="1"></Box>;
+function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbEntry[] }) {
+   const bc = breadcrumbs.map((breadcrumb) => ({
+      label: breadcrumb.title,
+      url: breadcrumb.url,
+   }));
+   return <BreadCrumbs breadCrumbs={bc} />;
 }
 
 function EditButton({ editUrl }: { editUrl: string }) {
