@@ -95,7 +95,20 @@ export async function findProductList(
          productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
+      heroImage: productList?.heroImage?.data?.attributes
+         ? getImageFromStrapiImage(
+              productList.heroImage.data.attributes,
+              'large'
+           )
+         : null,
       image: null,
+      brandLogo: productList?.brandLogo?.data?.attributes
+         ? getImageFromStrapiImage(
+              productList.brandLogo.data.attributes,
+              'large'
+           )
+         : null,
+      brandLogoWidth: productList?.brandLogoWidth ?? null,
       ancestors,
       children: await getProductListChildren({
          apiChildren: productList?.children?.data,
@@ -103,7 +116,6 @@ export async function findProductList(
          ifixitOrigin,
          isPartsList,
       }),
-      childrenHeading: productList?.childrenHeading ?? null,
       sections: filterNullableItems(
          productList?.sections.map(createProductListSection)
       ),

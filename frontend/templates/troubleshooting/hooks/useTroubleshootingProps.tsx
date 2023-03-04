@@ -12,6 +12,11 @@ export type TroubleshootingData = {
    introduction: Section[];
    solutions: Section[];
    conclusion: Section[];
+   editUrl: string;
+   historyUrl: string;
+   deviceGuideUrl?: string;
+   devicePartsUrl?: string;
+   canonicalUrl: string;
 };
 
 type TroubleshootingPageProps = {

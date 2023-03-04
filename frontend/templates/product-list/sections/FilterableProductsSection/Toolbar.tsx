@@ -12,13 +12,13 @@ import {
    Text,
    useDisclosure,
 } from '@chakra-ui/react';
-import { faList } from '@fortawesome/pro-solid-svg-icons';
-import { faGrid } from '@fortawesome/pro-solid-svg-icons';
+import { faGrid, faList } from '@fortawesome/pro-solid-svg-icons';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsDrawer } from './facets/drawer';
 import { SearchInput } from './SearchInput';
 
@@ -34,6 +34,7 @@ export type ToolbarProps = {
 };
 
 export function Toolbar(props: ToolbarProps) {
+   const currentRefinements = useCurrentRefinements();
    const { viewType, onViewTypeChange, productList } = props;
    const drawer = useDisclosure({
       defaultIsOpen: false,
@@ -61,30 +62,28 @@ export function Toolbar(props: ToolbarProps) {
          >
             <NumberOfHits />
             <Flex
-               wrap="wrap"
+               wrap={{
+                  base: 'wrap',
+                  md: 'nowrap',
+               }}
                flexGrow={1}
                justify="flex-end"
-               px={{ base: 6, sm: 0 }}
             >
-               <OpenFiltersButton onClick={drawer.onOpen}>
-                  Filters
-               </OpenFiltersButton>
                <SearchInput
                   placeholder={`Search ${getProductListTitle(productList)}`}
-                  order={{
-                     base: 3,
-                     md: 2,
-                  }}
                   maxW={{
                      base: 'full',
                      md: '80',
                   }}
-                  mt={{
+                  mb={{
                      base: '2',
                      md: '0',
                   }}
                   flexGrow={1}
                />
+               <OpenFiltersButton onClick={drawer.onOpen}>
+                  Filters
+               </OpenFiltersButton>
                <ProductViewSwitch
                   ml="2"
                   order={{
@@ -97,15 +96,27 @@ export function Toolbar(props: ToolbarProps) {
                      data-testid="list-view-button"
                      isActive={viewType === ProductViewType.List}
                      onClick={() => onViewTypeChange(ProductViewType.List)}
+                     borderColor="gray.300"
                   />
                   <ProductViewGridButton
                      aria-label="Select grid view"
                      data-testid="grid-view-button"
                      isActive={viewType === ProductViewType.Grid}
                      onClick={() => onViewTypeChange(ProductViewType.Grid)}
+                     borderColor="gray.300"
                   />
                </ProductViewSwitch>
             </Flex>
+
+            {currentRefinements.items.length > 0 && (
+               <Flex
+                  wrap="wrap"
+                  align="flex-start"
+                  display={{ base: 'flex', md: 'none' }}
+               >
+                  <CurrentRefinements />
+               </Flex>
+            )}
          </Stack>
       </>
    );
@@ -118,7 +129,12 @@ export function NumberOfHits() {
       return null;
    }
    return (
-      <Text textAlign="center" color="gray.500" fontWeight="bold">
+      <Text
+         textAlign="center"
+         color="gray.500"
+         fontWeight="medium"
+         whiteSpace="nowrap"
+      >
          {hitsCount}
          {hitsCount === 1 ? ' result' : ' results'}
       </Text>
@@ -158,7 +174,7 @@ export const ProductViewSwitch = (props: ButtonGroupProps) => {
          size="sm"
          isAttached
          bg="white"
-         borderRadius="md"
+         borderRadius="base"
          {...props}
       />
    );

@@ -22,7 +22,7 @@ import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { PageContentWrapper, ProductVariantPrice } from '@ifixit/ui';
+import { Wrapper, ProductVariantPrice } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
@@ -66,8 +66,8 @@ export function ProductSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <PageContentWrapper as="section">
-         <Flex px={{ base: 5, sm: 0 }}>
+      <Wrapper as="section">
+         <Flex>
             <Flex
                position="sticky"
                alignSelf="flex-start"
@@ -93,10 +93,11 @@ export function ProductSection({
                   id="zoom-container"
                   position="absolute"
                   top="0"
+                  // Calculation description: https://github.com/iFixit/react-commerce/pull/1398#issuecomment-1440432678
                   w={{
                      md: '320px',
-                     lg: 'calc(400px + 16px + ((100vw - 960px) / 2 - 24px))',
-                     xl: 'calc(400px + 16px + ((100vw - 1100px) / 2 - 24px))',
+                     lg: 'calc(16px + 400px + 32px - 24px)',
+                     xl: 'calc(16px + 400px + 32px + (100vw - 1280px) / 2 - 24px)',
                   }}
                   left="calc(100% + 24px)"
                   boxShadow="md"
@@ -116,6 +117,7 @@ export function ProductSection({
                }}
                fontSize="sm"
                position="relative"
+               data-testid="product-info-section"
             >
                {selectedVariant.sku && (
                   <Text color="gray.500" data-testid="product-sku">
@@ -242,7 +244,7 @@ export function ProductSection({
                </VStack>
             </Box>
          </Flex>
-      </PageContentWrapper>
+      </Wrapper>
    );
 }
 
@@ -368,7 +370,7 @@ function ProOnlyAlert(props: AlertProps) {
 
 function NotForSaleAlert(props: AlertProps) {
    return (
-      <Alert status="warning" {...props}>
+      <Alert status="warning" {...props} data-testid="not-for-sale-alert">
          <FaIcon icon={faCircleExclamation} h="5" mr="2" color="amber.600" />
          <span>Not for Sale.</span>
       </Alert>

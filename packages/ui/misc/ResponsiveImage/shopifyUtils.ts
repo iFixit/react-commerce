@@ -1,19 +1,12 @@
 import { ImageLoaderProps } from 'next/image';
 
-const CDN_HOSTNAMES = [
-   'cdn.shopify.com',
-   'cdn.shopifycdn.net',
-   'shopify-assets.shopifycdn.com',
-   'shopify-assets.shopifycdn.net',
-];
-
 const BASE_IMAGE_SIZE = 352;
 
+const shopifyImageRegExp = new RegExp(
+   /cdn\.shopify\.com|cdn\.shopifycdn\.net|shopify-assets\.shopifycdn\.com|shopify-assets\.shopifycdn\.net/
+);
 export function isShopifyImage(src: string) {
-   const newSrc = new URL(src);
-   return CDN_HOSTNAMES.some((allowedHostname) =>
-      newSrc.hostname.endsWith(allowedHostname)
-   );
+   return shopifyImageRegExp.test(src);
 }
 
 export function getShopifyImageLoader() {

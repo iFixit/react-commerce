@@ -53,6 +53,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
          type: 'product',
          product: {
             name: product.title,
+            variantTitle: selectedVariant.title,
             internalDisplayName:
                selectedVariant.internalDisplayName ?? undefined,
             itemcode: selectedVariant.sku,
@@ -66,6 +67,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       onOpen();
    }, [
       selectedVariant.sku,
+      selectedVariant.title,
       selectedVariant.id,
       selectedVariant.image?.url,
       addToCart,
@@ -115,7 +117,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                      align="flex-start"
                   />
                )}
-               <Alert status="warning" mb="3">
+               <Alert status="warning" mb="3" data-testid="out-of-stock-alert">
                   <FaIcon
                      icon={faExclamationCircle}
                      h="5"

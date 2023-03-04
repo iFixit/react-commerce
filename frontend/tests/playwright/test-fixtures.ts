@@ -23,6 +23,7 @@ import type { MockServiceWorker } from 'playwright-msw';
 import { createWorkerFixture } from 'playwright-msw';
 import { format } from 'util';
 import { handlers } from './msw/handlers';
+import { exec } from 'node:child_process';
 
 export const test = base.extend<
    ProductFixtures &
@@ -35,9 +36,14 @@ export const test = base.extend<
 >({
    customServer: [
       // eslint-disable-next-line no-empty-pattern
-      async ({}, use) => {
+      async ({}, use, workerInfo) => {
+         process.env.NEXT_DIST_DIR = process.env.CI
+            ? './.next'
+            : `./.next-worker-${workerInfo.workerIndex}`;
          const props: CustomNextjsServer = await Server();
          await use(props);
+         // Clean up the dist directory after the worker is done.
+         exec('rm -rf .next-worker-*');
       },
       {
          /**
@@ -53,8 +59,8 @@ export const test = base.extend<
          timeout: 60 * 2 * 1000,
       },
    ],
-   productPage: async ({ page }, use) => {
-      await use(new ProductPage(page));
+   productPage: async ({ page, baseURL }, use) => {
+      await use(new ProductPage(page, baseURL ?? 'http://localhost:3000'));
    },
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
@@ -70,7 +76,8 @@ export const test = base.extend<
     * test to ensure the custom server is booted.
     */
    serverRequestInterceptor: [
-      async ({ customServer }, use) => {
+      async ({ customServer, productPage }, use) => {
+         productPage.updateBaseURL(`http://localhost:${customServer.port}`);
          await use(customServer.serverRequestInterceptor);
       },
       { scope: 'test' },

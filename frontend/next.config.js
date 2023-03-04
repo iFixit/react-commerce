@@ -8,16 +8,17 @@ const {
 const withTM = require('next-transpile-modules')([
    '@ifixit/analytics',
    '@ifixit/app',
-   '@ifixit/ui',
-   '@ifixit/icons',
    '@ifixit/auth-sdk',
+   '@ifixit/breadcrumbs',
    '@ifixit/cart-sdk',
-   '@ifixit/newsletter-sdk',
-   '@ifixit/helpers',
-   '@ifixit/ifixit-api-client',
-   '@ifixit/shopify-storefront-client',
-   '@ifixit/sentry',
    '@ifixit/footer',
+   '@ifixit/helpers',
+   '@ifixit/icons',
+   '@ifixit/ifixit-api-client',
+   '@ifixit/newsletter-sdk',
+   '@ifixit/sentry',
+   '@ifixit/shopify-storefront-client',
+   '@ifixit/ui',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -44,29 +45,21 @@ const sentryWebpackPluginOptions = {
 };
 const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;
 
-console.log('Strapi API: ' + process.env.NEXT_PUBLIC_STRAPI_ORIGIN);
+const strapiOrigin = requireStrapiOrigin();
+
+console.log('Strapi API: ' + strapiOrigin);
 console.log('iFixit API: ' + process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
 
 const moduleExports = {
+   distDir: process.env.NEXT_DIST_DIR ?? '.next',
    env: {
-      ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
-      NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-      NEXT_PUBLIC_IFIXIT_ORIGIN: process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
-      NEXT_PUBLIC_STRAPI_ORIGIN: process.env.NEXT_PUBLIC_STRAPI_ORIGIN,
-      SENTRY_DSN: process.env.SENTRY_DSN,
-      NEXT_PUBLIC_MATOMO_URL: process.env.NEXT_PUBLIC_MATOMO_URL,
-      NEXT_PUBLIC_GA_URL: process.env.NEXT_PUBLIC_GA_URL,
-      NEXT_PUBLIC_GA_KEY: process.env.NEXT_PUBLIC_GA_KEY,
-      NEXT_PUBLIC_DEFAULT_STORE_CODE:
-         process.env.NEXT_PUBLIC_DEFAULT_STORE_CODE,
-      NEXT_PUBLIC_POLYFILL_DOMAIN: process.env.NEXT_PUBLIC_POLYFILL_DOMAIN,
-      NEXT_PUBLIC_CACHE_DISABLED: process.env.NEXT_PUBLIC_CACHE_DISABLED,
+      NEXT_PUBLIC_STRAPI_ORIGIN: strapiOrigin,
    },
    async rewrites() {
       return [
          {
             source: '/uploads/:name',
-            destination: `${process.env.NEXT_PUBLIC_STRAPI_ORIGIN}/uploads/:name`,
+            destination: `${strapiOrigin}/uploads/:name`,
          },
       ];
    },
@@ -161,3 +154,45 @@ module.exports = withSentryConfig(
    withBundleStats(withBundleAnalyzer(withTM(moduleExports))),
    SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );
+
+function requireStrapiOrigin() {
+   if (process.env.NEXT_PUBLIC_STRAPI_ORIGIN) {
+      return process.env.NEXT_PUBLIC_STRAPI_ORIGIN;
+   }
+   const branch = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF;
+   if (typeof branch !== 'string' || branch.trim().length === 0) {
+      throw new Error(
+         'NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF environment variable is not set'
+      );
+   }
+   return `https://${getGovinorBranchHandle(branch)}.govinor.com`;
+}
+
+/**
+ * This function takes a branch name and returns a handle that can be used to form the Strapi origin as
+ * setup by Govinor. The handle is a handleized version of the branch name, with a hash appended to the end
+ * if the handle is too long.
+ * @param {String} branchName
+ * @returns {String} handle for the branch
+ */
+function getGovinorBranchHandle(branchName) {
+   const MAX_DOMAIN_LENGTH = 63;
+   const BRANCH_HASH_LENGTH = 8;
+   const handle = branchName.replace(/\//g, '-').replace(/_/g, '-');
+
+   if (handle.length <= MAX_DOMAIN_LENGTH) {
+      return handle;
+   }
+
+   const crypto = require('crypto');
+   const hash = crypto
+      .createHash('sha1')
+      .update(branchName)
+      .digest('hex')
+      .substring(0, BRANCH_HASH_LENGTH);
+   const truncatedHandle = handle.substring(
+      0,
+      MAX_DOMAIN_LENGTH - BRANCH_HASH_LENGTH
+   );
+   return `${truncatedHandle}${hash}`;
+}

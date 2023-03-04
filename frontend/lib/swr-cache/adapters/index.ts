@@ -1,24 +1,13 @@
-import { redisAdapter } from './redis-adapter';
-import Redis from 'ioredis';
-import { REDIS_URL } from '@config/env';
+import { client } from '@lib/redis';
 import { nullAdapter } from './null-adapter';
+import { redisAdapter } from './redis-adapter';
 
-export const getCache = () => {
-   if (REDIS_URL === undefined) {
+const getCache = () => {
+   if (client == null) {
       return nullAdapter();
    }
 
-   const client = new Redis(REDIS_URL, {
-      connectTimeout: 500,
-      // Retry, connect every once in a while as cache misses / failures are OK
-      retryStrategy: (times) => Math.min(times * 5000, 10 * 60 * 1000),
-      maxRetriesPerRequest: 0,
-      // Always try re-connecting since one instance is shared across the whole
-      // process
-      reconnectOnError: (err) => 1,
-      // When not connected to redis, return error, don't add operations to a
-      // queue
-      enableOfflineQueue: false,
-   });
    return redisAdapter(client);
 };
+
+export const cache = getCache();

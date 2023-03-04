@@ -1,6 +1,10 @@
 import { test, expect } from '../test-fixtures';
 import { mockedProductQuery } from '@tests/jest/__mocks__/products';
 import { cloneDeep } from 'lodash';
+import {
+   createGraphQLHandler,
+   createRestHandler,
+} from './../msw/request-handler';
 
 test.describe('product page add to cart', () => {
    test('Clicking Add To Cart Adds Items To Cart', async ({
@@ -21,7 +25,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
@@ -49,7 +52,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Item Can Be Added Again After Removing The Item', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
@@ -69,7 +71,6 @@ test.describe('product page add to cart', () => {
    });
 
    test('Back to Shopping Button Works', async ({
-      page,
       productPage,
       cartDrawer,
    }) => {
@@ -79,42 +80,49 @@ test.describe('product page add to cart', () => {
       await cartDrawer.open();
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
-      await page.getByTestId('back-to-shopping').click();
+      await productPage.page.getByTestId('back-to-shopping').click();
       await cartDrawer.assertDrawerIsClosed();
 
       await productPage.addToCart();
       await cartDrawer.assertCartTotalQuantity(1);
-      await expect(page.getByTestId('back-to-shopping')).not.toBeVisible();
+      await expect(
+         productPage.page.getByTestId('back-to-shopping')
+      ).not.toBeVisible();
 
       await cartDrawer.removeItem(sku);
 
       await cartDrawer.assertCartTotalQuantity(0);
       await cartDrawer.assertItemIsNotPresent(sku);
-      await page.getByTestId('back-to-shopping').click();
+      await productPage.page.getByTestId('back-to-shopping').click();
       await cartDrawer.assertDrawerIsClosed();
    });
 
    test.describe('Product Stock Levels', () => {
       test('Low stocked product changes quantity', async ({
-         page,
          productPage,
          cartDrawer,
          serverRequestInterceptor,
-         port,
-         graphql,
       }) => {
+         const lowStockedProduct = cloneDeep(mockedProductQuery);
+         if (lowStockedProduct.product) {
+            lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
+         }
+
          serverRequestInterceptor.use(
-            graphql.query('findProduct', async (req, res, ctx) => {
-               const lowStockedProduct = cloneDeep(mockedProductQuery);
-               if (lowStockedProduct.product) {
-                  lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
-               }
-               return res(ctx.data(lowStockedProduct));
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: lowStockedProduct,
+               },
             })
          );
 
-         await page.goto(
-            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-low-stocked`
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-low-stocked'
          );
 
          const firstOptionSku = await productPage.getSku();
@@ -160,43 +168,50 @@ test.describe('product page add to cart', () => {
       });
 
       test('Out of stock product cannot be added to cart', async ({
-         page,
          productPage,
          cartDrawer,
          serverRequestInterceptor,
          clientRequestHandler,
-         port,
-         graphql,
-         rest,
       }) => {
          clientRequestHandler.use(
-            rest.post(
-               '/api/2.0/cart/product/notifyWhenSkuInStock',
-               (req, res, ctx) => {
-                  return res(ctx.status(200));
-               }
-            )
-         );
-
-         serverRequestInterceptor.use(
-            graphql.query('findProduct', async (req, res, ctx) => {
-               const outOfStockProduct = cloneDeep(mockedProductQuery);
-               if (outOfStockProduct.product) {
-                  outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
-               }
-               return res(ctx.data(outOfStockProduct));
+            createRestHandler({
+               request: {
+                  endpoint: '/api/2.0/cart/product/notifyWhenSkuInStock',
+                  method: 'post',
+               },
+               response: {
+                  status: 200,
+               },
             })
          );
 
-         await page.goto(
-            `http://localhost:${port}/products/iphone-6s-plus-replacement-battery-out-of-stock`
+         const outOfStockProduct = cloneDeep(mockedProductQuery);
+         if (outOfStockProduct.product) {
+            outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
+         }
+
+         serverRequestInterceptor.use(
+            createGraphQLHandler({
+               request: {
+                  endpoint: 'findProduct',
+                  method: 'query',
+               },
+               response: {
+                  status: 200,
+                  body: outOfStockProduct,
+               },
+            })
+         );
+
+         await productPage.gotoProduct(
+            'iphone-6s-plus-replacement-battery-out-of-stock'
          );
 
          await expect(
-            page.getByRole('img', { name: 'Fix Kit' })
+            productPage.page.getByRole('img', { name: 'Fix Kit' })
          ).not.toBeVisible();
          await expect(
-            page.getByRole('img', { name: 'Part Only' }).first()
+            productPage.page.getByRole('img', { name: 'Part Only' }).first()
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();
@@ -204,18 +219,19 @@ test.describe('product page add to cart', () => {
          await expect(productPage.addToCartButton).not.toBeVisible();
          await productPage.assertInventoryMessage();
 
-         const notifyMeForm = page.getByText(/this item is currently/i);
-         await expect(notifyMeForm).toBeVisible();
-         await expect(notifyMeForm).toHaveText(
-            'This item is currently Out of Stock.'
-         );
-
-         await page.getByLabel('Email address').fill('test@example.com');
-         await page.getByRole('button', { name: 'Notify me' }).click();
          await expect(
-            page.getByText(
-               'You will be notified when this product is back in stock.'
-            )
+            productPage.page.getByTestId('out-of-stock-alert')
+         ).toBeVisible();
+
+         const notifyMeForm = productPage.page.getByTestId('notify-me-form');
+         await expect(notifyMeForm).toBeVisible();
+
+         await notifyMeForm
+            .getByLabel('Email address')
+            .fill('test@example.com');
+         await notifyMeForm.getByRole('button', { name: 'Notify me' }).click();
+         await expect(
+            productPage.page.getByTestId('notify-me-form-successful')
          ).toBeVisible();
 
          await productPage.switchSelectedVariant();

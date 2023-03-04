@@ -1,0 +1,12 @@
+fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
+   id
+   title
+   description
+   callToAction {
+      ...CallToActionFields
+   }
+   imagePosition
+   image {
+      ...ImageFields
+   }
+}

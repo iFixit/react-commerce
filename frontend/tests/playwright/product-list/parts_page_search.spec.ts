@@ -1,9 +1,4 @@
-import { waitForAlgoliaSearch } from './../utils';
 import { test, expect } from '../test-fixtures';
-
-const NO_SEARCH_RESULT = 'No matching products found';
-const NO_SEARCH_RESULTS_DESC =
-   "Try adjusting your search or filter to find what you're looking for";
 
 test.describe('parts page search', () => {
    test.beforeEach(async ({ page }) => {
@@ -14,13 +9,9 @@ test.describe('parts page search', () => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
-      // Start listening for algolia search request
-      const queryResponse = waitForAlgoliaSearch(page);
-
       await page.getByTestId('collections-search-box').fill('iphone');
-
-      // Wait for search request to finish
-      await queryResponse;
+      // Wait for url to update after search
+      await page.waitForURL('**/Parts?q=*');
 
       // Check that url parameter contains ?q after searching
       expect(page.url()).toContain('?q=iphone');
@@ -43,19 +34,14 @@ test.describe('parts page search', () => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
-      // Start listening for algolia search request
-      const queryResponse = waitForAlgoliaSearch(page);
-
       await page.getByTestId('collections-search-box').fill('asdasasdadasd');
-
-      // Wait for search request to finish
-      await queryResponse;
+      // Wait for url to update after search
+      await page.waitForURL('**/Parts?q=*');
 
       // Check that url parameter contains ?q after searching
       expect(page.url()).toContain('?q=');
 
       await expect(page.getByTestId('list-view-products')).not.toBeVisible();
-      await expect(page.getByText(NO_SEARCH_RESULT)).toBeVisible();
-      await expect(page.getByText(NO_SEARCH_RESULTS_DESC)).toBeVisible();
+      await expect(page.getByTestId('product-list-no-results')).toBeVisible();
    });
 });

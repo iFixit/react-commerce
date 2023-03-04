@@ -1,14 +1,11 @@
 import { test, expect } from '../test-fixtures';
 
 test.describe('Cross-sell test', () => {
-   test.beforeEach(async ({ productPage }) => {
-      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
-   });
-
    test('Current item from cross-sell can be added to cart', async ({
-      page,
+      productPage,
    }) => {
-      const products = await page.getByTestId('cross-sell-item');
+      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
+      const products = await productPage.page.getByTestId('cross-sell-item');
 
       let currentProductTitle = null;
       let currentProductPrice = null;
@@ -37,15 +34,20 @@ test.describe('Cross-sell test', () => {
       }
 
       // Assert total price matches price of product as it's the only one selected
-      await expect(
-         page.getByText('Total Price: ' + currentProductPrice)
-      ).toBeVisible();
+      expect(currentProductPrice).not.toBeNull();
+      expect(
+         await productPage.page
+            .getByTestId('cross-sell-total-price')
+            .textContent()
+      ).toContain(currentProductPrice!);
 
       // Assert adding to cart only adds current product
-      await page.getByTestId('cross-sell-add-to-cart-button').click();
+      await productPage.page
+         .getByTestId('cross-sell-add-to-cart-button')
+         .click();
 
-      const cartDrawerText = await page
-         .getByTestId('cart-drawer-body')
+      const cartDrawerText = await productPage.page
+         .getByTestId('cart-drawer-line-items')
          .textContent();
 
       otherProductTitles.forEach((otherProductTitle) => {
@@ -54,8 +56,9 @@ test.describe('Cross-sell test', () => {
       expect(cartDrawerText).toContain(currentProductTitle);
    });
 
-   test('Cross-sell products can be added to cart', async ({ page }) => {
-      const products = await page.getByTestId('cross-sell-item');
+   test('Cross-sell products can be added to cart', async ({ productPage }) => {
+      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
+      const products = await productPage.page.getByTestId('cross-sell-item');
 
       const allProductTitles = [];
       let expectedTotalPrice = 0;
@@ -71,15 +74,19 @@ test.describe('Cross-sell test', () => {
       }
 
       // Assert total price matches the sum of all products
-      await expect(
-         page.getByText('Total Price: $' + expectedTotalPrice.toFixed(2))
-      ).toBeVisible();
+      expect(
+         await productPage.page
+            .getByTestId('cross-sell-total-price')
+            .textContent()
+      ).toContain(expectedTotalPrice.toFixed(2));
 
       // Assert adding to cart adds all products
-      await page.getByTestId('cross-sell-add-to-cart-button').click();
+      await productPage.page
+         .getByTestId('cross-sell-add-to-cart-button')
+         .click();
 
-      const cartDrawerText = await page
-         .getByTestId('cart-drawer-body')
+      const cartDrawerText = await productPage.page
+         .getByTestId('cart-drawer-line-items')
          .textContent();
 
       allProductTitles.forEach((productTitle) => {

@@ -23,9 +23,9 @@ export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {
          bg="white"
          position="relative"
          direction="column"
-         spacing={5}
+         spacing={{ base: 3, md: 4 }}
          align="stretch"
-         p={4}
+         p={{ base: 3, md: 4 }}
          {...props}
       />
    );
@@ -63,11 +63,25 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
 };
 
 export const ProductCardBody = (props: StackProps) => {
-   return <VStack h="full" spacing="4" align="flex-start" {...props} />;
+   return (
+      <VStack
+         h="full"
+         spacing={{ base: 3, md: 4 }}
+         align="flex-start"
+         {...props}
+      />
+   );
 };
 
 export const ProductCardTitle = (props: HeadingProps) => {
-   return <Heading as="h3" fontSize="md" fontWeight="medium" {...props} />;
+   return (
+      <Heading
+         as="h3"
+         fontSize={{ base: 'sm', md: 'md' }}
+         fontWeight="medium"
+         {...props}
+      />
+   );
 };
 
 export type ProductCardRatingProps = StackProps & {
@@ -92,7 +106,11 @@ export const ProductCardBadgeList = (props: StackProps) => {
    return (
       <HStack
          position="absolute"
-         top="-1"
+         zIndex="1"
+         top={{
+            base: 3,
+            md: 4,
+         }}
          left={{
             base: 3,
             md: 4,

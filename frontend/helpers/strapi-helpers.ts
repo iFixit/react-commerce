@@ -1,6 +1,12 @@
-import { UploadFile } from '@lib/strapi-sdk';
+import type { UploadFile } from '@lib/strapi-sdk';
 
 export type StrapiImageFormat = 'large' | 'medium' | 'small' | 'thumbnail';
+
+interface Image {
+   url: string;
+   alternativeText: string | null;
+   formats: Record<string, { url: string }>;
+}
 
 export function getImageFromStrapiImage(
    image: Pick<UploadFile, 'formats' | 'alternativeText' | 'url'>,
@@ -22,8 +28,19 @@ export function getImageFromStrapiImage(
    return result;
 }
 
-export interface Image {
-   url: string;
-   alternativeText: string | null;
-   formats: Record<string, { url: string }>;
+export function createSectionId<T extends { __typename: string }>(
+   section: T,
+   index: number
+): string;
+export function createSectionId<T extends { __typename?: string | null }>(
+   section: T | null | undefined,
+   index: number
+): string | null;
+export function createSectionId<T extends { __typename?: string | null }>(
+   section: T | null | undefined,
+   index: number
+): string | null {
+   if (section == null) return null;
+
+   return `${section.__typename}-${index}`;
 }

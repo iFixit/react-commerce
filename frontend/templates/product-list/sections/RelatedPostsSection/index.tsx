@@ -20,24 +20,16 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    }
 
    return (
-      <VStack align="stretch" spacing="6">
+      <VStack align="stretch" spacing="4">
          <Heading
-            size="lg"
-            px={{
-               base: 6,
-               sm: 0,
-            }}
+            as="h2"
+            color="gray.700"
+            fontSize={{ base: '2xl', md: '3xl' }}
+            fontWeight="medium"
          >
             Related News Stories
          </Heading>
-         <SimpleGrid
-            columns={{ base: 1, sm: 2, md: 3 }}
-            spacing="6"
-            px={{
-               base: 6,
-               sm: 0,
-            }}
-         >
+         <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
             {posts.map((post) => (
                <PostCard
                   key={post.id}

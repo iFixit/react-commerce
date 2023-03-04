@@ -3,7 +3,6 @@ import {
    Flex,
    Grid,
    GridItem,
-   Icon,
    Input,
    InputGroup,
    InputLeftElement,
@@ -11,19 +10,19 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
+import { SectionDescription } from '@components/sections/SectionDescription';
+import { SectionHeading } from '@components/sections/SectionHeading';
+import { faMagnifyingGlass } from '@fortawesome/pro-solid-svg-icons';
 import { productListPath } from '@helpers/path-helpers';
 import { useAppContext } from '@ifixit/app';
-import { PageContentWrapper } from '@ifixit/ui';
-import { GetSection } from '@models/page';
+import { FaIcon } from '@ifixit/icons';
+import { Wrapper } from '@ifixit/ui';
+import type { BrowseSection } from '@models/page/sections/browse-section';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { faMagnifyingGlass } from '@fortawesome/pro-solid-svg-icons';
-import { FaIcon } from '@ifixit/icons';
-import { SectionDescription } from '../components/SectionDescription';
-import { SectionHeading } from '../components/SectionHeading';
 
 export interface BrowseSectionProps {
-   data: GetSection<'ComponentPageBrowse'>;
+   data: BrowseSection;
 }
 
 export function BrowseSection({
@@ -33,7 +32,7 @@ export function BrowseSection({
       <Box as="section" mb="16">
          <Box position="relative" w="full">
             <HeadingBackground image={image} />
-            <PageContentWrapper py="16" textAlign="center" isResponsive>
+            <Wrapper py="16" textAlign="center">
                {title && (
                   <SectionHeading color="white" mb="6">
                      {title}
@@ -42,15 +41,15 @@ export function BrowseSection({
                {description && (
                   <SectionDescription richText={description} color="gray.100" />
                )}
-            </PageContentWrapper>
+            </Wrapper>
          </Box>
-         <PageContentWrapper isResponsive>
+         <Wrapper>
             <VStack spacing="0">
                <SearchBox />
                <Text>or explore by category</Text>
             </VStack>
             <FeaturedCategories categories={categories} />
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
@@ -121,10 +120,11 @@ function SearchBox() {
                _hover={{
                   bg: 'gray.50',
                }}
-               _focus={{
+               _focusVisible={{
                   bg: 'white',
                   boxShadow: 'outline',
                }}
+               outline="none"
                fontSize="sm"
                borderRadius="md"
                boxShadow="lg"
@@ -140,7 +140,7 @@ type FeaturedCategoriesProps = {
 
 function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
    return (
-      <Grid mt="16" templateColumns="repeat(12, 1fr)" gap="4">
+      <Grid mt="10" templateColumns="repeat(12, 1fr)" gap="4">
          {categories.map((category, index) => {
             const isBigger = index < 2;
             return (

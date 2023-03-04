@@ -28,7 +28,7 @@ export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
             lineHeight="1em"
             color={`${colorScheme}.700`}
             alignItems="center"
-            borderRadius="md"
+            borderRadius="base"
             flexShrink={0}
             maxW="full"
             {...props}

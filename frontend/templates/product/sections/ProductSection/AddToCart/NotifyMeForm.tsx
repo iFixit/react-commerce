@@ -62,7 +62,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
 
    if (status === NotifyMeStatus.Submitted) {
       return (
-         <Alert status="success">
+         <Alert status="success" data-testid="notify-me-form-successful">
             <FaIcon icon={faCheckCircle} h="5" mr="2" color="green.700" />
             You will be notified when this product is back in stock.
          </Alert>
@@ -78,6 +78,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
          w="full"
          px="3"
          py="4"
+         data-testid="notify-me-form"
       >
          <form onSubmit={handleFormSubmit}>
             <Text fontWeight="semibold" mb="1.5">

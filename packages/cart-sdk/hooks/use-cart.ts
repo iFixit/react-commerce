@@ -53,6 +53,7 @@ function createCart(input: APICart): Cart {
          input.miniCart.products.find((p) => p.sku === sku)?.variantId ?? '';
       const item: CartLineItem = {
          itemcode: product.itemcode,
+         variantTitle: product.variant,
          shopifyVariantId,
          name: product.name,
          imageSrc: product.imageSrc,
