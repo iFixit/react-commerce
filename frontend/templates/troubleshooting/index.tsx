@@ -4,11 +4,13 @@ import Head from 'next/head';
 import React from 'react';
 import {
    Box,
+   BoxProps,
    Button,
    Flex,
    Heading,
    IconButton,
    Link,
+   LinkProps,
    Menu,
    MenuButton,
    MenuItem,
@@ -30,7 +32,12 @@ const Wiki: NextPageWithLayout<{
 }> = ({ wikiData }) => {
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
-         <NavBar editUrl={wikiData.editUrl} historyUrl={wikiData.historyUrl} />
+         <NavBar
+            editUrl={wikiData.editUrl}
+            historyUrl={wikiData.historyUrl}
+            deviceGuideUrl={wikiData.deviceGuideUrl}
+            devicePartsUrl={wikiData.devicePartsUrl}
+         />
          <Flex
             padding="0px 32px 32px"
             gap="16px"
@@ -40,6 +47,7 @@ const Wiki: NextPageWithLayout<{
          >
             <Head>
                <meta name="robots" content="noindex" />
+               <link rel="canonical" href={wikiData.canonicalUrl} />
             </Head>
             <Heading as="h1">{wikiData.title}</Heading>
             {wikiData.introduction.map((intro) => (
@@ -66,10 +74,12 @@ const Wiki: NextPageWithLayout<{
 function NavBar({
    editUrl,
    historyUrl,
+   deviceGuideUrl,
+   devicePartsUrl,
 }: {
    editUrl: string;
    historyUrl: string;
-}) {
+} & NavTabsProps) {
    return (
       <Flex
          w="100%"
@@ -81,7 +91,10 @@ function NavBar({
       >
          <Flex maxW="1280px" flexGrow="1">
             <Breadcrumbs />
-            <AreaLinks />
+            <NavTabs
+               deviceGuideUrl={deviceGuideUrl}
+               devicePartsUrl={devicePartsUrl}
+            />
             <EditButton editUrl={editUrl} />
             <ActionsMenu historyUrl={historyUrl} />
          </Flex>
@@ -91,10 +104,6 @@ function NavBar({
 
 function Breadcrumbs() {
    return <Box flexGrow="1"></Box>;
-}
-
-function AreaLinks() {
-   return <> </>;
 }
 
 function EditButton({ editUrl }: { editUrl: string }) {
@@ -158,6 +167,110 @@ function ActionsMenu({ historyUrl }: { historyUrl: string }) {
             );
          }}
       </Menu>
+   );
+}
+
+type NavTabsProps = {
+   deviceGuideUrl?: string;
+   devicePartsUrl?: string;
+};
+
+function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
+   // The type here works because all the styles we want to use are available on
+   // both Box and Link
+   const baseStyleProps: BoxProps & LinkProps = {
+      outline: '2px solid transparent',
+      outlineOffset: '2px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 'md',
+      paddingTop: 2,
+      paddingBottom: 2,
+      paddingInlineStart: 4,
+      paddingInlineEnd: 4,
+      position: 'relative',
+   };
+
+   const bottomFeedbackStyleProps = {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: '3px',
+      borderRadius: '2px 2px 0px 0px',
+   };
+
+   const selectedStyleProps = {
+      ...baseStyleProps,
+      borderColor: 'blue.500',
+      color: 'gray.900',
+      fontWeight: 500,
+      sx: {
+         '&:visited': {
+            color: 'gray.900',
+         },
+         '&:hover': {
+            textDecoration: 'none',
+            background: 'gray.100',
+            '::after': {
+               background: 'blue.700',
+            },
+         },
+         '::after': {
+            ...bottomFeedbackStyleProps,
+            background: 'blue.500',
+         },
+      },
+   };
+
+   const notSelectedStyleProps = {
+      ...baseStyleProps,
+      borderColor: 'transparent',
+      color: 'gray.500',
+      fontWeight: 400,
+      sx: {
+         '&:visited': {
+            color: 'gray.500',
+         },
+         '&:hover': {
+            textDecoration: 'none',
+         },
+         '&:hover:not(.isDisabled)': {
+            textDecoration: 'none',
+            color: 'gray.700',
+            background: 'gray.100',
+         },
+         '&.isDisabled': {
+            opacity: 0.4,
+            cursor: 'not-allowed',
+            color: 'gray.700',
+            background: 'gray.100',
+         },
+      },
+   };
+
+   return (
+      <>
+         <Flex paddingInline="12px" gap="6px" height="100%">
+            <Link
+               className={devicePartsUrl ? '' : 'isDisabled'}
+               {...notSelectedStyleProps}
+               href={devicePartsUrl}
+            >
+               Parts
+            </Link>
+            <Link
+               className={deviceGuideUrl ? '' : 'isDisabled'}
+               {...notSelectedStyleProps}
+               href={deviceGuideUrl}
+            >
+               Guide
+            </Link>
+            <Box {...selectedStyleProps}>Answers</Box>
+         </Flex>
+      </>
    );
 }
 

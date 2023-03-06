@@ -3,12 +3,18 @@ import { expect, Locator, Page } from '@playwright/test';
 export class ProductPage {
    readonly page: Page;
    readonly addToCartButton: Locator;
+   private baseURL: string;
 
-   constructor(page: Page) {
+   constructor(page: Page, baseURL: string) {
       this.page = page;
       this.addToCartButton = this.page.getByTestId(
          'product-add-to-cart-button'
       );
+      this.baseURL = baseURL;
+   }
+
+   updateBaseURL(baseURL: string) {
+      this.baseURL = baseURL;
    }
 
    async addToCart() {
@@ -20,7 +26,7 @@ export class ProductPage {
     * product handle
     */
    async gotoProduct(productHandle: string) {
-      await this.page.goto(`/products/${productHandle}`);
+      await this.page.goto(`${this.baseURL}/products/${productHandle}`);
    }
 
    /**

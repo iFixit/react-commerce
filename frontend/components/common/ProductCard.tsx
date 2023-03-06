@@ -23,23 +23,30 @@ export const ProductCard = forwardRef<StackProps, 'div'>((props, ref) => {
          bg="white"
          position="relative"
          direction="column"
-         spacing={5}
-         align="stretch"
-         p={4}
+         spacing={{ base: 3, md: 4 }}
+         align="center"
+         p={{ base: 3, md: 4 }}
          {...props}
       />
    );
 });
 
 export interface ProductCardImageProps {
-   src: string;
+   src: string | null | undefined;
    alt?: string;
 }
 
 export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
    if (src == null) {
       return (
-         <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
+         <AspectRatio
+            ratio={1}
+            flexGrow={0}
+            flexShrink={0}
+            position="relative"
+            maxW="96"
+            w="full"
+         >
             <ResponsiveImage
                sizes="30vw"
                layout="fill"
@@ -50,7 +57,14 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
       );
    }
    return (
-      <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
+      <AspectRatio
+         ratio={1}
+         flexGrow={0}
+         flexShrink={0}
+         position="relative"
+         maxW="80"
+         w="full"
+      >
          <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
             layout="fill"
@@ -63,11 +77,26 @@ export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
 };
 
 export const ProductCardBody = (props: StackProps) => {
-   return <VStack h="full" spacing="4" align="flex-start" {...props} />;
+   return (
+      <VStack
+         h="full"
+         w="full"
+         spacing={{ base: 3, md: 4 }}
+         align="flex-start"
+         {...props}
+      />
+   );
 };
 
 export const ProductCardTitle = (props: HeadingProps) => {
-   return <Heading as="h3" fontSize="md" fontWeight="medium" {...props} />;
+   return (
+      <Heading
+         as="h3"
+         fontSize={{ base: 'sm', md: 'md' }}
+         fontWeight="medium"
+         {...props}
+      />
+   );
 };
 
 export type ProductCardRatingProps = StackProps & {
@@ -83,7 +112,9 @@ export const ProductCardRating = ({
    return (
       <HStack {...stackProps} align="flex-end">
          <Rating value={rating} />
-         <Text lineHeight="1em">{count}</Text>
+         <Text lineHeight="1em" color="gray.600" fontSize="sm">
+            {count}
+         </Text>
       </HStack>
    );
 };
@@ -92,7 +123,11 @@ export const ProductCardBadgeList = (props: StackProps) => {
    return (
       <HStack
          position="absolute"
-         top="-1"
+         zIndex="1"
+         top={{
+            base: 3,
+            md: 4,
+         }}
          left={{
             base: 3,
             md: 4,

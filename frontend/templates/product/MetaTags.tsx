@@ -33,21 +33,15 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
 
    const genericImages = React.useMemo(() => {
       return product.images.filter((image) => {
-         return (
-            image.altText == null ||
-            !product.variants.find((variant) => variant.sku === image.altText)
-         );
+         return image.variantId === null;
       });
-   }, [product.images, product.variants]);
+   }, [product.images]);
 
    const selectedVariantImages = React.useMemo(() => {
       return product.images.filter((image) => {
-         const variant = product.variants.find(
-            (variant) => variant.sku === image.altText
-         );
-         return image.altText != null && variant?.id === selectedVariant.id;
+         return image.variantId === selectedVariant.id;
       });
-   }, [product.images, product.variants, selectedVariant.id]);
+   }, [product.images, selectedVariant.id]);
 
    const priceValidUntil = new Date();
    priceValidUntil.setFullYear(priceValidUntil.getFullYear() + 1);

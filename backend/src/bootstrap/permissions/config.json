@@ -8,6 +8,8 @@
       "api::product-list.product-list.findOne",
       "api::product-list.product-list.find",
       "api::page.page.findOne",
-      "api::page.page.find"
+      "api::page.page.find",
+      "api::company.company.findOne",
+      "api::company.company.find"
    ]
 }

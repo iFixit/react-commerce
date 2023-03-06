@@ -14,6 +14,9 @@ export type TroubleshootingData = {
    conclusion: Section[];
    editUrl: string;
    historyUrl: string;
+   deviceGuideUrl?: string;
+   devicePartsUrl?: string;
+   canonicalUrl: string;
 };
 
 type TroubleshootingPageProps = {

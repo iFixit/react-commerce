@@ -42,7 +42,14 @@
             }
          },
          "type": "dynamiczone",
-         "components": ["page.hero", "page.browse", "page.stats"],
+         "components": [
+            "page.hero",
+            "page.browse",
+            "page.stats",
+            "page.split-with-image",
+            "page.press",
+            "section.featured-products"
+         ],
          "required": true
       }
    }

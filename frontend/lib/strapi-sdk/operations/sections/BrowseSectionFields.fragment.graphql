@@ -1,0 +1,20 @@
+fragment BrowseSectionFields on ComponentPageBrowse {
+   id
+   title
+   description
+   image {
+      ...ImageFields
+   }
+   categories(pagination: { limit: 100 }) {
+      ...CategoryFields
+   }
+}
+
+fragment CategoryFields on ComponentPageCategory {
+   id
+   productList {
+      data {
+         ...ProductListFields
+      }
+   }
+}

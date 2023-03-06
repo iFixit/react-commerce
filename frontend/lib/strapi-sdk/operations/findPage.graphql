@@ -14,41 +14,12 @@ query findPage(
             title
             sections {
                __typename
-               ... on ComponentPageHero {
-                  id
-                  title
-                  description
-                  callToAction {
-                     ...CallToActionFields
-                  }
-                  image {
-                     ...ImageFields
-                  }
-               }
-               ... on ComponentPageBrowse {
-                  id
-                  title
-                  description
-                  image {
-                     ...ImageFields
-                  }
-                  categories(pagination: { limit: 100 }) {
-                     id
-                     productList {
-                        data {
-                           ...ProductListFields
-                        }
-                     }
-                  }
-               }
-               ... on ComponentPageStats {
-                  id
-                  stats {
-                     id
-                     label
-                     value
-                  }
-               }
+               ...HeroSectionFields
+               ...BrowseSectionFields
+               ...StatsSectionFields
+               ...SplitWithImageSectionFields
+               ...PressQuotesSectionFields
+               ...FeaturedProductsSectionFields
             }
          }
       }

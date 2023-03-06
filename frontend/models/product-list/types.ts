@@ -58,6 +58,7 @@ export type iFixitPage = StorePage;
 
 export interface BaseProductList {
    title: string;
+   h1: string | null;
    handle: string;
    deviceTitle: string | null;
    deviceItemType: string | null;
