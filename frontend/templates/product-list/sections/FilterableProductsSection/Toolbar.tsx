@@ -70,7 +70,10 @@ export function Toolbar(props: ToolbarProps) {
                justify="flex-end"
             >
                <SearchInput
-                  placeholder={`Search ${getProductListTitle(productList)}`}
+                  placeholder={`Search ${getProductListTitle({
+                     title: productList.title,
+                     type: productList.type,
+                  })}`}
                   maxW={{
                      base: 'full',
                      md: '80',

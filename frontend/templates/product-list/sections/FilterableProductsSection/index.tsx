@@ -194,7 +194,13 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
       const isFiltered = hasRefinements || hasSearchQuery;
 
       const itemType = useDevicePartsItemType(productList);
-      const title = getProductListTitle(productList, itemType);
+      const title = getProductListTitle(
+         {
+            title: productList.title,
+            type: productList.type,
+         },
+         itemType
+      );
       const encodedQuery = encodeURIComponent(searchBox.query);
 
       const ancestors = productList.ancestors;

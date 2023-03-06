@@ -51,7 +51,13 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const itemType = useDevicePartsItemType(productList);
    let title =
       productList.metaTitle ||
-      getProductListTitle(productList, itemType) + ' | iFixit';
+      getProductListTitle(
+         {
+            title: productList.title,
+            type: productList.type,
+         },
+         itemType
+      ) + ' | iFixit';
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }

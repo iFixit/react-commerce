@@ -2902,6 +2902,7 @@ export type GetProductListQuery = {
             handle: string;
             deviceTitle?: string | null;
             title: string;
+            h1?: string | null;
             tagline?: string | null;
             description: string;
             metaDescription?: string | null;
@@ -3686,6 +3687,7 @@ export const GetProductListDocument = `
         handle
         deviceTitle
         title
+        h1
         tagline
         description
         metaDescription
