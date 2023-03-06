@@ -8,23 +8,23 @@ type ProductRatingProps = {
 };
 
 export function ProductRating({ product }: ProductRatingProps) {
-   const reviews = {
-      rating: product?.rating?.value,
-      reviewsCount: product?.reviewsCount,
-   };
+   const rating = product?.rating?.value;
+   const count = product?.reviewsCount;
 
-   if (!shouldShowProductRating(reviews)) {
+   if (rating == null || count == null) return null;
+
+   if (!shouldShowProductRating({ rating, count })) {
       return null;
    }
 
    return (
       <HStack mt="5" alignItems="unset">
-         <Rating value={reviews.rating} />
-         <Text color="gray.600">{reviews.rating}</Text>
+         <Rating value={rating} />
+         <Text color="gray.600">{rating}</Text>
          <Box w="1px" bg="gray.300"></Box>
 
          <Link href="#reviews" color="gray.600">
-            {reviews.reviewsCount} reviews
+            {count} reviews
          </Link>
       </HStack>
    );

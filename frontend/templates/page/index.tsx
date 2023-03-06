@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { assertNever } from '@ifixit/helpers';
@@ -36,6 +37,17 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                }
                case 'PressQuotes': {
                   return <PressQuotesSection key={section.id} data={section} />;
+               }
+               case 'FeaturedProducts': {
+                  return (
+                     <FeaturedProductsSection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
+                        background={section.background}
+                        products={section.products}
+                     />
+                  );
                }
                default:
                   return assertNever(section);

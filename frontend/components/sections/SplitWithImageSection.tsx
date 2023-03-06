@@ -1,6 +1,6 @@
 import { Box, Button, Flex, VStack } from '@chakra-ui/react';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
-import type { SplitWithImageSection } from '@models/shared/sections/split-with-image-section';
+import type { SplitWithImageSection } from '@models/sections/split-with-image-section';
 import NextLink from 'next/link';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';

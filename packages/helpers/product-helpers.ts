@@ -1,29 +1,17 @@
-type Value = string | number;
-
-type ReviewableProduct<T extends Value> = {
-   rating: T;
-   reviewsCount: T;
-};
-
-type NullablePartial<T> = { [P in keyof T]?: T[P] | null };
+interface Reviewable {
+   rating: number;
+   count: number;
+}
 
 const ITEMCODE_RE = /IF(\d{3})-(\d{3})-(\d{1,2})/;
 
-export function shouldShowProductRating<T extends Value>(
-   product: NullablePartial<ReviewableProduct<T>>
-): product is ReviewableProduct<T> {
-   if (product.rating == null || product.reviewsCount == null) {
+export function shouldShowProductRating<R extends Reviewable>(
+   reviewable: R | null | undefined
+): reviewable is R {
+   if (reviewable?.rating == null || reviewable?.count == null) {
       return false;
    }
-   const rating =
-      typeof product.rating === 'string'
-         ? parseFloat(product.rating)
-         : product.rating;
-   const ratingCount =
-      typeof product.reviewsCount === 'string'
-         ? parseFloat(product.reviewsCount)
-         : product.reviewsCount;
-   return rating >= 4 || ratingCount > 10;
+   return reviewable.rating >= 4 || reviewable.count > 10;
 }
 
 /**

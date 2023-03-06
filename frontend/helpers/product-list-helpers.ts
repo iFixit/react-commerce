@@ -4,8 +4,6 @@ import { z } from 'zod';
 type ProductListAttributes = {
    filters?: string | null;
    deviceTitle?: string | null;
-   type?: ProductListType | null;
-   itemType?: string | null;
 };
 
 export function computeProductListAlgoliaFilterPreset<
