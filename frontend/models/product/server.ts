@@ -11,12 +11,10 @@ import {
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
 import { getCurrencyCode } from '@models/components/money';
-import {
-   ProPriceTiers,
-   proPriceTiersFromPriceTiersMetafield,
-} from '@models/components/pro-price-tiers';
+import { proPriceTiersFromPriceTiersMetafield } from '@models/components/pro-price-tiers';
+import { productPreviewFromShopify } from '@models/components/product-preview';
 import shuffle from 'lodash/shuffle';
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import { findStoreByCode } from '../store';
 import {
    Breadcrumb,
@@ -111,7 +109,7 @@ export async function findProduct({
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
       ),
-      featuredProductVariants: getFeaturedProductVariants(response.product),
+      featuredProductVariants: getFeaturedProductPreviews(response.product),
       compatibility: parseCompatibility(response.product.compatibility?.value),
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
@@ -255,7 +253,7 @@ function getCrossSellVariants(
    return filterNullableItems(products);
 }
 
-function getFeaturedProductVariants(
+function getFeaturedProductPreviews(
    shopifyProduct: NonNullable<FindProductQuery['product']>
 ) {
    const variants =
@@ -263,10 +261,10 @@ function getFeaturedProductVariants(
          if (node.__typename !== 'ProductVariant') {
             return null;
          }
-         return getProductVariantCard(node);
+         return productPreviewFromShopify(node);
       }) ?? [];
    const featuredVariants = filterNullableItems(variants);
-   return shuffle(featuredVariants).slice(0, 5);
+   return shuffle(featuredVariants).slice(0, 6);
 }
 
 function getProductVariantCard(
