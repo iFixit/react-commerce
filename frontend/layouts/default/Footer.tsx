@@ -7,7 +7,6 @@ import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import type { GlobalSettings } from '@models/global-settings';
 import type { Store, StoreListItem } from '@models/store';
-import { getSupportUrlFromStoreCode } from '@models/store';
 import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
    FooterCopyright,
