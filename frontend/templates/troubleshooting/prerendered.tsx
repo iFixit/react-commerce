@@ -83,6 +83,8 @@ const renderStyles: SystemStyleObject = {
    '.imageBox_left': {
       clear: 'left',
       float: 'left',
+      marginBottom: '8px',
+      marginTop: '8px',
       marginRight: '30px',
       '> img': {
          clear: 'left',
@@ -97,6 +99,8 @@ const renderStyles: SystemStyleObject = {
    '.imageBox_right': {
       clear: 'right',
       float: 'right',
+      marginBottom: '8px',
+      marginTop: '8px',
       marginLeft: '30px',
       '>img': {
          clear: 'right',
@@ -108,6 +112,8 @@ const renderStyles: SystemStyleObject = {
       alignItems: 'center',
       justifyContent: 'center',
       clear: 'both',
+      marginBottom: '8px',
+      marginTop: '8px',
       '>img': {
          clear: 'both',
       },
