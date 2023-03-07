@@ -107,6 +107,7 @@ const renderStyles: SystemStyleObject = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      clear: 'both',
       '>img': {
          clear: 'both',
       },
