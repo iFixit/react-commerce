@@ -20,10 +20,7 @@ export function BannerSection({
    return (
       <Box
          as="section"
-         borderRadius={{
-            base: 'none',
-            sm: '2xl',
-         }}
+         borderRadius="base"
          overflow="hidden"
          position="relative"
       >

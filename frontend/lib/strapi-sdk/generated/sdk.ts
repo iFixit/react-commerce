@@ -289,6 +289,15 @@ export type ComponentProductListRelatedPosts = {
    tags?: Maybe<Scalars['String']>;
 };
 
+export type ComponentSectionFeaturedProducts = {
+   __typename?: 'ComponentSectionFeaturedProducts';
+   background?: Maybe<Enum_Componentsectionfeaturedproducts_Background>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   productList?: Maybe<ProductListEntityResponse>;
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentStoreFooter = {
    __typename?: 'ComponentStoreFooter';
    bottomMenu?: Maybe<MenuEntityResponse>;
@@ -428,6 +437,11 @@ export enum Enum_Componentpagesplitwithimage_Imageposition {
    Right = 'Right',
 }
 
+export enum Enum_Componentsectionfeaturedproducts_Background {
+   Transparent = 'transparent',
+   White = 'white',
+}
+
 export enum Enum_Productlist_Type {
    AllParts = 'all_parts',
    AllTools = 'all_tools',
@@ -500,6 +514,7 @@ export type GenericMorph =
    | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
+   | ComponentSectionFeaturedProducts
    | ComponentStoreFooter
    | ComponentStoreHeader
    | ComponentStoreShopifySettings
@@ -1062,6 +1077,7 @@ export type PageSectionsDynamicZone =
    | ComponentPagePress
    | ComponentPageSplitWithImage
    | ComponentPageStats
+   | ComponentSectionFeaturedProducts
    | Error;
 
 export type Pagination = {
@@ -1091,6 +1107,7 @@ export type ProductList = {
    excludeFromHierarchyDisplay: Scalars['Boolean'];
    filters?: Maybe<Scalars['String']>;
    forceNoindex?: Maybe<Scalars['Boolean']>;
+   h1?: Maybe<Scalars['String']>;
    handle: Scalars['String'];
    heroImage?: Maybe<UploadFileEntityResponse>;
    image?: Maybe<UploadFileEntityResponse>;
@@ -1152,6 +1169,7 @@ export type ProductListFiltersInput = {
    excludeFromHierarchyDisplay?: InputMaybe<BooleanFilterInput>;
    filters?: InputMaybe<StringFilterInput>;
    forceNoindex?: InputMaybe<BooleanFilterInput>;
+   h1?: InputMaybe<StringFilterInput>;
    handle?: InputMaybe<StringFilterInput>;
    id?: InputMaybe<IdFilterInput>;
    legacyDescription?: InputMaybe<StringFilterInput>;
@@ -1181,6 +1199,7 @@ export type ProductListInput = {
    excludeFromHierarchyDisplay?: InputMaybe<Scalars['Boolean']>;
    filters?: InputMaybe<Scalars['String']>;
    forceNoindex?: InputMaybe<Scalars['Boolean']>;
+   h1?: InputMaybe<Scalars['String']>;
    handle?: InputMaybe<Scalars['String']>;
    heroImage?: InputMaybe<Scalars['ID']>;
    image?: InputMaybe<Scalars['ID']>;
@@ -2034,6 +2053,25 @@ export type FindPageQuery = {
                        label: string;
                        value: string;
                     } | null>;
+                 }
+               | {
+                    __typename: 'ComponentSectionFeaturedProducts';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    background?: Enum_Componentsectionfeaturedproducts_Background | null;
+                    productList?: {
+                       __typename?: 'ProductListEntityResponse';
+                       data?: {
+                          __typename?: 'ProductListEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             filters?: string | null;
+                             deviceTitle?: string | null;
+                          } | null;
+                       } | null;
+                    } | null;
                  }
                | { __typename: 'Error' }
                | null
@@ -2899,6 +2937,7 @@ export type GetProductListQuery = {
             handle: string;
             deviceTitle?: string | null;
             title: string;
+            h1?: string | null;
             tagline?: string | null;
             description: string;
             metaDescription?: string | null;
@@ -3235,6 +3274,26 @@ export type CategoryFieldsFragment = {
    } | null;
 };
 
+export type FeaturedProductsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionFeaturedProducts';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   background?: Enum_Componentsectionfeaturedproducts_Background | null;
+   productList?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'ProductList';
+            filters?: string | null;
+            deviceTitle?: string | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type HeroSectionFieldsFragment = {
    __typename?: 'ComponentPageHero';
    id: string;
@@ -3501,6 +3560,23 @@ export const BrowseSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const FeaturedProductsSectionFieldsFragmentDoc = `
+    fragment FeaturedProductsSectionFields on ComponentSectionFeaturedProducts {
+  id
+  title
+  description
+  background
+  productList {
+    data {
+      id
+      attributes {
+        filters
+        deviceTitle
+      }
+    }
+  }
+}
+    `;
 export const CallToActionFieldsFragmentDoc = `
     fragment CallToActionFields on ComponentPageCallToAction {
   title
@@ -3598,6 +3674,7 @@ export const FindPageDocument = `
           ...StatsSectionFields
           ...SplitWithImageSectionFields
           ...PressQuotesSectionFields
+          ...FeaturedProductsSectionFields
         }
       }
     }
@@ -3613,7 +3690,8 @@ ${StatsSectionFieldsFragmentDoc}
 ${SplitWithImageSectionFieldsFragmentDoc}
 ${PressQuotesSectionFieldsFragmentDoc}
 ${PressQuoteFieldsFragmentDoc}
-${CompanyFieldsFragmentDoc}`;
+${CompanyFieldsFragmentDoc}
+${FeaturedProductsSectionFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -3683,6 +3761,7 @@ export const GetProductListDocument = `
         handle
         deviceTitle
         title
+        h1
         tagline
         description
         metaDescription

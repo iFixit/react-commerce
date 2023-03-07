@@ -6,7 +6,7 @@ import {
    StatNumber,
 } from '@chakra-ui/react';
 import { Wrapper } from '@ifixit/ui';
-import type { IFixitStatsSection } from '@models/shared/sections/ifixit-stats-section';
+import type { IFixitStatsSection } from '@models/sections/ifixit-stats-section';
 
 export interface IFixitStatsSectionProps {
    data: IFixitStatsSection;

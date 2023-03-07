@@ -1,8 +1,5 @@
 import type { PressQuoteFieldsFragment } from '@lib/strapi-sdk';
-import {
-   companyFromStrapi,
-   CompanySchema,
-} from '@models/shared/components/company';
+import { companyFromStrapi, CompanySchema } from '@models/components/company';
 import { z } from 'zod';
 
 export type PressQuote = z.infer<typeof PressQuoteSchema>;
