@@ -3830,9 +3830,6 @@ export const FindStoreDocument = `
          menu2 {
            ...MenuEntityResponseProps
          }
-         menu3 {
-           ...MenuEntityResponseProps
-         }
        }
         socialMediaAccounts {
           twitter
