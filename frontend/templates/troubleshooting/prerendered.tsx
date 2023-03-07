@@ -103,7 +103,6 @@ const renderStyles: SystemStyleObject = {
       alignItems: 'center',
       justifyContent: 'center',
       '>img': {
-         //margin: '0 auto',
          clear: 'both',
       },
    },
