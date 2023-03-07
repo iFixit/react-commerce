@@ -89,6 +89,11 @@ const renderStyles: SystemStyleObject = {
       },
    },
 
+   'table .imageBox_left': {
+      // Special-case default image alignment for tables
+      marginRight: '0px',
+   },
+
    '.imageBox_right': {
       clear: 'right',
       float: 'right',
