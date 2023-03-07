@@ -1,6 +1,14 @@
+declare global {
+   interface Window {
+       _paq: any;
+   }
+}
+
 export function usePaq(): any[] | undefined {
    if (typeof window === 'undefined') {
       return undefined;
    }
-   return (window as any)._paq;
+
+   var _paq = window._paq = window._paq || [];
+   return _paq;
 }
