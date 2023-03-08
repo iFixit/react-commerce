@@ -1,15 +1,18 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { ProductEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
+import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
+   trackInMatomoAndGA,
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
+import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import * as React from 'react';
 import { PixelPing } from './components/PixelPing';
@@ -23,7 +26,6 @@ import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
-import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductSection } from './sections/ProductSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
@@ -54,6 +56,16 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
+
+   const trackFeaturedProductClick = React.useCallback(
+      (product: ProductPreview) => {
+         trackInMatomoAndGA({
+            eventCategory: 'Featured Products - Product Page',
+            eventAction: `Featured on Product Page - ${product.handle}`,
+         });
+      },
+      []
+   );
 
    const adminLinks = React.useMemo(
       () =>
@@ -123,7 +135,13 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             )}
 
             <CompatibilitySection compatibility={product.compatibility} />
-            <FeaturedProductsSection product={product} />
+            {product.featuredProductVariants.length > 0 && (
+               <FeaturedProductsSection
+                  title="Featured Products"
+                  products={product.featuredProductVariants}
+                  onProductClick={trackFeaturedProductClick}
+               />
+            )}
             <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
          {product.productcode && (

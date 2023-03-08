@@ -54,7 +54,7 @@ query findProduct($handle: String) {
          references(first: 25) {
             nodes {
                __typename
-               ...ProductVariantCard
+               ...ProductPreviewFields
             }
          }
       }
