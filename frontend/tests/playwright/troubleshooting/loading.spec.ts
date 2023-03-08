@@ -21,4 +21,11 @@ test.describe('Vulcan page', () => {
       // Check that the canonical link is an absolute URL
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
+
+   test('it should have a link to the edit page', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      // check that the edit link is a resonable URL
+      const editLink = page.getByRole('link', { name: 'Edit' });
+      await expect(editLink).toBeVisible();
+   });
 });
