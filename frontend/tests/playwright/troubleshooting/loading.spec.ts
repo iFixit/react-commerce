@@ -23,4 +23,15 @@ test.describe('Vulcan page', () => {
       // Check that the canonical link is an absolute URL
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
+
+   test('there are breadcrumbs on the page', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      const nav = page.getByRole('navigation', { name: 'breadcrumb' });
+      await expect(nav).toBeVisible();
+
+      // Check that some expected breadcrumbs are present
+      await expect(nav.getByRole('link', { name: 'Home' })).toBeVisible();
+      const dryerLinks = await nav.getByRole('link', { name: 'Dryer' }).count();
+      expect(dryerLinks).toBeGreaterThan(0);
+   });
 });
