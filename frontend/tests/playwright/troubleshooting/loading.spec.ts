@@ -3,7 +3,9 @@ import { test, expect } from '../test-fixtures';
 test.describe('Vulcan page', () => {
    test('it loads', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      await expect(page.getByText('Dryer Not Spinning')).toBeVisible();
+      await expect(
+         page.getByRole('heading', { name: 'Dryer Not Spinning' })
+      ).toBeVisible();
    });
 
    test('it should not be indexed', async ({ page }) => {
