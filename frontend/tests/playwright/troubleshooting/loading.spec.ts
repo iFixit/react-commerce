@@ -34,4 +34,21 @@ test.describe('Vulcan page', () => {
       const dryerLinks = await nav.getByRole('link', { name: 'Dryer' }).count();
       expect(dryerLinks).toBeGreaterThan(0);
    });
+  
+   test('it should have a link to the edit page', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      // check that the edit link is a resonable URL
+      const editLink = page.getByRole('link', { name: 'Edit' });
+      await expect(editLink).toBeVisible();
+   });
+
+   test('it should have a link to the history page in a dropdown', async ({
+      page,
+   }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      const dropdown = page.getByRole('button', { name: 'Options' });
+      dropdown.click();
+      const historyLink = page.getByRole('menuitem', { name: 'History' });
+      await expect(historyLink).toBeVisible();
+   });
 });

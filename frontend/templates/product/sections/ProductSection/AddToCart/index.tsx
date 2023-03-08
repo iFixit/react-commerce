@@ -176,6 +176,10 @@ const shippingRestrictionsInfo: ShippingRestrictionsInfo = {
       notice: 'Partner fulfilled',
       text: 'This product will be packed and shipped by one of our fulfillment partners.',
    },
+   is_oem_partner_restricted: {
+      notice: 'Shipping restrictions apply',
+      text: 'This product ships to the United States, Japan, South Korea, Hong Kong, and Taiwan only.',
+   },
 };
 
 type ShippingRestrictionsProps = StackProps & {
