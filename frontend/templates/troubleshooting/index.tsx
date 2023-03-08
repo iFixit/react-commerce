@@ -3,6 +3,8 @@ import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
 import {
+   Text,
+   Avatar,
    Box,
    BoxProps,
    Button,
@@ -30,6 +32,7 @@ const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
+   const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
@@ -50,6 +53,7 @@ const Wiki: NextPageWithLayout<{
                <link rel="canonical" href={wikiData.canonicalUrl} />
             </Head>
             <Heading as="h1">{wikiData.title}</Heading>
+            <AuthorInformation lastUpdatedDate={lastUpdatedDate} />
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
@@ -271,6 +275,49 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
             <Box {...selectedStyleProps}>Answers</Box>
          </Flex>
       </>
+   );
+}
+
+function AuthorInformation({ lastUpdatedDate }: { lastUpdatedDate: Date }) {
+   return (
+      <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
+         <AuthorAvatar />
+         <Flex justify="center" direction="column">
+            <ContributorListing />
+            <LastUpdatedDate lastUpdatedDate={lastUpdatedDate} />
+         </Flex>
+      </Flex>
+   );
+}
+
+function AuthorAvatar() {
+   return <> </>;
+   return <Avatar size="40x40" showBorder={true} />;
+}
+
+function LastUpdatedDate({ lastUpdatedDate }: { lastUpdatedDate: Date }) {
+   return (
+      <Text fontWeight="regular" fontSize="14px" color="gray.500">
+         {'Last updated on ' +
+            lastUpdatedDate.toLocaleDateString(undefined, {
+               year: 'numeric',
+               month: 'long',
+               day: 'numeric',
+            })}
+      </Text>
+   );
+}
+
+function ContributorListing() {
+   return <></>;
+   return (
+      <Text fontWeight="medium" fontSize="14px" color="brand.500">
+         <span>Jeff Suovanen </span>
+         <Box as="span" fontWeight="regular" color="gray.900">
+            and
+         </Box>
+         <Box as="span"> 11 contributors</Box>
+      </Text>
    );
 }
 

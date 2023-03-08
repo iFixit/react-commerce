@@ -17,6 +17,7 @@ export type TroubleshootingData = {
    deviceGuideUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
+   lastUpdatedDate: number;
 };
 
 type TroubleshootingPageProps = {
