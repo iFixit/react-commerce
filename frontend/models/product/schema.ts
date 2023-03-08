@@ -80,7 +80,6 @@ export const ProductVariantSchema = z.object({
    internalDisplayName: z.string().nullable(),
    selectedOptions: z.array(SelectedOptionSchema),
    title: z.string(),
-   isActive: z.boolean().optional(),
 });
 
 export type ProductVariant = z.infer<typeof ProductVariantSchema>;
