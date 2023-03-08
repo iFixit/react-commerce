@@ -253,6 +253,8 @@ function getCrossSellVariants(
    return filterNullableItems(products);
 }
 
+const MAX_FEATURED_VARIANTS = 6;
+
 function getFeaturedProductPreviews(
    shopifyProduct: NonNullable<FindProductQuery['product']>
 ) {
@@ -264,7 +266,7 @@ function getFeaturedProductPreviews(
          return productPreviewFromShopify(node);
       }) ?? [];
    const featuredVariants = filterNullableItems(variants);
-   return shuffle(featuredVariants).slice(0, 6);
+   return shuffle(featuredVariants).slice(0, MAX_FEATURED_VARIANTS);
 }
 
 function getProductVariantCard(

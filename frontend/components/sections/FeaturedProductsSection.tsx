@@ -56,6 +56,7 @@ export function FeaturedProductsSection({
                      lg: 5,
                      xl: 6,
                   }}
+                  hideIncompleteRows
                >
                   {products.map((product) => (
                      <ProductGridItem
