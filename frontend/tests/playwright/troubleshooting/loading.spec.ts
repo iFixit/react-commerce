@@ -28,4 +28,14 @@ test.describe('Vulcan page', () => {
       const editLink = page.getByRole('link', { name: 'Edit' });
       await expect(editLink).toBeVisible();
    });
+
+   test('it should have a link to the history page in a dropdown', async ({
+      page,
+   }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      const dropdown = page.getByRole('button', { name: 'Options' });
+      dropdown.click();
+      const historyLink = page.getByRole('menuitem', { name: 'History' });
+      await expect(historyLink).toBeVisible();
+   });
 });
