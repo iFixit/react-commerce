@@ -29,6 +29,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
+import { ProductVariantCard } from '@models/product/schema';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 import React from 'react';
@@ -46,8 +47,10 @@ export function CrossSellSection({
    const getUserPrice = useGetUserPrice();
    const { onOpen } = useCartDrawer();
 
-   const crossSellVariantsForSale =
-      useCrossSellVariantsForSale(selectedVariant);
+   const crossSellVariantsForSale = useCrossSellVariantsForSale(
+      selectedVariant,
+      product.crossSellVariants
+   );
 
    const [selectedCrossSellVariantIds, setSelectedCrossSellVariantIds] =
       useSelectCrossSellVariantIds(selectedVariant, crossSellVariantsForSale);
@@ -522,15 +525,22 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
    );
 };
 
-function useCrossSellVariantsForSale(variant: ProductVariant) {
+function useCrossSellVariantsForSale(
+   variant: ProductVariant,
+   crossSellVariants: ProductVariantCard[]
+) {
    const getIsProductForSale = useGetIsProductForSale();
 
    const crossSellVariantsForSale = React.useMemo(() => {
-      return variant.crossSellVariants.filter((v) => {
-         const isProductForSale = getIsProductForSale(v.product);
-         return isProductForSale;
-      });
-   }, [getIsProductForSale, variant.crossSellVariants]);
+      return crossSellVariants
+         .filter((crossSellVariant) =>
+            variant.crossSellVariantIds.includes(crossSellVariant.id)
+         )
+         .filter((v) => {
+            const isProductForSale = getIsProductForSale(v.product);
+            return isProductForSale;
+         });
+   }, [getIsProductForSale, variant.crossSellVariantIds, crossSellVariants]);
 
    return crossSellVariantsForSale;
 }

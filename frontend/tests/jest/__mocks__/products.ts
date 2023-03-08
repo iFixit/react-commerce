@@ -107,136 +107,9 @@ const productVariants: ProductVariant[] = [
       isDiscounted: true,
       discountPercentage: 20,
       title: 'New / Fix Kit',
-      crossSellVariants: [
-         {
-            id: 'gid://shopify/ProductVariant/32965720473690',
-            sku: 'IF145-257-1',
-            quantityAvailable: 186,
-            product: {
-               handle: 'anti-static-project-tray',
-               title: 'Anti-Static Project Tray',
-               tags: [
-                  'Condition:New',
-                  'ESD-safe:ESD-safe',
-                  'iFixit Exclusive:iFixit Exclusive',
-                  'Item Type:SIM',
-                  'Main Category=Tools',
-                  'Product Manufacturer=iFixit',
-                  'Tool',
-                  'Tool Category (Legacy):ESD Safe',
-                  'Tool Type=Organization Tools',
-               ],
-               rating: 4.8,
-               reviewsCount: 273,
-               oemPartnership: null,
-            },
-            image: {
-               id: 'gid://shopify/ProductImage/30908161917018',
-               altText: '*',
-               height: 2000,
-               width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/xe2tWdmD14WfKdFS.jpg?v=1642620899',
-            },
-            price: {
-               amount: 4.99,
-               currencyCode: 'USD',
-            },
-            compareAtPrice: null,
-            proPricesByTier: {
-               pro_1: {
-                  amount: 3.99,
-                  currencyCode: 'USD',
-               },
-               pro_2: {
-                  amount: 3.99,
-                  currencyCode: 'USD',
-               },
-               pro_3: {
-                  amount: 3.99,
-                  currencyCode: 'USD',
-               },
-               pro_4: {
-                  amount: 3.99,
-                  currencyCode: 'USD',
-               },
-            },
-            warranty: 'Lifetime Guarantee',
-            enabled: true,
-         },
-         {
-            id: 'gid://shopify/ProductVariant/32965720178778',
-            sku: 'IF145-307-4',
-            quantityAvailable: 607,
-            product: {
-               handle: 'pro-tech-toolkit',
-               title: 'Pro Tech Toolkit',
-               tags: [
-                  'Condition:New',
-                  'iFixit Exclusive:iFixit Exclusive',
-                  'Item Type:Kits',
-                  'Item Type:SIM',
-                  'Main Category=Tools',
-                  'Product Manufacturer=iFixit',
-                  'Profile=Adapter',
-                  'Profile=Flathead',
-                  'Profile=Gamebit',
-                  'Profile=Hex',
-                  'Profile=iPhone Standoff',
-                  'Profile=JIS',
-                  'Profile=Magnetic Pickup',
-                  'Profile=Nut Driver',
-                  'Profile=Oval Bit',
-                  'Profile=Pentalobe',
-                  'Profile=Phillips',
-                  'Profile=SIM Eject',
-                  'Profile=Spanner',
-                  'Profile=Square',
-                  'Profile=Torx',
-                  'Profile=Torx Security',
-                  'Profile=Tri-point',
-                  'Profile=Triangle',
-                  'Screwdriver Type:Interchangeable Bits',
-                  'Tool',
-                  'Tool Category (Legacy):Drivers & Wrenches',
-                  'Tool Type=Toolkits',
-               ],
-               rating: 4.9,
-               reviewsCount: 1381,
-               oemPartnership: null,
-            },
-            image: {
-               id: 'gid://shopify/ProductImage/31392629260378',
-               altText: 'IF145-307-4',
-               height: 2000,
-               width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/p1IwUWSyQKngOgFn_0b395d12-94a4-40b6-932e-3cbc60cef003.jpg?v=1660832943',
-            },
-            price: {
-               amount: 74.99,
-               currencyCode: 'USD',
-            },
-            compareAtPrice: null,
-            proPricesByTier: {
-               pro_1: {
-                  amount: 59.99,
-                  currencyCode: 'USD',
-               },
-               pro_2: {
-                  amount: 59.99,
-                  currencyCode: 'USD',
-               },
-               pro_3: {
-                  amount: 59.99,
-                  currencyCode: 'USD',
-               },
-               pro_4: {
-                  amount: 59.99,
-                  currencyCode: 'USD',
-               },
-            },
-            warranty: 'Lifetime Guarantee',
-            enabled: true,
-         },
+      crossSellVariantIds: [
+         'gid://shopify/ProductVariant/32965720473690',
+         'gid://shopify/ProductVariant/32965720178778',
       ],
    },
    {
@@ -305,135 +178,9 @@ const productVariants: ProductVariant[] = [
       isDiscounted: false,
       discountPercentage: 0,
       title: 'New / Part Only',
-      crossSellVariants: [
-         {
-            id: 'gid://shopify/ProductVariant/39333786746970',
-            sku: 'IF315-038-1',
-            quantityAvailable: 25,
-            product: {
-               handle: 'iphone-6s-plus-screen',
-               title: 'iPhone 6s Plus Screen',
-               tags: [
-                  'Apple Device=iPhone',
-                  'Condition:New',
-                  'Device Brand:Apple',
-                  'Device Category:Phone',
-                  'Device Manufacturer=Apple',
-                  'Device Type:iPhone',
-                  'Device Type=Smartphones',
-                  'Item Type:Screens',
-                  'Main Category=Parts',
-                  'Model Number=A1634',
-                  'Model Number=A1687',
-                  'Model=iPhone 6s Plus',
-                  'OS:iOS',
-                  'Part',
-                  'Part or Kit:Fix Kit',
-                  'Part or Kit:Part Only',
-                  'Spare Part=Screens',
-                  'Version=iPhone Repair Kits',
-                  'worksin:1059',
-               ],
-               rating: 4.7,
-               reviewsCount: 27,
-               oemPartnership: null,
-            },
-            image: {
-               id: 'gid://shopify/ProductImage/31268982194266',
-               altText: 'IF315-038-1',
-               height: 2000,
-               width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5VOJlrQqeBjCF3nF.jpg?v=1656622264',
-            },
-            price: {
-               amount: 59.99,
-               currencyCode: 'USD',
-            },
-            compareAtPrice: null,
-            proPricesByTier: {
-               pro_1: {
-                  amount: 59.99,
-                  currencyCode: 'USD',
-               },
-               pro_2: {
-                  amount: 59.99,
-                  currencyCode: 'USD',
-               },
-               pro_3: {
-                  amount: 44.82,
-                  currencyCode: 'USD',
-               },
-               pro_4: {
-                  amount: 37.92,
-                  currencyCode: 'USD',
-               },
-            },
-            warranty: 'Lifetime Warranty',
-            enabled: true,
-         },
-         {
-            id: 'gid://shopify/ProductVariant/39333786583130',
-            sku: 'IF315-049-2',
-            quantityAvailable: 46,
-            product: {
-               handle: 'iphone-6s-plus-display-assembly-adhesive',
-               title: 'iPhone 6s Plus Display Assembly Adhesive',
-               tags: [
-                  'Apple Device=iPhone',
-                  'Condition:New',
-                  'Device Brand:Apple',
-                  'Device Category:Phone',
-                  'Device Manufacturer=Apple',
-                  'Device Type:iPhone',
-                  'Device Type=Smartphones',
-                  'Item Type:Adhesives',
-                  'Main Category=Parts',
-                  'Model Number=A1634',
-                  'Model Number=A1687',
-                  'Model=iPhone 6s Plus',
-                  'OS:iOS',
-                  'Part',
-                  'Part or Kit:Part Only',
-                  'Spare Part=Adhesives',
-                  'worksin:1059',
-               ],
-               rating: 4.7,
-               reviewsCount: 20,
-               oemPartnership: null,
-            },
-            image: {
-               id: 'gid://shopify/ProductImage/30908245409882',
-               altText: 'IF315-049-2',
-               height: 2000,
-               width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/BBYFChBH3BMOwJvp_6d0c34d9-eb5f-49e8-8c43-3a443b66fa14.jpg?v=1642621670',
-            },
-            price: {
-               amount: 4.99,
-               currencyCode: 'USD',
-            },
-            compareAtPrice: null,
-            proPricesByTier: {
-               pro_1: {
-                  amount: 4.49,
-                  currencyCode: 'USD',
-               },
-               pro_2: {
-                  amount: 3.99,
-                  currencyCode: 'USD',
-               },
-               pro_3: {
-                  amount: 1.5,
-                  currencyCode: 'USD',
-               },
-               pro_4: {
-                  amount: 0.9,
-                  currencyCode: 'USD',
-               },
-            },
-            warranty: 'Sold as-is; no refunds or returns',
-            enabled: true,
-         },
+      crossSellVariantIds: [
+         'gid://shopify/ProductVariant/39333786746970',
+         'gid://shopify/ProductVariant/39333786583130',
       ],
    },
 ];
@@ -736,7 +483,6 @@ export const mockedProduct: Product = {
       'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',
    oemPartnership: null,
    images: productImages,
-   allImages: productImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/5958025085018',
@@ -750,7 +496,6 @@ export const mockedProduct: Product = {
       },
    ],
    variants: productVariants,
-   allVariants: productVariants,
    isEnabled: true,
    iFixitProductId: 'IF315-007',
    productcode: '315007',
@@ -758,78 +503,6 @@ export const mockedProduct: Product = {
    enabledDomains: undefined,
    redirectUrl: null,
    vendor: '',
-};
-
-export const mockedProductVariant: ProductVariant = {
-   id: 'gid://shopify/ProductVariant/32965718147162',
-   sku: 'IF315-007-10',
-   quantityAvailable: 63,
-   image: {
-      id: 'gid://shopify/ProductImage/31263941197914',
-      altText: 'iPhone 6s Plus Battery New Fix Kit',
-      height: 2000,
-      width: 2000,
-      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
-      variantId: 'gid://shopify/ProductVariant/32965718147162',
-   },
-   price: {
-      amount: 23.99,
-      currencyCode: 'USD',
-   },
-   compareAtPrice: {
-      amount: 29.99,
-      currencyCode: 'USD',
-   },
-   proPricesByTier: {
-      pro_1: {
-         amount: 29.99,
-         currencyCode: 'USD',
-      },
-      pro_2: {
-         amount: 29.99,
-         currencyCode: 'USD',
-      },
-      pro_3: {
-         amount: 29.99,
-         currencyCode: 'USD',
-      },
-      pro_4: {
-         amount: 29.99,
-         currencyCode: 'USD',
-      },
-   },
-   selectedOptions: [
-      {
-         name: 'Condition',
-         value: 'New',
-      },
-      {
-         name: 'Part or Kit',
-         value: 'Fix Kit',
-      },
-   ],
-   description:
-      '<p>This replacement battery is what you need to bring that dead smartphone back to life. The Fix Kit includes everything you need to swap in a new replacement battery.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li><li>Make disassembly for future repairs easier, replace your pentalobe bottom screws with the Phillips screws included in the kit.</li></ul>',
-   kitContents:
-      '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus with Adhesive Strips Preinstalled</li><li><a href="/products/iphone-6s-plus-display-assembly-adhesive">iPhone 6s Plus Display Assembly Adhesive</a></li><li><a href="/products/spudger">Spudger</a></li><li><a href="/products/suction-handle">Suction Handle</a></li><li><a href="/products/tweezers">Tweezers / Angled / Pro / ESD</a></li><li><a href="/products/ifixit-opening-tool">iFixit Opening Tool</a></li><li>Replacement Phillips Bottom Screws</li><li><a href="/products/ifixit-precision-bit-driver">Precision Bit Driver</a></li><li><a href="/products/ifixit-precision-4-mm-screwdriver-bit">4 mm Precision Bits</a>:<ul><li>Phillips #000</li><li>Pentalobe P2</li><li>Tri-point Y000</li></ul></li></ul>',
-   assemblyContents: null,
-   note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
-   disclaimer:
-      '<p>While not necessary, some fixers prefer to use additional tools to accomplish this repair: <a href="/products/iopener">iOpener</a> and <a href="/products/plastic-cards">Plastic Card</a>.</p>',
-   warning:
-      '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
-   specifications:
-      "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
-   warranty: 'One year warranty',
-   enabled: true,
-   disableWhenOOS: false,
-   internalDisplayName: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
-   shippingRestrictions: ['is_battery'],
-   productcode: '315007',
-   optionid: '10',
-   isDiscounted: true,
-   discountPercentage: 20,
-   title: 'New / Fix Kit',
    crossSellVariants: [
       {
          id: 'gid://shopify/ProductVariant/32965720473690',
@@ -960,6 +633,210 @@ export const mockedProductVariant: ProductVariant = {
          warranty: 'Lifetime Guarantee',
          enabled: true,
       },
+      {
+         id: 'gid://shopify/ProductVariant/39333786746970',
+         sku: 'IF315-038-1',
+         quantityAvailable: 25,
+         product: {
+            handle: 'iphone-6s-plus-screen',
+            title: 'iPhone 6s Plus Screen',
+            tags: [
+               'Apple Device=iPhone',
+               'Condition:New',
+               'Device Brand:Apple',
+               'Device Category:Phone',
+               'Device Manufacturer=Apple',
+               'Device Type:iPhone',
+               'Device Type=Smartphones',
+               'Item Type:Screens',
+               'Main Category=Parts',
+               'Model Number=A1634',
+               'Model Number=A1687',
+               'Model=iPhone 6s Plus',
+               'OS:iOS',
+               'Part',
+               'Part or Kit:Fix Kit',
+               'Part or Kit:Part Only',
+               'Spare Part=Screens',
+               'Version=iPhone Repair Kits',
+               'worksin:1059',
+            ],
+            rating: 4.7,
+            reviewsCount: 27,
+            oemPartnership: null,
+         },
+         image: {
+            id: 'gid://shopify/ProductImage/31268982194266',
+            altText: 'IF315-038-1',
+            height: 2000,
+            width: 2000,
+            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/5VOJlrQqeBjCF3nF.jpg?v=1656622264',
+         },
+         price: {
+            amount: 59.99,
+            currencyCode: 'USD',
+         },
+         compareAtPrice: null,
+         proPricesByTier: {
+            pro_1: {
+               amount: 59.99,
+               currencyCode: 'USD',
+            },
+            pro_2: {
+               amount: 59.99,
+               currencyCode: 'USD',
+            },
+            pro_3: {
+               amount: 44.82,
+               currencyCode: 'USD',
+            },
+            pro_4: {
+               amount: 37.92,
+               currencyCode: 'USD',
+            },
+         },
+         warranty: 'Lifetime Warranty',
+         enabled: true,
+      },
+      {
+         id: 'gid://shopify/ProductVariant/39333786583130',
+         sku: 'IF315-049-2',
+         quantityAvailable: 46,
+         product: {
+            handle: 'iphone-6s-plus-display-assembly-adhesive',
+            title: 'iPhone 6s Plus Display Assembly Adhesive',
+            tags: [
+               'Apple Device=iPhone',
+               'Condition:New',
+               'Device Brand:Apple',
+               'Device Category:Phone',
+               'Device Manufacturer=Apple',
+               'Device Type:iPhone',
+               'Device Type=Smartphones',
+               'Item Type:Adhesives',
+               'Main Category=Parts',
+               'Model Number=A1634',
+               'Model Number=A1687',
+               'Model=iPhone 6s Plus',
+               'OS:iOS',
+               'Part',
+               'Part or Kit:Part Only',
+               'Spare Part=Adhesives',
+               'worksin:1059',
+            ],
+            rating: 4.7,
+            reviewsCount: 20,
+            oemPartnership: null,
+         },
+         image: {
+            id: 'gid://shopify/ProductImage/30908245409882',
+            altText: 'IF315-049-2',
+            height: 2000,
+            width: 2000,
+            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/BBYFChBH3BMOwJvp_6d0c34d9-eb5f-49e8-8c43-3a443b66fa14.jpg?v=1642621670',
+         },
+         price: {
+            amount: 4.99,
+            currencyCode: 'USD',
+         },
+         compareAtPrice: null,
+         proPricesByTier: {
+            pro_1: {
+               amount: 4.49,
+               currencyCode: 'USD',
+            },
+            pro_2: {
+               amount: 3.99,
+               currencyCode: 'USD',
+            },
+            pro_3: {
+               amount: 1.5,
+               currencyCode: 'USD',
+            },
+            pro_4: {
+               amount: 0.9,
+               currencyCode: 'USD',
+            },
+         },
+         warranty: 'Sold as-is; no refunds or returns',
+         enabled: true,
+      },
+   ],
+};
+
+export const mockedProductVariant: ProductVariant = {
+   id: 'gid://shopify/ProductVariant/32965718147162',
+   sku: 'IF315-007-10',
+   quantityAvailable: 63,
+   image: {
+      id: 'gid://shopify/ProductImage/31263941197914',
+      altText: 'iPhone 6s Plus Battery New Fix Kit',
+      height: 2000,
+      width: 2000,
+      url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/WNVDn4lvaMJpK33F.jpg?v=1656545132',
+      variantId: 'gid://shopify/ProductVariant/32965718147162',
+   },
+   price: {
+      amount: 23.99,
+      currencyCode: 'USD',
+   },
+   compareAtPrice: {
+      amount: 29.99,
+      currencyCode: 'USD',
+   },
+   proPricesByTier: {
+      pro_1: {
+         amount: 29.99,
+         currencyCode: 'USD',
+      },
+      pro_2: {
+         amount: 29.99,
+         currencyCode: 'USD',
+      },
+      pro_3: {
+         amount: 29.99,
+         currencyCode: 'USD',
+      },
+      pro_4: {
+         amount: 29.99,
+         currencyCode: 'USD',
+      },
+   },
+   selectedOptions: [
+      {
+         name: 'Condition',
+         value: 'New',
+      },
+      {
+         name: 'Part or Kit',
+         value: 'Fix Kit',
+      },
+   ],
+   description:
+      '<p>This replacement battery is what you need to bring that dead smartphone back to life. The Fix Kit includes everything you need to swap in a new replacement battery.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li><li>Make disassembly for future repairs easier, replace your pentalobe bottom screws with the Phillips screws included in the kit.</li></ul>',
+   kitContents:
+      '<ul><li>New Replacement Battery Compatible with iPhone 6s Plus with Adhesive Strips Preinstalled</li><li><a href="/products/iphone-6s-plus-display-assembly-adhesive">iPhone 6s Plus Display Assembly Adhesive</a></li><li><a href="/products/spudger">Spudger</a></li><li><a href="/products/suction-handle">Suction Handle</a></li><li><a href="/products/tweezers">Tweezers / Angled / Pro / ESD</a></li><li><a href="/products/ifixit-opening-tool">iFixit Opening Tool</a></li><li>Replacement Phillips Bottom Screws</li><li><a href="/products/ifixit-precision-bit-driver">Precision Bit Driver</a></li><li><a href="/products/ifixit-precision-4-mm-screwdriver-bit">4 mm Precision Bits</a>:<ul><li>Phillips #000</li><li>Pentalobe P2</li><li>Tri-point Y000</li></ul></li></ul>',
+   assemblyContents: null,
+   note: '<p>For optimal performance, calibrate your newly installed battery: Charge it to 100% and keep charging it for at least 2 more hours. Then use your device until it shuts off due to low battery. Finally, charge it uninterrupted to 100%.</p>',
+   disclaimer:
+      '<p>While not necessary, some fixers prefer to use additional tools to accomplish this repair: <a href="/products/iopener">iOpener</a> and <a href="/products/plastic-cards">Plastic Card</a>.</p>',
+   warning:
+      '<p><a href="https://mmcelvain.cominor.com/Wiki/What_to_do_with_a_swollen_battery" target="_blank">Learn more</a> about safe lithium-ion battery handling and proper disposal.</p>',
+   specifications:
+      "<table class='specifications'><tr><th>Part #</th><td>616-00045</td></tr>\n<tr><th>Watt Hours</th><td>10.45 Wh</td></tr>\n<tr><th>Voltage</th><td>3.8 V</td></tr>\n<tr><th>Milliamp Hours</th><td>2750 mAh</td></tr>\n<tr><th>Manufacturer</th><td>Aftermarket</td></tr></table>",
+   warranty: 'One year warranty',
+   enabled: true,
+   disableWhenOOS: false,
+   internalDisplayName: 'iPhone 6s Plus Battery / Fix Kit with Adhesive',
+   shippingRestrictions: ['is_battery'],
+   productcode: '315007',
+   optionid: '10',
+   isDiscounted: true,
+   discountPercentage: 20,
+   title: 'New / Fix Kit',
+   crossSellVariantIds: [
+      'gid://shopify/ProductVariant/32965720473690',
+      'gid://shopify/ProductVariant/32965720178778',
    ],
 };
 
@@ -1301,7 +1178,7 @@ const batteryProductVariants: ProductVariant[] = [
       isDiscounted: false,
       discountPercentage: 0,
       title: 'New',
-      crossSellVariants: [],
+      crossSellVariantIds: [],
    },
 ];
 
@@ -1564,7 +1441,6 @@ export const mockedBatteryProduct: Product = {
       },
    ],
    images: batteryProductImages,
-   allImages: batteryProductImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/8434015174746',
@@ -1573,12 +1449,12 @@ export const mockedBatteryProduct: Product = {
       },
    ],
    variants: batteryProductVariants,
-   allVariants: batteryProductVariants,
    isEnabled: true,
    iFixitProductId: 'IF390-042',
    productcode: '390042',
    redirectUrl: null,
    vendor: '',
+   crossSellVariants: [],
 };
 
 const toolProductImages: ProductVariantImage[] = [
@@ -1652,57 +1528,7 @@ const toolProductVariants: ProductVariant[] = [
       isDiscounted: false,
       discountPercentage: 0,
       title: 'New',
-      crossSellVariants: [
-         {
-            id: 'gid://shopify/ProductVariant/39333789794394',
-            sku: 'IF317-047-1',
-            quantityAvailable: 31,
-            product: {
-               handle: 'hakko-3-sa-tweezers',
-               title: 'Hakko 3 SA Tweezers',
-               tags: [
-                  'Condition:New',
-                  'Tool',
-                  'Tool Category (Legacy):Soldering & Wiring',
-               ],
-               rating: 5,
-               reviewsCount: 3,
-               oemPartnership: null,
-            },
-            image: {
-               id: 'gid://shopify/ProductImage/31648429015130',
-               altText: 'IF317-047-1',
-               height: 2000,
-               width: 2000,
-               url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/NHvasuuucgWNLOiK_5fe4cc71-1a6d-4718-b654-3f4cde68dbec.jpg?v=1667585988',
-            },
-            price: {
-               amount: 9.99,
-               currencyCode: 'USD',
-            },
-            compareAtPrice: null,
-            proPricesByTier: {
-               pro_1: {
-                  amount: 9.95,
-                  currencyCode: 'USD',
-               },
-               pro_2: {
-                  amount: 9.95,
-                  currencyCode: 'USD',
-               },
-               pro_3: {
-                  amount: 9.95,
-                  currencyCode: 'USD',
-               },
-               pro_4: {
-                  amount: 9.95,
-                  currencyCode: 'USD',
-               },
-            },
-            warranty: 'One year warranty',
-            enabled: true,
-         },
-      ],
+      crossSellVariantIds: ['gid://shopify/ProductVariant/39333789794394'],
    },
 ];
 
@@ -1908,7 +1734,6 @@ export const mockedToolProduct: Product = {
       },
    ],
    images: toolProductImages,
-   allImages: toolProductImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/8433952227418',
@@ -1917,12 +1742,62 @@ export const mockedToolProduct: Product = {
       },
    ],
    variants: toolProductVariants,
-   allVariants: toolProductVariants,
    isEnabled: true,
    iFixitProductId: 'IF317-048',
    productcode: '317048',
    redirectUrl: null,
    vendor: '',
+   crossSellVariants: [
+      {
+         id: 'gid://shopify/ProductVariant/39333789794394',
+         sku: 'IF317-047-1',
+         quantityAvailable: 31,
+         product: {
+            handle: 'hakko-3-sa-tweezers',
+            title: 'Hakko 3 SA Tweezers',
+            tags: [
+               'Condition:New',
+               'Tool',
+               'Tool Category (Legacy):Soldering & Wiring',
+            ],
+            rating: 5,
+            reviewsCount: 3,
+            oemPartnership: null,
+         },
+         image: {
+            id: 'gid://shopify/ProductImage/31648429015130',
+            altText: 'IF317-047-1',
+            height: 2000,
+            width: 2000,
+            url: 'https://cdn.shopify.com/s/files/1/2429/5121/products/NHvasuuucgWNLOiK_5fe4cc71-1a6d-4718-b654-3f4cde68dbec.jpg?v=1667585988',
+         },
+         price: {
+            amount: 9.99,
+            currencyCode: 'USD',
+         },
+         compareAtPrice: null,
+         proPricesByTier: {
+            pro_1: {
+               amount: 9.95,
+               currencyCode: 'USD',
+            },
+            pro_2: {
+               amount: 9.95,
+               currencyCode: 'USD',
+            },
+            pro_3: {
+               amount: 9.95,
+               currencyCode: 'USD',
+            },
+            pro_4: {
+               amount: 9.95,
+               currencyCode: 'USD',
+            },
+         },
+         warranty: 'One year warranty',
+         enabled: true,
+      },
+   ],
 };
 
 const partProductImages: ProductVariantImage[] = [
@@ -2010,7 +1885,7 @@ const partProductVariants: ProductVariant[] = [
       isDiscounted: false,
       discountPercentage: 0,
       title: 'New / Part Only',
-      crossSellVariants: [],
+      crossSellVariantIds: [],
    },
 ];
 
@@ -2274,7 +2149,6 @@ export const mockedPartProduct: Product = {
       },
    ],
    images: partProductImages,
-   allImages: partProductImages,
    options: [
       {
          id: 'gid://shopify/ProductOption/8466995773530',
@@ -2288,12 +2162,12 @@ export const mockedPartProduct: Product = {
       },
    ],
    variants: partProductVariants,
-   allVariants: partProductVariants,
    isEnabled: true,
    iFixitProductId: 'IF457-000',
    productcode: '457000',
    redirectUrl: null,
    vendor: '',
+   crossSellVariants: [],
 };
 
 export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {

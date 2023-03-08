@@ -62,14 +62,27 @@ export async function findProduct({
    if (response.product == null) {
       return null;
    }
-   const variants = getVariants(response.product);
-   const activeVariants = variants.filter(isActiveVariant);
+   const allVariants = getVariants(response.product);
+   const activeVariants = allVariants.filter(isActiveVariant);
+   const variants =
+      activeVariants.length > 0 ? activeVariants : allVariants.slice(0, 1);
 
    const allImages = getFormattedImages(response.product);
    const activeImages = allImages.filter((image) =>
       isActiveImage(image, activeVariants)
    );
+   const images =
+      activeVariants.length > 0
+         ? activeImages
+         : allImages.filter(
+              (image) =>
+                 image.variantId === null ||
+                 image.variantId === allVariants[0].id
+           );
+
    const options = getOptions(response.product.options, activeVariants);
+
+   const crossSellVariants = getProductCrossSellVariants(response.product);
 
    const variantSku = variants.find((variant) => variant.sku != null)?.sku;
    if (variantSku == null) {
@@ -93,11 +106,9 @@ export async function findProduct({
       breadcrumbs,
       iFixitProductId,
       productcode: parseItemcode(variantSku).productcode,
-      images: activeImages,
-      allImages,
       options,
-      variants: activeVariants,
-      allVariants: variants,
+      variants,
+      images,
       isEnabled: activeVariants.length > 0,
       prop65WarningType: response.product.prop65WarningType?.value ?? null,
       prop65Chemicals: response.product.prop65Chemicals?.value ?? null,
@@ -122,6 +133,7 @@ export async function findProduct({
          response.product.enabledDomains?.value
       ),
       redirectUrl: response.product.redirectUrl?.value ?? null,
+      crossSellVariants,
    };
 }
 
@@ -169,7 +181,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
          warning: variant.warning?.value ?? null,
          specifications: variant.specifications?.value ?? null,
          warranty: variant.warranty?.value ?? null,
-         crossSellVariants: getCrossSellVariants(variant),
+         crossSellVariantIds: getCrossSellVariantIds(variant),
          enabled: variant.enabled?.value === 'true',
          disableWhenOOS: variant.disableWhenOOS?.value === 'true',
          shippingRestrictions: parseShippingRestrictions(
@@ -230,6 +242,25 @@ function getOptions(
          )
       ),
    }));
+}
+
+function getProductCrossSellVariants(
+   shopifyProduct: ShopifyApiProduct
+): ProductVariantCard[] {
+   return shopifyProduct.variants.nodes.reduce((acc, variant) => {
+      const crossSellVariantsToAdd = getCrossSellVariants(variant);
+      const existingIds = new Set(acc.map((variant) => variant.id));
+      const newCrossSellVariants = crossSellVariantsToAdd.filter(
+         (variant) => !existingIds.has(variant.id)
+      );
+      return [...acc, ...newCrossSellVariants];
+   }, [] as ProductVariantCard[]);
+}
+
+function getCrossSellVariantIds(
+   variant: NonNullable<FindProductQuery['product']>['variants']['nodes'][0]
+): string[] {
+   return getCrossSellVariants(variant).map((variant) => variant.id);
 }
 
 function getCrossSellVariants(
