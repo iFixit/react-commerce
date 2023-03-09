@@ -147,11 +147,6 @@ export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
                base: 4,
                sm: 0,
             }}
-            borderBottomWidth={{
-               base: 'thin',
-               sm: 0,
-            }}
-            borderBottomColor="gray.700"
             {...otherProps}
          >
             {children}
