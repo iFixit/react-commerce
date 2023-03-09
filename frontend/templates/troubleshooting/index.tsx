@@ -60,6 +60,7 @@ const Wiki: NextPageWithLayout<{
             <AuthorInformation
                lastUpdatedDate={lastUpdatedDate}
                authors={wikiData.authors}
+               historyUrl={wikiData.historyUrl}
             />
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
@@ -288,16 +289,21 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
 function AuthorInformation({
    lastUpdatedDate,
    authors,
+   historyUrl,
 }: {
    lastUpdatedDate: Date;
    authors: Author[];
+   historyUrl: string;
 }) {
    return (
       <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
          <AuthorAvatar />
          <Flex justify="center" direction="column">
             <AuthorListing authors={authors} />
-            <LastUpdatedDate lastUpdatedDate={lastUpdatedDate} />
+            <LastUpdatedDate
+               lastUpdatedDate={lastUpdatedDate}
+               historyUrl={historyUrl}
+            />
          </Flex>
       </Flex>
    );
@@ -308,16 +314,27 @@ function AuthorAvatar() {
    return <Avatar size="40x40" showBorder={true} />;
 }
 
-function LastUpdatedDate({ lastUpdatedDate }: { lastUpdatedDate: Date }) {
+function LastUpdatedDate({
+   lastUpdatedDate,
+   historyUrl,
+}: {
+   lastUpdatedDate: Date;
+   historyUrl: string;
+}) {
    return (
-      <Text fontWeight="regular" fontSize="14px" color="gray.500">
+      <Link
+         href={historyUrl}
+         fontWeight="regular"
+         fontSize="14px"
+         color="gray.500"
+      >
          {'Last updated on ' +
             lastUpdatedDate.toLocaleDateString(undefined, {
                year: 'numeric',
                month: 'long',
                day: 'numeric',
             })}
-      </Text>
+      </Link>
    );
 }
 
