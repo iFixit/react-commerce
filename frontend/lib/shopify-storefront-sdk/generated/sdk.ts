@@ -6312,6 +6312,15 @@ export enum WeightUnit {
    Pounds = 'POUNDS',
 }
 
+export type ImageFieldsFragment = {
+   __typename?: 'Image';
+   id?: string | null;
+   altText?: string | null;
+   height?: number | null;
+   width?: number | null;
+   url: string;
+};
+
 export type FindProductQueryVariables = Exact<{
    handle?: InputMaybe<Scalars['String']>;
 }>;
@@ -6555,6 +6564,43 @@ export type FindProductQuery = {
    } | null;
 };
 
+export type ProductPreviewFieldsFragment = {
+   __typename?: 'ProductVariant';
+   id: string;
+   sku?: string | null;
+   quantityAvailable?: number | null;
+   product: {
+      __typename?: 'Product';
+      handle: string;
+      title: string;
+      tags: Array<string>;
+      rating?: { __typename?: 'Metafield'; value: string } | null;
+      reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
+      oemPartnership?: { __typename?: 'Metafield'; value: string } | null;
+   };
+   image?: {
+      __typename?: 'Image';
+      id?: string | null;
+      altText?: string | null;
+      height?: number | null;
+      width?: number | null;
+      url: string;
+   } | null;
+   price: {
+      __typename?: 'MoneyV2';
+      amount: string;
+      currencyCode: CurrencyCode;
+   };
+   compareAtPrice?: {
+      __typename?: 'MoneyV2';
+      amount: string;
+      currencyCode: CurrencyCode;
+   } | null;
+   proPricesByTier?: { __typename?: 'Metafield'; value: string } | null;
+   warranty?: { __typename?: 'Metafield'; value: string } | null;
+   enabled?: { __typename?: 'Metafield'; value: string } | null;
+};
+
 export type ProductVariantCardFragment = {
    __typename?: 'ProductVariant';
    id: string;
@@ -6592,6 +6638,56 @@ export type ProductVariantCardFragment = {
    enabled?: { __typename?: 'Metafield'; value: string } | null;
 };
 
+export const ImageFieldsFragmentDoc = `
+    fragment ImageFields on Image {
+  id
+  altText
+  height
+  width
+  url
+}
+    `;
+export const ProductPreviewFieldsFragmentDoc = `
+    fragment ProductPreviewFields on ProductVariant {
+  id
+  sku
+  quantityAvailable
+  product {
+    handle
+    title
+    tags
+    rating: metafield(namespace: "reviews", key: "rating") {
+      value
+    }
+    reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+      value
+    }
+    oemPartnership: metafield(namespace: "ifixit", key: "oem_partnership") {
+      value
+    }
+  }
+  image {
+    ...ImageFields
+  }
+  price {
+    amount
+    currencyCode
+  }
+  compareAtPrice {
+    amount
+    currencyCode
+  }
+  proPricesByTier: metafield(namespace: "ifixit", key: "price_tiers") {
+    value
+  }
+  warranty: metafield(namespace: "ifixit", key: "warranty") {
+    value
+  }
+  enabled: metafield(namespace: "ifixit", key: "enabled2") {
+    value
+  }
+}
+    ${ImageFieldsFragmentDoc}`;
 export const ProductVariantCardFragmentDoc = `
     fragment ProductVariantCard on ProductVariant {
   id
@@ -6682,7 +6778,7 @@ export const FindProductDocument = `
       references(first: 25) {
         nodes {
           __typename
-          ...ProductVariantCard
+          ...ProductPreviewFields
         }
       }
     }
@@ -6798,7 +6894,8 @@ export const FindProductDocument = `
     vendor
   }
 }
-    ${ProductVariantCardFragmentDoc}`;
+    ${ProductPreviewFieldsFragmentDoc}
+${ProductVariantCardFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(
    doc: string,
    vars?: V,

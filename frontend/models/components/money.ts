@@ -1,4 +1,5 @@
 import { printZodError, toNumber } from '@helpers/zod-helpers';
+import type { MoneyV2 } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 
 export type CurrencyCode = z.infer<typeof CurrencyCodeSchema>;
@@ -35,4 +36,18 @@ export function getCurrencyCode(code: unknown): CurrencyCode | null {
       return null;
    }
    return validation.data;
+}
+
+export function moneyFromShopify(
+   moneyFragment: MoneyV2 | null | undefined
+): Money | null {
+   if (moneyFragment == null) return null;
+
+   const currencyCode = getCurrencyCode(moneyFragment.currencyCode);
+
+   if (currencyCode == null) return null;
+
+   const amount = parseFloat(moneyFragment.amount);
+
+   return moneyFromAmount(amount, currencyCode);
 }
