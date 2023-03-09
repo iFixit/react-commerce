@@ -35,7 +35,7 @@ export const NavigationSection = ({
    newsletterForm,
 }: NavSectionProps) => {
    return (
-      <FooterTopSection p={5}>
+      <FooterTopSection>
          <FooterNavigationSection>
             <FooterNavigationList>
                <NavigationColumn menu={menu1} />
@@ -102,6 +102,8 @@ const FooterTopSection = forwardRef<FlexProps, 'div'>((props, ref) => {
    return (
       <Flex
          ref={ref}
+         p={5}
+         pb={8}
          flexDirection={{
             base: 'column',
             md: 'row',
