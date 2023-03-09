@@ -45,7 +45,7 @@ test.describe('parts page search', () => {
       await expect(page.getByTestId('product-list-no-results')).toBeVisible();
    });
 
-   test.only('Should update url on empty search query', async ({ page }) => {
+   test('Should update url on empty search query', async ({ page }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
