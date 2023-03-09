@@ -73,10 +73,8 @@ const renderStyles: SystemStyleObject = {
       padding: '4px',
    },
 
-   '.videoBox_center': {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+   'lite-youtube': {
+      margin: '0 auto',
       clear: 'both',
    },
 
