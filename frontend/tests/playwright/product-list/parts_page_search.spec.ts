@@ -45,24 +45,22 @@ test.describe('parts page search', () => {
       await expect(page.getByTestId('product-list-no-results')).toBeVisible();
    });
 
-   test.only("Should update url on empty search query", async ({
-    page,
- }) => {
-    expect(page.getByTestId('collections-search-box')).toBeVisible();
-    expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
+   test.only('Should update url on empty search query', async ({ page }) => {
+      expect(page.getByTestId('collections-search-box')).toBeVisible();
+      expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
-    const searchText = "vive";
-    await page.getByTestId('collections-search-box').fill(searchText);
-    // Wait for url to update after search
-    await page.waitForURL(`**/Parts?q=${searchText}`);
-    expect(page.url()).toContain(`?q=${searchText}`);
+      const searchText = 'vive';
+      await page.getByTestId('collections-search-box').fill(searchText);
+      // Wait for url to update after search
+      await page.waitForURL(`**/Parts?q=${searchText}`);
+      expect(page.url()).toContain(`?q=${searchText}`);
 
-    // Empty the search-box
-    await page.getByTestId('collections-search-box').fill('');
+      // Empty the search-box
+      await page.getByTestId('collections-search-box').fill('');
 
-    // Check that url doesn't have the query parameter containing ?q
-    await page.waitForURL('**/Parts');
-    expect(page.url()).not.toContain('?q=');
-    expect(page.url()).not.toContain(`?q=${searchText}`);
- });
+      // Check that url doesn't have the query parameter containing ?q
+      await page.waitForURL('**/Parts');
+      expect(page.url()).not.toContain('?q=');
+      expect(page.url()).not.toContain(`?q=${searchText}`);
+   });
 });
