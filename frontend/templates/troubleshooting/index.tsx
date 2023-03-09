@@ -366,6 +366,8 @@ function AuthorListing({
    historyUrl: string;
 }) {
    const primaryAuthorName = primaryAuthor.username;
+   const contributorDescription =
+      authorCount > 1 ? 'contributors' : 'contributor';
    return (
       <Link
          href={historyUrl}
@@ -379,7 +381,7 @@ function AuthorListing({
                <chakra.span as="span" fontWeight="regular" color="gray.900">
                   {' and '}
                </chakra.span>
-               <chakra.span>{`${authorCount} contributors`}</chakra.span>
+               <chakra.span>{`${authorCount} ${contributorDescription}`}</chakra.span>
             </>
          )}
       </Link>
