@@ -25,7 +25,8 @@
         "product.replacement-guides",
         "section.stories",
         "section.service-value-propositions",
-        "product.cross-sell"
+        "product.cross-sell",
+        "product.product-customer-reviews"
       ],
       "required": true
     }
