@@ -17,6 +17,7 @@ import {
    MenuButton,
    MenuItem,
    MenuList,
+   chakra,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -299,7 +300,7 @@ function AuthorInformation({
       <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
          <AuthorAvatar />
          <Flex justify="center" direction="column">
-            <AuthorListing authors={authors} />
+            <AuthorListing authors={authors} historyUrl={historyUrl} />
             <LastUpdatedDate
                lastUpdatedDate={lastUpdatedDate}
                historyUrl={historyUrl}
@@ -338,7 +339,13 @@ function LastUpdatedDate({
    );
 }
 
-function AuthorListing({ authors }: { authors: Author[] }) {
+function AuthorListing({
+   authors,
+   historyUrl,
+}: {
+   authors: Author[];
+   historyUrl: string;
+}) {
    const primaryAuthor = authors[0];
    if (!primaryAuthor) {
       return null;
@@ -346,17 +353,22 @@ function AuthorListing({ authors }: { authors: Author[] }) {
    const primaryAuthorName = primaryAuthor.username;
    const otherAuthors = authors.slice(1);
    return (
-      <Text fontWeight="medium" fontSize="14px" color="brand.500">
+      <Link
+         href={historyUrl}
+         fontWeight="medium"
+         fontSize="14px"
+         color="brand.500"
+      >
          <span>{primaryAuthorName}</span>
          {otherAuthors.length > 0 && (
             <>
-               <Box as="span" fontWeight="regular" color="gray.900">
+               <chakra.span as="span" fontWeight="regular" color="gray.900">
                   {' and '}
-               </Box>
-               <Box as="span">{`${otherAuthors.length} contributors`}</Box>
+               </chakra.span>
+               <chakra.span>{`${otherAuthors.length} contributors`}</chakra.span>
             </>
          )}
-      </Text>
+      </Link>
    );
 }
 
