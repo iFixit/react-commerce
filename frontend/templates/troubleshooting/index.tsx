@@ -296,11 +296,19 @@ function AuthorInformation({
    authors: Author[];
    historyUrl: string;
 }) {
+   const primaryAuthor: Author | undefined = authors[0];
+   const otherAuthors = authors.slice(1);
    return (
       <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
          <AuthorAvatar />
          <Flex justify="center" direction="column">
-            <AuthorListing authors={authors} historyUrl={historyUrl} />
+            {primaryAuthor && (
+               <AuthorListing
+                  primaryAuthor={primaryAuthor}
+                  authorCount={otherAuthors.length}
+                  historyUrl={historyUrl}
+               />
+            )}
             <LastUpdatedDate
                lastUpdatedDate={lastUpdatedDate}
                historyUrl={historyUrl}
@@ -340,18 +348,15 @@ function LastUpdatedDate({
 }
 
 function AuthorListing({
-   authors,
+   primaryAuthor,
+   authorCount,
    historyUrl,
 }: {
-   authors: Author[];
+   primaryAuthor: Author;
+   authorCount: number;
    historyUrl: string;
 }) {
-   const primaryAuthor = authors[0];
-   if (!primaryAuthor) {
-      return null;
-   }
    const primaryAuthorName = primaryAuthor.username;
-   const otherAuthors = authors.slice(1);
    return (
       <Link
          href={historyUrl}
@@ -360,12 +365,12 @@ function AuthorListing({
          color="brand.500"
       >
          <span>{primaryAuthorName}</span>
-         {otherAuthors.length > 0 && (
+         {authorCount > 0 && (
             <>
                <chakra.span as="span" fontWeight="regular" color="gray.900">
                   {' and '}
                </chakra.span>
-               <chakra.span>{`${otherAuthors.length} contributors`}</chakra.span>
+               <chakra.span>{`${authorCount} contributors`}</chakra.span>
             </>
          )}
       </Link>
