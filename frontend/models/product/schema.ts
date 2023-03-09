@@ -2,6 +2,7 @@ import { toNumber } from '@helpers/zod-helpers';
 import { ImageSchema } from '@models/components/image';
 import { MoneySchema } from '@models/components/money';
 import { ProPriceTiersSchema } from '@models/components/pro-price-tiers';
+import { ProductPreviewSchema } from '@models/components/product-preview';
 import { z } from 'zod';
 
 const BreadcrumbSchema = z.object({
@@ -167,7 +168,7 @@ export const ProductSchema = z.object({
       })
    ),
    replacementGuides: z.array(ReplacementGuideMetafieldItemSchema),
-   featuredProductVariants: z.array(ProductVariantCardSchema),
+   featuredProductVariants: z.array(ProductPreviewSchema),
    compatibility: CompatibilityMetafieldSchema,
    metaTitle: z.string().nullable(),
    shortDescription: z.string().nullable(),
