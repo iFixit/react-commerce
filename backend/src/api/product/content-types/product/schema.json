@@ -1,35 +1,35 @@
 {
-  "kind": "collectionType",
-  "collectionName": "products",
-  "info": {
-    "singularName": "product",
-    "pluralName": "products",
-    "displayName": "Product",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": true
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "handle": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "sections": {
-      "type": "dynamiczone",
-      "components": [
-        "product.product",
-        "page.split-with-image",
-        "product.replacement-guides",
-        "section.stories",
-        "section.service-value-propositions",
-        "product.cross-sell",
-        "product.product-customer-reviews",
-        "section.featured-products"
-      ],
-      "required": true
-    }
-  }
+   "kind": "collectionType",
+   "collectionName": "products",
+   "info": {
+      "singularName": "product",
+      "pluralName": "products",
+      "displayName": "Product",
+      "description": ""
+   },
+   "options": {
+      "draftAndPublish": true
+   },
+   "pluginOptions": {},
+   "attributes": {
+      "handle": {
+         "type": "string",
+         "required": true,
+         "unique": true
+      },
+      "sections": {
+         "type": "dynamiczone",
+         "components": [
+            "product.product",
+            "page.split-with-image",
+            "product.replacement-guides",
+            "section.stories",
+            "section.service-value-propositions",
+            "product.cross-sell",
+            "product.product-customer-reviews",
+            "section.featured-products"
+         ],
+         "required": true
+      }
+   }
 }

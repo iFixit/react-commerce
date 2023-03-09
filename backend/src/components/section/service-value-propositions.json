@@ -1,12 +1,12 @@
 {
-  "collectionName": "components_section_service_value_propositions",
-  "info": {
-    "displayName": "service value propositions"
-  },
-  "options": {},
-  "attributes": {
-    "title": {
-      "type": "string"
-    }
-  }
+   "collectionName": "components_section_service_value_propositions",
+   "info": {
+      "displayName": "service value propositions"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      }
+   }
 }
