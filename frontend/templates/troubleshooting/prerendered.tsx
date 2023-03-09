@@ -1,9 +1,7 @@
 import { Box, chakra, SystemStyleObject } from '@chakra-ui/react';
 
 import 'lite-youtube-embed/src/lite-yt-embed.css';
-
-// Dynamically import `lite-youtube-embed` to ensure it's not run server-side.
-import('lite-youtube-embed');
+import { useEffect } from 'react';
 
 const renderStyles: SystemStyleObject = {
    '.headerContainer': {
@@ -86,6 +84,9 @@ const Prerendered = chakra(function Prerendered({
    html: string;
    className?: string;
 }) {
+   useEffect(() => {
+      import('lite-youtube-embed');
+   }, []);
    return (
       <Box
          className={className}
