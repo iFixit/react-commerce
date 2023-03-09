@@ -24,7 +24,8 @@
         "page.split-with-image",
         "product.replacement-guides",
         "section.stories",
-        "section.service-value-propositions"
+        "section.service-value-propositions",
+        "product.cross-sell"
       ],
       "required": true
     }
