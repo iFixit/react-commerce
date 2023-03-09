@@ -22,7 +22,8 @@
       "components": [
         "product.product",
         "page.split-with-image",
-        "product.replacement-guides"
+        "product.replacement-guides",
+        "section.stories"
       ],
       "required": true
     }
