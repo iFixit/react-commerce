@@ -181,6 +181,7 @@ const NewsletterLink = ({ isSubscribed }: { isSubscribed: boolean }) => {
          marginTop={2}
          textDecoration="underline"
          fontSize="14px"
+         width="fit-content"
          _hover={{ color: 'white' }}
          _visited={{ color: 'gray.300' }}
       >
