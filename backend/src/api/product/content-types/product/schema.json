@@ -23,7 +23,8 @@
         "product.product",
         "page.split-with-image",
         "product.replacement-guides",
-        "section.stories"
+        "section.stories",
+        "section.service-value-propositions"
       ],
       "required": true
     }
