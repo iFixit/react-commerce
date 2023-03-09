@@ -19,7 +19,11 @@ import {
    MenuList,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
-import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import {
+   Author,
+   Section,
+   TroubleshootingData,
+} from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
@@ -53,7 +57,10 @@ const Wiki: NextPageWithLayout<{
                <link rel="canonical" href={wikiData.canonicalUrl} />
             </Head>
             <Heading as="h1">{wikiData.title}</Heading>
-            <AuthorInformation lastUpdatedDate={lastUpdatedDate} />
+            <AuthorInformation
+               lastUpdatedDate={lastUpdatedDate}
+               authors={wikiData.authors}
+            />
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
@@ -278,12 +285,18 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
    );
 }
 
-function AuthorInformation({ lastUpdatedDate }: { lastUpdatedDate: Date }) {
+function AuthorInformation({
+   lastUpdatedDate,
+   authors,
+}: {
+   lastUpdatedDate: Date;
+   authors: Author[];
+}) {
    return (
       <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
          <AuthorAvatar />
          <Flex justify="center" direction="column">
-            <ContributorListing />
+            <AuthorListing authors={authors} />
             <LastUpdatedDate lastUpdatedDate={lastUpdatedDate} />
          </Flex>
       </Flex>
@@ -308,15 +321,24 @@ function LastUpdatedDate({ lastUpdatedDate }: { lastUpdatedDate: Date }) {
    );
 }
 
-function ContributorListing() {
-   return <></>;
+function AuthorListing({ authors }: { authors: Author[] }) {
+   const primaryAuthor = authors[0];
+   if (!primaryAuthor) {
+      return null;
+   }
+   const primaryAuthorName = primaryAuthor.username;
+   const otherAuthors = authors.slice(1);
    return (
       <Text fontWeight="medium" fontSize="14px" color="brand.500">
-         <span>Jeff Suovanen </span>
-         <Box as="span" fontWeight="regular" color="gray.900">
-            and
-         </Box>
-         <Box as="span"> 11 contributors</Box>
+         <span>{primaryAuthorName}</span>
+         {otherAuthors.length > 0 && (
+            <>
+               <Box as="span" fontWeight="regular" color="gray.900">
+                  {' and '}
+               </Box>
+               <Box as="span">{`${otherAuthors.length} contributors`}</Box>
+            </>
+         )}
       </Text>
    );
 }
