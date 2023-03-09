@@ -300,7 +300,7 @@ function AuthorInformation({
    const otherAuthors = authors.slice(1);
    return (
       <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
-         <AuthorAvatar />
+         {primaryAuthor && <AuthorAvatar avatarUrl={primaryAuthor.avatar} />}
          <Flex justify="center" direction="column">
             {primaryAuthor && (
                <AuthorListing
@@ -318,9 +318,17 @@ function AuthorInformation({
    );
 }
 
-function AuthorAvatar() {
-   return <> </>;
-   return <Avatar size="40x40" showBorder={true} />;
+function AuthorAvatar({ avatarUrl }: { avatarUrl: string }) {
+   return (
+      <Avatar
+         size="md"
+         width="40px"
+         height="40px"
+         showBorder={true}
+         borderColor="brand.500"
+         src={avatarUrl}
+      />
+   );
 }
 
 function LastUpdatedDate({
