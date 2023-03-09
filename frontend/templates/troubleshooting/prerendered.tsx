@@ -75,6 +75,27 @@ const renderStyles: SystemStyleObject = {
       borderColor: 'gray.300',
       padding: '4px',
    },
+
+   'lite-youtube': {
+      marginTop: '8px',
+      marginBottom: '8px',
+      clear: 'both',
+      borderColor: 'gray.500',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      padding: '1px',
+
+      '&.float-left': {
+         float: 'left',
+      },
+      '&.float-right': {
+         float: 'right',
+      },
+      '&.mx-auto': {
+         marginLeft: 'auto',
+         marginRight: 'auto',
+      },
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
