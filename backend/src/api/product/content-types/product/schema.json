@@ -26,7 +26,8 @@
         "section.stories",
         "section.service-value-propositions",
         "product.cross-sell",
-        "product.product-customer-reviews"
+        "product.product-customer-reviews",
+        "section.featured-products"
       ],
       "required": true
     }
