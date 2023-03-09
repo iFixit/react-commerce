@@ -21,7 +21,8 @@
       "type": "dynamiczone",
       "components": [
         "product.product",
-        "page.split-with-image"
+        "page.split-with-image",
+        "product.replacement-guides"
       ],
       "required": true
     }
