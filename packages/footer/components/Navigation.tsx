@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
    Box,
+   Flex,
    forwardRef,
    List,
    ListIcon,
@@ -11,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import type {
    BoxProps,
+   FlexProps,
    ListItemProps,
    SimpleGridProps,
 } from '@chakra-ui/react';
@@ -33,18 +35,20 @@ export const NavigationSection = ({
    newsletterForm,
 }: NavSectionProps) => {
    return (
-      <FooterNavigationSection p={5}>
-         <FooterNavigationList pl={-5}>
-            <NavigationColumn menu={menu1} />
-         </FooterNavigationList>
-         <FooterNavigationList pl={-5}>
-            <NavigationColumn menu={menu2} />
-         </FooterNavigationList>
-         <FooterNavigationList pl={-5}>
-            <NavigationColumn menu={menu3} />
-         </FooterNavigationList>
+      <FooterTopSection p={5}>
+         <FooterNavigationSection>
+            <FooterNavigationList>
+               <NavigationColumn menu={menu1} />
+            </FooterNavigationList>
+            <FooterNavigationList>
+               <NavigationColumn menu={menu2} />
+            </FooterNavigationList>
+            <FooterNavigationList>
+               <NavigationColumn menu={menu3} />
+            </FooterNavigationList>
+         </FooterNavigationSection>
          <NewsletterComponent newsletterForm={newsletterForm} />
-      </FooterNavigationSection>
+      </FooterTopSection>
    );
 };
 
@@ -94,6 +98,21 @@ const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
    return <>{listItems}</>;
 };
 
+const FooterTopSection = forwardRef<FlexProps, 'div'>((props, ref) => {
+   return (
+      <Flex
+         ref={ref}
+         flexDirection={{
+            base: 'column',
+            md: 'row',
+         }}
+         flexWrap="wrap"
+         justifyContent="space-between"
+         {...props}
+      />
+   );
+});
+
 export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
    (props, ref) => {
       return (
@@ -102,15 +121,15 @@ export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
             columns={{
                base: 1,
                sm: 3,
-               lg: 4,
             }}
             spacing="4"
-            px={{
-               base: 5,
-               sm: 0,
-            }}
-            py="10"
+            p="0"
             autoFlow="row"
+            flexGrow={2}
+            width={{
+               base: '100%',
+               md: '60%',
+            }}
             {...props}
          />
       );

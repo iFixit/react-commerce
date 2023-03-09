@@ -206,14 +206,11 @@ export function NewsletterComponent({
          direction="column"
          ml={{
             base: 0,
-            // since the legal column is skinny, let's scoot the newsletter over
-            lg: -20,
          }}
          pr={0}
          mt={{
-            base: 0,
-            sm: 10,
-            lg: '-2px',
+            base: 4,
+            md: 0,
          }}
          gridColumnEnd={{
             sm: 'span 3',
@@ -221,6 +218,7 @@ export function NewsletterComponent({
          }}
          justify="flex-start"
          w="auto"
+         flexGrow={1}
       >
          <NewsletterHeader
             title={newsletterForm.title}
