@@ -2667,6 +2667,118 @@ export type FindStoreQuery = {
                      } | null;
                   } | null;
                } | null;
+               menu3?: {
+                  __typename?: 'MenuEntityResponse';
+                  data?: {
+                     __typename?: 'MenuEntity';
+                     attributes?: {
+                        __typename?: 'Menu';
+                        title: string;
+                        items: Array<
+                           | {
+                                __typename: 'ComponentMenuLink';
+                                name: string;
+                                url: string;
+                                description?: string | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuLinkWithImage';
+                                name: string;
+                                url: string;
+                                image: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                };
+                             }
+                           | {
+                                __typename: 'ComponentMenuProductListLink';
+                                name: string;
+                                productList?: {
+                                   __typename?: 'ProductListEntityResponse';
+                                   data?: {
+                                      __typename?: 'ProductListEntity';
+                                      attributes?: {
+                                         __typename?: 'ProductList';
+                                         handle: string;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | {
+                                __typename: 'ComponentMenuSubmenu';
+                                name: string;
+                                submenu?: {
+                                   __typename?: 'MenuEntityResponse';
+                                   data?: {
+                                      __typename?: 'MenuEntity';
+                                      attributes?: {
+                                         __typename?: 'Menu';
+                                         title: string;
+                                         items: Array<
+                                            | {
+                                                 __typename: 'ComponentMenuLink';
+                                                 name: string;
+                                                 url: string;
+                                                 description?: string | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuLinkWithImage';
+                                                 name: string;
+                                                 url: string;
+                                                 image: {
+                                                    __typename?: 'UploadFileEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'UploadFileEntity';
+                                                       attributes?: {
+                                                          __typename?: 'UploadFile';
+                                                          alternativeText?:
+                                                             | string
+                                                             | null;
+                                                          url: string;
+                                                          formats?: any | null;
+                                                       } | null;
+                                                    } | null;
+                                                 };
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuProductListLink';
+                                                 name: string;
+                                                 productList?: {
+                                                    __typename?: 'ProductListEntityResponse';
+                                                    data?: {
+                                                       __typename?: 'ProductListEntity';
+                                                       attributes?: {
+                                                          __typename?: 'ProductList';
+                                                          handle: string;
+                                                       } | null;
+                                                    } | null;
+                                                 } | null;
+                                              }
+                                            | {
+                                                 __typename: 'ComponentMenuSubmenu';
+                                                 name: string;
+                                              }
+                                            | { __typename: 'Error' }
+                                            | null
+                                         >;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             }
+                           | { __typename: 'Error' }
+                           | null
+                        >;
+                     } | null;
+                  } | null;
+               } | null;
             };
             socialMediaAccounts: {
                __typename?: 'ComponentStoreSocialMediaAccounts';
