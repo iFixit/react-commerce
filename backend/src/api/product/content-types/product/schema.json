@@ -20,7 +20,8 @@
     "sections": {
       "type": "dynamiczone",
       "components": [
-        "product.product"
+        "product.product",
+        "page.split-with-image"
       ],
       "required": true
     }
