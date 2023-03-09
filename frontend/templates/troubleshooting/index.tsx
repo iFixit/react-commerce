@@ -300,7 +300,7 @@ function AuthorInformation({
    const otherAuthors = authors.slice(1);
    return (
       <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
-         {primaryAuthor && <AuthorAvatar avatarUrl={primaryAuthor.avatar} />}
+         {primaryAuthor && <AuthorAvatar author={primaryAuthor} />}
          <Flex justify="center" direction="column">
             {primaryAuthor && (
                <AuthorListing
@@ -318,7 +318,7 @@ function AuthorInformation({
    );
 }
 
-function AuthorAvatar({ avatarUrl }: { avatarUrl: string }) {
+function AuthorAvatar({ author }: { author: Author }) {
    return (
       <Avatar
          size="md"
@@ -326,7 +326,8 @@ function AuthorAvatar({ avatarUrl }: { avatarUrl: string }) {
          height="40px"
          showBorder={true}
          borderColor="brand.500"
-         src={avatarUrl}
+         name={author.username}
+         src={author.avatar}
       />
    );
 }
