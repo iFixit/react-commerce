@@ -34,3 +34,83 @@ jobs:
               echo "modified-jest-tests=$(echo $MODIFIED_JEST_TESTS)" >> $GITHUB_OUTPUT
               echo "Modified playwright tests: $MODIFIED_PLAYWRIGHT_TESTS"
               echo "Modified jest tests: $MODIFIED_JEST_TESTS"
+
+   playwright-run:
+      name: playwright-stress-test
+      runs-on: ubuntu-latest
+      needs: check-diff
+      if: needs.check-diff.outputs.modified-playwright-tests != ''
+      timeout-minutes: 15
+      strategy:
+         fail-fast: false
+         matrix:
+            project:
+               [
+                  'Desktop Chrome',
+                  'Mobile Chrome',
+               ]
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+
+         - name: Install Node.js
+           uses: actions/setup-node@v3
+           with:
+              node-version: 16
+
+         - name: Start strapi server
+           run: cd backend && docker-compose up -d
+           env:
+              JWT_SECRET: 'ci-secret'
+              API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
+
+         - name: Setup and cache pnpm
+           uses: ./.github/actions/pnpm-setup
+         - name: Install workspaces
+           env:
+              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+           run: pnpm install
+
+         - name: Get installed Playwright version
+           id: playwright-version
+           run: echo "PLAYWRIGHT_VERSION=$(pnpm list -r "@playwright/test" | grep "@playwright/test" | tr -dc 1-9.)" >> $GITHUB_ENV
+
+         - name: Cache playwright binaries
+           uses: actions/cache@v3
+           id: playwright-cache
+           with:
+              path: ~/.cache/ms-playwright
+              key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
+         - name: Install Playwright Dependencies
+           if: steps.playwright-cache.outputs.cache-hit != 'true'
+           run: cd frontend && npx playwright install
+
+         - name: Cache Next.js cache directory
+           uses: actions/cache@v3
+           with:
+              path: frontend/.next/cache
+              key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+              restore-keys: |
+                 ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+         - name: Build Next.js
+           env:
+              NODE_ENV: test
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+           run: cd frontend && pnpm build
+
+         - name: Run Playwright Tests
+           env:
+              NODE_ENV: test
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+           run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}" ${{ needs.check-diff.outputs.modified-playwright-tests }} --repeat-each=5
+
+         - uses: actions/upload-artifact@v2
+           if: failure()
+           with:
+              name: playwright-artifacts
+              path: frontend/tests/playwright/test-results/artifacts
+              retention-days: 7
