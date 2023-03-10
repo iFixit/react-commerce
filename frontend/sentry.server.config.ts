@@ -21,7 +21,7 @@ Sentry.init({
    },
    beforeSend(event, hint) {
       const ex = hint.originalException;
-      if (ex && typeof ex == 'object' && ex.message) {
+      if (ex instanceof Error) {
          // Happens when receiving a bad url that fails to decode
          if (ex.message.match(/URI malformed/)) {
             return null;

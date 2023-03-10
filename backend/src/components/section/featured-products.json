@@ -1,0 +1,26 @@
+{
+   "collectionName": "components_section_featured_products",
+   "info": {
+      "displayName": "featured products",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "productList": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::product-list.product-list"
+      },
+      "background": {
+         "type": "enumeration",
+         "enum": ["white", "transparent"],
+         "default": "transparent"
+      }
+   }
+}

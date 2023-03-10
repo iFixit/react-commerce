@@ -1,7 +1,7 @@
 import { CategoryFieldsFragment } from '@lib/strapi-sdk';
 import { ProductListType } from '@models/product-list';
 import { getProductListType } from '@models/product-list/server';
-import { ImageSchema, imageFromStrapi } from '@models/shared/components/image';
+import { ImageSchema, imageFromStrapi } from '@models/components/image';
 import { z } from 'zod';
 
 export const BrowseCategorySchema = z.object({

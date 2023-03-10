@@ -10,8 +10,11 @@ import {
    getServerShopifyStorefrontSdk,
    ProductVariantCardFragment,
 } from '@lib/shopify-storefront-sdk';
+import { getCurrencyCode } from '@models/components/money';
+import { proPriceTiersFromPriceTiersMetafield } from '@models/components/pro-price-tiers';
+import { productPreviewFromShopify } from '@models/components/product-preview';
 import shuffle from 'lodash/shuffle';
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import { findStoreByCode } from '../store';
 import {
    Breadcrumb,
@@ -22,7 +25,6 @@ import {
    ProductVariantCardSchema,
    ProductVariantImage,
    ProductVariantSchema,
-   ProPriceTiers,
 } from './schema';
 
 export type {
@@ -107,7 +109,7 @@ export async function findProduct({
       replacementGuides: parseReplacementGuides(
          response.product.replacementGuides?.value
       ),
-      featuredProductVariants: getFeaturedProductVariants(response.product),
+      featuredProductVariants: getFeaturedProductPreviews(response.product),
       compatibility: parseCompatibility(response.product.compatibility?.value),
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
@@ -139,6 +141,7 @@ function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
            )
          : 0;
       const { productcode, optionid } = parseItemcode(String(variant.sku));
+      const currencyCode = getCurrencyCode(variant.price.currencyCode);
       return {
          ...other,
          productcode,
@@ -150,10 +153,12 @@ function getVariants(shopifyProduct: ShopifyApiProduct): ProductVariant[] {
          image: variant.image
             ? formatImage(variant.image, shopifyProduct)
             : null,
-         proPricesByTier: parsePriceTiersMetafieldValue(
-            variant.proPricesByTier?.value,
-            variant.price.currencyCode
-         ),
+         proPricesByTier: currencyCode
+            ? proPriceTiersFromPriceTiersMetafield(
+                 variant.proPricesByTier?.value,
+                 currencyCode
+              )
+            : null,
          isDiscounted,
          discountPercentage,
          description: variant.description?.value ?? null,
@@ -248,7 +253,9 @@ function getCrossSellVariants(
    return filterNullableItems(products);
 }
 
-function getFeaturedProductVariants(
+const MAX_FEATURED_VARIANTS = 6;
+
+function getFeaturedProductPreviews(
    shopifyProduct: NonNullable<FindProductQuery['product']>
 ) {
    const variants =
@@ -256,15 +263,16 @@ function getFeaturedProductVariants(
          if (node.__typename !== 'ProductVariant') {
             return null;
          }
-         return getProductVariantCard(node);
+         return productPreviewFromShopify(node);
       }) ?? [];
    const featuredVariants = filterNullableItems(variants);
-   return shuffle(featuredVariants).slice(0, 5);
+   return shuffle(featuredVariants).slice(0, MAX_FEATURED_VARIANTS);
 }
 
 function getProductVariantCard(
    fragment: ProductVariantCardFragment
 ): ProductVariantCard {
+   const currencyCode = getCurrencyCode(fragment.price.currencyCode);
    return {
       ...fragment,
       price: ProductVariantCardSchema.shape.price.parse(fragment.price),
@@ -280,10 +288,12 @@ function getProductVariantCard(
          oemPartnership: fragment.product.oemPartnership?.value ?? null,
       },
       warranty: fragment.warranty?.value ?? null,
-      proPricesByTier: parsePriceTiersMetafieldValue(
-         fragment.proPricesByTier?.value,
-         fragment.price.currencyCode
-      ),
+      proPricesByTier: currencyCode
+         ? proPriceTiersFromPriceTiersMetafield(
+              fragment.proPricesByTier?.value,
+              currencyCode
+           )
+         : null,
       enabled: fragment.enabled?.value === 'true',
    };
 }
@@ -431,36 +441,6 @@ function parseNumericMetafieldValue(value: string | null | undefined) {
       return null;
    }
    return value != null ? parseFloat(value) : null;
-}
-
-const PriceTiersMetafieldSchema = z.record(z.number());
-
-function parsePriceTiersMetafieldValue(
-   value: string | null | undefined,
-   currencyCode: string
-): ProPriceTiers | null {
-   if (value == null) {
-      return null;
-   }
-   const json: unknown = JSON.parse(value);
-   if (json == null) {
-      return null;
-   }
-   const result = PriceTiersMetafieldSchema.safeParse(json);
-   if (result.success) {
-      return Object.keys(result.data).reduce((acc, key) => {
-         const amount = result.data[key];
-         return {
-            ...acc,
-            [key]: {
-               amount,
-               currencyCode,
-            },
-         };
-      }, {} as ProPriceTiers);
-   }
-   logParseErrors(result.error, 'price tiers metafield');
-   return null;
 }
 
 function parseShippingRestrictions(value: string | null | undefined) {

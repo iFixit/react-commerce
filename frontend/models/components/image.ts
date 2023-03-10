@@ -1,4 +1,5 @@
 import type { ImageFieldsFragment } from '@lib/strapi-sdk';
+import type { ImageFieldsFragment as ShopifyImageFields } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 
 export const ImageSchema = z.object({
@@ -21,5 +22,23 @@ export function imageFromStrapi(
    return {
       url: attributes.url,
       altText: attributes.alternativeText,
+   };
+}
+
+export function imageFromUrl(url: string | null | undefined): Image | null {
+   if (url == null) return null;
+   return { url };
+}
+
+export function imageFromShopify(
+   imageFragment: ShopifyImageFields | null | undefined
+): Image | null {
+   if (imageFragment == null) return null;
+   return {
+      id: imageFragment.id,
+      altText: imageFragment.altText,
+      height: imageFragment.height,
+      width: imageFragment.width,
+      url: imageFragment.url,
    };
 }

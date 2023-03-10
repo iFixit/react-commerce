@@ -1,7 +1,8 @@
 import { Box, chakra, Flex, Link } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
+import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper';
 import { SectionHeading } from '@components/sections/SectionHeading';
-import { ResponsiveImage, Wrapper } from '@ifixit/ui';
+import { ResponsiveImage } from '@ifixit/ui';
 import type { PressQuote } from '@models/page/components/press-quote';
 import type { PressQuotesSection } from '@models/page/sections/press-quotes-section';
 import NextLink from 'next/link';
@@ -18,10 +19,10 @@ export function PressQuotesSection({
    return (
       <Box as="section" position="relative" w="full" bg="gray.200">
          <Flex direction="column" py="16" alignItems="center">
-            <Wrapper textAlign="center">
+            <SectionHeaderWrapper textAlign="center">
                {title && <SectionHeading mb="4">{title}</SectionHeading>}
                {description && <SectionDescription richText={description} />}
-            </Wrapper>
+            </SectionHeaderWrapper>
             <Box
                w="full"
                my={{

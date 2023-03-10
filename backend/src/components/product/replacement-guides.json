@@ -1,0 +1,14 @@
+{
+   "collectionName": "components_product_replacement_guides",
+   "info": {
+      "displayName": "replacement guides",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string",
+         "required": false
+      }
+   }
+}
