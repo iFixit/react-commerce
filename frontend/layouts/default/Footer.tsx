@@ -1,27 +1,14 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { Menu, MenuList } from '@chakra-ui/react';
-import {
-   FacebookLogo,
-   Flag,
-   FlagCountryCode,
-   Language,
-   InstagramLogo,
-   RepairOrgLogo,
-   TwitterLogo,
-   TiktokLogo,
-   YoutubeLogo,
-} from '@ifixit/icons';
-import { MenuItemType } from '@models/menu';
+import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
+import type { MenuItem } from '@ifixit/ui';
+import { MenuItemType } from '@ifixit/ui';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
-import { GlobalSettings } from '@models/global-settings';
-import { Store, StoreListItem } from '@models/store';
-import { NewsletterForm } from './Newsletter';
+import type { GlobalSettings } from '@models/global-settings';
+import type { Store, StoreListItem } from '@models/store';
+import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
 import {
-   FooterNavigationItem,
-   FooterNavigationList,
-   FooterNavigationLink,
-   FooterNavigationSection,
    FooterCopyright,
    FooterLegalLink,
    FooterLegalLinkList,
@@ -36,155 +23,41 @@ import {
    FooterLink,
    FooterDivider,
    EventTracker,
+   NavigationSection,
 } from '@ifixit/footer';
+import { CountryCode } from '@lib/shopify-storefront-sdk';
 
 interface FooterProps {
    stores: StoreListItem[];
-   menu1: Store['footer']['menu1'];
-   menu2: Store['footer']['menu2'];
    partners: Store['footer']['partners'];
    bottomMenu: Store['footer']['bottomMenu'];
    socialMediaAccounts: Store['socialMediaAccounts'];
+   menu1: Store['footer']['menu1'];
+   menu2: Store['footer']['menu2'];
+   menu3: Store['footer']['menu3'];
    globalSettings: GlobalSettings;
 }
 
 export function CartFooter({
    stores,
-   menu1,
-   menu2,
    partners,
    bottomMenu,
    socialMediaAccounts,
+   menu1,
+   menu2,
+   menu3,
    globalSettings,
 }: FooterProps) {
    const { newsletterForm } = globalSettings;
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
          <Footer>
-            <FooterNavigationSection>
-               <FooterNavigationList>
-                  {menu1?.items.map((item, index) => {
-                     if (item.type === 'link') {
-                        return (
-                           <FooterNavigationItem key={index}>
-                              <FooterNavigationLink href={item.url}>
-                                 {item.name}
-                              </FooterNavigationLink>
-                           </FooterNavigationItem>
-                        );
-                     }
-                  })}
-               </FooterNavigationList>
-               <FooterNavigationList>
-                  {menu2?.items.map((item, index) => {
-                     if (item.type === 'link') {
-                        return (
-                           <FooterNavigationItem key={index}>
-                              <FooterNavigationLink href={item.url}>
-                                 {item.name}
-                              </FooterNavigationLink>
-                           </FooterNavigationItem>
-                        );
-                     }
-                  })}
-               </FooterNavigationList>
-               <FooterNavigationList>
-                  {socialMediaAccounts.tiktok && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.tiktok}
-                           icon={TiktokLogo}
-                        >
-                           TikTok
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.facebook && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.facebook}
-                           icon={FacebookLogo}
-                        >
-                           Facebook
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.twitter && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.twitter}
-                           icon={TwitterLogo}
-                        >
-                           Twitter
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.instagram && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.instagram}
-                           icon={InstagramLogo}
-                        >
-                           Instagram
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.youtube && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.youtube}
-                           icon={YoutubeLogo}
-                        >
-                           YouTube
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-                  {socialMediaAccounts.repairOrg && (
-                     <FooterNavigationItem>
-                        <FooterNavigationLink
-                           href={socialMediaAccounts.repairOrg}
-                           icon={RepairOrgLogo}
-                        >
-                           Repair.org
-                        </FooterNavigationLink>
-                     </FooterNavigationItem>
-                  )}
-               </FooterNavigationList>
-               {partners && (
-                  <FooterPartners>
-                     {partners.items.map((partner) => {
-                        if (partner.type === MenuItemType.ImageLink) {
-                           return (
-                              <FooterPartnerLink
-                                 key={partner.name}
-                                 href={partner.url}
-                                 position="relative"
-                                 p="0"
-                              >
-                                 {partner.image?.url ? (
-                                    <ResponsiveImage
-                                       layout="fill"
-                                       objectFit="contain"
-                                       src={partner.image.url}
-                                       alt={
-                                          partner.image?.alternativeText ||
-                                          `${partner.name} logo`
-                                       }
-                                    />
-                                 ) : (
-                                    <ResponsiveImage
-                                       layout="fill"
-                                       objectFit="contain"
-                                       src={noImageFixie}
-                                    />
-                                 )}
-                              </FooterPartnerLink>
-                           );
-                        }
-                     })}
-                  </FooterPartners>
-               )}
-            </FooterNavigationSection>
+            <NavigationSection
+               menu1={menu1}
+               menu2={menu2}
+               menu3={menu3}
+               newsletterForm={newsletterForm}
+            />
 
             <FooterDivider />
 
@@ -194,6 +67,7 @@ export function CartFooter({
                      <Menu isLazy lazyBehavior="keepMounted">
                         <StoreMenuButton
                            icon={<Flag code={FlagCountryCode.US} />}
+                           color="white"
                         >
                            Region
                         </StoreMenuButton>
@@ -226,15 +100,47 @@ export function CartFooter({
                      Help translate
                   </FooterLink>
                </FooterSettings>
-               <NewsletterForm
-                  title={newsletterForm.title}
-                  description={newsletterForm.subtitle}
-                  subscribeLabel={newsletterForm.callToActionButtonTitle}
-                  emailPlaceholder={newsletterForm.inputPlaceholder}
-               />
+               <SocialMediaSection accounts={socialMediaAccounts} />
             </FooterSettingsSection>
 
             <FooterDivider />
+
+            {partners && (
+               <FooterPartners>
+                  {partners.items.map((partner: MenuItem) => {
+                     if (partner.type === MenuItemType.ImageLink) {
+                        return (
+                           <FooterPartnerLink
+                              key={partner.name}
+                              href={partner.url}
+                              position="relative"
+                              p="0"
+                           >
+                              {partner.image?.url ? (
+                                 <ResponsiveImage
+                                    layout="fill"
+                                    objectFit="contain"
+                                    src={partner.image.url}
+                                    alt={
+                                       partner.image?.alternativeText ||
+                                       `${partner.name} logo`
+                                    }
+                                    style={{ filter: 'grayscale(100%)' }}
+                                 />
+                              ) : (
+                                 <ResponsiveImage
+                                    layout="fill"
+                                    objectFit="contain"
+                                    src={noImageFixie}
+                                    style={{ filter: 'grayscale(100%)' }}
+                                 />
+                              )}
+                           </FooterPartnerLink>
+                        );
+                     }
+                  })}
+               </FooterPartners>
+            )}
 
             <FooterLegalSection>
                <FooterCopyright />
