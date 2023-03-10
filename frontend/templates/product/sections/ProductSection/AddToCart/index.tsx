@@ -1,29 +1,14 @@
-import {
-   Alert,
-   Box,
-   Button,
-   Flex,
-   Link,
-   Popover,
-   PopoverArrow,
-   PopoverBody,
-   PopoverContent,
-   PopoverTrigger,
-   StackProps,
-   Text,
-   VStack,
-} from '@chakra-ui/react';
-import {
-   faCircleExclamation,
-   faCircleInfo,
-   faExclamationCircle,
-} from '@fortawesome/pro-solid-svg-icons';
+import { Alert, Box, Button } from '@chakra-ui/react';
+import { faExclamationCircle } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
-import { useCartDrawer, useUserPrice } from '@ifixit/ui';
+import { useCartDrawer, useOnScreen, useUserPrice } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
+import { AddToCartBar } from './AddToCartBar';
+import { InventoryMessage } from './InventoryMessage';
 import { NotifyMeForm } from './NotifyMeForm';
+import { ShippingRestrictions } from './ShippingRestrictions';
 
 type AddToCartProps = {
    product: Product;
@@ -40,58 +25,35 @@ export function isVariantWithSku(
 
 export function AddToCart({ product, selectedVariant }: AddToCartProps) {
    const inventory = useVariantInventory(selectedVariant);
-   const addToCart = useAddToCart();
-   const { onOpen } = useCartDrawer();
-   const userPrice = useUserPrice({
-      price: selectedVariant.price,
-      compareAtPrice: selectedVariant.compareAtPrice,
-      proPricesByTier: selectedVariant.proPricesByTier,
-   });
 
-   const handleAddToCart = React.useCallback(() => {
-      addToCart.mutate({
-         type: 'product',
-         product: {
-            name: product.title,
-            variantTitle: selectedVariant.title,
-            internalDisplayName:
-               selectedVariant.internalDisplayName ?? undefined,
-            itemcode: selectedVariant.sku,
-            shopifyVariantId: selectedVariant.id,
-            quantity: 1,
-            imageSrc: selectedVariant.image?.url || product.images[0]?.url,
-            price: userPrice.price,
-            compareAtPrice: userPrice.compareAtPrice,
-         },
-      });
-      onOpen();
-   }, [
-      selectedVariant.sku,
-      selectedVariant.title,
-      selectedVariant.id,
-      selectedVariant.image?.url,
-      addToCart,
-      product.title,
-      selectedVariant.internalDisplayName,
-      product.images,
-      userPrice.price,
-      userPrice.compareAtPrice,
-      onOpen,
-   ]);
+   const [isAddingToCart, addToCart] = useOptimisticAddToCart(
+      product,
+      selectedVariant
+   );
 
    const isSelectedVariantAvailable =
       inventory.maxToBeAdded != null && inventory.maxToBeAdded > 0;
+
+   const buttonRef = React.useRef<HTMLButtonElement>(null);
+   const isButtonVisible = useOnScreen(buttonRef);
 
    return (
       <Box mt="5">
          {isSelectedVariantAvailable && (
             <>
+               <AddToCartBar
+                  title={product.title}
+                  rating={product.rating?.value}
+                  reviewsCount={product.reviewsCount}
+                  active={!isButtonVisible}
+               />
                <Button
+                  ref={buttonRef}
                   w="full"
                   colorScheme="brand"
-                  isLoading={addToCart.isLoading}
+                  isLoading={isAddingToCart}
                   disabled={inventory.remaining === 0}
-                  onClick={handleAddToCart}
+                  onClick={addToCart}
                   data-testid="product-add-to-cart-button"
                >
                   Add to cart
@@ -150,161 +112,6 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
    );
 }
 
-type ShippingRestrictionsInfo = {
-   [key: string]: { notice: string; text: string; link?: string };
-};
-const shippingRestrictionsInfo: ShippingRestrictionsInfo = {
-   is_battery: {
-      notice: 'Shipping restrictions apply',
-      text: 'Batteries may only be shipped within the contiguous USA at this time and may only ship via standard shipping.',
-      link: 'https://help.ifixit.com/article/195-battery-shipping-warnings',
-   },
-   is_dangerous: {
-      notice: 'Shipping restrictions apply',
-      text: 'New safety regulations for dangerous goods may cause shipping delays.',
-      link: 'https://help.ifixit.com/article/264-what-are-the-shipping-restrictions-for-orders-containing-dangerous-goods',
-   },
-   us_only: {
-      notice: 'US shipping only',
-      text: 'Due to shipping regulations, iFixit may only ship this product within the United States of America.',
-   },
-   does_not_ship_to_mexico: {
-      notice: 'Mexico shipping unavailable',
-      text: 'Due to shipping regulations, iFixit may not ship this product to Mexico.',
-   },
-   fulfilled_via_dropshipping: {
-      notice: 'Partner fulfilled',
-      text: 'This product will be packed and shipped by one of our fulfillment partners.',
-   },
-   is_oem_partner_restricted: {
-      notice: 'Shipping restrictions apply',
-      text: 'This product ships to the United States, Japan, South Korea, Hong Kong, and Taiwan only.',
-   },
-};
-
-type ShippingRestrictionsProps = StackProps & {
-   shippingRestrictions: string[];
-};
-
-function ShippingRestrictions({
-   shippingRestrictions,
-   ...stackProps
-}: ShippingRestrictionsProps) {
-   const restrictionKeysToShow: string[] = [];
-   const primaryRestrictionKey = shippingRestrictions.find(
-      (sr) =>
-         sr !== 'fulfilled_via_dropshipping' &&
-         Object.keys(shippingRestrictionsInfo).includes(sr)
-   );
-   if (primaryRestrictionKey) {
-      restrictionKeysToShow.push(primaryRestrictionKey);
-   }
-   if (shippingRestrictions.includes('fulfilled_via_dropshipping')) {
-      restrictionKeysToShow.push('fulfilled_via_dropshipping');
-   }
-
-   if (restrictionKeysToShow.length > 0) {
-      return (
-         <VStack spacing="1" {...stackProps}>
-            {restrictionKeysToShow.map((restrictionKey) => {
-               const shippingRestriction =
-                  shippingRestrictionsInfo[restrictionKey];
-               return (
-                  <Flex
-                     key={restrictionKey}
-                     py="0"
-                     fontSize="sm"
-                     align="center"
-                  >
-                     {shippingRestriction.notice}
-                     <Popover trigger="hover">
-                        <PopoverTrigger>
-                           <FaIcon
-                              display="block"
-                              icon={faCircleInfo}
-                              h="4"
-                              m="-1.5"
-                              ml="0"
-                              p="1.5"
-                              color="gray.400"
-                           />
-                        </PopoverTrigger>
-                        <PopoverContent>
-                           <PopoverArrow backgroundColor="gray.800" />
-                           <PopoverBody
-                              borderRadius="md"
-                              backgroundColor="gray.800"
-                              color="white"
-                              fontSize="13px"
-                           >
-                              <Box>{shippingRestriction.text}</Box>
-                              {shippingRestriction.link && (
-                                 <Link
-                                    href={shippingRestriction.link}
-                                    color="brand.400"
-                                    target="_blank"
-                                 >
-                                    Learn more
-                                 </Link>
-                              )}
-                           </PopoverBody>
-                        </PopoverContent>
-                     </Popover>
-                  </Flex>
-               );
-            })}
-         </VStack>
-      );
-   }
-
-   return null;
-}
-
-type InvetoryMessageProps = {
-   quantityAvailable?: number | null;
-   quantityAddedToCart?: number;
-};
-
-function InventoryMessage({
-   quantityAvailable,
-   quantityAddedToCart = 0,
-}: InvetoryMessageProps) {
-   if (quantityAvailable == null || quantityAvailable >= 10) {
-      return null;
-   }
-   const remaining = Math.max(0, quantityAvailable - quantityAddedToCart);
-
-   return (
-      <Flex
-         color="red.600"
-         mt="2.5"
-         fontSize="sm"
-         align="center"
-         justify="center"
-         data-testid="product-inventory-message"
-      >
-         <FaIcon
-            icon={faCircleExclamation}
-            display="block"
-            h="4"
-            mr="1.5"
-            color="red.500"
-         />
-         {remaining > 0 ? (
-            <>
-               Only{' '}
-               <Text fontWeight="bold" mx="1">
-                  {remaining}
-               </Text>{' '}
-               left
-            </>
-         ) : (
-            <>No more items available</>
-         )}
-      </Flex>
-   );
-}
-
 function useVariantInventory(variant: ProductVariantWithSku) {
    const cartLineItem = useCartLineItem(variant.sku);
    const cartMaxToAdd = cartLineItem.data?.maxToAdd ?? undefined;
@@ -319,4 +126,49 @@ function useVariantInventory(variant: ProductVariantWithSku) {
       addedToCart,
       remaining,
    };
+}
+
+function useOptimisticAddToCart(
+   product: Product,
+   selectedVariant: ProductVariantWithSku
+) {
+   const addToCart = useAddToCart();
+   const { onOpen } = useCartDrawer();
+   const userPrice = useUserPrice({
+      price: selectedVariant.price,
+      compareAtPrice: selectedVariant.compareAtPrice,
+      proPricesByTier: selectedVariant.proPricesByTier,
+   });
+
+   const optimisticAddToCart = React.useCallback(() => {
+      addToCart.mutate({
+         type: 'product',
+         product: {
+            name: product.title,
+            variantTitle: selectedVariant.title,
+            internalDisplayName:
+               selectedVariant.internalDisplayName ?? undefined,
+            itemcode: selectedVariant.sku,
+            shopifyVariantId: selectedVariant.id,
+            quantity: 1,
+            imageSrc: selectedVariant.image?.url || product.images[0]?.url,
+            price: userPrice.price,
+            compareAtPrice: userPrice.compareAtPrice,
+         },
+      });
+      onOpen();
+   }, [
+      selectedVariant.sku,
+      selectedVariant.title,
+      selectedVariant.id,
+      selectedVariant.image?.url,
+      addToCart,
+      product.title,
+      selectedVariant.internalDisplayName,
+      product.images,
+      userPrice.price,
+      userPrice.compareAtPrice,
+      onOpen,
+   ]);
+   return [addToCart.isLoading, optimisticAddToCart] as const;
 }

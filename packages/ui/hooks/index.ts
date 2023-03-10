@@ -252,3 +252,31 @@ export function useDecoupledState<Type = any>(
 
    return [decoupledState, setDecoupledState];
 }
+
+interface UseOnScreenOptions {
+   rootMargin?: string;
+}
+
+export function useOnScreen(
+   ref: React.RefObject<HTMLElement>,
+   options?: UseOnScreenOptions
+) {
+   const [isIntersecting, setIntersecting] = React.useState(false);
+   React.useEffect(() => {
+      const observer = new IntersectionObserver(
+         ([entry]) => {
+            setIntersecting(entry.isIntersecting);
+         },
+         {
+            rootMargin: options?.rootMargin || '0px',
+         }
+      );
+      if (ref.current) {
+         observer.observe(ref.current);
+      }
+      return () => {
+         if (ref.current) observer.unobserve(ref.current);
+      };
+   }, []);
+   return isIntersecting;
+}
