@@ -11,6 +11,7 @@ export interface FeaturedProductsSectionProps {
    description?: string | null;
    background?: BackgroundColor | null;
    products: ProductPreview[];
+   onProductClick?: (product: ProductPreview) => void;
 }
 
 type BackgroundColor = 'transparent' | 'white';
@@ -20,6 +21,7 @@ export function FeaturedProductsSection({
    description,
    background,
    products,
+   onProductClick,
 }: FeaturedProductsSectionProps) {
    return (
       <Box
@@ -54,9 +56,14 @@ export function FeaturedProductsSection({
                      lg: 5,
                      xl: 6,
                   }}
+                  hideIncompleteRows
                >
                   {products.map((product) => (
-                     <ProductGridItem key={product.id} product={product} />
+                     <ProductGridItem
+                        key={product.id}
+                        product={product}
+                        onClick={() => onProductClick?.(product)}
+                     />
                   ))}
                </ProductGrid>
             </Box>

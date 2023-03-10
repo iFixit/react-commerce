@@ -14,12 +14,14 @@ import {
 } from '@ifixit/helpers';
 import { IconBadge, ProductVariantPrice, useUserPrice } from '@ifixit/ui';
 import type { ProductPreview } from '@models/components/product-preview';
+import { useId } from 'react';
 
 export interface ProductGridItemProps {
    product: ProductPreview;
+   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-export function ProductGridItem({ product }: ProductGridItemProps) {
+export function ProductGridItem({ product, onClick }: ProductGridItemProps) {
    const userPrice = useUserPrice(product);
 
    const discountPercentage =
@@ -27,8 +29,16 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
          ? computeDiscountPercentage(userPrice.price, userPrice.compareAtPrice)
          : 0;
 
+   const productHeadingId = useId();
+
    return (
-      <LinkBox as="article" display="block" w="full" role="group">
+      <LinkBox
+         as="article"
+         role="group"
+         aria-labelledby={productHeadingId}
+         display="block"
+         w="full"
+      >
          <ProductCardBadgeList
             sx={{
                '& > div:first-of-type': {
@@ -59,8 +69,14 @@ export function ProductGridItem({ product }: ProductGridItemProps) {
          <ProductCard h="full">
             <ProductCardImage src={product.image?.url} alt={product.title} />
             <ProductCardBody>
-               <LinkOverlay href={getProductPath(product.handle)}>
-                  <ProductCardTitle _groupHover={{ color: 'brand.500' }}>
+               <LinkOverlay
+                  href={getProductPath(product.handle)}
+                  onClick={onClick}
+               >
+                  <ProductCardTitle
+                     _groupHover={{ color: 'brand.500' }}
+                     id={productHeadingId}
+                  >
                      {product.title}
                   </ProductCardTitle>
                </LinkOverlay>

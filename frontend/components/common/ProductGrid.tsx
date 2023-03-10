@@ -1,12 +1,37 @@
-import { ResponsiveValue, SimpleGrid, SimpleGridProps } from '@chakra-ui/react';
+import {
+   ResponsiveValue,
+   SimpleGrid,
+   SimpleGridProps,
+   useBreakpointValue,
+} from '@chakra-ui/react';
 import React from 'react';
 
 export type ProductGridProps = Omit<SimpleGridProps, 'columns' | '_after'> & {
    columns: Record<string, number>;
+   hideIncompleteRows?: boolean;
 };
 
-export function ProductGrid({ children, columns, ...other }: ProductGridProps) {
+export function ProductGrid({
+   children,
+   columns,
+   hideIncompleteRows = false,
+   ...other
+}: ProductGridProps) {
    const childrenCount = React.Children.count(children);
+
+   const visibleChildrenCount = useBreakpointValue(
+      Object.entries(columns).reduce((acc, [key, value]) => {
+         acc[key] = Math.floor(childrenCount / value) * value;
+         return acc;
+      }, {} as Record<string, number>)
+   );
+
+   const visibleChildren = hideIncompleteRows
+      ? React.Children.toArray(children).slice(
+           0,
+           visibleChildrenCount ?? childrenCount
+        )
+      : children;
 
    const gridRow: ResponsiveValue<number> = Object.entries(columns).reduce(
       (acc, [key, value]) => {
@@ -54,7 +79,7 @@ export function ProductGrid({ children, columns, ...other }: ProductGridProps) {
          }}
          {...other}
       >
-         {children}
+         {visibleChildren}
       </SimpleGrid>
    );
 }

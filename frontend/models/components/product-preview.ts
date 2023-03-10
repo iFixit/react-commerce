@@ -1,14 +1,23 @@
 import { printZodError } from '@helpers/zod-helpers';
+import { isLifetimeWarranty } from '@ifixit/helpers';
+import type { ProductPreviewFieldsFragment } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
 import { AlgoliaProductHitSchema } from './algolia-product-hit';
-import { imageFromUrl, ImageSchema } from './image';
-import { moneyFromAmount, MoneySchema } from './money';
+import { imageFromShopify, imageFromUrl, ImageSchema } from './image';
+import {
+   getCurrencyCode,
+   moneyFromAmount,
+   moneyFromShopify,
+   MoneySchema,
+} from './money';
 import {
    proPriceTiersFromAlgoliaPriceTiers,
+   proPriceTiersFromPriceTiersMetafield,
    ProPriceTiersSchema,
 } from './pro-price-tiers';
 import {
    productReviewsFromAlgoliaProductHit,
+   productReviewsFromMetafields,
    ProductReviewsSchema,
 } from './product-reviews';
 
@@ -17,6 +26,7 @@ export type ProductPreview = z.infer<typeof ProductPreviewSchema>;
 export const ProductPreviewSchema = z.object({
    id: z.string(),
    handle: z.string(),
+   sku: z.string().optional().nullable(),
    title: z.string(),
    image: ImageSchema.nullable(),
    price: MoneySchema,
@@ -53,5 +63,39 @@ export function productPreviewFromAlgoliaHit(
       reviews: productReviewsFromAlgoliaProductHit(product),
       oemPartnership: product.oem_partnership ?? null,
       hasLifetimeWarranty: product.lifetime_warranty ?? false,
+   };
+}
+
+export function productPreviewFromShopify(
+   fields: ProductPreviewFieldsFragment
+) {
+   const price = moneyFromShopify(fields.price);
+   if (price == null) return null;
+
+   const currencyCode = getCurrencyCode(fields.price.currencyCode);
+
+   return {
+      id: fields.id,
+      handle: fields.product.handle,
+      title: fields.product.title,
+      image: imageFromShopify(fields.image),
+      price,
+      compareAtPrice: moneyFromShopify(fields.compareAtPrice),
+      proPricesByTier:
+         currencyCode == null
+            ? null
+            : proPriceTiersFromPriceTiersMetafield(
+                 fields.proPricesByTier?.value,
+                 currencyCode
+              ),
+      isPro: false,
+      reviews: productReviewsFromMetafields(
+         fields.product.rating?.value,
+         fields.product.reviewsCount?.value
+      ),
+      oemPartnership: fields.product.oemPartnership?.value ?? null,
+      hasLifetimeWarranty:
+         typeof fields.warranty?.value === 'string' &&
+         isLifetimeWarranty(fields.warranty.value),
    };
 }
