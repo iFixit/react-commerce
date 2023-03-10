@@ -1,0 +1,36 @@
+name: Stress-test
+
+on: [pull_request]
+env:
+   npm_config_userconfig: './.npmrc'
+jobs:
+   check-diff:
+      name: check-diff
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout ifixit
+           uses: actions/checkout@v3
+           with:
+              fetch-depth: 0
+
+         - name: Get head commit message
+           run: |
+              echo "headCommitMsg=$(git log -s -1 --format=%B ${{ github.event.pull_request.head.sha }} | tr '\n' ' ')" >> $GITHUB_ENV
+
+         - name: Get base branch commit sha when the pull request was created
+           run: |
+              BASE_COMMIT_SHA=$(gh api repos/iFixit/react-commerce/compare/${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --jq '.merge_base_commit.sha')
+              echo "The base branch commit sha: $BASE_COMMIT_SHA"
+              echo "baseCommitSha=$BASE_COMMIT_SHA" >> $GITHUB_ENV
+           env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+         - name: Get and log modified test names
+           if: "!contains(env.headCommitMsg, '[skip stress-test]')"
+           run: |
+              MODIFIED_PLAYWRIGHT_TESTS=$(git diff ${{ env.baseCommitSha }}...${{ github.event.pull_request.head.sha }} --name-only --diff-filter=d -- 'frontend/tests/playwright/*.spec.ts' | tr '\n' ' ')
+              MODIFIED_JEST_TESTS=$(git diff ${{ env.baseCommitSha }}...${{ github.event.pull_request.head.sha }} --name-only --diff-filter=d -- 'frontend/tests/jest/tests/*.test.tsx' | tr '\n' ' ')
+              echo "modified-playwright-tests=$(echo $MODIFIED_PLAYWRIGHT_TESTS)" >> $GITHUB_OUTPUT
+              echo "modified-jest-tests=$(echo $MODIFIED_JEST_TESTS)" >> $GITHUB_OUTPUT
+              echo "Modified playwright tests: $MODIFIED_PLAYWRIGHT_TESTS"
+              echo "Modified jest tests: $MODIFIED_JEST_TESTS"
