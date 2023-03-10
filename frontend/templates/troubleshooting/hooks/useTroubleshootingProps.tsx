@@ -6,6 +6,13 @@ export type Section = {
    body: string;
 };
 
+export type Author = {
+   userid: number;
+   percent: number;
+   username: string;
+   avatar: string;
+};
+
 export type TroubleshootingData = {
    title: string;
    toc: string;
@@ -17,6 +24,8 @@ export type TroubleshootingData = {
    deviceGuideUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
+   lastUpdatedDate: number;
+   authors: Author[];
 };
 
 type TroubleshootingPageProps = {
