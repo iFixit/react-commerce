@@ -44,11 +44,7 @@ jobs:
       strategy:
          fail-fast: false
          matrix:
-            project:
-               [
-                  'Desktop Chrome',
-                  'Mobile Chrome',
-               ]
+            project: ['Desktop Chrome', 'Mobile Chrome']
       steps:
          - name: Checkout
            uses: actions/checkout@v3
