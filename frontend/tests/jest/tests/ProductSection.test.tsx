@@ -9,6 +9,7 @@ import {
    getProductOfType,
    getProductWithWarranty,
    mockResizeObserver,
+   mockIntersectionObserver,
 } from '../utils';
 import { ProductSection } from '@templates/product/sections/ProductSection/index';
 import { mockedLayoutProps } from '../__mocks__/products';
@@ -26,6 +27,7 @@ describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
       mockResizeObserver();
+      mockIntersectionObserver();
    });
 
    describe('Product Description Tests', () => {
