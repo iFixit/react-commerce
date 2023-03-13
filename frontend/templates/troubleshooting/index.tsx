@@ -56,6 +56,7 @@ const Wiki: NextPageWithLayout<{
             <Head>
                <meta name="robots" content="noindex" />
                <link rel="canonical" href={wikiData.canonicalUrl} />
+               <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
             <Heading as="h1">{wikiData.title}</Heading>
             <AuthorInformation
@@ -283,6 +284,17 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
             </Link>
             <Box {...selectedStyleProps}>Answers</Box>
          </Flex>
+      </>
+   );
+}
+
+function HreflangUrls({ urls }: { urls: Record<string, string> }) {
+   const hreflangs = Object.entries(urls);
+   return (
+      <>
+         {hreflangs.map(([lang, url]) => (
+            <link rel="alternate" key={lang} hrefLang={lang} href={url} />
+         ))}
       </>
    );
 }
