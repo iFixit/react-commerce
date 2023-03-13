@@ -3,9 +3,8 @@ import {
    Button,
    FormControl,
    FormErrorMessage,
-   HStack,
-   Input,
    Stack,
+   Input,
    Text,
    Flex,
    Link,
@@ -42,15 +41,11 @@ const NewsletterInput = ({
             type="email"
             disabled={subscription.status !== SubscriptionStatus.Idle}
             data-testid="newsletter-email-input"
-            variant="filled"
             bg="white"
             color="gray.900"
-            fontSize="14px"
-            _focus={{
-               bg: 'white',
-               boxShadow: 'outline',
-            }}
+            fontSize="sm"
             placeholder={placeholder}
+            borderRadius="base"
          />
          <FormErrorMessage>{subscription.error}</FormErrorMessage>
       </FormControl>
@@ -66,10 +61,10 @@ const NewsletterHeader = ({
 }) => {
    return (
       <Box textAlign="left">
-         <Text fontWeight="bold" fontSize="16px" color="white" my={2}>
+         <Text fontSize="sm" fontWeight="semibold" color="white">
             {title}
          </Text>
-         <Text color="gray.300" fontSize="14px" fontWeight="normal" mt={3}>
+         <Text color="gray.300" fontSize="sm" fontWeight="normal" mt={1.5}>
             {subtitle}
          </Text>
       </Box>
@@ -107,11 +102,13 @@ const NewsletterForm = ({
    );
 
    return (
-      <HStack
+      <Stack
          as="form"
+         direction={{ base: 'row', md: 'column', lg: 'row' }}
          onSubmit={onSubscribe}
          data-testid="footer-newsletter-form"
          spacing="3"
+         mt="3"
          w={{
             base: 'full',
             xl: 'auto',
@@ -132,16 +129,17 @@ const NewsletterForm = ({
             data-testid="footer-newsletter-subscribe-button"
             isLoading={subscription.status === SubscriptionStatus.Subscribing}
             disabled={subscription.status !== SubscriptionStatus.Idle}
-            bg="blue.ifixit"
+            colorScheme="brand"
             color="white"
             border="none"
-            fontWeight="bold"
-            fontSize="14px"
-            _hover={{ bg: 'blue.ifixit', boxShadow: '0 0 5px gray' }}
+            fontWeight="semibold"
+            fontSize="sm"
+            flexShrink={0}
+            w={{ base: 'unset', md: 'full', lg: 'unset' }}
          >
             {buttonText}
          </Button>
-      </HStack>
+      </Stack>
    );
 };
 
@@ -151,23 +149,21 @@ const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
    }
    return (
       <Flex
-         height="42px"
+         h="10"
          flexDirection="row"
          alignItems="center"
          padding="3"
          gap="2"
          w="100%"
-         backgroundColor="brand.100"
+         mt="3"
+         bg="brand.100"
          border="1px"
          borderColor="brand.300"
          borderStyle="solid"
-         borderRadius="4px"
-         mt="6px !important"
+         borderRadius="base"
       >
          <FaIcon icon={faCircleCheck} color="brand.500" />
-         <Text color="gray.900" m={0} fontSize="16px">
-            Subscribed!
-         </Text>
+         <Text color="gray.900">Subscribed!</Text>
       </Flex>
    );
 };
@@ -176,16 +172,17 @@ const NewsletterLink = ({ isSubscribed }: { isSubscribed: boolean }) => {
    const message = isSubscribed ? 'Let me read it!' : 'Let me read it first!';
    return (
       <Link
+         mt="3"
          href="/Newsletter"
          color="gray.300"
          marginTop={2}
          textDecoration="underline"
-         fontSize="14px"
+         fontSize="sm"
          width="fit-content"
          _hover={{ color: 'white' }}
          _visited={{ color: 'gray.300' }}
       >
-         <FaIcon icon={faEye} display="inline" mr={1} verticalAlign="-3px" />
+         <FaIcon icon={faEye} display="inline" mr={1} />
          {message}
       </Link>
    );
@@ -202,24 +199,14 @@ export function NewsletterComponent({
    const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
 
    return (
-      <Stack
+      <Flex
          ref={ref}
          direction="column"
-         ml={{
-            base: 0,
-         }}
-         pr={0}
          mt={{
             base: 4,
             md: 0,
          }}
-         gridColumnEnd={{
-            sm: 'span 3',
-            lg: 'auto',
-         }}
-         justify="flex-start"
-         w="auto"
-         flexGrow={1}
+         w={{ base: 'full', md: '64', lg: '96' }}
       >
          <NewsletterHeader
             title={newsletterForm.title}
@@ -234,6 +221,6 @@ export function NewsletterComponent({
          />
          <NewsletterSubscribed isSubscribed={isSubscribed} />
          <NewsletterLink isSubscribed={isSubscribed} />
-      </Stack>
+      </Flex>
    );
 }
