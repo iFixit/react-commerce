@@ -96,6 +96,45 @@ const renderStyles: SystemStyleObject = {
          marginRight: 'auto',
       },
    },
+
+   '.imageBox_left': {
+      clear: 'left',
+      float: 'left',
+      marginBottom: '8px',
+      marginTop: '8px',
+      marginRight: '30px',
+      '> img': {
+         clear: 'left',
+      },
+   },
+
+   'table .imageBox_left': {
+      // Special-case default image alignment for tables
+      marginRight: '0px',
+   },
+
+   '.imageBox_right': {
+      clear: 'right',
+      float: 'right',
+      marginBottom: '8px',
+      marginTop: '8px',
+      marginLeft: '30px',
+      '>img': {
+         clear: 'right',
+      },
+   },
+
+   '.imageBox_center': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      clear: 'both',
+      marginBottom: '8px',
+      marginTop: '8px',
+      '>img': {
+         clear: 'both',
+      },
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
