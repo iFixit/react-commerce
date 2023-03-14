@@ -7,12 +7,11 @@ export const FooterPartners = forwardRef<BoxProps, 'div'>(
       return (
          <Flex
             ref={ref}
-            mt="7"
+            mt="8"
             alignItems="center"
             justifyContent="center"
             flexWrap="wrap"
-            paddingLeft="4"
-            paddingRight="4"
+            gap="3"
             {...otherProps}
          >
             {children}
@@ -37,8 +36,8 @@ export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
             h="62px"
             w="92px"
             p="4"
-            m="6px"
-            borderRadius="4px"
+            borderRadius="base"
+            boxSizing="border-box"
             cursor="pointer"
             transition="all 400ms"
             _hover={{

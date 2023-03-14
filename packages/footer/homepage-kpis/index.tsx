@@ -1,6 +1,5 @@
-import React from 'react';
 import { Box, SimpleGrid, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
-import { PageContentWrapper } from '../components/PageContentWrapper';
+import { Wrapper } from '@ifixit/ui';
 
 interface Stat {
    value: string;
@@ -28,7 +27,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
          borderColor="blue.100"
          mb={-10}
       >
-         <PageContentWrapper>
+         <Wrapper>
             <SimpleGrid
                columns={{
                   base: 1,
@@ -46,7 +45,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
                   />
                ))}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Wrapper>
       </Box>
    );
 }
