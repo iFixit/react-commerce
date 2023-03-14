@@ -49,6 +49,8 @@ const Wiki: NextPageWithLayout<{
             padding="0px 32px 32px"
             gap="16px"
             maxW="1280px"
+            w="100%"
+            flexShrink="1"
             direction="column"
             id="main"
          >
@@ -92,20 +94,29 @@ function NavBar({
    return (
       <Flex
          w="100%"
-         h="48px"
+         minH="48px"
          backgroundColor="white"
          borderBottomColor="gray.200"
          borderBottomWidth="1px"
          justify="center"
       >
-         <Flex maxW="1280px" flexGrow="1">
+         <Flex
+            maxW="1280px"
+            width="100%"
+            flexDirection={{ base: 'column-reverse', sm: 'row' }}
+            padding="0 32px"
+         >
             <Breadcrumbs breadcrumbs={breadcrumbs} />
-            <NavTabs
-               deviceGuideUrl={deviceGuideUrl}
-               devicePartsUrl={devicePartsUrl}
-            />
-            <EditButton editUrl={editUrl} />
-            <ActionsMenu historyUrl={historyUrl} />
+            <Flex>
+               <NavTabs
+                  overflowX="scroll"
+                  flexGrow="1"
+                  deviceGuideUrl={deviceGuideUrl}
+                  devicePartsUrl={devicePartsUrl}
+               />
+               <EditButton editUrl={editUrl} />
+               <ActionsMenu historyUrl={historyUrl} />
+            </Flex>
          </Flex>
       </Flex>
    );
@@ -116,7 +127,7 @@ function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbEntry[] }) {
       label: breadcrumb.title,
       url: breadcrumb.url,
    }));
-   return <BreadCrumbs breadCrumbs={bc} />;
+   return <BreadCrumbs height="48px" breadCrumbs={bc} />;
 }
 
 function EditButton({ editUrl }: { editUrl: string }) {
