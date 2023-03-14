@@ -255,13 +255,16 @@ export function useDecoupledState<Type = any>(
 
 interface UseOnScreenOptions {
    rootMargin?: string;
+   initialOnScreen?: boolean;
 }
 
 export function useOnScreen(
    ref: React.RefObject<HTMLElement>,
    options?: UseOnScreenOptions
 ) {
-   const [isIntersecting, setIntersecting] = React.useState(false);
+   const [isIntersecting, setIntersecting] = React.useState(
+      options?.initialOnScreen ?? false
+   );
    React.useEffect(() => {
       const observer = new IntersectionObserver(
          ([entry]) => {

@@ -35,7 +35,9 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       inventory.maxToBeAdded != null && inventory.maxToBeAdded > 0;
 
    const buttonRef = React.useRef<HTMLButtonElement>(null);
-   const isButtonVisible = useOnScreen(buttonRef);
+   const isButtonVisible = useOnScreen(buttonRef, {
+      initialOnScreen: true,
+   });
 
    return (
       <Box mt="5">
