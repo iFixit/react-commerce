@@ -97,9 +97,10 @@ Here's an overview of the production setup (the focus is on Next.js, therefore d
 
 We use [Jest](https://jestjs.io) and [Playwright](https://playwright.dev/) (with [MSW](https://mswjs.io/)) to run our tests.
 
-At the moment, we only have tests for the `frontend`. These tests are located in the `frontend/tests` directory.
+At the moment, we only have tests for the `frontend`. These tests are located in the [`frontend/tests`](frontend/tests) directory.
 
 ### Running Jest Tests
+> ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
 You can use the following command to run all the `Jest` tests:
 ```sh
@@ -123,6 +124,9 @@ pnpm test -- ProductListItem --updateSnapshot
 <br/>
 
 ### Running Playwright Tests
+> ⚠️ We need the dev server running to run the Playwright tests. You can run the dev server by running `pnpm dev` in the `root` directory.
+>
+> You can also just let Playwright start the dev server automatically when running the tests, but this will make running Playwright tests slower as it will need to start the dev server every time.
 
 You can use the following command to run all `Playwright` tests:
 - **Run all tests for all devices _(a.k.a projects)_**
@@ -151,14 +155,6 @@ pnpm playwright:run --project="Desktop Chrome" fix_kit
 pnpm playwright:run --project="Mobile Chrome" --headed fix_kit
 ```
 **For more information on Playwright flags, click on the link to read the docs: [Playwright CLI](https://playwright.dev/docs/test-cli#reference)**
-
-This command will run Jest tests:
-
-```sh
-pnpm test
-```
-
-> ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
 ## Using SVG
 
