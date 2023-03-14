@@ -84,6 +84,7 @@ const renderStyles: SystemStyleObject = {
       borderWidth: '1px',
       borderStyle: 'solid',
       padding: '1px',
+      maxWidth: '100%',
 
       '&.float-left': {
          float: 'left',
