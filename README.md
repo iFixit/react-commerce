@@ -99,7 +99,29 @@ We use [Jest](https://jestjs.io) and [Playwright](https://playwright.dev/) (with
 
 At the moment, we only have tests for the `frontend`. These tests are located in the `frontend/tests` directory.
 
-You can use any of the following commands to run Playwright tests:
+### Running Jest Tests
+
+You can use the following command to run all the `Jest` tests:
+```sh
+pnpm test
+```
+
+Additionally, you can pass any `Jest` flag to the command by prepending `--` before the flags:
+```sh
+pnpm test -- --watch
+pnpm test -- ProductListItem --updateSnapshot
+```
+
+⚠️ **Note:** You will not be able to interact with the Jest CLI prompt if the tests were ran from the `root` directory. To be able to interact with the Jest CLI prompt, you will need to run the tests from the `frontend` directory.
+
+|Root Dir Execution| Frontend Execution|
+|:---:|:---:|
+| ![image](https://user-images.githubusercontent.com/22064420/225107750-2e161321-dc48-424a-880c-9d10ba1b12c3.png) |  ![image](https://user-images.githubusercontent.com/22064420/225106631-9d459540-4659-4f40-9070-40f25a5ac979.png) |
+
+**For more information on Jest flags, click on the link to read the docs: [Jest CLI](https://jestjs.io/docs/cli)**
+
+<br/>
+
 
 ```sh
 pnpm run playwright:run       // Runs all tests for all projects
