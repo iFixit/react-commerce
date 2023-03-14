@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
+import { SocialGallerySection } from '@components/sections/SocialGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
@@ -50,7 +51,14 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   );
                }
                case 'SocialGallery': {
-                  return <div key={section.id}>social gallery</div>;
+                  return (
+                     <SocialGallerySection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
+                        posts={section.posts}
+                     />
+                  );
                }
                default:
                   return assertNever(section);

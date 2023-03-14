@@ -13,9 +13,7 @@ fragment SocialPostFields on SocialPostEntity {
    id
    attributes {
       image {
-         data {
-            id
-         }
+         ...ImageFields
       }
       author
       url

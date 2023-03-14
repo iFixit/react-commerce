@@ -2321,7 +2321,12 @@ export type FindPageQuery = {
                                 __typename?: 'UploadFileEntityResponse';
                                 data?: {
                                    __typename?: 'UploadFileEntity';
-                                   id?: string | null;
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
                                 } | null;
                              };
                           } | null;
@@ -3772,7 +3777,12 @@ export type SocialGallerySectionFieldsFragment = {
                __typename?: 'UploadFileEntityResponse';
                data?: {
                   __typename?: 'UploadFileEntity';
-                  id?: string | null;
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
                } | null;
             };
          } | null;
@@ -3789,7 +3799,15 @@ export type SocialPostFieldsFragment = {
       url?: string | null;
       image: {
          __typename?: 'UploadFileEntityResponse';
-         data?: { __typename?: 'UploadFileEntity'; id?: string | null } | null;
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
       };
    } | null;
 };
@@ -4043,9 +4061,7 @@ export const SocialPostFieldsFragmentDoc = `
   id
   attributes {
     image {
-      data {
-        id
-      }
+      ...ImageFields
     }
     author
     url
