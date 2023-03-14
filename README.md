@@ -156,6 +156,9 @@ pnpm playwright:run --project="Mobile Chrome" --headed fix_kit
 ```
 **For more information on Playwright flags, click on the link to read the docs: [Playwright CLI](https://playwright.dev/docs/test-cli#reference)**
 
+⚠️ **For more Playwright specific information such as Mocking API Requests and
+debugging tips, check out the [testing-doc](frontend/tests/playwright/testing-doc.md)**
+
 ## Using SVG
 
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
