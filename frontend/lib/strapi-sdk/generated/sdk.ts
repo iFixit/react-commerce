@@ -329,6 +329,21 @@ export type ComponentSectionServiceValuePropositions = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentSectionSocialGallery = {
+   __typename?: 'ComponentSectionSocialGallery';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   posts?: Maybe<SocialPostRelationResponseCollection>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionSocialGalleryPostsArgs = {
+   filters?: InputMaybe<SocialPostFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentSectionStories = {
    __typename?: 'ComponentSectionStories';
    id: Scalars['ID'];
@@ -560,6 +575,7 @@ export type GenericMorph =
    | ComponentProductReplacementGuides
    | ComponentSectionFeaturedProducts
    | ComponentSectionServiceValuePropositions
+   | ComponentSectionSocialGallery
    | ComponentSectionStories
    | ComponentStoreFooter
    | ComponentStoreHeader
@@ -571,6 +587,7 @@ export type GenericMorph =
    | Page
    | Product
    | ProductList
+   | SocialPost
    | Store
    | UploadFile
    | UploadFolder
@@ -800,6 +817,7 @@ export type Mutation = {
    createProduct?: Maybe<ProductEntityResponse>;
    createProductList?: Maybe<ProductListEntityResponse>;
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
+   createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
    createUploadFile?: Maybe<UploadFileEntityResponse>;
    createUploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -813,6 +831,7 @@ export type Mutation = {
    deletePage?: Maybe<PageEntityResponse>;
    deleteProduct?: Maybe<ProductEntityResponse>;
    deleteProductList?: Maybe<ProductListEntityResponse>;
+   deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
    deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -838,6 +857,7 @@ export type Mutation = {
    updatePage?: Maybe<PageEntityResponse>;
    updateProduct?: Maybe<ProductEntityResponse>;
    updateProductList?: Maybe<ProductListEntityResponse>;
+   updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
    updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -901,6 +921,10 @@ export type MutationCreateProductListLocalizationArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationCreateSocialPostArgs = {
+   data: SocialPostInput;
+};
+
 export type MutationCreateStoreArgs = {
    data: StoreInput;
 };
@@ -946,6 +970,10 @@ export type MutationDeleteProductArgs = {
 export type MutationDeleteProductListArgs = {
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationDeleteSocialPostArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteStoreArgs = {
@@ -1037,6 +1065,11 @@ export type MutationUpdateProductListArgs = {
    data: ProductListInput;
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationUpdateSocialPostArgs = {
+   data: SocialPostInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateStoreArgs = {
@@ -1141,6 +1174,7 @@ export type PageSectionsDynamicZone =
    | ComponentPageSplitWithImage
    | ComponentPageStats
    | ComponentSectionFeaturedProducts
+   | ComponentSectionSocialGallery
    | Error;
 
 export type Pagination = {
@@ -1366,6 +1400,8 @@ export type Query = {
    productList?: Maybe<ProductListEntityResponse>;
    productLists?: Maybe<ProductListEntityResponseCollection>;
    products?: Maybe<ProductEntityResponseCollection>;
+   socialPost?: Maybe<SocialPostEntityResponse>;
+   socialPosts?: Maybe<SocialPostEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
    stores?: Maybe<StoreEntityResponseCollection>;
    uploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1454,6 +1490,17 @@ export type QueryProductsArgs = {
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type QuerySocialPostArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QuerySocialPostsArgs = {
+   filters?: InputMaybe<SocialPostFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type QueryStoreArgs = {
    id?: InputMaybe<Scalars['ID']>;
 };
@@ -1508,6 +1555,59 @@ export type QueryUsersPermissionsUsersArgs = {
 export type ResponseCollectionMeta = {
    __typename?: 'ResponseCollectionMeta';
    pagination: Pagination;
+};
+
+export type SocialPost = {
+   __typename?: 'SocialPost';
+   author: Scalars['String'];
+   createdAt?: Maybe<Scalars['DateTime']>;
+   image: UploadFileEntityResponse;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+   url?: Maybe<Scalars['String']>;
+};
+
+export type SocialPostEntity = {
+   __typename?: 'SocialPostEntity';
+   attributes?: Maybe<SocialPost>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type SocialPostEntityResponse = {
+   __typename?: 'SocialPostEntityResponse';
+   data?: Maybe<SocialPostEntity>;
+};
+
+export type SocialPostEntityResponseCollection = {
+   __typename?: 'SocialPostEntityResponseCollection';
+   data: Array<SocialPostEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type SocialPostFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<SocialPostFiltersInput>>>;
+   author?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<SocialPostFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<SocialPostFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+   url?: InputMaybe<StringFilterInput>;
+};
+
+export type SocialPostInput = {
+   author?: InputMaybe<Scalars['String']>;
+   image?: InputMaybe<Scalars['ID']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   title?: InputMaybe<Scalars['String']>;
+   url?: InputMaybe<Scalars['String']>;
+};
+
+export type SocialPostRelationResponseCollection = {
+   __typename?: 'SocialPostRelationResponseCollection';
+   data: Array<SocialPostEntity>;
 };
 
 export type Store = {
@@ -2203,6 +2303,7 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
+               | { __typename: 'ComponentSectionSocialGallery' }
                | { __typename: 'Error' }
                | null
             >;

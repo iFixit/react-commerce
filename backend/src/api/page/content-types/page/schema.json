@@ -1,56 +1,57 @@
 {
-   "kind": "collectionType",
-   "collectionName": "pages",
-   "info": {
-      "singularName": "page",
-      "pluralName": "pages",
-      "displayName": "Page",
-      "description": ""
-   },
-   "options": {
-      "draftAndPublish": true
-   },
-   "pluginOptions": {
-      "i18n": {
-         "localized": true
-      }
-   },
-   "attributes": {
-      "path": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "unique": true,
-         "required": true
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "singularName": "page",
+    "pluralName": "pages",
+    "displayName": "Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "path": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
       },
-      "title": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "required": true
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
       },
-      "sections": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "dynamiczone",
-         "components": [
-            "page.hero",
-            "page.browse",
-            "page.stats",
-            "page.split-with-image",
-            "page.press",
-            "section.featured-products"
-         ],
-         "required": true
-      }
-   }
+      "type": "string",
+      "required": true
+    },
+    "sections": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "page.hero",
+        "page.browse",
+        "page.stats",
+        "page.split-with-image",
+        "page.press",
+        "section.featured-products",
+        "section.social-gallery"
+      ],
+      "required": true
+    }
+  }
 }
