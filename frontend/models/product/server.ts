@@ -101,6 +101,15 @@ export async function findProduct({
       response.product.title
    );
 
+   const compatibility = parseCompatibility(
+      response.product.compatibility?.value
+   );
+   if (compatibility) {
+      compatibility.devices.forEach((device) => {
+         device.variants = device.variants.filter(Boolean);
+      });
+   }
+
    return {
       ...response.product,
       breadcrumbs,
@@ -121,7 +130,7 @@ export async function findProduct({
          response.product.replacementGuides?.value
       ),
       featuredProductVariants: getFeaturedProductPreviews(response.product),
-      compatibility: parseCompatibility(response.product.compatibility?.value),
+      compatibility,
       metaTitle: response.product.metaTitle?.value ?? null,
       shortDescription: response.product.shortDescription?.value ?? null,
       rating: parseRating(response.product.rating?.value),
