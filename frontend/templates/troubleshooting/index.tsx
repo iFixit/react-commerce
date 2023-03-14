@@ -51,7 +51,7 @@ const Wiki: NextPageWithLayout<{
             breadcrumbs={wikiData.breadcrumbs}
          />
          <Flex
-            padding="0px 32px 32px"
+            padding={{ base: '0px 16px 32px', sm: '0px 32px 32px' }}
             gap="16px"
             maxW="1280px"
             w="100%"
