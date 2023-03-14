@@ -21,7 +21,13 @@ export interface LinkMenuItem {
    name: string;
    url: string;
    description: string | null;
+   trackingData?: TrackingData;
 }
+
+type TrackingData = {
+   eventCategory: string;
+   eventAction: string;
+};
 
 export interface ImageLinkMenuItem {
    type: MenuItemType.ImageLink;

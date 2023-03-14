@@ -30,7 +30,7 @@ test.describe('Subscribe to newsletter', () => {
       ).not.toBeVisible();
 
       await footerNewsletterForm
-         .getByLabel(/enter your email/i)
+         .getByTestId('newsletter-email-input')
          .fill('test@example');
       await footerNewsletterForm
          .getByRole('button', { name: /subscribe|join/i })
@@ -58,13 +58,14 @@ test.describe('Subscribe to newsletter', () => {
 
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
 
+      await expect(page.getByText('Subscribed!')).not.toBeVisible();
       await footerNewsletterForm
-         .getByLabel(/enter your email/i)
+         .getByTestId('newsletter-email-input')
          .fill('test@example.com');
       await footerNewsletterForm
          .getByRole('button', { name: /subscribe|join/i })
          .click();
-      await expect(footerNewsletterForm.getByText('Subscribed!')).toBeVisible();
+      await expect(page.getByText('Subscribed!')).toBeVisible();
       await expect(
          footerNewsletterForm.getByTestId('footer-newsletter-subscribe-button')
       ).not.toBeVisible();
@@ -92,7 +93,7 @@ test.describe('Subscribe to newsletter', () => {
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
 
       await footerNewsletterForm
-         .getByLabel(/enter your email/i)
+         .getByTestId('newsletter-email-input')
          .fill('test@example.com');
 
       await footerNewsletterForm

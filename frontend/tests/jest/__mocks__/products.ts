@@ -1,13 +1,14 @@
-import { CurrencyCode, FindProductQuery } from '@lib/shopify-storefront-sdk';
-import { MenuItemType } from '@models/menu';
-import { ProductSearchHit } from '@models/product-list';
-import { ProductReview } from '@models/product/reviews';
+import { CurrencyCode } from '@lib/shopify-storefront-sdk';
+import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
+import { MenuItemType } from '@ifixit/ui/menu';
+import type { ProductSearchHit } from '@models/product-list';
+import type { ProductReview } from '@models/product/reviews';
 import type {
    Product,
    ProductVariant,
    ProductVariantImage,
 } from '@pages/api/nextjs/cache/product';
-import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
+import type { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 
 const productImages: ProductVariantImage[] = [
    {
@@ -2425,82 +2426,6 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
             },
          },
          footer: {
-            menu1: {
-               title: 'US Footer 1',
-               items: [
-                  {
-                     type: MenuItemType.Link,
-                     name: 'About us',
-                     url: 'https://www.ifixit.com/Info/index',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Customer Support',
-                     url: 'https://help.ifixit.com/',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Careers',
-                     url: 'https://www.ifixit.com/Info/jobs',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Feedback',
-                     url: 'https://meta.ifixit.com',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'API',
-                     url: 'https://www.ifixit.com/api/2.0/doc',
-                     description: null,
-                  },
-               ],
-            },
-            menu2: {
-               title: 'US Footer 2',
-               items: [
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Press',
-                     url: 'https://www.ifixit.com/Info/Media',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'News',
-                     url: 'https://www.ifixit.com/Page/all-categories',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Contribute',
-                     url: 'https://www.ifixit.com/Contribute',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Pro Wholesale',
-                     url: 'https://pro.ifixit.com/',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'Retail Locator',
-                     url: 'https://www.ifixit.com/Retail',
-                     description: null,
-                  },
-                  {
-                     type: MenuItemType.Link,
-                     name: 'For Manufacturers',
-                     url: 'https://www.ifixit.com/Page/services',
-                     description: null,
-                  },
-               ],
-            },
             partners: {
                title: 'US Partners',
                items: [
@@ -2650,6 +2575,111 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                      type: MenuItemType.Link,
                      name: 'Accessibility',
                      url: 'https://www.ifixit.com/Info/Accessibility',
+                     description: null,
+                  },
+               ],
+            },
+            menu1: {
+               title: 'iFixit',
+               items: [
+                  {
+                     type: MenuItemType.Link,
+                     name: 'About Us',
+                     url: 'https://www.ifixit.com/Info/index',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Customer Support',
+                     url: 'https://help.ifixit.com/',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Careers',
+                     url: 'https://www.ifixit.com/Info/jobs',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Feedback',
+                     url: 'https://meta.ifixit.com/',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Newsletter',
+                     url: 'https://www.ifixit.com/Newsletter',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'API',
+                     url: 'https://www.ifixit.com/api/2.0/doc',
+                     description: null,
+                  },
+               ],
+            },
+            menu2: {
+               title: 'Resources',
+               items: [
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Press',
+                     url: 'https://www.ifixit.com/Info/Media',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'News',
+                     url: 'https://www.ifixit.com/News/all-categories',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Participate',
+                     url: 'https://www.ifixit.com/Participate',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Pro Wholesale',
+                     url: 'https://pro.ifixit.com',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Retail Locator',
+                     url: 'https://www.ifixit.com/Retail',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'For Manufacturers',
+                     url: 'https://www.ifixit.com/services',
+                     description: null,
+                  },
+               ],
+            },
+            menu3: {
+               title: 'Legal',
+               items: [
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Accessibility',
+                     url: 'https://www.ifixit.com/Info/Accessibility',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Privacy',
+                     url: 'https://www.ifixit.com/Info/Privacy',
+                     description: null,
+                  },
+                  {
+                     type: MenuItemType.Link,
+                     name: 'Terms',
+                     url: 'https://www.ifixit.com/Info/Terms_of_Use',
                      description: null,
                   },
                ],

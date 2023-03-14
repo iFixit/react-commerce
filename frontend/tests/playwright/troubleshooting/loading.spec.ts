@@ -51,4 +51,14 @@ test.describe('Vulcan page', () => {
       const historyLink = page.getByRole('menuitem', { name: 'History' });
       await expect(historyLink).toBeVisible();
    });
+
+   test('it should include the last updated date', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await expect(page.getByText('Last updated')).toBeVisible();
+   });
+
+   test("it should include the author's name", async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await expect(page.getByText(/and \d+ contributors/)).toBeVisible();
+   });
 });
