@@ -91,6 +91,11 @@ function NavBar({
    historyUrl: string;
    breadcrumbs: BreadcrumbEntry[];
 } & NavTabsProps) {
+   const bc = breadcrumbs.map((breadcrumb) => ({
+      label: breadcrumb.title,
+      url: breadcrumb.url,
+   }));
+   const padding = { base: '16px', sm: '32px' };
    return (
       <Flex
          w="100%"
@@ -104,30 +109,55 @@ function NavBar({
             maxW="1280px"
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
-            padding="0 32px"
          >
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
+            <BreadCrumbs
+               height="48px"
+               breadCrumbs={bc}
+               paddingInline={padding}
+            />
             <Flex>
-               <NavTabs
-                  overflowX="scroll"
+               <Box
+                  sx={{
+                     '::before, ::after': {
+                        minWidth: padding,
+                        display: { base: 'default', sm: 'none' },
+                        position: 'absolute',
+                        top: '0',
+                        content: '""',
+                        height: '100%',
+                        zIndex: '1',
+                        isolation: 'isolate',
+                     },
+                     '::before': {
+                        left: '0',
+                        background:
+                           'linear-gradient(to right, #fff 60%, rgba(255, 255, 255, 0))',
+                     },
+                     '::after': {
+                        right: '0',
+                        background:
+                           'linear-gradient(to left, #fff 60%, rgba(255, 255, 255, 0))',
+                     },
+                  }}
+                  position="relative"
+                  flexShrink="1"
                   flexGrow="1"
-                  deviceGuideUrl={deviceGuideUrl}
-                  devicePartsUrl={devicePartsUrl}
-               />
+                  minW="0"
+               >
+                  <NavTabs
+                     overflowX="scroll"
+                     flexGrow="1"
+                     paddingInline={{ base: '16px', sm: '8px' }}
+                     deviceGuideUrl={deviceGuideUrl}
+                     devicePartsUrl={devicePartsUrl}
+                  />
+               </Box>
                <EditButton editUrl={editUrl} />
                <ActionsMenu historyUrl={historyUrl} />
             </Flex>
          </Flex>
       </Flex>
    );
-}
-
-function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbEntry[] }) {
-   const bc = breadcrumbs.map((breadcrumb) => ({
-      label: breadcrumb.title,
-      url: breadcrumb.url,
-   }));
-   return <BreadCrumbs height="48px" breadCrumbs={bc} />;
 }
 
 function EditButton({ editUrl }: { editUrl: string }) {
@@ -280,7 +310,7 @@ function NavTabs({
    };
 
    return (
-      <Flex {...props} paddingInline="12px" gap="6px" height="100%">
+      <Flex {...props} gap="6px" height="100%">
          <Link
             className={devicePartsUrl ? '' : 'isDisabled'}
             {...notSelectedStyleProps}
