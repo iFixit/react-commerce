@@ -2303,7 +2303,31 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
-               | { __typename: 'ComponentSectionSocialGallery' }
+               | {
+                    __typename: 'ComponentSectionSocialGallery';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    posts?: {
+                       __typename?: 'SocialPostRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'SocialPostEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'SocialPost';
+                             author: string;
+                             url?: string | null;
+                             image: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   id?: string | null;
+                                } | null;
+                             };
+                          } | null;
+                       }>;
+                    } | null;
+                 }
                | { __typename: 'Error' }
                | null
             >;
@@ -3730,6 +3754,46 @@ export type PressQuoteFieldsFragment = {
    } | null;
 };
 
+export type SocialGallerySectionFieldsFragment = {
+   __typename?: 'ComponentSectionSocialGallery';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   posts?: {
+      __typename?: 'SocialPostRelationResponseCollection';
+      data: Array<{
+         __typename?: 'SocialPostEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'SocialPost';
+            author: string;
+            url?: string | null;
+            image: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  id?: string | null;
+               } | null;
+            };
+         } | null;
+      }>;
+   } | null;
+};
+
+export type SocialPostFieldsFragment = {
+   __typename?: 'SocialPostEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'SocialPost';
+      author: string;
+      url?: string | null;
+      image: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: { __typename?: 'UploadFileEntity'; id?: string | null } | null;
+      };
+   } | null;
+};
+
 export type SplitWithImageSectionFieldsFragment = {
    __typename?: 'ComponentPageSplitWithImage';
    id: string;
@@ -3974,6 +4038,32 @@ export const PressQuotesSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const SocialPostFieldsFragmentDoc = `
+    fragment SocialPostFields on SocialPostEntity {
+  id
+  attributes {
+    image {
+      data {
+        id
+      }
+    }
+    author
+    url
+  }
+}
+    `;
+export const SocialGallerySectionFieldsFragmentDoc = `
+    fragment SocialGallerySectionFields on ComponentSectionSocialGallery {
+  id
+  title
+  description
+  posts(publicationState: LIVE) {
+    data {
+      ...SocialPostFields
+    }
+  }
+}
+    `;
 export const SplitWithImageSectionFieldsFragmentDoc = `
     fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
   id
@@ -4018,6 +4108,7 @@ export const FindPageDocument = `
           ...SplitWithImageSectionFields
           ...PressQuotesSectionFields
           ...FeaturedProductsSectionFields
+          ...SocialGallerySectionFields
         }
       }
     }
@@ -4034,7 +4125,9 @@ ${SplitWithImageSectionFieldsFragmentDoc}
 ${PressQuotesSectionFieldsFragmentDoc}
 ${PressQuoteFieldsFragmentDoc}
 ${CompanyFieldsFragmentDoc}
-${FeaturedProductsSectionFieldsFragmentDoc}`;
+${FeaturedProductsSectionFieldsFragmentDoc}
+${SocialGallerySectionFieldsFragmentDoc}
+${SocialPostFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

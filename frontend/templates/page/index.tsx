@@ -49,6 +49,9 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                      />
                   );
                }
+               case 'SocialGallery': {
+                  return <div key={section.id}>social gallery</div>;
+               }
                default:
                   return assertNever(section);
             }

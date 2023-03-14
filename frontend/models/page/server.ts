@@ -3,6 +3,7 @@ import { assertNever } from '@ifixit/helpers';
 import { FindPageQuery, strapi } from '@lib/strapi-sdk';
 import { featuredProductsSectionFromStrapi } from '@models/sections/featured-products-section';
 import { iFixitStatsSectionFromStrapi } from '@models/sections/ifixit-stats-section';
+import { socialGallerySectionFromStrapi } from '@models/sections/social-gallery-section';
 import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
 import { browseSectionFromStrapi } from './sections/browse-section';
@@ -48,6 +49,9 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
             }
             case 'ComponentSectionFeaturedProducts': {
                return featuredProductsSectionFromStrapi(section, index);
+            }
+            case 'ComponentSectionSocialGallery': {
+               return socialGallerySectionFromStrapi(section, index);
             }
             case 'Error': {
                console.error('Failed to parse page section:', section);
