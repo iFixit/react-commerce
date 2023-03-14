@@ -95,7 +95,9 @@ Here's an overview of the production setup (the focus is on Next.js, therefore d
 
 ## Tests
 
-We use Jest and Playwright (with MSW) to run our tests.
+We use [Jest](https://jestjs.io) and [Playwright](https://playwright.dev/) (with [MSW](https://mswjs.io/)) to run our tests.
+
+At the moment, we only have tests for the `frontend`. These tests are located in the `frontend/tests` directory.
 
 You can use any of the following commands to run Playwright tests:
 
