@@ -7,6 +7,7 @@ import {
    BoxProps,
    Button,
    Flex,
+   FlexProps,
    Heading,
    IconButton,
    Link,
@@ -187,7 +188,11 @@ type NavTabsProps = {
    devicePartsUrl?: string;
 };
 
-function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
+function NavTabs({
+   devicePartsUrl,
+   deviceGuideUrl,
+   ...props
+}: NavTabsProps & FlexProps) {
    // The type here works because all the styles we want to use are available on
    // both Box and Link
    const baseStyleProps: BoxProps & LinkProps = {
@@ -264,25 +269,23 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
    };
 
    return (
-      <>
-         <Flex paddingInline="12px" gap="6px" height="100%">
-            <Link
-               className={devicePartsUrl ? '' : 'isDisabled'}
-               {...notSelectedStyleProps}
-               href={devicePartsUrl}
-            >
-               Parts
-            </Link>
-            <Link
-               className={deviceGuideUrl ? '' : 'isDisabled'}
-               {...notSelectedStyleProps}
-               href={deviceGuideUrl}
-            >
-               Guide
-            </Link>
-            <Box {...selectedStyleProps}>Answers</Box>
-         </Flex>
-      </>
+      <Flex {...props} paddingInline="12px" gap="6px" height="100%">
+         <Link
+            className={devicePartsUrl ? '' : 'isDisabled'}
+            {...notSelectedStyleProps}
+            href={devicePartsUrl}
+         >
+            Parts
+         </Link>
+         <Link
+            className={deviceGuideUrl ? '' : 'isDisabled'}
+            {...notSelectedStyleProps}
+            href={deviceGuideUrl}
+         >
+            Guide
+         </Link>
+         <Box {...selectedStyleProps}>Answers</Box>
+      </Flex>
    );
 }
 
