@@ -203,7 +203,7 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
          <Menu>
             <MenuButton
                as={IconButton}
-               aria-label="Options"
+               aria-label="More breadcrumbs"
                colorScheme="gray"
                background="gray.300"
                variant="solid"
