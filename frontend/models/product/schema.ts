@@ -69,7 +69,7 @@ export const ProductVariantSchema = z.object({
    warning: z.string().nullable(),
    specifications: z.string().nullable(),
    warranty: z.string().nullable(),
-   crossSellVariants: z.array(ProductVariantCardSchema),
+   crossSellVariantIds: z.array(z.string()),
    enabled: z.boolean(),
    disableWhenOOS: z.boolean(),
    shippingRestrictions: z.array(z.string()).nullable(),
@@ -147,10 +147,8 @@ export const ProductSchema = z.object({
    tags: z.array(z.string()),
    breadcrumbs: z.array(BreadcrumbSchema).nullable(),
    images: z.array(ProductVariantImageSchema),
-   allImages: z.array(ProductVariantImageSchema),
    options: z.array(ProductOptionSchema),
    variants: z.array(ProductVariantSchema),
-   allVariants: z.array(ProductVariantSchema),
    isEnabled: z.boolean(),
    prop65WarningType: z.string().nullable(),
    prop65Chemicals: z.string().nullable(),
@@ -178,6 +176,7 @@ export const ProductSchema = z.object({
    enabledDomains: EnabledDomainsSchema,
    redirectUrl: z.string().nullable(),
    vendor: z.string().nullable(),
+   crossSellVariants: z.array(ProductVariantCardSchema),
 });
 
 export type Product = z.infer<typeof ProductSchema>;
