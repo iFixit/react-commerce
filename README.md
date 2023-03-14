@@ -67,7 +67,7 @@ After running the dev server, you can access the Strapi admin panel at `http://l
 
 The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
 
-### Project structure
+## Project structure
 
 The project contains a `backend` folder with Strapi config and a `frontend` with Next.js.
 You can run the backend both using SQLite and using Postgres with docker compose. For now the recommended approach for local dev is to just use SQLite.
@@ -93,7 +93,7 @@ Here's an overview of the production setup (the focus is on Next.js, therefore d
 
 ![image](https://user-images.githubusercontent.com/4640135/203581627-82ab19ca-7de7-4343-ae05-2a4f6330f38a.png)
 
-### Tests
+## Tests
 
 We use Jest and Playwright (with MSW) to run our tests.
 
@@ -131,7 +131,7 @@ pnpm test
 
 > ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
-### Using SVG
+## Using SVG
 
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
 
@@ -147,16 +147,16 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.
 
-### Miscellaenous
+## Miscellaenous
 
-#### Update Storefront graphql schema
+### Update Storefront graphql schema
 
 When you need to update the Shopify storefront GraphQL schema version, follow these steps:
 
 1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
 2. Run `pnpm codegen:download-shopify-storefront-schema`
 
-#### Generate Shopify storefront delegate access token
+### Generate Shopify storefront delegate access token
 
 The public Shopify storefront API is rate limited by user IP. To avoid hitting the rate limit when making requests from the server, we use Shopify storefront API with a [delegate access token](https://shopify.dev/apps/auth/oauth/delegate-access-tokens). To generate a token for a shop, use the automation bot:
 
@@ -166,9 +166,9 @@ pnpm bot shopify create delegate-token
 
 > :information_source: You can use the **Admin API Password** of the app that you use to generate the Storefront access token.
 
-### Troubleshooting
+## Troubleshooting
 
-#### Backend folder dependencies errors
+### Backend folder dependencies errors
 
 Since [OSX 12.3](https://developer.apple.com/documentation/macos-release-notes/macos-12_3-release-notes), python(2) is no longer available by default.
 If no prebuilt image is available for some dependencies like sqlite3, it may be necessary to install python(2) to build the image locally.
@@ -181,7 +181,7 @@ pyenv global 2.7.18
 echo 'PATH=$(pyenv root)/shims:$PATH' >> ~/.zshrc
 ```
 
-#### Local Strapi missing iFixit Test Store
+### Local Strapi missing iFixit Test Store
 
 With the latest changes, we might run into a situation where the local strapi does not have the ifixit test store in it. In order to fix this add the folowing to `backend/.env`
 
@@ -193,6 +193,6 @@ With the latest version of main, go to your local strapi at http://localhost:133
 
 If this page does not appear, then delete `backend/.cache` and `backend/dist` and re-start the dev server.
 
-#### I've updated the Shopify Storefront schema version but the graphql codegen script is not working
+### I've updated the Shopify Storefront schema version but the graphql codegen script is not working
 
 Whenever you update the Shopify Storefront schema version, you need to run `pnpm codegen:download-shopify-storefront-schema` to download the new schema.
