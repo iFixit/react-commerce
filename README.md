@@ -122,30 +122,35 @@ pnpm test -- ProductListItem --updateSnapshot
 
 <br/>
 
+### Running Playwright Tests
 
+You can use the following command to run all `Playwright` tests:
+- **Run all tests for all devices _(a.k.a projects)_**
+   ```sh
+   pnpm playwright:run
+   ```
+
+<br/>
+
+If you want to **debug** all the tests, or a single test, you can use the following command:
+
+- **Run all tests for Desktop Chrome**
+   ```sh
+   pnpm playwright:debug [test_name]
+   ```
+   - This will make Playwright do the following:
+     - Launch the browser in **headed** mode
+     - Disables parallelization
+     - Sets the `timeout` to `0` (_no timeout_)
+     - Configures a `playwright` object in the browser to allow you to interact with Playwright's Locator API right from the browser's console
+     - Enables verbose logging of Playwright's API calls
+
+Additionally, you can directly add any `Playwright` flag to the command:
 ```sh
-pnpm run playwright:run       // Runs all tests for all projects
-pnpm run playwright:debug     // Runs all tests for desktop chrome in debug mode (see frontend/package.json for details)
+pnpm playwright:run --project="Desktop Chrome" fix_kit
+pnpm playwright:run --project="Mobile Chrome" --headed fix_kit
 ```
-
-Also you can provide additional flags/options to run single/multiple tests and with different devices/projects:
-
-```sh
-pnpm run playwright:run --project="Desktop Chrome" fix_kit         // Runs fix_kit test for desktop chrome headless
-pnpm run playwright:run --project="Mobile Chrome" --headed fix_kit // Runs fix_kit test for mobile chrome headed
-```
-
-> ⚠️ We need to have the dev server running before we run the Playwright tests.
-> Luckily, Playwright webserver will start the app automatically if it's not running yet.
-
-If you are trying to experiment with the MSW handlers, you can use the following command to instantiate the Next.js server
-with the MSW handlers integrated. You can then add or remove handlers from
-`frontend/tests/playwright/msw/handlers.ts` and see the changes. If you do make
-any changes, make sure to restart the server.
-
-```sh
-NEXT_PUBLIC_MOCK_API=true pnpm dev
-```
+**For more information on Playwright flags, click on the link to read the docs: [Playwright CLI](https://playwright.dev/docs/test-cli#reference)**
 
 This command will run Jest tests:
 
