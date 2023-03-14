@@ -119,3 +119,41 @@ Likewise, if you want to mock an API request for a **client-side request**, you 
             })
          );
 ```
+
+## Debugging Playwright Tests
+
+The Playwright docs are very extensive and contain a lot of information on how to [debug tests](https://playwright.dev/docs/debug), however it can be difficult to find the information you need. This section contains some useful information that we have found useful when debugging Playwright tests.
+
+
+### `pnpm playwright:debug`
+
+As mentioned in the [`README`](../../../README.md#running-playwright-tests), you can run the Playwright tests in a custom debug mode by running the following command, where `test_name` is an optional argument if you want to debug a specific test.
+
+```sh
+pnpm playwright:debug [test_name]
+```
+
+<br/>
+
+Overall, this `pnpm` script will execute the following command:
+```sh
+DEBUG=pw:api playwright test --project="Desktop Chrome" --debug
+```
+
+#### `--debug` flag
+The `--debug` flag will run Playwright in [debug mode](https://playwright.dev/docs/debug#pwdebug) which is the same as setting the `PWDEBUG` environment variable to `console`. In this mode, Playwright will do the following:
+   - Runs a headed browser
+   - disables parallelization
+   - Sets the `timeout` to `0` _(i.e. no timeout)_
+   - Adds a `playwright` object to the browser to allow you to interact with the Playwright Locator api via the console
+     - What this means is that you can use the `playwright` object to interact with the DOM and debug your tests in the browser console. For example, you can use the `playwright` object to help you find the correct selector for a specific element. For more information on how to use the `playwright` object, see the [playwright debug object docs](https://playwright.dev/docs/debug-selectors#using-devtools).
+   ![image](https://user-images.githubusercontent.com/22064420/225163397-ea4409ca-0cf4-4a1c-96ae-c3307c0d1e0f.png)
+
+#### `--project="Desktop Chrome"` flag
+The `--project="Desktop Chrome"` flag will run the tests using a Chromium instance and the presets for a Desktop browser. This is to narrow down the scope of the tests to be ran. It is possible to
+change this to run the tests in a different browser or device preset by using one of the project names defined within the `projects` array in the [`playwright.config.ts`](../../playwright.config.ts) file.
+
+#### `DEBUG=pw:api` flag
+Lastly, the [`DEBUG=pw:api`](https://playwright.dev/docs/debug-selectors#verbose-api-logs) flag will enable verbose logging of Playwright's API. This will log all the Playwright API calls to the console. This is useful when you want to see what Playwright is doing under the hood. Ideally it would be used to ensure that certain events are being triggered or gain more insight into the order of events.
+   - For example, if you want to use `page.waitForLoadState('networkidle')` to wait for a page to no longer have any network requests, but you are not sure if the page is actually waiting for the network to be idle, you can enable this flag to see if the `networkidle` event is being triggered.
+   ![image](https://user-images.githubusercontent.com/22064420/225164688-0f2a8df7-12f1-4cdc-9e4b-a3e2d2a341bc.png)
