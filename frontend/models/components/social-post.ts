@@ -17,8 +17,6 @@ export function socialPostFromStrapi(
    const image = imageFromStrapi(fragment?.attributes?.image);
    const url = fragment?.attributes?.url ?? null;
 
-   console.log({ author, image, url });
-
    if (author == null || image == null) return null;
 
    return {
