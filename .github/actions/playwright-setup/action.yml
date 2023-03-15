@@ -1,0 +1,21 @@
+name: Setup playwright
+description: Installs playwright dependencies, and caches the binaries
+runs:
+   using: 'composite'
+   steps:
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(pnpm list -r "@playwright/test" | grep "@playwright/test" | tr -dc 1-9.)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+           path: ~/.cache/ms-playwright
+           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install Playwright Dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: cd frontend && npx playwright install
+        shell: bash
