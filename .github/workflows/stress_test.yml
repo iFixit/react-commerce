@@ -70,20 +70,10 @@ jobs:
          - name: Setup and cache playwright dependencies
            uses: ./.github/actions/playwright-setup
 
-         - name: Cache Next.js cache directory
-           uses: actions/cache@v3
+         - name: Build and cache frontend for with test setup
+           uses: ./.github/actions/build-test-frontend
            with:
-              path: frontend/.next/cache
-              key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-              restore-keys: |
-                 ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
-         - name: Build Next.js
-           env:
-              NODE_ENV: test
-              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-           run: cd frontend && pnpm build
+              algolia-api-key: ${{ secrets.ALGOLIA_API_KEY }}
 
          - name: Run Playwright Tests
            env:
