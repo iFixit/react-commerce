@@ -153,7 +153,6 @@ const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
          flexDirection="row"
          alignItems="center"
          padding="3"
-         gap="2"
          w="100%"
          mt="3"
          bg="brand.100"
@@ -163,7 +162,9 @@ const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
          borderRadius="base"
       >
          <FaIcon icon={faCircleCheck} color="brand.500" />
-         <Text color="gray.900">Subscribed!</Text>
+         <Text color="gray.900" ml="2">
+            Subscribed!
+         </Text>
       </Flex>
    );
 };
