@@ -100,14 +100,17 @@ We use [Jest](https://jestjs.io) and [Playwright](https://playwright.dev/) (with
 At the moment, we only have tests for the `frontend`. These tests are located in the [`frontend/tests`](frontend/tests) directory.
 
 ### Running Jest Tests
+
 > ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
 You can use the following command to run all the `Jest` tests:
+
 ```sh
 pnpm test
 ```
 
 Additionally, you can pass any `Jest` flag to the command by prepending `--` before the flags:
+
 ```sh
 pnpm test -- --watch
 pnpm test -- ProductListItem --updateSnapshot
@@ -115,21 +118,23 @@ pnpm test -- ProductListItem --updateSnapshot
 
 ⚠️ **Note:** You will not be able to interact with the Jest CLI prompt if the tests were ran from the `root` directory. To be able to interact with the Jest CLI prompt, you will need to run the tests from the `frontend` directory.
 
-|Root Dir Execution| Frontend Execution|
-|:---:|:---:|
-| ![image](https://user-images.githubusercontent.com/22064420/225107750-2e161321-dc48-424a-880c-9d10ba1b12c3.png) |  ![image](https://user-images.githubusercontent.com/22064420/225106631-9d459540-4659-4f40-9070-40f25a5ac979.png) |
+|                                               Root Dir Execution                                                |                                               Frontend Execution                                                |
+| :-------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
+| ![image](https://user-images.githubusercontent.com/22064420/225107750-2e161321-dc48-424a-880c-9d10ba1b12c3.png) | ![image](https://user-images.githubusercontent.com/22064420/225106631-9d459540-4659-4f40-9070-40f25a5ac979.png) |
 
 **For more information on Jest flags, click on the link to read the docs: [Jest CLI](https://jestjs.io/docs/cli)**
 
 <br/>
 
 ### Running Playwright Tests
+
 > ⚠️ We need the dev server running to run the Playwright tests. You can run the dev server by running `pnpm dev` in the `root` directory.
 >
 > You can also just let Playwright start the dev server automatically when running the tests, but this will make running Playwright tests slower as it will need to start the dev server every time.
 
 You can use the following command to run all `Playwright` tests:
-- **Run all tests for all devices _(a.k.a projects)_**
+
+-  **Run all tests for all devices _(a.k.a projects)_**
    ```sh
    pnpm playwright:run
    ```
@@ -138,22 +143,24 @@ You can use the following command to run all `Playwright` tests:
 
 If you want to **debug** all the tests, or a single test, you can use the following command:
 
-- **Run all tests for Desktop Chrome**
+-  **Run all tests for Desktop Chrome**
    ```sh
    pnpm playwright:debug [test_name]
    ```
-   - This will make Playwright do the following:
-     - Launch the browser in **headed** mode
-     - Disables parallelization
-     - Sets the `timeout` to `0` (_no timeout_)
-     - Configures a `playwright` object in the browser to allow you to interact with Playwright's Locator API right from the browser's console
-     - Enables verbose logging of Playwright's API calls
+   -  This will make Playwright do the following:
+      -  Launch the browser in **headed** mode
+      -  Disables parallelization
+      -  Sets the `timeout` to `0` (_no timeout_)
+      -  Configures a `playwright` object in the browser to allow you to interact with Playwright's Locator API right from the browser's console
+      -  Enables verbose logging of Playwright's API calls
 
 Additionally, you can directly add any `Playwright` flag to the command:
+
 ```sh
 pnpm playwright:run --project="Desktop Chrome" fix_kit
 pnpm playwright:run --project="Mobile Chrome" --headed fix_kit
 ```
+
 **For more information on Playwright flags, click on the link to read the docs: [Playwright CLI](https://playwright.dev/docs/test-cli#reference)**
 
 ⚠️ **For more Playwright specific information such as Mocking API Requests and
