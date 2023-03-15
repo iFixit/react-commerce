@@ -115,7 +115,7 @@ export function ProductListChildrenSection({
                         },
                      }}
                   >
-                     more to show
+                     more
                   </Text>
                </Button>
             )}
