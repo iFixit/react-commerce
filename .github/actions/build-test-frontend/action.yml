@@ -21,3 +21,4 @@ runs:
            NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
            ALGOLIA_API_KEY: ${{ inputs.ALGOLIA_API_KEY }}
         run: cd frontend && pnpm build
+        shell: bash
