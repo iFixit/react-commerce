@@ -21,7 +21,7 @@ export function ProductGrid({
 
    const columnsToGetAtLeastOneCompleteRow: Record<string, number> =
       Object.entries(columns).reduce((acc, [key, value]) => {
-         acc[key] = childrenCount < value ? childrenCount : value;
+         acc[key] = Math.min(childrenCount, value);
          return acc;
       }, {} as Record<string, number>);
 
