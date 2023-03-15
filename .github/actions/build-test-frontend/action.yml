@@ -10,14 +10,14 @@ runs:
       - name: Cache Next.js cache directory
         uses: actions/cache@v3
         with:
-          path: frontend/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
+           path: frontend/.next/cache
+           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+           restore-keys: |
               ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Build Next.js
         env:
-          NODE_ENV: test
-          NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-          ALGOLIA_API_KEY: ${{ inputs.ALGOLIA_API_KEY }}
+           NODE_ENV: test
+           NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+           ALGOLIA_API_KEY: ${{ inputs.ALGOLIA_API_KEY }}
         run: cd frontend && pnpm build
