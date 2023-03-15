@@ -11,7 +11,8 @@ export const FooterPartners = forwardRef<BoxProps, 'div'>(
             alignItems="center"
             justifyContent="center"
             flexWrap="wrap"
-            gap="3"
+            ml="-3"
+            mb="-3"
             {...otherProps}
          >
             {children}
@@ -35,6 +36,8 @@ export const FooterPartnerLink = forwardRef<BoxProps, 'a'>(
             opacity="0.5"
             h="62px"
             w="92px"
+            ml="3"
+            mb="3"
             p="4"
             borderRadius="base"
             boxSizing="border-box"
