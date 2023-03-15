@@ -2,6 +2,21 @@
 
 This document contains extra information for writing Playwright tests within the context of our application.
 
+-  [Mocking API Requests](#mocking-api-requests)
+   -  [Mock Handlers](#mock-handlers)
+   -  [Static Handlers](#static-handlers)
+      -  [Practical Usage: Developing Components](#practical-usage-developing-components)
+      -  [Practical Usage: Global Test Mock](#practical-usage-global-test-mock)
+   -  [Dynamic Handlers](#dynamic-handlers)
+-  [Debugging Playwright Tests](#debugging-playwright-tests)
+   -  [`pnpm playwright:debug`](#pnpm-playwrightdebug)
+      -  [`--debug` flag](#--debug-flag)
+      -  [`--project="Desktop Chrome"` flag](#--projectdesktop-chrome-flag)
+      -  [`DEBUG=pw:api` flag](#debugpwapi-flag)
+   -  [Playwright Trace Viewer](#playwright-trace-viewer)
+      -  [Recording a Trace Log](#recording-a-trace-log)
+      -  [Viewing Trace Logs](#viewing-trace-logs)
+
 ## Mocking API Requests
 
 Currently, we only mock API Requests for Playwright tests.
