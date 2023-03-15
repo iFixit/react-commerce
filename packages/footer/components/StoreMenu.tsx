@@ -22,7 +22,7 @@ export const StoreMenuButton = forwardRef<StoreMenuButtonProps, 'button'>(
       return (
          <MenuButton
             ref={ref}
-            fontSize="14px"
+            fontSize="sm"
             color="gray.300"
             _hover={{ color: 'white' }}
             {...otherProps}

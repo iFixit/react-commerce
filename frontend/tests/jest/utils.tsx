@@ -44,6 +44,17 @@ export const mockResizeObserver = () => {
    });
 };
 
+export const mockIntersectionObserver = () => {
+   Object.defineProperty(global, 'IntersectionObserver', {
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({
+         observe: jest.fn(),
+         unobserve: jest.fn(),
+         disconnect: jest.fn(),
+      })),
+   });
+};
+
 export const GlobalContextProvider = ({
    // @ts-ignore
    children,
