@@ -157,3 +157,55 @@ change this to run the tests in a different browser or device preset by using on
 Lastly, the [`DEBUG=pw:api`](https://playwright.dev/docs/debug-selectors#verbose-api-logs) flag will enable verbose logging of Playwright's API. This will log all the Playwright API calls to the console. This is useful when you want to see what Playwright is doing under the hood. Ideally it would be used to ensure that certain events are being triggered or gain more insight into the order of events.
    - For example, if you want to use `page.waitForLoadState('networkidle')` to wait for a page to no longer have any network requests, but you are not sure if the page is actually waiting for the network to be idle, you can enable this flag to see if the `networkidle` event is being triggered.
    ![image](https://user-images.githubusercontent.com/22064420/225164688-0f2a8df7-12f1-4cdc-9e4b-a3e2d2a341bc.png)
+
+### Playwright Trace Viewer
+
+Playwright has a built-in [trace viewer](https://playwright.dev/docs/trace-viewer) that can be used to debug tests that have already ran. This is useful when you want to see what happened during a test run while having access to the following runtime information:
+   - Browser Console
+   - Network Requests
+   - The DOM
+   - Associated Playwright actions and source code
+   - Metadata
+   - Screenshots
+
+This is a lot more useful than just looking at the failure log and trying to reproduce the failure. In order to use the trace viewer, you will need to record a trace log of a test run to obtain a `trace.zip` file.
+
+#### Recording a Trace Log
+We have already enabled trace viewer in CI, and have uploaded the `trace.zip` files as an artifact. More information on this can be found in [Viewing Trace Logs](#viewing-trace-logs).
+
+To enable trace viewer locally, you will need to add the `--trace on` flag to the Playwright commands. This will create a `trace.zip` file in the `frontend/tests/playwright/test-results` directory.
+
+Note, this won't really be that useful if you are running debug mode.
+
+```bash
+pnpm playwright:run --trace on
+
+pnpm playwright:debug --trace on # Not really useful for debug mode
+```
+
+#### Viewing Trace Logs
+
+In order to view a trace log, you will need a `trace.zip` file. If you
+have already enabled trace viewer locally, you can find the `trace.zip` file in the `frontend/tests/playwright/test-results` directory after a test run.
+
+If you are trying to view a trace log from CI, you can download the `playwright-artifacts.zip` file from the `Summary` tab of the `E2E` workflow run. Then you can unzip the `artifacts.zip` file which will contain a `trace.zip` file for each `device-test` failure.
+
+<details>
+<summary>Location of the <code>playwright-artifacts.zip</code> file</summary>
+
+![image](https://user-images.githubusercontent.com/22064420/225168783-470c1337-4894-4371-a205-251e31a33846.png)
+
+</details>
+
+**View the Trace Log Locally**
+
+To view the trace logs locally, you can run the following command:
+
+```bash
+npx playwright show-trace <path-to-trace.zip>
+```
+
+**View the Trace Log in the Browser**
+Otherwise, you can upload the `trace.zip` file to [Playwright Trace Viewer](https://trace.playwright.dev/).
+
+![image](https://user-images.githubusercontent.com/22064420/225170856-ac20e320-83cf-4cbd-967f-b858a1bf773a.png)
