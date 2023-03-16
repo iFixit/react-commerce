@@ -150,7 +150,6 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                               lg: 3,
                               xl: 4,
                            }}
-                           borderBottomWidth="1px"
                         >
                            {products.map((product) => {
                               return (
