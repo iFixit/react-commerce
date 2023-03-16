@@ -97,6 +97,52 @@ const renderStyles: SystemStyleObject = {
       },
    },
 
+   '.videoFrame': {
+      maxWidth: '100%',
+      border: '1px solid #e5e7eb',
+      marginTop: '8px',
+      marginBottom: '8px',
+      padding: '1px',
+      borderRadius: 0,
+      height: 'auto',
+
+      '&.videoBox_left': {
+         float: 'left',
+         clear: 'left',
+         marginRight: '30px',
+         position: 'relative',
+         width: 'fit-content',
+      },
+      '&.videoBox_center': {
+         marginLeft: 'auto',
+         marginRight: 'auto',
+         clear: 'both',
+         display: 'block',
+      },
+      '&.videoBox_right': {
+         float: 'right',
+         clear: 'right',
+         marginLeft: '30px',
+      },
+   },
+
+   '.videoBox': {
+      position: 'relative',
+      width: 'auto !important',
+      overflow: 'hidden',
+      maxWidth: '100%',
+      height: 0,
+      paddingBottom: '56.25%',
+
+      'video': {
+         position: 'absolute',
+         top: 0,
+         left: 0,
+         width: '100%',
+         height: '100%',
+      }
+   },
+
    '.imageBox_left': {
       clear: 'left',
       float: 'left',
