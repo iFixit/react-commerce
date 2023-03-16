@@ -16,7 +16,7 @@ export function CompatibilitySection({
          <Wrapper>
             <Heading
                as="h2"
-               color="gray.700"
+               color="gray.900"
                textAlign="center"
                mb="12"
                fontSize={{ base: '2xl', md: '3xl' }}

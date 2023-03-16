@@ -23,7 +23,7 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
       <VStack align="stretch" spacing="4">
          <Heading
             as="h2"
-            color="gray.700"
+            color="gray.900"
             fontSize={{ base: '2xl', md: '3xl' }}
             fontWeight="medium"
          >

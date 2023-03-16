@@ -181,7 +181,7 @@ export function CrossSellSection({
          <Wrapper>
             <Heading
                as="h2"
-               color="gray.700"
+               color="gray.900"
                textAlign="center"
                mb={{
                   base: 6,
