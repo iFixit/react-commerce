@@ -26,6 +26,15 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
          borderColor="blue.100"
          mb={-10}
       >
+         <Box
+               maxW="80rem"
+               mx="auto"
+               px={{
+                  base: 4,
+                  md: 6,
+                  lg: 8,
+               }}
+            >
             <SimpleGrid
                columns={{
                   base: 1,
@@ -43,6 +52,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
                   />
                ))}
             </SimpleGrid>
+         </Box>
       </Box>
    );
 }

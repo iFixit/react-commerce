@@ -15,7 +15,17 @@ export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
       return (
          <Box ref={ref} as="footer" bg="black" py="12" {...otherProps}>
-            {children}
+            <Box
+               maxW="80rem"
+               mx="auto"
+               px={{
+                  base: 4,
+                  md: 6,
+                  lg: 8,
+               }}
+            >
+               {children}
+            </Box>
          </Box>
       );
    }
