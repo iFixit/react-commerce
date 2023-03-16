@@ -41,7 +41,7 @@ export function Pagination(props: PaginationProps) {
    }
 
    return (
-      <HStack justify="center">
+      <HStack justify="center" borderTopWidth="1px">
          <BasePagination
             numberOfPages={nbPages}
             page={currentRefinement + 1}

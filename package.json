@@ -27,7 +27,7 @@
       "playwright:debug": "cd frontend && pnpm playwright:debug",
       "type-check": "cross-env FORCE_COLOR=1 npm-run-all -l -p -c type-check:*",
       "type-check:backend": "cd backend && pnpm run type-check",
-      "type-check:frontend": "pnpm run -r type-check",
+      "type-check:frontend": "pnpm -r --parallel --no-bail type-check",
       "codegen:download-shopify-storefront-schema": "cd frontend && pnpm run codegen:download-shopify-storefront-schema",
       "prepare": "husky install",
       "bot": "./packages/bot/cli.ts"

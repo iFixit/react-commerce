@@ -25,7 +25,7 @@ export function Rating(props: RatingProps) {
                appearance = RatingStarAppearance.Half;
             }
             return (
-               <RatingStar key={i} size={props.size} appearence={appearance} />
+               <RatingStar key={i} size={props.size} appearance={appearance} />
             );
          })}
       </HStack>
@@ -33,7 +33,7 @@ export function Rating(props: RatingProps) {
 }
 
 type RatingStarProps = Omit<FaIconProps, 'icon'> & {
-   appearence: RatingStarAppearance;
+   appearance: RatingStarAppearance;
    size?: ResponsiveValue<string | number>;
 };
 
@@ -44,11 +44,11 @@ export enum RatingStarAppearance {
 }
 
 export const RatingStar = ({
-   appearence = RatingStarAppearance.Empty,
+   appearance = RatingStarAppearance.Empty,
    size = '4',
    ...otherProps
 }: RatingStarProps) => {
-   switch (appearence) {
+   switch (appearance) {
       case RatingStarAppearance.Empty: {
          return (
             <FaIcon icon={faStar} h={size} color="gray.300" {...otherProps} />
