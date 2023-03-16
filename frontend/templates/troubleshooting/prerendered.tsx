@@ -106,12 +106,20 @@ const renderStyles: SystemStyleObject = {
       borderRadius: 0,
       height: 'auto',
 
+      '@media only screen and (max-width: 575px)': {
+         width: 'auto !important',
+      },
+
       '&.videoBox_left': {
          float: 'left',
          clear: 'left',
          marginRight: '30px',
          position: 'relative',
          width: 'fit-content',
+
+         '@media only screen and (max-width: 575px)': {
+            float: 'none',
+         },
       },
       '&.videoBox_center': {
          marginLeft: 'auto',
@@ -123,6 +131,10 @@ const renderStyles: SystemStyleObject = {
          float: 'right',
          clear: 'right',
          marginLeft: '30px',
+
+         '@media only screen and (max-width: 575px)': {
+            float: 'none',
+         },
       },
    },
 
