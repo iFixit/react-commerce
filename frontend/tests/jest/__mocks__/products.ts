@@ -1,6 +1,6 @@
 import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
-import { MenuItemType } from '@ifixit/ui/menu';
+import { MenuItemType } from '@ifixit/menu';
 import type { ProductSearchHit } from '@models/product-list';
 import type { ProductReview } from '@models/product/reviews';
 import type {

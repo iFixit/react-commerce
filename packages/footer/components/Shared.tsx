@@ -1,6 +1,6 @@
 import { Divider, Box, forwardRef, HStack, Icon, Text } from '@chakra-ui/react';
 import type { DividerProps, FlexProps, StackProps } from '@chakra-ui/react';
-import type { Menu } from '@ifixit/ui';
+import type { Menu } from '@ifixit/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 import { Wrapper } from '@ifixit/ui';
 
