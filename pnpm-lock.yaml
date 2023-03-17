@@ -438,17 +438,9 @@ importers:
   packages/menu:
     specifiers:
       '@ifixit/tsconfig': workspace:*
-      '@types/react': 18.0.24
-      '@types/react-dom': 18.0.8
-      react: 18.2.0
-      react-dom: 18.2.0
       typescript: 4.8.4
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
-      '@types/react': 18.0.24
-      '@types/react-dom': 18.0.8
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
       typescript: 4.8.4
 
   packages/newsletter-sdk:
