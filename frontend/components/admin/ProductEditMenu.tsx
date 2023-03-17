@@ -18,6 +18,7 @@ type ProductEditMenuProps = BoxProps & {
 };
 
 export function ProductEditMenu({ links, ...props }: ProductEditMenuProps) {
+   if (!links.length) return null;
    return (
       <Box px="4" borderLeftWidth="thin" borderColor="gray.200" {...props}>
          <Menu>
