@@ -57,6 +57,7 @@ export type ProductList =
 export type iFixitPage = StorePage;
 
 export interface BaseProductList {
+   id: string | null;
    title: string;
    h1: string | null;
    handle: string;
