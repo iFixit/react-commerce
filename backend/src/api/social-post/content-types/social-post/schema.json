@@ -1,0 +1,34 @@
+{
+   "kind": "collectionType",
+   "collectionName": "social_posts",
+   "info": {
+      "singularName": "social-post",
+      "pluralName": "social-posts",
+      "displayName": "SocialPost",
+      "description": ""
+   },
+   "options": {
+      "draftAndPublish": true
+   },
+   "pluginOptions": {},
+   "attributes": {
+      "title": {
+         "type": "string",
+         "unique": true,
+         "private": true
+      },
+      "image": {
+         "type": "media",
+         "multiple": false,
+         "required": true,
+         "allowedTypes": ["images"]
+      },
+      "author": {
+         "type": "string",
+         "required": true
+      },
+      "url": {
+         "type": "string"
+      }
+   }
+}

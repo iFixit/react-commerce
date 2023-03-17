@@ -1,0 +1,20 @@
+{
+   "collectionName": "components_section_social_galleries",
+   "info": {
+      "displayName": "SocialGallery"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "posts": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::social-post.social-post"
+      }
+   }
+}
