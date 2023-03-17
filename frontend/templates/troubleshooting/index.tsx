@@ -156,7 +156,7 @@ function NavBar({
                   minW="0"
                >
                   <NavTabs
-                     overflowX="scroll"
+                     overflowX="auto"
                      flexGrow="1"
                      paddingInline={{ base: '16px', sm: '8px' }}
                      deviceGuideUrl={deviceGuideUrl}
