@@ -22,22 +22,22 @@ import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { Wrapper, ProductVariantPrice } from '@ifixit/ui';
+import { ProductVariantPrice, Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
 import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { AddToCart, isVariantWithSku } from './AddToCart';
+import { CompatibleDevices } from './CompatibleDevices';
 import { GenuinePartBanner } from './GenuinePartBanner';
+import { InternationalBuyBox } from './InternationalBuyBox';
+import { ProductDescription } from './ProductDescription';
 import { ProductGallery } from './ProductGallery';
 import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
-import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
-import { InternationalBuyBox } from './InternationalBuyBox';
-import { ProductDescription } from './ProductDescription';
-import { CompatibleDevices } from './CompatibleDevices';
 
 export type ProductSectionProps = {
    product: Product;

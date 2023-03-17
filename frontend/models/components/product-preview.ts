@@ -26,7 +26,7 @@ export type ProductPreview = z.infer<typeof ProductPreviewSchema>;
 export const ProductPreviewSchema = z.object({
    id: z.string(),
    handle: z.string(),
-   sku: z.string().optional().nullable(),
+   sku: z.string().nullable(),
    title: z.string(),
    image: ImageSchema.nullable(),
    price: MoneySchema,
@@ -36,6 +36,8 @@ export const ProductPreviewSchema = z.object({
    reviews: ProductReviewsSchema.nullable(),
    oemPartnership: z.string().nullable(),
    hasLifetimeWarranty: z.boolean(),
+   quantityAvailable: z.number().nullable(),
+   enabled: z.boolean().nullable().optional(),
 });
 
 export function productPreviewFromAlgoliaHit(
@@ -54,6 +56,7 @@ export function productPreviewFromAlgoliaHit(
    return {
       id: String(product.productid),
       handle: product.handle,
+      sku: null,
       title: product.title,
       image: imageFromUrl(product.image_url),
       price: moneyFromAmount(product.price_float, 'USD'),
@@ -63,12 +66,13 @@ export function productPreviewFromAlgoliaHit(
       reviews: productReviewsFromAlgoliaProductHit(product),
       oemPartnership: product.oem_partnership ?? null,
       hasLifetimeWarranty: product.lifetime_warranty ?? false,
+      quantityAvailable: product.quantity_available ?? null,
    };
 }
 
 export function productPreviewFromShopify(
    fields: ProductPreviewFieldsFragment
-) {
+): ProductPreview | null {
    const price = moneyFromShopify(fields.price);
    if (price == null) return null;
 
@@ -77,6 +81,7 @@ export function productPreviewFromShopify(
    return {
       id: fields.id,
       handle: fields.product.handle,
+      sku: fields.sku ?? null,
       title: fields.product.title,
       image: imageFromShopify(fields.image),
       price,
@@ -88,7 +93,7 @@ export function productPreviewFromShopify(
                  fields.proPricesByTier?.value,
                  currencyCode
               ),
-      isPro: false,
+      isPro: fields.product.tags.includes('Pro Only'),
       reviews: productReviewsFromMetafields(
          fields.product.rating?.value,
          fields.product.reviewsCount?.value
@@ -97,5 +102,7 @@ export function productPreviewFromShopify(
       hasLifetimeWarranty:
          typeof fields.warranty?.value === 'string' &&
          isLifetimeWarranty(fields.warranty.value),
+      quantityAvailable: fields.quantityAvailable ?? null,
+      enabled: fields.enabled?.value === 'true',
    };
 }

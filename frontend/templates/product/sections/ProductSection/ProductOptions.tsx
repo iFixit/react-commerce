@@ -253,7 +253,6 @@ type ProductOptionImageProps = {
 };
 
 function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
-   const theme = useTheme();
    if (!image) {
       return (
          <Flex

@@ -20,7 +20,7 @@ import {
    faGaugeMax,
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
-import { IconBadge, Wrapper, ResponsiveImage } from '@ifixit/ui';
+import { IconBadge, ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type ReplacementGuidesSectionProps = {
@@ -75,7 +75,7 @@ type ReplacementGuideCardProps = {
 
 function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
    const hasBadges =
-      isPresent(guide.difficulty) || isPresent(guide.time_required);
+      isPresent(guide.difficulty) || isPresent(guide.timeRequired);
    return (
       <LinkBox
          as="article"
@@ -91,7 +91,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
          borderRadius="md"
          role="group"
       >
-         {guide.image_url && (
+         {guide.imageUrl && (
             <>
                <Flex
                   align="center"
@@ -127,7 +127,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                   position="relative"
                >
                   <ResponsiveImage
-                     src={guide.image_url}
+                     src={guide.imageUrl}
                      alt=""
                      objectFit="cover"
                      layout="fill"
@@ -146,7 +146,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
          )}
          <Box px="3" py="3" overflow="hidden">
             <LinkOverlay
-               href={guide.guide_url}
+               href={guide.url}
                target="_blank"
                fontWeight="semibold"
                fontSize="sm"
@@ -182,10 +182,10 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                   mx="0"
                   mt="1"
                >
-                  {isPresent(guide.time_required) && (
+                  {isPresent(guide.timeRequired) && (
                      <BadgeListItem>
                         <IconBadge icon={faClock}>
-                           {guide.time_required}
+                           {guide.timeRequired}
                         </IconBadge>
                      </BadgeListItem>
                   )}
