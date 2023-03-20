@@ -54,6 +54,9 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
+               <meta name="description" content={wikiData.metaDescription} />
+               <meta name="title" content={wikiData.title} />
+               <meta name="keywords" content={wikiData.metaKeywords} />
                <meta name="robots" content="noindex" />
                <link rel="canonical" href={wikiData.canonicalUrl} />
                <HreflangUrls urls={wikiData.hreflangUrls} />

@@ -1,5 +1,6 @@
 import { FeaturedProductsSectionSchema } from '@models/sections/featured-products-section';
 import { IFixitStatsSectionSchema } from '@models/sections/ifixit-stats-section';
+import { SocialGallerySectionSchema } from '@models/sections/social-gallery-section';
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
 import { BrowseSectionSchema } from './sections/browse-section';
@@ -15,6 +16,7 @@ export const PageSectionSchema = z.union([
    SplitWithImageSectionSchema,
    PressQuotesSectionSchema,
    FeaturedProductsSectionSchema,
+   SocialGallerySectionSchema,
 ]);
 
 export type Page = z.infer<typeof PageSchema>;

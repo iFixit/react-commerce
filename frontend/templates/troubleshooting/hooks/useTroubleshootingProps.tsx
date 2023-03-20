@@ -27,6 +27,8 @@ export type TroubleshootingData = {
    lastUpdatedDate: number;
    authors: Author[];
    hreflangUrls: Record<string, string>;
+   metaDescription: string;
+   metaKeywords: string;
 };
 
 type TroubleshootingPageProps = {
