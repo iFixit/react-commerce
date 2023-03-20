@@ -8,7 +8,6 @@ import {
    Heading,
    Text,
    useDisclosure,
-   VStack,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { getProductListTitle } from '@helpers/product-list-helpers';
