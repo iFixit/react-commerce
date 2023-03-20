@@ -57,6 +57,7 @@ export async function findProductList(
       return null;
    }
 
+   const id = result.productLists?.data?.[0]?.id ?? null;
    const deviceTitle =
       deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
    const handle = productList?.handle ?? '';
@@ -84,6 +85,7 @@ export async function findProductList(
       productListType === ProductListType.DeviceParts;
 
    const baseProductList: BaseProductList = {
+      id,
       title,
       h1,
       handle,

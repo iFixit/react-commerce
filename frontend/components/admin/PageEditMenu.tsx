@@ -9,15 +9,24 @@ import {
    MenuList,
 } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
-import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
+import {
+   faPenToSquare,
+   IconDefinition,
+} from '@fortawesome/pro-solid-svg-icons';
 import NextLink from 'next/link';
-import { ProductEditMenuLink } from '@helpers/product-helpers';
 
-type ProductEditMenuProps = BoxProps & {
-   links: ProductEditMenuLink[];
+export type PageEditMenuLink = {
+   icon: IconDefinition;
+   label: string;
+   url: string;
 };
 
-export function ProductEditMenu({ links, ...props }: ProductEditMenuProps) {
+type PageEditMenuProps = BoxProps & {
+   links: PageEditMenuLink[];
+};
+
+export function PageEditMenu({ links, ...props }: PageEditMenuProps) {
+   if (!links.length) return null;
    return (
       <Box px="4" borderLeftWidth="thin" borderColor="gray.200" {...props}>
          <Menu>
@@ -44,11 +53,11 @@ export function ProductEditMenu({ links, ...props }: ProductEditMenuProps) {
    );
 }
 
-type ProductEditMenuLinkProps = {
-   link: ProductEditMenuLink;
+type PageEditMenuLinkProps = {
+   link: PageEditMenuLink;
 };
 
-function MenuLink({ link }: ProductEditMenuLinkProps) {
+function MenuLink({ link }: PageEditMenuLinkProps) {
    const { icon, label, url } = link;
    return (
       <NextLink href={url} passHref legacyBehavior>

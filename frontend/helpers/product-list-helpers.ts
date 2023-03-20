@@ -1,3 +1,6 @@
+import { PageEditMenuLink } from '@components/admin';
+import { STRAPI_ORIGIN } from '@config/env';
+import { faDatabase, IconDefinition } from '@fortawesome/pro-solid-svg-icons';
 import { FacetWidgetType, ProductListType } from '@models/product-list';
 import { z } from 'zod';
 
@@ -88,4 +91,21 @@ export function isPartsProductList<
       productList.type === ProductListType.AllParts ||
       productList.type === ProductListType.DeviceParts
    );
+}
+
+type GetAdminLinksProps = {
+   productListId: string | null;
+};
+
+export function getAdminLinks({
+   productListId,
+}: GetAdminLinksProps): PageEditMenuLink[] {
+   if (!productListId) return [];
+   return [
+      {
+         icon: faDatabase,
+         label: 'Strapi',
+         url: `${STRAPI_ORIGIN}/admin/content-manager/collectionType/api::product-list.product-list/${productListId}`,
+      },
+   ];
 }

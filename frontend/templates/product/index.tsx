@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { ProductEditMenu } from '@components/admin';
+import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
@@ -87,7 +87,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                borderBottomWidth="thin"
             >
                <Flex w="full" direction="row-reverse">
-                  <ProductEditMenu links={adminLinks} />
+                  <PageEditMenu links={adminLinks} />
                </Flex>
             </SecondaryNavigation>
          )}
@@ -96,7 +96,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                <Flex w="full" justify="space-between">
                   <PageBreadcrumb items={product.breadcrumbs} w="full" />
                   {isAdminUser && (
-                     <ProductEditMenu
+                     <PageEditMenu
                         links={adminLinks}
                         display={{
                            base: 'none',
