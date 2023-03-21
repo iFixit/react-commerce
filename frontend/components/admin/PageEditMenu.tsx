@@ -30,7 +30,8 @@ export function PageEditMenu({ links, ...props }: PageEditMenuProps) {
    return (
       <Box px="4" borderLeftWidth="thin" borderColor="gray.200" {...props}>
          <Menu>
-            <MenuButton as={Button}
+            <MenuButton
+               as={Button}
                aria-label="Edit"
                leftIcon={<FaIcon icon={faPenToSquare} h="4" color="blue.500" />}
                variant="unstyled"
