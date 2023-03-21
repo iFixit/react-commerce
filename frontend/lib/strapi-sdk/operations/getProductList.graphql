@@ -144,30 +144,6 @@ query getProductList($filters: ProductListFiltersInput) {
                   id
                   tags
                }
-               ... on ComponentProductListFeaturedProductList {
-                  id
-                  productList {
-                     data {
-                        attributes {
-                           handle
-                           type
-                           title
-                           deviceTitle
-                           description
-                           filters
-                           image {
-                              data {
-                                 attributes {
-                                    alternativeText
-                                    url
-                                    formats
-                                 }
-                              }
-                           }
-                        }
-                     }
-                  }
-               }
                ... on ComponentProductListLinkedProductListSet {
                   id
                   title
