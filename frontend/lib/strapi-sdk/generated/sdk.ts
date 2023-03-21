@@ -270,12 +270,6 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
-export type ComponentProductListFeaturedProductList = {
-   __typename?: 'ComponentProductListFeaturedProductList';
-   id: Scalars['ID'];
-   productList?: Maybe<ProductListEntityResponse>;
-};
-
 export type ComponentProductListLinkedProductListSet = {
    __typename?: 'ComponentProductListLinkedProductListSet';
    id: Scalars['ID'];
@@ -567,7 +561,6 @@ export type GenericMorph =
    | ComponentPageStats
    | ComponentProductCrossSell
    | ComponentProductListBanner
-   | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | ComponentProductProduct
@@ -1363,7 +1356,6 @@ export type ProductListRelationResponseCollection = {
 
 export type ProductListSectionsDynamicZone =
    | ComponentProductListBanner
-   | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | Error;
@@ -3471,7 +3463,6 @@ export type GetProductListQuery = {
                     callToActionLabel: string;
                     url: string;
                  }
-               | { __typename: 'ComponentProductListFeaturedProductList' }
                | {
                     __typename: 'ComponentProductListLinkedProductListSet';
                     id: string;
