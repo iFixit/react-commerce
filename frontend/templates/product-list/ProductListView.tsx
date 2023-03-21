@@ -2,7 +2,7 @@ import { VStack } from '@chakra-ui/react';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListSectionType } from '@models/product-list';
-import { Configure, Index } from 'react-instantsearch-hooks-web';
+import { Configure } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {

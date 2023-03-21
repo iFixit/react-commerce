@@ -155,20 +155,6 @@ export interface ProductListRelatedPostsSection {
    tags: string | null;
 }
 
-export interface FeaturedProductList {
-   algolia: {
-      apiKey: string;
-      indexName: string;
-   };
-   handle: string;
-   title: string;
-   type: ProductListType;
-   deviceTitle: string | null;
-   description: string;
-   image: ProductListImage | null;
-   filters: string | null;
-}
-
 export interface ProductListProductListSetSection {
    type: ProductListSectionType.ProductListSet;
    id: string;
