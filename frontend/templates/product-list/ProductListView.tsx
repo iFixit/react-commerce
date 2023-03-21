@@ -7,7 +7,6 @@ import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
    BannerSection,
-   FeaturedProductListSection,
    FilterableProductsSection,
    HeroSection,
    ProductListChildrenSection,
@@ -32,19 +31,17 @@ export function ProductListView({
          <SecondaryNavigation productList={productList} />
          <Wrapper py={{ base: 4, md: 6 }}>
             <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
-               <Index indexName={indexName} indexId="main-product-list-index">
-                  <Configure filters={filters} hitsPerPage={24} />
-                  <MetaTags productList={productList} />
-                  {productList.heroImage ? (
-                     <HeroWithBackgroundSection productList={productList} />
-                  ) : (
-                     <HeroSection productList={productList} />
-                  )}
-                  {productList.children.length > 0 && (
-                     <ProductListChildrenSection productList={productList} />
-                  )}
-                  <FilterableProductsSection productList={productList} />
-               </Index>
+               <Configure filters={filters} hitsPerPage={24} />
+               <MetaTags productList={productList} />
+               {productList.heroImage ? (
+                  <HeroWithBackgroundSection productList={productList} />
+               ) : (
+                  <HeroSection productList={productList} />
+               )}
+               {productList.children.length > 0 && (
+                  <ProductListChildrenSection productList={productList} />
+               )}
+               <FilterableProductsSection productList={productList} />
                {productList.sections.map((section, index) => {
                   switch (section.type) {
                      case ProductListSectionType.Banner: {
@@ -64,19 +61,6 @@ export function ProductListView({
                               []
                         );
                         return <RelatedPostsSection key={index} tags={tags} />;
-                     }
-                     case ProductListSectionType.FeaturedProductList: {
-                        const { productList } = section;
-                        if (productList) {
-                           return (
-                              <FeaturedProductListSection
-                                 key={index}
-                                 productList={productList}
-                                 index={index}
-                              />
-                           );
-                        }
-                        return null;
                      }
                      case ProductListSectionType.ProductListSet: {
                         const { title, productLists } = section;

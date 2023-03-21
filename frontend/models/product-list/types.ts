@@ -132,14 +132,12 @@ export interface ProductListImage {
 export enum ProductListSectionType {
    Banner = 'banner',
    RelatedPosts = 'related-posts',
-   FeaturedProductList = 'featured-product-list',
    ProductListSet = 'product-list-set',
 }
 
 export type ProductListSection =
    | ProductListBannerSection
    | ProductListRelatedPostsSection
-   | ProductListFeaturedProductListSection
    | ProductListProductListSetSection;
 
 export interface ProductListBannerSection {
@@ -155,12 +153,6 @@ export interface ProductListRelatedPostsSection {
    type: ProductListSectionType.RelatedPosts;
    id: string;
    tags: string | null;
-}
-
-export interface ProductListFeaturedProductListSection {
-   type: ProductListSectionType.FeaturedProductList;
-   id: string;
-   productList: FeaturedProductList;
 }
 
 export interface FeaturedProductList {

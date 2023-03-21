@@ -270,12 +270,6 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
-export type ComponentProductListFeaturedProductList = {
-   __typename?: 'ComponentProductListFeaturedProductList';
-   id: Scalars['ID'];
-   productList?: Maybe<ProductListEntityResponse>;
-};
-
 export type ComponentProductListLinkedProductListSet = {
    __typename?: 'ComponentProductListLinkedProductListSet';
    id: Scalars['ID'];
@@ -567,7 +561,6 @@ export type GenericMorph =
    | ComponentPageStats
    | ComponentProductCrossSell
    | ComponentProductListBanner
-   | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | ComponentProductProduct
@@ -1363,7 +1356,6 @@ export type ProductListRelationResponseCollection = {
 
 export type ProductListSectionsDynamicZone =
    | ComponentProductListBanner
-   | ComponentProductListFeaturedProductList
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | Error;
@@ -3472,37 +3464,6 @@ export type GetProductListQuery = {
                     url: string;
                  }
                | {
-                    __typename: 'ComponentProductListFeaturedProductList';
-                    id: string;
-                    productList?: {
-                       __typename?: 'ProductListEntityResponse';
-                       data?: {
-                          __typename?: 'ProductListEntity';
-                          attributes?: {
-                             __typename?: 'ProductList';
-                             handle: string;
-                             type?: Enum_Productlist_Type | null;
-                             title: string;
-                             deviceTitle?: string | null;
-                             description: string;
-                             filters?: string | null;
-                             image?: {
-                                __typename?: 'UploadFileEntityResponse';
-                                data?: {
-                                   __typename?: 'UploadFileEntity';
-                                   attributes?: {
-                                      __typename?: 'UploadFile';
-                                      alternativeText?: string | null;
-                                      url: string;
-                                      formats?: any | null;
-                                   } | null;
-                                } | null;
-                             } | null;
-                          } | null;
-                       } | null;
-                    } | null;
-                 }
-               | {
                     __typename: 'ComponentProductListLinkedProductListSet';
                     id: string;
                     title: string;
@@ -4348,30 +4309,6 @@ export const GetProductListDocument = `
           ... on ComponentProductListRelatedPosts {
             id
             tags
-          }
-          ... on ComponentProductListFeaturedProductList {
-            id
-            productList {
-              data {
-                attributes {
-                  handle
-                  type
-                  title
-                  deviceTitle
-                  description
-                  filters
-                  image {
-                    data {
-                      attributes {
-                        alternativeText
-                        url
-                        formats
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
           ... on ComponentProductListLinkedProductListSet {
             id
