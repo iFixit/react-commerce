@@ -48,6 +48,7 @@ importers:
       '@ifixit/helpers': workspace:*
       '@ifixit/icons': workspace:*
       '@ifixit/ifixit-api-client': workspace:*
+      '@ifixit/menu': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/sentry': workspace:*
       '@ifixit/shopify-storefront-client': workspace:*
@@ -137,6 +138,7 @@ importers:
       '@ifixit/helpers': link:../packages/helpers
       '@ifixit/icons': link:../packages/icons
       '@ifixit/ifixit-api-client': link:../packages/ifixit-api-client
+      '@ifixit/menu': link:../packages/menu
       '@ifixit/newsletter-sdk': link:../packages/newsletter-sdk
       '@ifixit/sentry': link:../packages/sentry
       '@ifixit/shopify-storefront-client': link:../packages/shopify-storefront-client
@@ -355,9 +357,9 @@ importers:
       '@emotion/react': '>=11.0.0 <12.0.0'
       '@emotion/styled': '>=11.0.0 <12.0.0'
       '@ifixit/icons': workspace:*
+      '@ifixit/menu': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/tsconfig': workspace:*
-      '@ifixit/ui': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       framer-motion: '>=3.0.0 <4.0.0 || >=4.0.0 <5.0.0 || >=5.0.0 <6.0.0 || >=6.0.0 <7.0.0'
@@ -367,8 +369,8 @@ importers:
       typescript: 4.8.4
     dependencies:
       '@ifixit/icons': link:../icons
+      '@ifixit/menu': link:../menu
       '@ifixit/newsletter-sdk': link:../newsletter-sdk
-      '@ifixit/ui': link:../ui
     devDependencies:
       '@babel/core': 7.18.6
       '@emotion/react': 11.7.1_sxwbo4xt7gk63ri5mq3agqslqm
@@ -431,6 +433,14 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      typescript: 4.8.4
+
+  packages/menu:
+    specifiers:
+      '@ifixit/tsconfig': workspace:*
+      typescript: 4.8.4
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
       typescript: 4.8.4
 
   packages/newsletter-sdk:

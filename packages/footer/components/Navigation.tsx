@@ -18,7 +18,7 @@ import type {
 } from '@chakra-ui/react';
 import { NewsletterComponent } from './Newsletter';
 import type { NewsletterFormProps } from './Newsletter';
-import type { Menu as MenuType, MenuItem } from '@ifixit/ui';
+import type { Menu as MenuType, MenuItem } from '@ifixit/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 type NavSectionProps = {

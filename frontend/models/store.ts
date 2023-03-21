@@ -10,8 +10,8 @@ import type {
    MenuItem,
    ProductListLinkMenuItem,
    SubmenuMenuItem,
-} from '@ifixit/ui';
-import { MenuItemType } from '@ifixit/ui';
+} from '@ifixit/menu';
+import { MenuItemType } from '@ifixit/menu';
 
 export type Store = Awaited<ReturnType<typeof findStoreByCode>>;
 

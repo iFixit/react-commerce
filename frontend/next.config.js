@@ -19,6 +19,7 @@ const withTM = require('next-transpile-modules')([
    '@ifixit/sentry',
    '@ifixit/shopify-storefront-client',
    '@ifixit/ui',
+   '@ifixit/menu',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
