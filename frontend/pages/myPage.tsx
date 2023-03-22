@@ -5,7 +5,7 @@ const MyComponent = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-   if (context.params?.myParam === 'two') {
+   if (context.query.myParam === 'two') {
       // only throw conditionally so that this page actually builds
       throw new Error("We don't like page two");
    }
