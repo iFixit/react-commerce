@@ -195,7 +195,6 @@
          "type": "dynamiczone",
          "components": [
             "product-list.banner",
-            "product-list.featured-product-list",
             "product-list.linked-product-list-set",
             "product-list.related-posts"
          ],
