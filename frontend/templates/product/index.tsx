@@ -28,7 +28,7 @@ import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
-import { ProductSection } from './sections/ProductSection';
+import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
@@ -113,7 +113,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                switch (section.type) {
                   case 'ProductOverview':
                      return (
-                        <ProductSection
+                        <ProductOverviewSection
                            key={section.id}
                            product={product}
                            selectedVariant={selectedVariant}
