@@ -52,6 +52,7 @@ import {
    productVideoFromMetafield,
    ProductVideosSchema,
 } from './components/product-video';
+import { getDefaultProductSections, ProductSectionSchema } from './sections';
 
 export type {
    ProductVariant,
@@ -89,6 +90,7 @@ export const ProductSchema = z.object({
    redirectUrl: z.string().nullable(),
    vendor: z.string().nullable(),
    crossSellVariants: z.array(ProductPreviewSchema),
+   sections: z.array(ProductSectionSchema),
 });
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -159,6 +161,7 @@ export function productFromQueryProduct(
       redirectUrl: queryProduct.redirectUrl?.value ?? null,
       vendor: queryProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(queryProduct),
+      sections: getDefaultProductSections(),
    };
 }
 
