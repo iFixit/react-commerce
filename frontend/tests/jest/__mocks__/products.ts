@@ -9,6 +9,7 @@ import type {
 import type { ProductSearchHit } from '@models/product-list';
 import type { ProductReview } from '@models/product/reviews';
 import type { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
+import { getDefaultProductSections } from '@models/product/sections';
 
 const productImages: ProductVariantImage[] = [
    {
@@ -689,6 +690,7 @@ export const mockedProduct: Product = {
          enabled: true,
       },
    ],
+   sections: getDefaultProductSections(),
 };
 
 export const mockedProductVariant: ProductVariant = {
@@ -1384,6 +1386,7 @@ export const mockedBatteryProduct: Product = {
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
+   sections: getDefaultProductSections(),
 };
 
 const toolProductImages: ProductVariantImage[] = [
@@ -1725,6 +1728,7 @@ export const mockedToolProduct: Product = {
          enabled: true,
       },
    ],
+   sections: getDefaultProductSections(),
 };
 
 const partProductImages: ProductVariantImage[] = [
@@ -2097,6 +2101,7 @@ export const mockedPartProduct: Product = {
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
+   sections: getDefaultProductSections(),
 };
 
 export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
