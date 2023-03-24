@@ -1,7 +1,12 @@
-import type { ProductVariant } from '@pages/api/nextjs/cache/product';
-import { Heading, Stack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
-import { List, ListIcon, ListItem } from '@chakra-ui/react';
+import {
+   Heading,
+   List,
+   ListIcon,
+   ListItem,
+   Stack,
+   Text,
+   VStack,
+} from '@chakra-ui/react';
 import {
    faBoxCircleCheck as faBoxCircleCheckDuo,
    faRocket as faRocketDuo,
@@ -13,6 +18,8 @@ import {
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
+import type { ProductVariant } from '@pages/api/nextjs/cache/product';
+import React from 'react';
 
 export type ServiceValuePropositionSectionProps = {
    selectedVariant: ProductVariant;

@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
-import { renderWithAppContext, getMockProduct } from '../utils';
 import { ReplacementGuidesSection } from '@templates/product/sections/ReplacementGuidesSection';
+import { screen } from '@testing-library/react';
+import { getMockProduct, renderWithAppContext } from '../utils';
 
 describe('Product Replacement Guides Section Tests', () => {
    test('renders Replacement Guides Section for a product with a replacement guide', async () => {
@@ -20,7 +20,7 @@ describe('Product Replacement Guides Section Tests', () => {
       );
       (expect(guideTitle) as any).toBeVisible();
 
-      const expectedGuideUrl = mockedProduct.replacementGuides[0].guide_url;
+      const expectedGuideUrl = mockedProduct.replacementGuides[0].url;
       (
          expect(screen.getByRole('link', { name: expectedGuideTitle })) as any
       ).toHaveAttribute('href', expectedGuideUrl);

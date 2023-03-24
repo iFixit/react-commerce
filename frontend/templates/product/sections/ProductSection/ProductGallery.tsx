@@ -5,8 +5,8 @@ import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
 import type {
    Product,
-   ProductImage,
    ProductVariant,
+   ProductVariantImage,
 } from '@pages/api/nextjs/cache/product';
 import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
@@ -231,7 +231,7 @@ function useVariantImages(product: Product, variantId: string) {
 }
 
 function useCurrentImageIndex(
-   variantImages: ProductImage[],
+   variantImages: ProductVariantImage[],
    selectedImageId?: string | null
 ) {
    const currentImageId = React.useMemo(() => {

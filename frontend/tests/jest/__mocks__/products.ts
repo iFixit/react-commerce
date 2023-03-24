@@ -1,13 +1,13 @@
-import { CurrencyCode } from '@lib/shopify-storefront-sdk';
-import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
 import { MenuItemType } from '@ifixit/menu';
-import type { ProductSearchHit } from '@models/product-list';
-import type { ProductReview } from '@models/product/reviews';
+import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
+import { CurrencyCode } from '@lib/shopify-storefront-sdk';
 import type {
    Product,
    ProductVariant,
    ProductVariantImage,
 } from '@pages/api/nextjs/cache/product';
+import type { ProductSearchHit } from '@models/product-list';
+import type { ProductReview } from '@models/product/reviews';
 import type { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
 
 const productImages: ProductVariantImage[] = [
@@ -214,12 +214,10 @@ export const mockedProduct: Product = {
       'Version=iPhone Repair Kits',
       'worksin:1059',
    ],
-   rating: {
-      scale_min: 1.0,
-      scale_max: 5.0,
-      value: 4.8,
+   reviews: {
+      rating: 4.8,
+      count: 41,
    },
-   reviewsCount: 41,
    breadcrumbs: [
       {
          label: 'Home',
@@ -255,12 +253,12 @@ export const mockedProduct: Product = {
       {
          id: '0',
          title: 'iPhone 6s Plus Battery Replacement',
-         guide_url: '/Guide/iPhone+6s+Plus+Battery+Replacement/51380',
-         image_url:
+         url: '/Guide/iPhone+6s+Plus+Battery+Replacement/51380',
+         imageUrl:
             'https://mmcelvain.cominor.com/igi/LVQpdSdCEY1YxPkM.thumbnail',
          summary: 'Use this guide to bring life back to your...',
          difficulty: 'Moderate',
-         time_required: '15 - 45 minutes',
+         timeRequired: '15 - 45 minutes',
       },
    ],
    featuredProductVariants: [
@@ -269,6 +267,7 @@ export const mockedProduct: Product = {
          handle: 'pro-tech-toolkit',
          sku: 'IF145-307-4',
          title: 'Pro Tech Toolkit',
+         quantityAvailable: null,
          reviews: {
             rating: 4.9,
             count: 1381,
@@ -312,6 +311,7 @@ export const mockedProduct: Product = {
          handle: 'essential-electronics-toolkit',
          sku: 'IF145-348-5',
          title: 'Essential Electronics Toolkit',
+         quantityAvailable: null,
          reviews: null,
          image: {
             id: 'gid://shopify/ProductImage/30147156082778',
@@ -335,6 +335,7 @@ export const mockedProduct: Product = {
          handle: 'iphone-6s-plus-replacement-battery',
          sku: 'IF315-007-10',
          title: 'iPhone 6s Plus Battery',
+         quantityAvailable: null,
          reviews: {
             rating: 4.8,
             count: 41,
@@ -381,6 +382,7 @@ export const mockedProduct: Product = {
          handle: 'iphone-6s-plus-screen',
          sku: 'IF315-038-5',
          title: 'iPhone 6s Plus Screen',
+         quantityAvailable: null,
          reviews: {
             rating: 4.7,
             count: 27,
@@ -424,6 +426,7 @@ export const mockedProduct: Product = {
          handle: 'iphone-6s-plus-lightning-connector-and-headphone-jack',
          sku: 'IF315-001-10',
          title: 'iPhone 6s Plus Lightning Connector and Headphone Jack',
+         quantityAvailable: null,
          reviews: {
             rating: 5,
             count: 7,
@@ -501,7 +504,7 @@ export const mockedProduct: Product = {
    iFixitProductId: 'IF315-007',
    productcode: '315007',
    productVideosJson: null,
-   enabledDomains: undefined,
+   enabledDomains: null,
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [
@@ -509,24 +512,13 @@ export const mockedProduct: Product = {
          id: 'gid://shopify/ProductVariant/32965720473690',
          sku: 'IF145-257-1',
          quantityAvailable: 186,
-         product: {
-            handle: 'anti-static-project-tray',
-            title: 'Anti-Static Project Tray',
-            tags: [
-               'Condition:New',
-               'ESD-safe:ESD-safe',
-               'iFixit Exclusive:iFixit Exclusive',
-               'Item Type:SIM',
-               'Main Category=Tools',
-               'Product Manufacturer=iFixit',
-               'Tool',
-               'Tool Category (Legacy):ESD Safe',
-               'Tool Type=Organization Tools',
-            ],
+         handle: 'anti-static-project-tray',
+         title: 'Anti-Static Project Tray',
+         reviews: {
             rating: 4.8,
-            reviewsCount: 273,
-            oemPartnership: null,
+            count: 273,
          },
+         oemPartnership: null,
          image: {
             id: 'gid://shopify/ProductImage/30908161917018',
             altText: '*',
@@ -557,50 +549,21 @@ export const mockedProduct: Product = {
                currencyCode: 'USD',
             },
          },
-         warranty: 'Lifetime Guarantee',
+         isPro: false,
+         hasLifetimeWarranty: true,
          enabled: true,
       },
       {
          id: 'gid://shopify/ProductVariant/32965720178778',
          sku: 'IF145-307-4',
          quantityAvailable: 607,
-         product: {
-            handle: 'pro-tech-toolkit',
-            title: 'Pro Tech Toolkit',
-            tags: [
-               'Condition:New',
-               'iFixit Exclusive:iFixit Exclusive',
-               'Item Type:Kits',
-               'Item Type:SIM',
-               'Main Category=Tools',
-               'Product Manufacturer=iFixit',
-               'Profile=Adapter',
-               'Profile=Flathead',
-               'Profile=Gamebit',
-               'Profile=Hex',
-               'Profile=iPhone Standoff',
-               'Profile=JIS',
-               'Profile=Magnetic Pickup',
-               'Profile=Nut Driver',
-               'Profile=Oval Bit',
-               'Profile=Pentalobe',
-               'Profile=Phillips',
-               'Profile=SIM Eject',
-               'Profile=Spanner',
-               'Profile=Square',
-               'Profile=Torx',
-               'Profile=Torx Security',
-               'Profile=Tri-point',
-               'Profile=Triangle',
-               'Screwdriver Type:Interchangeable Bits',
-               'Tool',
-               'Tool Category (Legacy):Drivers & Wrenches',
-               'Tool Type=Toolkits',
-            ],
+         handle: 'pro-tech-toolkit',
+         title: 'Pro Tech Toolkit',
+         reviews: {
             rating: 4.9,
-            reviewsCount: 1381,
-            oemPartnership: null,
+            count: 1381,
          },
+         oemPartnership: null,
          image: {
             id: 'gid://shopify/ProductImage/31392629260378',
             altText: 'IF145-307-4',
@@ -631,41 +594,21 @@ export const mockedProduct: Product = {
                currencyCode: 'USD',
             },
          },
-         warranty: 'Lifetime Guarantee',
+         hasLifetimeWarranty: true,
+         isPro: false,
          enabled: true,
       },
       {
          id: 'gid://shopify/ProductVariant/39333786746970',
          sku: 'IF315-038-1',
          quantityAvailable: 25,
-         product: {
-            handle: 'iphone-6s-plus-screen',
-            title: 'iPhone 6s Plus Screen',
-            tags: [
-               'Apple Device=iPhone',
-               'Condition:New',
-               'Device Brand:Apple',
-               'Device Category:Phone',
-               'Device Manufacturer=Apple',
-               'Device Type:iPhone',
-               'Device Type=Smartphones',
-               'Item Type:Screens',
-               'Main Category=Parts',
-               'Model Number=A1634',
-               'Model Number=A1687',
-               'Model=iPhone 6s Plus',
-               'OS:iOS',
-               'Part',
-               'Part or Kit:Fix Kit',
-               'Part or Kit:Part Only',
-               'Spare Part=Screens',
-               'Version=iPhone Repair Kits',
-               'worksin:1059',
-            ],
+         handle: 'iphone-6s-plus-screen',
+         title: 'iPhone 6s Plus Screen',
+         reviews: {
             rating: 4.7,
-            reviewsCount: 27,
-            oemPartnership: null,
+            count: 27,
          },
+         oemPartnership: null,
          image: {
             id: 'gid://shopify/ProductImage/31268982194266',
             altText: 'IF315-038-1',
@@ -696,39 +639,21 @@ export const mockedProduct: Product = {
                currencyCode: 'USD',
             },
          },
-         warranty: 'Lifetime Warranty',
+         hasLifetimeWarranty: true,
+         isPro: false,
          enabled: true,
       },
       {
          id: 'gid://shopify/ProductVariant/39333786583130',
          sku: 'IF315-049-2',
          quantityAvailable: 46,
-         product: {
-            handle: 'iphone-6s-plus-display-assembly-adhesive',
-            title: 'iPhone 6s Plus Display Assembly Adhesive',
-            tags: [
-               'Apple Device=iPhone',
-               'Condition:New',
-               'Device Brand:Apple',
-               'Device Category:Phone',
-               'Device Manufacturer=Apple',
-               'Device Type:iPhone',
-               'Device Type=Smartphones',
-               'Item Type:Adhesives',
-               'Main Category=Parts',
-               'Model Number=A1634',
-               'Model Number=A1687',
-               'Model=iPhone 6s Plus',
-               'OS:iOS',
-               'Part',
-               'Part or Kit:Part Only',
-               'Spare Part=Adhesives',
-               'worksin:1059',
-            ],
+         handle: 'iphone-6s-plus-display-assembly-adhesive',
+         title: 'iPhone 6s Plus Display Assembly Adhesive',
+         reviews: {
             rating: 4.7,
-            reviewsCount: 20,
-            oemPartnership: null,
+            count: 20,
          },
+         oemPartnership: null,
          image: {
             id: 'gid://shopify/ProductImage/30908245409882',
             altText: 'IF315-049-2',
@@ -759,7 +684,8 @@ export const mockedProduct: Product = {
                currencyCode: 'USD',
             },
          },
-         warranty: 'Sold as-is; no refunds or returns',
+         hasLifetimeWarranty: true,
+         isPro: false,
          enabled: true,
       },
    ],
@@ -1202,12 +1128,10 @@ export const mockedBatteryProduct: Product = {
       'Part or Kit:Part Only',
       'worksin:1884',
    ],
-   rating: {
-      scale_min: 1.0,
-      scale_max: 5.0,
-      value: 5.0,
+   reviews: {
+      rating: 5.0,
+      count: 2,
    },
-   reviewsCount: 2,
    breadcrumbs: [
       {
          label: 'Home',
@@ -1251,11 +1175,11 @@ export const mockedBatteryProduct: Product = {
       {
          id: '0',
          title: 'Motorola Moto G7 Play Battery Replacement',
-         guide_url: '/Guide/Motorola+Moto+G7+Play+Battery+Replacement/131323',
-         image_url: 'https://www.cominor.com/igi/VccIYuMpooQRd6Od.thumbnail',
+         url: '/Guide/Motorola+Moto+G7+Play+Battery+Replacement/131323',
+         imageUrl: 'https://www.cominor.com/igi/VccIYuMpooQRd6Od.thumbnail',
          summary: 'This guide will show each detailed step to...',
          difficulty: 'Moderate',
-         time_required: '45 - 50 minutes',
+         timeRequired: '45 - 50 minutes',
       },
    ],
    featuredProductVariants: [
@@ -1298,6 +1222,7 @@ export const mockedBatteryProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          oemPartnership: null,
          isPro: false,
@@ -1319,6 +1244,7 @@ export const mockedBatteryProduct: Product = {
             amount: 24.99,
             currencyCode: 'USD',
          },
+         quantityAvailable: null,
          compareAtPrice: null,
          proPricesByTier: null,
          hasLifetimeWarranty: true,
@@ -1364,6 +1290,7 @@ export const mockedBatteryProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          oemPartnership: null,
          isPro: false,
@@ -1411,6 +1338,7 @@ export const mockedBatteryProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },
@@ -1540,12 +1468,10 @@ export const mockedToolProduct: Product = {
    descriptionHtml:
       '<p>Very precise fine tipped tweezers for microsoldering and manipulating tiny parts.</p>',
    tags: ['Condition:New', 'Tool', 'Tool Category (Legacy):Soldering & Wiring'],
-   rating: {
-      scale_min: 1.0,
-      scale_max: 5.0,
-      value: 5.0,
+   reviews: {
+      rating: 5.0,
+      count: 2,
    },
-   reviewsCount: 2,
    breadcrumbs: [
       {
          label: 'Home',
@@ -1587,6 +1513,7 @@ export const mockedToolProduct: Product = {
          },
          compareAtPrice: null,
          proPricesByTier: null,
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },
@@ -1630,6 +1557,7 @@ export const mockedToolProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },
@@ -1676,6 +1604,7 @@ export const mockedToolProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },
@@ -1719,6 +1648,7 @@ export const mockedToolProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },
@@ -1753,18 +1683,13 @@ export const mockedToolProduct: Product = {
          id: 'gid://shopify/ProductVariant/39333789794394',
          sku: 'IF317-047-1',
          quantityAvailable: 31,
-         product: {
-            handle: 'hakko-3-sa-tweezers',
-            title: 'Hakko 3 SA Tweezers',
-            tags: [
-               'Condition:New',
-               'Tool',
-               'Tool Category (Legacy):Soldering & Wiring',
-            ],
+         handle: 'hakko-3-sa-tweezers',
+         title: 'Hakko 3 SA Tweezers',
+         reviews: {
             rating: 5,
-            reviewsCount: 3,
-            oemPartnership: null,
+            count: 3,
          },
+         oemPartnership: null,
          image: {
             id: 'gid://shopify/ProductImage/31648429015130',
             altText: 'IF317-047-1',
@@ -1795,7 +1720,8 @@ export const mockedToolProduct: Product = {
                currencyCode: 'USD',
             },
          },
-         warranty: 'One year warranty',
+         hasLifetimeWarranty: true,
+         isPro: false,
          enabled: true,
       },
    ],
@@ -1907,12 +1833,10 @@ export const mockedPartProduct: Product = {
       'Part or Kit:Part Only',
       'worksin:2255',
    ],
-   rating: {
-      scale_min: 1.0,
-      scale_max: 5.0,
-      value: 5.0,
+   reviews: {
+      rating: 5.0,
+      count: 1,
    },
-   reviewsCount: 1,
    breadcrumbs: [
       {
          label: 'Home',
@@ -1956,11 +1880,11 @@ export const mockedPartProduct: Product = {
       {
          id: '0',
          title: 'Samsung Galaxy A51 Screen Replacement',
-         guide_url: '/Guide/Samsung+Galaxy+A51+Screen+Replacement/135277',
-         image_url: 'https://www.cominor.com/igi/RH2mIEknySwiMw5Z.thumbnail',
+         url: '/Guide/Samsung+Galaxy+A51+Screen+Replacement/135277',
+         imageUrl: 'https://www.cominor.com/igi/RH2mIEknySwiMw5Z.thumbnail',
          summary: 'Use this guide to replace a cracked or broken...',
          difficulty: 'Moderate',
-         time_required: '1 - 2 hours',
+         timeRequired: '1 - 2 hours',
       },
    ],
    featuredProductVariants: [
@@ -1985,6 +1909,7 @@ export const mockedPartProduct: Product = {
          compareAtPrice: null,
          proPricesByTier: null,
          hasLifetimeWarranty: true,
+         quantityAvailable: null,
          isPro: false,
       },
       {
@@ -2028,6 +1953,7 @@ export const mockedPartProduct: Product = {
             },
          },
          hasLifetimeWarranty: true,
+         quantityAvailable: null,
          isPro: false,
       },
       {
@@ -2073,6 +1999,7 @@ export const mockedPartProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },
@@ -2116,6 +2043,7 @@ export const mockedPartProduct: Product = {
                currencyCode: 'USD',
             },
          },
+         quantityAvailable: null,
          hasLifetimeWarranty: true,
          isPro: false,
       },

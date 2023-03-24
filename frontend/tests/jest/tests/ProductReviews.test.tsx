@@ -77,8 +77,10 @@ describe('Product Reviews Tests', () => {
       renderWithAppContext(
          <ProductRating
             product={getMockProduct({
-               rating: { value: ratingValue, scale_min: 1, scale_max: 5 },
-               reviewsCount: reviewsCount,
+               reviews: {
+                  rating: ratingValue,
+                  count: reviewsCount ?? 0,
+               },
             })}
          />
       );
