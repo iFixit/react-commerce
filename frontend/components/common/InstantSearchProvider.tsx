@@ -230,7 +230,10 @@ export function InstantSearchProvider({
 
             return {
                q: String(q || ''),
-               p: typeof p === 'string' && parseInt(p) >= 0 ? parseInt(p) : undefined,
+               p:
+                  typeof p === 'string' && parseInt(p) >= 0
+                     ? parseInt(p)
+                     : undefined,
                filter: filterObject,
             };
          },
