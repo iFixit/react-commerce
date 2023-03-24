@@ -50,3 +50,14 @@ export const withNoindexDevDomains: GetServerSidePropsMiddleware = (next) => {
       return result;
    };
 };
+
+export const withSentry: GetServerSidePropsMiddleware = (next) => {
+   return (context) => {
+      try {
+         return next(context);
+      } catch (e) {
+         Sentry.captureException(e);
+         throw e;
+      }
+   };
+};

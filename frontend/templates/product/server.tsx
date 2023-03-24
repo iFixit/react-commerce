@@ -1,6 +1,10 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { withCacheLong } from '@helpers/cache-control-helpers';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   withLogging,
+   withNoindexDevDomains,
+   withSentry,
+} from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -11,6 +15,7 @@ import { GetServerSideProps } from 'next';
 import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
 const withMiddleware = compose(
+   withSentry<ProductTemplateProps>,
    withLogging<ProductTemplateProps>,
    withCacheLong<ProductTemplateProps>,
    withNoindexDevDomains<ProductTemplateProps>

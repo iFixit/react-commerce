@@ -1,4 +1,5 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
+import { withSentry } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { getLayoutServerSideProps } from '@layouts/default/server';
@@ -8,39 +9,40 @@ import {
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
 
-export const getServerSideProps: GetServerSideProps<
-   TroubleshootingProps
-> = async (context) => {
-   const layoutProps = await getLayoutServerSideProps({
-      storeCode: DEFAULT_STORE_CODE,
-   });
+const withMiddleware = withSentry<TroubleshootingProps>;
 
-   const ifixitOrigin = ifixitOriginFromHost(context);
-   const client = new IFixitAPIClient({ origin: ifixitOrigin });
+export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
+   withMiddleware(async (context) => {
+      const layoutProps = await getLayoutServerSideProps({
+         storeCode: DEFAULT_STORE_CODE,
+      });
 
-   const wikiname = context.params?.wikiname;
+      const ifixitOrigin = ifixitOriginFromHost(context);
+      const client = new IFixitAPIClient({ origin: ifixitOrigin });
 
-   if (!wikiname) {
-      return {
-         notFound: true,
-      };
-   }
+      const wikiname = context.params?.wikiname;
 
-   const wikiData = await client.get<TroubleshootingData>(
-      `Troubleshooting/${wikiname}`,
-      {
-         credentials: 'include',
+      if (!wikiname) {
+         return {
+            notFound: true,
+         };
       }
-   );
 
-   const pageProps: TroubleshootingProps = {
-      wikiData,
-      layoutProps,
-      appProps: {
-         ifixitOrigin,
-      },
-   };
-   return {
-      props: pageProps,
-   };
-};
+      const wikiData = await client.get<TroubleshootingData>(
+         `Troubleshooting/${wikiname}`,
+         {
+            credentials: 'include',
+         }
+      );
+
+      const pageProps: TroubleshootingProps = {
+         wikiData,
+         layoutProps,
+         appProps: {
+            ifixitOrigin,
+         },
+      };
+      return {
+         props: pageProps,
+      };
+   });
