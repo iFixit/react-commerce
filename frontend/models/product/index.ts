@@ -16,10 +16,6 @@ import {
    productReviewsFromMetafields,
    ProductReviewsSchema,
 } from '@models/components/product-reviews';
-import {
-   replacementGuidePreviewFromMetafield,
-   ReplacementGuidePreviewSchema,
-} from '@models/components/replacement-guide-preview';
 import shuffle from 'lodash/shuffle';
 import { z } from 'zod';
 import {
@@ -79,7 +75,6 @@ export const ProductSchema = z.object({
    productVideos: z.string().nullable(),
    productVideosJson: ProductVideosSchema.nullable(),
    faqs: z.array(FAQSchema),
-   replacementGuides: z.array(ReplacementGuidePreviewSchema),
    featuredProductVariants: z.array(ProductPreviewSchema),
    compatibility: ProductDeviceCompatibilitySchema.nullable(),
    metaTitle: z.string().nullable(),
@@ -139,9 +134,6 @@ export function productFromQueryProduct(
          queryProduct.productVideos?.value
       ),
       faqs: faqsFromMetafield(queryProduct.faqs?.value),
-      replacementGuides: replacementGuidePreviewFromMetafield(
-         queryProduct.replacementGuides?.value
-      ),
       featuredProductVariants: getFeaturedProductPreviews(queryProduct),
       compatibility: productDeviceCompatibilityFromMetafield(
          queryProduct.compatibility?.value
@@ -161,7 +153,7 @@ export function productFromQueryProduct(
       redirectUrl: queryProduct.redirectUrl?.value ?? null,
       vendor: queryProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(queryProduct),
-      sections: getDefaultProductSections(),
+      sections: getDefaultProductSections({ queryProduct }),
    };
 }
 

@@ -21,18 +21,18 @@ import {
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
 import { IconBadge, ResponsiveImage, Wrapper } from '@ifixit/ui';
-import type { Product } from '@pages/api/nextjs/cache/product';
+import type { ReplacementGuidePreview } from '@models/components/replacement-guide-preview';
 
-export type ReplacementGuidesSectionProps = {
-   product: Product;
-};
-
-type ReplacementGuide = Product['replacementGuides'][0];
+export interface ReplacementGuidesSectionProps {
+   title?: string | null;
+   guides: ReplacementGuidePreview[];
+}
 
 export function ReplacementGuidesSection({
-   product,
+   title,
+   guides,
 }: ReplacementGuidesSectionProps) {
-   if (product.replacementGuides.length === 0) {
+   if (guides.length === 0) {
       return null;
    }
 
@@ -51,7 +51,7 @@ export function ReplacementGuidesSection({
                fontSize={{ base: '2xl', md: '3xl' }}
                fontWeight="medium"
             >
-               Replacement Guides
+               {title ?? 'Replacement Guides'}
             </Heading>
             <SimpleGrid
                columns={{
@@ -60,7 +60,7 @@ export function ReplacementGuidesSection({
                }}
                spacing="3"
             >
-               {product.replacementGuides.map((guide) => {
+               {guides.map((guide) => {
                   return <ReplacementGuideCard key={guide.id} guide={guide} />;
                })}
             </SimpleGrid>
@@ -70,7 +70,7 @@ export function ReplacementGuidesSection({
 }
 
 type ReplacementGuideCardProps = {
-   guide: ReplacementGuide;
+   guide: ReplacementGuidePreview;
 };
 
 function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {

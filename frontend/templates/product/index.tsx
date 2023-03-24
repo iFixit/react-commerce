@@ -29,7 +29,7 @@ import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
-import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
+import { ReplacementGuidesSection } from '../../components/sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
@@ -121,6 +121,14 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            internationalBuyBox={internationalBuyBox}
                         />
                      );
+                  case 'ReplacementGuides':
+                     return (
+                        <ReplacementGuidesSection
+                           key={section.id}
+                           title={section.title}
+                           guides={section.guides}
+                        />
+                     );
                   case 'SplitWithImage':
                      return (
                         <SplitWithImageContentSection
@@ -132,7 +140,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return assertNever(section);
                }
             })}
-            <ReplacementGuidesSection product={product} />
             {product.isEnabled && (
                <ServiceValuePropositionSection
                   selectedVariant={selectedVariant}
