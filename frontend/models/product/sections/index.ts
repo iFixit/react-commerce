@@ -4,6 +4,7 @@ import { replacementGuidePreviewFromMetafield } from '@models/components/replace
 import { ReplacementGuidesSectionSchema } from '@models/sections/replacement-guides-section';
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
+import { CrossSellSectionSchema } from './cross-sell-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
 
 export type ProductSection = z.infer<typeof ProductSectionSchema>;
@@ -12,6 +13,7 @@ export const ProductSectionSchema = z.union([
    ProductOverviewSectionSchema,
    SplitWithImageSectionSchema,
    ReplacementGuidesSectionSchema,
+   CrossSellSectionSchema,
 ]);
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -41,6 +43,10 @@ export function getDefaultProductSections({
       guides: replacementGuidePreviewFromMetafield(
          queryProduct.replacementGuides?.value
       ),
+   });
+   sections.push({
+      type: 'CrossSell',
+      id: createSectionId({ __typename: 'CrossSellSection' }, sections.length),
    });
    return sections;
 }

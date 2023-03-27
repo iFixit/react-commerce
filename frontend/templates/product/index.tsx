@@ -136,19 +136,24 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            data={section}
                         />
                      );
+                  case 'CrossSell': {
+                     if (!isProductForSale || internationalBuyBox != null)
+                        return null;
+
+                     return (
+                        <CrossSellSection
+                           key={section.id}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
                   default:
                      return assertNever(section);
                }
             })}
             {product.isEnabled && (
                <ServiceValuePropositionSection
-                  selectedVariant={selectedVariant}
-               />
-            )}
-            {isProductForSale && !internationalBuyBox && (
-               <CrossSellSection
-                  key={selectedVariant.id}
-                  product={product}
                   selectedVariant={selectedVariant}
                />
             )}
