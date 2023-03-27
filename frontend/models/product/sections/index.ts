@@ -10,6 +10,7 @@ import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-s
 import { z } from 'zod';
 import { DeviceCompatibilitySectionSchema } from './compatibility-section';
 import { CrossSellSectionSchema } from './cross-sell-section';
+import { LifetimeWarrantySectionSchema } from './lifetime-warranty-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
 import { ProductReviewsSectionSchema } from './product-reviews-section';
 
@@ -23,6 +24,7 @@ export const ProductSectionSchema = z.union([
    ProductReviewsSectionSchema,
    DeviceCompatibilitySectionSchema,
    FeaturedProductsSectionSchema,
+   LifetimeWarrantySectionSchema,
 ]);
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -82,5 +84,13 @@ export function getDefaultProductSections({
       background: 'transparent',
       products: featuredProductPreviewsFromShopifyProduct(queryProduct),
    });
+   sections.push({
+      type: 'LifetimeWarranty',
+      id: createSectionId(
+         { __typename: 'LifetimeWarrantySection' },
+         sections.length
+      ),
+   });
+
    return sections;
 }

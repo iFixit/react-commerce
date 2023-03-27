@@ -180,7 +180,13 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
-
+                  case 'LifetimeWarranty':
+                     return (
+                        <LifetimeWarrantySection
+                           key={section.id}
+                           variant={selectedVariant}
+                        />
+                     );
                   default:
                      return assertNever(section);
                }
@@ -190,7 +196,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                   selectedVariant={selectedVariant}
                />
             )}
-            <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
          {product.productcode && (
             <PixelPing productcode={product.productcode} />
