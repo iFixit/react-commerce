@@ -2,6 +2,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
+import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getAdminLinks } from '@helpers/product-helpers';
@@ -29,9 +31,7 @@ import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
-import { ReplacementGuidesSection } from '../../components/sections/ReplacementGuidesSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
-import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -148,6 +148,16 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
+                  case 'ServiceValueProposition': {
+                     if (!product.isEnabled) return null;
+
+                     return (
+                        <ServiceValuePropositionSection
+                           key={section.id}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
                   case 'ProductReviews': {
                      if (!isProductForSale) return null;
 
@@ -191,11 +201,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return assertNever(section);
                }
             })}
-            {product.isEnabled && (
-               <ServiceValuePropositionSection
-                  selectedVariant={selectedVariant}
-               />
-            )}
          </Box>
          {product.productcode && (
             <PixelPing productcode={product.productcode} />

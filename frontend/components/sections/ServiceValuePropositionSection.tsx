@@ -18,7 +18,7 @@ import {
    faShieldCheck,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
-import type { ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { ProductVariant } from '@models/product';
 import React from 'react';
 
 export type ServiceValuePropositionSectionProps = {
@@ -51,7 +51,6 @@ export function ServiceValuePropositionSection({
                base: 8,
                md: 20,
             }}
-            mt="16"
             py="16"
             px={{ base: 5, sm: 6 }}
          >

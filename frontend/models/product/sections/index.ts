@@ -6,6 +6,7 @@ import {
    FeaturedProductsSectionSchema,
 } from '@models/sections/featured-products-section';
 import { ReplacementGuidesSectionSchema } from '@models/sections/replacement-guides-section';
+import { ServiceValuePropositionSectionSchema } from '@models/sections/service-value-proposition-section';
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
 import { DeviceCompatibilitySectionSchema } from './compatibility-section';
@@ -25,6 +26,7 @@ export const ProductSectionSchema = z.union([
    DeviceCompatibilitySectionSchema,
    FeaturedProductsSectionSchema,
    LifetimeWarrantySectionSchema,
+   ServiceValuePropositionSectionSchema,
 ]);
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -53,6 +55,13 @@ export function getDefaultProductSections({
       title: null,
       guides: replacementGuidePreviewFromMetafield(
          queryProduct.replacementGuides?.value
+      ),
+   });
+   sections.push({
+      type: 'ServiceValueProposition',
+      id: createSectionId(
+         { __typename: 'ServiceValuePropositionSection' },
+         sections.length
       ),
    });
    sections.push({
