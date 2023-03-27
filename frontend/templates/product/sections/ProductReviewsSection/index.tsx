@@ -21,8 +21,8 @@ import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
+import type { Product, ProductVariant } from '@models/product';
 import type { ProductReview } from '@models/product/reviews';
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
 import React from 'react';
 
@@ -33,7 +33,7 @@ export type ReviewsSectionProps = {
    selectedVariant: ProductVariant;
 };
 
-export function ReviewsSection({
+export function ProductReviewsSection({
    product,
    selectedVariant,
 }: ReviewsSectionProps) {

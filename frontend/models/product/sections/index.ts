@@ -6,6 +6,7 @@ import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-s
 import { z } from 'zod';
 import { CrossSellSectionSchema } from './cross-sell-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
+import { ProductReviewsSectionSchema } from './product-reviews-section';
 
 export type ProductSection = z.infer<typeof ProductSectionSchema>;
 
@@ -14,6 +15,7 @@ export const ProductSectionSchema = z.union([
    SplitWithImageSectionSchema,
    ReplacementGuidesSectionSchema,
    CrossSellSectionSchema,
+   ProductReviewsSectionSchema,
 ]);
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -47,6 +49,13 @@ export function getDefaultProductSections({
    sections.push({
       type: 'CrossSell',
       id: createSectionId({ __typename: 'CrossSellSection' }, sections.length),
+   });
+   sections.push({
+      type: 'ProductReviews',
+      id: createSectionId(
+         { __typename: 'ProductReviewsSection' },
+         sections.length
+      ),
    });
    return sections;
 }

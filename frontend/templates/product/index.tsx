@@ -30,7 +30,7 @@ import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ReplacementGuidesSection } from '../../components/sections/ReplacementGuidesSection';
-import { ReviewsSection } from './sections/ReviewsSection';
+import { ProductReviewsSection } from './sections/ProductReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
@@ -148,6 +148,17 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
+                  case 'ProductReviews': {
+                     if (!isProductForSale) return null;
+
+                     return (
+                        <ProductReviewsSection
+                           key={section.id}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
                   default:
                      return assertNever(section);
                }
@@ -158,7 +169,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                />
             )}
             {isProductForSale && (
-               <ReviewsSection
+               <ProductReviewsSection
                   product={product}
                   selectedVariant={selectedVariant}
                />
