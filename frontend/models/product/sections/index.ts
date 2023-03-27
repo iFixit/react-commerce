@@ -11,10 +11,13 @@ export const ProductSectionSchema = z.union([
 ]);
 
 export function getDefaultProductSections(): ProductSection[] {
-   return [
-      {
-         type: 'ProductOverview',
-         id: createSectionId({ __typename: 'ProductOverviewSection' }, 0),
-      },
-   ];
+   const sections: ProductSection[] = [];
+   sections.push({
+      type: 'ProductOverview',
+      id: createSectionId(
+         { __typename: 'ProductOverviewSection' },
+         sections.length
+      ),
+   });
+   return sections;
 }
