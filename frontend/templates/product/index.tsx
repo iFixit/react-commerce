@@ -166,6 +166,21 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            compatibility={product.compatibility}
                         />
                      );
+                  case 'FeaturedProducts': {
+                     if (section.products.length === 0) return null;
+
+                     return (
+                        <FeaturedProductsSection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                           background={section.background}
+                           products={section.products}
+                           onProductClick={trackFeaturedProductClick}
+                        />
+                     );
+                  }
+
                   default:
                      return assertNever(section);
                }
@@ -173,13 +188,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             {product.isEnabled && (
                <ServiceValuePropositionSection
                   selectedVariant={selectedVariant}
-               />
-            )}
-            {product.featuredProductVariants.length > 0 && (
-               <FeaturedProductsSection
-                  title="Featured Products"
-                  products={product.featuredProductVariants}
-                  onProductClick={trackFeaturedProductClick}
                />
             )}
             <LifetimeWarrantySection variant={selectedVariant} />

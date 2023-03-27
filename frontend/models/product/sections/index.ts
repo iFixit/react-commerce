@@ -1,6 +1,10 @@
 import { createSectionId } from '@helpers/strapi-helpers';
 import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
 import { replacementGuidePreviewFromMetafield } from '@models/components/replacement-guide-preview';
+import {
+   featuredProductPreviewsFromShopifyProduct,
+   FeaturedProductsSectionSchema,
+} from '@models/sections/featured-products-section';
 import { ReplacementGuidesSectionSchema } from '@models/sections/replacement-guides-section';
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
@@ -18,6 +22,7 @@ export const ProductSectionSchema = z.union([
    CrossSellSectionSchema,
    ProductReviewsSectionSchema,
    DeviceCompatibilitySectionSchema,
+   FeaturedProductsSectionSchema,
 ]);
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -65,6 +70,17 @@ export function getDefaultProductSections({
          { __typename: 'DeviceCompatibilitySection' },
          sections.length
       ),
+   });
+   sections.push({
+      type: 'FeaturedProducts',
+      id: createSectionId(
+         { __typename: 'FeaturedProductsSection' },
+         sections.length
+      ),
+      title: 'Featured Products',
+      description: null,
+      background: 'transparent',
+      products: featuredProductPreviewsFromShopifyProduct(queryProduct),
    });
    return sections;
 }

@@ -6,10 +6,14 @@ import {
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
+import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
 import type { FeaturedProductsSectionFieldsFragment } from '@lib/strapi-sdk';
+import { productPreviewFromShopify } from '@models/components/product-preview';
 import algoliasearch from 'algoliasearch/lite';
+import shuffle from 'lodash/shuffle';
 import { z } from 'zod';
 import {
+   ProductPreview,
    productPreviewFromAlgoliaHit,
    ProductPreviewSchema,
 } from '../components/product-preview';
@@ -17,6 +21,8 @@ import {
 export type FeaturedProductsSection = z.infer<
    typeof FeaturedProductsSectionSchema
 >;
+
+export type BackgroundColor = z.infer<typeof BackgroundColorSchema>;
 
 const BackgroundColorSchema = z.enum(['transparent', 'white']);
 
@@ -70,4 +76,22 @@ export async function featuredProductsSectionFromStrapi(
          : null,
       products,
    };
+}
+
+const MAX_FEATURED_VARIANTS = 6;
+
+type QueryProduct = NonNullable<FindProductQuery['product']>;
+
+export function featuredProductPreviewsFromShopifyProduct(
+   shopifyProduct: QueryProduct
+): ProductPreview[] {
+   const variants =
+      shopifyProduct.featuredProductVariants?.references?.nodes.map((node) => {
+         if (node.__typename !== 'ProductVariant') {
+            return null;
+         }
+         return productPreviewFromShopify(node);
+      }) ?? [];
+   const featuredVariants = filterFalsyItems(variants);
+   return shuffle(featuredVariants).slice(0, MAX_FEATURED_VARIANTS);
 }
