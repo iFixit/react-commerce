@@ -159,6 +159,13 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
+                  case 'DeviceCompatibility':
+                     return (
+                        <CompatibilitySection
+                           key={section.id}
+                           compatibility={product.compatibility}
+                        />
+                     );
                   default:
                      return assertNever(section);
                }
@@ -168,14 +175,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                   selectedVariant={selectedVariant}
                />
             )}
-            {isProductForSale && (
-               <ProductReviewsSection
-                  product={product}
-                  selectedVariant={selectedVariant}
-               />
-            )}
-
-            <CompatibilitySection compatibility={product.compatibility} />
             {product.featuredProductVariants.length > 0 && (
                <FeaturedProductsSection
                   title="Featured Products"

@@ -4,6 +4,7 @@ import { replacementGuidePreviewFromMetafield } from '@models/components/replace
 import { ReplacementGuidesSectionSchema } from '@models/sections/replacement-guides-section';
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
+import { DeviceCompatibilitySectionSchema } from './compatibility-section';
 import { CrossSellSectionSchema } from './cross-sell-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
 import { ProductReviewsSectionSchema } from './product-reviews-section';
@@ -16,6 +17,7 @@ export const ProductSectionSchema = z.union([
    ReplacementGuidesSectionSchema,
    CrossSellSectionSchema,
    ProductReviewsSectionSchema,
+   DeviceCompatibilitySectionSchema,
 ]);
 
 type QueryProduct = NonNullable<FindProductQuery['product']>;
@@ -54,6 +56,13 @@ export function getDefaultProductSections({
       type: 'ProductReviews',
       id: createSectionId(
          { __typename: 'ProductReviewsSection' },
+         sections.length
+      ),
+   });
+   sections.push({
+      type: 'DeviceCompatibility',
+      id: createSectionId(
+         { __typename: 'DeviceCompatibilitySection' },
          sections.length
       ),
    });
