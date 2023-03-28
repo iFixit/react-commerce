@@ -90,7 +90,7 @@ export function getDefaultProductSections({
       ),
       title: 'Featured Products',
       description: null,
-      background: 'transparent',
+      background: 'white',
       products: featuredProductPreviewsFromShopifyProduct(queryProduct),
    });
    sections.push({
