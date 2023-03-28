@@ -20,7 +20,12 @@ import {
    faGaugeMax,
    faGaugeMin,
 } from '@fortawesome/pro-solid-svg-icons';
-import { IconBadge, ResponsiveImage, Wrapper } from '@ifixit/ui';
+import {
+   IconBadge,
+   IconBadgeProps,
+   ResponsiveImage,
+   Wrapper,
+} from '@ifixit/ui';
 import type { ReplacementGuidePreview } from '@models/components/replacement-guide-preview';
 
 export interface ReplacementGuidesSectionProps {
@@ -184,14 +189,17 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                >
                   {isPresent(guide.timeRequired) && (
                      <BadgeListItem>
-                        <IconBadge icon={faClock}>
+                        <IconBadge icon={faClock} size="small">
                            {guide.timeRequired}
                         </IconBadge>
                      </BadgeListItem>
                   )}
                   {isPresent(guide.difficulty) && (
                      <BadgeListItem>
-                        <DifficultyBadge difficulty={guide.difficulty} />
+                        <DifficultyBadge
+                           difficulty={guide.difficulty}
+                           size="small"
+                        />
                      </BadgeListItem>
                   )}
                </UnorderedList>
@@ -213,7 +221,7 @@ function isPresent(text: any): text is string {
    return typeof text === 'string' && text.length > 0;
 }
 
-type DifficultyBadgeProps = TagProps & {
+type DifficultyBadgeProps = IconBadgeProps & {
    difficulty: string;
 };
 
