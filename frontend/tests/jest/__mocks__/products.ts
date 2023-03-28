@@ -250,18 +250,6 @@ export const mockedProduct: Product = {
    prop65Chemicals: 'lead',
    productVideos:
       'https://www.youtube-nocookie.com/embed/4Kskal4s1sU?wmode=opaque',
-   replacementGuides: [
-      {
-         id: '0',
-         title: 'iPhone 6s Plus Battery Replacement',
-         url: '/Guide/iPhone+6s+Plus+Battery+Replacement/51380',
-         imageUrl:
-            'https://mmcelvain.cominor.com/igi/LVQpdSdCEY1YxPkM.thumbnail',
-         summary: 'Use this guide to bring life back to your...',
-         difficulty: 'Moderate',
-         timeRequired: '15 - 45 minutes',
-      },
-   ],
    featuredProductVariants: [
       {
          id: 'gid://shopify/ProductVariant/32965720178778',
@@ -690,7 +678,29 @@ export const mockedProduct: Product = {
          enabled: true,
       },
    ],
-   sections: getDefaultProductSections(),
+   sections: [
+      {
+         type: 'ProductOverview',
+         id: 'ProductOverviewSection-0',
+      },
+      {
+         type: 'ReplacementGuides',
+         id: 'ReplacementGuidesSection-1',
+         title: null,
+         guides: [
+            {
+               id: '0',
+               title: 'iPhone 6s Plus Battery Replacement',
+               url: '/Guide/iPhone+6s+Plus+Battery+Replacement/51380',
+               imageUrl:
+                  'https://mmcelvain.cominor.com/igi/LVQpdSdCEY1YxPkM.thumbnail',
+               summary: 'Use this guide to bring life back to your...',
+               difficulty: 'Moderate',
+               timeRequired: '15 - 45 minutes',
+            },
+         ],
+      },
+   ],
 };
 
 export const mockedProductVariant: ProductVariant = {
@@ -1173,17 +1183,6 @@ export const mockedBatteryProduct: Product = {
    prop65Chemicals: 'lead',
    productVideos: null,
    productVideosJson: null,
-   replacementGuides: [
-      {
-         id: '0',
-         title: 'Motorola Moto G7 Play Battery Replacement',
-         url: '/Guide/Motorola+Moto+G7+Play+Battery+Replacement/131323',
-         imageUrl: 'https://www.cominor.com/igi/VccIYuMpooQRd6Od.thumbnail',
-         summary: 'This guide will show each detailed step to...',
-         difficulty: 'Moderate',
-         timeRequired: '45 - 50 minutes',
-      },
-   ],
    featuredProductVariants: [
       {
          id: 'gid://shopify/ProductVariant/32965709037658',
@@ -1386,7 +1385,29 @@ export const mockedBatteryProduct: Product = {
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
-   sections: getDefaultProductSections(),
+   sections: [
+      {
+         type: 'ProductOverview',
+         id: 'ProductOverviewSection-0',
+      },
+      {
+         type: 'ReplacementGuides',
+         id: 'ReplacementGuidesSection-1',
+         title: null,
+         guides: [
+            {
+               id: '0',
+               title: 'Motorola Moto G7 Play Battery Replacement',
+               url: '/Guide/Motorola+Moto+G7+Play+Battery+Replacement/131323',
+               imageUrl:
+                  'https://www.cominor.com/igi/VccIYuMpooQRd6Od.thumbnail',
+               summary: 'This guide will show each detailed step to...',
+               difficulty: 'Moderate',
+               timeRequired: '45 - 50 minutes',
+            },
+         ],
+      },
+   ],
 };
 
 const toolProductImages: ProductVariantImage[] = [
@@ -1494,7 +1515,6 @@ export const mockedToolProduct: Product = {
    prop65Chemicals: 'none',
    productVideos: null,
    productVideosJson: null,
-   replacementGuides: [],
    featuredProductVariants: [
       {
          id: 'gid://shopify/ProductVariant/39443942670426',
@@ -1728,7 +1748,29 @@ export const mockedToolProduct: Product = {
          enabled: true,
       },
    ],
-   sections: getDefaultProductSections(),
+   sections: [
+      {
+         type: 'ProductOverview',
+         id: 'ProductOverviewSection-0',
+      },
+      {
+         type: 'ReplacementGuides',
+         id: 'ReplacementGuidesSection-1',
+         title: null,
+         guides: [
+            {
+               id: '0',
+               title: 'Motorola Moto G7 Play Battery Replacement',
+               url: '/Guide/Motorola+Moto+G7+Play+Battery+Replacement/131323',
+               imageUrl:
+                  'https://www.cominor.com/igi/VccIYuMpooQRd6Od.thumbnail',
+               summary: 'This guide will show each detailed step to...',
+               difficulty: 'Moderate',
+               timeRequired: '45 - 50 minutes',
+            },
+         ],
+      },
+   ],
 };
 
 const partProductImages: ProductVariantImage[] = [
@@ -1880,17 +1922,6 @@ export const mockedPartProduct: Product = {
    prop65Chemicals: 'lead',
    productVideos: null,
    productVideosJson: null,
-   replacementGuides: [
-      {
-         id: '0',
-         title: 'Samsung Galaxy A51 Screen Replacement',
-         url: '/Guide/Samsung+Galaxy+A51+Screen+Replacement/135277',
-         imageUrl: 'https://www.cominor.com/igi/RH2mIEknySwiMw5Z.thumbnail',
-         summary: 'Use this guide to replace a cracked or broken...',
-         difficulty: 'Moderate',
-         timeRequired: '1 - 2 hours',
-      },
-   ],
    featuredProductVariants: [
       {
          id: 'gid://shopify/ProductVariant/39443942670426',
@@ -2101,7 +2132,29 @@ export const mockedPartProduct: Product = {
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
-   sections: getDefaultProductSections(),
+   sections: [
+      {
+         type: 'ProductOverview',
+         id: 'ProductOverviewSection-0',
+      },
+      {
+         type: 'ReplacementGuides',
+         id: 'ReplacementGuidesSection-1',
+         title: null,
+         guides: [
+            {
+               id: '0',
+               title: 'Samsung Galaxy A51 Screen Replacement',
+               url: '/Guide/Samsung+Galaxy+A51+Screen+Replacement/135277',
+               imageUrl:
+                  'https://www.cominor.com/igi/RH2mIEknySwiMw5Z.thumbnail',
+               summary: 'Use this guide to replace a cracked or broken...',
+               difficulty: 'Moderate',
+               timeRequired: '1 - 2 hours',
+            },
+         ],
+      },
+   ],
 };
 
 export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
