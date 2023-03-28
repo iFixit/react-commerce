@@ -39,19 +39,19 @@ import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 
-export type ProductSectionProps = {
+export type ProductOverviewSectionProps = {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
    internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 };
 
-export function ProductSection({
+export function ProductOverviewSection({
    product,
    selectedVariant,
    onVariantChange,
    internationalBuyBox,
-}: ProductSectionProps) {
+}: ProductOverviewSectionProps) {
    const [selectedImageId, setSelectedImageId] = React.useState<string | null>(
       null
    );

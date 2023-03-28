@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getAdminLinks } from '@helpers/product-helpers';
 import {
@@ -10,7 +11,7 @@ import {
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import { assertNever, moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
@@ -27,7 +28,7 @@ import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
-import { ProductSection } from './sections/ProductSection';
+import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
 import { ReviewsSection } from './sections/ReviewsSection';
 import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
@@ -108,12 +109,29 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             </SecondaryNavigation>
          )}
          <Box pt="6">
-            <ProductSection
-               product={product}
-               selectedVariant={selectedVariant}
-               onVariantChange={setSelectedVariantId}
-               internationalBuyBox={internationalBuyBox}
-            />
+            {product.sections.map((section) => {
+               switch (section.type) {
+                  case 'ProductOverview':
+                     return (
+                        <ProductOverviewSection
+                           key={section.id}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                           onVariantChange={setSelectedVariantId}
+                           internationalBuyBox={internationalBuyBox}
+                        />
+                     );
+                  case 'SplitWithImage':
+                     return (
+                        <SplitWithImageContentSection
+                           key={section.id}
+                           data={section}
+                        />
+                     );
+                  default:
+                     return assertNever(section);
+               }
+            })}
             <ReplacementGuidesSection product={product} />
             {product.isEnabled && (
                <ServiceValuePropositionSection
