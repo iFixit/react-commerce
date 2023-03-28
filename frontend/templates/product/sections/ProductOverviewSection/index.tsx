@@ -66,7 +66,7 @@ export function ProductOverviewSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <Wrapper as="section" id="product">
+      <Wrapper as="section" id="product" mb="16">
          <Flex>
             <Flex
                position="sticky"
