@@ -1,0 +1,3 @@
+fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
+   id
+}

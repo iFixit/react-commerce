@@ -2339,6 +2339,88 @@ export type CallToActionFieldsFragment = {
    url: string;
 };
 
+export type FindProductQueryVariables = Exact<{
+   handle?: InputMaybe<Scalars['String']>;
+}>;
+
+export type FindProductQuery = {
+   __typename?: 'Query';
+   products?: {
+      __typename?: 'ProductEntityResponseCollection';
+      data: Array<{
+         __typename?: 'ProductEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Product';
+            handle: string;
+            sections: Array<
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | { __typename: 'ComponentProductCrossSell'; id: string }
+               | { __typename: 'ComponentProductProduct'; id: string }
+               | {
+                    __typename: 'ComponentProductProductCustomerReviews';
+                    id: string;
+                 }
+               | {
+                    __typename: 'ComponentProductReplacementGuides';
+                    id: string;
+                    title?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionFeaturedProducts';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    background?: Enum_Componentsectionfeaturedproducts_Background | null;
+                    productList?: {
+                       __typename?: 'ProductListEntityResponse';
+                       data?: {
+                          __typename?: 'ProductListEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             filters?: string | null;
+                             deviceTitle?: string | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionServiceValuePropositions';
+                    id: string;
+                 }
+               | { __typename: 'ComponentSectionStories' }
+               | { __typename: 'Error' }
+               | null
+            >;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type FindStoreQueryVariables = Exact<{
    filters?: InputMaybe<StoreFiltersInput>;
 }>;
@@ -3720,6 +3802,32 @@ export type PressQuoteFieldsFragment = {
    } | null;
 };
 
+export type ProductCrossSellSectionFieldsFragment = {
+   __typename?: 'ComponentProductCrossSell';
+   id: string;
+};
+
+export type ProductCustomerReviewsSectionFieldsFragment = {
+   __typename?: 'ComponentProductProductCustomerReviews';
+   id: string;
+};
+
+export type ProductOverviewSectionFieldsFragment = {
+   __typename?: 'ComponentProductProduct';
+   id: string;
+};
+
+export type ProductReplacementGuidesSectionFieldsFragment = {
+   __typename?: 'ComponentProductReplacementGuides';
+   id: string;
+   title?: string | null;
+};
+
+export type ServiceValuePropositionsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionServiceValuePropositions';
+   id: string;
+};
+
 export type SocialGallerySectionFieldsFragment = {
    __typename?: 'ComponentSectionSocialGallery';
    id: string;
@@ -4017,6 +4125,32 @@ export const PressQuotesSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const ProductCrossSellSectionFieldsFragmentDoc = `
+    fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
+  id
+}
+    `;
+export const ProductCustomerReviewsSectionFieldsFragmentDoc = `
+    fragment ProductCustomerReviewsSectionFields on ComponentProductProductCustomerReviews {
+  id
+}
+    `;
+export const ProductOverviewSectionFieldsFragmentDoc = `
+    fragment ProductOverviewSectionFields on ComponentProductProduct {
+  id
+}
+    `;
+export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
+    fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
+  id
+  title
+}
+    `;
+export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
+    fragment ServiceValuePropositionsSectionFields on ComponentSectionServiceValuePropositions {
+  id
+}
+    `;
 export const SocialPostFieldsFragmentDoc = `
     fragment SocialPostFields on SocialPostEntity {
   id
@@ -4105,6 +4239,36 @@ ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
 ${SocialPostFieldsFragmentDoc}`;
+export const FindProductDocument = `
+    query findProduct($handle: String) {
+  products(filters: {handle: {eq: $handle}}) {
+    data {
+      id
+      attributes {
+        handle
+        sections {
+          __typename
+          ...ProductOverviewSectionFields
+          ...ProductReplacementGuidesSectionFields
+          ...ServiceValuePropositionsSectionFields
+          ...ProductCrossSellSectionFields
+          ...ProductCustomerReviewsSectionFields
+          ...FeaturedProductsSectionFields
+          ...SplitWithImageSectionFields
+        }
+      }
+    }
+  }
+}
+    ${ProductOverviewSectionFieldsFragmentDoc}
+${ProductReplacementGuidesSectionFieldsFragmentDoc}
+${ServiceValuePropositionsSectionFieldsFragmentDoc}
+${ProductCrossSellSectionFieldsFragmentDoc}
+${ProductCustomerReviewsSectionFieldsFragmentDoc}
+${FeaturedProductsSectionFieldsFragmentDoc}
+${SplitWithImageSectionFieldsFragmentDoc}
+${CallToActionFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -4368,6 +4532,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
       ): Promise<FindPageQuery> {
          return requester<FindPageQuery, FindPageQueryVariables>(
             FindPageDocument,
+            variables,
+            options
+         );
+      },
+      findProduct(
+         variables?: FindProductQueryVariables,
+         options?: C
+      ): Promise<FindProductQuery> {
+         return requester<FindProductQuery, FindProductQueryVariables>(
+            FindProductDocument,
             variables,
             options
          );

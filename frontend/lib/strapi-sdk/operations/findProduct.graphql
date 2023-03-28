@@ -1,0 +1,20 @@
+query findProduct($handle: String) {
+   products(filters: { handle: { eq: $handle } }) {
+      data {
+         id
+         attributes {
+            handle
+            sections {
+               __typename
+               ...ProductOverviewSectionFields
+               ...ProductReplacementGuidesSectionFields
+               ...ServiceValuePropositionsSectionFields
+               ...ProductCrossSellSectionFields
+               ...ProductCustomerReviewsSectionFields
+               ...FeaturedProductsSectionFields
+               ...SplitWithImageSectionFields
+            }
+         }
+      }
+   }
+}

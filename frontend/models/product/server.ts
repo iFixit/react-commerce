@@ -1,6 +1,7 @@
 import { invariant, timeAsync } from '@ifixit/helpers';
 import { getServerShopifyStorefrontSdk } from '@lib/shopify-storefront-sdk';
-import { Product, productFromQueryProduct } from '.';
+import { strapi } from '@lib/strapi-sdk';
+import { Product, getProduct } from '.';
 import { findStoreByCode } from '../store';
 
 export type FindProductArgs = {
@@ -23,12 +24,21 @@ export async function findProduct({
       storefrontDelegateToken: storefrontDelegateAccessToken,
    });
 
-   const response = await timeAsync('shopify_api.findProduct', () =>
-      storefront.findProduct({
+   const [shopifyQueryResponse, strapiQueryResponse] = await Promise.all([
+      timeAsync('shopify_api.findProduct', () =>
+         storefront.findProduct({
+            handle,
+         })
+      ),
+      strapi.findProduct({
          handle,
-      })
-   );
-   const product = productFromQueryProduct(response.product);
+      }),
+   ]);
+
+   const product = await getProduct({
+      shopifyProduct: shopifyQueryResponse.product,
+      strapiProduct: strapiQueryResponse.products?.data[0],
+   });
    if (product == null) {
       return null;
    }
