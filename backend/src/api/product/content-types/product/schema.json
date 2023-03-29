@@ -27,7 +27,9 @@
             "section.service-value-propositions",
             "product.cross-sell",
             "product.product-customer-reviews",
-            "section.featured-products"
+            "section.featured-products",
+            "product.device-compatibility",
+            "section.lifetime-warranty"
          ],
          "required": true
       }
