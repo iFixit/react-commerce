@@ -8,15 +8,11 @@ import {
    isCurrentPageBreadcrumbMissing,
 } from '@models/components/breadcrumb';
 import { FAQSchema, faqsFromMetafield } from '@models/components/faq';
-import {
-   productPreviewFromShopify,
-   ProductPreviewSchema,
-} from '@models/components/product-preview';
+import { ProductPreviewSchema } from '@models/components/product-preview';
 import {
    productReviewsFromMetafields,
    ProductReviewsSchema,
 } from '@models/components/product-reviews';
-import shuffle from 'lodash/shuffle';
 import { z } from 'zod';
 import {
    productDeviceCompatibilityFromMetafield,
@@ -75,7 +71,6 @@ export const ProductSchema = z.object({
    productVideos: z.string().nullable(),
    productVideosJson: ProductVideosSchema.nullable(),
    faqs: z.array(FAQSchema),
-   featuredProductVariants: z.array(ProductPreviewSchema),
    compatibility: ProductDeviceCompatibilitySchema.nullable(),
    metaTitle: z.string().nullable(),
    shortDescription: z.string().nullable(),
@@ -134,7 +129,6 @@ export function productFromQueryProduct(
          queryProduct.productVideos?.value
       ),
       faqs: faqsFromMetafield(queryProduct.faqs?.value),
-      featuredProductVariants: getFeaturedProductPreviews(queryProduct),
       compatibility: productDeviceCompatibilityFromMetafield(
          queryProduct.compatibility?.value
       ),
@@ -194,18 +188,4 @@ function isGenericOrActiveVariantImage(
 
 function computeIFixitProductId(variantSku: string) {
    return variantSku.split('-').slice(0, 2).join('-');
-}
-
-const MAX_FEATURED_VARIANTS = 6;
-
-function getFeaturedProductPreviews(shopifyProduct: QueryProduct) {
-   const variants =
-      shopifyProduct.featuredProductVariants?.references?.nodes.map((node) => {
-         if (node.__typename !== 'ProductVariant') {
-            return null;
-         }
-         return productPreviewFromShopify(node);
-      }) ?? [];
-   const featuredVariants = filterFalsyItems(variants);
-   return shuffle(featuredVariants).slice(0, MAX_FEATURED_VARIANTS);
 }

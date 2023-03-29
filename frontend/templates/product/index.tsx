@@ -2,6 +2,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
+import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getAdminLinks } from '@helpers/product-helpers';
@@ -29,9 +31,7 @@ import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
-import { ReplacementGuidesSection } from '../../components/sections/ReplacementGuidesSection';
-import { ReviewsSection } from './sections/ReviewsSection';
-import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
+import { ProductReviewsSection } from './sections/ProductReviewsSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -136,38 +136,71 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            data={section}
                         />
                      );
+                  case 'CrossSell': {
+                     if (!isProductForSale || internationalBuyBox != null)
+                        return null;
+
+                     return (
+                        <CrossSellSection
+                           key={section.id}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
+                  case 'ServiceValueProposition': {
+                     if (!product.isEnabled) return null;
+
+                     return (
+                        <ServiceValuePropositionSection
+                           key={section.id}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
+                  case 'ProductReviews': {
+                     if (!isProductForSale) return null;
+
+                     return (
+                        <ProductReviewsSection
+                           key={section.id}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
+                  case 'DeviceCompatibility':
+                     return (
+                        <CompatibilitySection
+                           key={section.id}
+                           compatibility={product.compatibility}
+                        />
+                     );
+                  case 'FeaturedProducts': {
+                     if (section.products.length === 0) return null;
+
+                     return (
+                        <FeaturedProductsSection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                           background={section.background}
+                           products={section.products}
+                           onProductClick={trackFeaturedProductClick}
+                        />
+                     );
+                  }
+                  case 'LifetimeWarranty':
+                     return (
+                        <LifetimeWarrantySection
+                           key={section.id}
+                           variant={selectedVariant}
+                        />
+                     );
                   default:
                      return assertNever(section);
                }
             })}
-            {product.isEnabled && (
-               <ServiceValuePropositionSection
-                  selectedVariant={selectedVariant}
-               />
-            )}
-            {isProductForSale && !internationalBuyBox && (
-               <CrossSellSection
-                  key={selectedVariant.id}
-                  product={product}
-                  selectedVariant={selectedVariant}
-               />
-            )}
-            {isProductForSale && (
-               <ReviewsSection
-                  product={product}
-                  selectedVariant={selectedVariant}
-               />
-            )}
-
-            <CompatibilitySection compatibility={product.compatibility} />
-            {product.featuredProductVariants.length > 0 && (
-               <FeaturedProductsSection
-                  title="Featured Products"
-                  products={product.featuredProductVariants}
-                  onProductClick={trackFeaturedProductClick}
-               />
-            )}
-            <LifetimeWarrantySection variant={selectedVariant} />
          </Box>
          {product.productcode && (
             <PixelPing productcode={product.productcode} />

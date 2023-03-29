@@ -18,6 +18,7 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { BuyBoxPropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
@@ -27,7 +28,6 @@ import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
-import { BuyBoxPropositionSection } from '../ServiceValuePropositionSection';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { CompatibleDevices } from './CompatibleDevices';
 import { GenuinePartBanner } from './GenuinePartBanner';
@@ -66,7 +66,7 @@ export function ProductOverviewSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <Wrapper as="section" id="product">
+      <Wrapper as="section" id="product" mb="16">
          <Flex>
             <Flex
                position="sticky"

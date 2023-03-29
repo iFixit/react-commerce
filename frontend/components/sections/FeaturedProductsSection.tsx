@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { ProductGrid } from '@components/common/ProductGrid';
 import { ProductGridItem } from '@components/common/ProductGridItem';
 import type { ProductPreview } from '@models/components/product-preview';
+import type { BackgroundColor } from '@models/sections/featured-products-section';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeaderWrapper } from './SectionHeaderWrapper';
 import { SectionHeading } from './SectionHeading';
@@ -13,8 +14,6 @@ export interface FeaturedProductsSectionProps {
    products: ProductPreview[];
    onProductClick?: (product: ProductPreview) => void;
 }
-
-type BackgroundColor = 'transparent' | 'white';
 
 export function FeaturedProductsSection({
    title,

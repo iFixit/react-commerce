@@ -8,11 +8,11 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Wrapper } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { Product, ProductVariant } from '@models/product';
 import { CrossSellVariantCard } from './CrossSellVariantCard';
+import { useAvailableForSaleVariants } from './useAvailableForSaleVariants';
 import { useBundlePrice } from './useBundlePrice';
 import { useCrossSellVariants } from './useCrossSellVariants';
-import { useAvailableForSaleVariants } from './useAvailableForSaleVariants';
 import { useOptimisticAddToCart } from './useOptimisticAddToCart';
 
 export interface CrossSellSectionProps {

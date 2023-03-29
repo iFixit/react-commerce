@@ -5,7 +5,7 @@ import {
    getMockProductVariant,
    getReviewsResponse,
 } from '../utils';
-import { ReviewsSection } from '@templates/product/sections/ReviewsSection/index';
+import { ProductReviewsSection } from '@templates/product/sections/ProductReviewsSection/index';
 import { ProductRating } from '@templates/product/sections/ProductOverviewSection/ProductRating';
 import { useProductReviews } from 'templates/product/hooks/useProductReviews';
 
@@ -23,7 +23,7 @@ describe('Product Reviews Tests', () => {
          data: getReviewsResponse('empty'),
       }));
       renderWithAppContext(
-         <ReviewsSection
+         <ProductReviewsSection
             product={getMockProduct()}
             selectedVariant={getMockProductVariant()}
          />
@@ -39,7 +39,7 @@ describe('Product Reviews Tests', () => {
          data: reviewResponse,
       }));
       renderWithAppContext(
-         <ReviewsSection
+         <ProductReviewsSection
             product={getMockProduct()}
             selectedVariant={getMockProductVariant()}
          />
@@ -89,7 +89,7 @@ describe('Product Reviews Tests', () => {
          data: reviewsResponseWithReviews,
       }));
       renderWithAppContext(
-         <ReviewsSection
+         <ProductReviewsSection
             product={getMockProduct()}
             selectedVariant={getMockProductVariant()}
          />
