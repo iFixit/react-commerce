@@ -1,5 +1,5 @@
-import { MenuItemType } from '@ifixit/menu';
 import type { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
+import { MenuItemType } from '@ifixit/menu';
 
 export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
    layoutProps: {
