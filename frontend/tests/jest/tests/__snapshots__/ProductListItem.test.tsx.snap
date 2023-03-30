@@ -163,7 +163,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               class="css-1qc3xp7"
             >
               <div
-                class="css-1ah8j8s"
+                class="css-rzte29"
               >
                 <div
                   class="css-zvlevn"
@@ -178,10 +178,10 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           class="chakra-stack css-f4fjr9"
         >
           <div
-            class="css-kmjck4"
+            class="css-oazic6"
           >
             <p
-              class="chakra-text css-1kmakxd"
+              class="chakra-text css-wxbpi4"
               data-testid="current-price"
             >
               $5.00

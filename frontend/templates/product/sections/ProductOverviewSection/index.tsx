@@ -133,6 +133,7 @@ export function ProductOverviewSection({
                      compareAtPrice={selectedVariant.compareAtPrice}
                      proPricesByTier={selectedVariant.proPricesByTier}
                      data-testid="product-price-section"
+                     size={{ base: 'medium', md: 'large' }}
                   />
                )}
 

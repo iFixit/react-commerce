@@ -187,6 +187,7 @@ export function CrossSellVariantCard({
                      proPricesByTier={proPricesByTier}
                      direction="column-reverse"
                      alignSelf="flex-end"
+                     size="medium"
                   />
                </Flex>
             </Flex>
