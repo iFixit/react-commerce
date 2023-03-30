@@ -42,6 +42,7 @@
    "devDependencies": {
       "cross-env": "7.0.3",
       "husky": "8.0.1",
+      "lint-staged": "13.2.0",
       "npm-run-all": "4.1.5",
       "prettier": "2.7.1",
       "wait-on": "6.0.0"
@@ -50,5 +51,8 @@
       "patchedDependencies": {
          "react-lite-yt-embed@1.2.7": "patches/react-lite-yt-embed@1.2.7.patch"
       }
+   },
+   "lint-staged": {
+      "*": "prettier --write --ignore-unknown"
    }
 }
