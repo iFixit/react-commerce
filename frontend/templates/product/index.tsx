@@ -165,6 +165,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ProductReviewsSection
                            key={section.id}
+                           title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
                         />

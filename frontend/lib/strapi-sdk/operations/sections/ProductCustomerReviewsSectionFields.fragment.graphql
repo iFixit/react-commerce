@@ -1,3 +1,4 @@
 fragment ProductCustomerReviewsSectionFields on ComponentProductProductCustomerReviews {
    id
+   title
 }

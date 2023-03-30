@@ -88,6 +88,7 @@ export async function getProductSections({
                   return {
                      type: 'ProductReviews',
                      id: sectionId,
+                     title: section.title ?? null,
                   };
                case 'ComponentSectionFeaturedProducts':
                   return featuredProductsSectionFromStrapi({
@@ -155,6 +156,7 @@ export function getDefaultProductSections({
          { __typename: 'ProductReviewsSection' },
          sections.length
       ),
+      title: null,
    });
    sections.push({
       type: 'DeviceCompatibility',

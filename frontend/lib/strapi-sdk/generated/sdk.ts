@@ -2406,6 +2406,7 @@ export type FindProductQuery = {
                | {
                     __typename: 'ComponentProductProductCustomerReviews';
                     id: string;
+                    title?: string | null;
                  }
                | {
                     __typename: 'ComponentProductReplacementGuides';
@@ -3835,6 +3836,7 @@ export type ProductCrossSellSectionFieldsFragment = {
 export type ProductCustomerReviewsSectionFieldsFragment = {
    __typename?: 'ComponentProductProductCustomerReviews';
    id: string;
+   title?: string | null;
 };
 
 export type ProductOverviewSectionFieldsFragment = {
@@ -4159,6 +4161,7 @@ export const ProductCrossSellSectionFieldsFragmentDoc = `
 export const ProductCustomerReviewsSectionFieldsFragmentDoc = `
     fragment ProductCustomerReviewsSectionFields on ComponentProductProductCustomerReviews {
   id
+  title
 }
     `;
 export const ProductOverviewSectionFieldsFragmentDoc = `
