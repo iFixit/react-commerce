@@ -15,8 +15,7 @@
  * @see https://playwright.dev/docs/test-fixtures
  */
 
-import { test as base, expect, Page, Locator } from '@playwright/test';
-import { graphql, rest } from 'msw';
+import { test as base, expect, Locator } from '@playwright/test';
 import type { ProductFixtures, CustomNextjsServer } from './fixtures';
 import {
    ProductPage,
@@ -34,8 +33,6 @@ export const test = base.extend<
    ProductFixtures &
       CustomNextjsServer & {
          clientRequestHandler: MockServiceWorker;
-         graphql: typeof graphql;
-         rest: typeof rest;
       }, // Test Fixture types are passed as the first template parameter
    { customServer: CustomNextjsServer } // Worker Fixture types are passed as the second template parameter
 >({
@@ -71,8 +68,6 @@ export const test = base.extend<
       await use(new CartDrawer(page));
    },
    findProductQueryMock,
-   graphql,
-   rest,
    clientRequestHandler: createWorkerFixture(handlers),
    /**
     * The following fixtures are dependent on the customServer fixture. By being
