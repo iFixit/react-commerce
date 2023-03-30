@@ -1,6 +1,4 @@
 import { test, expect } from '../test-fixtures';
-import { mockedProductQuery } from '@tests/jest/__mocks__/products';
-import { cloneDeep } from 'lodash';
 import {
    createGraphQLHandler,
    createRestHandler,
@@ -102,11 +100,11 @@ test.describe('product page add to cart', () => {
          productPage,
          cartDrawer,
          serverRequestInterceptor,
+         findProductQueryMock,
       }) => {
-         const lowStockedProduct = cloneDeep(mockedProductQuery);
-         if (lowStockedProduct.product) {
-            lowStockedProduct.product.variants.nodes[0].quantityAvailable = 3;
-         }
+         const lowStockedProduct = findProductQueryMock;
+
+         lowStockedProduct.product!.variants.nodes[0].quantityAvailable = 3;
 
          serverRequestInterceptor.use(
             createGraphQLHandler({
@@ -172,6 +170,7 @@ test.describe('product page add to cart', () => {
          cartDrawer,
          serverRequestInterceptor,
          clientRequestHandler,
+         findProductQueryMock,
       }) => {
          clientRequestHandler.use(
             createRestHandler({
@@ -185,10 +184,9 @@ test.describe('product page add to cart', () => {
             })
          );
 
-         const outOfStockProduct = cloneDeep(mockedProductQuery);
-         if (outOfStockProduct.product) {
-            outOfStockProduct.product.variants.nodes[0].quantityAvailable = 0;
-         }
+         const outOfStockProduct = findProductQueryMock;
+
+         outOfStockProduct.product!.variants.nodes[0].quantityAvailable = 0;
 
          serverRequestInterceptor.use(
             createGraphQLHandler({
