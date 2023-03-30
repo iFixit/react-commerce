@@ -261,6 +261,13 @@ export type ComponentProductCrossSell = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentProductDeviceCompatibility = {
+   __typename?: 'ComponentProductDeviceCompatibility';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentProductListBanner = {
    __typename?: 'ComponentProductListBanner';
    callToActionLabel: Scalars['String'];
@@ -314,6 +321,13 @@ export type ComponentSectionFeaturedProducts = {
    description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    productList?: Maybe<ProductListEntityResponse>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionLifetimeWarranty = {
+   __typename?: 'ComponentSectionLifetimeWarranty';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
    title?: Maybe<Scalars['String']>;
 };
 
@@ -560,6 +574,7 @@ export type GenericMorph =
    | ComponentPageStatItem
    | ComponentPageStats
    | ComponentProductCrossSell
+   | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
@@ -567,6 +582,7 @@ export type GenericMorph =
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
@@ -1363,10 +1379,12 @@ export type ProductListSectionsDynamicZone =
 export type ProductSectionsDynamicZone =
    | ComponentPageSplitWithImage
    | ComponentProductCrossSell
+   | ComponentProductDeviceCompatibility
    | ComponentProductProduct
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
    | ComponentSectionServiceValuePropositions
    | ComponentSectionStories
    | Error;
@@ -2378,7 +2396,12 @@ export type FindProductQuery = {
                        } | null;
                     } | null;
                  }
-               | { __typename: 'ComponentProductCrossSell'; id: string }
+               | {
+                    __typename: 'ComponentProductCrossSell';
+                    id: string;
+                    title?: string | null;
+                 }
+               | { __typename: 'ComponentProductDeviceCompatibility' }
                | { __typename: 'ComponentProductProduct'; id: string }
                | {
                     __typename: 'ComponentProductProductCustomerReviews';
@@ -2408,6 +2431,7 @@ export type FindProductQuery = {
                        } | null;
                     } | null;
                  }
+               | { __typename: 'ComponentSectionLifetimeWarranty' }
                | {
                     __typename: 'ComponentSectionServiceValuePropositions';
                     id: string;
@@ -3805,6 +3829,7 @@ export type PressQuoteFieldsFragment = {
 export type ProductCrossSellSectionFieldsFragment = {
    __typename?: 'ComponentProductCrossSell';
    id: string;
+   title?: string | null;
 };
 
 export type ProductCustomerReviewsSectionFieldsFragment = {
@@ -4128,6 +4153,7 @@ export const PressQuotesSectionFieldsFragmentDoc = `
 export const ProductCrossSellSectionFieldsFragmentDoc = `
     fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
   id
+  title
 }
     `;
 export const ProductCustomerReviewsSectionFieldsFragmentDoc = `

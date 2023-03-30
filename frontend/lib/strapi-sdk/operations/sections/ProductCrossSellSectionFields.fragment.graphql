@@ -1,3 +1,4 @@
 fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
    id
+   title
 }

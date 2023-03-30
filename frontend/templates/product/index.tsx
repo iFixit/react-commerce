@@ -143,6 +143,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <CrossSellSection
                            key={section.id}
+                           title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
                         />

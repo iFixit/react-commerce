@@ -7,6 +7,7 @@ import {
    Stack,
    VStack,
 } from '@chakra-ui/react';
+import { isPresent } from '@ifixit/helpers';
 import { Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@models/product';
 import { CrossSellVariantCard } from './CrossSellVariantCard';
@@ -16,14 +17,17 @@ import { useCrossSellVariants } from './useCrossSellVariants';
 import { useOptimisticAddToCart } from './useOptimisticAddToCart';
 
 export interface CrossSellSectionProps {
+   title?: string | null;
    product: Product;
    selectedVariant: ProductVariant;
 }
 
 export function CrossSellSection({
+   title,
    product,
    selectedVariant,
 }: CrossSellSectionProps) {
+   const sectionTitle = isPresent(title) ? title : 'Frequently Bought Together';
    const availableForSaleVariants = useAvailableForSaleVariants(
       selectedVariant,
       product.crossSellVariants
@@ -69,7 +73,7 @@ export function CrossSellSection({
                fontSize={{ base: '2xl', md: '3xl' }}
                fontWeight="medium"
             >
-               Frequently Bought Together
+               {sectionTitle}
             </Heading>
             <Flex
                justify="center"

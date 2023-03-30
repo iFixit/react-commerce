@@ -82,6 +82,7 @@ export async function getProductSections({
                   return {
                      type: 'CrossSell',
                      id: sectionId,
+                     title: section.title ?? null,
                   };
                case 'ComponentProductProductCustomerReviews':
                   return {
@@ -146,6 +147,7 @@ export function getDefaultProductSections({
    sections.push({
       type: 'CrossSell',
       id: createSectionId({ __typename: 'CrossSellSection' }, sections.length),
+      title: null,
    });
    sections.push({
       type: 'ProductReviews',
