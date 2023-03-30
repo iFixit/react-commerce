@@ -1,6 +1,7 @@
 import { test, expect } from '../test-fixtures';
 // Assert that when a user clicks the pagination buttons,
 // the page scrolls back up.
+//playwright
 
 test.describe('collections scroll', () => {
    test.beforeEach(async ({ page }) => {

@@ -4,6 +4,7 @@ import { renderWithAppContext } from '../utils';
 import { getMockProduct } from '../utils';
 
 describe('CompatibleDevice', () => {
+   //jest
    it('renders and matches the snapshot', () => {
       const product = getMockProduct();
       const device = product!.compatibility!.devices[0];
