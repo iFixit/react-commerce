@@ -18,7 +18,12 @@
 import { test as base, expect, Page, Locator } from '@playwright/test';
 import { graphql, rest } from 'msw';
 import type { ProductFixtures, CustomNextjsServer } from './fixtures';
-import { ProductPage, CartDrawer, Server } from './fixtures';
+import {
+   ProductPage,
+   CartDrawer,
+   Server,
+   findProductQueryMock,
+} from './fixtures';
 import type { MockServiceWorker } from 'playwright-msw';
 import { createWorkerFixture } from 'playwright-msw';
 import { format } from 'util';
@@ -65,6 +70,7 @@ export const test = base.extend<
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
    },
+   findProductQueryMock,
    graphql,
    rest,
    clientRequestHandler: createWorkerFixture(handlers),
