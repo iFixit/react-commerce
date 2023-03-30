@@ -1,18 +1,5 @@
 import { AppProviders } from '@components/common';
-import { CurrencyCode } from '@lib/shopify-storefront-sdk';
-import { ProductReview, ProductReviewData } from '@models/product/reviews';
-import { ProductSearchHit } from '@models/product-list';
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
-import {
-   mockedBatteryProduct,
-   mockedPartProduct,
-   mockedProduct,
-   mockedProductSearchHit,
-   mockedProductVariant,
-   mockedReviews,
-   mockedToolProduct,
-} from './__mocks__/products';
 
 /* This is needed if there is some code that uses a method which is not available in the jsdom environment yet
  * https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
