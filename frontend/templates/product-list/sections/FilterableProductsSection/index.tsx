@@ -75,6 +75,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
    return (
       <Flex
          ref={productsContainerScrollRef}
+         id="products"
          as="section"
          direction="column"
          align="stretch"
