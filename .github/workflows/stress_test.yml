@@ -115,7 +115,7 @@ jobs:
            run: pnpm install:all
 
          - name: Run Jest tests
-           run: for i in {1..5}; do jest -- ${{ needs.check-diff.outputs.modified-jest-tests }}; done
+           run: for i in {1..5}; do pnpm test -- ${{ needs.check-diff.outputs.modified-jest-tests }}; done
            env:
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
