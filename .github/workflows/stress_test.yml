@@ -9,7 +9,7 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
          modified-playwright-tests: ${{ steps.git-diff.outputs.modified-playwright-tests }}
-         modified-jest-tests: ${{ steps.git-diff.outputs.modified-playwright-tests }}
+         modified-jest-tests: ${{ steps.git-diff.outputs.modified-jest-tests }}
       steps:
          - name: Checkout ifixit
            uses: actions/checkout@v3
