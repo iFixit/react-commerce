@@ -68,16 +68,6 @@ export const renderWithAppContext = (
    options?: RenderOptions
 ): RenderResult => render(ui, { wrapper: GlobalContextProvider, ...options });
 
-
-export const getMockProductSearchHit = (
-   overrides: Partial<ProductSearchHit> = {}
-): ProductSearchHit => {
-   return {
-      ...mockedProductSearchHit,
-      ...overrides,
-   };
-};
-
 export const getReviewsResponse = (
    type: 'filled' | 'empty' = 'filled'
 ): ProductReviewData => {
