@@ -1,7 +1,5 @@
 import placeholderImageUrl from '@assets/images/no-image-fixie.jpeg';
 import {
-   Badge,
-   BadgeProps,
    Box,
    Button,
    Divider,
@@ -14,19 +12,19 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import {
-   ResponsiveImage,
-   ProductVariantPrice,
-   useUserPrice,
-   IconBadge,
-} from '@ifixit/ui';
 import { Rating } from '@components/ui';
 import { flags } from '@config/flags';
+import { getProductPath } from '@helpers/product-helpers';
 import { useAppContext } from '@ifixit/app';
+import {
+   IconBadge,
+   ProductVariantPrice,
+   ResponsiveImage,
+   useUserPrice,
+} from '@ifixit/ui';
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
-import { getProductPath } from '@helpers/product-helpers';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 
@@ -164,24 +162,34 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            }}
                         >
                            {showProBadge && (
-                              <IconBadge colorScheme="orange">
+                              <IconBadge
+                                 colorScheme="orange"
+                                 size={{ base: 'small', md: 'base' }}
+                              >
                                  iFixit Pro
                               </IconBadge>
                            )}
                            {showDiscountBadge && (
                               <IconBadge
                                  colorScheme={isProPrice ? 'orange' : 'red'}
+                                 size={{ base: 'small', md: 'base' }}
                               >
                                  {percentage}% Off
                               </IconBadge>
                            )}
                            {showOemPartnershipBadge && (
-                              <IconBadge colorScheme="green">
+                              <IconBadge
+                                 colorScheme="green"
+                                 size={{ base: 'small', md: 'base' }}
+                              >
                                  {product.oem_partnership}
                               </IconBadge>
                            )}
                            {showLifetimeWarrantyBadge && (
-                              <IconBadge colorScheme="blue">
+                              <IconBadge
+                                 colorScheme="blue"
+                                 size={{ base: 'small', md: 'base' }}
+                              >
                                  Lifetime Guarantee
                               </IconBadge>
                            )}
@@ -205,6 +213,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         showDiscountLabel={false}
                         direction="column"
                         alignSelf="flex-end"
+                        size={{ base: 'small', md: 'medium' }}
                      />
                   )}
                   <Stack

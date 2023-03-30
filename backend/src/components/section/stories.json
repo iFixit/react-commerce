@@ -1,0 +1,12 @@
+{
+   "collectionName": "components_section_stories",
+   "info": {
+      "displayName": "stories"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      }
+   }
+}

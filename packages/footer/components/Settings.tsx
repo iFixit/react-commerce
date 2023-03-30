@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { forwardRef, HStack, Stack, StackProps } from '@chakra-ui/react';
 
 export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
@@ -12,7 +11,7 @@ export const FooterSettingsSection = forwardRef<StackProps, 'div'>(
             }}
             direction={{
                base: 'column',
-               xl: 'row',
+               md: 'row',
             }}
             spacing={{
                base: 10,

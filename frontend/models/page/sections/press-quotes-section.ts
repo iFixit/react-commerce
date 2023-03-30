@@ -4,7 +4,7 @@ import type { PressQuotesSectionFieldsFragment } from '@lib/strapi-sdk';
 import {
    callToActionFromStrapi,
    CallToActionSchema,
-} from '@models/shared/components/call-to-action';
+} from '@models/components/call-to-action';
 import { z } from 'zod';
 import {
    pressQuoteFromStrapi,

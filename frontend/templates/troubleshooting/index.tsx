@@ -3,6 +3,8 @@ import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
 import {
+   Text,
+   Avatar,
    Box,
    BoxProps,
    Button,
@@ -15,9 +17,14 @@ import {
    MenuButton,
    MenuItem,
    MenuList,
+   chakra,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
-import { Section, TroubleshootingData } from './hooks/useTroubleshootingProps';
+import {
+   Author,
+   Section,
+   TroubleshootingData,
+} from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
@@ -30,6 +37,7 @@ const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
+   const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
@@ -46,10 +54,19 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
+               <meta name="description" content={wikiData.metaDescription} />
+               <meta name="title" content={wikiData.title} />
+               <meta name="keywords" content={wikiData.metaKeywords} />
                <meta name="robots" content="noindex" />
                <link rel="canonical" href={wikiData.canonicalUrl} />
+               <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
             <Heading as="h1">{wikiData.title}</Heading>
+            <AuthorInformation
+               lastUpdatedDate={lastUpdatedDate}
+               authors={wikiData.authors}
+               historyUrl={wikiData.historyUrl}
+            />
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
@@ -271,6 +288,118 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
             <Box {...selectedStyleProps}>Answers</Box>
          </Flex>
       </>
+   );
+}
+
+function HreflangUrls({ urls }: { urls: Record<string, string> }) {
+   const hreflangs = Object.entries(urls);
+   return (
+      <>
+         {hreflangs.map(([lang, url]) => (
+            <link rel="alternate" key={lang} hrefLang={lang} href={url} />
+         ))}
+      </>
+   );
+}
+
+function AuthorInformation({
+   lastUpdatedDate,
+   authors,
+   historyUrl,
+}: {
+   lastUpdatedDate: Date;
+   authors: Author[];
+   historyUrl: string;
+}) {
+   const primaryAuthor: Author | undefined = authors[0];
+   const otherAuthors = authors.slice(1);
+   return (
+      <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
+         {primaryAuthor && <AuthorAvatar author={primaryAuthor} />}
+         <Flex justify="center" direction="column">
+            {primaryAuthor && (
+               <AuthorListing
+                  primaryAuthor={primaryAuthor}
+                  authorCount={otherAuthors.length}
+                  historyUrl={historyUrl}
+               />
+            )}
+            <LastUpdatedDate
+               lastUpdatedDate={lastUpdatedDate}
+               historyUrl={historyUrl}
+            />
+         </Flex>
+      </Flex>
+   );
+}
+
+function AuthorAvatar({ author }: { author: Author }) {
+   return (
+      <Avatar
+         size="md"
+         width="40px"
+         height="40px"
+         showBorder={true}
+         borderColor="brand.500"
+         name={author.username}
+         src={author.avatar}
+      />
+   );
+}
+
+function LastUpdatedDate({
+   lastUpdatedDate,
+   historyUrl,
+}: {
+   lastUpdatedDate: Date;
+   historyUrl: string;
+}) {
+   return (
+      <Link
+         href={historyUrl}
+         fontWeight="regular"
+         fontSize="14px"
+         color="gray.500"
+      >
+         {'Last updated on ' +
+            lastUpdatedDate.toLocaleDateString(undefined, {
+               year: 'numeric',
+               month: 'long',
+               day: 'numeric',
+            })}
+      </Link>
+   );
+}
+
+function AuthorListing({
+   primaryAuthor,
+   authorCount,
+   historyUrl,
+}: {
+   primaryAuthor: Author;
+   authorCount: number;
+   historyUrl: string;
+}) {
+   const primaryAuthorName = primaryAuthor.username;
+   const contributorDescription =
+      authorCount > 1 ? 'contributors' : 'contributor';
+   return (
+      <Link
+         href={historyUrl}
+         fontWeight="medium"
+         fontSize="14px"
+         color="brand.500"
+      >
+         <span>{primaryAuthorName}</span>
+         {authorCount > 0 && (
+            <>
+               <chakra.span as="span" fontWeight="regular" color="gray.900">
+                  {' and '}
+               </chakra.span>
+               <chakra.span>{`${authorCount} ${contributorDescription}`}</chakra.span>
+            </>
+         )}
+      </Link>
    );
 }
 

@@ -16,15 +16,23 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { ProductGrid } from '@components/common/ProductGrid';
+import { ProductGridItem } from '@components/common/ProductGridItem';
 import { Card } from '@components/ui';
+import { filterFalsyItems } from '@helpers/application-helpers';
 import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { useLocalPreference } from '@ifixit/ui';
+import { productPreviewFromAlgoliaHit } from '@models/components/product-preview';
 import {
    ProductList as TProductList,
    ProductSearchHit,
 } from '@models/product-list';
+import {
+   SearchQueryProvider,
+   useSearchQueryContext,
+} from '@templates/product-list/hooks/useSearchQuery';
 import * as React from 'react';
 import {
    useClearRefinements,
@@ -36,13 +44,9 @@ import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
-import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
-import {
-   SearchQueryProvider,
-   useSearchQueryContext,
-} from '@templates/product-list/hooks/useSearchQuery';
+import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -52,6 +56,12 @@ type SectionProps = {
 
 export function FilterableProductsSection({ productList }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
+   const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
+
+   const products = React.useMemo(
+      () => filterFalsyItems(hits.map(productPreviewFromAlgoliaHit)),
+      [hits]
+   );
    const currentRefinements = useCurrentRefinements();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
@@ -65,6 +75,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
    return (
       <Flex
          ref={productsContainerScrollRef}
+         id="products"
          as="section"
          direction="column"
          align="stretch"
@@ -78,7 +89,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
 
          <SearchQueryProvider>
             <Flex align="flex-start">
-               <Flex
+               <Box
                   bg="white"
                   borderWidth="1px"
                   borderStyle="solid"
@@ -92,7 +103,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                   overflow="auto"
                   display={{
                      base: 'none',
-                     md: 'block',
+                     md: hasAnyVisibleFacet ? 'block' : 'none',
                   }}
                   position="sticky"
                   top="4"
@@ -109,7 +120,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                      <Divider borderColor="gray.300" opacity="1" />
                   </Collapse>
                   <FacetsAccordion productList={productList} />
-               </Flex>
+               </Box>
                <Flex direction="column" flex="1">
                   <Toolbar
                      viewType={viewType}
@@ -131,12 +142,21 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                         hidden={!isEmpty}
                      />
                      {!isEmpty && viewType === ProductViewType.Grid && (
-                        <ProductGrid>
-                           {hits.map((hit) => {
+                        <ProductGrid
+                           data-testid="grid-view-products"
+                           columns={{
+                              base: 2,
+                              sm: 3,
+                              md: 2,
+                              lg: 3,
+                              xl: 4,
+                           }}
+                        >
+                           {products.map((product) => {
                               return (
                                  <ProductGridItem
-                                    key={hit.handle}
-                                    product={hit}
+                                    key={product.handle}
+                                    product={product}
                                  />
                               );
                            })}

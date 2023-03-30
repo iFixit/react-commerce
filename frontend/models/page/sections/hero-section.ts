@@ -3,8 +3,8 @@ import type { HeroSectionFieldsFragment } from '@lib/strapi-sdk';
 import {
    callToActionFromStrapi,
    CallToActionSchema,
-} from '@models/shared/components/call-to-action';
-import { imageFromStrapi, ImageSchema } from '@models/shared/components/image';
+} from '@models/components/call-to-action';
+import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 
 export type HeroSection = z.infer<typeof HeroSectionSchema>;

@@ -19,6 +19,8 @@ query findPage(
                ...StatsSectionFields
                ...SplitWithImageSectionFields
                ...PressQuotesSectionFields
+               ...FeaturedProductsSectionFields
+               ...SocialGallerySectionFields
             }
          }
       }

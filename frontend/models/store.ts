@@ -1,15 +1,17 @@
-import { filterNullableItems, Awaited } from '@helpers/application-helpers';
+import { filterNullableItems } from '@helpers/application-helpers';
+import type { Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
-import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
-import {
+import type { FindStoreQuery } from '@lib/strapi-sdk';
+import { strapi } from '@lib/strapi-sdk';
+import type {
    ImageLinkMenuItem,
    LinkMenuItem,
    Menu,
    MenuItem,
-   MenuItemType,
    ProductListLinkMenuItem,
    SubmenuMenuItem,
-} from './menu';
+} from '@ifixit/menu';
+import { MenuItemType } from '@ifixit/menu';
 
 export type Store = Awaited<ReturnType<typeof findStoreByCode>>;
 
@@ -46,10 +48,11 @@ async function findStoreByCodeFromStrapi(code: string) {
          menu: createMenu(store.header.menu),
       },
       footer: {
-         menu1: createMenu(store.footer.menu1),
-         menu2: createMenu(store.footer.menu2),
          partners: createMenu(store.footer.partners),
          bottomMenu: createMenu(store.footer.bottomMenu),
+         menu1: createMenu(store.footer.menu1),
+         menu2: createMenu(store.footer.menu2),
+         menu3: createMenu(store.footer.menu3),
       },
       socialMediaAccounts: {
          twitter: store.socialMediaAccounts.twitter || null,

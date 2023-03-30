@@ -34,13 +34,13 @@ export function CurrentRefinements() {
                            bgColor="brand.100"
                            borderColor="brand.300"
                            borderWidth="1px"
-                           py="1"
+                           py="3px"
                            px="1.5"
                            mr="1.5"
                            mb="1.5"
                            fontWeight="semibold"
-                           fontSize="sm"
-                           lineHeight="1em"
+                           fontSize={{ base: '13px', md: 'sm' }}
+                           lineHeight={{ base: '4', md: '5' }}
                            color="brand.700"
                            alignItems="center"
                            borderRadius="base"

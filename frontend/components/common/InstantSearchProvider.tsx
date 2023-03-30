@@ -64,7 +64,7 @@ export function InstantSearchProvider({
    const routing: RouterProps<UiState, RouteState> = {
       stateMapping: {
          stateToRoute(uiState) {
-            const indexUiState = uiState['main-product-list-index'];
+            const indexUiState = uiState[indexName];
             if (!indexUiState) {
                return {};
             }
@@ -117,7 +117,7 @@ export function InstantSearchProvider({
                });
             }
             return {
-               ['main-product-list-index']: stateObject,
+               [indexName]: stateObject,
             };
          },
       },
@@ -230,7 +230,10 @@ export function InstantSearchProvider({
 
             return {
                q: String(q || ''),
-               p: typeof p === 'string' ? parseInt(p) : undefined,
+               p:
+                  typeof p === 'string' && parseInt(p) >= 0
+                     ? parseInt(p)
+                     : undefined,
                filter: filterObject,
             };
          },

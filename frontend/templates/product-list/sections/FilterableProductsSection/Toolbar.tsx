@@ -21,6 +21,7 @@ import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsDrawer } from './facets/drawer';
 import { SearchInput } from './SearchInput';
+import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
 
 export enum ProductViewType {
    Grid = 'grid',
@@ -34,8 +35,9 @@ export type ToolbarProps = {
 };
 
 export function Toolbar(props: ToolbarProps) {
-   const currentRefinements = useCurrentRefinements();
    const { viewType, onViewTypeChange, productList } = props;
+   const currentRefinements = useCurrentRefinements();
+   const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
    const drawer = useDisclosure({
       defaultIsOpen: false,
    });
@@ -63,7 +65,7 @@ export function Toolbar(props: ToolbarProps) {
             <NumberOfHits />
             <Flex
                wrap={{
-                  base: 'wrap',
+                  base: hasAnyVisibleFacet ? 'wrap' : 'nowrap',
                   md: 'nowrap',
                }}
                flexGrow={1}
@@ -84,9 +86,11 @@ export function Toolbar(props: ToolbarProps) {
                   }}
                   flexGrow={1}
                />
-               <OpenFiltersButton onClick={drawer.onOpen}>
-                  Filters
-               </OpenFiltersButton>
+               {hasAnyVisibleFacet && (
+                  <OpenFiltersButton onClick={drawer.onOpen}>
+                     Filters
+                  </OpenFiltersButton>
+               )}
                <ProductViewSwitch
                   ml="2"
                   order={{
