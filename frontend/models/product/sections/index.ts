@@ -99,6 +99,13 @@ export async function getProductSections({
                            shopifyProduct
                         ),
                   });
+               case 'ComponentSectionLifetimeWarranty':
+                  return {
+                     type: 'LifetimeWarranty',
+                     id: sectionId,
+                     title: section.title ?? null,
+                     description: section.description ?? null,
+                  };
                case 'ComponentPageSplitWithImage':
                   return splitWithImageSectionFromStrapi(section, sectionId);
 
@@ -182,6 +189,8 @@ export function getDefaultProductSections({
          { __typename: 'LifetimeWarrantySection' },
          sections.length
       ),
+      title: null,
+      description: null,
    });
 
    return sections;

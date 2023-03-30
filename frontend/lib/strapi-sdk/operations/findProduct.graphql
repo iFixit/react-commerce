@@ -12,6 +12,7 @@ query findProduct($handle: String) {
                ...ProductCrossSellSectionFields
                ...ProductCustomerReviewsSectionFields
                ...FeaturedProductsSectionFields
+               ...LifetimeWarrantySectionFields
                ...SplitWithImageSectionFields
             }
          }

@@ -2432,7 +2432,12 @@ export type FindProductQuery = {
                        } | null;
                     } | null;
                  }
-               | { __typename: 'ComponentSectionLifetimeWarranty' }
+               | {
+                    __typename: 'ComponentSectionLifetimeWarranty';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
                | {
                     __typename: 'ComponentSectionServiceValuePropositions';
                     id: string;
@@ -3758,6 +3763,13 @@ export type HeroSectionFieldsFragment = {
    } | null;
 };
 
+export type LifetimeWarrantySectionFieldsFragment = {
+   __typename?: 'ComponentSectionLifetimeWarranty';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+};
+
 export type PressQuotesSectionFieldsFragment = {
    __typename?: 'ComponentPagePress';
    id: string;
@@ -4117,6 +4129,13 @@ export const HeroSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const LifetimeWarrantySectionFieldsFragmentDoc = `
+    fragment LifetimeWarrantySectionFields on ComponentSectionLifetimeWarranty {
+  id
+  title
+  description
+}
+    `;
 export const CompanyFieldsFragmentDoc = `
     fragment CompanyFields on CompanyEntity {
   id
@@ -4283,6 +4302,7 @@ export const FindProductDocument = `
           ...ProductCrossSellSectionFields
           ...ProductCustomerReviewsSectionFields
           ...FeaturedProductsSectionFields
+          ...LifetimeWarrantySectionFields
           ...SplitWithImageSectionFields
         }
       }
@@ -4295,6 +4315,7 @@ ${ServiceValuePropositionsSectionFieldsFragmentDoc}
 ${ProductCrossSellSectionFieldsFragmentDoc}
 ${ProductCustomerReviewsSectionFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
+${LifetimeWarrantySectionFieldsFragmentDoc}
 ${SplitWithImageSectionFieldsFragmentDoc}
 ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}`;
