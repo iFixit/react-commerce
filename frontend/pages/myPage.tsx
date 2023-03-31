@@ -5,9 +5,10 @@ const MyComponent = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-   if (context.query.myParam === 'two') {
-      // only throw conditionally so that this page actually builds
+   if (context.query.myParam === 'unhandled') {
       Promise.reject(new Error("We don't like page two"));
+   } else if (context.query.myParam === 'handled') {
+      return Promise.reject(new Error("We don't like page two"));
    }
 
    return { props: {} };
