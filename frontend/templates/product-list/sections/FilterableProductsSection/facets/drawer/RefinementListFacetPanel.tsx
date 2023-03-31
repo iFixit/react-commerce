@@ -19,6 +19,7 @@ export function RefinementListFacetPanel({
          data-testid={`facet-panel${isOpen ? '-open' : ''}`}
       >
          <RefinementListFacet
+            attribute={attribute}
             items={items}
             refine={refine}
             canToggleShowMore={canToggleShowMore}

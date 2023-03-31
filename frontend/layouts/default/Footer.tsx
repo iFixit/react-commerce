@@ -131,6 +131,7 @@ export function CartFooter({
                                  <ResponsiveImage
                                     layout="fill"
                                     objectFit="contain"
+                                    alt="no-image"
                                     src={noImageFixie}
                                     style={{ filter: 'grayscale(100%)' }}
                                  />

@@ -61,6 +61,7 @@ export function FacetMenuAccordionItem({
          refinementIndicator="dot"
       >
          <MenuFacet
+            attribute={attribute}
             items={items}
             limit={PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT}
             canToggleShowMore={canLoadMore ? canToggleShowMore : undefined}
