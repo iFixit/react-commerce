@@ -1,6 +1,13 @@
+import {
+   ALGOLIA_API_KEY,
+   ALGOLIA_APP_ID,
+   ALGOLIA_PRODUCT_INDEX_NAME,
+} from '@config/env';
+import { filterFalsyItems } from '@helpers/application-helpers';
 import { printZodError } from '@helpers/zod-helpers';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import type { ProductPreviewFieldsFragment } from '@lib/shopify-storefront-sdk';
+import algoliasearch from 'algoliasearch/lite';
 import { z } from 'zod';
 import { AlgoliaProductHitSchema } from './algolia-product-hit';
 import { imageFromShopify, imageFromUrl, ImageSchema } from './image';
@@ -105,4 +112,26 @@ export function productPreviewFromShopify(
       quantityAvailable: fields.quantityAvailable ?? null,
       enabled: fields.enabled?.value === 'true',
    };
+}
+
+interface GetProductPreviewsFromAlgoliaProps {
+   query?: string;
+   filters?: string;
+   hitsPerPage: number;
+}
+
+export async function getProductPreviewsFromAlgolia({
+   query = '',
+   filters,
+   hitsPerPage,
+}: GetProductPreviewsFromAlgoliaProps) {
+   const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+   const searchIndex = client.initIndex(ALGOLIA_PRODUCT_INDEX_NAME);
+
+   const response = await searchIndex.search(query, {
+      hitsPerPage,
+      filters,
+   });
+
+   return filterFalsyItems(response.hits.map(productPreviewFromAlgoliaHit));
 }

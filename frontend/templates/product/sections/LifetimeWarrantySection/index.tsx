@@ -1,24 +1,27 @@
 import { QualityGuarantee } from '@assets/svg/files';
-import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Icon } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
-import { isLifetimeWarranty } from '@ifixit/helpers';
+import { isPresent } from '@ifixit/helpers';
 import { Wrapper } from '@ifixit/ui';
-import type { ProductVariant } from '@pages/api/nextjs/cache/product';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
 import Image from 'next/image';
 
-export type LifetimeWarrantySectionProps = {
-   variant: ProductVariant;
-};
+export interface LifetimeWarrantySectionProps {
+   title?: string | null;
+   description?: string | null;
+}
 
 export function LifetimeWarrantySection({
-   variant,
+   title,
+   description,
 }: LifetimeWarrantySectionProps) {
    const appContext = useAppContext();
 
-   if (variant.warranty == null || !isLifetimeWarranty(variant.warranty)) {
-      return null;
-   }
+   const sectionTitle = isPresent(title) ? title : 'Lifetime Guarantee';
+   const sectionDescription = isPresent(description)
+      ? description
+      : "We stand behind our tools. If something breaks, we'll replace it—for as long as you own the iFixit tool.";
+
    return (
       <Box py="16" position="relative">
          <Box position="absolute" inset="0">
@@ -55,13 +58,14 @@ export function LifetimeWarrantySection({
                         fontSize={{ base: '2xl', md: '3xl' }}
                         fontWeight="medium"
                      >
-                        Lifetime Guarantee
+                        {sectionTitle}
                      </Heading>
-                     <Text color="white">
-                        We stand behind our tools. If something breaks,
-                        we&apos;ll replace it—for as long as you own the iFixit
-                        tool.
-                     </Text>
+                     <Box
+                        color="white"
+                        dangerouslySetInnerHTML={{
+                           __html: sectionDescription,
+                        }}
+                     />
                      <Button
                         as="a"
                         mt="8"

@@ -1,0 +1,5 @@
+fragment LifetimeWarrantySectionFields on ComponentSectionLifetimeWarranty {
+   id
+   title
+   description
+}

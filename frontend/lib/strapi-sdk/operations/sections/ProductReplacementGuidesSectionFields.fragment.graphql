@@ -1,0 +1,4 @@
+fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
+   id
+   title
+}
