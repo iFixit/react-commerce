@@ -126,9 +126,8 @@ function NavBar({
          >
             <BreadCrumbs
                minW="0"
-               minHeight="48px"
-               height="min-content"
-               breadCrumbs={bc}
+               height="48px"
+               breadCrumbs={bc.slice(0, -1)}
                paddingInline={padding}
             />
             <Flex minW="0">
