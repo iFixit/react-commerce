@@ -56,10 +56,10 @@ export const withSentry: GetServerSidePropsMiddleware = (next) => {
       return new Promise((resolve, reject) => {
          next(context).then(resolve, (e) => {
             Sentry.captureException(e);
-            console.log("Reporting exception to sentry");
+            console.log('Reporting exception to sentry');
             console.log(e);
             setTimeout(() => {
-               console.log("delayed for a bit, now carrying on");
+               console.log('delayed for a bit, now carrying on');
                reject(e);
             }, 1000);
          });
