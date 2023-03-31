@@ -6,9 +6,9 @@ const MyComponent = () => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
    if (context.query.myParam === 'unhandled') {
-      Promise.reject(new Error("This is an unhandled rejected promise"));
+      Promise.reject(new Error('This is an unhandled rejected promise'));
    } else if (context.query.myParam === 'handled') {
-      return Promise.reject(new Error("This is a handled rejected promise"));
+      return Promise.reject(new Error('This is a handled rejected promise'));
    }
 
    return { props: {} };
