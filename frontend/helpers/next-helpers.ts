@@ -53,11 +53,11 @@ export const withNoindexDevDomains: GetServerSidePropsMiddleware = (next) => {
 
 export const withSentry: GetServerSidePropsMiddleware = (next) => {
    return (context) => {
-      try {
-         return next(context);
-      } catch (e) {
-         Sentry.captureException(e);
-         throw e;
-      }
+      return new Promise((resolve, reject) => {
+         next(context).then(resolve, (e) => {
+            Sentry.captureException(e);
+            setTimeout(() => reject(e), 1000);
+         });
+      });
    };
 };
