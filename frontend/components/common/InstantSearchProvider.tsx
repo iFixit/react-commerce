@@ -13,11 +13,10 @@ import { usePrevious } from '@ifixit/ui';
 import { FacetWidgetType } from '@models/product-list';
 import { useFacets } from '@templates/product-list/sections/FilterableProductsSection/facets/useFacets';
 import algoliasearch from 'algoliasearch/lite';
-import { history } from 'instantsearch.js/es/lib/routers';
-import { RouterProps } from 'instantsearch.js/es/middlewares';
-import { UiState } from 'instantsearch.js/es/types';
-import { useRouter } from 'next/router';
+import singletonRouter from 'next/router';
+import qs from 'qs';
 import * as React from 'react';
+import { createInstantSearchRouterNext } from 'react-instantsearch-hooks-router-nextjs';
 import {
    InstantSearch,
    InstantSearchServerState,
@@ -30,7 +29,7 @@ type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 export type AlgoliaProps = {
    url: string;
    indexName: string;
-   serverState?: Partial<InstantSearchServerState>;
+   serverState?: InstantSearchServerState;
    apiKey: string;
 };
 
@@ -57,163 +56,180 @@ export function InstantSearchProvider({
       return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey, CLIENT_OPTIONS);
    }, [algoliaApiKey]);
 
-   const resetKey = useSearchStateForceResetKey();
-
    const facets = useFacets();
 
-   const routing: RouterProps<UiState, RouteState> = {
-      stateMapping: {
-         stateToRoute(uiState) {
-            const indexUiState = uiState[indexName];
-            if (!indexUiState) {
-               return {};
-            }
-            const routeState: RouteState = {};
-            if (indexUiState.query) {
-               routeState.q = indexUiState.query;
-            }
-            if (indexUiState.page) {
-               routeState.p = indexUiState.page;
-            }
-            if (indexUiState.refinementList) {
-               routeState.filter = indexUiState.refinementList;
-            }
-            if (indexUiState.menu) {
-               routeState.filter = {
-                  ...routeState.filter,
-                  ...indexUiState.menu,
-               };
-            }
-            return routeState;
-         },
-         routeToState(routeState: RouteState) {
-            const stateObject: IndexUiState = {};
-            if (routeState.q != null) {
-               stateObject.query = routeState.q;
-            }
-            if (routeState.p != null) {
-               stateObject.page = routeState.p;
-            }
-            const filter = routeState.filter;
-            if (filter != null) {
-               stateObject.menu = {};
-               stateObject.refinementList = {};
-               Object.keys(filter).forEach((attribute) => {
-                  const widgetType = getFacetWidgetType(attribute);
-                  switch (widgetType) {
-                     case FacetWidgetType.Menu: {
-                        stateObject.menu[attribute] = filter[attribute];
-                        break;
-                     }
-                     case FacetWidgetType.RefinementList: {
-                        stateObject.refinementList[attribute] =
-                           filter[attribute];
-                        break;
-                     }
-                     default: {
-                        return assertNever(widgetType);
-                     }
-                  }
-               });
-            }
-            return {
-               [indexName]: stateObject,
-            };
-         },
+   const routerOptions = {
+      getLocation() {
+         if (typeof window === 'undefined') {
+            return new URL(url) as unknown as Location;
+         }
+
+         return window.location;
       },
-      router: history({
-         getLocation() {
-            if (typeof window === 'undefined') {
-               return new URL(url) as unknown as Location;
-            }
+      createURL({
+         qsModule,
+         routeState,
+         location,
+      }: {
+         qsModule: typeof qs;
+         routeState: RouteState;
+         location: Location;
+      }) {
+         const baseUrl = getBaseOrigin(location);
+         const pathParts = location.pathname
+            .split('/')
+            .filter((part) => part !== '');
+         const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
+         const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
 
-            return window.location;
-         },
-         createURL({ qsModule, routeState, location }) {
-            const baseUrl = getBaseOrigin(location);
-            const pathParts = location.pathname
-               .split('/')
-               .filter((part) => part !== '');
-            const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
-            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-
-            let path = '';
-            if (partsOrTools) {
-               path += `/${partsOrTools}`;
-               if (deviceHandle) {
-                  path += `/${deviceHandle}`;
-                  const raw: string | string[] | undefined =
-                     routeState.filter?.['facet_tags.Item Type'];
-                  const itemType = Array.isArray(raw) ? raw[0] : raw;
-                  if (itemType?.length) {
-                     const encodedItemType = encodeURIComponent(
-                        stylizeDeviceItemType(itemType)
-                     );
-                     path += `/${encodedItemType}`;
-                  }
+         let path = '';
+         if (partsOrTools) {
+            path += `/${partsOrTools}`;
+            if (deviceHandle) {
+               path += `/${deviceHandle}`;
+               const raw: string | string[] | undefined =
+                  routeState.filter?.['facet_tags.Item Type'];
+               const itemType = Array.isArray(raw) ? raw[0] : raw;
+               if (itemType?.length) {
+                  const encodedItemType = encodeURIComponent(
+                     stylizeDeviceItemType(itemType)
+                  );
+                  path += `/${encodedItemType}`;
                }
             }
+         }
 
-            const filterCopy = { ...routeState.filter };
-            if (partsOrTools && deviceHandle) {
-               // Item Type is the slug on device pages, not in the query.
-               delete filterCopy['facet_tags.Item Type'];
-            }
-            const { q, p, filter, ...otherParams } = qsModule.parse(
-               location.search,
-               {
-                  ignoreQueryPrefix: true,
-               }
-            );
-            const queryString = qsModule.stringify(
-               {
-                  ...otherParams,
-                  ...routeState,
-                  filter: filterCopy,
-               },
-               {
-                  addQueryPrefix: true,
-                  arrayFormat: 'indices',
-               }
-            );
-
-            return `${baseUrl}${path}${queryString}`;
-         },
-         parseURL({ qsModule, location }) {
-            const pathParts = location.pathname
-               .split('/')
-               .filter((part) => part !== '');
-            const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-            const itemType = pathParts.length >= 3 ? pathParts[2] : '';
-
-            const { q, p, filter } = qsModule.parse(location.search, {
+         const filterCopy = { ...routeState.filter };
+         if (partsOrTools && deviceHandle) {
+            // Item Type is the slug on device pages, not in the query.
+            delete filterCopy['facet_tags.Item Type'];
+         }
+         const { q, p, filter, ...otherParams } = qsModule.parse(
+            location.search,
+            {
                ignoreQueryPrefix: true,
-            });
+            }
+         );
+         const queryString = qsModule.stringify(
+            {
+               ...otherParams,
+               ...routeState,
+               filter: filterCopy,
+            },
+            {
+               addQueryPrefix: true,
+               arrayFormat: 'indices',
+            }
+         );
 
-            const filterObject =
-               typeof filter === 'object' && !Array.isArray(filter)
-                  ? filter
-                  : {};
+         return `${baseUrl}${path}${queryString}`;
+      },
+      parseURL({
+         qsModule,
+         location,
+      }: {
+         qsModule: typeof qs;
+         location: Location;
+      }) {
+         const pathParts = location.pathname
+            .split('/')
+            .filter((part) => part !== '');
+         const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+         const itemType = pathParts.length >= 3 ? pathParts[2] : '';
 
-            Object.entries(filterObject).forEach(([attribute, value]) => {
-               if (!facets.includes(attribute)) {
-                  delete filterObject[attribute];
-                  return;
+         const { q, p, filter } = qsModule.parse(location.search, {
+            ignoreQueryPrefix: true,
+         });
+
+         const filterObject =
+            typeof filter === 'object' && !Array.isArray(filter) ? filter : {};
+
+         Object.entries(filterObject).forEach(([attribute, value]) => {
+            if (!facets.includes(attribute)) {
+               delete filterObject[attribute];
+               return;
+            }
+            const widgetType = getFacetWidgetType(attribute);
+            switch (widgetType) {
+               case FacetWidgetType.Menu: {
+                  if (isValidRefinementListValue(value)) {
+                     filterObject[attribute] = (value as string[])[0];
+                  } else if (typeof value !== 'string') {
+                     delete filterObject[attribute];
+                  }
+                  break;
                }
+               case FacetWidgetType.RefinementList: {
+                  if (!isValidRefinementListValue(value)) {
+                     delete filterObject[attribute];
+                  }
+                  break;
+               }
+               default: {
+                  return assertNever(widgetType);
+               }
+            }
+         });
+
+         if (deviceHandle && itemType) {
+            filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
+               decodeURIComponent(itemType)
+            ).trim();
+         }
+
+         return {
+            q: String(q || ''),
+            p: typeof p === 'string' ? parseInt(p) : undefined,
+            filter: filterObject,
+         };
+      },
+   };
+
+   const stateMapping = {
+      stateToRoute(uiState: IndexUiState) {
+         const indexUiState = uiState[indexName];
+         if (!indexUiState) {
+            return {};
+         }
+         const routeState: RouteState = {};
+         if (indexUiState.query) {
+            routeState.q = indexUiState.query;
+         }
+         if (indexUiState.page) {
+            routeState.p = indexUiState.page;
+         }
+         if (indexUiState.refinementList) {
+            routeState.filter = indexUiState.refinementList;
+         }
+         if (indexUiState.menu) {
+            routeState.filter = {
+               ...routeState.filter,
+               ...indexUiState.menu,
+            };
+         }
+         return routeState;
+      },
+      routeToState(routeState: RouteState) {
+         const stateObject: IndexUiState = {};
+         if (routeState.q != null) {
+            stateObject.query = routeState.q;
+         }
+         if (routeState.p != null) {
+            stateObject.page = routeState.p;
+         }
+         const filter = routeState.filter;
+         if (filter != null) {
+            stateObject.menu = {};
+            stateObject.refinementList = {};
+            Object.keys(filter).forEach((attribute) => {
                const widgetType = getFacetWidgetType(attribute);
                switch (widgetType) {
                   case FacetWidgetType.Menu: {
-                     if (isValidRefinementListValue(value)) {
-                        filterObject[attribute] = (value as string[])[0];
-                     } else if (typeof value !== 'string') {
-                        delete filterObject[attribute];
-                     }
+                     stateObject.menu[attribute] = filter[attribute];
                      break;
                   }
                   case FacetWidgetType.RefinementList: {
-                     if (!isValidRefinementListValue(value)) {
-                        delete filterObject[attribute];
-                     }
+                     stateObject.refinementList[attribute] = filter[attribute];
                      break;
                   }
                   default: {
@@ -221,23 +237,11 @@ export function InstantSearchProvider({
                   }
                }
             });
-
-            if (deviceHandle && itemType) {
-               filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
-                  decodeURIComponent(itemType)
-               ).trim();
-            }
-
-            return {
-               q: String(q || ''),
-               p:
-                  typeof p === 'string' && parseInt(p) >= 0
-                     ? parseInt(p)
-                     : undefined,
-               filter: filterObject,
-            };
-         },
-      }),
+         }
+         return {
+            [indexName]: stateObject,
+         };
+      },
    };
 
    return (
@@ -245,8 +249,14 @@ export function InstantSearchProvider({
          <InstantSearch
             searchClient={algoliaClient}
             indexName={indexName}
-            routing={routing}
-            key={resetKey}
+            routing={{
+               router: createInstantSearchRouterNext<RouteState>({
+                  serverUrl: url,
+                  singletonRouter,
+                  routerOptions,
+               }),
+               stateMapping,
+            }}
          >
             <RefreshSearchResults
                apiKey={algoliaApiKey}
@@ -292,35 +302,3 @@ function getBaseOrigin(location: Location): string {
    }
    return location.origin;
 }
-
-const useSearchStateForceResetKey = () => {
-   const router = useRouter();
-   const historyChangeCount = React.useRef(0);
-   // Currently, Algolia routing does not play well with Next.js routing, since Next.js
-   // is not aware of url changes that happens without interacting with its builtin router.
-   // To make popstate work (i.e. whenever the browser back button is pressed), we do a
-   // a full page reload as a workaround.
-   // This should be only a temporary workaround until Algolia routing is fixed.
-   useSafeLayoutEffect(() => {
-      const handleRouteChange = () => {
-         // When the back button is pressed, the popstate event is fired, and
-         // Algolia tries to re-render the page (although in a broken state).
-         // To avoid seeing this broken re-render we hide the page while we wait for
-         // the page to be reloaded.
-         window.document.body.hidden = true;
-         window.location.reload();
-      };
-      const beforeHistoryChange = () => {
-         historyChangeCount.current++;
-      };
-      window.addEventListener('popstate', handleRouteChange);
-      router.events.on('beforeHistoryChange', beforeHistoryChange);
-
-      return () => {
-         window.removeEventListener('popstate', handleRouteChange);
-         router.events.off('beforeHistoryChange', beforeHistoryChange);
-      };
-   }, [router]);
-
-   return historyChangeCount.current;
-};
