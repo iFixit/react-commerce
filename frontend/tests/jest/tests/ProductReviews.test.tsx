@@ -1,13 +1,10 @@
 import { screen } from '@testing-library/react';
-import {
-   renderWithAppContext,
-   getMockProduct,
-   getMockProductVariant,
-   getReviewsResponse,
-} from '../utils';
+import { renderWithAppContext } from '../utils';
 import { ProductReviewsSection } from '@templates/product/sections/ProductReviewsSection/index';
 import { ProductRating } from '@templates/product/sections/ProductOverviewSection/ProductRating';
 import { useProductReviews } from 'templates/product/hooks/useProductReviews';
+import { getMockProduct, getMockProductVariant } from '../__mocks__/products';
+import { getReviewsResponse } from '../__mocks__/reviews';
 
 jest.mock('@templates/product/hooks/useProductReviews', () => ({
    useProductReviews: jest.fn(),

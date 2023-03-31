@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { CompatibleDevice } from '@components/common';
 import { renderWithAppContext } from '../utils';
-import { getMockProduct } from '../utils';
+import { getMockProduct } from '../__mocks__/products';
 
 describe('CompatibleDevice', () => {
    it('renders and matches the snapshot', () => {
