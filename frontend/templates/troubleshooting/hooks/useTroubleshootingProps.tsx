@@ -11,6 +11,7 @@ export type Author = {
    percent: number;
    username: string;
    avatar: string;
+   profileUrl: string;
 };
 
 export type TroubleshootingData = {
