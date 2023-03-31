@@ -10,7 +10,7 @@
       "type-check": "tsc --pretty --noEmit"
    },
    "dependencies": {
-      "@ifixit/ui": "workspace:*",
+      "@ifixit/menu": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
       "@ifixit/icons": "workspace:*"
    },

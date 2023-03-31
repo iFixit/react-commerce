@@ -26,4 +26,5 @@ export const AlgoliaProductHitSchema = z.object({
    is_pro: z.number().nullable().optional(),
    rating: z.number().nullable().optional(),
    rating_count: z.number().nullable().optional(),
+   quantity_available: z.number().nullable().optional(),
 });

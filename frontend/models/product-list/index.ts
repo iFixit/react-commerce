@@ -5,7 +5,6 @@ export {
    FacetWidgetType,
 } from './types';
 export type {
-   FeaturedProductList,
    iFixitPage,
    ProductList,
    ProductListPreview,

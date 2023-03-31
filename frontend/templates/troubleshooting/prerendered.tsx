@@ -85,6 +85,7 @@ const renderStyles: SystemStyleObject = {
       borderStyle: 'solid',
       padding: '1px',
       maxWidth: '100%',
+      height: 'auto !important',
 
       '&.float-left': {
          float: 'left',
@@ -95,6 +96,64 @@ const renderStyles: SystemStyleObject = {
       '&.mx-auto': {
          marginLeft: 'auto',
          marginRight: 'auto',
+      },
+   },
+
+   '.videoFrame': {
+      maxWidth: '100%',
+      border: '1px solid #e5e7eb',
+      marginTop: '8px',
+      marginBottom: '8px',
+      padding: '1px',
+      borderRadius: 0,
+      height: 'auto',
+
+      '@media only screen and (max-width: 575px)': {
+         width: 'auto !important',
+      },
+
+      '&.videoBox_left': {
+         float: 'left',
+         clear: 'left',
+         marginRight: '30px',
+         position: 'relative',
+         width: 'fit-content',
+
+         '@media only screen and (max-width: 575px)': {
+            float: 'none',
+         },
+      },
+      '&.videoBox_center': {
+         marginLeft: 'auto',
+         marginRight: 'auto',
+         clear: 'both',
+         display: 'block',
+      },
+      '&.videoBox_right': {
+         float: 'right',
+         clear: 'right',
+         marginLeft: '30px',
+
+         '@media only screen and (max-width: 575px)': {
+            float: 'none',
+         },
+      },
+   },
+
+   '.videoBox': {
+      position: 'relative',
+      width: 'auto !important',
+      overflow: 'hidden',
+      maxWidth: '100%',
+      height: 0,
+      paddingBottom: '56.25%',
+
+      video: {
+         position: 'absolute',
+         top: 0,
+         left: 0,
+         width: '100%',
+         height: '100%',
       },
    },
 

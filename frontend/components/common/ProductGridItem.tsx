@@ -50,20 +50,36 @@ export function ProductGridItem({ product, onClick }: ProductGridItemProps) {
             }}
          >
             {product.oemPartnership && (
-               <IconBadge colorScheme="green">
+               <IconBadge
+                  colorScheme="green"
+                  size={{ base: 'small', md: 'base' }}
+               >
                   {product.oemPartnership}
                </IconBadge>
             )}
             {product.isPro && (
-               <IconBadge colorScheme="orange">iFixit Pro</IconBadge>
+               <IconBadge
+                  colorScheme="orange"
+                  size={{ base: 'small', md: 'base' }}
+               >
+                  iFixit Pro
+               </IconBadge>
             )}
             {discountPercentage > 0 && (
-               <IconBadge colorScheme={userPrice.isProPrice ? 'orange' : 'red'}>
+               <IconBadge
+                  colorScheme={userPrice.isProPrice ? 'orange' : 'red'}
+                  size={{ base: 'small', md: 'base' }}
+               >
                   {discountPercentage}% Off
                </IconBadge>
             )}
             {product.hasLifetimeWarranty && (
-               <IconBadge colorScheme="blue">Lifetime Guarantee</IconBadge>
+               <IconBadge
+                  colorScheme="blue"
+                  size={{ base: 'small', md: 'base' }}
+               >
+                  Lifetime Guarantee
+               </IconBadge>
             )}
          </ProductCardBadgeList>
          <ProductCard h="full">
@@ -94,6 +110,7 @@ export function ProductGridItem({ product, onClick }: ProductGridItemProps) {
                      showDiscountLabel={false}
                      direction="row-reverse"
                      alignSelf="flex-end"
+                     size={{ base: 'small', md: 'medium' }}
                   />
                </HStack>
             </ProductCardBody>

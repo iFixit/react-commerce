@@ -28,6 +28,8 @@ export type TroubleshootingData = {
    authors: Author[];
    hreflangUrls: Record<string, string>;
    breadcrumbs: BreadcrumbEntry[];
+   metaDescription: string;
+   metaKeywords: string;
 };
 
 export type BreadcrumbEntry = {

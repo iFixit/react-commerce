@@ -12,11 +12,11 @@ export function CompatibilitySection({
    compatibility,
 }: CompatibilitySectionProps) {
    return compatibility && compatibility.devices.length > 0 ? (
-      <Box id="compatibility" bg="gray.100" py="16" fontSize="sm">
+      <Box id="compatibility" py="16" fontSize="sm">
          <Wrapper>
             <Heading
                as="h2"
-               color="gray.700"
+               color="gray.900"
                textAlign="center"
                mb="12"
                fontSize={{ base: '2xl', md: '3xl' }}

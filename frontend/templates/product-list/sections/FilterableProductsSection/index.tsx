@@ -46,6 +46,7 @@ import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
+import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -55,6 +56,8 @@ type SectionProps = {
 
 export function FilterableProductsSection({ productList }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
+   const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
+
    const products = React.useMemo(
       () => filterFalsyItems(hits.map(productPreviewFromAlgoliaHit)),
       [hits]
@@ -72,6 +75,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
    return (
       <Flex
          ref={productsContainerScrollRef}
+         id="products"
          as="section"
          direction="column"
          align="stretch"
@@ -85,7 +89,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
 
          <SearchQueryProvider>
             <Flex align="flex-start">
-               <Flex
+               <Box
                   bg="white"
                   borderWidth="1px"
                   borderStyle="solid"
@@ -99,7 +103,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                   overflow="auto"
                   display={{
                      base: 'none',
-                     md: 'block',
+                     md: hasAnyVisibleFacet ? 'block' : 'none',
                   }}
                   position="sticky"
                   top="4"
@@ -116,7 +120,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                      <Divider borderColor="gray.300" opacity="1" />
                   </Collapse>
                   <FacetsAccordion productList={productList} />
-               </Flex>
+               </Box>
                <Flex direction="column" flex="1">
                   <Toolbar
                      viewType={viewType}
@@ -147,7 +151,6 @@ export function FilterableProductsSection({ productList }: SectionProps) {
                               lg: 3,
                               xl: 4,
                            }}
-                           borderBottomWidth="1px"
                         >
                            {products.map((product) => {
                               return (

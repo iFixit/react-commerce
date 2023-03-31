@@ -1,0 +1,15 @@
+{
+   "collectionName": "components_section_lifetime_warranties",
+   "info": {
+      "displayName": "lifetime warranty"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      }
+   }
+}

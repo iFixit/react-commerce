@@ -13,6 +13,7 @@ export function toNumber(value: unknown): number | null {
    return null;
 }
 
-export const printZodError = (error: z.ZodError) => {
-   return JSON.stringify(error.format(), null, 2);
-};
+export function printZodError(error: z.ZodError, title?: string) {
+   const validationError = JSON.stringify(error.format(), null, 2);
+   return title ? `${title}: ${validationError}` : validationError;
+}

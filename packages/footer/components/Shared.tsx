@@ -1,15 +1,7 @@
-import {
-   Divider,
-   Flex,
-   forwardRef,
-   HStack,
-   Icon,
-   Text,
-} from '@chakra-ui/react';
+import { Divider, Box, forwardRef, HStack, Icon, Text } from '@chakra-ui/react';
 import type { DividerProps, FlexProps, StackProps } from '@chakra-ui/react';
-import type { Menu } from '@ifixit/ui';
+import type { Menu } from '@ifixit/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
-import { PageContentWrapper } from './PageContentWrapper';
 
 export interface FooterType {
    menu1: Menu | null;
@@ -22,16 +14,19 @@ export interface FooterType {
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
       return (
-         <Flex
-            ref={ref}
-            as="footer"
-            direction="column"
-            bg="black"
-            color="white"
-            {...otherProps}
-         >
-            <PageContentWrapper>{children}</PageContentWrapper>
-         </Flex>
+         <Box ref={ref} as="footer" bg="black" py="12" {...otherProps}>
+            <Box
+               maxW="80rem"
+               mx="auto"
+               px={{
+                  base: 4,
+                  md: 6,
+                  lg: 8,
+               }}
+            >
+               {children}
+            </Box>
+         </Box>
       );
    }
 );

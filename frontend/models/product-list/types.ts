@@ -57,6 +57,7 @@ export type ProductList =
 export type iFixitPage = StorePage;
 
 export interface BaseProductList {
+   id: string | null;
    title: string;
    h1: string | null;
    handle: string;
@@ -131,14 +132,12 @@ export interface ProductListImage {
 export enum ProductListSectionType {
    Banner = 'banner',
    RelatedPosts = 'related-posts',
-   FeaturedProductList = 'featured-product-list',
    ProductListSet = 'product-list-set',
 }
 
 export type ProductListSection =
    | ProductListBannerSection
    | ProductListRelatedPostsSection
-   | ProductListFeaturedProductListSection
    | ProductListProductListSetSection;
 
 export interface ProductListBannerSection {
@@ -154,26 +153,6 @@ export interface ProductListRelatedPostsSection {
    type: ProductListSectionType.RelatedPosts;
    id: string;
    tags: string | null;
-}
-
-export interface ProductListFeaturedProductListSection {
-   type: ProductListSectionType.FeaturedProductList;
-   id: string;
-   productList: FeaturedProductList;
-}
-
-export interface FeaturedProductList {
-   algolia: {
-      apiKey: string;
-      indexName: string;
-   };
-   handle: string;
-   title: string;
-   type: ProductListType;
-   deviceTitle: string | null;
-   description: string;
-   image: ProductListImage | null;
-   filters: string | null;
 }
 
 export interface ProductListProductListSetSection {

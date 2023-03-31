@@ -57,6 +57,7 @@ export async function findProductList(
       return null;
    }
 
+   const id = result.productLists?.data?.[0]?.id ?? null;
    const deviceTitle =
       deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
    const handle = productList?.handle ?? '';
@@ -84,6 +85,7 @@ export async function findProductList(
       productListType === ProductListType.DeviceParts;
 
    const baseProductList: BaseProductList = {
+      id,
       title,
       h1,
       handle,
@@ -389,39 +391,6 @@ function createProductListSection(
             type: ProductListSectionType.RelatedPosts,
             id: section.id,
             tags: section.tags || null,
-         };
-      }
-      case 'ComponentProductListFeaturedProductList': {
-         const productList = section.productList?.data?.attributes;
-         if (productList == null) {
-            return null;
-         }
-         const image = productList.image?.data?.attributes;
-
-         const algoliaApiKey = createPublicAlgoliaKey(
-            ALGOLIA_APP_ID,
-            ALGOLIA_API_KEY
-         );
-
-         return {
-            type: ProductListSectionType.FeaturedProductList,
-            id: section.id,
-            productList: {
-               handle: productList.handle,
-               title: productList.title,
-               type: getProductListType(productList.type),
-               deviceTitle: productList.deviceTitle ?? null,
-               description: productList.description,
-               image:
-                  image == null
-                     ? null
-                     : getImageFromStrapiImage(image, 'thumbnail'),
-               filters: productList.filters ?? null,
-               algolia: {
-                  indexName: ALGOLIA_PRODUCT_INDEX_NAME,
-                  apiKey: algoliaApiKey,
-               },
-            },
          };
       }
       case 'ComponentProductListLinkedProductListSet': {

@@ -1,10 +1,12 @@
 import { Box, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
+import { formatFacetName } from '@helpers/algolia-helpers';
 import { useDecoupledState } from '@ifixit/ui';
 import * as React from 'react';
 import { ShowMoreButton } from './ShowMoreButton';
 import { RefinementListFacetState } from './useRefinementListFacet';
 
 type RefinementListFacetProps = {
+   attribute: string;
    items: RefinementListItem[];
    refine: (value: string) => void;
    canToggleShowMore?: boolean;
@@ -15,15 +17,23 @@ type RefinementListFacetProps = {
 type RefinementListItem = RefinementListFacetState['items'][0];
 
 export function RefinementListFacet({
+   attribute,
    items,
    refine,
    canToggleShowMore,
    isShowingMore = false,
    onToggleShowMore,
 }: RefinementListFacetProps) {
+   const formattedFacetName = formatFacetName(attribute);
+
    return (
       <Box>
-         <VStack align="stretch" spacing="2" role="listbox">
+         <VStack
+            align="stretch"
+            spacing="2"
+            role="listbox"
+            aria-label={`${formattedFacetName} options`}
+         >
             {items.map((item) => {
                return (
                   <RefinementListItem

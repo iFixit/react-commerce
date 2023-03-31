@@ -1,8 +1,8 @@
 import { trackInMatomoAndGA } from '@ifixit/analytics';
 import { Menu, MenuList } from '@chakra-ui/react';
 import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
-import type { MenuItem } from '@ifixit/ui';
-import { MenuItemType } from '@ifixit/ui';
+import type { MenuItem } from '@ifixit/menu';
+import { MenuItemType } from '@ifixit/menu';
 import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import type { GlobalSettings } from '@models/global-settings';
@@ -131,6 +131,7 @@ export function CartFooter({
                                  <ResponsiveImage
                                     layout="fill"
                                     objectFit="contain"
+                                    alt="no-image"
                                     src={noImageFixie}
                                     style={{ filter: 'grayscale(100%)' }}
                                  />

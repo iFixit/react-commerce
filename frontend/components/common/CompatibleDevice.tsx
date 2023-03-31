@@ -11,10 +11,7 @@ export function CompatibleDevice({
    device,
    maxModelLines = 0,
 }: CompatibleDeviceProps) {
-   const variants = React.useMemo(
-      () => device.variants.filter(Boolean),
-      [device.variants]
-   );
+   const variants = device.variants;
    const [visibleVariants, hiddenVariantCount] = React.useMemo(
       () =>
          maxModelLines > 0 && variants.length > maxModelLines

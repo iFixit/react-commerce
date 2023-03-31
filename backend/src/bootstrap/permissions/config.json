@@ -12,6 +12,8 @@
       "api::company.company.findOne",
       "api::company.company.find",
       "api::product.product.findOne",
-      "api::product.product.find"
+      "api::product.product.find",
+      "api::social-post.social-post.findOne",
+      "api::social-post.social-post.find"
    ]
 }

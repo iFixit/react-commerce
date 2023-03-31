@@ -18,7 +18,7 @@ import type {
 } from '@chakra-ui/react';
 import { NewsletterComponent } from './Newsletter';
 import type { NewsletterFormProps } from './Newsletter';
-import type { Menu as MenuType, MenuItem } from '@ifixit/ui';
+import type { Menu as MenuType, MenuItem } from '@ifixit/menu';
 import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
 
 type NavSectionProps = {
@@ -58,7 +58,7 @@ const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
    }
    return (
       <>
-         <Text fontSize="16px" fontWeight="bold" color="white" my={2}>
+         <Text fontSize="sm" fontWeight="semibold" color="white" mb="3">
             {menu.title}
          </Text>
          <FooterNavigationListItems menu={menu} />
@@ -75,10 +75,7 @@ const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
       return (
          <FooterNavigationItem key={index}>
             <FooterNavigationLink
-               fontSize="14px"
-               fontWeight="normal"
-               m={0}
-               p={0}
+               fontSize="sm"
                color="gray.300"
                _visited={{ color: 'gray.300' }}
                _hover={{ color: 'white', textDecoration: 'none' }}
@@ -102,8 +99,7 @@ const FooterTopSection = forwardRef<FlexProps, 'div'>((props, ref) => {
    return (
       <Flex
          ref={ref}
-         p={5}
-         pb={8}
+         pb={10}
          flexDirection={{
             base: 'column',
             md: 'row',
@@ -127,11 +123,7 @@ export const FooterNavigationSection = forwardRef<SimpleGridProps, 'div'>(
             spacing="4"
             p="0"
             autoFlow="row"
-            flexGrow={2}
-            width={{
-               base: '100%',
-               md: '60%',
-            }}
+            flex="1"
             {...props}
          />
       );
@@ -156,7 +148,7 @@ export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
 );
 
 export const FooterNavigationItem = (props: ListItemProps) => {
-   return <ListItem py="1" fontSize="sm" color="gray.300" {...props} />;
+   return <ListItem py="1" my="1" fontSize="sm" color="gray.300" {...props} />;
 };
 
 type FooterNavigationLinkProps = BoxProps & {
