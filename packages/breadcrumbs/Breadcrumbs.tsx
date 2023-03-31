@@ -142,7 +142,8 @@ const IFixitBreadcrumb = memo(function IFixitBreadcrumb({
             ...hiddenWrapProps,
             flexDirection: 'row-reverse',
             justifyContent: 'flex-end',
-            height: '20px',
+            height: 'min-content',
+            minHeight: '20px',
          }}
       >
          {BreadCrumbItems}
