@@ -125,11 +125,13 @@ function NavBar({
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
          >
             <BreadCrumbs
-               height="48px"
+               minW="0"
+               minHeight="48px"
+               height="min-content"
                breadCrumbs={bc}
                paddingInline={padding}
             />
-            <Flex>
+            <Flex minW="0">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -195,6 +197,7 @@ function EditButton({ editUrl }: { editUrl: string }) {
          color="brand.500"
          textAlign="center"
          href={editUrl}
+         minW="fit-content"
       >
          Edit
       </Button>
