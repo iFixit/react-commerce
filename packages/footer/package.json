@@ -12,7 +12,8 @@
    "dependencies": {
       "@ifixit/menu": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
-      "@ifixit/icons": "workspace:*"
+      "@ifixit/icons": "workspace:*",
+      "@ifixit/tracking-hooks": "workspace:*"
    },
    "peerDependencies": {
       "@chakra-ui/react": ">=2",

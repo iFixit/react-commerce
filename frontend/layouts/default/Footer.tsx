@@ -22,9 +22,9 @@ import {
    Footer,
    FooterLink,
    FooterDivider,
-   EventTracker,
    NavigationSection,
 } from '@ifixit/footer';
+import { EventTracker } from '@ifixit/tracking-hooks';
 import { CountryCode } from '@lib/shopify-storefront-sdk';
 
 interface FooterProps {

@@ -11,7 +11,7 @@ import {
    MenuItemProps,
    Text,
 } from '@chakra-ui/react';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 type StoreMenuButtonProps = MenuButtonProps & {
    icon?: React.ReactNode;

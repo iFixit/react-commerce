@@ -1,7 +1,7 @@
 import { Divider, Box, forwardRef, HStack, Icon, Text } from '@chakra-ui/react';
 import type { DividerProps, FlexProps, StackProps } from '@chakra-ui/react';
 import type { Menu } from '@ifixit/menu';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 export interface FooterType {
    menu1: Menu | null;
