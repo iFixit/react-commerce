@@ -20,6 +20,7 @@ import {
    chakra,
    OrderedList,
    ListItem,
+   Spacer,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -72,6 +73,7 @@ const Wiki: NextPageWithLayout<{
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
+            <Spacer borderBottom="1px" borderColor="gray.300" />
             {wikiData.solutions.length > 0 && (
                <>
                   <Heading as="h2" fontSize="20px">
