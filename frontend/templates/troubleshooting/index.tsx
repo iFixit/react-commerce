@@ -18,6 +18,8 @@ import {
    MenuItem,
    MenuList,
    chakra,
+   OrderedList,
+   ListItem,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -70,6 +72,22 @@ const Wiki: NextPageWithLayout<{
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
+            {wikiData.solutions.length > 0 && (
+               <>
+                  <Heading as="h2" size="md">
+                     {'Causes'}
+                  </Heading>
+                  <OrderedList>
+                     {wikiData.solutions.map((solution, index) => (
+                        <ListItem key={solution.heading}>
+                           <Link href={`#solution-${index + 1}`}>
+                              {solution.heading}
+                           </Link>
+                        </ListItem>
+                     ))}
+                  </OrderedList>
+               </>
+            )}
             {wikiData.solutions.map((solution, index) => (
                <SolutionCard
                   key={solution.heading}
