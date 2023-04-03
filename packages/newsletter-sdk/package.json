@@ -5,7 +5,7 @@
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/analytics": "workspace:*",
+      "@ifixit/tracking-hooks": "workspace:*",
       "@ifixit/helpers": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*"
    },

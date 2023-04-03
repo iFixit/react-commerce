@@ -1,4 +1,4 @@
-import { trackInMatomoAndGA } from '@ifixit/analytics';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 import { isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import * as React from 'react';
@@ -43,7 +43,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
                status: SubscriptionStatus.Subscribed,
                error: undefined,
             }));
-            trackInMatomoAndGA({
+            useTrackedOnClick({
                eventCategory: 'Newsletter',
                eventAction: 'Subscribe Form - Submit',
             });
