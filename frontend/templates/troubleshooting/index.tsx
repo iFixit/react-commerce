@@ -74,13 +74,17 @@ const Wiki: NextPageWithLayout<{
             ))}
             {wikiData.solutions.length > 0 && (
                <>
-                  <Heading as="h2" size="md">
+                  <Heading as="h2" fontSize="20px">
                      {'Causes'}
                   </Heading>
-                  <OrderedList>
+                  <OrderedList marginBottom="24px" spacing="8px">
                      {wikiData.solutions.map((solution, index) => (
                         <ListItem key={solution.heading}>
-                           <Link href={`#solution-${index + 1}`}>
+                           <Link
+                              href={`#solution-${index + 1}`}
+                              color="brand.500"
+                              fontWeight="bold"
+                           >
                               {solution.heading}
                            </Link>
                         </ListItem>
