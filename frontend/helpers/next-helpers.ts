@@ -51,11 +51,4 @@ export const withNoindexDevDomains: GetServerSidePropsMiddleware = (next) => {
    };
 };
 
-export const withSentry: GetServerSidePropsMiddleware = (next) => {
-   process.on('unhandledRejection', (reason) => {
-      console.log('[Debug] Reporting exception to sentry', reason);
-      Sentry.captureException(reason);
-      console.log('[Debug] Reported to Sentry');
-   });
-   return next;
-};
+export const withSentry: GetServerSidePropsMiddleware = (next) => next;
