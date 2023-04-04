@@ -2223,6 +2223,40 @@ export type UsersPermissionsUserRelationResponseCollection = {
    data: Array<UsersPermissionsUserEntity>;
 };
 
+export type BannerFieldsFragment = {
+   __typename?: 'BannerEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'Banner';
+      title?: string | null;
+      label?: string | null;
+      description?: string | null;
+      image?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+      callToAction?: {
+         __typename?: 'ComponentPageCallToAction';
+         title: string;
+         url: string;
+      } | null;
+   } | null;
+};
+
+export type CallToActionFieldsFragment = {
+   __typename?: 'ComponentPageCallToAction';
+   title: string;
+   url: string;
+};
+
 export type CompanyFieldsFragment = {
    __typename?: 'CompanyEntity';
    id?: string | null;
@@ -2499,12 +2533,6 @@ export type FindPageQuery = {
    } | null;
 };
 
-export type CallToActionFieldsFragment = {
-   __typename?: 'ComponentPageCallToAction';
-   title: string;
-   url: string;
-};
-
 export type FindProductQueryVariables = Exact<{
    handle?: InputMaybe<Scalars['String']>;
 }>;
@@ -2562,6 +2590,40 @@ export type FindProductQuery = {
                     title?: string | null;
                  }
                | { __typename: 'ComponentSectionBanner' }
+               | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
                | {
                     __typename: 'ComponentSectionFeaturedProducts';
                     id: string;
@@ -3789,6 +3851,41 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export type BannersSectionFieldsFragment = {
+   __typename?: 'ComponentSectionBanner';
+   id: string;
+   banners?: {
+      __typename?: 'BannerRelationResponseCollection';
+      data: Array<{
+         __typename?: 'BannerEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Banner';
+            title?: string | null;
+            label?: string | null;
+            description?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            callToAction?: {
+               __typename?: 'ComponentPageCallToAction';
+               title: string;
+               url: string;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type BrowseSectionFieldsFragment = {
    __typename?: 'ComponentPageBrowse';
    id: string;
@@ -4206,6 +4303,38 @@ export const ImageFieldsFragmentDoc = `
   }
 }
     `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const BannerFieldsFragmentDoc = `
+    fragment BannerFields on BannerEntity {
+  id
+  attributes {
+    title
+    label
+    description
+    image {
+      ...ImageFields
+    }
+    callToAction {
+      ...CallToActionFields
+    }
+  }
+}
+    `;
+export const BannersSectionFieldsFragmentDoc = `
+    fragment BannersSectionFields on ComponentSectionBanner {
+  id
+  banners {
+    data {
+      ...BannerFields
+    }
+  }
+}
+    `;
 export const ProductListFieldsFragmentDoc = `
     fragment ProductListFields on ProductListEntity {
   attributes {
@@ -4258,12 +4387,6 @@ export const FeaturedProductsSectionFieldsFragmentDoc = `
       }
     }
   }
-}
-    `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
 }
     `;
 export const HeroSectionFieldsFragmentDoc = `
@@ -4454,6 +4577,7 @@ export const FindProductDocument = `
           ...FeaturedProductsSectionFields
           ...LifetimeWarrantySectionFields
           ...SplitWithImageSectionFields
+          ...BannersSectionFields
         }
       }
     }
@@ -4468,7 +4592,9 @@ ${FeaturedProductsSectionFieldsFragmentDoc}
 ${LifetimeWarrantySectionFieldsFragmentDoc}
 ${SplitWithImageSectionFieldsFragmentDoc}
 ${CallToActionFieldsFragmentDoc}
-${ImageFieldsFragmentDoc}`;
+${ImageFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

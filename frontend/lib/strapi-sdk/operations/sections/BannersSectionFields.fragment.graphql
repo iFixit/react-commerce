@@ -1,0 +1,8 @@
+fragment BannersSectionFields on ComponentSectionBanner {
+   id
+   banners {
+      data {
+         ...BannerFields
+      }
+   }
+}
