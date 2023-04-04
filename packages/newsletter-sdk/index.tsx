@@ -1,4 +1,4 @@
-import { useTrackedOnClick } from '@ifixit/tracking-hooks';
+import { TrackingContext } from '@ifixit/tracking-hooks';
 import { isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import * as React from 'react';
@@ -29,6 +29,8 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
       status: SubscriptionStatus.Idle,
    });
 
+   const { trackClick } = React.useContext(TrackingContext);
+
    const subscribe = React.useCallback<SubscribeFn>(async (email) => {
       if (EMAIL_VALIDATION_REGEX.test(email)) {
          setState((current) => ({
@@ -43,7 +45,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
                status: SubscriptionStatus.Subscribed,
                error: undefined,
             }));
-            useTrackedOnClick({
+            trackClick({
                eventCategory: 'Newsletter',
                eventAction: 'Subscribe Form - Submit',
             });

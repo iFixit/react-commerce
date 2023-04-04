@@ -1,2 +1,2 @@
 export * from './hooks/useTrackedOnClick';
-export { EventTracker } from './hooks/TrackingContext';
+export * from './hooks/TrackingContext';
