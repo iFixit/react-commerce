@@ -90,7 +90,6 @@ function BannerGridItem({ banner }: BannerProps) {
                >
                   {banner.callToAction.title}
                   <FaIcon icon={faArrowRight} h="4" mt="0.5" ml="1" />
-                  {/* <Icon as={HiChevronRight} boxSize="6" /> */}
                </Link>
             )}
          </Flex>

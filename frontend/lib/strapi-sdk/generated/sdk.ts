@@ -2589,7 +2589,6 @@ export type FindProductQuery = {
                     id: string;
                     title?: string | null;
                  }
-               | { __typename: 'ComponentSectionBanner' }
                | {
                     __typename: 'ComponentSectionBanner';
                     id: string;

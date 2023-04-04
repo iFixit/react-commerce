@@ -211,10 +211,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'Banners': {
-                     if (section.banners.length === 0) return null;
-
-                     // return null;
-                     // return <p key={section.id}>Banners</p>;
                      return (
                         <BannersSection
                            key={section.id}
