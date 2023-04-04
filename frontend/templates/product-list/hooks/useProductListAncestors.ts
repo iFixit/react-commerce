@@ -11,7 +11,6 @@ export function useProductListAncestors(productList: ProductList) {
    let { ancestors } = productList;
    const itemType = useDevicePartsItemType({
       ...productList,
-      deviceItemType: null,
    });
 
    let currentItemTitle = productList.title;

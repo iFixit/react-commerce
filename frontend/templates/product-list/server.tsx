@@ -83,8 +83,7 @@ export const getProductListServerSideProps = ({
                         eqi: deviceTitle,
                      },
                   },
-                  ifixitOrigin,
-                  itemType
+                  ifixitOrigin
                )
             );
 
