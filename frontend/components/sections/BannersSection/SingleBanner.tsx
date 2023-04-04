@@ -1,40 +1,15 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import { Wrapper } from '@ifixit/ui';
+import { Box, Button, Text } from '@chakra-ui/react';
+import { ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { Banner } from '@models/components/banner';
-import NextImage from 'next/image';
 import NextLink from 'next/link';
-import { SectionDescription } from './SectionDescription';
-import { SectionHeading } from './SectionHeading';
+import { SectionDescription } from '../SectionDescription';
+import { SectionHeading } from '../SectionHeading';
 
-export interface BannersSectionProps {
-   banners: Banner[];
-}
-
-export function BannersSection({ banners }: BannersSectionProps) {
-   if (banners.length === 0) return null;
-
-   if (banners.length === 1) {
-      return <Banner banner={banners[0]} />;
-   }
-
-   return (
-      <Box as="section" position="relative" w="full" py="16">
-         <Wrapper>
-            <Flex justify="space-between" align="center">
-               {banners.map((banner) => (
-                  <Banner key={banner.id} banner={banner} />
-               ))}
-            </Flex>
-         </Wrapper>
-      </Box>
-   );
-}
-
-interface BannerProps {
+interface SingleBannerProps {
    banner: Banner;
 }
 
-function Banner({ banner }: BannerProps) {
+export function SingleBanner({ banner }: SingleBannerProps) {
    return (
       <Box as="section" position="relative" w="full" pt="36" pb="16">
          <Box
@@ -55,7 +30,7 @@ function Banner({ banner }: BannerProps) {
                bottom="0"
                right="0"
             >
-               <NextImage
+               <ResponsiveImage
                   src={banner.image.url}
                   alt=""
                   layout="fill"
