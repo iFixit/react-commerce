@@ -261,6 +261,13 @@ export type ComponentProductCrossSell = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentProductDeviceCompatibility = {
+   __typename?: 'ComponentProductDeviceCompatibility';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentProductListBanner = {
    __typename?: 'ComponentProductListBanner';
    callToActionLabel: Scalars['String'];
@@ -314,6 +321,13 @@ export type ComponentSectionFeaturedProducts = {
    description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    productList?: Maybe<ProductListEntityResponse>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionLifetimeWarranty = {
+   __typename?: 'ComponentSectionLifetimeWarranty';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
    title?: Maybe<Scalars['String']>;
 };
 
@@ -560,6 +574,7 @@ export type GenericMorph =
    | ComponentPageStatItem
    | ComponentPageStats
    | ComponentProductCrossSell
+   | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
@@ -567,6 +582,7 @@ export type GenericMorph =
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
@@ -1363,10 +1379,12 @@ export type ProductListSectionsDynamicZone =
 export type ProductSectionsDynamicZone =
    | ComponentPageSplitWithImage
    | ComponentProductCrossSell
+   | ComponentProductDeviceCompatibility
    | ComponentProductProduct
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
    | ComponentSectionServiceValuePropositions
    | ComponentSectionStories
    | Error;
@@ -2337,6 +2355,100 @@ export type CallToActionFieldsFragment = {
    __typename?: 'ComponentPageCallToAction';
    title: string;
    url: string;
+};
+
+export type FindProductQueryVariables = Exact<{
+   handle?: InputMaybe<Scalars['String']>;
+}>;
+
+export type FindProductQuery = {
+   __typename?: 'Query';
+   products?: {
+      __typename?: 'ProductEntityResponseCollection';
+      data: Array<{
+         __typename?: 'ProductEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Product';
+            handle: string;
+            sections: Array<
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentProductCrossSell';
+                    id: string;
+                    title?: string | null;
+                 }
+               | { __typename: 'ComponentProductDeviceCompatibility' }
+               | { __typename: 'ComponentProductProduct'; id: string }
+               | {
+                    __typename: 'ComponentProductProductCustomerReviews';
+                    id: string;
+                    title?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentProductReplacementGuides';
+                    id: string;
+                    title?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionFeaturedProducts';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    background?: Enum_Componentsectionfeaturedproducts_Background | null;
+                    productList?: {
+                       __typename?: 'ProductListEntityResponse';
+                       data?: {
+                          __typename?: 'ProductListEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             filters?: string | null;
+                             deviceTitle?: string | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionLifetimeWarranty';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionServiceValuePropositions';
+                    id: string;
+                 }
+               | { __typename: 'ComponentSectionStories' }
+               | { __typename: 'Error' }
+               | null
+            >;
+         } | null;
+      }>;
+   } | null;
 };
 
 export type FindStoreQueryVariables = Exact<{
@@ -3651,6 +3763,13 @@ export type HeroSectionFieldsFragment = {
    } | null;
 };
 
+export type LifetimeWarrantySectionFieldsFragment = {
+   __typename?: 'ComponentSectionLifetimeWarranty';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+};
+
 export type PressQuotesSectionFieldsFragment = {
    __typename?: 'ComponentPagePress';
    id: string;
@@ -3718,6 +3837,34 @@ export type PressQuoteFieldsFragment = {
          } | null;
       } | null;
    } | null;
+};
+
+export type ProductCrossSellSectionFieldsFragment = {
+   __typename?: 'ComponentProductCrossSell';
+   id: string;
+   title?: string | null;
+};
+
+export type ProductCustomerReviewsSectionFieldsFragment = {
+   __typename?: 'ComponentProductProductCustomerReviews';
+   id: string;
+   title?: string | null;
+};
+
+export type ProductOverviewSectionFieldsFragment = {
+   __typename?: 'ComponentProductProduct';
+   id: string;
+};
+
+export type ProductReplacementGuidesSectionFieldsFragment = {
+   __typename?: 'ComponentProductReplacementGuides';
+   id: string;
+   title?: string | null;
+};
+
+export type ServiceValuePropositionsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionServiceValuePropositions';
+   id: string;
 };
 
 export type SocialGallerySectionFieldsFragment = {
@@ -3982,6 +4129,13 @@ export const HeroSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const LifetimeWarrantySectionFieldsFragmentDoc = `
+    fragment LifetimeWarrantySectionFields on ComponentSectionLifetimeWarranty {
+  id
+  title
+  description
+}
+    `;
 export const CompanyFieldsFragmentDoc = `
     fragment CompanyFields on CompanyEntity {
   id
@@ -4015,6 +4169,34 @@ export const PressQuotesSectionFieldsFragmentDoc = `
   callToAction {
     ...CallToActionFields
   }
+}
+    `;
+export const ProductCrossSellSectionFieldsFragmentDoc = `
+    fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
+  id
+  title
+}
+    `;
+export const ProductCustomerReviewsSectionFieldsFragmentDoc = `
+    fragment ProductCustomerReviewsSectionFields on ComponentProductProductCustomerReviews {
+  id
+  title
+}
+    `;
+export const ProductOverviewSectionFieldsFragmentDoc = `
+    fragment ProductOverviewSectionFields on ComponentProductProduct {
+  id
+}
+    `;
+export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
+    fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
+  id
+  title
+}
+    `;
+export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
+    fragment ServiceValuePropositionsSectionFields on ComponentSectionServiceValuePropositions {
+  id
 }
     `;
 export const SocialPostFieldsFragmentDoc = `
@@ -4105,6 +4287,38 @@ ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
 ${SocialPostFieldsFragmentDoc}`;
+export const FindProductDocument = `
+    query findProduct($handle: String) {
+  products(filters: {handle: {eq: $handle}}) {
+    data {
+      id
+      attributes {
+        handle
+        sections {
+          __typename
+          ...ProductOverviewSectionFields
+          ...ProductReplacementGuidesSectionFields
+          ...ServiceValuePropositionsSectionFields
+          ...ProductCrossSellSectionFields
+          ...ProductCustomerReviewsSectionFields
+          ...FeaturedProductsSectionFields
+          ...LifetimeWarrantySectionFields
+          ...SplitWithImageSectionFields
+        }
+      }
+    }
+  }
+}
+    ${ProductOverviewSectionFieldsFragmentDoc}
+${ProductReplacementGuidesSectionFieldsFragmentDoc}
+${ServiceValuePropositionsSectionFieldsFragmentDoc}
+${ProductCrossSellSectionFieldsFragmentDoc}
+${ProductCustomerReviewsSectionFieldsFragmentDoc}
+${FeaturedProductsSectionFieldsFragmentDoc}
+${LifetimeWarrantySectionFieldsFragmentDoc}
+${SplitWithImageSectionFieldsFragmentDoc}
+${CallToActionFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -4368,6 +4582,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
       ): Promise<FindPageQuery> {
          return requester<FindPageQuery, FindPageQueryVariables>(
             FindPageDocument,
+            variables,
+            options
+         );
+      },
+      findProduct(
+         variables?: FindProductQueryVariables,
+         options?: C
+      ): Promise<FindProductQuery> {
+         return requester<FindProductQuery, FindProductQueryVariables>(
+            FindProductDocument,
             variables,
             options
          );

@@ -41,6 +41,7 @@ export function FacetRefinementListAccordionItem({
          refinementIndicator="count"
       >
          <RefinementListFacet
+            attribute={attribute}
             items={items}
             refine={refine}
             canToggleShowMore={canToggleShowMore}

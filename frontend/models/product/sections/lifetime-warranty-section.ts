@@ -7,4 +7,6 @@ export type LifetimeWarrantySection = z.infer<
 export const LifetimeWarrantySectionSchema = z.object({
    type: z.literal('LifetimeWarranty'),
    id: z.string(),
+   title: z.string().nullable(),
+   description: z.string().nullable(),
 });

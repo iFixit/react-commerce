@@ -13,7 +13,12 @@ import {
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { assertNever, moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import {
+   assertNever,
+   isLifetimeWarranty,
+   moneyToNumber,
+   parseItemcode,
+} from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
@@ -143,6 +148,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <CrossSellSection
                            key={section.id}
+                           title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
                         />
@@ -164,6 +170,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ProductReviewsSection
                            key={section.id}
+                           title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
                         />
@@ -190,13 +197,18 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
-                  case 'LifetimeWarranty':
+                  case 'LifetimeWarranty': {
+                     if (!isLifetimeWarranty(selectedVariant.warranty))
+                        return null;
+
                      return (
                         <LifetimeWarrantySection
                            key={section.id}
-                           variant={selectedVariant}
+                           title={section.title}
+                           description={section.description}
                         />
                      );
+                  }
                   default:
                      return assertNever(section);
                }
