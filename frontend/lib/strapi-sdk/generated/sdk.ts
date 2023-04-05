@@ -430,6 +430,7 @@ export type ComponentSectionQuote = {
    __typename?: 'ComponentSectionQuote';
    author?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
    text: Scalars['String'];
 };
 
@@ -2648,7 +2649,24 @@ export type FindProductQuery = {
                     title?: string | null;
                     description?: string | null;
                  }
-               | { __typename: 'ComponentSectionQuote' }
+               | {
+                    __typename: 'ComponentSectionQuote';
+                    id: string;
+                    text: string;
+                    author?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
                | {
                     __typename: 'ComponentSectionServiceValuePropositions';
                     id: string;
@@ -4108,6 +4126,25 @@ export type ProductReplacementGuidesSectionFieldsFragment = {
    title?: string | null;
 };
 
+export type QuoteSectionFieldsFragment = {
+   __typename?: 'ComponentSectionQuote';
+   id: string;
+   text: string;
+   author?: string | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type ServiceValuePropositionsSectionFieldsFragment = {
    __typename?: 'ComponentSectionServiceValuePropositions';
    id: string;
@@ -4466,6 +4503,16 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
   title
 }
     `;
+export const QuoteSectionFieldsFragmentDoc = `
+    fragment QuoteSectionFields on ComponentSectionQuote {
+  id
+  text
+  author
+  image {
+    ...ImageFields
+  }
+}
+    `;
 export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
     fragment ServiceValuePropositionsSectionFields on ComponentSectionServiceValuePropositions {
   id
@@ -4577,6 +4624,7 @@ export const FindProductDocument = `
           ...LifetimeWarrantySectionFields
           ...SplitWithImageSectionFields
           ...BannersSectionFields
+          ...QuoteSectionFields
         }
       }
     }
@@ -4593,7 +4641,8 @@ ${SplitWithImageSectionFieldsFragmentDoc}
 ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${BannersSectionFieldsFragmentDoc}
-${BannerFieldsFragmentDoc}`;
+${BannerFieldsFragmentDoc}
+${QuoteSectionFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

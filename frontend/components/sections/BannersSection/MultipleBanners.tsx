@@ -44,7 +44,7 @@ function BannerGridItem({ banner }: BannerProps) {
             <AspectRatio ratio={4 / 3}>
                <ResponsiveImage
                   src={banner.image.url}
-                  alt="store hero image"
+                  alt={banner.image.altText ?? ''}
                   layout="fill"
                   objectFit="cover"
                />
