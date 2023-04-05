@@ -20,7 +20,7 @@ To update a Jest snapshot, follow these steps:
 pnpm test -- [test-name] --updateSnapshot
 ```
 
-## Woring with Mock Data
+## Working with Mock Data
 
 Unlike `Playwright`, we don't use `MSW` for mocking. We use static mock data passed to our components. The mock data is located in the `__mocks__` directory, containing both `ts` and `tsx` files.
 
