@@ -1,7 +1,8 @@
 {
    "collectionName": "components_section_quotes",
    "info": {
-      "displayName": "quote"
+      "displayName": "quote",
+      "description": ""
    },
    "options": {},
    "attributes": {
@@ -11,6 +12,11 @@
       },
       "author": {
          "type": "string"
+      },
+      "image": {
+         "allowedTypes": ["images"],
+         "type": "media",
+         "multiple": false
       }
    }
 }
