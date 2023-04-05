@@ -2,4 +2,7 @@ fragment QuoteSectionFields on ComponentSectionQuote {
    id
    text
    author
+   image {
+      ...ImageFields
+   }
 }

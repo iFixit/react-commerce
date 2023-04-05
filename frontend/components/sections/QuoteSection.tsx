@@ -1,13 +1,15 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
+import type { Image } from '@models/components/image';
 
 interface QuoteSectionProps {
    id: string;
    quote: string;
    author?: string | null;
+   image?: Image | null;
 }
 
-export function QuoteSection({ id, quote, author }: QuoteSectionProps) {
+export function QuoteSection({ id, quote, author, image }: QuoteSectionProps) {
    return (
       <Box
          as="section"
@@ -27,7 +29,7 @@ export function QuoteSection({ id, quote, author }: QuoteSectionProps) {
             bottom="0"
             right="0"
          />
-         {true && (
+         {image && (
             <Box
                position="absolute"
                zIndex={-2}
@@ -37,8 +39,7 @@ export function QuoteSection({ id, quote, author }: QuoteSectionProps) {
                right="0"
             >
                <ResponsiveImage
-                  src="http://localhost:3000/uploads/store_home_hero_2_4d3893674a.jpeg"
-                  // src={banner.image.url}
+                  src={image.url}
                   alt=""
                   layout="fill"
                   objectFit="cover"

@@ -1,5 +1,6 @@
 import { isPresent } from '@ifixit/helpers';
 import type { QuoteSectionFieldsFragment } from '@lib/strapi-sdk';
+import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 
 export type QuoteSection = z.infer<typeof QuoteSectionSchema>;
@@ -9,6 +10,7 @@ export const QuoteSectionSchema = z.object({
    id: z.string(),
    text: z.string(),
    author: z.string().nullable(),
+   image: ImageSchema.nullable(),
 });
 
 export function quoteSectionFromStrapi(
@@ -24,5 +26,6 @@ export function quoteSectionFromStrapi(
       id: sectionId,
       text,
       author: fragment?.author ?? null,
+      image: imageFromStrapi(fragment?.image),
    };
 }

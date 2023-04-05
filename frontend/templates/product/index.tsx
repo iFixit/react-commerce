@@ -226,6 +226,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            id={section.id}
                            quote={section.text}
                            author={section.author}
+                           image={section.image}
                         />
                      );
                   }

@@ -430,6 +430,7 @@ export type ComponentSectionQuote = {
    __typename?: 'ComponentSectionQuote';
    author?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
    text: Scalars['String'];
 };
 
@@ -2653,6 +2654,18 @@ export type FindProductQuery = {
                     id: string;
                     text: string;
                     author?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
                  }
                | {
                     __typename: 'ComponentSectionServiceValuePropositions';
@@ -4118,6 +4131,18 @@ export type QuoteSectionFieldsFragment = {
    id: string;
    text: string;
    author?: string | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
 };
 
 export type ServiceValuePropositionsSectionFieldsFragment = {
@@ -4483,6 +4508,9 @@ export const QuoteSectionFieldsFragmentDoc = `
   id
   text
   author
+  image {
+    ...ImageFields
+  }
 }
     `;
 export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
