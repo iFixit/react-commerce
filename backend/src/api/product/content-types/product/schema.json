@@ -29,7 +29,9 @@
             "product.product-customer-reviews",
             "section.featured-products",
             "product.device-compatibility",
-            "section.lifetime-warranty"
+            "section.lifetime-warranty",
+            "section.banner",
+            "section.quote"
          ],
          "required": true
       }

@@ -22,9 +22,9 @@ import {
    Footer,
    FooterLink,
    FooterDivider,
-   EventTracker,
    NavigationSection,
 } from '@ifixit/footer';
+import { EventTracker } from '@ifixit/tracking-hooks';
 import { CountryCode } from '@lib/shopify-storefront-sdk';
 
 interface FooterProps {
@@ -131,6 +131,7 @@ export function CartFooter({
                                  <ResponsiveImage
                                     layout="fill"
                                     objectFit="contain"
+                                    alt="no-image"
                                     src={noImageFixie}
                                     style={{ filter: 'grayscale(100%)' }}
                                  />

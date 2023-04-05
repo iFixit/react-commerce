@@ -19,6 +19,7 @@ import { Rating } from '@components/ui';
 import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
+import { isPresent } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@models/product';
@@ -29,14 +30,17 @@ import React from 'react';
 const INITIAL_VISIBILE_REVIEWS = 3;
 
 export type ReviewsSectionProps = {
+   title?: string | null;
    product: Product;
    selectedVariant: ProductVariant;
 };
 
 export function ProductReviewsSection({
+   title,
    product,
    selectedVariant,
 }: ReviewsSectionProps) {
+   const sectionTitle = isPresent(title) ? title : 'Customer Reviews';
    const reviewsQuery = useProductReviews(product);
    const reviewsData = reviewsQuery.data;
 
@@ -91,7 +95,7 @@ export function ProductReviewsSection({
                fontSize={{ base: '2xl', md: '3xl' }}
                fontWeight="medium"
             >
-               Customer Reviews
+               {sectionTitle}
             </Heading>
             {canShowReviews ? (
                <>

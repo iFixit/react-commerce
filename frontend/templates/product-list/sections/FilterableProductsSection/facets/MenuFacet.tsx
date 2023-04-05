@@ -7,6 +7,7 @@ import {
    useBoolean,
    VStack,
 } from '@chakra-ui/react';
+import { formatFacetName } from '@helpers/algolia-helpers';
 import { invariant } from '@helpers/application-helpers';
 import React, { MouseEventHandler } from 'react';
 import { ShowMoreButton } from './ShowMoreButton';
@@ -15,6 +16,7 @@ import type { MenuFacetState } from './useMenuFacet';
 type MenuItem = MenuFacetState['items'][0];
 
 export type MenuFacetProps = {
+   attribute: string;
    items: MenuItem[];
    limit: number;
    onItemClick?: (value: string) => void;
@@ -26,6 +28,7 @@ export type MenuFacetProps = {
 
 export function MenuFacet(props: MenuFacetProps) {
    const { isShowingMore, canToggleShowMore, onShowMore } = useShowMore(props);
+   const formattedFacetName = formatFacetName(props.attribute);
 
    const firstItems = React.useMemo(() => {
       return props.items.slice(0, props.limit);
@@ -37,7 +40,12 @@ export function MenuFacet(props: MenuFacetProps) {
 
    return (
       <Box>
-         <VStack align="stretch" spacing="2" role="listbox">
+         <VStack
+            align="stretch"
+            spacing="2"
+            role="listbox"
+            aria-label={`${formattedFacetName} options`}
+         >
             {firstItems.map((item) => (
                <MenuListItem
                   key={item.label}
@@ -49,25 +57,26 @@ export function MenuFacet(props: MenuFacetProps) {
                   onClick={props.onItemClick}
                />
             ))}
-            <VStack
-               align="stretch"
-               spacing="2"
-               role="listbox"
-               overflow="hidden"
-               h={isShowingMore ? undefined : 0}
-            >
-               {additionalItems.map((item) => (
-                  <MenuListItem
-                     key={item.label}
-                     label={item.label}
-                     value={item.value}
-                     count={item.count}
-                     isRefined={item.isRefined}
-                     url={props.createItemURL?.(item)}
-                     onClick={props.onItemClick}
-                  />
-               ))}
-            </VStack>
+            {additionalItems.length > 0 && (
+               <VStack
+                  align="stretch"
+                  spacing="2"
+                  overflow="hidden"
+                  h={isShowingMore ? undefined : 0}
+               >
+                  {additionalItems.map((item) => (
+                     <MenuListItem
+                        key={item.label}
+                        label={item.label}
+                        value={item.value}
+                        count={item.count}
+                        isRefined={item.isRefined}
+                        url={props.createItemURL?.(item)}
+                        onClick={props.onItemClick}
+                     />
+                  ))}
+               </VStack>
+            )}
          </VStack>
          {canToggleShowMore && (
             <ShowMoreButton

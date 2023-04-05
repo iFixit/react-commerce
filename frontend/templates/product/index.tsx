@@ -1,7 +1,9 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
+import { BannersSection } from '@components/sections/BannersSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { QuoteSection } from '@components/sections/QuoteSection';
 import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
@@ -13,7 +15,12 @@ import {
    trackMatomoEcommerceView,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { assertNever, moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import {
+   assertNever,
+   isLifetimeWarranty,
+   moneyToNumber,
+   parseItemcode,
+} from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
@@ -108,7 +115,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                </Flex>
             </SecondaryNavigation>
          )}
-         <Box pt="6">
+         <Box>
             {product.sections.map((section) => {
                switch (section.type) {
                   case 'ProductOverview':
@@ -143,6 +150,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <CrossSellSection
                            key={section.id}
+                           title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
                         />
@@ -164,6 +172,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ProductReviewsSection
                            key={section.id}
+                           title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
                         />
@@ -190,13 +199,37 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
-                  case 'LifetimeWarranty':
+                  case 'LifetimeWarranty': {
+                     if (!isLifetimeWarranty(selectedVariant.warranty))
+                        return null;
+
                      return (
                         <LifetimeWarrantySection
                            key={section.id}
-                           variant={selectedVariant}
+                           title={section.title}
+                           description={section.description}
                         />
                      );
+                  }
+                  case 'Banners': {
+                     return (
+                        <BannersSection
+                           key={section.id}
+                           banners={section.banners}
+                        />
+                     );
+                  }
+                  case 'Quote': {
+                     return (
+                        <QuoteSection
+                           key={section.id}
+                           id={section.id}
+                           quote={section.text}
+                           author={section.author}
+                           image={section.image}
+                        />
+                     );
+                  }
                   default:
                      return assertNever(section);
                }

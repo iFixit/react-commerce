@@ -1,13 +1,27 @@
+import { filterFalsyItems } from '@helpers/application-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
-import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
+import type { FindProductQuery as ShopifyFindProductQuery } from '@lib/shopify-storefront-sdk';
+import type { FindProductQuery as StrapiFindProductQuery } from '@lib/strapi-sdk';
 import { replacementGuidePreviewFromMetafield } from '@models/components/replacement-guide-preview';
 import {
+   bannersSectionFromStrapi,
+   BannersSectionSchema,
+} from '@models/sections/banners-section';
+import {
    featuredProductPreviewsFromShopifyProduct,
+   featuredProductsSectionFromStrapi,
    FeaturedProductsSectionSchema,
 } from '@models/sections/featured-products-section';
+import {
+   quoteSectionFromStrapi,
+   QuoteSectionSchema,
+} from '@models/sections/quote-section';
 import { ReplacementGuidesSectionSchema } from '@models/sections/replacement-guides-section';
 import { ServiceValuePropositionSectionSchema } from '@models/sections/service-value-proposition-section';
-import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
+import {
+   splitWithImageSectionFromStrapi,
+   SplitWithImageSectionSchema,
+} from '@models/sections/split-with-image-section';
 import { z } from 'zod';
 import { DeviceCompatibilitySectionSchema } from './compatibility-section';
 import { CrossSellSectionSchema } from './cross-sell-section';
@@ -27,16 +41,106 @@ export const ProductSectionSchema = z.union([
    FeaturedProductsSectionSchema,
    LifetimeWarrantySectionSchema,
    ServiceValuePropositionSectionSchema,
+   BannersSectionSchema,
+   QuoteSectionSchema,
 ]);
 
-type QueryProduct = NonNullable<FindProductQuery['product']>;
+interface GetProductSectionsArgs {
+   shopifyProduct: ShopifyProduct;
+   strapiProduct?: StrapiProduct | null;
+}
+
+type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
+type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
+
+export async function getProductSections({
+   shopifyProduct,
+   strapiProduct,
+}: GetProductSectionsArgs): Promise<ProductSection[]> {
+   if (!strapiProduct) return getDefaultProductSections({ shopifyProduct });
+
+   const strapiSections = strapiProduct.attributes?.sections ?? [];
+
+   const productSections = await Promise.all(
+      strapiSections.map(
+         async (section, index): Promise<ProductSection | null> => {
+            if (section == null) return null;
+
+            const sectionId = createSectionId(section, index);
+
+            switch (section.__typename) {
+               case 'ComponentProductProduct':
+                  return {
+                     type: 'ProductOverview',
+                     id: sectionId,
+                  };
+               case 'ComponentProductReplacementGuides':
+                  return {
+                     type: 'ReplacementGuides',
+                     id: sectionId,
+                     title: section.title ?? null,
+                     guides: replacementGuidePreviewFromMetafield(
+                        shopifyProduct.replacementGuides?.value
+                     ),
+                  };
+               case 'ComponentSectionServiceValuePropositions':
+                  return {
+                     type: 'ServiceValueProposition',
+                     id: sectionId,
+                  };
+               case 'ComponentProductCrossSell':
+                  return {
+                     type: 'CrossSell',
+                     id: sectionId,
+                     title: section.title ?? null,
+                  };
+               case 'ComponentProductProductCustomerReviews':
+                  return {
+                     type: 'ProductReviews',
+                     id: sectionId,
+                     title: section.title ?? null,
+                  };
+               case 'ComponentSectionFeaturedProducts':
+                  return featuredProductsSectionFromStrapi({
+                     strapiSection: section,
+                     sectionId,
+                     fallbackProducts:
+                        featuredProductPreviewsFromShopifyProduct(
+                           shopifyProduct
+                        ),
+                  });
+               case 'ComponentSectionLifetimeWarranty':
+                  return {
+                     type: 'LifetimeWarranty',
+                     id: sectionId,
+                     title: section.title ?? null,
+                     description: section.description ?? null,
+                  };
+               case 'ComponentPageSplitWithImage':
+                  return splitWithImageSectionFromStrapi(section, sectionId);
+
+               case 'ComponentSectionBanner':
+                  return bannersSectionFromStrapi(section, sectionId);
+
+               case 'ComponentSectionQuote':
+                  return quoteSectionFromStrapi(section, sectionId);
+
+               default:
+                  return null;
+            }
+         }
+      )
+   );
+
+   return filterFalsyItems(productSections);
+}
 
 interface GetDefaultProductSectionsArgs {
-   queryProduct: QueryProduct;
+   shopifyProduct: ShopifyProduct;
 }
 
 export function getDefaultProductSections({
-   queryProduct,
+   shopifyProduct,
 }: GetDefaultProductSectionsArgs): ProductSection[] {
    const sections: ProductSection[] = [];
    sections.push({
@@ -54,7 +158,7 @@ export function getDefaultProductSections({
       ),
       title: null,
       guides: replacementGuidePreviewFromMetafield(
-         queryProduct.replacementGuides?.value
+         shopifyProduct.replacementGuides?.value
       ),
    });
    sections.push({
@@ -67,6 +171,7 @@ export function getDefaultProductSections({
    sections.push({
       type: 'CrossSell',
       id: createSectionId({ __typename: 'CrossSellSection' }, sections.length),
+      title: null,
    });
    sections.push({
       type: 'ProductReviews',
@@ -74,6 +179,7 @@ export function getDefaultProductSections({
          { __typename: 'ProductReviewsSection' },
          sections.length
       ),
+      title: null,
    });
    sections.push({
       type: 'DeviceCompatibility',
@@ -91,7 +197,7 @@ export function getDefaultProductSections({
       title: 'Featured Products',
       description: null,
       background: 'white',
-      products: featuredProductPreviewsFromShopifyProduct(queryProduct),
+      products: featuredProductPreviewsFromShopifyProduct(shopifyProduct),
    });
    sections.push({
       type: 'LifetimeWarranty',
@@ -99,6 +205,8 @@ export function getDefaultProductSections({
          { __typename: 'LifetimeWarrantySection' },
          sections.length
       ),
+      title: null,
+      description: null,
    });
 
    return sections;

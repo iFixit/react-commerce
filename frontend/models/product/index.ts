@@ -1,6 +1,7 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { parseItemcode } from '@ifixit/helpers';
-import type { FindProductQuery } from '@lib/shopify-storefront-sdk';
+import type { FindProductQuery as ShopifyFindProductQuery } from '@lib/shopify-storefront-sdk';
+import type { FindProductQuery as StrapiFindProductQuery } from '@lib/strapi-sdk';
 import {
    appendCurrentPageBreadcrumb,
    BreadcrumbSchema,
@@ -44,7 +45,7 @@ import {
    productVideoFromMetafield,
    ProductVideosSchema,
 } from './components/product-video';
-import { getDefaultProductSections, ProductSectionSchema } from './sections';
+import { getProductSections, ProductSectionSchema } from './sections';
 
 export type {
    ProductVariant,
@@ -83,76 +84,90 @@ export const ProductSchema = z.object({
    sections: z.array(ProductSectionSchema),
 });
 
-type QueryProduct = NonNullable<FindProductQuery['product']>;
+type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
+type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
 
-export function productFromQueryProduct(
-   queryProduct: QueryProduct | null | undefined
-): Product | null {
-   if (queryProduct == null) return null;
+interface GetProductArgs {
+   shopifyProduct: ShopifyProduct | null | undefined;
+   strapiProduct: StrapiProduct | null | undefined;
+}
 
-   const variants = variantsFromQueryProduct(queryProduct);
+export async function getProduct({
+   shopifyProduct,
+   strapiProduct,
+}: GetProductArgs): Promise<Product | null> {
+   if (shopifyProduct == null) return null;
+
+   const variants = variantsFromQueryProduct(shopifyProduct);
    const hasActiveVariants = variants.some(isActiveVariant);
    const aVariantSku = variants.find((v) => v.sku != null)?.sku;
 
    if (aVariantSku == null) {
-      console.warn(`No sku found for product "${queryProduct.handle}"`);
+      console.warn(`No sku found for product "${shopifyProduct.handle}"`);
       return null;
    }
 
-   let breadcrumbs = breadcrumbsFromMetafield(queryProduct.breadcrumbs?.value);
-   if (isCurrentPageBreadcrumbMissing(breadcrumbs, queryProduct.title)) {
+   let breadcrumbs = breadcrumbsFromMetafield(
+      shopifyProduct.breadcrumbs?.value
+   );
+   if (isCurrentPageBreadcrumbMissing(breadcrumbs, shopifyProduct.title)) {
       breadcrumbs = appendCurrentPageBreadcrumb(
          breadcrumbs,
-         queryProduct.title
+         shopifyProduct.title
       );
    }
 
+   const sections = await getProductSections({
+      shopifyProduct,
+      strapiProduct,
+   });
+
    return {
-      id: queryProduct.id,
-      handle: queryProduct.handle,
-      title: queryProduct.title,
+      id: shopifyProduct.id,
+      handle: shopifyProduct.handle,
+      title: shopifyProduct.title,
       breadcrumbs,
-      descriptionHtml: queryProduct.descriptionHtml,
+      descriptionHtml: shopifyProduct.descriptionHtml,
       iFixitProductId: computeIFixitProductId(aVariantSku),
       productcode: parseItemcode(aVariantSku).productcode,
-      tags: queryProduct.tags,
-      images: imagesFromQueryProduct(queryProduct, variants),
-      options: queryProduct.options.map((option) =>
+      tags: shopifyProduct.tags,
+      images: imagesFromQueryProduct(shopifyProduct, variants),
+      options: shopifyProduct.options.map((option) =>
          productOptionFromShopify(option, variants)
       ),
       variants,
       isEnabled: hasActiveVariants,
-      prop65WarningType: queryProduct.prop65WarningType?.value ?? null,
-      prop65Chemicals: queryProduct.prop65Chemicals?.value ?? null,
-      productVideos: queryProduct.productVideos?.value ?? null,
+      prop65WarningType: shopifyProduct.prop65WarningType?.value ?? null,
+      prop65Chemicals: shopifyProduct.prop65Chemicals?.value ?? null,
+      productVideos: shopifyProduct.productVideos?.value ?? null,
       productVideosJson: productVideoFromMetafield(
-         queryProduct.productVideos?.value
+         shopifyProduct.productVideos?.value
       ),
-      faqs: faqsFromMetafield(queryProduct.faqs?.value),
+      faqs: faqsFromMetafield(shopifyProduct.faqs?.value),
       compatibility: productDeviceCompatibilityFromMetafield(
-         queryProduct.compatibility?.value
+         shopifyProduct.compatibility?.value
       ),
-      metaTitle: queryProduct.metaTitle?.value ?? null,
-      shortDescription: queryProduct.shortDescription?.value ?? null,
+      metaTitle: shopifyProduct.metaTitle?.value ?? null,
+      shortDescription: shopifyProduct.shortDescription?.value ?? null,
       reviews: productReviewsFromMetafields(
-         queryProduct.rating?.value,
-         queryProduct.reviewsCount?.value
+         shopifyProduct.rating?.value,
+         shopifyProduct.reviewsCount?.value
       ),
       oemPartnership: productOemPartnershipFromMetafield(
-         queryProduct.oemPartnership?.value
+         shopifyProduct.oemPartnership?.value
       ),
       enabledDomains: productEnabledDomainsFromMetafield(
-         queryProduct.enabledDomains?.value
+         shopifyProduct.enabledDomains?.value
       ),
-      redirectUrl: queryProduct.redirectUrl?.value ?? null,
-      vendor: queryProduct.vendor ?? null,
-      crossSellVariants: getAllCrossSellProductVariant(queryProduct),
-      sections: getDefaultProductSections({ queryProduct }),
+      redirectUrl: shopifyProduct.redirectUrl?.value ?? null,
+      vendor: shopifyProduct.vendor ?? null,
+      crossSellVariants: getAllCrossSellProductVariant(shopifyProduct),
+      sections,
    };
 }
 
 function imagesFromQueryProduct(
-   queryProduct: QueryProduct,
+   queryProduct: ShopifyProduct,
    variants: ProductVariant[]
 ): ProductVariantImage[] {
    const allImages = filterFalsyItems(

@@ -30,6 +30,74 @@ export type Scalars = {
    Upload: any;
 };
 
+export type Banner = {
+   __typename?: 'Banner';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   createdAt?: Maybe<Scalars['DateTime']>;
+   description?: Maybe<Scalars['String']>;
+   image?: Maybe<UploadFileEntityResponse>;
+   label?: Maybe<Scalars['String']>;
+   locale?: Maybe<Scalars['String']>;
+   localizations?: Maybe<BannerRelationResponseCollection>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   title?: Maybe<Scalars['String']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type BannerLocalizationsArgs = {
+   filters?: InputMaybe<BannerFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type BannerEntity = {
+   __typename?: 'BannerEntity';
+   attributes?: Maybe<Banner>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type BannerEntityResponse = {
+   __typename?: 'BannerEntityResponse';
+   data?: Maybe<BannerEntity>;
+};
+
+export type BannerEntityResponseCollection = {
+   __typename?: 'BannerEntityResponseCollection';
+   data: Array<BannerEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type BannerFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<BannerFiltersInput>>>;
+   callToAction?: InputMaybe<ComponentPageCallToActionFiltersInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   description?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   label?: InputMaybe<StringFilterInput>;
+   locale?: InputMaybe<StringFilterInput>;
+   localizations?: InputMaybe<BannerFiltersInput>;
+   not?: InputMaybe<BannerFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<BannerFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type BannerInput = {
+   callToAction?: InputMaybe<ComponentPageCallToActionInput>;
+   description?: InputMaybe<Scalars['String']>;
+   image?: InputMaybe<Scalars['ID']>;
+   label?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   title?: InputMaybe<Scalars['String']>;
+};
+
+export type BannerRelationResponseCollection = {
+   __typename?: 'BannerRelationResponseCollection';
+   data: Array<BannerEntity>;
+};
+
 export type BooleanFilterInput = {
    and?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
    between?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -166,6 +234,20 @@ export type ComponentPageCallToAction = {
    url: Scalars['String'];
 };
 
+export type ComponentPageCallToActionFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentPageCallToActionFiltersInput>>>;
+   not?: InputMaybe<ComponentPageCallToActionFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentPageCallToActionFiltersInput>>>;
+   title?: InputMaybe<StringFilterInput>;
+   url?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentPageCallToActionInput = {
+   id?: InputMaybe<Scalars['ID']>;
+   title?: InputMaybe<Scalars['String']>;
+   url?: InputMaybe<Scalars['String']>;
+};
+
 export type ComponentPageCategory = {
    __typename?: 'ComponentPageCategory';
    id: Scalars['ID'];
@@ -261,6 +343,13 @@ export type ComponentProductCrossSell = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentProductDeviceCompatibility = {
+   __typename?: 'ComponentProductDeviceCompatibility';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
 export type ComponentProductListBanner = {
    __typename?: 'ComponentProductListBanner';
    callToActionLabel: Scalars['String'];
@@ -308,6 +397,19 @@ export type ComponentProductReplacementGuides = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentSectionBanner = {
+   __typename?: 'ComponentSectionBanner';
+   banners?: Maybe<BannerRelationResponseCollection>;
+   id: Scalars['ID'];
+};
+
+export type ComponentSectionBannerBannersArgs = {
+   filters?: InputMaybe<BannerFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentSectionFeaturedProducts = {
    __typename?: 'ComponentSectionFeaturedProducts';
    background?: Maybe<Enum_Componentsectionfeaturedproducts_Background>;
@@ -315,6 +417,21 @@ export type ComponentSectionFeaturedProducts = {
    id: Scalars['ID'];
    productList?: Maybe<ProductListEntityResponse>;
    title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionLifetimeWarranty = {
+   __typename?: 'ComponentSectionLifetimeWarranty';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionQuote = {
+   __typename?: 'ComponentSectionQuote';
+   author?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   text: Scalars['String'];
 };
 
 export type ComponentSectionServiceValuePropositions = {
@@ -544,6 +661,7 @@ export type FloatFilterInput = {
 };
 
 export type GenericMorph =
+   | Banner
    | Company
    | ComponentGlobalNewsletterForm
    | ComponentMenuLink
@@ -560,13 +678,17 @@ export type GenericMorph =
    | ComponentPageStatItem
    | ComponentPageStats
    | ComponentProductCrossSell
+   | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | ComponentProductProduct
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
+   | ComponentSectionBanner
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
+   | ComponentSectionQuote
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
@@ -801,6 +923,8 @@ export type Mutation = {
    __typename?: 'Mutation';
    /** Change user password. Confirm with the current password. */
    changePassword?: Maybe<UsersPermissionsLoginPayload>;
+   createBanner?: Maybe<BannerEntityResponse>;
+   createBannerLocalization?: Maybe<BannerEntityResponse>;
    createCompany?: Maybe<CompanyEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
@@ -818,6 +942,7 @@ export type Mutation = {
    createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
    /** Create a new user */
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+   deleteBanner?: Maybe<BannerEntityResponse>;
    deleteCompany?: Maybe<CompanyEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
@@ -843,6 +968,7 @@ export type Mutation = {
    removeFile?: Maybe<UploadFileEntityResponse>;
    /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
    resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+   updateBanner?: Maybe<BannerEntityResponse>;
    updateCompany?: Maybe<CompanyEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
@@ -865,6 +991,17 @@ export type MutationChangePasswordArgs = {
    currentPassword: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationCreateBannerArgs = {
+   data: BannerInput;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreateBannerLocalizationArgs = {
+   data?: InputMaybe<BannerInput>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationCreateCompanyArgs = {
@@ -936,6 +1073,11 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
    data: UsersPermissionsUserInput;
+};
+
+export type MutationDeleteBannerArgs = {
+   id: Scalars['ID'];
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationDeleteCompanyArgs = {
@@ -1020,6 +1162,12 @@ export type MutationResetPasswordArgs = {
    code: Scalars['String'];
    password: Scalars['String'];
    passwordConfirmation: Scalars['String'];
+};
+
+export type MutationUpdateBannerArgs = {
+   data: BannerInput;
+   id: Scalars['ID'];
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 export type MutationUpdateCompanyArgs = {
@@ -1363,10 +1511,14 @@ export type ProductListSectionsDynamicZone =
 export type ProductSectionsDynamicZone =
    | ComponentPageSplitWithImage
    | ComponentProductCrossSell
+   | ComponentProductDeviceCompatibility
    | ComponentProductProduct
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
+   | ComponentSectionBanner
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
+   | ComponentSectionQuote
    | ComponentSectionServiceValuePropositions
    | ComponentSectionStories
    | Error;
@@ -1378,6 +1530,8 @@ export enum PublicationState {
 
 export type Query = {
    __typename?: 'Query';
+   banner?: Maybe<BannerEntityResponse>;
+   banners?: Maybe<BannerEntityResponseCollection>;
    companies?: Maybe<CompanyEntityResponseCollection>;
    company?: Maybe<CompanyEntityResponse>;
    global?: Maybe<GlobalEntityResponse>;
@@ -1404,6 +1558,19 @@ export type Query = {
    usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
    usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
    usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+export type QueryBannerArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type QueryBannersArgs = {
+   filters?: InputMaybe<BannerFiltersInput>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryCompaniesArgs = {
@@ -2057,6 +2224,40 @@ export type UsersPermissionsUserRelationResponseCollection = {
    data: Array<UsersPermissionsUserEntity>;
 };
 
+export type BannerFieldsFragment = {
+   __typename?: 'BannerEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'Banner';
+      title?: string | null;
+      label?: string | null;
+      description?: string | null;
+      image?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+      callToAction?: {
+         __typename?: 'ComponentPageCallToAction';
+         title: string;
+         url: string;
+      } | null;
+   } | null;
+};
+
+export type CallToActionFieldsFragment = {
+   __typename?: 'ComponentPageCallToAction';
+   title: string;
+   url: string;
+};
+
 export type CompanyFieldsFragment = {
    __typename?: 'CompanyEntity';
    id?: string | null;
@@ -2333,10 +2534,150 @@ export type FindPageQuery = {
    } | null;
 };
 
-export type CallToActionFieldsFragment = {
-   __typename?: 'ComponentPageCallToAction';
-   title: string;
-   url: string;
+export type FindProductQueryVariables = Exact<{
+   handle?: InputMaybe<Scalars['String']>;
+}>;
+
+export type FindProductQuery = {
+   __typename?: 'Query';
+   products?: {
+      __typename?: 'ProductEntityResponseCollection';
+      data: Array<{
+         __typename?: 'ProductEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Product';
+            handle: string;
+            sections: Array<
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentProductCrossSell';
+                    id: string;
+                    title?: string | null;
+                 }
+               | { __typename: 'ComponentProductDeviceCompatibility' }
+               | { __typename: 'ComponentProductProduct'; id: string }
+               | {
+                    __typename: 'ComponentProductProductCustomerReviews';
+                    id: string;
+                    title?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentProductReplacementGuides';
+                    id: string;
+                    title?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionFeaturedProducts';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    background?: Enum_Componentsectionfeaturedproducts_Background | null;
+                    productList?: {
+                       __typename?: 'ProductListEntityResponse';
+                       data?: {
+                          __typename?: 'ProductListEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             filters?: string | null;
+                             deviceTitle?: string | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionLifetimeWarranty';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionQuote';
+                    id: string;
+                    text: string;
+                    author?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionServiceValuePropositions';
+                    id: string;
+                 }
+               | { __typename: 'ComponentSectionStories' }
+               | { __typename: 'Error' }
+               | null
+            >;
+         } | null;
+      }>;
+   } | null;
 };
 
 export type FindStoreQueryVariables = Exact<{
@@ -3527,6 +3868,41 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export type BannersSectionFieldsFragment = {
+   __typename?: 'ComponentSectionBanner';
+   id: string;
+   banners?: {
+      __typename?: 'BannerRelationResponseCollection';
+      data: Array<{
+         __typename?: 'BannerEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Banner';
+            title?: string | null;
+            label?: string | null;
+            description?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            callToAction?: {
+               __typename?: 'ComponentPageCallToAction';
+               title: string;
+               url: string;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type BrowseSectionFieldsFragment = {
    __typename?: 'ComponentPageBrowse';
    id: string;
@@ -3651,6 +4027,13 @@ export type HeroSectionFieldsFragment = {
    } | null;
 };
 
+export type LifetimeWarrantySectionFieldsFragment = {
+   __typename?: 'ComponentSectionLifetimeWarranty';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+};
+
 export type PressQuotesSectionFieldsFragment = {
    __typename?: 'ComponentPagePress';
    id: string;
@@ -3718,6 +4101,53 @@ export type PressQuoteFieldsFragment = {
          } | null;
       } | null;
    } | null;
+};
+
+export type ProductCrossSellSectionFieldsFragment = {
+   __typename?: 'ComponentProductCrossSell';
+   id: string;
+   title?: string | null;
+};
+
+export type ProductCustomerReviewsSectionFieldsFragment = {
+   __typename?: 'ComponentProductProductCustomerReviews';
+   id: string;
+   title?: string | null;
+};
+
+export type ProductOverviewSectionFieldsFragment = {
+   __typename?: 'ComponentProductProduct';
+   id: string;
+};
+
+export type ProductReplacementGuidesSectionFieldsFragment = {
+   __typename?: 'ComponentProductReplacementGuides';
+   id: string;
+   title?: string | null;
+};
+
+export type QuoteSectionFieldsFragment = {
+   __typename?: 'ComponentSectionQuote';
+   id: string;
+   text: string;
+   author?: string | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type ServiceValuePropositionsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionServiceValuePropositions';
+   id: string;
 };
 
 export type SocialGallerySectionFieldsFragment = {
@@ -3909,6 +4339,38 @@ export const ImageFieldsFragmentDoc = `
   }
 }
     `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const BannerFieldsFragmentDoc = `
+    fragment BannerFields on BannerEntity {
+  id
+  attributes {
+    title
+    label
+    description
+    image {
+      ...ImageFields
+    }
+    callToAction {
+      ...CallToActionFields
+    }
+  }
+}
+    `;
+export const BannersSectionFieldsFragmentDoc = `
+    fragment BannersSectionFields on ComponentSectionBanner {
+  id
+  banners {
+    data {
+      ...BannerFields
+    }
+  }
+}
+    `;
 export const ProductListFieldsFragmentDoc = `
     fragment ProductListFields on ProductListEntity {
   attributes {
@@ -3963,12 +4425,6 @@ export const FeaturedProductsSectionFieldsFragmentDoc = `
   }
 }
     `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
-}
-    `;
 export const HeroSectionFieldsFragmentDoc = `
     fragment HeroSectionFields on ComponentPageHero {
   id
@@ -3980,6 +4436,13 @@ export const HeroSectionFieldsFragmentDoc = `
   image {
     ...ImageFields
   }
+}
+    `;
+export const LifetimeWarrantySectionFieldsFragmentDoc = `
+    fragment LifetimeWarrantySectionFields on ComponentSectionLifetimeWarranty {
+  id
+  title
+  description
 }
     `;
 export const CompanyFieldsFragmentDoc = `
@@ -4015,6 +4478,44 @@ export const PressQuotesSectionFieldsFragmentDoc = `
   callToAction {
     ...CallToActionFields
   }
+}
+    `;
+export const ProductCrossSellSectionFieldsFragmentDoc = `
+    fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
+  id
+  title
+}
+    `;
+export const ProductCustomerReviewsSectionFieldsFragmentDoc = `
+    fragment ProductCustomerReviewsSectionFields on ComponentProductProductCustomerReviews {
+  id
+  title
+}
+    `;
+export const ProductOverviewSectionFieldsFragmentDoc = `
+    fragment ProductOverviewSectionFields on ComponentProductProduct {
+  id
+}
+    `;
+export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
+    fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
+  id
+  title
+}
+    `;
+export const QuoteSectionFieldsFragmentDoc = `
+    fragment QuoteSectionFields on ComponentSectionQuote {
+  id
+  text
+  author
+  image {
+    ...ImageFields
+  }
+}
+    `;
+export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
+    fragment ServiceValuePropositionsSectionFields on ComponentSectionServiceValuePropositions {
+  id
 }
     `;
 export const SocialPostFieldsFragmentDoc = `
@@ -4105,6 +4606,43 @@ ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
 ${SocialPostFieldsFragmentDoc}`;
+export const FindProductDocument = `
+    query findProduct($handle: String) {
+  products(filters: {handle: {eq: $handle}}) {
+    data {
+      id
+      attributes {
+        handle
+        sections {
+          __typename
+          ...ProductOverviewSectionFields
+          ...ProductReplacementGuidesSectionFields
+          ...ServiceValuePropositionsSectionFields
+          ...ProductCrossSellSectionFields
+          ...ProductCustomerReviewsSectionFields
+          ...FeaturedProductsSectionFields
+          ...LifetimeWarrantySectionFields
+          ...SplitWithImageSectionFields
+          ...BannersSectionFields
+          ...QuoteSectionFields
+        }
+      }
+    }
+  }
+}
+    ${ProductOverviewSectionFieldsFragmentDoc}
+${ProductReplacementGuidesSectionFieldsFragmentDoc}
+${ServiceValuePropositionsSectionFieldsFragmentDoc}
+${ProductCrossSellSectionFieldsFragmentDoc}
+${ProductCustomerReviewsSectionFieldsFragmentDoc}
+${FeaturedProductsSectionFieldsFragmentDoc}
+${LifetimeWarrantySectionFieldsFragmentDoc}
+${SplitWithImageSectionFieldsFragmentDoc}
+${CallToActionFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}
+${QuoteSectionFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -4368,6 +4906,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
       ): Promise<FindPageQuery> {
          return requester<FindPageQuery, FindPageQueryVariables>(
             FindPageDocument,
+            variables,
+            options
+         );
+      },
+      findProduct(
+         variables?: FindProductQueryVariables,
+         options?: C
+      ): Promise<FindProductQuery> {
+         return requester<FindProductQuery, FindProductQueryVariables>(
+            FindProductDocument,
             variables,
             options
          );
