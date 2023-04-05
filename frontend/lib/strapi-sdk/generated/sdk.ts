@@ -2648,7 +2648,12 @@ export type FindProductQuery = {
                     title?: string | null;
                     description?: string | null;
                  }
-               | { __typename: 'ComponentSectionQuote' }
+               | {
+                    __typename: 'ComponentSectionQuote';
+                    id: string;
+                    text: string;
+                    author?: string | null;
+                 }
                | {
                     __typename: 'ComponentSectionServiceValuePropositions';
                     id: string;
@@ -4108,6 +4113,13 @@ export type ProductReplacementGuidesSectionFieldsFragment = {
    title?: string | null;
 };
 
+export type QuoteSectionFieldsFragment = {
+   __typename?: 'ComponentSectionQuote';
+   id: string;
+   text: string;
+   author?: string | null;
+};
+
 export type ServiceValuePropositionsSectionFieldsFragment = {
    __typename?: 'ComponentSectionServiceValuePropositions';
    id: string;
@@ -4466,6 +4478,13 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
   title
 }
     `;
+export const QuoteSectionFieldsFragmentDoc = `
+    fragment QuoteSectionFields on ComponentSectionQuote {
+  id
+  text
+  author
+}
+    `;
 export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
     fragment ServiceValuePropositionsSectionFields on ComponentSectionServiceValuePropositions {
   id
@@ -4577,6 +4596,7 @@ export const FindProductDocument = `
           ...LifetimeWarrantySectionFields
           ...SplitWithImageSectionFields
           ...BannersSectionFields
+          ...QuoteSectionFields
         }
       }
     }
@@ -4593,7 +4613,8 @@ ${SplitWithImageSectionFieldsFragmentDoc}
 ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${BannersSectionFieldsFragmentDoc}
-${BannerFieldsFragmentDoc}`;
+${BannerFieldsFragmentDoc}
+${QuoteSectionFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

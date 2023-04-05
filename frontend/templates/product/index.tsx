@@ -218,6 +218,18 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
+                  case 'Quote': {
+                     console.log('Quote section', section);
+                     return null;
+
+                     // return (
+                     //    <QuoteSection
+                     //       key={section.id}
+                     //       quote={section.quote}
+                     //       author={section.author}
+                     //    />
+                     // );
+                  }
                   default:
                      return assertNever(section);
                }
