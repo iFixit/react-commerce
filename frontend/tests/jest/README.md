@@ -3,7 +3,7 @@
 This document contains extra information for writing `Jest` tests within the context of our application.
 
 -  [Updating Jest Snapshots](#updating-jest-snapshots)
--  [Woring with Mock Data](#woring-with-mock-data)
+-  [Working with Mock Data](#working-with-mock-data)
    -  [`products` Mock Data](#products-mock-data)
       -  [Updating Mock Data with `TypeScript`](#updating-mock-data-with-typescript)
       -  [Updating Mock Data with `console`](#updating-mock-data-with-console)
@@ -59,6 +59,6 @@ When adding new mock data, ensure:
 2. The mock data is assigned a type matching the type of data being mocked. For example, if mocking a `Product`, the mock data should be of type `Product`.
 3. Snapshot the mock data.
 
-   To mock data from the `pageProps` object, follow the instructions in [Update Mock Data](#using-console-to-update-mock-data). Otherwise, manually add a `console.log` statement to obtain the data you want to mock.
+   To mock data from the `pageProps` object, follow the instructions in [ Updating Mock Data with `console`](#updating-mock-data-with-console). Otherwise, manually add a `console.log` statement to obtain the data you want to mock.
 
 4. Add the mock data to the `__mocks__` directory.
