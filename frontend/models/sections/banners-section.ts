@@ -23,8 +23,6 @@ export function bannersSectionFromStrapi(
       strapiBanners.map(bannerFromStrapiFragment)
    );
 
-   if (banners == null) return null;
-
    return {
       type: 'Banners',
       id: sectionId,
