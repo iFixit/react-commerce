@@ -3,6 +3,7 @@ import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { BannersSection } from '@components/sections/BannersSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { QuoteSection } from '@components/sections/QuoteSection';
 import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
@@ -219,16 +220,14 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'Quote': {
-                     console.log('Quote section', section);
-                     return null;
-
-                     // return (
-                     //    <QuoteSection
-                     //       key={section.id}
-                     //       quote={section.quote}
-                     //       author={section.author}
-                     //    />
-                     // );
+                     return (
+                        <QuoteSection
+                           key={section.id}
+                           id={section.id}
+                           quote={section.text}
+                           author={section.author}
+                        />
+                     );
                   }
                   default:
                      return assertNever(section);
