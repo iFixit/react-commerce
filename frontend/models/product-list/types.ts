@@ -62,7 +62,6 @@ export interface BaseProductList {
    h1: string | null;
    handle: string;
    deviceTitle: string | null;
-   deviceItemType: string | null;
    tagline: string | null;
    description: string;
    metaDescription: string | null;

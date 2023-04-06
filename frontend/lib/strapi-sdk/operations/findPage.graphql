@@ -26,8 +26,3 @@ query findPage(
       }
    }
 }
-
-fragment CallToActionFields on ComponentPageCallToAction {
-   title
-   url
-}

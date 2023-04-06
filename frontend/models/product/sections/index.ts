@@ -4,10 +4,18 @@ import type { FindProductQuery as ShopifyFindProductQuery } from '@lib/shopify-s
 import type { FindProductQuery as StrapiFindProductQuery } from '@lib/strapi-sdk';
 import { replacementGuidePreviewFromMetafield } from '@models/components/replacement-guide-preview';
 import {
+   bannersSectionFromStrapi,
+   BannersSectionSchema,
+} from '@models/sections/banners-section';
+import {
    featuredProductPreviewsFromShopifyProduct,
    featuredProductsSectionFromStrapi,
    FeaturedProductsSectionSchema,
 } from '@models/sections/featured-products-section';
+import {
+   quoteSectionFromStrapi,
+   QuoteSectionSchema,
+} from '@models/sections/quote-section';
 import { ReplacementGuidesSectionSchema } from '@models/sections/replacement-guides-section';
 import { ServiceValuePropositionSectionSchema } from '@models/sections/service-value-proposition-section';
 import {
@@ -33,6 +41,8 @@ export const ProductSectionSchema = z.union([
    FeaturedProductsSectionSchema,
    LifetimeWarrantySectionSchema,
    ServiceValuePropositionSectionSchema,
+   BannersSectionSchema,
+   QuoteSectionSchema,
 ]);
 
 interface GetProductSectionsArgs {
@@ -108,6 +118,12 @@ export async function getProductSections({
                   };
                case 'ComponentPageSplitWithImage':
                   return splitWithImageSectionFromStrapi(section, sectionId);
+
+               case 'ComponentSectionBanner':
+                  return bannersSectionFromStrapi(section, sectionId);
+
+               case 'ComponentSectionQuote':
+                  return quoteSectionFromStrapi(section, sectionId);
 
                default:
                   return null;

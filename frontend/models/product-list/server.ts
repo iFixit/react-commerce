@@ -37,8 +37,7 @@ import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
  */
 export async function findProductList(
    filters: ProductListFiltersInput,
-   ifixitOrigin: string,
-   deviceItemType: string | null = null
+   ifixitOrigin: string
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
@@ -90,7 +89,6 @@ export async function findProductList(
       h1,
       handle,
       deviceTitle,
-      deviceItemType,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,

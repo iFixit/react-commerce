@@ -19,7 +19,7 @@ import type {
 import { NewsletterComponent } from './Newsletter';
 import type { NewsletterFormProps } from './Newsletter';
 import type { Menu as MenuType, MenuItem } from '@ifixit/menu';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 type NavSectionProps = {
    menu1: MenuType | null;
