@@ -31,7 +31,8 @@
             "product.device-compatibility",
             "section.lifetime-warranty",
             "section.banner",
-            "section.quote"
+            "section.quote",
+            "section.faqs"
          ],
          "required": true
       }
