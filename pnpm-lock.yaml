@@ -54,6 +54,7 @@ importers:
       '@ifixit/newsletter-sdk': workspace:*
       '@ifixit/sentry': workspace:*
       '@ifixit/shopify-storefront-client': workspace:*
+      '@ifixit/tracking-hooks': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@ifixit/ui': workspace:*
       '@next/bundle-analyzer': 12.1.6
@@ -110,8 +111,9 @@ importers:
       query-string: 7.0.1
       react: 18.2.0
       react-dom: 18.2.0
-      react-instantsearch-hooks-server: 6.38.1
-      react-instantsearch-hooks-web: 6.38.1
+      react-instantsearch-hooks-router-nextjs: 6.42.0
+      react-instantsearch-hooks-server: 6.42.0
+      react-instantsearch-hooks-web: 6.42.0
       react-lite-yt-embed: 1.2.7
       react-schemaorg: 2.0.0
       schema-dts: 1.1.0
@@ -144,6 +146,7 @@ importers:
       '@ifixit/newsletter-sdk': link:../packages/newsletter-sdk
       '@ifixit/sentry': link:../packages/sentry
       '@ifixit/shopify-storefront-client': link:../packages/shopify-storefront-client
+      '@ifixit/tracking-hooks': link:../packages/tracking-hooks
       '@ifixit/ui': link:../packages/ui
       '@sentry/nextjs': 7.42.0_5cy3dema5qwip6n7exqk4sqtji
       '@sentry/tracing': 7.42.0
@@ -162,8 +165,9 @@ importers:
       query-string: 7.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-instantsearch-hooks-server: 6.38.1_3d5redehl2jjvbpdn3mne6usq4
-      react-instantsearch-hooks-web: 6.38.1_3d5redehl2jjvbpdn3mne6usq4
+      react-instantsearch-hooks-router-nextjs: 6.42.0_aj6ezh4wr5cwe23uxqnwmmfcwi
+      react-instantsearch-hooks-server: 6.42.0_3d5redehl2jjvbpdn3mne6usq4
+      react-instantsearch-hooks-web: 6.42.0_3d5redehl2jjvbpdn3mne6usq4
       react-lite-yt-embed: 1.2.7_govv7rvipvpuihepwlh66bbxfy_react@18.2.0
       react-schemaorg: 2.0.0_2w7h6qeg2rncqnecijazkzv3ba
       schema-dts: 1.1.0_typescript@4.8.4
@@ -358,9 +362,11 @@ importers:
       '@babel/core': '>=7.0.0 <8.0.0'
       '@emotion/react': '>=11.0.0 <12.0.0'
       '@emotion/styled': '>=11.0.0 <12.0.0'
+      '@fortawesome/pro-solid-svg-icons': 6.2.1
       '@ifixit/icons': workspace:*
       '@ifixit/menu': workspace:*
       '@ifixit/newsletter-sdk': workspace:*
+      '@ifixit/tracking-hooks': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
@@ -373,10 +379,12 @@ importers:
       '@ifixit/icons': link:../icons
       '@ifixit/menu': link:../menu
       '@ifixit/newsletter-sdk': link:../newsletter-sdk
+      '@ifixit/tracking-hooks': link:../tracking-hooks
     devDependencies:
       '@babel/core': 7.18.6
       '@emotion/react': 11.7.1_sxwbo4xt7gk63ri5mq3agqslqm
       '@emotion/styled': 11.6.0_wqfmtoa4qqw2uo45wgyguljgsu
+      '@fortawesome/pro-solid-svg-icons': 6.2.1
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
@@ -422,7 +430,6 @@ importers:
     specifiers:
       '@ifixit/app': workspace:*
       '@ifixit/helpers': workspace:*
-      '@ifixit/sentry': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
@@ -430,7 +437,6 @@ importers:
     dependencies:
       '@ifixit/app': link:../app
       '@ifixit/helpers': link:../helpers
-      '@ifixit/sentry': link:../sentry
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
@@ -447,21 +453,17 @@ importers:
 
   packages/newsletter-sdk:
     specifiers:
-      '@ifixit/analytics': workspace:*
-      '@ifixit/app': workspace:*
       '@ifixit/helpers': workspace:*
       '@ifixit/ifixit-api-client': workspace:*
-      '@ifixit/sentry': workspace:*
+      '@ifixit/tracking-hooks': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       typescript: 4.8.4
     dependencies:
-      '@ifixit/analytics': link:../analytics
-      '@ifixit/app': link:../app
       '@ifixit/helpers': link:../helpers
       '@ifixit/ifixit-api-client': link:../ifixit-api-client
-      '@ifixit/sentry': link:../sentry
+      '@ifixit/tracking-hooks': link:../tracking-hooks
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
@@ -502,6 +504,16 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      typescript: 4.8.4
+
+  packages/tracking-hooks:
+    specifiers:
+      '@ifixit/tsconfig': workspace:*
+      '@types/react': 18.0.24
+      typescript: 4.8.4
+    devDependencies:
+      '@ifixit/tsconfig': link:../tsconfig
+      '@types/react': 18.0.24
       typescript: 4.8.4
 
   packages/tsconfig:
@@ -7374,6 +7386,10 @@ packages:
       '@types/ms': 0.7.31
     dev: true
 
+  /@types/dom-speech-recognition/0.0.1:
+    resolution: {integrity: sha512-udCxb8DvjcDKfk1WTBzDsxFbLgYxmQGKrE/ricoMqHRNjSlSUCcamVTA5lIQqzY10mY5qCY0QDwBfFEwhfoDPw==}
+    dev: false
+
   /@types/eslint-scope/3.7.3:
     resolution: {integrity: sha512-PB3ldyrcnAicT35TWPs5IcwKD8S333HMaa2VVv4+wdvebJkjWuW/xESoB8IwRcog8HYVYamb1g/R31Qv5Bx03g==}
     dependencies:
@@ -8114,8 +8130,8 @@ packages:
       uri-js: 4.4.1
     dev: true
 
-  /algoliasearch-helper/3.11.1_algoliasearch@4.13.1:
-    resolution: {integrity: sha512-mvsPN3eK4E0bZG0/WlWJjeqe/bUD2KOEVOl0GyL/TGXn6wcpZU8NOuztGHCUKXkyg5gq6YzUakVTmnmSSO5Yiw==}
+  /algoliasearch-helper/3.12.0_algoliasearch@4.13.1:
+    resolution: {integrity: sha512-/j1U3PEwdan0n6P/QqSnSpNSLC5+cEMvyljd5CnmNmUjDlGrys+vFEOwjVEnqELIiAGMHEA/Nl3CiKVFBUYqyQ==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
     dependencies:
@@ -11599,19 +11615,20 @@ packages:
       wrap-ansi: 7.0.0
     dev: true
 
-  /instantsearch.js/4.49.1_algoliasearch@4.13.1:
-    resolution: {integrity: sha512-iYGRF+UujVaxn/twZXTfYkI+wc1luCiHZ/ozBME5MiVoit0wBvtERGUFR01uauZJSXCCXmjBg/JJojPngf7mAA==}
+  /instantsearch.js/4.53.0_algoliasearch@4.13.1:
+    resolution: {integrity: sha512-YsKZo8yF/2/lc1FHwyP73k8IoIMPesP+8R4VSmWDf/No8EgELgpC7qgZOlQl/vLIoAAaDrKD/BfstposfMF8KQ==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
     dependencies:
       '@algolia/events': 4.0.1
       '@algolia/ui-components-highlight-vdom': 1.2.1
       '@algolia/ui-components-shared': 1.2.1
+      '@types/dom-speech-recognition': 0.0.1
       '@types/google.maps': 3.49.1
       '@types/hogan.js': 3.0.1
       '@types/qs': 6.9.7
       algoliasearch: 4.13.1
-      algoliasearch-helper: 3.11.1_algoliasearch@4.13.1
+      algoliasearch-helper: 3.12.0_algoliasearch@4.13.1
       hogan.js: 3.0.2
       htm: 3.1.1
       preact: 10.11.3
@@ -14582,8 +14599,21 @@ packages:
       use-callback-ref: 1.3.0_bbvjflvjoibwhtpmedigb26h6y
       use-sidecar: 1.1.2_bbvjflvjoibwhtpmedigb26h6y
 
-  /react-instantsearch-hooks-server/6.38.1_3d5redehl2jjvbpdn3mne6usq4:
-    resolution: {integrity: sha512-CxA9ryLnP+R3VRj5ba2qLm06GSMhfvvcQtbELN0tZKr6jF0UPhQRg4DNYNnzIswsZ8PqTCAjtD63BHAEBf/QLQ==}
+  /react-instantsearch-hooks-router-nextjs/6.42.0_aj6ezh4wr5cwe23uxqnwmmfcwi:
+    resolution: {integrity: sha512-Pi10V9Mb6YKZmY4u/dLh6b8tkbUqdZ7Fo9omALJERIKeP+AWpLO+XlOYXBrsecnA+wNdB7fwtpMpeL1OA4UtSA==}
+    peerDependencies:
+      next: '>= 9 && < 14'
+    dependencies:
+      instantsearch.js: 4.53.0_algoliasearch@4.13.1
+      next: 12.2.3_t7ss3ubh4wigfvyfclbvqff3gm
+      react-instantsearch-hooks: 6.38.3_wccoi2hm3lxcwz3rqgfrqrl2pe
+    transitivePeerDependencies:
+      - algoliasearch
+      - react
+    dev: false
+
+  /react-instantsearch-hooks-server/6.42.0_3d5redehl2jjvbpdn3mne6usq4:
+    resolution: {integrity: sha512-HjtmqKxtiK4qNGighkY+wOL5K52K0KjLwnPQoP2VHmUNppnxXUy3UvBD83yjD4KwJeQtTC/Aksyf3A/D3UPDhg==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
       react: '>= 16.8.0 < 19'
@@ -14591,14 +14621,14 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.6
       algoliasearch: 4.13.1
-      instantsearch.js: 4.49.1_algoliasearch@4.13.1
+      instantsearch.js: 4.53.0_algoliasearch@4.13.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-instantsearch-hooks: 6.38.1_wccoi2hm3lxcwz3rqgfrqrl2pe
+      react-instantsearch-hooks: 6.42.0_wccoi2hm3lxcwz3rqgfrqrl2pe
     dev: false
 
-  /react-instantsearch-hooks-web/6.38.1_3d5redehl2jjvbpdn3mne6usq4:
-    resolution: {integrity: sha512-CSaHleVFVDz9mCos+eJMxagM9a6H9NO8nvkAqCwx2MOzqJFS1aE5htx8nnlTZt7nqpclPwu3VZUzMFrreA9D6g==}
+  /react-instantsearch-hooks-web/6.42.0_3d5redehl2jjvbpdn3mne6usq4:
+    resolution: {integrity: sha512-l8Hhhk3Z3jAR4vffrdXpGmRLm2uphf0g1nzwMV/Ao01Co1Ygbtudg8f+Juc37TNrFcDgcK3vleBL8qMT6Ek2ng==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
       react: '>= 16.8.0 < 19'
@@ -14606,22 +14636,36 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.6
       algoliasearch: 4.13.1
-      instantsearch.js: 4.49.1_algoliasearch@4.13.1
+      instantsearch.js: 4.53.0_algoliasearch@4.13.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-instantsearch-hooks: 6.38.1_wccoi2hm3lxcwz3rqgfrqrl2pe
+      react-instantsearch-hooks: 6.42.0_wccoi2hm3lxcwz3rqgfrqrl2pe
     dev: false
 
-  /react-instantsearch-hooks/6.38.1_wccoi2hm3lxcwz3rqgfrqrl2pe:
-    resolution: {integrity: sha512-y3Y2w3mnaZWJb2GKVddX2ht4hYy5zd+Hxs+YdACgJeM9Ta1qA6xeH+DxEv3ECY6OgeBekccCTeJhC/CZ1v+VrQ==}
+  /react-instantsearch-hooks/6.38.3_wccoi2hm3lxcwz3rqgfrqrl2pe:
+    resolution: {integrity: sha512-Sgdh9LripR/Xx3qeIsL+BA6hy0gBm+jgFPSi5leB4ypwUtijxDV24fEnZsRZJqIuYuA+n+KCxQEaDJKOWPymrg==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
       react: '>= 16.8.0 < 19'
     dependencies:
       '@babel/runtime': 7.20.6
       algoliasearch: 4.13.1
-      algoliasearch-helper: 3.11.1_algoliasearch@4.13.1
-      instantsearch.js: 4.49.1_algoliasearch@4.13.1
+      algoliasearch-helper: 3.12.0_algoliasearch@4.13.1
+      instantsearch.js: 4.53.0_algoliasearch@4.13.1
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
+
+  /react-instantsearch-hooks/6.42.0_wccoi2hm3lxcwz3rqgfrqrl2pe:
+    resolution: {integrity: sha512-LPpvRuSaJ1rjqmQSnZzJ31nDQJUENVJbnOdsbJjo597DOjBc24jDbca0XFZKMfdt4d6l2CTGvwTVFdrI7t+OkA==}
+    peerDependencies:
+      algoliasearch: '>= 3.1 < 5'
+      react: '>= 16.8.0 < 19'
+    dependencies:
+      '@babel/runtime': 7.20.6
+      algoliasearch: 4.13.1
+      algoliasearch-helper: 3.12.0_algoliasearch@4.13.1
+      instantsearch.js: 4.53.0_algoliasearch@4.13.1
       react: 18.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false

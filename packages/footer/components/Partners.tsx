@@ -1,6 +1,6 @@
 import { Box, forwardRef, Flex } from '@chakra-ui/react';
 import type { BoxProps } from '@chakra-ui/react';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 export const FooterPartners = forwardRef<BoxProps, 'div'>(
    ({ children, ...otherProps }, ref) => {

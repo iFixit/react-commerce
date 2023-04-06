@@ -7,7 +7,7 @@ import {
    Stack,
    StackProps,
 } from '@chakra-ui/react';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 export const FooterLegalSection = forwardRef<StackProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
