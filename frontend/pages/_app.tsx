@@ -17,25 +17,25 @@ type AppPropsWithLayout<P> = AppProps<P> & {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
-   const [mswState, setMswState] = React.useState<
-      'unused' | 'waiting' | 'ready'
-   >(() =>
-      process.env.NEXT_PUBLIC_MOCK_API === 'true' ? 'waiting' : 'unused'
-   );
+   // const [mswState, setMswState] = React.useState<
+   //    'unused' | 'waiting' | 'ready'
+   // >(() =>
+   //    process.env.NEXT_PUBLIC_MOCK_API === 'true' ? 'waiting' : 'unused'
+   // );
 
-   React.useEffect(() => {
-      if (mswState === 'waiting') {
-         import('@tests/playwright/msw')
-            .then(({ setupMocks }) => {
-               setupMocks();
-            })
-            .then(() => setMswState('ready'));
-      }
-   }, [mswState]);
+   // React.useEffect(() => {
+   //    if (mswState === 'waiting') {
+   //       import('@tests/playwright/msw')
+   //          .then(({ setupMocks }) => {
+   //             setupMocks();
+   //          })
+   //          .then(() => setMswState('ready'));
+   //    }
+   // }, [mswState]);
 
-   if (mswState === 'waiting') {
-      return <div>Waiting MSW Worker...</div>;
-   }
+   // if (mswState === 'waiting') {
+   //    return <div>Waiting MSW Worker...</div>;
+   // }
 
    const getLayout = Component.getLayout ?? ((page) => page);
    const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';
