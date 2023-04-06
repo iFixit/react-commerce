@@ -238,7 +238,6 @@ export const mockedProduct: Product = {
          url: '#',
       },
    ],
-   faqs: [],
    prop65WarningType: 'cancer and birth defects or other reproductive harm',
    prop65Chemicals: 'lead',
    productVideos:
