@@ -130,12 +130,19 @@ const moduleExports = {
       locales: ['en-US'],
       defaultLocale: 'en-US',
    },
-   webpack(config) {
+   webpack(config, { webpack }) {
       config.module.rules.push({
          test: /\.svg$/i,
          issuer: /\.tsx?$/,
          use: ['@svgr/webpack'],
       });
+      if (!process.env.NEXT_PUBLIC_MOCK_API) {
+         config.plugins.push(
+            new webpack.IgnorePlugin({
+               resourceRegExp: /playwright/,
+            })
+         );
+      }
       return config;
    },
    sentry: {
