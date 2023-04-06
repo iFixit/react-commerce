@@ -433,6 +433,7 @@ importers:
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      react: 18.2.0
       typescript: 4.8.4
     dependencies:
       '@ifixit/app': link:../app
@@ -441,6 +442,7 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      react: 18.2.0
       typescript: 4.8.4
 
   packages/menu:
@@ -459,6 +461,7 @@ importers:
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      react: 18.2.0
       typescript: 4.8.4
     dependencies:
       '@ifixit/helpers': link:../helpers
@@ -468,6 +471,7 @@ importers:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
+      react: 18.2.0
       typescript: 4.8.4
 
   packages/sentry:
@@ -510,10 +514,12 @@ importers:
     specifiers:
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
+      react: 18.2.0
       typescript: 4.8.4
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
+      react: 18.2.0
       typescript: 4.8.4
 
   packages/tsconfig:
