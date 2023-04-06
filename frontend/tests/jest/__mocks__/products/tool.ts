@@ -104,7 +104,6 @@ export const mockedToolProduct: Product = {
          url: '#',
       },
    ],
-   faqs: [],
    prop65WarningType: null,
    prop65Chemicals: 'none',
    productVideos: null,

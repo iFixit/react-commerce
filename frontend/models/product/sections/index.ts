@@ -8,6 +8,10 @@ import {
    BannersSectionSchema,
 } from '@models/sections/banners-section';
 import {
+   faqsSectionFromStrapi,
+   FAQsSectionSchema,
+} from '@models/sections/faqs-section';
+import {
    featuredProductPreviewsFromShopifyProduct,
    featuredProductsSectionFromStrapi,
    FeaturedProductsSectionSchema,
@@ -43,6 +47,7 @@ export const ProductSectionSchema = z.union([
    ServiceValuePropositionSectionSchema,
    BannersSectionSchema,
    QuoteSectionSchema,
+   FAQsSectionSchema,
 ]);
 
 interface GetProductSectionsArgs {
@@ -124,6 +129,9 @@ export async function getProductSections({
 
                case 'ComponentSectionQuote':
                   return quoteSectionFromStrapi(section, sectionId);
+
+               case 'ComponentSectionFaqs':
+                  return faqsSectionFromStrapi(section, sectionId);
 
                default:
                   return null;
