@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { BannersSection } from '@components/sections/BannersSection';
+import { FAQsSection } from '@components/sections/FAQsSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { QuoteSection } from '@components/sections/QuoteSection';
 import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
@@ -231,8 +232,15 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'FAQs': {
-                     console.log('faqs section', section);
-                     return <p key={section.id}>faqs</p>;
+                     return (
+                        <FAQsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           faqs={section.faqs}
+                        />
+                     );
                   }
 
                   default:
