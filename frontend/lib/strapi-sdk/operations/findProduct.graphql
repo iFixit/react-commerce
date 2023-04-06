@@ -16,6 +16,7 @@ query findProduct($handle: String) {
                ...SplitWithImageSectionFields
                ...BannersSectionFields
                ...QuoteSectionFields
+               ...FAQsSectionFields
             }
          }
       }

@@ -410,6 +410,21 @@ export type ComponentSectionBannerBannersArgs = {
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type ComponentSectionFaqs = {
+   __typename?: 'ComponentSectionFaqs';
+   description?: Maybe<Scalars['String']>;
+   faqs?: Maybe<FaqRelationResponseCollection>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionFaqsFaqsArgs = {
+   filters?: InputMaybe<FaqFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentSectionFeaturedProducts = {
    __typename?: 'ComponentSectionFeaturedProducts';
    background?: Maybe<Enum_Componentsectionfeaturedproducts_Background>;
@@ -630,6 +645,55 @@ export type Error = {
    message?: Maybe<Scalars['String']>;
 };
 
+export type Faq = {
+   __typename?: 'Faq';
+   answer: Scalars['String'];
+   createdAt?: Maybe<Scalars['DateTime']>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   question: Scalars['String'];
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type FaqEntity = {
+   __typename?: 'FaqEntity';
+   attributes?: Maybe<Faq>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type FaqEntityResponse = {
+   __typename?: 'FaqEntityResponse';
+   data?: Maybe<FaqEntity>;
+};
+
+export type FaqEntityResponseCollection = {
+   __typename?: 'FaqEntityResponseCollection';
+   data: Array<FaqEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type FaqFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<FaqFiltersInput>>>;
+   answer?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<FaqFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<FaqFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   question?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type FaqInput = {
+   answer?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   question?: InputMaybe<Scalars['String']>;
+};
+
+export type FaqRelationResponseCollection = {
+   __typename?: 'FaqRelationResponseCollection';
+   data: Array<FaqEntity>;
+};
+
 export type FileInfoInput = {
    alternativeText?: InputMaybe<Scalars['String']>;
    caption?: InputMaybe<Scalars['String']>;
@@ -686,6 +750,7 @@ export type GenericMorph =
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
    | ComponentSectionBanner
+   | ComponentSectionFaqs
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
    | ComponentSectionQuote
@@ -696,6 +761,7 @@ export type GenericMorph =
    | ComponentStoreHeader
    | ComponentStoreShopifySettings
    | ComponentStoreSocialMediaAccounts
+   | Faq
    | Global
    | I18NLocale
    | Menu
@@ -926,6 +992,7 @@ export type Mutation = {
    createBanner?: Maybe<BannerEntityResponse>;
    createBannerLocalization?: Maybe<BannerEntityResponse>;
    createCompany?: Maybe<CompanyEntityResponse>;
+   createFaq?: Maybe<FaqEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
@@ -944,6 +1011,7 @@ export type Mutation = {
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
    deleteBanner?: Maybe<BannerEntityResponse>;
    deleteCompany?: Maybe<CompanyEntityResponse>;
+   deleteFaq?: Maybe<FaqEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
@@ -970,6 +1038,7 @@ export type Mutation = {
    resetPassword?: Maybe<UsersPermissionsLoginPayload>;
    updateBanner?: Maybe<BannerEntityResponse>;
    updateCompany?: Maybe<CompanyEntityResponse>;
+   updateFaq?: Maybe<FaqEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
@@ -1006,6 +1075,10 @@ export type MutationCreateBannerLocalizationArgs = {
 
 export type MutationCreateCompanyArgs = {
    data: CompanyInput;
+};
+
+export type MutationCreateFaqArgs = {
+   data: FaqInput;
 };
 
 export type MutationCreateGlobalLocalizationArgs = {
@@ -1081,6 +1154,10 @@ export type MutationDeleteBannerArgs = {
 };
 
 export type MutationDeleteCompanyArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteFaqArgs = {
    id: Scalars['ID'];
 };
 
@@ -1172,6 +1249,11 @@ export type MutationUpdateBannerArgs = {
 
 export type MutationUpdateCompanyArgs = {
    data: CompanyInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateFaqArgs = {
+   data: FaqInput;
    id: Scalars['ID'];
 };
 
@@ -1516,6 +1598,7 @@ export type ProductSectionsDynamicZone =
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
    | ComponentSectionBanner
+   | ComponentSectionFaqs
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
    | ComponentSectionQuote
@@ -1534,6 +1617,8 @@ export type Query = {
    banners?: Maybe<BannerEntityResponseCollection>;
    companies?: Maybe<CompanyEntityResponseCollection>;
    company?: Maybe<CompanyEntityResponse>;
+   faq?: Maybe<FaqEntityResponse>;
+   faqs?: Maybe<FaqEntityResponseCollection>;
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
@@ -1582,6 +1667,17 @@ export type QueryCompaniesArgs = {
 
 export type QueryCompanyArgs = {
    id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryFaqArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryFaqsArgs = {
+   filters?: InputMaybe<FaqFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryGlobalArgs = {
@@ -2279,6 +2375,12 @@ export type CompanyFieldsFragment = {
    } | null;
 };
 
+export type FaqFieldsFragment = {
+   __typename?: 'FaqEntity';
+   id?: string | null;
+   attributes?: { __typename?: 'Faq'; question: string; answer: string } | null;
+};
+
 export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: {
@@ -2620,6 +2722,24 @@ export type FindProductQuery = {
                                 title: string;
                                 url: string;
                              } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionFaqs';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    faqs?: {
+                       __typename?: 'FaqRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'FaqEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Faq';
+                             question: string;
+                             answer: string;
                           } | null;
                        }>;
                     } | null;
@@ -3983,6 +4103,25 @@ export type CategoryFieldsFragment = {
    } | null;
 };
 
+export type FaQsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionFaqs';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   faqs?: {
+      __typename?: 'FaqRelationResponseCollection';
+      data: Array<{
+         __typename?: 'FaqEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Faq';
+            question: string;
+            answer: string;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type FeaturedProductsSectionFieldsFragment = {
    __typename?: 'ComponentSectionFeaturedProducts';
    id: string;
@@ -4408,6 +4547,27 @@ export const BrowseSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const FaqFieldsFragmentDoc = `
+    fragment FAQFields on FaqEntity {
+  id
+  attributes {
+    question
+    answer
+  }
+}
+    `;
+export const FaQsSectionFieldsFragmentDoc = `
+    fragment FAQsSectionFields on ComponentSectionFaqs {
+  id
+  title
+  description
+  faqs {
+    data {
+      ...FAQFields
+    }
+  }
+}
+    `;
 export const FeaturedProductsSectionFieldsFragmentDoc = `
     fragment FeaturedProductsSectionFields on ComponentSectionFeaturedProducts {
   id
@@ -4625,6 +4785,7 @@ export const FindProductDocument = `
           ...SplitWithImageSectionFields
           ...BannersSectionFields
           ...QuoteSectionFields
+          ...FAQsSectionFields
         }
       }
     }
@@ -4642,7 +4803,9 @@ ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${BannersSectionFieldsFragmentDoc}
 ${BannerFieldsFragmentDoc}
-${QuoteSectionFieldsFragmentDoc}`;
+${QuoteSectionFieldsFragmentDoc}
+${FaQsSectionFieldsFragmentDoc}
+${FaqFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

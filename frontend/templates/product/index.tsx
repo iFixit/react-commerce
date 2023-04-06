@@ -230,6 +230,11 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   }
+                  case 'FAQs': {
+                     console.log('faqs section', section);
+                     return <p key={section.id}>faqs</p>;
+                  }
+
                   default:
                      return assertNever(section);
                }
