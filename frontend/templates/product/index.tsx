@@ -187,8 +187,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   case 'FeaturedProducts': {
-                     if (section.products.length === 0) return null;
-
                      return (
                         <FeaturedProductsSection
                            key={section.id}

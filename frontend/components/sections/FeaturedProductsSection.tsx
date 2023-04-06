@@ -22,6 +22,8 @@ export function FeaturedProductsSection({
    products,
    onProductClick,
 }: FeaturedProductsSectionProps) {
+   if (products.length === 0) return null;
+
    return (
       <Box
          as="section"
