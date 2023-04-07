@@ -145,13 +145,7 @@ const SolutionHeader = ({
       alignContent="center"
       spacing="16px"
    >
-      <Stack
-         direction="row"
-         justify="flex-start"
-         align="center"
-         spacing="10px"
-         height="28px"
-      >
+      <Stack direction="row" justify="flex-start" align="center" spacing="10px">
          <Square
             borderRadius="4px"
             borderColor="brand.700"
