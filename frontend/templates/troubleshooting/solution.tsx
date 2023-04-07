@@ -133,9 +133,11 @@ const SolutionFooter = () => (
 
 const SolutionHeader = ({
    index,
+   title,
    popularity,
 }: {
    index: number;
+   title: string;
    popularity?: number;
 }) => (
    <Stack
@@ -145,13 +147,7 @@ const SolutionHeader = ({
       alignContent="center"
       spacing="16px"
    >
-      <Stack
-         direction="row"
-         justify="flex-start"
-         align="center"
-         spacing="10px"
-         height="28px"
-      >
+      <Stack direction="row" justify="flex-start" align="center" spacing="10px">
          <Square
             borderRadius="4px"
             borderColor="brand.700"
@@ -165,6 +161,14 @@ const SolutionHeader = ({
             {index}
          </Square>
       </Stack>
+      <Heading
+         fontWeight="medium"
+         fontSize="24px"
+         color="brand.500"
+         alignSelf="center"
+      >
+         {title}
+      </Heading>
       {popularity !== undefined && (
          <Stack direction="row" justify="flex-start" align="flex-start">
             <Badge
@@ -185,16 +189,8 @@ const SolutionHeader = ({
    </Stack>
 );
 
-const SolutionTexts = ({ title, body }: { title: string; body: string }) => (
+const SolutionTexts = ({ body }: { body: string }) => (
    <Stack justify="flex-start" align="flex-start">
-      <Heading
-         fontWeight="medium"
-         fontSize="24px"
-         color="gray.900"
-         alignSelf="stretch"
-      >
-         {title}
-      </Heading>
       <Prerendered html={body} />
    </Stack>
 );
@@ -217,8 +213,8 @@ export default function SolutionCard({
          padding="24px 24px 12px 24px"
       >
          <Flex gap="24px" direction="column">
-            <SolutionHeader index={index} />
-            <SolutionTexts title={solution.heading} body={solution.body} />
+            <SolutionHeader index={index} title={solution.heading} />
+            <SolutionTexts body={solution.body} />
          </Flex>
       </Flex>
    );
