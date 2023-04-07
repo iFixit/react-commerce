@@ -64,7 +64,9 @@ const Wiki: NextPageWithLayout<{
                <link rel="canonical" href={wikiData.canonicalUrl} />
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
-            <Heading as="h1">{wikiData.title}</Heading>
+            <Heading as="h1" marginTop={6}>
+               {wikiData.title}
+            </Heading>
             <AuthorInformation
                lastUpdatedDate={lastUpdatedDate}
                authors={wikiData.authors}
@@ -430,7 +432,7 @@ function AuthorListing({
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
-         <Heading>{intro.heading}</Heading>
+         <Heading marginBottom={6}>{intro.heading}</Heading>
          <Prerendered html={intro.body} />
       </Box>
    );
@@ -439,7 +441,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
-         <Heading>{conclusion.heading}</Heading>
+         <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
    );
