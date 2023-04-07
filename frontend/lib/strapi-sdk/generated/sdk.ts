@@ -2680,7 +2680,12 @@ export type FindProductQuery = {
                     id: string;
                     title?: string | null;
                  }
-               | { __typename: 'ComponentProductDeviceCompatibility' }
+               | {
+                    __typename: 'ComponentProductDeviceCompatibility';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
                | { __typename: 'ComponentProductProduct'; id: string }
                | {
                     __typename: 'ComponentProductProductCustomerReviews';
@@ -4103,6 +4108,13 @@ export type CategoryFieldsFragment = {
    } | null;
 };
 
+export type DeviceCompatibilitySectionFieldsFragment = {
+   __typename?: 'ComponentProductDeviceCompatibility';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+};
+
 export type FaQsSectionFieldsFragment = {
    __typename?: 'ComponentSectionFaqs';
    id: string;
@@ -4547,6 +4559,13 @@ export const BrowseSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const DeviceCompatibilitySectionFieldsFragmentDoc = `
+    fragment DeviceCompatibilitySectionFields on ComponentProductDeviceCompatibility {
+  id
+  title
+  description
+}
+    `;
 export const FaqFieldsFragmentDoc = `
     fragment FAQFields on FaqEntity {
   id
@@ -4786,6 +4805,7 @@ export const FindProductDocument = `
           ...BannersSectionFields
           ...QuoteSectionFields
           ...FAQsSectionFields
+          ...DeviceCompatibilitySectionFields
         }
       }
     }
@@ -4805,7 +4825,8 @@ ${BannersSectionFieldsFragmentDoc}
 ${BannerFieldsFragmentDoc}
 ${QuoteSectionFieldsFragmentDoc}
 ${FaQsSectionFieldsFragmentDoc}
-${FaqFieldsFragmentDoc}`;
+${FaqFieldsFragmentDoc}
+${DeviceCompatibilitySectionFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
