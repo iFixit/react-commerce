@@ -82,7 +82,7 @@ export function ProductReviewsSection({
       (reviewsData.average >= 4 || reviewsData.count > 10);
 
    return (
-      <Box id="reviews" bg="white" py="16" fontSize="sm">
+      <Box as="section" id="reviews" bg="white" py="16" fontSize="sm">
          <Wrapper>
             <Heading
                as="h2"

@@ -1,4 +1,5 @@
 import {
+   Box,
    Heading,
    List,
    ListIcon,
@@ -21,15 +22,17 @@ import { FaIcon, FaIconProps } from '@ifixit/icons';
 import type { ProductVariant } from '@models/product';
 import React from 'react';
 
-export type ServiceValuePropositionSectionProps = {
+export interface ServiceValuePropositionSectionProps {
+   id: string;
    selectedVariant: ProductVariant;
-};
+}
 
 export function ServiceValuePropositionSection({
+   id,
    selectedVariant,
 }: ServiceValuePropositionSectionProps) {
    return (
-      <>
+      <Box as="section" id={id}>
          <Heading as="h2" srOnly>
             Service value proposition
          </Heading>
@@ -78,7 +81,7 @@ export function ServiceValuePropositionSection({
                </ValueProposition>
             )}
          </Stack>
-      </>
+      </Box>
    );
 }
 

@@ -12,12 +12,13 @@ import { ResponsiveImage } from '@ifixit/ui';
 import type { Banner } from '@models/components/banner';
 
 export interface MultipleBannersProps {
+   id: string;
    banners: Banner[];
 }
 
-export function MultipleBanners({ banners }: MultipleBannersProps) {
+export function MultipleBanners({ id, banners }: MultipleBannersProps) {
    return (
-      <Box as="section" position="relative" w="full">
+      <Box as="section" id={id} position="relative" w="full">
          <SimpleGrid
             columns={{
                base: 1,

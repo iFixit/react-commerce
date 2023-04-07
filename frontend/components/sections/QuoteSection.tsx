@@ -58,6 +58,7 @@ export function QuoteSection({ id, quote, author, image }: QuoteSectionProps) {
                      base: '120px',
                      md: '180px',
                   }}
+                  mt="-10"
                >
                   “
                </Text>

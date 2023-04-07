@@ -3,15 +3,16 @@ import { MultipleBanners } from './MultipleBanners';
 import { SingleBanner } from './SingleBanner';
 
 export interface BannersSectionProps {
+   id: string;
    banners: SingleBannerSection[];
 }
 
-export function BannersSection({ banners }: BannersSectionProps) {
+export function BannersSection({ id, banners }: BannersSectionProps) {
    if (banners.length === 0) return null;
 
    if (banners.length === 1) {
-      return <SingleBanner banner={banners[0]} />;
+      return <SingleBanner id={id} banner={banners[0]} />;
    }
 
-   return <MultipleBanners banners={banners} />;
+   return <MultipleBanners id={id} banners={banners} />;
 }

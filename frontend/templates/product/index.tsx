@@ -133,6 +133,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ReplacementGuidesSection
                            key={section.id}
+                           id={section.id}
                            title={section.title}
                            guides={section.guides}
                         />
@@ -141,7 +142,12 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <SplitWithImageContentSection
                            key={section.id}
-                           data={section}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           image={section.image}
+                           imagePosition={section.imagePosition}
+                           callToAction={section.callToAction}
                         />
                      );
                   case 'CrossSell': {
@@ -151,6 +157,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <CrossSellSection
                            key={section.id}
+                           id={section.id}
                            title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
@@ -163,6 +170,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ServiceValuePropositionSection
                            key={section.id}
+                           id={section.id}
                            selectedVariant={selectedVariant}
                         />
                      );
@@ -190,6 +198,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <FeaturedProductsSection
                            key={section.id}
+                           id={section.id}
                            title={section.title}
                            description={section.description}
                            background={section.background}
@@ -214,6 +223,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <BannersSection
                            key={section.id}
+                           id={section.id}
                            banners={section.banners}
                         />
                      );
