@@ -26,7 +26,7 @@ export function pressQuotesSectionFromStrapi(
    fragment: PressQuotesSectionFieldsFragment | null | undefined,
    index: number
 ): PressQuotesSection | null {
-   const id = createSectionId(fragment, index);
+   const id = createSectionId(fragment);
    const title = fragment?.title;
    const description = fragment?.description;
    const quotes = filterFalsyItems(fragment?.quotes?.map(pressQuoteFromStrapi));

@@ -32,7 +32,12 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   return (
                      <SplitWithImageContentSection
                         key={section.id}
-                        data={section}
+                        id={section.id}
+                        title={section.title}
+                        description={section.description}
+                        image={section.image}
+                        imagePosition={section.imagePosition}
+                        callToAction={section.callToAction}
                      />
                   );
                }
@@ -43,6 +48,7 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   return (
                      <FeaturedProductsSection
                         key={section.id}
+                        id={section.id}
                         title={section.title}
                         description={section.description}
                         background={section.background}

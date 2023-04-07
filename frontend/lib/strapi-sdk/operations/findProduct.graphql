@@ -17,6 +17,7 @@ query findProduct($handle: String) {
                ...BannersSectionFields
                ...QuoteSectionFields
                ...FAQsSectionFields
+               ...DeviceCompatibilitySectionFields
             }
          }
       }

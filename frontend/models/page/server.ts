@@ -32,7 +32,9 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
    const sections = await sectionsFromStrapi(
       page.sections,
       async (section, index) => {
-         const sectionId = createSectionId(section, index);
+         const sectionId = createSectionId(section);
+         if (sectionId == null) return null;
+
          switch (section.__typename) {
             case 'ComponentPageHero': {
                return heroSectionFromStrapi(section, index);

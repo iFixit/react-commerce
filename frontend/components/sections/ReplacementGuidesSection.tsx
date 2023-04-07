@@ -8,7 +8,6 @@ import {
    LinkOverlay,
    ListItem,
    SimpleGrid,
-   TagProps,
    Text,
    UnorderedList,
 } from '@chakra-ui/react';
@@ -29,11 +28,13 @@ import {
 import type { ReplacementGuidePreview } from '@models/components/replacement-guide-preview';
 
 export interface ReplacementGuidesSectionProps {
+   id: string;
    title?: string | null;
    guides: ReplacementGuidePreview[];
 }
 
 export function ReplacementGuidesSection({
+   id,
    title,
    guides,
 }: ReplacementGuidesSectionProps) {
@@ -42,7 +43,7 @@ export function ReplacementGuidesSection({
    }
 
    return (
-      <Box my="16">
+      <Box as="section" id={id} my="16">
          <Wrapper>
             <Heading
                as="h2"

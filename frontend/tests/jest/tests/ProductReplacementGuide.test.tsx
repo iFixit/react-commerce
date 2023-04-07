@@ -16,7 +16,7 @@ const replacementGuide: ReplacementGuidePreview = {
 describe('Product Replacement Guides Section Tests', () => {
    test('renders Replacement Guides Section for a product with a replacement guide', async () => {
       renderWithAppContext(
-         <ReplacementGuidesSection guides={[replacementGuide]} />
+         <ReplacementGuidesSection id="1" guides={[replacementGuide]} />
       );
 
       const replacementGuidesSectionText = await screen.findByText(
@@ -36,7 +36,7 @@ describe('Product Replacement Guides Section Tests', () => {
 
    test('does not render Replacement Guides Section for a product with no replacement guides', async () => {
       const { container } = renderWithAppContext(
-         <ReplacementGuidesSection guides={[]} />
+         <ReplacementGuidesSection id="1" guides={[]} />
       );
 
       const replacementGuidesHeading =

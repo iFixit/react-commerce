@@ -17,12 +17,14 @@ import { useCrossSellVariants } from './useCrossSellVariants';
 import { useOptimisticAddToCart } from './useOptimisticAddToCart';
 
 export interface CrossSellSectionProps {
+   id: string;
    title?: string | null;
    product: Product;
    selectedVariant: ProductVariant;
 }
 
 export function CrossSellSection({
+   id,
    title,
    product,
    selectedVariant,
@@ -59,7 +61,7 @@ export function CrossSellSection({
    }
 
    return (
-      <Box my="16">
+      <Box as="section" id={id} my="16">
          <Wrapper>
             <Heading
                as="h2"

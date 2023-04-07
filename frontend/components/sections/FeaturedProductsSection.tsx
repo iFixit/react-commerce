@@ -8,6 +8,7 @@ import { SectionHeaderWrapper } from './SectionHeaderWrapper';
 import { SectionHeading } from './SectionHeading';
 
 export interface FeaturedProductsSectionProps {
+   id: string;
    title?: string | null;
    description?: string | null;
    background?: BackgroundColor | null;
@@ -16,6 +17,7 @@ export interface FeaturedProductsSectionProps {
 }
 
 export function FeaturedProductsSection({
+   id,
    title,
    description,
    background,
@@ -27,6 +29,7 @@ export function FeaturedProductsSection({
    return (
       <Box
          as="section"
+         id={id}
          position="relative"
          w="full"
          bg={background ?? 'transparent'}

@@ -21,7 +21,7 @@ export async function socialGallerySectionFromStrapi(
    fragment: SocialGallerySectionFieldsFragment | null | undefined,
    index: number
 ): Promise<SocialGallerySection | null> {
-   const id = createSectionId(fragment, index);
+   const id = createSectionId(fragment);
 
    if (id == null) return null;
 
