@@ -208,6 +208,7 @@ export default function SolutionCard({
 }) {
    return (
       <Flex
+         id={`solution-${index}`}
          background="white"
          borderRadius="4px"
          borderColor="gray.300"
