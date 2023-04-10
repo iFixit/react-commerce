@@ -63,11 +63,7 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
-               <meta name="description" content={wikiData.metaDescription} />
-               <meta name="title" content={wikiData.title} />
-               <meta name="keywords" content={wikiData.metaKeywords} />
-               <meta name="robots" content="noindex" />
-               <link rel="canonical" href={wikiData.canonicalUrl} />
+               <Metadata wikiData={wikiData} />
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
             <Heading as="h1" marginTop={6}>
@@ -119,6 +115,18 @@ const Wiki: NextPageWithLayout<{
       </Flex>
    );
 };
+
+function Metadata({ wikiData }: { wikiData: TroubleshootingData }) {
+   return (
+      <>
+         <meta name="description" content={wikiData.metaDescription} />
+         <meta name="title" content={wikiData.title} />
+         <meta name="keywords" content={wikiData.metaKeywords} />
+         <meta name="robots" content="noindex" />
+         <link rel="canonical" href={wikiData.canonicalUrl} />
+      </>
+   );
+}
 
 function NavBar({
    editUrl,
