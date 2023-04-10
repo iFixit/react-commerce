@@ -386,14 +386,14 @@ function AuthorListing({
    const primaryAuthorName = primaryAuthor.username;
    const contributorDescription =
       authorCount > 1 ? 'contributors' : 'contributor';
+   const linkStyle = {
+      fontWeight: 'medium',
+      fontSize: '14px',
+      color: 'brand.500',
+   };
    return (
       <Box>
-         <Link
-            href={authorProfileUrl}
-            fontWeight="medium"
-            fontSize="14px"
-            color="brand.500"
-         >
+         <Link href={authorProfileUrl} {...linkStyle}>
             {primaryAuthorName}
          </Link>
          {authorCount > 0 && (
@@ -401,7 +401,7 @@ function AuthorListing({
                <chakra.span as="span" fontWeight="regular" color="gray.900">
                   {' and '}
                </chakra.span>
-               <Link href={historyUrl}>
+               <Link {...linkStyle} href={historyUrl}>
                   {`${authorCount} ${contributorDescription}`}
                </Link>
             </>
