@@ -83,19 +83,7 @@ const Wiki: NextPageWithLayout<{
                   <Heading as="h2" fontSize="20px">
                      {'Causes'}
                   </Heading>
-                  <OrderedList marginBottom="24px" spacing="8px">
-                     {wikiData.solutions.map((solution, index) => (
-                        <ListItem key={solution.heading}>
-                           <Link
-                              href={`#solution-${index + 1}`}
-                              color="brand.500"
-                              fontWeight="bold"
-                           >
-                              {solution.heading}
-                           </Link>
-                        </ListItem>
-                     ))}
-                  </OrderedList>
+                  <TableOfContents solutions={wikiData.solutions} />
                </>
             )}
             {wikiData.solutions.map((solution, index) => (
@@ -115,6 +103,24 @@ const Wiki: NextPageWithLayout<{
       </Flex>
    );
 };
+
+function TableOfContents({ solutions }: { solutions: Section[] }) {
+   return (
+      <OrderedList marginBottom="24px" spacing="8px">
+         {solutions.map((solution, index) => (
+            <ListItem key={solution.heading}>
+               <Link
+                  href={`#solution-${index + 1}`}
+                  color="brand.500"
+                  fontWeight="bold"
+               >
+                  {solution.heading}
+               </Link>
+            </ListItem>
+         ))}
+      </OrderedList>
+   );
+}
 
 function Metadata({ wikiData }: { wikiData: TroubleshootingData }) {
    return (
