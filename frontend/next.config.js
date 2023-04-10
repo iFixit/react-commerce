@@ -134,6 +134,7 @@ const moduleExports = {
          'www.cominor.com',
          'guide-images.cdn.ifixit.com',
          process.env.STRAPI_IMAGE_DOMAIN,
+         new URL(strapiOrigin).hostname,
       ].filter((domain) => domain),
    },
    i18n: {
