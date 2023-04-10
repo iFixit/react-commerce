@@ -3,7 +3,9 @@ import { test, expect } from '../test-fixtures';
 test.describe('Vulcan page', () => {
    test('it loads', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      await expect(page.getByText('Dryer Not Spinning')).toBeVisible();
+      await expect(
+         page.getByRole('heading', { name: 'Dryer Not Spinning' })
+      ).toBeVisible();
    });
 
    test('it should not be indexed', async ({ page }) => {
@@ -20,6 +22,17 @@ test.describe('Vulcan page', () => {
       await expect(canonical).toHaveAttribute('href', /Dryer.*Not.*Spinning/);
       // Check that the canonical link is an absolute URL
       await expect(canonical).toHaveAttribute('href', /^http/);
+   });
+
+   test('there are breadcrumbs on the page', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      const nav = page.getByRole('navigation', { name: 'breadcrumb' });
+      await expect(nav).toBeVisible();
+
+      // Check that some expected breadcrumbs are present
+      await expect(nav.getByRole('link', { name: 'Home' })).toBeVisible();
+      const dryerLinks = await nav.getByRole('link', { name: 'Dryer' }).count();
+      expect(dryerLinks).toBeGreaterThan(0);
    });
 
    test('it should have a link to the edit page', async ({ page }) => {

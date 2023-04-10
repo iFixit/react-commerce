@@ -142,7 +142,8 @@ const IFixitBreadcrumb = memo(function IFixitBreadcrumb({
             ...hiddenWrapProps,
             flexDirection: 'row-reverse',
             justifyContent: 'flex-end',
-            height: '20px',
+            height: '1.5em',
+            minHeight: '20px',
          }}
       >
          {BreadCrumbItems}
@@ -203,7 +204,7 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
          <Menu>
             <MenuButton
                as={IconButton}
-               aria-label="Options"
+               aria-label="More breadcrumbs"
                colorScheme="gray"
                background="gray.300"
                variant="solid"

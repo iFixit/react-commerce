@@ -9,6 +9,7 @@ import {
    BoxProps,
    Button,
    Flex,
+   FlexProps,
    Heading,
    IconButton,
    Link,
@@ -25,6 +26,7 @@ import {
 import Prerendered from './prerendered';
 import {
    Author,
+   BreadcrumbEntry,
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
@@ -35,6 +37,7 @@ import {
    faClockRotateLeft,
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
+import { BreadCrumbs } from '@ifixit/breadcrumbs';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -48,11 +51,14 @@ const Wiki: NextPageWithLayout<{
             historyUrl={wikiData.historyUrl}
             deviceGuideUrl={wikiData.deviceGuideUrl}
             devicePartsUrl={wikiData.devicePartsUrl}
+            breadcrumbs={wikiData.breadcrumbs}
          />
          <Flex
-            padding="0px 32px 32px"
+            padding={{ base: '0px 16px 32px', sm: '0px 32px 32px' }}
             gap="16px"
             maxW="1280px"
+            w="100%"
+            flexShrink="1"
             direction="column"
             id="main"
          >
@@ -119,34 +125,80 @@ function NavBar({
    historyUrl,
    deviceGuideUrl,
    devicePartsUrl,
+   breadcrumbs,
 }: {
    editUrl: string;
    historyUrl: string;
+   breadcrumbs: BreadcrumbEntry[];
 } & NavTabsProps) {
+   const bc = breadcrumbs.map((breadcrumb) => ({
+      label: breadcrumb.title,
+      url: breadcrumb.url,
+   }));
+   const padding = { base: '16px', sm: '32px' };
    return (
       <Flex
          w="100%"
-         h="48px"
+         minH="48px"
          backgroundColor="white"
          borderBottomColor="gray.200"
          borderBottomWidth="1px"
          justify="center"
       >
-         <Flex maxW="1280px" flexGrow="1">
-            <Breadcrumbs />
-            <NavTabs
-               deviceGuideUrl={deviceGuideUrl}
-               devicePartsUrl={devicePartsUrl}
+         <Flex
+            maxW="1280px"
+            width="100%"
+            flexDirection={{ base: 'column-reverse', sm: 'row' }}
+         >
+            <BreadCrumbs
+               minW="0"
+               height="48px"
+               breadCrumbs={bc.slice(0, -1)}
+               paddingInline={padding}
             />
-            <EditButton editUrl={editUrl} />
-            <ActionsMenu historyUrl={historyUrl} />
+            <Flex minW="0">
+               <Box
+                  sx={{
+                     '::before, ::after': {
+                        minWidth: padding,
+                        display: { base: 'default', sm: 'none' },
+                        position: 'absolute',
+                        top: '0',
+                        content: '""',
+                        height: '100%',
+                        zIndex: '1',
+                        isolation: 'isolate',
+                     },
+                     '::before': {
+                        left: '0',
+                        background:
+                           'linear-gradient(to right, #fff 60%, rgba(255, 255, 255, 0))',
+                     },
+                     '::after': {
+                        right: '0',
+                        background:
+                           'linear-gradient(to left, #fff 60%, rgba(255, 255, 255, 0))',
+                     },
+                  }}
+                  position="relative"
+                  flexShrink="1"
+                  flexGrow="1"
+                  minW="0"
+               >
+                  <NavTabs
+                     overflowX="auto"
+                     flexGrow="1"
+                     paddingInline={{ base: '16px', sm: '8px' }}
+                     deviceGuideUrl={deviceGuideUrl}
+                     devicePartsUrl={devicePartsUrl}
+                  />
+               </Box>
+               <EditButton editUrl={editUrl} />
+               <ActionsMenu historyUrl={historyUrl} />
+            </Flex>
          </Flex>
       </Flex>
    );
-}
-
-function Breadcrumbs() {
-   return <Box flexGrow="1"></Box>;
 }
 
 function EditButton({ editUrl }: { editUrl: string }) {
@@ -170,6 +222,7 @@ function EditButton({ editUrl }: { editUrl: string }) {
          color="brand.500"
          textAlign="center"
          href={editUrl}
+         minW="fit-content"
       >
          Edit
       </Button>
@@ -218,7 +271,11 @@ type NavTabsProps = {
    devicePartsUrl?: string;
 };
 
-function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
+function NavTabs({
+   devicePartsUrl,
+   deviceGuideUrl,
+   ...props
+}: NavTabsProps & FlexProps) {
    // The type here works because all the styles we want to use are available on
    // both Box and Link
    const baseStyleProps: BoxProps & LinkProps = {
@@ -295,25 +352,23 @@ function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps) {
    };
 
    return (
-      <>
-         <Flex paddingInline="12px" gap="6px" height="100%">
-            <Link
-               className={devicePartsUrl ? '' : 'isDisabled'}
-               {...notSelectedStyleProps}
-               href={devicePartsUrl}
-            >
-               Parts
-            </Link>
-            <Link
-               className={deviceGuideUrl ? '' : 'isDisabled'}
-               {...notSelectedStyleProps}
-               href={deviceGuideUrl}
-            >
-               Guide
-            </Link>
-            <Box {...selectedStyleProps}>Answers</Box>
-         </Flex>
-      </>
+      <Flex {...props} gap="6px" height="100%">
+         <Link
+            className={devicePartsUrl ? '' : 'isDisabled'}
+            {...notSelectedStyleProps}
+            href={devicePartsUrl}
+         >
+            Parts
+         </Link>
+         <Link
+            className={deviceGuideUrl ? '' : 'isDisabled'}
+            {...notSelectedStyleProps}
+            href={deviceGuideUrl}
+         >
+            Guide
+         </Link>
+         <Box {...selectedStyleProps}>Answers</Box>
+      </Flex>
    );
 }
 
