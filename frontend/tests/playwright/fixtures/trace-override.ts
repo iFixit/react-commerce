@@ -19,10 +19,7 @@ export function traceOutputDirTemplate(testInfo: TestInfo) {
 }
 
 function formatTestNameForDirectory(testName: string) {
-   // Replace any special characters and spaces with a hyphen
    const formattedName = testName.replace(/[^a-zA-Z0-9]+/g, '-');
-
-   // Ensure the directory name is in lowercase
    const directoryName = formattedName.toLowerCase();
 
    return directoryName;
