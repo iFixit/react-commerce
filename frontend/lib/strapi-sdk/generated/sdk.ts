@@ -2599,7 +2599,12 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
-               | { __typename: 'ComponentSectionLifetimeWarranty' }
+               | {
+                    __typename: 'ComponentSectionLifetimeWarranty';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
                | {
                     __typename: 'ComponentSectionSocialGallery';
                     id: string;
@@ -4768,6 +4773,7 @@ export const FindPageDocument = `
           ...PressQuotesSectionFields
           ...FeaturedProductsSectionFields
           ...SocialGallerySectionFields
+          ...LifetimeWarrantySectionFields
         }
       }
     }
@@ -4786,7 +4792,8 @@ ${PressQuoteFieldsFragmentDoc}
 ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
-${SocialPostFieldsFragmentDoc}`;
+${SocialPostFieldsFragmentDoc}
+${LifetimeWarrantySectionFieldsFragmentDoc}`;
 export const FindProductDocument = `
     query findProduct($handle: String) {
   products(filters: {handle: {eq: $handle}}) {
