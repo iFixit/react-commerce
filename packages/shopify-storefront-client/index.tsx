@@ -1,4 +1,3 @@
-import { reportException } from '@ifixit/sentry';
 import * as React from 'react';
 
 interface ShopifyStorefrontClientOptions {
