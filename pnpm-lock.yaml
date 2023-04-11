@@ -497,13 +497,10 @@ importers:
 
   packages/shopify-storefront-client:
     specifiers:
-      '@ifixit/sentry': workspace:*
       '@ifixit/tsconfig': workspace:*
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       typescript: 4.8.4
-    dependencies:
-      '@ifixit/sentry': link:../sentry
     devDependencies:
       '@ifixit/tsconfig': link:../tsconfig
       '@types/react': 18.0.24
