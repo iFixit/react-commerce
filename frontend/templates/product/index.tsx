@@ -144,6 +144,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            key={section.id}
                            id={section.id}
                            title={section.title}
+                           label={section.label}
                            description={section.description}
                            image={section.image}
                            imagePosition={section.imagePosition}

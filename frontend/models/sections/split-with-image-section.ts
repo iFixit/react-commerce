@@ -16,6 +16,7 @@ export const SplitWithImageSectionSchema = z.object({
    type: z.literal('SplitWithImage'),
    id: z.string(),
    title: z.string().nullable(),
+   label: z.string().nullable(),
    description: z.string().nullable(),
    image: ImageSchema.nullable(),
    imagePosition: z.enum(['left', 'right']),
@@ -27,12 +28,14 @@ export function splitWithImageSectionFromStrapi(
    sectionId: string
 ): SplitWithImageSection | null {
    const title = fragment?.title ?? null;
+   const label = fragment?.label ?? null;
    const description = fragment?.description ?? null;
 
    return {
       type: 'SplitWithImage',
       id: sectionId,
       title,
+      label,
       description,
       image: imageFromStrapi(fragment?.image),
       imagePosition:
