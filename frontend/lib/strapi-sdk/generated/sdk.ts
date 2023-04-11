@@ -2550,6 +2550,7 @@ export type FindPageQuery = {
                     __typename: 'ComponentPageSplitWithImage';
                     id: string;
                     title?: string | null;
+                    label?: string | null;
                     description?: string | null;
                     imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
                     callToAction?: {
@@ -2656,6 +2657,7 @@ export type FindProductQuery = {
                     __typename: 'ComponentPageSplitWithImage';
                     id: string;
                     title?: string | null;
+                    label?: string | null;
                     description?: string | null;
                     imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
                     callToAction?: {
@@ -4359,6 +4361,7 @@ export type SplitWithImageSectionFieldsFragment = {
    __typename?: 'ComponentPageSplitWithImage';
    id: string;
    title?: string | null;
+   label?: string | null;
    description?: string | null;
    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
    callToAction?: {
@@ -4726,6 +4729,7 @@ export const SplitWithImageSectionFieldsFragmentDoc = `
     fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
   id
   title
+  label
   description
   callToAction {
     ...CallToActionFields
