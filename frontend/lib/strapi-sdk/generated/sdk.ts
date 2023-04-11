@@ -1397,6 +1397,7 @@ export type PageSectionsDynamicZone =
    | ComponentPageSplitWithImage
    | ComponentPageStats
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
    | ComponentSectionSocialGallery
    | Error;
 
@@ -2598,6 +2599,7 @@ export type FindPageQuery = {
                        } | null;
                     } | null;
                  }
+               | { __typename: 'ComponentSectionLifetimeWarranty' }
                | {
                     __typename: 'ComponentSectionSocialGallery';
                     id: string;
