@@ -307,6 +307,7 @@ export type ComponentPageSplitWithImage = {
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
    imagePosition?: Maybe<Enum_Componentpagesplitwithimage_Imageposition>;
+   label?: Maybe<Scalars['String']>;
    title?: Maybe<Scalars['String']>;
 };
 
