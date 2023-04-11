@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
+import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
 import { SocialGallerySection } from '@components/sections/SocialGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { assertNever } from '@ifixit/helpers';
@@ -63,6 +64,15 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                         title={section.title}
                         description={section.description}
                         posts={section.posts}
+                     />
+                  );
+               }
+               case 'LifetimeWarranty': {
+                  return (
+                     <LifetimeWarrantySection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
                      />
                   );
                }
