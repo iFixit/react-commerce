@@ -16,6 +16,8 @@ export interface PressQuotesSectionProps {
 export function PressQuotesSection({
    data: { title, description, callToAction, quotes },
 }: PressQuotesSectionProps) {
+   if (quotes.length === 0) return null;
+
    return (
       <Box as="section" position="relative" w="full" bg="gray.200">
          <Flex direction="column" py="16" alignItems="center">

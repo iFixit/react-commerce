@@ -1398,6 +1398,7 @@ export type PageSectionsDynamicZone =
    | ComponentPageSplitWithImage
    | ComponentPageStats
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
    | ComponentSectionSocialGallery
    | Error;
 
@@ -2599,6 +2600,12 @@ export type FindPageQuery = {
                           } | null;
                        } | null;
                     } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionLifetimeWarranty';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
                  }
                | {
                     __typename: 'ComponentSectionSocialGallery';
@@ -4771,6 +4778,7 @@ export const FindPageDocument = `
           ...PressQuotesSectionFields
           ...FeaturedProductsSectionFields
           ...SocialGallerySectionFields
+          ...LifetimeWarrantySectionFields
         }
       }
     }
@@ -4789,7 +4797,8 @@ ${PressQuoteFieldsFragmentDoc}
 ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
-${SocialPostFieldsFragmentDoc}`;
+${SocialPostFieldsFragmentDoc}
+${LifetimeWarrantySectionFieldsFragmentDoc}`;
 export const FindProductDocument = `
     query findProduct($handle: String) {
   products(filters: {handle: {eq: $handle}}) {
