@@ -39,12 +39,12 @@ import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 
-export type ProductOverviewSectionProps = {
+export interface ProductOverviewSectionProps {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
    internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
-};
+}
 
 export function ProductOverviewSection({
    product,
@@ -66,7 +66,7 @@ export function ProductOverviewSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <Wrapper as="section" id="product" mb="16">
+      <Wrapper as="section" id="product-overview" mb="16" pt="6">
          <Flex>
             <Flex
                position="sticky"

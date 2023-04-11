@@ -30,6 +30,74 @@ export type Scalars = {
    Upload: any;
 };
 
+export type Banner = {
+   __typename?: 'Banner';
+   callToAction?: Maybe<ComponentPageCallToAction>;
+   createdAt?: Maybe<Scalars['DateTime']>;
+   description?: Maybe<Scalars['String']>;
+   image?: Maybe<UploadFileEntityResponse>;
+   label?: Maybe<Scalars['String']>;
+   locale?: Maybe<Scalars['String']>;
+   localizations?: Maybe<BannerRelationResponseCollection>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   title?: Maybe<Scalars['String']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type BannerLocalizationsArgs = {
+   filters?: InputMaybe<BannerFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type BannerEntity = {
+   __typename?: 'BannerEntity';
+   attributes?: Maybe<Banner>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type BannerEntityResponse = {
+   __typename?: 'BannerEntityResponse';
+   data?: Maybe<BannerEntity>;
+};
+
+export type BannerEntityResponseCollection = {
+   __typename?: 'BannerEntityResponseCollection';
+   data: Array<BannerEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type BannerFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<BannerFiltersInput>>>;
+   callToAction?: InputMaybe<ComponentPageCallToActionFiltersInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   description?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   label?: InputMaybe<StringFilterInput>;
+   locale?: InputMaybe<StringFilterInput>;
+   localizations?: InputMaybe<BannerFiltersInput>;
+   not?: InputMaybe<BannerFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<BannerFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type BannerInput = {
+   callToAction?: InputMaybe<ComponentPageCallToActionInput>;
+   description?: InputMaybe<Scalars['String']>;
+   image?: InputMaybe<Scalars['ID']>;
+   label?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   title?: InputMaybe<Scalars['String']>;
+};
+
+export type BannerRelationResponseCollection = {
+   __typename?: 'BannerRelationResponseCollection';
+   data: Array<BannerEntity>;
+};
+
 export type BooleanFilterInput = {
    and?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
    between?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -164,6 +232,20 @@ export type ComponentPageCallToAction = {
    id: Scalars['ID'];
    title: Scalars['String'];
    url: Scalars['String'];
+};
+
+export type ComponentPageCallToActionFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentPageCallToActionFiltersInput>>>;
+   not?: InputMaybe<ComponentPageCallToActionFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentPageCallToActionFiltersInput>>>;
+   title?: InputMaybe<StringFilterInput>;
+   url?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentPageCallToActionInput = {
+   id?: InputMaybe<Scalars['ID']>;
+   title?: InputMaybe<Scalars['String']>;
+   url?: InputMaybe<Scalars['String']>;
 };
 
 export type ComponentPageCategory = {
@@ -315,6 +397,34 @@ export type ComponentProductReplacementGuides = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentSectionBanner = {
+   __typename?: 'ComponentSectionBanner';
+   banners?: Maybe<BannerRelationResponseCollection>;
+   id: Scalars['ID'];
+};
+
+export type ComponentSectionBannerBannersArgs = {
+   filters?: InputMaybe<BannerFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ComponentSectionFaqs = {
+   __typename?: 'ComponentSectionFaqs';
+   description?: Maybe<Scalars['String']>;
+   faqs?: Maybe<FaqRelationResponseCollection>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionFaqsFaqsArgs = {
+   filters?: InputMaybe<FaqFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentSectionFeaturedProducts = {
    __typename?: 'ComponentSectionFeaturedProducts';
    background?: Maybe<Enum_Componentsectionfeaturedproducts_Background>;
@@ -329,6 +439,14 @@ export type ComponentSectionLifetimeWarranty = {
    description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionQuote = {
+   __typename?: 'ComponentSectionQuote';
+   author?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   image?: Maybe<UploadFileEntityResponse>;
+   text: Scalars['String'];
 };
 
 export type ComponentSectionServiceValuePropositions = {
@@ -527,6 +645,55 @@ export type Error = {
    message?: Maybe<Scalars['String']>;
 };
 
+export type Faq = {
+   __typename?: 'Faq';
+   answer: Scalars['String'];
+   createdAt?: Maybe<Scalars['DateTime']>;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   question: Scalars['String'];
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type FaqEntity = {
+   __typename?: 'FaqEntity';
+   attributes?: Maybe<Faq>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type FaqEntityResponse = {
+   __typename?: 'FaqEntityResponse';
+   data?: Maybe<FaqEntity>;
+};
+
+export type FaqEntityResponseCollection = {
+   __typename?: 'FaqEntityResponseCollection';
+   data: Array<FaqEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type FaqFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<FaqFiltersInput>>>;
+   answer?: InputMaybe<StringFilterInput>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<FaqFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<FaqFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   question?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type FaqInput = {
+   answer?: InputMaybe<Scalars['String']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   question?: InputMaybe<Scalars['String']>;
+};
+
+export type FaqRelationResponseCollection = {
+   __typename?: 'FaqRelationResponseCollection';
+   data: Array<FaqEntity>;
+};
+
 export type FileInfoInput = {
    alternativeText?: InputMaybe<Scalars['String']>;
    caption?: InputMaybe<Scalars['String']>;
@@ -558,6 +725,7 @@ export type FloatFilterInput = {
 };
 
 export type GenericMorph =
+   | Banner
    | Company
    | ComponentGlobalNewsletterForm
    | ComponentMenuLink
@@ -581,8 +749,11 @@ export type GenericMorph =
    | ComponentProductProduct
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
+   | ComponentSectionBanner
+   | ComponentSectionFaqs
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
+   | ComponentSectionQuote
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
@@ -590,6 +761,7 @@ export type GenericMorph =
    | ComponentStoreHeader
    | ComponentStoreShopifySettings
    | ComponentStoreSocialMediaAccounts
+   | Faq
    | Global
    | I18NLocale
    | Menu
@@ -817,7 +989,10 @@ export type Mutation = {
    __typename?: 'Mutation';
    /** Change user password. Confirm with the current password. */
    changePassword?: Maybe<UsersPermissionsLoginPayload>;
+   createBanner?: Maybe<BannerEntityResponse>;
+   createBannerLocalization?: Maybe<BannerEntityResponse>;
    createCompany?: Maybe<CompanyEntityResponse>;
+   createFaq?: Maybe<FaqEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
@@ -834,7 +1009,9 @@ export type Mutation = {
    createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
    /** Create a new user */
    createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+   deleteBanner?: Maybe<BannerEntityResponse>;
    deleteCompany?: Maybe<CompanyEntityResponse>;
+   deleteFaq?: Maybe<FaqEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
@@ -859,7 +1036,9 @@ export type Mutation = {
    removeFile?: Maybe<UploadFileEntityResponse>;
    /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
    resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+   updateBanner?: Maybe<BannerEntityResponse>;
    updateCompany?: Maybe<CompanyEntityResponse>;
+   updateFaq?: Maybe<FaqEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
@@ -883,8 +1062,23 @@ export type MutationChangePasswordArgs = {
    passwordConfirmation: Scalars['String'];
 };
 
+export type MutationCreateBannerArgs = {
+   data: BannerInput;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreateBannerLocalizationArgs = {
+   data?: InputMaybe<BannerInput>;
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
 export type MutationCreateCompanyArgs = {
    data: CompanyInput;
+};
+
+export type MutationCreateFaqArgs = {
+   data: FaqInput;
 };
 
 export type MutationCreateGlobalLocalizationArgs = {
@@ -954,7 +1148,16 @@ export type MutationCreateUsersPermissionsUserArgs = {
    data: UsersPermissionsUserInput;
 };
 
+export type MutationDeleteBannerArgs = {
+   id: Scalars['ID'];
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
 export type MutationDeleteCompanyArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteFaqArgs = {
    id: Scalars['ID'];
 };
 
@@ -1038,8 +1241,19 @@ export type MutationResetPasswordArgs = {
    passwordConfirmation: Scalars['String'];
 };
 
+export type MutationUpdateBannerArgs = {
+   data: BannerInput;
+   id: Scalars['ID'];
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
 export type MutationUpdateCompanyArgs = {
    data: CompanyInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateFaqArgs = {
+   data: FaqInput;
    id: Scalars['ID'];
 };
 
@@ -1383,8 +1597,11 @@ export type ProductSectionsDynamicZone =
    | ComponentProductProduct
    | ComponentProductProductCustomerReviews
    | ComponentProductReplacementGuides
+   | ComponentSectionBanner
+   | ComponentSectionFaqs
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
+   | ComponentSectionQuote
    | ComponentSectionServiceValuePropositions
    | ComponentSectionStories
    | Error;
@@ -1396,8 +1613,12 @@ export enum PublicationState {
 
 export type Query = {
    __typename?: 'Query';
+   banner?: Maybe<BannerEntityResponse>;
+   banners?: Maybe<BannerEntityResponseCollection>;
    companies?: Maybe<CompanyEntityResponseCollection>;
    company?: Maybe<CompanyEntityResponse>;
+   faq?: Maybe<FaqEntityResponse>;
+   faqs?: Maybe<FaqEntityResponseCollection>;
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
@@ -1424,6 +1645,19 @@ export type Query = {
    usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
 };
 
+export type QueryBannerArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type QueryBannersArgs = {
+   filters?: InputMaybe<BannerFiltersInput>;
+   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type QueryCompaniesArgs = {
    filters?: InputMaybe<CompanyFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
@@ -1433,6 +1667,17 @@ export type QueryCompaniesArgs = {
 
 export type QueryCompanyArgs = {
    id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryFaqArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryFaqsArgs = {
+   filters?: InputMaybe<FaqFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type QueryGlobalArgs = {
@@ -2075,6 +2320,40 @@ export type UsersPermissionsUserRelationResponseCollection = {
    data: Array<UsersPermissionsUserEntity>;
 };
 
+export type BannerFieldsFragment = {
+   __typename?: 'BannerEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'Banner';
+      title?: string | null;
+      label?: string | null;
+      description?: string | null;
+      image?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+      callToAction?: {
+         __typename?: 'ComponentPageCallToAction';
+         title: string;
+         url: string;
+      } | null;
+   } | null;
+};
+
+export type CallToActionFieldsFragment = {
+   __typename?: 'ComponentPageCallToAction';
+   title: string;
+   url: string;
+};
+
 export type CompanyFieldsFragment = {
    __typename?: 'CompanyEntity';
    id?: string | null;
@@ -2094,6 +2373,12 @@ export type CompanyFieldsFragment = {
          } | null;
       } | null;
    } | null;
+};
+
+export type FaqFieldsFragment = {
+   __typename?: 'FaqEntity';
+   id?: string | null;
+   attributes?: { __typename?: 'Faq'; question: string; answer: string } | null;
 };
 
 export type ImageFieldsFragment = {
@@ -2351,12 +2636,6 @@ export type FindPageQuery = {
    } | null;
 };
 
-export type CallToActionFieldsFragment = {
-   __typename?: 'ComponentPageCallToAction';
-   title: string;
-   url: string;
-};
-
 export type FindProductQueryVariables = Exact<{
    handle?: InputMaybe<Scalars['String']>;
 }>;
@@ -2401,7 +2680,12 @@ export type FindProductQuery = {
                     id: string;
                     title?: string | null;
                  }
-               | { __typename: 'ComponentProductDeviceCompatibility' }
+               | {
+                    __typename: 'ComponentProductDeviceCompatibility';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
                | { __typename: 'ComponentProductProduct'; id: string }
                | {
                     __typename: 'ComponentProductProductCustomerReviews';
@@ -2412,6 +2696,58 @@ export type FindProductQuery = {
                     __typename: 'ComponentProductReplacementGuides';
                     id: string;
                     title?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionFaqs';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    faqs?: {
+                       __typename?: 'FaqRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'FaqEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Faq';
+                             question: string;
+                             answer: string;
+                          } | null;
+                       }>;
+                    } | null;
                  }
                | {
                     __typename: 'ComponentSectionFeaturedProducts';
@@ -2437,6 +2773,24 @@ export type FindProductQuery = {
                     id: string;
                     title?: string | null;
                     description?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionQuote';
+                    id: string;
+                    text: string;
+                    author?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
                  }
                | {
                     __typename: 'ComponentSectionServiceValuePropositions';
@@ -3639,6 +3993,41 @@ export type GetStoreListQuery = {
    } | null;
 };
 
+export type BannersSectionFieldsFragment = {
+   __typename?: 'ComponentSectionBanner';
+   id: string;
+   banners?: {
+      __typename?: 'BannerRelationResponseCollection';
+      data: Array<{
+         __typename?: 'BannerEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Banner';
+            title?: string | null;
+            label?: string | null;
+            description?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            callToAction?: {
+               __typename?: 'ComponentPageCallToAction';
+               title: string;
+               url: string;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type BrowseSectionFieldsFragment = {
    __typename?: 'ComponentPageBrowse';
    id: string;
@@ -3716,6 +4105,32 @@ export type CategoryFieldsFragment = {
             } | null;
          } | null;
       } | null;
+   } | null;
+};
+
+export type DeviceCompatibilitySectionFieldsFragment = {
+   __typename?: 'ComponentProductDeviceCompatibility';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+};
+
+export type FaQsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionFaqs';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   faqs?: {
+      __typename?: 'FaqRelationResponseCollection';
+      data: Array<{
+         __typename?: 'FaqEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Faq';
+            question: string;
+            answer: string;
+         } | null;
+      }>;
    } | null;
 };
 
@@ -3860,6 +4275,25 @@ export type ProductReplacementGuidesSectionFieldsFragment = {
    __typename?: 'ComponentProductReplacementGuides';
    id: string;
    title?: string | null;
+};
+
+export type QuoteSectionFieldsFragment = {
+   __typename?: 'ComponentSectionQuote';
+   id: string;
+   text: string;
+   author?: string | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
 };
 
 export type ServiceValuePropositionsSectionFieldsFragment = {
@@ -4056,6 +4490,38 @@ export const ImageFieldsFragmentDoc = `
   }
 }
     `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const BannerFieldsFragmentDoc = `
+    fragment BannerFields on BannerEntity {
+  id
+  attributes {
+    title
+    label
+    description
+    image {
+      ...ImageFields
+    }
+    callToAction {
+      ...CallToActionFields
+    }
+  }
+}
+    `;
+export const BannersSectionFieldsFragmentDoc = `
+    fragment BannersSectionFields on ComponentSectionBanner {
+  id
+  banners {
+    data {
+      ...BannerFields
+    }
+  }
+}
+    `;
 export const ProductListFieldsFragmentDoc = `
     fragment ProductListFields on ProductListEntity {
   attributes {
@@ -4093,6 +4559,34 @@ export const BrowseSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const DeviceCompatibilitySectionFieldsFragmentDoc = `
+    fragment DeviceCompatibilitySectionFields on ComponentProductDeviceCompatibility {
+  id
+  title
+  description
+}
+    `;
+export const FaqFieldsFragmentDoc = `
+    fragment FAQFields on FaqEntity {
+  id
+  attributes {
+    question
+    answer
+  }
+}
+    `;
+export const FaQsSectionFieldsFragmentDoc = `
+    fragment FAQsSectionFields on ComponentSectionFaqs {
+  id
+  title
+  description
+  faqs {
+    data {
+      ...FAQFields
+    }
+  }
+}
+    `;
 export const FeaturedProductsSectionFieldsFragmentDoc = `
     fragment FeaturedProductsSectionFields on ComponentSectionFeaturedProducts {
   id
@@ -4108,12 +4602,6 @@ export const FeaturedProductsSectionFieldsFragmentDoc = `
       }
     }
   }
-}
-    `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
 }
     `;
 export const HeroSectionFieldsFragmentDoc = `
@@ -4192,6 +4680,16 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
     fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
   id
   title
+}
+    `;
+export const QuoteSectionFieldsFragmentDoc = `
+    fragment QuoteSectionFields on ComponentSectionQuote {
+  id
+  text
+  author
+  image {
+    ...ImageFields
+  }
 }
     `;
 export const ServiceValuePropositionsSectionFieldsFragmentDoc = `
@@ -4304,6 +4802,10 @@ export const FindProductDocument = `
           ...FeaturedProductsSectionFields
           ...LifetimeWarrantySectionFields
           ...SplitWithImageSectionFields
+          ...BannersSectionFields
+          ...QuoteSectionFields
+          ...FAQsSectionFields
+          ...DeviceCompatibilitySectionFields
         }
       }
     }
@@ -4318,7 +4820,13 @@ ${FeaturedProductsSectionFieldsFragmentDoc}
 ${LifetimeWarrantySectionFieldsFragmentDoc}
 ${SplitWithImageSectionFieldsFragmentDoc}
 ${CallToActionFieldsFragmentDoc}
-${ImageFieldsFragmentDoc}`;
+${ImageFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}
+${QuoteSectionFieldsFragmentDoc}
+${FaQsSectionFieldsFragmentDoc}
+${FaqFieldsFragmentDoc}
+${DeviceCompatibilitySectionFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {

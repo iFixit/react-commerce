@@ -24,7 +24,7 @@ export function browseSectionFromStrapi(
    fragment: BrowseSectionFieldsFragment | null | undefined,
    index: number
 ): BrowseSection | null {
-   const id = createSectionId(fragment, index);
+   const id = createSectionId(fragment);
    const title = fragment?.title ?? null;
    const description = fragment?.description ?? null;
    const categories: BrowseCategory[] = filterFalsyItems(

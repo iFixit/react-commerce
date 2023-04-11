@@ -23,7 +23,7 @@ export function LifetimeWarrantySection({
       : "We stand behind our tools. If something breaks, we'll replace it—for as long as you own the iFixit tool.";
 
    return (
-      <Box py="16" position="relative">
+      <Box as="section" id="lifetime-warranty" py="16" position="relative">
          <Box position="absolute" inset="0">
             <Image
                alt=""

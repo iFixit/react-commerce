@@ -8,6 +8,7 @@ This document contains extra information for writing Playwright tests within the
       -  [Practical Usage: Developing Components](#practical-usage-developing-components)
       -  [Practical Usage: Global Test Mock](#practical-usage-global-test-mock)
    -  [Dynamic Handlers](#dynamic-handlers)
+   -  [Working with Mock Data](#working-with-mock-data)
 -  [Debugging Playwright Tests](#debugging-playwright-tests)
    -  [`pnpm playwright:debug`](#pnpm-playwrightdebug)
       -  [`--debug` flag](#--debug-flag)
@@ -141,6 +142,27 @@ Likewise, if you want to mock an API request for a **client-side request**, you 
             })
          );
 ```
+
+### Working with Mock Data
+
+We are currently only mocking the `findProduct` GraphQL query from `shopify` -- [mocked queries](./fixtures/shopify-mocked-queries.ts).
+
+If we ever change the fields we request or the schema changes, we will need to do the following to update the mock data:
+
+1. Copy the `graphql` query from [`findProduct` query](../../lib/shopify-storefront-sdk/operations/findProduct.graphql)
+2. Grab a `shopify` storefront access token
+3. Send a curl request to `https://store.cominor.com/api/<latest>/graphql.json` where `latest` is the most recently generate graphql schema date. For example `2022-10`
+
+```bash
+curl --location 'https://store.cominor.com/api/2022-10/graphql.json' \
+--header 'X-Shopify-Storefront-Access-Token: <access-token>' \
+--header 'Content-Type: application/json' \
+--data '{"query":"<graphql-query>", "variables":{"handle": "<product-handle>"}}'
+```
+
+4. Copy the response body and paste it into [`shopify-mocked-queries.ts`](./fixtures/shopify-mocked-queries.ts)
+
+_💡 It can be easier to use `Postman` to send the request and copy the response body._
 
 ## Debugging Playwright Tests
 

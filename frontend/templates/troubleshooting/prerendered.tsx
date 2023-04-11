@@ -41,6 +41,10 @@ const renderStyles: SystemStyleObject = {
       paddingLeft: 4,
    },
 
+   '>ul, >ol': {
+      paddingBottom: 6,
+   },
+
    a: {
       color: 'brand.500',
    },

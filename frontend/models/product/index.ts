@@ -8,7 +8,6 @@ import {
    breadcrumbsFromMetafield,
    isCurrentPageBreadcrumbMissing,
 } from '@models/components/breadcrumb';
-import { FAQSchema, faqsFromMetafield } from '@models/components/faq';
 import { ProductPreviewSchema } from '@models/components/product-preview';
 import {
    productReviewsFromMetafields,
@@ -71,7 +70,6 @@ export const ProductSchema = z.object({
    prop65Chemicals: z.string().nullable(),
    productVideos: z.string().nullable(),
    productVideosJson: ProductVideosSchema.nullable(),
-   faqs: z.array(FAQSchema),
    compatibility: ProductDeviceCompatibilitySchema.nullable(),
    metaTitle: z.string().nullable(),
    shortDescription: z.string().nullable(),
@@ -143,7 +141,6 @@ export async function getProduct({
       productVideosJson: productVideoFromMetafield(
          shopifyProduct.productVideos?.value
       ),
-      faqs: faqsFromMetafield(shopifyProduct.faqs?.value),
       compatibility: productDeviceCompatibilityFromMetafield(
          shopifyProduct.compatibility?.value
       ),

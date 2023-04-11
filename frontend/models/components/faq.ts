@@ -1,5 +1,5 @@
-import { parseJSONMetafield } from '@helpers/storefront-helpers';
-import { filterNullableItems } from '@ifixit/helpers';
+import { isPresent } from '@ifixit/helpers';
+import type { FaqFieldsFragment } from '@lib/strapi-sdk';
 import { z } from 'zod';
 
 export type FAQ = z.infer<typeof FAQSchema>;
@@ -9,22 +9,16 @@ export const FAQSchema = z.object({
    answer: z.string(),
 });
 
-export function faqsFromMetafield(value: string | null | undefined): FAQ[] {
-   const json = parseJSONMetafield(value);
-   if (!Array.isArray(json)) {
-      return [];
-   }
-   return filterNullableItems(
-      json.map((faq) => {
-         const question = faq?.question;
-         const answer = faq?.answer;
-         if (typeof question !== 'string' || typeof answer !== 'string') {
-            return null;
-         }
-         return {
-            question,
-            answer,
-         };
-      })
-   );
+export function faqFromStrapi(
+   fragment: FaqFieldsFragment | null | undefined
+): FAQ | null {
+   const question = fragment?.attributes?.question;
+   const answer = fragment?.attributes?.answer;
+
+   if (!isPresent(question) || !isPresent(answer)) return null;
+
+   return {
+      question,
+      answer,
+   };
 }

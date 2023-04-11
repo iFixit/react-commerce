@@ -20,6 +20,7 @@ const withTM = require('next-transpile-modules')([
    '@ifixit/shopify-storefront-client',
    '@ifixit/ui',
    '@ifixit/menu',
+   '@ifixit/tracking-hooks',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -106,6 +107,16 @@ const moduleExports = {
          {
             source: '/Parts/Over-Ear_Headphone',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Headphone`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/Wii',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/Nintendo_Wii`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/Computer',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/PC`,
             permanent: true,
          },
       ];

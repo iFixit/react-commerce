@@ -19,7 +19,7 @@ export const withLogging: GetServerSidePropsMiddleware = (next) => {
          ...context.query,
       });
       const isCacheDisabled =
-         CACHE_DISABLED || context.query._vercel_no_cache === '1';
+         CACHE_DISABLED || context.query.disableCacheGets !== undefined;
       return next(context)
          .then((result) => {
             if (isCacheDisabled) {
