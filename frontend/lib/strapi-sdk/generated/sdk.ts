@@ -1397,6 +1397,7 @@ export type PageSectionsDynamicZone =
    | ComponentPagePress
    | ComponentPageSplitWithImage
    | ComponentPageStats
+   | ComponentSectionBanner
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
    | ComponentSectionSocialGallery
@@ -2582,6 +2583,7 @@ export type FindPageQuery = {
                        value: string;
                     } | null>;
                  }
+               | { __typename: 'ComponentSectionBanner' }
                | {
                     __typename: 'ComponentSectionFeaturedProducts';
                     id: string;

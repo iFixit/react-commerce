@@ -50,7 +50,8 @@
             "page.press",
             "section.featured-products",
             "section.social-gallery",
-            "section.lifetime-warranty"
+            "section.lifetime-warranty",
+            "section.banner"
          ],
          "required": true
       }
