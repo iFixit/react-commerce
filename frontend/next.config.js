@@ -135,6 +135,7 @@ const moduleExports = {
          'guide-images.cdn.ifixit.com',
          process.env.STRAPI_IMAGE_DOMAIN,
       ].filter((domain) => domain),
+      minimumCacheTTL: 3600,
    },
    i18n: {
       locales: ['en-US'],
