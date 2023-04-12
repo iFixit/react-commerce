@@ -186,7 +186,7 @@ export const getProductListServerSideProps = ({
          ifixitOrigin,
       };
 
-      const serverState = await getSafeServerState({
+      const { serverState, adminMessage } = await getSafeServerState({
          appProps,
          indexName,
          productList,
@@ -198,6 +198,7 @@ export const getProductListServerSideProps = ({
          layoutProps: await layoutProps,
          appProps: {
             ...appProps,
+            ...(adminMessage ? { adminMessage } : {}),
             algolia: appProps.algolia
                ? {
                     ...appProps.algolia,
@@ -234,7 +235,7 @@ async function getSafeServerState({
       );
    };
    try {
-      return await tryGetServerState(productList);
+      return { serverState: await tryGetServerState(productList) };
    } catch (e) {
       console.error('Error getting instantsearch server state', e);
       Sentry.withScope((scope) => {
@@ -242,7 +243,15 @@ async function getSafeServerState({
          scope.setExtra('Filters from Strapi', productList?.filters);
          Sentry.captureException(e);
       });
-      return await tryGetServerState({ ...productList, filters: null });
+      const serverState = await tryGetServerState({
+         ...productList,
+         filters: null,
+      });
+      return {
+         serverState,
+         adminMessage:
+            'Failed to perform algolia search, possible error in filters, check strapi',
+      };
    }
 }
 
