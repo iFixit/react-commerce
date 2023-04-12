@@ -1,3 +1,4 @@
+import { BannersSectionSchema } from '@models/sections/banners-section';
 import { FeaturedProductsSectionSchema } from '@models/sections/featured-products-section';
 import { IFixitStatsSectionSchema } from '@models/sections/ifixit-stats-section';
 import { LifetimeWarrantySectionSchema } from '@models/sections/lifetime-warranty-section';
@@ -19,6 +20,7 @@ export const PageSectionSchema = z.union([
    FeaturedProductsSectionSchema,
    SocialGallerySectionSchema,
    LifetimeWarrantySectionSchema,
+   BannersSectionSchema,
 ]);
 
 export type Page = z.infer<typeof PageSchema>;

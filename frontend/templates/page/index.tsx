@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { BannersSection } from '@components/sections/BannersSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
 import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
@@ -73,6 +74,15 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                         key={section.id}
                         title={section.title}
                         description={section.description}
+                     />
+                  );
+               }
+               case 'Banners': {
+                  return (
+                     <BannersSection
+                        key={section.id}
+                        id={section.id}
+                        banners={section.banners}
                      />
                   );
                }
