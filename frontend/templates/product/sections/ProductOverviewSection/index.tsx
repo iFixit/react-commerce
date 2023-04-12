@@ -30,6 +30,7 @@ import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSal
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { CompatibleDevices } from './CompatibleDevices';
+import { PRODUCT_OVERVIEW_SECTION_ID } from './constants';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { InternationalBuyBox } from './InternationalBuyBox';
 import { ProductDescription } from './ProductDescription';
@@ -66,7 +67,7 @@ export function ProductOverviewSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <Wrapper as="section" id="product-overview" mb="16" pt="6">
+      <Wrapper as="section" id={PRODUCT_OVERVIEW_SECTION_ID} mb="16" pt="6">
          <Flex>
             <Flex
                position="sticky"
