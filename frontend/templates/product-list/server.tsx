@@ -15,6 +15,7 @@ import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ProductList, ProductListType } from '@models/product-list';
 import { findProductList } from '@models/product-list/server';
+import * as Sentry from '@sentry/nextjs';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
@@ -185,15 +186,11 @@ export const getProductListServerSideProps = ({
          ifixitOrigin,
       };
 
-      const appMarkup = (
-         <AppProviders {...appProps}>
-            <ProductListView productList={productList} indexName={indexName} />
-         </AppProviders>
-      );
-
-      const serverState = await timeAsync('getServerState', () =>
-         getServerState(appMarkup, { renderToString })
-      );
+      const { serverState, adminMessage } = await getSafeServerState({
+         appProps,
+         indexName,
+         productList,
+      });
 
       const pageProps: ProductListTemplateProps = {
          productList,
@@ -201,6 +198,7 @@ export const getProductListServerSideProps = ({
          layoutProps: await layoutProps,
          appProps: {
             ...appProps,
+            ...(adminMessage ? { adminMessage } : {}),
             algolia: appProps.algolia
                ? {
                     ...appProps.algolia,
@@ -214,6 +212,48 @@ export const getProductListServerSideProps = ({
          props: pageProps,
       };
    });
+
+type GetSafeServerStateProps = {
+   appProps: AppProvidersProps;
+   indexName: string;
+   productList: ProductList;
+};
+
+async function getSafeServerState({
+   appProps,
+   indexName,
+   productList,
+}: GetSafeServerStateProps) {
+   const tryGetServerState = (productList: ProductList) => {
+      const appMarkup = (
+         <AppProviders {...appProps}>
+            <ProductListView productList={productList} indexName={indexName} />
+         </AppProviders>
+      );
+      return timeAsync('getServerState', () =>
+         getServerState(appMarkup, { renderToString })
+      );
+   };
+   try {
+      return { serverState: await tryGetServerState(productList) };
+   } catch (e) {
+      console.error('Error getting instantsearch server state', e);
+      Sentry.withScope((scope) => {
+         scope.setExtra('Productlist', productList);
+         scope.setExtra('Filters from Strapi', productList?.filters);
+         Sentry.captureException(e);
+      });
+      const serverState = await tryGetServerState({
+         ...productList,
+         filters: null,
+      });
+      return {
+         serverState,
+         adminMessage:
+            'Failed to perform algolia search, possible error in filters, check strapi',
+      };
+   }
+}
 
 function getDevicePathSegments(
    context: GetServerSidePropsContext<ParsedUrlQuery>
