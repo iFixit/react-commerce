@@ -2583,7 +2583,40 @@ export type FindPageQuery = {
                        value: string;
                     } | null>;
                  }
-               | { __typename: 'ComponentSectionBanner' }
+               | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
                | {
                     __typename: 'ComponentSectionFeaturedProducts';
                     id: string;
@@ -4781,6 +4814,7 @@ export const FindPageDocument = `
           ...FeaturedProductsSectionFields
           ...SocialGallerySectionFields
           ...LifetimeWarrantySectionFields
+          ...BannersSectionFields
         }
       }
     }
@@ -4800,7 +4834,9 @@ ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
 ${SocialPostFieldsFragmentDoc}
-${LifetimeWarrantySectionFieldsFragmentDoc}`;
+${LifetimeWarrantySectionFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}`;
 export const FindProductDocument = `
     query findProduct($handle: String) {
   products(filters: {handle: {eq: $handle}}) {
