@@ -1,8 +1,7 @@
-import { Box, chakra, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common/CompatibleDevice';
 import { Wrapper } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
-import NextLink from 'next/link';
 
 export type CompatibilitySectionProps = {
    compatibility: Product['compatibility'];
@@ -30,29 +29,26 @@ export function CompatibilitySection({
                margin={{ base: 5, sm: 0 }}
             >
                {compatibility?.devices.map((device, index) => (
-                  <NextLink key={index} href={device.deviceUrl} passHref>
-                     <chakra.a
-                        display="flex"
-                        p="3"
-                        bg="white"
-                        borderWidth="1px"
-                        borderStyle="solid"
-                        borderColor="gray.300"
-                        borderRadius="base"
-                        transition="all 300ms"
-                        _hover={{
-                           boxShadow: 'md',
-                        }}
-                        alignItems="flex-start"
-                        gridColumnStart={
-                           compatibility.devices.length === 1
-                              ? { base: 1, md: 2 }
-                              : 'unset'
-                        }
-                     >
-                        <CompatibleDevice device={device} />
-                     </chakra.a>
-                  </NextLink>
+                  <CompatibleDevice
+                     key={index}
+                     device={device}
+                     maxModelLines={10}
+                     truncateModels={false}
+                     p="3"
+                     bg="white"
+                     borderWidth="1px"
+                     borderStyle="solid"
+                     borderColor="gray.300"
+                     borderRadius="base"
+                     _hover={{
+                        boxShadow: 'md',
+                     }}
+                     gridColumnStart={
+                        compatibility.devices.length === 1
+                           ? { base: 1, md: 2 }
+                           : 'unset'
+                     }
+                  />
                ))}
             </SimpleGrid>
          </Wrapper>

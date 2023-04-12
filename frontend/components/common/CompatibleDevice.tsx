@@ -1,71 +1,127 @@
-import { Flex, Img, Text } from '@chakra-ui/react';
+import {
+   chakra,
+   Flex,
+   HTMLChakraProps,
+   Img,
+   Text,
+   useDisclosure,
+} from '@chakra-ui/react';
 import type { Product } from '@pages/api/nextjs/cache/product';
-import * as React from 'react';
+import NextLink from 'next/link';
 
-export type CompatibleDeviceProps = {
+export interface CompatibleDeviceProps extends HTMLChakraProps<'a'> {
    device: NonNullable<Product['compatibility']>['devices'][number];
    maxModelLines?: number;
-};
+   truncateModels?: boolean;
+}
 
 export function CompatibleDevice({
    device,
    maxModelLines = 0,
+   truncateModels = true,
+   ...otherProps
 }: CompatibleDeviceProps) {
-   const variants = device.variants;
-   const [visibleVariants, hiddenVariantCount] = React.useMemo(
-      () =>
-         maxModelLines > 0 && variants.length > maxModelLines
-            ? [
-                 variants.slice(0, maxModelLines - 1),
-                 variants.length - maxModelLines + 1,
-              ]
-            : [variants, 0],
-      [maxModelLines, variants]
-   );
+   const { variants } = device;
+   const [visibleVariants, hiddenVariants] =
+      maxModelLines > 0 && variants.length > maxModelLines
+         ? [variants.slice(0, maxModelLines), variants.slice(maxModelLines)]
+         : [variants, []];
+   const { isOpen, getDisclosureProps, getButtonProps, onToggle } =
+      useDisclosure();
    return (
-      <>
-         <Img
-            src={device.imageUrl}
-            alt={device.deviceName ?? ''}
-            w="12"
-            mr="3"
-            borderWidth="1px"
-            borderStyle="solid"
-            borderColor="gray.300"
-            borderRadius="base"
-         />
-         <Flex
-            minH="12"
-            flexDir="column"
-            alignSelf="flex-start"
-            justifyContent="center"
+      <NextLink href={device.deviceUrl} passHref>
+         <chakra.a
+            display="flex"
+            alignItems="start"
+            transition="all 300m"
+            {...otherProps}
          >
-            <Text
-               my="2px"
-               fontWeight="medium"
-               _groupHover={{ color: 'brand.500' }}
+            <Img
+               src={device.imageUrl}
+               alt={device.deviceName ?? ''}
+               w="12"
+               mr="3"
+               borderWidth="1px"
+               borderStyle="solid"
+               borderColor="gray.300"
+               borderRadius="base"
+            />
+            <Flex
+               minH="12"
+               flexDir="column"
+               alignSelf="flex-start"
+               justifyContent="center"
             >
-               {device.deviceName}
-            </Text>
-            <Flex flexDir="column">
-               {visibleVariants.map((variant) => (
+               <Text
+                  my="2px"
+                  fontWeight="medium"
+                  _groupHover={{ color: 'brand.500' }}
+               >
+                  {device.deviceName}
+               </Text>
+               <Flex flexDir="column">
+                  {visibleVariants.map((variant) => (
+                     <Text
+                        key={variant}
+                        lineHeight="short"
+                        fontSize="xs"
+                        color="gray.600"
+                     >
+                        {variant}
+                     </Text>
+                  ))}
+               </Flex>
+               <Flex flexDir="column" {...getDisclosureProps()}>
+                  {hiddenVariants.map((variant) => (
+                     <Text
+                        key={variant}
+                        lineHeight="short"
+                        fontSize="xs"
+                        color="gray.600"
+                     >
+                        {variant}
+                     </Text>
+                  ))}
+               </Flex>
+               {truncateModels && hiddenVariants.length > 0 && (
                   <Text
-                     key={variant}
+                     mb="2px"
                      lineHeight="short"
                      fontSize="xs"
                      color="gray.600"
                   >
-                     {variant}
+                     And {hiddenVariants.length} other model
+                     {hiddenVariants.length > 1 ? 's' : ''}...
                   </Text>
-               ))}
+               )}
+               {!truncateModels && hiddenVariants.length > 0 && (
+                  <Text
+                     mt="2px"
+                     lineHeight="short"
+                     fontSize="xs"
+                     fontWeight="medium"
+                     color="brand.500"
+                     {...getButtonProps()}
+                     onClick={(event) => {
+                        onToggle();
+                        event.preventDefault();
+                        event.stopPropagation();
+                     }}
+                     onKeyDown={(event) => {
+                        if ('Enter' === event.code) {
+                           onToggle();
+                           event.preventDefault();
+                           event.stopPropagation();
+                        }
+                     }}
+                  >
+                     {isOpen
+                        ? 'Show fewer models'
+                        : `Show all ${variants.length} models`}
+                  </Text>
+               )}
             </Flex>
-            {hiddenVariantCount > 0 && (
-               <Text mb="2px" lineHeight="short" fontSize="xs" color="gray.600">
-                  And {hiddenVariantCount} other model
-                  {hiddenVariantCount > 1 ? 's' : ''}...
-               </Text>
-            )}
-         </Flex>
-      </>
+         </chakra.a>
+      </NextLink>
    );
 }
