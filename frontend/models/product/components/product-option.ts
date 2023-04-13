@@ -15,7 +15,7 @@ export function productOptionFromShopify(
    variants: ProductVariant[],
    iFixitOptions?: string[]
 ): ProductOption {
-   const values = iFixitOptions ?? option.values;
+   const values = iFixitOptions?.length ? iFixitOptions : option.values;
    const valuesWithMatchingVariants = values.filter((value: string) =>
       valueHasMatchingVariant(value, option, variants)
    );
