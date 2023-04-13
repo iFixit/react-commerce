@@ -8,7 +8,7 @@ export type CompatibleDevicesProps = {
 };
 
 const MAX_VISIBLE_DEVICES = 3;
-const MAX_MODEL_LINES_PER_DEVICE = 4;
+const MAX_MODEL_LINES_PER_DEVICE = 3;
 
 export function CompatibleDevices({ product }: CompatibleDevicesProps) {
    const devices = product.compatibility?.devices ?? [];
