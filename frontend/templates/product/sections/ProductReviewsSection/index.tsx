@@ -235,7 +235,7 @@ function ProductReviewLineItem({
          borderColor="gray.200"
          data-testid="product-review-line-item"
       >
-         {isAdminUser && (
+         {isAdminUser && $variantSku && (
             <Button
                variant="link"
                as={Link}
