@@ -46,6 +46,7 @@ export async function findProduct({
    const product = await getProduct({
       shopifyProduct: shopifyQueryResponse.product,
       strapiProduct: strapiQueryResponse.products?.data[0],
+      iFixitProduct: iFixitQueryResponse,
    });
    if (product == null) {
       return null;

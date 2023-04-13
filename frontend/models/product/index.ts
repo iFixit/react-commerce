@@ -45,6 +45,7 @@ import {
    ProductVideosSchema,
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
+import { DeviceWikiApiResponse } from '@lib/ifixit-api/devices';
 
 export type {
    ProductVariant,
@@ -84,15 +85,18 @@ export const ProductSchema = z.object({
 
 type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
 type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
+type iFixitProduct = NonNullable<DeviceWikiApiResponse>;
 
 interface GetProductArgs {
    shopifyProduct: ShopifyProduct | null | undefined;
    strapiProduct: StrapiProduct | null | undefined;
+   iFixitProduct: iFixitProduct | null | undefined;
 }
 
 export async function getProduct({
    shopifyProduct,
    strapiProduct,
+   iFixitProduct,
 }: GetProductArgs): Promise<Product | null> {
    if (shopifyProduct == null) return null;
 
@@ -131,7 +135,11 @@ export async function getProduct({
       tags: shopifyProduct.tags,
       images: imagesFromQueryProduct(shopifyProduct, variants),
       options: shopifyProduct.options.map((option) =>
-         productOptionFromShopify(option, variants)
+         productOptionFromShopify(
+            option,
+            variants,
+            iFixitProduct?.variantOptions[option.name]
+         )
       ),
       variants,
       isEnabled: hasActiveVariants,
