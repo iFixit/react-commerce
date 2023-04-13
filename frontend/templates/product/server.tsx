@@ -73,7 +73,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             stores: storesWithProductUrls,
          },
          appProps: {
-            ifixitOrigin: ifixitOriginFromHost(context),
+            ifixitOrigin: ifixitOrigin,
          },
          product,
       };
