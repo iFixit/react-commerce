@@ -2433,6 +2433,30 @@ export type FaqFieldsFragment = {
    attributes?: { __typename?: 'Faq'; question: string; answer: string } | null;
 };
 
+export type ProductListFieldsFragment = {
+   __typename?: 'ProductListEntity';
+   attributes?: {
+      __typename?: 'ProductList';
+      type?: Enum_Productlist_Type | null;
+      handle: string;
+      deviceTitle?: string | null;
+      title: string;
+      metaDescription?: string | null;
+      image?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: {
@@ -2446,16 +2470,35 @@ export type ImageFieldsFragment = {
    } | null;
 };
 
-export type ProductListFieldsFragment = {
-   __typename?: 'ProductListEntity';
-   attributes?: {
-      __typename?: 'ProductList';
-      type?: Enum_Productlist_Type | null;
-      handle: string;
-      deviceTitle?: string | null;
-      title: string;
-      metaDescription?: string | null;
-      image?: {
+export type PersonFieldsFragment = {
+   __typename?: 'ComponentGlobalPerson';
+   id: string;
+   name?: string | null;
+   role?: string | null;
+   avatar?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type QuoteCardFieldsFragment = {
+   __typename?: 'ComponentSectionQuoteCard';
+   id: string;
+   text: string;
+   author?: {
+      __typename?: 'ComponentGlobalPerson';
+      id: string;
+      name?: string | null;
+      role?: string | null;
+      avatar?: {
          __typename?: 'UploadFileEntityResponse';
          data?: {
             __typename?: 'UploadFileEntity';
@@ -2691,7 +2734,35 @@ export type FindPageQuery = {
                     title?: string | null;
                     description?: string | null;
                  }
-               | { __typename: 'ComponentSectionQuoteGallery' }
+               | {
+                    __typename: 'ComponentSectionQuoteGallery';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentSectionQuoteCard';
+                       id: string;
+                       text: string;
+                       author?: {
+                          __typename?: 'ComponentGlobalPerson';
+                          id: string;
+                          name?: string | null;
+                          role?: string | null;
+                          avatar?: {
+                             __typename?: 'UploadFileEntityResponse';
+                             data?: {
+                                __typename?: 'UploadFileEntity';
+                                attributes?: {
+                                   __typename?: 'UploadFile';
+                                   alternativeText?: string | null;
+                                   url: string;
+                                   formats?: any | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                 }
                | {
                     __typename: 'ComponentSectionSocialGallery';
                     id: string;
@@ -4372,6 +4443,36 @@ export type ProductReplacementGuidesSectionFieldsFragment = {
    title?: string | null;
 };
 
+export type QuoteGallerySectionFieldsFragment = {
+   __typename?: 'ComponentSectionQuoteGallery';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   quotes?: Array<{
+      __typename?: 'ComponentSectionQuoteCard';
+      id: string;
+      text: string;
+      author?: {
+         __typename?: 'ComponentGlobalPerson';
+         id: string;
+         name?: string | null;
+         role?: string | null;
+         avatar?: {
+            __typename?: 'UploadFileEntityResponse';
+            data?: {
+               __typename?: 'UploadFileEntity';
+               attributes?: {
+                  __typename?: 'UploadFile';
+                  alternativeText?: string | null;
+                  url: string;
+                  formats?: any | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null> | null;
+};
+
 export type QuoteSectionFieldsFragment = {
    __typename?: 'ComponentSectionQuote';
    id: string;
@@ -4778,6 +4879,35 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
   title
 }
     `;
+export const PersonFieldsFragmentDoc = `
+    fragment PersonFields on ComponentGlobalPerson {
+  id
+  name
+  role
+  avatar {
+    ...ImageFields
+  }
+}
+    `;
+export const QuoteCardFieldsFragmentDoc = `
+    fragment QuoteCardFields on ComponentSectionQuoteCard {
+  id
+  text
+  author {
+    ...PersonFields
+  }
+}
+    `;
+export const QuoteGallerySectionFieldsFragmentDoc = `
+    fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
+  id
+  title
+  description
+  quotes {
+    ...QuoteCardFields
+  }
+}
+    `;
 export const QuoteSectionFieldsFragmentDoc = `
     fragment QuoteSectionFields on ComponentSectionQuote {
   id
@@ -4865,6 +4995,7 @@ export const FindPageDocument = `
           ...SocialGallerySectionFields
           ...LifetimeWarrantySectionFields
           ...BannersSectionFields
+          ...QuoteGallerySectionFields
         }
       }
     }
@@ -4886,7 +5017,10 @@ ${SocialGallerySectionFieldsFragmentDoc}
 ${SocialPostFieldsFragmentDoc}
 ${LifetimeWarrantySectionFieldsFragmentDoc}
 ${BannersSectionFieldsFragmentDoc}
-${BannerFieldsFragmentDoc}`;
+${BannerFieldsFragmentDoc}
+${QuoteGallerySectionFieldsFragmentDoc}
+${QuoteCardFieldsFragmentDoc}
+${PersonFieldsFragmentDoc}`;
 export const FindProductDocument = `
     query findProduct($handle: String) {
   products(filters: {handle: {eq: $handle}}) {

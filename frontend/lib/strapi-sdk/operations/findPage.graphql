@@ -23,6 +23,7 @@ query findPage(
                ...SocialGallerySectionFields
                ...LifetimeWarrantySectionFields
                ...BannersSectionFields
+               ...QuoteGallerySectionFields
             }
          }
       }
