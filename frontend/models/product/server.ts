@@ -3,7 +3,7 @@ import { getServerShopifyStorefrontSdk } from '@lib/shopify-storefront-sdk';
 import { strapi } from '@lib/strapi-sdk';
 import { Product, getProduct } from '.';
 import { findStoreByCode } from '../store';
-import { fetchProductData } from '@lib/ifixit-api/devices';
+import { fetchProductData } from '@lib/ifixit-api/productData';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 
 export type FindProductArgs = {
