@@ -2,7 +2,7 @@ import { test, expect } from '../test-fixtures';
 import {
    createGraphQLHandler,
    createRestHandler,
-} from './../msw/request-handler';
+} from '../msw/request-handler';
 
 test.describe('Product Page and Cart Interactions', () => {
    test('Multiple Add To Cart Clicks with Quantity Check', async ({

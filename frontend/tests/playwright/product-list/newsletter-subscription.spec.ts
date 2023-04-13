@@ -1,5 +1,5 @@
 import { test, expect } from '../test-fixtures';
-import { createRestHandler } from './../msw/request-handler';
+import { createRestHandler } from '../msw/request-handler';
 
 test.describe('Newsletter Subscription', () => {
    test.beforeEach(async ({ page }) => {
