@@ -182,6 +182,22 @@ export type ComponentGlobalNewsletterFormInput = {
    title?: InputMaybe<Scalars['String']>;
 };
 
+export type ComponentGlobalPerson = {
+   __typename?: 'ComponentGlobalPerson';
+   avatar?: Maybe<UploadFileEntityResponse>;
+   id: Scalars['ID'];
+   name?: Maybe<Scalars['String']>;
+   role?: Maybe<Scalars['String']>;
+};
+
+export type ComponentGlobalPersonFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentGlobalPersonFiltersInput>>>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ComponentGlobalPersonFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentGlobalPersonFiltersInput>>>;
+   role?: InputMaybe<StringFilterInput>;
+};
+
 export type ComponentMenuLink = {
    __typename?: 'ComponentMenuLink';
    description?: Maybe<Scalars['String']>;
@@ -448,6 +464,35 @@ export type ComponentSectionQuote = {
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
    text: Scalars['String'];
+};
+
+export type ComponentSectionQuoteCard = {
+   __typename?: 'ComponentSectionQuoteCard';
+   author?: Maybe<ComponentGlobalPerson>;
+   id: Scalars['ID'];
+   text: Scalars['String'];
+};
+
+export type ComponentSectionQuoteCardFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentSectionQuoteCardFiltersInput>>>;
+   author?: InputMaybe<ComponentGlobalPersonFiltersInput>;
+   not?: InputMaybe<ComponentSectionQuoteCardFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentSectionQuoteCardFiltersInput>>>;
+   text?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentSectionQuoteGallery = {
+   __typename?: 'ComponentSectionQuoteGallery';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   quotes?: Maybe<Array<Maybe<ComponentSectionQuoteCard>>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionQuoteGalleryQuotesArgs = {
+   filters?: InputMaybe<ComponentSectionQuoteCardFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ComponentSectionServiceValuePropositions = {
@@ -729,6 +774,7 @@ export type GenericMorph =
    | Banner
    | Company
    | ComponentGlobalNewsletterForm
+   | ComponentGlobalPerson
    | ComponentMenuLink
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
@@ -755,6 +801,8 @@ export type GenericMorph =
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
    | ComponentSectionQuote
+   | ComponentSectionQuoteCard
+   | ComponentSectionQuoteGallery
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
@@ -1400,6 +1448,7 @@ export type PageSectionsDynamicZone =
    | ComponentSectionBanner
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
+   | ComponentSectionQuoteGallery
    | ComponentSectionSocialGallery
    | Error;
 
@@ -2642,6 +2691,7 @@ export type FindPageQuery = {
                     title?: string | null;
                     description?: string | null;
                  }
+               | { __typename: 'ComponentSectionQuoteGallery' }
                | {
                     __typename: 'ComponentSectionSocialGallery';
                     id: string;
