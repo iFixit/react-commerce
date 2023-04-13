@@ -1,7 +1,9 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Fix Kit and Part Only test', () => {
-   test('Kit contents and product skus', async ({ productPage }) => {
+test.describe('Product Variant Tests', () => {
+   test('Product Variant Switch and Content Visibility', async ({
+      productPage,
+   }) => {
       await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
 
       await expect(await productPage.getActiveVariant()).toContainText(
@@ -32,7 +34,7 @@ test.describe('Fix Kit and Part Only test', () => {
       expect(fixKitSku).not.toEqual(partOnlySku);
    });
 
-   test('Product image changes', async ({ productPage }) => {
+   test('Product Variant Image Visibility Toggle', async ({ productPage }) => {
       await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
       await expect(await productPage.getActiveVariant()).toContainText(
          'Fix Kit'

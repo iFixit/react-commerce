@@ -1,7 +1,10 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Product option test', () => {
-   test('Different styles', async ({ productPage, cartDrawer }) => {
+test.describe('Product Variant Selection', () => {
+   test('Switch Variants and Add To Cart', async ({
+      productPage,
+      cartDrawer,
+   }) => {
       await productPage.gotoProduct('repair-business-toolkit');
       const productInfoSection = productPage.page.getByTestId(
          'product-info-section'

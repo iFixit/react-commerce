@@ -1,6 +1,6 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Product breadcrumb test', () => {
+test.describe('Product Breadcrumb Navigation', () => {
    test.describe('Mobile and Tablet', () => {
       test.skip(({ page }) => {
          const viewPort = page.viewportSize();
@@ -12,7 +12,7 @@ test.describe('Product breadcrumb test', () => {
        * regardless of the number of breadcrumb links. Everything else is collapsed in
        * the breadcrumb menu.
        */
-      test('with number of any breadcrumb links', async ({ productPage }) => {
+      test('Breadcrumb Visibility', async ({ productPage }) => {
          await productPage.gotoProduct('iflex-opening-tool');
 
          // Last child breadcrumb is visible on both mobile and desktop
@@ -47,9 +47,7 @@ test.describe('Product breadcrumb test', () => {
        * Makes sure that the ancestor and last child breadcrumbs are visible
        * and the breadcrumb menu is not visible.
        */
-      test('with less than or equal to 3 breacrumb links', async ({
-         productPage,
-      }) => {
+      test('Breadcrumb Visibility', async ({ productPage }) => {
          await productPage.gotoProduct('iflex-opening-tool');
 
          await expect(
@@ -83,7 +81,9 @@ test.describe('Product breadcrumb test', () => {
       /*
        * Same as the test above, but checks that the desktop breadcrumb menu is visible.
        */
-      test('with more than 3 breacrumb links', async ({ productPage }) => {
+      test('Breadcrumb Navigation Links and Menu Visibility', async ({
+         productPage,
+      }) => {
          await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
 
          await expect(

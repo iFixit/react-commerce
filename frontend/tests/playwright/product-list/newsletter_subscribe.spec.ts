@@ -1,12 +1,12 @@
 import { test, expect } from '../test-fixtures';
 import { createRestHandler } from './../msw/request-handler';
 
-test.describe('Subscribe to newsletter', () => {
+test.describe('Newsletter Subscription', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test('Requires an email', async ({ page }) => {
+   test('Email Input Required', async ({ page }) => {
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
 
       await expect(
@@ -22,7 +22,7 @@ test.describe('Subscribe to newsletter', () => {
       ).toBeVisible();
    });
 
-   test('Prevents invalid email', async ({ page }) => {
+   test('Reject Invalid Email Input', async ({ page }) => {
       const footerNewsletterForm = page.getByTestId('footer-newsletter-form');
 
       await expect(
@@ -40,7 +40,7 @@ test.describe('Subscribe to newsletter', () => {
       ).toBeVisible();
    });
 
-   test('Shows confirmation when email is subscribed', async ({
+   test('Display Success Message Upon Subscription', async ({
       page,
       clientRequestHandler,
    }) => {
@@ -74,7 +74,7 @@ test.describe('Subscribe to newsletter', () => {
       ).not.toBeVisible();
    });
 
-   test('Shows an error when server request fails', async ({
+   test('Display Error Message for Failed Server Requests', async ({
       page,
       clientRequestHandler,
    }) => {

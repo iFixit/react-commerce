@@ -1,11 +1,11 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('parts page search', () => {
+test.describe('Parts Page Search', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test('Should show results when the search term exists', async ({ page }) => {
+   test('Display Results for Existing Search Term', async ({ page }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
@@ -28,9 +28,7 @@ test.describe('parts page search', () => {
       }
    });
 
-   test("Should show no results when search term doesn't exist", async ({
-      page,
-   }) => {
+   test('Display No Results for Non-Existing Search Term', async ({ page }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
@@ -45,7 +43,7 @@ test.describe('parts page search', () => {
       await expect(page.getByTestId('product-list-no-results')).toBeVisible();
    });
 
-   test('Should update url on empty search query', async ({ page }) => {
+   test('URL Updates When Search Query is Empty', async ({ page }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
