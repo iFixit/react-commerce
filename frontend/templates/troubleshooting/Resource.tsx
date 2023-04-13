@@ -1,10 +1,11 @@
 import { Stack, Image, Box, Text, Badge, Icon } from '@chakra-ui/react';
 
 export function GuideResource({ guideid }: { guideid: number }) {
+   return <ResourceBox />;
    return <Resource title={guideid} />;
 }
 
-function Resource({ title }: { title: string }) {
+function ResourceBox({ children }: React.PropsWithChildren<{}>) {
    return (
       <Stack
          showReference={false}
@@ -23,7 +24,17 @@ function Resource({ title }: { title: string }) {
          borderEndWidth="1px"
          borderTopWidth="1px"
          borderBottomWidth="1px"
+         borderRadius="4px"
+         minHeight="88px"
       >
+         {children}
+      </Stack>
+   );
+}
+
+function Resource({ title }: { title: string }) {
+   return (
+      <ResourceBox>
          <Stack
             padding="12px"
             direction="row"
@@ -156,6 +167,6 @@ function Resource({ title }: { title: string }) {
                </Stack>
             </Stack>
          </Stack>
-      </Stack>
+      </ResourceBox>
    );
 }
