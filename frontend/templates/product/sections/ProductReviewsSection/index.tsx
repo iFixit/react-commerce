@@ -122,6 +122,7 @@ export function ProductReviewsSection({
                            <ProductReviewLineItem
                               key={review.reviewid}
                               review={review}
+                              variantSku={selectedVariant.sku}
                            />
                         );
                      })}
@@ -234,6 +235,25 @@ function ProductReviewLineItem({
          borderColor="gray.200"
          data-testid="product-review-line-item"
       >
+         {isAdminUser && (
+            <Button
+               variant="link"
+               as={Link}
+               bgColor="transparent"
+               textColor="brand"
+               fontFamily="heading"
+               lineHeight="1.29"
+               fontWeight="semibold"
+               fontSize="14px"
+               color="brand.500"
+               textAlign="center"
+               paddingBottom="10px"
+               href={`${appContext.ifixitOrigin}/User/Reviews/${variantSku}/userid=${review.author?.userid}`}
+            >
+               Edit
+            </Button>
+         )}
+
          {review.author && (
             <HStack>
                <Avatar
