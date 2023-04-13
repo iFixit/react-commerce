@@ -19,6 +19,7 @@ import {
 import { FaIcon } from '@ifixit/icons';
 import { Section } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
+import { GuideResource } from './Resource';
 
 const SolutionFooter = () => (
    <Stack
@@ -215,7 +216,18 @@ export default function SolutionCard({
          <Flex gap="24px" direction="column">
             <SolutionHeader index={index} title={solution.heading} />
             <SolutionTexts body={solution.body} />
+            <LinkCards guides={solution.guides} />
          </Flex>
       </Flex>
+   );
+}
+
+function LinkCards({ guides }: { guides: number[] }) {
+   return (
+      <Box>
+         {guides.map((guideid) => (
+            <GuideResource guideid={guideid} />
+         ))}
+      </Box>
    );
 }
