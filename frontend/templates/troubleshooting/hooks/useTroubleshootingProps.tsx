@@ -6,6 +6,10 @@ export type Section = {
    body: string;
 };
 
+export type SolutionSection = Section & {
+   guides: number[];
+};
+
 export type Author = {
    userid: number;
    percent: number;
@@ -17,7 +21,7 @@ export type TroubleshootingData = {
    title: string;
    toc: string;
    introduction: Section[];
-   solutions: Section[];
+   solutions: SolutionSection[];
    conclusion: Section[];
    editUrl: string;
    historyUrl: string;
