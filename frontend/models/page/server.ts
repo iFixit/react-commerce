@@ -4,6 +4,7 @@ import { FindPageQuery, strapi } from '@lib/strapi-sdk';
 import { bannersSectionFromStrapi } from '@models/sections/banners-section';
 import { featuredProductsSectionFromStrapi } from '@models/sections/featured-products-section';
 import { iFixitStatsSectionFromStrapi } from '@models/sections/ifixit-stats-section';
+import { quoteGallerySectionFromStrapi } from '@models/sections/quote-gallery-section';
 import { socialGallerySectionFromStrapi } from '@models/sections/social-gallery-section';
 import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
@@ -70,6 +71,9 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
             }
             case 'ComponentSectionBanner': {
                return bannersSectionFromStrapi(section, sectionId);
+            }
+            case 'ComponentSectionQuoteGallery': {
+               return quoteGallerySectionFromStrapi(section, sectionId);
             }
             default: {
                return null;

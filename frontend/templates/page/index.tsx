@@ -3,6 +3,7 @@ import { BannersSection } from '@components/sections/BannersSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
 import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
+import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
 import { SocialGallerySection } from '@components/sections/SocialGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { assertNever } from '@ifixit/helpers';
@@ -83,6 +84,18 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                         key={section.id}
                         id={section.id}
                         banners={section.banners}
+                     />
+                  );
+               }
+               case 'QuoteGallery': {
+                  console.log('section', section);
+                  return (
+                     <QuoteGallerySection
+                        key={section.id}
+                        id={section.id}
+                        title={section.title}
+                        description={section.description}
+                        quotes={section.quotes}
                      />
                   );
                }
