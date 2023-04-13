@@ -16,14 +16,12 @@ export default withCache({
    variablesSchema: z.object({
       handle: z.string(),
       storeCode: z.string(),
-      ifixitOrigin: z.string(),
    }),
    valueSchema: ProductSchema.nullable(),
-   async getFreshValue({ handle, storeCode, ifixitOrigin }) {
+   async getFreshValue({ handle, storeCode }) {
       return findProduct({
          handle,
          storeCode,
-         ifixitOrigin,
       });
    },
    ttl: Duration(1).minute,
