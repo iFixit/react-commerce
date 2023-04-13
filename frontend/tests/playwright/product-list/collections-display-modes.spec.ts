@@ -5,7 +5,7 @@ test.describe('Collections Display Modes', () => {
       await page.goto('/Tools');
    });
 
-   test('Dispaly Grid View on Selection', async ({ page }) => {
+   test('Display Grid View on Selection', async ({ page }) => {
       await page.getByTestId('grid-view-button').click();
       await expect(page.getByTestId('list-view-products')).not.toBeVisible();
 
