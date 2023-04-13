@@ -5,6 +5,16 @@ import { z } from 'zod';
 
 export type DeviceWiki = Record<string, any>;
 
+export type DeviceWikiApiResponse = {
+   variantOptions: {
+      [o_code: string]: string[];
+   };
+};
+
+export type VariantOptions = {
+   [o_code: string]: string[];
+};
+
 export async function fetchDeviceWiki(
    client: IFixitAPIClient,
    deviceTitle: string
@@ -16,6 +26,22 @@ export async function fetchDeviceWiki(
          'deviceHandle cannot be a blank string'
       );
       return await client.get(`cart/part_collections/devices/${deviceHandle}`);
+   } catch (error: any) {
+      return null;
+   }
+}
+
+export async function fetchProductData(
+   client: IFixitAPIClient,
+   handle: string
+): Promise<DeviceWikiApiResponse | null> {
+   const productHandle = encodeURIComponent(handle);
+   try {
+      invariant(
+         productHandle.length > 0,
+         'productHandle cannot be a blank string'
+      );
+      return await client.get(`store/product/${productHandle}`);
    } catch (error: any) {
       return null;
    }
