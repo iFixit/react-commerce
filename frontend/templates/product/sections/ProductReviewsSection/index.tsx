@@ -25,6 +25,7 @@ import { Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@models/product';
 import type { ProductReview } from '@models/product/reviews';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import React from 'react';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -217,8 +218,15 @@ function ReviewsStats({
 
 type ProductReviewLineItemProps = {
    review: ProductReview;
+   variantSku: string | undefined | null;
 };
-function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
+function ProductReviewLineItem({
+   review,
+   variantSku,
+}: ProductReviewLineItemProps) {
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const appContext = useAppContext();
+
    return (
       <Box
          py="6"
