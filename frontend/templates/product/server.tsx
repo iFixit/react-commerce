@@ -23,9 +23,11 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
       });
+      const ifixitOrigin = ifixitOriginFromHost(context);
       const product = await Product.get({
          handle,
          storeCode: DEFAULT_STORE_CODE,
+         ifixitOrigin,
       });
 
       if (product == null) {
