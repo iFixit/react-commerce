@@ -248,7 +248,7 @@ function ProductReviewLineItem({
                color="brand.500"
                textAlign="center"
                paddingBottom="10px"
-               href={`${appContext.ifixitOrigin}/User/Reviews/${variantSku}/userid=${review.author?.userid}`}
+               href={`${appContext.ifixitOrigin}/User/Reviews/${variantSku}?userid=${review.author?.userid}`}
             >
                Edit
             </Button>
