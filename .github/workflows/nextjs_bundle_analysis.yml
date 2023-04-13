@@ -103,7 +103,8 @@ jobs:
            id: fc
            with:
               issue-number: ${{ github.event.number }}
-              body-includes: '<!-- __NEXTJS_BUNDLE -->'
+              comment-author: 'github-actions[bot]'
+              body-includes: 'Next.js Bundle Analysis'
 
          - name: Create or Update comment
            uses: peter-evans/create-or-update-comment@v2
