@@ -92,6 +92,7 @@ importers:
       graphql: 15.5.3
       graphql-tag: 2.12.6
       graphqurl: 1.0.1
+      htmx.org: 1.9.0
       identity-obj-proxy: 3.0.0
       ioredis: 5.2.4
       jest: 28.1.2
@@ -156,6 +157,7 @@ importers:
       dayjs: 1.10.5
       framer-motion: 6.2.7_biqbaboplfbrettd7655fr4n2y
       graphql: 15.5.3
+      htmx.org: 1.9.0
       ioredis: 5.2.4
       lite-youtube-embed: 0.2.0
       lodash: 4.17.21
@@ -11392,6 +11394,10 @@ packages:
   /html-escaper/2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
     dev: true
+
+  /htmx.org/1.9.0:
+    resolution: {integrity: sha512-yDLbgDmyhPRLFyd8s+FjCz3KKuF9pw1j8ECWqp//TCraqmkYzeAxufJZz7q5tUfhJJo49b74IP0Ww3SUL1o7Ew==}
+    dev: false
 
   /http-cache-semantics/4.1.0:
     resolution: {integrity: sha512-carPklcUh7ROWRK7Cv27RPtdhYhUsela/ue5/jKzjegVvXDqM2ILE9Q2BGn9JZJh1g87cp56su/FgQSzcWS8cQ==}
