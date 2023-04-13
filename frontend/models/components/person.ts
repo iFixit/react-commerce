@@ -8,7 +8,7 @@ export const PersonSchema = z.object({
    id: z.string(),
    name: z.string(),
    role: z.string().nullable(),
-   image: ImageSchema.nullable(),
+   avatar: ImageSchema.nullable(),
 });
 
 export function personFromStrapiFragment(
@@ -24,6 +24,6 @@ export function personFromStrapiFragment(
       id,
       name,
       role,
-      image: imageFromStrapi(fragment?.avatar),
+      avatar: imageFromStrapi(fragment?.avatar),
    };
 }

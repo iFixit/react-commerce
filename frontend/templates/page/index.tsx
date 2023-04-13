@@ -88,7 +88,6 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   );
                }
                case 'QuoteGallery': {
-                  console.log('section', section);
                   return (
                      <QuoteGallerySection
                         key={section.id}
