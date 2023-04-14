@@ -12,7 +12,7 @@ test.describe('Product Breadcrumb Navigation', () => {
        * regardless of the number of breadcrumb links. Everything else is collapsed in
        * the breadcrumb menu.
        */
-      test('Breadcrumb Visibility', async ({ productPage }) => {
+      test('Breadcrumb Navigation Links Visibile', async ({ productPage }) => {
          await productPage.gotoProduct('iflex-opening-tool');
 
          // Last child breadcrumb is visible on both mobile and desktop
@@ -47,7 +47,7 @@ test.describe('Product Breadcrumb Navigation', () => {
        * Makes sure that the ancestor and last child breadcrumbs are visible
        * and the breadcrumb menu is not visible.
        */
-      test('Breadcrumb Visibility', async ({ productPage }) => {
+      test('Breadcrumb Navigation Links Visibile', async ({ productPage }) => {
          await productPage.gotoProduct('iflex-opening-tool');
 
          await expect(
@@ -81,7 +81,7 @@ test.describe('Product Breadcrumb Navigation', () => {
       /*
        * Same as the test above, but checks that the desktop breadcrumb menu is visible.
        */
-      test('Breadcrumb Navigation Links and Menu Visibility', async ({
+      test('Breadcrumb Navigation Links and Menu Visibile', async ({
          productPage,
       }) => {
          await productPage.gotoProduct('iphone-6s-plus-replacement-battery');

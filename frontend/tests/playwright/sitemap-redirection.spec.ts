@@ -1,7 +1,7 @@
 import { test, expect } from './test-fixtures';
 
 test.describe('Sitemap Redirection', () => {
-   test('Each Page Sitemap Redirection', async ({ page }) => {
+   test('Verify Redirection for Each Sitemap Page', async ({ page }) => {
       // Use the APIRequestContext object to make requests without
       // redirecting.
       const request = page.request;

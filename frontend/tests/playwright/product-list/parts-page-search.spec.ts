@@ -28,7 +28,7 @@ test.describe('Parts Page Search', () => {
       }
    });
 
-   test('Display No Results for Non-Existing Search Term', async ({ page }) => {
+   test('Display No Results for Nonexisting Search Term', async ({ page }) => {
       expect(page.getByTestId('collections-search-box')).toBeVisible();
       expect(page.getByTestId('collections-search-box')).not.toBeDisabled();
 
