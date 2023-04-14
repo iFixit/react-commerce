@@ -17,6 +17,7 @@
 
 import { APP_ORIGIN } from '@config/env';
 import { log as defaultLog, Logger } from '@ifixit/helpers';
+import { request } from 'https';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { cache } from './adapters';
@@ -28,7 +29,6 @@ import {
    isValidCacheEntry,
    printError,
    printZodError,
-   sleep,
 } from './utils';
 
 interface CacheOptions<
@@ -72,18 +72,29 @@ export const withCache = <
    const logger: Logger = defaultLog;
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
-      fetch(`${APP_ORIGIN}/${endpoint}`, {
-         method: 'POST',
-         body: JSON.stringify(variables),
-      }).catch((error) => {
-         logger.error(
-            `${endpoint}.error: failed to trigger revalidation\n${printError(
-               error
-            )}`
-         );
+      await new Promise((resolve, reject) => {
+         // Don't delay the lambda beyond 50ms for revalidation
+         setTimeout(resolve, 50);
+         const postData = JSON.stringify(variables);
+         const req = request({
+            hostname: new URL(APP_ORIGIN).hostname,
+            path: `/${endpoint}`,
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Content-Length': Buffer.byteLength(postData),
+            },
+         }).on('error', (error) => {
+            logger.error(
+               `${endpoint}.error: failed to trigger revalidation\n${printError(
+                  error
+               )}`
+            );
+            reject();
+         });
+         req.write(postData);
+         req.end(resolve);
       });
-      // We add a small delay to ensure the revalidation is triggered
-      await sleep(50);
    };
 
    const get: NextApiHandlerWithProps<
@@ -153,7 +164,7 @@ export const withCache = <
       ValueSchema
    > = async (req, res) => {
       try {
-         const variables = variablesSchema.parse(JSON.parse(req.body));
+         const variables = variablesSchema.parse(req.body);
          const value = await getFreshValue(variables);
          const cacheEntry = createCacheEntry(value, {
             ttl,
