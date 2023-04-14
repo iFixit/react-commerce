@@ -15,7 +15,7 @@
  *   e.g. `const productList = await ProductList.get({ ... })`
  */
 
-import { APP_ORIGIN } from '@config/env';
+import { APP_ORIGIN, VERCEL_URL } from '@config/env';
 import { log as defaultLog, Logger } from '@ifixit/helpers';
 import { request } from 'https';
 import type { NextApiHandler } from 'next';
@@ -77,7 +77,7 @@ export const withCache = <
          setTimeout(resolve, 50);
          const postData = JSON.stringify(variables);
          const req = request({
-            hostname: new URL(APP_ORIGIN).hostname,
+            hostname: VERCEL_URL || new URL(APP_ORIGIN).hostname,
             path: `/${endpoint}`,
             method: 'POST',
             headers: {

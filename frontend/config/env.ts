@@ -56,6 +56,8 @@ export const CACHE_DISABLED = process.env.NEXT_PUBLIC_CACHE_DISABLED === 'true';
 
 export const REDIS_URL = process.env.REDIS_URL;
 
+export const VERCEL_URL = process.env.VERCEL_URL;
+
 export const COLORLESS_LOGS = process.env.COLORLESS_LOGS;
 
 function requireEnvVariable(
