@@ -1,8 +1,8 @@
 import { interceptLogin } from '../utils';
 import { test, expect } from '../test-fixtures';
 
-test.describe('Pro user test', () => {
-   test('Will give pro users a discount', async ({ productPage }) => {
+test.describe('Pro User Test', () => {
+   test('Pro Discount Applied to Product Price', async ({ productPage }) => {
       await productPage.gotoProduct('repair-business-toolkit');
 
       // Get price from page
