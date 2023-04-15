@@ -230,7 +230,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
          borderColor="gray.200"
          data-testid="product-review-line-item"
       >
-         {isAdminUser && variantSku && (
+         {isAdminUser && (
             <Button
                variant="link"
                as={Link}
