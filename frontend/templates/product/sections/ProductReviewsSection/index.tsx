@@ -122,7 +122,6 @@ export function ProductReviewsSection({
                            <ProductReviewLineItem
                               key={review.reviewid}
                               review={review}
-                              variantSku={selectedVariant.sku}
                            />
                         );
                      })}
@@ -219,12 +218,8 @@ function ReviewsStats({
 
 type ProductReviewLineItemProps = {
    review: ProductReview;
-   variantSku: string | undefined | null;
 };
-function ProductReviewLineItem({
-   review,
-   variantSku,
-}: ProductReviewLineItemProps) {
+function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
    const appContext = useAppContext();
 
@@ -248,7 +243,7 @@ function ProductReviewLineItem({
                color="brand.500"
                textAlign="center"
                paddingBottom="10px"
-               href={`${appContext.ifixitOrigin}/User/Reviews/${variantSku}?userid=${review.author?.userid}`}
+               href={`${appContext.ifixitOrigin}/User/Reviews/${review.sku}?userid=${review.author?.userid}`}
             >
                Edit
             </Button>
