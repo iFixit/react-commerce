@@ -1,7 +1,6 @@
 import {
    Avatar,
    Box,
-   chakra,
    Flex,
    HStack,
    IconButton,
@@ -11,12 +10,10 @@ import {
 } from '@chakra-ui/react';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { Wrapper } from '@ifixit/ui';
+import { Slider, Wrapper } from '@ifixit/ui';
 import type { QuoteCard } from '@models/components/quote-card';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { createPortal } from 'react-dom';
-import 'swiper/css';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
 
@@ -33,7 +30,8 @@ export function QuoteGallerySection({
    description,
    quotes,
 }: QuoteGallerySectionProps) {
-   const controlsContainerRef = useRef<HTMLDivElement>(null);
+   const navigationBackButtonContainerRef = useRef<HTMLDivElement>(null);
+   const navigationNextButtonContainerRef = useRef<HTMLDivElement>(null);
 
    if (quotes.length === 0) return null;
 
@@ -69,8 +67,7 @@ export function QuoteGallerySection({
                      <SectionDescription richText={description} maxW="750px" />
                   )}
                </Box>
-               <Box
-                  ref={controlsContainerRef}
+               <HStack
                   ml={{
                      base: 0,
                      md: 10,
@@ -79,14 +76,22 @@ export function QuoteGallerySection({
                      base: '5',
                      md: '0',
                   }}
-               />
+               >
+                  <Box ref={navigationBackButtonContainerRef} />
+                  <Box ref={navigationNextButtonContainerRef} />
+               </HStack>
             </Flex>
          </Wrapper>
          <Box>
             <Wrapper>
                <QuoteGallery
                   quotes={quotes}
-                  controlsContainerRef={controlsContainerRef}
+                  navigationBackButtonContainerRef={
+                     navigationBackButtonContainerRef
+                  }
+                  navigationNextButtonContainerRef={
+                     navigationNextButtonContainerRef
+                  }
                />
             </Wrapper>
          </Box>
@@ -96,10 +101,15 @@ export function QuoteGallerySection({
 
 interface QuoteGalleryProps {
    quotes: QuoteCard[];
-   controlsContainerRef?: React.RefObject<HTMLDivElement>;
+   navigationBackButtonContainerRef?: React.RefObject<HTMLDivElement>;
+   navigationNextButtonContainerRef?: React.RefObject<HTMLDivElement>;
 }
 
-function QuoteGallery({ quotes, controlsContainerRef }: QuoteGalleryProps) {
+function QuoteGallery({
+   quotes,
+   navigationBackButtonContainerRef,
+   navigationNextButtonContainerRef,
+}: QuoteGalleryProps) {
    const spaceBetween = useBreakpointValue<number>(
       {
          base: 16,
@@ -112,47 +122,48 @@ function QuoteGallery({ quotes, controlsContainerRef }: QuoteGalleryProps) {
 
    return (
       <Slider
-         spaceBetween={spaceBetween}
-         slidesPerView={1}
-         slideToClickedSlide
          w={{
             base: '90%',
             md: '60%',
          }}
          mx="0"
          overflow="visible"
-         sx={{
-            '& .swiper-slide': {
-               cursor: 'pointer',
-               opacity: 0.5,
-               '&.swiper-slide-active': {
-                  opacity: 1,
-               },
-            },
-         }}
-      >
-         {quotes.map((quote) => {
-            return (
-               <SwiperSlide key={quote.id}>
-                  <QuoteCard quote={quote} />
-               </SwiperSlide>
-            );
-         })}
-         {controlsContainerRef && (
-            <NavigationControls containerRef={controlsContainerRef} />
+         items={quotes}
+         spaceBetween={spaceBetween}
+         renderSlide={({ item, isActive }) => (
+            <QuoteCard key={item.id} quote={item} isActive={isActive} />
          )}
-      </Slider>
+         renderPreviousButton={(props) => (
+            <NavigationBackButton
+               containerRef={navigationBackButtonContainerRef}
+               {...props}
+            />
+         )}
+         renderNextButton={(props) => (
+            <NavigationNextButton
+               containerRef={navigationNextButtonContainerRef}
+               {...props}
+            />
+         )}
+      />
    );
 }
 
 interface QuoteCardProps {
    quote: QuoteCard;
+   isActive: boolean;
 }
 
-function QuoteCard({ quote }: QuoteCardProps) {
+function QuoteCard({ quote, isActive }: QuoteCardProps) {
    const author = quote.author;
    return (
-      <Box p={{ base: 6, md: 9 }} bg="white" borderRadius="base">
+      <Box
+         p={{ base: 6, md: 9 }}
+         bg="white"
+         borderRadius="base"
+         transition="opacity 300ms"
+         opacity={isActive ? 1 : 0.5}
+      >
          <Box dangerouslySetInnerHTML={{ __html: quote.text }}></Box>
          {author && (
             <HStack
@@ -181,30 +192,44 @@ function QuoteCard({ quote }: QuoteCardProps) {
    );
 }
 
-interface NavigationControlsProps {
-   containerRef: React.RefObject<HTMLDivElement>;
+interface NavigationButtonProps {
+   containerRef?: React.RefObject<HTMLDivElement>;
+   disabled?: boolean;
+   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function NavigationControls({ containerRef }: NavigationControlsProps) {
-   const { isBeginning, isEnd, slideNext, slidePrev } = useSwiperNavigation();
-
-   if (!containerRef.current) return null;
+function NavigationBackButton({
+   containerRef,
+   disabled,
+   onClick,
+}: NavigationButtonProps) {
+   if (!containerRef?.current) return null;
 
    return createPortal(
-      <HStack>
-         <SlideControlButton
-            aria-label="view previous quote"
-            disabled={isBeginning}
-            icon={<FaIcon icon={faArrowLeft} />}
-            onClick={slidePrev}
-         />
-         <SlideControlButton
-            aria-label="view next quote"
-            disabled={isEnd}
-            icon={<FaIcon icon={faArrowRight} />}
-            onClick={slideNext}
-         />
-      </HStack>,
+      <SlideControlButton
+         aria-label="view previous quote"
+         disabled={disabled}
+         icon={<FaIcon icon={faArrowLeft} />}
+         onClick={onClick}
+      />,
+      containerRef.current
+   );
+}
+
+function NavigationNextButton({
+   containerRef,
+   disabled,
+   onClick,
+}: NavigationButtonProps) {
+   if (!containerRef?.current) return null;
+
+   return createPortal(
+      <SlideControlButton
+         aria-label="view next quote"
+         disabled={disabled}
+         icon={<FaIcon icon={faArrowRight} />}
+         onClick={onClick}
+      />,
       containerRef.current
    );
 }
@@ -221,25 +246,3 @@ function SlideControlButton({ disabled, ...others }: IconButtonProps) {
       />
    );
 }
-
-function useSwiperNavigation() {
-   const swiper = useSwiper();
-   const [isBeginning, setIsBeginning] = useState(swiper.isBeginning);
-   const [isEnd, setIsEnd] = useState(swiper.isEnd);
-
-   useEffect(() => {
-      swiper.on('slideChange', () => {
-         setIsBeginning(swiper.isBeginning);
-         setIsEnd(swiper.isEnd);
-      });
-   }, [swiper]);
-
-   return {
-      isBeginning,
-      isEnd,
-      slidePrev: () => swiper.slidePrev(),
-      slideNext: () => swiper.slideNext(),
-   };
-}
-
-const Slider = chakra(Swiper);
