@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -o pipefail -e
+
+export STRAPI_COMMIT=$(git rev-parse HEAD)
+
+dir=$(git rev-parse --show-toplevel)
+cd "$dir/backend"
+./build-docker-and-push
+
+# Yes, capistrano is only available in our main repo...
+# This wont be a problem when these repos are joined though :-)
+cd /home/ifixit/Code
+cap prod strapi:deploy
