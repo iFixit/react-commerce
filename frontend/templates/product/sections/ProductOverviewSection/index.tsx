@@ -65,7 +65,7 @@ export function ProductOverviewSection({
       [onVariantChange]
    );
    const isForSale = useIsProductForSale(product);
-
+   const hasCompatibilityNotes = !!product.compatibilityNotes;
    return (
       <Wrapper as="section" id={PRODUCT_OVERVIEW_SECTION_ID} mb="16" pt="6">
          <Flex>
@@ -219,12 +219,25 @@ export function ProductOverviewSection({
                         product.compatibility.devices.length <= 0
                      }
                   >
-                     <CustomAccordionButton>
-                        Compatibility
-                     </CustomAccordionButton>
-                     <CustomAccordionPanel data-testid="product-compatibility-dropdown">
-                        <CompatibleDevices product={product} />
-                     </CustomAccordionPanel>
+                     {hasCompatibilityNotes ? (
+                        <>
+                           <CustomAccordionButton>
+                              Compatibility Notes
+                           </CustomAccordionButton>
+                           <CustomAccordionPanel>
+                              {product.compatibilityNotes}
+                           </CustomAccordionPanel>
+                        </>
+                     ) : (
+                        <>
+                           <CustomAccordionButton>
+                              Compatibility
+                           </CustomAccordionButton>
+                           <CustomAccordionPanel data-testid="product-compatibility-dropdown">
+                              <CompatibleDevices product={product} />
+                           </CustomAccordionPanel>
+                        </>
+                     )}
                   </AccordionItem>
 
                   <WikiHtmlAccordianItem title="Specifications">
