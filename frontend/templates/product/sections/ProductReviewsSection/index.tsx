@@ -25,6 +25,7 @@ import { Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@models/product';
 import type { ProductReview } from '@models/product/reviews';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import React from 'react';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -82,7 +83,7 @@ export function ProductReviewsSection({
       (reviewsData.average >= 4 || reviewsData.count > 10);
 
    return (
-      <Box id="reviews" bg="white" py="16" fontSize="sm">
+      <Box as="section" id="reviews" bg="white" py="16" fontSize="sm">
          <Wrapper>
             <Heading
                as="h2"
@@ -121,6 +122,7 @@ export function ProductReviewsSection({
                            <ProductReviewLineItem
                               key={review.reviewid}
                               review={review}
+                              variantSku={selectedVariant.sku}
                            />
                         );
                      })}
@@ -217,8 +219,15 @@ function ReviewsStats({
 
 type ProductReviewLineItemProps = {
    review: ProductReview;
+   variantSku: string | undefined | null;
 };
-function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
+function ProductReviewLineItem({
+   review,
+   variantSku,
+}: ProductReviewLineItemProps) {
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const appContext = useAppContext();
+
    return (
       <Box
          py="6"
@@ -226,6 +235,25 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
          borderColor="gray.200"
          data-testid="product-review-line-item"
       >
+         {isAdminUser && variantSku && (
+            <Button
+               variant="link"
+               as={Link}
+               bgColor="transparent"
+               textColor="brand"
+               fontFamily="heading"
+               lineHeight="1.29"
+               fontWeight="semibold"
+               fontSize="14px"
+               color="brand.500"
+               textAlign="center"
+               paddingBottom="10px"
+               href={`${appContext.ifixitOrigin}/User/Reviews/${variantSku}?userid=${review.author?.userid}`}
+            >
+               Edit
+            </Button>
+         )}
+
          {review.author && (
             <HStack>
                <Avatar

@@ -16,6 +16,8 @@
       "api::social-post.social-post.findOne",
       "api::social-post.social-post.find",
       "api::banner.banner.findOne",
-      "api::banner.banner.find"
+      "api::banner.banner.find",
+      "api::faq.faq.findOne",
+      "api::faq.faq.find"
    ]
 }

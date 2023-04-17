@@ -8,7 +8,6 @@ import {
    breadcrumbsFromMetafield,
    isCurrentPageBreadcrumbMissing,
 } from '@models/components/breadcrumb';
-import { FAQSchema, faqsFromMetafield } from '@models/components/faq';
 import { ProductPreviewSchema } from '@models/components/product-preview';
 import {
    productReviewsFromMetafields,
@@ -46,6 +45,7 @@ import {
    ProductVideosSchema,
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
+import { ProductDataApiResponse } from '@lib/ifixit-api/productData';
 
 export type {
    ProductVariant,
@@ -71,7 +71,6 @@ export const ProductSchema = z.object({
    prop65Chemicals: z.string().nullable(),
    productVideos: z.string().nullable(),
    productVideosJson: ProductVideosSchema.nullable(),
-   faqs: z.array(FAQSchema),
    compatibility: ProductDeviceCompatibilitySchema.nullable(),
    metaTitle: z.string().nullable(),
    shortDescription: z.string().nullable(),
@@ -86,15 +85,18 @@ export const ProductSchema = z.object({
 
 type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
 type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
+type iFixitProduct = NonNullable<ProductDataApiResponse>;
 
 interface GetProductArgs {
    shopifyProduct: ShopifyProduct | null | undefined;
    strapiProduct: StrapiProduct | null | undefined;
+   iFixitProduct: iFixitProduct | null | undefined;
 }
 
 export async function getProduct({
    shopifyProduct,
    strapiProduct,
+   iFixitProduct,
 }: GetProductArgs): Promise<Product | null> {
    if (shopifyProduct == null) return null;
 
@@ -133,7 +135,11 @@ export async function getProduct({
       tags: shopifyProduct.tags,
       images: imagesFromQueryProduct(shopifyProduct, variants),
       options: shopifyProduct.options.map((option) =>
-         productOptionFromShopify(option, variants)
+         productOptionFromShopify(
+            option,
+            variants,
+            iFixitProduct?.variantOptions[option.name]
+         )
       ),
       variants,
       isEnabled: hasActiveVariants,
@@ -143,7 +149,6 @@ export async function getProduct({
       productVideosJson: productVideoFromMetafield(
          shopifyProduct.productVideos?.value
       ),
-      faqs: faqsFromMetafield(shopifyProduct.faqs?.value),
       compatibility: productDeviceCompatibilityFromMetafield(
          shopifyProduct.compatibility?.value
       ),

@@ -11,6 +11,7 @@ export type Author = {
    percent: number;
    username: string;
    avatar: string;
+   profileUrl: string;
 };
 
 export type TroubleshootingData = {
@@ -27,8 +28,14 @@ export type TroubleshootingData = {
    lastUpdatedDate: number;
    authors: Author[];
    hreflangUrls: Record<string, string>;
+   breadcrumbs: BreadcrumbEntry[];
    metaDescription: string;
    metaKeywords: string;
+};
+
+export type BreadcrumbEntry = {
+   title: string;
+   url: string;
 };
 
 type TroubleshootingPageProps = {

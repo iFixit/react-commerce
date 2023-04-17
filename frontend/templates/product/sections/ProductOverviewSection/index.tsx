@@ -30,6 +30,7 @@ import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSal
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { CompatibleDevices } from './CompatibleDevices';
+import { PRODUCT_OVERVIEW_SECTION_ID } from './constants';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { InternationalBuyBox } from './InternationalBuyBox';
 import { ProductDescription } from './ProductDescription';
@@ -39,12 +40,12 @@ import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 
-export type ProductOverviewSectionProps = {
+export interface ProductOverviewSectionProps {
    product: Product;
    selectedVariant: ProductVariant;
    onVariantChange: (variantId: string) => void;
    internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
-};
+}
 
 export function ProductOverviewSection({
    product,
@@ -66,7 +67,7 @@ export function ProductOverviewSection({
    const isForSale = useIsProductForSale(product);
 
    return (
-      <Wrapper as="section" id="product" mb="16" pt="6">
+      <Wrapper as="section" id={PRODUCT_OVERVIEW_SECTION_ID} mb="16" pt="6">
          <Flex>
             <Flex
                position="sticky"

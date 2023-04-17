@@ -2,7 +2,9 @@ import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
 import { BannersSection } from '@components/sections/BannersSection';
+import { FAQsSection } from '@components/sections/FAQsSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { QuoteSection } from '@components/sections/QuoteSection';
 import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
@@ -35,7 +37,7 @@ import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { MetaTags } from './MetaTags';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
-import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
+import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
 
@@ -131,6 +133,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ReplacementGuidesSection
                            key={section.id}
+                           id={section.id}
                            title={section.title}
                            guides={section.guides}
                         />
@@ -139,7 +142,13 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <SplitWithImageContentSection
                            key={section.id}
-                           data={section}
+                           id={section.id}
+                           title={section.title}
+                           label={section.label}
+                           description={section.description}
+                           image={section.image}
+                           imagePosition={section.imagePosition}
+                           callToAction={section.callToAction}
                         />
                      );
                   case 'CrossSell': {
@@ -149,6 +158,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <CrossSellSection
                            key={section.id}
+                           id={section.id}
                            title={section.title}
                            product={product}
                            selectedVariant={selectedVariant}
@@ -161,6 +171,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <ServiceValuePropositionSection
                            key={section.id}
+                           id={section.id}
                            selectedVariant={selectedVariant}
                         />
                      );
@@ -185,11 +196,10 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         />
                      );
                   case 'FeaturedProducts': {
-                     if (section.products.length === 0) return null;
-
                      return (
                         <FeaturedProductsSection
                            key={section.id}
+                           id={section.id}
                            title={section.title}
                            description={section.description}
                            background={section.background}
@@ -214,10 +224,34 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      return (
                         <BannersSection
                            key={section.id}
+                           id={section.id}
                            banners={section.banners}
                         />
                      );
                   }
+                  case 'Quote': {
+                     return (
+                        <QuoteSection
+                           key={section.id}
+                           id={section.id}
+                           quote={section.text}
+                           author={section.author}
+                           image={section.image}
+                        />
+                     );
+                  }
+                  case 'FAQs': {
+                     return (
+                        <FAQsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           faqs={section.faqs}
+                        />
+                     );
+                  }
+
                   default:
                      return assertNever(section);
                }

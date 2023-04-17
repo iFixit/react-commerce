@@ -49,7 +49,10 @@
             "page.split-with-image",
             "page.press",
             "section.featured-products",
-            "section.social-gallery"
+            "section.social-gallery",
+            "section.lifetime-warranty",
+            "section.banner",
+            "section.quote-gallery"
          ],
          "required": true
       }

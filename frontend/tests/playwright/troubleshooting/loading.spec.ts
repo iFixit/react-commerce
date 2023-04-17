@@ -1,19 +1,21 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Vulcan page', () => {
-   test('it loads', async ({ page }) => {
+test.describe('Vulcan Page Content and SEO', () => {
+   test('Loads Successfully', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      await expect(page.getByText('Dryer Not Spinning')).toBeVisible();
+      await expect(
+         page.getByRole('heading', { name: 'Dryer Not Spinning' })
+      ).toBeVisible();
    });
 
-   test('it should not be indexed', async ({ page }) => {
+   test('noindex Meta Tag Included', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       // check that the meta robots tag is set to noindex
       const meta = page.locator('meta[name="robots"]');
       await expect(meta).toHaveAttribute('content', 'noindex');
    });
 
-   test('it should include the canonical link', async ({ page }) => {
+   test('Canonical Link Included', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       // check that the canonical link is a resonable URL
       const canonical = page.locator('link[rel="canonical"]');
@@ -22,16 +24,25 @@ test.describe('Vulcan page', () => {
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
 
-   test('it should have a link to the edit page', async ({ page }) => {
+   test('Breadcrumbs Visible', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      const nav = page.getByRole('navigation', { name: 'breadcrumb' });
+      await expect(nav).toBeVisible();
+
+      // Check that some expected breadcrumbs are present
+      await expect(nav.getByRole('link', { name: 'Home' })).toBeVisible();
+      const dryerLinks = await nav.getByRole('link', { name: 'Dryer' }).count();
+      expect(dryerLinks).toBeGreaterThan(0);
+   });
+
+   test('Edit Page Link Visibile', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       // check that the edit link is a resonable URL
       const editLink = page.getByRole('link', { name: 'Edit' });
       await expect(editLink).toBeVisible();
    });
 
-   test('it should have a link to the history page in a dropdown', async ({
-      page,
-   }) => {
+   test('History Page Link in Dropdown', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       const dropdown = page.getByRole('button', { name: 'Options' });
       dropdown.click();
@@ -39,12 +50,12 @@ test.describe('Vulcan page', () => {
       await expect(historyLink).toBeVisible();
    });
 
-   test('it should include the last updated date', async ({ page }) => {
+   test('Last Updated Date Visible', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       await expect(page.getByText('Last updated')).toBeVisible();
    });
 
-   test("it should include the author's name", async ({ page }) => {
+   test("Author's Name Visible", async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       await expect(page.getByText(/and \d+ contributors/)).toBeVisible();
    });

@@ -15,6 +15,9 @@ query findProduct($handle: String) {
                ...LifetimeWarrantySectionFields
                ...SplitWithImageSectionFields
                ...BannersSectionFields
+               ...QuoteSectionFields
+               ...FAQsSectionFields
+               ...DeviceCompatibilitySectionFields
             }
          }
       }

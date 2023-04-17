@@ -185,15 +185,11 @@ export const getProductListServerSideProps = ({
          ifixitOrigin,
       };
 
-      const appMarkup = (
-         <AppProviders {...appProps}>
-            <ProductListView productList={productList} indexName={indexName} />
-         </AppProviders>
-      );
-
-      const serverState = await timeAsync('getServerState', () =>
-         getServerState(appMarkup, { renderToString })
-      );
+      const { serverState, adminMessage } = await getSafeServerState({
+         appProps,
+         indexName,
+         productList,
+      });
 
       const pageProps: ProductListTemplateProps = {
          productList,
@@ -201,6 +197,7 @@ export const getProductListServerSideProps = ({
          layoutProps: await layoutProps,
          appProps: {
             ...appProps,
+            ...(adminMessage ? { adminMessage } : {}),
             algolia: appProps.algolia
                ? {
                     ...appProps.algolia,
@@ -214,6 +211,43 @@ export const getProductListServerSideProps = ({
          props: pageProps,
       };
    });
+
+type GetSafeServerStateProps = {
+   appProps: AppProvidersProps;
+   indexName: string;
+   productList: ProductList;
+};
+
+async function getSafeServerState({
+   appProps,
+   indexName,
+   productList,
+}: GetSafeServerStateProps) {
+   const tryGetServerState = (productList: ProductList) => {
+      const appMarkup = (
+         <AppProviders {...appProps}>
+            <ProductListView productList={productList} indexName={indexName} />
+         </AppProviders>
+      );
+      return timeAsync('getServerState', () =>
+         getServerState(appMarkup, { renderToString })
+      );
+   };
+   try {
+      return { serverState: await tryGetServerState(productList) };
+   } catch (e) {
+      console.error('Error getting instantsearch server state', e);
+      const serverState = await tryGetServerState({
+         ...productList,
+         filters: null,
+      });
+      return {
+         serverState,
+         adminMessage:
+            'Failed to perform algolia search, possible error in filters, check strapi',
+      };
+   }
+}
 
 function getDevicePathSegments(
    context: GetServerSidePropsContext<ParsedUrlQuery>

@@ -6,12 +6,13 @@ import { SectionDescription } from '../SectionDescription';
 import { SectionHeading } from '../SectionHeading';
 
 interface SingleBannerProps {
+   id: string;
    banner: Banner;
 }
 
-export function SingleBanner({ banner }: SingleBannerProps) {
+export function SingleBanner({ id, banner }: SingleBannerProps) {
    return (
-      <Box as="section" position="relative" w="full" pt="36" pb="16">
+      <Box as="section" id={id} position="relative" w="full" pt="36" pb="16">
          <Box
             position="absolute"
             bgGradient="linear(to-r, blackAlpha.600 50%, blackAlpha.400)"
