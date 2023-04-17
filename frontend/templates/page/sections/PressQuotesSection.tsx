@@ -1,13 +1,11 @@
-import { Box, chakra, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex, Link } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper';
 import { SectionHeading } from '@components/sections/SectionHeading';
-import { ResponsiveImage } from '@ifixit/ui';
+import { ResponsiveImage, Slider } from '@ifixit/ui';
 import type { PressQuote } from '@models/page/components/press-quote';
 import type { PressQuotesSection } from '@models/page/sections/press-quotes-section';
 import NextLink from 'next/link';
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 export interface PressQuotesSectionProps {
    data: PressQuotesSection;
@@ -59,45 +57,52 @@ interface QuotesGalleryProps {
 function QuotesGallery({ quotes }: QuotesGalleryProps) {
    return (
       <Slider
-         loop
-         spaceBetween={20}
-         slidesPerView="auto"
-         slideToClickedSlide
-         centeredSlides
-         breakpoints={{
-            768: {
-               spaceBetween: 48,
-            },
-         }}
-         sx={{
-            '& .swiper-slide': {
-               cursor: 'pointer',
-               maxW: {
-                  base: '256px',
-                  md: '320px',
-               },
-               opacity: 0.2,
-               transition: 'opacity 300ms',
-               '&.swiper-slide-prev, &.swiper-slide-next': {
-                  opacity: 0.4,
-               },
-               '&.swiper-slide-active': {
-                  opacity: 1,
-               },
-               '&:not(.swiper-slide-active):hover': {
-                  opacity: 0.6,
-               },
-            },
-         }}
-      >
-         {quotes.map((quote) => {
-            return (
-               <SwiperSlide key={quote.id}>
-                  <Quote quote={quote} />
-               </SwiperSlide>
-            );
-         })}
-      </Slider>
+         slides={quotes.map((quote) => (
+            <Quote key={quote.id} quote={quote} />
+         ))}
+         slideSpacing={5}
+      />
+
+      // <Slider
+      //    loop
+      //    spaceBetween={20}
+      //    slidesPerView="auto"
+      //    slideToClickedSlide
+      //    centeredSlides
+      //    breakpoints={{
+      //       768: {
+      //          spaceBetween: 48,
+      //       },
+      //    }}
+      //    sx={{
+      //       '& .swiper-slide': {
+      //          cursor: 'pointer',
+      //          maxW: {
+      //             base: '256px',
+      //             md: '320px',
+      //          },
+      //          opacity: 0.2,
+      //          transition: 'opacity 300ms',
+      //          '&.swiper-slide-prev, &.swiper-slide-next': {
+      //             opacity: 0.4,
+      //          },
+      //          '&.swiper-slide-active': {
+      //             opacity: 1,
+      //          },
+      //          '&:not(.swiper-slide-active):hover': {
+      //             opacity: 0.6,
+      //          },
+      //       },
+      //    }}
+      // >
+      //    {quotes.map((quote) => {
+      //       return (
+      //          <SwiperSlide key={quote.id}>
+      //             <Quote quote={quote} />
+      //          </SwiperSlide>
+      //       );
+      //    })}
+      // </Slider>
    );
 }
 
@@ -137,5 +142,3 @@ function Quote({ quote }: QuoteProps) {
       </Flex>
    );
 }
-
-const Slider = chakra(Swiper);
