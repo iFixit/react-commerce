@@ -5,6 +5,8 @@ import React from 'react';
 import {
    Text,
    Avatar,
+   Alert,
+   AlertIcon,
    Box,
    BoxProps,
    Button,
@@ -115,6 +117,7 @@ const Wiki: NextPageWithLayout<{
                   conclusion={conclusion}
                />
             ))}
+            <AnswersCTA />
          </Flex>
       </Flex>
    );
@@ -499,6 +502,17 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
          <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
+   );
+}
+
+function AnswersCTA() {
+   return (
+      <Alert status="info">
+         <AlertIcon />
+         <chakra.span>Haven't found the solution to your problem?</chakra.span>
+         <chakra.span flexGrow="1"></chakra.span>
+         <Button as="Link">Ask a question</Button>
+      </Alert>
    );
 }
 
