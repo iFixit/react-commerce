@@ -228,7 +228,7 @@ function LinkCards({ guides }: { guides: Guide[] }) {
    return (
       <Box>
          {guides.map((guide: Guide) => (
-            <GuideResource guide={guide} />
+            <GuideResource key={guide.guideid} guide={guide} />
          ))}
       </Box>
    );
