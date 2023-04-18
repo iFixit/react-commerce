@@ -228,7 +228,6 @@ const PreviousButton = ({ disabled, onClick }: NavigationButtonProps) => (
 
 const NextButton = ({ disabled, onClick }: NavigationButtonProps) => (
    <Button
-      data-testid="swiper-next-image"
       pos="absolute"
       top="50%"
       right="2"
