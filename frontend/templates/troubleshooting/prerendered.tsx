@@ -34,6 +34,9 @@ const renderStyles: SystemStyleObject = {
       color: 'gray.700',
       alignSelf: 'stretch',
       paddingBottom: 6,
+      '&:last-child': {
+         paddingBottom: 0,
+      },
    },
 
    'ul,ol': {
