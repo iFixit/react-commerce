@@ -1,4 +1,13 @@
-import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
+import {
+   Box,
+   Button,
+   Circle,
+   Flex,
+   Img,
+   Text,
+   Th,
+   VStack,
+} from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
@@ -35,7 +44,6 @@ export function ProductGallery({
    const variantImages = useVariantImages(product, selectedVariant.id);
 
    const [innerEnableZoom, setInnerEnableZoom] = React.useState(false);
-   const [sharedIndex, setSharedIndex] = React.useState(0);
 
    React.useEffect(() => {
       const containingElement = galleryContainerRef.current;
@@ -74,35 +82,25 @@ export function ProductGallery({
    );
 
    return (
-      <Box
-         sx={{
-            '.swiper-pagination-bullet': {
-               background: 'gray.200',
-               opacity: 1,
-            },
-            '.swiper-pagination-bullet-active': {
-               background: 'gray.500',
-            },
-         }}
-         w="full"
-         {...otherProps}
-      >
+      <Box w="full" {...otherProps}>
          <Box ref={galleryContainerRef}>
             {variantImages.length > 1 ? (
                <Slider
-                  slides={variantImages.map((variantImage, index) => (
+                  items={variantImages}
+                  currentIndex={selectedImageIndex}
+                  spaceBetween={12}
+                  renderSlide={({ item, index }) => (
                      <ImageWithZoom
-                        key={variantImage.id}
+                        key={item.id}
                         index={index}
-                        image={variantImage}
+                        image={item}
                         enableZoom={innerEnableZoom}
                      />
-                  ))}
-                  slideSpacing={3}
-                  PreviousButton={PreviousButton}
-                  NextButton={NextButton}
-                  currentIndex={sharedIndex}
-                  onIndexChange={setSharedIndex}
+                  )}
+                  renderPreviousButton={PreviousButton}
+                  renderNextButton={NextButton}
+                  renderBullet={Bullet}
+                  onIndexChange={onSlideChange}
                />
             ) : (
                <ImagePlaceholder />
@@ -112,22 +110,21 @@ export function ProductGallery({
          {showThumbnails && variantImages.length > 1 && (
             <Box position="relative" mt="3">
                <Slider
-                  slides={variantImages.map((variantImage, index) => (
+                  items={variantImages}
+                  currentIndex={selectedImageIndex}
+                  slidesPerView={THUMBNAILS_COUNT}
+                  spaceBetween={12}
+                  slidesToKeepOnLeft={1}
+                  renderSlide={({ item, index }) => (
                      <ImageThumbnail
-                        key={variantImage.id}
-                        image={variantImage}
-                        active={index === sharedIndex}
+                        key={item.id}
+                        image={item}
+                        active={index === selectedImageIndex}
                      />
-                  ))}
-                  visibleSlides={THUMBNAILS_COUNT}
-                  slideSpacing={3}
-                  showNavigation={false}
-                  PreviousButton={PreviousButton}
-                  NextButton={NextButton}
-                  currentIndex={sharedIndex}
-                  onIndexChange={setSharedIndex}
+                  )}
+                  onIndexChange={onSlideChange}
                />
-               {/* <Box
+               <Box
                   position="absolute"
                   bgGradient="linear(to-l, transparent, blueGray.50)"
                   w="25%"
@@ -138,7 +135,8 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     sharedIndex > 0 && variantImages.length > THUMBNAILS_COUNT
+                     selectedImageIndex > 1 &&
+                     variantImages.length > THUMBNAILS_COUNT
                         ? 1
                         : 0
                   }
@@ -155,12 +153,13 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     variantImages.length - sharedIndex - 1 >= THUMBNAILS_COUNT
+                     variantImages.length - selectedImageIndex >=
+                     THUMBNAILS_COUNT
                         ? 1
                         : 0
                   }
                   transition="all 300ms"
-               /> */}
+               />
             </Box>
          )}
       </Box>
@@ -197,6 +196,7 @@ type NavigationButtonProps = {
    disabled?: boolean;
    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
+
 const PreviousButton = ({ disabled, onClick }: NavigationButtonProps) => (
    <Button
       pos="absolute"
@@ -254,6 +254,23 @@ const NextButton = ({ disabled, onClick }: NavigationButtonProps) => (
          <FaIcon icon={faArrowRight} color="white" />
       </Circle>
    </Button>
+);
+
+type BulletProps = {
+   isActive: boolean;
+   onClick?: React.MouseEventHandler<any>;
+};
+
+const Bullet = ({ isActive, ...rest }: BulletProps) => (
+   <Box
+      w="2"
+      h="2"
+      borderRadius="full"
+      bg={isActive ? 'gray.500' : 'gray.200'}
+      _notFirst={{ ml: 1 }}
+      transition="all 300ms"
+      {...rest}
+   />
 );
 
 type Image = {

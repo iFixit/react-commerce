@@ -23,7 +23,8 @@ export function PressQuotesSection({
                {title && <SectionHeading mb="4">{title}</SectionHeading>}
                {description && <SectionDescription richText={description} />}
             </SectionHeaderWrapper>
-            <Box
+            <Flex
+               justifyContent="center"
                w="full"
                my={{
                   base: '6',
@@ -31,7 +32,7 @@ export function PressQuotesSection({
                }}
             >
                <QuotesGallery quotes={quotes} />
-            </Box>
+            </Flex>
             {callToAction && (
                <NextLink href={callToAction.url} passHref>
                   <Link
@@ -57,62 +58,35 @@ interface QuotesGalleryProps {
 function QuotesGallery({ quotes }: QuotesGalleryProps) {
    return (
       <Slider
-         slides={quotes.map((quote) => (
-            <Quote key={quote.id} quote={quote} />
-         ))}
-         slideSpacing={5}
+         maxW={{
+            base: '64',
+            md: '80',
+         }}
+         overflow="visible"
+         items={quotes}
+         currentIndex={Math.floor((quotes.length - 1) / 2)}
+         renderSlide={({ item, isActive }) => (
+            <Quote key={item.id} quote={item} isActive={isActive} />
+         )}
+         spaceBetween={20}
       />
-
-      // <Slider
-      //    loop
-      //    spaceBetween={20}
-      //    slidesPerView="auto"
-      //    slideToClickedSlide
-      //    centeredSlides
-      //    breakpoints={{
-      //       768: {
-      //          spaceBetween: 48,
-      //       },
-      //    }}
-      //    sx={{
-      //       '& .swiper-slide': {
-      //          cursor: 'pointer',
-      //          maxW: {
-      //             base: '256px',
-      //             md: '320px',
-      //          },
-      //          opacity: 0.2,
-      //          transition: 'opacity 300ms',
-      //          '&.swiper-slide-prev, &.swiper-slide-next': {
-      //             opacity: 0.4,
-      //          },
-      //          '&.swiper-slide-active': {
-      //             opacity: 1,
-      //          },
-      //          '&:not(.swiper-slide-active):hover': {
-      //             opacity: 0.6,
-      //          },
-      //       },
-      //    }}
-      // >
-      //    {quotes.map((quote) => {
-      //       return (
-      //          <SwiperSlide key={quote.id}>
-      //             <Quote quote={quote} />
-      //          </SwiperSlide>
-      //       );
-      //    })}
-      // </Slider>
    );
 }
 
 interface QuoteProps {
    quote: PressQuote;
+   isActive: boolean;
 }
 
-function Quote({ quote }: QuoteProps) {
+function Quote({ quote, isActive }: QuoteProps) {
    return (
-      <Flex direction="column" alignItems="center">
+      <Flex
+         direction="column"
+         alignItems="center"
+         transition="opacity 300ms"
+         opacity={isActive ? 1 : 0.4}
+         _hover={{ opacity: isActive ? 1 : 0.6 }}
+      >
          <Box
             position="relative"
             w={{
