@@ -7,6 +7,7 @@ import Prerendered from './prerendered';
 export function GuideResource({ guide }: { guide: Guide }) {
    return (
       <Resource
+         href={guide.url}
          title={guide.title}
          imageUrl={guide.image.thumbnail}
          introduction={guide.introduction_rendered}
@@ -16,7 +17,10 @@ export function GuideResource({ guide }: { guide: Guide }) {
    );
 }
 
-function ResourceBox({ children }: React.PropsWithChildren<{}>) {
+function ResourceBox({
+   href,
+   children,
+}: React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>) {
    return (
       <Stack
          alignSelf="stretch"
@@ -28,6 +32,8 @@ function ResourceBox({ children }: React.PropsWithChildren<{}>) {
          borderWidth="1px"
          borderRadius="4px"
          minHeight="88px"
+         as="a"
+         href={href}
       >
          {children}
       </Stack>
@@ -40,15 +46,17 @@ function Resource({
    introduction,
    timeRequired,
    difficulty,
+   href,
 }: {
    title: string;
    imageUrl: string;
    introduction: string;
    timeRequired: string;
    difficulty: string;
+   href: string;
 }) {
    return (
-      <ResourceBox>
+      <ResourceBox href={href}>
          <Stack
             padding="12px"
             direction="row"
