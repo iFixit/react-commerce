@@ -1,13 +1,10 @@
 import { WithProvidersProps } from '@components/common';
 import type { WithLayoutProps } from '@layouts/default/server';
+import { Guide } from './GuideModel';
 
 export type Section = {
    heading: string;
    body: string;
-};
-
-export type SolutionSection = Section & {
-   guides: number[];
 };
 
 export type Author = {
@@ -17,11 +14,19 @@ export type Author = {
    avatar: string;
 };
 
-export type TroubleshootingData = {
+export type ApiSolutionSection = Section & {
+   guides: number[];
+};
+
+export type SolutionSection = Omit<ApiSolutionSection, 'guides'> & {
+   guides: Guide[];
+};
+
+export type TroubleshootingApiData = {
    title: string;
    toc: string;
    introduction: Section[];
-   solutions: SolutionSection[];
+   solutions: ApiSolutionSection[];
    conclusion: Section[];
    editUrl: string;
    historyUrl: string;
@@ -34,6 +39,10 @@ export type TroubleshootingData = {
    breadcrumbs: BreadcrumbEntry[];
    metaDescription: string;
    metaKeywords: string;
+};
+
+export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {
+   solutions: SolutionSection[];
 };
 
 export type BreadcrumbEntry = {
