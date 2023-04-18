@@ -1,19 +1,15 @@
-import { Stack, Image, Box, Text, Badge, Icon } from '@chakra-ui/react';
+import { Stack, Image, Text, Badge } from '@chakra-ui/react';
+import { Guide } from './hooks/GuideModel';
+import { FaIcon } from '@ifixit/icons';
+import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
 
-export function GuideResource({ guideid }: { guideid: number }) {
-   return <ResourceBox />;
-   return <Resource title={guideid} />;
+export function GuideResource({ guide }: { guide: Guide }) {
+   return <Resource title={guide.title} />;
 }
 
 function ResourceBox({ children }: React.PropsWithChildren<{}>) {
    return (
       <Stack
-         showReference={false}
-         showDate
-         guide
-         showLanguages={false}
-         device
-         size="md"
          alignSelf="stretch"
          justify="flex-start"
          align="flex-start"
@@ -41,21 +37,9 @@ function Resource({ title }: { title: string }) {
             justify="flex-start"
             align="center"
             alignSelf="stretch"
+            spacing="8px"
          >
-            <Stack
-               justify="flex-start"
-               align="flex-start"
-               spacing="10px"
-               alignSelf="stretch"
-            >
-               <Image
-                  type="Default"
-                  size="48x48"
-                  height="64px"
-                  width="100%"
-                  objectFit="cover"
-               />
-            </Stack>
+            <Image boxSize="48px" height="64px" objectFit="cover" />
             <Stack justify="center" align="flex-start" spacing="6px" flex="1">
                <Stack
                   justify="flex-start"
@@ -64,34 +48,22 @@ function Resource({ title }: { title: string }) {
                   alignSelf="stretch"
                >
                   <Text
-                     fontFamily="SF Pro"
                      lineHeight="1.07"
                      fontWeight="semibold"
                      fontSize="14px"
                      color="gray.900"
-                     alignSelf="stretch"
                   >
                      {title}
                   </Text>
-                  <Stack
-                     direction="row"
-                     justify="flex-start"
-                     align="flex-start"
-                     spacing="10px"
-                     alignSelf="stretch"
+                  <Text
+                     lineHeight="1.36"
+                     fontWeight="regular"
+                     fontSize="12px"
+                     color="gray.600"
                   >
-                     <Text
-                        fontFamily="SF Pro"
-                        lineHeight="1.36"
-                        fontWeight="regular"
-                        fontSize="12px"
-                        color="gray.600"
-                        flex="1"
-                     >
-                        This guide shows how to remove and replace the battery
-                        in a Samsung Galaxy S10.
-                     </Text>
-                  </Stack>
+                     This guide shows how to remove and replace the battery in a
+                     Samsung Galaxy S10.
+                  </Text>
                </Stack>
                <Stack
                   direction="row"
@@ -100,70 +72,14 @@ function Resource({ title }: { title: string }) {
                   spacing="4px"
                   alignSelf="stretch"
                >
-                  <Stack
-                     size="Small"
-                     direction="row"
-                     justify="flex-start"
-                     align="flex-start"
-                     spacing="0px"
-                  >
-                     <Badge>
-                        <Icon iconName="clock" padding="square" scale="0.75x" />
-                        <Stack
-                           justify="center"
-                           align="flex-start"
-                           spacing="10px"
-                           height="16px"
-                        >
-                           <Text
-                              fontFamily="SF Pro"
-                              fontWeight="semibold"
-                              fontSize="13px"
-                              color="gray.700"
-                           >
-                              1 h - 2 h
-                           </Text>
-                        </Stack>
-                     </Badge>
-                  </Stack>
-                  <Stack
-                     state="Moderate"
-                     size="Small"
-                     direction="row"
-                     justify="flex-start"
-                     align="flex-start"
-                     spacing="0px"
-                  >
-                     <Badge>
-                        <Icon iconName="gauge" padding="square" scale="0.75x">
-                           <Text
-                              fontFamily="Font Awesome 6 Pro"
-                              fontWeight="solid"
-                              fontSize="12px"
-                              color="amber.500"
-                              width="16px"
-                              textAlign="center"
-                           >
-                              gauge
-                           </Text>
-                        </Icon>
-                        <Stack
-                           justify="center"
-                           align="flex-start"
-                           spacing="10px"
-                           height="16px"
-                        >
-                           <Text
-                              fontFamily="SF Pro"
-                              fontWeight="semibold"
-                              fontSize="13px"
-                              color="amber.700"
-                           >
-                              Moderate
-                           </Text>
-                        </Stack>
-                     </Badge>
-                  </Stack>
+                  <Badge display="flex" gap="2px">
+                     <FaIcon icon={faClock} />
+                     1h–2h
+                  </Badge>
+                  <Badge display="flex" gap="2px" colorScheme="amber">
+                     <FaIcon icon={faGauge} />
+                     Moderate
+                  </Badge>
                </Stack>
             </Stack>
          </Stack>
