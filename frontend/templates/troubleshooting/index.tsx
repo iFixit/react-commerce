@@ -117,7 +117,7 @@ const Wiki: NextPageWithLayout<{
                   conclusion={conclusion}
                />
             ))}
-            <AnswersCTA />
+            <AnswersCTA answersUrl={wikiData.answersUrl} />
          </Flex>
       </Flex>
    );
@@ -505,13 +505,13 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
    );
 }
 
-function AnswersCTA() {
+function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
       <Alert status="info">
          <AlertIcon />
          <chakra.span>Haven't found the solution to your problem?</chakra.span>
          <chakra.span flexGrow="1"></chakra.span>
-         <Button href="/Answers" as="link">
+         <Button href={answersUrl} as="link">
             Ask a question
          </Button>
       </Alert>

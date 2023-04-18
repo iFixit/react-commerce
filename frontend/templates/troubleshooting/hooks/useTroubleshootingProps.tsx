@@ -21,6 +21,7 @@ export type TroubleshootingData = {
    conclusion: Section[];
    editUrl: string;
    historyUrl: string;
+   answersUrl: string;
    deviceGuideUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
