@@ -1,6 +1,8 @@
 import { useBreakpointValue } from '@chakra-ui/react';
 import * as React from 'react';
 
+export * from './useDetails';
+
 export function useDebounce<Value = any>(value: Value, delay: number): Value {
    const [debouncedValue, setDebouncedValue] = React.useState(value);
 
