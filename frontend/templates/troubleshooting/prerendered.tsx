@@ -31,7 +31,6 @@ const renderStyles: SystemStyleObject = {
    p: {
       lineHeight: '1.38',
       fontWeight: 'regular',
-      fontSize: '16px',
       color: 'gray.700',
       alignSelf: 'stretch',
       paddingBottom: 6,
@@ -201,23 +200,26 @@ const renderStyles: SystemStyleObject = {
    },
 };
 
-const Prerendered = chakra(function Prerendered({
-   html,
-   className,
-}: {
-   html: string;
-   className?: string;
-}) {
-   useEffect(() => {
-      import('lite-youtube-embed');
-   }, []);
-   return (
-      <Box
-         className={className}
-         sx={renderStyles}
-         dangerouslySetInnerHTML={{ __html: html }}
-      />
-   );
-});
+const Prerendered = chakra(
+   function Prerendered({
+      html,
+      className,
+   }: {
+      html: string;
+      className?: string;
+   }) {
+      useEffect(() => {
+         import('lite-youtube-embed');
+      }, []);
+      return (
+         <Box
+            className={className}
+            sx={renderStyles}
+            dangerouslySetInnerHTML={{ __html: html }}
+         />
+      );
+   },
+   { baseStyle: { fontSize: '16px' } }
+);
 
 export default Prerendered;
