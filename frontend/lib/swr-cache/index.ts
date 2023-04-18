@@ -17,7 +17,8 @@
 
 import { APP_ORIGIN, VERCEL_URL } from '@config/env';
 import { log as defaultLog, Logger } from '@ifixit/helpers';
-import { request } from 'https';
+import * as http from 'http';
+import * as https from 'https';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { cache } from './adapters';
@@ -30,6 +31,8 @@ import {
    printError,
    printZodError,
 } from './utils';
+
+const { request } = VERCEL_URL ? https : http;
 
 interface CacheOptions<
    VariablesSchema extends z.ZodTypeAny,
@@ -72,12 +75,13 @@ export const withCache = <
    const logger: Logger = defaultLog;
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
          // Don't delay the lambda beyond 50ms for revalidation
-         setTimeout(resolve, 50);
+         const timeout = setTimeout(resolve, 50);
          const postData = JSON.stringify(variables);
          const req = request({
             hostname: VERCEL_URL || new URL(APP_ORIGIN).hostname,
+            ...(!VERCEL_URL && { port: new URL(APP_ORIGIN).port }),
             path: `/${endpoint}`,
             method: 'POST',
             headers: {
@@ -93,7 +97,10 @@ export const withCache = <
             reject();
          });
          req.write(postData);
-         req.end(resolve);
+         req.end(() => {
+            clearTimeout(timeout);
+            resolve();
+         });
       });
    };
 
@@ -164,7 +171,9 @@ export const withCache = <
       ValueSchema
    > = async (req, res) => {
       try {
-         const variables = variablesSchema.parse(req.body);
+         const body =
+            typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+         const variables = variablesSchema.parse(body);
          const value = await getFreshValue(variables);
          const cacheEntry = createCacheEntry(value, {
             ttl,
