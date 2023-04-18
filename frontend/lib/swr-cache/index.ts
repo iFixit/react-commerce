@@ -75,9 +75,15 @@ export const withCache = <
    const logger: Logger = defaultLog;
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
-      await new Promise<void>((resolve, reject) => {
+      const start = performance.now();
+      const p = new Promise<void>((resolve, reject) => {
          // Don't delay the lambda beyond 50ms for revalidation
-         const timeout = setTimeout(resolve, 50);
+         const timeout = setTimeout(() => {
+            const elapsed = performance.now() - start;
+            logger.warning.event(`${endpoint}.revalidation.timeout`);
+            logger.warning.timing(`${endpoint}.revalidation.timeout`, elapsed);
+            resolve();
+         }, 50);
          const postData = JSON.stringify(variables);
          const req = request({
             hostname: VERCEL_URL || new URL(APP_ORIGIN).hostname,
@@ -89,19 +95,34 @@ export const withCache = <
                'Content-Length': Buffer.byteLength(postData),
             },
          }).on('error', (error) => {
+            const elapsed = performance.now() - start;
             logger.error(
                `${endpoint}.error: failed to trigger revalidation\n${printError(
                   error
                )}`
             );
+            logger.error.timing(`${endpoint}.revalidation.error`, elapsed);
             reject();
          });
          req.write(postData);
          req.end(() => {
+            const elapsed = performance.now() - start;
+            logger.success.event(`${endpoint}.revalidation.request_end`);
+            logger.success.timing(
+               `${endpoint}.revalidation.request_end`,
+               elapsed
+            );
             clearTimeout(timeout);
             resolve();
          });
       });
+      let elapsed = performance.now() - start;
+      logger.info.event(`${endpoint}.revalidation.create_promise`);
+      logger.info.timing(`${endpoint}.revalidation.create_promise`, elapsed);
+      await p;
+      elapsed = performance.now() - start;
+      logger.info.event(`${endpoint}.revalidation.count`);
+      logger.info.timing(`${endpoint}.revalidation.total`, elapsed);
    };
 
    const get: NextApiHandlerWithProps<
