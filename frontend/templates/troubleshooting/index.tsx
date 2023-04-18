@@ -511,7 +511,9 @@ function AnswersCTA() {
          <AlertIcon />
          <chakra.span>Haven't found the solution to your problem?</chakra.span>
          <chakra.span flexGrow="1"></chakra.span>
-         <Button as="Link">Ask a question</Button>
+         <Button href="/Answers" as="link">
+            Ask a question
+         </Button>
       </Alert>
    );
 }
