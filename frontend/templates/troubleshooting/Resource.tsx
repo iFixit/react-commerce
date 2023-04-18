@@ -2,9 +2,18 @@ import { Stack, Image, Text, Badge } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
+import Prerendered from './prerendered';
 
 export function GuideResource({ guide }: { guide: Guide }) {
-   return <Resource title={guide.title} />;
+   return (
+      <Resource
+         title={guide.title}
+         imageUrl={guide.image.thumbnail}
+         introduction={guide.introduction_rendered}
+         timeRequired={guide.time_required}
+         difficulty={guide.difficulty}
+      />
+   );
 }
 
 function ResourceBox({ children }: React.PropsWithChildren<{}>) {
@@ -25,7 +34,19 @@ function ResourceBox({ children }: React.PropsWithChildren<{}>) {
    );
 }
 
-function Resource({ title }: { title: string }) {
+function Resource({
+   title,
+   imageUrl,
+   introduction,
+   timeRequired,
+   difficulty,
+}: {
+   title: string;
+   imageUrl: string;
+   introduction: string;
+   timeRequired: string;
+   difficulty: string;
+}) {
    return (
       <ResourceBox>
          <Stack
@@ -36,7 +57,13 @@ function Resource({ title }: { title: string }) {
             alignSelf="stretch"
             spacing="8px"
          >
-            <Image boxSize="48px" height="64px" objectFit="cover" alt="" />
+            <Image
+               boxSize="48px"
+               height="64px"
+               objectFit="cover"
+               alt=""
+               src={imageUrl}
+            />
             <Stack justify="center" align="flex-start" spacing="6px" flex="1">
                <Stack
                   justify="flex-start"
@@ -52,15 +79,13 @@ function Resource({ title }: { title: string }) {
                   >
                      {title}
                   </Text>
-                  <Text
+                  <Prerendered
                      lineHeight="1.36"
                      fontWeight="regular"
                      fontSize="12px"
                      color="gray.600"
-                  >
-                     This guide shows how to remove and replace the battery in a
-                     Samsung Galaxy S10.
-                  </Text>
+                     html={introduction}
+                  />
                </Stack>
                <Stack
                   direction="row"
@@ -71,11 +96,11 @@ function Resource({ title }: { title: string }) {
                >
                   <Badge display="flex" gap="2px">
                      <FaIcon icon={faClock} />
-                     1h–2h
+                     {timeRequired}
                   </Badge>
                   <Badge display="flex" gap="2px" colorScheme="amber">
                      <FaIcon icon={faGauge} />
-                     Moderate
+                     {difficulty}
                   </Badge>
                </Stack>
             </Stack>
