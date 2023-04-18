@@ -39,7 +39,7 @@ function Resource({ title }: { title: string }) {
             alignSelf="stretch"
             spacing="8px"
          >
-            <Image boxSize="48px" height="64px" objectFit="cover" />
+            <Image boxSize="48px" height="64px" objectFit="cover" alt="" />
             <Stack justify="center" align="flex-start" spacing="6px" flex="1">
                <Stack
                   justify="flex-start"
