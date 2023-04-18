@@ -17,9 +17,10 @@ import {
    faSquareArrowUp,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { Section } from './hooks/useTroubleshootingProps';
+import { SolutionSection } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 import { GuideResource } from './Resource';
+import { Guide } from './hooks/GuideModel';
 
 const SolutionFooter = () => (
    <Stack
@@ -201,7 +202,7 @@ export default function SolutionCard({
    solution,
 }: {
    index: number;
-   solution: Section;
+   solution: SolutionSection;
 }) {
    return (
       <Flex
@@ -222,11 +223,12 @@ export default function SolutionCard({
    );
 }
 
-function LinkCards({ guides }: { guides: number[] }) {
+function LinkCards({ guides }: { guides: Guide[] }) {
+   console.log(guides);
    return (
       <Box>
-         {guides.map((guideid) => (
-            <GuideResource guideid={guideid} />
+         {guides.map((guide: Guide) => (
+            <GuideResource guide={guide} />
          ))}
       </Box>
    );

@@ -30,7 +30,7 @@ import {
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
-import SolutionCard from './solution';
+import SectionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
    faAngleDown,
@@ -87,7 +87,7 @@ const Wiki: NextPageWithLayout<{
                </>
             )}
             {wikiData.solutions.map((solution, index) => (
-               <SolutionCard
+               <SectionCard
                   key={solution.heading}
                   index={index + 1}
                   solution={solution}
