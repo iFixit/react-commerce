@@ -30,6 +30,7 @@ import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSal
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { CompatibleDevices } from './CompatibleDevices';
+import { CompatibilityNotes } from './CompatibilityNotes';
 import { PRODUCT_OVERVIEW_SECTION_ID } from './constants';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { InternationalBuyBox } from './InternationalBuyBox';
@@ -65,7 +66,6 @@ export function ProductOverviewSection({
       [onVariantChange]
    );
    const isForSale = useIsProductForSale(product);
-   const hasCompatibilityNotes = !!product.compatibilityNotes;
    return (
       <Wrapper as="section" id={PRODUCT_OVERVIEW_SECTION_ID} mb="16" pt="6">
          <Flex>
@@ -219,13 +219,13 @@ export function ProductOverviewSection({
                         product.compatibility.devices.length <= 0
                      }
                   >
-                     {hasCompatibilityNotes ? (
+                     {product.compatibilityNotes ? (
                         <>
                            <CustomAccordionButton>
                               Compatibility Notes
                            </CustomAccordionButton>
-                           <CustomAccordionPanel>
-                              {product.compatibilityNotes}
+                           <CustomAccordionPanel data-testid="product-compatibility-dropdown">
+                              <CompatibilityNotes product={product} />
                            </CustomAccordionPanel>
                         </>
                      ) : (
@@ -239,7 +239,6 @@ export function ProductOverviewSection({
                         </>
                      )}
                   </AccordionItem>
-
                   <WikiHtmlAccordianItem title="Specifications">
                      {selectedVariant.specifications}
                   </WikiHtmlAccordianItem>
@@ -284,7 +283,9 @@ const ProductTitle = chakra(
 
 type CustomAccordionButtonProps = React.PropsWithChildren<{}>;
 
-function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
+export function CustomAccordionButton({
+   children,
+}: CustomAccordionButtonProps) {
    return (
       <AccordionButton py="5" px="1.5">
          <Box
