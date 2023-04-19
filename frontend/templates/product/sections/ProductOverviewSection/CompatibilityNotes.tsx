@@ -7,22 +7,21 @@ import {
 } from '@chakra-ui/react';
 import type { Product } from '@pages/api/nextjs/cache/product';
 import React from 'react';
+import { SplitCompatibilityNotes } from '../CompatibilityNotesSection';
+
 export type CompatibilityNotesProps = {
    product: Product;
 };
 
-const MAX_DEFAULT_VISIBLE_DEVICES = 10;
-
 export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
-   const devices = product.compatibilityNotes?.split(/\r?\n/) ?? [];
-   const visibleDevices = devices
-      .slice(0, MAX_DEFAULT_VISIBLE_DEVICES)
-      .join(', ');
-   const hiddenDevices = devices.slice(MAX_DEFAULT_VISIBLE_DEVICES).join(', ');
+   const compatibilityNotes = product.compatibilityNotes;
+   const [visibleDevices, hiddenDevices] = SplitCompatibilityNotes({
+      compatibilityNotes,
+   });
    return (
       <Box px={2}>
          <Box pb={5}>{visibleDevices}</Box>
-         <AccordionItem>
+         <AccordionItem hidden={!hiddenDevices.length}>
             <AccordionButton py="5" px="1.5">
                <Box
                   flex="1"
@@ -31,7 +30,7 @@ export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
                   fontWeight="semibold"
                   fontSize="sm"
                >
-                  {'Show  More Models'}
+                  {'Show ' + hiddenDevices.length + ' More Models'}
                </Box>
                <AccordionIcon />
             </AccordionButton>

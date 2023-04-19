@@ -40,6 +40,7 @@ import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
+import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -189,13 +190,16 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'DeviceCompatibility':
-                     return (
-                        !hasCompatibilityNotes && (
-                           <CompatibilitySection
-                              key={section.id}
-                              compatibility={product.compatibility}
-                           />
-                        )
+                     return hasCompatibilityNotes ? (
+                        <CompatibilityNotesSection
+                           key={section.id}
+                           compatibilityNotes={product.compatibilityNotes}
+                        />
+                     ) : (
+                        <CompatibilitySection
+                           key={section.id}
+                           compatibility={product.compatibility}
+                        />
                      );
                   case 'FeaturedProducts': {
                      return (
