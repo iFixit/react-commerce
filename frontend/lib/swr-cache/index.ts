@@ -80,8 +80,8 @@ export const withCache = <
          // Don't delay the lambda beyond 50ms for revalidation
          const timeout = setTimeout(() => {
             const elapsed = performance.now() - start;
-            logger.warning.event(`${endpoint}.revalidation.timeout`);
-            logger.warning.timing(`${endpoint}.revalidation.timeout`, elapsed);
+            logger.warning.event(`${statName}.revalidation.timeout`);
+            logger.warning.timing(`${statName}.revalidation.timeout`, elapsed);
             resolve();
          }, 50);
          const postData = JSON.stringify(variables);
@@ -101,15 +101,15 @@ export const withCache = <
                   error
                )}`
             );
-            logger.error.timing(`${endpoint}.revalidation.error`, elapsed);
+            logger.error.timing(`${statName}.revalidation.error`, elapsed);
             reject();
          });
          req.write(postData);
          req.end(() => {
             const elapsed = performance.now() - start;
-            logger.success.event(`${endpoint}.revalidation.request_end`);
+            logger.success.event(`${statName}.revalidation.request_end`);
             logger.success.timing(
-               `${endpoint}.revalidation.request_end`,
+               `${statName}.revalidation.request_end`,
                elapsed
             );
             clearTimeout(timeout);
@@ -117,12 +117,12 @@ export const withCache = <
          });
       });
       let elapsed = performance.now() - start;
-      logger.info.event(`${endpoint}.revalidation.create_promise`);
-      logger.info.timing(`${endpoint}.revalidation.create_promise`, elapsed);
+      logger.info.event(`${statName}.revalidation.create_promise`);
+      logger.info.timing(`${statName}.revalidation.create_promise`, elapsed);
       await p;
       elapsed = performance.now() - start;
-      logger.info.event(`${endpoint}.revalidation.count`);
-      logger.info.timing(`${endpoint}.revalidation.total`, elapsed);
+      logger.info.event(`${statName}.revalidation.count`);
+      logger.info.timing(`${statName}.revalidation.total`, elapsed);
    };
 
    const get: NextApiHandlerWithProps<
