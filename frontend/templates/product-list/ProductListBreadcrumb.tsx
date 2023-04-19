@@ -34,7 +34,7 @@ export function ProductListBreadcrumb({
    const desktopCollapsedProductLists = ancestors
       .slice(0, -MAX_VISIBLE_ITEMS)
       .reverse();
-   const mobileCollapsedProductLists = ancestors.slice(0, -1).reverse();
+   const mobileCollapsedProductLists = ancestors.reverse();
 
    return (
       <Breadcrumb
