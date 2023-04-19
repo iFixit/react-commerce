@@ -15,8 +15,10 @@
  *   e.g. `const productList = await ProductList.get({ ... })`
  */
 
-import { APP_ORIGIN } from '@config/env';
+import { APP_ORIGIN, VERCEL_URL } from '@config/env';
 import { log as defaultLog, Logger } from '@ifixit/helpers';
+import * as http from 'http';
+import * as https from 'https';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { cache } from './adapters';
@@ -28,8 +30,9 @@ import {
    isValidCacheEntry,
    printError,
    printZodError,
-   sleep,
 } from './utils';
+
+const { request } = VERCEL_URL ? https : http;
 
 interface CacheOptions<
    VariablesSchema extends z.ZodTypeAny,
@@ -72,18 +75,54 @@ export const withCache = <
    const logger: Logger = defaultLog;
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
-      fetch(`${APP_ORIGIN}/${endpoint}`, {
-         method: 'POST',
-         body: JSON.stringify(variables),
-      }).catch((error) => {
-         logger.error(
-            `${endpoint}.error: failed to trigger revalidation\n${printError(
-               error
-            )}`
-         );
+      const start = performance.now();
+      const p = new Promise<void>((resolve, reject) => {
+         // Don't delay the lambda beyond 50ms for revalidation
+         const timeout = setTimeout(() => {
+            const elapsed = performance.now() - start;
+            logger.warning.event(`${endpoint}.revalidation.timeout`);
+            logger.warning.timing(`${endpoint}.revalidation.timeout`, elapsed);
+            resolve();
+         }, 50);
+         const postData = JSON.stringify(variables);
+         const req = request({
+            hostname: VERCEL_URL || new URL(APP_ORIGIN).hostname,
+            ...(!VERCEL_URL && { port: new URL(APP_ORIGIN).port }),
+            path: `/${endpoint}`,
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Content-Length': Buffer.byteLength(postData),
+            },
+         }).on('error', (error) => {
+            const elapsed = performance.now() - start;
+            logger.error(
+               `${endpoint}.error: failed to trigger revalidation\n${printError(
+                  error
+               )}`
+            );
+            logger.error.timing(`${endpoint}.revalidation.error`, elapsed);
+            reject();
+         });
+         req.write(postData);
+         req.end(() => {
+            const elapsed = performance.now() - start;
+            logger.success.event(`${endpoint}.revalidation.request_end`);
+            logger.success.timing(
+               `${endpoint}.revalidation.request_end`,
+               elapsed
+            );
+            clearTimeout(timeout);
+            resolve();
+         });
       });
-      // We add a small delay to ensure the revalidation is triggered
-      await sleep(50);
+      let elapsed = performance.now() - start;
+      logger.info.event(`${endpoint}.revalidation.create_promise`);
+      logger.info.timing(`${endpoint}.revalidation.create_promise`, elapsed);
+      await p;
+      elapsed = performance.now() - start;
+      logger.info.event(`${endpoint}.revalidation.count`);
+      logger.info.timing(`${endpoint}.revalidation.total`, elapsed);
    };
 
    const get: NextApiHandlerWithProps<
@@ -153,7 +192,7 @@ export const withCache = <
       ValueSchema
    > = async (req, res) => {
       try {
-         const variables = variablesSchema.parse(JSON.parse(req.body));
+         const variables = variablesSchema.parse(req.body);
          const value = await getFreshValue(variables);
          const cacheEntry = createCacheEntry(value, {
             ttl,
