@@ -16,10 +16,7 @@ function ResourceBox({ children }: React.PropsWithChildren<{}>) {
          spacing="0px"
          overflow="hidden"
          borderColor="gray.400"
-         borderStartWidth="1px"
-         borderEndWidth="1px"
-         borderTopWidth="1px"
-         borderBottomWidth="1px"
+         borderWidth="1px"
          borderRadius="4px"
          minHeight="88px"
       >
