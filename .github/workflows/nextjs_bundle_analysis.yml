@@ -17,7 +17,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: Checkout
-           uses: actions/checkout@v2
+           uses: actions/checkout@v3
 
          - name: Install Node.js
            uses: actions/setup-node@v3
@@ -33,7 +33,7 @@ jobs:
               FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
 
          - name: Restore next build
-           uses: actions/cache@v2
+           uses: actions/cache@v3
            id: restore-build-cache
            env:
               cache-name: cache-next-build
@@ -57,7 +57,7 @@ jobs:
            run: npx -p nextjs-bundle-analysis@0.5.0 report
 
          - name: Upload bundle
-           uses: actions/upload-artifact@v2
+           uses: actions/upload-artifact@v3
            with:
               name: bundle
               path: frontend/.next/analyze/__bundle_analysis.json
@@ -91,11 +91,9 @@ jobs:
            id: get-comment-body
            if: success() && github.event.number
            run: |
-              body=$(cat .next/analyze/__bundle_analysis_comment.txt)
-              body="${body//'%'/'%25'}"
-              body="${body//$'\n'/'%0A'}"
-              body="${body//$'\r'/'%0D'}"
-              echo ::set-output name=body::$body
+              echo "body<<EOF" >> $GITHUB_OUTPUT
+              echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
+              echo EOF >> $GITHUB_OUTPUT
 
          - name: Find Comment
            uses: peter-evans/find-comment@v2
