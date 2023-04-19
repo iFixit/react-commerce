@@ -224,7 +224,6 @@ export default function SolutionCard({
 }
 
 function LinkCards({ guides }: { guides: Guide[] }) {
-   console.log(guides);
    return (
       <Box>
          {guides.map((guide: Guide) => (
