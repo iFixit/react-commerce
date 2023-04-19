@@ -40,13 +40,6 @@ export function CompatibleDevice({
                event.preventDefault();
                event.stopPropagation();
             },
-            onKeyDown: (event) => {
-               if ('Enter' === event.code) {
-                  toggle();
-                  event.preventDefault();
-                  event.stopPropagation();
-               }
-            },
          })}
          {...otherProps}
       >
@@ -88,12 +81,6 @@ export function CompatibleDevice({
                      event.preventDefault();
                      event.stopPropagation();
                   },
-                  onKeyDown: (event) => {
-                     if ('Enter' === event.code) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                     }
-                  },
                })}
             >
                {visibleVariants.map((variant) => (
@@ -133,12 +120,6 @@ export function CompatibleDevice({
                         onClick: (event) => {
                            event.preventDefault();
                            event.stopPropagation();
-                        },
-                        onKeyDown: (event) => {
-                           if ('Enter' === event.code) {
-                              event.preventDefault();
-                              event.stopPropagation();
-                           }
                         },
                      })}
                   >
