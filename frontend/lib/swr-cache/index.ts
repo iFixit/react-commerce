@@ -192,9 +192,7 @@ export const withCache = <
       ValueSchema
    > = async (req, res) => {
       try {
-         const body =
-            typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-         const variables = variablesSchema.parse(body);
+         const variables = variablesSchema.parse(req.body);
          const value = await getFreshValue(variables);
          const cacheEntry = createCacheEntry(value, {
             ttl,
