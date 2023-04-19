@@ -509,7 +509,9 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
       <Alert status="info">
          <AlertIcon />
-         <chakra.span>Haven't found the solution to your problem?</chakra.span>
+         <chakra.span>
+            Haven&apos;t found the solution to your problem?
+         </chakra.span>
          <chakra.span flexGrow="1"></chakra.span>
          <Button href={answersUrl} as="link">
             Ask a question
