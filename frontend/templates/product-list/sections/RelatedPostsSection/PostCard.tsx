@@ -6,12 +6,10 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { FaIcon } from '@ifixit/icons';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
+import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
 import dayjs from 'dayjs';
-import NextLink from 'next/link';
-import * as React from 'react';
 
 export interface PostCardProps {
    title: string;
@@ -69,13 +67,11 @@ export function PostCard({
                   </Text>
                )}
                <VStack spacing="1" align="flex-start">
-                  <NextLink href={link} passHref>
-                     <LinkOverlay>
-                        <Text as="h3" fontWeight="medium" lineHeight="shorter">
-                           {title}
-                        </Text>
-                     </LinkOverlay>
-                  </NextLink>
+                  <LinkOverlay href={link}>
+                     <Text as="h3" fontWeight="medium" lineHeight="shorter">
+                        {title}
+                     </Text>
+                  </LinkOverlay>
                   <Text fontSize="sm" color="gray.600">
                      {dayjs(date).format('MMMM D, YYYY')}
                   </Text>

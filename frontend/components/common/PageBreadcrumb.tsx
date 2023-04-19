@@ -4,15 +4,17 @@ import {
    BreadcrumbLink,
    BreadcrumbProps,
    Flex,
+   forwardRef,
    IconButton,
    Menu,
    MenuButton,
    MenuItem,
+   MenuItemProps,
    MenuList,
 } from '@chakra-ui/react';
-import { FaIcon } from '@ifixit/icons';
+import { SmartLink } from '@components/ui/SmartLink';
 import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
-import NextLink from 'next/link';
+import { FaIcon } from '@ifixit/icons';
 
 export type PageBreadcrumbProps = BreadcrumbProps & {
    items: TBreadcrumbItem[];
@@ -85,21 +87,22 @@ export function PageBreadcrumb({ items, ...otherProps }: PageBreadcrumbProps) {
                      lg: 'inline-flex',
                   }}
                >
-                  <NextLink href={ancestor.url} passHref>
-                     <BreadcrumbLink
-                        data-testid="breadcrumb-ancestor-link-desktop"
-                        color="gray.500"
-                        whiteSpace="nowrap"
-                        borderRadius="sm"
-                        px="1"
-                        maxW="300px"
-                        noOfLines={1}
-                        display="inline-block"
-                        fontSize="sm"
-                     >
-                        {ancestor.label}
-                     </BreadcrumbLink>
-                  </NextLink>
+                  <SmartLink
+                     href={ancestor.url}
+                     as={BreadcrumbLink}
+                     behaviour={ancestor.url === '/Store' ? 'reload' : 'auto'}
+                     data-testid="breadcrumb-ancestor-link-desktop"
+                     color="gray.500"
+                     whiteSpace="nowrap"
+                     borderRadius="sm"
+                     px="1"
+                     maxW="300px"
+                     noOfLines={1}
+                     display="inline-block"
+                     fontSize="sm"
+                  >
+                     {ancestor.label}
+                  </SmartLink>
                </BreadcrumbItem>
             );
          })}
@@ -150,16 +153,24 @@ function BreadcrumbMenu({ items, ...otherProps }: BreadcrumbMenuProps) {
          />
          <MenuList zIndex="dropdown">
             {items.map((ancestor, index) => (
-               <NextLink key={index} href={ancestor.url} passHref>
-                  <MenuItem fontSize="sm" as="a">
-                     {ancestor.label}
-                  </MenuItem>
-               </NextLink>
+               <SmartLink
+                  key={index}
+                  as={MenuItemLink}
+                  href={ancestor.url}
+                  behaviour={ancestor.url === '/Store' ? 'reload' : 'auto'}
+                  fontSize="sm"
+               >
+                  {ancestor.label}
+               </SmartLink>
             ))}
          </MenuList>
       </Menu>
    );
 }
+
+const MenuItemLink = forwardRef<MenuItemProps, 'a'>((props, ref) => (
+   <MenuItem as="a" ref={ref} {...props} />
+));
 
 function BreadcrumbIcon() {
    return (
