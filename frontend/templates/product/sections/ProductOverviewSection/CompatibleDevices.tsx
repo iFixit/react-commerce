@@ -1,4 +1,4 @@
-import { Link } from '@chakra-ui/react';
+import { Link, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
 import type { Product } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
@@ -21,14 +21,16 @@ export function CompatibleDevices({ product }: CompatibleDevicesProps) {
 
    return (
       <>
-         {devices.slice(0, 3).map((device, index) => (
-            <CompatibleDevice
-               key={index}
-               device={device}
-               maxModelLines={MAX_MODEL_LINES_PER_DEVICE}
-               role="group"
-               mb="6px"
-            />
+         {devices.slice(0, MAX_VISIBLE_DEVICES).map((device, index) => (
+            <LinkBox key={index}>
+               <LinkOverlay href="#compatibility" />
+               <CompatibleDevice
+                  device={{ ...device, deviceUrl: '#compatibility' }}
+                  maxModelLines={MAX_MODEL_LINES_PER_DEVICE}
+                  role="group"
+                  mb="6px"
+               />
+            </LinkBox>
          ))}
 
          {hasMoreToShow ? (
