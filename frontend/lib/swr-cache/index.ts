@@ -15,7 +15,7 @@
  *   e.g. `const productList = await ProductList.get({ ... })`
  */
 
-import { APP_ORIGIN, VERCEL_URL } from '@config/env';
+import { APP_ORIGIN, VERCEL_HOST } from '@config/env';
 import { log as defaultLog, Logger } from '@ifixit/helpers';
 import * as http from 'http';
 import * as https from 'https';
@@ -32,7 +32,7 @@ import {
    printZodError,
 } from './utils';
 
-const { request } = VERCEL_URL ? https : http;
+const { request } = VERCEL_HOST ? https : http;
 
 interface CacheOptions<
    VariablesSchema extends z.ZodTypeAny,
@@ -86,8 +86,8 @@ export const withCache = <
          }, 50);
          const postData = JSON.stringify(variables);
          const req = request({
-            hostname: VERCEL_URL || new URL(APP_ORIGIN).hostname,
-            ...(!VERCEL_URL && { port: new URL(APP_ORIGIN).port }),
+            hostname: VERCEL_HOST || new URL(APP_ORIGIN).hostname,
+            ...(!VERCEL_HOST && { port: new URL(APP_ORIGIN).port }),
             path: `/${endpoint}`,
             method: 'POST',
             headers: {
