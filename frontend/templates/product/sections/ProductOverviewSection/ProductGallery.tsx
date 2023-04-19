@@ -99,7 +99,7 @@ export function ProductGallery({
                   )}
                   renderPreviousButton={PreviousButton}
                   renderNextButton={NextButton}
-                  renderBullet={Bullet}
+                  renderBullet
                   onIndexChange={onSlideChange}
                />
             ) : (
@@ -253,23 +253,6 @@ const NextButton = ({ disabled, onClick }: NavigationButtonProps) => (
          <FaIcon icon={faArrowRight} color="white" />
       </Circle>
    </Button>
-);
-
-type BulletProps = {
-   isActive: boolean;
-   onClick?: React.MouseEventHandler<any>;
-};
-
-const Bullet = ({ isActive, ...rest }: BulletProps) => (
-   <Box
-      w="2"
-      h="2"
-      borderRadius="full"
-      bg={isActive ? 'gray.500' : 'gray.200'}
-      _notFirst={{ ml: 1 }}
-      transition="all 300ms"
-      {...rest}
-   />
 );
 
 type Image = {

@@ -1,4 +1,4 @@
-import { Box, BoxProps, Flex, forwardRef } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Flex, forwardRef } from '@chakra-ui/react';
 import React, { useEffect, useState, useRef } from 'react';
 
 type RenderSlideProps = {
@@ -14,7 +14,7 @@ type NavigationButtonProps = {
 
 type RenderBulletProps = {
    isActive: boolean;
-   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+   onClick?: React.MouseEventHandler<any>;
 };
 
 type SliderProps = BoxProps & {
@@ -26,7 +26,7 @@ type SliderProps = BoxProps & {
    renderSlide: (props: RenderSlideProps) => JSX.Element;
    renderPreviousButton?: (props: NavigationButtonProps) => JSX.Element;
    renderNextButton?: (props: NavigationButtonProps) => JSX.Element;
-   renderBullet?: (props: RenderBulletProps) => JSX.Element;
+   renderBullet?: boolean | ((props: RenderBulletProps) => JSX.Element);
    onIndexChange?: (index: number) => void;
 };
 
@@ -193,16 +193,37 @@ export const Slider = forwardRef<SliderProps, 'div'>(
             {renderBullet && (
                <Flex position="absolute" bottom="5" w="full" justify="center">
                   {items.map((_item, index) =>
-                     renderBullet({
-                        isActive: index === currentIndex,
-                        onClick: () => setCurrentIndex(index),
-                     })
+                     typeof renderBullet === 'function' ? (
+                        renderBullet({
+                           isActive: index === currentIndex,
+                           onClick: () => setCurrentIndex(index),
+                        })
+                     ) : (
+                        <Bullet
+                           isActive={index === currentIndex}
+                           onClick={() => setCurrentIndex(index)}
+                        />
+                     )
                   )}
                </Flex>
             )}
          </Box>
       );
    }
+);
+
+const Bullet = ({ isActive, onClick }: RenderBulletProps) => (
+   <Box
+      w="2"
+      h="2"
+      as="button"
+      borderRadius="full"
+      bg={isActive ? 'gray.500' : 'gray.200'}
+      _notFirst={{ ml: 1 }}
+      transition="all 300ms"
+      cursor="pointer"
+      onClick={onClick}
+   />
 );
 
 type ComputeWidthProps = {
