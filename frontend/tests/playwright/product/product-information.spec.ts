@@ -1,9 +1,7 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Product page test', () => {
-   test('Verify product title, price and sku are visible', async ({
-      productPage,
-   }) => {
+test.describe('Product Information Visibility', () => {
+   test('Title, Price, and SKU', async ({ productPage }) => {
       await productPage.gotoProduct('repair-business-toolkit');
 
       // Assert product title is visible

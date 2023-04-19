@@ -205,12 +205,12 @@ export function ProductOverviewSection({
                      </CustomAccordionPanel>
                   </AccordionItem>
 
-                  <WikiHtmlAccordianItem title="Kit contents">
-                     {selectedVariant.kitContents}
-                  </WikiHtmlAccordianItem>
-
                   <WikiHtmlAccordianItem title="Assembly contents">
                      {selectedVariant.assemblyContents}
+                  </WikiHtmlAccordianItem>
+
+                  <WikiHtmlAccordianItem title="Kit contents">
+                     {selectedVariant.kitContents}
                   </WikiHtmlAccordianItem>
 
                   <AccordionItem

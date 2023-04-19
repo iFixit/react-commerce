@@ -12,9 +12,11 @@ export const ProductOptionSchema = z.object({
 
 export function productOptionFromShopify(
    option: ProductOptionFieldsFragment,
-   variants: ProductVariant[]
+   variants: ProductVariant[],
+   iFixitOptions?: string[]
 ): ProductOption {
-   const valuesWithMatchingVariants = option.values.filter((value) =>
+   const values = iFixitOptions?.length ? iFixitOptions : option.values;
+   const valuesWithMatchingVariants = values.filter((value: string) =>
       valueHasMatchingVariant(value, option, variants)
    );
    return {

@@ -19,6 +19,7 @@ export type ProductReview = Partial<{
    modified_date: number;
    productName: string;
    productVariantName: string;
+   sku: string;
    rating: number;
    reviewid: number;
 }>;

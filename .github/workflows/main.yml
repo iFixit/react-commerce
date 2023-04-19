@@ -53,7 +53,7 @@ jobs:
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
            run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}"
 
-         - uses: actions/upload-artifact@v2
+         - uses: actions/upload-artifact@v3
            if: failure()
            with:
               name: playwright-artifacts

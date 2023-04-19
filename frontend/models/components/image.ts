@@ -8,6 +8,7 @@ export const ImageSchema = z.object({
    height: z.number().nullable().optional(),
    width: z.number().nullable().optional(),
    url: z.string(),
+   thumbnailUrl: z.string().nullable().optional(),
 });
 
 export type Image = z.infer<typeof ImageSchema>;
@@ -19,9 +20,11 @@ export function imageFromStrapi(
    if (attributes == null) {
       return null;
    }
+   const thumbnailUrl = attributes.formats?.thumbnail?.url ?? null;
    return {
       url: attributes.url,
       altText: attributes.alternativeText,
+      thumbnailUrl,
    };
 }
 
