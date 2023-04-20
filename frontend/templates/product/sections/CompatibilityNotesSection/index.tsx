@@ -3,15 +3,16 @@ import { Wrapper } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type CompatibilityNotesSectionProps = {
-   compatibilityNotes?: Product['compatibilityNotes'] | null;
+   compatibilityNotes?: Product['compatibilityNotes'];
 };
 
 const MAX_DEFAULT_VISIBLE_DEVICES = 10;
 
-export function SplitCompatibilityNotes({
+export function splitCompatibilityNotes({
    compatibilityNotes,
 }: CompatibilityNotesSectionProps) {
-   const devices = compatibilityNotes?.split(/\r?\n/) ?? [];
+   let devices = compatibilityNotes?.trim().split(/\r?\n/) ?? [];
+   devices = devices.map((device) => device.trim()).filter(Boolean);
    const visibleDevices = devices
       .slice(0, MAX_DEFAULT_VISIBLE_DEVICES)
       .join(', ');
@@ -22,7 +23,7 @@ export function SplitCompatibilityNotes({
 export function CompatibilityNotesSection({
    compatibilityNotes,
 }: CompatibilityNotesSectionProps) {
-   const [visibleDevices, hiddenDevices] = SplitCompatibilityNotes({
+   const [visibleDevices, hiddenDevices] = splitCompatibilityNotes({
       compatibilityNotes,
    });
    return compatibilityNotes && visibleDevices.length > 0 ? (

@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import type { Product } from '@pages/api/nextjs/cache/product';
 import React from 'react';
-import { SplitCompatibilityNotes } from '../CompatibilityNotesSection';
+import { splitCompatibilityNotes } from '../CompatibilityNotesSection';
 
 export type CompatibilityNotesProps = {
    product: Product;
@@ -15,7 +15,7 @@ export type CompatibilityNotesProps = {
 
 export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
    const compatibilityNotes = product.compatibilityNotes;
-   const [visibleDevices, hiddenDevices] = SplitCompatibilityNotes({
+   const [visibleDevices, hiddenDevices] = splitCompatibilityNotes({
       compatibilityNotes,
    });
    return (
@@ -30,7 +30,7 @@ export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
                   fontWeight="semibold"
                   fontSize="sm"
                >
-                  {'Show ' + hiddenDevices.length + ' More Models'}
+                  {'Show ' + hiddenDevices.length + ' more'}
                </Box>
                <AccordionIcon />
             </AccordionButton>
