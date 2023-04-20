@@ -99,18 +99,16 @@ export function CompatibleDevice({
             )}
             {!truncateModels && hiddenVariants.length > 0 && (
                <details>
-                  <summary
-                     style={{
-                        marginTop: '2px',
-                        lineHeight: 'short',
-                        fontSize: 'xs',
-                        fontWeight: 'medium',
-                        color: 'var(--chakra-colors-brand-500)',
-                        cursor: 'pointer',
-                     }}
+                  <chakra.summary
+                     mt="2px"
+                     lineHeight="short"
+                     fontSize="xs"
+                     fontWeight="medium"
+                     color="brand.500"
+                     cursor="pointer"
                   >
                      Show {hiddenVariants.length} more
-                  </summary>
+                  </chakra.summary>
                   <Flex
                      flexDir="column"
                      {...(!truncateModels && {
