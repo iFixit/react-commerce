@@ -64,14 +64,12 @@ export function CompatibleDevice({
             justifyContent="center"
          >
             <NextLink href="#compatibility" passHref>
-               <chakra.a>
-                  <Text
-                     my="2px"
-                     fontWeight="medium"
-                     _groupHover={{ color: 'brand.500' }}
-                  >
-                     {device.deviceName}
-                  </Text>
+               <chakra.a
+                  my="2px"
+                  fontWeight="medium"
+                  _groupHover={{ color: 'brand.500' }}
+               >
+                  {device.deviceName}
                </chakra.a>
             </NextLink>
             <Flex
