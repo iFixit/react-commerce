@@ -7,7 +7,6 @@ import {
    Link,
    Text,
 } from '@chakra-ui/react';
-import { Summary, useDetails } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
 
@@ -28,7 +27,6 @@ export function CompatibleDevice({
       maxModelLines > 0 && variants.length > maxModelLines
          ? [variants.slice(0, maxModelLines), variants.slice(maxModelLines)]
          : [variants, []];
-   const [detailsRef, isOpen, toggle] = useDetails();
    return (
       <Box
          display="flex"
@@ -36,7 +34,9 @@ export function CompatibleDevice({
          transition="all 300m"
          {...(!truncateModels && {
             onClick: (event) => {
-               toggle();
+               event.currentTarget
+                  ?.getElementsByTagName('details')[0]
+                  ?.toggleAttribute('open');
                event.preventDefault();
                event.stopPropagation();
             },
@@ -82,6 +82,17 @@ export function CompatibleDevice({
                      event.stopPropagation();
                   },
                })}
+               sx={{
+                  'details .whenOpen': {
+                     display: 'none',
+                  },
+                  'details[open] .whenOpen': {
+                     display: 'initial',
+                  },
+                  'details[open] .whenClosed': {
+                     display: 'none',
+                  },
+               }}
             >
                {visibleVariants.map((variant) => (
                   <Text
@@ -101,19 +112,22 @@ export function CompatibleDevice({
                </Text>
             )}
             {!truncateModels && hiddenVariants.length > 0 && (
-               <details ref={detailsRef}>
-                  <Summary
-                     mt="2px"
-                     lineHeight="short"
-                     fontSize="xs"
-                     fontWeight="medium"
-                     color="brand.500"
-                     cursor="pointer"
+               <details>
+                  <summary
+                     style={{
+                        marginTop: '2px',
+                        lineHeight: 'short',
+                        fontSize: 'xs',
+                        fontWeight: 'medium',
+                        color: 'var(--chakra-colors-brand-500)',
+                        cursor: 'pointer',
+                     }}
                   >
-                     {isOpen
-                        ? 'Show fewer'
-                        : `Show ${hiddenVariants.length} more`}
-                  </Summary>
+                     <span className="whenClosed">
+                        Show {hiddenVariants.length} more
+                     </span>
+                     <span className="whenOpen">Show fewer</span>
+                  </summary>
                   <Flex
                      flexDir="column"
                      {...(!truncateModels && {
