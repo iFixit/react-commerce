@@ -19,17 +19,13 @@ exports[`CompatibleDevice renders and matches the snapshot 1`] = `
       class="css-qi8j5b"
     >
       <a
-        class="css-0"
-        href="/#compatibility"
+        class="css-1h9z0di"
+        href="/Device/iPhone_6s_Plus"
       >
-        <p
-          class="chakra-text css-1h9z0di"
-        >
-          iPhone 6s Plus
-        </p>
+        iPhone 6s Plus
       </a>
       <div
-        class="css-j7qwjs"
+        class="css-1d4a447"
       >
         <p
           class="chakra-text css-4137gr"
@@ -75,17 +71,13 @@ exports[`CompatibleDevice renders and matches the snapshot with truncated varian
       class="css-qi8j5b"
     >
       <a
-        class="css-0"
-        href="/#compatibility"
+        class="css-1h9z0di"
+        href="/Device/iPhone_6s_Plus"
       >
-        <p
-          class="chakra-text css-1h9z0di"
-        >
-          iPhone 6s Plus
-        </p>
+        iPhone 6s Plus
       </a>
       <div
-        class="css-j7qwjs"
+        class="css-1d4a447"
       >
         <p
           class="chakra-text css-4137gr"
