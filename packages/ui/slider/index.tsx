@@ -198,15 +198,17 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                activeIndex >= loopTailsLength + inputItems.length;
             if (outOfBound) {
                setIsLooping(true);
-               const inBoundIndex =
-                  activeIndex < loopTailsLength
-                     ? loopTailsLength +
-                       inputItems.length -
-                       ((loopTailsLength - activeIndex) % inputItems.length)
-                     : loopTailsLength +
-                       (activeIndex - (loopTailsLength + inputItems.length));
-               setActiveIndex(inBoundIndex);
-               setTimeout(() => setIsLooping(false));
+               setTimeout(() => {
+                  const inBoundIndex =
+                     activeIndex < loopTailsLength
+                        ? loopTailsLength +
+                          inputItems.length -
+                          ((loopTailsLength - activeIndex) % inputItems.length)
+                        : loopTailsLength +
+                          (activeIndex - (loopTailsLength + inputItems.length));
+                  setActiveIndex(inBoundIndex);
+                  setTimeout(() => setIsLooping(false));
+               });
             } else {
                controlsEnabled.current = true;
             }
