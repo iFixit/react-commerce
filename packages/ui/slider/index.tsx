@@ -5,7 +5,6 @@ type RenderSlideProps = {
    item: any;
    index: number;
    isActive: boolean;
-   isLooping: boolean;
 };
 
 type NavigationButtonProps = {
@@ -58,10 +57,9 @@ export const Slider = forwardRef<SliderProps, 'div'>(
       );
       const [touchIndex, setTouchIndex] = React.useState<number | null>(null);
       const [touchX, setTouchX] = React.useState<number | null>(null);
-      const [isDragging, setIsDragging] = React.useState(false);
       const [dragX, setDragX] = React.useState<number | null>(null);
-      const [isLooping, setIsLooping] = React.useState(false);
 
+      const isDragging = React.useRef(false);
       const controlsEnabled = React.useRef(false);
 
       const items = React.useMemo(
@@ -89,22 +87,9 @@ export const Slider = forwardRef<SliderProps, 'div'>(
       }, [activeIndex, onIndexChange]);
 
       React.useEffect(() => {
-         if (isLooping === false) {
-            controlsEnabled.current = true;
-         }
-      }, [isLooping]);
-
-      React.useEffect(() => {
          document.addEventListener('mouseup', handleTouchEnd);
          return () => document.removeEventListener('mouseup', handleTouchEnd);
-      }, [
-         isDragging,
-         dragX,
-         activeIndex,
-         slideCount,
-         visibleSlides,
-         touchIndex,
-      ]);
+      }, [dragX, activeIndex, slideCount, visibleSlides, touchIndex]);
 
       const handlePrevious = () => {
          if (controlsEnabled.current) {
@@ -148,8 +133,9 @@ export const Slider = forwardRef<SliderProps, 'div'>(
 
          e.stopPropagation();
          const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-         if (!isDragging && Math.abs(currentX - touchX) >= 1) {
-            setIsDragging(true);
+         if (!isDragging.current && Math.abs(currentX - touchX) >= 1) {
+            isDragging.current = true;
+            trackRef.current!.style.transition = 'none';
          } else {
             setDragX(currentX - touchX);
          }
@@ -158,7 +144,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
       const handleTouchEnd = React.useCallback(() => {
          if (!trackRef.current?.clientWidth) return;
 
-         if (isDragging) {
+         if (isDragging.current) {
             const movement =
                dragX! / (trackRef.current.clientWidth / visibleSlides);
             const roundMovement =
@@ -181,34 +167,30 @@ export const Slider = forwardRef<SliderProps, 'div'>(
          setTouchIndex(null);
          setTouchX(null);
          setDragX(null);
-         setIsDragging(false);
-      }, [
-         isDragging,
-         dragX,
-         activeIndex,
-         slideCount,
-         visibleSlides,
-         touchIndex,
-      ]);
+         trackRef.current!.style.transition = 'transform ease-in-out 300ms';
+         isDragging.current = false;
+      }, [dragX, activeIndex, slideCount, visibleSlides, touchIndex]);
 
-      const handleTransitionEnd = () => {
-         if (loop) {
+      const handleTransitionEnd = (e: React.TransitionEvent) => {
+         if (loop && e.propertyName === 'transform') {
             const outOfBound =
                activeIndex < loopTailsLength ||
                activeIndex >= loopTailsLength + inputItems.length;
             if (outOfBound) {
-               setIsLooping(true);
+               trackRef.current!.style.transition = 'none';
+               const inBoundIndex =
+                  activeIndex < loopTailsLength
+                     ? loopTailsLength +
+                       inputItems.length -
+                       ((loopTailsLength - activeIndex) % inputItems.length)
+                     : loopTailsLength +
+                       (activeIndex - (loopTailsLength + inputItems.length));
+               setActiveIndex(inBoundIndex);
                setTimeout(() => {
-                  const inBoundIndex =
-                     activeIndex < loopTailsLength
-                        ? loopTailsLength +
-                          inputItems.length -
-                          ((loopTailsLength - activeIndex) % inputItems.length)
-                        : loopTailsLength +
-                          (activeIndex - (loopTailsLength + inputItems.length));
-                  setActiveIndex(inBoundIndex);
-                  setTimeout(() => setIsLooping(false));
-               });
+                  controlsEnabled.current = true;
+                  trackRef.current!.style.transition =
+                     'transform ease-in-out 300ms';
+               }, 300);
             } else {
                controlsEnabled.current = true;
             }
@@ -220,9 +202,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
             <Flex
                ref={trackRef}
                sx={{ 'touch-action': 'pan-x' }}
-               transition={
-                  isDragging || isLooping ? 'none' : 'ease-in-out 300ms'
-               }
+               transition="transform ease-in-out 300ms"
                transform={computeTransform({
                   activeIndex: activeIndex,
                   slideCount,
@@ -234,7 +214,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                onMouseMoveCapture={handleTouchMove}
                onTouchMove={handleTouchMove}
                onTouchEnd={handleTouchEnd}
-               onTransitionEndCapture={handleTransitionEnd}
+               onTransitionEnd={handleTransitionEnd}
             >
                {items.map((item, index) => (
                   <Box
@@ -253,7 +233,6 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                         item,
                         index,
                         isActive: index === activeIndex,
-                        isLooping,
                      })}
                   </Box>
                ))}

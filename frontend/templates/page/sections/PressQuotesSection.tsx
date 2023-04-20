@@ -79,15 +79,14 @@ function QuotesGallery({ quotes }: QuotesGalleryProps) {
 interface QuoteProps {
    quote: PressQuote;
    isActive: boolean;
-   isLooping: boolean;
 }
 
-function Quote({ quote, isActive, isLooping }: QuoteProps) {
+function Quote({ quote, isActive }: QuoteProps) {
    return (
       <Flex
          direction="column"
          alignItems="center"
-         transition={isLooping ? 'none' : 'opacity 300ms'}
+         transition="opacity 300ms"
          opacity={isActive ? 1 : 0.4}
          _hover={{ opacity: isActive ? 1 : 0.6 }}
       >
