@@ -63,7 +63,7 @@ export function CompatibleDevice({
             alignSelf="flex-start"
             justifyContent="center"
          >
-            <NextLink href="#compatibility" passHref>
+            <NextLink href={device.deviceUrl} passHref>
                <chakra.a
                   my="2px"
                   fontWeight="medium"
