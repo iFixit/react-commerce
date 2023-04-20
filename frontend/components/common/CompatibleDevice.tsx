@@ -94,8 +94,7 @@ export function CompatibleDevice({
             </Flex>
             {truncateModels && hiddenVariants.length > 0 && (
                <Text mb="2px" lineHeight="short" fontSize="xs" color="gray.600">
-                  And {hiddenVariants.length} other model
-                  {hiddenVariants.length > 1 ? 's' : ''}...
+                  And {hiddenVariants.length} more...
                </Text>
             )}
             {!truncateModels && hiddenVariants.length > 0 && (
