@@ -1,10 +1,11 @@
-import { Box, BoxProps, Button, Flex, forwardRef } from '@chakra-ui/react';
-import React, { useEffect, useState, useRef } from 'react';
+import { Box, BoxProps, Flex, forwardRef } from '@chakra-ui/react';
+import React from 'react';
 
 type RenderSlideProps = {
    item: any;
-   isActive: boolean;
    index: number;
+   isActive: boolean;
+   isLooping: boolean;
 };
 
 type NavigationButtonProps = {
@@ -13,16 +14,18 @@ type NavigationButtonProps = {
 };
 
 type RenderBulletProps = {
-   isActive: boolean;
+   isActive?: boolean;
    onClick?: React.MouseEventHandler<any>;
 };
 
 type SliderProps = BoxProps & {
    items: any[];
-   currentIndex?: number;
-   slidesPerView?: number;
+   activeIndex?: number;
+   visibleSlides?: number;
    spaceBetween?: number;
    slidesToKeepOnLeft?: number;
+   loop?: boolean;
+   loopTailsLength?: number;
    renderSlide: (props: RenderSlideProps) => JSX.Element;
    renderPreviousButton?: (props: NavigationButtonProps) => JSX.Element;
    renderNextButton?: (props: NavigationButtonProps) => JSX.Element;
@@ -33,11 +36,13 @@ type SliderProps = BoxProps & {
 export const Slider = forwardRef<SliderProps, 'div'>(
    (
       {
-         items,
-         currentIndex: externalCurrentIndex = 0,
-         slidesPerView = 1,
+         items: inputItems,
+         activeIndex: inputActiveIndex = 0,
+         visibleSlides = 1,
          spaceBetween = 0,
          slidesToKeepOnLeft = 0,
+         loop = false,
+         loopTailsLength = 1,
          renderSlide,
          renderPreviousButton,
          renderNextButton,
@@ -47,65 +52,106 @@ export const Slider = forwardRef<SliderProps, 'div'>(
       },
       ref
    ) => {
-      const trackRef = useRef<HTMLDivElement>(null);
-      const [isDragging, setIsDragging] = useState(false);
-      const [startIndex, setStartIndex] = useState<number | null>(null);
-      const [dragStart, setDragStart] = useState<number | null>(null);
-      const [drag, setDrag] = useState<number | null>(null);
-      const [currentIndex, setCurrentIndex] = useState(externalCurrentIndex);
+      const trackRef = React.useRef<HTMLDivElement>(null);
+      const [activeIndex, setActiveIndex] = React.useState(
+         loop ? inputActiveIndex + loopTailsLength : inputActiveIndex
+      );
+      const [touchIndex, setTouchIndex] = React.useState<number | null>(null);
+      const [touchX, setTouchX] = React.useState<number | null>(null);
+      const [isDragging, setIsDragging] = React.useState(false);
+      const [dragX, setDragX] = React.useState<number | null>(null);
+      const [isLooping, setIsLooping] = React.useState(false);
 
-      const slideCount = items.length;
-      const canMove = slideCount > slidesPerView;
+      const controlsEnabled = React.useRef(false);
 
-      useEffect(() => {
-         setCurrentIndex(externalCurrentIndex);
-      }, [externalCurrentIndex]);
+      const items = React.useMemo(
+         () =>
+            loop
+               ? createArrayWithPrefixAndTail({
+                    items: inputItems,
+                    tailLength: loopTailsLength,
+                 })
+               : inputItems,
+         [inputItems, loopTailsLength]
+      );
 
-      useEffect(() => {
-         onIndexChange?.(currentIndex);
-      }, [currentIndex, onIndexChange]);
+      const slideCount = items.length + ((loop && loopTailsLength) || 0);
+      const canMove = slideCount > visibleSlides;
 
-      useEffect(() => {
+      React.useEffect(() => {
+         setActiveIndex(
+            loop ? inputActiveIndex + loopTailsLength : inputActiveIndex
+         );
+      }, [inputActiveIndex]);
+
+      React.useEffect(() => {
+         onIndexChange?.(activeIndex);
+      }, [activeIndex, onIndexChange]);
+
+      React.useEffect(() => {
+         if (isLooping === false) {
+            controlsEnabled.current = true;
+         }
+      }, [isLooping]);
+
+      React.useEffect(() => {
          document.addEventListener('mouseup', handleTouchEnd);
          return () => document.removeEventListener('mouseup', handleTouchEnd);
       }, [
          isDragging,
-         drag,
-         currentIndex,
+         dragX,
+         activeIndex,
          slideCount,
-         slidesPerView,
-         startIndex,
+         visibleSlides,
+         touchIndex,
       ]);
 
       const handlePrevious = () => {
-         setCurrentIndex((currentIndex) => Math.max(currentIndex - 1, 0));
+         if (controlsEnabled.current) {
+            if (loop) {
+               controlsEnabled.current = false;
+            }
+            setActiveIndex((activeIndex) => Math.max(activeIndex - 1, 0));
+         }
       };
 
       const handleNext = () => {
-         setCurrentIndex((currentIndex) =>
-            Math.min(currentIndex + 1, slideCount - 1)
-         );
+         if (controlsEnabled.current) {
+            if (loop) {
+               controlsEnabled.current = false;
+            }
+            setActiveIndex((activeIndex) =>
+               Math.min(activeIndex + 1, slideCount - 1)
+            );
+         }
+      };
+
+      const handleBulletClick = (index: number) => {
+         if (controlsEnabled.current) {
+            if (loop) {
+               controlsEnabled.current = false;
+            }
+            setActiveIndex(index);
+         }
       };
 
       const handleTouchStart = (
          e: React.MouseEvent | React.TouchEvent,
          index: number | null
       ) => {
-         setStartIndex(index);
-         setDragStart('touches' in e ? e.touches[0].clientX : e.clientX);
+         setTouchIndex(index);
+         setTouchX('touches' in e ? e.touches[0].clientX : e.clientX);
       };
 
       const handleTouchMove = (e: React.MouseEvent | React.TouchEvent) => {
-         if (!dragStart || !canMove) {
-            return;
-         }
+         if (!touchX || !canMove || !trackRef.current) return;
 
          e.stopPropagation();
          const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-         if (!isDragging && Math.abs(currentX - dragStart) >= 1) {
+         if (!isDragging && Math.abs(currentX - touchX) >= 1) {
             setIsDragging(true);
          } else {
-            setDrag(currentX - dragStart);
+            setDragX(currentX - touchX);
          }
       };
 
@@ -114,7 +160,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
 
          if (isDragging) {
             const movement =
-               drag! / (trackRef.current.clientWidth / slidesPerView);
+               dragX! / (trackRef.current.clientWidth / visibleSlides);
             const roundMovement =
                Math.abs(movement) % 1 > 0.4
                   ? movement > 0
@@ -124,50 +170,75 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                   ? Math.floor(movement)
                   : Math.ceil(movement);
             const newIndex = Math.min(
-               Math.max(currentIndex - roundMovement, 0),
-               slideCount - slidesPerView
+               Math.max(activeIndex - roundMovement, 0),
+               slideCount - visibleSlides
             );
-            setCurrentIndex(newIndex);
-         } else if (startIndex !== null) {
-            setCurrentIndex(startIndex);
+            setActiveIndex(newIndex);
+         } else if (touchIndex !== null) {
+            setActiveIndex(touchIndex);
          }
 
-         setStartIndex(null);
-         setDragStart(null);
-         setDrag(null);
+         setTouchIndex(null);
+         setTouchX(null);
+         setDragX(null);
          setIsDragging(false);
       }, [
          isDragging,
-         drag,
-         currentIndex,
+         dragX,
+         activeIndex,
          slideCount,
-         slidesPerView,
-         startIndex,
+         visibleSlides,
+         touchIndex,
       ]);
+
+      const handleTransitionEnd = () => {
+         if (loop) {
+            const outOfBound =
+               activeIndex < loopTailsLength ||
+               activeIndex >= loopTailsLength + inputItems.length;
+            if (outOfBound) {
+               setIsLooping(true);
+               const inBoundIndex =
+                  activeIndex < loopTailsLength
+                     ? loopTailsLength + inputItems.length - 1
+                     : loopTailsLength;
+               setActiveIndex(inBoundIndex);
+               setTimeout(() => setIsLooping(false));
+            } else {
+               controlsEnabled.current = true;
+            }
+         }
+      };
 
       return (
          <Box ref={ref} pos="relative" overflow="hidden" {...other}>
             <Flex
                ref={trackRef}
                sx={{ 'touch-action': 'pan-x' }}
-               transition={!isDragging ? 'ease-in-out 300ms' : 'none'}
+               transition={
+                  isDragging || isLooping ? 'none' : 'ease-in-out 300ms'
+               }
                transform={computeTransform({
-                  currentIndex,
+                  activeIndex: activeIndex,
                   slideCount,
-                  slidesPerView,
-                  drag: drag ?? 0,
+                  slidesPerView: visibleSlides,
+                  drag: dragX ?? 0,
                   spaceBetween,
                   slidesToKeepOnLeft,
                })}
                onMouseMoveCapture={handleTouchMove}
                onTouchMove={handleTouchMove}
                onTouchEnd={handleTouchEnd}
+               onTransitionEndCapture={handleTransitionEnd}
             >
                {items.map((item, index) => (
                   <Box
                      key={index}
                      cursor="pointer"
-                     minW={computeWidth({ slidesPerView, spaceBetween })}
+                     minW={computeWidth({
+                        slidesPerView: visibleSlides,
+                        spaceBetween,
+                     })}
                      _notFirst={{ ml: `${spaceBetween}px` }}
                      onMouseDownCapture={(e) => handleTouchStart(e, index)}
                      onTouchStart={(e) => handleTouchStart(e, index)}
@@ -175,33 +246,34 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                   >
                      {renderSlide({
                         item,
-                        isActive: index === currentIndex,
                         index,
+                        isActive: index === activeIndex,
+                        isLooping,
                      })}
                   </Box>
                ))}
             </Flex>
 
             {renderPreviousButton?.({
-               disabled: currentIndex === 0,
+               disabled: activeIndex === 0,
                onClick: handlePrevious,
             })}
             {renderNextButton?.({
-               disabled: currentIndex === slideCount - 1,
+               disabled: activeIndex === slideCount - 1,
                onClick: handleNext,
             })}
             {renderBullet && (
                <Flex position="absolute" bottom="5" w="full" justify="center">
-                  {items.map((_item, index) =>
+                  {items.map((item, index) =>
                      typeof renderBullet === 'function' ? (
                         renderBullet({
-                           isActive: index === currentIndex,
-                           onClick: () => setCurrentIndex(index),
+                           isActive: index === activeIndex,
+                           onClick: () => handleBulletClick(index),
                         })
                      ) : (
                         <Bullet
-                           isActive={index === currentIndex}
-                           onClick={() => setCurrentIndex(index)}
+                           isActive={index === activeIndex}
+                           onClick={() => handleBulletClick(index)}
                         />
                      )
                   )}
@@ -212,55 +284,84 @@ export const Slider = forwardRef<SliderProps, 'div'>(
    }
 );
 
-const Bullet = ({ isActive, onClick }: RenderBulletProps) => (
-   <Box
-      w="2"
-      h="2"
-      as="button"
-      borderRadius="full"
-      bg={isActive ? 'gray.500' : 'gray.200'}
-      _notFirst={{ ml: 1 }}
-      transition="all 300ms"
-      cursor="pointer"
-      onClick={onClick}
-   />
-);
-
 type ComputeWidthProps = {
    slidesPerView: number;
    spaceBetween: number;
 };
-const computeWidth = ({ slidesPerView, spaceBetween }: ComputeWidthProps) => {
+function computeWidth({ slidesPerView, spaceBetween }: ComputeWidthProps) {
    return `calc((100% - ${
       (slidesPerView - 1) * spaceBetween
    }px) / ${slidesPerView})`;
-};
+}
 
 type ComputeTranslationProps = {
-   currentIndex: number;
+   activeIndex: number;
    slideCount: number;
    slidesPerView: number;
    drag: number;
    spaceBetween: number;
    slidesToKeepOnLeft: number;
 };
-const computeTransform = ({
-   currentIndex,
+function computeTransform({
+   activeIndex,
    slideCount,
    slidesPerView,
    drag,
    spaceBetween,
    slidesToKeepOnLeft,
-}: ComputeTranslationProps) => {
+}: ComputeTranslationProps) {
    const slideWidth = `(100% - ${
       (slidesPerView - 1) * spaceBetween
    }px) / ${slidesPerView}`;
    const slideMargin = `${spaceBetween}px`;
    const slidesToScroll = Math.min(
-      Math.max(currentIndex - slidesToKeepOnLeft, 0),
+      Math.max(activeIndex - slidesToKeepOnLeft, 0),
       Math.max(slideCount - slidesPerView, 0)
    );
    return `translateX(calc((${slideWidth} + ${slideMargin}) * ${-slidesToScroll} + ${
       drag ?? 0
    }px))`;
+}
+
+type CreateArrayWithPrefixAndTailProps = {
+   items: any[];
+   tailLength: number;
 };
+function createArrayWithPrefixAndTail({
+   items,
+   tailLength,
+}: CreateArrayWithPrefixAndTailProps) {
+   const result = [];
+   const originalLength = items.length;
+
+   if (tailLength <= 0) {
+      return items;
+   }
+
+   for (let i = tailLength; i > 0; i--) {
+      result.push(
+         items[(originalLength - i + originalLength) % originalLength]
+      );
+   }
+   for (let i = 0; i < originalLength + tailLength; i++) {
+      result.push(items[i % originalLength]);
+   }
+
+   return result.map((item) => item);
+}
+
+function Bullet({ isActive, onClick }: RenderBulletProps) {
+   return (
+      <Box
+         w="2"
+         h="2"
+         as="button"
+         borderRadius="full"
+         bg={isActive ? 'gray.500' : 'gray.200'}
+         _notFirst={{ ml: 1 }}
+         transition="all 300ms"
+         cursor="pointer"
+         onClick={onClick}
+      />
+   );
+}

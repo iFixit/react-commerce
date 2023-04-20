@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper';
 import { SectionHeading } from '@components/sections/SectionHeading';
@@ -26,6 +26,7 @@ export function PressQuotesSection({
             <Flex
                justifyContent="center"
                w="full"
+               overflow="hidden"
                my={{
                   base: '6',
                   md: '8',
@@ -64,11 +65,13 @@ function QuotesGallery({ quotes }: QuotesGalleryProps) {
          }}
          overflow="visible"
          items={quotes}
-         currentIndex={Math.floor((quotes.length - 1) / 2)}
-         renderSlide={({ item, isActive }) => (
-            <Quote key={item.id} quote={item} isActive={isActive} />
-         )}
+         activeIndex={Math.floor((quotes.length - 1) / 2)}
          spaceBetween={20}
+         loop
+         loopTailsLength={3}
+         renderSlide={({ item, ...rest }) => (
+            <Quote key={item.id} quote={item} {...rest} />
+         )}
       />
    );
 }
@@ -76,14 +79,15 @@ function QuotesGallery({ quotes }: QuotesGalleryProps) {
 interface QuoteProps {
    quote: PressQuote;
    isActive: boolean;
+   isLooping: boolean;
 }
 
-function Quote({ quote, isActive }: QuoteProps) {
+function Quote({ quote, isActive, isLooping }: QuoteProps) {
    return (
       <Flex
          direction="column"
          alignItems="center"
-         transition="opacity 300ms"
+         transition={isLooping ? 'none' : 'opacity 300ms'}
          opacity={isActive ? 1 : 0.4}
          _hover={{ opacity: isActive ? 1 : 0.6 }}
       >

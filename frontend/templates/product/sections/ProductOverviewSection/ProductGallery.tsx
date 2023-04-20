@@ -87,7 +87,7 @@ export function ProductGallery({
             {variantImages.length > 1 ? (
                <Slider
                   items={variantImages}
-                  currentIndex={selectedImageIndex}
+                  activeIndex={selectedImageIndex}
                   spaceBetween={12}
                   renderSlide={({ item, index }) => (
                      <ImageWithZoom
@@ -111,8 +111,8 @@ export function ProductGallery({
             <Box position="relative" mt="3">
                <Slider
                   items={variantImages}
-                  currentIndex={selectedImageIndex}
-                  slidesPerView={THUMBNAILS_COUNT}
+                  activeIndex={selectedImageIndex}
+                  visibleSlides={THUMBNAILS_COUNT}
                   spaceBetween={12}
                   slidesToKeepOnLeft={1}
                   renderSlide={({ item, index }) => (
