@@ -200,8 +200,11 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                setIsLooping(true);
                const inBoundIndex =
                   activeIndex < loopTailsLength
-                     ? loopTailsLength + inputItems.length - 1
-                     : loopTailsLength;
+                     ? loopTailsLength +
+                       inputItems.length -
+                       ((loopTailsLength - activeIndex) % inputItems.length)
+                     : loopTailsLength +
+                       (activeIndex - (loopTailsLength + inputItems.length));
                setActiveIndex(inBoundIndex);
                setTimeout(() => setIsLooping(false));
             } else {
