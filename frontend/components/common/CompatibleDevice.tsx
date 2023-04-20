@@ -80,17 +80,6 @@ export function CompatibleDevice({
                      event.stopPropagation();
                   },
                })}
-               sx={{
-                  'details .whenOpen': {
-                     display: 'none',
-                  },
-                  'details[open] .whenOpen': {
-                     display: 'initial',
-                  },
-                  'details[open] .whenClosed': {
-                     display: 'none',
-                  },
-               }}
             >
                {visibleVariants.map((variant) => (
                   <Text
@@ -121,10 +110,7 @@ export function CompatibleDevice({
                         cursor: 'pointer',
                      }}
                   >
-                     <span className="whenClosed">
-                        Show {hiddenVariants.length} more
-                     </span>
-                     <span className="whenOpen">Show fewer</span>
+                     Show {hiddenVariants.length} more
                   </summary>
                   <Flex
                      flexDir="column"
