@@ -1,11 +1,11 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('parts page devices', () => {
+test.describe('Parts Page Navigation', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test('Should navigate until the last device page', async ({ page }) => {
+   test('Navigate Through All Device Pages', async ({ page }) => {
       const viewPort = page.viewportSize();
 
       await expect(

@@ -2,10 +2,10 @@ import { test, expect } from '../test-fixtures';
 import {
    createGraphQLHandler,
    createRestHandler,
-} from './../msw/request-handler';
+} from '../msw/request-handler';
 
-test.describe('product page add to cart', () => {
-   test('Clicking Add To Cart Adds Items To Cart', async ({
+test.describe('Product Page and Cart Interactions', () => {
+   test('Multiple Add To Cart Clicks with Quantity Check', async ({
       productPage,
       cartDrawer,
    }) => {
@@ -22,7 +22,7 @@ test.describe('product page add to cart', () => {
       await cartDrawer.assertItemQuantity(sku, 5);
    });
 
-   test('Clicking + and - Buttons Changes Item Quantity in Cart', async ({
+   test('Adjust Cart Item Quantity With Increase and Decrease', async ({
       productPage,
       cartDrawer,
    }) => {
@@ -49,7 +49,7 @@ test.describe('product page add to cart', () => {
       await cartDrawer.assertItemQuantity(sku, 1);
    });
 
-   test('Item Can Be Added Again After Removing The Item', async ({
+   test('Remove Item and Re-add to Cart', async ({
       productPage,
       cartDrawer,
    }) => {
@@ -68,7 +68,7 @@ test.describe('product page add to cart', () => {
       await cartDrawer.assertCartTotalQuantity(1);
    });
 
-   test('Back to Shopping Button Works', async ({
+   test('Cart Drawer Navigation and Item Removal', async ({
       productPage,
       cartDrawer,
    }) => {
@@ -96,7 +96,7 @@ test.describe('product page add to cart', () => {
    });
 
    test.describe('Product Stock Levels', () => {
-      test('Low stocked product changes quantity', async ({
+      test('Low Stock Product Inventory Management Visibility', async ({
          productPage,
          cartDrawer,
          serverRequestInterceptor,
@@ -165,7 +165,7 @@ test.describe('product page add to cart', () => {
          await productPage.assertInventoryMessage('Only 1 left');
       });
 
-      test('Out of stock product cannot be added to cart', async ({
+      test('Out of Stock Product Notifications and Variant Switching', async ({
          productPage,
          cartDrawer,
          serverRequestInterceptor,

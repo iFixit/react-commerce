@@ -86,18 +86,18 @@ async function resetAndCheckRefinements(buttonText: string, page: Page) {
    ).toBe(0);
 }
 
-test.describe('product list filters', () => {
+test.describe('Product List Filtering', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Parts');
    });
 
-   test.describe('Desktop', () => {
+   test.describe('Desktop Filters', () => {
       test.skip(({ page }) => {
          const viewPort = page.viewportSize();
          return !viewPort || viewPort.width < 768;
       }, 'Only run on desktop.');
 
-      test('Should help user filter', async ({ page }) => {
+      test('Filter Products', async ({ page }) => {
          const facetList = page
             .getByTestId('facets-accordion')
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
@@ -167,13 +167,13 @@ test.describe('product list filters', () => {
       });
    });
 
-   test.describe('Mobile and Tablet', () => {
+   test.describe('Mobile and Tablet Filters', () => {
       test.skip(({ page }) => {
          const viewPort = page.viewportSize();
          return !viewPort || viewPort.width > 768;
       }, 'Only run on mobile and tablet.');
 
-      test('Should help user filter', async ({ page }) => {
+      test('Filter Products', async ({ page }) => {
          // Select the first filter and close the drawer
          await page
             .getByRole('button', { name: 'Filters', exact: true })
@@ -232,9 +232,7 @@ test.describe('product list filters', () => {
          await resetAndCheckRefinements('Clear all filters', page);
       });
 
-      test('Apply and Clear all buttons work in Facet Drawer', async ({
-         page,
-      }) => {
+      test('Facet Drawer Apply and Clear All Buttons', async ({ page }) => {
          // Select the first filter and click Apply button
          await page
             .getByRole('button', { name: 'Filters', exact: true })

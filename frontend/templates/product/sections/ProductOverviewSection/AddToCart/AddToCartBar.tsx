@@ -2,6 +2,7 @@ import { Box, Button, Flex, HStack, Link, Text } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
 import { shouldShowProductRating } from '@ifixit/helpers';
 import { Wrapper } from '@ifixit/ui';
+import { PRODUCT_OVERVIEW_SECTION_ID } from '../constants';
 
 interface AddToCartBarProps {
    title: string;
@@ -41,7 +42,7 @@ export function AddToCartBar({
                </Flex>
                <Button
                   as="a"
-                  href="#product"
+                  href={`#${PRODUCT_OVERVIEW_SECTION_ID}`}
                   colorScheme="brand"
                   size={{ base: 'sm', md: 'md' }}
                   flexShrink={0}

@@ -2,39 +2,49 @@
 
 exports[`CompatibleDevice renders and matches the snapshot 1`] = `
 <DocumentFragment>
-  <img
-    alt="iPhone 6s Plus"
-    class="chakra-image css-ky1liq"
-    src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
-  />
-  <div
-    class="css-qi8j5b"
+  <a
+    class="css-1tbib0t"
+    href="/Device/iPhone_6s_Plus"
   >
-    <p
-      class="chakra-text css-1h9z0di"
-    >
-      iPhone 6s Plus
-    </p>
+    <img
+      alt="iPhone 6s Plus"
+      class="chakra-image css-ky1liq"
+      src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
+    />
     <div
-      class="css-j7qwjs"
+      class="css-qi8j5b"
     >
       <p
-        class="chakra-text css-4137gr"
+        class="chakra-text css-1h9z0di"
       >
-        A1634 US AT&T Locked or SIM Free
+        iPhone 6s Plus
       </p>
-      <p
-        class="chakra-text css-4137gr"
+      <div
+        class="css-j7qwjs"
       >
-        A1687 US Sprint/Verizon and Global
-      </p>
-      <p
-        class="chakra-text css-4137gr"
-      >
-        A1699 Mainland China
-      </p>
+        <p
+          class="chakra-text css-4137gr"
+        >
+          A1634 US AT&T Locked or SIM Free
+        </p>
+        <p
+          class="chakra-text css-4137gr"
+        >
+          A1687 US Sprint/Verizon and Global
+        </p>
+        <p
+          class="chakra-text css-4137gr"
+        >
+          A1699 Mainland China
+        </p>
+      </div>
+      <div
+        class="css-j7qwjs"
+        hidden=""
+        id="disclosure-:r1:"
+      />
     </div>
-  </div>
+  </a>
   <span
     hidden=""
     id="__chakra_env"
@@ -44,34 +54,55 @@ exports[`CompatibleDevice renders and matches the snapshot 1`] = `
 
 exports[`CompatibleDevice renders and matches the snapshot with truncated variants 1`] = `
 <DocumentFragment>
-  <img
-    alt="iPhone 6s Plus"
-    class="chakra-image css-ky1liq"
-    src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
-  />
-  <div
-    class="css-qi8j5b"
+  <a
+    class="css-1tbib0t"
+    href="/Device/iPhone_6s_Plus"
   >
-    <p
-      class="chakra-text css-1h9z0di"
-    >
-      iPhone 6s Plus
-    </p>
+    <img
+      alt="iPhone 6s Plus"
+      class="chakra-image css-ky1liq"
+      src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
+    />
     <div
-      class="css-j7qwjs"
+      class="css-qi8j5b"
     >
       <p
-        class="chakra-text css-4137gr"
+        class="chakra-text css-1h9z0di"
       >
-        A1634 US AT&T Locked or SIM Free
+        iPhone 6s Plus
+      </p>
+      <div
+        class="css-j7qwjs"
+      >
+        <p
+          class="chakra-text css-4137gr"
+        >
+          A1634 US AT&T Locked or SIM Free
+        </p>
+      </div>
+      <div
+        class="css-j7qwjs"
+        hidden=""
+        id="disclosure-:r3:"
+      >
+        <p
+          class="chakra-text css-4137gr"
+        >
+          A1687 US Sprint/Verizon and Global
+        </p>
+        <p
+          class="chakra-text css-4137gr"
+        >
+          A1699 Mainland China
+        </p>
+      </div>
+      <p
+        class="chakra-text css-1ji9qma"
+      >
+        And 2 other models...
       </p>
     </div>
-    <p
-      class="chakra-text css-1ji9qma"
-    >
-      And 2 other models...
-    </p>
-  </div>
+  </a>
   <span
     hidden=""
     id="__chakra_env"

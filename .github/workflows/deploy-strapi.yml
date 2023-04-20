@@ -1,0 +1,42 @@
+name: Build Strapi on Deploy
+
+on:
+   workflow_dispatch:
+   push:
+      branches:
+         - main
+         - deploy-strapi-test*
+      paths:
+         - 'backend/**'
+
+# @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-permissions-settings
+permissions:
+   id-token: write # Required to allow the JWT to be requested from GitHub's OIDC provider
+   contents: read # Required for actions/checkout
+
+jobs:
+   build-strapi:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+
+         - name: Configure AWS credentials
+           uses: aws-actions/configure-aws-credentials@v2
+           with:
+              role-to-assume: 'arn:aws:iam::884681002735:role/github_actions/github-actions-role'
+              aws-region: us-east-1
+
+         - name: Login to Amazon ECR
+           id: login-ecr
+           uses: aws-actions/amazon-ecr-login@v1
+
+         - name: Build, Tag, and Push Base Image to Amazon ECR Private
+           env:
+              REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+              DOCKER_TAG: strapi:${{ github.sha }}
+           run: |
+              cd backend
+              docker build -t "$DOCKER_TAG" .
+              docker tag "$DOCKER_TAG" "$REGISTRY/$DOCKER_TAG"
+              docker push "$REGISTRY/$DOCKER_TAG"

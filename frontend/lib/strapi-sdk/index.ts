@@ -39,9 +39,7 @@ const requester: Requester = async <R, V>(
          scope.setExtra('query', doc);
          scope.setExtra('variables', variables);
          scope.setExtra('errors', result.errors);
-         Sentry.captureException(
-            new Error('Strapi SDK GraphQL query failed with errors')
-         );
+         throw new Error('Strapi SDK GraphQL query failed with errors');
       });
    }
    throw new Error(`GraphQL query failed to execute: ${response.statusText}`);
