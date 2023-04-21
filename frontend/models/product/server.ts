@@ -34,9 +34,11 @@ export async function findProduct({
                handle,
             })
          ),
-         strapi.findProduct({
-            handle,
-         }),
+         timeAsync('strapi.findProduct', () =>
+            strapi.findProduct({
+               handle,
+            })
+         ),
          fetchProductData(
             new IFixitAPIClient({ origin: ifixitOrigin }),
             handle
