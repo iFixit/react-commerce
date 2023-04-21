@@ -21,6 +21,9 @@ query findPage(
                ...PressQuotesSectionFields
                ...FeaturedProductsSectionFields
                ...SocialGallerySectionFields
+               ...LifetimeWarrantySectionFields
+               ...BannersSectionFields
+               ...QuoteGallerySectionFields
             }
          }
       }

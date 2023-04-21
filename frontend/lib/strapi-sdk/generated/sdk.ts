@@ -182,6 +182,22 @@ export type ComponentGlobalNewsletterFormInput = {
    title?: InputMaybe<Scalars['String']>;
 };
 
+export type ComponentGlobalPerson = {
+   __typename?: 'ComponentGlobalPerson';
+   avatar?: Maybe<UploadFileEntityResponse>;
+   id: Scalars['ID'];
+   name?: Maybe<Scalars['String']>;
+   role?: Maybe<Scalars['String']>;
+};
+
+export type ComponentGlobalPersonFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentGlobalPersonFiltersInput>>>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ComponentGlobalPersonFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentGlobalPersonFiltersInput>>>;
+   role?: InputMaybe<StringFilterInput>;
+};
+
 export type ComponentMenuLink = {
    __typename?: 'ComponentMenuLink';
    description?: Maybe<Scalars['String']>;
@@ -307,6 +323,7 @@ export type ComponentPageSplitWithImage = {
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
    imagePosition?: Maybe<Enum_Componentpagesplitwithimage_Imageposition>;
+   label?: Maybe<Scalars['String']>;
    title?: Maybe<Scalars['String']>;
 };
 
@@ -447,6 +464,35 @@ export type ComponentSectionQuote = {
    id: Scalars['ID'];
    image?: Maybe<UploadFileEntityResponse>;
    text: Scalars['String'];
+};
+
+export type ComponentSectionQuoteCard = {
+   __typename?: 'ComponentSectionQuoteCard';
+   author?: Maybe<ComponentGlobalPerson>;
+   id: Scalars['ID'];
+   text: Scalars['String'];
+};
+
+export type ComponentSectionQuoteCardFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentSectionQuoteCardFiltersInput>>>;
+   author?: InputMaybe<ComponentGlobalPersonFiltersInput>;
+   not?: InputMaybe<ComponentSectionQuoteCardFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentSectionQuoteCardFiltersInput>>>;
+   text?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentSectionQuoteGallery = {
+   __typename?: 'ComponentSectionQuoteGallery';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   quotes?: Maybe<Array<Maybe<ComponentSectionQuoteCard>>>;
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentSectionQuoteGalleryQuotesArgs = {
+   filters?: InputMaybe<ComponentSectionQuoteCardFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ComponentSectionServiceValuePropositions = {
@@ -728,6 +774,7 @@ export type GenericMorph =
    | Banner
    | Company
    | ComponentGlobalNewsletterForm
+   | ComponentGlobalPerson
    | ComponentMenuLink
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
@@ -754,6 +801,8 @@ export type GenericMorph =
    | ComponentSectionFeaturedProducts
    | ComponentSectionLifetimeWarranty
    | ComponentSectionQuote
+   | ComponentSectionQuoteCard
+   | ComponentSectionQuoteGallery
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
@@ -1396,7 +1445,10 @@ export type PageSectionsDynamicZone =
    | ComponentPagePress
    | ComponentPageSplitWithImage
    | ComponentPageStats
+   | ComponentSectionBanner
    | ComponentSectionFeaturedProducts
+   | ComponentSectionLifetimeWarranty
+   | ComponentSectionQuoteGallery
    | ComponentSectionSocialGallery
    | Error;
 
@@ -2381,6 +2433,30 @@ export type FaqFieldsFragment = {
    attributes?: { __typename?: 'Faq'; question: string; answer: string } | null;
 };
 
+export type ProductListFieldsFragment = {
+   __typename?: 'ProductListEntity';
+   attributes?: {
+      __typename?: 'ProductList';
+      type?: Enum_Productlist_Type | null;
+      handle: string;
+      deviceTitle?: string | null;
+      title: string;
+      metaDescription?: string | null;
+      image?: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
 export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: {
@@ -2394,16 +2470,35 @@ export type ImageFieldsFragment = {
    } | null;
 };
 
-export type ProductListFieldsFragment = {
-   __typename?: 'ProductListEntity';
-   attributes?: {
-      __typename?: 'ProductList';
-      type?: Enum_Productlist_Type | null;
-      handle: string;
-      deviceTitle?: string | null;
-      title: string;
-      metaDescription?: string | null;
-      image?: {
+export type PersonFieldsFragment = {
+   __typename?: 'ComponentGlobalPerson';
+   id: string;
+   name?: string | null;
+   role?: string | null;
+   avatar?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type QuoteCardFieldsFragment = {
+   __typename?: 'ComponentSectionQuoteCard';
+   id: string;
+   text: string;
+   author?: {
+      __typename?: 'ComponentGlobalPerson';
+      id: string;
+      name?: string | null;
+      role?: string | null;
+      avatar?: {
          __typename?: 'UploadFileEntityResponse';
          data?: {
             __typename?: 'UploadFileEntity';
@@ -2549,6 +2644,7 @@ export type FindPageQuery = {
                     __typename: 'ComponentPageSplitWithImage';
                     id: string;
                     title?: string | null;
+                    label?: string | null;
                     description?: string | null;
                     imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
                     callToAction?: {
@@ -2580,6 +2676,40 @@ export type FindPageQuery = {
                     } | null>;
                  }
                | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
                     __typename: 'ComponentSectionFeaturedProducts';
                     id: string;
                     title?: string | null;
@@ -2597,6 +2727,41 @@ export type FindPageQuery = {
                           } | null;
                        } | null;
                     } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionLifetimeWarranty';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionQuoteGallery';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentSectionQuoteCard';
+                       id: string;
+                       text: string;
+                       author?: {
+                          __typename?: 'ComponentGlobalPerson';
+                          id: string;
+                          name?: string | null;
+                          role?: string | null;
+                          avatar?: {
+                             __typename?: 'UploadFileEntityResponse';
+                             data?: {
+                                __typename?: 'UploadFileEntity';
+                                attributes?: {
+                                   __typename?: 'UploadFile';
+                                   alternativeText?: string | null;
+                                   url: string;
+                                   formats?: any | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
                  }
                | {
                     __typename: 'ComponentSectionSocialGallery';
@@ -2655,6 +2820,7 @@ export type FindProductQuery = {
                     __typename: 'ComponentPageSplitWithImage';
                     id: string;
                     title?: string | null;
+                    label?: string | null;
                     description?: string | null;
                     imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
                     callToAction?: {
@@ -4277,6 +4443,36 @@ export type ProductReplacementGuidesSectionFieldsFragment = {
    title?: string | null;
 };
 
+export type QuoteGallerySectionFieldsFragment = {
+   __typename?: 'ComponentSectionQuoteGallery';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   quotes?: Array<{
+      __typename?: 'ComponentSectionQuoteCard';
+      id: string;
+      text: string;
+      author?: {
+         __typename?: 'ComponentGlobalPerson';
+         id: string;
+         name?: string | null;
+         role?: string | null;
+         avatar?: {
+            __typename?: 'UploadFileEntityResponse';
+            data?: {
+               __typename?: 'UploadFileEntity';
+               attributes?: {
+                  __typename?: 'UploadFile';
+                  alternativeText?: string | null;
+                  url: string;
+                  formats?: any | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null> | null;
+};
+
 export type QuoteSectionFieldsFragment = {
    __typename?: 'ComponentSectionQuote';
    id: string;
@@ -4358,6 +4554,7 @@ export type SplitWithImageSectionFieldsFragment = {
    __typename?: 'ComponentPageSplitWithImage';
    id: string;
    title?: string | null;
+   label?: string | null;
    description?: string | null;
    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
    callToAction?: {
@@ -4682,6 +4879,35 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
   title
 }
     `;
+export const PersonFieldsFragmentDoc = `
+    fragment PersonFields on ComponentGlobalPerson {
+  id
+  name
+  role
+  avatar {
+    ...ImageFields
+  }
+}
+    `;
+export const QuoteCardFieldsFragmentDoc = `
+    fragment QuoteCardFields on ComponentSectionQuoteCard {
+  id
+  text
+  author {
+    ...PersonFields
+  }
+}
+    `;
+export const QuoteGallerySectionFieldsFragmentDoc = `
+    fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
+  id
+  title
+  description
+  quotes {
+    ...QuoteCardFields
+  }
+}
+    `;
 export const QuoteSectionFieldsFragmentDoc = `
     fragment QuoteSectionFields on ComponentSectionQuote {
   id
@@ -4725,6 +4951,7 @@ export const SplitWithImageSectionFieldsFragmentDoc = `
     fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
   id
   title
+  label
   description
   callToAction {
     ...CallToActionFields
@@ -4766,6 +4993,9 @@ export const FindPageDocument = `
           ...PressQuotesSectionFields
           ...FeaturedProductsSectionFields
           ...SocialGallerySectionFields
+          ...LifetimeWarrantySectionFields
+          ...BannersSectionFields
+          ...QuoteGallerySectionFields
         }
       }
     }
@@ -4784,7 +5014,13 @@ ${PressQuoteFieldsFragmentDoc}
 ${CompanyFieldsFragmentDoc}
 ${FeaturedProductsSectionFieldsFragmentDoc}
 ${SocialGallerySectionFieldsFragmentDoc}
-${SocialPostFieldsFragmentDoc}`;
+${SocialPostFieldsFragmentDoc}
+${LifetimeWarrantySectionFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}
+${QuoteGallerySectionFieldsFragmentDoc}
+${QuoteCardFieldsFragmentDoc}
+${PersonFieldsFragmentDoc}`;
 export const FindProductDocument = `
     query findProduct($handle: String) {
   products(filters: {handle: {eq: $handle}}) {

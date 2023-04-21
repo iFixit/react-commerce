@@ -416,6 +416,7 @@ function AuthorInformation({
                <AuthorListing
                   primaryAuthor={primaryAuthor}
                   authorCount={otherAuthors.length}
+                  authorProfileUrl={primaryAuthor.profileUrl}
                   historyUrl={historyUrl}
                />
             )}
@@ -470,31 +471,37 @@ function AuthorListing({
    primaryAuthor,
    authorCount,
    historyUrl,
+   authorProfileUrl,
 }: {
    primaryAuthor: Author;
    authorCount: number;
    historyUrl: string;
+   authorProfileUrl: string;
 }) {
    const primaryAuthorName = primaryAuthor.username;
    const contributorDescription =
       authorCount > 1 ? 'contributors' : 'contributor';
+   const linkStyle = {
+      fontWeight: 'medium',
+      fontSize: '14px',
+      color: 'brand.500',
+   };
    return (
-      <Link
-         href={historyUrl}
-         fontWeight="medium"
-         fontSize="14px"
-         color="brand.500"
-      >
-         <span>{primaryAuthorName}</span>
+      <Box>
+         <Link href={authorProfileUrl} {...linkStyle}>
+            {primaryAuthorName}
+         </Link>
          {authorCount > 0 && (
             <>
                <chakra.span as="span" fontWeight="regular" color="gray.900">
                   {' and '}
                </chakra.span>
-               <chakra.span>{`${authorCount} ${contributorDescription}`}</chakra.span>
+               <Link {...linkStyle} href={historyUrl}>
+                  {`${authorCount} ${contributorDescription}`}
+               </Link>
             </>
          )}
-      </Link>
+      </Box>
    );
 }
 

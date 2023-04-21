@@ -1,4 +1,7 @@
 import {
+   Alert,
+   AlertIcon,
+   AlertTitle,
    Box,
    DrawerCloseButton,
    Flex,
@@ -70,6 +73,8 @@ export function DefaultLayout({
 }: React.PropsWithChildren<DefaultLayoutProps>) {
    const { menu } = currentStore.header;
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
+   const { adminMessage } = useAppContext();
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    return (
       <ShopifyStorefrontProvider
@@ -279,6 +284,12 @@ export function DefaultLayout({
                   </HeaderBar>
                   {menu && <LayoutNavigationDrawer menu={menu} />}
                </Header>
+               {isAdminUser && adminMessage && (
+                  <Alert status="error">
+                     <AlertIcon />
+                     <AlertTitle>{adminMessage}</AlertTitle>
+                  </Alert>
+               )}
                {children}
                <CartFooter
                   partners={currentStore.footer.partners}

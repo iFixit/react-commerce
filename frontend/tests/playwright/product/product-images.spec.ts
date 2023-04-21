@@ -1,7 +1,7 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Product image test', () => {
-   test('product with a single image ', async ({ productPage }) => {
+test.describe('Product Image Display', () => {
+   test('Single Image Product', async ({ productPage }) => {
       await productPage.gotoProduct('iflex-opening-tool');
 
       const image = productPage.page
@@ -10,7 +10,7 @@ test.describe('Product image test', () => {
       expect(image).toBeVisible;
    });
 
-   test('product with multiple images ', async ({ productPage }) => {
+   test('Multiple Images Product', async ({ productPage }) => {
       await productPage.gotoProduct('repair-business-toolkit');
       const viewPort = productPage.page.viewportSize();
 

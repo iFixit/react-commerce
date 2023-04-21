@@ -1,9 +1,10 @@
 import { filterNullableItems } from '@helpers/application-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
-import { assertNever } from '@ifixit/helpers';
 import { FindPageQuery, strapi } from '@lib/strapi-sdk';
+import { bannersSectionFromStrapi } from '@models/sections/banners-section';
 import { featuredProductsSectionFromStrapi } from '@models/sections/featured-products-section';
 import { iFixitStatsSectionFromStrapi } from '@models/sections/ifixit-stats-section';
+import { quoteGallerySectionFromStrapi } from '@models/sections/quote-gallery-section';
 import { socialGallerySectionFromStrapi } from '@models/sections/social-gallery-section';
 import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
@@ -60,12 +61,22 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
             case 'ComponentSectionSocialGallery': {
                return socialGallerySectionFromStrapi(section, index);
             }
-            case 'Error': {
-               console.error('Failed to parse page section:', section);
-               return null;
+            case 'ComponentSectionLifetimeWarranty': {
+               return {
+                  type: 'LifetimeWarranty',
+                  id: sectionId,
+                  title: section.title ?? null,
+                  description: section.description ?? null,
+               };
+            }
+            case 'ComponentSectionBanner': {
+               return bannersSectionFromStrapi(section, sectionId);
+            }
+            case 'ComponentSectionQuoteGallery': {
+               return quoteGallerySectionFromStrapi(section, sectionId);
             }
             default: {
-               return assertNever(section);
+               return null;
             }
          }
       }

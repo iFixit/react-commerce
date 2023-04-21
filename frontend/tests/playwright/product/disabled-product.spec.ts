@@ -1,8 +1,8 @@
 import { test, expect } from '../test-fixtures';
 import { createGraphQLHandler } from '../msw/request-handler';
 
-test.describe('Disabled Product Test', () => {
-   test('Not for Sale text renders and noindexed', async ({
+test.describe('Disabled Product Behavior', () => {
+   test('Disabled Product Page Visibility and Meta Tags Validation', async ({
       productPage,
       serverRequestInterceptor,
       findProductQueryMock,

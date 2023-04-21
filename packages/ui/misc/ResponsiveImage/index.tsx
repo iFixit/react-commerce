@@ -23,7 +23,7 @@ export function ResponsiveImage(props: ImageProps) {
       } else if (isGuideImage(props.src)) {
          loader = getIFixitImageLoader(guideImageSizeMap, 'huge', props.width);
       } else if (isStrapiImage(props.src)) {
-         unoptimized = true;
+         unoptimized = false; // let next handle optimization cache resizing
       }
    }
 
