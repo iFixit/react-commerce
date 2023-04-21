@@ -86,7 +86,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          }),
       [product.productcode, product.id]
    );
-   const hasCompatibilityNotes = !!product.compatibilityNotes;
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
@@ -190,7 +189,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'DeviceCompatibility':
-                     return hasCompatibilityNotes ? (
+                     return product.compatibilityNotes ? (
                         <CompatibilityNotesSection
                            key={section.id}
                            compatibilityNotes={product.compatibilityNotes}
