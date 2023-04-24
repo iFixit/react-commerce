@@ -3,6 +3,7 @@ import type { Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
 import type { FindStoreQuery } from '@lib/strapi-sdk';
 import { strapi } from '@lib/strapi-sdk';
+import { timeAsync } from '@ifixit/helpers';
 import type {
    ImageLinkMenuItem,
    LinkMenuItem,
@@ -33,9 +34,11 @@ export function findStoreByCode(code: string) {
 }
 
 async function findStoreByCodeFromStrapi(code: string) {
-   const result = await strapi.findStore({
-      filters: { code: { eq: code } },
-   });
+   const result = await timeAsync('strapi.findStore', () =>
+      strapi.findStore({
+         filters: { code: { eq: code } },
+      })
+   );
    const store = result.store?.data?.[0]?.attributes;
    if (store == null) {
       throw new Error('Store not found');
@@ -87,7 +90,7 @@ export function getStoreList(): Promise<StoreListItem[]> {
 }
 
 async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
-   const result = await strapi.getStoreList();
+   const result = await timeAsync('strapi.getStoreList', strapi.getStoreList);
    const stores = result.stores?.data || [];
    return filterNullableItems(
       stores.map((store) => {

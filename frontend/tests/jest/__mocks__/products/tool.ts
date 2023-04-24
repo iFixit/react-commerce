@@ -109,6 +109,7 @@ export const mockedToolProduct: Product = {
    productVideos: null,
    productVideosJson: null,
    compatibility: null,
+   compatibilityNotes: null,
    metaTitle: 'Hakko 5B SA Curved Tweezers',
    shortDescription: 'Hakko 5B SA Curved tweezers great for microsoldering.',
    oemPartnership: null,
