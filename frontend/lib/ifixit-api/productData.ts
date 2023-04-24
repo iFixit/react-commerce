@@ -5,10 +5,7 @@ export type ProductDataApiResponse = {
    variantOptions: {
       [o_code: string]: string[];
    };
-};
-
-export type VariantOptions = {
-   [o_code: string]: string[];
+   compatibilityNotes: string;
 };
 
 export async function fetchProductData(

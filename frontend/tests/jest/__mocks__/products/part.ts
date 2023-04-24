@@ -170,6 +170,7 @@ export const mockedPartProduct: Product = {
       ],
       hasMoreDevices: false,
    },
+   compatibilityNotes: null,
    metaTitle: 'Galaxy A51 Screen',
    shortDescription:
       'Replace an AMOLED screen compatible with the Samsung Galaxy A51 smartphone.',
