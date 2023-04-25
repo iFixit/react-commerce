@@ -9,6 +9,7 @@ import {
    ListProps,
    SimpleGrid,
    Text,
+   TextProps,
 } from '@chakra-ui/react';
 import type {
    BoxProps,
@@ -57,7 +58,7 @@ export const NavigationColumn = ({
    ...otherProps
 }: {
    menu: MenuType | null;
-}) => {
+} & TextProps) => {
    if (!menu) {
       return null;
    }
