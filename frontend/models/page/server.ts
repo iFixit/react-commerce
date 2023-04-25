@@ -11,19 +11,22 @@ import type { Page, PageSection } from '.';
 import { browseSectionFromStrapi } from './sections/browse-section';
 import { heroSectionFromStrapi } from './sections/hero-section';
 import { pressQuotesSectionFromStrapi } from './sections/press-quotes-section';
+import { timeAsync } from '@ifixit/helpers';
 
 interface FindPageArgs {
    path: string;
 }
 
 export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
-   const response = await strapi.findPage({
-      filters: {
-         path: {
-            eq: path,
+   const response = await timeAsync('strapi.findPage', () =>
+      strapi.findPage({
+         filters: {
+            path: {
+               eq: path,
+            },
          },
-      },
-   });
+      })
+   );
    const page = pageFromStrapi(response);
 
    if (page == null) {

@@ -40,6 +40,7 @@ import { CrossSellSection } from './sections/CrossSellSection';
 import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
+import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -85,7 +86,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          }),
       [product.productcode, product.id]
    );
-
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />
@@ -189,7 +189,12 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'DeviceCompatibility':
-                     return (
+                     return product.compatibilityNotes ? (
+                        <CompatibilityNotesSection
+                           key={section.id}
+                           compatibilityNotes={product.compatibilityNotes}
+                        />
+                     ) : (
                         <CompatibilitySection
                            key={section.id}
                            compatibility={product.compatibility}

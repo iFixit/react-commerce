@@ -161,6 +161,7 @@ export const mockedBatteryProduct: Product = {
       ],
       hasMoreDevices: false,
    },
+   compatibilityNotes: null,
    metaTitle: 'Moto G7 Play Battery',
    shortDescription:
       'Replace a JE40 model battery compatible with the Motorola Moto G7 Play smartphone.  3000 mAh. 11.4 Watt Hours (Wh). 3.8 Volts (V).',
