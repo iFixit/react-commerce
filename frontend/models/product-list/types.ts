@@ -43,6 +43,7 @@ export enum ProductListType {
    ToolsCategory = 'tools-category',
    Marketing = 'marketing',
 }
+const ProductListTypeZodNativeEnum = z.nativeEnum(ProductListType);
 
 const ProductListImageSchema = z.object({
    alternativeText: z.string().nullable(),
@@ -53,11 +54,22 @@ export type ProductListImage = z.infer<typeof ProductListImageSchema>;
 export enum iFixitPageType {
    Store = 'store',
 }
+const iFixitPageTypeZodNativeEnum = z.nativeEnum(iFixitPageType);
 
 export enum FacetWidgetType {
    RefinementList = 'refinement-list',
    Menu = 'menu',
 }
+const FacetWidgetTypeZodNativeEnum = z.nativeEnum(FacetWidgetType);
+
+export enum ProductListSectionType {
+   Banner = 'banner',
+   RelatedPosts = 'related-posts',
+   ProductListSet = 'product-list-set',
+}
+const ProductListSectionTypeZodNativeEnum = z.nativeEnum(
+   ProductListSectionType
+);
 
 export type ProductList =
    | AllPartsProductList
@@ -133,12 +145,6 @@ export interface ProductListChild {
    image: ProductListImage | null;
    sortPriority: number | null;
    type: ProductListType;
-}
-
-export enum ProductListSectionType {
-   Banner = 'banner',
-   RelatedPosts = 'related-posts',
-   ProductListSet = 'product-list-set',
 }
 
 export type ProductListSection =
