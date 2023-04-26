@@ -7,25 +7,27 @@ const PriceTierSchema = z.object({
 });
 export type PriceTier = z.infer<typeof PriceTierSchema>;
 
-export interface ProductSearchHit {
-   objectID: string;
-   title: string;
-   handle: string;
-   price_float: number;
-   compare_at_price?: number;
-   price_tiers?: Record<string, PriceTier>;
-   sku: string;
-   image_url: string;
-   short_description?: string;
-   quantity_available: number;
-   lifetime_warranty: boolean;
-   oem_partnership: string | null;
-   rating: number;
-   rating_count: number;
-   url: string;
-   is_pro: number;
+const ProductSearchHitSchema = z.object({
+   objectID: z.string(),
+   title: z.string(),
+   handle: z.string(),
+   price_float: z.number(),
+   compare_at_price: z.number().optional(),
+   price_tiers: z.record(PriceTierSchema).optional(),
+   sku: z.string(),
+   image_url: z.string(),
+   short_description: z.string().optional(),
+   quantity_available: z.number(),
+   lifetime_warranty: z.boolean(),
+   oem_partnership: z.string().nullable(),
+   rating: z.number(),
+   rating_count: z.number(),
+   url: z.string(),
+   is_pro: z.number(),
+}).passthrough();
+export type ProductSearchHit = z.infer<typeof ProductSearchHitSchema> & {
    [attribute: string]: unknown;
-}
+};
 
 export type WikiInfoEntry = {
    name: string;
