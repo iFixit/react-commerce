@@ -44,6 +44,12 @@ export enum ProductListType {
    Marketing = 'marketing',
 }
 
+const ProductListImageSchema = z.object({
+   alternativeText: z.string().nullable(),
+   url: z.string(),
+});
+export type ProductListImage = z.infer<typeof ProductListImageSchema>;
+
 export enum iFixitPageType {
    Store = 'store',
 }
@@ -127,11 +133,6 @@ export interface ProductListChild {
    image: ProductListImage | null;
    sortPriority: number | null;
    type: ProductListType;
-}
-
-export interface ProductListImage {
-   alternativeText: string | null;
-   url: string;
 }
 
 export enum ProductListSectionType {
