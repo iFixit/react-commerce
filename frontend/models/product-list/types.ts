@@ -1,3 +1,12 @@
+import { z } from 'zod';
+
+const PriceTierSchema = z.object({
+   default_variant_price: z.union([z.string(), z.number()]),
+   min: z.union([z.string(), z.number()]),
+   max: z.union([z.string(), z.number()]),
+});
+export type PriceTier = z.infer<typeof PriceTierSchema>;
+
 export interface ProductSearchHit {
    objectID: string;
    title: string;
@@ -17,12 +26,6 @@ export interface ProductSearchHit {
    is_pro: number;
    [attribute: string]: unknown;
 }
-
-export type PriceTier = {
-   default_variant_price: string | number;
-   min: string | number;
-   max: string | number;
-};
 
 export type WikiInfoEntry = {
    name: string;
