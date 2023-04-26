@@ -1,6 +1,10 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { withCacheLong } from '@helpers/cache-control-helpers';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   hasDisableCacheGets,
+   withLogging,
+   withNoindexDevDomains,
+} from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -24,11 +28,14 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          storeCode: DEFAULT_STORE_CODE,
       });
       const ifixitOrigin = ifixitOriginFromHost(context);
-      const product = await Product.get({
-         handle,
-         storeCode: DEFAULT_STORE_CODE,
-         ifixitOrigin,
-      });
+      const product = await Product.get(
+         {
+            handle,
+            storeCode: DEFAULT_STORE_CODE,
+            ifixitOrigin,
+         },
+         hasDisableCacheGets(context)
+      );
 
       if (product == null) {
          return {
