@@ -29,11 +29,12 @@ export type ProductSearchHit = z.infer<typeof ProductSearchHitSchema> & {
    [attribute: string]: unknown;
 };
 
-export type WikiInfoEntry = {
-   name: string;
-   value: string;
-   inheritedFrom: string | null;
-};
+const WikiInfoEntrySchema = z.object({
+   name: z.string(),
+   value: z.string(),
+   inheritedFrom: z.string().nullable(),
+});
+export type WikiInfoEntry = z.infer<typeof WikiInfoEntrySchema>;
 
 export enum ProductListType {
    AllParts = 'parts',
