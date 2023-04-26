@@ -38,9 +38,13 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             status: SubscriptionStatus.Subscribing,
          }));
          try {
-            await client.post('cart/newsletter/subscribe', {
-               body: JSON.stringify({ email }),
-            });
+            await client.post(
+               'cart/newsletter/subscribe',
+               'subscribe-to-newsletter',
+               {
+                  body: JSON.stringify({ email }),
+               }
+            );
             setState(() => ({
                status: SubscriptionStatus.Subscribed,
                error: undefined,

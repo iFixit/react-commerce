@@ -17,9 +17,10 @@ export class IFixitAPIClient {
 
    async get<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'GET',
       });
@@ -27,9 +28,10 @@ export class IFixitAPIClient {
 
    async post<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'POST',
       });
@@ -37,9 +39,10 @@ export class IFixitAPIClient {
 
    async put<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'PUT',
       });
@@ -47,18 +50,19 @@ export class IFixitAPIClient {
 
    async delete<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'DELETE',
       });
    }
 
-   async fetch(endpoint: string, init?: RequestInit) {
+   async fetch(endpoint: string, statName: string, init?: RequestInit) {
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
       const response = await timeAsync(
-         `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
+         `ifixit-api.${init?.method?.toLowerCase() || 'get'}.${statName}`,
          () =>
             fetch(url, {
                credentials: 'include',
