@@ -116,7 +116,10 @@ function useDraftOrderCheckout() {
    const shopifyClient = useShopifyStorefrontClient();
    const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/${shopifyClient.shopDomain}?checkout=1`;
    return async () => {
-      const result = await client.post('cart/order/draftOrder');
+      const result = await client.post(
+         'cart/order/draftOrder',
+         'create-draft-order'
+      );
       const draftOrder = DraftOrderResponseSchema.parse(result);
       const returnToUrl = new URL(draftOrder.invoiceUrl);
       const ssoUrl = new URL(ssoRoute);
