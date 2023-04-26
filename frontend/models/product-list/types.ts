@@ -71,6 +71,14 @@ const ProductListSectionTypeZodNativeEnum = z.nativeEnum(
    ProductListSectionType
 );
 
+const ProductListAncestorSchema = z.object({
+   deviceTitle: z.string().nullable(),
+   title: z.string(),
+   type: z.union([ProductListTypeZodNativeEnum, iFixitPageTypeZodNativeEnum]),
+   handle: z.string(),
+});
+export type ProductListAncestor = z.infer<typeof ProductListAncestorSchema>;
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
@@ -129,13 +137,6 @@ interface MarketingProductList extends BaseProductList {
 
 interface StorePage extends BaseProductList {
    type: iFixitPageType.Store;
-}
-
-export interface ProductListAncestor {
-   deviceTitle: string | null;
-   title: string;
-   type: ProductListType | iFixitPageType;
-   handle: string;
 }
 
 export interface ProductListChild {
