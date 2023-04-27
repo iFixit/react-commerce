@@ -7,24 +7,26 @@ const PriceTierSchema = z.object({
 });
 export type PriceTier = z.infer<typeof PriceTierSchema>;
 
-const ProductSearchHitSchema = z.object({
-   objectID: z.string(),
-   title: z.string(),
-   handle: z.string(),
-   price_float: z.number(),
-   compare_at_price: z.number().optional(),
-   price_tiers: z.record(PriceTierSchema).optional(),
-   sku: z.string(),
-   image_url: z.string(),
-   short_description: z.string().optional(),
-   quantity_available: z.number(),
-   lifetime_warranty: z.boolean(),
-   oem_partnership: z.string().nullable(),
-   rating: z.number(),
-   rating_count: z.number(),
-   url: z.string(),
-   is_pro: z.number(),
-}).passthrough();
+const ProductSearchHitSchema = z
+   .object({
+      objectID: z.string(),
+      title: z.string(),
+      handle: z.string(),
+      price_float: z.number(),
+      compare_at_price: z.number().optional(),
+      price_tiers: z.record(PriceTierSchema).optional(),
+      sku: z.string(),
+      image_url: z.string(),
+      short_description: z.string().optional(),
+      quantity_available: z.number(),
+      lifetime_warranty: z.boolean(),
+      oem_partnership: z.string().nullable(),
+      rating: z.number(),
+      rating_count: z.number(),
+      url: z.string(),
+      is_pro: z.number(),
+   })
+   .passthrough();
 export type ProductSearchHit = z.infer<typeof ProductSearchHitSchema> & {
    [attribute: string]: unknown;
 };
@@ -138,6 +140,34 @@ const ProductListSectionSchema = z.union([
 ]);
 export type ProductListSection = z.infer<typeof ProductListSectionSchema>;
 
+const BaseProductListSchema = z.object({
+   id: z.string().nullable(),
+   title: z.string(),
+   h1: z.string().nullable(),
+   handle: z.string(),
+   deviceTitle: z.string().nullable(),
+   tagline: z.string().nullable(),
+   description: z.string(),
+   metaDescription: z.string().nullable(),
+   metaTitle: z.string().nullable(),
+   defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),
+   filters: z.string().nullable(),
+   forceNoindex: z.boolean().nullable(),
+   heroImage: ProductListImageSchema.nullable(),
+   image: ProductListImageSchema.nullable(),
+   brandLogo: ProductListImageSchema.nullable(),
+   brandLogoWidth: z.number().nullable(),
+   ancestors: z.array(ProductListAncestorSchema),
+   children: z.array(ProductListChildSchema),
+   sections: z.array(ProductListSectionSchema),
+   algolia: z.object({
+      apiKey: z.string(),
+   }),
+   wikiInfo: z.array(WikiInfoEntrySchema),
+   isOnStrapi: z.boolean(),
+});
+export type BaseProductList = z.infer<typeof BaseProductListSchema>;
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
@@ -146,33 +176,6 @@ export type ProductList =
    | MarketingProductList;
 
 export type iFixitPage = StorePage;
-
-export interface BaseProductList {
-   id: string | null;
-   title: string;
-   h1: string | null;
-   handle: string;
-   deviceTitle: string | null;
-   tagline: string | null;
-   description: string;
-   metaDescription: string | null;
-   metaTitle: string | null;
-   defaultShowAllChildrenOnLgSizes: boolean | null;
-   filters: string | null;
-   forceNoindex: boolean | null;
-   heroImage: ProductListImage | null;
-   image: ProductListImage | null;
-   brandLogo: ProductListImage | null;
-   brandLogoWidth: number | null;
-   ancestors: ProductListAncestor[];
-   children: ProductListChild[];
-   sections: ProductListSection[];
-   algolia: {
-      apiKey: string;
-   };
-   wikiInfo: WikiInfoEntry[];
-   isOnStrapi: boolean;
-}
 
 interface AllPartsProductList extends BaseProductList {
    type: ProductListType.AllParts;
