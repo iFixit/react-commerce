@@ -134,7 +134,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             <Text
                sx={styles.price}
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
-               data-testid="current-price"
+               data-testid="price"
             >
                {showProBadge && !isHorizontal && (
                   <FaIcon
