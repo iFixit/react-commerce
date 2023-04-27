@@ -1,16 +1,7 @@
-import {
-   chakra,
-   Box,
-   Flex,
-   HTMLChakraProps,
-   Img,
-   Link,
-   Text,
-} from '@chakra-ui/react';
+import { chakra, Flex, FlexProps, Img, Link, Text } from '@chakra-ui/react';
 import type { Product } from '@pages/api/nextjs/cache/product';
-import NextLink from 'next/link';
 
-export interface CompatibleDeviceProps extends HTMLChakraProps<'div'> {
+export interface CompatibleDeviceProps extends FlexProps {
    device: NonNullable<Product['compatibility']>['devices'][number];
    maxModelLines?: number;
    truncateModels?: boolean;
@@ -28,8 +19,7 @@ export function CompatibleDevice({
          ? [variants.slice(0, maxModelLines), variants.slice(maxModelLines)]
          : [variants, []];
    return (
-      <Box
-         display="flex"
+      <Flex
          alignItems="start"
          transition="all 300m"
          {...(!truncateModels && {
@@ -43,35 +33,32 @@ export function CompatibleDevice({
          })}
          {...otherProps}
       >
-         <NextLink href={device.deviceUrl} passHref>
-            <Link>
-               <Img
-                  src={device.imageUrl}
-                  alt={device.deviceName ?? ''}
-                  w="12"
-                  mr="3"
-                  borderWidth="1px"
-                  borderStyle="solid"
-                  borderColor="gray.300"
-                  borderRadius="base"
-               />
-            </Link>
-         </NextLink>
+         <Link href={device.deviceUrl}>
+            <Img
+               src={device.imageUrl}
+               alt={device.deviceName ?? ''}
+               w="12"
+               mr="3"
+               borderWidth="1px"
+               borderStyle="solid"
+               borderColor="gray.300"
+               borderRadius="base"
+            />
+         </Link>
          <Flex
             minH="12"
             flexDir="column"
             alignSelf="flex-start"
             justifyContent="center"
          >
-            <NextLink href={device.deviceUrl} passHref>
-               <chakra.a
-                  my="2px"
-                  fontWeight="medium"
-                  _groupHover={{ color: 'brand.500' }}
-               >
-                  {device.deviceName}
-               </chakra.a>
-            </NextLink>
+            <chakra.a
+               href={device.deviceUrl}
+               my="2px"
+               fontWeight="medium"
+               _groupHover={{ color: 'brand.500' }}
+            >
+               {device.deviceName}
+            </chakra.a>
             <Flex
                flexDir="column"
                {...(!truncateModels && {
@@ -132,6 +119,6 @@ export function CompatibleDevice({
                </details>
             )}
          </Flex>
-      </Box>
+      </Flex>
    );
 }

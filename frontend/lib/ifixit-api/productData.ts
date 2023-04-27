@@ -18,7 +18,7 @@ export async function fetchProductData(
          productHandle.length > 0,
          'productHandle cannot be a blank string'
       );
-      return await client.get(`store/product/${productHandle}`);
+      return await client.get(`store/product/${productHandle}`, 'product-data');
    } catch (error: any) {
       return null;
    }

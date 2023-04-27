@@ -327,7 +327,7 @@ type CreateProductListChildOptions = {
 function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
    return (apiChild: ApiProductListChild): ProductListChild | null => {
       const { attributes } = apiChild;
-      if (attributes == null) {
+      if (attributes == null || attributes.hideFromParent) {
          return null;
       }
       const imageAttributes = attributes.image?.data?.attributes;

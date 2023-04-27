@@ -1519,12 +1519,12 @@ export type ProductList = {
    defaultShowAllChildrenOnLgSizes?: Maybe<Scalars['Boolean']>;
    description: Scalars['String'];
    deviceTitle?: Maybe<Scalars['String']>;
-   excludeFromHierarchyDisplay: Scalars['Boolean'];
    filters?: Maybe<Scalars['String']>;
    forceNoindex?: Maybe<Scalars['Boolean']>;
    h1?: Maybe<Scalars['String']>;
    handle: Scalars['String'];
    heroImage?: Maybe<UploadFileEntityResponse>;
+   hideFromParent?: Maybe<Scalars['Boolean']>;
    image?: Maybe<UploadFileEntityResponse>;
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
@@ -1581,11 +1581,11 @@ export type ProductListFiltersInput = {
    defaultShowAllChildrenOnLgSizes?: InputMaybe<BooleanFilterInput>;
    description?: InputMaybe<StringFilterInput>;
    deviceTitle?: InputMaybe<StringFilterInput>;
-   excludeFromHierarchyDisplay?: InputMaybe<BooleanFilterInput>;
    filters?: InputMaybe<StringFilterInput>;
    forceNoindex?: InputMaybe<BooleanFilterInput>;
    h1?: InputMaybe<StringFilterInput>;
    handle?: InputMaybe<StringFilterInput>;
+   hideFromParent?: InputMaybe<BooleanFilterInput>;
    id?: InputMaybe<IdFilterInput>;
    legacyDescription?: InputMaybe<StringFilterInput>;
    legacyPageId?: InputMaybe<IntFilterInput>;
@@ -1611,12 +1611,12 @@ export type ProductListInput = {
    defaultShowAllChildrenOnLgSizes?: InputMaybe<Scalars['Boolean']>;
    description?: InputMaybe<Scalars['String']>;
    deviceTitle?: InputMaybe<Scalars['String']>;
-   excludeFromHierarchyDisplay?: InputMaybe<Scalars['Boolean']>;
    filters?: InputMaybe<Scalars['String']>;
    forceNoindex?: InputMaybe<Scalars['Boolean']>;
    h1?: InputMaybe<Scalars['String']>;
    handle?: InputMaybe<Scalars['String']>;
    heroImage?: InputMaybe<Scalars['ID']>;
+   hideFromParent?: InputMaybe<Scalars['Boolean']>;
    image?: InputMaybe<Scalars['ID']>;
    legacyDescription?: InputMaybe<Scalars['String']>;
    legacyPageId?: InputMaybe<Scalars['Int']>;
@@ -4071,6 +4071,7 @@ export type GetProductListQuery = {
                      handle: string;
                      deviceTitle?: string | null;
                      title: string;
+                     hideFromParent?: boolean | null;
                      image?: {
                         __typename?: 'UploadFileEntityResponse';
                         data?: {
@@ -5252,6 +5253,7 @@ export const GetProductListDocument = `
                   }
                 }
               }
+              hideFromParent
             }
           }
         }
