@@ -223,9 +223,9 @@ export default function SolutionCard({
    );
 }
 
-function LinkCards({ guides }: { guides: Guide[] }) {
+function LinkCards({ guides, ...props }: { guides: Guide[] } & BoxProps) {
    return (
-      <Box>
+      <Box {...props}>
          {guides.map((guide: Guide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
