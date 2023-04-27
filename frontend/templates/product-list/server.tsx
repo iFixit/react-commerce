@@ -187,13 +187,11 @@ export const getProductListServerSideProps = ({
 
       const { serverState, adminMessage } = await getSafeServerState({
          appProps,
-         indexName,
          productList,
       });
 
       const pageProps: ProductListTemplateProps = {
          productList,
-         indexName,
          layoutProps: await layoutProps,
          appProps: {
             ...appProps,
@@ -214,19 +212,17 @@ export const getProductListServerSideProps = ({
 
 type GetSafeServerStateProps = {
    appProps: AppProvidersProps;
-   indexName: string;
    productList: ProductList;
 };
 
 async function getSafeServerState({
    appProps,
-   indexName,
    productList,
 }: GetSafeServerStateProps) {
    const tryGetServerState = (productList: ProductList) => {
       const appMarkup = (
          <AppProviders {...appProps}>
-            <ProductListView productList={productList} indexName={indexName} />
+            <ProductListView productList={productList} />
          </AppProviders>
       );
       return timeAsync('getServerState', () =>
