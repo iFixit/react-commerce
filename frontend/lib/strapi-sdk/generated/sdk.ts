@@ -4071,6 +4071,7 @@ export type GetProductListQuery = {
                      handle: string;
                      deviceTitle?: string | null;
                      title: string;
+                     hideFromParent?: boolean | null;
                      image?: {
                         __typename?: 'UploadFileEntityResponse';
                         data?: {
@@ -5252,6 +5253,7 @@ export const GetProductListDocument = `
                   }
                 }
               }
+              hideFromParent
             }
           }
         }
