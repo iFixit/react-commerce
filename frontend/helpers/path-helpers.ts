@@ -3,14 +3,14 @@ import { invariant } from '@ifixit/helpers';
 import {
    ProductList,
    ProductListType,
+   StorePage,
    iFixitPageType,
-   iFixitPage,
 } from '@models/product-list';
 import { GetServerSidePropsContext } from 'next';
 import { stylizeDeviceTitle } from './product-list-helpers';
 
 type ProductListPathAttributes = Pick<
-   ProductList | iFixitPage,
+   ProductList | StorePage,
    'type' | 'handle' | 'deviceTitle'
 >;
 

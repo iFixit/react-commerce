@@ -210,5 +210,3 @@ const ProductListSchema = z.union([
    MarketingProductListSchema,
 ]);
 export type ProductList = z.infer<typeof ProductListSchema>;
-
-export type iFixitPage = StorePage;
