@@ -1,11 +1,4 @@
-import {
-   AspectRatio,
-   Button,
-   Flex,
-   Heading,
-   Link,
-   Text,
-} from '@chakra-ui/react';
+import { AspectRatio, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import links from '../../lib/links';
 import {
    color,
