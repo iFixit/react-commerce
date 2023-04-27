@@ -1,7 +1,11 @@
 import { AppProviders, AppProvidersProps } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
 import { withCacheLong } from '@helpers/cache-control-helpers';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   hasDisableCacheGets,
+   withLogging,
+   withNoindexDevDomains,
+} from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
@@ -14,7 +18,7 @@ import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ProductList, ProductListType } from '@models/product-list';
-import { findProductList } from '@models/product-list/server';
+import ProductListCache from '@pages/api/nextjs/cache/product-list';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
@@ -51,7 +55,13 @@ export const getProductListServerSideProps = ({
       switch (productListType) {
          case ProductListType.AllParts: {
             productList = await timeAsync('findProductList', () =>
-               findProductList({ handle: { eq: 'Parts' } }, ifixitOrigin)
+               ProductListCache.get(
+                  {
+                     filters: { handle: { eq: 'Parts' } },
+                     ifixitOrigin,
+                  },
+                  hasDisableCacheGets(context)
+               )
             );
             break;
          }
@@ -77,13 +87,16 @@ export const getProductListServerSideProps = ({
                : null;
 
             productList = await timeAsync('findProductList', () =>
-               findProductList(
+               ProductListCache.get(
                   {
-                     deviceTitle: {
-                        eqi: deviceTitle,
+                     filters: {
+                        deviceTitle: {
+                           eqi: deviceTitle,
+                        },
                      },
+                     ifixitOrigin,
                   },
-                  ifixitOrigin
+                  hasDisableCacheGets(context)
                )
             );
 
@@ -100,7 +113,10 @@ export const getProductListServerSideProps = ({
          }
          case ProductListType.AllTools: {
             productList = await timeAsync('findProductList', () =>
-               findProductList({ handle: { eq: 'Tools' } }, ifixitOrigin)
+               ProductListCache.get(
+                  { filters: { handle: { eq: 'Tools' } }, ifixitOrigin },
+                  hasDisableCacheGets(context)
+               )
             );
             break;
          }
@@ -112,7 +128,10 @@ export const getProductListServerSideProps = ({
             );
 
             productList = await timeAsync('findProductList', () =>
-               findProductList({ handle: { eqi: handle } }, ifixitOrigin)
+               ProductListCache.get(
+                  { filters: { handle: { eqi: handle } }, ifixitOrigin },
+                  hasDisableCacheGets(context)
+               )
             );
 
             shouldRedirectToCanonical =
@@ -133,16 +152,19 @@ export const getProductListServerSideProps = ({
             );
 
             productList = await timeAsync('findProductList', () =>
-               findProductList(
+               ProductListCache.get(
                   {
-                     handle: {
-                        eqi: handle,
+                     filters: {
+                        handle: {
+                           eqi: handle,
+                        },
+                        type: {
+                           eq: 'marketing',
+                        },
                      },
-                     type: {
-                        eq: 'marketing',
-                     },
+                     ifixitOrigin,
                   },
-                  ifixitOrigin
+                  hasDisableCacheGets(context)
                )
             );
             shouldRedirectToCanonical =
