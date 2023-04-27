@@ -18,8 +18,7 @@ export const withLogging: GetServerSidePropsMiddleware = (next) => {
          ...context.params,
          ...context.query,
       });
-      const isCacheDisabled =
-         CACHE_DISABLED || context.query.disableCacheGets !== undefined;
+      const isCacheDisabled = CACHE_DISABLED || hasDisableCacheGets(context);
       return next(context)
          .then((result) => {
             if (isCacheDisabled) {
@@ -50,3 +49,7 @@ export const withNoindexDevDomains: GetServerSidePropsMiddleware = (next) => {
       return result;
    };
 };
+
+export function hasDisableCacheGets(context: GetServerSidePropsContext) {
+   return context.query.disableCacheGets !== undefined;
+}

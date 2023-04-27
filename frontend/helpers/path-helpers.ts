@@ -1,4 +1,4 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { APP_ORIGIN, IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import {
    ProductList,
@@ -41,7 +41,7 @@ export function productListPath(
          return `/Shop/${productList.handle}`;
       }
       case iFixitPageType.Store: {
-         return '/Store';
+         return `${APP_ORIGIN}/Store`;
       }
       default: {
          throw new Error(`unknown product list type: ${productList.type}`);

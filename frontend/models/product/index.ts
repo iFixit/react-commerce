@@ -72,6 +72,7 @@ export const ProductSchema = z.object({
    productVideos: z.string().nullable(),
    productVideosJson: ProductVideosSchema.nullable(),
    compatibility: ProductDeviceCompatibilitySchema.nullable(),
+   compatibilityNotes: z.string().nullable(),
    metaTitle: z.string().nullable(),
    shortDescription: z.string().nullable(),
    reviews: ProductReviewsSchema.nullable(),
@@ -152,6 +153,7 @@ export async function getProduct({
       compatibility: productDeviceCompatibilityFromMetafield(
          shopifyProduct.compatibility?.value
       ),
+      compatibilityNotes: iFixitProduct?.compatibilityNotes ?? null,
       metaTitle: shopifyProduct.metaTitle?.value ?? null,
       shortDescription: shopifyProduct.shortDescription?.value ?? null,
       reviews: productReviewsFromMetafields(

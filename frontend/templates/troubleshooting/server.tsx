@@ -47,6 +47,7 @@ export const getServerSideProps: GetServerSideProps<
 
    const troubleshootingData = await client.get<TroubleshootingApiData>(
       `Troubleshooting/${wikiname}`,
+      'troubleshooting',
       {
          credentials: 'include',
       }

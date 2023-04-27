@@ -258,6 +258,7 @@ export const mockedProduct: Product = {
       ],
       hasMoreDevices: false,
    },
+   compatibilityNotes: null,
    metaTitle: 'iPhone 6s Plus Battery: Replacement Part / Repair Kit',
    shortDescription:
       'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',

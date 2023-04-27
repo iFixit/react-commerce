@@ -4,18 +4,20 @@ import {
    BreadcrumbLink,
    BreadcrumbProps,
    Flex,
+   forwardRef,
    IconButton,
    Menu,
    MenuButton,
    MenuItem,
+   MenuItemProps,
    MenuList,
    Text,
 } from '@chakra-ui/react';
+import { SmartLink } from '@components/ui/SmartLink';
 import { faChevronRight, faEllipsis } from '@fortawesome/pro-solid-svg-icons';
 import { productListPath } from '@helpers/path-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
-import NextLink from 'next/link';
 import { useProductListAncestors } from './hooks/useProductListAncestors';
 
 export type ProductListBreadcrumbProps = BreadcrumbProps & {
@@ -68,16 +70,16 @@ export function ProductListBreadcrumb({
                   lg: 'inline-flex',
                }}
             >
-               <NextLink href={productListPath(ancestor)} passHref>
-                  <BreadcrumbLink
-                     color="gray.500"
-                     whiteSpace="nowrap"
-                     borderRadius="sm"
-                     px="1"
-                  >
-                     {ancestor.title}
-                  </BreadcrumbLink>
-               </NextLink>
+               <SmartLink
+                  as={BreadcrumbLink}
+                  href={productListPath(ancestor)}
+                  color="gray.500"
+                  whiteSpace="nowrap"
+                  borderRadius="sm"
+                  px="1"
+               >
+                  {ancestor.title}
+               </SmartLink>
             </BreadcrumbItem>
          ))}
          {reverseAncestorList.length > 0 && (
@@ -100,13 +102,13 @@ export function ProductListBreadcrumb({
                   />
                   <MenuList>
                      {reverseAncestorList.map((ancestor) => (
-                        <NextLink
+                        <SmartLink
                            key={ancestor.handle}
+                           as={MenuItemLink}
                            href={productListPath(ancestor)}
-                           passHref
                         >
-                           <MenuItem as="a">{ancestor.title}</MenuItem>
-                        </NextLink>
+                           {ancestor.title}
+                        </SmartLink>
                      ))}
                   </MenuList>
                </Menu>
@@ -120,3 +122,7 @@ export function ProductListBreadcrumb({
       </Breadcrumb>
    );
 }
+
+const MenuItemLink = forwardRef<MenuItemProps, 'a'>((props, ref) => (
+   <MenuItem as="a" ref={ref} {...props} />
+));
