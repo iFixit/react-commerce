@@ -55,9 +55,11 @@ export const NavigationSection = ({
 
 export const NavigationColumn = ({
    menu,
+   listFontSize = 'sm',
    ...otherProps
 }: {
    menu: MenuType | null;
+   listFontSize?: TextProps['fontSize'];
 } & TextProps) => {
    if (!menu) {
       return null;
@@ -74,12 +76,15 @@ export const NavigationColumn = ({
          >
             {menu.title}
          </Text>
-         <FooterNavigationListItems menu={menu} />
+         <FooterNavigationListItems menu={menu} fontSize={listFontSize} />
       </>
    );
 };
 
-export const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
+export const FooterNavigationListItems = ({
+   menu,
+   ...otherProps
+}: { menu: MenuType } & TextProps) => {
    const listItems = menu.items.map((item: MenuItem, index: number) => {
       if (item.type !== 'link') {
          return null;
@@ -89,6 +94,9 @@ export const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
          <FooterNavigationItem key={index}>
             <FooterNavigationLink
                fontSize="sm"
+               fontWeight="normal"
+               m={0}
+               p={0}
                color="gray.300"
                _visited={{ color: 'gray.300' }}
                _hover={{ color: 'white', textDecoration: 'none' }}
@@ -98,6 +106,7 @@ export const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
                   },
                }}
                href={item.url}
+               {...otherProps}
             >
                {item.name}
             </FooterNavigationLink>
