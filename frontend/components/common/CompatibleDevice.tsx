@@ -69,7 +69,7 @@ export function CompatibleDevice({
                      href={device.deviceUrl}
                      my="2px"
                      fontWeight="medium"
-                     _groupHover={{ color: 'brand.500' }}
+                     _hover={{ color: 'brand.500' }}
                   >
                      {children}
                   </chakra.a>

@@ -25,7 +25,6 @@ export function CompatibleDevices({ product }: CompatibleDevicesProps) {
                <CompatibleDevice
                   device={{ ...device, deviceUrl: undefined }}
                   maxModelLines={MAX_MODEL_LINES_PER_DEVICE}
-                  role="group"
                   mb="6px"
                />
             </a>
