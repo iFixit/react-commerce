@@ -79,6 +79,16 @@ const ProductListAncestorSchema = z.object({
 });
 export type ProductListAncestor = z.infer<typeof ProductListAncestorSchema>;
 
+const ProductListChildSchema = z.object({
+   title: z.string(),
+   deviceTitle: z.string().nullable(),
+   handle: z.string(),
+   image: ProductListImageSchema.nullable(),
+   sortPriority: z.number().nullable(),
+   type: ProductListTypeZodNativeEnum,
+});
+export type ProductListChild = z.infer<typeof ProductListChildSchema>;
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
@@ -137,15 +147,6 @@ interface MarketingProductList extends BaseProductList {
 
 interface StorePage extends BaseProductList {
    type: iFixitPageType.Store;
-}
-
-export interface ProductListChild {
-   title: string;
-   deviceTitle: string | null;
-   handle: string;
-   image: ProductListImage | null;
-   sortPriority: number | null;
-   type: ProductListType;
 }
 
 export type ProductListSection =
