@@ -21,7 +21,7 @@ export const IFixitStatsSectionSchema = z.object({
 
 export function iFixitStatsSectionFromStrapi(
    fragment: StatsSectionFieldsFragment | null | undefined,
-   index: number
+   _index: number
 ): IFixitStatsSection | null {
    const id = createSectionId(fragment);
    const stats = filterFalsyItems(fragment?.stats).map(

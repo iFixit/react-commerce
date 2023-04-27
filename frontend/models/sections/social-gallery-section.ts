@@ -19,7 +19,7 @@ export const SocialGallerySectionSchema = z.object({
 
 export async function socialGallerySectionFromStrapi(
    fragment: SocialGallerySectionFieldsFragment | null | undefined,
-   index: number
+   _index: number
 ): Promise<SocialGallerySection | null> {
    const id = createSectionId(fragment);
 
