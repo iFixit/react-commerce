@@ -168,35 +168,47 @@ const BaseProductListSchema = z.object({
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 
-export type ProductList =
-   | AllPartsProductList
-   | DevicePartsProductList
-   | AllToolsProductList
-   | ToolsCategoryProductList
-   | MarketingProductList;
+const AllPartsProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.AllParts),
+});
+export type AllPartsProductList = z.infer<typeof AllPartsProductListSchema>;
+
+const DevicePartsProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.DeviceParts),
+});
+export type DevicePartsProductList = z.infer<
+   typeof DevicePartsProductListSchema
+>;
+
+const AllToolsProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.AllTools),
+});
+export type AllToolsProductList = z.infer<typeof AllToolsProductListSchema>;
+
+const ToolsCategoryProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.ToolsCategory),
+});
+export type ToolsCategoryProductList = z.infer<
+   typeof ToolsCategoryProductListSchema
+>;
+
+const MarketingProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.Marketing),
+});
+export type MarketingProductList = z.infer<typeof MarketingProductListSchema>;
+
+const StorePageSchema = BaseProductListSchema.extend({
+   type: z.literal(iFixitPageType.Store),
+});
+export type StorePage = z.infer<typeof StorePageSchema>;
+
+const ProductListSchema = z.union([
+   AllPartsProductListSchema,
+   DevicePartsProductListSchema,
+   AllToolsProductListSchema,
+   ToolsCategoryProductListSchema,
+   MarketingProductListSchema,
+]);
+export type ProductList = z.infer<typeof ProductListSchema>;
 
 export type iFixitPage = StorePage;
-
-interface AllPartsProductList extends BaseProductList {
-   type: ProductListType.AllParts;
-}
-
-interface DevicePartsProductList extends BaseProductList {
-   type: ProductListType.DeviceParts;
-}
-
-interface AllToolsProductList extends BaseProductList {
-   type: ProductListType.AllTools;
-}
-
-interface ToolsCategoryProductList extends BaseProductList {
-   type: ProductListType.ToolsCategory;
-}
-
-interface MarketingProductList extends BaseProductList {
-   type: ProductListType.Marketing;
-}
-
-interface StorePage extends BaseProductList {
-   type: iFixitPageType.Store;
-}
