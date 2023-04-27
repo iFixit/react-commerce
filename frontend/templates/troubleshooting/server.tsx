@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<
       const guides = await Promise.all(
          solution.guides.map(
             (guideid: number) =>
-               client.get(`guides/${guideid}`) as Promise<Guide>
+               client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
          )
       );
       return {
