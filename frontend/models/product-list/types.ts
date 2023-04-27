@@ -62,17 +62,12 @@ export enum FacetWidgetType {
    RefinementList = 'refinement-list',
    Menu = 'menu',
 }
-const FacetWidgetTypeZodNativeEnum = z.nativeEnum(FacetWidgetType);
 
 export enum ProductListSectionType {
    Banner = 'banner',
    RelatedPosts = 'related-posts',
    ProductListSet = 'product-list-set',
 }
-const ProductListSectionTypeZodNativeEnum = z.nativeEnum(
-   ProductListSectionType
-);
-
 const ProductListAncestorSchema = z.object({
    deviceTitle: z.string().nullable(),
    title: z.string(),
