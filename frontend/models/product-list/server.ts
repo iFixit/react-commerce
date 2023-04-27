@@ -98,10 +98,7 @@ export async function findProductList(
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
       heroImage: productList?.heroImage?.data?.attributes
-         ? getImageFromStrapiImage(
-              productList.heroImage.data.attributes,
-              'large'
-           )
+         ? getImageFromStrapiImage(productList.heroImage.data.attributes)
          : null,
       image: null,
       brandLogo: productList?.brandLogo?.data?.attributes
