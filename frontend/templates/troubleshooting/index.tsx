@@ -44,13 +44,14 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
+   const { metaDescription, title, metaKeywords, canonicalUrl } = wikiData;
    const metadata = (
       <>
-         <meta name="description" content={wikiData.metaDescription} />
-         <meta name="title" content={wikiData.title} />
-         <meta name="keywords" content={wikiData.metaKeywords} />
+         <meta name="description" content={metaDescription} />
+         <meta name="title" content={title} />
+         <meta name="keywords" content={metaKeywords} />
          <meta name="robots" content="noindex" />,
-         <link rel="canonical" href={wikiData.canonicalUrl} />
+         <link rel="canonical" href={canonicalUrl} />
       </>
    );
 
