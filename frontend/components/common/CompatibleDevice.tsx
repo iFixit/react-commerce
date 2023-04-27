@@ -1,8 +1,14 @@
 import { chakra, Flex, FlexProps, Img, Link, Text } from '@chakra-ui/react';
+import { ConditionalWrapper } from '@ifixit/ui/misc';
 import type { Product } from '@pages/api/nextjs/cache/product';
 
 export interface CompatibleDeviceProps extends FlexProps {
-   device: NonNullable<Product['compatibility']>['devices'][number];
+   device: Omit<
+      NonNullable<Product['compatibility']>['devices'][number],
+      'deviceUrl'
+   > & {
+      deviceUrl?: string;
+   };
    maxModelLines?: number;
    truncateModels?: boolean;
 }
@@ -33,7 +39,12 @@ export function CompatibleDevice({
          })}
          {...otherProps}
       >
-         <Link href={device.deviceUrl}>
+         <ConditionalWrapper
+            condition={!!device.deviceUrl}
+            wrapper={(children) => (
+               <Link href={device.deviceUrl}>{children}</Link>
+            )}
+         >
             <Img
                src={device.imageUrl}
                alt={device.deviceName ?? ''}
@@ -44,21 +55,28 @@ export function CompatibleDevice({
                borderColor="gray.300"
                borderRadius="base"
             />
-         </Link>
+         </ConditionalWrapper>
          <Flex
             minH="12"
             flexDir="column"
             alignSelf="flex-start"
             justifyContent="center"
          >
-            <chakra.a
-               href={device.deviceUrl}
-               my="2px"
-               fontWeight="medium"
-               _groupHover={{ color: 'brand.500' }}
+            <ConditionalWrapper
+               condition={!!device.deviceUrl}
+               wrapper={(children) => (
+                  <chakra.a
+                     href={device.deviceUrl}
+                     my="2px"
+                     fontWeight="medium"
+                     _groupHover={{ color: 'brand.500' }}
+                  >
+                     {children}
+                  </chakra.a>
+               )}
             >
                {device.deviceName}
-            </chakra.a>
+            </ConditionalWrapper>
             <Flex
                flexDir="column"
                {...(!truncateModels && {
