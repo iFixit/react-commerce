@@ -89,6 +89,17 @@ const ProductListChildSchema = z.object({
 });
 export type ProductListChild = z.infer<typeof ProductListChildSchema>;
 
+const ProductListPreviewSchema = z.object({
+   handle: z.string(),
+   title: z.string(),
+   type: ProductListTypeZodNativeEnum,
+   deviceTitle: z.string().nullable(),
+   description: z.string(),
+   image: ProductListImageSchema.nullable(),
+   filters: z.string().nullable(),
+});
+export type ProductListPreview = z.infer<typeof ProductListPreviewSchema>;
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
@@ -174,14 +185,4 @@ export interface ProductListProductListSetSection {
    id: string;
    title: string;
    productLists: ProductListPreview[];
-}
-
-export interface ProductListPreview {
-   handle: string;
-   title: string;
-   type: ProductListType;
-   deviceTitle: string | null;
-   description: string;
-   image: ProductListImage | null;
-   filters: string | null;
 }
