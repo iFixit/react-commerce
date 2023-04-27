@@ -8,12 +8,11 @@ import {
    MenuItem,
    MenuList,
 } from '@chakra-ui/react';
-import { FaIcon } from '@ifixit/icons';
 import {
    faPenToSquare,
    IconDefinition,
 } from '@fortawesome/pro-solid-svg-icons';
-import NextLink from 'next/link';
+import { FaIcon } from '@ifixit/icons';
 
 export type PageEditMenuLink = {
    icon: IconDefinition;
@@ -60,20 +59,19 @@ type PageEditMenuLinkProps = {
 function MenuLink({ link }: PageEditMenuLinkProps) {
    const { icon, label, url } = link;
    return (
-      <NextLink href={url} passHref legacyBehavior>
-         <MenuItem
-            fontSize="sm"
-            as={Link}
-            isExternal
-            icon={<FaIcon icon={icon} h="4" color="gray.500" />}
-            display="inline-flex"
-            alignItems="center"
-            _hover={{
-               textDecor: 'none',
-            }}
-         >
-            {label}
-         </MenuItem>
-      </NextLink>
+      <MenuItem
+         href={url}
+         fontSize="sm"
+         as={Link}
+         isExternal
+         icon={<FaIcon icon={icon} h="4" color="gray.500" />}
+         display="inline-flex"
+         alignItems="center"
+         _hover={{
+            textDecor: 'none',
+         }}
+      >
+         {label}
+      </MenuItem>
    );
 }

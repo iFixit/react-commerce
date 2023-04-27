@@ -1,7 +1,8 @@
 import { Box, Button, Text } from '@chakra-ui/react';
+import { LinkButton } from '@components/ui/LinkButton';
+import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { Banner } from '@models/components/banner';
-import NextLink from 'next/link';
 import { SectionDescription } from '../SectionDescription';
 import { SectionHeading } from '../SectionHeading';
 
@@ -60,11 +61,14 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
                   />
                )}
                {banner.callToAction && (
-                  <NextLink href={banner.callToAction.url} passHref>
-                     <Button as="a" colorScheme="brand" mt="10">
-                        {banner.callToAction.title}
-                     </Button>
-                  </NextLink>
+                  <SmartLink
+                     as={LinkButton}
+                     href={banner.callToAction.url}
+                     colorScheme="brand"
+                     mt="10"
+                  >
+                     {banner.callToAction.title}
+                  </SmartLink>
                )}
             </Box>
          </Wrapper>

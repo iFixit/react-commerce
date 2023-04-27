@@ -1,9 +1,10 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { LinkButton } from '@components/ui/LinkButton';
+import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { CallToAction } from '@models/components/call-to-action';
 import type { Image } from '@models/components/image';
 import type { SplitWithImageSection } from '@models/sections/split-with-image-section';
-import NextLink from 'next/link';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
 
@@ -75,11 +76,14 @@ export function SplitWithImageContentSection({
                   {title && <SectionHeading mb="4">{title}</SectionHeading>}
                   {description && <SectionDescription richText={description} />}
                   {callToAction && (
-                     <NextLink href={callToAction.url} passHref>
-                        <Button as="a" colorScheme="brand" mt="6">
-                           {callToAction.title}
-                        </Button>
-                     </NextLink>
+                     <SmartLink
+                        as={LinkButton}
+                        href={callToAction.url}
+                        colorScheme="brand"
+                        mt="6"
+                     >
+                        {callToAction.title}
+                     </SmartLink>
                   )}
                </Box>
             </Flex>

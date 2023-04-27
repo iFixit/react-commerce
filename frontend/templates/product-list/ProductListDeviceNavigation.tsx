@@ -3,7 +3,6 @@ import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { stylizeDeviceTitle } from '@helpers/product-list-helpers';
 import { ProductList } from '@models/product-list';
-import NextLink from 'next/link';
 
 type ProductListDeviceNavigationProps = FlexProps & {
    productList: ProductList;
@@ -45,14 +44,10 @@ export function ProductListDeviceNavigation({
       >
          <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={guideUrl} passHref>
-               <SecondaryNavbarLink>Guides</SecondaryNavbarLink>
-            </NextLink>
+            <SecondaryNavbarLink href={guideUrl}>Guides</SecondaryNavbarLink>
          </SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={answersUrl} passHref>
-               <SecondaryNavbarLink>Answers</SecondaryNavbarLink>
-            </NextLink>
+            <SecondaryNavbarLink href={answersUrl}>Answers</SecondaryNavbarLink>
          </SecondaryNavbarItem>
       </Flex>
    );
