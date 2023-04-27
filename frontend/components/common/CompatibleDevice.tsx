@@ -34,7 +34,6 @@ export function CompatibleDevice({
                   ?.getElementsByTagName('details')[0]
                   ?.toggleAttribute('open');
                event.preventDefault();
-               event.stopPropagation();
             },
          })}
          {...otherProps}
@@ -42,7 +41,14 @@ export function CompatibleDevice({
          <ConditionalWrapper
             condition={!!device.deviceUrl}
             wrapper={(children) => (
-               <Link href={device.deviceUrl}>{children}</Link>
+               <Link
+                  href={device.deviceUrl}
+                  {...(!truncateModels && {
+                     onClick: (event) => event.stopPropagation(),
+                  })}
+               >
+                  {children}
+               </Link>
             )}
          >
             <Img
@@ -70,6 +76,9 @@ export function CompatibleDevice({
                      my="2px"
                      fontWeight="medium"
                      _hover={{ color: 'brand.500' }}
+                     {...(!truncateModels && {
+                        onClick: (event) => event.stopPropagation(),
+                     })}
                   >
                      {children}
                   </chakra.a>
@@ -80,10 +89,7 @@ export function CompatibleDevice({
             <Flex
                flexDir="column"
                {...(!truncateModels && {
-                  onClick: (event) => {
-                     event.preventDefault();
-                     event.stopPropagation();
-                  },
+                  onClick: (event) => event.stopPropagation(),
                })}
             >
                {visibleVariants.map((variant) => (
@@ -117,10 +123,7 @@ export function CompatibleDevice({
                   <Flex
                      flexDir="column"
                      {...(!truncateModels && {
-                        onClick: (event) => {
-                           event.preventDefault();
-                           event.stopPropagation();
-                        },
+                        onClick: (event) => event.stopPropagation(),
                      })}
                   >
                      {hiddenVariants.map((variant) => (
