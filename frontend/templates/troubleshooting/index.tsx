@@ -44,6 +44,16 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
+   const metadata = (
+      <>
+         <meta name="description" content={wikiData.metaDescription} />
+         <meta name="title" content={wikiData.title} />
+         <meta name="keywords" content={wikiData.metaKeywords} />
+         <meta name="robots" content="noindex" />,
+         <link rel="canonical" href={wikiData.canonicalUrl} />
+      </>
+   );
+
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
@@ -63,7 +73,7 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
-               <Metadata wikiData={wikiData} />
+               {metadata}
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
             <Heading as="h1" marginTop={6}>
@@ -119,18 +129,6 @@ function TableOfContents({ solutions }: { solutions: Section[] }) {
             </ListItem>
          ))}
       </OrderedList>
-   );
-}
-
-function Metadata({ wikiData }: { wikiData: TroubleshootingData }) {
-   return (
-      <>
-         <meta name="description" content={wikiData.metaDescription} />
-         <meta name="title" content={wikiData.title} />
-         <meta name="keywords" content={wikiData.metaKeywords} />
-         <meta name="robots" content="noindex" />
-         <link rel="canonical" href={wikiData.canonicalUrl} />
-      </>
    );
 }
 
