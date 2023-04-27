@@ -19,7 +19,7 @@ exports[`CompatibleDevice renders and matches the snapshot 1`] = `
       class="css-qi8j5b"
     >
       <a
-        class="css-1h9z0di"
+        class="css-ce03x1"
         href="/Device/iPhone_6s_Plus"
       >
         iPhone 6s Plus
@@ -71,7 +71,7 @@ exports[`CompatibleDevice renders and matches the snapshot with truncated varian
       class="css-qi8j5b"
     >
       <a
-        class="css-1h9z0di"
+        class="css-ce03x1"
         href="/Device/iPhone_6s_Plus"
       >
         iPhone 6s Plus
