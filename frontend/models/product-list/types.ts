@@ -100,6 +100,44 @@ const ProductListPreviewSchema = z.object({
 });
 export type ProductListPreview = z.infer<typeof ProductListPreviewSchema>;
 
+const ProductListBannerSectionSchema = z.object({
+   type: z.literal(ProductListSectionType.Banner),
+   id: z.string(),
+   title: z.string(),
+   description: z.string(),
+   callToActionLabel: z.string(),
+   url: z.string(),
+});
+export type ProductListBannerSection = z.infer<
+   typeof ProductListBannerSectionSchema
+>;
+
+const ProductListRelatedPostsSectionSchema = z.object({
+   type: z.literal(ProductListSectionType.RelatedPosts),
+   id: z.string(),
+   tags: z.string().nullable(),
+});
+export type ProductListRelatedPostsSection = z.infer<
+   typeof ProductListRelatedPostsSectionSchema
+>;
+
+const ProductListProductListSetSectionSchema = z.object({
+   type: z.literal(ProductListSectionType.ProductListSet),
+   id: z.string(),
+   title: z.string(),
+   productLists: z.array(ProductListPreviewSchema),
+});
+export type ProductListProductListSetSection = z.infer<
+   typeof ProductListProductListSetSectionSchema
+>;
+
+const ProductListSectionSchema = z.union([
+   ProductListBannerSectionSchema,
+   ProductListRelatedPostsSectionSchema,
+   ProductListProductListSetSectionSchema,
+]);
+export type ProductListSection = z.infer<typeof ProductListSectionSchema>;
+
 export type ProductList =
    | AllPartsProductList
    | DevicePartsProductList
@@ -158,31 +196,4 @@ interface MarketingProductList extends BaseProductList {
 
 interface StorePage extends BaseProductList {
    type: iFixitPageType.Store;
-}
-
-export type ProductListSection =
-   | ProductListBannerSection
-   | ProductListRelatedPostsSection
-   | ProductListProductListSetSection;
-
-export interface ProductListBannerSection {
-   type: ProductListSectionType.Banner;
-   id: string;
-   title: string;
-   description: string;
-   callToActionLabel: string;
-   url: string;
-}
-
-export interface ProductListRelatedPostsSection {
-   type: ProductListSectionType.RelatedPosts;
-   id: string;
-   tags: string | null;
-}
-
-export interface ProductListProductListSetSection {
-   type: ProductListSectionType.ProductListSet;
-   id: string;
-   title: string;
-   productLists: ProductListPreview[];
 }
