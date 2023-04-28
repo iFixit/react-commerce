@@ -29,6 +29,8 @@ import {
    ProductListSection,
    ProductListSectionType,
    ProductListType,
+   ProductListItemTypeOverride,
+   ProductListItemTypeOverrideIndexed,
 } from './types';
 import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
 
@@ -126,6 +128,7 @@ export async function findProductList(
       },
       wikiInfo: deviceWiki?.info || [],
       isOnStrapi: !!productList,
+      itemOverrides: formatItemTypeOverrides(productList?.itemOverrides),
    };
 
    return {
@@ -426,6 +429,48 @@ function createProductListSection(
          return null;
       }
    }
+}
+
+type ApiProductListItemOverrides = NonNullable<
+   ApiProductList['itemOverrides']
+>[0];
+
+function formatItemTypeOverrides(
+   itemOverrides: ApiProductListItemOverrides[] | undefined
+): ProductListItemTypeOverrideIndexed {
+   if (!itemOverrides) return {};
+   let convertedOverrides =
+      convertToProductListItemTypeOverrides(itemOverrides);
+   return convertedOverrides.reduce((result, item) => {
+      result[item?.itemType || '*'] = item;
+      return result;
+   }, {} as ProductListItemTypeOverrideIndexed);
+}
+
+function convertToProductListItemTypeOverrides(
+   itemOverrides: ApiProductListItemOverrides[]
+): ProductListItemTypeOverride[] {
+   let formatedOverrides = itemOverrides.map(
+      (itemOverride): ProductListItemTypeOverride | null => {
+         if (
+            itemOverride == null ||
+            itemOverride.__typename !== 'ComponentProductListItemTypeOverride'
+         ) {
+            return null;
+         } else {
+            return {
+               id: itemOverride.id,
+               itemType: itemOverride.itemType ?? null,
+               title: itemOverride.title ?? null,
+               metaTitle: itemOverride.metaTitle ?? null,
+               metaDescription: itemOverride.metaDescription ?? null,
+               description: itemOverride.description ?? null,
+               tagline: itemOverride.tagline ?? null,
+            };
+         }
+      }
+   );
+   return filterNullableItems(formatedOverrides);
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {
