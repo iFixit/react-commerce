@@ -8,13 +8,11 @@ import {
    Text,
    Image,
 } from '@chakra-ui/react';
-import { getProductListTitle } from '@helpers/product-list-helpers';
 import { ResponsiveImage } from '@ifixit/ui';
 import { ProductList } from '@models/product-list';
 import React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
-import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export interface HeroSectionProps {
    productList: ProductList;
@@ -23,23 +21,10 @@ export interface HeroSectionProps {
 export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
-   const itemType = useDevicePartsItemType(productList);
    const hasBrandImage =
       productList.brandLogo &&
       productList.brandLogoWidth &&
       productList.brandLogoWidth > 0;
-   const hasDescription =
-      productList.description != null &&
-      productList.description.length > 0 &&
-      page === 1 &&
-      !itemType;
-   const hasTagline =
-      productList.tagline != null &&
-      productList.tagline.length > 0 &&
-      page === 1 &&
-      !itemType;
-
-   const title = getProductListTitle(productList, itemType);
    return (
       <Flex pos="relative" minH="96" borderRadius="base" overflow="hidden">
          <ResponsiveImage
@@ -78,15 +63,15 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
                />
             )}
             <HeroTitle>
-               {title}
+               {productList.title}
                {page > 1 ? ` - Page ${page}` : ''}
             </HeroTitle>
-            {hasTagline && (
+            {productList.tagline && (
                <Text as="h2" fontWeight="medium">
                   {productList.tagline}
                </Text>
             )}
-            {hasDescription && (
+            {productList.description && (
                <HeroDescription mt="4">
                   {productList.description}
                </HeroDescription>

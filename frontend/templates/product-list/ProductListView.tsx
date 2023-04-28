@@ -37,11 +37,13 @@ export function ProductListView({ productList }: ProductListViewProps) {
          <Wrapper py={{ base: 4, md: 6 }}>
             <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
                <Configure filters={filters} hitsPerPage={24} />
-               <MetaTags productList={productList} />
-               {productList.heroImage ? (
-                  <HeroWithBackgroundSection productList={productList} />
+               <MetaTags productList={productListModified} />
+               {productListModified.heroImage ? (
+                  <HeroWithBackgroundSection
+                     productList={productListModified}
+                  />
                ) : (
-                  <HeroSection productList={productList} />
+                  <HeroSection productList={productListModified} />
                )}
                {productList.children.length > 0 && (
                   <ProductListChildrenSection productList={productList} />

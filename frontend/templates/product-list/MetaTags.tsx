@@ -1,9 +1,6 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
-import {
-   getProductListTitle,
-   stylizeDeviceItemType,
-} from '@helpers/product-list-helpers';
+import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { ProductList, ProductListAncestor } from '@models/product-list';
 import Head from 'next/head';
@@ -49,15 +46,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
    const itemType = useDevicePartsItemType(productList);
-   let title =
-      productList.metaTitle ||
-      getProductListTitle(
-         {
-            title: productList.title,
-            type: productList.type,
-         },
-         itemType
-      ) + ' | iFixit';
+   let title = productList.title;
    if (!isFiltered && page > 1) {
       title += ` - Page ${page}`;
    }
@@ -88,9 +77,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
                <link rel="canonical" href={canonicalUrl} />
                <meta
                   name="description"
-                  content={
-                     productList.metaDescription || productList.description
-                  }
+                  content={productList.metaDescription ?? undefined}
                />
             </>
          )}
@@ -98,7 +85,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
          <meta property="og:title" content={title} />
          <meta
             name="og:description"
-            content={productList.metaDescription || productList.description}
+            content={productList.metaDescription ?? undefined}
          />
          <meta property="og:type" content="website" />
          <meta property="og:url" content={canonicalUrl} />
