@@ -16,12 +16,14 @@
  */
 
 import { test as base, expect, Locator } from '@playwright/test';
-import type { ProductFixtures, CustomNextjsServer } from './fixtures';
+import { ProductFixtures, CustomNextjsServer } from './fixtures';
 import {
+   PartsPage,
    ProductPage,
    CartDrawer,
    Server,
    findProductQueryMock,
+   getProductListMock,
    traceOutputDirTemplate,
 } from './fixtures';
 import type { MockServiceWorker } from 'playwright-msw';
@@ -65,6 +67,9 @@ export const test = base.extend<
    productPage: async ({ page, baseURL }, use) => {
       await use(new ProductPage(page, baseURL ?? 'http://localhost:3000'));
    },
+   partsPage: async ({ page, baseURL }, use) => {
+      await use(new PartsPage(page, baseURL ?? 'http://localhost:3000'));
+   },
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
    },
@@ -77,6 +82,7 @@ export const test = base.extend<
       { scope: 'test', auto: true },
    ],
    findProductQueryMock,
+   getProductListMock,
    clientRequestHandler: createWorkerFixture(handlers),
    /**
     * The following fixtures are dependent on the customServer fixture. By being
@@ -86,8 +92,9 @@ export const test = base.extend<
     * test to ensure the custom server is booted.
     */
    serverRequestInterceptor: [
-      async ({ customServer, productPage }, use) => {
+      async ({ customServer, productPage, partsPage }, use) => {
          productPage.updateBaseURL(`http://localhost:${customServer.port}`);
+         partsPage.updateBaseURL(`http://localhost:${customServer.port}`);
          await use(customServer.serverRequestInterceptor);
       },
       { scope: 'test' },
