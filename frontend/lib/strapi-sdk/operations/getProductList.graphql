@@ -170,6 +170,18 @@ query getProductList($filters: ProductListFiltersInput) {
                   }
                }
             }
+            itemOverrides {
+               __typename
+               ... on ComponentProductListItemTypeOverride {
+                  id
+                  title
+                  metaTitle
+                  description
+                  metaDescription
+                  itemType
+                  tagline
+               }
+            }
          }
       }
    }

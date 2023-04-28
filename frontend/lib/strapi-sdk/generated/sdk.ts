@@ -24,6 +24,7 @@ export type Scalars = {
    JSON: any;
    MenuItemsDynamicZoneInput: any;
    PageSectionsDynamicZoneInput: any;
+   ProductListItemOverridesDynamicZoneInput: any;
    ProductListSectionsDynamicZoneInput: any;
    ProductSectionsDynamicZoneInput: any;
    /** The `Upload` scalar type represents a file upload. */
@@ -374,6 +375,17 @@ export type ComponentProductListBanner = {
    id: Scalars['ID'];
    title: Scalars['String'];
    url: Scalars['String'];
+};
+
+export type ComponentProductListItemTypeOverride = {
+   __typename?: 'ComponentProductListItemTypeOverride';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   itemType?: Maybe<Scalars['String']>;
+   metaDescription?: Maybe<Scalars['String']>;
+   metaTitle?: Maybe<Scalars['String']>;
+   tagline?: Maybe<Scalars['String']>;
+   title?: Maybe<Scalars['String']>;
 };
 
 export type ComponentProductListLinkedProductListSet = {
@@ -791,6 +803,7 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
+   | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | ComponentProductProduct
@@ -1526,6 +1539,7 @@ export type ProductList = {
    handle: Scalars['String'];
    heroImage?: Maybe<UploadFileEntityResponse>;
    image?: Maybe<UploadFileEntityResponse>;
+   itemOverrides: Array<Maybe<ProductListItemOverridesDynamicZone>>;
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
    locale?: Maybe<Scalars['String']>;
@@ -1618,6 +1632,9 @@ export type ProductListInput = {
    handle?: InputMaybe<Scalars['String']>;
    heroImage?: InputMaybe<Scalars['ID']>;
    image?: InputMaybe<Scalars['ID']>;
+   itemOverrides?: InputMaybe<
+      Array<Scalars['ProductListItemOverridesDynamicZoneInput']>
+   >;
    legacyDescription?: InputMaybe<Scalars['String']>;
    legacyPageId?: InputMaybe<Scalars['Int']>;
    metaDescription?: InputMaybe<Scalars['String']>;
@@ -1630,6 +1647,10 @@ export type ProductListInput = {
    title?: InputMaybe<Scalars['String']>;
    type?: InputMaybe<Enum_Productlist_Type>;
 };
+
+export type ProductListItemOverridesDynamicZone =
+   | ComponentProductListItemTypeOverride
+   | Error;
 
 export type ProductListRelationResponseCollection = {
    __typename?: 'ProductListRelationResponseCollection';
@@ -4135,6 +4156,20 @@ export type GetProductListQuery = {
                | { __typename: 'Error' }
                | null
             >;
+            itemOverrides: Array<
+               | {
+                    __typename: 'ComponentProductListItemTypeOverride';
+                    id: string;
+                    title?: string | null;
+                    metaTitle?: string | null;
+                    description?: string | null;
+                    metaDescription?: string | null;
+                    itemType?: string | null;
+                    tagline?: string | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
          } | null;
       }>;
    } | null;
@@ -5292,6 +5327,18 @@ export const GetProductListDocument = `
                 }
               }
             }
+          }
+        }
+        itemOverrides {
+          __typename
+          ... on ComponentProductListItemTypeOverride {
+            id
+            title
+            metaTitle
+            description
+            metaDescription
+            itemType
+            tagline
           }
         }
       }

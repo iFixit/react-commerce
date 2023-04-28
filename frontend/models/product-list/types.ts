@@ -81,6 +81,7 @@ export interface BaseProductList {
    };
    wikiInfo: WikiInfoEntry[];
    isOnStrapi: boolean;
+   itemOverrides: ProductListItemTypeOverrideIndexed;
 }
 
 interface AllPartsProductList extends BaseProductList {
@@ -132,6 +133,7 @@ export enum ProductListSectionType {
    Banner = 'banner',
    RelatedPosts = 'related-posts',
    ProductListSet = 'product-list-set',
+   ItemTypeOverride = 'item-type-override',
 }
 
 export type ProductListSection =
@@ -160,6 +162,20 @@ export interface ProductListProductListSetSection {
    title: string;
    productLists: ProductListPreview[];
 }
+
+export type ProductListItemTypeOverride = {
+   id: string;
+   itemType: string | null;
+   title: string | null;
+   description: string | null;
+   metaDescription: string | null;
+   metaTitle: string | null;
+   tagline: string | null;
+};
+
+export type ProductListItemTypeOverrideIndexed = {
+   [key: string]: ProductListItemTypeOverride;
+};
 
 export interface ProductListPreview {
    handle: string;
