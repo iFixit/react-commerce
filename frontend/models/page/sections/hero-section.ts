@@ -20,7 +20,7 @@ export const HeroSectionSchema = z.object({
 
 export function heroSectionFromStrapi(
    fragment: HeroSectionFieldsFragment | null | undefined,
-   index: number
+   _index: number
 ): HeroSection | null {
    const id = createSectionId(fragment);
    const title = fragment?.title ?? null;

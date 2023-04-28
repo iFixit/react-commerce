@@ -43,17 +43,21 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
          if (typeof email != 'string') {
             throw new Error('email is required');
          }
-         await ifixitAPI.post('cart/product/notifyWhenSkuInStock', {
-            credentials: 'same-origin',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-               sku,
-               shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
-               email,
-            }),
-         });
+         await ifixitAPI.post(
+            'cart/product/notifyWhenSkuInStock',
+            'notify-when-sku-in-stock',
+            {
+               credentials: 'same-origin',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  sku,
+                  shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
+                  email,
+               }),
+            }
+         );
          setStatus(NotifyMeStatus.Submitted);
       } catch (error) {
          setStatus(NotifyMeStatus.Error);

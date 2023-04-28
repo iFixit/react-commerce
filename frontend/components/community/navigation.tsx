@@ -9,7 +9,6 @@ import {
    TabPanel,
    TabPanels,
    Tabs,
-   useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
@@ -25,16 +24,13 @@ interface TabData {
 export default function NavigationDisplay({
    title,
    privileges,
-   setUser,
    patrolEnabled,
 }: {
    title: string;
    privileges: { isLoggedIn: boolean; isMod: boolean };
-   setUser: React.Dispatch<React.SetStateAction<{}>>;
    patrolEnabled: boolean;
 }) {
    const [onIfixit, setOnIfixit] = useState(true);
-   const { isOpen, onOpen, onClose } = useDisclosure();
    const router = useRouter();
    const visibleTabs = getTabs();
 

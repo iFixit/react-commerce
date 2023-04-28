@@ -128,6 +128,7 @@ query getProductList($filters: ProductListFiltersInput) {
                            }
                         }
                      }
+                     hideFromParent
                   }
                }
             }

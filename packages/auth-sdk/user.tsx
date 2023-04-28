@@ -67,7 +67,7 @@ const UserApiResponseSchema = z.object({
 async function fetchAuthenticatedUser(
    apiClient: IFixitAPIClient
 ): Promise<User | null> {
-   const payload = await apiClient.get('user');
+   const payload = await apiClient.get('user', 'user');
    const userSchema = UserApiResponseSchema.parse(payload);
    return {
       id: userSchema.userid,

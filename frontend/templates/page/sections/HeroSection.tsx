@@ -1,10 +1,11 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeading } from '@components/sections/SectionHeading';
+import { LinkButton } from '@components/ui/LinkButton';
+import { SmartLink } from '@components/ui/SmartLink';
 import { Wrapper } from '@ifixit/ui';
 import type { HeroSection } from '@models/page/sections/hero-section';
 import Image from 'next/image';
-import NextLink from 'next/link';
 
 export interface HeroSectionProps {
    data: HeroSection;
@@ -44,11 +45,14 @@ export function HeroSection({
                   <SectionDescription richText={description} color="gray.100" />
                )}
                {callToAction && (
-                  <NextLink href={callToAction.url} passHref>
-                     <Button as="a" colorScheme="brand" mt="12">
-                        {callToAction.title}
-                     </Button>
-                  </NextLink>
+                  <SmartLink
+                     as={LinkButton}
+                     href={callToAction.url}
+                     colorScheme="brand"
+                     mt="12"
+                  >
+                     {callToAction.title}
+                  </SmartLink>
                )}
             </Box>
          </Wrapper>

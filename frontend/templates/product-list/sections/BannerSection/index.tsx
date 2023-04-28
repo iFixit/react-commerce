@@ -1,7 +1,7 @@
 import { QualityGuarantee } from '@assets/svg/files';
-import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import { LinkButton } from '@components/ui/LinkButton';
 import { ResponsiveImage } from '@ifixit/ui';
-import NextLink from 'next/link';
 import backgroundImage from './lifetime-guarantee-background.jpg';
 
 export interface BannerSectionProps {
@@ -77,9 +77,7 @@ export function BannerSection({
                   {description}
                </Text>
                <Flex w="full" justify="space-between" align="center">
-                  <NextLink href={url} passHref>
-                     <Button as="a">{callToActionLabel}</Button>
-                  </NextLink>
+                  <LinkButton href={url}>{callToActionLabel}</LinkButton>
                </Flex>
             </Flex>
             <Icon

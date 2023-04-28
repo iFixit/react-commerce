@@ -1,16 +1,16 @@
-import { IFIXIT_ORIGIN } from '@config/env';
+import { APP_ORIGIN, IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import {
    ProductList,
    ProductListType,
+   StorePage,
    iFixitPageType,
-   iFixitPage,
 } from '@models/product-list';
 import { GetServerSidePropsContext } from 'next';
 import { stylizeDeviceTitle } from './product-list-helpers';
 
 type ProductListPathAttributes = Pick<
-   ProductList | iFixitPage,
+   ProductList | StorePage,
    'type' | 'handle' | 'deviceTitle'
 >;
 
@@ -41,7 +41,7 @@ export function productListPath(
          return `/Shop/${productList.handle}`;
       }
       case iFixitPageType.Store: {
-         return '/Store';
+         return `${APP_ORIGIN}/Store`;
       }
       default: {
          throw new Error(`unknown product list type: ${productList.type}`);
