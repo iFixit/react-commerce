@@ -51,6 +51,7 @@ export const getProductListServerSideProps = ({
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
       const ifixitOrigin = ifixitOriginFromHost(context);
+      const cacheOptions = { forceMiss: hasDisableCacheGets(context) };
 
       switch (productListType) {
          case ProductListType.AllParts: {
@@ -60,7 +61,7 @@ export const getProductListServerSideProps = ({
                      filters: { handle: { eq: 'Parts' } },
                      ifixitOrigin,
                   },
-                  hasDisableCacheGets(context)
+                  cacheOptions
                )
             );
             break;
@@ -96,7 +97,7 @@ export const getProductListServerSideProps = ({
                      },
                      ifixitOrigin,
                   },
-                  hasDisableCacheGets(context)
+                  cacheOptions
                )
             );
 
@@ -115,7 +116,7 @@ export const getProductListServerSideProps = ({
             productList = await timeAsync('findProductList', () =>
                ProductListCache.get(
                   { filters: { handle: { eq: 'Tools' } }, ifixitOrigin },
-                  hasDisableCacheGets(context)
+                  cacheOptions
                )
             );
             break;
@@ -130,7 +131,7 @@ export const getProductListServerSideProps = ({
             productList = await timeAsync('findProductList', () =>
                ProductListCache.get(
                   { filters: { handle: { eqi: handle } }, ifixitOrigin },
-                  hasDisableCacheGets(context)
+                  cacheOptions
                )
             );
 
@@ -164,7 +165,7 @@ export const getProductListServerSideProps = ({
                      },
                      ifixitOrigin,
                   },
-                  hasDisableCacheGets(context)
+                  cacheOptions
                )
             );
             shouldRedirectToCanonical =
