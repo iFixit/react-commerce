@@ -1,7 +1,17 @@
 import { PageEditMenuLink } from '@components/admin';
 import { STRAPI_ORIGIN } from '@config/env';
 import { faDatabase, IconDefinition } from '@fortawesome/pro-solid-svg-icons';
-import { FacetWidgetType, ProductListType } from '@models/product-list';
+import {
+   FacetWidgetType,
+   ProductList,
+   ProductListType,
+} from '@models/product-list';
+import {
+   ProductListItemTypeOverride,
+   ProductListItemTypeOverrideIndexed,
+} from '@models/product-list/types';
+import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
+import { usePagination } from 'react-instantsearch-hooks-web';
 import { z } from 'zod';
 
 type ProductListAttributes = {
@@ -108,4 +118,164 @@ export function getAdminLinks({
          url: `${STRAPI_ORIGIN}/admin/content-manager/collectionType/api::product-list.product-list/${productListId}`,
       },
    ];
+}
+
+export function updateProductListWithItemTypeOverrides(
+   productList: ProductList
+): ProductList {
+   const itemType = useDevicePartsItemType(productList);
+   const pagination = usePagination();
+   const page = pagination.currentRefinement + 1;
+   const productListCopy = { ...productList };
+   productListCopy.title = getTitle(productList, itemType);
+   productListCopy.metaTitle = getMetaTitle(productList, itemType);
+   productListCopy.description = getDescription(productList, page, itemType);
+   productListCopy.metaDescription = getMetaDescription(productList, itemType);
+   productListCopy.tagline = getTagline(productList, page, itemType);
+   return productListCopy;
+}
+
+function getDescription(
+   productList: ProductList,
+   page: number,
+   itemType?: string
+): string {
+   const description = page === 1 ? productList.description : null;
+   return (
+      (itemType && productList.deviceTitle
+         ? getItemOverrideAttribute(
+              productList.itemOverrides,
+              itemType,
+              'description',
+              productList.deviceTitle
+           )
+         : description) || ''
+   );
+}
+
+function getMetaDescription(
+   productList: ProductList,
+   itemType?: string
+): string {
+   const metaDescription =
+      itemType && productList.deviceTitle
+         ? getItemOverrideAttribute(
+              productList.itemOverrides,
+              itemType,
+              'metaDescription',
+              productList.deviceTitle
+           ) ?? productList.metaDescription
+         : productList.metaDescription;
+   const description =
+      itemType && productList.deviceTitle
+         ? getItemOverrideAttribute(
+              productList.itemOverrides,
+              itemType,
+              'description',
+              productList.deviceTitle
+           ) ?? productList.description
+         : productList.description;
+   return metaDescription || description;
+}
+
+function getTagline( // taglines don't exist if page > 1
+   productList: ProductList,
+   page: number,
+   itemType?: string
+): string | null {
+   const tagline =
+      !!productList.tagline && page === 1 ? productList.tagline : null;
+   return itemType && productList.deviceTitle
+      ? getItemOverrideAttribute(
+           productList.itemOverrides,
+           itemType,
+           'tagline',
+           productList.deviceTitle
+        )
+      : tagline;
+}
+
+function getTitle(productList: ProductList, itemType?: string): string {
+   const title =
+      itemType && productList.deviceTitle
+         ? getItemOverrideAttribute(
+              productList.itemOverrides,
+              itemType,
+              'title',
+              productList.deviceTitle
+           ) ?? productList.title
+         : productList.title;
+   return getProductListTitle(
+      {
+         title: title,
+         type: productList.type,
+         h1: productList.h1,
+      },
+      itemType
+   );
+}
+
+function getMetaTitle(productList: ProductList, itemType?: string): string {
+   const metaTitle =
+      itemType && productList.deviceTitle
+         ? getItemOverrideAttribute(
+              productList.itemOverrides,
+              itemType,
+              'metaTitle',
+              productList.deviceTitle
+           ) ?? productList.metaTitle
+         : productList.metaTitle;
+   const realTitle =
+      itemType && productList.deviceTitle
+         ? getItemOverrideAttribute(
+              productList.itemOverrides,
+              itemType,
+              'title',
+              productList.deviceTitle
+           ) ?? productList.title
+         : productList.title;
+   const { h1, title, ...productListMinusH1 } = productList;
+   return (
+      metaTitle ||
+      getTitle(
+         {
+            h1: null,
+            title: realTitle,
+            ...productListMinusH1,
+         },
+         itemType
+      ) + ' | iFixit'
+   );
+}
+
+function getItemOverrideAttribute(
+   itemOverrides: ProductListItemTypeOverrideIndexed,
+   itemType: string,
+   attribute: keyof ProductListItemTypeOverride,
+   deviceTitle: string
+): string | null {
+   const overrideValue =
+      itemOverrides?.[itemType]?.[attribute] ??
+      itemOverrides?.['*']?.[attribute];
+   return parseOverrideAttribute(overrideValue, deviceTitle, itemType);
+}
+
+function parseOverrideAttribute(
+   value: string | null,
+   deviceTitle: string,
+   itemType: string
+): string | null {
+   const replacements = {
+      DEVICE: deviceTitle,
+      ITEM: itemType,
+   };
+
+   if (!value) {
+      return null;
+   }
+   let result = value;
+   for (const [key, replacement] of Object.entries(replacements)) {
+      result = result.replace(new RegExp(`\\[${key}\\]`, 'g'), replacement);
+   }
+   return result;
 }

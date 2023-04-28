@@ -1,5 +1,8 @@
 import { VStack } from '@chakra-ui/react';
-import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
+import {
+   computeProductListAlgoliaFilterPreset,
+   updateProductListWithItemTypeOverrides,
+} from '@helpers/product-list-helpers';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListSectionType } from '@models/product-list';
 import { Configure, useMenu } from 'react-instantsearch-hooks-web';
@@ -17,17 +20,16 @@ import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection'
 
 export interface ProductListViewProps {
    productList: ProductList;
-   indexName: string;
 }
 
-export function ProductListView({
-   productList,
-   indexName,
-}: ProductListViewProps) {
+export function ProductListView({ productList }: ProductListViewProps) {
    // This temporary hack allows to correctly populate the itemType facet during SSR
    // see: https://github.com/algolia/instantsearch/issues/5571
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
+
+   const productListModified =
+      updateProductListWithItemTypeOverrides(productList);
 
    return (
       <>
