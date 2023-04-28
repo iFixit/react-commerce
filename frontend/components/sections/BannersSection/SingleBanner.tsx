@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { LinkButton } from '@components/ui/LinkButton';
 import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';

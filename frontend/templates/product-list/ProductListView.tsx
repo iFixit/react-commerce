@@ -17,13 +17,9 @@ import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection'
 
 export interface ProductListViewProps {
    productList: ProductList;
-   indexName: string;
 }
 
-export function ProductListView({
-   productList,
-   indexName,
-}: ProductListViewProps) {
+export function ProductListView({ productList }: ProductListViewProps) {
    // This temporary hack allows to correctly populate the itemType facet during SSR
    // see: https://github.com/algolia/instantsearch/issues/5571
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });

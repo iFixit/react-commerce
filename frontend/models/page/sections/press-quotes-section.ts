@@ -24,7 +24,7 @@ export const PressQuotesSectionSchema = z.object({
 
 export function pressQuotesSectionFromStrapi(
    fragment: PressQuotesSectionFieldsFragment | null | undefined,
-   index: number
+   _index: number
 ): PressQuotesSection | null {
    const id = createSectionId(fragment);
    const title = fragment?.title;

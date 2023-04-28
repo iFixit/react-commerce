@@ -3,7 +3,6 @@ import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
 import {
-   Text,
    Avatar,
    Box,
    BoxProps,
