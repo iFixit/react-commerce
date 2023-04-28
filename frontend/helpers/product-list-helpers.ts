@@ -10,8 +10,6 @@ import {
    ProductListItemTypeOverride,
    ProductListItemTypeOverrideIndexed,
 } from '@models/product-list/types';
-import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
-import { usePagination } from 'react-instantsearch-hooks-web';
 import { z } from 'zod';
 
 type ProductListAttributes = {
@@ -121,11 +119,10 @@ export function getAdminLinks({
 }
 
 export function updateProductListWithItemTypeOverrides(
-   productList: ProductList
+   productList: ProductList,
+   page: number,
+   itemType?: string
 ): ProductList {
-   const itemType = useDevicePartsItemType(productList);
-   const pagination = usePagination();
-   const page = pagination.currentRefinement + 1;
    const productListCopy = { ...productList };
    productListCopy.title = getTitle(productList, itemType);
    productListCopy.metaTitle = getMetaTitle(productList, itemType);

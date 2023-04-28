@@ -17,6 +17,8 @@ import {
    RelatedPostsSection,
 } from './sections';
 import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
+import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
+import { usePagination } from 'react-instantsearch-hooks-web';
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -28,8 +30,14 @@ export function ProductListView({ productList }: ProductListViewProps) {
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
 
-   const productListModified =
-      updateProductListWithItemTypeOverrides(productList);
+   const itemType = useDevicePartsItemType(productList);
+   const pagination = usePagination();
+   const page = pagination.currentRefinement + 1;
+   const productListModified = updateProductListWithItemTypeOverrides(
+      productList,
+      page,
+      itemType
+   );
 
    return (
       <>
