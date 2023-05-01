@@ -2,6 +2,7 @@ import { STRAPI_ORIGIN } from '@config/env';
 import * as Sentry from '@sentry/nextjs';
 import { getSdk, Requester } from './generated/sdk';
 export * from './generated/sdk';
+export * from './generated/validation';
 
 const requester: Requester = async <R, V>(
    doc: string,
