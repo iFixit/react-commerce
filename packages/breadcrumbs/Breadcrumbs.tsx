@@ -166,7 +166,7 @@ const IFixitBreadcrumbItem = function IFixitBreadcrumbItem({
          data-name={name}
       >
          <Text
-            as={Link}
+            as={url ? Link : undefined}
             noOfLines={1}
             href={url}
             fontWeight={isLast ? 500 : 400}
@@ -234,7 +234,7 @@ function IFixitCollapsedBreadcrumbItem({
 }: BreadcrumbItem & MenuItemProps & LinkProps) {
    return (
       <MenuItem
-         as={url ? Link : Text}
+         as={url ? Link : undefined}
          color="gray.900"
          _visited={{ color: menuItemProps.color || 'gray.900' }}
          _hover={{ textDecoration: 'none' }}
