@@ -59,9 +59,9 @@ export const Slider = forwardRef<SliderProps, 'div'>(
       );
       const [touchIndex, setTouchIndex] = React.useState<number | null>(null);
       const [touchX, setTouchX] = React.useState<number | null>(null);
-      const [dragX, setDragX] = React.useState<number | null>(null);
       const [isLooping, setLooping] = React.useState(false);
 
+      const dragX = React.useRef<number | null>(null);
       const isDragging = React.useRef(false);
       const controlsEnabled = React.useRef(true);
 
@@ -73,7 +73,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                     tailLength: loopTailsLength,
                  })
                : inputItems,
-         [inputItems, loopTailsLength]
+         [inputItems, loopTailsLength, loop]
       );
 
       const slideCount = items.length + ((loop && loopTailsLength) || 0);
@@ -89,10 +89,10 @@ export const Slider = forwardRef<SliderProps, 'div'>(
          onIndexChange?.(activeIndex);
       }, [activeIndex, onIndexChange]);
 
-      React.useEffect(() => {
+      React.useLayoutEffect(() => {
          document.addEventListener('mouseup', handleTouchEnd);
          return () => document.removeEventListener('mouseup', handleTouchEnd);
-      }, [dragX, activeIndex, slideCount, visibleSlides, touchIndex]);
+      }, [activeIndex, slideCount, visibleSlides, touchIndex]);
 
       const handlePrevious = () => {
          if (controlsEnabled.current) {
@@ -138,9 +138,20 @@ export const Slider = forwardRef<SliderProps, 'div'>(
          const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
          if (!isDragging.current && Math.abs(currentX - touchX) >= 1) {
             isDragging.current = true;
-            trackRef.current!.style.transition = 'none';
+            trackRef.current.style.transition = 'none';
          } else {
-            setDragX(currentX - touchX);
+            const newDragX = currentX - touchX;
+            dragX.current = newDragX;
+
+            // Directly update the component's style
+            trackRef.current.style.transform = computeTransform({
+               activeIndex,
+               slideCount,
+               slidesPerView: visibleSlides,
+               drag: newDragX,
+               spaceBetween,
+               slidesToKeepOnLeft,
+            });
          }
       };
 
@@ -149,9 +160,9 @@ export const Slider = forwardRef<SliderProps, 'div'>(
 
          if (isDragging.current) {
             const movement =
-               dragX! / (trackRef.current.clientWidth / visibleSlides);
+               dragX.current! / (trackRef.current.clientWidth / visibleSlides);
             const roundMovement =
-               Math.abs(movement) % 1 > 0.4
+               Math.abs(movement) % 1 > 0.2
                   ? movement > 0
                      ? Math.ceil(movement)
                      : Math.floor(movement)
@@ -169,10 +180,11 @@ export const Slider = forwardRef<SliderProps, 'div'>(
 
          setTouchIndex(null);
          setTouchX(null);
-         setDragX(null);
-         trackRef.current!.style.transition = 'transform ease-in-out 300ms';
+         dragX.current = null;
+         trackRef.current.style.transform = '';
+         trackRef.current.style.transition = 'transform ease-in-out 300ms';
          isDragging.current = false;
-      }, [dragX, activeIndex, slideCount, visibleSlides, touchIndex]);
+      }, [activeIndex, slideCount, visibleSlides, touchIndex]);
 
       const handleTransitionEnd = (e: React.TransitionEvent) => {
          if (loop && e.propertyName === 'transform') {
@@ -207,13 +219,13 @@ export const Slider = forwardRef<SliderProps, 'div'>(
          <Box ref={ref} pos="relative" overflow="hidden" {...other}>
             <Flex
                ref={trackRef}
-               sx={{ 'touch-action': 'pan-x' }}
+               sx={{ 'touch-action': 'pan-y' }}
                transition="transform ease-in-out 300ms"
                transform={computeTransform({
                   activeIndex: activeIndex,
                   slideCount,
                   slidesPerView: visibleSlides,
-                  drag: dragX ?? 0,
+                  drag: dragX.current ?? 0,
                   spaceBetween,
                   slidesToKeepOnLeft,
                })}
@@ -310,9 +322,9 @@ function computeTransform({
       Math.max(activeIndex - slidesToKeepOnLeft, 0),
       Math.max(slideCount - slidesPerView, 0)
    );
-   return `translateX(calc((${slideWidth} + ${slideMargin}) * ${-slidesToScroll} + ${
+   return `translate3d(calc((${slideWidth} + ${slideMargin}) * ${-slidesToScroll} + ${
       drag ?? 0
-   }px))`;
+   }px), 0, 0)`;
 }
 
 type CreateArrayWithPrefixAndTailProps = {
