@@ -24,7 +24,7 @@ import { HiddenWrapEffect, useHiddenWrap } from './FlexHiddenWrap';
 
 export type BreadcrumbItem = {
    label: string;
-   url: string;
+   url?: string;
 };
 
 export interface BreadCrumbsProps {
@@ -234,7 +234,7 @@ function IFixitCollapsedBreadcrumbItem({
 }: BreadcrumbItem & MenuItemProps & LinkProps) {
    return (
       <MenuItem
-         as={Link}
+         as={url ? Link : Text}
          color="gray.900"
          _visited={{ color: menuItemProps.color || 'gray.900' }}
          _hover={{ textDecoration: 'none' }}
