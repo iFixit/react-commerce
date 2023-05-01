@@ -70,12 +70,12 @@ function Resource({ title }: { title: string }) {
                   spacing="4px"
                   alignSelf="stretch"
                >
-                  <Badge display="flex" gap="2px">
-                     <FaIcon icon={faClock} />
+                  <Badge display="flex">
+                     <FaIcon icon={faClock} mr="2px" />
                      1h–2h
                   </Badge>
-                  <Badge display="flex" gap="2px" colorScheme="amber">
-                     <FaIcon icon={faGauge} />
+                  <Badge display="flex" colorScheme="amber">
+                     <FaIcon icon={faGauge} mr="2px" />
                      Moderate
                   </Badge>
                </Stack>
