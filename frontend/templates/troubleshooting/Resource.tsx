@@ -1,4 +1,4 @@
-import { Stack, Image, Text, Badge } from '@chakra-ui/react';
+import { Stack, Image, Text, Badge, StackProps } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
@@ -7,7 +7,10 @@ export function GuideResource({ guide }: { guide: Guide }) {
    return <Resource title={guide.title} />;
 }
 
-function ResourceBox({ children, ...props }: React.PropsWithChildren<StackProps>) {
+function ResourceBox({
+   children,
+   ...props
+}: React.PropsWithChildren<StackProps>) {
    return (
       <Stack
          alignSelf="stretch"
