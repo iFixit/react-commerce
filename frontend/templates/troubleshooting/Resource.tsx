@@ -7,7 +7,7 @@ export function GuideResource({ guide }: { guide: Guide }) {
    return <Resource title={guide.title} />;
 }
 
-function ResourceBox({ children }: React.PropsWithChildren<{}>) {
+function ResourceBox({ children, ...props }: React.PropsWithChildren<StackProps>) {
    return (
       <Stack
          alignSelf="stretch"
@@ -19,6 +19,7 @@ function ResourceBox({ children }: React.PropsWithChildren<{}>) {
          borderWidth="1px"
          borderRadius="4px"
          minHeight="88px"
+         {...props}
       >
          {children}
       </Stack>
