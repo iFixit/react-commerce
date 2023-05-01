@@ -1,5 +1,6 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { flags } from '@config/flags';
+import { invariant } from '@helpers/application-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { findPage } from '@models/page/server';
@@ -15,11 +16,15 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
       };
    }
 
+   const slug = context.params?.slug;
+   invariant(Array.isArray(slug), 'page slug param is missing');
+   const path = `/${slug.join('/')}`;
+
    const layoutProps = await getLayoutServerSideProps({
       storeCode: DEFAULT_STORE_CODE,
    });
    const page = await findPage({
-      path: '/Store',
+      path,
    });
 
    if (page == null) {

@@ -38,7 +38,8 @@ export async function fetchProductReviews(
 ): Promise<ProductReviewData | null> {
    const response = await apiClient.get(
       // TODO: get store code from user session or fall back to default
-      `reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`
+      `reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`,
+      'product-reviews'
    );
 
    invariant(isRecord(response), 'unexpected api response');

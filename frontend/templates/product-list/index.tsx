@@ -4,9 +4,8 @@ import { ProductListView } from './ProductListView';
 
 const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> = ({
    productList,
-   indexName,
 }) => {
-   return <ProductListView productList={productList} indexName={indexName} />;
+   return <ProductListView productList={productList} />;
 };
 
 ProductListTemplate.getLayout = function getLayout(page, pageProps) {

@@ -49,11 +49,15 @@ interface CacheOptions<
    staleWhileRevalidate?: number;
 }
 
+type GetOptions = {
+   forceMiss?: boolean;
+};
+
 type NextApiHandlerWithProps<
    Variables = unknown,
    Value = unknown
 > = NextApiHandler & {
-   get: (variables: Variables) => Promise<Value>;
+   get: (variables: Variables, options: GetOptions) => Promise<Value>;
    revalidate: (variables: Variables) => Promise<void>;
 };
 
@@ -128,43 +132,47 @@ export const withCache = <
    const get: NextApiHandlerWithProps<
       z.infer<VariablesSchema>,
       ValueSchema
-   >['get'] = async (variables) => {
+   >['get'] = async (variables, options = {}) => {
+      const { forceMiss } = options;
       const key = createCacheKey(endpoint, variables);
       logger.info(`${endpoint}.key: "${key}"`);
       let start = performance.now();
-      let cachedEntry: CacheEntry | null = null;
-      try {
-         cachedEntry = await cache.get(key);
-      } catch (error) {
-         logger.warning(
-            `${endpoint}.error: unable to get entry with key. ${printError(
-               error
-            )}`
-         );
-      }
-      if (isValidCacheEntry(cachedEntry)) {
-         const valueValidation = valueSchema.safeParse(cachedEntry.value);
-         if (valueValidation.success) {
-            if (isStale(cachedEntry)) {
-               await requestRevalidation(variables);
-               const elapsed = performance.now() - start;
-               logger.success.event(`${statName}.stale`);
-               logger.success.timing(`${statName}.stale`, elapsed);
-            } else {
-               const elapsed = performance.now() - start;
-               logger.success.event(`${statName}.hit`);
-               logger.success.timing(`${statName}.hit`, elapsed);
-            }
-            return valueValidation.data;
+      if (!forceMiss) {
+         let cachedEntry: CacheEntry | null = null;
+         try {
+            cachedEntry = await cache.get(key);
+         } catch (error) {
+            logger.warning(
+               `${endpoint}.error: unable to get entry with key. ${printError(
+                  error
+               )}`
+            );
          }
-         logger.warning(`${endpoint}.warning: Invalid value. If you've changed the value schema, this error is expected. We'll get a fresh value and update the cache.\n
-            ${printZodError(valueValidation.error)}`);
+         if (isValidCacheEntry(cachedEntry)) {
+            const valueValidation = valueSchema.safeParse(cachedEntry.value);
+            if (valueValidation.success) {
+               if (isStale(cachedEntry)) {
+                  await requestRevalidation(variables);
+                  const elapsed = performance.now() - start;
+                  logger.success.event(`${statName}.stale`);
+                  logger.success.timing(`${statName}.stale`, elapsed);
+               } else {
+                  const elapsed = performance.now() - start;
+                  logger.success.event(`${statName}.hit`);
+                  logger.success.timing(`${statName}.hit`, elapsed);
+               }
+               return valueValidation.data;
+            }
+            logger.warning(`${endpoint}.warning: Invalid value. If you've changed the value schema, this error is expected. We'll get a fresh value and update the cache.\n
+               ${printZodError(valueValidation.error)}`);
+         }
       }
       start = performance.now();
       const value = await getFreshValue(variables);
       let elapsed = performance.now() - start;
-      logger.warning.event(`${statName}.miss`);
-      logger.warning.timing(`${statName}.miss`, elapsed);
+      const missType = forceMiss ? 'force_miss' : 'miss';
+      logger.warning.event(`${statName}.${missType}`);
+      logger.warning.timing(`${statName}.${missType}`, elapsed);
       if (ttl != null && ttl > 0) {
          start = performance.now();
          const cacheEntry = createCacheEntry(value, {

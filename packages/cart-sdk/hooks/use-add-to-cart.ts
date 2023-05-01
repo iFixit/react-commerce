@@ -32,6 +32,7 @@ export function useAddToCart(analyticsMessage?: string) {
             case 'product': {
                return iFixitApiClient.post(
                   `store/user/cart/product/${input.product.itemcode}`,
+                  'add-to-cart',
                   {
                      body: JSON.stringify({
                         quantity: input.product.quantity,
@@ -40,16 +41,20 @@ export function useAddToCart(analyticsMessage?: string) {
                );
             }
             case 'bundle': {
-               return iFixitApiClient.post(`store/user/cart/product`, {
-                  body: JSON.stringify({
-                     skus: input.bundle.items.map((item) =>
-                        getProductVariantSku(item.itemcode)
-                     ),
-                     pageSku: getProductVariantSku(
-                        input.bundle.currentItemCode
-                     ),
-                  }),
-               });
+               return iFixitApiClient.post(
+                  `store/user/cart/product`,
+                  'add-to-cart-bundle',
+                  {
+                     body: JSON.stringify({
+                        skus: input.bundle.items.map((item) =>
+                           getProductVariantSku(item.itemcode)
+                        ),
+                        pageSku: getProductVariantSku(
+                           input.bundle.currentItemCode
+                        ),
+                     }),
+                  }
+               );
             }
             default: {
                throw assertNever(input);
