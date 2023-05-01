@@ -221,7 +221,7 @@ const StorePageSchema = BaseProductListSchema.extend({
 });
 export type StorePage = z.infer<typeof StorePageSchema>;
 
-const ProductListSchema = z.union([
+export const ProductListSchema = z.union([
    AllPartsProductListSchema,
    DevicePartsProductListSchema,
    AllToolsProductListSchema,
