@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             storeCode: DEFAULT_STORE_CODE,
             ifixitOrigin,
          },
-         hasDisableCacheGets(context)
+         { forceMiss: hasDisableCacheGets(context) }
       );
 
       if (product == null) {

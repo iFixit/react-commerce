@@ -5,7 +5,6 @@ import {
    Text,
    Avatar,
    Button,
-   Icon,
    Badge,
    Square,
    Flex,
@@ -22,7 +21,7 @@ import Prerendered from './prerendered';
 import { GuideResource } from './Resource';
 import { Guide } from './hooks/GuideModel';
 
-const SolutionFooter = () => (
+const _SolutionFooter = () => (
    <Stack
       justify="flex-start"
       align="flex-start"

@@ -49,11 +49,15 @@ interface CacheOptions<
    staleWhileRevalidate?: number;
 }
 
+type GetOptions = {
+   forceMiss?: boolean;
+};
+
 type NextApiHandlerWithProps<
    Variables = unknown,
    Value = unknown
 > = NextApiHandler & {
-   get: (variables: Variables, forceMiss: boolean) => Promise<Value>;
+   get: (variables: Variables, options: GetOptions) => Promise<Value>;
    revalidate: (variables: Variables) => Promise<void>;
 };
 
@@ -128,7 +132,8 @@ export const withCache = <
    const get: NextApiHandlerWithProps<
       z.infer<VariablesSchema>,
       ValueSchema
-   >['get'] = async (variables, forceMiss) => {
+   >['get'] = async (variables, options = {}) => {
+      const { forceMiss } = options;
       const key = createCacheKey(endpoint, variables);
       logger.info(`${endpoint}.key: "${key}"`);
       let start = performance.now();

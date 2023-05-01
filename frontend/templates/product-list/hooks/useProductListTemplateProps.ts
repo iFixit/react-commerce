@@ -6,7 +6,6 @@ import type { ProductList } from '@models/product-list';
 export type ProductListTemplateProps = WithProvidersProps<
    WithLayoutProps<{
       productList: ProductList;
-      indexName: string;
    }>
 >;
 

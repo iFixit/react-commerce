@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import { Wrapper } from '@ifixit/ui';
 import type { Product } from '@pages/api/nextjs/cache/product';
 

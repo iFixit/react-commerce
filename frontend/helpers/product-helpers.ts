@@ -5,7 +5,6 @@ import {
    faImage,
    faShop,
    faWarehouse,
-   IconDefinition,
 } from '@fortawesome/pro-solid-svg-icons';
 import { ifixitOriginWithSubdomain } from './path-helpers';
 
