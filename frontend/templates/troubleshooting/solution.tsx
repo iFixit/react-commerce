@@ -8,6 +8,7 @@ import {
    Badge,
    Square,
    Flex,
+   BoxProps,
 } from '@chakra-ui/react';
 import {
    faCircleCheck,
