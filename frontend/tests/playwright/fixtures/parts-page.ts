@@ -2,7 +2,6 @@ import { expect, Locator, Page } from '@playwright/test';
 
 export class PartsPage {
    readonly page: Page;
-   readonly addToCartButton: Locator;
    private baseURL: string;
 
    constructor(page: Page, baseURL: string) {

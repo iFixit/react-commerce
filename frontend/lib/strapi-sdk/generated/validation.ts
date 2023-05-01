@@ -823,6 +823,7 @@ export function ProductListInputSchema(): z.ZodObject<
       heroImage: z.string().nullish(),
       hideFromParent: z.boolean().nullish(),
       image: z.string().nullish(),
+      itemOverrides: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
       legacyDescription: z.string().nullish(),
       legacyPageId: z.number().nullish(),
       metaDescription: z.string().nullish(),
