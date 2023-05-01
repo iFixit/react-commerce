@@ -60,6 +60,18 @@ export function withTiming<ARGS extends Array<any>, RETURN>(
    };
 }
 
+export function withSyncTiming<ARGS extends Array<any>, RETURN>(
+   name: string,
+   syncFunction: (...args: ARGS) => RETURN
+) {
+   return (...args: ARGS) => {
+      const done = time(name);
+      const ret = syncFunction(...args);
+      done();
+      return ret;
+   };
+}
+
 function noOp() {}
 const silentTimer = function (timerName: string) {
    return noOp;
