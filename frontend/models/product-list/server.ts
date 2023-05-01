@@ -439,7 +439,7 @@ function formatItemTypeOverrides(
    itemOverrides: ApiProductListItemOverrides[] | undefined
 ): ProductListItemTypeOverrideIndexed {
    if (!itemOverrides) return {};
-   let convertedOverrides =
+   const convertedOverrides =
       convertToProductListItemTypeOverrides(itemOverrides);
    return convertedOverrides.reduce((result, item) => {
       result[item?.itemType || '*'] = item;
@@ -450,7 +450,7 @@ function formatItemTypeOverrides(
 function convertToProductListItemTypeOverrides(
    itemOverrides: ApiProductListItemOverrides[]
 ): ProductListItemTypeOverride[] {
-   let formatedOverrides = itemOverrides.map(
+   const formatedOverrides = itemOverrides.map(
       (itemOverride): ProductListItemTypeOverride | null => {
          if (
             itemOverride == null ||
