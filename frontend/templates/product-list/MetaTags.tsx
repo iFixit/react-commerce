@@ -46,9 +46,9 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
    const itemType = useDevicePartsItemType(productList);
-   let title = productList.title;
-   if (!isFiltered && page > 1) {
-      title += ` - Page ${page}`;
+   let metaTitle = productList.metaTitle ?? undefined;
+   if (metaTitle && !isFiltered && page > 1) {
+      metaTitle += ` - Page ${page}`;
    }
    const itemTypeHandle = itemType
       ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
@@ -81,8 +81,8 @@ export function MetaTags({ productList }: MetaTagsProps) {
                />
             </>
          )}
-         <title>{title}</title>
-         <meta property="og:title" content={title} />
+         <title>{metaTitle}</title>
+         <meta property="og:title" content={metaTitle} />
          <meta
             name="og:description"
             content={productList.metaDescription ?? undefined}
