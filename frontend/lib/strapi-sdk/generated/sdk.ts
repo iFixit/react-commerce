@@ -266,12 +266,14 @@ export type ComponentPageCallToActionInput = {
 
 export type ComponentPageCategory = {
    __typename?: 'ComponentPageCategory';
+   description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    productList?: Maybe<ProductListEntityResponse>;
 };
 
 export type ComponentPageCategoryFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ComponentPageCategoryFiltersInput>>>;
+   description?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<ComponentPageCategoryFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<ComponentPageCategoryFiltersInput>>>;
    productList?: InputMaybe<ProductListFiltersInput>;
