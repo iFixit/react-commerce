@@ -459,13 +459,12 @@ function convertToProductListItemTypeOverrides(
             return null;
          } else {
             return {
-               id: itemOverride.id,
-               itemType: itemOverride.itemType ?? null,
-               title: itemOverride.title ?? null,
-               metaTitle: itemOverride.metaTitle ?? null,
-               metaDescription: itemOverride.metaDescription ?? null,
-               description: itemOverride.description ?? null,
-               tagline: itemOverride.tagline ?? null,
+               itemType: itemOverride.itemType,
+               title: itemOverride.title,
+               metaTitle: itemOverride.metaTitle,
+               metaDescription: itemOverride.metaDescription,
+               description: itemOverride.description,
+               tagline: itemOverride.tagline,
             };
          }
       }

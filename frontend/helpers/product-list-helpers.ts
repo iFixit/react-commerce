@@ -253,7 +253,8 @@ function getItemOverrideAttribute(
 ): string | null {
    const overrideValue =
       itemOverrides?.[itemType]?.[attribute] ??
-      itemOverrides?.['*']?.[attribute];
+      itemOverrides?.['*']?.[attribute] ??
+      null;
    return parseOverrideAttribute(overrideValue, deviceTitle, itemType);
 }
 

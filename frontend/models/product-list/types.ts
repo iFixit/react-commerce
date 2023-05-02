@@ -137,13 +137,12 @@ const ProductListSectionSchema = z.union([
 export type ProductListSection = z.infer<typeof ProductListSectionSchema>;
 
 const ProductListItemTypeOverrideSchema = z.object({
-   id: z.string(),
-   itemType: z.string().nullable(),
-   title: z.string().nullable(),
-   description: z.string().nullable(),
-   metaDescription: z.string().nullable(),
-   metaTitle: z.string().nullable(),
-   tagline: z.string().nullable(),
+   itemType: z.string().nullable().optional(),
+   title: z.string().nullable().optional(),
+   description: z.string().nullable().optional(),
+   metaDescription: z.string().nullable().optional(),
+   metaTitle: z.string().nullable().optional(),
+   tagline: z.string().nullable().optional(),
 });
 
 const ProductListItemTypeOverrideIndexedSchema = z.record(
