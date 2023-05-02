@@ -138,7 +138,6 @@ function NavBar({
    return (
       <Flex
          w="100%"
-         minH="48px"
          backgroundColor="white"
          borderBottomColor="gray.200"
          borderBottomWidth="1px"
@@ -146,16 +145,16 @@ function NavBar({
       >
          <Flex
             maxW="1280px"
+            minHeight="48px"
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
+            justify="stretch"
          >
             <BreadCrumbs
-               minW="0"
-               height="48px"
                breadCrumbs={bc.slice(0, -1)}
                paddingInline={padding}
             />
-            <Flex minW="0">
+            <Flex flexShrink="0">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -180,8 +179,7 @@ function NavBar({
                      },
                   }}
                   position="relative"
-                  flexShrink="1"
-                  flexGrow="1"
+                  flex="1"
                   minW="0"
                >
                   <NavTabs
