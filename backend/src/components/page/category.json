@@ -13,7 +13,7 @@
          "target": "api::product-list.product-list"
       },
       "description": {
-         "type": "string"
+         "type": "text"
       }
    }
 }

@@ -2552,6 +2552,7 @@ export type FindPageQuery = {
                     categories?: Array<{
                        __typename?: 'ComponentPageCategory';
                        id: string;
+                       description?: string | null;
                        productList?: {
                           __typename?: 'ProductListEntityResponse';
                           data?: {
@@ -4217,6 +4218,7 @@ export type BrowseSectionFieldsFragment = {
    categories?: Array<{
       __typename?: 'ComponentPageCategory';
       id: string;
+      description?: string | null;
       productList?: {
          __typename?: 'ProductListEntityResponse';
          data?: {
@@ -4249,6 +4251,7 @@ export type BrowseSectionFieldsFragment = {
 export type CategoryFieldsFragment = {
    __typename?: 'ComponentPageCategory';
    id: string;
+   description?: string | null;
    productList?: {
       __typename?: 'ProductListEntityResponse';
       data?: {
@@ -4739,6 +4742,7 @@ export const ProductListFieldsFragmentDoc = `
 export const CategoryFieldsFragmentDoc = `
     fragment CategoryFields on ComponentPageCategory {
   id
+  description
   productList {
     data {
       ...ProductListFields
