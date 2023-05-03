@@ -67,6 +67,7 @@ export enum ProductListSectionType {
    Banner = 'banner',
    RelatedPosts = 'related-posts',
    ProductListSet = 'product-list-set',
+   ItemTypeOverride = 'item-type-override',
 }
 const ProductListAncestorSchema = z.object({
    deviceTitle: z.string().nullable(),
@@ -135,6 +136,27 @@ const ProductListSectionSchema = z.union([
 ]);
 export type ProductListSection = z.infer<typeof ProductListSectionSchema>;
 
+const ProductListItemTypeOverrideSchema = z.object({
+   itemType: z.string().nullable().optional(),
+   title: z.string().nullable().optional(),
+   description: z.string().nullable().optional(),
+   metaDescription: z.string().nullable().optional(),
+   metaTitle: z.string().nullable().optional(),
+   tagline: z.string().nullable().optional(),
+});
+
+const ProductListItemTypeOverrideIndexedSchema = z.record(
+   ProductListItemTypeOverrideSchema
+);
+
+export type ProductListItemTypeOverride = z.infer<
+   typeof ProductListItemTypeOverrideSchema
+>;
+
+export type ProductListItemTypeOverrideIndexed = z.infer<
+   typeof ProductListItemTypeOverrideIndexedSchema
+>;
+
 const BaseProductListSchema = z.object({
    id: z.string().nullable(),
    title: z.string(),
@@ -160,6 +182,7 @@ const BaseProductListSchema = z.object({
    }),
    wikiInfo: z.array(WikiInfoEntrySchema),
    isOnStrapi: z.boolean(),
+   itemOverrides: ProductListItemTypeOverrideIndexedSchema,
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 
