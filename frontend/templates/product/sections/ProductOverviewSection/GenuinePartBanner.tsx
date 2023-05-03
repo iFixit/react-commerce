@@ -1,5 +1,6 @@
 import {
    Crucial,
+   Hp,
    Lenovo,
    Logitech,
    Micron,
@@ -26,6 +27,7 @@ const partnerCodeToComponentMap: { [key: string]: React.FC } = {
    // Don't have permission yet
    // google_pixel: Google,
    crucial: () => <Crucial px="2" />,
+   hp: Hp,
    htc_vive: Vive,
    lenovo: Lenovo,
    logitech: Logitech,
