@@ -1,6 +1,16 @@
-import { chakra, Flex, FlexProps, Img, Link, Text } from '@chakra-ui/react';
+import {
+   Button,
+   chakra,
+   Flex,
+   FlexProps,
+   Img,
+   Link,
+   Text,
+} from '@chakra-ui/react';
 import { ConditionalWrapper } from '@ifixit/ui/misc';
 import type { Product } from '@pages/api/nextjs/cache/product';
+import React from 'react';
+import TextWithHighlight from './TextWithHighlight';
 
 export interface CompatibleDeviceProps extends FlexProps {
    device: Omit<
@@ -11,19 +21,24 @@ export interface CompatibleDeviceProps extends FlexProps {
    };
    maxModelLines?: number;
    truncateModels?: boolean;
+   query?: string;
 }
 
 export function CompatibleDevice({
    device,
    maxModelLines = 0,
    truncateModels = true,
+   query,
    ...otherProps
 }: CompatibleDeviceProps) {
-   const { variants } = device;
+   const [showHiddenVariants, setShowHiddenVariants] = React.useState(false);
+
+   const variants = device.variants as string[];
    const [visibleVariants, hiddenVariants] =
       maxModelLines > 0 && variants.length > maxModelLines
          ? [variants.slice(0, maxModelLines), variants.slice(maxModelLines)]
          : [variants, []];
+
    return (
       <Flex
          alignItems="start"
@@ -55,6 +70,8 @@ export function CompatibleDevice({
                src={device.imageUrl}
                alt={device.deviceName ?? ''}
                w="12"
+               h="12"
+               objectFit="contain"
                mr="3"
                borderWidth="1px"
                borderStyle="solid"
@@ -65,8 +82,8 @@ export function CompatibleDevice({
          <Flex
             minH="12"
             flexDir="column"
-            alignSelf="flex-start"
-            justifyContent="center"
+            alignItems="flex-start"
+            justifyContent="flex-start"
          >
             <ConditionalWrapper
                condition={!!device.deviceUrl}
@@ -84,7 +101,7 @@ export function CompatibleDevice({
                   </chakra.a>
                )}
             >
-               {device.deviceName}
+               <TextWithHighlight text={device.deviceName} query={query} />
             </ConditionalWrapper>
             <Flex
                flexDir="column"
@@ -99,7 +116,7 @@ export function CompatibleDevice({
                      fontSize="xs"
                      color="gray.600"
                   >
-                     {variant}
+                     <TextWithHighlight text={variant} query={query} />
                   </Text>
                ))}
             </Flex>
@@ -108,37 +125,63 @@ export function CompatibleDevice({
                   And {hiddenVariants.length} more...
                </Text>
             )}
-            {!truncateModels && hiddenVariants.length > 0 && (
-               <details>
-                  <chakra.summary
+            {!truncateModels &&
+               hiddenVariants.length > 0 &&
+               (!showHiddenVariants ? (
+                  <Button
+                     display="block"
                      mt="2px"
                      lineHeight="short"
                      fontSize="xs"
                      fontWeight="medium"
                      color="brand.500"
-                     cursor="pointer"
+                     variant="link"
+                     textDecoration="none"
+                     onClick={() => setShowHiddenVariants(true)}
                   >
-                     Show {hiddenVariants.length} more
-                  </chakra.summary>
-                  <Flex
-                     flexDir="column"
-                     {...(!truncateModels && {
-                        onClick: (event) => event.stopPropagation(),
-                     })}
-                  >
-                     {hiddenVariants.map((variant) => (
-                        <Text
-                           key={variant}
-                           lineHeight="short"
-                           fontSize="xs"
-                           color="gray.600"
-                        >
-                           {variant}
+                     Show{' '}
+                     <Text as="span" fontWeight="bold">
+                        {hiddenVariants.length}
+                     </Text>{' '}
+                     more
+                  </Button>
+               ) : (
+                  <>
+                     <Flex
+                        flexDir="column"
+                        {...(!truncateModels && {
+                           onClick: (event) => event.stopPropagation(),
+                        })}
+                     >
+                        {hiddenVariants.map((variant) => (
+                           <Text
+                              key={variant}
+                              lineHeight="short"
+                              fontSize="xs"
+                              color="gray.600"
+                           >
+                              <TextWithHighlight text={variant} query={query} />
+                           </Text>
+                        ))}
+                     </Flex>
+                     <Button
+                        display="block"
+                        mt="2px"
+                        lineHeight="short"
+                        fontSize="xs"
+                        fontWeight="medium"
+                        color="brand.500"
+                        variant="link"
+                        textDecoration="none"
+                        onClick={() => setShowHiddenVariants(false)}
+                     >
+                        Hide{' '}
+                        <Text as="span" fontWeight="bold">
+                           {hiddenVariants.length}
                         </Text>
-                     ))}
-                  </Flex>
-               </details>
-            )}
+                     </Button>
+                  </>
+               ))}
          </Flex>
       </Flex>
    );
