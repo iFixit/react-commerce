@@ -247,6 +247,7 @@ export function ComponentPageCategoryFiltersInputSchema(): z.ZodObject<
             z.lazy(() => ComponentPageCategoryFiltersInputSchema().nullable())
          )
          .nullish(),
+      description: z.lazy(() => StringFilterInputSchema().nullish()),
       not: z.lazy(() => ComponentPageCategoryFiltersInputSchema().nullish()),
       or: z
          .array(

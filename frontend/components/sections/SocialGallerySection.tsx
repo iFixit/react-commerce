@@ -32,7 +32,10 @@ export function SocialGallerySection({
                   md: 'repeat(5, 1fr)',
                }}
                w="full"
-               gap={5}
+               gap={{
+                  base: 4,
+                  md: 5,
+               }}
             >
                {posts.map((post, index) => {
                   const isFirstPost = index === 0;
@@ -74,7 +77,7 @@ interface SocialPostGridItemProps {
 
 function SocialPost({ post: { image, author } }: SocialPostGridItemProps) {
    return (
-      <Box as="article" position="relative">
+      <Box as="article" position="relative" borderRadius="md" overflow="hidden">
          {image && (
             <Box w="full" position="relative">
                <AspectRatio ratio={1}>

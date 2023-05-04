@@ -17,6 +17,7 @@ import {
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
+import { withSyncTiming } from '@ifixit/helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { FaIcon } from '@ifixit/icons';
 import type { Menu } from '@ifixit/menu';
@@ -64,7 +65,7 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import type { DefaultLayoutProps } from './server';
 
-export function DefaultLayout({
+const DefaultLayoutComponent = function ({
    stores,
    currentStore,
    shopifyCredentials,
@@ -312,7 +313,7 @@ export function DefaultLayout({
          <GoogleAnalytics />
       </ShopifyStorefrontProvider>
    );
-}
+};
 
 interface LayoutNavigationDrawerProps {
    menu: Menu;
@@ -418,3 +419,8 @@ function HeaderUserMenu() {
       </UserMenu>
    );
 }
+
+export const DefaultLayout = withSyncTiming(
+   'react.page',
+   DefaultLayoutComponent
+);
