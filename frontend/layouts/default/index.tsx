@@ -183,6 +183,7 @@ const DefaultLayoutComponent = function ({
                            href="/"
                            aria-label="Go to homepage"
                            pr="4"
+                           title="iFixit turns 20"
                         >
                            <Icon as={Wordmark20th} width="auto" height="100%" />
                         </WordmarkLink>
@@ -332,7 +333,12 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    return (
       <NavigationDrawer>
          <DrawerCloseButton />
-         <WordmarkLink href="/" aria-label="Go to homepage" mb="8">
+         <WordmarkLink
+            href="/"
+            aria-label="Go to homepage"
+            mb="8"
+            title="iFixit turns 20"
+         >
             <Icon as={Wordmark20th} width="auto" height="100%" />
          </WordmarkLink>
          <NavigationAccordion>
