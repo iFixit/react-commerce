@@ -8,6 +8,8 @@ export const interceptLogin = async (page: Page, userParams?: Object) => {
       username: 'john',
       unique_username: 'john123',
       privileges: [],
+      teams: [],
+      links: {},
    };
 
    await page.route('**/api/2.0/user', (route) =>
