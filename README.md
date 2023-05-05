@@ -34,7 +34,7 @@ Here's one way you can get all the right versions installed and setup:
 3. `vercel login`
 4. `cd path/to/this/repo && vercel link --project=react-commerce`
 5. `vercel env pull`
-6. `ln -s ../.env frontend/.env.local
+6. `ln -s ../.env frontend/.env.local`
 
 #### Setup next.js environment file (without vercel account)
 
