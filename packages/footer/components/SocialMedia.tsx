@@ -3,6 +3,7 @@ import {
    FacebookLogo,
    InstagramLogo,
    RepairOrgLogo,
+   RepairEULogo,
    TwitterLogo,
    TiktokLogo,
    YoutubeLogo,
@@ -21,12 +22,21 @@ export interface SocialMediaAccounts {
 
 export const SocialMediaSection = memo(function SocialMediaSection({
    accounts,
+   repairUrl,
 }: {
    accounts: SocialMediaAccounts;
+   repairUrl?: string;
 }) {
    if (!accounts) {
       return null;
    }
+
+   let showRepairEU = false;
+
+   if (repairUrl.includes('eu')) {
+      showRepairEU = true;
+   }
+
    return (
       <HStack spacing={4} justify={{ base: 'space-between', sm: 'center' }}>
          {accounts.tiktok && (
@@ -73,7 +83,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
             <FooterLink
                aria-label="The Repair Association"
                href={accounts.repairOrg}
-               icon={RepairOrgLogo}
+               icon={showRepairEU ? RepairEULogo : RepairOrgLogo}
                customColor={'gray.400'}
             />
          )}
