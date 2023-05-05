@@ -25,7 +25,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
    repairUrl,
 }: {
    accounts: SocialMediaAccounts;
-   repairUrl: string;
+   repairUrl?: string;
 }) {
    if (!accounts) {
       return null;
@@ -33,7 +33,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
    
    let showRepairEU = false;
    
-   if (repairUrl.includes('eu')) {
+   if (repairUrl && repairUrl.includes('eu')) {
       showRepairEU = true;
    }
    
