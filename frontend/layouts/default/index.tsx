@@ -411,9 +411,21 @@ function HeaderUserMenu() {
                   >
                      View Profile
                   </UserMenuLink>
+                  {user.data.teams.length > 0 && (
+                     <UserMenuLink href={`${appContext.ifixitOrigin}/Team`}>
+                        My Team
+                     </UserMenuLink>
+                  )}
                   <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
                      Orders
                   </UserMenuLink>
+                  {user.data.links.manage && (
+                     <UserMenuLink
+                        href={`${appContext.ifixitOrigin}${user.data.links.manage}`}
+                     >
+                        Manage
+                     </UserMenuLink>
+                  )}
                </MenuGroup>
                <MenuDivider />
                <MenuGroup>
