@@ -253,7 +253,10 @@ function getItemOverrideAttribute(
    attribute: keyof ProductListItemTypeOverride,
    deviceTitle: string
 ): string | null {
-   const overrideValue = itemOverrides?.['*']?.[attribute] ?? null;
+   const overrideValue =
+      itemOverrides?.[itemType]?.[attribute] ??
+      itemOverrides?.['*']?.[attribute] ??
+      null;
    return parseOverrideAttribute(overrideValue, deviceTitle, itemType);
 }
 
