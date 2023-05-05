@@ -184,6 +184,7 @@ const DefaultLayoutComponent = function ({
                            aria-label="Go to homepage"
                            pr="4"
                            title="iFixit turns 20"
+                           padding={0}
                         >
                            <Icon as={Wordmark20th} width="auto" height="100%" />
                         </WordmarkLink>
@@ -338,6 +339,7 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
             aria-label="Go to homepage"
             mb="8"
             title="iFixit turns 20"
+            paddding={0}
          >
             <Icon as={Wordmark20th} width="auto" height="100%" />
          </WordmarkLink>
