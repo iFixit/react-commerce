@@ -74,7 +74,7 @@ You can run the backend both using SQLite and using Postgres with docker compose
 
 > :warning: If you are running Strapi using docker compose, be sure to delete `backend/node_modules` first, as your OS might differ from the docker container OS, so you want the docker container to install dependencies by itself.
 
-The `frontend` directory is structured as follows:
+The `frontend` directory is structured as follows:a
 
 -  `pages`: contains the Next.js routes (usually these just export code from a template)
 -  `models`: contains business logic (e.g. how to fetch product list from API, how to subscribe to newsletter, etc.)
