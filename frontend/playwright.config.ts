@@ -1,4 +1,10 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import {
+   PlaywrightTestConfig,
+   PlaywrightTestOptions,
+   PlaywrightWorkerOptions,
+   Project,
+   devices,
+} from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -58,33 +64,33 @@ const config: PlaywrightTestConfig = {
 
    /* Configure projects for major browsers */
    projects: [
-      {
+      { name: 'setup', testMatch: /.*\.setup\.ts/ },
+      generateBrowserConfig({
          name: 'Desktop Chrome',
          use: {
             ...devices['Desktop Chrome'],
          },
-      },
-
-      {
+      }),
+      generateBrowserConfig({
          name: 'Desktop Firefox',
          use: {
             ...devices['Desktop Firefox'],
          },
-      },
+      }),
 
       /* Test against mobile viewports. */
-      {
+      generateBrowserConfig({
          name: 'Mobile Chrome',
          use: {
             ...devices['Pixel 5'],
          },
-      },
-      {
+      }),
+      generateBrowserConfig({
          name: 'Tablet Chrome',
          use: {
             ...devices['Galaxy Tab S4'],
          },
-      },
+      }),
 
       /* Test against branded browsers. */
       // {
@@ -114,5 +120,18 @@ const config: PlaywrightTestConfig = {
       reuseExistingServer: !process.env.CI,
    },
 };
+
+function generateBrowserConfig(
+   config: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>
+) {
+   return {
+      ...config,
+      use: {
+         ...config.use,
+         storageState: __dirname + '/tests/playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+   };
+}
 
 export default config;
