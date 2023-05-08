@@ -13,7 +13,7 @@ test.describe('Parts Page Product Listing', () => {
 
       for (let i = 0; i < productCount; i++) {
          const product = products.nth(i);
-         await expect(product.getByTestId('current-price')).toBeVisible();
+         await expect(product.getByTestId('price')).toBeVisible();
       }
    });
 

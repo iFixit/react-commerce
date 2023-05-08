@@ -20,7 +20,7 @@ const userKeys = {
    user: ['user'],
 };
 
-const userDataLocalKey = 'user.data';
+const userDataLocalKey = 'user.data.1';
 
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();

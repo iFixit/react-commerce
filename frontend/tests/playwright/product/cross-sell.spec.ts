@@ -15,7 +15,7 @@ test.describe('Cross-Sell Tests', () => {
             .isVisible();
          if (isCurrent) {
             currentProductPrice = await product
-               .getByTestId('current-price')
+               .getByTestId('price')
                .textContent();
             await expect(currentProductPrice).toMatch(/^\$[0-9]+(\.[0-9]{2})/);
             currentProductTitle = await product
@@ -56,7 +56,7 @@ test.describe('Cross-Sell Tests', () => {
 
    test('Add All Cross-Sell Products to Cart', async ({ productPage }) => {
       await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
-      const products = await productPage.page.getByTestId('cross-sell-item');
+      const products = productPage.page.getByTestId('cross-sell-item');
 
       const allProductTitles = [];
       let expectedTotalPrice = 0;
@@ -65,9 +65,7 @@ test.describe('Cross-Sell Tests', () => {
          allProductTitles.push(
             await product.getByTestId('cross-sell-item-title').textContent()
          );
-         const productPrice = await product
-            .getByTestId('current-price')
-            .textContent();
+         const productPrice = await product.getByTestId('price').textContent();
          expectedTotalPrice += parseFloat(productPrice!.slice(1));
       }
 
