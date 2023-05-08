@@ -20,7 +20,9 @@ export function GuideResource({ guide }: { guide: Guide }) {
 function ResourceBox({
    children,
    ...props
-}: React.PropsWithChildren<StackProps>) {
+}: React.PropsWithChildren<StackProps> & {
+   href: string;
+}) {
    return (
       <Stack
          alignSelf="stretch"
