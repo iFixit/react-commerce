@@ -5,7 +5,8 @@ const { definePartsStyle, defineMultiStyleConfig } =
    createMultiStyleConfigHelpers(parts.keys);
 
 const STATUSES: Record<string, string> = {
-   info: 'brand',
+   default: 'brand',
+   info: 'gray',
    warning: 'amber',
    success: 'green',
    error: 'red',
@@ -13,7 +14,7 @@ const STATUSES: Record<string, string> = {
 };
 
 const subtle = definePartsStyle((props) => {
-   const status: string = props.status ?? 'info';
+   const status: string = props.status ?? 'default';
    const colorScheme: string = STATUSES[status];
 
    return {
