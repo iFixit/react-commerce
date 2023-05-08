@@ -38,6 +38,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
          }),
       [productList.id]
    );
+   const padding = { base: '16px', sm: '32px' };
    return (
       <>
          <SecondaryNavbar
@@ -59,7 +60,6 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                         sm: 'flex',
                      }}
                      breadCrumbs={breadCrumbs}
-                     breadcrumbsToShow={3}
                      fontSize="sm"
                   />
                   <Flex
@@ -78,10 +78,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
          <SecondaryNavbar display={{ sm: 'none' }}>
             <Wrapper h="full">
                <Flex h="full" w="full" boxSizing="border-box">
-                  <BreadCrumbs
-                     breadCrumbs={breadCrumbs}
-                     breadcrumbsToShow={1}
-                  />
+                  <BreadCrumbs breadCrumbs={breadCrumbs} fontSize="sm" />
                </Flex>
             </Wrapper>
          </SecondaryNavbar>
