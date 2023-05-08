@@ -5,12 +5,14 @@ import {
    Project,
    devices,
 } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+dotenv.config({ path: '.env.test' });
+dotenv.config({ path: '.env.local' });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -64,7 +66,6 @@ const config: PlaywrightTestConfig = {
 
    /* Configure projects for major browsers */
    projects: [
-      { name: 'setup', testMatch: /.*\.setup\.ts/ },
       generateBrowserConfig({
          name: 'Desktop Chrome',
          use: {
@@ -128,7 +129,19 @@ function generateBrowserConfig(
       ...config,
       use: {
          ...config.use,
-         storageState: __dirname + '/tests/playwright/.auth/user.json',
+         storageState: {
+            cookies: [
+               {
+                  name: 'dev-api-psk',
+                  value: process.env.DEV_API_AUTH_TOKEN,
+                  url: process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
+                  sameSite: 'None',
+                  expires:
+                     Math.floor(Date.now().valueOf() / 1000) +
+                     60 * 60 * 24 * 365,
+               },
+            ],
+         },
       },
       dependencies: ['setup'],
    };
