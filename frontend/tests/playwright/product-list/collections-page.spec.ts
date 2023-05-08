@@ -2,14 +2,12 @@ import { test, expect } from '../test-fixtures';
 // Assert that when a user clicks the pagination buttons,
 // the page scrolls back up.
 
-test.describe('collections scroll', () => {
+test.describe('Collections Page Scroll', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto('/Tools');
    });
 
-   test('Should scroll to the top of the page after clicking next page', async ({
-      page,
-   }) => {
+   test('Scroll to Top on Pagination Click', async ({ page }) => {
       await (
          expect(page.getByTestId('collections-search-box')) as any
       ).toBeVisible();

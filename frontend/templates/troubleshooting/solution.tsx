@@ -5,10 +5,10 @@ import {
    Text,
    Avatar,
    Button,
-   Icon,
    Badge,
    Square,
    Flex,
+   BoxProps,
 } from '@chakra-ui/react';
 import {
    faCircleCheck,
@@ -22,7 +22,7 @@ import Prerendered from './prerendered';
 import { GuideResource } from './Resource';
 import { Guide } from './hooks/GuideModel';
 
-const SolutionFooter = () => (
+const _SolutionFooter = () => (
    <Stack
       justify="flex-start"
       align="flex-start"
@@ -223,9 +223,9 @@ export default function SolutionCard({
    );
 }
 
-function LinkCards({ guides }: { guides: Guide[] }) {
+function LinkCards({ guides, ...props }: { guides: Guide[] } & BoxProps) {
    return (
-      <Box>
+      <Box {...props}>
          {guides.map((guide: Guide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}

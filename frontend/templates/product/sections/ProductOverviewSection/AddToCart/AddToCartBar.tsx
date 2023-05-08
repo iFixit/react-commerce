@@ -1,19 +1,18 @@
-import { Box, Button, Flex, HStack, Link, Text } from '@chakra-ui/react';
-import { Rating } from '@components/ui';
-import { shouldShowProductRating } from '@ifixit/helpers';
-import { Wrapper } from '@ifixit/ui';
+import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
+import { ProductVariantPrice, Wrapper } from '@ifixit/ui';
+import type { ProductVariant } from '@models/product';
 
 interface AddToCartBarProps {
    title: string;
-   rating?: number | null;
-   reviewsCount?: number | null;
+   variant: ProductVariant;
    active?: boolean;
+   onClickAddToCart: () => void;
 }
 
 export function AddToCartBar({
    title,
-   rating,
-   reviewsCount,
+   variant,
+   onClickAddToCart,
    active = false,
 }: AddToCartBarProps) {
    return (
@@ -34,62 +33,34 @@ export function AddToCartBar({
          <Wrapper>
             <HStack justify="space-between">
                <Flex flexDir="column">
-                  <Text fontSize="md" noOfLines={1}>
-                     {title}
+                  <Text
+                     fontSize={{
+                        base: 'sm',
+                        md: 'md',
+                     }}
+                     noOfLines={1}
+                  >
+                     {title} - {variant.title}
                   </Text>
-                  <ProductRating rating={rating} count={reviewsCount} />
+                  <ProductVariantPrice
+                     price={variant.price}
+                     compareAtPrice={variant.compareAtPrice}
+                     proPricesByTier={variant.proPricesByTier}
+                     data-testid="add-to-cart-bar-price"
+                     showDiscountLabel={false}
+                     size={{ base: 'small' }}
+                  />
                </Flex>
                <Button
-                  as="a"
-                  href="#product"
                   colorScheme="brand"
                   size={{ base: 'sm', md: 'md' }}
                   flexShrink={0}
+                  onClick={onClickAddToCart}
                >
                   Add to cart
                </Button>
             </HStack>
          </Wrapper>
       </Box>
-   );
-}
-
-interface ProductRatingProps {
-   rating?: number | null;
-   count?: number | null;
-}
-
-function ProductRating({ rating, count }: ProductRatingProps) {
-   if (rating == null || count == null) return null;
-
-   if (!shouldShowProductRating({ rating, count })) {
-      return null;
-   }
-
-   return (
-      <HStack alignItems="unset">
-         <Rating value={rating} size="3" />
-         <Text color="gray.600">{rating}</Text>
-
-         <Box
-            w="1px"
-            bg="gray.300"
-            display={{
-               base: 'none',
-               sm: 'block',
-            }}
-         ></Box>
-
-         <Link
-            href="#reviews"
-            color="gray.600"
-            display={{
-               base: 'none',
-               sm: 'block',
-            }}
-         >
-            {count} reviews
-         </Link>
-      </HStack>
    );
 }

@@ -1,9 +1,7 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Product Page Reviews test', () => {
-   test('see more reviews button displays more reviews', async ({
-      productPage,
-   }) => {
+test.describe('Product Reviews on Product Page', () => {
+   test('Load More Reviews', async ({ productPage }) => {
       await productPage.gotoProduct('repair-business-toolkit');
 
       const reviewsCountBefore = await productPage.page

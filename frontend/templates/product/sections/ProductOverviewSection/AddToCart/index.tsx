@@ -45,9 +45,9 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
             <>
                <AddToCartBar
                   title={product.title}
-                  rating={product.reviews?.rating}
-                  reviewsCount={product.reviews?.count}
+                  variant={selectedVariant}
                   active={!isButtonVisible}
+                  onClickAddToCart={addToCart}
                />
                <Button
                   ref={buttonRef}

@@ -1,0 +1,7 @@
+fragment QuoteCardFields on ComponentSectionQuoteCard {
+   id
+   text
+   author {
+      ...PersonFields
+   }
+}

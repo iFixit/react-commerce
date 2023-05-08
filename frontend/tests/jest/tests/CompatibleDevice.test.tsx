@@ -22,13 +22,14 @@ describe('CompatibleDevice', () => {
    it('renders and matches the snapshot with truncated variants', async () => {
       const product = getMockProduct();
       const device = product!.compatibility!.devices[0];
+      expect(device.variants.length).toBeGreaterThan(2);
 
       // @ts-ignore
       const { asFragment } = renderWithAppContext(
-         <CompatibleDevice device={device} maxModelLines={2} />
+         <CompatibleDevice device={device} maxModelLines={1} />
       );
 
-      (expect(screen.queryByText(/other models.../i)) as any).toBeVisible();
+      (expect(screen.queryByText(/And \d more.../i)) as any).toBeVisible();
       (expect(asFragment()) as any).toMatchSnapshot();
    });
 });

@@ -30,6 +30,8 @@ import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSal
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
 import { CompatibleDevices } from './CompatibleDevices';
+import { CompatibilityNotes } from './CompatibilityNotes';
+import { PRODUCT_OVERVIEW_SECTION_ID } from './constants';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { InternationalBuyBox } from './InternationalBuyBox';
 import { ProductDescription } from './ProductDescription';
@@ -64,9 +66,8 @@ export function ProductOverviewSection({
       [onVariantChange]
    );
    const isForSale = useIsProductForSale(product);
-
    return (
-      <Wrapper as="section" id="product-overview" mb="16" pt="6">
+      <Wrapper as="section" id={PRODUCT_OVERVIEW_SECTION_ID} mb="16" pt="6">
          <Flex>
             <Flex
                position="sticky"
@@ -204,12 +205,12 @@ export function ProductOverviewSection({
                      </CustomAccordionPanel>
                   </AccordionItem>
 
-                  <WikiHtmlAccordianItem title="Kit contents">
-                     {selectedVariant.kitContents}
-                  </WikiHtmlAccordianItem>
-
                   <WikiHtmlAccordianItem title="Assembly contents">
                      {selectedVariant.assemblyContents}
+                  </WikiHtmlAccordianItem>
+
+                  <WikiHtmlAccordianItem title="Kit contents">
+                     {selectedVariant.kitContents}
                   </WikiHtmlAccordianItem>
 
                   <AccordionItem
@@ -218,14 +219,26 @@ export function ProductOverviewSection({
                         product.compatibility.devices.length <= 0
                      }
                   >
-                     <CustomAccordionButton>
-                        Compatibility
-                     </CustomAccordionButton>
-                     <CustomAccordionPanel data-testid="product-compatibility-dropdown">
-                        <CompatibleDevices product={product} />
-                     </CustomAccordionPanel>
+                     {product.compatibilityNotes ? (
+                        <>
+                           <CustomAccordionButton>
+                              Compatibility Notes
+                           </CustomAccordionButton>
+                           <CustomAccordionPanel data-testid="product-compatibility-dropdown">
+                              <CompatibilityNotes product={product} />
+                           </CustomAccordionPanel>
+                        </>
+                     ) : (
+                        <>
+                           <CustomAccordionButton>
+                              Compatibility
+                           </CustomAccordionButton>
+                           <CustomAccordionPanel data-testid="product-compatibility-dropdown">
+                              <CompatibleDevices product={product} />
+                           </CustomAccordionPanel>
+                        </>
+                     )}
                   </AccordionItem>
-
                   <WikiHtmlAccordianItem title="Specifications">
                      {selectedVariant.specifications}
                   </WikiHtmlAccordianItem>
@@ -270,7 +283,9 @@ const ProductTitle = chakra(
 
 type CustomAccordionButtonProps = React.PropsWithChildren<{}>;
 
-function CustomAccordionButton({ children }: CustomAccordionButtonProps) {
+export function CustomAccordionButton({
+   children,
+}: CustomAccordionButtonProps) {
    return (
       <AccordionButton py="5" px="1.5">
          <Box

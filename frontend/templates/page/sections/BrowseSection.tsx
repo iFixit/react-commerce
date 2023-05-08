@@ -160,7 +160,7 @@ function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                         productList={{
                            title: category.title,
                            imageUrl: category.image?.url,
-                           description: category.metaDescription,
+                           description: category.description,
                         }}
                      />
                   </NextLink>

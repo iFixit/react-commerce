@@ -1,5 +1,6 @@
 import { strapi } from '@lib/strapi-sdk';
 import { cache } from '@lib/cache';
+import { timeAsync } from '@ifixit/helpers';
 
 export interface GlobalSettings {
    newsletterForm: {
@@ -15,7 +16,10 @@ export async function getGlobalSettings(): Promise<GlobalSettings> {
 }
 
 async function getGlobalSettingsFromStrapi(): Promise<GlobalSettings> {
-   const result = await strapi.getGlobalSettings();
+   const result = await timeAsync(
+      'strapi.getGlobalSettings',
+      strapi.getGlobalSettings
+   );
    const newsletterForm =
       result.global?.data?.attributes?.newsletterForm || null;
    if (newsletterForm == null) {

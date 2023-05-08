@@ -3,7 +3,6 @@ import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import React from 'react';
 import {
-   Text,
    Avatar,
    Box,
    BoxProps,
@@ -44,6 +43,17 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
+   const { metaDescription, title, metaKeywords, canonicalUrl } = wikiData;
+   const metadata = (
+      <>
+         <meta name="description" content={metaDescription} />
+         <meta name="title" content={title} />
+         <meta name="keywords" content={metaKeywords} />
+         <meta name="robots" content="noindex" />,
+         <link rel="canonical" href={canonicalUrl} />
+      </>
+   );
+
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
@@ -63,7 +73,7 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
-               <Metadata wikiData={wikiData} />
+               {metadata}
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
             <Heading as="h1" marginTop={6}>
@@ -119,18 +129,6 @@ function TableOfContents({ solutions }: { solutions: Section[] }) {
             </ListItem>
          ))}
       </OrderedList>
-   );
-}
-
-function Metadata({ wikiData }: { wikiData: TroubleshootingData }) {
-   return (
-      <>
-         <meta name="description" content={wikiData.metaDescription} />
-         <meta name="title" content={wikiData.title} />
-         <meta name="keywords" content={wikiData.metaKeywords} />
-         <meta name="robots" content="noindex" />
-         <link rel="canonical" href={wikiData.canonicalUrl} />
-      </>
    );
 }
 
@@ -416,6 +414,7 @@ function AuthorInformation({
                <AuthorListing
                   primaryAuthor={primaryAuthor}
                   authorCount={otherAuthors.length}
+                  authorProfileUrl={primaryAuthor.profileUrl}
                   historyUrl={historyUrl}
                />
             )}
@@ -470,31 +469,37 @@ function AuthorListing({
    primaryAuthor,
    authorCount,
    historyUrl,
+   authorProfileUrl,
 }: {
    primaryAuthor: Author;
    authorCount: number;
    historyUrl: string;
+   authorProfileUrl: string;
 }) {
    const primaryAuthorName = primaryAuthor.username;
    const contributorDescription =
       authorCount > 1 ? 'contributors' : 'contributor';
+   const linkStyle = {
+      fontWeight: 'medium',
+      fontSize: '14px',
+      color: 'brand.500',
+   };
    return (
-      <Link
-         href={historyUrl}
-         fontWeight="medium"
-         fontSize="14px"
-         color="brand.500"
-      >
-         <span>{primaryAuthorName}</span>
+      <Box>
+         <Link href={authorProfileUrl} {...linkStyle}>
+            {primaryAuthorName}
+         </Link>
          {authorCount > 0 && (
             <>
                <chakra.span as="span" fontWeight="regular" color="gray.900">
                   {' and '}
                </chakra.span>
-               <chakra.span>{`${authorCount} ${contributorDescription}`}</chakra.span>
+               <Link {...linkStyle} href={historyUrl}>
+                  {`${authorCount} ${contributorDescription}`}
+               </Link>
             </>
          )}
-      </Link>
+      </Box>
    );
 }
 

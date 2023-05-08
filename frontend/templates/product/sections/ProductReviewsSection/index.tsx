@@ -25,6 +25,7 @@ import { Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@models/product';
 import type { ProductReview } from '@models/product/reviews';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import React from 'react';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
@@ -219,6 +220,9 @@ type ProductReviewLineItemProps = {
    review: ProductReview;
 };
 function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const appContext = useAppContext();
+
    return (
       <Box
          py="6"
@@ -226,6 +230,25 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
          borderColor="gray.200"
          data-testid="product-review-line-item"
       >
+         {isAdminUser && (
+            <Button
+               variant="link"
+               as={Link}
+               bgColor="transparent"
+               textColor="brand"
+               fontFamily="heading"
+               lineHeight="1.29"
+               fontWeight="semibold"
+               fontSize="14px"
+               color="brand.500"
+               textAlign="center"
+               paddingBottom="10px"
+               href={`${appContext.ifixitOrigin}/User/Reviews/${review.sku}?userid=${review.author?.userid}`}
+            >
+               Edit
+            </Button>
+         )}
+
          {review.author && (
             <HStack>
                <Avatar

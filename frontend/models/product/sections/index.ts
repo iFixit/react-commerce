@@ -29,7 +29,7 @@ import {
 import { z } from 'zod';
 import { DeviceCompatibilitySectionSchema } from './compatibility-section';
 import { CrossSellSectionSchema } from './cross-sell-section';
-import { LifetimeWarrantySectionSchema } from './lifetime-warranty-section';
+import { LifetimeWarrantySectionSchema } from '../../sections/lifetime-warranty-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
 import { ProductReviewsSectionSchema } from './product-reviews-section';
 

@@ -22,6 +22,7 @@ import {
    CartDrawer,
    Server,
    findProductQueryMock,
+   traceOutputDirTemplate,
 } from './fixtures';
 import type { MockServiceWorker } from 'playwright-msw';
 import { createWorkerFixture } from 'playwright-msw';
@@ -67,6 +68,14 @@ export const test = base.extend<
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
    },
+   testInfo: [
+      // eslint-disable-next-line no-empty-pattern
+      async ({}, use, testInfo) => {
+         testInfo.outputDir = traceOutputDirTemplate(testInfo);
+         await use(testInfo);
+      },
+      { scope: 'test', auto: true },
+   ],
    findProductQueryMock,
    clientRequestHandler: createWorkerFixture(handlers),
    /**

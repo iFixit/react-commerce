@@ -1,4 +1,4 @@
-import { Stack, Image, Text, Badge } from '@chakra-ui/react';
+import { Stack, Image, Text, Badge, StackProps } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
@@ -18,9 +18,9 @@ export function GuideResource({ guide }: { guide: Guide }) {
 }
 
 function ResourceBox({
-   href,
-   children,
-}: React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>) {
+\ildren,
+   ...props
+}: React.PropsWithChildren<StackProps>) {
    return (
       <Stack
          alignSelf="stretch"
@@ -33,7 +33,7 @@ function ResourceBox({
          borderRadius="4px"
          minHeight="88px"
          as="a"
-         href={href}
+         {...props}
       >
          {children}
       </Stack>
@@ -102,12 +102,12 @@ function Resource({
                   spacing="4px"
                   alignSelf="stretch"
                >
-                  <Badge display="flex" gap="2px">
-                     <FaIcon icon={faClock} />
+                  <Badge display="flex">
+                     <FaIcon icon={faClock} mr="2px" />
                      {timeRequired}
                   </Badge>
-                  <Badge display="flex" gap="2px" colorScheme="amber">
-                     <FaIcon icon={faGauge} />
+                  <Badge display="flex" colorScheme="amber">
+                     <FaIcon icon={faGauge} mr="2px" />
                      {difficulty}
                   </Badge>
                </Stack>
