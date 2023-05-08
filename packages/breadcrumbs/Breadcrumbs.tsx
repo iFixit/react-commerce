@@ -51,13 +51,15 @@ export const BreadCrumbs = memo(function DynamicBreadCrumbs({
 
    const isStatic = !!breadcrumbsToShow;
 
-   const visibleBreadCrumbs = isStatic
-      ? breadCrumbs.slice(breadCrumbs.length - breadcrumbsToShow)
-      : breadCrumbs;
+   const visibleBreadCrumbs =
+      isStatic && breadCrumbs.length > breadcrumbsToShow
+         ? breadCrumbs.slice(breadCrumbs.length - breadcrumbsToShow)
+         : breadCrumbs;
 
-   const hiddenBreadCrumbs = isStatic
-      ? breadCrumbs.slice(0, breadCrumbs.length - breadcrumbsToShow)
-      : [];
+   const hiddenBreadCrumbs =
+      isStatic && breadCrumbs.length > breadcrumbsToShow
+         ? breadCrumbs.slice(0, breadCrumbs.length - breadcrumbsToShow)
+         : [];
 
    const [wrappedBreadcrumbs, setWrappedBreadcrumbs] =
       useState<BreadcrumbItem[]>(hiddenBreadCrumbs);
