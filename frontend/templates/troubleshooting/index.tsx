@@ -514,11 +514,11 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
       <Alert status="info">
-         <AlertIcon />
-         <chakra.span>
+         <AlertIcon color="gray.500" />
+         <chakra.span pr={3} mr="auto">
             Haven&apos;t found the solution to your problem?
          </chakra.span>
-         <Button href={answersUrl} as="a" ml="auto">
+         <Button href={answersUrl} as="a" colorScheme="brand">
             Ask a question
          </Button>
       </Alert>
