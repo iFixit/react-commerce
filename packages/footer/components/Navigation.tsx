@@ -9,6 +9,7 @@ import {
    ListProps,
    SimpleGrid,
    Text,
+   TextProps,
 } from '@chakra-ui/react';
 import type {
    BoxProps,
@@ -21,7 +22,7 @@ import type { NewsletterFormProps } from './Newsletter';
 import type { Menu as MenuType, MenuItem } from '@ifixit/menu';
 import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
-type NavSectionProps = {
+export type NavSectionProps = {
    menu1: MenuType | null;
    menu2: MenuType | null;
    menu3: MenuType | null;
@@ -52,21 +53,38 @@ export const NavigationSection = ({
    );
 };
 
-const NavigationColumn = ({ menu }: { menu: MenuType | null }) => {
+export const NavigationColumn = ({
+   menu,
+   listFontSize = 'sm',
+   ...otherProps
+}: {
+   menu: MenuType | null;
+   listFontSize?: TextProps['fontSize'];
+} & TextProps) => {
    if (!menu) {
       return null;
    }
    return (
       <>
-         <Text fontSize="sm" fontWeight="semibold" color="white" mb="3">
+         <Text
+            fontSize="sm"
+            fontWeight="semibold"
+            color="white"
+            mb="3"
+            mt="0"
+            {...otherProps}
+         >
             {menu.title}
          </Text>
-         <FooterNavigationListItems menu={menu} />
+         <FooterNavigationListItems menu={menu} fontSize={listFontSize} />
       </>
    );
 };
 
-const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
+export const FooterNavigationListItems = ({
+   menu,
+   ...otherProps
+}: { menu: MenuType } & TextProps) => {
    const listItems = menu.items.map((item: MenuItem, index: number) => {
       if (item.type !== 'link') {
          return null;
@@ -76,6 +94,9 @@ const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
          <FooterNavigationItem key={index}>
             <FooterNavigationLink
                fontSize="sm"
+               fontWeight="normal"
+               m={0}
+               p={0}
                color="gray.300"
                _visited={{ color: 'gray.300' }}
                _hover={{ color: 'white', textDecoration: 'none' }}
@@ -85,6 +106,7 @@ const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
                   },
                }}
                href={item.url}
+               {...otherProps}
             >
                {item.name}
             </FooterNavigationLink>
@@ -95,7 +117,7 @@ const FooterNavigationListItems = ({ menu }: { menu: MenuType }) => {
    return <>{listItems}</>;
 };
 
-const FooterTopSection = forwardRef<FlexProps, 'div'>((props, ref) => {
+export const FooterTopSection = forwardRef<FlexProps, 'div'>((props, ref) => {
    return (
       <Flex
          ref={ref}
@@ -139,6 +161,8 @@ export const FooterNavigationList = forwardRef<ListProps, 'ul'>(
                base: 4,
                sm: 0,
             }}
+            m={{ base: 0 }}
+            pl={0}
             {...otherProps}
          >
             {children}
@@ -168,6 +192,9 @@ export const FooterNavigationLink = forwardRef<FooterNavigationLinkProps, 'a'>(
             onClick={trackedOnClick}
             cursor="pointer"
             transition="all 400ms"
+            fontWeight="normal"
+            m={0}
+            p={0}
             _hover={{
                color: 'white',
                textDecoration: 'none',

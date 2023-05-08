@@ -29,7 +29,7 @@ describe('CompatibleDevice', () => {
          <CompatibleDevice device={device} maxModelLines={1} />
       );
 
-      (expect(screen.queryByText(/other models.../i)) as any).toBeVisible();
+      (expect(screen.queryByText(/And \d more.../i)) as any).toBeVisible();
       (expect(asFragment()) as any).toMatchSnapshot();
    });
 });

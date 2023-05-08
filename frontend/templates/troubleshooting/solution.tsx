@@ -5,7 +5,6 @@ import {
    Text,
    Avatar,
    Button,
-   Icon,
    Badge,
    Square,
    Flex,
@@ -20,7 +19,7 @@ import { FaIcon } from '@ifixit/icons';
 import { Section } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 
-const SolutionFooter = () => (
+const _SolutionFooter = () => (
    <Stack
       justify="flex-start"
       align="flex-start"

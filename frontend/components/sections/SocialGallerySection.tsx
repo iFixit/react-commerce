@@ -1,7 +1,6 @@
 import { AspectRatio, Box, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { SocialPost } from '@models/components/social-post';
-import NextLink from 'next/link';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeaderWrapper } from './SectionHeaderWrapper';
 import { SectionHeading } from './SectionHeading';
@@ -33,23 +32,26 @@ export function SocialGallerySection({
                   md: 'repeat(5, 1fr)',
                }}
                w="full"
-               gap={5}
+               gap={{
+                  base: 4,
+                  md: 5,
+               }}
             >
                {posts.map((post, index) => {
                   const isFirstPost = index === 0;
                   if (post.url) {
                      return (
-                        <NextLink key={index} href={post.url ?? '#'} passHref>
-                           <GridItem
-                              as="a"
-                              target="_blank"
-                              rowSpan={isFirstPost ? 2 : 1}
-                              colSpan={isFirstPost ? 2 : 1}
-                              position="relative"
-                           >
-                              <SocialPost post={post} />
-                           </GridItem>
-                        </NextLink>
+                        <GridItem
+                           key={index}
+                           as="a"
+                           href={post.url ?? '#'}
+                           target="_blank"
+                           rowSpan={isFirstPost ? 2 : 1}
+                           colSpan={isFirstPost ? 2 : 1}
+                           position="relative"
+                        >
+                           <SocialPost post={post} />
+                        </GridItem>
                      );
                   }
                   return (
@@ -75,7 +77,7 @@ interface SocialPostGridItemProps {
 
 function SocialPost({ post: { image, author } }: SocialPostGridItemProps) {
    return (
-      <Box as="article" position="relative">
+      <Box as="article" position="relative" borderRadius="md" overflow="hidden">
          {image && (
             <Box w="full" position="relative">
                <AspectRatio ratio={1}>

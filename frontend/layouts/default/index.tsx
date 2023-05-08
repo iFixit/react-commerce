@@ -11,13 +11,16 @@ import {
    Portal,
 } from '@chakra-ui/react';
 import { GoogleAnalytics, Matomo } from '@components/analytics';
+import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
+import { withSyncTiming } from '@ifixit/helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { FaIcon } from '@ifixit/icons';
+import type { Menu } from '@ifixit/menu';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
    CartDrawer,
@@ -56,15 +59,13 @@ import {
    Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
-import type { Menu } from '@ifixit/menu';
 import Head from 'next/head';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import type { DefaultLayoutProps } from './server';
 import { CartFooter } from './Footer';
+import type { DefaultLayoutProps } from './server';
 
-export function DefaultLayout({
+const DefaultLayoutComponent = function ({
    stores,
    currentStore,
    shopifyCredentials,
@@ -177,11 +178,13 @@ export function DefaultLayout({
                   <HeaderBar>
                      <HeaderPrimaryNavigation>
                         <HeaderNavigationToggleButton aria-label="Open navigation menu" />
-                        <NextLink href="/" passHref>
-                           <WordmarkLink aria-label="Go to homepage" pr="4">
-                              <Wordmark />
-                           </WordmarkLink>
-                        </NextLink>
+                        <WordmarkLink
+                           href="/"
+                           aria-label="Go to homepage"
+                           pr="4"
+                        >
+                           <Wordmark />
+                        </WordmarkLink>
                         {menu && (
                            <NavigationMenu>
                               {menu.items.map((item, index) => {
@@ -207,39 +210,42 @@ export function DefaultLayout({
                                                          <NavigationSubmenuItem
                                                             key={subIndex}
                                                          >
-                                                            <NextLink
+                                                            <SmartLink
+                                                               as={
+                                                                  NavigationSubmenuLink
+                                                               }
                                                                href={
                                                                   subitem.url
                                                                }
-                                                               passHref
-                                                            >
-                                                               <NavigationSubmenuLink
-                                                                  disclosureIcon={
-                                                                     <FaIcon
-                                                                        icon={
-                                                                           faArrowRight
-                                                                        }
-                                                                        h="5"
-                                                                        transform="translateY(-50%)"
-                                                                        color="white"
-                                                                     />
-                                                                  }
-                                                               >
-                                                                  <NavigationSubmenuName>
-                                                                     {
-                                                                        subitem.name
+                                                               behaviour={
+                                                                  subitem.url ===
+                                                                  '/Store'
+                                                                     ? 'reload'
+                                                                     : 'auto'
+                                                               }
+                                                               disclosureIcon={
+                                                                  <FaIcon
+                                                                     icon={
+                                                                        faArrowRight
                                                                      }
-                                                                  </NavigationSubmenuName>
-                                                                  <NavigationSubmenuDivider />
-                                                                  {subitem.description && (
-                                                                     <NavigationSubmenuDescription>
-                                                                        {
-                                                                           subitem.description
-                                                                        }
-                                                                     </NavigationSubmenuDescription>
-                                                                  )}
-                                                               </NavigationSubmenuLink>
-                                                            </NextLink>
+                                                                     h="5"
+                                                                     transform="translateY(-50%)"
+                                                                     color="white"
+                                                                  />
+                                                               }
+                                                            >
+                                                               <NavigationSubmenuName>
+                                                                  {subitem.name}
+                                                               </NavigationSubmenuName>
+                                                               <NavigationSubmenuDivider />
+                                                               {subitem.description && (
+                                                                  <NavigationSubmenuDescription>
+                                                                     {
+                                                                        subitem.description
+                                                                     }
+                                                                  </NavigationSubmenuDescription>
+                                                               )}
+                                                            </SmartLink>
                                                          </NavigationSubmenuItem>
                                                       );
                                                    }
@@ -307,7 +313,7 @@ export function DefaultLayout({
          <GoogleAnalytics />
       </ShopifyStorefrontProvider>
    );
-}
+};
 
 interface LayoutNavigationDrawerProps {
    menu: Menu;
@@ -325,11 +331,9 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    return (
       <NavigationDrawer>
          <DrawerCloseButton />
-         <NextLink href="/" passHref>
-            <WordmarkLink aria-label="Go to homepage" mb="8">
-               <Wordmark />
-            </WordmarkLink>
-         </NextLink>
+         <WordmarkLink href="/" aria-label="Go to homepage" mb="8">
+            <Wordmark />
+         </WordmarkLink>
          <NavigationAccordion>
             {menu.items.map((item, index) => {
                switch (item.type) {
@@ -349,11 +353,12 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
                                  }
                                  return (
                                     <NavigationAccordionSubItem key={subIndex}>
-                                       <NextLink href={subitem.url} passHref>
-                                          <NavigationAccordionLink>
-                                             {subitem.name}
-                                          </NavigationAccordionLink>
-                                       </NextLink>
+                                       <SmartLink
+                                          as={NavigationAccordionLink}
+                                          href={subitem.url}
+                                       >
+                                          {subitem.name}
+                                       </SmartLink>
                                     </NavigationAccordionSubItem>
                                  );
                               })}
@@ -397,9 +402,21 @@ function HeaderUserMenu() {
                   >
                      View Profile
                   </UserMenuLink>
+                  {user.data.teams.length > 0 && (
+                     <UserMenuLink href={`${appContext.ifixitOrigin}/Team`}>
+                        My Team
+                     </UserMenuLink>
+                  )}
                   <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
                      Orders
                   </UserMenuLink>
+                  {user.data.links.manage && (
+                     <UserMenuLink
+                        href={`${appContext.ifixitOrigin}${user.data.links.manage}`}
+                     >
+                        Manage
+                     </UserMenuLink>
+                  )}
                </MenuGroup>
                <MenuDivider />
                <MenuGroup>
@@ -414,3 +431,8 @@ function HeaderUserMenu() {
       </UserMenu>
    );
 }
+
+export const DefaultLayout = withSyncTiming(
+   'react.page',
+   DefaultLayoutComponent
+);

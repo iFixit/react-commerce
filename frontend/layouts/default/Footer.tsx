@@ -1,31 +1,30 @@
-import { trackInMatomoAndGA } from '@ifixit/analytics';
-import { Menu, MenuList } from '@chakra-ui/react';
-import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
-import type { MenuItem } from '@ifixit/menu';
-import { MenuItemType } from '@ifixit/menu';
-import { ResponsiveImage } from '@ifixit/ui';
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
-import type { GlobalSettings } from '@models/global-settings';
-import type { Store, StoreListItem } from '@models/store';
-import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
+import { Menu, MenuList } from '@chakra-ui/react';
+import { trackInMatomoAndGA } from '@ifixit/analytics';
 import {
+   Footer,
    FooterCopyright,
+   FooterDivider,
    FooterLegalLink,
    FooterLegalLinkList,
    FooterLegalSection,
+   FooterLink,
+   FooterPartnerLink,
+   FooterPartners,
    FooterSettings,
    FooterSettingsSection,
-   FooterPartners,
-   FooterPartnerLink,
+   NavigationSection,
    StoreMenuButton,
    StoreMenuItem,
-   Footer,
-   FooterLink,
-   FooterDivider,
-   NavigationSection,
 } from '@ifixit/footer';
+import { SocialMediaSection } from '@ifixit/footer/components/SocialMedia';
+import { Flag, FlagCountryCode, Language } from '@ifixit/icons';
+import type { MenuItem } from '@ifixit/menu';
+import { MenuItemType } from '@ifixit/menu';
 import { EventTracker } from '@ifixit/tracking-hooks';
-import { CountryCode } from '@lib/shopify-storefront-sdk';
+import { ResponsiveImage } from '@ifixit/ui';
+import type { GlobalSettings } from '@models/global-settings';
+import type { Store, StoreListItem } from '@models/store';
 
 interface FooterProps {
    stores: StoreListItem[];

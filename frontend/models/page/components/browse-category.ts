@@ -1,7 +1,7 @@
 import { CategoryFieldsFragment } from '@lib/strapi-sdk';
+import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { ProductListType } from '@models/product-list';
 import { getProductListType } from '@models/product-list/server';
-import { ImageSchema, imageFromStrapi } from '@models/components/image';
 import { z } from 'zod';
 
 export const BrowseCategorySchema = z.object({
@@ -10,7 +10,7 @@ export const BrowseCategorySchema = z.object({
    handle: z.string(),
    title: z.string(),
    deviceTitle: z.string().nullable(),
-   metaDescription: z.string().nullable(),
+   description: z.string().nullable(),
    image: ImageSchema.nullable(),
 });
 
@@ -21,6 +21,8 @@ export function browseCategoryFromStrapi(
 ): BrowseCategory | null {
    const id = fragment?.id;
    const attributes = fragment?.productList?.data?.attributes;
+   const description = fragment?.description ?? null;
+
    if (id == null || attributes == null) {
       return null;
    }
@@ -30,7 +32,7 @@ export function browseCategoryFromStrapi(
       handle: attributes.handle,
       title: attributes.title,
       deviceTitle: attributes.deviceTitle ?? null,
-      metaDescription: attributes.metaDescription ?? null,
+      description,
       image: imageFromStrapi(attributes.image),
    };
 }

@@ -1,6 +1,6 @@
 import { PageEditMenuLink } from '@components/admin';
 import { STRAPI_ORIGIN } from '@config/env';
-import { faDatabase, IconDefinition } from '@fortawesome/pro-solid-svg-icons';
+import { faDatabase } from '@fortawesome/pro-solid-svg-icons';
 import { FacetWidgetType, ProductListType } from '@models/product-list';
 import { z } from 'zod';
 
