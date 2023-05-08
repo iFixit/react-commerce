@@ -122,9 +122,11 @@ const config: PlaywrightTestConfig = {
    },
 };
 
+const targetUrl = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN || '');
+
 function generateBrowserConfig(
    config: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>
-) {
+): Project<PlaywrightTestOptions, PlaywrightWorkerOptions> {
    return {
       ...config,
       use: {
@@ -133,18 +135,20 @@ function generateBrowserConfig(
             cookies: [
                {
                   name: 'dev-api-psk',
-                  value: process.env.DEV_API_AUTH_TOKEN,
-                  url: process.env.NEXT_PUBLIC_IFIXIT_ORIGIN,
+                  value: process.env.DEV_API_AUTH_TOKEN || 'filler-token',
                   sameSite: 'None',
                   expires:
                      Math.floor(Date.now().valueOf() / 1000) +
                      60 * 60 * 24 * 365,
+                  httpOnly: false,
+                  domain: targetUrl.hostname,
+                  path: targetUrl.pathname,
+                  secure: false,
                },
             ],
             origins: [],
          },
       },
-      dependencies: ['setup'],
    };
 }
 
