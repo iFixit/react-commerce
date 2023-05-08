@@ -18,7 +18,7 @@ export function GuideResource({ guide }: { guide: Guide }) {
 }
 
 function ResourceBox({
-\ildren,
+   children,
    ...props
 }: React.PropsWithChildren<StackProps>) {
    return (
