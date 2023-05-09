@@ -14,6 +14,8 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.test' });
 dotenv.config({ path: '.env.local' });
 
+const targetUrl = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN || '');
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -121,8 +123,6 @@ const config: PlaywrightTestConfig = {
       reuseExistingServer: !process.env.CI,
    },
 };
-
-const targetUrl = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN || '');
 
 function generateBrowserConfig(
    config: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>
