@@ -68,17 +68,19 @@ function Resource({
             spacing="8px"
          >
             <Image
-               boxSize="48px"
-               height="64px"
+               boxSize="64px"
+               border="1px solid"
+               borderColor="gray.300"
+               borderRadius="4px"
                objectFit="cover"
-               alt=""
+               alt={title}
                src={imageUrl}
             />
             <Stack justify="center" align="flex-start" spacing="6px" flex="1">
                <Stack
                   justify="flex-start"
                   align="flex-start"
-                  spacing="2px"
+                  spacing="6px"
                   alignSelf="stretch"
                >
                   <Text
@@ -94,6 +96,9 @@ function Resource({
                      fontWeight="regular"
                      fontSize="12px"
                      color="gray.600"
+                     overflow="hidden"
+                     height="16px"
+                     noOfLines={1}
                      html={introduction}
                   />
                </Stack>
