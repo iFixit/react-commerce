@@ -125,63 +125,45 @@ export function CompatibleDevice({
                   And {hiddenVariants.length} more...
                </Text>
             )}
-            {!truncateModels &&
-               hiddenVariants.length > 0 &&
-               (!showHiddenVariants ? (
-                  <Button
-                     display="block"
+            {!truncateModels && hiddenVariants.length > 0 && (
+               <details
+                  open={showHiddenVariants}
+                  onToggle={() => setShowHiddenVariants((value) => !value)}
+               >
+                  <chakra.summary
                      mt="2px"
                      lineHeight="short"
                      fontSize="xs"
                      fontWeight="medium"
                      color="brand.500"
-                     variant="link"
-                     textDecoration="none"
-                     onClick={() => setShowHiddenVariants(true)}
+                     cursor="pointer"
                   >
-                     Show{' '}
+                     {showHiddenVariants ? 'Hide' : 'Show all'}{' '}
                      <Text as="span" fontWeight="bold">
                         {hiddenVariants.length}
                      </Text>{' '}
-                     more
-                  </Button>
-               ) : (
-                  <>
-                     <Flex
-                        flexDir="column"
-                        {...(!truncateModels && {
-                           onClick: (event) => event.stopPropagation(),
-                        })}
-                     >
-                        {hiddenVariants.map((variant) => (
-                           <Text
-                              key={variant}
-                              lineHeight="short"
-                              fontSize="xs"
-                              color="gray.600"
-                           >
-                              <TextWithHighlight text={variant} query={query} />
-                           </Text>
-                        ))}
-                     </Flex>
-                     <Button
-                        display="block"
-                        mt="2px"
-                        lineHeight="short"
-                        fontSize="xs"
-                        fontWeight="medium"
-                        color="brand.500"
-                        variant="link"
-                        textDecoration="none"
-                        onClick={() => setShowHiddenVariants(false)}
-                     >
-                        Hide{' '}
-                        <Text as="span" fontWeight="bold">
-                           {hiddenVariants.length}
+                     models
+                  </chakra.summary>
+
+                  <Flex
+                     flexDir="column"
+                     {...(!truncateModels && {
+                        onClick: (event) => event.stopPropagation(),
+                     })}
+                  >
+                     {hiddenVariants.map((variant) => (
+                        <Text
+                           key={variant}
+                           lineHeight="short"
+                           fontSize="xs"
+                           color="gray.600"
+                        >
+                           <TextWithHighlight text={variant} query={query} />
                         </Text>
-                     </Button>
-                  </>
-               ))}
+                     ))}
+                  </Flex>
+               </details>
+            )}
          </Flex>
       </Flex>
    );
