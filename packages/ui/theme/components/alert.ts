@@ -5,8 +5,8 @@ const { definePartsStyle, defineMultiStyleConfig } =
    createMultiStyleConfigHelpers(parts.keys);
 
 const STATUSES: Record<string, string> = {
-   default: 'brand',
-   info: 'gray',
+   default: 'gray',
+   info: 'brand',
    warning: 'amber',
    success: 'green',
    error: 'red',
@@ -19,11 +19,12 @@ const subtle = definePartsStyle((props) => {
 
    return {
       container: {
+         bgColor: status === 'default' ? `${colorScheme}.100` : 'transparent',
          border: '1px',
          borderColor: `${colorScheme}.300`,
          borderRadius: 'base',
          _light: {
-            bg: `${colorScheme}.50`,
+            bgColor: `${colorScheme}.50`,
          },
       },
    };

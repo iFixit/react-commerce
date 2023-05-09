@@ -513,7 +513,7 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert status="info">
+      <Alert>
          <AlertIcon color="gray.500" />
          <chakra.span pr={3} mr="auto">
             Haven&apos;t found the solution to your problem?
