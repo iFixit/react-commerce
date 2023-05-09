@@ -6,7 +6,11 @@ import { GetServerSideProps } from 'next';
 import {
    TroubleshootingProps,
    TroubleshootingData,
+   TroubleshootingApiData,
+   ApiSolutionSection,
+   SolutionSection,
 } from './hooks/useTroubleshootingProps';
+import { Guide } from './hooks/GuideModel';
 
 export const getServerSideProps: GetServerSideProps<
    TroubleshootingProps
@@ -26,13 +30,37 @@ export const getServerSideProps: GetServerSideProps<
       };
    }
 
-   const wikiData = await client.get<TroubleshootingData>(
+   async function fetchGuidesForSolution(
+      solution: ApiSolutionSection
+   ): Promise<SolutionSection> {
+      const guides = await Promise.all(
+         solution.guides.map(
+            (guideid: number) =>
+               client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
+         )
+      );
+      return {
+         ...solution,
+         guides,
+      };
+   }
+
+   const troubleshootingData = await client.get<TroubleshootingApiData>(
       `Troubleshooting/${wikiname}`,
       'troubleshooting',
       {
          credentials: 'include',
       }
    );
+
+   const solutions: SolutionSection[] = await Promise.all(
+      troubleshootingData.solutions.map(fetchGuidesForSolution)
+   );
+
+   const wikiData: TroubleshootingData = {
+      ...troubleshootingData,
+      solutions,
+   };
 
    const pageProps: TroubleshootingProps = {
       wikiData,
