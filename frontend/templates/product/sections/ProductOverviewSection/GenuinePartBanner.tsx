@@ -27,7 +27,7 @@ const partnerCodeToComponentMap: { [key: string]: React.FC } = {
    // Don't have permission yet
    // google_pixel: Google,
    crucial: () => <Crucial px="2" />,
-   hp: Hp,
+   hp: () => <Hp py="2" />,
    htc_vive: Vive,
    lenovo: Lenovo,
    logitech: Logitech,
