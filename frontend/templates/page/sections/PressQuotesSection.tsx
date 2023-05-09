@@ -39,7 +39,7 @@ export function PressQuotesSection({
                   as={Link}
                   href={callToAction.url}
                   color="brand.500"
-                  fontWeight="bold"
+                  fontWeight="semibold"
                   display="block"
                   py="2"
                   px="3"

@@ -9,6 +9,7 @@ import {
    MenuGroup,
    MenuList,
    Portal,
+   Icon,
 } from '@chakra-ui/react';
 import { GoogleAnalytics, Matomo } from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
@@ -17,8 +18,10 @@ import {
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
+import { withSyncTiming } from '@ifixit/helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { FaIcon } from '@ifixit/icons';
+import { Wordmark20th } from '@assets/svg/files';
 import type { Menu } from '@ifixit/menu';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
@@ -55,7 +58,6 @@ import {
    UserMenuButton,
    UserMenuHeading,
    UserMenuLink,
-   Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
 import Head from 'next/head';
@@ -64,7 +66,7 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import type { DefaultLayoutProps } from './server';
 
-export function DefaultLayout({
+const DefaultLayoutComponent = function ({
    stores,
    currentStore,
    shopifyCredentials,
@@ -181,8 +183,10 @@ export function DefaultLayout({
                            href="/"
                            aria-label="Go to homepage"
                            pr="4"
+                           title="iFixit turns 20"
+                           padding={0}
                         >
-                           <Wordmark />
+                           <Icon as={Wordmark20th} width="auto" height="100%" />
                         </WordmarkLink>
                         {menu && (
                            <NavigationMenu>
@@ -312,7 +316,7 @@ export function DefaultLayout({
          <GoogleAnalytics />
       </ShopifyStorefrontProvider>
    );
-}
+};
 
 interface LayoutNavigationDrawerProps {
    menu: Menu;
@@ -330,8 +334,14 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    return (
       <NavigationDrawer>
          <DrawerCloseButton />
-         <WordmarkLink href="/" aria-label="Go to homepage" mb="8">
-            <Wordmark />
+         <WordmarkLink
+            href="/"
+            aria-label="Go to homepage"
+            mb="8"
+            title="iFixit turns 20"
+            padding={0}
+         >
+            <Icon as={Wordmark20th} width="auto" height="100%" />
          </WordmarkLink>
          <NavigationAccordion>
             {menu.items.map((item, index) => {
@@ -401,9 +411,21 @@ function HeaderUserMenu() {
                   >
                      View Profile
                   </UserMenuLink>
+                  {user.data.teams.length > 0 && (
+                     <UserMenuLink href={`${appContext.ifixitOrigin}/Team`}>
+                        My Team
+                     </UserMenuLink>
+                  )}
                   <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
                      Orders
                   </UserMenuLink>
+                  {user.data.links.manage && (
+                     <UserMenuLink
+                        href={`${appContext.ifixitOrigin}${user.data.links.manage}`}
+                     >
+                        Manage
+                     </UserMenuLink>
+                  )}
                </MenuGroup>
                <MenuDivider />
                <MenuGroup>
@@ -418,3 +440,8 @@ function HeaderUserMenu() {
       </UserMenu>
    );
 }
+
+export const DefaultLayout = withSyncTiming(
+   'react.page',
+   DefaultLayoutComponent
+);
