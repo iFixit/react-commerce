@@ -31,12 +31,6 @@ export const SocialMediaSection = memo(function SocialMediaSection({
       return null;
    }
 
-   let showRepairEU = false;
-
-   if (repairUrl && repairUrl.includes('eu')) {
-      showRepairEU = true;
-   }
-
    return (
       <HStack spacing={4} justify={{ base: 'space-between', sm: 'center' }}>
          {accounts.tiktok && (
@@ -83,7 +77,7 @@ export const SocialMediaSection = memo(function SocialMediaSection({
             <FooterLink
                aria-label="The Repair Association"
                href={accounts.repairOrg}
-               icon={showRepairEU ? RepairEULogo : RepairOrgLogo}
+               icon={repairUrl.includes('eu') ? RepairEULogo : RepairOrgLogo}
                customColor={'gray.400'}
             />
          )}
