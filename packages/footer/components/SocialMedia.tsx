@@ -77,7 +77,11 @@ export const SocialMediaSection = memo(function SocialMediaSection({
             <FooterLink
                aria-label="The Repair Association"
                href={accounts.repairOrg}
-               icon={repairUrl.includes('eu') ? RepairEULogo : RepairOrgLogo}
+               icon={
+                  repairUrl && repairUrl.includes('eu')
+                     ? RepairEULogo
+                     : RepairOrgLogo
+               }
                customColor={'gray.400'}
             />
          )}
