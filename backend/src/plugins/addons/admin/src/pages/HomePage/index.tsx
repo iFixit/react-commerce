@@ -10,6 +10,7 @@ import {
    Typography,
 } from '@strapi/design-system';
 import React from 'react';
+import { parseValidUrl } from '../../../../helpers/generic-helpers';
 import { useImportBackup, useRequestBackup } from '../../api/seed';
 
 function HomePage() {
@@ -89,11 +90,9 @@ function ImportSection() {
    ) => {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
-      let strapiUrl: URL;
-      try {
-         strapiUrl = requireStrapiDomain(formData.get('strapi-domain'));
-      } catch (error) {
-         setValidationError(error.message);
+      let strapiUrl = parseValidUrl(formData.get('strapi-domain'));
+      if (strapiUrl === null) {
+         setValidationError('invalid url');
          return;
       }
       const isConfirmed = window.confirm(
@@ -147,20 +146,6 @@ function ImportSection() {
          )}
       </Flex>
    );
-}
-
-const URL_REGEX = /^https?:\/\//i;
-
-function requireStrapiDomain(value: FormDataEntryValue | null) {
-   let domain = typeof value === 'string' ? value.trim() : '';
-   if (domain.length === 0) {
-      throw new Error('domain is required');
-   }
-   const url = URL_REGEX.test(domain)
-      ? new URL(domain)
-      : new URL(`https://${domain}`);
-
-   return url;
 }
 
 export default HomePage;

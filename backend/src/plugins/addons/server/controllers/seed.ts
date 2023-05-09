@@ -1,4 +1,5 @@
 import type { Strapi } from '@strapi/strapi';
+import { parseValidUrl } from '../../helpers/generic-helpers';
 import { getAddonsService } from '../services';
 
 export default ({ strapi }: { strapi: Strapi }) => ({
@@ -27,17 +28,15 @@ export default ({ strapi }: { strapi: Strapi }) => ({
    },
    async import(ctx: any) {
       const seedService = getAddonsService(strapi, 'seed');
-      let strapiOrigin: string;
-      try {
-         strapiOrigin = requireStrapiDomain(ctx.request.body?.strapiOrigin);
-      } catch (error) {
+      let url = parseValidUrl(ctx.request.body?.strapiOrigin);
+      if (url == null) {
          ctx.status = 400;
-         ctx.body = error.message;
+         ctx.body = 'invalid strapi origin';
          return;
       }
       try {
          const backup = await seedService.downloadBackup({
-            strapiOrigin,
+            strapiOrigin: url.origin,
          });
          await seedService.importBackup(backup);
          ctx.body = 'ok';
@@ -47,15 +46,3 @@ export default ({ strapi }: { strapi: Strapi }) => ({
       }
    },
 });
-
-const URL_REGEX = /^https?:\/\//i;
-
-function requireStrapiDomain(value: unknown): string {
-   if (typeof value !== 'string' || value.trim().length === 0) {
-      throw new Error('Strapi domain is required');
-   }
-   let domain = value.trim();
-   const url = URL_REGEX.test(domain) ? domain : `https://${domain}`;
-
-   return url;
-}
