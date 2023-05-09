@@ -1,27 +1,11 @@
 import { exec } from 'child_process';
-import path from 'path';
+import type { Backup } from './types';
 import { isStderrAnError } from './utils';
 
-export function importBackup(): Promise<string> {
-   strapi.log.info(`🌱 Importing data..`);
-   const filePath = getBackupFilePath({ isEncrypted: false });
-   return importFromFile({ filePath });
+export function importBackup(backup: Backup): Promise<string> {
+   strapi.log.info(`🌱 Importing data from ${backup.filePath} ...`);
+   return importFromFile({ filePath: backup.filePath });
 }
-
-interface GetImportPathInput {
-   isEncrypted: boolean;
-}
-
-function getBackupFilePath({ isEncrypted }: GetImportPathInput) {
-   const directory = process.cwd() + '/.tmp';
-   const fileName = 'import.tar.gz';
-   let importPath = path.join(directory, fileName);
-   if (isEncrypted) {
-      importPath += '.enc';
-   }
-   return importPath;
-}
-
 interface ImportFromFileArgs {
    filePath: string;
 }

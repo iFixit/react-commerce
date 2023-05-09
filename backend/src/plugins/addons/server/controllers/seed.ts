@@ -36,10 +36,10 @@ export default ({ strapi }: { strapi: Strapi }) => ({
          return;
       }
       try {
-         await seedService.downloadBackup({
+         const backup = await seedService.downloadBackup({
             strapiOrigin,
          });
-         await seedService.importBackup();
+         await seedService.importBackup(backup);
          ctx.body = 'ok';
       } catch (error) {
          ctx.status = 500;

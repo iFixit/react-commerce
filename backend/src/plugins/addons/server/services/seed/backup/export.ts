@@ -1,6 +1,5 @@
 import { exec } from 'child_process';
-import fs from 'fs/promises';
-import { isStderrAnError } from './utils';
+import { ensureDirectoryExists, isStderrAnError } from './utils';
 
 export const BACKUP_FILE_NAME = 'export';
 
@@ -20,7 +19,7 @@ export function getBackupPath({ isEncrypted }: GetBackupPathInput) {
 }
 
 export async function exportBackup(): Promise<string> {
-   await ensureBackupFolderExists();
+   await ensureDirectoryExists(BACKUP_FOLDER_PATH);
    return new Promise((resolve, reject) => {
       exec(
          `strapi export --no-encrypt -f ${EXPORT_FILE_PATH}`,
@@ -37,8 +36,4 @@ export async function exportBackup(): Promise<string> {
          }
       );
    });
-}
-
-async function ensureBackupFolderExists() {
-   await fs.mkdir(BACKUP_FOLDER_PATH, { recursive: true });
 }

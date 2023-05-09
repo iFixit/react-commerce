@@ -3,28 +3,31 @@ import http from 'http';
 import https from 'https';
 import path from 'path';
 import { getBackupPath } from './export';
+import type { Backup } from './types';
+import { ensureDirectoryExists } from './utils';
 
-export interface DownloadBackup {
+export interface DownloadBackupOptions {
    strapiOrigin: string;
 }
 
 export async function downloadBackup({
    strapiOrigin,
-}: DownloadBackup): Promise<void> {
+}: DownloadBackupOptions): Promise<Backup> {
    const exportURL = new URL(
       getBackupPath({ isEncrypted: false }),
       strapiOrigin
    );
    try {
       const backupFilePath = getBackupFilePath({ isEncrypted: false });
-      ensureDirectoryExistence(backupFilePath);
+      ensureDirectoryExists(backupFilePath);
       strapi.log.info(`🌱 Downloading backup from: ${exportURL.href}`);
       await downloadFile(exportURL, backupFilePath);
+      return { filePath: backupFilePath };
    } catch (err) {
       strapi.log.error(
          `🌱💥 Failed to download backup from: ${exportURL.href}`
       );
-      console.error(err);
+      strapi.log.error(err);
       throw new Error(`Failed to download backup from: ${exportURL.href}`);
    }
 }
@@ -61,12 +64,4 @@ function downloadFile(url: URL, dest: string) {
             reject(error);
          });
    });
-}
-
-function ensureDirectoryExistence(filePath: string) {
-   const directory = path.dirname(filePath);
-   if (fs.existsSync(directory)) {
-      return;
-   }
-   fs.mkdirSync(directory, { recursive: true });
 }
