@@ -8,6 +8,7 @@ import {
    Badge,
    Square,
    Flex,
+   BoxProps,
 } from '@chakra-ui/react';
 import {
    faCircleCheck,
@@ -16,8 +17,10 @@ import {
    faSquareArrowUp,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { Section } from './hooks/useTroubleshootingProps';
+import { SolutionSection } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
+import { GuideResource } from './Resource';
+import { Guide } from './hooks/GuideModel';
 
 const _SolutionFooter = () => (
    <Stack
@@ -199,7 +202,7 @@ export default function SolutionCard({
    solution,
 }: {
    index: number;
-   solution: Section;
+   solution: SolutionSection;
 }) {
    return (
       <Flex
@@ -214,7 +217,18 @@ export default function SolutionCard({
          <Flex gap="24px" direction="column">
             <SolutionHeader index={index} title={solution.heading} />
             <SolutionTexts body={solution.body} />
+            <LinkCards guides={solution.guides} />
          </Flex>
       </Flex>
+   );
+}
+
+function LinkCards({ guides, ...props }: { guides: Guide[] } & BoxProps) {
+   return (
+      <Box {...props}>
+         {guides.map((guide: Guide) => (
+            <GuideResource key={guide.guideid} guide={guide} />
+         ))}
+      </Box>
    );
 }

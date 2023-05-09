@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import {
    mockMatchMedia,
    renderWithAppContext,
@@ -197,10 +197,13 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const price = await screen.findByTestId('current-price');
+         const productPrice = await screen.findByTestId(
+            'product-price-section'
+         );
+         const price = within(productPrice).getByTestId('price');
 
-         (expect(price) as any).toBeInTheDocument();
-         (expect(price.textContent) as any).toBe('$29.99');
+         expect(price).toBeInTheDocument();
+         expect(price.textContent).toBe('$29.99');
       });
 
       test('Discounted Price Renders', async () => {
@@ -222,9 +225,13 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const price = await screen.findByTestId('current-price');
-         (expect(price) as any).toBeInTheDocument();
-         (expect(price.textContent) as any).toBe('$' + discountPrice);
+         const productPrice = await screen.findByTestId(
+            'product-price-section'
+         );
+         const price = within(productPrice).getByTestId('price');
+
+         expect(price).toBeInTheDocument();
+         expect(price.textContent).toBe('$' + discountPrice);
 
          // Get the parent element of the element
          const parentElement = price.parentElement;
@@ -243,7 +250,7 @@ describe('ProductSection Tests', () => {
          const priceTexts = [discountPercentage + '% OFF', '$' + originalPrice];
 
          siblings.forEach((sibling: HTMLElement) => {
-            (expect(priceTexts) as any).toContain(sibling.textContent);
+            expect(priceTexts).toContain(sibling.textContent);
          });
       });
    });

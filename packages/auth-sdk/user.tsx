@@ -12,13 +12,15 @@ export type User = {
    discountTier: string | null;
    algoliaApiKeyProducts: string | null | undefined;
    isAdmin: boolean;
+   teams: number[];
+   links: { [key: string]: any };
 };
 
 const userKeys = {
    user: ['user'],
 };
 
-const userDataLocalKey = 'user.data';
+const userDataLocalKey = 'user.data.1';
 
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
@@ -62,6 +64,8 @@ const UserApiResponseSchema = z.object({
    algoliaApiKeyProducts: z.string().optional().nullable(),
    discount_tier: z.string().optional().nullable(),
    privileges: z.array(z.string()),
+   teams: z.array(z.number()),
+   links: z.record(z.any()),
 });
 
 async function fetchAuthenticatedUser(
@@ -78,5 +82,7 @@ async function fetchAuthenticatedUser(
       algoliaApiKeyProducts: userSchema.algoliaApiKeyProducts,
       discountTier: userSchema.discount_tier ?? null,
       isAdmin: userSchema.privileges.includes('Admin'),
+      teams: userSchema.teams,
+      links: userSchema.links,
    };
 }

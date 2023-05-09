@@ -1,4 +1,4 @@
-import { test, expect } from '../test-fixtures';
+import { expect, test } from '../test-fixtures';
 
 test.describe('Product Information Visibility', () => {
    test('Title, Price, and SKU', async ({ productPage }) => {
@@ -18,11 +18,11 @@ test.describe('Product Information Visibility', () => {
       );
 
       // Get price from page
-      await expect(
-         productPage.page.getByTestId('current-price').first()
-      ).toBeVisible();
-      await expect(
-         productPage.page.getByTestId('current-price').first()
-      ).toContainText(/\$\d*\.\d*/g);
+      const productPrice = productPage.page.getByTestId(
+         'product-price-section'
+      );
+      const price = productPrice.getByTestId('price');
+      await expect(price).toBeVisible();
+      await expect(price).toContainText(/\$\d*\.\d*/g);
    });
 });
