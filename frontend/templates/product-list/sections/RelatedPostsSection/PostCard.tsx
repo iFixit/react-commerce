@@ -24,7 +24,7 @@ export function PostCard({
    title,
    category,
    imageSrc,
-   imageAlt,
+   imageAlt = '',
    link,
    date,
 }: PostCardProps) {

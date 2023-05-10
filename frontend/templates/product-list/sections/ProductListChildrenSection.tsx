@@ -69,6 +69,7 @@ export function ProductListChildrenSection({
                            type: child.type,
                         })}
                         passHref
+                        legacyBehavior
                      >
                         <ProductListCard
                            as="a"

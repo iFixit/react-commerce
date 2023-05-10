@@ -36,7 +36,7 @@ export interface ProductCardImageProps {
    alt?: string;
 }
 
-export const ProductCardImage = ({ src, alt }: ProductCardImageProps) => {
+export const ProductCardImage = ({ src, alt = '' }: ProductCardImageProps) => {
    if (src == null) {
       return (
          <AspectRatio

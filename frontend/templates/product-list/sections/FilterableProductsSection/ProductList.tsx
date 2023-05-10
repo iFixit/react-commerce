@@ -98,8 +98,8 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      src={product.image_url}
                      alt={product.title}
                      objectFit="contain"
-                     width="320px"
-                     height="320px"
+                     width={320}
+                     height={320}
                   />
                ) : (
                   <ResponsiveImage

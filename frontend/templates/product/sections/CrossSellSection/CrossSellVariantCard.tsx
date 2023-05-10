@@ -201,7 +201,7 @@ export interface CardImageProps {
    alt?: string;
 }
 
-export const CardImage = ({ src, alt }: CardImageProps) => {
+export const CardImage = ({ src, alt = '' }: CardImageProps) => {
    if (src == null) {
       return (
          <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
