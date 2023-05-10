@@ -4,6 +4,8 @@ import Head from 'next/head';
 import React from 'react';
 import {
    Avatar,
+   Alert,
+   AlertIcon,
    Box,
    BoxProps,
    Button,
@@ -109,6 +111,7 @@ const Wiki: NextPageWithLayout<{
                   conclusion={conclusion}
                />
             ))}
+            <AnswersCTA answersUrl={wikiData.answersUrl} />
          </Flex>
       </Flex>
    );
@@ -518,6 +521,20 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
          <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
+   );
+}
+
+function AnswersCTA({ answersUrl }: { answersUrl: string }) {
+   return (
+      <Alert>
+         <AlertIcon color="gray.500" />
+         <chakra.span pr={3} mr="auto">
+            Haven&apos;t found the solution to your problem?
+         </chakra.span>
+         <Button href={answersUrl} as="a" colorScheme="brand">
+            Ask a question
+         </Button>
+      </Alert>
    );
 }
 
