@@ -19,9 +19,13 @@ export async function downloadBackup({
    );
    try {
       const backupFilePath = getBackupFilePath({ isEncrypted: false });
-      ensureDirectoryExists(backupFilePath);
-      strapi.log.info(`🌱 Downloading backup from: ${exportURL.href}`);
+      const backupDirectory = path.dirname(backupFilePath);
+      ensureDirectoryExists(backupDirectory);
+      strapi.log.info(
+         `🌱 Downloading backup from ${exportURL.href} into ${backupDirectory}`
+      );
       await downloadFile(exportURL, backupFilePath);
+      strapi.log.info(`🌱 Backup downloaded: ${backupFilePath}`);
       return { filePath: backupFilePath };
    } catch (err) {
       strapi.log.error(
@@ -45,6 +49,7 @@ export function getBackupFilePath({ isEncrypted }: GetImportPathInput) {
    }
    return importPath;
 }
+
 function downloadFile(url: URL, dest: string) {
    return new Promise((resolve, reject) => {
       const file = fs.createWriteStream(dest);
