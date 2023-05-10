@@ -54,7 +54,9 @@ test.describe('Parts Page Search', () => {
       expect(page.url()).toContain(`?q=${searchText}`);
 
       // Empty the search-box
-      await page.getByTestId('collections-search-box').fill('');
+      const inputField = await page.getByTestId('collections-search-box');
+      await inputField.selectText();
+      await inputField.press('Backspace');
 
       // Check that url doesn't have the query parameter containing ?q
       await page.waitForURL('**/Parts');
