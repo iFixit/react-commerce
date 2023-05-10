@@ -5,12 +5,11 @@ export {
    FacetWidgetType,
 } from './types';
 export type {
-   FeaturedProductList,
-   iFixitPage,
    ProductList,
    ProductListPreview,
    ProductListSection,
    ProductSearchHit,
    WikiInfoEntry,
    ProductListAncestor,
+   StorePage,
 } from './types';

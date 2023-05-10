@@ -155,7 +155,7 @@
          "type": "boolean",
          "default": false
       },
-      "excludeFromHierarchyDisplay": {
+      "hideFromParent": {
          "pluginOptions": {
             "i18n": {
                "localized": false
@@ -163,7 +163,7 @@
          },
          "type": "boolean",
          "default": false,
-         "required": true
+         "required": false
       },
       "parent": {
          "type": "relation",
@@ -195,7 +195,6 @@
          "type": "dynamiczone",
          "components": [
             "product-list.banner",
-            "product-list.featured-product-list",
             "product-list.linked-product-list-set",
             "product-list.related-posts"
          ],
@@ -226,6 +225,16 @@
          },
          "type": "boolean",
          "default": false
+      },
+      "itemOverrides": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "dynamiczone",
+         "components": ["product-list.item-type-override"],
+         "required": true
       }
    }
 }

@@ -1,7 +1,11 @@
 import { Flex } from '@chakra-ui/react';
+import { PageEditMenu } from '@components/admin';
 import { SecondaryNavbar } from '@components/common';
+import { getAdminLinks } from '@helpers/product-list-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListType } from '@models/product-list';
+import { useMemo } from 'react';
 import { ProductListBreadcrumb } from './ProductListBreadcrumb';
 import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
 
@@ -15,6 +19,14 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
       productList.type === ProductListType.ToolsCategory;
    const hasDeviceNavigation =
       productList.type !== ProductListType.AllParts && !isToolsProductList;
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const adminLinks = useMemo(
+      () =>
+         getAdminLinks({
+            productListId: productList.id,
+         }),
+      [productList.id]
+   );
    return (
       <>
          <SecondaryNavbar
@@ -37,7 +49,15 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                      }}
                      productList={productList}
                   />
-                  <ProductListDeviceNavigation productList={productList} />
+                  <Flex
+                     h="full"
+                     w={{ base: 'full', sm: 'min-content' }}
+                     boxSizing="border-box"
+                     justify="space-between"
+                  >
+                     <ProductListDeviceNavigation productList={productList} />
+                     {isAdminUser && <PageEditMenu links={adminLinks} />}
+                  </Flex>
                </Flex>
             </Wrapper>
          </SecondaryNavbar>

@@ -5,10 +5,10 @@ import {
    Text,
    Avatar,
    Button,
-   Icon,
    Badge,
    Square,
    Flex,
+   BoxProps,
 } from '@chakra-ui/react';
 import {
    faCircleCheck,
@@ -17,10 +17,12 @@ import {
    faSquareArrowUp,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { Section } from './hooks/useTroubleshootingProps';
+import { SolutionSection } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
+import { GuideResource } from './Resource';
+import { Guide } from './hooks/GuideModel';
 
-const SolutionFooter = () => (
+const _SolutionFooter = () => (
    <Stack
       justify="flex-start"
       align="flex-start"
@@ -133,9 +135,11 @@ const SolutionFooter = () => (
 
 const SolutionHeader = ({
    index,
+   title,
    popularity,
 }: {
    index: number;
+   title: string;
    popularity?: number;
 }) => (
    <Stack
@@ -145,13 +149,7 @@ const SolutionHeader = ({
       alignContent="center"
       spacing="16px"
    >
-      <Stack
-         direction="row"
-         justify="flex-start"
-         align="center"
-         spacing="10px"
-         height="28px"
-      >
+      <Stack direction="row" justify="flex-start" align="center" spacing="10px">
          <Square
             borderRadius="4px"
             borderColor="brand.700"
@@ -165,6 +163,14 @@ const SolutionHeader = ({
             {index}
          </Square>
       </Stack>
+      <Heading
+         fontWeight="medium"
+         fontSize="24px"
+         color="brand.500"
+         alignSelf="center"
+      >
+         {title}
+      </Heading>
       {popularity !== undefined && (
          <Stack direction="row" justify="flex-start" align="flex-start">
             <Badge
@@ -185,16 +191,8 @@ const SolutionHeader = ({
    </Stack>
 );
 
-const SolutionTexts = ({ title, body }: { title: string; body: string }) => (
+const SolutionTexts = ({ body }: { body: string }) => (
    <Stack justify="flex-start" align="flex-start">
-      <Heading
-         fontWeight="medium"
-         fontSize="24px"
-         color="gray.900"
-         alignSelf="stretch"
-      >
-         {title}
-      </Heading>
       <Prerendered html={body} />
    </Stack>
 );
@@ -204,10 +202,11 @@ export default function SolutionCard({
    solution,
 }: {
    index: number;
-   solution: Section;
+   solution: SolutionSection;
 }) {
    return (
       <Flex
+         id={`solution-${index}`}
          background="white"
          borderRadius="4px"
          borderColor="gray.300"
@@ -216,9 +215,20 @@ export default function SolutionCard({
          padding="24px 24px 12px 24px"
       >
          <Flex gap="24px" direction="column">
-            <SolutionHeader index={index} />
-            <SolutionTexts title={solution.heading} body={solution.body} />
+            <SolutionHeader index={index} title={solution.heading} />
+            <SolutionTexts body={solution.body} />
+            <LinkCards guides={solution.guides} />
          </Flex>
       </Flex>
+   );
+}
+
+function LinkCards({ guides, ...props }: { guides: Guide[] } & BoxProps) {
+   return (
+      <Box {...props}>
+         {guides.map((guide: Guide) => (
+            <GuideResource key={guide.guideid} guide={guide} />
+         ))}
+      </Box>
    );
 }

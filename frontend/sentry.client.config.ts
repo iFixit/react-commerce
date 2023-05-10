@@ -5,7 +5,7 @@
 import * as Sentry from '@sentry/nextjs';
 import { BrowserTracing } from '@sentry/tracing';
 
-const SENTRY_DSN = process.env.SENTRY_DSN;
+const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 const hydrationErrors = [
    'Hydration failed because the initial UI does not match what was rendered on the server.',
@@ -41,7 +41,7 @@ Sentry.init({
    ],
    beforeSend: (event, hint) => {
       const ex = hint.originalException;
-      if (ex && typeof ex == 'object' && ex.message) {
+      if (ex instanceof Error) {
          // Sample hydration errors.
          if (hydrationErrors.some((msg) => ex.message.match(msg))) {
             return Math.random() < 0.05 ? event : null;

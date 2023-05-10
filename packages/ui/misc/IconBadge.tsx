@@ -4,46 +4,45 @@ import {
    FlexProps,
    forwardRef,
    ThemeTypings,
+   useMultiStyleConfig,
 } from '@chakra-ui/react';
 import { IconDefinition } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 
+type IconBadgeSize = 'tiny' | 'small' | 'base';
+
 export type IconBadgeProps = FlexProps & {
+   size?:
+      | IconBadgeSize
+      | Partial<Record<ThemeTypings['breakpoints'] | string, IconBadgeSize>>;
    colorScheme?: ThemeTypings['colorSchemes'];
    icon?: IconDefinition;
 };
 
 export const IconBadge = forwardRef<IconBadgeProps, 'div'>(
-   ({ children, colorScheme = 'gray', icon, ...props }, ref) => {
+   (
+      { children, size = 'small', colorScheme = 'gray', icon, ...props },
+      ref
+   ) => {
+      const styles = useMultiStyleConfig('IconBadge', { size });
+
       return (
          <Flex
             ref={ref}
+            __css={styles.container}
             bgColor={`${colorScheme}.100`}
             borderColor={`${colorScheme}.300`}
-            borderWidth="1px"
-            py="1"
-            px="1.5"
-            fontWeight="semibold"
-            fontSize="sm"
-            lineHeight="1em"
             color={`${colorScheme}.700`}
-            alignItems="center"
-            borderRadius="base"
-            flexShrink={0}
-            maxW="full"
             {...props}
          >
             {icon && (
-               <Box mr="1">
-                  <FaIcon
-                     display="block"
-                     icon={icon}
-                     h="4"
-                     color={`${colorScheme}.500`}
-                  />
-               </Box>
+               <FaIcon
+                  __css={styles.icon}
+                  icon={icon}
+                  color={`${colorScheme}.500`}
+               />
             )}
-            <Box noOfLines={1}>{children}</Box>
+            <Box __css={styles.label}>{children}</Box>
          </Flex>
       );
    }

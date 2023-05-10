@@ -1,4 +1,3 @@
-import { createSectionId } from '@helpers/strapi-helpers';
 import { assertNever } from '@ifixit/helpers';
 import {
    Enum_Componentpagesplitwithimage_Imageposition,
@@ -17,6 +16,7 @@ export const SplitWithImageSectionSchema = z.object({
    type: z.literal('SplitWithImage'),
    id: z.string(),
    title: z.string().nullable(),
+   label: z.string().nullable(),
    description: z.string().nullable(),
    image: ImageSchema.nullable(),
    imagePosition: z.enum(['left', 'right']),
@@ -25,18 +25,17 @@ export const SplitWithImageSectionSchema = z.object({
 
 export function splitWithImageSectionFromStrapi(
    fragment: SplitWithImageSectionFieldsFragment | null | undefined,
-   index: number
+   sectionId: string
 ): SplitWithImageSection | null {
-   const id = createSectionId(fragment, index);
    const title = fragment?.title ?? null;
+   const label = fragment?.label ?? null;
    const description = fragment?.description ?? null;
-
-   if (id == null) return null;
 
    return {
       type: 'SplitWithImage',
-      id,
+      id: sectionId,
       title,
+      label,
       description,
       image: imageFromStrapi(fragment?.image),
       imagePosition:

@@ -37,8 +37,7 @@ import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
  */
 export async function findProductList(
    filters: ProductListFiltersInput,
-   ifixitOrigin: string,
-   deviceItemType: string | null = null
+   ifixitOrigin: string
 ): Promise<ProductList | null> {
    const filterDeviceTitle = filters.deviceTitle?.eqi ?? '';
 
@@ -57,6 +56,7 @@ export async function findProductList(
       return null;
    }
 
+   const id = result.productLists?.data?.[0]?.id ?? null;
    const deviceTitle =
       deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
    const handle = productList?.handle ?? '';
@@ -84,11 +84,11 @@ export async function findProductList(
       productListType === ProductListType.DeviceParts;
 
    const baseProductList: BaseProductList = {
+      id,
       title,
       h1,
       handle,
       deviceTitle,
-      deviceItemType,
       tagline: productList?.tagline ?? null,
       description: description,
       metaDescription: productList?.metaDescription ?? null,
@@ -98,10 +98,7 @@ export async function findProductList(
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
       heroImage: productList?.heroImage?.data?.attributes
-         ? getImageFromStrapiImage(
-              productList.heroImage.data.attributes,
-              'large'
-           )
+         ? getImageFromStrapiImage(productList.heroImage.data.attributes)
          : null,
       image: null,
       brandLogo: productList?.brandLogo?.data?.attributes
@@ -327,7 +324,7 @@ type CreateProductListChildOptions = {
 function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
    return (apiChild: ApiProductListChild): ProductListChild | null => {
       const { attributes } = apiChild;
-      if (attributes == null) {
+      if (attributes == null || attributes.hideFromParent) {
          return null;
       }
       const imageAttributes = attributes.image?.data?.attributes;
@@ -389,39 +386,6 @@ function createProductListSection(
             type: ProductListSectionType.RelatedPosts,
             id: section.id,
             tags: section.tags || null,
-         };
-      }
-      case 'ComponentProductListFeaturedProductList': {
-         const productList = section.productList?.data?.attributes;
-         if (productList == null) {
-            return null;
-         }
-         const image = productList.image?.data?.attributes;
-
-         const algoliaApiKey = createPublicAlgoliaKey(
-            ALGOLIA_APP_ID,
-            ALGOLIA_API_KEY
-         );
-
-         return {
-            type: ProductListSectionType.FeaturedProductList,
-            id: section.id,
-            productList: {
-               handle: productList.handle,
-               title: productList.title,
-               type: getProductListType(productList.type),
-               deviceTitle: productList.deviceTitle ?? null,
-               description: productList.description,
-               image:
-                  image == null
-                     ? null
-                     : getImageFromStrapiImage(image, 'thumbnail'),
-               filters: productList.filters ?? null,
-               algolia: {
-                  indexName: ALGOLIA_PRODUCT_INDEX_NAME,
-                  apiKey: algoliaApiKey,
-               },
-            },
          };
       }
       case 'ComponentProductListLinkedProductListSet': {

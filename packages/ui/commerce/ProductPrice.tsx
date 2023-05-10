@@ -14,6 +14,7 @@ import {
    forwardRef,
    Text,
    ThemeTypings,
+   useMultiStyleConfig,
 } from '@chakra-ui/react';
 import { faRectanglePro } from '@fortawesome/pro-solid-svg-icons';
 import { computeDiscountPercentage, formatMoney, Money } from '@ifixit/helpers';
@@ -21,13 +22,17 @@ import { FaIcon } from '@ifixit/icons';
 import { IconBadge } from '../misc';
 import { useUserPrice } from './hooks/useUserPrice';
 
+type ProductPriceSize = 'small' | 'medium' | 'large';
+
 export type ProductVariantPriceProps = Omit<BoxProps, 'children'> & {
    price: Money;
    compareAtPrice?: Money | null;
    proPricesByTier?: Record<string, Money> | null;
    showDiscountLabel?: boolean;
    formatDiscountLabel?: (discountPercentage: number) => string;
-   size?: 'large' | 'medium' | 'small';
+   size?:
+      | ProductPriceSize
+      | Partial<Record<ThemeTypings['breakpoints'], ProductPriceSize>>;
    direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
 };
 
@@ -92,7 +97,9 @@ type ProductPriceProps = {
    discountLabel?: string;
    showDiscountLabel?: boolean;
    showProBadge?: boolean;
-   size?: 'large' | 'medium' | 'small';
+   size?:
+      | ProductPriceSize
+      | Partial<Record<ThemeTypings['breakpoints'], ProductPriceSize>>;
    colorScheme?: ThemeTypings['colorSchemes'];
    direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
 };
@@ -113,33 +120,27 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
       },
       ref
    ) => {
-      const priceFontSize =
-         size === 'large' ? 'xl' : size === 'medium' ? 'md' : 'sm';
-      const compareAtPriceFontSize = size === 'large' ? 'md' : 'sm';
+      const styles = useMultiStyleConfig('ProductPrice', { size });
       const isHorizontal = direction === 'row' || direction === 'row-reverse';
 
       return (
          <Box
             ref={ref}
-            display="flex"
+            __css={styles.container}
             flexDir={direction}
-            alignSelf="flex-start"
             alignItems={isHorizontal ? 'center' : 'flex-end'}
             {...other}
          >
             <Text
-               fontSize={priceFontSize}
-               fontWeight="semibold"
+               sx={styles.price}
                color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
-               data-testid="current-price"
+               data-testid="price"
             >
                {showProBadge && !isHorizontal && (
                   <FaIcon
+                     __css={styles.proBadgeVertical}
                      icon={faRectanglePro}
-                     h="4"
-                     mr="1.5"
                      color={`${colorScheme}.500`}
-                     display="inline-block"
                   />
                )}
                {formattedPrice}
@@ -147,17 +148,16 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
             {isDiscounted && (
                <>
                   <Text
+                     sx={styles.compareAtPrice}
                      ml={direction === 'row' ? 1 : 0}
                      mr={direction === 'row-reverse' ? 1 : 0}
-                     fontSize={compareAtPriceFontSize}
-                     color="gray.500"
-                     textDecor="line-through"
                      data-testid="compare-at-price"
                   >
                      {formattedCompareAtPrice}
                   </Text>
                   {isDiscounted && showDiscountLabel && isHorizontal && (
                      <IconBadge
+                        sx={styles.proBadgeHorizontal}
                         ml={direction === 'row' ? '10px' : 0}
                         mr={direction === 'row-reverse' ? '10px' : 0}
                         icon={showProBadge ? faRectanglePro : undefined}

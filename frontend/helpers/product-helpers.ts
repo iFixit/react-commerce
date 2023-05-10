@@ -1,10 +1,10 @@
+import { PageEditMenuLink } from '@components/admin';
 import { IFIXIT_ORIGIN } from '@config/env';
 import {
    faArrowUpRightFromSquare,
    faImage,
    faShop,
    faWarehouse,
-   IconDefinition,
 } from '@fortawesome/pro-solid-svg-icons';
 import { ifixitOriginWithSubdomain } from './path-helpers';
 
@@ -19,15 +19,6 @@ export function getProductPath(handle: string) {
    }
 }
 
-interface ProductEditMenuOption {
-   icon: IconDefinition;
-   label: string;
-}
-
-export interface ProductEditMenuLink extends ProductEditMenuOption {
-   url: string;
-}
-
 type GetAdminLinksProps = {
    productcode?: string;
    productId: string;
@@ -38,7 +29,7 @@ export function getAdminLinks({
    productcode,
    productId,
    storeCode,
-}: GetAdminLinksProps): ProductEditMenuLink[] {
+}: GetAdminLinksProps): PageEditMenuLink[] {
    const encodedProductcode = encodeURIComponent(productcode ?? '');
    const encodedProductId = encodeProductId(productId);
    const akeneoOrigin = ifixitOriginWithSubdomain('akeneo');

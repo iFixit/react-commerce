@@ -1,5 +1,9 @@
+import { BannersSectionSchema } from '@models/sections/banners-section';
 import { FeaturedProductsSectionSchema } from '@models/sections/featured-products-section';
 import { IFixitStatsSectionSchema } from '@models/sections/ifixit-stats-section';
+import { LifetimeWarrantySectionSchema } from '@models/sections/lifetime-warranty-section';
+import { QuoteGallerySectionSchema } from '@models/sections/quote-gallery-section';
+import { SocialGallerySectionSchema } from '@models/sections/social-gallery-section';
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
 import { BrowseSectionSchema } from './sections/browse-section';
@@ -15,6 +19,10 @@ export const PageSectionSchema = z.union([
    SplitWithImageSectionSchema,
    PressQuotesSectionSchema,
    FeaturedProductsSectionSchema,
+   SocialGallerySectionSchema,
+   LifetimeWarrantySectionSchema,
+   BannersSectionSchema,
+   QuoteGallerySectionSchema,
 ]);
 
 export type Page = z.infer<typeof PageSchema>;

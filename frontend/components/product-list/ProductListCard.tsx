@@ -22,9 +22,10 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                  objectFit: 'contain',
               }
             : {
-                 sizes: '20vw',
-                 layout: 'fill',
-                 objectFit: 'cover',
+                 height: 80,
+                 width: 80,
+                 layout: 'fixed',
+                 objectFit: 'contain',
               };
       return (
          <Flex
@@ -62,6 +63,8 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   boxSizing="content-box"
                   bgColor="white"
                   mr="2"
+                  flexShrink={0}
+                  overflow="hidden"
                >
                   <ResponsiveImage
                      src={productList.imageUrl}
@@ -86,6 +89,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                      display={{ base: 'none', md: 'block' }}
                      color="gray.600"
                      fontSize="sm"
+                     lineHeight="shorter"
                      dangerouslySetInnerHTML={{
                         __html: productList.description,
                      }}

@@ -1,5 +1,8 @@
 import { Box, chakra, SystemStyleObject } from '@chakra-ui/react';
 
+import 'lite-youtube-embed/src/lite-yt-embed.css';
+import { useEffect } from 'react';
+
 const renderStyles: SystemStyleObject = {
    '.headerContainer': {
       display: 'flex',
@@ -38,6 +41,10 @@ const renderStyles: SystemStyleObject = {
       paddingLeft: 4,
    },
 
+   '>ul, >ol': {
+      paddingBottom: 6,
+   },
+
    a: {
       color: 'brand.500',
    },
@@ -72,6 +79,126 @@ const renderStyles: SystemStyleObject = {
       borderColor: 'gray.300',
       padding: '4px',
    },
+
+   'lite-youtube': {
+      marginTop: '8px',
+      marginBottom: '8px',
+      clear: 'both',
+      borderColor: 'gray.500',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      padding: '1px',
+      maxWidth: '100%',
+      height: 'auto !important',
+
+      '&.float-left': {
+         float: 'left',
+      },
+      '&.float-right': {
+         float: 'right',
+      },
+      '&.mx-auto': {
+         marginLeft: 'auto',
+         marginRight: 'auto',
+      },
+   },
+
+   '.videoFrame': {
+      maxWidth: '100%',
+      border: '1px solid #e5e7eb',
+      marginTop: '8px',
+      marginBottom: '8px',
+      padding: '1px',
+      borderRadius: 0,
+      height: 'auto',
+
+      '@media only screen and (max-width: 575px)': {
+         width: 'auto !important',
+      },
+
+      '&.videoBox_left': {
+         float: 'left',
+         clear: 'left',
+         marginRight: '30px',
+         position: 'relative',
+         width: 'fit-content',
+
+         '@media only screen and (max-width: 575px)': {
+            float: 'none',
+         },
+      },
+      '&.videoBox_center': {
+         marginLeft: 'auto',
+         marginRight: 'auto',
+         clear: 'both',
+         display: 'block',
+      },
+      '&.videoBox_right': {
+         float: 'right',
+         clear: 'right',
+         marginLeft: '30px',
+
+         '@media only screen and (max-width: 575px)': {
+            float: 'none',
+         },
+      },
+   },
+
+   '.videoBox': {
+      position: 'relative',
+      width: 'auto !important',
+      overflow: 'hidden',
+      maxWidth: '100%',
+      height: 0,
+      paddingBottom: '56.25%',
+
+      video: {
+         position: 'absolute',
+         top: 0,
+         left: 0,
+         width: '100%',
+         height: '100%',
+      },
+   },
+
+   '.imageBox_left': {
+      clear: 'left',
+      float: 'left',
+      marginBottom: '8px',
+      marginTop: '8px',
+      marginRight: '30px',
+      '> img': {
+         clear: 'left',
+      },
+   },
+
+   'table .imageBox_left': {
+      // Special-case default image alignment for tables
+      marginRight: '0px',
+   },
+
+   '.imageBox_right': {
+      clear: 'right',
+      float: 'right',
+      marginBottom: '8px',
+      marginTop: '8px',
+      marginLeft: '30px',
+      '>img': {
+         clear: 'right',
+      },
+   },
+
+   '.imageBox_center': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      clear: 'both',
+      marginBottom: '8px',
+      marginTop: '8px',
+      '>img': {
+         clear: 'both',
+      },
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
@@ -81,6 +208,9 @@ const Prerendered = chakra(function Prerendered({
    html: string;
    className?: string;
 }) {
+   useEffect(() => {
+      import('lite-youtube-embed');
+   }, []);
    return (
       <Box
          className={className}

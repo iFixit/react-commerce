@@ -19,6 +19,8 @@ const withTM = require('next-transpile-modules')([
    '@ifixit/sentry',
    '@ifixit/shopify-storefront-client',
    '@ifixit/ui',
+   '@ifixit/menu',
+   '@ifixit/tracking-hooks',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -107,6 +109,16 @@ const moduleExports = {
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Headphone`,
             permanent: true,
          },
+         {
+            source: '/Tools/Wii',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/Nintendo_Wii`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/Computer',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/PC`,
+            permanent: true,
+         },
       ];
    },
    images: {
@@ -123,6 +135,7 @@ const moduleExports = {
          'guide-images.cdn.ifixit.com',
          process.env.STRAPI_IMAGE_DOMAIN,
       ].filter((domain) => domain),
+      minimumCacheTTL: 3600,
    },
    i18n: {
       locales: ['en-US'],
@@ -137,7 +150,6 @@ const moduleExports = {
       return config;
    },
    sentry: {
-      autoInstrumentServerFunctions: false,
       // Upload artifacts in dist/framework as well; this includes sourcemaps
       // for react and other next.js code
       widenClientFileUpload: true,

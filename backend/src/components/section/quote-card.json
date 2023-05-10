@@ -1,0 +1,19 @@
+{
+   "collectionName": "components_section_quote_cards",
+   "info": {
+      "displayName": "quote card"
+   },
+   "options": {},
+   "attributes": {
+      "text": {
+         "type": "richtext",
+         "required": true
+      },
+      "author": {
+         "displayName": "Person",
+         "type": "component",
+         "repeatable": false,
+         "component": "global.person"
+      }
+   }
+}

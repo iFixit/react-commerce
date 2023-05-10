@@ -67,7 +67,7 @@ After running the dev server, you can access the Strapi admin panel at `http://l
 
 The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
 
-### Project structure
+## Project structure
 
 The project contains a `backend` folder with Strapi config and a `frontend` with Next.js.
 You can run the backend both using SQLite and using Postgres with docker compose. For now the recommended approach for local dev is to just use SQLite.
@@ -93,45 +93,80 @@ Here's an overview of the production setup (the focus is on Next.js, therefore d
 
 ![image](https://user-images.githubusercontent.com/4640135/203581627-82ab19ca-7de7-4343-ae05-2a4f6330f38a.png)
 
-### Tests
+## Tests
 
-We use Jest and Playwright (with MSW) to run our tests.
+We use [Jest](https://jestjs.io) and [Playwright](https://playwright.dev/) (with [MSW](https://mswjs.io/)) to run our tests.
 
-You can use any of the following commands to run Playwright tests:
+At the moment, we only have tests for the `frontend`. These tests are located in the [`frontend/tests`](frontend/tests) directory.
 
-```sh
-pnpm run playwright:run       // Runs all tests for all projects
-pnpm run playwright:debug     // Runs all tests for desktop chrome in debug mode (see frontend/package.json for details)
-```
+### Running Jest Tests
 
-Also you can provide additional flags/options to run single/multiple tests and with different devices/projects:
+> ⚠️ We don't need to have the dev server running before we run the Jest tests.
 
-```sh
-pnpm run playwright:run --project="Desktop Chrome" fix_kit         // Runs fix_kit test for desktop chrome headless
-pnpm run playwright:run --project="Mobile Chrome" --headed fix_kit // Runs fix_kit test for mobile chrome headed
-```
-
-> ⚠️ We need to have the dev server running before we run the Playwright tests.
-> Luckily, Playwright webserver will start the app automatically if it's not running yet.
-
-If you are trying to experiment with the MSW handlers, you can use the following command to instantiate the Next.js server
-with the MSW handlers integrated. You can then add or remove handlers from
-`frontend/tests/playwright/msw/handlers.ts` and see the changes. If you do make
-any changes, make sure to restart the server.
-
-```sh
-NEXT_PUBLIC_MOCK_API=true pnpm dev
-```
-
-This command will run Jest tests:
+You can use the following command to run all the `Jest` tests:
 
 ```sh
 pnpm test
 ```
 
-> ⚠️ We don't need to have the dev server running before we run the Jest tests.
+Additionally, you can pass any `Jest` flag to the command by prepending `--` before the flags:
 
-### Using SVG
+```sh
+pnpm test -- --watch
+pnpm test -- ProductListItem --updateSnapshot
+```
+
+⚠️ **Note:** You will not be able to interact with the Jest CLI prompt if the tests were ran from the `root` directory. To be able to interact with the Jest CLI prompt, you will need to run the tests from the `frontend` directory.
+
+|                                               Root Dir Execution                                                |                                               Frontend Execution                                                |
+| :-------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
+| ![image](https://user-images.githubusercontent.com/22064420/225107750-2e161321-dc48-424a-880c-9d10ba1b12c3.png) | ![image](https://user-images.githubusercontent.com/22064420/225106631-9d459540-4659-4f40-9070-40f25a5ac979.png) |
+
+**For more information on Jest flags, click on the link to read the docs: [Jest CLI](https://jestjs.io/docs/cli)**
+
+<br/>
+
+### Running Playwright Tests
+
+> ⚠️ We need the dev server running to run the Playwright tests. You can run the dev server by running `pnpm dev` in the `root` directory.
+>
+> You can also just let Playwright start the dev server automatically when running the tests, but this will make running Playwright tests slower as it will need to start the dev server every time.
+
+You can use the following command to run all `Playwright` tests:
+
+-  **Run all tests for all devices _(a.k.a projects)_**
+   ```sh
+   pnpm playwright:run
+   ```
+
+<br/>
+
+If you want to **debug** all the tests, or a single test, you can use the following command:
+
+-  **Run all tests for Desktop Chrome**
+   ```sh
+   pnpm playwright:debug [test_name]
+   ```
+   -  This will make Playwright do the following:
+      -  Launch the browser in **headed** mode
+      -  Disables parallelization
+      -  Sets the `timeout` to `0` (_no timeout_)
+      -  Configures a `playwright` object in the browser to allow you to interact with Playwright's Locator API right from the browser's console
+      -  Enables verbose logging of Playwright's API calls
+
+Additionally, you can directly add any `Playwright` flag to the command:
+
+```sh
+pnpm playwright:run --project="Desktop Chrome" fix_kit
+pnpm playwright:run --project="Mobile Chrome" --headed fix_kit
+```
+
+**For more information on Playwright flags, click on the link to read the docs: [Playwright CLI](https://playwright.dev/docs/test-cli#reference)**
+
+⚠️ **For more Playwright specific information such as Mocking API Requests and
+debugging tips, check out the [testing-doc](frontend/tests/playwright/testing-doc.md)**
+
+## Using SVG
 
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
 
@@ -147,16 +182,16 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 
 > :warning: SVGR uses the name of the file to name the component (it converts it to camel case), so name the svg accordingly.
 
-### Miscellaenous
+## Miscellaenous
 
-#### Update Storefront graphql schema
+### Update Storefront graphql schema
 
 When you need to update the Shopify storefront GraphQL schema version, follow these steps:
 
 1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
 2. Run `pnpm codegen:download-shopify-storefront-schema`
 
-#### Generate Shopify storefront delegate access token
+### Generate Shopify storefront delegate access token
 
 The public Shopify storefront API is rate limited by user IP. To avoid hitting the rate limit when making requests from the server, we use Shopify storefront API with a [delegate access token](https://shopify.dev/apps/auth/oauth/delegate-access-tokens). To generate a token for a shop, use the automation bot:
 
@@ -166,9 +201,9 @@ pnpm bot shopify create delegate-token
 
 > :information_source: You can use the **Admin API Password** of the app that you use to generate the Storefront access token.
 
-### Troubleshooting
+## Troubleshooting
 
-#### Backend folder dependencies errors
+### Backend folder dependencies errors
 
 Since [OSX 12.3](https://developer.apple.com/documentation/macos-release-notes/macos-12_3-release-notes), python(2) is no longer available by default.
 If no prebuilt image is available for some dependencies like sqlite3, it may be necessary to install python(2) to build the image locally.
@@ -181,7 +216,7 @@ pyenv global 2.7.18
 echo 'PATH=$(pyenv root)/shims:$PATH' >> ~/.zshrc
 ```
 
-#### Local Strapi missing iFixit Test Store
+### Local Strapi missing iFixit Test Store
 
 With the latest changes, we might run into a situation where the local strapi does not have the ifixit test store in it. In order to fix this add the folowing to `backend/.env`
 
@@ -193,6 +228,6 @@ With the latest version of main, go to your local strapi at http://localhost:133
 
 If this page does not appear, then delete `backend/.cache` and `backend/dist` and re-start the dev server.
 
-#### I've updated the Shopify Storefront schema version but the graphql codegen script is not working
+### I've updated the Shopify Storefront schema version but the graphql codegen script is not working
 
 Whenever you update the Shopify Storefront schema version, you need to run `pnpm codegen:download-shopify-storefront-schema` to download the new schema.

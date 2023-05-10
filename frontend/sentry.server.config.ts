@@ -4,7 +4,7 @@
 
 import * as Sentry from '@sentry/nextjs';
 
-const SENTRY_DSN = process.env.SENTRY_DSN;
+const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 Sentry.init({
    dsn: SENTRY_DSN,
@@ -21,7 +21,7 @@ Sentry.init({
    },
    beforeSend(event, hint) {
       const ex = hint.originalException;
-      if (ex && typeof ex == 'object' && ex.message) {
+      if (ex instanceof Error) {
          // Happens when receiving a bad url that fails to decode
          if (ex.message.match(/URI malformed/)) {
             return null;

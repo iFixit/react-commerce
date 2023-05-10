@@ -2,10 +2,10 @@ import { Box, chakra, Flex, Link } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper';
 import { SectionHeading } from '@components/sections/SectionHeading';
+import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage } from '@ifixit/ui';
 import type { PressQuote } from '@models/page/components/press-quote';
 import type { PressQuotesSection } from '@models/page/sections/press-quotes-section';
-import NextLink from 'next/link';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -16,6 +16,8 @@ export interface PressQuotesSectionProps {
 export function PressQuotesSection({
    data: { title, description, callToAction, quotes },
 }: PressQuotesSectionProps) {
+   if (quotes.length === 0) return null;
+
    return (
       <Box as="section" position="relative" w="full" bg="gray.200">
          <Flex direction="column" py="16" alignItems="center">
@@ -33,17 +35,17 @@ export function PressQuotesSection({
                <QuotesGallery quotes={quotes} />
             </Box>
             {callToAction && (
-               <NextLink href={callToAction.url} passHref>
-                  <Link
-                     color="brand.500"
-                     fontWeight="bold"
-                     display="block"
-                     py="2"
-                     px="3"
-                  >
-                     {callToAction.title}
-                  </Link>
-               </NextLink>
+               <SmartLink
+                  as={Link}
+                  href={callToAction.url}
+                  color="brand.500"
+                  fontWeight="semibold"
+                  display="block"
+                  py="2"
+                  px="3"
+               >
+                  {callToAction.title}
+               </SmartLink>
             )}
          </Flex>
       </Box>

@@ -1,6 +1,7 @@
 fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
    id
    title
+   label
    description
    callToAction {
       ...CallToActionFields

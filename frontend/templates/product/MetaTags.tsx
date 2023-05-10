@@ -1,5 +1,5 @@
 import { useAppContext } from '@ifixit/app';
-import { parseItemcode } from '@ifixit/helpers';
+import { parseItemcode, shouldShowProductRating } from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import Head from 'next/head';
 import React from 'react';
@@ -116,7 +116,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                '@context': 'https://schema.org',
                '@type': 'BreadcrumbList',
                itemListElement:
-                  product.breadcrumbs?.map((item, index) => ({
+                  product.breadcrumbs.map((item, index) => ({
                      '@type': 'ListItem',
                      position: index + 1,
                      name: item.label,
@@ -134,16 +134,13 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                '@type': 'Product',
                name: metaTitle || undefined,
                url: selectedVariantUrl,
-               aggregateRating:
-                  product.rating?.value &&
-                  product.reviewsCount &&
-                  (product.rating.value >= 4 || product.reviewsCount > 10)
-                     ? {
-                          '@type': 'AggregateRating',
-                          ratingValue: product.rating.value,
-                          reviewCount: product.reviewsCount,
-                       }
-                     : undefined,
+               aggregateRating: shouldShowProductRating(product.reviews)
+                  ? {
+                       '@type': 'AggregateRating',
+                       ratingValue: product.reviews.rating,
+                       reviewCount: product.reviews.count,
+                    }
+                  : undefined,
                brand: {
                   '@type': 'Brand',
                   name: product.vendor || 'iFixit',

@@ -162,24 +162,34 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            }}
                         >
                            {showProBadge && (
-                              <IconBadge colorScheme="orange">
+                              <IconBadge
+                                 colorScheme="orange"
+                                 size={{ base: 'small', md: 'base' }}
+                              >
                                  iFixit Pro
                               </IconBadge>
                            )}
                            {showDiscountBadge && (
                               <IconBadge
                                  colorScheme={isProPrice ? 'orange' : 'red'}
+                                 size={{ base: 'small', md: 'base' }}
                               >
                                  {percentage}% Off
                               </IconBadge>
                            )}
                            {showOemPartnershipBadge && (
-                              <IconBadge colorScheme="green">
+                              <IconBadge
+                                 colorScheme="green"
+                                 size={{ base: 'small', md: 'base' }}
+                              >
                                  {product.oem_partnership}
                               </IconBadge>
                            )}
                            {showLifetimeWarrantyBadge && (
-                              <IconBadge colorScheme="blue">
+                              <IconBadge
+                                 colorScheme="blue"
+                                 size={{ base: 'small', md: 'base' }}
+                              >
                                  Lifetime Guarantee
                               </IconBadge>
                            )}
@@ -203,6 +213,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         showDiscountLabel={false}
                         direction="column"
                         alignSelf="flex-end"
+                        size={{ base: 'small', md: 'medium' }}
                      />
                   )}
                   <Stack

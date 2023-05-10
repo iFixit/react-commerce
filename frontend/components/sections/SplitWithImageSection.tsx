@@ -1,20 +1,35 @@
-import { Box, Button, Flex, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { LinkButton } from '@components/ui/LinkButton';
+import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
+import type { CallToAction } from '@models/components/call-to-action';
+import type { Image } from '@models/components/image';
 import type { SplitWithImageSection } from '@models/sections/split-with-image-section';
-import NextLink from 'next/link';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
 
 export interface SplitWithImageContentSectionProps {
-   data: SplitWithImageSection;
+   id: string;
+   title?: string | null;
+   label?: string | null;
+   description?: string | null;
+   image?: Image | null;
+   imagePosition?: SplitWithImageSection['imagePosition'];
+   callToAction?: CallToAction | null;
 }
 
 export function SplitWithImageContentSection({
-   data: { title, description, image, imagePosition, callToAction },
+   id,
+   title,
+   label,
+   description,
+   image,
+   imagePosition,
+   callToAction,
 }: SplitWithImageContentSectionProps) {
    const isImageLeft = imagePosition === 'left';
    return (
-      <Box as="section" position="relative" w="full">
+      <Box as="section" id={id} position="relative" w="full">
          {image && (
             <Box
                w={{
@@ -41,13 +56,11 @@ export function SplitWithImageContentSection({
          )}
          <Wrapper>
             <Flex justify={isImageLeft ? 'flex-end' : 'flex-start'}>
-               <VStack
-                  align="flex-start"
+               <Box
                   py={{
                      base: '10',
                      md: '36',
                   }}
-                  spacing="7"
                   w={{
                      base: 'full',
                      md: '50%',
@@ -55,16 +68,24 @@ export function SplitWithImageContentSection({
                   pl={{ base: 0, md: isImageLeft ? '32' : undefined }}
                   pr={{ base: 0, md: isImageLeft ? undefined : '32' }}
                >
-                  {title && <SectionHeading>{title}</SectionHeading>}
+                  {label && (
+                     <Text color="brand.500" fontSize="sm" fontFamily="mono">
+                        {label}
+                     </Text>
+                  )}
+                  {title && <SectionHeading mb="4">{title}</SectionHeading>}
                   {description && <SectionDescription richText={description} />}
                   {callToAction && (
-                     <NextLink href={callToAction.url} passHref>
-                        <Button as="a" colorScheme="brand">
-                           {callToAction.title}
-                        </Button>
-                     </NextLink>
+                     <SmartLink
+                        as={LinkButton}
+                        href={callToAction.url}
+                        colorScheme="brand"
+                        mt="6"
+                     >
+                        {callToAction.title}
+                     </SmartLink>
                   )}
-               </VStack>
+               </Box>
             </Flex>
          </Wrapper>
       </Box>

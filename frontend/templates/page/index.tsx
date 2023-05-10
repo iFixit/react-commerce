@@ -1,6 +1,10 @@
 import { Box } from '@chakra-ui/react';
+import { BannersSection } from '@components/sections/BannersSection';
 import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
 import { IFixitStatsSection } from '@components/sections/IFixitStatsSection';
+import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
+import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
+import { SocialGallerySection } from '@components/sections/SocialGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { assertNever } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
@@ -31,7 +35,12 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   return (
                      <SplitWithImageContentSection
                         key={section.id}
-                        data={section}
+                        id={section.id}
+                        title={section.title}
+                        description={section.description}
+                        image={section.image}
+                        imagePosition={section.imagePosition}
+                        callToAction={section.callToAction}
                      />
                   );
                }
@@ -42,10 +51,50 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   return (
                      <FeaturedProductsSection
                         key={section.id}
+                        id={section.id}
                         title={section.title}
                         description={section.description}
                         background={section.background}
                         products={section.products}
+                     />
+                  );
+               }
+               case 'SocialGallery': {
+                  return (
+                     <SocialGallerySection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
+                        posts={section.posts}
+                     />
+                  );
+               }
+               case 'LifetimeWarranty': {
+                  return (
+                     <LifetimeWarrantySection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
+                     />
+                  );
+               }
+               case 'Banners': {
+                  return (
+                     <BannersSection
+                        key={section.id}
+                        id={section.id}
+                        banners={section.banners}
+                     />
+                  );
+               }
+               case 'QuoteGallery': {
+                  return (
+                     <QuoteGallerySection
+                        key={section.id}
+                        id={section.id}
+                        title={section.title}
+                        description={section.description}
+                        quotes={section.quotes}
                      />
                   );
                }

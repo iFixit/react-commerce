@@ -2,12 +2,11 @@ import { VStack } from '@chakra-ui/react';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListSectionType } from '@models/product-list';
-import { Configure, Index } from 'react-instantsearch-hooks-web';
+import { Configure, useMenu } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
    BannerSection,
-   FeaturedProductListSection,
    FilterableProductsSection,
    HeroSection,
    ProductListChildrenSection,
@@ -18,13 +17,12 @@ import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection'
 
 export interface ProductListViewProps {
    productList: ProductList;
-   indexName: string;
 }
 
-export function ProductListView({
-   productList,
-   indexName,
-}: ProductListViewProps) {
+export function ProductListView({ productList }: ProductListViewProps) {
+   // This temporary hack allows to correctly populate the itemType facet during SSR
+   // see: https://github.com/algolia/instantsearch/issues/5571
+   const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
 
    return (
@@ -32,19 +30,17 @@ export function ProductListView({
          <SecondaryNavigation productList={productList} />
          <Wrapper py={{ base: 4, md: 6 }}>
             <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
-               <Index indexName={indexName} indexId="main-product-list-index">
-                  <Configure filters={filters} hitsPerPage={24} />
-                  <MetaTags productList={productList} />
-                  {productList.heroImage ? (
-                     <HeroWithBackgroundSection productList={productList} />
-                  ) : (
-                     <HeroSection productList={productList} />
-                  )}
-                  {productList.children.length > 0 && (
-                     <ProductListChildrenSection productList={productList} />
-                  )}
-                  <FilterableProductsSection productList={productList} />
-               </Index>
+               <Configure filters={filters} hitsPerPage={24} />
+               <MetaTags productList={productList} />
+               {productList.heroImage ? (
+                  <HeroWithBackgroundSection productList={productList} />
+               ) : (
+                  <HeroSection productList={productList} />
+               )}
+               {productList.children.length > 0 && (
+                  <ProductListChildrenSection productList={productList} />
+               )}
+               <FilterableProductsSection productList={productList} />
                {productList.sections.map((section, index) => {
                   switch (section.type) {
                      case ProductListSectionType.Banner: {
@@ -64,19 +60,6 @@ export function ProductListView({
                               []
                         );
                         return <RelatedPostsSection key={index} tags={tags} />;
-                     }
-                     case ProductListSectionType.FeaturedProductList: {
-                        const { productList } = section;
-                        if (productList) {
-                           return (
-                              <FeaturedProductListSection
-                                 key={index}
-                                 productList={productList}
-                                 index={index}
-                              />
-                           );
-                        }
-                        return null;
                      }
                      case ProductListSectionType.ProductListSet: {
                         const { title, productLists } = section;

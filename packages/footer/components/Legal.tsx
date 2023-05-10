@@ -7,7 +7,7 @@ import {
    Stack,
    StackProps,
 } from '@chakra-ui/react';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 export const FooterLegalSection = forwardRef<StackProps, 'div'>(
    ({ children, ...otherProps }, ref) => {
@@ -22,7 +22,7 @@ export const FooterLegalSection = forwardRef<StackProps, 'div'>(
                base: 5,
                md: 0,
             }}
-            py="6"
+            mt="6"
             px={{
                base: 5,
                sm: 0,

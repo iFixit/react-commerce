@@ -1,26 +1,32 @@
 import { filterNullableItems } from '@helpers/application-helpers';
-import { assertNever } from '@ifixit/helpers';
+import { createSectionId } from '@helpers/strapi-helpers';
 import { FindPageQuery, strapi } from '@lib/strapi-sdk';
+import { bannersSectionFromStrapi } from '@models/sections/banners-section';
 import { featuredProductsSectionFromStrapi } from '@models/sections/featured-products-section';
 import { iFixitStatsSectionFromStrapi } from '@models/sections/ifixit-stats-section';
+import { quoteGallerySectionFromStrapi } from '@models/sections/quote-gallery-section';
+import { socialGallerySectionFromStrapi } from '@models/sections/social-gallery-section';
 import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
 import { browseSectionFromStrapi } from './sections/browse-section';
 import { heroSectionFromStrapi } from './sections/hero-section';
 import { pressQuotesSectionFromStrapi } from './sections/press-quotes-section';
+import { timeAsync } from '@ifixit/helpers';
 
 interface FindPageArgs {
    path: string;
 }
 
 export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
-   const response = await strapi.findPage({
-      filters: {
-         path: {
-            eq: path,
+   const response = await timeAsync('strapi.findPage', () =>
+      strapi.findPage({
+         filters: {
+            path: {
+               eq: path,
+            },
          },
-      },
-   });
+      })
+   );
    const page = pageFromStrapi(response);
 
    if (page == null) {
@@ -30,6 +36,9 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
    const sections = await sectionsFromStrapi(
       page.sections,
       async (section, index) => {
+         const sectionId = createSectionId(section);
+         if (sectionId == null) return null;
+
          switch (section.__typename) {
             case 'ComponentPageHero': {
                return heroSectionFromStrapi(section, index);
@@ -41,20 +50,36 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                return iFixitStatsSectionFromStrapi(section, index);
             }
             case 'ComponentPageSplitWithImage': {
-               return splitWithImageSectionFromStrapi(section, index);
+               return splitWithImageSectionFromStrapi(section, sectionId);
             }
             case 'ComponentPagePress': {
                return pressQuotesSectionFromStrapi(section, index);
             }
             case 'ComponentSectionFeaturedProducts': {
-               return featuredProductsSectionFromStrapi(section, index);
+               return featuredProductsSectionFromStrapi({
+                  strapiSection: section,
+                  sectionId,
+               });
             }
-            case 'Error': {
-               console.error('Failed to parse page section:', section);
-               return null;
+            case 'ComponentSectionSocialGallery': {
+               return socialGallerySectionFromStrapi(section, index);
+            }
+            case 'ComponentSectionLifetimeWarranty': {
+               return {
+                  type: 'LifetimeWarranty',
+                  id: sectionId,
+                  title: section.title ?? null,
+                  description: section.description ?? null,
+               };
+            }
+            case 'ComponentSectionBanner': {
+               return bannersSectionFromStrapi(section, sectionId);
+            }
+            case 'ComponentSectionQuoteGallery': {
+               return quoteGallerySectionFromStrapi(section, sectionId);
             }
             default: {
-               return assertNever(section);
+               return null;
             }
          }
       }

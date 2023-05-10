@@ -36,13 +36,6 @@ export const applySentryFetchMiddleware = () => {
    }
 };
 
-export const reportException: CaptureWithContextFn = (e, context) => {
-   Sentry.captureException(e, (scope) => {
-      scope.setContext('request', context);
-      return scope;
-   });
-};
-
 const withSentry: FetchMiddleware =
    (fetcher, shouldSkipRequest) => async (input, init) => {
       if (shouldSkipRequest?.(input, init)) {

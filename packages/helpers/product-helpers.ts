@@ -33,6 +33,9 @@ export function parseItemcode(itemcode: string) {
       : {};
 }
 
-export function isLifetimeWarranty(warranty: string): boolean {
+export function isLifetimeWarranty(
+   warranty: string | undefined | null
+): boolean {
+   if (!warranty) return false;
    return /lifetime/i.test(warranty);
 }

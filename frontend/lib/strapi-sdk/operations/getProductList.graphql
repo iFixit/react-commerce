@@ -128,6 +128,7 @@ query getProductList($filters: ProductListFiltersInput) {
                            }
                         }
                      }
+                     hideFromParent
                   }
                }
             }
@@ -143,30 +144,6 @@ query getProductList($filters: ProductListFiltersInput) {
                ... on ComponentProductListRelatedPosts {
                   id
                   tags
-               }
-               ... on ComponentProductListFeaturedProductList {
-                  id
-                  productList {
-                     data {
-                        attributes {
-                           handle
-                           type
-                           title
-                           deviceTitle
-                           description
-                           filters
-                           image {
-                              data {
-                                 attributes {
-                                    alternativeText
-                                    url
-                                    formats
-                                 }
-                              }
-                           }
-                        }
-                     }
-                  }
                }
                ... on ComponentProductListLinkedProductListSet {
                   id

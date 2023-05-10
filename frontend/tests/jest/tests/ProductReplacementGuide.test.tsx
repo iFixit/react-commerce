@@ -1,43 +1,48 @@
+import type { ReplacementGuidePreview } from '@models/components/replacement-guide-preview';
+import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
 import { screen } from '@testing-library/react';
-import { renderWithAppContext, getMockProduct } from '../utils';
-import { ReplacementGuidesSection } from '@templates/product/sections/ReplacementGuidesSection';
+import { renderWithAppContext } from '../utils';
+
+const replacementGuide: ReplacementGuidePreview = {
+   id: '0',
+   title: 'iPhone 6s Plus Battery Replacement',
+   url: '/Guide/iPhone+6s+Plus+Battery+Replacement/51380',
+   imageUrl: 'https://mmcelvain.cominor.com/igi/LVQpdSdCEY1YxPkM.thumbnail',
+   summary: 'Use this guide to bring life back to your...',
+   difficulty: 'Moderate',
+   timeRequired: '15 - 45 minutes',
+};
 
 describe('Product Replacement Guides Section Tests', () => {
    test('renders Replacement Guides Section for a product with a replacement guide', async () => {
-      const mockedProduct = getMockProduct();
       renderWithAppContext(
-         <ReplacementGuidesSection product={mockedProduct} />
+         <ReplacementGuidesSection id="1" guides={[replacementGuide]} />
       );
 
       const replacementGuidesSectionText = await screen.findByText(
          /Replacement Guides/i
       );
-      (expect(replacementGuidesSectionText) as any).toBeVisible();
+      expect(replacementGuidesSectionText).toBeVisible();
 
-      const expectedGuideTitle = mockedProduct.replacementGuides[0].title;
       const guideTitle = await screen.findByText(
-         new RegExp(expectedGuideTitle, 'i')
+         new RegExp(replacementGuide.title, 'i')
       );
-      (expect(guideTitle) as any).toBeVisible();
+      expect(guideTitle).toBeVisible();
 
-      const expectedGuideUrl = mockedProduct.replacementGuides[0].guide_url;
-      (
-         expect(screen.getByRole('link', { name: expectedGuideTitle })) as any
-      ).toHaveAttribute('href', expectedGuideUrl);
+      expect(
+         screen.getByRole('link', { name: replacementGuide.title })
+      ).toHaveAttribute('href', replacementGuide.url);
    });
 
    test('does not render Replacement Guides Section for a product with no replacement guides', async () => {
       const { container } = renderWithAppContext(
-         <ReplacementGuidesSection
-            product={getMockProduct({ replacementGuides: [] })}
-         />
+         <ReplacementGuidesSection id="1" guides={[]} />
       );
 
-      const replacementGuidesHeading = await screen.queryByText(
-         /Replacement Guides/i
-      );
-      (expect(replacementGuidesHeading) as any).not.toBeInTheDocument();
+      const replacementGuidesHeading =
+         screen.queryByText(/Replacement Guides/i);
+      expect(replacementGuidesHeading).not.toBeInTheDocument();
 
-      (expect(container.firstChild) as any).toBeEmptyDOMElement();
+      expect(container.firstChild).toBeEmptyDOMElement();
    });
 });

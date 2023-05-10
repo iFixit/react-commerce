@@ -252,3 +252,56 @@ export function useDecoupledState<Type = any>(
 
    return [decoupledState, setDecoupledState];
 }
+
+interface UseOnScreenOptions {
+   rootMargin?: string;
+   initialOnScreen?: boolean;
+}
+
+export function useOnScreen(
+   ref: React.RefObject<HTMLElement>,
+   options?: UseOnScreenOptions
+) {
+   const [isIntersecting, setIntersecting] = React.useState(
+      options?.initialOnScreen ?? false
+   );
+   React.useEffect(() => {
+      const observer = new IntersectionObserver(
+         ([entry]) => {
+            setIntersecting(entry.isIntersecting);
+         },
+         {
+            rootMargin: options?.rootMargin || '0px',
+         }
+      );
+      if (ref.current) {
+         observer.observe(ref.current);
+      }
+      return () => {
+         if (ref.current) observer.unobserve(ref.current);
+      };
+   }, []);
+   return isIntersecting;
+}
+
+export function useIsScrolledPast(ref: React.RefObject<HTMLElement>) {
+   const [isScrolledPast, setIsScrolledPast] = React.useState(false);
+
+   React.useEffect(() => {
+      const handleScroll = () => {
+         if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            setIsScrolledPast(rect.bottom < 0);
+         }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+
+      return () => {
+         window.removeEventListener('scroll', handleScroll);
+      };
+   }, [ref]);
+
+   return isScrolledPast;
+}

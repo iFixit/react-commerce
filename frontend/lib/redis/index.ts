@@ -12,7 +12,7 @@ function getClient() {
       maxRetriesPerRequest: 0,
       // Always try re-connecting since one instance is shared across the whole
       // process
-      reconnectOnError: (err) => 1,
+      reconnectOnError: (_err) => 1,
       // When not connected to redis, return error, don't add operations to a
       // queue
       enableOfflineQueue: false,
