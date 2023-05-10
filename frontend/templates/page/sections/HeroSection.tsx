@@ -5,7 +5,7 @@ import { LinkButton } from '@components/ui/LinkButton';
 import { SmartLink } from '@components/ui/SmartLink';
 import { Wrapper } from '@ifixit/ui';
 import type { HeroSection } from '@models/page/sections/hero-section';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 export interface HeroSectionProps {
    data: HeroSection;

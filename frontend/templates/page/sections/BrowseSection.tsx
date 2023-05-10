@@ -18,7 +18,7 @@ import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
 import type { BrowseSection } from '@models/page/sections/browse-section';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import NextLink from 'next/link';
 
 export interface BrowseSectionProps {

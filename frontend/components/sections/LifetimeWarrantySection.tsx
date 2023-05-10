@@ -4,7 +4,7 @@ import { useAppContext } from '@ifixit/app';
 import { isPresent } from '@ifixit/helpers';
 import { Wrapper } from '@ifixit/ui';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 export interface LifetimeWarrantySectionProps {
    title?: string | null;

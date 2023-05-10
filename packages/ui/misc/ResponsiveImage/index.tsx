@@ -1,4 +1,4 @@
-import Image, { ImageLoader, ImageProps } from 'next/image';
+import Image, { ImageLoader, ImageProps } from 'next/legacy/image';
 import {
    cartImageSizeMap,
    getIFixitImageLoader,

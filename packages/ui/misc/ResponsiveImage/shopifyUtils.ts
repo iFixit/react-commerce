@@ -1,4 +1,4 @@
-import { ImageLoaderProps } from 'next/image';
+import { ImageLoaderProps } from 'next/legacy/image';
 
 const BASE_IMAGE_SIZE = 352;
 

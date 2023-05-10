@@ -1,6 +1,6 @@
 import { Box, Flex, forwardRef, Heading } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
-import { ImageProps } from 'next/image';
+import { ImageProps } from 'next/legacy/image';
 
 interface ProductListCardProps {
    variant?: 'small' | 'medium';

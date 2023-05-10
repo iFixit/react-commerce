@@ -17,7 +17,7 @@ import {
 } from '@core-ds/primitives';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import * as React from 'react';
 
 export interface Activity {
