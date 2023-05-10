@@ -380,7 +380,7 @@ function NavTabs({
             {...notSelectedStyleProps}
             href={deviceGuideUrl}
          >
-            Guide
+            Guides
          </Link>
          <Box {...selectedStyleProps}>Answers</Box>
       </Flex>
