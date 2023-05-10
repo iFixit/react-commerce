@@ -22,8 +22,7 @@ export function useRequest<Data = any, Input = any>(
    });
    const request = React.useCallback(async (input: Input) => {
       try {
-         setState((current) => ({ ...current, isLoading: true }));
-         // const result = await axiosInstance.get(endpoint);
+         setState((current) => ({ ...current, isLoading: true, error: null }));
          const result = await axiosInstance.request({
             ...config,
             data: input,
@@ -41,7 +40,10 @@ export function useRequest<Data = any, Input = any>(
          setState((current) => ({
             ...current,
             isLoading: false,
-            error: error.message,
+            error:
+               typeof error.response?.data === 'string'
+                  ? error.response.data
+                  : error.message,
          }));
       }
    }, []);
