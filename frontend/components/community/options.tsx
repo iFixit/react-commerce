@@ -99,7 +99,15 @@ function OptionCard({ option }: { option: Option }) {
             objectFit="cover"
             display={{ base: 'none', md: 'unset' }}
          >
-            <Image src={option.image} alt="" layout="fill" objectFit="cover" />
+            <Image
+               src={option.image}
+               alt=""
+               fill
+               sizes="100vw"
+               style={{
+                  objectFit: 'cover',
+               }}
+            />
          </Flex>
          <Box
             position="relative"
@@ -116,7 +124,7 @@ function OptionCard({ option }: { option: Option }) {
                md: `calc(-1 * ${space[7]}) auto ${space[2]}`,
             }}
          >
-            <Image src={option.icon} alt="" layout="fill" />
+            <Image src={option.icon} alt="" fill sizes="100vw" />
          </Box>
          <Flex
             direction="column"

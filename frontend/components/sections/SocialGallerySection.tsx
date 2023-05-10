@@ -69,8 +69,10 @@ function SocialPost({ post: { image, author, url } }: SocialPostGridItemProps) {
                   <ResponsiveImage
                      src={image.url}
                      alt={image.altText ?? ''}
-                     objectFit="cover"
-                     layout="fill"
+                     style={{
+                        objectFit: 'cover',
+                     }}
+                     fill
                   />
                </AspectRatio>
             </Box>

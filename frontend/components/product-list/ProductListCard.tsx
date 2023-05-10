@@ -18,14 +18,10 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
             ? {
                  height: 48,
                  width: 48,
-                 layout: 'fixed',
-                 objectFit: 'contain',
               }
             : {
                  height: 80,
                  width: 80,
-                 layout: 'fixed',
-                 objectFit: 'contain',
               };
       return (
          <Flex
@@ -52,7 +48,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
             {...other}
          >
             {productList.imageUrl && (
-               <Box
+               <Flex
                   w={Number(imageSizeProps.width) / 4}
                   h={Number(imageSizeProps.height) / 4}
                   position="relative"
@@ -61,6 +57,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   borderRadius="base"
                   borderStyle="solid"
                   boxSizing="content-box"
+                  alignItems="center"
                   bgColor="white"
                   mr="2"
                   flexShrink={0}
@@ -69,10 +66,11 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   <ResponsiveImage
                      src={productList.imageUrl}
                      alt=""
+                     style={{ objectFit: 'contain' }}
                      priority
                      {...imageSizeProps}
                   />
-               </Box>
+               </Flex>
             )}
             <Flex
                boxSizing="border-box"

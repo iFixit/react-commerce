@@ -117,22 +117,26 @@ export function CartFooter({
                            >
                               {partner.image?.url ? (
                                  <ResponsiveImage
-                                    layout="fill"
-                                    objectFit="contain"
+                                    fill
+                                    style={{
+                                       objectFit: 'contain',
+                                       filter: 'grayscale(100%)',
+                                    }}
                                     src={partner.image.url}
                                     alt={
                                        partner.image?.alternativeText ||
                                        `${partner.name} logo`
                                     }
-                                    style={{ filter: 'grayscale(100%)' }}
                                  />
                               ) : (
                                  <ResponsiveImage
-                                    layout="fill"
-                                    objectFit="contain"
+                                    fill
                                     alt="no-image"
                                     src={noImageFixie}
-                                    style={{ filter: 'grayscale(100%)' }}
+                                    style={{
+                                       objectFit: 'contain',
+                                       filter: 'grayscale(100%)',
+                                    }}
                                  />
                               )}
                            </FooterPartnerLink>
