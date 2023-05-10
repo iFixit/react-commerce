@@ -9,17 +9,17 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useAddToCart } from '@ifixit/cart-sdk';
-import { UpsellProduct } from '@ifixit/cart-sdk/types';
+import { CrossSellProduct } from '@ifixit/cart-sdk/types';
 import { useCallback } from 'react';
 import { ProductVariantPrice, useUserPrice } from '../../commerce';
 import { CartLineItemImage } from './CartLineItemImage';
 import { useCartDrawer } from './hooks/useCartDrawer';
 
-export interface UpsellProps {
-   item: UpsellProduct;
+export interface CrossSellProps {
+   item: CrossSellProduct;
 }
 
-export function Upsell({ item }: UpsellProps) {
+export function CrossSell({ item }: CrossSellProps) {
    const { onClose } = useCartDrawer();
    const addToCart = useAddToCart('Cart Drawer');
    const userPrice = useUserPrice({

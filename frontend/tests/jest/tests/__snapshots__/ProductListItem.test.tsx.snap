@@ -182,7 +182,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           >
             <p
               class="chakra-text css-wxbpi4"
-              data-testid="current-price"
+              data-testid="price"
             >
               $5.00
             </p>
@@ -195,7 +195,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               href="/products/galaxy-s9-plus-replacement-battery"
             >
               <div
-                class="chakra-button css-vzzk84"
+                class="chakra-button css-1sntzjs"
               >
                 View
               </div>

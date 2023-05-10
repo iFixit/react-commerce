@@ -4,6 +4,8 @@ import Head from 'next/head';
 import React from 'react';
 import {
    Avatar,
+   Alert,
+   AlertIcon,
    Box,
    BoxProps,
    Button,
@@ -29,7 +31,7 @@ import {
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
-import SolutionCard from './solution';
+import SectionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
    faAngleDown,
@@ -43,6 +45,17 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
+   const { metaDescription, title, metaKeywords, canonicalUrl } = wikiData;
+   const metadata = (
+      <>
+         <meta name="description" content={metaDescription} />
+         <meta name="title" content={title} />
+         <meta name="keywords" content={metaKeywords} />
+         <meta name="robots" content="noindex" />,
+         <link rel="canonical" href={canonicalUrl} />
+      </>
+   );
+
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
@@ -62,11 +75,7 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
-               <meta name="description" content={wikiData.metaDescription} />
-               <meta name="title" content={wikiData.title} />
-               <meta name="keywords" content={wikiData.metaKeywords} />
-               <meta name="robots" content="noindex" />
-               <link rel="canonical" href={wikiData.canonicalUrl} />
+               {metadata}
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
             <Heading as="h1" marginTop={6}>
@@ -86,23 +95,11 @@ const Wiki: NextPageWithLayout<{
                   <Heading as="h2" fontSize="20px">
                      {'Causes'}
                   </Heading>
-                  <OrderedList marginBottom="24px" spacing="8px">
-                     {wikiData.solutions.map((solution, index) => (
-                        <ListItem key={solution.heading}>
-                           <Link
-                              href={`#solution-${index + 1}`}
-                              color="brand.500"
-                              fontWeight="bold"
-                           >
-                              {solution.heading}
-                           </Link>
-                        </ListItem>
-                     ))}
-                  </OrderedList>
+                  <TableOfContents solutions={wikiData.solutions} />
                </>
             )}
             {wikiData.solutions.map((solution, index) => (
-               <SolutionCard
+               <SectionCard
                   key={solution.heading}
                   index={index + 1}
                   solution={solution}
@@ -114,10 +111,29 @@ const Wiki: NextPageWithLayout<{
                   conclusion={conclusion}
                />
             ))}
+            <AnswersCTA answersUrl={wikiData.answersUrl} />
          </Flex>
       </Flex>
    );
 };
+
+function TableOfContents({ solutions }: { solutions: Section[] }) {
+   return (
+      <OrderedList marginBottom="24px" spacing="8px">
+         {solutions.map((solution, index) => (
+            <ListItem key={solution.heading}>
+               <Link
+                  href={`#solution-${index + 1}`}
+                  color="brand.500"
+                  fontWeight="bold"
+               >
+                  {solution.heading}
+               </Link>
+            </ListItem>
+         ))}
+      </OrderedList>
+   );
+}
 
 function NavBar({
    editUrl,
@@ -505,6 +521,20 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
          <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
+   );
+}
+
+function AnswersCTA({ answersUrl }: { answersUrl: string }) {
+   return (
+      <Alert>
+         <AlertIcon color="gray.500" />
+         <chakra.span pr={3} mr="auto">
+            Haven&apos;t found the solution to your problem?
+         </chakra.span>
+         <Button href={answersUrl} as="a" colorScheme="brand">
+            Ask a question
+         </Button>
+      </Alert>
    );
 }
 

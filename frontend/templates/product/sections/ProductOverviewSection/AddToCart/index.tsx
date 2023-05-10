@@ -2,7 +2,7 @@ import { Alert, Box, Button } from '@chakra-ui/react';
 import { faExclamationCircle } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
-import { useCartDrawer, useOnScreen, useUserPrice } from '@ifixit/ui';
+import { useCartDrawer, useIsScrolledPast, useUserPrice } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
 import { AddToCartBar } from './AddToCartBar';
@@ -35,9 +35,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
       inventory.maxToBeAdded != null && inventory.maxToBeAdded > 0;
 
    const buttonRef = React.useRef<HTMLButtonElement>(null);
-   const isButtonVisible = useOnScreen(buttonRef, {
-      initialOnScreen: true,
-   });
+   const hasScrolledPastAddToCartButton = useIsScrolledPast(buttonRef);
 
    return (
       <Box mt="5">
@@ -45,9 +43,9 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
             <>
                <AddToCartBar
                   title={product.title}
-                  rating={product.reviews?.rating}
-                  reviewsCount={product.reviews?.count}
-                  active={!isButtonVisible}
+                  variant={selectedVariant}
+                  active={hasScrolledPastAddToCartButton}
+                  onClickAddToCart={addToCart}
                />
                <Button
                   ref={buttonRef}
