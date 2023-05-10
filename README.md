@@ -1,5 +1,7 @@
 # [iFixit React Commerce](https://react-commerce.vercel.app)
 
+Don't use double dash branch names!
+
 New iFixit e-commerce site.
 
 ## Development
