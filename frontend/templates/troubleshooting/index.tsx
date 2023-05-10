@@ -520,9 +520,12 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
 }
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
+   const filteredConclusions = conclusions.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
    return (
       <>
-         {conclusions.map((conclusion) => (
+         {filteredConclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
