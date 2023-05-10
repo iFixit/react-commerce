@@ -18,7 +18,7 @@ import { useAppContext } from '@ifixit/app';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
 import type { BrowseSection } from '@models/page/sections/browse-section';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import NextLink from 'next/link';
 
 export interface BrowseSectionProps {
@@ -75,9 +75,12 @@ function HeadingBackground({ image }: HeadingBackgroundProps) {
                   src={image.url}
                   alt="store search image"
                   priority
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="center"
+                  fill
+                  sizes="100vw"
+                  style={{
+                     objectFit: 'cover',
+                     objectPosition: 'center',
+                  }}
                />
             </Box>
          )}

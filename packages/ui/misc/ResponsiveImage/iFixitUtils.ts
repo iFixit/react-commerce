@@ -1,4 +1,4 @@
-import { ImageLoader, ImageLoaderProps } from 'next/legacy/image';
+import { ImageLoader, ImageLoaderProps } from 'next/image';
 
 type SizeMap = {
    width: number;

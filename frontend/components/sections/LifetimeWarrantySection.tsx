@@ -4,7 +4,7 @@ import { useAppContext } from '@ifixit/app';
 import { isPresent } from '@ifixit/helpers';
 import { Wrapper } from '@ifixit/ui';
 import backgroundImage from '@public/images/lifetime-guarantee-background.jpg';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 export interface LifetimeWarrantySectionProps {
    title?: string | null;
@@ -27,9 +27,12 @@ export function LifetimeWarrantySection({
          <Box position="absolute" inset="0">
             <Image
                alt=""
-               layout="fill"
                src={backgroundImage}
-               objectFit="cover"
+               fill
+               sizes="100vw"
+               style={{
+                  objectFit: 'cover',
+               }}
             />
          </Box>
          <Box

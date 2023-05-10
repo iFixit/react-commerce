@@ -5,7 +5,7 @@ import { LinkButton } from '@components/ui/LinkButton';
 import { SmartLink } from '@components/ui/SmartLink';
 import { Wrapper } from '@ifixit/ui';
 import type { HeroSection } from '@models/page/sections/hero-section';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 export interface HeroSectionProps {
    data: HeroSection;
@@ -22,8 +22,11 @@ export function HeroSection({
                   src={image.url}
                   alt="store hero image"
                   priority
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  sizes="100vw"
+                  style={{
+                     objectFit: 'cover',
+                  }}
                />
             </Box>
          )}

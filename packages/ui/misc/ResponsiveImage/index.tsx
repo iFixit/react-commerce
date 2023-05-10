@@ -1,4 +1,4 @@
-import Image, { ImageLoader, ImageProps } from 'next/legacy/image';
+import Image, { ImageLoader, ImageProps } from 'next/image';
 import {
    cartImageSizeMap,
    getIFixitImageLoader,
@@ -10,8 +10,6 @@ import {
 import { getShopifyImageLoader, isShopifyImage } from './shopifyUtils';
 
 export function ResponsiveImage(props: ImageProps) {
-   const alt = props.alt ?? '';
-
    let loader: ImageLoader | undefined;
    let unoptimized: boolean | undefined;
 
@@ -28,6 +26,14 @@ export function ResponsiveImage(props: ImageProps) {
    }
 
    return (
-      <Image alt={alt} loader={loader} unoptimized={unoptimized} {...props} />
+      <Image
+         loader={loader}
+         unoptimized={unoptimized}
+         style={{
+            maxWidth: '100%',
+            height: 'auto',
+         }}
+         {...props}
+      />
    );
 }
