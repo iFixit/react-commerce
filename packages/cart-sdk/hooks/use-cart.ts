@@ -11,7 +11,7 @@ import {
    Cart,
    CartAPIResponse,
    CartLineItem,
-   UpsellProduct,
+   CrossSellProduct,
 } from '../types';
 import { cartKeys } from '../utils';
 
@@ -82,6 +82,7 @@ function createCart(input: APICart): Cart {
            }
          : null;
 
+   const crossSellProducts = input.upsellProducts ?? input.crossSellProducts;
    return {
       hasItemsInCart: input.totalNumItems > 0,
       lineItems,
@@ -91,8 +92,8 @@ function createCart(input: APICart): Cart {
          price: totalPrice,
          compareAtPrice: totalCompareAtPrice,
       },
-      upsellProducts: filterNullableItems(
-         input.upsellProducts.map<UpsellProduct | null>((apiProduct) => {
+      crossSellProducts: filterNullableItems(
+         crossSellProducts.map<CrossSellProduct | null>((apiProduct) => {
             if (apiProduct.subPrice == null) {
                return null;
             }
