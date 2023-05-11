@@ -4,7 +4,11 @@ import { productListPath } from '@helpers/path-helpers';
 import { ProductList } from '@models/product-list';
 import NextLink from 'next/link';
 import * as React from 'react';
-import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import {
+   useCurrentRefinements,
+   useHits,
+   useSearchBox,
+} from 'react-instantsearch-hooks-web';
 import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
@@ -20,6 +24,7 @@ export function ProductListChildrenSection({
    const [showAll, setShowAll] = React.useState(false);
 
    const { items } = useCurrentRefinements();
+   const { query } = useSearchBox();
    const { hits } = useHits();
    const itemType = useDevicePartsItemType(productList);
 
@@ -28,8 +33,10 @@ export function ProductListChildrenSection({
       const nonItemTypeRefinements = items.filter(
          (item) => item.attribute !== 'facet_tags.Item Type'
       );
-      return !hits.length && itemType && !nonItemTypeRefinements.length;
-   }, [items, itemType, hits]);
+      return (
+         !hits.length && itemType && !nonItemTypeRefinements.length && !query
+      );
+   }, [items, itemType, hits, query]);
 
    return isUnfilteredItemTypeWithNoHits ? null : (
       <Box>
