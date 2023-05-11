@@ -105,12 +105,7 @@ const Wiki: NextPageWithLayout<{
                   solution={solution}
                />
             ))}
-            {wikiData.conclusion.map((conclusion) => (
-               <ConclusionSection
-                  key={conclusion.heading}
-                  conclusion={conclusion}
-               />
-            ))}
+            <Conclusion conclusion={wikiData.conclusion} />
             <AnswersCTA answersUrl={wikiData.answersUrl} />
          </Flex>
       </Flex>
@@ -521,6 +516,22 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
          <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
+   );
+}
+
+function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
+   const filteredConclusions = conclusions.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
+   return (
+      <>
+         {filteredConclusions.map((conclusion) => (
+            <ConclusionSection
+               key={conclusion.heading}
+               conclusion={conclusion}
+            />
+         ))}
+      </>
    );
 }
 
