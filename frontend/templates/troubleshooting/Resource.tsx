@@ -1,4 +1,4 @@
-import { Stack, Image, Text, Badge, StackProps } from '@chakra-ui/react';
+import { Stack, Image, Text, Badge, StackProps, Link } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
@@ -20,9 +20,7 @@ export function GuideResource({ guide }: { guide: Guide }) {
 function ResourceBox({
    children,
    ...props
-}: React.PropsWithChildren<StackProps> & {
-   href: string;
-}) {
+}: React.PropsWithChildren<StackProps>) {
    return (
       <Stack
          alignSelf="stretch"
@@ -34,7 +32,6 @@ function ResourceBox({
          borderWidth="1px"
          borderRadius="4px"
          minHeight="88px"
-         as="a"
          {...props}
       >
          {children}
@@ -58,7 +55,7 @@ function Resource({
    href: string;
 }) {
    return (
-      <ResourceBox href={href}>
+      <ResourceBox>
          <Stack
             padding="12px"
             direction="row"
@@ -67,15 +64,17 @@ function Resource({
             alignSelf="stretch"
             spacing="8px"
          >
-            <Image
-               boxSize="64px"
-               border="1px solid"
-               borderColor="gray.300"
-               borderRadius="4px"
-               objectFit="cover"
-               alt={title}
-               src={imageUrl}
-            />
+            <Link href={href}>
+               <Image
+                  boxSize="64px"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="4px"
+                  objectFit="cover"
+                  alt={title}
+                  src={imageUrl}
+               />
+            </Link>
             <Stack justify="center" align="flex-start" spacing="6px" flex="1">
                <Stack
                   justify="flex-start"
@@ -83,14 +82,15 @@ function Resource({
                   spacing="6px"
                   alignSelf="stretch"
                >
-                  <Text
+                  <Link
+                     href={href}
                      lineHeight="1.07"
                      fontWeight="semibold"
                      fontSize="14px"
                      color="gray.900"
                   >
                      {title}
-                  </Text>
+                  </Link>
                   <Prerendered
                      lineHeight="1.36"
                      fontWeight="regular"
