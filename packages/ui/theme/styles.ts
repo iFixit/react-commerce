@@ -7,6 +7,7 @@ export const styles: ThemeOverride['styles'] = {
       },
       body: {
          backgroundColor: 'blueGray.50',
+         fontSize: 'md', // set cascading font-size at body, leave html at 16px to preserve rem
       },
    },
 };
