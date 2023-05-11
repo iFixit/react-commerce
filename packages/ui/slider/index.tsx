@@ -89,7 +89,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
          onIndexChange?.(activeIndex);
       }, [activeIndex, onIndexChange]);
 
-      React.useLayoutEffect(() => {
+      React.useEffect(() => {
          document.addEventListener('mouseup', handleTouchEnd);
          return () => document.removeEventListener('mouseup', handleTouchEnd);
       }, [activeIndex, slideCount, visibleSlides, touchIndex]);
