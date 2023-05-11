@@ -21,7 +21,7 @@ import { useSearchBox } from 'react-instantsearch-hooks-web';
 type SearchInputProps = InputGroupProps;
 
 const MAX_SEARCH_QUERY_LENGTH = 100;
-const DEBOUNCE_INTERVAL_MILLIS = 300;
+const DEBOUNCE_INTERVAL_MILLIS = 50;
 
 export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    const { query, refine, clear } = useSearchBox({
