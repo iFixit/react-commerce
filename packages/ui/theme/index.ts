@@ -10,6 +10,7 @@ import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 import { radii } from './foundations/radii';
 import { shadow } from './foundations/shadow';
+import { sizes } from './foundations/sizes';
 import { space } from './foundations/space';
 import { zIndices } from './foundations/zIndices';
 import { styles } from './styles';
@@ -20,6 +21,7 @@ export const theme: ThemeOverride = {
    fonts,
    radii,
    shadows: shadow,
+   sizes,
    space,
    styles,
    zIndices,
