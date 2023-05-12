@@ -3,6 +3,7 @@ import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
 import Prerendered from './prerendered';
+import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 
 export function GuideResource({ guide }: { guide: Guide }) {
    return (
@@ -39,6 +40,11 @@ function ResourceBox({
    );
 }
 
+// https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
+function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
+   return key in obj;
+}
+
 function Resource({
    title,
    imageUrl,
@@ -54,6 +60,11 @@ function Resource({
    difficulty: string;
    href: string;
 }) {
+   const difficultyTheme = hasKey(DifficultyThemeLookup, difficulty)
+      ? DifficultyThemeLookup[difficulty]
+      : DifficultyThemeLookup[GuideDifficultyNames.Moderate];
+   const { themeColor, iconColor, icon } = difficultyTheme;
+
    return (
       <ResourceBox>
          <Stack
@@ -123,8 +134,12 @@ function Resource({
                      <FaIcon icon={faClock} mr="4px" color="gray.500" />
                      {timeRequired}
                   </Badge>
-                  <Badge display="flex" colorScheme="amber">
-                     <FaIcon icon={faGauge} mr="4px" color="amber.500" />
+                  <Badge display="flex" colorScheme={themeColor}>
+                     <FaIcon
+                        icon={icon}
+                        mr="4px"
+                        color={iconColor || `${themeColor}.500`}
+                     />
                      {difficulty}
                   </Badge>
                </Stack>
