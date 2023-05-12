@@ -283,3 +283,25 @@ export function useOnScreen(
    }, []);
    return isIntersecting;
 }
+
+export function useIsScrolledPast(ref: React.RefObject<HTMLElement>) {
+   const [isScrolledPast, setIsScrolledPast] = React.useState(false);
+
+   React.useEffect(() => {
+      const handleScroll = () => {
+         if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            setIsScrolledPast(rect.bottom < 0);
+         }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+
+      return () => {
+         window.removeEventListener('scroll', handleScroll);
+      };
+   }, [ref]);
+
+   return isScrolledPast;
+}

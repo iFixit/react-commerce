@@ -37,7 +37,7 @@ import { CartDrawerTrigger } from './CartDrawerTrigger';
 import { CartEmptyState } from './CartEmptyState';
 import { CartLineItem } from './CartLineItem';
 import { useCartDrawer } from './hooks/useCartDrawer';
-import { Upsell } from './Upsell';
+import { CrossSell } from './CrossSell';
 
 // This is a temporary type fix for Framer Motion since
 // React 18 typings breaks FC which Framer Motion relies on.
@@ -54,8 +54,8 @@ export function CartDrawer() {
    const cart = useCart();
    const checkout = useCheckout();
 
-   const upsellItem = React.useMemo(() => {
-      const item = cart.data?.upsellProducts[0];
+   const crossSellItem = React.useMemo(() => {
+      const item = cart.data?.crossSellProducts[0];
       const isAlreadyInCart =
          item &&
          cart.data?.lineItems.find(
@@ -153,7 +153,7 @@ export function CartDrawer() {
                               })}
                            </AnimatePresence>
                         </Box>
-                        {upsellItem && <Upsell item={upsellItem} />}
+                        {crossSellItem && <CrossSell item={crossSellItem} />}
                      </ScaleFade>
                      <Collapse
                         animateOpacity

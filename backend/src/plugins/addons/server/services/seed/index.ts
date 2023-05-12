@@ -1,4 +1,7 @@
 import '@strapi/strapi';
+import { downloadBackup } from './backup/download';
+import { exportBackup } from './backup/export';
+import { importBackup } from './backup/import';
 import { CollectionTypeRepository } from './collection-type-repository';
 import { MediaRepository } from './media-repository';
 import { SingleTypeRepository } from './single-type-repository';
@@ -24,6 +27,9 @@ type ImportContentTypesOptions = {
 };
 
 export default ({ strapi }: { strapi: Strapi.Strapi }) => ({
+   exportBackup,
+   downloadBackup,
+   importBackup,
    async importContentTypes({
       strapiOrigin = FALLBACK_STRAPI_ORIGIN,
       canDeleteExistingContent = false,

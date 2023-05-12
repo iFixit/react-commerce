@@ -4,6 +4,8 @@ import Head from 'next/head';
 import React from 'react';
 import {
    Avatar,
+   Alert,
+   AlertIcon,
    Box,
    BoxProps,
    Button,
@@ -103,12 +105,8 @@ const Wiki: NextPageWithLayout<{
                   solution={solution}
                />
             ))}
-            {wikiData.conclusion.map((conclusion) => (
-               <ConclusionSection
-                  key={conclusion.heading}
-                  conclusion={conclusion}
-               />
-            ))}
+            <Conclusion conclusion={wikiData.conclusion} />
+            <AnswersCTA answersUrl={wikiData.answersUrl} />
          </Flex>
       </Flex>
    );
@@ -377,7 +375,7 @@ function NavTabs({
             {...notSelectedStyleProps}
             href={deviceGuideUrl}
          >
-            Guide
+            Guides
          </Link>
          <Box {...selectedStyleProps}>Answers</Box>
       </Flex>
@@ -518,6 +516,36 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
          <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
+   );
+}
+
+function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
+   const filteredConclusions = conclusions.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
+   return (
+      <>
+         {filteredConclusions.map((conclusion) => (
+            <ConclusionSection
+               key={conclusion.heading}
+               conclusion={conclusion}
+            />
+         ))}
+      </>
+   );
+}
+
+function AnswersCTA({ answersUrl }: { answersUrl: string }) {
+   return (
+      <Alert>
+         <AlertIcon color="gray.500" />
+         <chakra.span pr={3} mr="auto">
+            Haven&apos;t found the solution to your problem?
+         </chakra.span>
+         <Button href={answersUrl} as="a" colorScheme="brand">
+            Ask a question
+         </Button>
+      </Alert>
    );
 }
 

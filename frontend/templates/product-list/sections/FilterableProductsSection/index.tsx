@@ -31,7 +31,7 @@ import {
 } from '@models/product-list';
 import {
    SearchQueryProvider,
-   useSearchQueryContext,
+   useSearchQuery,
 } from '@templates/product-list/hooks/useSearchQuery';
 import * as React from 'react';
 import {
@@ -202,7 +202,7 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
-      const { setSearchQuery } = useSearchQueryContext();
+      const { setSearchQuery } = useSearchQuery();
       const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
       const currentRefinements = useCurrentRefinements();
