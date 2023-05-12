@@ -21,11 +21,13 @@ import {
    chakra,
    Spacer,
    VStack,
+   SimpleGrid,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
-import {
+import type {
    Author,
    BreadcrumbEntry,
+   Problem,
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
@@ -38,6 +40,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
+import Problem from './Problem';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -111,6 +114,7 @@ const Wiki: NextPageWithLayout<{
             ))}
             <Conclusion conclusion={wikiData.conclusion} />
             <AnswersCTA answersUrl={wikiData.answersUrl} />
+            <RelatedProblems problems={wikiData.linkedProblems} />
          </Flex>
       </Flex>
    );
@@ -567,6 +571,19 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             Ask a question
          </Button>
       </Alert>
+   );
+}
+
+function RelatedProblems({ problems }: { problems: Problem[] }) {
+   return (
+      <>
+         <HeadingSelfLink as="h2">Related Problems</HeadingSelfLink>
+         <SimpleGrid columns={2} gap="12px">
+            {problems.map((problem) => (
+               <Problem problem={problem} key={problem.title} />
+            ))}
+         </SimpleGrid>
+      </>
    );
 }
 
