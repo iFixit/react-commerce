@@ -1,4 +1,4 @@
-import { Stack, Image, Badge, StackProps, Link } from '@chakra-ui/react';
+import { Stack, Image, Badge, StackProps, Link, Wrap } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
@@ -121,15 +121,7 @@ function Resource({
                      />
                   )}
                </Stack>
-               <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="0px"
-                  alignSelf="stretch"
-                  flexWrap="wrap"
-                  gridGap="4px"
-               >
+               <Wrap spacing="4px">
                   <Badge display="flex">
                      <FaIcon icon={faClock} mr="4px" color="gray.500" />
                      {timeRequired}
@@ -142,7 +134,7 @@ function Resource({
                      />
                      {difficulty}
                   </Badge>
-               </Stack>
+               </Wrap>
             </Stack>
          </Stack>
       </ResourceBox>
