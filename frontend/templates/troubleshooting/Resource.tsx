@@ -75,7 +75,13 @@ function Resource({
                   src={imageUrl}
                />
             </Link>
-            <Stack justify="center" align="flex-start" spacing="6px" flex="1">
+            <Stack
+               justify="center"
+               align="flex-start"
+               spacing="6px"
+               flex="1"
+               overflow="hidden"
+            >
                <Stack
                   justify="flex-start"
                   align="flex-start"
@@ -108,8 +114,10 @@ function Resource({
                   direction="row"
                   justify="flex-start"
                   align="flex-start"
-                  spacing="4px"
+                  spacing="0px"
                   alignSelf="stretch"
+                  flexWrap="wrap"
+                  gridGap="4px"
                >
                   <Badge display="flex">
                      <FaIcon icon={faClock} mr="2px" />
