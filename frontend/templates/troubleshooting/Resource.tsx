@@ -91,16 +91,18 @@ function Resource({
                   >
                      {title}
                   </Link>
-                  <Prerendered
-                     lineHeight="1.36"
-                     fontWeight="regular"
-                     fontSize="12px"
-                     color="gray.600"
-                     overflow="hidden"
-                     height="16px"
-                     noOfLines={1}
-                     html={introduction}
-                  />
+                  {introduction && (
+                     <Prerendered
+                        lineHeight="1.36"
+                        fontWeight="regular"
+                        fontSize="12px"
+                        color="gray.600"
+                        overflow="hidden"
+                        height="16px"
+                        noOfLines={1}
+                        html={introduction}
+                     />
+                  )}
                </Stack>
                <Stack
                   direction="row"
