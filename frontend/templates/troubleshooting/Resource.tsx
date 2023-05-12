@@ -1,7 +1,7 @@
 import { Stack, Image, Badge, StackProps, Link, Wrap } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
-import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
+import { faClock } from '@fortawesome/pro-solid-svg-icons';
 import Prerendered from './prerendered';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 
