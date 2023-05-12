@@ -1,4 +1,4 @@
-import { Stack, Image, Text, Badge, StackProps, Link } from '@chakra-ui/react';
+import { Stack, Image, Badge, StackProps, Link } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faGauge, faClock } from '@fortawesome/pro-solid-svg-icons';
