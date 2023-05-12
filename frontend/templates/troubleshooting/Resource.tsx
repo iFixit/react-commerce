@@ -120,11 +120,11 @@ function Resource({
                   gridGap="4px"
                >
                   <Badge display="flex">
-                     <FaIcon icon={faClock} mr="2px" />
+                     <FaIcon icon={faClock} mr="4px" color="gray.500" />
                      {timeRequired}
                   </Badge>
                   <Badge display="flex" colorScheme="amber">
-                     <FaIcon icon={faGauge} mr="2px" />
+                     <FaIcon icon={faGauge} mr="4px" color="amber.500" />
                      {difficulty}
                   </Badge>
                </Stack>
