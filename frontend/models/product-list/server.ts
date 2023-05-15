@@ -439,7 +439,7 @@ function formatItemTypeOverrides(
    const convertedOverrides =
       convertToProductListItemTypeOverrides(itemOverrides);
    return convertedOverrides.reduce((result, item) => {
-      result[item?.itemType || '*'] = item;
+      result[item.itemType || '*'] = item;
       return result;
    }, {} as ProductListItemTypeOverrideIndexed);
 }
