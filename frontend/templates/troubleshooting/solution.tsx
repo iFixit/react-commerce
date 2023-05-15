@@ -9,6 +9,7 @@ import {
    Square,
    Flex,
    BoxProps,
+   VStack,
 } from '@chakra-ui/react';
 import {
    faCircleCheck,
@@ -225,10 +226,10 @@ export default function SolutionCard({
 
 function LinkCards({ guides, ...props }: { guides: Guide[] } & BoxProps) {
    return (
-      <Box {...props}>
+      <VStack spacing="6px" {...props}>
          {guides.map((guide: Guide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
-      </Box>
+      </VStack>
    );
 }
