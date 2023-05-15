@@ -506,7 +506,11 @@ function AuthorListing({
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
-         {intro.heading && <Heading marginBottom={6} fontSize="2xl" fontWeight="600">{intro.heading}</Heading>}
+         {intro.heading && (
+            <Heading marginBottom={6} fontSize="2xl" fontWeight="600">
+               {intro.heading}
+            </Heading>
+         )}
          <Prerendered html={intro.body} />
       </Box>
    );
