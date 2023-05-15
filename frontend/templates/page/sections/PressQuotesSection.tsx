@@ -1,13 +1,11 @@
-import { Box, chakra, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex, Link } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper';
 import { SectionHeading } from '@components/sections/SectionHeading';
 import { SmartLink } from '@components/ui/SmartLink';
-import { ResponsiveImage } from '@ifixit/ui';
+import { ResponsiveImage, Slider } from '@ifixit/ui';
 import type { PressQuote } from '@models/page/components/press-quote';
 import type { PressQuotesSection } from '@models/page/sections/press-quotes-section';
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 export interface PressQuotesSectionProps {
    data: PressQuotesSection;
@@ -25,15 +23,17 @@ export function PressQuotesSection({
                {title && <SectionHeading mb="4">{title}</SectionHeading>}
                {description && <SectionDescription richText={description} />}
             </SectionHeaderWrapper>
-            <Box
+            <Flex
+               justifyContent="center"
                w="full"
+               overflow="hidden"
                my={{
                   base: '6',
                   md: '8',
                }}
             >
                <QuotesGallery quotes={quotes} />
-            </Box>
+            </Flex>
             {callToAction && (
                <SmartLink
                   as={Link}
@@ -59,55 +59,44 @@ interface QuotesGalleryProps {
 function QuotesGallery({ quotes }: QuotesGalleryProps) {
    return (
       <Slider
-         loop
+         maxW={{
+            base: '64',
+            md: '80',
+         }}
+         overflow="visible"
+         items={quotes}
+         activeIndex={Math.floor((quotes.length - 1) / 2)}
          spaceBetween={20}
-         slidesPerView="auto"
-         slideToClickedSlide
-         centeredSlides
-         breakpoints={{
-            768: {
-               spaceBetween: 48,
-            },
-         }}
-         sx={{
-            '& .swiper-slide': {
-               cursor: 'pointer',
-               maxW: {
-                  base: '256px',
-                  md: '320px',
-               },
-               opacity: 0.2,
-               transition: 'opacity 300ms',
-               '&.swiper-slide-prev, &.swiper-slide-next': {
-                  opacity: 0.4,
-               },
-               '&.swiper-slide-active': {
-                  opacity: 1,
-               },
-               '&:not(.swiper-slide-active):hover': {
-                  opacity: 0.6,
-               },
-            },
-         }}
-      >
-         {quotes.map((quote) => {
-            return (
-               <SwiperSlide key={quote.id}>
-                  <Quote quote={quote} />
-               </SwiperSlide>
-            );
-         })}
-      </Slider>
+         loop
+         loopTailsLength={3}
+         renderSlide={({ item, index, activeIndex, ...rest }) => (
+            <Quote
+               key={item.id}
+               quote={item}
+               isFarFromView={Math.abs(activeIndex - index) > 1}
+               {...rest}
+            />
+         )}
+      />
    );
 }
 
 interface QuoteProps {
    quote: PressQuote;
+   isFarFromView: boolean;
+   isActive: boolean;
+   isLooping: boolean;
 }
 
-function Quote({ quote }: QuoteProps) {
+function Quote({ quote, isActive, isFarFromView, isLooping }: QuoteProps) {
    return (
-      <Flex direction="column" alignItems="center">
+      <Flex
+         direction="column"
+         alignItems="center"
+         transition={isLooping ? 'none' : 'opacity 300ms'}
+         opacity={isActive ? 1 : isFarFromView ? 0.2 : 0.4}
+         _hover={{ opacity: isActive ? 1 : 0.6 }}
+      >
          <Box
             position="relative"
             w={{
@@ -137,5 +126,3 @@ function Quote({ quote }: QuoteProps) {
       </Flex>
    );
 }
-
-const Slider = chakra(Swiper);

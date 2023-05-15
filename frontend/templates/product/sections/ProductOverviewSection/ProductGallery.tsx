@@ -2,21 +2,14 @@ import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { ResponsiveImage } from '@ifixit/ui';
+import { Slider, ResponsiveImage } from '@ifixit/ui';
 import type {
    Product,
    ProductVariant,
    ProductVariantImage,
 } from '@pages/api/nextjs/cache/product';
-import { useSwiper } from '@templates/product/hooks/useSwiper';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/thumbs';
-import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react';
 
 export type ProductGalleryProps = {
    product: Product;
@@ -28,7 +21,6 @@ export type ProductGalleryProps = {
 };
 
 const THUMBNAILS_COUNT = 6;
-const THUMBNAILS_SPACE_BETWEEN = 12;
 
 export function ProductGallery({
    product,
@@ -80,63 +72,32 @@ export function ProductGallery({
       [onChangeImage, variantImages]
    );
 
-   const {
-      mainSwiper,
-      setMainSwiper,
-      thumbsSwiper,
-      setThumbsSwiper,
-      realIndex,
-      snapIndex,
-      isBeginning,
-      isEnd,
-   } = useSwiper({
-      slideIndex: selectedImageIndex,
-      totalSlides: variantImages.length,
-      showThumbnails: variantImages.length > 1,
-      onSlideChange,
-   });
-
    return (
-      <Box
-         sx={{
-            '.swiper-pagination-bullet': {
-               background: 'gray.200',
-               opacity: 1,
-            },
-            '.swiper-pagination-bullet-active': {
-               background: 'gray.500',
-            },
-         }}
-         w="full"
-         {...otherProps}
-      >
+      <Box w="full" {...otherProps}>
          <Box ref={galleryContainerRef}>
             {variantImages.length > 1 ? (
-               <ReactSwiper
-                  onSwiper={setMainSwiper}
-                  modules={[Navigation, Pagination, Thumbs]}
-                  thumbs={{ swiper: thumbsSwiper }}
+               <Slider
+                  items={variantImages}
+                  activeIndex={selectedImageIndex}
                   spaceBetween={12}
-                  style={{ width: '100%' }}
-                  pagination={{
-                     clickable: true,
-                  }}
-               >
-                  <CustomNavigation
-                     swiper={mainSwiper}
-                     isBeginning={isBeginning}
-                     isEnd={isEnd}
-                  />
-                  {variantImages.map((variantImage, index) => (
-                     <SwiperSlide key={variantImage.id}>
-                        <ImageWithZoom
-                           index={index}
-                           image={variantImage}
-                           enableZoom={innerEnableZoom}
-                        />
-                     </SwiperSlide>
-                  ))}
-               </ReactSwiper>
+                  renderSlide={({ item, index }) => (
+                     <ImageWithZoom
+                        key={item.id}
+                        index={index}
+                        image={item}
+                        enableZoom={innerEnableZoom}
+                        active={index === selectedImageIndex}
+                     />
+                  )}
+                  renderPreviousButton={(props) => (
+                     <ArrowButton direction="previous" {...props} />
+                  )}
+                  renderNextButton={(props) => (
+                     <ArrowButton direction="next" {...props} />
+                  )}
+                  renderBullets
+                  onIndexChange={onSlideChange}
+               />
             ) : variantImages.length === 1 ? (
                <ImageWithZoom
                   index={0}
@@ -149,39 +110,22 @@ export function ProductGallery({
          </Box>
 
          {showThumbnails && variantImages.length > 1 && (
-            <Box position="relative">
-               <ReactSwiper
-                  onSwiper={setThumbsSwiper}
-                  modules={[Navigation, Thumbs]}
-                  watchSlidesProgress
-                  threshold={5}
-                  slidesPerView={THUMBNAILS_COUNT}
-                  spaceBetween={THUMBNAILS_SPACE_BETWEEN}
-                  style={{
-                     width: '100%',
-                     marginTop: '12px',
-                  }}
-               >
-                  {variantImages.map((variantImage, index) => {
-                     return (
-                        <SwiperSlide
-                           key={variantImage.id}
-                           style={{
-                              maxWidth: `calc((100% - ${
-                                 THUMBNAILS_SPACE_BETWEEN *
-                                 (THUMBNAILS_COUNT - 1)
-                              }px) / ${THUMBNAILS_COUNT})`,
-                              marginRight: `${THUMBNAILS_SPACE_BETWEEN}px`,
-                           }}
-                        >
-                           <ImageThumbnail
-                              image={variantImage}
-                              active={realIndex === index}
-                           />
-                        </SwiperSlide>
-                     );
-                  })}
-               </ReactSwiper>
+            <Box position="relative" mt="3">
+               <Slider
+                  items={variantImages}
+                  activeIndex={selectedImageIndex}
+                  visibleSlides={THUMBNAILS_COUNT}
+                  spaceBetween={12}
+                  slidesToKeepOnLeft={1}
+                  renderSlide={({ item, index }) => (
+                     <ImageThumbnail
+                        key={item.id}
+                        image={item}
+                        active={index === selectedImageIndex}
+                     />
+                  )}
+                  onIndexChange={onSlideChange}
+               />
                <Box
                   position="absolute"
                   bgGradient="linear(to-l, transparent, blueGray.50)"
@@ -193,7 +137,8 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     snapIndex > 0 && variantImages.length > THUMBNAILS_COUNT
+                     selectedImageIndex > 1 &&
+                     variantImages.length > THUMBNAILS_COUNT
                         ? 1
                         : 0
                   }
@@ -210,7 +155,8 @@ export function ProductGallery({
                   zIndex="10"
                   pointerEvents="none"
                   opacity={
-                     variantImages.length - snapIndex - 1 >= THUMBNAILS_COUNT
+                     variantImages.length - selectedImageIndex >=
+                     THUMBNAILS_COUNT
                         ? 1
                         : 0
                   }
@@ -248,75 +194,48 @@ function useCurrentImageIndex(
    return currentImageIndex;
 }
 
-type CustomNavigationType = {
-   swiper?: Swiper | null;
-   isBeginning?: boolean;
-   isEnd?: boolean;
+type NavigationButtonProps = {
+   disabled?: boolean;
+   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const CustomNavigation = ({
-   swiper,
-   isBeginning,
-   isEnd,
-}: CustomNavigationType) => {
-   return (
-      <>
-         <Button
-            pos="absolute"
-            top="50%"
-            left="2"
-            transform="translateY(-50%)"
-            zIndex="1"
-            onClick={() => swiper?.slidePrev()}
-            disabled={isBeginning}
-            backgroundColor="transparent"
-            h="48px"
-            w="48px"
-            borderRadius="full"
-            role="group"
-            _hover={{
-               backgroundColor: 'transparent',
-            }}
-         >
-            <Circle
-               size="32px"
-               bg="gray.600"
-               _groupHover={!isBeginning ? { bg: 'gray.800' } : undefined}
-               transition="300ms all"
-            >
-               <FaIcon icon={faArrowLeft} color="white" />
-            </Circle>
-         </Button>
-         <Button
-            data-testid="swiper-next-image"
-            pos="absolute"
-            top="50%"
-            right="2"
-            transform="translateY(-50%)"
-            zIndex="1"
-            onClick={() => swiper?.slideNext()}
-            disabled={isEnd}
-            backgroundColor="transparent"
-            h="48px"
-            w="48px"
-            borderRadius="full"
-            role="group"
-            _hover={{
-               backgroundColor: 'transparent',
-            }}
-         >
-            <Circle
-               size="32px"
-               bg="gray.600"
-               _groupHover={!isEnd ? { bg: 'gray.800' } : undefined}
-               transition="300ms all"
-            >
-               <FaIcon icon={faArrowRight} color="white" />
-            </Circle>
-         </Button>
-      </>
-   );
-};
+const ArrowButton = ({
+   disabled,
+   onClick,
+   direction,
+}: NavigationButtonProps & { direction: 'next' | 'previous' }) => (
+   <Button
+      data-testid={`slider-${direction}-image`}
+      pos="absolute"
+      top="50%"
+      left={direction === 'previous' ? '2' : 'unset'}
+      right={direction === 'next' ? '2' : 'unset'}
+      transform="translateY(-50%)"
+      zIndex="1"
+      onClick={onClick}
+      disabled={disabled}
+      backgroundColor="transparent"
+      h="48px"
+      w="48px"
+      borderRadius="full"
+      role="group"
+      _hover={{
+         backgroundColor: 'transparent',
+      }}
+   >
+      <Circle
+         size="32px"
+         bg="gray.600"
+         _groupHover={!disabled ? { bg: 'gray.800' } : undefined}
+         transition="300ms all"
+      >
+         <FaIcon
+            icon={direction === 'next' ? faArrowRight : faArrowLeft}
+            color="white"
+         />
+      </Circle>
+   </Button>
+);
 
 type Image = {
    id?: string | null;
@@ -330,12 +249,18 @@ type ImageWithZoomProps = {
    index: number;
    image: Image;
    enableZoom?: boolean;
+   active?: boolean;
 };
 
 const ZOOM_FACTOR = 3;
 const CONTAINER_PADDING = 24;
 
-function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
+function ImageWithZoom({
+   index,
+   image,
+   enableZoom,
+   active,
+}: ImageWithZoomProps) {
    const [show, setShow] = React.useState(false);
    const [dimensionData, setDimensionData] = React.useState<DimensionData>({
       zoomMaskAspectRatio: 1,
@@ -413,6 +338,7 @@ function ImageWithZoom({ index, image, enableZoom }: ImageWithZoomProps) {
          position="relative"
          h="0"
          pb="100%"
+         data-testid={active ? 'slider-active-image' : undefined}
       >
          <Box
             position="absolute"
