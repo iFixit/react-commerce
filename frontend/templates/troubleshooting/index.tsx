@@ -114,16 +114,18 @@ const Wiki: NextPageWithLayout<{
 
 function TableOfContents({ solutions }: { solutions: Section[] }) {
    return (
-      <OrderedList marginBottom="24px" spacing="8px">
+      <OrderedList
+         marginBottom="24px"
+         spacing="8px"
+         sx={{ marginInlineStart: '2em' }}
+      >
          {solutions.map((solution, index) => (
-            <ListItem key={solution.heading}>
-               <Link
-                  href={`#solution-${index + 1}`}
-                  color="brand.500"
-                  fontWeight="bold"
-               >
-                  {solution.heading}
-               </Link>
+            <ListItem
+               color="brand.500"
+               fontWeight="bold"
+               key={solution.heading}
+            >
+               <Link href={`#solution-${index + 1}`}>{solution.heading}</Link>
             </ListItem>
          ))}
       </OrderedList>
@@ -504,7 +506,7 @@ function AuthorListing({
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
-         <Heading marginBottom={6}>{intro.heading}</Heading>
+         {intro.heading && <Heading marginBottom={6}>{intro.heading}</Heading>}
          <Prerendered html={intro.body} />
       </Box>
    );
