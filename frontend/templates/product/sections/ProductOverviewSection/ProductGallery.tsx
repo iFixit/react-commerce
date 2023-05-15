@@ -1,13 +1,4 @@
-import {
-   Box,
-   Button,
-   Circle,
-   Flex,
-   Img,
-   Text,
-   Th,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Circle, Flex, Img, Text, VStack } from '@chakra-ui/react';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
@@ -98,8 +89,12 @@ export function ProductGallery({
                         active={index === selectedImageIndex}
                      />
                   )}
-                  renderPreviousButton={PreviousButton}
-                  renderNextButton={NextButton}
+                  renderPreviousButton={(props) => (
+                     <ArrowButton direction="previous" {...props} />
+                  )}
+                  renderNextButton={(props) => (
+                     <ArrowButton direction="next" {...props} />
+                  )}
                   renderBullets
                   onIndexChange={onSlideChange}
                />
@@ -204,11 +199,17 @@ type NavigationButtonProps = {
    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const PreviousButton = ({ disabled, onClick }: NavigationButtonProps) => (
+const ArrowButton = ({
+   disabled,
+   onClick,
+   direction,
+}: NavigationButtonProps & { direction: 'next' | 'previous' }) => (
    <Button
+      data-testid={`slider-${direction}-image`}
       pos="absolute"
       top="50%"
-      left="2"
+      left={direction === 'previous' ? '2' : 'unset'}
+      right={direction === 'next' ? '2' : 'unset'}
       transform="translateY(-50%)"
       zIndex="1"
       onClick={onClick}
@@ -225,40 +226,13 @@ const PreviousButton = ({ disabled, onClick }: NavigationButtonProps) => (
       <Circle
          size="32px"
          bg="gray.600"
-         _groupHover={disabled ? { bg: 'gray.800' } : undefined}
+         _groupHover={!disabled ? { bg: 'gray.800' } : undefined}
          transition="300ms all"
       >
-         <FaIcon icon={faArrowLeft} color="white" />
-      </Circle>
-   </Button>
-);
-
-const NextButton = ({ disabled, onClick }: NavigationButtonProps) => (
-   <Button
-      data-testid="slider-next-image"
-      pos="absolute"
-      top="50%"
-      right="2"
-      transform="translateY(-50%)"
-      zIndex="1"
-      onClick={onClick}
-      disabled={disabled}
-      backgroundColor="transparent"
-      h="48px"
-      w="48px"
-      borderRadius="full"
-      role="group"
-      _hover={{
-         backgroundColor: 'transparent',
-      }}
-   >
-      <Circle
-         size="32px"
-         bg="gray.600"
-         _groupHover={disabled ? { bg: 'gray.800' } : undefined}
-         transition="300ms all"
-      >
-         <FaIcon icon={faArrowRight} color="white" />
+         <FaIcon
+            icon={direction === 'next' ? faArrowRight : faArrowLeft}
+            color="white"
+         />
       </Circle>
    </Button>
 );
