@@ -29,6 +29,7 @@ import { createWorkerFixture } from 'playwright-msw';
 import { format } from 'util';
 import { handlers } from './msw/handlers';
 import { exec } from 'node:child_process';
+import { cloneDeep } from 'lodash';
 
 export const test = base.extend<
    ProductFixtures &
@@ -76,7 +77,10 @@ export const test = base.extend<
       },
       { scope: 'test', auto: true },
    ],
-   findProductQueryMock,
+   // eslint-disable-next-line no-empty-pattern
+   findProductQueryMock: async ({}, use) => {
+      await use(cloneDeep(findProductQueryMock));
+   },
    clientRequestHandler: createWorkerFixture(handlers),
    /**
     * The following fixtures are dependent on the customServer fixture. By being
