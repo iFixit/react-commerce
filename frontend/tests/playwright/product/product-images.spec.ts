@@ -15,7 +15,7 @@ test.describe('Product Image Display', () => {
       const viewPort = productPage.page.viewportSize();
 
       const firstImageSrc = await productPage.page
-         .locator('.swiper-slide.swiper-slide-active')
+         .getByTestId('slider-active-image')
          .getByRole('img')
          .first()
          .getAttribute('src');
@@ -37,17 +37,17 @@ test.describe('Product Image Display', () => {
       if (viewPort!.width > 768) {
          await productPage.page
             .getByTestId('product-gallery-desktop')
-            .getByTestId('swiper-next-image')
+            .getByTestId('slider-next-image')
             .click();
       } else {
          await productPage.page
             .getByTestId('product-gallery-mobile')
-            .getByTestId('swiper-next-image')
+            .getByTestId('slider-next-image')
             .click();
       }
 
       const secondImageSrc = await productPage.page
-         .locator('.swiper-slide.swiper-slide-active')
+         .getByTestId('slider-active-image')
          .getByRole('img')
          .first()
          .getAttribute('src');

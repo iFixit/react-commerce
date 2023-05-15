@@ -38,7 +38,6 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
          }),
       [productList.id]
    );
-   const padding = { base: '16px', sm: '32px' };
    return (
       <>
          <SecondaryNavbar
