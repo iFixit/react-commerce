@@ -123,14 +123,15 @@ export function calculateProductListOverrides(
    page: number,
    itemType?: string
 ): ProductList {
-   productList.overrides = {
+   const productListCopy = { ...productList };
+   productListCopy.overrides = {
       title: getTitle(productList, itemType),
       metaTitle: getMetaTitle(productList, itemType),
       description: getDescription(productList, page, itemType),
       metaDescription: getMetaDescription(productList, itemType),
       tagline: getTagline(productList, page, itemType),
    };
-   return productList;
+   return productListCopy;
 }
 
 function getDescription(
@@ -176,20 +177,21 @@ function getMetaDescription(
    return metaDescription || description;
 }
 
-function getTagline( // taglines don't exist if page > 1
+function getTagline(
    productList: ProductList,
    page: number,
    itemType?: string
-): string | undefined {
+): string | null {
+   // taglines don't exist if page > 1
    const tagline =
-      !!productList.tagline && page === 1 ? productList.tagline : undefined;
+      !!productList.tagline && page === 1 ? productList.tagline : null;
    return itemType && productList.deviceTitle
       ? getItemOverrideAttribute(
            productList.itemOverrides,
            itemType,
            'tagline',
            productList.deviceTitle
-        ) ?? undefined
+        ) ?? null
       : tagline;
 }
 

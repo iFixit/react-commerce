@@ -46,7 +46,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
       refinementAttributes[0] === 'facet_tags.Item Type';
    const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
    const itemType = useDevicePartsItemType(productList);
-   let metaTitle = productList?.overrides?.metaTitle;
+   let metaTitle = productList.overrides?.metaTitle;
    if (metaTitle && !isFiltered && page > 1) {
       metaTitle += ` - Page ${page}`;
    }
@@ -77,7 +77,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
                <link rel="canonical" href={canonicalUrl} />
                <meta
                   name="description"
-                  content={productList?.overrides?.metaDescription}
+                  content={productList.overrides?.metaDescription}
                />
             </>
          )}
@@ -85,7 +85,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
          <meta property="og:title" content={metaTitle} />
          <meta
             name="og:description"
-            content={productList?.overrides?.metaDescription}
+            content={productList.overrides?.metaDescription}
          />
          <meta property="og:type" content="website" />
          <meta property="og:url" content={canonicalUrl} />

@@ -27,17 +27,17 @@ export function HeroSection({ productList }: HeroSectionProps) {
    return (
       <Flex direction="column">
          <HeroTitle>
-            {productList?.overrides?.title}
+            {productList.overrides?.title}
             {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
-         {productList?.overrides?.tagline && (
+         {productList.overrides?.tagline && (
             <Text as="h2" fontWeight="medium" data-testid="hero-tagline">
-               {productList?.overrides?.tagline}
+               {productList.overrides?.tagline}
             </Text>
          )}
-         {productList?.overrides?.description && (
+         {productList.overrides?.description && (
             <HeroDescription>
-               {productList?.overrides?.description}
+               {productList.overrides?.description}
             </HeroDescription>
          )}
       </Flex>

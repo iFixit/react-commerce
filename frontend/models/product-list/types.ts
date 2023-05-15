@@ -158,11 +158,11 @@ export type ProductListItemTypeOverrideIndexed = z.infer<
 >;
 
 const ProductListOverridesSchema = z.object({
-   title: z.string().optional(),
-   description: z.string().optional(),
-   metaDescription: z.string().optional(),
-   metaTitle: z.string().optional(),
-   tagline: z.string().optional(),
+   title: z.string(),
+   description: z.string(),
+   metaDescription: z.string(),
+   metaTitle: z.string(),
+   tagline: z.string().nullable(),
 });
 
 export type ProductListOverrides = z.infer<typeof ProductListOverridesSchema>;
