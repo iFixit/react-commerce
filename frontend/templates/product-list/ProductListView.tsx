@@ -19,7 +19,6 @@ import {
 import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
 import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
 import { usePagination } from 'react-instantsearch-hooks-web';
-import { z } from 'zod';
 
 export interface ProductListViewProps {
    productList: ProductList;
