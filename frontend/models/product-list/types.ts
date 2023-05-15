@@ -157,6 +157,16 @@ export type ProductListItemTypeOverrideIndexed = z.infer<
    typeof ProductListItemTypeOverrideIndexedSchema
 >;
 
+const ProductListOverridesSchema = z.object({
+   title: z.string().optional(),
+   description: z.string().optional(),
+   metaDescription: z.string().optional(),
+   metaTitle: z.string().optional(),
+   tagline: z.string().optional(),
+});
+
+export type ProductListOverrides = z.infer<typeof ProductListOverridesSchema>;
+
 const BaseProductListSchema = z.object({
    id: z.string().nullable(),
    title: z.string(),
@@ -183,6 +193,7 @@ const BaseProductListSchema = z.object({
    wikiInfo: z.array(WikiInfoEntrySchema),
    isOnStrapi: z.boolean(),
    itemOverrides: ProductListItemTypeOverrideIndexedSchema,
+   overrides: ProductListOverridesSchema.optional(),
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 

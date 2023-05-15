@@ -63,17 +63,17 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
                />
             )}
             <HeroTitle>
-               {productList.title}
+               {productList?.overrides?.title}
                {page > 1 ? ` - Page ${page}` : ''}
             </HeroTitle>
-            {productList.tagline && (
+            {productList?.overrides?.tagline && (
                <Text as="h2" fontWeight="medium">
-                  {productList.tagline}
+                  {productList?.overrides?.tagline}
                </Text>
             )}
-            {productList.description && (
+            {productList?.overrides?.description && (
                <HeroDescription mt="4">
-                  {productList.description}
+                  {productList?.overrides?.description}
                </HeroDescription>
             )}
          </Flex>

@@ -118,18 +118,19 @@ export function getAdminLinks({
    ];
 }
 
-export function updateProductListWithItemTypeOverrides(
+export function calculateProductListOverrides(
    productList: ProductList,
    page: number,
    itemType?: string
 ): ProductList {
-   const productListCopy = { ...productList };
-   productListCopy.title = getTitle(productList, itemType);
-   productListCopy.metaTitle = getMetaTitle(productList, itemType);
-   productListCopy.description = getDescription(productList, page, itemType);
-   productListCopy.metaDescription = getMetaDescription(productList, itemType);
-   productListCopy.tagline = getTagline(productList, page, itemType);
-   return productListCopy;
+   productList.overrides = {
+      title: getTitle(productList, itemType),
+      metaTitle: getMetaTitle(productList, itemType),
+      description: getDescription(productList, page, itemType),
+      metaDescription: getMetaDescription(productList, itemType),
+      tagline: getTagline(productList, page, itemType),
+   };
+   return productList;
 }
 
 function getDescription(
@@ -179,16 +180,16 @@ function getTagline( // taglines don't exist if page > 1
    productList: ProductList,
    page: number,
    itemType?: string
-): string | null {
+): string | undefined {
    const tagline =
-      !!productList.tagline && page === 1 ? productList.tagline : null;
+      !!productList.tagline && page === 1 ? productList.tagline : undefined;
    return itemType && productList.deviceTitle
       ? getItemOverrideAttribute(
            productList.itemOverrides,
            itemType,
            'tagline',
            productList.deviceTitle
-        )
+        ) ?? undefined
       : tagline;
 }
 
