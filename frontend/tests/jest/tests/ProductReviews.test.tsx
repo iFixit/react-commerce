@@ -98,9 +98,13 @@ describe('Product Reviews Tests', () => {
       );
       (expect(reviewAverageValue.length) as any).toBe(2);
 
-      const expectedReviewCount = screen.getAllByText(
+      const expectedRatingCountText = screen.getAllByText(
          `${reviewsResponseWithReviews.count} ratings`
       );
-      (expect(expectedReviewCount.length) as any).toBe(2);
+      (expect(expectedRatingCountText.length) as any).toBe(1);
+      const expectedReviewCountText = screen.getAllByText(
+         `${reviewsResponseWithReviews.count} reviews`
+      );
+      (expect(expectedReviewCountText.length) as any).toBe(1);
    });
 });
