@@ -11,6 +11,8 @@ import {
    SolutionSection,
 } from './hooks/useTroubleshootingProps';
 import { Guide } from './hooks/GuideModel';
+import Product from '@pages/api/nextjs/cache/product';
+import { hasDisableCacheGets } from '../../helpers/next-helpers';
 
 export const getServerSideProps: GetServerSideProps<
    TroubleshootingProps
@@ -30,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<
       };
    }
 
-   async function fetchGuidesForSolution(
+   async function fetchDataForSolution(
       solution: ApiSolutionSection
    ): Promise<SolutionSection> {
       const guides = await Promise.all(
@@ -39,9 +41,22 @@ export const getServerSideProps: GetServerSideProps<
                client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
          )
       );
+      const products = await Promise.all(
+         solution.products.map((handle: string) =>
+            Product.get(
+               {
+                  handle,
+                  storeCode: DEFAULT_STORE_CODE,
+                  ifixitOrigin,
+               },
+               { forceMiss: hasDisableCacheGets(context) }
+            )
+         )
+      );
       return {
          ...solution,
          guides,
+         products,
       };
    }
 
@@ -54,7 +69,7 @@ export const getServerSideProps: GetServerSideProps<
    );
 
    const solutions: SolutionSection[] = await Promise.all(
-      troubleshootingData.solutions.map(fetchGuidesForSolution)
+      troubleshootingData.solutions.map(fetchDataForSolution)
    );
 
    const wikiData: TroubleshootingData = {
