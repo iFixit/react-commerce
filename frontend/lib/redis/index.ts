@@ -16,6 +16,7 @@ function getClient() {
       // When not connected to redis, return error, don't add operations to a
       // queue
       enableOfflineQueue: false,
+      commandTimeout: 500,
    });
 }
 
