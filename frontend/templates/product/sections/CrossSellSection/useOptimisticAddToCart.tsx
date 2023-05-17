@@ -41,7 +41,7 @@ export function useOptimisticAddToCart({
                itemcode: selectedVariant.sku,
                shopifyVariantId: selectedVariant.id,
                quantity: 1,
-               imageSrc: selectedVariant.image?.url,
+               imageSrc: selectedVariant.image?.url || product.images[0]?.url,
                price: userPrice.price,
                compareAtPrice: userPrice.compareAtPrice,
             };
