@@ -24,6 +24,7 @@ export type Scalars = {
    JSON: any;
    MenuItemsDynamicZoneInput: any;
    PageSectionsDynamicZoneInput: any;
+   ProductListItemOverridesDynamicZoneInput: any;
    ProductListSectionsDynamicZoneInput: any;
    ProductSectionsDynamicZoneInput: any;
    /** The `Upload` scalar type represents a file upload. */
@@ -266,12 +267,14 @@ export type ComponentPageCallToActionInput = {
 
 export type ComponentPageCategory = {
    __typename?: 'ComponentPageCategory';
+   description?: Maybe<Scalars['String']>;
    id: Scalars['ID'];
    productList?: Maybe<ProductListEntityResponse>;
 };
 
 export type ComponentPageCategoryFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ComponentPageCategoryFiltersInput>>>;
+   description?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<ComponentPageCategoryFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<ComponentPageCategoryFiltersInput>>>;
    productList?: InputMaybe<ProductListFiltersInput>;
@@ -374,6 +377,17 @@ export type ComponentProductListBanner = {
    id: Scalars['ID'];
    title: Scalars['String'];
    url: Scalars['String'];
+};
+
+export type ComponentProductListItemTypeOverride = {
+   __typename?: 'ComponentProductListItemTypeOverride';
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   itemType?: Maybe<Scalars['String']>;
+   metaDescription?: Maybe<Scalars['String']>;
+   metaTitle?: Maybe<Scalars['String']>;
+   tagline?: Maybe<Scalars['String']>;
+   title?: Maybe<Scalars['String']>;
 };
 
 export type ComponentProductListLinkedProductListSet = {
@@ -791,6 +805,7 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
+   | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
    | ComponentProductProduct
@@ -1526,6 +1541,7 @@ export type ProductList = {
    heroImage?: Maybe<UploadFileEntityResponse>;
    hideFromParent?: Maybe<Scalars['Boolean']>;
    image?: Maybe<UploadFileEntityResponse>;
+   itemOverrides: Array<Maybe<ProductListItemOverridesDynamicZone>>;
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
    locale?: Maybe<Scalars['String']>;
@@ -1618,6 +1634,9 @@ export type ProductListInput = {
    heroImage?: InputMaybe<Scalars['ID']>;
    hideFromParent?: InputMaybe<Scalars['Boolean']>;
    image?: InputMaybe<Scalars['ID']>;
+   itemOverrides?: InputMaybe<
+      Array<Scalars['ProductListItemOverridesDynamicZoneInput']>
+   >;
    legacyDescription?: InputMaybe<Scalars['String']>;
    legacyPageId?: InputMaybe<Scalars['Int']>;
    metaDescription?: InputMaybe<Scalars['String']>;
@@ -1630,6 +1649,10 @@ export type ProductListInput = {
    title?: InputMaybe<Scalars['String']>;
    type?: InputMaybe<Enum_Productlist_Type>;
 };
+
+export type ProductListItemOverridesDynamicZone =
+   | ComponentProductListItemTypeOverride
+   | Error;
 
 export type ProductListRelationResponseCollection = {
    __typename?: 'ProductListRelationResponseCollection';
@@ -2550,6 +2573,7 @@ export type FindPageQuery = {
                     categories?: Array<{
                        __typename?: 'ComponentPageCategory';
                        id: string;
+                       description?: string | null;
                        productList?: {
                           __typename?: 'ProductListEntityResponse';
                           data?: {
@@ -4136,6 +4160,19 @@ export type GetProductListQuery = {
                | { __typename: 'Error' }
                | null
             >;
+            itemOverrides: Array<
+               | {
+                    __typename: 'ComponentProductListItemTypeOverride';
+                    title?: string | null;
+                    metaTitle?: string | null;
+                    description?: string | null;
+                    metaDescription?: string | null;
+                    itemType?: string | null;
+                    tagline?: string | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
          } | null;
       }>;
    } | null;
@@ -4215,6 +4252,7 @@ export type BrowseSectionFieldsFragment = {
    categories?: Array<{
       __typename?: 'ComponentPageCategory';
       id: string;
+      description?: string | null;
       productList?: {
          __typename?: 'ProductListEntityResponse';
          data?: {
@@ -4247,6 +4285,7 @@ export type BrowseSectionFieldsFragment = {
 export type CategoryFieldsFragment = {
    __typename?: 'ComponentPageCategory';
    id: string;
+   description?: string | null;
    productList?: {
       __typename?: 'ProductListEntityResponse';
       data?: {
@@ -4737,6 +4776,7 @@ export const ProductListFieldsFragmentDoc = `
 export const CategoryFieldsFragmentDoc = `
     fragment CategoryFields on ComponentPageCategory {
   id
+  description
   productList {
     data {
       ...ProductListFields
@@ -5294,6 +5334,17 @@ export const GetProductListDocument = `
                 }
               }
             }
+          }
+        }
+        itemOverrides {
+          __typename
+          ... on ComponentProductListItemTypeOverride {
+            title
+            metaTitle
+            description
+            metaDescription
+            itemType
+            tagline
           }
         }
       }

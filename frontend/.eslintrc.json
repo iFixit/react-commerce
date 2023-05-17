@@ -30,7 +30,7 @@
       "@typescript-eslint/no-use-before-define": 0,
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-unused-vars": [
-         "warn",
+         "error",
          {
             "argsIgnorePattern": "^_",
             "caughtErrorsIgnorePattern": "^_",

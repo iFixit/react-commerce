@@ -1,6 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import SvgCrucial from './crucial.svg';
 import SvgGoogle from './google.svg';
+import SvgHp from './hp.svg';
 import SvgLenovo from './lenovo.svg';
 import SvgLogitech from './logitech.svg';
 import SvgMicron from './micron.svg';
@@ -15,6 +16,7 @@ import SvgVive from './vive.svg';
 
 export const Crucial = chakra(SvgCrucial);
 export const Google = chakra(SvgGoogle);
+export const Hp = chakra(SvgHp);
 export const Lenovo = chakra(SvgLenovo);
 export const Logitech = chakra(SvgLogitech);
 export const Micron = chakra(SvgMicron);

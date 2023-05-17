@@ -29,6 +29,8 @@ import {
    ProductListSection,
    ProductListSectionType,
    ProductListType,
+   ProductListItemTypeOverride,
+   ProductListItemTypeOverrideIndexed,
 } from './types';
 import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
 
@@ -98,10 +100,7 @@ export async function findProductList(
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
       heroImage: productList?.heroImage?.data?.attributes
-         ? getImageFromStrapiImage(
-              productList.heroImage.data.attributes,
-              'large'
-           )
+         ? getImageFromStrapiImage(productList.heroImage.data.attributes)
          : null,
       image: null,
       brandLogo: productList?.brandLogo?.data?.attributes
@@ -126,6 +125,7 @@ export async function findProductList(
       },
       wikiInfo: deviceWiki?.info || [],
       isOnStrapi: !!productList,
+      itemOverrides: formatItemTypeOverrides(productList?.itemOverrides),
    };
 
    return {
@@ -426,6 +426,47 @@ function createProductListSection(
          return null;
       }
    }
+}
+
+type ApiProductListItemOverrides = NonNullable<
+   ApiProductList['itemOverrides']
+>[0];
+
+function formatItemTypeOverrides(
+   itemOverrides: ApiProductListItemOverrides[] | undefined
+): ProductListItemTypeOverrideIndexed {
+   if (!itemOverrides) return {};
+   const convertedOverrides =
+      convertToProductListItemTypeOverrides(itemOverrides);
+   return convertedOverrides.reduce((result, item) => {
+      result[item.itemType || '*'] = item;
+      return result;
+   }, {} as ProductListItemTypeOverrideIndexed);
+}
+
+function convertToProductListItemTypeOverrides(
+   itemOverrides: ApiProductListItemOverrides[]
+): ProductListItemTypeOverride[] {
+   const formatedOverrides = itemOverrides.map(
+      (itemOverride): ProductListItemTypeOverride | null => {
+         if (
+            itemOverride == null ||
+            itemOverride.__typename !== 'ComponentProductListItemTypeOverride'
+         ) {
+            return null;
+         } else {
+            return {
+               itemType: itemOverride.itemType,
+               title: itemOverride.title,
+               metaTitle: itemOverride.metaTitle,
+               metaDescription: itemOverride.metaDescription,
+               description: itemOverride.description,
+               tagline: itemOverride.tagline,
+            };
+         }
+      }
+   );
+   return filterNullableItems(formatedOverrides);
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {

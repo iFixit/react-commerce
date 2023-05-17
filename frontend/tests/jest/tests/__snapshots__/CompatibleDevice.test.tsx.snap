@@ -11,18 +11,20 @@ exports[`CompatibleDevice renders and matches the snapshot 1`] = `
     >
       <img
         alt="iPhone 6s Plus"
-        class="chakra-image css-ky1liq"
+        class="chakra-image css-wn6w1c"
         src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
       />
     </a>
     <div
-      class="css-qi8j5b"
+      class="css-7k4xcc"
     >
       <a
         class="css-ce03x1"
         href="/Device/iPhone_6s_Plus"
       >
-        iPhone 6s Plus
+        <span>
+          iPhone 6s Plus
+        </span>
       </a>
       <div
         class="css-j7qwjs"
@@ -30,17 +32,23 @@ exports[`CompatibleDevice renders and matches the snapshot 1`] = `
         <p
           class="chakra-text css-4137gr"
         >
-          A1634 US AT&T Locked or SIM Free
+          <span>
+            A1634 US AT&T Locked or SIM Free
+          </span>
         </p>
         <p
           class="chakra-text css-4137gr"
         >
-          A1687 US Sprint/Verizon and Global
+          <span>
+            A1687 US Sprint/Verizon and Global
+          </span>
         </p>
         <p
           class="chakra-text css-4137gr"
         >
-          A1699 Mainland China
+          <span>
+            A1699 Mainland China
+          </span>
         </p>
       </div>
     </div>
@@ -63,18 +71,20 @@ exports[`CompatibleDevice renders and matches the snapshot with truncated varian
     >
       <img
         alt="iPhone 6s Plus"
-        class="chakra-image css-ky1liq"
+        class="chakra-image css-wn6w1c"
         src="https://mmcelvain.cominor.com/igi/cMVbyIbIrTEbi2j5.thumbnail"
       />
     </a>
     <div
-      class="css-qi8j5b"
+      class="css-7k4xcc"
     >
       <a
         class="css-ce03x1"
         href="/Device/iPhone_6s_Plus"
       >
-        iPhone 6s Plus
+        <span>
+          iPhone 6s Plus
+        </span>
       </a>
       <div
         class="css-j7qwjs"
@@ -82,7 +92,9 @@ exports[`CompatibleDevice renders and matches the snapshot with truncated varian
         <p
           class="chakra-text css-4137gr"
         >
-          A1634 US AT&T Locked or SIM Free
+          <span>
+            A1634 US AT&T Locked or SIM Free
+          </span>
         </p>
       </div>
       <p

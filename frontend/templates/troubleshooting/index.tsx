@@ -4,6 +4,8 @@ import Head from 'next/head';
 import React from 'react';
 import {
    Avatar,
+   Alert,
+   AlertIcon,
    Box,
    BoxProps,
    Button,
@@ -29,7 +31,7 @@ import {
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
-import SolutionCard from './solution';
+import SectionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
    faAngleDown,
@@ -43,6 +45,17 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
+   const { metaDescription, title, metaKeywords, canonicalUrl } = wikiData;
+   const metadata = (
+      <>
+         <meta name="description" content={metaDescription} />
+         <meta name="title" content={title} />
+         <meta name="keywords" content={metaKeywords} />
+         <meta name="robots" content="noindex" />,
+         <link rel="canonical" href={canonicalUrl} />
+      </>
+   );
+
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
@@ -62,14 +75,10 @@ const Wiki: NextPageWithLayout<{
             id="main"
          >
             <Head>
-               <meta name="description" content={wikiData.metaDescription} />
-               <meta name="title" content={wikiData.title} />
-               <meta name="keywords" content={wikiData.metaKeywords} />
-               <meta name="robots" content="noindex" />
-               <link rel="canonical" href={wikiData.canonicalUrl} />
+               {metadata}
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
-            <Heading as="h1" marginTop={6}>
+            <Heading as="h1" fontSize="3xl" fontWeight="500" marginTop={6}>
                {wikiData.title}
             </Heading>
             <AuthorInformation
@@ -83,41 +92,43 @@ const Wiki: NextPageWithLayout<{
             <Spacer borderBottom="1px" borderColor="gray.300" />
             {wikiData.solutions.length > 0 && (
                <>
-                  <Heading as="h2" fontSize="20px">
+                  <Heading as="h2" fontSize="20px" fontWeight="600">
                      {'Causes'}
                   </Heading>
-                  <OrderedList marginBottom="24px" spacing="8px">
-                     {wikiData.solutions.map((solution, index) => (
-                        <ListItem key={solution.heading}>
-                           <Link
-                              href={`#solution-${index + 1}`}
-                              color="brand.500"
-                              fontWeight="bold"
-                           >
-                              {solution.heading}
-                           </Link>
-                        </ListItem>
-                     ))}
-                  </OrderedList>
+                  <TableOfContents solutions={wikiData.solutions} />
                </>
             )}
             {wikiData.solutions.map((solution, index) => (
-               <SolutionCard
+               <SectionCard
                   key={solution.heading}
                   index={index + 1}
                   solution={solution}
                />
             ))}
-            {wikiData.conclusion.map((conclusion) => (
-               <ConclusionSection
-                  key={conclusion.heading}
-                  conclusion={conclusion}
-               />
-            ))}
+            <Conclusion conclusion={wikiData.conclusion} />
+            <AnswersCTA answersUrl={wikiData.answersUrl} />
          </Flex>
       </Flex>
    );
 };
+
+function TableOfContents({ solutions }: { solutions: Section[] }) {
+   return (
+      <OrderedList marginBottom="24px" spacing="8px">
+         {solutions.map((solution, index) => (
+            <ListItem key={solution.heading}>
+               <Link
+                  href={`#solution-${index + 1}`}
+                  color="brand.500"
+                  fontWeight="bold"
+               >
+                  {solution.heading}
+               </Link>
+            </ListItem>
+         ))}
+      </OrderedList>
+   );
+}
 
 function NavBar({
    editUrl,
@@ -362,7 +373,7 @@ function NavTabs({
             {...notSelectedStyleProps}
             href={deviceGuideUrl}
          >
-            Guide
+            Guides
          </Link>
          <Box {...selectedStyleProps}>Answers</Box>
       </Flex>
@@ -491,7 +502,9 @@ function AuthorListing({
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
-         <Heading marginBottom={6}>{intro.heading}</Heading>
+         <Heading marginBottom={6} fontSize="2xl" fontWeight="600">
+            {intro.heading}
+         </Heading>
          <Prerendered html={intro.body} />
       </Box>
    );
@@ -503,6 +516,36 @@ function ConclusionSection({ conclusion }: { conclusion: Section }) {
          <Heading marginBottom={6}>{conclusion.heading}</Heading>
          <Prerendered html={conclusion.body} />
       </Box>
+   );
+}
+
+function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
+   const filteredConclusions = conclusions.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
+   return (
+      <>
+         {filteredConclusions.map((conclusion) => (
+            <ConclusionSection
+               key={conclusion.heading}
+               conclusion={conclusion}
+            />
+         ))}
+      </>
+   );
+}
+
+function AnswersCTA({ answersUrl }: { answersUrl: string }) {
+   return (
+      <Alert>
+         <AlertIcon color="gray.500" />
+         <chakra.span pr={3} mr="auto">
+            Haven&apos;t found the solution to your problem?
+         </chakra.span>
+         <Button href={answersUrl} as="a" colorScheme="brand">
+            Ask a question
+         </Button>
+      </Alert>
    );
 }
 

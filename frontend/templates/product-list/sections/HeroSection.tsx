@@ -10,13 +10,11 @@ import {
    useDisclosure,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
-import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useIsMounted } from '@ifixit/ui';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
-import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export interface HeroSectionProps {
    productList: ProductList;
@@ -25,33 +23,22 @@ export interface HeroSectionProps {
 export function HeroSection({ productList }: HeroSectionProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
-   const itemType = useDevicePartsItemType(productList);
-   const hasDescription =
-      productList.description != null &&
-      productList.description.length > 0 &&
-      page === 1 &&
-      !itemType;
-   const hasTagline =
-      productList.tagline != null &&
-      productList.tagline.length > 0 &&
-      page === 1 &&
-      !itemType;
-
-   const title = getProductListTitle(productList, itemType);
 
    return (
       <Flex direction="column">
          <HeroTitle>
-            {title}
+            {productList.overrides?.title}
             {page > 1 ? ` - Page ${page}` : ''}
          </HeroTitle>
-         {hasTagline && (
-            <Text as="h2" fontWeight="medium">
-               {productList.tagline}
+         {productList.overrides?.tagline && (
+            <Text as="h2" fontWeight="medium" data-testid="hero-tagline">
+               {productList.overrides?.tagline}
             </Text>
          )}
-         {hasDescription && (
-            <HeroDescription>{productList.description}</HeroDescription>
+         {productList.overrides?.description && (
+            <HeroDescription>
+               {productList.overrides?.description}
+            </HeroDescription>
          )}
       </Flex>
    );
@@ -69,6 +56,7 @@ const HeroTitle = chakra(
             size="xl"
             fontSize={{ base: '2xl', md: '3xl' }}
             fontWeight="medium"
+            data-testid="hero-title"
          >
             {children}
          </Heading>
@@ -97,7 +85,7 @@ function HeroDescription({ children }: HeroDescriptionProps) {
    const isShowMoreVisible = textHeight > VISIBLE_HEIGHT;
 
    return (
-      <Box mt="4">
+      <Box mt="4" data-testid="hero-description">
          <Box
             maxH={isOpen ? textHeight : VISIBLE_HEIGHT}
             overflow="hidden"
