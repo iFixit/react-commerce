@@ -4,6 +4,8 @@ import { FaIcon } from '@ifixit/icons';
 import { faClock } from '@fortawesome/pro-solid-svg-icons';
 import Prerendered from './prerendered';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
+import { Product } from '@models/product';
+import { useSelectedVariant } from '@templates/product/hooks/useSelectedVariant';
 
 export function GuideResource({ guide }: { guide: Guide }) {
    return (
@@ -14,6 +16,19 @@ export function GuideResource({ guide }: { guide: Guide }) {
          introduction={guide.introduction_rendered}
          timeRequired={guide.time_required}
          difficulty={guide.difficulty}
+      />
+   );
+}
+
+export function ProductResource({ product }: { product: Product }) {
+   const [selectedVariant, _setSelectedVariant] = useSelectedVariant(product);
+
+   return (
+      <Resource
+         href={`/products/${product.handle}`}
+         title={product.title}
+         imageUrl={selectedVariant.image?.url}
+         introduction={product.shortDescription}
       />
    );
 }
@@ -54,15 +69,16 @@ function Resource({
    href,
 }: {
    title: string;
-   imageUrl: string;
-   introduction: string;
-   timeRequired: string;
-   difficulty: string;
+   imageUrl?: string | null;
+   introduction?: string | null;
+   timeRequired?: string;
+   difficulty?: string;
    href: string;
 }) {
-   const difficultyTheme = hasKey(DifficultyThemeLookup, difficulty)
-      ? DifficultyThemeLookup[difficulty]
-      : DifficultyThemeLookup[GuideDifficultyNames.Moderate];
+   const difficultyTheme =
+      difficulty && hasKey(DifficultyThemeLookup, difficulty)
+         ? DifficultyThemeLookup[difficulty]
+         : DifficultyThemeLookup[GuideDifficultyNames.Moderate];
    const { themeColor, iconColor, icon } = difficultyTheme;
 
    return (
@@ -75,17 +91,19 @@ function Resource({
             alignSelf="stretch"
             spacing="8px"
          >
-            <Link href={href}>
-               <Image
-                  boxSize="64px"
-                  border="1px solid"
-                  borderColor="gray.300"
-                  borderRadius="4px"
-                  objectFit="cover"
-                  alt={title}
-                  src={imageUrl}
-               />
-            </Link>
+            {imageUrl && (
+               <Link href={href}>
+                  <Image
+                     boxSize="64px"
+                     border="1px solid"
+                     borderColor="gray.300"
+                     borderRadius="4px"
+                     objectFit="cover"
+                     alt={title}
+                     src={imageUrl}
+                  />
+               </Link>
+            )}
             <Stack
                justify="center"
                align="flex-start"
@@ -122,18 +140,22 @@ function Resource({
                   )}
                </Stack>
                <Wrap spacing="4px">
-                  <Badge display="flex">
-                     <FaIcon icon={faClock} mr="4px" color="gray.500" />
-                     {timeRequired}
-                  </Badge>
-                  <Badge display="flex" colorScheme={themeColor}>
-                     <FaIcon
-                        icon={icon}
-                        mr="4px"
-                        color={iconColor || `${themeColor}.500`}
-                     />
-                     {difficulty}
-                  </Badge>
+                  {timeRequired && (
+                     <Badge display="flex">
+                        <FaIcon icon={faClock} mr="4px" color="gray.500" />
+                        {timeRequired}
+                     </Badge>
+                  )}
+                  {difficulty && (
+                     <Badge display="flex" colorScheme={themeColor}>
+                        <FaIcon
+                           icon={icon}
+                           mr="4px"
+                           color={iconColor || `${themeColor}.500`}
+                        />
+                        {difficulty}
+                     </Badge>
+                  )}
                </Wrap>
             </Stack>
          </Stack>
