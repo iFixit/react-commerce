@@ -1,6 +1,6 @@
 import { WithProvidersProps } from '@components/common';
 import type { WithLayoutProps } from '@layouts/default/server';
-import { Product } from '../../../models/product';
+import { Product } from '@models/product';
 import { Guide } from './GuideModel';
 
 export type Section = {
@@ -26,7 +26,7 @@ export type SolutionSection = Omit<
    'guides' | 'products'
 > & {
    guides: Guide[];
-   products: Array<Product | null>;
+   products: Array<Product>;
 };
 
 export type TroubleshootingApiData = {

@@ -12,6 +12,7 @@ import {
 } from './hooks/useTroubleshootingProps';
 import { Guide } from './hooks/GuideModel';
 import Product from '@pages/api/nextjs/cache/product';
+import type { Product as ProductType } from '@models/product';
 import { hasDisableCacheGets } from '../../helpers/next-helpers';
 
 export const getServerSideProps: GetServerSideProps<
@@ -42,21 +43,28 @@ export const getServerSideProps: GetServerSideProps<
          )
       );
       const products = await Promise.all(
-         solution.products.map((handle: string) =>
-            Product.get(
-               {
-                  handle,
-                  storeCode: DEFAULT_STORE_CODE,
-                  ifixitOrigin,
-               },
-               { forceMiss: hasDisableCacheGets(context) }
-            )
+         solution.products.map(
+            (handle: string | null) =>
+               handle &&
+               Product.get(
+                  {
+                     handle,
+                     storeCode: DEFAULT_STORE_CODE,
+                     ifixitOrigin,
+                  },
+                  { forceMiss: hasDisableCacheGets(context) }
+               )
          )
       );
+      function isProduct(
+         product: ProductType | '' | null
+      ): product is ProductType {
+         return product !== '' && product !== null;
+      }
       return {
          ...solution,
          guides,
-         products,
+         products: products.filter(isProduct),
       };
    }
 
