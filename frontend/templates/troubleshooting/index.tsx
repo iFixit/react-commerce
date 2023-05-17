@@ -20,9 +20,8 @@ import {
    MenuItem,
    MenuList,
    chakra,
-   OrderedList,
-   ListItem,
    Spacer,
+   VStack,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -114,19 +113,27 @@ const Wiki: NextPageWithLayout<{
 
 function TableOfContents({ solutions }: { solutions: Section[] }) {
    return (
-      <OrderedList marginBottom="24px" spacing="8px">
+      <VStack
+         as="nav"
+         align="flex-start"
+         color="brand.500"
+         marginBottom={6}
+         spacing={2}
+      >
          {solutions.map((solution, index) => (
-            <ListItem key={solution.heading}>
-               <Link
-                  href={`#solution-${index + 1}`}
-                  color="brand.500"
-                  fontWeight="bold"
-               >
-                  {solution.heading}
-               </Link>
-            </ListItem>
+            <Link
+               key={solution.heading}
+               href={`#solution-${index + 1}`}
+               fontWeight="medium"
+               display="flex"
+            >
+               <Box as="span" minWidth="3ch" textAlign="right">
+                  {`${index + 1}.`}&nbsp;
+               </Box>
+               <Box as="span">{solution.heading}</Box>
+            </Link>
          ))}
-      </OrderedList>
+      </VStack>
    );
 }
 
@@ -504,9 +511,11 @@ function AuthorListing({
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
-         <Heading marginBottom={6} fontSize="2xl" fontWeight="600">
-            {intro.heading}
-         </Heading>
+         {intro.heading && (
+            <Heading marginBottom={6} fontSize="2xl" fontWeight="600">
+               {intro.heading}
+            </Heading>
+         )}
          <Prerendered html={intro.body} />
       </Box>
    );

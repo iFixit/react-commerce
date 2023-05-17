@@ -40,6 +40,7 @@ const renderStyles: SystemStyleObject = {
    },
 
    'ul,ol': {
+      marginInlineStart: '1em',
       paddingLeft: 4,
    },
 
