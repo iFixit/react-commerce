@@ -20,9 +20,8 @@ import {
    MenuItem,
    MenuList,
    chakra,
-   OrderedList,
-   ListItem,
    Spacer,
+   VStack,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -114,21 +113,27 @@ const Wiki: NextPageWithLayout<{
 
 function TableOfContents({ solutions }: { solutions: Section[] }) {
    return (
-      <OrderedList
-         marginBottom="24px"
-         spacing="8px"
-         sx={{ marginInlineStart: '2em' }}
+      <VStack
+         as="nav"
+         align="flex-start"
+         color="brand.500"
+         marginBottom={6}
+         spacing={2}
       >
          {solutions.map((solution, index) => (
-            <ListItem
-               color="brand.500"
-               fontWeight="bold"
+            <Link
                key={solution.heading}
+               href={`#solution-${index + 1}`}
+               fontWeight="medium"
+               display="flex"
             >
-               <Link href={`#solution-${index + 1}`}>{solution.heading}</Link>
-            </ListItem>
+               <Box as="span" minWidth="3ch" textAlign="right">
+                  {`${index + 1}.`}&nbsp;
+               </Box>
+               <Box as="span">{solution.heading}</Box>
+            </Link>
          ))}
-      </OrderedList>
+      </VStack>
    );
 }
 
