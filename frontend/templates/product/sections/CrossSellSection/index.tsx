@@ -104,7 +104,7 @@ export function CrossSellSection({
                         key={product.handle}
                         handle={product.handle}
                         title={product.title}
-                        image={selectedVariant.image}
+                        image={selectedVariant.image ?? product.images[0]}
                         reviews={product.reviews}
                         price={selectedVariant.price}
                         compareAtPrice={selectedVariant.compareAtPrice}

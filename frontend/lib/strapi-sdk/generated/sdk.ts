@@ -4160,6 +4160,19 @@ export type GetProductListQuery = {
                | { __typename: 'Error' }
                | null
             >;
+            itemOverrides: Array<
+               | {
+                    __typename: 'ComponentProductListItemTypeOverride';
+                    title?: string | null;
+                    metaTitle?: string | null;
+                    description?: string | null;
+                    metaDescription?: string | null;
+                    itemType?: string | null;
+                    tagline?: string | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
          } | null;
       }>;
    } | null;
@@ -5321,6 +5334,17 @@ export const GetProductListDocument = `
                 }
               }
             }
+          }
+        }
+        itemOverrides {
+          __typename
+          ... on ComponentProductListItemTypeOverride {
+            title
+            metaTitle
+            description
+            metaDescription
+            itemType
+            tagline
           }
         }
       }

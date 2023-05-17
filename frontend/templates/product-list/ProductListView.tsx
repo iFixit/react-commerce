@@ -1,5 +1,8 @@
 import { VStack } from '@chakra-ui/react';
-import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
+import {
+   computeProductListAlgoliaFilterPreset,
+   calculateProductListOverrides,
+} from '@helpers/product-list-helpers';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListSectionType } from '@models/product-list';
 import { Configure, useMenu } from 'react-instantsearch-hooks-web';
@@ -14,6 +17,8 @@ import {
    RelatedPostsSection,
 } from './sections';
 import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
+import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
+import { usePagination } from 'react-instantsearch-hooks-web';
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -25,23 +30,38 @@ export function ProductListView({ productList }: ProductListViewProps) {
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
 
+   const itemType = useDevicePartsItemType(productList);
+   const pagination = usePagination();
+   const page = pagination.currentRefinement + 1;
+   const productListWithOverrides = calculateProductListOverrides(
+      productList,
+      page,
+      itemType
+   );
+
    return (
       <>
-         <SecondaryNavigation productList={productList} />
+         <SecondaryNavigation productList={productListWithOverrides} />
          <Wrapper py={{ base: 4, md: 6 }}>
             <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
                <Configure filters={filters} hitsPerPage={24} />
-               <MetaTags productList={productList} />
-               {productList.heroImage ? (
-                  <HeroWithBackgroundSection productList={productList} />
+               <MetaTags productList={productListWithOverrides} />
+               {productListWithOverrides.heroImage ? (
+                  <HeroWithBackgroundSection
+                     productList={productListWithOverrides}
+                  />
                ) : (
-                  <HeroSection productList={productList} />
+                  <HeroSection productList={productListWithOverrides} />
                )}
-               {productList.children.length > 0 && (
-                  <ProductListChildrenSection productList={productList} />
+               {productListWithOverrides.children.length > 0 && (
+                  <ProductListChildrenSection
+                     productList={productListWithOverrides}
+                  />
                )}
-               <FilterableProductsSection productList={productList} />
-               {productList.sections.map((section, index) => {
+               <FilterableProductsSection
+                  productList={productListWithOverrides}
+               />
+               {productListWithOverrides.sections.map((section, index) => {
                   switch (section.type) {
                      case ProductListSectionType.Banner: {
                         return (
@@ -55,7 +75,7 @@ export function ProductListView({ productList }: ProductListViewProps) {
                         );
                      }
                      case ProductListSectionType.RelatedPosts: {
-                        const tags = [productList.title].concat(
+                        const tags = [productListWithOverrides.title].concat(
                            section.tags?.split(',').map((tag) => tag.trim()) ||
                               []
                         );
