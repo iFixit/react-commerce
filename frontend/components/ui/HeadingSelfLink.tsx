@@ -11,13 +11,6 @@ export function HeadingSelfLink({
    props: HeadingProps;
 }) {
    const id = children.toLowerCase().replace(/ /g, '-');
-   const iconStyles = {
-      height: '50%',
-      maxHeight: '4',
-      color: 'gray.500',
-      marginY: 'auto',
-      visibility: 'hidden',
-   };
    const sharedStyles = {
       display: 'inline-flex',
       alignItems: 'stretch',
@@ -32,7 +25,14 @@ export function HeadingSelfLink({
       >
          {children}
          <Link href={`#${id}`} paddingLeft={2} minWidth={6} {...sharedStyles}>
-            <FaIcon icon={faLink} {...iconStyles} />
+            <FaIcon
+               icon={faLink}
+               height="50%"
+               maxHeight="4"
+               color="gray.500"
+               marginY="auto"
+               visibility="hidden"
+            />
          </Link>
       </Heading>
    );
