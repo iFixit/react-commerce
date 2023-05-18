@@ -1,4 +1,15 @@
-import { Stack, Image, Badge, StackProps, Link, Wrap } from '@chakra-ui/react';
+import {
+   Stack,
+   Image,
+   Badge,
+   StackProps,
+   Link,
+   Wrap,
+   HStack,
+   Text,
+   Box,
+   SystemProps,
+} from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faClock } from '@fortawesome/pro-solid-svg-icons';
@@ -6,6 +17,10 @@ import Prerendered from './prerendered';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 import { Product } from '@models/product';
 import { useSelectedVariant } from '@templates/product/hooks/useSelectedVariant';
+import { useIsProductForSale } from '../product/hooks/useIsProductForSale';
+import { shouldShowProductRating } from '../../../packages/helpers/product-helpers';
+import { Rating } from '@components/ui';
+import { Money, formatMoney } from '@ifixit/helpers';
 
 export function GuideResource({ guide }: { guide: Guide }) {
    return (
@@ -15,6 +30,7 @@ export function GuideResource({ guide }: { guide: Guide }) {
          imageUrl={guide.image.thumbnail}
          timeRequired={guide.time_required}
          difficulty={guide.difficulty}
+         spacing="6px"
       >
          {guide.introduction_rendered && (
             <Prerendered
@@ -34,14 +50,51 @@ export function GuideResource({ guide }: { guide: Guide }) {
 
 export function ProductResource({ product }: { product: Product }) {
    const [selectedVariant, _setSelectedVariant] = useSelectedVariant(product);
+   const isForSale = useIsProductForSale(product);
 
    return (
       <Resource
          href={`/products/${product.handle}`}
          title={product.title}
          imageUrl={selectedVariant.image?.url}
-         introduction={product.shortDescription}
-      />
+         spacing="4px"
+      >
+         {isForSale && <ResourceProductRating product={product} />}
+         {isForSale && <ResourceProductPrice price={selectedVariant.price} />}
+      </Resource>
+   );
+}
+
+function ResourceProductRating({ product }: { product: Product }) {
+   if (!shouldShowProductRating(product.reviews)) {
+      return null;
+   }
+   return (
+      <HStack spacing="6px" fontWeight={400}>
+         <Rating
+            value={product.reviews.rating}
+            size={3}
+            position="relative"
+            top="-1px"
+         />
+         <Text color="gray.600" fontSize="12px">
+            {product.reviews.rating}
+         </Text>
+         <Box w="1px" h="14px" bg="gray.300"></Box>
+         <Text color="gray.600" fontSize="12px">
+            {product.reviews.count} reviews
+         </Text>
+      </HStack>
+   );
+}
+
+function ResourceProductPrice({ price }: { price: Money }) {
+   return (
+      <Box alignItems="center">
+         <Text fontSize="12px" color="gray.600" fontWeight={510}>
+            {formatMoney(price)}
+         </Text>
+      </Box>
    );
 }
 
