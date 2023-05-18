@@ -5,7 +5,8 @@ import { faLink } from '@fortawesome/pro-solid-svg-icons';
 
 export const HeadingSelfLink = forwardRef<HeadingProps, 'h2'>(
    ({ children, ...props }, ref) => {
-      const id = `${children}.toLowerCase().replace(/ /g, '-')`;
+      const heading = children as string;
+      const id = heading.toLowerCase().replace(/ /g, '-');
 
       return (
          <Heading
