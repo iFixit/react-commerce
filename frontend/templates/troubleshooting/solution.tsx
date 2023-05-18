@@ -216,7 +216,7 @@ export default function SolutionCard({
          borderWidth="1px"
          padding="24px 24px 12px 24px"
       >
-         <Flex gap="24px" direction="column">
+         <Flex gap="24px" direction="column" flexGrow={1}>
             <SolutionHeader index={index} title={solution.heading} />
             <SolutionTexts body={solution.body} />
             <LinkCards guides={solution.guides} products={solution.products} />
