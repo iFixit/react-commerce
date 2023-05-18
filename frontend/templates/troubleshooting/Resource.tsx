@@ -13,10 +13,22 @@ export function GuideResource({ guide }: { guide: Guide }) {
          href={guide.url}
          title={guide.title}
          imageUrl={guide.image.thumbnail}
-         introduction={guide.introduction_rendered}
          timeRequired={guide.time_required}
          difficulty={guide.difficulty}
-      />
+      >
+         {guide.introduction_rendered && (
+            <Prerendered
+               lineHeight="1.36"
+               fontWeight="regular"
+               fontSize="12px"
+               color="gray.600"
+               overflow="hidden"
+               height="16px"
+               noOfLines={1}
+               html={guide.introduction_rendered}
+            />
+         )}
+      </Resource>
    );
 }
 
@@ -63,18 +75,18 @@ function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
 function Resource({
    title,
    imageUrl,
-   introduction,
    timeRequired,
    difficulty,
    href,
-}: {
+   children,
+}: React.PropsWithChildren<{
    title: string;
    imageUrl?: string | null;
    introduction?: string | null;
    timeRequired?: string;
    difficulty?: string;
    href: string;
-}) {
+}>) {
    const difficultyTheme =
       difficulty && hasKey(DifficultyThemeLookup, difficulty)
          ? DifficultyThemeLookup[difficulty]
@@ -126,18 +138,7 @@ function Resource({
                   >
                      {title}
                   </Link>
-                  {introduction && (
-                     <Prerendered
-                        lineHeight="1.36"
-                        fontWeight="regular"
-                        fontSize="12px"
-                        color="gray.600"
-                        overflow="hidden"
-                        height="16px"
-                        noOfLines={1}
-                        html={introduction}
-                     />
-                  )}
+                  {children}
                </Stack>
                <Wrap spacing="4px">
                   {timeRequired && (
