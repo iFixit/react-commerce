@@ -1,37 +1,40 @@
 import * as React from 'react';
-import { Heading, HeadingProps, Link } from '@chakra-ui/react';
+import { forwardRef, Heading, HeadingProps, Link } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faLink } from '@fortawesome/pro-solid-svg-icons';
 
-export function HeadingSelfLink(children: any, props: HeadingProps) {
-   const id = children.toLowerCase().replace(/ /g, '-');
+export const HeadingSelfLink = forwardRef<HeadingProps, 'h2'>(
+   ({ children, ...props }, ref) => {
+      const id = `${children}.toLowerCase().replace(/ /g, '-')`;
 
-   return (
-      <Heading
-         id={id}
-         display="flex"
-         alignItems="stretch"
-         sx={{ _hover: { '& .heading_link-icon': { visibility: 'visible' } } }}
-         {...props}
-      >
-         {children}
-         <Link
-            href={`#${id}`}
-            display="inline-flex"
-            alignItems="stretch"
-            paddingLeft={2}
-            minWidth={6}
+      return (
+         <Heading
+            id={id}
+            display="flex"
+            sx={{ _hover: { '& .heading_link-icon': { opacity: '1' } } }}
+            {...ref}
+            {...props}
          >
-            <FaIcon
-               className="heading_link-icon"
-               icon={faLink}
-               height="55%"
-               maxHeight="4"
-               color="gray.500"
-               marginY="auto"
-               visibility="hidden"
-            />
-         </Link>
-      </Heading>
-   );
-}
+            {children}
+            <Link
+               href={`#${id}`}
+               display="inline-flex"
+               placeItems="center start"
+               paddingLeft={2}
+               minWidth={7}
+               aria-label={`${children} page link`}
+            >
+               <FaIcon
+                  className="heading_link-icon"
+                  icon={faLink}
+                  height="55%" // scale with smaller headings
+                  maxHeight={4} // cap size to 1em
+                  color="gray.500"
+                  opacity="0"
+                  transition="opacity 0.1s ease-in-out"
+               />
+            </Link>
+         </Heading>
+      );
+   }
+);
