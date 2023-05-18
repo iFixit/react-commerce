@@ -158,27 +158,31 @@ function NavBar({
       url: breadcrumb.url,
    }));
    const padding = { base: '16px', sm: '32px' };
+   const breadcrumbMinHeight = '48px';
    return (
       <Flex
          w="100%"
-         minH="48px"
          backgroundColor="white"
          borderBottomColor="gray.200"
-         borderBottomWidth="1px"
+         borderBottomWidth={{ base: '0', sm: '1px' }}
          justify="center"
+         minHeight={breadcrumbMinHeight}
       >
          <Flex
             maxW="1280px"
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
+            justify="stretch"
          >
             <BreadCrumbs
-               minW="0"
-               height="48px"
                breadCrumbs={bc.slice(0, -1)}
                paddingInline={padding}
+               minHeight={breadcrumbMinHeight}
+               borderTop={{ base: '1px', sm: '0' }}
+               borderTopColor="gray.200"
+               bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
             />
-            <Flex minW="0">
+            <Flex flexShrink="1">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -203,9 +207,8 @@ function NavBar({
                      },
                   }}
                   position="relative"
-                  flexShrink="1"
-                  flexGrow="1"
-                  minW="0"
+                  flex="1 2"
+                  overflowX="scroll"
                >
                   <NavTabs
                      overflowX="auto"
