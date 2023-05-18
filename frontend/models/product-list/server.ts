@@ -495,6 +495,7 @@ async function findDevicesWithProducts(devices: string[]) {
          facets: ['device'],
          filters: `public = 1${deviceFilterSuffix}`,
          maxValuesPerFacet: 1000,
+         facetingAfterDistinct: true,
          hitsPerPage: 0,
       });
       return facets?.device ? facets?.device : {};
