@@ -3,31 +3,29 @@ import { Heading, HeadingProps, Link } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faLink } from '@fortawesome/pro-solid-svg-icons';
 
-export function HeadingSelfLink({
-   children,
-   ...props
-}: {
-   children: any;
-   props: HeadingProps;
-}) {
+export function HeadingSelfLink(children: any, props: HeadingProps) {
    const id = children.toLowerCase().replace(/ /g, '-');
-   const sharedStyles = {
-      display: 'inline-flex',
-      alignItems: 'stretch',
-   };
 
    return (
       <Heading
          id={id}
-         sx={{ _hover: { '& svg': { visibility: 'visible' } } }}
-         {...sharedStyles}
+         display="flex"
+         alignItems="stretch"
+         sx={{ _hover: { '& .heading_link-icon': { visibility: 'visible' } } }}
          {...props}
       >
          {children}
-         <Link href={`#${id}`} paddingLeft={2} minWidth={6} {...sharedStyles}>
+         <Link
+            href={`#${id}`}
+            display="inline-flex"
+            alignItems="stretch"
+            paddingLeft={2}
+            minWidth={6}
+         >
             <FaIcon
+               className="heading_link-icon"
                icon={faLink}
-               height="50%"
+               height="55%"
                maxHeight="4"
                color="gray.500"
                marginY="auto"
