@@ -131,6 +131,7 @@ function Resource({
    timeRequired,
    difficulty,
    href,
+   spacing,
    children,
 }: React.PropsWithChildren<{
    title: string;
@@ -138,6 +139,7 @@ function Resource({
    introduction?: string | null;
    timeRequired?: string;
    difficulty?: string;
+   spacing: SystemProps['margin'];
    href: string;
 }>) {
    const difficultyTheme =
@@ -172,14 +174,14 @@ function Resource({
             <Stack
                justify="center"
                align="flex-start"
-               spacing="6px"
+               spacing={spacing}
                flex="1"
                overflow="hidden"
             >
                <Stack
                   justify="flex-start"
                   align="flex-start"
-                  spacing="6px"
+                  spacing={spacing}
                   alignSelf="stretch"
                >
                   <Link
@@ -193,24 +195,26 @@ function Resource({
                   </Link>
                   {children}
                </Stack>
-               <Wrap spacing="4px">
-                  {timeRequired && (
-                     <Badge display="flex">
-                        <FaIcon icon={faClock} mr="4px" color="gray.500" />
-                        {timeRequired}
-                     </Badge>
-                  )}
-                  {difficulty && (
-                     <Badge display="flex" colorScheme={themeColor}>
-                        <FaIcon
-                           icon={icon}
-                           mr="4px"
-                           color={iconColor || `${themeColor}.500`}
-                        />
-                        {difficulty}
-                     </Badge>
-                  )}
-               </Wrap>
+               {(timeRequired || difficulty) && (
+                  <Wrap spacing="4px">
+                     {timeRequired && (
+                        <Badge display="flex">
+                           <FaIcon icon={faClock} mr="4px" color="gray.500" />
+                           {timeRequired}
+                        </Badge>
+                     )}
+                     {difficulty && (
+                        <Badge display="flex" colorScheme={themeColor}>
+                           <FaIcon
+                              icon={icon}
+                              mr="4px"
+                              color={iconColor || `${themeColor}.500`}
+                           />
+                           {difficulty}
+                        </Badge>
+                     )}
+                  </Wrap>
+               )}
             </Stack>
          </Stack>
       </ResourceBox>
