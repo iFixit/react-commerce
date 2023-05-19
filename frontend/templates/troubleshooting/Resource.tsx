@@ -64,6 +64,7 @@ export function ProductResource({ product }: { product: Product }) {
          imageUrl={selectedVariant.image?.url}
          spacing="4px"
          showBuyButton={isForSale}
+         openInNewTab={true}
       >
          {isForSale && <ResourceProductRating product={product} />}
          {isForSale && <ResourceProductPrice price={selectedVariant.price} />}
@@ -111,7 +112,7 @@ function BuyButton({
    buyButtonText: string;
    buttonStyling?: ButtonProps;
    buttonSize: ThemingProps<'Button'>['size'];
-   openInNewTab: boolean;
+   openInNewTab?: boolean;
    colorScheme: ThemingProps<'Button'>['colorScheme'];
 }) {
    const openSettings = openInNewTab
@@ -169,6 +170,7 @@ function Resource({
    href,
    spacing,
    showBuyButton,
+   openInNewTab,
    children,
 }: React.PropsWithChildren<{
    title: string;
@@ -179,6 +181,7 @@ function Resource({
    spacing: SystemProps['margin'];
    href: string;
    showBuyButton?: boolean;
+   openInNewTab?: boolean;
 }>) {
    const difficultyTheme =
       difficulty && hasKey(DifficultyThemeLookup, difficulty)
@@ -199,7 +202,7 @@ function Resource({
             spacing="8px"
          >
             {imageUrl && (
-               <Link href={href}>
+               <Link href={href} isExternal={openInNewTab}>
                   <Image
                      boxSize="64px"
                      border="1px solid"
@@ -230,6 +233,7 @@ function Resource({
                      fontWeight="semibold"
                      fontSize="14px"
                      color="gray.900"
+                     isExternal={openInNewTab}
                   >
                      {title}
                   </Link>
@@ -269,7 +273,7 @@ function Resource({
                <BuyButton
                   colorScheme="brand"
                   buttonSize="sm"
-                  openInNewTab={false}
+                  openInNewTab={openInNewTab}
                   url={href}
                   buyButtonText="Buy"
                />
