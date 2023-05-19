@@ -9,6 +9,9 @@ import {
    Text,
    Box,
    SystemProps,
+   Button,
+   ButtonProps,
+   ThemingProps,
 } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
@@ -51,13 +54,15 @@ export function GuideResource({ guide }: { guide: Guide }) {
 export function ProductResource({ product }: { product: Product }) {
    const [selectedVariant, _setSelectedVariant] = useSelectedVariant(product);
    const isForSale = useIsProductForSale(product);
+   const productUrl = `/products/${product.handle}`;
 
    return (
       <Resource
-         href={`/products/${product.handle}`}
+         href={productUrl}
          title={product.title}
          imageUrl={selectedVariant.image?.url}
          spacing="4px"
+         showBuyButton={isForSale}
       >
          {isForSale && <ResourceProductRating product={product} />}
          {isForSale && <ResourceProductPrice price={selectedVariant.price} />}
@@ -90,6 +95,41 @@ function ResourceProductPrice({ price }: { price: Money }) {
             {formatMoney(price)}
          </Text>
       </Box>
+   );
+}
+
+function BuyButton({
+   url,
+   buyButtonText,
+   buttonStyling,
+   buttonSize,
+   openInNewTab,
+   colorScheme,
+}: {
+   url: string;
+   buyButtonText: string;
+   buttonStyling?: ButtonProps;
+   buttonSize: ThemingProps<'Button'>['size'];
+   openInNewTab: boolean;
+   colorScheme: ThemingProps<'Button'>['colorScheme'];
+}) {
+   const openSettings = openInNewTab
+      ? { target: '_blank', rel: 'noopener' }
+      : {};
+
+   return (
+      <Button
+         as="a"
+         href={url}
+         {...openSettings}
+         alignSelf={{ md: 'flex-start', sm: 'flex-end', base: 'flex-end' }}
+         flexShrink={0}
+         size={buttonSize}
+         colorScheme={colorScheme}
+         {...buttonStyling}
+      >
+         {buyButtonText}
+      </Button>
    );
 }
 
@@ -127,6 +167,7 @@ function Resource({
    difficulty,
    href,
    spacing,
+   showBuyButton,
    children,
 }: React.PropsWithChildren<{
    title: string;
@@ -136,6 +177,7 @@ function Resource({
    difficulty?: string;
    spacing: SystemProps['margin'];
    href: string;
+   showBuyButton?: boolean;
 }>) {
    const difficultyTheme =
       difficulty && hasKey(DifficultyThemeLookup, difficulty)
@@ -211,6 +253,15 @@ function Resource({
                   </Wrap>
                )}
             </Stack>
+            {showBuyButton && (
+               <BuyButton
+                  colorScheme="brand"
+                  buttonSize="sm"
+                  openInNewTab={false}
+                  url={href}
+                  buyButtonText="Buy"
+               />
+            )}
          </Stack>
       </ResourceBox>
    );
