@@ -22,9 +22,8 @@ import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 import { Product } from '@models/product';
 import { useSelectedVariant } from '@templates/product/hooks/useSelectedVariant';
 import { useIsProductForSale } from '../product/hooks/useIsProductForSale';
-import { shouldShowProductRating } from '../../../packages/helpers/product-helpers';
 import { Rating } from '@components/ui';
-import { Money, formatMoney } from '@ifixit/helpers';
+import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
 
 export function GuideResource({ guide }: { guide: Guide }) {
    return (
