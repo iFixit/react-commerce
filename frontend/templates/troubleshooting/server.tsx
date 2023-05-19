@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps<
                client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
          )
       );
-      const products = await Promise.all(
+      const products: ('' | null | ProductType)[] = await Promise.all(
          solution.products.map(
             (handle: string | null) =>
                handle &&
@@ -56,15 +56,12 @@ export const getServerSideProps: GetServerSideProps<
                )
          )
       );
-      function isProduct(
-         product: ProductType | '' | null
-      ): product is ProductType {
-         return product !== '' && product !== null;
-      }
       return {
          ...solution,
          guides,
-         products: products.filter(isProduct),
+         products: products.filter((product): product is ProductType =>
+            Boolean(product)
+         ),
       };
    }
 
