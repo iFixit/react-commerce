@@ -123,7 +123,7 @@ function BuyButton({
          as="a"
          href={url}
          {...openSettings}
-         alignSelf={{ md: 'flex-start', sm: 'flex-end', base: 'flex-end' }}
+         alignSelf={{ md: 'flex-start', sm: 'flex-start', base: 'flex-end' }}
          flexShrink={0}
          size={buttonSize}
          colorScheme={colorScheme}
@@ -186,7 +186,7 @@ function Resource({
          : DifficultyThemeLookup[GuideDifficultyNames.Moderate];
    const { themeColor, iconColor, icon } = difficultyTheme;
    const breakpoint = useBreakpoint();
-   const isTablet = breakpoint === 'sm' || breakpoint === 'base';
+   const isMobile = breakpoint === 'base';
 
    return (
       <ResourceBox>
@@ -255,7 +255,7 @@ function Resource({
                      )}
                   </Wrap>
                )}
-               {isTablet && showBuyButton && (
+               {isMobile && showBuyButton && (
                   <BuyButton
                      colorScheme="brand"
                      buttonSize="xs"
@@ -265,7 +265,7 @@ function Resource({
                   />
                )}
             </Stack>
-            {!isTablet && showBuyButton && (
+            {!isMobile && showBuyButton && (
                <BuyButton
                   colorScheme="brand"
                   buttonSize="sm"
