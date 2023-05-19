@@ -165,6 +165,11 @@ const DefaultLayoutComponent = function ({
                   href="https://assets.cdn.ifixit.com/static/icons/ifixit/safari-pinned-tab.svg"
                   color="#5bbad5"
                />
+
+               <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1"
+               />
             </Head>
             <Flex direction="column" minH="100vh">
                <Header>
