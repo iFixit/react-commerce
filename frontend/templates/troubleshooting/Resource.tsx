@@ -71,12 +71,7 @@ function ResourceProductRating({ product }: { product: Product }) {
    }
    return (
       <HStack spacing="6px" fontWeight={400}>
-         <Rating
-            value={product.reviews.rating}
-            size={3}
-            position="relative"
-            top="-1px"
-         />
+         <Rating value={product.reviews.rating} size={3} />
          <Text color="gray.600" fontSize="12px">
             {product.reviews.rating}
          </Text>
