@@ -1,6 +1,5 @@
 import {
    Box,
-   Heading,
    Stack,
    Text,
    Avatar,
@@ -23,6 +22,7 @@ import Prerendered from './prerendered';
 import { GuideResource, ProductResource } from './Resource';
 import { Guide } from './hooks/GuideModel';
 import { Product } from '@models/product';
+import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
 
 const _SolutionFooter = () => (
    <Stack
@@ -165,14 +165,14 @@ const SolutionHeader = ({
             {index}
          </Square>
       </Stack>
-      <Heading
+      <HeadingSelfLink
          fontWeight="medium"
          fontSize="24px"
          color="brand.500"
          alignSelf="center"
       >
          {title}
-      </Heading>
+      </HeadingSelfLink>
       {popularity !== undefined && (
          <Stack direction="row" justify="flex-start" align="flex-start">
             <Badge

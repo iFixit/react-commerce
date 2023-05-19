@@ -44,7 +44,11 @@ export function ProductListView({ productList }: ProductListViewProps) {
          <SecondaryNavigation productList={productListWithOverrides} />
          <Wrapper py={{ base: 4, md: 6 }}>
             <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
-               <Configure filters={filters} hitsPerPage={24} />
+               <Configure
+                  filters={filters}
+                  hitsPerPage={24}
+                  facetingAfterDistinct={true}
+               />
                <MetaTags productList={productListWithOverrides} />
                {productListWithOverrides.heroImage ? (
                   <HeroWithBackgroundSection

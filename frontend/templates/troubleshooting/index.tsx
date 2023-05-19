@@ -11,7 +11,6 @@ import {
    Button,
    Flex,
    FlexProps,
-   Heading,
    IconButton,
    Link,
    LinkProps,
@@ -20,9 +19,8 @@ import {
    MenuItem,
    MenuList,
    chakra,
-   OrderedList,
-   ListItem,
    Spacer,
+   VStack,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -39,6 +37,7 @@ import {
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
+import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -78,9 +77,14 @@ const Wiki: NextPageWithLayout<{
                {metadata}
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
-            <Heading as="h1" fontSize="3xl" fontWeight="500" marginTop={6}>
+            <HeadingSelfLink
+               as="h1"
+               fontSize="3xl"
+               fontWeight="500"
+               marginTop={6}
+            >
                {wikiData.title}
-            </Heading>
+            </HeadingSelfLink>
             <AuthorInformation
                lastUpdatedDate={lastUpdatedDate}
                authors={wikiData.authors}
@@ -92,9 +96,9 @@ const Wiki: NextPageWithLayout<{
             <Spacer borderBottom="1px" borderColor="gray.300" />
             {wikiData.solutions.length > 0 && (
                <>
-                  <Heading as="h2" fontSize="20px" fontWeight="600">
+                  <HeadingSelfLink as="h2" fontSize="20px" fontWeight="600">
                      {'Causes'}
-                  </Heading>
+                  </HeadingSelfLink>
                   <TableOfContents solutions={wikiData.solutions} />
                </>
             )}
@@ -114,19 +118,27 @@ const Wiki: NextPageWithLayout<{
 
 function TableOfContents({ solutions }: { solutions: Section[] }) {
    return (
-      <OrderedList marginBottom="24px" spacing="8px">
+      <VStack
+         as="nav"
+         align="flex-start"
+         color="brand.500"
+         marginBottom={6}
+         spacing={2}
+      >
          {solutions.map((solution, index) => (
-            <ListItem key={solution.heading}>
-               <Link
-                  href={`#solution-${index + 1}`}
-                  color="brand.500"
-                  fontWeight="bold"
-               >
-                  {solution.heading}
-               </Link>
-            </ListItem>
+            <Link
+               key={solution.heading}
+               href={`#solution-${index + 1}`}
+               fontWeight="medium"
+               display="flex"
+            >
+               <Box as="span" minWidth="3ch" textAlign="right">
+                  {`${index + 1}.`}&nbsp;
+               </Box>
+               <Box as="span">{solution.heading}</Box>
+            </Link>
          ))}
-      </OrderedList>
+      </VStack>
    );
 }
 
@@ -146,27 +158,31 @@ function NavBar({
       url: breadcrumb.url,
    }));
    const padding = { base: '16px', sm: '32px' };
+   const breadcrumbMinHeight = '48px';
    return (
       <Flex
          w="100%"
-         minH="48px"
          backgroundColor="white"
          borderBottomColor="gray.200"
-         borderBottomWidth="1px"
+         borderBottomWidth={{ base: '0', sm: '1px' }}
          justify="center"
+         minHeight={breadcrumbMinHeight}
       >
          <Flex
             maxW="1280px"
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
+            justify="stretch"
          >
             <BreadCrumbs
-               minW="0"
-               height="48px"
                breadCrumbs={bc.slice(0, -1)}
                paddingInline={padding}
+               minHeight={breadcrumbMinHeight}
+               borderTop={{ base: '1px', sm: '0' }}
+               borderTopColor="gray.200"
+               bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
             />
-            <Flex minW="0">
+            <Flex flexShrink="1">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -191,9 +207,8 @@ function NavBar({
                      },
                   }}
                   position="relative"
-                  flexShrink="1"
-                  flexGrow="1"
-                  minW="0"
+                  flex="1 2"
+                  overflowX="scroll"
                >
                   <NavTabs
                      overflowX="auto"
@@ -504,9 +519,11 @@ function AuthorListing({
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
-         <Heading marginBottom={6} fontSize="2xl" fontWeight="600">
-            {intro.heading}
-         </Heading>
+         {intro.heading && (
+            <HeadingSelfLink marginBottom={6} fontSize="2xl" fontWeight="600">
+               {intro.heading}
+            </HeadingSelfLink>
+         )}
          <Prerendered html={intro.body} />
       </Box>
    );
@@ -515,7 +532,9 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
-         <Heading marginBottom={6}>{conclusion.heading}</Heading>
+         <HeadingSelfLink marginBottom={6}>
+            {conclusion.heading}
+         </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
       </Box>
    );
