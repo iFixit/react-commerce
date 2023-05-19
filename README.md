@@ -7,7 +7,7 @@ New iFixit e-commerce site.
 ### Prerequisites
 
 -  npm v8
--  pnpm v7
+-  pnpm v8
 -  node v16
 -  yarn
 
@@ -16,7 +16,7 @@ Here's one way you can get all the right versions installed and setup:
 1. Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 2. `nvm use`
    -  run this command in the project root to install compatible versions of `node` and `npm`
-3. `npm install -g pnpm@7`
+3. `npm install -g pnpm@8`
 
 ### Setup
 
