@@ -12,6 +12,7 @@ import {
    Button,
    ButtonProps,
    ThemingProps,
+   useBreakpoint,
 } from '@chakra-ui/react';
 import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
@@ -184,6 +185,8 @@ function Resource({
          ? DifficultyThemeLookup[difficulty]
          : DifficultyThemeLookup[GuideDifficultyNames.Moderate];
    const { themeColor, iconColor, icon } = difficultyTheme;
+   const breakpoint = useBreakpoint();
+   const isTablet = breakpoint === 'sm' || breakpoint === 'base';
 
    return (
       <ResourceBox>
@@ -252,8 +255,17 @@ function Resource({
                      )}
                   </Wrap>
                )}
+               {isTablet && showBuyButton && (
+                  <BuyButton
+                     colorScheme="brand"
+                     buttonSize="xs"
+                     openInNewTab={false}
+                     url={href}
+                     buyButtonText="Buy"
+                  />
+               )}
             </Stack>
-            {showBuyButton && (
+            {!isTablet && showBuyButton && (
                <BuyButton
                   colorScheme="brand"
                   buttonSize="sm"
