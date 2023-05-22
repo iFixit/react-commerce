@@ -611,7 +611,7 @@ export const findProductQueryMock: FindProductQuery = {
                   currencyCode: CurrencyCode.Usd,
                },
                proPricesByTier: {
-                  value: '{"pro_1":29.99,"pro_2":29.99,"pro_3":29.99,"pro_4":29.99}',
+                  value: '{"pro_1":22.99,"pro_2":21.99,"pro_3":20.99,"pro_4":19.99}',
                },
                selectedOptions: [
                   {
