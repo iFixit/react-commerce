@@ -37,14 +37,15 @@ export const getServerSideProps: GetServerSideProps<
       solution: ApiSolutionSection
    ): Promise<SolutionSection> {
       const guides = await Promise.all(
-         solution.guides.map(
-            (guideid: number) =>
+         solution.guides.map((guideid: number) => {
+            return (
                client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
-         )
+            ).catch(() => null);
+         })
       );
       const products: ('' | null | ProductType)[] = await Promise.all(
-         solution.products.map(
-            (handle: string | null) =>
+         solution.products.map((handle: string | null) => {
+            return (
                handle &&
                Product.get(
                   {
@@ -53,12 +54,13 @@ export const getServerSideProps: GetServerSideProps<
                      ifixitOrigin,
                   },
                   { forceMiss: hasDisableCacheGets(context) }
-               )
-         )
+               ).catch(() => null)
+            );
+         })
       );
       return {
          ...solution,
-         guides,
+         guides: guides.filter((guide): guide is Guide => Boolean(guide)),
          products: products.filter((product): product is ProductType =>
             Boolean(product)
          ),
