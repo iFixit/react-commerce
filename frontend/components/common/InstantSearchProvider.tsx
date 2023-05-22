@@ -83,20 +83,17 @@ export function InstantSearchProvider({
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const isPartsDevicePage = firstPathSegment === 'Parts' && deviceHandle;
 
-         let path = '';
-         if (firstPathSegment) {
-            path += `/${firstPathSegment}`;
-            if (deviceHandle) {
-               path += `/${deviceHandle}`;
-               const raw: string | string[] | undefined =
-                  routeState.filter?.['facet_tags.Item Type'];
-               const itemType = Array.isArray(raw) ? raw[0] : raw;
-               if (isPartsDevicePage && itemType?.length) {
-                  const encodedItemType = encodeURIComponent(
-                     stylizeDeviceItemType(itemType)
-                  );
-                  path += `/${encodedItemType}`;
-               }
+         let path = `/${firstPathSegment}`;
+         if (deviceHandle) {
+            path += `/${deviceHandle}`;
+            const raw: string | string[] | undefined =
+               routeState.filter?.['facet_tags.Item Type'];
+            const itemType = Array.isArray(raw) ? raw[0] : raw;
+            if (isPartsDevicePage && itemType?.length) {
+               const encodedItemType = encodeURIComponent(
+                  stylizeDeviceItemType(itemType)
+               );
+               path += `/${encodedItemType}`;
             }
          }
 
