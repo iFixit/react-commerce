@@ -204,6 +204,7 @@ export const getProductListServerSideProps = ({
             indexName,
             url: urlFromContext(context),
             apiKey: productList.algolia.apiKey,
+            productListType,
          },
          ifixitOrigin,
       };

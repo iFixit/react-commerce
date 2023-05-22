@@ -19,8 +19,9 @@ import {
 import { FaIcon } from '@ifixit/icons';
 import { SolutionSection } from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
-import { GuideResource } from './Resource';
+import { GuideResource, ProductResource } from './Resource';
 import { Guide } from './hooks/GuideModel';
+import { Product } from '@models/product';
 import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
 
 const _SolutionFooter = () => (
@@ -215,20 +216,27 @@ export default function SolutionCard({
          borderWidth="1px"
          padding="24px 24px 12px 24px"
       >
-         <Flex gap="24px" direction="column">
+         <Flex gap="24px" direction="column" flexGrow={1}>
             <SolutionHeader index={index} title={solution.heading} />
             <SolutionTexts body={solution.body} />
-            <LinkCards guides={solution.guides} />
+            <LinkCards guides={solution.guides} products={solution.products} />
          </Flex>
       </Flex>
    );
 }
 
-function LinkCards({ guides, ...props }: { guides: Guide[] } & BoxProps) {
+function LinkCards({
+   guides,
+   products,
+   ...props
+}: { guides: Guide[]; products: Product[] } & BoxProps) {
    return (
       <VStack spacing="6px" {...props}>
          {guides.map((guide: Guide) => (
             <GuideResource key={guide.guideid} guide={guide} />
+         ))}
+         {products.map((product: Product) => (
+            <ProductResource key={product.id} product={product} />
          ))}
       </VStack>
    );
