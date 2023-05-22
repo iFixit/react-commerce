@@ -65,13 +65,20 @@ export const getServerSideProps: GetServerSideProps<
       };
    }
 
-   const troubleshootingData = await client.get<TroubleshootingApiData>(
-      `Troubleshooting/${wikiname}`,
-      'troubleshooting',
-      {
-         credentials: 'include',
-      }
-   );
+   let troubleshootingData: TroubleshootingApiData;
+   try {
+      troubleshootingData = await client.get<TroubleshootingApiData>(
+         `Troubleshooting/${wikiname}`,
+         'troubleshooting',
+         {
+            credentials: 'include',
+         }
+      );
+   } catch (e) {
+      return {
+         notFound: true,
+      };
+   }
 
    const solutions: SolutionSection[] = await Promise.all(
       troubleshootingData.solutions.map(fetchDataForSolution)
