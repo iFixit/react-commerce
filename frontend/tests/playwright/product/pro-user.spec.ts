@@ -1,9 +1,27 @@
 import { interceptLogin } from '../utils';
 import { test, expect } from '../test-fixtures';
+import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Pro User Test', () => {
-   test('Pro Discount Applied to Product Price', async ({ productPage }) => {
-      await productPage.gotoProduct('repair-business-toolkit');
+   test('Pro Discount Applied to Product Price', async ({
+      productPage,
+      serverRequestInterceptor,
+      findProductQueryMock,
+   }) => {
+      const proUserProduct = findProductQueryMock;
+      serverRequestInterceptor.use(
+         createGraphQLHandler({
+            request: {
+               endpoint: 'findProduct',
+               method: 'query',
+            },
+            response: {
+               status: 200,
+               body: proUserProduct,
+            },
+         })
+      );
+      await productPage.gotoProduct('pro-user-product');
 
       // Get price from page
       const originalPrice = await productPage.getCurrentPrice();
