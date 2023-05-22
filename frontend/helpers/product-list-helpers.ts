@@ -141,12 +141,12 @@ function getDescription(
 ): string {
    const description = page === 1 ? productList.description : null;
    return (
-      (itemType && productList.deviceTitle
+      (itemType
          ? getItemOverrideAttribute(
               productList.itemOverrides,
               itemType,
               'description',
-              productList.deviceTitle
+              productList.deviceTitle ?? productList.title
            )
          : description) || ''
    );
@@ -156,24 +156,22 @@ function getMetaDescription(
    productList: ProductList,
    itemType?: string
 ): string {
-   const metaDescription =
-      itemType && productList.deviceTitle
-         ? getItemOverrideAttribute(
-              productList.itemOverrides,
-              itemType,
-              'metaDescription',
-              productList.deviceTitle
-           ) ?? productList.metaDescription
-         : productList.metaDescription;
-   const description =
-      itemType && productList.deviceTitle
-         ? getItemOverrideAttribute(
-              productList.itemOverrides,
-              itemType,
-              'description',
-              productList.deviceTitle
-           ) ?? productList.description
-         : productList.description;
+   const metaDescription = itemType
+      ? getItemOverrideAttribute(
+           productList.itemOverrides,
+           itemType,
+           'metaDescription',
+           productList.deviceTitle ?? productList.title
+        ) ?? productList.metaDescription
+      : productList.metaDescription;
+   const description = itemType
+      ? getItemOverrideAttribute(
+           productList.itemOverrides,
+           itemType,
+           'description',
+           productList.deviceTitle ?? productList.title
+        ) ?? productList.description
+      : productList.description;
    return metaDescription || description;
 }
 
@@ -185,12 +183,12 @@ function getTagline(
    // taglines don't exist if page > 1
    const tagline =
       !!productList.tagline && page === 1 ? productList.tagline : null;
-   return itemType && productList.deviceTitle
+   return itemType
       ? getItemOverrideAttribute(
            productList.itemOverrides,
            itemType,
            'tagline',
-           productList.deviceTitle
+           productList.deviceTitle ?? productList.title
         ) ?? null
       : tagline;
 }
@@ -201,7 +199,7 @@ function getTitle(productList: ProductList, itemType?: string): string {
            productList.itemOverrides,
            itemType,
            'title',
-           productList.title
+           productList.deviceTitle ?? productList.title
         )
       : null;
    return (
@@ -224,18 +222,17 @@ function getMetaTitle(productList: ProductList, itemType?: string): string {
               productList.itemOverrides,
               itemType,
               'metaTitle',
-              productList.deviceTitle
+              productList.deviceTitle ?? productList.title
            ) ?? productList.metaTitle
          : productList.metaTitle;
-   const realTitle =
-      itemType && productList.deviceTitle
-         ? getItemOverrideAttribute(
-              productList.itemOverrides,
-              itemType,
-              'title',
-              productList.deviceTitle
-           ) ?? productList.title
-         : productList.title;
+   const realTitle = itemType
+      ? getItemOverrideAttribute(
+           productList.itemOverrides,
+           itemType,
+           'title',
+           productList.deviceTitle ?? productList.title
+        ) ?? productList.title
+      : productList.title;
    const { h1, title, ...productListMinusH1 } = productList;
    return (
       metaTitle ||
