@@ -79,18 +79,19 @@ export function InstantSearchProvider({
          const pathParts = location.pathname
             .split('/')
             .filter((part) => part !== '');
-         const partsOrTools = pathParts.length >= 1 ? pathParts[0] : '';
+         const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+         const isPartsDevicePage = firstPathSegment === 'Parts' && deviceHandle;
 
          let path = '';
-         if (partsOrTools) {
-            path += `/${partsOrTools}`;
+         if (firstPathSegment) {
+            path += `/${firstPathSegment}`;
             if (deviceHandle) {
                path += `/${deviceHandle}`;
                const raw: string | string[] | undefined =
                   routeState.filter?.['facet_tags.Item Type'];
                const itemType = Array.isArray(raw) ? raw[0] : raw;
-               if (itemType?.length) {
+               if (isPartsDevicePage && itemType?.length) {
                   const encodedItemType = encodeURIComponent(
                      stylizeDeviceItemType(itemType)
                   );
@@ -100,7 +101,7 @@ export function InstantSearchProvider({
          }
 
          const filterCopy = { ...routeState.filter };
-         if (partsOrTools && deviceHandle) {
+         if (isPartsDevicePage) {
             // Item Type is the slug on device pages, not in the query.
             delete filterCopy['facet_tags.Item Type'];
          }
@@ -134,8 +135,10 @@ export function InstantSearchProvider({
          const pathParts = location.pathname
             .split('/')
             .filter((part) => part !== '');
+         const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+         const isPartsDevicePage = firstPathSegment === 'Parts' && deviceHandle;
 
          const { q, p, filter } = qsModule.parse(location.search, {
             ignoreQueryPrefix: true,
@@ -171,7 +174,7 @@ export function InstantSearchProvider({
             }
          });
 
-         if (deviceHandle && itemType) {
+         if (isPartsDevicePage && itemType) {
             filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
                decodeURIComponent(itemType)
             ).trim();
