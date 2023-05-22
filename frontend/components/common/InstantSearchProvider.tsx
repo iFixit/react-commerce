@@ -10,7 +10,7 @@ import {
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
-import { FacetWidgetType } from '@models/product-list';
+import { FacetWidgetType, ProductListType } from '@models/product-list';
 import { useFacets } from '@templates/product-list/sections/FilterableProductsSection/facets/useFacets';
 import algoliasearch from 'algoliasearch/lite';
 import singletonRouter from 'next/router';
@@ -29,6 +29,7 @@ type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 export type AlgoliaProps = {
    url: string;
    indexName: string;
+   productListType: ProductListType;
    serverState?: InstantSearchServerState;
    apiKey: string;
 };
@@ -45,6 +46,7 @@ export function InstantSearchProvider({
    children,
    url,
    indexName,
+   productListType,
    serverState,
    apiKey,
 }: InstantSearchProviderProps) {
@@ -81,27 +83,25 @@ export function InstantSearchProvider({
             .filter((part) => part !== '');
          const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-         const isPartsDevicePage = firstPathSegment === 'Parts' && deviceHandle;
+         const isDevicePartsPage =
+            productListType === ProductListType.DeviceParts;
 
-         let path = '';
-         if (firstPathSegment) {
-            path += `/${firstPathSegment}`;
-            if (deviceHandle) {
-               path += `/${deviceHandle}`;
-               const raw: string | string[] | undefined =
-                  routeState.filter?.['facet_tags.Item Type'];
-               const itemType = Array.isArray(raw) ? raw[0] : raw;
-               if (isPartsDevicePage && itemType?.length) {
-                  const encodedItemType = encodeURIComponent(
-                     stylizeDeviceItemType(itemType)
-                  );
-                  path += `/${encodedItemType}`;
-               }
+         let path = `/${firstPathSegment}`;
+         if (deviceHandle) {
+            path += `/${deviceHandle}`;
+            const raw: string | string[] | undefined =
+               routeState.filter?.['facet_tags.Item Type'];
+            const itemType = Array.isArray(raw) ? raw[0] : raw;
+            if (isDevicePartsPage && itemType?.length) {
+               const encodedItemType = encodeURIComponent(
+                  stylizeDeviceItemType(itemType)
+               );
+               path += `/${encodedItemType}`;
             }
          }
 
          const filterCopy = { ...routeState.filter };
-         if (isPartsDevicePage) {
+         if (isDevicePartsPage) {
             // Item Type is the slug on device pages, not in the query.
             delete filterCopy['facet_tags.Item Type'];
          }
@@ -135,10 +135,9 @@ export function InstantSearchProvider({
          const pathParts = location.pathname
             .split('/')
             .filter((part) => part !== '');
-         const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
-         const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const itemType = pathParts.length >= 3 ? pathParts[2] : '';
-         const isPartsDevicePage = firstPathSegment === 'Parts' && deviceHandle;
+         const isDevicePartsPage =
+            productListType === ProductListType.DeviceParts;
 
          const { q, p, filter } = qsModule.parse(location.search, {
             ignoreQueryPrefix: true,
@@ -174,7 +173,7 @@ export function InstantSearchProvider({
             }
          });
 
-         if (isPartsDevicePage && itemType) {
+         if (isDevicePartsPage && itemType) {
             filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
                decodeURIComponent(itemType)
             ).trim();
