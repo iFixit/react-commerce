@@ -3,7 +3,13 @@ import { forwardRef, Heading, HeadingProps, Link } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faLink } from '@fortawesome/pro-solid-svg-icons';
 
-export const HeadingSelfLink = forwardRef<HeadingProps, 'h2'>(
+export interface HeadingSelfLinkProps {
+   children: string;
+   props: HeadingProps;
+   selfLinked: boolean;
+}
+
+export const HeadingSelfLink = forwardRef<HeadingSelfLinkProps, 'h2'>(
    ({ children, ...props }, ref) => {
       const solutionHeading = children as string;
       const solutionHeadingId = solutionHeading
