@@ -33,8 +33,9 @@ Here's one way you can get all the right versions installed and setup:
 2. Install vercel cli: `pnpm install -g vercel`
 3. `vercel login`
 4. `cd path/to/this/repo && vercel link --project=react-commerce`
-5. `vercel env pull`
-6. `ln -s ../.env frontend/.env.local`
+5. Choose the `iFixit` scope when it asks which scope to use
+6. `vercel env pull`
+7. `ln -s ../.env frontend/.env.local`
 
 #### Setup next.js environment file (without vercel account)
 
