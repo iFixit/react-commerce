@@ -13,7 +13,7 @@ interface SingleBannerProps {
 
 export function SingleBanner({ id, banner }: SingleBannerProps) {
    return (
-      <Box as="section" id={id} position="relative" w="full" pt="36" pb="16">
+      <Box as="section" id={id} position="relative" w="full" py="144px">
          <Box
             position="absolute"
             bgGradient="linear(to-r, blackAlpha.600 50%, blackAlpha.400)"
@@ -41,7 +41,7 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
             </Box>
          )}
          <Wrapper>
-            <Box textAlign="center">
+            <Box textAlign="center" position="relative">
                {banner.label && (
                   <Text color="white" mb="3" fontSize="sm">
                      {banner.label}
@@ -61,14 +61,15 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
                   />
                )}
                {banner.callToAction && (
-                  <SmartLink
-                     as={LinkButton}
-                     href={banner.callToAction.url}
-                     colorScheme="brand"
-                     mt="10"
-                  >
-                     {banner.callToAction.title}
-                  </SmartLink>
+                  <Box position="absolute" w="full" bottom="-20">
+                     <SmartLink
+                        as={LinkButton}
+                        href={banner.callToAction.url}
+                        colorScheme="brand"
+                     >
+                        {banner.callToAction.title}
+                     </SmartLink>
+                  </Box>
                )}
             </Box>
          </Wrapper>
