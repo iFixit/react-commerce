@@ -15,6 +15,15 @@ import Product from '@pages/api/nextjs/cache/product';
 import type { Product as ProductType } from '@models/product';
 import { hasDisableCacheGets } from '../../helpers/next-helpers';
 
+function rethrowUnless404(e: any) {
+   // If e is from IFixitAPIClient and fetch() didn't error,
+   // e.message is the response's statusText
+   if (typeof e === 'object' && (e as Error)?.message === 'Not Found') {
+      return;
+   }
+   throw e;
+}
+
 export const getServerSideProps: GetServerSideProps<
    TroubleshootingProps
 > = async (context) => {
@@ -40,7 +49,10 @@ export const getServerSideProps: GetServerSideProps<
          solution.guides.map((guideid: number) => {
             return (
                client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
-            ).catch(() => null);
+            ).catch((error) => {
+               rethrowUnless404(error);
+               return null;
+            });
          })
       );
       const products: ('' | null | ProductType)[] = await Promise.all(
@@ -54,7 +66,10 @@ export const getServerSideProps: GetServerSideProps<
                      ifixitOrigin,
                   },
                   { forceMiss: hasDisableCacheGets(context) }
-               ).catch(() => null)
+               ).catch((error) => {
+                  rethrowUnless404(error);
+                  return null;
+               })
             );
          })
       );
@@ -77,13 +92,10 @@ export const getServerSideProps: GetServerSideProps<
          }
       );
    } catch (e) {
-      // If fetch() doesn't error, e.message is the response's statusText
-      if (typeof e === 'object' && (e as Error)?.message === 'Not Found') {
-         return {
-            notFound: true,
-         };
-      }
-      throw e;
+      rethrowUnless404(e);
+      return {
+         notFound: true,
+      };
    }
 
    const solutions: SolutionSection[] = await Promise.all(
