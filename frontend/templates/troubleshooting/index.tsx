@@ -37,7 +37,7 @@ import {
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
-import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
+import { HeadingSelfLink } from './components/HeadingSelfLink';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -82,6 +82,7 @@ const Wiki: NextPageWithLayout<{
                fontSize="3xl"
                fontWeight="500"
                marginTop={6}
+               selfLinked
             >
                {wikiData.title}
             </HeadingSelfLink>
@@ -96,7 +97,12 @@ const Wiki: NextPageWithLayout<{
             <Spacer borderBottom="1px" borderColor="gray.300" />
             {wikiData.solutions.length > 0 && (
                <>
-                  <HeadingSelfLink as="h2" fontSize="20px" fontWeight="600">
+                  <HeadingSelfLink
+                     as="h2"
+                     fontSize="20px"
+                     fontWeight="600"
+                     selfLinked
+                  >
                      {'Causes'}
                   </HeadingSelfLink>
                   <TableOfContents solutions={wikiData.solutions} />
@@ -128,7 +134,7 @@ function TableOfContents({ solutions }: { solutions: Section[] }) {
          {solutions.map((solution, index) => (
             <Link
                key={solution.heading}
-               href={`#solution-${index + 1}`}
+               href={`#${solution.heading.toLowerCase().replace(/\s/g, '-')}`}
                fontWeight="medium"
                display="flex"
             >

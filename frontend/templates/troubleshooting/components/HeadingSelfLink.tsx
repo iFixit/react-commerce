@@ -5,20 +5,22 @@ import { faLink } from '@fortawesome/pro-solid-svg-icons';
 
 export const HeadingSelfLink = forwardRef<HeadingProps, 'h2'>(
    ({ children, ...props }, ref) => {
-      const heading = children as string;
-      const id = heading.toLowerCase().replace(/ /g, '-');
+      const solutionHeading = children as string;
+      const solutionHeadingId = solutionHeading
+         .toLowerCase()
+         .replace(/ /g, '-');
 
       return (
          <Heading
-            id={id}
             display="flex"
             sx={{ _hover: { '& .heading_link-icon': { opacity: '1' } } }}
-            {...ref}
+            {...(props.selfLinked === true && { id: solutionHeadingId })}
             {...props}
+            {...ref}
          >
             {children}
             <Link
-               href={`#${id}`}
+               href={`#${solutionHeadingId}`}
                display="inline-flex"
                placeItems="center start"
                paddingLeft={2}
