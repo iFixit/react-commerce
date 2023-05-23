@@ -77,9 +77,13 @@ export const getServerSideProps: GetServerSideProps<
          }
       );
    } catch (e) {
-      return {
-         notFound: true,
-      };
+      // If fetch() doesn't error, e.message is the response's statusText
+      if (typeof e === 'object' && (e as Error)?.message === 'Not Found') {
+         return {
+            notFound: true,
+         };
+      }
+      throw e;
    }
 
    const solutions: SolutionSection[] = await Promise.all(
