@@ -526,7 +526,12 @@ function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
          {intro.heading && (
-            <HeadingSelfLink marginBottom={6} fontSize="2xl" fontWeight="600">
+            <HeadingSelfLink
+               marginBottom={6}
+               fontSize="2xl"
+               fontWeight="600"
+               selfLinked
+            >
                {intro.heading}
             </HeadingSelfLink>
          )}
@@ -538,7 +543,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
-         <HeadingSelfLink marginBottom={6}>
+         <HeadingSelfLink marginBottom={6} selfLinked>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
