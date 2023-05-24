@@ -12,15 +12,6 @@ type Properties<T> = Required<{
    [K in keyof T]: z.ZodType<T[K], any, T[K]>;
 }>;
 
-type definedNonNullAny = {};
-
-export const isDefinedNonNullAny = (v: any): v is definedNonNullAny =>
-   v !== undefined && v !== null;
-
-export const definedNonNullAnySchema = z
-   .any()
-   .refine((v) => isDefinedNonNullAny(v));
-
 export function BooleanFilterInputSchema(): z.ZodObject<
    Properties<BooleanFilterInput>
 > {
@@ -53,27 +44,27 @@ export function DateTimeFilterInputSchema(): z.ZodObject<
    Properties<DateTimeFilterInput>
 > {
    return z.object<Properties<DateTimeFilterInput>>({
-      and: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      between: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      contains: definedNonNullAnySchema.nullish(),
-      containsi: definedNonNullAnySchema.nullish(),
-      endsWith: definedNonNullAnySchema.nullish(),
-      eq: definedNonNullAnySchema.nullish(),
-      eqi: definedNonNullAnySchema.nullish(),
-      gt: definedNonNullAnySchema.nullish(),
-      gte: definedNonNullAnySchema.nullish(),
-      in: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      lt: definedNonNullAnySchema.nullish(),
-      lte: definedNonNullAnySchema.nullish(),
-      ne: definedNonNullAnySchema.nullish(),
+      and: z.array(z.date().nullable()).nullish(),
+      between: z.array(z.date().nullable()).nullish(),
+      contains: z.date().nullish(),
+      containsi: z.date().nullish(),
+      endsWith: z.date().nullish(),
+      eq: z.date().nullish(),
+      eqi: z.date().nullish(),
+      gt: z.date().nullish(),
+      gte: z.date().nullish(),
+      in: z.array(z.date().nullable()).nullish(),
+      lt: z.date().nullish(),
+      lte: z.date().nullish(),
+      ne: z.date().nullish(),
       not: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      notContains: definedNonNullAnySchema.nullish(),
-      notContainsi: definedNonNullAnySchema.nullish(),
-      notIn: z.array(definedNonNullAnySchema.nullable()).nullish(),
+      notContains: z.date().nullish(),
+      notContainsi: z.date().nullish(),
+      notIn: z.array(z.date().nullable()).nullish(),
       notNull: z.boolean().nullish(),
       null: z.boolean().nullish(),
-      or: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      startsWith: definedNonNullAnySchema.nullish(),
+      or: z.array(z.date().nullable()).nullish(),
+      startsWith: z.date().nullish(),
    });
 }
 
