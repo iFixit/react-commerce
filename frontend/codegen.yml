@@ -13,16 +13,6 @@ generates:
       config:
          documentMode: 'string'
          dedupeFragments: true
-   lib/strapi-sdk/generated/validation.ts:
-      schema: http://localhost:1337/graphql
-      plugins:
-         - typescript-validation-schema
-      hooks:
-         afterOneFileWrite:
-            - prettier --write
-      config:
-         importFrom: ./sdk
-         schema: zod
    lib/shopify-storefront-sdk/generated/sdk.ts:
       schema: lib/shopify-storefront-sdk/schema.graphql
       documents: 'lib/shopify-storefront-sdk/operations/**/*.graphql'
