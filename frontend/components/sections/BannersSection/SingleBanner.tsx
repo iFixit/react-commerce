@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Center, Text } from '@chakra-ui/react';
 import { LinkButton } from '@components/ui/LinkButton';
 import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
@@ -13,7 +13,7 @@ interface SingleBannerProps {
 
 export function SingleBanner({ id, banner }: SingleBannerProps) {
    return (
-      <Box as="section" id={id} position="relative" w="full" py="144px">
+      <Center as="section" id={id} position="relative" w="full" minH="390px">
          <Box
             position="absolute"
             bgGradient="linear(to-r, blackAlpha.600 50%, blackAlpha.400)"
@@ -73,6 +73,6 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
                )}
             </Box>
          </Wrapper>
-      </Box>
+      </Center>
    );
 }
