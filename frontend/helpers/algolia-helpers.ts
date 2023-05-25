@@ -1,31 +1,51 @@
 import { capitalize } from '@helpers/application-helpers';
 import { AlgoliaSearchOptions } from 'algoliasearch';
 import { createNodeHttpRequester } from '@algolia/requester-node-http';
-import { Requester } from '@algolia/requester-common';
-import { withTiming } from '@ifixit/helpers';
+import { Requester, Request, Response } from '@algolia/requester-common';
+import { timeAsync } from '@ifixit/helpers';
 
 const FACETS_NAME_OVERRIDES: { [rawName: string]: string } = {
    price_range: 'Price Range',
 };
 
-const requesterOptions =
-   typeof window === 'undefined'
-      ? { requester: withRequestLogging(createNodeHttpRequester()) }
-      : undefined;
+const requester =
+   typeof window === 'undefined' ? createNodeHttpRequester() : undefined;
 
-export const CLIENT_OPTIONS: AlgoliaSearchOptions = {
-   // Default timeouts: connect = 2s, read = 5s, write = 30s
-   timeouts: {
-      connect: 5,
-      read: 5,
-      write: 30,
-   },
-   ...requesterOptions,
-};
+/**
+ * @param logContextName: log the timing of each algolia request under this
+ * name (or don't log if it's null)
+ */
+export function getClientOptions(
+   logContextName: string | null = 'algolia.request'
+): AlgoliaSearchOptions {
+   const requesterOptions =
+      requester && logContextName
+         ? { requester: withRequestLogging(logContextName, requester) }
+         : undefined;
 
-function withRequestLogging(requester: Requester): Requester {
    return {
-      send: withTiming('algolia.request', requester.send),
+      // Default timeouts: connect = 2s, read = 5s, write = 30s
+      timeouts: {
+         connect: 5,
+         read: 5,
+         write: 30,
+      },
+      ...requesterOptions,
+   };
+}
+
+function withRequestLogging(
+   logContextName: string,
+   requester: Requester
+): Requester {
+   let count = 0;
+   return {
+      send(request: Request): Promise<Response> {
+         count++;
+         const eventSuffix = count > 1 ? count : '';
+         const eventName = logContextName + eventSuffix;
+         return timeAsync(eventName, () => requester.send(request));
+      },
    };
 }
 
