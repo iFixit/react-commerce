@@ -30,38 +30,42 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
                />
             </Box>
          )}
-         <Wrapper>
-            <Box textAlign="center" position="relative">
-               {banner.label && (
-                  <Text color="white" mb="3" fontSize="sm">
-                     {banner.label}
-                  </Text>
-               )}
-               {banner.title && (
-                  <SectionHeading color="white" mb="2.5">
-                     {banner.title}
-                  </SectionHeading>
-               )}
-               {banner.description && (
-                  <SectionDescription
-                     richText={banner.description}
-                     color="white"
-                     maxW="750px"
-                     mx="auto"
-                  />
-               )}
-               {banner.callToAction && (
-                  <Box position="absolute" w="full" bottom="-20">
-                     <SmartLink
-                        as={LinkButton}
-                        href={banner.callToAction.url}
-                        colorScheme="brand"
-                     >
-                        {banner.callToAction.title}
-                     </SmartLink>
-                  </Box>
-               )}
-            </Box>
+         <Wrapper position="relative" textAlign="center">
+            {banner.label && (
+               <Text color="white" mb="3" fontSize="sm">
+                  {banner.label}
+               </Text>
+            )}
+            {banner.title && (
+               <SectionHeading color="white" mb="2.5">
+                  {banner.title}
+               </SectionHeading>
+            )}
+            {banner.description && (
+               <SectionDescription
+                  richText={banner.description}
+                  color="white"
+                  maxW="750px"
+                  mx="auto"
+               />
+            )}
+            {banner.callToAction && (
+               <Box
+                  position="absolute"
+                  w="full"
+                  bottom="-20"
+                  left="50%"
+                  transform="translateX(-50%)"
+               >
+                  <SmartLink
+                     as={LinkButton}
+                     href={banner.callToAction.url}
+                     colorScheme="brand"
+                  >
+                     {banner.callToAction.title}
+                  </SmartLink>
+               </Box>
+            )}
          </Wrapper>
       </Center>
    );
