@@ -1,5 +1,9 @@
 overwrite: true
 generates:
+   lib/strapi-sdk/generated/schema.graphql:
+      schema: http://localhost:1337/graphql
+      plugins:
+         - schema-ast
    lib/strapi-sdk/generated/sdk.ts:
       schema: http://localhost:1337/graphql
       documents: 'lib/strapi-sdk/operations/**/*.graphql'
@@ -14,7 +18,7 @@ generates:
          documentMode: 'string'
          dedupeFragments: true
    lib/strapi-sdk/generated/validation.ts:
-      schema: http://localhost:1337/graphql
+      schema: lib/strapi-sdk/generated/schema.graphql
       plugins:
          - typescript-validation-schema
       hooks:
