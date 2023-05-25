@@ -8,6 +8,7 @@ import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 import { applySentryFetchMiddleware } from '@ifixit/sentry';
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 // Improve FontAwesome integration with Next.js https://fontawesome.com/v5/docs/web/use-with/react#next-js
 config.autoAddCss = false;
 applySentryFetchMiddleware();
@@ -48,6 +49,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
                {getLayout(<Component {...pageProps} />, pageProps)}
             </AppProviders>
          </ServerSidePropsProvider>
+         <Analytics />
       </>
    );
 }
