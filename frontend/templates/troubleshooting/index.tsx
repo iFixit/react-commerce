@@ -12,15 +12,25 @@ import {
    Flex,
    FlexProps,
    IconButton,
+   Image,
    Link,
    LinkProps,
    Menu,
    MenuButton,
    MenuItem,
    MenuList,
-   chakra,
+   Modal,
+   ModalOverlay,
+   ModalContent,
+   ModalHeader,
+   ModalBody,
+   ModalCloseButton,
    Spacer,
+   useDisclosure,
+   VisuallyHidden,
    VStack,
+   chakra,
+   HStack,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import {
@@ -44,7 +54,15 @@ const Wiki: NextPageWithLayout<{
    layoutProps: DefaultLayoutProps;
 }> = ({ wikiData }) => {
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
-   const { metaDescription, title, metaKeywords, canonicalUrl } = wikiData;
+   const {
+      metaDescription,
+      title,
+      metaKeywords,
+      canonicalUrl,
+      mainImageUrl,
+      mainImageUrlFull,
+   } = wikiData;
+   const { isOpen, onOpen, onClose } = useDisclosure();
    const metadata = (
       <>
          <meta name="description" content={metaDescription} />
@@ -65,7 +83,7 @@ const Wiki: NextPageWithLayout<{
             breadcrumbs={wikiData.breadcrumbs}
          />
          <Flex
-            padding={{ base: '0px 16px 32px', sm: '0px 32px 32px' }}
+            padding={{ base: '16px 16px 32px', sm: '32px 32px 32px' }}
             gap="16px"
             maxW="1280px"
             w="100%"
@@ -77,19 +95,54 @@ const Wiki: NextPageWithLayout<{
                {metadata}
                <HreflangUrls urls={wikiData.hreflangUrls} />
             </Head>
-            <HeadingSelfLink
-               as="h1"
-               fontSize="3xl"
-               fontWeight="500"
-               marginTop={6}
-            >
-               {wikiData.title}
-            </HeadingSelfLink>
-            <AuthorInformation
-               lastUpdatedDate={lastUpdatedDate}
-               authors={wikiData.authors}
-               historyUrl={wikiData.historyUrl}
-            />
+            <HStack spacing={0}>
+               <Image
+                  src={mainImageUrl}
+                  onClick={onOpen}
+                  cursor="pointer"
+                  alt={title}
+                  maxWidth="120px"
+                  minWidth="120px"
+                  minHeight="90.5px"
+                  objectFit="contain"
+                  borderRadius="4px"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  marginRight="12px"
+                  display={{ base: 'none', sm: 'block' }}
+               />
+               <Modal isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay />
+                  <ModalContent
+                     width="auto"
+                     maxWidth="calc(100% - 64px)"
+                     background="none"
+                  >
+                     <VisuallyHidden>
+                        <ModalHeader>{title}</ModalHeader>
+                     </VisuallyHidden>
+                     <ModalCloseButton />
+                     <VisuallyHidden></VisuallyHidden>
+                     <ModalBody padding={0}>
+                        <Image
+                           src={mainImageUrlFull}
+                           width="100%"
+                           height="auto"
+                        />
+                     </ModalBody>
+                  </ModalContent>
+               </Modal>
+               <VStack alignItems="flex-start">
+                  <HeadingSelfLink as="h1" fontSize="3xl" fontWeight="500">
+                     {wikiData.title}
+                  </HeadingSelfLink>
+                  <AuthorInformation
+                     lastUpdatedDate={lastUpdatedDate}
+                     authors={wikiData.authors}
+                     historyUrl={wikiData.historyUrl}
+                  />
+               </VStack>
+            </HStack>
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
@@ -420,7 +473,7 @@ function AuthorInformation({
    const primaryAuthor: Author | undefined = authors[0];
    const otherAuthors = authors.slice(1);
    return (
-      <Flex paddingTop="8px" paddingBottom="16px" align="center" gap="6px">
+      <Flex paddingTop="8px" align="center" gap="6px">
          {primaryAuthor && <AuthorAvatar author={primaryAuthor} />}
          <Flex justify="center" direction="column">
             {primaryAuthor && (
