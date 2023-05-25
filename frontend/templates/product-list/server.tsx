@@ -246,13 +246,14 @@ async function getSafeServerState({
 }: GetSafeServerStateProps) {
    const tryGetServerState = (productList: ProductList) => {
       const appMarkup = (
-         <AppProviders {...appProps}>
+         <AppProviders {...appProps} minimalMode={true}>
             <ProductListView productList={productList} />
          </AppProviders>
       );
-      return timeAsync('getServerState', () =>
-         getServerState(appMarkup, { renderToString })
-      );
+      return timeAsync('getServerState', () => {
+         console.log('Before getServerState');
+         return getServerState(appMarkup, { renderToString });
+      });
    };
    try {
       return { serverState: await tryGetServerState(productList) };

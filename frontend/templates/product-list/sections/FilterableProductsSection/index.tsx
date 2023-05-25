@@ -72,6 +72,15 @@ export function FilterableProductsSection({ productList }: SectionProps) {
 
    const isEmpty = hits.length === 0;
 
+   const { minimalMode } = useAppContext();
+   if (minimalMode) {
+      return (
+         <SearchQueryProvider>
+            <CurrentRefinements />
+            <FacetsAccordion productList={productList} />
+         </SearchQueryProvider>
+      );
+   }
    return (
       <Flex
          ref={productsContainerScrollRef}
