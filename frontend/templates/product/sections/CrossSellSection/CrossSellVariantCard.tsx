@@ -12,6 +12,7 @@ import { ProductRating } from '@components/common';
 import { Card } from '@components/ui';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
+import { productPath } from '@helpers/path-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductVariantPrice, ResponsiveImage } from '@ifixit/ui';
 import type { Image } from '@models/components/image';
@@ -46,7 +47,7 @@ export function CrossSellVariantCard({
    onChange,
 }: CrossSellVariantCardProps) {
    return (
-      <NextLink href={`/products/${handle}`} passHref legacyBehavior>
+      <NextLink href={productPath(handle)} passHref legacyBehavior>
          <Card
             data-testid="cross-sell-item"
             as="a"
