@@ -19,7 +19,6 @@ import type { Image } from '@models/components/image';
 import type { Money } from '@models/components/money';
 import type { ProPriceTiers } from '@models/components/pro-price-tiers';
 import type { ProductReviews } from '@models/components/product-reviews';
-import NextLink from 'next/link';
 
 interface CrossSellVariantCardProps {
    handle: string;
@@ -47,153 +46,152 @@ export function CrossSellVariantCard({
    onChange,
 }: CrossSellVariantCardProps) {
    return (
-      <NextLink href={productPath(handle)} passHref legacyBehavior>
-         <Card
-            data-testid="cross-sell-item"
-            as="a"
-            overflow="hidden"
-            flexBasis={{
-               md: 0,
+      <Card
+         data-testid="cross-sell-item"
+         as="a"
+         href={productPath(handle)}
+         overflow="hidden"
+         flexBasis={{
+            md: 0,
+         }}
+         flexGrow={1}
+      >
+         <Flex
+            direction={{
+               base: 'row',
+               md: 'column',
             }}
-            flexGrow={1}
+            bg="white"
+            position="relative"
+            align={{
+               base: 'flex-start',
+               md: 'stretch',
+            }}
+            p={{
+               base: 3,
+               md: 4,
+            }}
+            h="full"
+            borderWidth="2px"
+            borderColor={isSelected ? 'brand.500' : 'transparent'}
+            borderRadius="lg"
+            transition="all 300ms"
          >
+            <CardImage src={image?.url ?? null} alt={title} />
             <Flex
-               direction={{
-                  base: 'row',
-                  md: 'column',
-               }}
-               bg="white"
-               position="relative"
-               align={{
-                  base: 'flex-start',
-                  md: 'stretch',
-               }}
-               p={{
-                  base: 3,
-                  md: 4,
-               }}
+               direction="column"
+               w="full"
                h="full"
-               borderWidth="2px"
-               borderColor={isSelected ? 'brand.500' : 'transparent'}
-               borderRadius="lg"
-               transition="all 300ms"
+               justify="space-between"
+               flexGrow={1}
             >
-               <CardImage src={image?.url ?? null} alt={title} />
-               <Flex
-                  direction="column"
-                  w="full"
-                  h="full"
-                  justify="space-between"
-                  flexGrow={1}
-               >
-                  <Flex w="full">
-                     <Flex
-                        w="full"
-                        direction={{
-                           base: 'column',
-                        }}
-                        ml={{
-                           base: 3,
-                           md: 0,
-                        }}
-                     >
-                        {isCurrentItem && (
-                           <HStack
-                              position={{
-                                 base: 'relative',
-                                 md: 'absolute',
-                              }}
-                              top={{
-                                 base: 'auto',
-                                 md: 4,
-                              }}
-                              right={{
-                                 base: 'auto',
-                                 md: 4,
-                              }}
-                              spacing="1"
+               <Flex w="full">
+                  <Flex
+                     w="full"
+                     direction={{
+                        base: 'column',
+                     }}
+                     ml={{
+                        base: 3,
+                        md: 0,
+                     }}
+                  >
+                     {isCurrentItem && (
+                        <HStack
+                           position={{
+                              base: 'relative',
+                              md: 'absolute',
+                           }}
+                           top={{
+                              base: 'auto',
+                              md: 4,
+                           }}
+                           right={{
+                              base: 'auto',
+                              md: 4,
+                           }}
+                           spacing="1"
+                           mb="3"
+                        >
+                           <Badge colorScheme="brand">Current item</Badge>
+                        </HStack>
+                     )}
+                     <Flex direction="column" h="full" align="flex-start">
+                        <Text
+                           data-testid="cross-sell-item-title"
+                           fontSize="md"
+                           mb="2"
+                           _groupHover={{ color: 'brand.500' }}
+                        >
+                           {title}
+                        </Text>
+                        {reviews && (
+                           <ProductRating
                               mb="3"
-                           >
-                              <Badge colorScheme="brand">Current item</Badge>
-                           </HStack>
+                              rating={reviews.rating}
+                              count={reviews.count}
+                           />
                         )}
-                        <Flex direction="column" h="full" align="flex-start">
-                           <Text
-                              data-testid="cross-sell-item-title"
-                              fontSize="md"
-                              mb="2"
-                              _groupHover={{ color: 'brand.500' }}
-                           >
-                              {title}
-                           </Text>
-                           {reviews && (
-                              <ProductRating
-                                 mb="3"
-                                 rating={reviews.rating}
-                                 count={reviews.count}
-                              />
-                           )}
-                        </Flex>
                      </Flex>
-                     <Box
-                        position={{
-                           base: 'relative',
-                           md: 'absolute',
+                  </Flex>
+                  <Box
+                     position={{
+                        base: 'relative',
+                        md: 'absolute',
+                     }}
+                     pl={{
+                        base: 3,
+                        md: 0,
+                     }}
+                     top={{
+                        base: 0,
+                        md: 4,
+                     }}
+                  >
+                     <Center
+                        onClick={(event) => {
+                           onChange(!isSelected);
+                           event.preventDefault();
+                           event.stopPropagation();
                         }}
-                        pl={{
-                           base: 3,
-                           md: 0,
-                        }}
-                        top={{
-                           base: 0,
-                           md: 4,
-                        }}
-                     >
-                        <Center
-                           onClick={(event) => {
+                        onKeyDown={(event) => {
+                           if ('Enter' === event.code) {
                               onChange(!isSelected);
                               event.preventDefault();
                               event.stopPropagation();
-                           }}
-                           onKeyDown={(event) => {
-                              if ('Enter' === event.code) {
-                                 onChange(!isSelected);
-                                 event.preventDefault();
-                                 event.stopPropagation();
-                              }
-                           }}
-                           data-testid="cross-sell-item-select"
-                           tabIndex={0}
-                           outline="none"
-                           _focus={{
-                              boxShadow: 'outline',
-                           }}
-                           cursor="pointer"
-                        >
-                           <FaIcon
-                              icon={faCircleCheck}
-                              color={isSelected ? 'brand.500' : 'gray.300'}
-                              h="6"
-                              transition="color 300ms"
-                              _hover={
-                                 isSelected ? { color: 'brand.700' } : undefined
-                              }
-                           />
-                        </Center>
-                     </Box>
-                  </Flex>
-                  <ProductVariantPrice
-                     price={price}
-                     compareAtPrice={compareAtPrice}
-                     proPricesByTier={proPricesByTier}
-                     direction="column-reverse"
-                     alignSelf="flex-end"
-                     size="medium"
-                  />
+                           }
+                        }}
+                        data-testid="cross-sell-item-select"
+                        tabIndex={0}
+                        outline="none"
+                        _focus={{
+                           boxShadow: 'outline',
+                        }}
+                        cursor="pointer"
+                     >
+                        <FaIcon
+                           icon={faCircleCheck}
+                           color={isSelected ? 'brand.500' : 'gray.300'}
+                           h="6"
+                           transition="color 300ms"
+                           _hover={
+                              isSelected ? { color: 'brand.700' } : undefined
+                           }
+                        />
+                     </Center>
+                  </Box>
                </Flex>
+               <ProductVariantPrice
+                  price={price}
+                  compareAtPrice={compareAtPrice}
+                  proPricesByTier={proPricesByTier}
+                  direction="column-reverse"
+                  alignSelf="flex-end"
+                  size="medium"
+               />
             </Flex>
-         </Card>
-      </NextLink>
+         </Flex>
+      </Card>
    );
 }
 
