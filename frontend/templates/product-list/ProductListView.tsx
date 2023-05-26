@@ -8,7 +8,6 @@ import { ProductList, ProductListSectionType } from '@models/product-list';
 import { Configure, useMenu } from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
-import { useAppContext } from '@ifixit/app';
 import {
    BannerSection,
    FilterableProductsSection,
@@ -23,10 +22,13 @@ import { usePagination } from 'react-instantsearch-hooks-web';
 
 export interface ProductListViewProps {
    productList: ProductList;
+   algoliaSSR?: boolean;
 }
 
-export function ProductListView({ productList }: ProductListViewProps) {
-   const { minimalMode } = useAppContext();
+export function ProductListView({
+   productList,
+   algoliaSSR,
+}: ProductListViewProps) {
    // This temporary hack allows to correctly populate the itemType facet during SSR
    // see: https://github.com/algolia/instantsearch/issues/5571
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
@@ -41,7 +43,7 @@ export function ProductListView({ productList }: ProductListViewProps) {
       itemType
    );
 
-   if (minimalMode) {
+   if (algoliaSSR) {
       return (
          <>
             <Configure
@@ -49,7 +51,10 @@ export function ProductListView({ productList }: ProductListViewProps) {
                hitsPerPage={24}
                facetingAfterDistinct={true}
             />
-            <FilterableProductsSection productList={productListWithOverrides} />
+            <FilterableProductsSection
+               productList={productListWithOverrides}
+               algoliaSSR={algoliaSSR}
+            />
          </>
       );
    }

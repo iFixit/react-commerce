@@ -65,7 +65,6 @@ export function withSyncTiming<ARGS extends Array<any>, RETURN>(
    syncFunction: (...args: ARGS) => RETURN
 ) {
    return (...args: ARGS) => {
-      console.log('Starting: ' + name);
       const done = time(name);
       const ret = syncFunction(...args);
       done();

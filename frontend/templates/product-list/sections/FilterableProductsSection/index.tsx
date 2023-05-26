@@ -52,9 +52,13 @@ const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
 type SectionProps = {
    productList: TProductList;
+   algoliaSSR?: boolean;
 };
 
-export function FilterableProductsSection({ productList }: SectionProps) {
+export function FilterableProductsSection({
+   productList,
+   algoliaSSR,
+}: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
    const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
 
@@ -72,8 +76,7 @@ export function FilterableProductsSection({ productList }: SectionProps) {
 
    const isEmpty = hits.length === 0;
 
-   const { minimalMode } = useAppContext();
-   if (minimalMode) {
+   if (algoliaSSR) {
       return (
          <SearchQueryProvider>
             <CurrentRefinements />

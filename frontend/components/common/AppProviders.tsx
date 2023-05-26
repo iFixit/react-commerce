@@ -52,7 +52,6 @@ export type AppProvidersProps = {
    algolia?: AlgoliaProps;
    ifixitOrigin?: string;
    adminMessage?: string;
-   minimalMode?: boolean;
 };
 
 export function AppProviders({
@@ -60,7 +59,6 @@ export function AppProviders({
    algolia,
    ifixitOrigin,
    adminMessage,
-   minimalMode,
 }: React.PropsWithChildren<AppProvidersProps>) {
    const markup = (
       <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
@@ -70,7 +68,6 @@ export function AppProviders({
       <AppProvider
          ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}
          adminMessage={adminMessage}
-         minimalMode={minimalMode || false}
       >
          <CartDrawerProvider>
             <QueryClientProvider client={queryClient}>
