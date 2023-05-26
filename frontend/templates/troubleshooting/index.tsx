@@ -144,6 +144,7 @@ const Wiki: NextPageWithLayout<{
                   />
                </VStack>
             </HStack>
+            <Spacer borderBottom="1px" borderColor="gray.300" marginTop="2px" />
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
