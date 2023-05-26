@@ -1,0 +1,12 @@
+{
+   "Hello!": "¡Hola!",
+   "welcome {{ userName }}": "Bienvenido {{ userName }}",
+   "There are {{ count }} items_one": "There is {{ count }} item",
+   "There are {{ count }} items_other": "There are {{ count }} items",
+   "super <strong>strong</strong>": "mucho <strong>strong</strong>",
+   "linkTestTag": "<1>Link's</1> Awakening",
+   "linkTest": "<5>Link's</5> Awakening",
+   "nameTitle": "This is your name",
+   "messagesCount_one": "Hola <1>{{userName}}</1>, you have {{count}} unread message. <5>Go to message</5>.",
+   "messagesCount_other": "Hola <1>{{userName}}</1>, you have {{count}} unread messages.  <5>Go to messages</5>."
+}
