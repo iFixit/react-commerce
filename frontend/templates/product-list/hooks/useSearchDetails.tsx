@@ -14,7 +14,7 @@ export const SearchDetailsProvider = ({
    children,
 }: React.PropsWithChildren) => {
    const { query: initialQuery } = useSearchBox();
-   const hitsProps = useHits<ProductSearchHit>();
+   const hitsProps = useHits<ProductSearchHit>({ escapeHTML: false });
    const [searchQuery, setSearchQuery] = React.useState(initialQuery);
    return (
       <SearchDetailsContext.Provider
