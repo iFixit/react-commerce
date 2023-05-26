@@ -29,9 +29,7 @@ import {
    ProductList as TProductList,
    ProductSearchHit,
 } from '@models/product-list';
-import {
-   useSearchDetails
-} from '@templates/product-list/hooks/useSearchDetails';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
 import * as React from 'react';
 import {
    useClearRefinements,
@@ -101,96 +99,96 @@ export function FilterableProductsSection({
             Products
          </Heading>
 
-            <Flex align="flex-start">
-               <Box
+         <Flex align="flex-start">
+            <Box
+               bg="white"
+               borderWidth="1px"
+               borderStyle="solid"
+               borderColor="gray.300"
+               borderRadius="base"
+               px="3"
+               py="1.5"
+               mr="4"
+               w="64"
+               maxH="calc(100vh - var(--chakra-space-4) * 2)"
+               overflow="auto"
+               display={{
+                  base: 'none',
+                  md: hasAnyVisibleFacet ? 'block' : 'none',
+               }}
+               position="sticky"
+               top="4"
+               flexGrow="0"
+            >
+               <Collapse
+                  in={currentRefinements.items.length > 0}
+                  animateOpacity
+                  data-testid="current-refinements"
+               >
+                  <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
+                     <CurrentRefinements />
+                  </Flex>
+                  <Divider borderColor="gray.300" opacity="1" />
+               </Collapse>
+               <FacetsAccordion productList={productList} />
+            </Box>
+            <Flex direction="column" flex="1">
+               <Toolbar
+                  viewType={viewType}
+                  productList={productList}
+                  onViewTypeChange={setViewType}
+               />
+               <Flex
                   bg="white"
+                  direction="column"
+                  mt="2"
+                  overflow="hidden"
                   borderWidth="1px"
                   borderStyle="solid"
                   borderColor="gray.300"
                   borderRadius="base"
-                  px="3"
-                  py="1.5"
-                  mr="4"
-                  w="64"
-                  maxH="calc(100vh - var(--chakra-space-4) * 2)"
-                  overflow="auto"
-                  display={{
-                     base: 'none',
-                     md: hasAnyVisibleFacet ? 'block' : 'none',
-                  }}
-                  position="sticky"
-                  top="4"
-                  flexGrow="0"
                >
-                  <Collapse
-                     in={currentRefinements.items.length > 0}
-                     animateOpacity
-                     data-testid="current-refinements"
-                  >
-                     <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
-                        <CurrentRefinements />
-                     </Flex>
-                     <Divider borderColor="gray.300" opacity="1" />
-                  </Collapse>
-                  <FacetsAccordion productList={productList} />
-               </Box>
-               <Flex direction="column" flex="1">
-                  <Toolbar
-                     viewType={viewType}
+                  <ProductListEmptyState
                      productList={productList}
-                     onViewTypeChange={setViewType}
+                     hidden={!isEmpty}
                   />
-                  <Flex
-                     bg="white"
-                     direction="column"
-                     mt="2"
-                     overflow="hidden"
-                     borderWidth="1px"
-                     borderStyle="solid"
-                     borderColor="gray.300"
-                     borderRadius="base"
-                  >
-                     <ProductListEmptyState
-                        productList={productList}
-                        hidden={!isEmpty}
-                     />
-                     {!isEmpty && viewType === ProductViewType.Grid && (
-                        <ProductGrid
-                           data-testid="grid-view-products"
-                           columns={{
-                              base: 2,
-                              sm: 3,
-                              md: 2,
-                              lg: 3,
-                              xl: 4,
-                           }}
-                        >
-                           {products.map((product) => {
-                              return (
-                                 <ProductGridItem
-                                    key={product.handle}
-                                    product={product}
-                                 />
-                              );
-                           })}
-                        </ProductGrid>
-                     )}
-                     {!isEmpty && viewType === ProductViewType.List && (
-                        <ProductList>
-                           {hits.map((hit) => {
-                              return (
-                                 <ProductListItem
-                                    key={hit.objectID}
-                                    product={hit}
-                                 />
-                              );
-                           })}
-                        </ProductList>
-                     )}
-                     <Pagination />
-                  </Flex>
+                  {!isEmpty && viewType === ProductViewType.Grid && (
+                     <ProductGrid
+                        data-testid="grid-view-products"
+                        columns={{
+                           base: 2,
+                           sm: 3,
+                           md: 2,
+                           lg: 3,
+                           xl: 4,
+                        }}
+                     >
+                        {products.map((product) => {
+                           return (
+                              <ProductGridItem
+                                 key={product.handle}
+                                 product={product}
+                              />
+                           );
+                        })}
+                     </ProductGrid>
+                  )}
+                  {!isEmpty && viewType === ProductViewType.List && (
+                     <ProductList>
+                        {hits.map((hit) => {
+                           return (
+                              <ProductListItem
+                                 key={hit.objectID}
+                                 product={hit}
+                              />
+                           );
+                        })}
+                     </ProductList>
+                  )}
+                  <Pagination />
                </Flex>
             </Flex>
+         </Flex>
       </Flex>
    );
 }

@@ -16,9 +16,7 @@ import {
    ProductListSetSection,
    RelatedPostsSection,
 } from './sections';
-import {
-   SearchDetailsProvider
-} from '@templates/product-list/hooks/useSearchDetails';
+import { SearchDetailsProvider } from '@templates/product-list/hooks/useSearchDetails';
 import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
 import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
 import { usePagination } from 'react-instantsearch-hooks-web';
