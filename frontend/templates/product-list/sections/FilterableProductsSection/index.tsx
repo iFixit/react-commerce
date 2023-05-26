@@ -32,7 +32,7 @@ import {
 import {
    SearchQueryProvider,
    useSearchQuery,
-} from '@templates/product-list/hooks/useSearchQuery';
+} from '@templates/product-list/hooks/useSearchDetails';
 import * as React from 'react';
 import {
    useClearRefinements,

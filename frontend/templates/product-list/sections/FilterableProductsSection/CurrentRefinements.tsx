@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { faClose } from '@fortawesome/pro-solid-svg-icons';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { useSearchQuery } from '@templates/product-list/hooks/useSearchQuery';
+import { useSearchQuery } from '@templates/product-list/hooks/useSearchDetails';
 import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
 import {
