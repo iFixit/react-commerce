@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ProductRating } from '@components/common';
 import { Card } from '@components/ui';
+import { SmartLink } from '@components/ui/SmartLink';
 import { faImage } from '@fortawesome/pro-duotone-svg-icons';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { productPath } from '@helpers/path-helpers';
@@ -48,7 +49,7 @@ export function CrossSellVariantCard({
    return (
       <Card
          data-testid="cross-sell-item"
-         as="a"
+         as={SmartLink}
          href={productPath(handle)}
          overflow="hidden"
          flexBasis={{
