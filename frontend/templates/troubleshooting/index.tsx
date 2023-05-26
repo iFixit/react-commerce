@@ -60,7 +60,7 @@ const Wiki: NextPageWithLayout<{
       metaKeywords,
       canonicalUrl,
       mainImageUrl,
-      mainImageUrlFull,
+      mainImageUrlLarge,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const metadata = (
@@ -125,7 +125,7 @@ const Wiki: NextPageWithLayout<{
                      <VisuallyHidden></VisuallyHidden>
                      <ModalBody padding={0}>
                         <Image
-                           src={mainImageUrlFull}
+                           src={mainImageUrlLarge}
                            width="100%"
                            height="auto"
                         />

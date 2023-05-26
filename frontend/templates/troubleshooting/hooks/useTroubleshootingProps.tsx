@@ -48,7 +48,7 @@ export type TroubleshootingApiData = {
    metaDescription: string;
    metaKeywords: string;
    mainImageUrl: string;
-   mainImageUrlFull: string;
+   mainImageUrlLarge: string;
 };
 
 export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {
