@@ -30,8 +30,7 @@ import {
    ProductSearchHit,
 } from '@models/product-list';
 import {
-   SearchDetailsProvider,
-   useSearchDetails,
+   useSearchDetails
 } from '@templates/product-list/hooks/useSearchDetails';
 import * as React from 'react';
 import {
@@ -78,13 +77,13 @@ export function FilterableProductsSection({
 
    if (algoliaSSR) {
       return (
-         <SearchDetailsProvider>
+         <>
             <CurrentRefinements />
             <FacetsAccordion
                productList={productList}
                algoliaSSR={algoliaSSR}
             />
-         </SearchDetailsProvider>
+         </>
       );
    }
    return (
@@ -102,7 +101,6 @@ export function FilterableProductsSection({
             Products
          </Heading>
 
-         <SearchDetailsProvider>
             <Flex align="flex-start">
                <Box
                   bg="white"
@@ -193,7 +191,6 @@ export function FilterableProductsSection({
                   </Flex>
                </Flex>
             </Flex>
-         </SearchDetailsProvider>
       </Flex>
    );
 }

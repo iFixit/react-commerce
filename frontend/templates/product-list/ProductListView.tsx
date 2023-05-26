@@ -16,6 +16,9 @@ import {
    ProductListSetSection,
    RelatedPostsSection,
 } from './sections';
+import {
+   SearchDetailsProvider
+} from '@templates/product-list/hooks/useSearchDetails';
 import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
 import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
 import { usePagination } from 'react-instantsearch-hooks-web';
@@ -51,10 +54,12 @@ export function ProductListView({
                hitsPerPage={24}
                facetingAfterDistinct={true}
             />
-            <FilterableProductsSection
-               productList={productListWithOverrides}
-               algoliaSSR={algoliaSSR}
-            />
+            <SearchDetailsProvider>
+               <FilterableProductsSection
+                  productList={productListWithOverrides}
+                  algoliaSSR={algoliaSSR}
+               />
+            </SearchDetailsProvider>
          </>
       );
    }
@@ -82,9 +87,11 @@ export function ProductListView({
                      productList={productListWithOverrides}
                   />
                )}
-               <FilterableProductsSection
-                  productList={productListWithOverrides}
-               />
+               <SearchDetailsProvider>
+                  <FilterableProductsSection
+                     productList={productListWithOverrides}
+                  />
+               </SearchDetailsProvider>
                {productListWithOverrides.sections.map((section, index) => {
                   switch (section.type) {
                      case ProductListSectionType.Banner: {
