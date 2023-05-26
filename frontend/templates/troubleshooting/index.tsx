@@ -128,6 +128,7 @@ const Wiki: NextPageWithLayout<{
                            src={mainImageUrlLarge}
                            width="100%"
                            height="auto"
+                           alt={title}
                         />
                      </ModalBody>
                   </ModalContent>
