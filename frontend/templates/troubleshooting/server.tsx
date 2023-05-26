@@ -86,10 +86,7 @@ export const getServerSideProps: GetServerSideProps<
    try {
       troubleshootingData = await client.get<TroubleshootingApiData>(
          `Troubleshooting/${wikiname}`,
-         'troubleshooting',
-         {
-            credentials: 'include',
-         }
+         'troubleshooting'
       );
    } catch (e) {
       rethrowUnless404(e);
