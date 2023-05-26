@@ -21,6 +21,7 @@ const withTM = require('next-transpile-modules')([
    '@ifixit/ui',
    '@ifixit/menu',
    '@ifixit/tracking-hooks',
+   '@ifixit/translations',
 ]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
