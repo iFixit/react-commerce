@@ -62,7 +62,7 @@ export function InstantSearchProvider({
          algoliaApiKey,
          getClientOptions(logContextName)
       );
-   }, [algoliaApiKey]);
+   }, [algoliaApiKey, logContextName]);
 
    const facets = useFacets();
 
