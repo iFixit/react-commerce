@@ -1,13 +1,26 @@
 import { APP_ORIGIN, IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
+import type { Product } from '@models/product';
 import {
+   iFixitPageType,
    ProductList,
    ProductListType,
    StorePage,
-   iFixitPageType,
 } from '@models/product-list';
 import { GetServerSidePropsContext } from 'next';
+import { getProductIdFromGlobalId } from './product-helpers';
 import { stylizeDeviceTitle } from './product-list-helpers';
+
+export function productPath(handle: string) {
+   switch (handle) {
+      case 'pro-tech-toolkit':
+         return `${IFIXIT_ORIGIN}/Store/Tools/Pro-Tech-Toolkit/IF145-307`;
+      case 'manta-driver-kit-112-bit-driver-kit':
+         return `${IFIXIT_ORIGIN}/Store/Tools/Manta-Driver-Kit--112-Bit-Driver-Kit/IF145-392`;
+      default:
+         return `/products/${handle}`;
+   }
+}
 
 type ProductListPathAttributes = Pick<
    ProductList | StorePage,
@@ -47,6 +60,76 @@ export function productListPath(
          throw new Error(`unknown product list type: ${productList.type}`);
       }
    }
+}
+
+interface AkineoProductUrlProps {
+   product: Pick<Product, 'productcode'>;
+}
+
+export function akineoProductUrl({ product }: AkineoProductUrlProps) {
+   return `${akineoUrl()}/redirect/edit/product/${encodeURIComponent(
+      product.productcode ?? ''
+   )}`;
+}
+
+export function akineoUrl() {
+   return ifixitOriginWithSubdomain('akeneo');
+}
+
+export interface IFixitAdminProductInvetoryUrlProps {
+   product: Pick<Product, 'productcode'>;
+}
+
+export function iFixitAdminProductInventoryUrl({
+   product,
+}: IFixitAdminProductInvetoryUrlProps) {
+   const encodedProductcode = encodeURIComponent(product.productcode ?? '');
+   return `${iFixitAdminUrl()}/Inventory/inventory_report.php?searchTerm=${encodedProductcode}`;
+}
+
+interface IFixitAdminProductImagesUrlProps {
+   product: Pick<Product, 'productcode'>;
+}
+
+export function iFixitAdminProductImagesUrl({
+   product,
+}: IFixitAdminProductImagesUrlProps) {
+   const encodedProductcode = encodeURIComponent(product.productcode ?? '');
+   return `${iFixitAdminUrl()}/Product/ProductImages.php?productcode=${encodedProductcode}`;
+}
+
+export function iFixitAdminUrl() {
+   return `${IFIXIT_ORIGIN}/Admin`;
+}
+
+interface ShopifyAdminProductUrlProps {
+   product: Pick<Product, 'id'>;
+   storeCode: string;
+}
+export function shopifyStoreAdminProductUrl({
+   product,
+   storeCode,
+}: ShopifyAdminProductUrlProps) {
+   const adminProductId = getProductIdFromGlobalId(product.id);
+   return `${shopifyStoreAdminUrl({ storeCode })}/products/${adminProductId}`;
+}
+
+interface ShopifyStoreAdminUrlProps {
+   storeCode: string;
+}
+
+export function shopifyStoreAdminUrl({ storeCode }: ShopifyStoreAdminUrlProps) {
+   return `${shopifyStoreOriginUrl({ storeCode })}/admin`;
+}
+
+interface ShopifyStoreOriginUrlProps {
+   storeCode: string;
+}
+
+export function shopifyStoreOriginUrl({
+   storeCode,
+}: ShopifyStoreOriginUrlProps) {
+   return `https://ifixit-${storeCode}.myshopify.com`;
 }
 
 export function ifixitOriginFromHost(
