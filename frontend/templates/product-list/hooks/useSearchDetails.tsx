@@ -1,7 +1,8 @@
 import React from 'react';
-import { useSearchBox } from 'react-instantsearch-hooks-web';
+import { useSearchBox, useHits } from 'react-instantsearch-hooks-web';
+import { ProductSearchHit } from '@models/product-list';
 
-type SearchDetailsContext = {
+type SearchDetailsContext = ReturnType<typeof useHits<ProductSearchHit>> & {
    searchQuery: string;
    setSearchQuery: (_: string) => void;
 };
@@ -13,9 +14,12 @@ export const SearchDetailsProvider = ({
    children,
 }: React.PropsWithChildren) => {
    const { query: initialQuery } = useSearchBox();
+   const hitsProps = useHits<ProductSearchHit>();
    const [searchQuery, setSearchQuery] = React.useState(initialQuery);
    return (
-      <SearchDetailsContext.Provider value={{ searchQuery, setSearchQuery }}>
+      <SearchDetailsContext.Provider
+         value={{ searchQuery, setSearchQuery, ...hitsProps }}
+      >
          {children}
       </SearchDetailsContext.Provider>
    );
