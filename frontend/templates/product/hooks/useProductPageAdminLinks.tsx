@@ -6,7 +6,7 @@ import {
    faWarehouse,
 } from '@fortawesome/pro-solid-svg-icons';
 import {
-   akineoProductUrl,
+   akeneoProductUrl,
    iFixitAdminProductImagesUrl,
    iFixitAdminProductInventoryUrl,
    shopifyStoreAdminProductUrl,
@@ -28,7 +28,7 @@ export function useProductPageAdminLinks({
          {
             icon: faArrowUpRightFromSquare,
             label: 'Akeneo',
-            url: akineoProductUrl({ product }),
+            url: akeneoProductUrl({ product }),
          },
          {
             icon: faShop,

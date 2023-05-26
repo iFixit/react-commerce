@@ -62,17 +62,17 @@ export function productListPath(
    }
 }
 
-interface AkineoProductUrlProps {
+interface AkeneoProductUrlProps {
    product: Pick<Product, 'productcode'>;
 }
 
-export function akineoProductUrl({ product }: AkineoProductUrlProps) {
-   return `${akineoUrl()}/redirect/edit/product/${encodeURIComponent(
+export function akeneoProductUrl({ product }: AkeneoProductUrlProps) {
+   return `${akeneoUrl()}/redirect/edit/product/${encodeURIComponent(
       product.productcode ?? ''
    )}`;
 }
 
-export function akineoUrl() {
+export function akeneoUrl() {
    return ifixitOriginWithSubdomain('akeneo');
 }
 
