@@ -2,7 +2,8 @@ import {
    PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT,
    PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
 } from '@config/constants';
-import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
+import { useRefinementList } from 'react-instantsearch-hooks-web';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
 import { useSortBy } from './useSortBy';
 
 export type RefinementListFacetState = ReturnType<
@@ -24,7 +25,7 @@ export function useRefinementListFacet({
       showMore: true,
       showMoreLimit: PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
    });
-   const { results } = useHits();
+   const { results } = useSearchDetails();
    const hitsCount = results?.nbHits ?? 0;
    const isAnyRefined = items.some((item) => item.isRefined);
    const filteredItems =

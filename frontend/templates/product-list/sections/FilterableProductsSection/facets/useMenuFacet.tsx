@@ -3,7 +3,8 @@ import {
    PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
 } from '@config/constants';
 import { ProductList, ProductListType } from '@models/product-list';
-import { useHits, useMenu, UseMenuProps } from 'react-instantsearch-hooks-web';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
+import { useMenu, UseMenuProps } from 'react-instantsearch-hooks-web';
 import { useSortBy } from './useSortBy';
 
 export type MenuFacetState = ReturnType<typeof useMenuFacet>;
@@ -44,7 +45,7 @@ function useFilteredMenu(props: UseMenuProps) {
       showMore: true,
       ...props,
    });
-   const { results } = useHits();
+   const { results } = useSearchDetails();
    const hitsCount = results?.nbHits ?? 0;
    const isAnyRefined = items.some((item) => item.isRefined);
    const filteredItems = isAnyRefined

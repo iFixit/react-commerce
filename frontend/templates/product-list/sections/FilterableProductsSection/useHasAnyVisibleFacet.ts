@@ -2,7 +2,7 @@ import {
    ProductList as TProductList,
    ProductSearchHit,
 } from '@models/product-list';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
 import { SearchResults } from 'algoliasearch-helper';
 import { useFilteredFacets } from './facets/useFacets';
 
@@ -13,7 +13,7 @@ type HierarchicalFacet =
    SearchResults<ProductSearchHit>['hierarchicalFacets'][number];
 
 export function useHasAnyVisibleFacet(productList: TProductList): boolean {
-   const { results } = useHits<ProductSearchHit>();
+   const { results } = useSearchDetails();
    const activeFacetsName = useFilteredFacets(productList);
 
    if (!results) {

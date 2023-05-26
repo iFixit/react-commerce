@@ -1,5 +1,5 @@
 import { ProductList, ProductListType } from '@models/product-list';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
 
 export type UseFacetAccordionItemProps = {
    attribute: string;
@@ -12,7 +12,7 @@ export function useFacetAccordionItemState({
    hasApplicableRefinements,
    productList,
 }: UseFacetAccordionItemProps) {
-   const { hits } = useHits();
+   const { hits } = useSearchDetails();
    const isProductListEmpty = hits.length === 0;
    const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 

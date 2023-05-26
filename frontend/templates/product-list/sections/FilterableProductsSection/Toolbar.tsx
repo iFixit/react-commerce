@@ -16,8 +16,9 @@ import { faGrid, faList } from '@fortawesome/pro-solid-svg-icons';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
 import * as React from 'react';
-import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements } from 'react-instantsearch-hooks-web';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsDrawer } from './facets/drawer';
 import { SearchInput } from './SearchInput';
@@ -130,7 +131,7 @@ export function Toolbar(props: ToolbarProps) {
 }
 
 export function NumberOfHits() {
-   const { results } = useHits();
+   const { results } = useSearchDetails();
    const hitsCount = results?.nbHits;
    if (hitsCount == null) {
       return null;
