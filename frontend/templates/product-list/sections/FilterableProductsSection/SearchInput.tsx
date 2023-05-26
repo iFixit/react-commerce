@@ -13,7 +13,7 @@ import {
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { useSearchQuery } from '@templates/product-list/hooks/useSearchDetails';
+import { useSearchDetails } from '@templates/product-list/hooks/useSearchDetails';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { useSearchBox } from 'react-instantsearch-hooks-web';
@@ -27,7 +27,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    const { query, refine, clear } = useSearchBox({
       queryHook: debouncedQueryHook,
    });
-   const { searchQuery, setSearchQuery } = useSearchQuery();
+   const { searchQuery, setSearchQuery } = useSearchDetails();
 
    const inputRef = React.useRef<HTMLInputElement>(null);
 

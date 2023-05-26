@@ -30,8 +30,8 @@ import {
    ProductSearchHit,
 } from '@models/product-list';
 import {
-   SearchQueryProvider,
-   useSearchQuery,
+   SearchDetailsProvider,
+   useSearchDetails,
 } from '@templates/product-list/hooks/useSearchDetails';
 import * as React from 'react';
 import {
@@ -78,10 +78,13 @@ export function FilterableProductsSection({
 
    if (algoliaSSR) {
       return (
-         <SearchQueryProvider>
+         <SearchDetailsProvider>
             <CurrentRefinements />
-            <FacetsAccordion productList={productList} />
-         </SearchQueryProvider>
+            <FacetsAccordion
+               productList={productList}
+               algoliaSSR={algoliaSSR}
+            />
+         </SearchDetailsProvider>
       );
    }
    return (
@@ -99,7 +102,7 @@ export function FilterableProductsSection({
             Products
          </Heading>
 
-         <SearchQueryProvider>
+         <SearchDetailsProvider>
             <Flex align="flex-start">
                <Box
                   bg="white"
@@ -190,7 +193,7 @@ export function FilterableProductsSection({
                   </Flex>
                </Flex>
             </Flex>
-         </SearchQueryProvider>
+         </SearchDetailsProvider>
       </Flex>
    );
 }
@@ -214,7 +217,7 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
-      const { setSearchQuery } = useSearchQuery();
+      const { setSearchQuery } = useSearchDetails();
       const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
       const currentRefinements = useCurrentRefinements();
