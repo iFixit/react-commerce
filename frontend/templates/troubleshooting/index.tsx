@@ -133,7 +133,7 @@ const Wiki: NextPageWithLayout<{
                      </ModalBody>
                   </ModalContent>
                </Modal>
-               <VStack alignItems="flex-start">
+               <VStack alignItems="flex-start" spacing="0px">
                   <HeadingSelfLink as="h1" fontSize="3xl" fontWeight="500">
                      {wikiData.title}
                   </HeadingSelfLink>
