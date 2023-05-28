@@ -77,10 +77,7 @@ export function FilterableProductsSection({
       return (
          <>
             <CurrentRefinements />
-            <FacetsAccordion
-               productList={productList}
-               algoliaSSR={algoliaSSR}
-            />
+            <FacetsAccordion productList={productList} />
          </>
       );
    }
