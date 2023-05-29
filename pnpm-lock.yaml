@@ -442,6 +442,9 @@ importers:
       '@ifixit/icons':
         specifier: workspace:*
         version: link:../icons
+      '@ifixit/ui':
+        specifier: workspace:*
+        version: link:../ui
     devDependencies:
       '@babel/core':
         specifier: 7.17.9
