@@ -22,7 +22,7 @@ export function CartLineItemImage({ src, alt }: CartLineItemImageProps) {
          {src ? (
             <ResponsiveImage
                src={src}
-               alt={alt}
+               alt={alt || ''}
                priority
                height={62}
                width={62}
