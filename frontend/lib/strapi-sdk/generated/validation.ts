@@ -80,33 +80,25 @@ export function BannerFiltersInputSchema(): z.ZodObject<
    Properties<BannerFiltersInput>
 > {
    return z.object<Properties<BannerFiltersInput>>({
-      and: z
-         .array(z.lazy(() => BannerFiltersInputSchema().nullable()))
-         .nullish(),
-      callToAction: z.lazy(() =>
-         ComponentPageCallToActionFiltersInputSchema().nullish()
-      ),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      description: z.lazy(() => StringFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      label: z.lazy(() => StringFilterInputSchema().nullish()),
-      locale: z.lazy(() => StringFilterInputSchema().nullish()),
-      localizations: z.lazy(() => BannerFiltersInputSchema().nullish()),
-      not: z.lazy(() => BannerFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => BannerFiltersInputSchema().nullable()))
-         .nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      title: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      callToAction: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      description: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      label: z.lazy(() => definedNonNullAnySchema.nullish()),
+      locale: z.lazy(() => definedNonNullAnySchema.nullish()),
+      localizations: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      title: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
 export function BannerInputSchema(): z.ZodObject<Properties<BannerInput>> {
    return z.object<Properties<BannerInput>>({
-      callToAction: z.lazy(() =>
-         ComponentPageCallToActionInputSchema().nullish()
-      ),
+      callToAction: z.lazy(() => definedNonNullAnySchema.nullish()),
       description: z.string().nullish(),
       image: z.string().nullish(),
       label: z.string().nullish(),
@@ -132,7 +124,7 @@ export function BooleanFilterInputSchema(): z.ZodObject<
       lt: z.boolean().nullish(),
       lte: z.boolean().nullish(),
       ne: z.boolean().nullish(),
-      not: z.lazy(() => BooleanFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: z.boolean().nullish(),
       notContainsi: z.boolean().nullish(),
       notIn: z.array(z.boolean().nullable()).nullish(),
@@ -147,18 +139,14 @@ export function CompanyFiltersInputSchema(): z.ZodObject<
    Properties<CompanyFiltersInput>
 > {
    return z.object<Properties<CompanyFiltersInput>>({
-      and: z
-         .array(z.lazy(() => CompanyFiltersInputSchema().nullable()))
-         .nullish(),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => CompanyFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => CompanyFiltersInputSchema().nullable()))
-         .nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -186,19 +174,11 @@ export function ComponentGlobalPersonFiltersInputSchema(): z.ZodObject<
    Properties<ComponentGlobalPersonFiltersInput>
 > {
    return z.object<Properties<ComponentGlobalPersonFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => ComponentGlobalPersonFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => ComponentGlobalPersonFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => ComponentGlobalPersonFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      role: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      role: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -206,25 +186,11 @@ export function ComponentPageCallToActionFiltersInputSchema(): z.ZodObject<
    Properties<ComponentPageCallToActionFiltersInput>
 > {
    return z.object<Properties<ComponentPageCallToActionFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() =>
-               ComponentPageCallToActionFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      not: z.lazy(() =>
-         ComponentPageCallToActionFiltersInputSchema().nullish()
-      ),
-      or: z
-         .array(
-            z.lazy(() =>
-               ComponentPageCallToActionFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      title: z.lazy(() => StringFilterInputSchema().nullish()),
-      url: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      title: z.lazy(() => definedNonNullAnySchema.nullish()),
+      url: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -242,19 +208,11 @@ export function ComponentPageCategoryFiltersInputSchema(): z.ZodObject<
    Properties<ComponentPageCategoryFiltersInput>
 > {
    return z.object<Properties<ComponentPageCategoryFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => ComponentPageCategoryFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      description: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => ComponentPageCategoryFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => ComponentPageCategoryFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      productList: z.lazy(() => ProductListFiltersInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      description: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      productList: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -262,19 +220,11 @@ export function ComponentPagePressQuoteFiltersInputSchema(): z.ZodObject<
    Properties<ComponentPagePressQuoteFiltersInput>
 > {
    return z.object<Properties<ComponentPagePressQuoteFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => ComponentPagePressQuoteFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      company: z.lazy(() => CompanyFiltersInputSchema().nullish()),
-      not: z.lazy(() => ComponentPagePressQuoteFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => ComponentPagePressQuoteFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      text: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      company: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      text: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -282,19 +232,11 @@ export function ComponentPageStatItemFiltersInputSchema(): z.ZodObject<
    Properties<ComponentPageStatItemFiltersInput>
 > {
    return z.object<Properties<ComponentPageStatItemFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => ComponentPageStatItemFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      label: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => ComponentPageStatItemFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => ComponentPageStatItemFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      value: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      label: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      value: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -302,25 +244,11 @@ export function ComponentSectionQuoteCardFiltersInputSchema(): z.ZodObject<
    Properties<ComponentSectionQuoteCardFiltersInput>
 > {
    return z.object<Properties<ComponentSectionQuoteCardFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() =>
-               ComponentSectionQuoteCardFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      author: z.lazy(() => ComponentGlobalPersonFiltersInputSchema().nullish()),
-      not: z.lazy(() =>
-         ComponentSectionQuoteCardFiltersInputSchema().nullish()
-      ),
-      or: z
-         .array(
-            z.lazy(() =>
-               ComponentSectionQuoteCardFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      text: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      author: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      text: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -328,22 +256,14 @@ export function ComponentStoreFooterFiltersInputSchema(): z.ZodObject<
    Properties<ComponentStoreFooterFiltersInput>
 > {
    return z.object<Properties<ComponentStoreFooterFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => ComponentStoreFooterFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      bottomMenu: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      menu1: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      menu2: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      menu3: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      not: z.lazy(() => ComponentStoreFooterFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => ComponentStoreFooterFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      partners: z.lazy(() => MenuFiltersInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      bottomMenu: z.lazy(() => definedNonNullAnySchema.nullish()),
+      menu1: z.lazy(() => definedNonNullAnySchema.nullish()),
+      menu2: z.lazy(() => definedNonNullAnySchema.nullish()),
+      menu3: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      partners: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -364,18 +284,10 @@ export function ComponentStoreHeaderFiltersInputSchema(): z.ZodObject<
    Properties<ComponentStoreHeaderFiltersInput>
 > {
    return z.object<Properties<ComponentStoreHeaderFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => ComponentStoreHeaderFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      menu: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      not: z.lazy(() => ComponentStoreHeaderFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => ComponentStoreHeaderFiltersInputSchema().nullable())
-         )
-         .nullish(),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      menu: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
    });
 }
 
@@ -392,26 +304,12 @@ export function ComponentStoreShopifySettingsFiltersInputSchema(): z.ZodObject<
    Properties<ComponentStoreShopifySettingsFiltersInput>
 > {
    return z.object<Properties<ComponentStoreShopifySettingsFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() =>
-               ComponentStoreShopifySettingsFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      delegateAccessToken: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() =>
-         ComponentStoreShopifySettingsFiltersInputSchema().nullish()
-      ),
-      or: z
-         .array(
-            z.lazy(() =>
-               ComponentStoreShopifySettingsFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      storefrontAccessToken: z.lazy(() => StringFilterInputSchema().nullish()),
-      storefrontDomain: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      delegateAccessToken: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      storefrontAccessToken: z.lazy(() => definedNonNullAnySchema.nullish()),
+      storefrontDomain: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -430,29 +328,15 @@ export function ComponentStoreSocialMediaAccountsFiltersInputSchema(): z.ZodObje
    Properties<ComponentStoreSocialMediaAccountsFiltersInput>
 > {
    return z.object<Properties<ComponentStoreSocialMediaAccountsFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() =>
-               ComponentStoreSocialMediaAccountsFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      facebook: z.lazy(() => StringFilterInputSchema().nullish()),
-      instagram: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() =>
-         ComponentStoreSocialMediaAccountsFiltersInputSchema().nullish()
-      ),
-      or: z
-         .array(
-            z.lazy(() =>
-               ComponentStoreSocialMediaAccountsFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      repairOrg: z.lazy(() => StringFilterInputSchema().nullish()),
-      tiktok: z.lazy(() => StringFilterInputSchema().nullish()),
-      twitter: z.lazy(() => StringFilterInputSchema().nullish()),
-      youtube: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      facebook: z.lazy(() => definedNonNullAnySchema.nullish()),
+      instagram: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      repairOrg: z.lazy(() => definedNonNullAnySchema.nullish()),
+      tiktok: z.lazy(() => definedNonNullAnySchema.nullish()),
+      twitter: z.lazy(() => definedNonNullAnySchema.nullish()),
+      youtube: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -487,7 +371,7 @@ export function DateTimeFilterInputSchema(): z.ZodObject<
       lt: definedNonNullAnySchema.nullish(),
       lte: definedNonNullAnySchema.nullish(),
       ne: definedNonNullAnySchema.nullish(),
-      not: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: definedNonNullAnySchema.nullish(),
       notContainsi: definedNonNullAnySchema.nullish(),
       notIn: z.array(definedNonNullAnySchema.nullable()).nullish(),
@@ -512,15 +396,15 @@ export function FaqFiltersInputSchema(): z.ZodObject<
    Properties<FaqFiltersInput>
 > {
    return z.object<Properties<FaqFiltersInput>>({
-      and: z.array(z.lazy(() => FaqFiltersInputSchema().nullable())).nullish(),
-      answer: z.lazy(() => StringFilterInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      not: z.lazy(() => FaqFiltersInputSchema().nullish()),
-      or: z.array(z.lazy(() => FaqFiltersInputSchema().nullable())).nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      question: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      answer: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      question: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -557,7 +441,7 @@ export function FloatFilterInputSchema(): z.ZodObject<
       lt: z.number().nullish(),
       lte: z.number().nullish(),
       ne: z.number().nullish(),
-      not: z.lazy(() => FloatFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: z.number().nullish(),
       notContainsi: z.number().nullish(),
       notIn: z.array(z.number().nullable()).nullish(),
@@ -570,9 +454,7 @@ export function FloatFilterInputSchema(): z.ZodObject<
 
 export function GlobalInputSchema(): z.ZodObject<Properties<GlobalInput>> {
    return z.object<Properties<GlobalInput>>({
-      newsletterForm: z.lazy(() =>
-         ComponentGlobalNewsletterFormInputSchema().nullish()
-      ),
+      newsletterForm: z.lazy(() => definedNonNullAnySchema.nullish()),
       publishedAt: definedNonNullAnySchema.nullish(),
    });
 }
@@ -581,18 +463,14 @@ export function I18NLocaleFiltersInputSchema(): z.ZodObject<
    Properties<I18NLocaleFiltersInput>
 > {
    return z.object<Properties<I18NLocaleFiltersInput>>({
-      and: z
-         .array(z.lazy(() => I18NLocaleFiltersInputSchema().nullable()))
-         .nullish(),
-      code: z.lazy(() => StringFilterInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => I18NLocaleFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => I18NLocaleFiltersInputSchema().nullable()))
-         .nullish(),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      code: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -611,7 +489,7 @@ export function IdFilterInputSchema(): z.ZodObject<Properties<IdFilterInput>> {
       lt: z.string().nullish(),
       lte: z.string().nullish(),
       ne: z.string().nullish(),
-      not: z.lazy(() => IdFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: z.string().nullish(),
       notContainsi: z.string().nullish(),
       notIn: z.array(z.string().nullable()).nullish(),
@@ -639,7 +517,7 @@ export function IntFilterInputSchema(): z.ZodObject<
       lt: z.number().nullish(),
       lte: z.number().nullish(),
       ne: z.number().nullish(),
-      not: z.lazy(() => IntFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: z.number().nullish(),
       notContainsi: z.number().nullish(),
       notIn: z.array(z.number().nullable()).nullish(),
@@ -667,7 +545,7 @@ export function JsonFilterInputSchema(): z.ZodObject<
       lt: definedNonNullAnySchema.nullish(),
       lte: definedNonNullAnySchema.nullish(),
       ne: definedNonNullAnySchema.nullish(),
-      not: z.lazy(() => JsonFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: definedNonNullAnySchema.nullish(),
       notContainsi: definedNonNullAnySchema.nullish(),
       notIn: z.array(definedNonNullAnySchema.nullable()).nullish(),
@@ -682,16 +560,16 @@ export function MenuFiltersInputSchema(): z.ZodObject<
    Properties<MenuFiltersInput>
 > {
    return z.object<Properties<MenuFiltersInput>>({
-      and: z.array(z.lazy(() => MenuFiltersInputSchema().nullable())).nullish(),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      locale: z.lazy(() => StringFilterInputSchema().nullish()),
-      localizations: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      not: z.lazy(() => MenuFiltersInputSchema().nullish()),
-      or: z.array(z.lazy(() => MenuFiltersInputSchema().nullable())).nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      title: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      locale: z.lazy(() => definedNonNullAnySchema.nullish()),
+      localizations: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      title: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -707,17 +585,17 @@ export function PageFiltersInputSchema(): z.ZodObject<
    Properties<PageFiltersInput>
 > {
    return z.object<Properties<PageFiltersInput>>({
-      and: z.array(z.lazy(() => PageFiltersInputSchema().nullable())).nullish(),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      locale: z.lazy(() => StringFilterInputSchema().nullish()),
-      localizations: z.lazy(() => PageFiltersInputSchema().nullish()),
-      not: z.lazy(() => PageFiltersInputSchema().nullish()),
-      or: z.array(z.lazy(() => PageFiltersInputSchema().nullable())).nullish(),
-      path: z.lazy(() => StringFilterInputSchema().nullish()),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      title: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      locale: z.lazy(() => definedNonNullAnySchema.nullish()),
+      localizations: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      path: z.lazy(() => definedNonNullAnySchema.nullish()),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      title: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -743,18 +621,14 @@ export function ProductFiltersInputSchema(): z.ZodObject<
    Properties<ProductFiltersInput>
 > {
    return z.object<Properties<ProductFiltersInput>>({
-      and: z
-         .array(z.lazy(() => ProductFiltersInputSchema().nullable()))
-         .nullish(),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      handle: z.lazy(() => StringFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      not: z.lazy(() => ProductFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => ProductFiltersInputSchema().nullable()))
-         .nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      handle: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -770,40 +644,36 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
    Properties<ProductListFiltersInput>
 > {
    return z.object<Properties<ProductListFiltersInput>>({
-      and: z
-         .array(z.lazy(() => ProductListFiltersInputSchema().nullable()))
-         .nullish(),
-      brandLogoWidth: z.lazy(() => IntFilterInputSchema().nullish()),
-      children: z.lazy(() => ProductListFiltersInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      brandLogoWidth: z.lazy(() => definedNonNullAnySchema.nullish()),
+      children: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
       defaultShowAllChildrenOnLgSizes: z.lazy(() =>
-         BooleanFilterInputSchema().nullish()
+         definedNonNullAnySchema.nullish()
       ),
-      description: z.lazy(() => StringFilterInputSchema().nullish()),
-      deviceTitle: z.lazy(() => StringFilterInputSchema().nullish()),
-      filters: z.lazy(() => StringFilterInputSchema().nullish()),
-      forceNoindex: z.lazy(() => BooleanFilterInputSchema().nullish()),
-      h1: z.lazy(() => StringFilterInputSchema().nullish()),
-      handle: z.lazy(() => StringFilterInputSchema().nullish()),
-      hideFromParent: z.lazy(() => BooleanFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      legacyDescription: z.lazy(() => StringFilterInputSchema().nullish()),
-      legacyPageId: z.lazy(() => IntFilterInputSchema().nullish()),
-      locale: z.lazy(() => StringFilterInputSchema().nullish()),
-      localizations: z.lazy(() => ProductListFiltersInputSchema().nullish()),
-      metaDescription: z.lazy(() => StringFilterInputSchema().nullish()),
-      metaTitle: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => ProductListFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => ProductListFiltersInputSchema().nullable()))
-         .nullish(),
-      parent: z.lazy(() => ProductListFiltersInputSchema().nullish()),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      sortPriority: z.lazy(() => IntFilterInputSchema().nullish()),
-      tagline: z.lazy(() => StringFilterInputSchema().nullish()),
-      title: z.lazy(() => StringFilterInputSchema().nullish()),
-      type: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      description: z.lazy(() => definedNonNullAnySchema.nullish()),
+      deviceTitle: z.lazy(() => definedNonNullAnySchema.nullish()),
+      filters: z.lazy(() => definedNonNullAnySchema.nullish()),
+      forceNoindex: z.lazy(() => definedNonNullAnySchema.nullish()),
+      h1: z.lazy(() => definedNonNullAnySchema.nullish()),
+      handle: z.lazy(() => definedNonNullAnySchema.nullish()),
+      hideFromParent: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      legacyDescription: z.lazy(() => definedNonNullAnySchema.nullish()),
+      legacyPageId: z.lazy(() => definedNonNullAnySchema.nullish()),
+      locale: z.lazy(() => definedNonNullAnySchema.nullish()),
+      localizations: z.lazy(() => definedNonNullAnySchema.nullish()),
+      metaDescription: z.lazy(() => definedNonNullAnySchema.nullish()),
+      metaTitle: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      parent: z.lazy(() => definedNonNullAnySchema.nullish()),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      sortPriority: z.lazy(() => definedNonNullAnySchema.nullish()),
+      tagline: z.lazy(() => definedNonNullAnySchema.nullish()),
+      title: z.lazy(() => definedNonNullAnySchema.nullish()),
+      type: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -835,7 +705,7 @@ export function ProductListInputSchema(): z.ZodObject<
       sortPriority: z.number().nullish(),
       tagline: z.string().nullish(),
       title: z.string().nullish(),
-      type: Enum_Productlist_TypeSchema.nullish(),
+      type: definedNonNullAnySchema.nullish(),
    });
 }
 
@@ -845,20 +715,16 @@ export function SocialPostFiltersInputSchema(): z.ZodObject<
    Properties<SocialPostFiltersInput>
 > {
    return z.object<Properties<SocialPostFiltersInput>>({
-      and: z
-         .array(z.lazy(() => SocialPostFiltersInputSchema().nullable()))
-         .nullish(),
-      author: z.lazy(() => StringFilterInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      not: z.lazy(() => SocialPostFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => SocialPostFiltersInputSchema().nullable()))
-         .nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      title: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      url: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      author: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      title: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      url: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -878,44 +744,34 @@ export function StoreFiltersInputSchema(): z.ZodObject<
    Properties<StoreFiltersInput>
 > {
    return z.object<Properties<StoreFiltersInput>>({
-      and: z
-         .array(z.lazy(() => StoreFiltersInputSchema().nullable()))
-         .nullish(),
-      code: z.lazy(() => StringFilterInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      currency: z.lazy(() => StringFilterInputSchema().nullish()),
-      footer: z.lazy(() => ComponentStoreFooterFiltersInputSchema().nullish()),
-      header: z.lazy(() => ComponentStoreHeaderFiltersInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => StoreFiltersInputSchema().nullish()),
-      or: z.array(z.lazy(() => StoreFiltersInputSchema().nullable())).nullish(),
-      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      shopifySettings: z.lazy(() =>
-         ComponentStoreShopifySettingsFiltersInputSchema().nullish()
-      ),
-      socialMediaAccounts: z.lazy(() =>
-         ComponentStoreSocialMediaAccountsFiltersInputSchema().nullish()
-      ),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      url: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      code: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      currency: z.lazy(() => definedNonNullAnySchema.nullish()),
+      footer: z.lazy(() => definedNonNullAnySchema.nullish()),
+      header: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      publishedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      shopifySettings: z.lazy(() => definedNonNullAnySchema.nullish()),
+      socialMediaAccounts: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      url: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
 export function StoreInputSchema(): z.ZodObject<Properties<StoreInput>> {
    return z.object<Properties<StoreInput>>({
       code: z.string().nullish(),
-      currency: Enum_Store_CurrencySchema.nullish(),
-      footer: z.lazy(() => ComponentStoreFooterInputSchema().nullish()),
-      header: z.lazy(() => ComponentStoreHeaderInputSchema().nullish()),
+      currency: definedNonNullAnySchema.nullish(),
+      footer: z.lazy(() => definedNonNullAnySchema.nullish()),
+      header: z.lazy(() => definedNonNullAnySchema.nullish()),
       name: z.string().nullish(),
       publishedAt: definedNonNullAnySchema.nullish(),
-      shopifySettings: z.lazy(() =>
-         ComponentStoreShopifySettingsInputSchema().nullish()
-      ),
-      socialMediaAccounts: z.lazy(() =>
-         ComponentStoreSocialMediaAccountsInputSchema().nullish()
-      ),
+      shopifySettings: z.lazy(() => definedNonNullAnySchema.nullish()),
+      socialMediaAccounts: z.lazy(() => definedNonNullAnySchema.nullish()),
       url: z.string().nullish(),
    });
 }
@@ -937,7 +793,7 @@ export function StringFilterInputSchema(): z.ZodObject<
       lt: z.string().nullish(),
       lte: z.string().nullish(),
       ne: z.string().nullish(),
-      not: z.lazy(() => StringFilterInputSchema().nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
       notContains: z.string().nullish(),
       notContainsi: z.string().nullish(),
       notIn: z.array(z.string().nullable()).nullish(),
@@ -952,32 +808,28 @@ export function UploadFileFiltersInputSchema(): z.ZodObject<
    Properties<UploadFileFiltersInput>
 > {
    return z.object<Properties<UploadFileFiltersInput>>({
-      alternativeText: z.lazy(() => StringFilterInputSchema().nullish()),
-      and: z
-         .array(z.lazy(() => UploadFileFiltersInputSchema().nullable()))
-         .nullish(),
-      caption: z.lazy(() => StringFilterInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      ext: z.lazy(() => StringFilterInputSchema().nullish()),
-      folder: z.lazy(() => UploadFolderFiltersInputSchema().nullish()),
-      folderPath: z.lazy(() => StringFilterInputSchema().nullish()),
-      formats: z.lazy(() => JsonFilterInputSchema().nullish()),
-      hash: z.lazy(() => StringFilterInputSchema().nullish()),
-      height: z.lazy(() => IntFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      mime: z.lazy(() => StringFilterInputSchema().nullish()),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => UploadFileFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => UploadFileFiltersInputSchema().nullable()))
-         .nullish(),
-      previewUrl: z.lazy(() => StringFilterInputSchema().nullish()),
-      provider: z.lazy(() => StringFilterInputSchema().nullish()),
-      provider_metadata: z.lazy(() => JsonFilterInputSchema().nullish()),
-      size: z.lazy(() => FloatFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      url: z.lazy(() => StringFilterInputSchema().nullish()),
-      width: z.lazy(() => IntFilterInputSchema().nullish()),
+      alternativeText: z.lazy(() => definedNonNullAnySchema.nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      caption: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      ext: z.lazy(() => definedNonNullAnySchema.nullish()),
+      folder: z.lazy(() => definedNonNullAnySchema.nullish()),
+      folderPath: z.lazy(() => definedNonNullAnySchema.nullish()),
+      formats: z.lazy(() => definedNonNullAnySchema.nullish()),
+      hash: z.lazy(() => definedNonNullAnySchema.nullish()),
+      height: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      mime: z.lazy(() => definedNonNullAnySchema.nullish()),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      previewUrl: z.lazy(() => definedNonNullAnySchema.nullish()),
+      provider: z.lazy(() => definedNonNullAnySchema.nullish()),
+      provider_metadata: z.lazy(() => definedNonNullAnySchema.nullish()),
+      size: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      url: z.lazy(() => definedNonNullAnySchema.nullish()),
+      width: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -1008,22 +860,18 @@ export function UploadFolderFiltersInputSchema(): z.ZodObject<
    Properties<UploadFolderFiltersInput>
 > {
    return z.object<Properties<UploadFolderFiltersInput>>({
-      and: z
-         .array(z.lazy(() => UploadFolderFiltersInputSchema().nullable()))
-         .nullish(),
-      children: z.lazy(() => UploadFolderFiltersInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      files: z.lazy(() => UploadFileFiltersInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => UploadFolderFiltersInputSchema().nullish()),
-      or: z
-         .array(z.lazy(() => UploadFolderFiltersInputSchema().nullable()))
-         .nullish(),
-      parent: z.lazy(() => UploadFolderFiltersInputSchema().nullish()),
-      path: z.lazy(() => StringFilterInputSchema().nullish()),
-      pathId: z.lazy(() => IntFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      children: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      files: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      parent: z.lazy(() => definedNonNullAnySchema.nullish()),
+      path: z.lazy(() => definedNonNullAnySchema.nullish()),
+      pathId: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -1054,28 +902,14 @@ export function UsersPermissionsPermissionFiltersInputSchema(): z.ZodObject<
    Properties<UsersPermissionsPermissionFiltersInput>
 > {
    return z.object<Properties<UsersPermissionsPermissionFiltersInput>>({
-      action: z.lazy(() => StringFilterInputSchema().nullish()),
-      and: z
-         .array(
-            z.lazy(() =>
-               UsersPermissionsPermissionFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      not: z.lazy(() =>
-         UsersPermissionsPermissionFiltersInputSchema().nullish()
-      ),
-      or: z
-         .array(
-            z.lazy(() =>
-               UsersPermissionsPermissionFiltersInputSchema().nullable()
-            )
-         )
-         .nullish(),
-      role: z.lazy(() => UsersPermissionsRoleFiltersInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      action: z.lazy(() => definedNonNullAnySchema.nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      role: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -1093,27 +927,17 @@ export function UsersPermissionsRoleFiltersInputSchema(): z.ZodObject<
    Properties<UsersPermissionsRoleFiltersInput>
 > {
    return z.object<Properties<UsersPermissionsRoleFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => UsersPermissionsRoleFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      description: z.lazy(() => StringFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      name: z.lazy(() => StringFilterInputSchema().nullish()),
-      not: z.lazy(() => UsersPermissionsRoleFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => UsersPermissionsRoleFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      permissions: z.lazy(() =>
-         UsersPermissionsPermissionFiltersInputSchema().nullish()
-      ),
-      type: z.lazy(() => StringFilterInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      users: z.lazy(() => UsersPermissionsUserFiltersInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      description: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      name: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      permissions: z.lazy(() => definedNonNullAnySchema.nullish()),
+      type: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      users: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 
@@ -1133,29 +957,21 @@ export function UsersPermissionsUserFiltersInputSchema(): z.ZodObject<
    Properties<UsersPermissionsUserFiltersInput>
 > {
    return z.object<Properties<UsersPermissionsUserFiltersInput>>({
-      and: z
-         .array(
-            z.lazy(() => UsersPermissionsUserFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      blocked: z.lazy(() => BooleanFilterInputSchema().nullish()),
-      confirmationToken: z.lazy(() => StringFilterInputSchema().nullish()),
-      confirmed: z.lazy(() => BooleanFilterInputSchema().nullish()),
-      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      email: z.lazy(() => StringFilterInputSchema().nullish()),
-      id: z.lazy(() => IdFilterInputSchema().nullish()),
-      not: z.lazy(() => UsersPermissionsUserFiltersInputSchema().nullish()),
-      or: z
-         .array(
-            z.lazy(() => UsersPermissionsUserFiltersInputSchema().nullable())
-         )
-         .nullish(),
-      password: z.lazy(() => StringFilterInputSchema().nullish()),
-      provider: z.lazy(() => StringFilterInputSchema().nullish()),
-      resetPasswordToken: z.lazy(() => StringFilterInputSchema().nullish()),
-      role: z.lazy(() => UsersPermissionsRoleFiltersInputSchema().nullish()),
-      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      username: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      blocked: z.lazy(() => definedNonNullAnySchema.nullish()),
+      confirmationToken: z.lazy(() => definedNonNullAnySchema.nullish()),
+      confirmed: z.lazy(() => definedNonNullAnySchema.nullish()),
+      createdAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      email: z.lazy(() => definedNonNullAnySchema.nullish()),
+      id: z.lazy(() => definedNonNullAnySchema.nullish()),
+      not: z.lazy(() => definedNonNullAnySchema.nullish()),
+      or: z.array(z.lazy(() => definedNonNullAnySchema.nullable())).nullish(),
+      password: z.lazy(() => definedNonNullAnySchema.nullish()),
+      provider: z.lazy(() => definedNonNullAnySchema.nullish()),
+      resetPasswordToken: z.lazy(() => definedNonNullAnySchema.nullish()),
+      role: z.lazy(() => definedNonNullAnySchema.nullish()),
+      updatedAt: z.lazy(() => definedNonNullAnySchema.nullish()),
+      username: z.lazy(() => definedNonNullAnySchema.nullish()),
    });
 }
 

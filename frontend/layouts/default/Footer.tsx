@@ -117,7 +117,7 @@ export function CartFooter({
                            >
                               {partner.image?.url ? (
                                  <ResponsiveImage
-                                    layout="fill"
+                                    fill
                                     objectFit="contain"
                                     src={partner.image.url}
                                     alt={
@@ -128,7 +128,7 @@ export function CartFooter({
                                  />
                               ) : (
                                  <ResponsiveImage
-                                    layout="fill"
+                                    fill
                                     objectFit="contain"
                                     alt="no-image"
                                     src={noImageFixie}

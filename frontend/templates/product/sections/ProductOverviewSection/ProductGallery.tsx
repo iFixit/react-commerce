@@ -368,7 +368,7 @@ function ImageWithZoom({
                   priority={index === 0}
                   src={image.url}
                   alt={image.altText ?? ''}
-                  layout="fill"
+                  fill
                   objectFit="contain"
                   sizes="(max-width: 767px) 100vw, 700px"
                   onLoadingComplete={(dimensions) => {
@@ -513,7 +513,7 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
             <ResponsiveImage
                src={image.url}
                alt={image.altText ?? ''}
-               layout="fill"
+               fill
                objectFit="contain"
                sizes="100px"
             />

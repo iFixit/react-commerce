@@ -46,7 +46,7 @@ function BannerGridItem({ banner }: BannerProps) {
                <ResponsiveImage
                   src={banner.image.url}
                   alt={banner.image.altText ?? ''}
-                  layout="fill"
+                  fill
                   objectFit="cover"
                />
             </AspectRatio>

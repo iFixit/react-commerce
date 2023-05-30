@@ -45,7 +45,7 @@ export function PostCard({
                   <ResponsiveImage
                      src={imageSrc}
                      alt={imageAlt}
-                     layout="fill"
+                     fill
                      objectFit="cover"
                      sizes="50vw"
                   />

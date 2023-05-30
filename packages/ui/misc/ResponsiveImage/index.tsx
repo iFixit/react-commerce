@@ -25,14 +25,20 @@ export function ResponsiveImage(props: ImageProps) {
       }
    }
 
+   const style = props.fill
+      ? {
+           maxWidth: '100%',
+        }
+      : {
+           maxWidth: '100%',
+           height: 'auto',
+        };
+
    return (
       <Image
          loader={loader}
          unoptimized={unoptimized}
-         style={{
-            maxWidth: '100%',
-            height: 'auto',
-         }}
+         style={style}
          {...props}
       />
    );

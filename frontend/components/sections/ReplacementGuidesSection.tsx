@@ -136,7 +136,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                      src={guide.imageUrl}
                      alt=""
                      objectFit="cover"
-                     layout="fill"
+                     fill
                      sizes="20vw"
                      priority
                   />

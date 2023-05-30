@@ -49,7 +49,7 @@ export const ProductCardImage = ({ src, alt = '' }: ProductCardImageProps) => {
          >
             <ResponsiveImage
                sizes="30vw"
-               layout="fill"
+               fill
                src={placeholderImageUrl}
                alt={alt}
             />
@@ -67,7 +67,7 @@ export const ProductCardImage = ({ src, alt = '' }: ProductCardImageProps) => {
       >
          <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
-            layout="fill"
+            fill
             objectFit="contain"
             src={src}
             alt={alt}

@@ -16,18 +16,14 @@ export type Scalars = {
    Boolean: boolean;
    Int: number;
    Float: number;
-   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
    DateTime: any;
-   /** A string used to identify an i18n locale */
    I18NLocaleCode: any;
-   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
    JSON: any;
    MenuItemsDynamicZoneInput: any;
    PageSectionsDynamicZoneInput: any;
    ProductListItemOverridesDynamicZoneInput: any;
    ProductListSectionsDynamicZoneInput: any;
    ProductSectionsDynamicZoneInput: any;
-   /** The `Upload` scalar type represents a file upload. */
    Upload: any;
 };
 
@@ -5370,7 +5366,7 @@ export type Requester<C = {}, E = unknown> = <R, V>(
    doc: string,
    vars?: V,
    options?: C
-) => Promise<R>;
+) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
    return {
       findPage(
@@ -5381,7 +5377,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             FindPageDocument,
             variables,
             options
-         );
+         ) as Promise<FindPageQuery>;
       },
       findProduct(
          variables?: FindProductQueryVariables,
@@ -5391,7 +5387,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             FindProductDocument,
             variables,
             options
-         );
+         ) as Promise<FindProductQuery>;
       },
       findStore(
          variables?: FindStoreQueryVariables,
@@ -5401,7 +5397,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             FindStoreDocument,
             variables,
             options
-         );
+         ) as Promise<FindStoreQuery>;
       },
       getGlobalSettings(
          variables?: GetGlobalSettingsQueryVariables,
@@ -5410,7 +5406,11 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
          return requester<
             GetGlobalSettingsQuery,
             GetGlobalSettingsQueryVariables
-         >(GetGlobalSettingsDocument, variables, options);
+         >(
+            GetGlobalSettingsDocument,
+            variables,
+            options
+         ) as Promise<GetGlobalSettingsQuery>;
       },
       getProductList(
          variables?: GetProductListQueryVariables,
@@ -5420,7 +5420,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             GetProductListDocument,
             variables,
             options
-         );
+         ) as Promise<GetProductListQuery>;
       },
       getStoreList(
          variables?: GetStoreListQueryVariables,
@@ -5430,7 +5430,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             GetStoreListDocument,
             variables,
             options
-         );
+         ) as Promise<GetStoreListQuery>;
       },
    };
 }

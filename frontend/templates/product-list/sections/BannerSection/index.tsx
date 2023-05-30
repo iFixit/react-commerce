@@ -24,12 +24,7 @@ export function BannerSection({
          overflow="hidden"
          position="relative"
       >
-         <ResponsiveImage
-            src={backgroundImage}
-            alt=""
-            layout="fill"
-            objectFit="cover"
-         />
+         <ResponsiveImage src={backgroundImage} alt="" fill objectFit="cover" />
          <Flex
             px={{
                base: 6,

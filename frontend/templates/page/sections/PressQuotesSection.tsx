@@ -113,7 +113,7 @@ function Quote({ quote, isActive, isFarFromView, isLooping }: QuoteProps) {
                src={quote.company.logo.url}
                alt={quote.company.logo.altText ?? ''}
                objectFit="contain"
-               layout="fill"
+               fill
             />
          </Box>
          <Box

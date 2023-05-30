@@ -50,7 +50,7 @@ export function SplitWithImageContentSection({
                   src={image.url}
                   alt={image.altText ?? ''}
                   objectFit="cover"
-                  layout="fill"
+                  fill
                />
             </Box>
          )}

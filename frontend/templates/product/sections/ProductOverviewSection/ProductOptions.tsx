@@ -275,7 +275,13 @@ function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
    }
 
    return (
-      <Box h="16" position="relative" mb="1" opacity={exactMatch ? 1 : 0.4}>
+      <Flex
+         justify="center"
+         h="16"
+         position="relative"
+         mb="1"
+         opacity={exactMatch ? 1 : 0.4}
+      >
          <ResponsiveImage
             height={64 /* chakra theme sizes.16 = 4em == 70 */}
             width={64}
@@ -283,6 +289,6 @@ function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
             alt=""
             objectFit="contain"
          />
-      </Box>
+      </Flex>
    );
 }

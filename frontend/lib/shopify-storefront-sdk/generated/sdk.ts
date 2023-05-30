@@ -6936,7 +6936,7 @@ export type Requester<C = {}, E = unknown> = <R, V>(
    doc: string,
    vars?: V,
    options?: C
-) => Promise<R>;
+) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
    return {
       findProduct(
@@ -6947,7 +6947,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             FindProductDocument,
             variables,
             options
-         );
+         ) as Promise<FindProductQuery>;
       },
    };
 }

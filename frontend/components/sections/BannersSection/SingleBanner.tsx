@@ -25,7 +25,7 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
                <ResponsiveImage
                   src={banner.image.url}
                   alt=""
-                  layout="fill"
+                  fill
                   objectFit="cover"
                />
             </Box>
