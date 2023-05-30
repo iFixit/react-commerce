@@ -59,7 +59,7 @@ export function FilterableProductsSection({
    productList,
    algoliaSSR,
 }: SectionProps) {
-   const { hits } = useHits<ProductSearchHit>();
+   const { hits } = useHits<ProductSearchHit>({ escapeHTML: false });
    const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
 
    const products = React.useMemo(

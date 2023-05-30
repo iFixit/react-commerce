@@ -13,7 +13,7 @@ type HierarchicalFacet =
    SearchResults<ProductSearchHit>['hierarchicalFacets'][number];
 
 export function useHasAnyVisibleFacet(productList: TProductList): boolean {
-   const { results } = useHits<ProductSearchHit>();
+   const { results } = useHits<ProductSearchHit>({ escapeHTML: false });
    const activeFacetsName = useFilteredFacets(productList);
 
    if (!results) {
