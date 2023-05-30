@@ -2,7 +2,10 @@ import {
    PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT,
    PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
 } from '@config/constants';
-import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
+import {
+   useRefinementList,
+   usePagination,
+} from 'react-instantsearch-hooks-web';
 import { useSortBy } from './useSortBy';
 
 export type RefinementListFacetState = ReturnType<
@@ -24,8 +27,7 @@ export function useRefinementListFacet({
       showMore: true,
       showMoreLimit: PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
    });
-   const { results } = useHits();
-   const hitsCount = results?.nbHits ?? 0;
+   const { nbHits: hitsCount } = usePagination();
    const isAnyRefined = items.some((item) => item.isRefined);
    const filteredItems =
       isAnyRefined || isPriceRange

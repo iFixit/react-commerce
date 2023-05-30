@@ -1,5 +1,5 @@
 import { ProductList, ProductListType } from '@models/product-list';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { usePagination } from 'react-instantsearch-hooks-web';
 
 export type UseFacetAccordionItemProps = {
    attribute: string;
@@ -12,8 +12,8 @@ export function useFacetAccordionItemState({
    hasApplicableRefinements,
    productList,
 }: UseFacetAccordionItemProps) {
-   const { hits } = useHits();
-   const isProductListEmpty = hits.length === 0;
+   const { nbHits } = usePagination();
+   const isProductListEmpty = nbHits < 1;
    const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 
    const isProductListEmptyState =

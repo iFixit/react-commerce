@@ -6,7 +6,7 @@ import NextLink from 'next/link';
 import * as React from 'react';
 import {
    useCurrentRefinements,
-   useHits,
+   usePagination,
    useSearchBox,
 } from 'react-instantsearch-hooks-web';
 import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
@@ -25,7 +25,7 @@ export function ProductListChildrenSection({
 
    const { items } = useCurrentRefinements();
    const { query } = useSearchBox();
-   const { hits } = useHits();
+   const { nbHits } = usePagination();
    const itemType = useDevicePartsItemType(productList);
 
    const childrenCount = productListChildren.length;
@@ -33,10 +33,8 @@ export function ProductListChildrenSection({
       const nonItemTypeRefinements = items.filter(
          (item) => item.attribute !== 'facet_tags.Item Type'
       );
-      return (
-         !hits.length && itemType && !nonItemTypeRefinements.length && !query
-      );
-   }, [items, itemType, hits, query]);
+      return !nbHits && itemType && !nonItemTypeRefinements.length && !query;
+   }, [items, itemType, nbHits, query]);
 
    return isUnfilteredItemTypeWithNoHits ? null : (
       <Box>
