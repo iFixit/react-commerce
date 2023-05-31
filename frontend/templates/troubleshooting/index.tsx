@@ -38,6 +38,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
+import { solutionHeadingToId } from './utils/solutionHeadingToId';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -134,7 +135,7 @@ function TableOfContents({ solutions }: { solutions: Section[] }) {
          {solutions.map((solution, index) => (
             <Link
                key={solution.heading}
-               href={`#${solution.heading.toLowerCase().replace(/\s/g, '-')}`}
+               href={`#${solutionHeadingToId(solution.heading)}`}
                fontWeight="medium"
                display="flex"
             >

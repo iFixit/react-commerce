@@ -2,6 +2,7 @@ import * as React from 'react';
 import { forwardRef, Heading, HeadingProps, Link } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faLink } from '@fortawesome/pro-solid-svg-icons';
+import { solutionHeadingToId } from '../utils/solutionHeadingToId';
 
 export interface HeadingSelfLinkProps {
    children: string;
@@ -13,19 +14,20 @@ export const HeadingSelfLink = forwardRef<
    'h2'
 >(({ children, selfLinked, ...props }, ref) => {
    const solutionHeading = children as string;
-   const solutionHeadingId = solutionHeading.toLowerCase().replace(/ /g, '-');
 
    return (
       <Heading
          display="flex"
          sx={{ _hover: { '& .heading_link-icon': { opacity: '1' } } }}
-         {...(selfLinked === true && { id: solutionHeadingId })}
+         {...(selfLinked === true && {
+            id: solutionHeadingToId(solutionHeading),
+         })}
          {...props}
          {...ref}
       >
          {children}
          <Link
-            href={`#${solutionHeadingId}`}
+            href={`#${solutionHeadingToId(solutionHeading)}`}
             display="inline-flex"
             placeItems="center start"
             paddingLeft={2}
