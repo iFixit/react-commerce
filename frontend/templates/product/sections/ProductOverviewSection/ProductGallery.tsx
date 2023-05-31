@@ -369,7 +369,9 @@ function ImageWithZoom({
                   src={image.url}
                   alt={image.altText ?? ''}
                   fill
-                  objectFit="contain"
+                  style={{
+                     objectFit: 'contain',
+                  }}
                   sizes="(max-width: 767px) 100vw, 700px"
                   onLoadingComplete={(dimensions) => {
                      galleryImageDimensionsRef.current = dimensions;
@@ -514,7 +516,9 @@ function ImageThumbnail({ image, active, onClick }: ImageThumbnailProps) {
                src={image.url}
                alt={image.altText ?? ''}
                fill
-               objectFit="contain"
+               style={{
+                  objectFit: 'contain',
+               }}
                sizes="100px"
             />
          </Flex>

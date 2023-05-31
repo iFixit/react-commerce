@@ -287,7 +287,9 @@ function ProductOptionImage({ image, exactMatch }: ProductOptionImageProps) {
             width={64}
             src={image.url}
             alt=""
-            objectFit="contain"
+            style={{
+               objectFit: 'contain',
+            }}
          />
       </Flex>
    );

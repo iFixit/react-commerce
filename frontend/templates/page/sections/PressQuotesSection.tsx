@@ -112,7 +112,9 @@ function Quote({ quote, isActive, isFarFromView, isLooping }: QuoteProps) {
             <ResponsiveImage
                src={quote.company.logo.url}
                alt={quote.company.logo.altText ?? ''}
-               objectFit="contain"
+               style={{
+                  objectFit: 'contain',
+               }}
                fill
             />
          </Box>

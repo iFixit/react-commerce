@@ -118,21 +118,25 @@ export function CartFooter({
                               {partner.image?.url ? (
                                  <ResponsiveImage
                                     fill
-                                    objectFit="contain"
+                                    style={{
+                                       objectFit: 'contain',
+                                       filter: 'grayscale(100%)',
+                                    }}
                                     src={partner.image.url}
                                     alt={
                                        partner.image?.alternativeText ||
                                        `${partner.name} logo`
                                     }
-                                    style={{ filter: 'grayscale(100%)' }}
                                  />
                               ) : (
                                  <ResponsiveImage
                                     fill
-                                    objectFit="contain"
                                     alt="no-image"
                                     src={noImageFixie}
-                                    style={{ filter: 'grayscale(100%)' }}
+                                    style={{
+                                       objectFit: 'contain',
+                                       filter: 'grayscale(100%)',
+                                    }}
                                  />
                               )}
                            </FooterPartnerLink>

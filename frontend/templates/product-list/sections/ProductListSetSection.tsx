@@ -72,7 +72,9 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                      alt=""
                      width={80}
                      height={60}
-                     objectFit="contain"
+                     style={{
+                        objectFit: 'contain',
+                     }}
                   />
                </Flex>
             )}

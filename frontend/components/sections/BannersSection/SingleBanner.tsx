@@ -26,7 +26,9 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
                   src={banner.image.url}
                   alt=""
                   fill
-                  objectFit="cover"
+                  style={{
+                     objectFit: 'cover',
+                  }}
                />
             </Box>
          )}

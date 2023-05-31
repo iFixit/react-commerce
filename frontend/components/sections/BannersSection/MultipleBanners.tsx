@@ -47,7 +47,9 @@ function BannerGridItem({ banner }: BannerProps) {
                   src={banner.image.url}
                   alt={banner.image.altText ?? ''}
                   fill
-                  objectFit="cover"
+                  style={{
+                     objectFit: 'cover',
+                  }}
                />
             </AspectRatio>
          )}

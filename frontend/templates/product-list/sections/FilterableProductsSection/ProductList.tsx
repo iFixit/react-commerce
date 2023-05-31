@@ -97,7 +97,9 @@ export function ProductListItem({ product }: ProductListItemProps) {
                   <ResponsiveImage
                      src={product.image_url}
                      alt={product.title}
-                     objectFit="contain"
+                     style={{
+                        objectFit: 'contain',
+                     }}
                      width={320}
                      height={320}
                   />

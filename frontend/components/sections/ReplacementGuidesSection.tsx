@@ -135,7 +135,9 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                   <ResponsiveImage
                      src={guide.imageUrl}
                      alt=""
-                     objectFit="cover"
+                     style={{
+                        objectFit: 'cover',
+                     }}
                      fill
                      sizes="20vw"
                      priority

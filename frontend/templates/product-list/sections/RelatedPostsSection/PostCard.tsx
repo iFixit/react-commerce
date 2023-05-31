@@ -46,7 +46,9 @@ export function PostCard({
                      src={imageSrc}
                      alt={imageAlt}
                      fill
-                     objectFit="cover"
+                     style={{
+                        objectFit: 'cover',
+                     }}
                      sizes="50vw"
                   />
                </Box>

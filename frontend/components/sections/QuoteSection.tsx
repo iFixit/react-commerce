@@ -38,7 +38,14 @@ export function QuoteSection({ id, quote, author, image }: QuoteSectionProps) {
                bottom="0"
                right="0"
             >
-               <ResponsiveImage src={image.url} alt="" fill objectFit="cover" />
+               <ResponsiveImage
+                  src={image.url}
+                  alt=""
+                  fill
+                  style={{
+                     objectFit: 'cover',
+                  }}
+               />
             </Box>
          )}
          <Wrapper>

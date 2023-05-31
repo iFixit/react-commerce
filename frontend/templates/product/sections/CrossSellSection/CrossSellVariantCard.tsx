@@ -242,7 +242,9 @@ export const CardImage = ({ src, alt = '' }: CardImageProps) => {
          <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
             fill
-            objectFit="contain"
+            style={{
+               objectFit: 'contain',
+            }}
             src={src}
             alt={alt}
          />

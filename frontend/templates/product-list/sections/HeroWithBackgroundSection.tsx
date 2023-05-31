@@ -30,10 +30,12 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
          <ResponsiveImage
             priority
             fill
-            objectFit="cover"
+            style={{
+               objectFit: 'cover',
+               zIndex: -1,
+            }}
             src={productList.heroImage!.url}
             alt={productList.heroImage!.alternativeText ?? ''}
-            style={{ zIndex: -1 }}
          />
 
          <Box

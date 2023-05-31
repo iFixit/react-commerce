@@ -38,7 +38,7 @@ export function ResponsiveImage(props: ImageProps) {
       <Image
          loader={loader}
          unoptimized={unoptimized}
-         style={style}
+         style={{ ...style, ...props.style }}
          {...props}
       />
    );

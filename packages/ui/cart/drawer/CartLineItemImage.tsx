@@ -26,7 +26,9 @@ export function CartLineItemImage({ src, alt }: CartLineItemImageProps) {
                priority
                height={62}
                width={62}
-               objectFit="cover"
+               style={{
+                  objectFit: 'cover',
+               }}
             />
          ) : (
             <Center bgColor="gray.100" h="full">
