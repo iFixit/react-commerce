@@ -5,7 +5,8 @@
    "types": "./Breadcrumbs.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/icons": "workspace:*"
+      "@ifixit/icons": "workspace:*",
+      "@ifixit/ui": "workspace:*"
    },
    "peerDependencies": {
       "@babel/core": "7.17.9",

@@ -20,34 +20,43 @@ Here's one way you can get all the right versions installed and setup:
 
 ### Setup
 
-This command will install both backend and frontend dependencies:
+#### Setup strapi Env file
 
-Copy `.env.local.example` to `.env.local` and fill in the values.
+1. Copy `backend/.env.example` to `backend/.env`
+
+#### Setup next.js environment file (with vercel account)
+
+1. Setup pnpm so installed modules are in your PATH:
+
+-  `pnpm setup && source ~/.bashrc` (if you haven't already done so)
+
+2. Install vercel cli: `pnpm install -g vercel`
+3. `vercel login`
+4. `cd path/to/this/repo && vercel link --project=react-commerce`
+5. Choose the `iFixit` scope when it asks which scope to use
+6. `vercel env pull`
+7. `ln -s ../.env frontend/.env.local`
+
+#### Setup next.js environment file (without vercel account)
+
+1. Copy `frontend/.env.local.example` to `frontend/.env.local`
+2. Fill in the Algolia API Key
+   -  In `frontend/.env.local` fill in `ALGOLIA_API_KEY` by either:
+      -  Copying the `Search API Key` [from Algolia](https://www.algolia.com/account/api-keys/all?applicationId=XQEP3AD9ZT)
+         -  :warning: You may need to ask for access to our Algolia
+      -  Or copying the dev key from Cominor:
+         ```sh
+         cat /etc/dozuki/algolia-keys.json | jq --raw-output .searchApiKey
+         ```
+   -  Note: `SENTRY_AUTH_TOKEN` is not needed in development
+
+#### Install Dependencies
+
+This command will install both backend and frontend dependencies:
 
 ```sh
 pnpm install:all
 ```
-
-#### Copy the environment files to local
-
-1. Copy `backend/.env.example` to `backend/.env`
-2. Copy `frontend/.env.local.example` to `frontend/.env.local`
-
-#### Fill in the Algolia API Key
-
-In `frontend/.env.local` fill in `ALGOLIA_API_KEY` by either:
-
--  Copying the `Search API Key` [from Algolia](https://www.algolia.com/account/api-keys/all?applicationId=XQEP3AD9ZT)
-
-   -  :warning: You may need to ask for access to our Algolia
-
--  Or copy the dev key from Cominor:
-
-   ```sh
-   cat /etc/dozuki/algolia-keys.json | jq --raw-output .searchApiKey
-   ```
-
-> Note: `SENTRY_AUTH_TOKEN` is not needed in development
 
 ### Start dev server
 

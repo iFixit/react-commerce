@@ -13,9 +13,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
-import { flags } from '@config/flags';
-import { getProductPath } from '@helpers/product-helpers';
-import { useAppContext } from '@ifixit/app';
+import { productPath } from '@helpers/path-helpers';
 import {
    IconBadge,
    ProductVariantPrice,
@@ -54,8 +52,6 @@ export interface ProductListItemProps {
 }
 
 export function ProductListItem({ product }: ProductListItemProps) {
-   const appContext = useAppContext();
-
    const { price, compareAtPrice, isDiscounted, percentage, proPricesByTier } =
       useProductSearchHitPricing(product);
 
@@ -230,13 +226,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            Only {quantityAvailable} left in stock
                         </Text>
                      )}
-                     <LinkOverlay
-                        href={
-                           flags.PRODUCT_PAGE_ENABLED
-                              ? getProductPath(product.handle)
-                              : `${appContext.ifixitOrigin}${product.url}`
-                        }
-                     >
+                     <LinkOverlay href={productPath(product.handle)}>
                         <Button as="div" minW="20" colorScheme="brand">
                            View
                         </Button>

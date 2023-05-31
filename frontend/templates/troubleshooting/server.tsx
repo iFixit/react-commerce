@@ -15,6 +15,15 @@ import Product from '@pages/api/nextjs/cache/product';
 import type { Product as ProductType } from '@models/product';
 import { hasDisableCacheGets } from '../../helpers/next-helpers';
 
+function rethrowUnless404(e: any) {
+   // If e is from IFixitAPIClient and fetch() didn't error,
+   // e.message is the response's statusText
+   if (typeof e === 'object' && (e as Error)?.message === 'Not Found') {
+      return;
+   }
+   throw e;
+}
+
 export const getServerSideProps: GetServerSideProps<
    TroubleshootingProps
 > = async (context) => {
@@ -37,14 +46,18 @@ export const getServerSideProps: GetServerSideProps<
       solution: ApiSolutionSection
    ): Promise<SolutionSection> {
       const guides = await Promise.all(
-         solution.guides.map(
-            (guideid: number) =>
+         solution.guides.map((guideid: number) => {
+            return (
                client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
-         )
+            ).catch((error) => {
+               rethrowUnless404(error);
+               return null;
+            });
+         })
       );
       const products: ('' | null | ProductType)[] = await Promise.all(
-         solution.products.map(
-            (handle: string | null) =>
+         solution.products.map((handle: string | null) => {
+            return (
                handle &&
                Product.get(
                   {
@@ -53,25 +66,34 @@ export const getServerSideProps: GetServerSideProps<
                      ifixitOrigin,
                   },
                   { forceMiss: hasDisableCacheGets(context) }
-               )
-         )
+               ).catch((error) => {
+                  rethrowUnless404(error);
+                  return null;
+               })
+            );
+         })
       );
       return {
          ...solution,
-         guides,
+         guides: guides.filter((guide): guide is Guide => Boolean(guide)),
          products: products.filter((product): product is ProductType =>
             Boolean(product)
          ),
       };
    }
 
-   const troubleshootingData = await client.get<TroubleshootingApiData>(
-      `Troubleshooting/${wikiname}`,
-      'troubleshooting',
-      {
-         credentials: 'include',
-      }
-   );
+   let troubleshootingData: TroubleshootingApiData;
+   try {
+      troubleshootingData = await client.get<TroubleshootingApiData>(
+         `Troubleshooting/${wikiname}`,
+         'troubleshooting'
+      );
+   } catch (e) {
+      rethrowUnless404(e);
+      return {
+         notFound: true,
+      };
+   }
 
    const solutions: SolutionSection[] = await Promise.all(
       troubleshootingData.solutions.map(fetchDataForSolution)
