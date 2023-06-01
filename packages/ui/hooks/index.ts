@@ -136,7 +136,8 @@ export function useSSRBreakpointValue<Value>(
 export function useExpiringLocalPreference<Data = any>(
    key: string,
    defaultData: Data,
-   expireInDays: number
+   expireInDays: number,
+   validator: (data: any) => Data | null
 ): [Data, (data: Data) => void] {
    type ExpiringData = {
       value: Data;
@@ -153,8 +154,9 @@ export function useExpiringLocalPreference<Data = any>(
             const expiresAt = Number.isInteger(data?.expires)
                ? data.expires
                : 0;
-            if (expiresAt && Date.now() < expiresAt) {
-               setData(data?.value);
+            const validData = validator(data?.value);
+            if (validData !== null && expiresAt && Date.now() < expiresAt) {
+               setData(validData);
             } else {
                localStorage.deleteIem(key);
             }
@@ -183,7 +185,8 @@ export function useExpiringLocalPreference<Data = any>(
  */
 export function useLocalPreference<Data = any>(
    key: string,
-   defaultData: Data
+   defaultData: Data,
+   validator: (data: any) => Data | null
 ): [Data, (data: Data) => void] {
    const [data, setData] = React.useState(defaultData);
 
@@ -191,8 +194,10 @@ export function useLocalPreference<Data = any>(
       try {
          const serializedData = localStorage.getItem(key);
          if (serializedData != null) {
-            const data = JSON.parse(serializedData);
-            setData(data as Data);
+            const data = validator(JSON.parse(serializedData));
+            if (data !== null) {
+               setData(data as Data);
+            }
          }
       } catch (error) {}
    }, []);

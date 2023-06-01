@@ -3,18 +3,7 @@ import { useLocalPreference } from '@ifixit/ui';
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
-export type User = {
-   id: number;
-   username: string;
-   handle: string | null;
-   thumbnail: string | null;
-   is_pro: boolean;
-   discountTier: string | null;
-   algoliaApiKeyProducts: string | null | undefined;
-   isAdmin: boolean;
-   teams: number[];
-   links: { [key: string]: any };
-};
+export type User = z.infer<typeof AuthenticatedUserSchema>;
 
 const userKeys = {
    user: ['user'],
@@ -22,11 +11,25 @@ const userKeys = {
 
 const userDataLocalKey = 'user.data.1';
 
+const AuthenticatedUserSchema = z.object({
+   id: z.number(),
+   username: z.string(),
+   handle: z.string().nullable(),
+   thumbnail: z.string().nullable(),
+   is_pro: z.boolean(),
+   algoliaApiKeyProducts: z.string().nullable(),
+   discountTier: z.string().nullable(),
+   isAdmin: z.boolean(),
+   teams: z.array(z.number()),
+   links: z.record(z.any()),
+});
+
 export function useAuthenticatedUser() {
    const apiClient = useIFixitApiClient();
    const [cachedUserData, setCachedUserData] = useLocalPreference<User | null>(
       userDataLocalKey,
-      null
+      null,
+      (data: any) => AuthenticatedUserSchema.parse(data)
    );
    const query = useQuery(
       userKeys.user,
@@ -79,7 +82,7 @@ async function fetchAuthenticatedUser(
       handle: userSchema.unique_username ?? null,
       thumbnail: userSchema.image?.thumbnail ?? null,
       is_pro: userSchema.discount_tier != null,
-      algoliaApiKeyProducts: userSchema.algoliaApiKeyProducts,
+      algoliaApiKeyProducts: userSchema.algoliaApiKeyProducts ?? null,
       discountTier: userSchema.discount_tier ?? null,
       isAdmin: userSchema.privileges.includes('Admin'),
       teams: userSchema.teams,
