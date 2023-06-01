@@ -8,5 +8,11 @@
    "linkTest": "<5>Link's</5> Awakening",
    "nameTitle": "This is your name",
    "messagesCount_one": "Hola <1>{{userName}}</1>, you have {{count}} unread message. <5>Go to message</5>.",
-   "messagesCount_other": "Hola <1>{{userName}}</1>, you have {{count}} unread messages.  <5>Go to messages</5>."
+   "messagesCount_other": "Hola <1>{{userName}}</1>, you have {{count}} unread messages.  <5>Go to messages</5>.",
+   "<strong>Hello, I am a component!</strong>": "<strong>¡Hola, soy un componente!</strong>",
+   "hello <italic>beautiful</italic> <bold>{{what}}</bold>": "hola <italic>bonita</italic> <bold>{{what}}</bold>",
+   "hello <i>beautiful</i> <strong>{{userName}}</strong>": "hola <i>bonita</i> <strong>{{userName}}</strong>",
+   "hello <italic>beautiful <bold>{{what}}</bold></italic>": "hola <italic>bonita <bold>{{what}}</bold></italic>",
+   "hello <boxy>beautiful {{what}}</boxy>": "hola <boxy>bonita {{what}}</boxy>",
+   "hello <linky>beautiful {{what}}</linky>": "hola <linky>bonita {{what}}</linky>"
 }

@@ -1,4 +1,12 @@
-import { Center, Divider, Heading, Text, VStack, Link } from '@chakra-ui/react';
+import {
+   Center,
+   Divider,
+   Heading,
+   Text,
+   VStack,
+   Link,
+   Box,
+} from '@chakra-ui/react';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { DefaultLayout } from '@layouts/default';
 import type { WithLayoutProps } from '@layouts/default/server';
@@ -27,6 +35,9 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
          fallbackLng: 'en',
          interpolation: {
             escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+         },
+         react: {
+            transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
          },
       });
 
@@ -140,6 +151,115 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
                   .
                </Trans>
             </div>
+
+            <br />
+            <Trans>
+               <strong>Hello, I am a component!</strong>
+            </Trans>
+            <Trans i18nKey="<strong>Hello, I am a component!</strong>">
+               <strong>Hello, I am a component!</strong>
+            </Trans>
+            {
+               // None of these uses seem to work; Use the below alternative method to render inline links
+               /* <Trans>
+               <Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages</Link>
+            </Trans>
+            <Trans>
+               <a color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages</a>
+            </Trans>
+            <Trans i18nKey="msgLink">
+               <a color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages</a>
+            </Trans>
+            <br />
+            <Trans i18nKey={"<Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages</Link>"}>
+               <Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages</Link>
+            </Trans>
+            <Trans>
+               <Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages Noindex</Link>
+            </Trans>
+            <Trans i18nKey={"<a color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages Noindex</a>"}>
+               <a color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages Noindex</a>
+            </Trans>
+            
+            // Associated Json lines:
+            "<Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages</Link>": "<1>Spanish: Go to messages</1>",
+            "msgLink": "<1>Spanish: Go to messages</1>",
+            "<a color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages Noindex</a>": "<a color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Spanish: Go to messages Noindex</a>",
+            "<Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Go to messages Noindex</Link>": "<Link color='blue' href='https://youtu.be/dQw4w9WgXcQ'>Spanish: Go to messages Noindex</Link>"
+            
+            */
+            }
+            <br />
+            {/* Alternative use of trans to declare components naming (allows skipping of indexing like <2>asdf</2>) */}
+            <Text>
+               <Trans i18nKey="hello <i>beautiful</i> <strong>{{userName}}</strong>">
+                  hello <i>beautiful</i> <strong>{{ userName }}</strong>
+               </Trans>
+            </Text>
+            <Text>
+               <Trans
+                  defaults="hello <italic>beautiful</italic> <bold>{{what}}</bold>"
+                  values={{ what: userName }}
+                  components={{ italic: <i />, bold: <strong /> }}
+               />
+            </Text>
+            <Text>
+               <Trans
+                  defaults="hello <boxy>beautiful {{what}}</boxy>"
+                  values={{ what: userName }}
+                  components={{ boxy: <div /> }}
+               />
+            </Text>
+            <Text>
+               <Trans
+                  defaults="hello <boxy>beautiful {{what}}</boxy>"
+                  values={{ what: userName }}
+                  components={{ boxy: <Box /> }}
+               />
+            </Text>
+            <Text>
+               <Trans
+                  defaults="hello <linky>beautiful {{what}}</linky>"
+                  values={{ what: userName }}
+                  components={{
+                     linky: (
+                        <a
+                           href="https://youtu.be/dQw4w9WgXcQ"
+                           style={{
+                              color: 'blue',
+                              textDecoration: 'underline',
+                           }}
+                        />
+                     ),
+                  }}
+               />
+            </Text>
+            <Text>
+               <Trans
+                  defaults="hello <linky>beautiful {{what}}</linky>"
+                  values={{ what: userName }}
+                  components={{
+                     linky: (
+                        <Link
+                           href="https://youtu.be/dQw4w9WgXcQ"
+                           style={{
+                              color: 'blue',
+                              textDecoration: 'underline',
+                           }}
+                        />
+                     ),
+                  }}
+               />
+            </Text>
+            <Text>
+               <Trans
+                  // nested components would normally be indexed
+                  defaults="hello <italic>beautiful <bold>{{what}}</bold></italic>"
+                  values={{ what: userName }}
+                  components={{ italic: <i />, bold: <strong /> }}
+               />
+            </Text>
+            <br />
 
             <Text fontWeight="medium" pb="3" textTransform="uppercase">
                Page not found
