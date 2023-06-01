@@ -10,7 +10,9 @@
    "scripts": {
       "dev": "concurrently -n \"Next,codegen\" -c \"blue,magenta\" \"pnpm run dev:next\" \"pnpm run dev:codegen\"",
       "dev:next": "next dev",
-      "dev:codegen": "cross-env DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen.ts --watch",
+      "dev:codegen": "pnpm run codegen:download-strapi-schema && pnpm run codegen:watch",
+      "codegen:watch": "cross-env DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen/config.ts --watch",
+      "codegen:download-strapi-schema": "cross-env DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen/strapi-schema-config.ts",
       "codegen:download-shopify-storefront-schema": "node ./lib/shopify-storefront-sdk/generate-schema.js",
       "build": "next build",
       "start": "next start",

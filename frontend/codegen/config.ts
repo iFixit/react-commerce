@@ -1,14 +1,4 @@
-import { CodegenConfig, generate } from '@graphql-codegen/cli';
-
-const schemaConfig: CodegenConfig = {
-   overwrite: true,
-   generates: {
-      'lib/strapi-sdk/generated/schema.graphql': {
-         schema: 'http://localhost:1337/graphql',
-         plugins: ['schema-ast'],
-      },
-   },
-};
+import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
    overwrite: true,
@@ -64,4 +54,4 @@ const config: CodegenConfig = {
    },
 };
 
-export default generate(schemaConfig, true).then(() => config);
+export default config;
