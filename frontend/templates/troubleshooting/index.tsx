@@ -114,7 +114,9 @@ const Wiki: NextPageWithLayout<{
             ))}
             <Conclusion conclusion={wikiData.conclusion} />
             <AnswersCTA answersUrl={wikiData.answersUrl} />
-            <RelatedProblems problems={wikiData.linkedProblems} />
+            {wikiData.linkedProblems.length > 0 && (
+               <RelatedProblems problems={wikiData.linkedProblems} />
+            )}
          </Flex>
       </Flex>
    );
