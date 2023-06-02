@@ -196,7 +196,7 @@ export function useLocalPreference<Data = any>(
          if (serializedData != null) {
             const data = validator(JSON.parse(serializedData));
             if (data !== null) {
-               setData(data as Data);
+               setData(data);
             }
          }
       } catch (error) {}
