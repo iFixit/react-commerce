@@ -47,7 +47,8 @@ import {
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
-import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
+import { HeadingSelfLink } from './components/HeadingSelfLink';
+import { solutionHeadingToId } from './utils/solutionHeadingToId';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -134,7 +135,13 @@ const Wiki: NextPageWithLayout<{
                   </ModalContent>
                </Modal>
                <VStack alignItems="flex-start" spacing="0px">
-                  <HeadingSelfLink as="h1" fontSize="3xl" fontWeight="500">
+                  <HeadingSelfLink
+                     as="h1"
+                     fontSize="3xl"
+                     fontWeight="500"
+                     marginTop={6}
+                     selfLinked
+                  >
                      {wikiData.title}
                   </HeadingSelfLink>
                   <AuthorInformation
@@ -151,7 +158,12 @@ const Wiki: NextPageWithLayout<{
             <Spacer borderBottom="1px" borderColor="gray.300" />
             {wikiData.solutions.length > 0 && (
                <>
-                  <HeadingSelfLink as="h2" fontSize="20px" fontWeight="600">
+                  <HeadingSelfLink
+                     as="h2"
+                     fontSize="20px"
+                     fontWeight="600"
+                     selfLinked
+                  >
                      {'Causes'}
                   </HeadingSelfLink>
                   <TableOfContents solutions={wikiData.solutions} />
@@ -183,7 +195,7 @@ function TableOfContents({ solutions }: { solutions: Section[] }) {
          {solutions.map((solution, index) => (
             <Link
                key={solution.heading}
-               href={`#solution-${index + 1}`}
+               href={`#${solutionHeadingToId(solution.heading)}`}
                fontWeight="medium"
                display="flex"
             >
@@ -575,7 +587,12 @@ function IntroductionSection({ intro }: { intro: Section }) {
    return (
       <Box>
          {intro.heading && (
-            <HeadingSelfLink marginBottom={6} fontSize="2xl" fontWeight="600">
+            <HeadingSelfLink
+               marginBottom={6}
+               fontSize="2xl"
+               fontWeight="600"
+               selfLinked
+            >
                {intro.heading}
             </HeadingSelfLink>
          )}
@@ -587,7 +604,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
-         <HeadingSelfLink marginBottom={6}>
+         <HeadingSelfLink marginBottom={6} selfLinked>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
