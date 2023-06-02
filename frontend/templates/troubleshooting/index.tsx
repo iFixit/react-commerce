@@ -139,7 +139,6 @@ const Wiki: NextPageWithLayout<{
                      as="h1"
                      fontSize="3xl"
                      fontWeight="500"
-                     marginTop={6}
                      selfLinked
                   >
                      {wikiData.title}
