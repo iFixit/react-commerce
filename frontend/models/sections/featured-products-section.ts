@@ -52,10 +52,15 @@ export async function featuredProductsSectionFromStrapi({
          filters: productList.filters ?? null,
       });
 
-      products = await getProductPreviewsFromAlgolia({
-         filters,
-         hitsPerPage: 12,
-      });
+      try {
+         products = await getProductPreviewsFromAlgolia({
+            filters,
+            hitsPerPage: 12,
+         });
+      } catch (e) {
+         console.error('Error getting featured products from Algolia', e);
+         products = fallbackProducts;
+      }
    } else {
       products = fallbackProducts;
    }
