@@ -6,6 +6,7 @@ import {
    LinkBox,
    LinkOverlay,
    Text,
+   VStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useAddToCart } from '@ifixit/cart-sdk';
@@ -57,22 +58,32 @@ export function CrossSell({ item }: CrossSellProps) {
          >
             <NextLink href={`/products/${item.handle}`} passHref>
                <LinkOverlay
+                  fontSize="sm"
                   fontWeight="semibold"
                   color="brand.500"
                   _groupHover={{ color: 'black' }}
                   onClick={onClose}
                >
-                  {item.marketingTitle ?? item.name}
-                  <Text>Add the product below to your order</Text>
+                  {item.marketingHeading}
+                  <Text fontWeight="normal" fontSize="sm">
+                     Add the product below to your order
+                  </Text>
                </LinkOverlay>
             </NextLink>
-            <HStack mt="3" align="center" spacing="3">
+            <HStack mt="3" align="flex-start" spacing="3">
                <NextLink href={`/products/${item.handle}`} passHref>
                   <LinkOverlay onClick={onClose}>
                      <CartLineItemImage src={item.imageSrc} alt={item.name} />
                   </LinkOverlay>
                </NextLink>
-               <Text fontSize="sm">{item.marketingBlurb}</Text>
+               <Flex direction="column" align="flex-start">
+                  <Text fontSize="sm" fontWeight="semibold">
+                     {item.marketingTitle ?? item.name}
+                  </Text>
+                  <Text fontSize="sm" mt="1.5">
+                     {item.marketingBlurb}
+                  </Text>
+               </Flex>
             </HStack>
             <Flex mt="2" justify="flex-end">
                <ProductVariantPrice
