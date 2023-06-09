@@ -274,7 +274,7 @@ function NavBar({
                   }}
                   position="relative"
                   flex="1 2"
-                  overflowX="scroll"
+                  overflowX="auto"
                >
                   <NavTabs
                      overflowX="auto"
