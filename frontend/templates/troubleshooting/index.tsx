@@ -154,7 +154,9 @@ const Wiki: NextPageWithLayout<{
             {wikiData.introduction.map((intro) => (
                <IntroductionSection key={intro.heading} intro={intro} />
             ))}
-            <Spacer borderBottom="1px" borderColor="gray.300" />
+            {wikiData.introduction.length > 0 && (
+               <Spacer borderBottom="1px" borderColor="gray.300" />
+            )}
             {wikiData.solutions.length > 0 && (
                <>
                   <HeadingSelfLink
