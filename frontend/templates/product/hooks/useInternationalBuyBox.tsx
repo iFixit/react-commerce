@@ -12,7 +12,8 @@ export function useInternationalBuyBox(product: Product) {
    const [dismissed, setDismissed] = useExpiringLocalPreference<boolean | null>(
       'buy-box-this-store',
       null,
-      7 // expire in days
+      7, // expire in days
+      (data: any) => (data === true || data === false ? data : null)
    );
    const [selectedVariant] = useSelectedVariant(product);
    const buyBox = useQuery(

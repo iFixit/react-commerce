@@ -69,7 +69,11 @@ export function FilterableProductsSection({
    const currentRefinements = useCurrentRefinements();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
-      ProductViewType.List
+      ProductViewType.List,
+      (data) =>
+         data === ProductViewType.List || data === ProductViewType.Grid
+            ? data
+            : null
    );
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
