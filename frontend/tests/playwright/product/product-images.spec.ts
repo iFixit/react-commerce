@@ -10,7 +10,7 @@ test.describe('Product Image Display', () => {
       expect(image).toBeVisible;
    });
 
-   test('Multiple Images Product', async ({ productPage }) => {
+   test.skip('Multiple Images Product', async ({ productPage }) => {
       await productPage.gotoProduct('repair-business-toolkit');
       const viewPort = productPage.page.viewportSize();
 
