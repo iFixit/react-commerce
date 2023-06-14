@@ -1,4 +1,4 @@
-import { GA_URL, GA_KEY, GA_DEBUG } from '@config/env';
+import { GA_URL, GA_KEY, GA_DEBUG, GTAG_ID } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
@@ -22,8 +22,17 @@ export function GoogleAnalytics() {
       };
    }, [router?.events]);
 
-   return GA_URL ? (
+   return (GA_URL || GTAG_ID) ? (
       <>
+         <Script id="gtag-ga4" strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}></Script>
+         <Script>{`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
+         `}
+         </Script>
          <Script id="google-analytics" strategy="afterInteractive">
             {`
                window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
