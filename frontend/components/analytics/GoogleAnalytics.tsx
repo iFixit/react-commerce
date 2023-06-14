@@ -22,10 +22,15 @@ export function GoogleAnalytics() {
       };
    }, [router?.events]);
 
-   return (GA_URL || GTAG_ID) ? (
+   return GA_URL || GTAG_ID ? (
       <>
-         <Script id="gtag-ga4" strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}></Script>
-         <Script>{`
+         <Script
+            id="gtag-ga4"
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+         ></Script>
+         <Script>
+            {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
