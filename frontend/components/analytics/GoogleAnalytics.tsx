@@ -22,47 +22,60 @@ export function GoogleAnalytics() {
       };
    }, [router?.events]);
 
-   return GA_URL || GTAG_ID ? (
-      <>
-         <Script
-            id="gtag-ga4"
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
-         ></Script>
-         <Script>
-            {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+   const wantsUA = GA_URL && GA_KEY;
+   const wantsGA4 = Boolean(GTAG_ID);
 
-            gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
-         `}
-         </Script>
-         <Script id="google-analytics" strategy="afterInteractive">
-            {`
-               window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+   return <>
+      {wantsUA && <UA />}
+      {wantsGA4 && <GA4 />}
+   </>;
+}
 
-               if (${GA_DEBUG} === true) {
-                  window.ga_debug = {trace: true};
-               }
+function GA4() {
+   return <>
+      <Script
+         id="gtag-ga4"
+         strategy="afterInteractive"
+         src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+      ></Script>
+      <Script>
+         {`
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
 
-               ga('create', '${GA_KEY}', 'auto', 'ifixit', {'legacyCookieDomain': 'ifixit.com'});
-               ga('ifixit.set', 'anonymizeIp', true);
+         gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
+      `}
+      </Script>
+   </>;
+}
 
-               // Do not lazy load.
-               ga('ifixit.set', 'dimension2', '0');
+function UA() {
+   return <>
+   <Script id="google-analytics" strategy="afterInteractive">
+      {`
+         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 
-               // Load the enhanced ecommerce plug-in.
-               ga('ifixit.require', 'ec');
+         if (${GA_DEBUG} === true) {
+            window.ga_debug = {trace: true};
+         }
 
-               // Enable Remarketing and Advertising Reporting Features in GA
-               ga('ifixit.require', 'displayfeatures');
+         ga('create', '${GA_KEY}', 'auto', 'ifixit', {'legacyCookieDomain': 'ifixit.com'});
+         ga('ifixit.set', 'anonymizeIp', true);
 
-               ga('ifixit.set', 'page', window.location.pathname);
-               ga('ifixit.send', 'pageview');
-            `}
-         </Script>
-         <Script src={GA_URL} strategy="afterInteractive" />
-      </>
-   ) : null;
+         // Do not lazy load.
+         ga('ifixit.set', 'dimension2', '0');
+
+         // Load the enhanced ecommerce plug-in.
+         ga('ifixit.require', 'ec');
+
+         // Enable Remarketing and Advertising Reporting Features in GA
+         ga('ifixit.require', 'displayfeatures');
+
+         ga('ifixit.set', 'page', window.location.pathname);
+         ga('ifixit.send', 'pageview');
+      `}
+   </Script>
+   <Script src={GA_URL} strategy="afterInteractive" />
+</>
 }
