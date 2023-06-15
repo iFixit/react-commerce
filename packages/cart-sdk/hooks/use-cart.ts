@@ -82,7 +82,7 @@ function createCart(input: APICart): Cart {
            }
          : null;
 
-   const crossSellProducts = input.upsellProducts ?? input.crossSellProducts;
+   const crossSellProducts = input.crossSellProducts;
    return {
       hasItemsInCart: input.totalNumItems > 0,
       lineItems,

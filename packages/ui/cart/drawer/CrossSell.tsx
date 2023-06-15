@@ -99,7 +99,7 @@ export function CrossSell({ item }: CrossSellProps) {
                w="full"
                colorScheme="brand"
                mt="3"
-               data-testid="upsell-add-to-cart-button"
+               data-testid="x-sell-add-to-cart-button"
             >
                Add to cart
             </Button>
