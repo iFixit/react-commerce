@@ -25,35 +25,40 @@ export function GoogleAnalytics() {
    const wantsUA = GA_URL && GA_KEY;
    const wantsGA4 = Boolean(GTAG_ID);
 
-   return <>
-      {wantsUA && <UA />}
-      {wantsGA4 && <GA4 />}
-   </>;
+   return (
+      <>
+         {wantsUA && <UA />}
+         {wantsGA4 && <GA4 />}
+      </>
+   );
 }
 
 function GA4() {
-   return <>
-      <Script
-         id="gtag-ga4"
-         strategy="afterInteractive"
-         src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
-      ></Script>
-      <Script>
-         {`
+   return (
+      <>
+         <Script
+            id="gtag-ga4"
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+         ></Script>
+         <Script>
+            {`
          window.dataLayer = window.dataLayer || [];
          function gtag(){dataLayer.push(arguments);}
          gtag('js', new Date());
 
          gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
       `}
-      </Script>
-   </>;
+         </Script>
+      </>
+   );
 }
 
 function UA() {
-   return <>
-   <Script id="google-analytics" strategy="afterInteractive">
-      {`
+   return (
+      <>
+         <Script id="google-analytics" strategy="afterInteractive">
+            {`
          window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 
          if (${GA_DEBUG} === true) {
@@ -75,7 +80,8 @@ function UA() {
          ga('ifixit.set', 'page', window.location.pathname);
          ga('ifixit.send', 'pageview');
       `}
-   </Script>
-   <Script src={GA_URL} strategy="afterInteractive" />
-</>
+         </Script>
+         <Script src={GA_URL} strategy="afterInteractive" />
+      </>
+   );
 }
