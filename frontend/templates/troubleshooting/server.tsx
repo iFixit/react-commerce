@@ -13,7 +13,19 @@ import {
 import { Guide } from './hooks/GuideModel';
 import Product from '@pages/api/nextjs/cache/product';
 import type { Product as ProductType } from '@models/product';
-import { hasDisableCacheGets } from '../../helpers/next-helpers';
+import {
+   hasDisableCacheGets,
+   withLogging,
+   withNoindexDevDomains,
+} from '@helpers/next-helpers';
+import { withCacheLong } from '@helpers/cache-control-helpers';
+import compose from 'lodash/flowRight';
+
+const withMiddleware = compose(
+   withLogging<TroubleshootingProps>,
+   withCacheLong<TroubleshootingProps>,
+   withNoindexDevDomains<TroubleshootingProps>
+);
 
 function rethrowUnless404(e: any) {
    // If e is from IFixitAPIClient and fetch() didn't error,
@@ -24,94 +36,93 @@ function rethrowUnless404(e: any) {
    throw e;
 }
 
-export const getServerSideProps: GetServerSideProps<
-   TroubleshootingProps
-> = async (context) => {
-   const layoutProps = await getLayoutServerSideProps({
-      storeCode: DEFAULT_STORE_CODE,
-   });
+export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
+   withMiddleware(async (context) => {
+      const layoutProps = await getLayoutServerSideProps({
+         storeCode: DEFAULT_STORE_CODE,
+      });
 
-   const ifixitOrigin = ifixitOriginFromHost(context);
-   const client = new IFixitAPIClient({ origin: ifixitOrigin });
+      const ifixitOrigin = ifixitOriginFromHost(context);
+      const client = new IFixitAPIClient({ origin: ifixitOrigin });
 
-   const wikiname = context.params?.wikiname;
+      const wikiname = context.params?.wikiname;
 
-   if (!wikiname) {
-      return {
-         notFound: true,
-      };
-   }
+      if (!wikiname) {
+         return {
+            notFound: true,
+         };
+      }
 
-   async function fetchDataForSolution(
-      solution: ApiSolutionSection
-   ): Promise<SolutionSection> {
-      const guides = await Promise.all(
-         solution.guides.map((guideid: number) => {
-            return (
-               client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
-            ).catch((error) => {
-               rethrowUnless404(error);
-               return null;
-            });
-         })
-      );
-      const products: ('' | null | ProductType)[] = await Promise.all(
-         solution.products.map((handle: string | null) => {
-            return (
-               handle &&
-               Product.get(
-                  {
-                     handle,
-                     storeCode: DEFAULT_STORE_CODE,
-                     ifixitOrigin,
-                  },
-                  { forceMiss: hasDisableCacheGets(context) }
+      async function fetchDataForSolution(
+         solution: ApiSolutionSection
+      ): Promise<SolutionSection> {
+         const guides = await Promise.all(
+            solution.guides.map((guideid: number) => {
+               return (
+                  client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
                ).catch((error) => {
                   rethrowUnless404(error);
                   return null;
-               })
-            );
-         })
+               });
+            })
+         );
+         const products: ('' | null | ProductType)[] = await Promise.all(
+            solution.products.map((handle: string | null) => {
+               return (
+                  handle &&
+                  Product.get(
+                     {
+                        handle,
+                        storeCode: DEFAULT_STORE_CODE,
+                        ifixitOrigin,
+                     },
+                     { forceMiss: hasDisableCacheGets(context) }
+                  ).catch((error) => {
+                     rethrowUnless404(error);
+                     return null;
+                  })
+               );
+            })
+         );
+         return {
+            ...solution,
+            guides: guides.filter((guide): guide is Guide => Boolean(guide)),
+            products: products.filter((product): product is ProductType =>
+               Boolean(product)
+            ),
+         };
+      }
+
+      let troubleshootingData: TroubleshootingApiData;
+      try {
+         troubleshootingData = await client.get<TroubleshootingApiData>(
+            `Troubleshooting/${wikiname}`,
+            'troubleshooting'
+         );
+      } catch (e) {
+         rethrowUnless404(e);
+         return {
+            notFound: true,
+         };
+      }
+
+      const solutions: SolutionSection[] = await Promise.all(
+         troubleshootingData.solutions.map(fetchDataForSolution)
       );
-      return {
-         ...solution,
-         guides: guides.filter((guide): guide is Guide => Boolean(guide)),
-         products: products.filter((product): product is ProductType =>
-            Boolean(product)
-         ),
+
+      const wikiData: TroubleshootingData = {
+         ...troubleshootingData,
+         solutions,
       };
-   }
 
-   let troubleshootingData: TroubleshootingApiData;
-   try {
-      troubleshootingData = await client.get<TroubleshootingApiData>(
-         `Troubleshooting/${wikiname}`,
-         'troubleshooting'
-      );
-   } catch (e) {
-      rethrowUnless404(e);
-      return {
-         notFound: true,
+      const pageProps: TroubleshootingProps = {
+         wikiData,
+         layoutProps,
+         appProps: {
+            ifixitOrigin,
+         },
       };
-   }
-
-   const solutions: SolutionSection[] = await Promise.all(
-      troubleshootingData.solutions.map(fetchDataForSolution)
-   );
-
-   const wikiData: TroubleshootingData = {
-      ...troubleshootingData,
-      solutions,
-   };
-
-   const pageProps: TroubleshootingProps = {
-      wikiData,
-      layoutProps,
-      appProps: {
-         ifixitOrigin,
-      },
-   };
-   return {
-      props: pageProps,
-   };
-};
+      return {
+         props: pageProps,
+      };
+   });
