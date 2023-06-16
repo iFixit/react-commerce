@@ -652,7 +652,14 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 function RelatedProblems({ problems }: { problems: Problem[] }) {
    return (
       <>
-         <HeadingSelfLink as="h2">Related Problems</HeadingSelfLink>
+         <HeadingSelfLink
+            as="h3"
+            fontSize="24px"
+            fontWeight="500"
+            marginTop={4}
+         >
+            Related Problems
+         </HeadingSelfLink>
          <SimpleGrid columns={2} gap="12px">
             {problems.map((problem) => (
                <ProblemCard problem={problem} key={problem.title} />
