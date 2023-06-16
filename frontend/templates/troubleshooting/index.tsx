@@ -51,7 +51,7 @@ import {
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { solutionHeadingToId } from './utils/solutionHeadingToId';
-import Problem from './Problem';
+import ProblemCard from './Problem';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -655,7 +655,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
          <HeadingSelfLink as="h2">Related Problems</HeadingSelfLink>
          <SimpleGrid columns={2} gap="12px">
             {problems.map((problem) => (
-               <Problem problem={problem} key={problem.title} />
+               <ProblemCard problem={problem} key={problem.title} />
             ))}
          </SimpleGrid>
       </>
