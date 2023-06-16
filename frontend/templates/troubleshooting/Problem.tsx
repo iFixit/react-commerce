@@ -43,7 +43,6 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                      {deviceTitle}
                   </Text>
                   <Text
-                     fontFamily="SF Pro"
                      fontWeight="semibold"
                      fontSize="14px"
                      color="brand.500"
