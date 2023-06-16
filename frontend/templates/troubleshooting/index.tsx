@@ -660,7 +660,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
          >
             Related Problems
          </HeadingSelfLink>
-         <SimpleGrid columns={2} gap="12px">
+         <SimpleGrid columns={{ base: 1, sm: 2 }} gap="12px">
             {problems.map((problem) => (
                <ProblemCard problem={problem} key={problem.title} />
             ))}
