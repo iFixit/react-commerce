@@ -16,6 +16,13 @@ export type Author = {
    profileUrl: string;
 };
 
+export type Problem = {
+   url: string;
+   imageUrl: string;
+   title: string;
+   deviceTitle: string;
+};
+
 export type ApiSolutionSection = Section & {
    guides: number[];
    products: string[];
@@ -47,6 +54,7 @@ export type TroubleshootingApiData = {
    breadcrumbs: BreadcrumbEntry[];
    metaDescription: string;
    metaKeywords: string;
+   linkedProblems: Problem[];
    mainImageUrl: string;
    mainImageUrlLarge: string;
 };
