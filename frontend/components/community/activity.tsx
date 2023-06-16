@@ -55,7 +55,6 @@ function ActivityCard({ data }: { data: Activity }) {
                src={data.image_url}
                alt=""
                fill
-               sizes="100vw"
                style={{
                   objectFit: 'cover',
                }}

@@ -76,7 +76,6 @@ function HeadingBackground({ image }: HeadingBackgroundProps) {
                   alt="store search image"
                   priority
                   fill
-                  sizes="100vw"
                   style={{
                      objectFit: 'cover',
                      objectPosition: 'center',

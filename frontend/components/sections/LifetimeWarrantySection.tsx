@@ -29,7 +29,6 @@ export function LifetimeWarrantySection({
                alt=""
                src={backgroundImage}
                fill
-               sizes="100vw"
                style={{
                   objectFit: 'cover',
                }}

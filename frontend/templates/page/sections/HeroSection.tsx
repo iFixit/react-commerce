@@ -23,7 +23,6 @@ export function HeroSection({
                   alt="store hero image"
                   priority
                   fill
-                  sizes="100vw"
                   style={{
                      objectFit: 'cover',
                   }}
