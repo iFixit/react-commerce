@@ -1,6 +1,4 @@
-import { Stack, Image, Box, Text, Badge, Icon } from '@chakra-ui/react';
-import { FaIcon } from '@ifixit/icons';
-import { faPowerOff } from '@fortawesome/pro-solid-svg-icons';
+import { Stack, Image, Text } from '@chakra-ui/react';
 import { Problem } from './hooks/useTroubleshootingProps';
 
 export default function ProblemCard({ problem }: { problem: Problem }) {
@@ -53,38 +51,6 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                   >
                      {title}
                   </Text>
-                  {/* <Stack
-                     direction="row"
-                     justify="flex-start"
-                     align="flex-start"
-                     spacing="6px"
-                  >
-                     <Stack
-                        direction="row"
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="0px"
-                     >
-                        <Badge>
-                           <FaIcon icon={faPowerOff} />
-                           <Stack
-                              justify="center"
-                              align="flex-start"
-                              spacing="10px"
-                              height="16px"
-                           >
-                              <Text
-                                 fontFamily="SF Pro"
-                                 fontWeight="semibold"
-                                 fontSize="13px"
-                                 color="amber.700"
-                              >
-                                 Won't Turn On
-                              </Text>
-                           </Stack>
-                        </Badge>
-                     </Stack>
-                  </Stack> */}
                </Stack>
             </Stack>
          </Stack>
