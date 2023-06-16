@@ -39,21 +39,6 @@ export function SocialGallerySection({
             >
                {posts.map((post, index) => {
                   const isFirstPost = index === 0;
-                  if (post.url) {
-                     return (
-                        <GridItem
-                           key={index}
-                           as="a"
-                           href={post.url ?? '#'}
-                           target="_blank"
-                           rowSpan={isFirstPost ? 2 : 1}
-                           colSpan={isFirstPost ? 2 : 1}
-                           position="relative"
-                        >
-                           <SocialPost post={post} />
-                        </GridItem>
-                     );
-                  }
                   return (
                      <GridItem
                         key={index}
@@ -75,7 +60,7 @@ interface SocialPostGridItemProps {
    post: SocialPost;
 }
 
-function SocialPost({ post: { image, author } }: SocialPostGridItemProps) {
+function SocialPost({ post: { image, author, url } }: SocialPostGridItemProps) {
    return (
       <Box as="article" position="relative" borderRadius="md" overflow="hidden">
          {image && (
@@ -102,7 +87,14 @@ function SocialPost({ post: { image, author } }: SocialPostGridItemProps) {
             px="4"
             bgGradient="linear(to-b, transparent 70%, black)"
          >
-            <Text color="white" fontWeight="medium" noOfLines={1}>
+            <Text
+               as="a"
+               href={url ?? '#'}
+               target="_blank"
+               color="white"
+               fontWeight="medium"
+               noOfLines={1}
+            >
                {authorWithHandle(author)}
             </Text>
          </Flex>

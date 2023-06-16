@@ -55,6 +55,8 @@ export type TroubleshootingApiData = {
    metaDescription: string;
    metaKeywords: string;
    linkedProblems: Problem[];
+   mainImageUrl: string;
+   mainImageUrlLarge: string;
 };
 
 export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {

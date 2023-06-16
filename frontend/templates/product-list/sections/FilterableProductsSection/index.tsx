@@ -52,9 +52,13 @@ const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
 type SectionProps = {
    productList: TProductList;
+   algoliaSSR?: boolean;
 };
 
-export function FilterableProductsSection({ productList }: SectionProps) {
+export function FilterableProductsSection({
+   productList,
+   algoliaSSR,
+}: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
    const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
 
@@ -65,13 +69,25 @@ export function FilterableProductsSection({ productList }: SectionProps) {
    const currentRefinements = useCurrentRefinements();
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
-      ProductViewType.List
+      ProductViewType.List,
+      (data) =>
+         data === ProductViewType.List || data === ProductViewType.Grid
+            ? data
+            : null
    );
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
    const isEmpty = hits.length === 0;
 
+   if (algoliaSSR) {
+      return (
+         <SearchQueryProvider>
+            <CurrentRefinements />
+            <FacetsAccordion productList={productList} />
+         </SearchQueryProvider>
+      );
+   }
    return (
       <Flex
          ref={productsContainerScrollRef}

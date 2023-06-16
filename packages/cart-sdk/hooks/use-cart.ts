@@ -99,6 +99,7 @@ function createCart(input: APICart): Cart {
             }
             const variantId = `gid://shopify/ProductVariant/${apiProduct.variant_id}`;
             return {
+               marketingHeading: apiProduct.marketing_heading,
                marketingTitle: apiProduct.marketing_title,
                marketingBlurb: apiProduct.product_blurb,
                itemcode: apiProduct.itemcode,
