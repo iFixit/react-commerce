@@ -22,13 +22,9 @@ import { usePagination } from 'react-instantsearch-hooks-web';
 
 export interface ProductListViewProps {
    productList: ProductList;
-   algoliaSSR?: boolean;
 }
 
-export function ProductListView({
-   productList,
-   algoliaSSR,
-}: ProductListViewProps) {
+export function ProductListView({ productList }: ProductListViewProps) {
    // This temporary hack allows to correctly populate the itemType facet during SSR
    // see: https://github.com/algolia/instantsearch/issues/5571
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
@@ -42,22 +38,6 @@ export function ProductListView({
       page,
       itemType
    );
-
-   if (algoliaSSR) {
-      return (
-         <>
-            <Configure
-               filters={filters}
-               hitsPerPage={24}
-               facetingAfterDistinct={true}
-            />
-            <FilterableProductsSection
-               productList={productListWithOverrides}
-               algoliaSSR={algoliaSSR}
-            />
-         </>
-      );
-   }
 
    return (
       <>

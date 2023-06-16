@@ -209,7 +209,7 @@ function ReviewsStats({
             <Text fontSize="5xl">{averageRating}</Text>
             <Rating value={averageRating ?? 0} />
             {totalReviewsCount && (
-               <Text fontSize="sm">{totalReviewsCount} ratings</Text>
+               <Text fontSize="sm">{totalReviewsCount} reviews</Text>
             )}
          </Flex>
       </Stack>

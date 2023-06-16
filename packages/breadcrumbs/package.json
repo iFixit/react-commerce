@@ -5,8 +5,7 @@
    "types": "./Breadcrumbs.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/icons": "workspace:*",
-      "@ifixit/ui": "workspace:*"
+      "@ifixit/icons": "workspace:*"
    },
    "peerDependencies": {
       "@babel/core": "7.17.9",
@@ -14,7 +13,7 @@
       "@emotion/react": "11.10.5",
       "@emotion/styled": "11.10.5",
       "@fortawesome/pro-solid-svg-icons": "6.4.0",
-      "framer-motion": ">=4.0.0 <11.0.0",
+      "framer-motion": "6.2.7",
       "lodash": "4.17.21",
       "react-dom": "18.2.0",
       "react": "18.2.0"
@@ -29,7 +28,7 @@
       "@types/lodash": "4.14.182",
       "@types/react-dom": "18.0.8",
       "@types/react": "18.0.24",
-      "framer-motion": ">=4.0.0 <11.0.0",
+      "framer-motion": "6.2.7",
       "lodash": "4.17.21",
       "react-dom": "18.2.0",
       "react": "18.2.0",

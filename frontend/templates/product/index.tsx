@@ -9,6 +9,7 @@ import { ReplacementGuidesSection } from '@components/sections/ReplacementGuides
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
+import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
    trackInMatomoAndGA,
@@ -25,22 +26,21 @@ import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import * as React from 'react';
-import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
 import { PixelPing } from './components/PixelPing';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
-import { useProductPageAdminLinks } from './hooks/useProductPageAdminLinks';
 import {
    ProductTemplateProps,
    useProductTemplateProps,
 } from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { MetaTags } from './MetaTags';
-import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { CrossSellSection } from './sections/CrossSellSection';
+import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
+import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -77,11 +77,15 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
       []
    );
 
-   const adminLinks = useProductPageAdminLinks({
-      product,
-      storeCode: DEFAULT_STORE_CODE,
-   });
-
+   const adminLinks = React.useMemo(
+      () =>
+         getAdminLinks({
+            productcode: product.productcode,
+            productId: product.id,
+            storeCode: DEFAULT_STORE_CODE,
+         }),
+      [product.productcode, product.id]
+   );
    return (
       <React.Fragment key={product.handle}>
          <MetaTags product={product} selectedVariant={selectedVariant} />

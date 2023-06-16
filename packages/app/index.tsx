@@ -18,10 +18,7 @@ export function AppProvider({
    children,
 }: AppProviderProps) {
    const value = React.useMemo(
-      (): AppContext => ({
-         ifixitOrigin,
-         adminMessage,
-      }),
+      (): AppContext => ({ ifixitOrigin, adminMessage }),
       [ifixitOrigin, adminMessage]
    );
 

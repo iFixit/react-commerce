@@ -1,6 +1,5 @@
 import { SystemProps } from '@chakra-ui/react';
 import { useRef, useLayoutEffect, ReactNode, RefObject } from 'react';
-import { useIsomorphicLayoutEffect } from '@ifixit/ui';
 
 export type HiddenWrapEffect = (
    _children: HTMLElement[],
@@ -20,7 +19,7 @@ export function useHiddenWrap<T extends HTMLElement>({
 } {
    const ref = useRef<T>();
 
-   useIsomorphicLayoutEffect(() => {
+   useLayoutEffect(() => {
       if (!ref?.current) {
          return;
       }

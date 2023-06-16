@@ -205,7 +205,6 @@ export const getProductListServerSideProps = ({
             url: urlFromContext(context),
             apiKey: productList.algolia.apiKey,
             productListType,
-            logContextName: 'algolia.getServerState',
          },
          ifixitOrigin,
       };
@@ -247,7 +246,7 @@ async function getSafeServerState({
    const tryGetServerState = (productList: ProductList) => {
       const appMarkup = (
          <AppProviders {...appProps}>
-            <ProductListView productList={productList} algoliaSSR={true} />
+            <ProductListView productList={productList} />
          </AppProviders>
       );
       return timeAsync('getServerState', () =>

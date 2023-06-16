@@ -48,7 +48,7 @@ describe('Product Reviews Tests', () => {
       (expect(expectedReviewAverage) as any).toBeVisible();
 
       const expectedReviewCount = screen.getByText(
-         `${reviewResponse.count} ratings`
+         `${reviewResponse.count} reviews`
       );
       (expect(expectedReviewCount) as any).toBeVisible();
 
@@ -98,13 +98,9 @@ describe('Product Reviews Tests', () => {
       );
       (expect(reviewAverageValue.length) as any).toBe(2);
 
-      const expectedRatingCountText = screen.getAllByText(
-         `${reviewsResponseWithReviews.count} ratings`
-      );
-      (expect(expectedRatingCountText.length) as any).toBe(1);
-      const expectedReviewCountText = screen.getAllByText(
+      const expectedReviewCount = screen.getAllByText(
          `${reviewsResponseWithReviews.count} reviews`
       );
-      (expect(expectedReviewCountText.length) as any).toBe(1);
+      (expect(expectedReviewCount.length) as any).toBe(2);
    });
 });

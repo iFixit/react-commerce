@@ -52,7 +52,6 @@ export interface APICart {
    crossSellProducts: APICrossSellProduct[];
 }
 export interface CrossSellProduct {
-   marketingHeading: string | null;
    marketingTitle: string | null;
    marketingBlurb: string | null;
    itemcode: string;

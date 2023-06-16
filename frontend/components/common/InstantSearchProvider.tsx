@@ -1,6 +1,6 @@
 import { useSafeLayoutEffect } from '@chakra-ui/react';
 import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
-import { getClientOptions } from '@helpers/algolia-helpers';
+import { CLIENT_OPTIONS } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
    getFacetWidgetType,
@@ -32,7 +32,6 @@ export type AlgoliaProps = {
    productListType: ProductListType;
    serverState?: InstantSearchServerState;
    apiKey: string;
-   logContextName: string;
 };
 
 type RouteState = Partial<{
@@ -50,18 +49,13 @@ export function InstantSearchProvider({
    productListType,
    serverState,
    apiKey,
-   logContextName,
 }: InstantSearchProviderProps) {
    const user = useAuthenticatedUser();
 
    const algoliaApiKey = user.data?.algoliaApiKeyProducts || apiKey;
    const previousApiKey = usePrevious(algoliaApiKey);
    const algoliaClient = React.useMemo(() => {
-      return algoliasearch(
-         ALGOLIA_APP_ID,
-         algoliaApiKey,
-         getClientOptions(logContextName)
-      );
+      return algoliasearch(ALGOLIA_APP_ID, algoliaApiKey, CLIENT_OPTIONS);
    }, [algoliaApiKey]);
 
    const facets = useFacets();

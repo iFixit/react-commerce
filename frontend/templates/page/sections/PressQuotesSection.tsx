@@ -97,7 +97,18 @@ function Quote({ quote, isActive, isFarFromView, isLooping }: QuoteProps) {
          opacity={isActive ? 1 : isFarFromView ? 0.2 : 0.4}
          _hover={{ opacity: isActive ? 1 : 0.6 }}
       >
-         <Box position="relative" w={{ base: '200px' }} h={{ base: '100px' }}>
+         <Box
+            position="relative"
+            w={{
+               base: '120px',
+               md: '200px',
+            }}
+            h={{
+               base: '30px',
+               md: '40px',
+            }}
+            my="30px"
+         >
             <ResponsiveImage
                src={quote.company.logo.url}
                alt={quote.company.logo.altText ?? ''}

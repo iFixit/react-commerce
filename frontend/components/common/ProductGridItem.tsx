@@ -7,7 +7,7 @@ import {
    ProductCardRating,
    ProductCardTitle,
 } from '@components/common';
-import { productPath } from '@helpers/path-helpers';
+import { getProductPath } from '@helpers/product-helpers';
 import {
    computeDiscountPercentage,
    shouldShowProductRating,
@@ -86,7 +86,7 @@ export function ProductGridItem({ product, onClick }: ProductGridItemProps) {
             <ProductCardImage src={product.image?.url} alt={product.title} />
             <ProductCardBody>
                <LinkOverlay
-                  href={productPath(product.handle)}
+                  href={getProductPath(product.handle)}
                   onClick={onClick}
                >
                   <ProductCardTitle

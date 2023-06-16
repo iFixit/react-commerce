@@ -22,8 +22,7 @@ import Prerendered from './prerendered';
 import { GuideResource, ProductResource } from './Resource';
 import { Guide } from './hooks/GuideModel';
 import { Product } from '@models/product';
-import { HeadingSelfLink } from './components/HeadingSelfLink';
-import { solutionHeadingToId } from './utils/solutionHeadingToId';
+import { HeadingSelfLink } from '@components/ui/HeadingSelfLink';
 
 const _SolutionFooter = () => (
    <Stack
@@ -209,7 +208,7 @@ export default function SolutionCard({
 }) {
    return (
       <Flex
-         id={solutionHeadingToId(solution.heading)}
+         id={`solution-${index}`}
          background="white"
          borderRadius="4px"
          borderColor="gray.300"

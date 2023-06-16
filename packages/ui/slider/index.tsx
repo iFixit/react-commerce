@@ -219,7 +219,7 @@ export const Slider = forwardRef<SliderProps, 'div'>(
          <Box ref={ref} pos="relative" overflow="hidden" {...other}>
             <Flex
                ref={trackRef}
-               sx={{ touchAction: 'pan-y' }}
+               sx={{ 'touch-action': 'pan-y' }}
                transition="transform ease-in-out 300ms"
                transform={computeTransform({
                   activeIndex: activeIndex,
@@ -276,7 +276,6 @@ export const Slider = forwardRef<SliderProps, 'div'>(
                         })
                      ) : (
                         <Bullet
-                           key={index}
                            isActive={index === activeIndex}
                            onClick={() => handleBulletClick(index)}
                         />
