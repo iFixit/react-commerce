@@ -47,6 +47,8 @@ export type TroubleshootingApiData = {
    breadcrumbs: BreadcrumbEntry[];
    metaDescription: string;
    metaKeywords: string;
+   mainImageUrl: string;
+   mainImageUrlLarge: string;
 };
 
 export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {

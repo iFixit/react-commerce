@@ -18,7 +18,6 @@ import {
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
-import { withSyncTiming } from '@ifixit/helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { Wordmark20th } from '@assets/svg/files';
@@ -441,7 +440,4 @@ function HeaderUserMenu() {
    );
 }
 
-export const DefaultLayout = withSyncTiming(
-   'react.page',
-   DefaultLayoutComponent
-);
+export const DefaultLayout = DefaultLayoutComponent;

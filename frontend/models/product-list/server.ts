@@ -32,7 +32,7 @@ import {
    ProductListItemTypeOverride,
    ProductListItemTypeOverrideIndexed,
 } from './types';
-import { CLIENT_OPTIONS, escapeFilterValue } from '@helpers/algolia-helpers';
+import { getClientOptions, escapeFilterValue } from '@helpers/algolia-helpers';
 
 /**
  * Get the product list data from the API
@@ -470,7 +470,7 @@ function convertToProductListItemTypeOverrides(
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {
-   const client = algoliasearch(appId, apiKey, CLIENT_OPTIONS);
+   const client = algoliasearch(appId, apiKey, getClientOptions());
    const publicKey = client.generateSecuredApiKey(apiKey, {
       filters: 'public=1 AND is_pro!=1',
    });
@@ -482,7 +482,7 @@ async function findDevicesWithProducts(devices: string[]) {
       const client = algoliasearch(
          ALGOLIA_APP_ID,
          ALGOLIA_API_KEY,
-         CLIENT_OPTIONS
+         getClientOptions(null)
       );
       const index = client.initIndex(ALGOLIA_PRODUCT_INDEX_NAME);
       const deviceDisjunctiveFilters = devices
