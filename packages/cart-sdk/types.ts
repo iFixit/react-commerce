@@ -48,7 +48,6 @@ export interface APICart {
    miniCart: {
       products: MiniCartProduct[];
    };
-   upsellProducts: APICrossSellProduct[];
    crossSellProducts: APICrossSellProduct[];
 }
 export interface CrossSellProduct {

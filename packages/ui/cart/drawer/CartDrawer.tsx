@@ -54,15 +54,18 @@ export function CartDrawer() {
    const cart = useCart();
    const checkout = useCheckout();
 
-   const crossSellItem = React.useMemo(() => {
-      const item = cart.data?.crossSellProducts[0];
-      const isAlreadyInCart =
-         item &&
-         cart.data?.lineItems.find(
-            (lineItem) => lineItem.itemcode === item.itemcode
-         );
-      if (isAlreadyInCart) return null;
-      return item;
+   const crossSellItems = React.useMemo(() => {
+      const crossSells =
+         cart.data?.crossSellProducts.filter((item) => {
+            const isAlreadyInCart =
+               item &&
+               cart.data?.lineItems.find(
+                  (lineItem) => lineItem.itemcode === item.itemcode
+               );
+            if (isAlreadyInCart) return null;
+            return item;
+         }) ?? [];
+      return crossSells;
    }, [cart.data]);
 
    return (
@@ -153,7 +156,18 @@ export function CartDrawer() {
                               })}
                            </AnimatePresence>
                         </Box>
-                        {crossSellItem && <CrossSell item={crossSellItem} />}
+                        <Box as="ul" data-testid="cart-drawer-x-sell-items">
+                           <AnimatePresence>
+                              {crossSellItems.map((crossSellItem) => {
+                                 return (
+                                    <ListItem key={crossSellItem.itemcode}>
+                                       <CrossSell item={crossSellItem} />
+                                       <Divider borderColor="gray.200" />
+                                    </ListItem>
+                                 );
+                              })}
+                           </AnimatePresence>
+                        </Box>
                      </ScaleFade>
                      <Collapse
                         animateOpacity
