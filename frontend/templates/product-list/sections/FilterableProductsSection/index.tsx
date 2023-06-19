@@ -119,7 +119,11 @@ export function FilterableProductsSection({
                   overflow="auto"
                   display={{
                      base: 'none',
-                     md: hasAnyVisibleFacet ? 'block' : 'none',
+                     md:
+                        hasAnyVisibleFacet ||
+                        currentRefinements.items.length > 0
+                           ? 'block'
+                           : 'none',
                   }}
                   position="sticky"
                   top="4"
@@ -133,9 +137,21 @@ export function FilterableProductsSection({
                      <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
                         <CurrentRefinements />
                      </Flex>
-                     <Divider borderColor="gray.300" opacity="1" />
                   </Collapse>
-                  <FacetsAccordion productList={productList} />
+                  <Divider
+                     display={{
+                        md:
+                           hasAnyVisibleFacet &&
+                           currentRefinements.items.length > 0
+                              ? 'block'
+                              : 'none',
+                     }}
+                     borderColor="gray.300"
+                     opacity="1"
+                  />
+                  <Collapse in={hasAnyVisibleFacet} animateOpacity>
+                     <FacetsAccordion productList={productList} />
+                  </Collapse>
                </Box>
                <Flex direction="column" flex="1">
                   <Toolbar
