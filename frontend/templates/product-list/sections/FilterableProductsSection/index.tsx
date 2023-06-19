@@ -61,12 +61,12 @@ export function FilterableProductsSection({
 }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
    const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
-
    const products = React.useMemo(
       () => filterFalsyItems(hits.map(productPreviewFromAlgoliaHit)),
       [hits]
    );
    const currentRefinements = useCurrentRefinements();
+   const hasCurrentRefinements = currentRefinements.items.length > 0;
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
       ProductViewType.List,
@@ -120,8 +120,7 @@ export function FilterableProductsSection({
                   display={{
                      base: 'none',
                      md:
-                        hasAnyVisibleFacet ||
-                        currentRefinements.items.length > 0
+                        hasAnyVisibleFacet || hasCurrentRefinements
                            ? 'block'
                            : 'none',
                   }}
@@ -130,7 +129,7 @@ export function FilterableProductsSection({
                   flexGrow="0"
                >
                   <Collapse
-                     in={currentRefinements.items.length > 0}
+                     in={hasCurrentRefinements}
                      animateOpacity
                      data-testid="current-refinements"
                   >
@@ -141,8 +140,7 @@ export function FilterableProductsSection({
                   <Divider
                      display={{
                         md:
-                           hasAnyVisibleFacet &&
-                           currentRefinements.items.length > 0
+                           hasAnyVisibleFacet && hasCurrentRefinements
                               ? 'block'
                               : 'none',
                      }}
