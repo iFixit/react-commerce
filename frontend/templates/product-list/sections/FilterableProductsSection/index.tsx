@@ -136,20 +136,9 @@ export function FilterableProductsSection({
                      <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
                         <CurrentRefinements />
                      </Flex>
+                     <Divider borderColor="gray.300" opacity="1" />
                   </Collapse>
-                  <Divider
-                     display={{
-                        md:
-                           hasAnyVisibleFacet && hasCurrentRefinements
-                              ? 'block'
-                              : 'none',
-                     }}
-                     borderColor="gray.300"
-                     opacity="1"
-                  />
-                  <Collapse in={hasAnyVisibleFacet} animateOpacity>
-                     <FacetsAccordion productList={productList} />
-                  </Collapse>
+                  <FacetsAccordion productList={productList} />
                </Box>
                <Flex direction="column" flex="1">
                   <Toolbar
