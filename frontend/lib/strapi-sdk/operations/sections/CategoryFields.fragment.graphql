@@ -3,7 +3,9 @@ fragment CategoryFields on ComponentPageCategory {
    description
    productList {
       data {
-         ...ProductListFields
+         attributes {
+            ...ProductListPreviewFields
+         }
       }
    }
 }

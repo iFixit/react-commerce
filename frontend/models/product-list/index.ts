@@ -1,15 +1,23 @@
-export {
-   iFixitPageType,
-   ProductListSectionType,
-   ProductListType,
-   FacetWidgetType,
-} from './types';
+import { z } from 'zod';
+
+export type { ProductListPreview } from './component/product-list-preview';
+export type { ProductListSection } from './sections';
+export { ProductListType } from './component/product-list-type';
 export type {
    ProductList,
-   ProductListPreview,
-   ProductListSection,
-   ProductSearchHit,
-   WikiInfoEntry,
    ProductListAncestor,
+   ProductSearchHit,
    StorePage,
+   WikiInfoEntry,
 } from './types';
+
+export enum iFixitPageType {
+   Store = 'store',
+}
+
+export const iFixitPageTypeSchema = z.nativeEnum(iFixitPageType);
+
+export enum FacetWidgetType {
+   RefinementList = 'refinement-list',
+   Menu = 'menu',
+}
