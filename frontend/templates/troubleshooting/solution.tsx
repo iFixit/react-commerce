@@ -210,12 +210,18 @@ export default function SolutionCard({
          borderColor="gray.300"
          borderStyle="solid"
          borderWidth="1px"
-         padding="24px 24px 12px 24px"
+         padding="24px"
       >
          <Flex gap="24px" direction="column" flexGrow={1}>
             <SolutionHeader index={index} title={solution.heading} />
             <SolutionTexts body={solution.body} />
-            <LinkCards guides={solution.guides} products={solution.products} />
+            {solution.guides.length > 0 ||
+               (solution.products.length > 0 && (
+                  <LinkCards
+                     guides={solution.guides}
+                     products={solution.products}
+                  />
+               ))}
          </Flex>
       </Box>
    );
