@@ -572,7 +572,7 @@ function AuthorListing({
       color: 'brand.500',
    };
    return (
-      <Box>
+      <>
          <Link href={authorProfileUrl} {...linkStyle}>
             {primaryAuthorName}
          </Link>
@@ -586,13 +586,13 @@ function AuthorListing({
                </Link>
             </>
          )}
-      </Box>
+      </>
    );
 }
 
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
-      <Box>
+      <>
          {intro.heading && (
             <HeadingSelfLink
                marginBottom={6}
@@ -604,18 +604,18 @@ function IntroductionSection({ intro }: { intro: Section }) {
             </HeadingSelfLink>
          )}
          <Prerendered html={intro.body} />
-      </Box>
+      </>
    );
 }
 
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
-      <Box>
+      <>
          <HeadingSelfLink marginBottom={6} selfLinked>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
-      </Box>
+      </>
    );
 }
 
