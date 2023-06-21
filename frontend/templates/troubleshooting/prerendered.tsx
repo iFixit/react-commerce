@@ -44,7 +44,7 @@ const renderStyles: SystemStyleObject = {
       paddingLeft: 4,
    },
 
-   '>ul, >ol': {
+   '>ul:not(:last-child), >ol:not(:last-child)': {
       paddingBottom: 6,
    },
 
