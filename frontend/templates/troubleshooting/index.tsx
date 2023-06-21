@@ -538,7 +538,7 @@ function LastUpdatedDate({
    return (
       <Link
          href={historyUrl}
-         fontWeight="regular"
+         fontWeight="normal"
          fontSize="14px"
          color="gray.500"
       >
@@ -578,7 +578,7 @@ function AuthorListing({
          </Link>
          {authorCount > 0 && (
             <>
-               <chakra.span as="span" fontWeight="regular" color="gray.900">
+               <chakra.span as="span" color="gray.900">
                   {' and '}
                </chakra.span>
                <Link {...linkStyle} href={historyUrl}>

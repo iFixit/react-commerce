@@ -44,12 +44,7 @@ const _SolutionFooter = () => (
          borderTopWidth="1px"
          alignSelf="stretch"
       >
-         <Text
-            fontWeight="regular"
-            fontSize="14px"
-            color="gray.900"
-            textAlign="center"
-         >
+         <Text fontSize="14px" color="gray.900" textAlign="center">
             This solution was suggested by
          </Text>
          <Avatar size="24x24">
@@ -62,7 +57,7 @@ const _SolutionFooter = () => (
             textAlign="center"
          >
             <span>Kyle Wiens</span>
-            <Box as="span" fontWeight="regular" color="gray.900">
+            <Box as="span" color="gray.900">
                {' '}
                in{' '}
             </Box>

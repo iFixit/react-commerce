@@ -30,7 +30,6 @@ const renderStyles: SystemStyleObject = {
 
    p: {
       lineHeight: '1.38',
-      fontWeight: 'regular',
       color: 'gray.700',
       alignSelf: 'stretch',
       paddingBottom: 6,
