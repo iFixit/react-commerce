@@ -568,11 +568,10 @@ function AuthorListing({
       authorCount > 1 ? 'contributors' : 'contributor';
    const linkStyle = {
       fontWeight: 'medium',
-      fontSize: '14px',
       color: 'brand.500',
    };
    return (
-      <>
+      <Box fontSize="14px">
          <Link href={authorProfileUrl} {...linkStyle}>
             {primaryAuthorName}
          </Link>
@@ -586,7 +585,7 @@ function AuthorListing({
                </Link>
             </>
          )}
-      </>
+      </Box>
    );
 }
 
