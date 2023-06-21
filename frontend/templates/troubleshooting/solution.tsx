@@ -195,9 +195,9 @@ const SolutionHeader = ({
 );
 
 const SolutionTexts = ({ body }: { body: string }) => (
-   <Stack justify="flex-start" align="flex-start">
+   <>
       <Prerendered html={body} />
-   </Stack>
+   </>
 );
 
 export default function SolutionCard({
@@ -208,7 +208,7 @@ export default function SolutionCard({
    solution: SolutionSection;
 }) {
    return (
-      <Flex
+      <Box
          id={solutionHeadingToId(solution.heading)}
          background="white"
          borderRadius="4px"
@@ -222,7 +222,7 @@ export default function SolutionCard({
             <SolutionTexts body={solution.body} />
             <LinkCards guides={solution.guides} products={solution.products} />
          </Flex>
-      </Flex>
+      </Box>
    );
 }
 
