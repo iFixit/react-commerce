@@ -97,6 +97,7 @@ function SearchBox() {
          w="full"
          justify="center"
       >
+         <input type="hidden" name="doctype" value="product" />
          <InputGroup
             transform="translateY(-50%)"
             size="lg"

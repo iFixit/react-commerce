@@ -35,6 +35,8 @@ export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
 
 export const GA_DEBUG = process.env.NEXT_PUBLIC_GA_DEBUG;
 
+export const GTAG_ID = process.env.NEXT_PUBLIC_GTAG_ID;
+
 export const ALGOLIA_PRODUCT_INDEX_NAME = requireEnvVariable(
    process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME,
    'NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME'
