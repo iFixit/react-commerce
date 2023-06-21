@@ -83,6 +83,26 @@ const renderStyles: SystemStyleObject = {
       padding: '4px',
    },
 
+   '.table-overflow': {
+      overflowX: 'auto',
+   },
+
+   '.table-container': {
+      position: 'relative',
+   },
+
+   '.table-container::after': {
+      content: '""',
+      position: 'absolute',
+      top: '17px',
+      right: '0',
+      bottom: '17px',
+      width: '20px',
+      display: 'block',
+      background:
+         'linear-gradient(90deg, rgba(249,250,251, 0) 0%, rgb(249,250,251) 75%)',
+   },
+
    'lite-youtube': {
       marginTop: '8px',
       marginBottom: '8px',
@@ -204,26 +224,23 @@ const renderStyles: SystemStyleObject = {
    },
 };
 
-const Prerendered = chakra(
-   function Prerendered({
-      html,
-      className,
-   }: {
-      html: string;
-      className?: string;
-   }) {
-      useEffect(() => {
-         import('lite-youtube-embed');
-      }, []);
-      return (
-         <Box
-            className={className}
-            sx={renderStyles}
-            dangerouslySetInnerHTML={{ __html: html }}
-         />
-      );
-   },
-   { baseStyle: { fontSize: '16px' } }
-);
+const Prerendered = chakra(function Prerendered({
+   html,
+   className,
+}: {
+   html: string;
+   className?: string;
+}) {
+   useEffect(() => {
+      import('lite-youtube-embed');
+   }, []);
+   return (
+      <Box
+         className={className}
+         sx={renderStyles}
+         dangerouslySetInnerHTML={{ __html: html }}
+      />
+   );
+});
 
 export default Prerendered;
