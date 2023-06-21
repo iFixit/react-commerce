@@ -34,6 +34,7 @@ const renderStyles: SystemStyleObject = {
       color: 'gray.700',
       alignSelf: 'stretch',
       paddingBottom: 6,
+      marginTop: 4,
       '&:last-child': {
          paddingBottom: 0,
       },
@@ -80,7 +81,7 @@ const renderStyles: SystemStyleObject = {
    td: {
       border: '1px solid',
       borderColor: 'gray.300',
-      padding: '4px',
+      padding: 3,
    },
 
    '.table-overflow': {
@@ -94,13 +95,13 @@ const renderStyles: SystemStyleObject = {
    '.table-container::after': {
       content: '""',
       position: 'absolute',
-      top: '17px',
+      top: '0',
       right: '0',
-      bottom: '17px',
+      bottom: '0',
       width: '20px',
       display: 'block',
       background:
-         'linear-gradient(90deg, rgba(249,250,251, 0) 0%, rgb(249,250,251) 75%)',
+         'linear-gradient(90deg, rgba(255,255,255, 0) 0%, rgb(255,255,255) 75%)',
    },
 
    'lite-youtube': {
@@ -187,8 +188,6 @@ const renderStyles: SystemStyleObject = {
    '.imageBox_left': {
       clear: 'left',
       float: 'left',
-      marginBottom: '8px',
-      marginTop: '8px',
       marginRight: '30px',
       '> img': {
          clear: 'left',
@@ -203,8 +202,6 @@ const renderStyles: SystemStyleObject = {
    '.imageBox_right': {
       clear: 'right',
       float: 'right',
-      marginBottom: '8px',
-      marginTop: '8px',
       marginLeft: '30px',
       '>img': {
          clear: 'right',
@@ -212,12 +209,6 @@ const renderStyles: SystemStyleObject = {
    },
 
    '.imageBox_center': {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      clear: 'both',
-      marginBottom: '8px',
-      marginTop: '8px',
       '>img': {
          clear: 'both',
       },
