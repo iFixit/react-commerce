@@ -86,3 +86,35 @@ jobs:
               name: ${{ env.playwright-upload-result-path }}
               path: ${{ steps.test-result.outputs.result-path }}
               retention-days: 1
+
+   record-playwright-metrics:
+      name: record-playwright-metrics
+      runs-on: [self-hosted, metrics-runner]
+      needs: [playwright-run]
+      if: success() || failure()
+      timeout-minutes: 5
+      steps:
+         - name: Checkout ifixit
+           uses: actions/checkout@v3
+           with:
+              repository: iFixit/ifixit
+              token: ${{ secrets.ACTION_PAT }}
+
+         - name: Download playwright test results
+           if: always()
+           uses: actions/download-artifact@v3
+
+         - name: Install deps
+           run: make deps.unit-tests
+
+         - name: Combine all results
+           if: always()
+           run: find "${{ env.playwright-upload-result-path }}" -type f -print0 | xargs -0 cat > playwright-all-test-results
+
+         - name: Preview the results
+           if: always()
+           run: cat playwright-all-test-results
+
+         - name: Record test runs
+           if: always()
+           run: cat playwright-all-test-results | Tests/Exec/report-test-run
