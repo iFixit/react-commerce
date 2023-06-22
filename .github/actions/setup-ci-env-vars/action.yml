@@ -26,9 +26,3 @@ runs:
            echo "BUILD_LOG_URL=${{ steps.get_job_url_and_date.outputs.job-url }}" >> $GITHUB_ENV
            echo "BUILD_BRANCH=${{ github.event.pull_request.head.ref || github.ref_name }}" >> $GITHUB_ENV
         shell: bash
-
-      - name: Fetch relevant commits needed for tests
-        run: |
-           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
-           git fetch --no-tags --prune --depth=1 origin "${{ github.event.pull_request.head.ref }}"
-        shell: bash
