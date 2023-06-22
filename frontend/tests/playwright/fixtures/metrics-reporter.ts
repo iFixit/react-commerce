@@ -24,6 +24,8 @@ class MetricsReporter implements Reporter {
    commit: string;
    test_suite_id: string;
    results: Array<Object>;
+   timeStart!: number;
+   timeEnd!: number;
 
    constructor() {
       this.branch =
@@ -37,6 +39,10 @@ class MetricsReporter implements Reporter {
       this.test_suite_id = uuidv4();
 
       this.results = [];
+   }
+
+   onBegin(): void {
+      this.timeStart = Date.now();
    }
 
    getTestName(test: TestCase) {
@@ -92,7 +98,24 @@ class MetricsReporter implements Reporter {
       }
    }
 
-   onEnd(fullResult: FullResult) {}
+   // Add the total time for the test suite took to run
+   addFullResult(fullResult: FullResult) {
+      this.addResult({
+         id: this.test_suite_id,
+         test_name: 'ci-playwright',
+         time_start: this.timeStart,
+         time_end: this.timeEnd,
+         time_taken: this.timeEnd - this.timeStart,
+         pass: fullResult.status,
+         test_suite_id: null,
+         file_path: process.env.BUILD_LOG_URL || null,
+      });
+   }
+
+   onEnd(fullResult: FullResult) {
+      this.timeEnd = Date.now();
+      this.addFullResult(fullResult);
+   }
 }
 
 export default MetricsReporter;
