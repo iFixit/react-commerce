@@ -112,9 +112,23 @@ class MetricsReporter implements Reporter {
       });
    }
 
+   // format the results into a file to read from stdin for the report-test-run script
+   createJsonResult() {
+      const resultFileName = `playwright-result-${this.commit}.txt`;
+      try {
+         const jsonString =
+            this.results.map((result) => JSON.stringify(result)).join('\n\n') +
+            '\n\n';
+         fs.writeFileSync(resultFileName, jsonString);
+      } catch (error) {
+         console.error('Error saving playwright test results to a file', error);
+      }
+   }
+
    onEnd(fullResult: FullResult) {
       this.timeEnd = Date.now();
       this.addFullResult(fullResult);
+      this.createJsonResult();
    }
 }
 
