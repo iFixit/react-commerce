@@ -1,0 +1,34 @@
+name: Set CI Environment Variables
+description: Set CI Environment Variables
+runs:
+   using: 'composite'
+   steps:
+      - name: Get Action Job Info
+        uses: octokit/request-action@v2.x
+        id: get_action_job_data
+        with:
+           route: GET /repos/${{ github.repository }}/actions/runs/${{github.run_id}}/jobs
+
+      - name: Get job url and start date
+        id: get_job_url_and_date
+        run: |
+           JOB_DATA_JSON=$(echo $job_data_json | jq '.jobs | .[]? | select(.name == "${{ env.GITHUB_JOB_NAME }}")')
+           echo "job-url=$(echo $JOB_DATA_JSON | jq '.html_url')" >> $GITHUB_OUTPUT
+           echo "job-start-time=$(echo $JOB_DATA_JSON | jq '.started_at')" >> $GITHUB_OUTPUT
+        env:
+           job_data_json: ${{ steps.get_action_job_data.outputs.data }}
+        shell: bash
+
+      - name: Set Environment Variables
+        run: |
+           echo "QUEUED_AT=$(date --date="${{ steps.get_job_url_and_date.outputs.job-start-time }}" +%s)" >> $GITHUB_ENV
+           echo "BUILD_COMMIT=${{ github.event.pull_request.head.sha || github.sha }}" >> $GITHUB_ENV
+           echo "BUILD_LOG_URL=${{ steps.get_job_url_and_date.outputs.job-url }}" >> $GITHUB_ENV
+           echo "BUILD_BRANCH=${{ github.event.pull_request.head.ref || github.ref_name }}" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Fetch relevant commits needed for tests
+        run: |
+           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+           git fetch --no-tags --prune --depth=1 origin "${{ github.event.pull_request.head.ref }}"
+        shell: bash
