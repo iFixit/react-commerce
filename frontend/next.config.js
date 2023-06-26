@@ -1,27 +1,11 @@
+/** @type {import('next').NextConfig} */
+
 const {
    getLegacyPartItemTypeRedirects,
 } = require('./next-config/redirects/part-collections');
 const {
    getLegacyToolRedirects,
 } = require('./next-config/redirects/tool-collections');
-
-const withTM = require('next-transpile-modules')([
-   '@ifixit/analytics',
-   '@ifixit/app',
-   '@ifixit/auth-sdk',
-   '@ifixit/breadcrumbs',
-   '@ifixit/cart-sdk',
-   '@ifixit/footer',
-   '@ifixit/helpers',
-   '@ifixit/icons',
-   '@ifixit/ifixit-api-client',
-   '@ifixit/newsletter-sdk',
-   '@ifixit/sentry',
-   '@ifixit/shopify-storefront-client',
-   '@ifixit/ui',
-   '@ifixit/menu',
-   '@ifixit/tracking-hooks',
-]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
 
@@ -53,6 +37,23 @@ console.log('Strapi API: ' + strapiOrigin);
 console.log('iFixit API: ' + process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
 
 const moduleExports = {
+   transpilePackages: [
+      '@ifixit/analytics',
+      '@ifixit/app',
+      '@ifixit/auth-sdk',
+      '@ifixit/breadcrumbs',
+      '@ifixit/cart-sdk',
+      '@ifixit/footer',
+      '@ifixit/helpers',
+      '@ifixit/icons',
+      '@ifixit/ifixit-api-client',
+      '@ifixit/newsletter-sdk',
+      '@ifixit/sentry',
+      '@ifixit/shopify-storefront-client',
+      '@ifixit/ui',
+      '@ifixit/menu',
+      '@ifixit/tracking-hooks',
+   ],
    distDir: process.env.NEXT_DIST_DIR ?? '.next',
    env: {
       NEXT_PUBLIC_STRAPI_ORIGIN: strapiOrigin,
@@ -163,7 +164,7 @@ const moduleExports = {
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(
-   withBundleStats(withBundleAnalyzer(withTM(moduleExports))),
+   withBundleStats(withBundleAnalyzer(moduleExports)),
    SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );
 

@@ -201,7 +201,7 @@ export interface CardImageProps {
    alt?: string;
 }
 
-export const CardImage = ({ src, alt }: CardImageProps) => {
+export const CardImage = ({ src, alt = '' }: CardImageProps) => {
    if (src == null) {
       return (
          <AspectRatio ratio={1} flexGrow={0} flexShrink={0} position="relative">
@@ -241,8 +241,10 @@ export const CardImage = ({ src, alt }: CardImageProps) => {
       >
          <ResponsiveImage
             sizes="(max-width: 629px) 250px, (max-width: 767px) 400px, (max-width: 895px) 250px, (max-width: 1000px) 400px, 250px"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{
+               objectFit: 'contain',
+            }}
             src={src}
             alt={alt}
          />

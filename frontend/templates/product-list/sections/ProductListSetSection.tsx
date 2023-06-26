@@ -70,14 +70,20 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                   <ResponsiveImage
                      src={productList.image.url}
                      alt=""
-                     width="80px"
-                     height="60px"
-                     objectFit="contain"
+                     width={80}
+                     height={60}
+                     style={{
+                        objectFit: 'contain',
+                     }}
                   />
                </Flex>
             )}
             <Divider orientation="vertical" />
-            <NextLink href={productListPath(productList)} passHref>
+            <NextLink
+               href={productListPath(productList)}
+               passHref
+               legacyBehavior
+            >
                <LinkOverlay
                   px="3"
                   py="2"

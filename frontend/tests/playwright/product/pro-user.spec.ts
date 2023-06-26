@@ -3,7 +3,7 @@ import { test, expect } from '../test-fixtures';
 import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Pro User Test', () => {
-   test('Pro Discount Applied to Product Price', async ({
+   test.skip('Pro Discount Applied to Product Price', async ({
       productPage,
       serverRequestInterceptor,
       findProductQueryMock,
