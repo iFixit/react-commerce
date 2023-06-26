@@ -2,7 +2,6 @@ import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
 import { productListPath } from '@helpers/path-helpers';
 import { ProductList } from '@models/product-list';
-import NextLink from 'next/link';
 import * as React from 'react';
 import {
    useCurrentRefinements,
@@ -62,23 +61,18 @@ export function ProductListChildrenSection({
                         defaultShowAllChildrenOnLgSizes
                      )}
                   >
-                     <NextLink
+                     <ProductListCard
+                        as="a"
                         href={productListPath({
                            deviceTitle: child.deviceTitle,
                            handle: child.handle,
                            type: child.type,
                         })}
-                        passHref
-                        legacyBehavior
-                     >
-                        <ProductListCard
-                           as="a"
-                           productList={{
-                              title: child.title,
-                              imageUrl: child.image?.url,
-                           }}
-                        />
-                     </NextLink>
+                        productList={{
+                           title: child.title,
+                           imageUrl: child.image?.url,
+                        }}
+                     />
                   </Box>
                );
             })}

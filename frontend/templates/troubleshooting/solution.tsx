@@ -44,12 +44,7 @@ const _SolutionFooter = () => (
          borderTopWidth="1px"
          alignSelf="stretch"
       >
-         <Text
-            fontWeight="regular"
-            fontSize="14px"
-            color="gray.900"
-            textAlign="center"
-         >
+         <Text fontSize="14px" color="gray.900" textAlign="center">
             This solution was suggested by
          </Text>
          <Avatar size="24x24">
@@ -62,7 +57,7 @@ const _SolutionFooter = () => (
             textAlign="center"
          >
             <span>Kyle Wiens</span>
-            <Box as="span" fontWeight="regular" color="gray.900">
+            <Box as="span" color="gray.900">
                {' '}
                in{' '}
             </Box>
@@ -195,9 +190,9 @@ const SolutionHeader = ({
 );
 
 const SolutionTexts = ({ body }: { body: string }) => (
-   <Stack justify="flex-start" align="flex-start">
+   <>
       <Prerendered html={body} />
-   </Stack>
+   </>
 );
 
 export default function SolutionCard({
@@ -208,21 +203,27 @@ export default function SolutionCard({
    solution: SolutionSection;
 }) {
    return (
-      <Flex
+      <Box
          id={solutionHeadingToId(solution.heading)}
          background="white"
          borderRadius="4px"
          borderColor="gray.300"
          borderStyle="solid"
          borderWidth="1px"
-         padding="24px 24px 12px 24px"
+         padding="24px"
       >
          <Flex gap="24px" direction="column" flexGrow={1}>
             <SolutionHeader index={index} title={solution.heading} />
             <SolutionTexts body={solution.body} />
-            <LinkCards guides={solution.guides} products={solution.products} />
+            {solution.guides.length > 0 ||
+               (solution.products.length > 0 && (
+                  <LinkCards
+                     guides={solution.guides}
+                     products={solution.products}
+                  />
+               ))}
          </Flex>
-      </Flex>
+      </Box>
    );
 }
 

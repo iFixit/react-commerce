@@ -42,7 +42,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
             borderRadius="base"
             borderStyle="solid"
             p="2"
-            align="center"
+            align="flex-start"
             h="full"
             minH="16"
             {...other}
@@ -74,6 +74,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
             )}
             <Flex
                boxSizing="border-box"
+               h="full"
                justify="center"
                direction="column"
                flexGrow={1}
@@ -84,7 +85,6 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                {variant === 'medium' && productList.description && (
                   <Box
                      mt="1"
-                     display={{ base: 'none', md: 'block' }}
                      color="gray.600"
                      fontSize="sm"
                      lineHeight="shorter"
