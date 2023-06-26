@@ -3,7 +3,6 @@ name: E2E tests
 on: [push]
 env:
    npm_config_userconfig: './.npmrc'
-   playwright-upload-result-path: 'playwright-results'
 jobs:
    playwright-run:
       timeout-minutes: 15
@@ -21,12 +20,6 @@ jobs:
       steps:
          - name: Checkout
            uses: actions/checkout@v3
-
-         - name: Setup CI Environment Variables
-           uses: ./.github/actions/setup-ci-env-vars
-           env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              GITHUB_JOB_NAME: ${{ github.job }} (${{ matrix.project }})
 
          - name: Install Node.js
            uses: actions/setup-node@v3
@@ -66,51 +59,3 @@ jobs:
               name: playwright-artifacts
               path: frontend/tests/playwright/test-results/artifacts
               retention-days: 7
-
-         - name: Prepare results to upload for project matrix
-           if: success() || failure()
-           id: test-result
-           run: |
-              MATRIX_NAME=$(echo "${{ matrix.project }}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
-              RESULT_ORIGINAL_NAME="playwright-result-$BUILD_COMMIT"
-              RESULT_FINAL_NAME="$RESULT_ORIGINAL_NAME-$MATRIX_NAME"
-              mv "frontend/$RESULT_ORIGINAL_NAME" "frontend/$RESULT_FINAL_NAME"
-              RESULT_PATH="frontend/$RESULT_FINAL_NAME"
-              echo "Result path: $RESULT_PATH"
-              echo "result-path=$RESULT_PATH" >> $GITHUB_OUTPUT
-
-         - name: Upload Playwright Test Result Metrics
-           if: success() || failure()
-           uses: actions/upload-artifact@v3
-           with:
-              name: ${{ env.playwright-upload-result-path }}
-              path: ${{ steps.test-result.outputs.result-path }}
-              retention-days: 1
-
-   record-playwright-metrics:
-      name: record-playwright-metrics
-      runs-on: [self-hosted, metrics-runner]
-      needs: [playwright-run]
-      if: success() || failure()
-      timeout-minutes: 5
-      steps:
-         - name: Checkout ifixit
-           uses: actions/checkout@v3
-           with:
-              repository: iFixit/ifixit
-              token: ${{ secrets.ACTION_PAT }}
-
-         - name: Download playwright test results
-           uses: actions/download-artifact@v3
-
-         - name: Install deps
-           run: make deps.unit-tests
-
-         - name: Combine all results
-           run: find "${{ env.playwright-upload-result-path }}" -type f -print0 | xargs -0 cat > playwright-all-test-results
-
-         - name: Preview the results
-           run: cat playwright-all-test-results
-
-         - name: Record test runs
-           run: cat playwright-all-test-results | Tests/Exec/report-test-run
