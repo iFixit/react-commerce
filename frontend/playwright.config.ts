@@ -39,17 +39,17 @@ const config: PlaywrightTestConfig = {
    /* Opt out of parallel tests on CI. */
    workers: process.env.CI ? '100%' : '25%',
    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-   reporter: process.env.CI
-      ? [['list'], ['./tests/playwright/fixtures/metrics-reporter.ts']]
-      : [
-           [
+   reporter: [
+      process.env.CI
+         ? ['list']
+         : [
               'html',
               {
                  open: 'never', // will not try to automatically open the report in the browser if test fails
                  outputFolder: 'tests/playwright/test-results/reports/',
               },
            ],
-        ],
+   ],
    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
    use: {
       /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
