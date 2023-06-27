@@ -29,11 +29,13 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
       <Flex pos="relative" minH="96" borderRadius="base" overflow="hidden">
          <ResponsiveImage
             priority
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{
+               objectFit: 'cover',
+               zIndex: -1,
+            }}
             src={productList.heroImage!.url}
             alt={productList.heroImage!.alternativeText ?? ''}
-            style={{ zIndex: -1 }}
          />
 
          <Box

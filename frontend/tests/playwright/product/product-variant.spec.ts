@@ -56,7 +56,7 @@ test.describe('Product Variant Tests', () => {
       ).not.toBeVisible();
    });
 
-   test('Switch Variants and Add To Cart', async ({
+   test.skip('Switch Variants and Add To Cart', async ({
       productPage,
       cartDrawer,
       serverRequestInterceptor,

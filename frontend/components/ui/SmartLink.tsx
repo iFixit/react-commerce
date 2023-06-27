@@ -1,16 +1,15 @@
 import { Box, BoxProps as ChakraBoxProps, forwardRef } from '@chakra-ui/react';
-import NextLink, { LinkProps } from 'next/link';
+import NextLink from 'next/link';
 
-type SmartLinkProps = Pick<LinkProps, 'legacyBehavior'> &
-   ChakraBoxProps & {
-      href: string;
-      behaviour?: LinkBehavior;
-   };
+type SmartLinkProps = ChakraBoxProps & {
+   href: string;
+   behaviour?: LinkBehavior;
+};
 
 type LinkBehavior = 'auto' | 'reload' | 'fast';
 
 export const SmartLink = forwardRef<SmartLinkProps, 'a'>(
-   ({ href, children, legacyBehavior, behaviour = 'auto', ...props }, ref) => {
+   ({ href, children, behaviour = 'auto', ...props }, ref) => {
       const isAbsoluteURL = /^(?:[a-z]+:)?\/\//i.test(href);
       const shouldReload =
          (isAbsoluteURL && behaviour === 'auto') || behaviour === 'reload';
@@ -24,12 +23,7 @@ export const SmartLink = forwardRef<SmartLinkProps, 'a'>(
       }
 
       return (
-         <NextLink
-            ref={ref}
-            href={href}
-            passHref
-            legacyBehavior={legacyBehavior}
-         >
+         <NextLink ref={ref} href={href} passHref legacyBehavior>
             <Box as="a" {...props}>
                {children}
             </Box>

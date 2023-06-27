@@ -27,8 +27,10 @@ export function BannerSection({
          <ResponsiveImage
             src={backgroundImage}
             alt=""
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{
+               objectFit: 'cover',
+            }}
          />
          <Flex
             px={{

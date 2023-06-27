@@ -27,9 +27,11 @@ export function LifetimeWarrantySection({
          <Box position="absolute" inset="0">
             <Image
                alt=""
-               layout="fill"
                src={backgroundImage}
-               objectFit="cover"
+               fill
+               style={{
+                  objectFit: 'cover',
+               }}
             />
          </Box>
          <Box
