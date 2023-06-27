@@ -50,7 +50,6 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
-import { solutionHeadingToId } from './utils/solutionHeadingToId';
 import ProblemCard from './Problem';
 
 const Wiki: NextPageWithLayout<{
@@ -143,6 +142,7 @@ const Wiki: NextPageWithLayout<{
                      fontSize="3xl"
                      fontWeight="500"
                      selfLinked
+                     id="top"
                   >
                      {wikiData.title}
                   </HeadingSelfLink>
@@ -167,6 +167,7 @@ const Wiki: NextPageWithLayout<{
                      fontSize="20px"
                      fontWeight="600"
                      selfLinked
+                     id="causes"
                   >
                      {'Causes'}
                   </HeadingSelfLink>
@@ -202,7 +203,7 @@ function TableOfContents({ solutions }: { solutions: Section[] }) {
          {solutions.map((solution, index) => (
             <Link
                key={solution.heading}
-               href={`#${solutionHeadingToId(solution.heading)}`}
+               href={`#${solution.id}`}
                fontWeight="medium"
                display="flex"
             >
@@ -599,6 +600,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                fontSize="2xl"
                fontWeight="600"
                selfLinked
+               id={intro.id}
             >
                {intro.heading}
             </HeadingSelfLink>
@@ -611,7 +613,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <Box>
-         <HeadingSelfLink marginBottom={6} selfLinked>
+         <HeadingSelfLink marginBottom={6} selfLinked id={conclusion.id}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
@@ -657,6 +659,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             fontSize="24px"
             fontWeight="500"
             marginTop={4}
+            id="related-problems"
          >
             Related Problems
          </HeadingSelfLink>
