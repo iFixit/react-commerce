@@ -16,11 +16,8 @@ interface SecondaryNavigationProps {
 }
 
 export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
-   const isToolsProductList =
-      productList.type === ProductListType.AllTools ||
-      productList.type === ProductListType.ToolsCategory;
-   const hasDeviceNavigation =
-      productList.type !== ProductListType.AllParts && !isToolsProductList;
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const hasDeviceNavigation = productList.type === ProductListType.DeviceParts;
    const { currentItemTitle, ancestors } = useProductListAncestors(productList);
    const breadCrumbs: BreadcrumbItem[] = ancestors.map((ancestor) => ({
       label: ancestor.title,
@@ -30,7 +27,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
       label: currentItemTitle,
       url: undefined,
    });
-   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+
    const adminLinks = useMemo(
       () =>
          getAdminLinks({
@@ -42,7 +39,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
       <>
          <SecondaryNavbar
             display={{
-               base: hasDeviceNavigation ? 'initial' : 'none',
+               base: hasDeviceNavigation || isAdminUser ? 'initial' : 'none',
                sm: 'initial',
             }}
          >
@@ -66,6 +63,10 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                      w={{ base: 'full', sm: 'min-content' }}
                      boxSizing="border-box"
                      justify="space-between"
+                     direction={{
+                        base: hasDeviceNavigation ? 'row' : 'row-reverse',
+                        sm: 'row',
+                     }}
                   >
                      <ProductListDeviceNavigation productList={productList} />
                      {isAdminUser && <PageEditMenu links={adminLinks} />}

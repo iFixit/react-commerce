@@ -54,8 +54,10 @@ function ActivityCard({ data }: { data: Activity }) {
             <Image
                src={data.image_url}
                alt=""
-               layout="fill"
-               objectFit="cover"
+               fill
+               style={{
+                  objectFit: 'cover',
+               }}
             />
          </Link>
          <Flex
@@ -76,7 +78,16 @@ function ActivityCard({ data }: { data: Activity }) {
                   opacity: '50%',
                }}
             >
-               <Image src={data.user_image} alt="" width={40} height={40} />
+               <Image
+                  src={data.user_image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  style={{
+                     maxWidth: '100%',
+                     height: 'auto',
+                  }}
+               />
             </Box>
             <Flex
                direction="column"

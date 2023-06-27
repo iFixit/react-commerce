@@ -49,8 +49,10 @@ export function SplitWithImageContentSection({
                <ResponsiveImage
                   src={image.url}
                   alt={image.altText ?? ''}
-                  objectFit="cover"
-                  layout="fill"
+                  style={{
+                     objectFit: 'cover',
+                  }}
+                  fill
                />
             </Box>
          )}

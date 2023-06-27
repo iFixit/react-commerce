@@ -539,7 +539,7 @@ function LastUpdatedDate({
    return (
       <Link
          href={historyUrl}
-         fontWeight="regular"
+         fontWeight="normal"
          fontSize="14px"
          color="gray.500"
       >
@@ -569,17 +569,16 @@ function AuthorListing({
       authorCount > 1 ? 'contributors' : 'contributor';
    const linkStyle = {
       fontWeight: 'medium',
-      fontSize: '14px',
       color: 'brand.500',
    };
    return (
-      <Box>
+      <Box fontSize="14px">
          <Link href={authorProfileUrl} {...linkStyle}>
             {primaryAuthorName}
          </Link>
          {authorCount > 0 && (
             <>
-               <chakra.span as="span" fontWeight="regular" color="gray.900">
+               <chakra.span as="span" color="gray.900">
                   {' and '}
                </chakra.span>
                <Link {...linkStyle} href={historyUrl}>
@@ -593,7 +592,7 @@ function AuthorListing({
 
 function IntroductionSection({ intro }: { intro: Section }) {
    return (
-      <Box>
+      <>
          {intro.heading && (
             <HeadingSelfLink
                marginBottom={6}
@@ -606,18 +605,18 @@ function IntroductionSection({ intro }: { intro: Section }) {
             </HeadingSelfLink>
          )}
          <Prerendered html={intro.body} />
-      </Box>
+      </>
    );
 }
 
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
-      <Box>
+      <>
          <HeadingSelfLink marginBottom={6} selfLinked id={conclusion.id}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
-      </Box>
+      </>
    );
 }
 

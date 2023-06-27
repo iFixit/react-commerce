@@ -24,7 +24,7 @@ export function PostCard({
    title,
    category,
    imageSrc,
-   imageAlt,
+   imageAlt = '',
    link,
    date,
 }: PostCardProps) {
@@ -45,8 +45,10 @@ export function PostCard({
                   <ResponsiveImage
                      src={imageSrc}
                      alt={imageAlt}
-                     layout="fill"
-                     objectFit="cover"
+                     fill
+                     style={{
+                        objectFit: 'cover',
+                     }}
                      sizes="50vw"
                   />
                </Box>
