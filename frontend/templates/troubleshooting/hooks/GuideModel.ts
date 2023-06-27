@@ -9,7 +9,7 @@ export type Guide = {
    documents: any[];
    flags: Flag[];
    guideid: number;
-   image: ImageElement;
+   image?: ImageElement;
    introduction_raw: string;
    introduction_rendered: string;
    featured_document_embed_url: string;

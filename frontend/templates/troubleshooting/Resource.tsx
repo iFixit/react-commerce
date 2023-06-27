@@ -30,7 +30,7 @@ export function GuideResource({ guide }: { guide: Guide }) {
       <Resource
          href={guide.url}
          title={guide.title}
-         imageUrl={guide.image.thumbnail}
+         imageUrl={guide.image?.thumbnail}
          timeRequired={guide.time_required}
          difficulty={guide.difficulty}
          spacing="6px"
