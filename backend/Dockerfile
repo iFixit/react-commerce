@@ -1,4 +1,4 @@
-FROM node:16-alpine3.14
+FROM node:18-alpine3.18
 # Installing libvips for sharp compatibility
 RUN apk --update-cache add vips-dev \
   && rm -rf /var/cache/apk/*

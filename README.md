@@ -8,7 +8,7 @@ New iFixit e-commerce site.
 
 -  npm v8
 -  pnpm v8
--  node v16
+-  node v18
 -  yarn
 
 Here's one way you can get all the right versions installed and setup:
