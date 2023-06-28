@@ -212,6 +212,28 @@ const renderStyles: SystemStyleObject = {
          clear: 'both',
       },
    },
+
+   '.svg-icon': {
+      svg: {
+         width: '1em',
+         height: '1em',
+         display: 'inline-block',
+
+         path: {
+            fill: 'currentColor',
+         },
+      },
+
+      '&.xs svg': {
+         width: '0.5em',
+         height: '0.5em',
+      },
+
+      '&.sm svg': {
+         width: '0.75em',
+         height: '0.75em',
+      },
+   },
 };
 
 const Prerendered = chakra(function Prerendered({
