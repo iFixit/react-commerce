@@ -75,6 +75,12 @@ const renderStyles: SystemStyleObject = {
       borderLeftWidth: '5px',
       borderLeftStyle: 'solid',
       padding: '2px 8px 2px 12px',
+
+      '&.featured': {
+         borderColor: '#fe6f15',
+         borderTopWidth: '1px',
+         borderBottomWidth: '1px',
+      },
    },
 
    td: {
