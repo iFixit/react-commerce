@@ -81,7 +81,7 @@ const renderStyles: SystemStyleObject = {
          borderTopWidth: '1px',
          borderBottomWidth: '1px',
       },
-      
+
       '& > p': {
          marginBlock: '8px',
       },
