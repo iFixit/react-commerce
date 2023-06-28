@@ -23,4 +23,28 @@ export default [
          policies: [],
       },
    },
+   {
+      method: 'GET',
+      path: '/content-types',
+      handler: 'contentTypesController.findManyContentTypes',
+      config: {
+         policies: [],
+      },
+   },
+   {
+      method: 'POST',
+      path: '/export-csv',
+      handler: 'bulkOperationsController.exportCSV',
+      config: {
+         policies: [],
+      },
+   },
+   {
+      method: 'POST',
+      path: '/import-csv',
+      handler: 'bulkOperationsController.importCSV',
+      config: {
+         policies: [],
+      },
+   },
 ];

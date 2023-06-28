@@ -5,20 +5,41 @@
  *
  */
 
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Layout } from '@strapi/design-system';
 import { NotFound } from '@strapi/helper-plugin';
-import pluginId from '../../pluginId';
-import HomePage from '../HomePage';
+import { QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { queryClient } from '../../utils/react-query-client';
+import { NavBar } from '../../components/NavBar';
+import {
+   backupPath,
+   bulkOperationsPath,
+   homePath,
+} from '../../utils/path-helpers';
+import BackupPage from '../Backup';
+import BulkOperationsPage from '../BulkOperations';
 
-const App: React.VoidFunctionComponent = () => {
+const App = () => {
    return (
-      <div>
-         <Switch>
-            <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
-            <Route component={NotFound} />
-         </Switch>
-      </div>
+      <QueryClientProvider client={queryClient}>
+         <div>
+            <Layout sideNav={<NavBar />}>
+               <Switch>
+                  <Route exact path={homePath()}>
+                     <Redirect to={backupPath()} />
+                  </Route>
+                  <Route path={backupPath()} component={BackupPage} exact />
+                  <Route
+                     path={bulkOperationsPath()}
+                     component={BulkOperationsPage}
+                     exact
+                  />
+                  <Route component={NotFound} />
+               </Switch>
+            </Layout>
+         </div>
+      </QueryClientProvider>
    );
 };
 

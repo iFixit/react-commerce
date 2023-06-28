@@ -12,7 +12,7 @@ export default async ({ strapi }: { strapi: Strapi }) => {
          await seedService.importContentTypes({
             canDeleteExistingContent: false,
          });
-      } catch (err) {
+      } catch (err: any) {
          strapi.log.error('💥 Error while seeding database');
          strapi.log.error(err.message);
       }

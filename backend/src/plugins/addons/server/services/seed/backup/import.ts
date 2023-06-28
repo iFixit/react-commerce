@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import type { Backup } from './types';
-import { isStderrAnError } from './utils';
+import { isStderrAnError } from '../../../helpers/server-helpers';
 
 export function importBackup(backup: Backup): Promise<string> {
    strapi.log.info(`🌱 Importing data from ${backup.filePath} ...`);

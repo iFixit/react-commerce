@@ -12,7 +12,7 @@ type ConstructorArgs = {
 };
 
 export class CollectionTypeRepository extends ContentTypeRepository {
-   private items: ContentTypeItem[];
+   private items: ContentTypeItem[] = [];
 
    constructor({ strapi, uid }: ConstructorArgs) {
       super();
