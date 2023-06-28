@@ -105,13 +105,12 @@ const Wiki: NextPageWithLayout<{
                   onClick={onOpen}
                   cursor="pointer"
                   alt={title}
-                  maxWidth="120px"
-                  minWidth="120px"
-                  minHeight="90.5px"
+                  htmlWidth={120}
+                  htmlHeight={90}
                   objectFit="contain"
                   borderRadius="4px"
-                  border="1px solid"
-                  borderColor="gray.300"
+                  outline="1px solid"
+                  outlineColor="gray.300"
                   marginRight="12px"
                   display={{ base: 'none', sm: 'block' }}
                />
