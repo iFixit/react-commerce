@@ -100,7 +100,52 @@ The `frontend` directory is structured as follows:
 
 Here's an overview of the production setup (the focus is on Next.js, therefore details on the iFixit app have been left out):
 
-![image](https://user-images.githubusercontent.com/4640135/203581627-82ab19ca-7de7-4343-ae05-2a4f6330f38a.png)
+```mermaid
+graph LR
+   User --> Browser -->|Client Request| Request
+
+   Request <-->|"ifixit.com/*"| IsNextPage
+   IsNextPageYes --> EdgeNetwork
+   IsNextPageNo --> LoadBalancer
+
+   Request <--> AlgoliaSearchAPI
+   Request <--> ShopifyStorefrontAPI
+
+   Next.js <-->|Server Request| Request
+
+   subgraph CloudFront
+      direction LR
+      IsNextPage{"Should route to next?\n(Determined by settings in cloudfront)"}
+      IsNextPage --> IsNextPageNo["No"]
+      IsNextPage --> IsNextPageYes["Yes"]
+   end
+
+   subgraph Vercel
+      direction LR
+      EdgeNetwork["Edge Network"] --> Next.js["Next.js Server instance"]
+   end
+
+   subgraph ExternalResources["External Resources"]
+      direction LR
+      CloudFront
+      ShopifyStorefrontAPI["Shopify Storefront API"]
+      AlgoliaSearchAPI["Algolia Search API"]
+   end
+
+   subgraph iFixitInfrastructure["iFixit Infrastructure"]
+        direction LR
+      LoadBalancer["Load Balancer"] -->|strapi.ifixit.com| Strapi
+      LoadBalancer -->|ifixit.com| PHPApp
+      Strapi --> RDS
+   end
+
+   subgraph PHPApp["PHP App"]
+      direction TB
+      Web
+      API
+   end
+
+```
 
 ## Tests
 
