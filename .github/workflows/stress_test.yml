@@ -82,7 +82,7 @@ jobs:
          - name: Run Playwright Tests
            env:
               NODE_ENV: test
-              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://127.0.0.1:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
            run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}" ${{ needs.check-diff.outputs.modified-playwright-tests }} --repeat-each=5
 
@@ -117,5 +117,5 @@ jobs:
          - name: Run Jest tests
            run: for i in {1..5}; do pnpm test -- ${{ needs.check-diff.outputs.modified-jest-tests }}; done
            env:
-              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://127.0.0.1:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

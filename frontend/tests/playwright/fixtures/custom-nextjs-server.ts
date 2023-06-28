@@ -25,7 +25,7 @@ loadEnvConfig('./', process.env.NODE_ENV !== 'production');
  * running the tests.
  */
 const isDev = process.env.NODE_ENV !== 'production' && process.env.CI == null;
-const hostname = 'localhost';
+const hostname = '127.0.0.1';
 
 // Create Next.js instance
 const app = next({ dev: isDev, hostname, quiet: true });
