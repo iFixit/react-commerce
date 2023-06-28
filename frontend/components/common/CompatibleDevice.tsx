@@ -50,6 +50,7 @@ export function CompatibleDevice({
             wrapper={(children) => (
                <Link
                   href={device.deviceUrl}
+                  flexShrink="0"
                   {...(!truncateModels && {
                      onClick: (event) => event.stopPropagation(),
                   })}
@@ -69,6 +70,7 @@ export function CompatibleDevice({
                borderStyle="solid"
                borderColor="gray.300"
                borderRadius="base"
+               flexShrink="0"
             />
          </ConditionalWrapper>
          <Flex
@@ -76,6 +78,7 @@ export function CompatibleDevice({
             flexDir="column"
             alignItems="flex-start"
             justifyContent="flex-start"
+            wordBreak="break-word"
          >
             <ConditionalWrapper
                condition={!!device.deviceUrl}
