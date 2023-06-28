@@ -213,7 +213,7 @@ const renderStyles: SystemStyleObject = {
       },
    },
 
-   '.svg-icon': {
+   '.fa-svg-icon': {
       svg: {
          width: '1em',
          height: '1em',
