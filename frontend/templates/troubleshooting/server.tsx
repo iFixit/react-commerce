@@ -106,6 +106,21 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
+      const canonicalUrl = new URL(troubleshootingData.canonicalUrl);
+      canonicalUrl.protocol = /localhost/.test(context.req.headers.host || '')
+         ? 'http'
+         : 'https';
+      canonicalUrl.host = context.req.headers.host || canonicalUrl.host;
+
+      if (context.resolvedUrl !== canonicalUrl.pathname.toString()) {
+         return {
+            redirect: {
+               destination: canonicalUrl.toString(),
+               permanent: true,
+            },
+         };
+      }
+
       const solutions: SolutionSection[] = await Promise.all(
          troubleshootingData.solutions.map(fetchDataForSolution)
       );
