@@ -33,6 +33,7 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                   outline="1px solid"
                   outlineColor="gray.300"
                   borderRadius="4px"
+                  loading="lazy"
                />
                <Stack
                   justify="center"
