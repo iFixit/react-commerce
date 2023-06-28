@@ -25,13 +25,14 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
             >
                <Image
                   boxSize="48px"
+                  htmlWidth={48}
+                  htmlHeight={48}
                   objectFit="cover"
                   src={imageUrl}
                   alt=""
+                  outline="1px solid"
+                  outlineColor="gray.300"
                   borderRadius="4px"
-                  borderColor="gray.300"
-                  borderWidth="1px"
-                  borderStyle="solid"
                />
                <Stack
                   justify="center"
