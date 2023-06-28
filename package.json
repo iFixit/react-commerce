@@ -11,7 +11,7 @@
       "install:all": "export $(cat .env.local) && pnpm install && npm run install:backend",
       "install:backend": "cd backend && yarn install:all",
       "dev:backend": "cd backend && pnpm run dev",
-      "dev:frontend": "wait-on http://127.0.0.1:1337/_health && cd frontend && npm run dev",
+      "dev:frontend": "wait-on http://localhost:1337/_health && cd frontend && npm run dev",
       "dev": "cross-env FORCE_COLOR=1 npm-run-all -l -p dev:*",
       "build:backend": "cd backend && pnpm run build",
       "build:frontend": "cd frontend && pnpm run build",
