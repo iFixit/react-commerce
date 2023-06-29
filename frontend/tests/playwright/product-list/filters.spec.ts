@@ -171,9 +171,16 @@ test.describe('Product List Filtering', () => {
             .getByTestId('facets-accordion')
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
 
-         const firstCollapsedAccordionItem = await facetList
-            .nth(0)
-            .elementHandle();
+         // Get the visible facets
+         let visibleFacetList = [];
+         for (let i = 0; i < (await facetList.count()); i++) {
+            const element = facetList.nth(i);
+            if (await element.isVisible()) {
+               visibleFacetList.push(element);
+            }
+         }
+         const firstCollapsedAccordionItem =
+            await visibleFacetList[0].elementHandle();
 
          // Click the first facet accordion item.
          if (!firstCollapsedAccordionItem) {
