@@ -66,10 +66,10 @@ export const test = base.extend<
       },
    ],
    productPage: async ({ page, baseURL }, use) => {
-      await use(new ProductPage(page, baseURL ?? 'http://localhost:3000'));
+      await use(new ProductPage(page, baseURL ?? 'http://127.0.0.1:3000'));
    },
    partsPage: async ({ page, baseURL }, use) => {
-      await use(new PartsPage(page, baseURL ?? 'http://localhost:3000'));
+      await use(new PartsPage(page, baseURL ?? 'http://127.0.0.1:3000'));
    },
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
@@ -97,8 +97,8 @@ export const test = base.extend<
     */
    serverRequestInterceptor: [
       async ({ customServer, productPage, partsPage }, use) => {
-         productPage.updateBaseURL(`http://localhost:${customServer.port}`);
-         partsPage.updateBaseURL(`http://localhost:${customServer.port}`);
+         productPage.updateBaseURL(`http://127.0.0.1:${customServer.port}`);
+         partsPage.updateBaseURL(`http://127.0.0.1:${customServer.port}`);
          await use(customServer.serverRequestInterceptor);
       },
       { scope: 'test' },
