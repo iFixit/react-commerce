@@ -2,7 +2,7 @@ import { Stack, Image, Text } from '@chakra-ui/react';
 import { Problem } from './hooks/useTroubleshootingProps';
 
 export default function ProblemCard({ problem }: { problem: Problem }) {
-   const { title, deviceTitle, imageUrl, url } = problem;
+   const { title, deviceTitle, imageUrlThumbnail, url } = problem;
    return (
       <a href={url}>
          <Stack
@@ -28,7 +28,7 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                   htmlWidth={48}
                   htmlHeight={48}
                   objectFit="cover"
-                  src={imageUrl}
+                  src={imageUrlThumbnail}
                   alt=""
                   outline="1px solid"
                   outlineColor="gray.300"

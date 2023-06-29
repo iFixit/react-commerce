@@ -19,7 +19,7 @@ export type Author = {
 
 export type Problem = {
    url: string;
-   imageUrl: string;
+   imageUrlThumbnail: string;
    title: string;
    deviceTitle: string;
 };
