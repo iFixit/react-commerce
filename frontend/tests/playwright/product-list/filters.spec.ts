@@ -87,17 +87,15 @@ async function resetAndCheckRefinements(buttonText: string, page: Page) {
 }
 
 test.describe('Product List Filtering', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.goto('/Parts');
-   });
-
    test.describe('Desktop Filters', () => {
       test.skip(({ page }) => {
          const viewPort = page.viewportSize();
          return !viewPort || viewPort.width < 768;
       }, 'Only run on desktop.');
 
-      test('Filter Products', async ({ page }) => {
+      test('Filter Products on /Parts Page', async ({ page }) => {
+         await page.goto('/Parts');
+
          const facetList = page
             .getByTestId('facets-accordion')
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
@@ -165,6 +163,10 @@ test.describe('Product List Filtering', () => {
          );
          await resetAndCheckRefinements('Clear all filters', page);
       });
+
+      test('Filter Products on /Shop Page', async ({ page }) => {
+         await page.goto('/Shop/Samsung_Repair_Kits');
+      });
    });
 
    test.describe('Mobile and Tablet Filters', () => {
@@ -173,7 +175,9 @@ test.describe('Product List Filtering', () => {
          return !viewPort || viewPort.width > 768;
       }, 'Only run on mobile and tablet.');
 
-      test('Filter Products', async ({ page }) => {
+      test('Filter Products on /Parts Page', async ({ page }) => {
+         await page.goto('/Parts');
+
          // Select the first filter and close the drawer
          await page
             .getByRole('button', { name: 'Filters', exact: true })
@@ -232,7 +236,13 @@ test.describe('Product List Filtering', () => {
          await resetAndCheckRefinements('Clear all filters', page);
       });
 
+      test('Filter Products on /Shop Page', async ({ page }) => {
+         await page.goto('/Shop/Samsung_Repair_Kits');
+      });
+
       test('Facet Drawer Apply and Clear All Buttons', async ({ page }) => {
+         await page.goto('/Parts');
+
          // Select the first filter and click Apply button
          await page
             .getByRole('button', { name: 'Filters', exact: true })
