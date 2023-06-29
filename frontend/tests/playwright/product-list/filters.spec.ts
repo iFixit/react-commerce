@@ -166,6 +166,48 @@ test.describe('Product List Filtering', () => {
 
       test('Filter Products on /Shop Page', async ({ page }) => {
          await page.goto('/Shop/Samsung_Repair_Kits');
+
+         const facetList = page
+            .getByTestId('facets-accordion')
+            .locator('[data-testid^=collapsed-facet-accordion-item-]');
+
+         const firstCollapsedAccordionItem = await facetList
+            .nth(0)
+            .elementHandle();
+
+         // Click the first facet accordion item.
+         if (!firstCollapsedAccordionItem) {
+            throw new Error('Could not find first collapsed accordion item');
+         }
+         await firstCollapsedAccordionItem.click();
+
+         // Define a Promise to wait for the search to be triggered and let the UI update.
+         const queryResponse = waitForAlgoliaSearch(page);
+
+         // Click the first facet item
+         const firstFacetOption = await firstCollapsedAccordionItem.$(
+            'button[role="option"]'
+         );
+         await firstFacetOption?.click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await checkRefinementValue(firstFacetOptionValue, page, 'desktop');
+
+         // Check that the refinement value is in the search results.
+         const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
+            'data-facet-name'
+         );
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue!,
+            results
+         );
+
+         await resetAndCheckRefinements('Clear all filters', page);
       });
    });
 
@@ -238,6 +280,40 @@ test.describe('Product List Filtering', () => {
 
       test('Filter Products on /Shop Page', async ({ page }) => {
          await page.goto('/Shop/Samsung_Repair_Kits');
+
+         // Select the first filter and close the drawer
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         const firstFacet = page.getByTestId('facets-drawer-list-item').nth(1);
+         const firstFacetName = await firstFacet?.getAttribute(
+            'data-drawer-list-item-name'
+         );
+         await firstFacet.click();
+
+         const queryResponse = waitForAlgoliaSearch(page);
+         const firstFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await firstFacetOption.click();
+         await page.getByRole('button', { name: 'Close' }).click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         await checkRefinementValue(firstFacetOptionValue, page, 'mobile');
+
+         // Check that the refinement value is in the search results.
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue!,
+            results
+         );
+
+         await resetAndCheckRefinements('Clear all filters', page);
       });
 
       test('Facet Drawer Apply and Clear All Buttons', async ({ page }) => {
