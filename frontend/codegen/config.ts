@@ -4,7 +4,7 @@ const config: CodegenConfig = {
    overwrite: true,
    generates: {
       'lib/strapi-sdk/generated/sdk.ts': {
-         schema: 'http://127.0.0.1:1337/graphql',
+         schema: 'http://localhost:1337/graphql',
          documents: 'lib/strapi-sdk/operations/**/*.graphql',
          plugins: [
             'typescript',
