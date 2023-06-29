@@ -46,7 +46,7 @@ jobs:
 
          - name: Build next.js app
            # change this if your site requires a custom build command
-           run: cd frontend && pnpm build
+           run: ./node_modules/.bin/next build
            env:
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
               NEXT_PUBLIC_STRAPI_ORIGIN: https://main.govinor.com
