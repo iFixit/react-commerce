@@ -5,6 +5,7 @@ import { Guide } from './GuideModel';
 
 export type Section = {
    heading: string;
+   id: string;
    body: string;
 };
 

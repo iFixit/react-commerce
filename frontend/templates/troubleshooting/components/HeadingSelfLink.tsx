@@ -2,32 +2,30 @@ import * as React from 'react';
 import { forwardRef, Heading, HeadingProps, Link } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faLink } from '@fortawesome/pro-solid-svg-icons';
-import { solutionHeadingToId } from '../utils/solutionHeadingToId';
 
 export interface HeadingSelfLinkProps {
    children: string;
+   id: string;
    selfLinked?: boolean;
 }
 
 export const HeadingSelfLink = forwardRef<
    HeadingProps & HeadingSelfLinkProps,
    'h2'
->(({ children, selfLinked, ...props }, ref) => {
-   const solutionHeading = children as string;
-
+>(({ children, id, selfLinked, ...props }, ref) => {
    return (
       <Heading
          display="flex"
          sx={{ _hover: { '& .heading_link-icon': { opacity: '1' } } }}
          {...(selfLinked === true && {
-            id: solutionHeadingToId(solutionHeading),
+            id,
          })}
          {...props}
          {...ref}
       >
          {children}
          <Link
-            href={`#${solutionHeadingToId(solutionHeading)}`}
+            href={`#${id}`}
             display="inline-flex"
             placeItems="center start"
             paddingLeft={2}

@@ -23,7 +23,6 @@ import { GuideResource, ProductResource } from './Resource';
 import { Guide } from './hooks/GuideModel';
 import { Product } from '@models/product';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
-import { solutionHeadingToId } from './utils/solutionHeadingToId';
 
 const _SolutionFooter = () => (
    <Stack
@@ -134,10 +133,12 @@ const _SolutionFooter = () => (
 const SolutionHeader = ({
    index,
    title,
+   id,
    popularity,
 }: {
    index: number;
    title: string;
+   id: string;
    popularity?: number;
 }) => (
    <Stack
@@ -166,6 +167,7 @@ const SolutionHeader = ({
          fontSize="24px"
          color="brand.500"
          alignSelf="center"
+         id={id}
       >
          {title}
       </HeadingSelfLink>
@@ -204,7 +206,7 @@ export default function SolutionCard({
 }) {
    return (
       <Box
-         id={solutionHeadingToId(solution.heading)}
+         id={solution.id}
          background="white"
          borderRadius="4px"
          borderColor="gray.300"
@@ -213,7 +215,11 @@ export default function SolutionCard({
          padding="24px"
       >
          <Flex gap="24px" direction="column" flexGrow={1}>
-            <SolutionHeader index={index} title={solution.heading} />
+            <SolutionHeader
+               id={solution.id}
+               index={index}
+               title={solution.heading}
+            />
             <SolutionTexts body={solution.body} />
             {solution.guides.length > 0 ||
                (solution.products.length > 0 && (
