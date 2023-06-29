@@ -221,13 +221,12 @@ export default function SolutionCard({
                title={solution.heading}
             />
             <SolutionTexts body={solution.body} />
-            {solution.guides.length > 0 ||
-               (solution.products.length > 0 && (
-                  <LinkCards
-                     guides={solution.guides}
-                     products={solution.products}
-                  />
-               ))}
+            {(solution.guides.length > 0 || solution.products.length > 0) && (
+               <LinkCards
+                  guides={solution.guides}
+                  products={solution.products}
+               />
+            )}
          </Flex>
       </Box>
    );
