@@ -237,12 +237,20 @@ function LinkCards({
    products,
    ...props
 }: { guides: Guide[]; products: Product[] } & BoxProps) {
+   const uniqueGuides = guides.filter(
+      (guide, index) =>
+         guides.findIndex((g) => g.guideid === guide.guideid) === index
+   );
+   const uniqueProducts = products.filter(
+      (product, index) =>
+         products.findIndex((p) => p.id === product.id) === index
+   );
    return (
       <VStack spacing="6px" {...props}>
-         {guides.map((guide: Guide) => (
+         {uniqueGuides.map((guide: Guide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
-         {products.map((product: Product) => (
+         {uniqueProducts.map((product: Product) => (
             <ProductResource key={product.id} product={product} />
          ))}
       </VStack>
