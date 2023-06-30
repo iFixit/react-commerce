@@ -1,6 +1,6 @@
-import { Enum_Productlist_Type, GetProductListQuery } from '@lib/strapi-sdk';
+import { Enum_Productlist_Type, FindProductListQuery } from '@lib/strapi-sdk';
 
-export const getProductListMock: GetProductListQuery = {
+export const getProductListMock: FindProductListQuery = {
    productLists: {
       data: [
          {

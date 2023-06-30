@@ -2,7 +2,7 @@ import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
-import { ProductList, ProductListAncestor } from '@models/product-list';
+import type { ProductList, ProductListAncestor } from '@models/product-list';
 import Head from 'next/head';
 import React from 'react';
 import {

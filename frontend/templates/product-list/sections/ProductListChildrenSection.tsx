@@ -1,7 +1,7 @@
 import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
 import { productListPath } from '@helpers/path-helpers';
-import { ProductList } from '@models/product-list';
+import type { ProductList } from '@models/product-list';
 import * as React from 'react';
 import {
    useCurrentRefinements,
