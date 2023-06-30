@@ -86,6 +86,8 @@ async function resetAndCheckRefinements(buttonText: string, page: Page) {
    ).toBe(0);
 }
 
+const SHOP_PAGE_URL = '/Shop/Samsung_Repair_Kits';
+
 test.describe('Product List Filtering', () => {
    test.describe('Desktop Filters', () => {
       test.skip(({ page }) => {
@@ -165,7 +167,7 @@ test.describe('Product List Filtering', () => {
       });
 
       test('Filter Products on /Shop Page', async ({ page }) => {
-         await page.goto('/Shop/Samsung_Repair_Kits');
+         await page.goto(SHOP_PAGE_URL);
 
          const facetList = page
             .getByTestId('facets-accordion')
@@ -181,6 +183,11 @@ test.describe('Product List Filtering', () => {
          }
          const firstCollapsedAccordionItem =
             await visibleFacetList[0].elementHandle();
+
+         // Check current url path and search params.
+         const url = new URL(page.url());
+         expect(url.pathname).toEqual(SHOP_PAGE_URL);
+         expect(url.search).toEqual('');
 
          // Click the first facet accordion item.
          if (!firstCollapsedAccordionItem) {
@@ -214,7 +221,17 @@ test.describe('Product List Filtering', () => {
             results
          );
 
+         // Check that url pathname is still /Shop/Samsung_Repair_Kits
+         // after clicking on a facet button.
+         const urlAfterApplyingFilters = new URL(page.url());
+         expect(urlAfterApplyingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterApplyingFilters.search).not.toEqual('');
+
          await resetAndCheckRefinements('Clear all filters', page);
+
+         const urlAfterClearingFilters = new URL(page.url());
+         expect(urlAfterClearingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterClearingFilters.search).toEqual('');
       });
    });
 
@@ -286,7 +303,12 @@ test.describe('Product List Filtering', () => {
       });
 
       test('Filter Products on /Shop Page', async ({ page }) => {
-         await page.goto('/Shop/Samsung_Repair_Kits');
+         await page.goto(SHOP_PAGE_URL);
+
+         // Check current url path and search params.
+         const url = new URL(page.url());
+         expect(url.pathname).toEqual(SHOP_PAGE_URL);
+         expect(url.search).toEqual('');
 
          // Select the first filter and close the drawer
          await page
@@ -320,7 +342,17 @@ test.describe('Product List Filtering', () => {
             results
          );
 
+         // Check that url pathname is still /Shop/Samsung_Repair_Kits
+         // after clicking on a facet button.
+         const urlAfterApplyingFilters = new URL(page.url());
+         expect(urlAfterApplyingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterApplyingFilters.search).not.toEqual('');
+
          await resetAndCheckRefinements('Clear all filters', page);
+
+         const urlAfterClearingFilters = new URL(page.url());
+         expect(urlAfterClearingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterClearingFilters.search).toEqual('');
       });
 
       test('Facet Drawer Apply and Clear All Buttons', async ({ page }) => {
