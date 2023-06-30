@@ -173,16 +173,20 @@ test.describe('Product List Filtering', () => {
             .getByTestId('facets-accordion')
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
 
-         // Get the visible facets
-         const visibleFacetList = [];
-         for (let i = 0; i < (await facetList.count()); i++) {
-            const element = facetList.nth(i);
+         // Get the visible facet
+         let visibleFacet = null;
+         for (const element of await facetList.all()) {
             if (await element.isVisible()) {
-               visibleFacetList.push(element);
+               visibleFacet = element;
+               break;
             }
          }
-         const firstCollapsedAccordionItem =
-            await visibleFacetList[0].elementHandle();
+
+         if (!visibleFacet) {
+            throw new Error('Could not find a visible facet');
+         }
+
+         const firstCollapsedAccordionItem = await visibleFacet.elementHandle();
 
          // Check current url path and search params.
          const url = new URL(page.url());
