@@ -138,11 +138,7 @@ const renderStyles: SystemStyleObject = {
 
    '.videoFrame': {
       maxWidth: '100%',
-      border: '1px solid #e5e7eb',
-      marginTop: '8px',
-      marginBottom: '8px',
-      padding: '1px',
-      borderRadius: 0,
+      marginBlock: '8px',
       height: 'auto',
 
       '@media only screen and (max-width: 575px)': {
@@ -179,11 +175,12 @@ const renderStyles: SystemStyleObject = {
 
    '.videoBox': {
       position: 'relative',
-      width: 'auto !important',
       overflow: 'hidden',
       maxWidth: '100%',
-      height: 0,
-      paddingBottom: '56.25%',
+      aspectRatio: '16 / 9',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
 
       video: {
          position: 'absolute',
