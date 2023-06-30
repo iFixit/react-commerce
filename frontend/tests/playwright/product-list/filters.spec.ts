@@ -174,7 +174,7 @@ test.describe('Product List Filtering', () => {
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
 
          // Get the visible facets
-         let visibleFacetList = [];
+         const visibleFacetList = [];
          for (let i = 0; i < (await facetList.count()); i++) {
             const element = facetList.nth(i);
             if (await element.isVisible()) {
