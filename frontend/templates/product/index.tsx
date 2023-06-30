@@ -259,7 +259,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             })}
          </Box>
          {product.productcode && (
-            <ProductPixelPing productcode={product.productcode} />
+            <ProductPixelPing productcode={parseInt(product.productcode)} />
          )}
       </React.Fragment>
    );

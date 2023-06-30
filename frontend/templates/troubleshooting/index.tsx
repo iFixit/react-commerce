@@ -187,7 +187,7 @@ const Wiki: NextPageWithLayout<{
             {wikiData.linkedProblems.length > 0 && (
                <RelatedProblems problems={wikiData.linkedProblems} />
             )}
-            <PixelPing id={String(id)} type="troubleshooting" />
+            <PixelPing id={id} type="troubleshooting" />
          </Flex>
       </Flex>
    );

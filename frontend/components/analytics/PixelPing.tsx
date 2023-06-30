@@ -7,7 +7,7 @@ export const PixelPing = ({
    lang = 'en',
 }: {
    type: string;
-   id: string;
+   id: number;
    site?: string;
    lang?: string;
 }) => {
@@ -15,7 +15,8 @@ export const PixelPing = ({
       return null;
    }
 
-   const key = `${site}/${type}/${id}/${lang}`;
+   const intId = Math.trunc(id);
+   const key = `${site}/${type}/${intId}/${lang}`;
    const url = `${PIXEL_PING_URL}?key=${encodeURIComponent(key)}`;
    return (
       // eslint-disable-next-line @next/next/no-img-element
