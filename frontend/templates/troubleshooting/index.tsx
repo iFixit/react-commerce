@@ -51,6 +51,7 @@ import {
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
+import { PixelPing } from '@components/analytics/PixelPing';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -64,6 +65,7 @@ const Wiki: NextPageWithLayout<{
       canonicalUrl,
       mainImageUrl,
       mainImageUrlLarge,
+      id,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const metadata = (
@@ -185,6 +187,7 @@ const Wiki: NextPageWithLayout<{
             {wikiData.linkedProblems.length > 0 && (
                <RelatedProblems problems={wikiData.linkedProblems} />
             )}
+            <PixelPing id={id} type="wiki" />
          </Flex>
       </Flex>
    );
