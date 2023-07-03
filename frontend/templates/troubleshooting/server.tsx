@@ -96,13 +96,28 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       let troubleshootingData: TroubleshootingApiData;
       try {
          troubleshootingData = await client.get<TroubleshootingApiData>(
-            `Troubleshooting/${wikiname}`,
+            `Troubleshooting/${wikiname}?vulcan=1`,
             'troubleshooting'
          );
       } catch (e) {
          rethrowUnless404(e);
          return {
             notFound: true,
+         };
+      }
+
+      const canonicalUrl = new URL(troubleshootingData.canonicalUrl);
+      canonicalUrl.protocol = /localhost/.test(context.req.headers.host || '')
+         ? 'http'
+         : 'https';
+      canonicalUrl.host = context.req.headers.host || canonicalUrl.host;
+
+      if (context.resolvedUrl !== canonicalUrl.pathname.toString()) {
+         return {
+            redirect: {
+               destination: canonicalUrl.toString(),
+               permanent: true,
+            },
          };
       }
 

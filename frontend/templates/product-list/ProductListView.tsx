@@ -1,24 +1,27 @@
 import { VStack } from '@chakra-ui/react';
 import {
-   computeProductListAlgoliaFilterPreset,
    calculateProductListOverrides,
+   computeProductListAlgoliaFilterPreset,
 } from '@helpers/product-list-helpers';
 import { Wrapper } from '@ifixit/ui';
-import { ProductList, ProductListSectionType } from '@models/product-list';
-import { Configure, useMenu } from 'react-instantsearch-hooks-web';
+import type { ProductList } from '@models/product-list';
+import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
+import {
+   Configure,
+   useMenu,
+   usePagination,
+} from 'react-instantsearch-hooks-web';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
-   BannerSection,
+   FeaturedProductListsSection,
    FilterableProductsSection,
    HeroSection,
+   LifetimeWarrantyBannerSection,
    ProductListChildrenSection,
-   ProductListSetSection,
    RelatedPostsSection,
 } from './sections';
 import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
-import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
-import { usePagination } from 'react-instantsearch-hooks-web';
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -87,29 +90,28 @@ export function ProductListView({
                />
                {productListWithOverrides.sections.map((section, index) => {
                   switch (section.type) {
-                     case ProductListSectionType.Banner: {
+                     case 'LifetimeWarranty': {
                         return (
-                           <BannerSection
+                           <LifetimeWarrantyBannerSection
                               key={index}
                               title={section.title}
                               description={section.description}
-                              callToActionLabel={section.callToActionLabel}
-                              url={section.url}
+                              callToAction={section.callToAction}
                            />
                         );
                      }
-                     case ProductListSectionType.RelatedPosts: {
+                     case 'RelatedPosts': {
                         const tags = [productListWithOverrides.title].concat(
                            section.tags?.split(',').map((tag) => tag.trim()) ||
                               []
                         );
                         return <RelatedPostsSection key={index} tags={tags} />;
                      }
-                     case ProductListSectionType.ProductListSet: {
+                     case 'FeaturedProductLists': {
                         const { title, productLists } = section;
                         if (productLists.length > 0) {
                            return (
-                              <ProductListSetSection
+                              <FeaturedProductListsSection
                                  key={index}
                                  title={title}
                                  productLists={productLists}

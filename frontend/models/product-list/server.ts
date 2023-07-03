@@ -3,6 +3,7 @@ import {
    ALGOLIA_APP_ID,
    ALGOLIA_PRODUCT_INDEX_NAME,
 } from '@config/env';
+import { escapeFilterValue, getClientOptions } from '@helpers/algolia-helpers';
 import { Awaited, filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
@@ -13,26 +14,21 @@ import {
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
-import {
-   Enum_Productlist_Type,
-   ProductListFiltersInput,
-   strapi,
-} from '@lib/strapi-sdk';
+import { ProductListFiltersInput, strapi } from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
+import { iFixitPageType } from '.';
+import { ProductListType } from './component/product-list-type';
+import { productListTypeFromStrapi } from './component/product-list-type.server';
+import { getProductListSection } from './sections';
 import {
    BaseProductList,
-   iFixitPageType,
    ProductList,
    ProductListAncestor,
    ProductListChild,
    ProductListImage,
-   ProductListSection,
-   ProductListSectionType,
-   ProductListType,
    ProductListItemTypeOverride,
    ProductListItemTypeOverrideIndexed,
 } from './types';
-import { getClientOptions, escapeFilterValue } from '@helpers/algolia-helpers';
 
 /**
  * Get the product list data from the API
@@ -45,7 +41,7 @@ export async function findProductList(
 
    const [result, deviceWiki] = await Promise.all([
       timeAsync('strapi.getProductList', () =>
-         strapi.getProductList({ filters })
+         strapi.findProductList({ filters })
       ),
       fetchDeviceWiki(
          new IFixitAPIClient({ origin: ifixitOrigin }),
@@ -78,7 +74,7 @@ export async function findProductList(
       ALGOLIA_APP_ID,
       ALGOLIA_API_KEY
    );
-   const productListType = getProductListType(productList?.type);
+   const productListType = productListTypeFromStrapi(productList?.type);
 
    const ancestors = createProductListAncestors(parents);
    const isPartsList =
@@ -118,7 +114,7 @@ export async function findProductList(
          isPartsList,
       }),
       sections: filterNullableItems(
-         productList?.sections.map(createProductListSection)
+         productList?.sections.map(getProductListSection)
       ),
       algolia: {
          apiKey: algoliaApiKey,
@@ -132,23 +128,6 @@ export async function findProductList(
       ...baseProductList,
       type: productListType,
    };
-}
-
-export function getProductListType(
-   type?: Enum_Productlist_Type | null
-): ProductListType {
-   switch (type) {
-      case Enum_Productlist_Type.AllParts:
-         return ProductListType.AllParts;
-      case Enum_Productlist_Type.AllTools:
-         return ProductListType.AllTools;
-      case Enum_Productlist_Type.Tools:
-         return ProductListType.ToolsCategory;
-      case Enum_Productlist_Type.Marketing:
-         return ProductListType.Marketing;
-      default:
-         return ProductListType.DeviceParts;
-   }
 }
 
 type GetProductListChildrenProps = {
@@ -255,7 +234,7 @@ function getChildDeviceImage(
 }
 
 type StrapiProductListPageData = NonNullable<
-   NonNullable<Awaited<ReturnType<typeof strapi['getProductList']>>>
+   NonNullable<Awaited<ReturnType<typeof strapi['findProductList']>>>
 >;
 
 type ApiProductList = NonNullable<
@@ -305,7 +284,7 @@ function createProductListAncestors(
    }
    const ancestors = createProductListAncestors(attributes.parent);
 
-   const type = getProductListType(attributes.type);
+   const type = productListTypeFromStrapi(attributes.type);
 
    return ancestors.concat({
       deviceTitle: attributes.deviceTitle ?? null,
@@ -313,7 +292,7 @@ function createProductListAncestors(
          title: attributes.title,
          type,
       }),
-      type: getProductListType(attributes.type),
+      type: productListTypeFromStrapi(attributes.type),
       handle: attributes.handle,
    });
 }
@@ -331,7 +310,7 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
          return null;
       }
       const imageAttributes = attributes.image?.data?.attributes;
-      const type = getProductListType(attributes.type);
+      const type = productListTypeFromStrapi(attributes.type);
       return {
          title: getProductListTitle({
             title: attributes.title,
@@ -363,69 +342,6 @@ function sortProductListChildren(
       }
       return bPriority - aPriority;
    });
-}
-
-type ApiProductListSection = NonNullable<ApiProductList['sections']>[0];
-
-function createProductListSection(
-   section: ApiProductListSection
-): ProductListSection | null {
-   if (section == null) {
-      return null;
-   }
-   switch (section.__typename) {
-      case 'ComponentProductListBanner': {
-         return {
-            type: ProductListSectionType.Banner,
-            id: section.id,
-            title: section.title,
-            description: section.description,
-            callToActionLabel: section.callToActionLabel,
-            url: section.url,
-         };
-      }
-      case 'ComponentProductListRelatedPosts': {
-         return {
-            type: ProductListSectionType.RelatedPosts,
-            id: section.id,
-            tags: section.tags || null,
-         };
-      }
-      case 'ComponentProductListLinkedProductListSet': {
-         return {
-            type: ProductListSectionType.ProductListSet,
-            id: section.id,
-            title: section.title,
-            productLists: filterNullableItems(
-               section.productLists?.data?.map((item) => {
-                  const productList = item.attributes;
-                  if (productList == null) {
-                     return null;
-                  }
-                  const image = productList.image?.data?.attributes;
-                  return {
-                     handle: productList.handle,
-                     title: productList.title,
-                     type: getProductListType(productList.type),
-                     deviceTitle: productList.deviceTitle ?? null,
-                     description: productList.description,
-                     image:
-                        image == null
-                           ? null
-                           : getImageFromStrapiImage(image, 'thumbnail'),
-                     filters: productList.filters ?? null,
-                  };
-               })
-            ),
-         };
-      }
-      default: {
-         console.warn(
-            `Unknown product list section type: ${section.__typename}`
-         );
-         return null;
-      }
-   }
 }
 
 type ApiProductListItemOverrides = NonNullable<

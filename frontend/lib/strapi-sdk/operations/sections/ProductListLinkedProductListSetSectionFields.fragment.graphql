@@ -1,0 +1,11 @@
+fragment ProductListLinkedProductListSetSectionFields on ComponentProductListLinkedProductListSet {
+   id
+   title
+   productLists(pagination: { limit: 3 }) {
+      data {
+         attributes {
+            ...ProductListPreviewFields
+         }
+      }
+   }
+}

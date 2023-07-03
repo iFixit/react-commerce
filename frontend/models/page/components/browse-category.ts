@@ -1,7 +1,7 @@
 import { CategoryFieldsFragment } from '@lib/strapi-sdk';
 import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { ProductListType } from '@models/product-list';
-import { getProductListType } from '@models/product-list/server';
+import { productListTypeFromStrapi } from '@models/product-list/component/product-list-type.server';
 import { z } from 'zod';
 
 export const BrowseCategorySchema = z.object({
@@ -28,7 +28,7 @@ export function browseCategoryFromStrapi(
    }
    return {
       id,
-      type: getProductListType(attributes.type),
+      type: productListTypeFromStrapi(attributes.type),
       handle: attributes.handle,
       title: attributes.title,
       deviceTitle: attributes.deviceTitle ?? null,

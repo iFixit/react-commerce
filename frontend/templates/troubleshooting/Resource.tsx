@@ -60,7 +60,11 @@ export function ProductResource({ product }: { product: Product }) {
       <Resource
          href={productUrl}
          title={product.title}
-         imageUrl={selectedVariant.image?.url}
+         imageUrl={
+            selectedVariant.image?.url ||
+            product.images[0]?.thumbnailUrl ||
+            product.images[0]?.url
+         }
          spacing="4px"
          showBuyButton={isForSale}
          openInNewTab={true}

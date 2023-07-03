@@ -9,7 +9,7 @@ import {
    Image,
 } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
-import { ProductList } from '@models/product-list';
+import type { ProductList } from '@models/product-list';
 import React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';

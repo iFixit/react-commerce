@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import { iFixitPageType, iFixitPageTypeSchema } from '.';
+import {
+   ProductListType,
+   ProductListTypeSchema,
+} from './component/product-list-type';
+import { ProductListSectionSchema } from './sections';
 
 const PriceTierSchema = z.object({
    default_variant_price: z.union([z.string(), z.number()]),
@@ -38,41 +44,16 @@ const WikiInfoEntrySchema = z.object({
 });
 export type WikiInfoEntry = z.infer<typeof WikiInfoEntrySchema>;
 
-export enum ProductListType {
-   AllParts = 'parts',
-   DeviceParts = 'device-parts',
-   AllTools = 'tools',
-   ToolsCategory = 'tools-category',
-   Marketing = 'marketing',
-}
-const ProductListTypeZodNativeEnum = z.nativeEnum(ProductListType);
-
 const ProductListImageSchema = z.object({
    alternativeText: z.string().nullable(),
    url: z.string(),
 });
 export type ProductListImage = z.infer<typeof ProductListImageSchema>;
 
-export enum iFixitPageType {
-   Store = 'store',
-}
-const iFixitPageTypeZodNativeEnum = z.nativeEnum(iFixitPageType);
-
-export enum FacetWidgetType {
-   RefinementList = 'refinement-list',
-   Menu = 'menu',
-}
-
-export enum ProductListSectionType {
-   Banner = 'banner',
-   RelatedPosts = 'related-posts',
-   ProductListSet = 'product-list-set',
-   ItemTypeOverride = 'item-type-override',
-}
 const ProductListAncestorSchema = z.object({
    deviceTitle: z.string().nullable(),
    title: z.string(),
-   type: z.union([ProductListTypeZodNativeEnum, iFixitPageTypeZodNativeEnum]),
+   type: z.union([ProductListTypeSchema, iFixitPageTypeSchema]),
    handle: z.string(),
 });
 export type ProductListAncestor = z.infer<typeof ProductListAncestorSchema>;
@@ -83,58 +64,9 @@ const ProductListChildSchema = z.object({
    handle: z.string(),
    image: ProductListImageSchema.nullable(),
    sortPriority: z.number().nullable(),
-   type: ProductListTypeZodNativeEnum,
+   type: ProductListTypeSchema,
 });
 export type ProductListChild = z.infer<typeof ProductListChildSchema>;
-
-const ProductListPreviewSchema = z.object({
-   handle: z.string(),
-   title: z.string(),
-   type: ProductListTypeZodNativeEnum,
-   deviceTitle: z.string().nullable(),
-   description: z.string(),
-   image: ProductListImageSchema.nullable(),
-   filters: z.string().nullable(),
-});
-export type ProductListPreview = z.infer<typeof ProductListPreviewSchema>;
-
-const ProductListBannerSectionSchema = z.object({
-   type: z.literal(ProductListSectionType.Banner),
-   id: z.string(),
-   title: z.string(),
-   description: z.string(),
-   callToActionLabel: z.string(),
-   url: z.string(),
-});
-export type ProductListBannerSection = z.infer<
-   typeof ProductListBannerSectionSchema
->;
-
-const ProductListRelatedPostsSectionSchema = z.object({
-   type: z.literal(ProductListSectionType.RelatedPosts),
-   id: z.string(),
-   tags: z.string().nullable(),
-});
-export type ProductListRelatedPostsSection = z.infer<
-   typeof ProductListRelatedPostsSectionSchema
->;
-
-const ProductListProductListSetSectionSchema = z.object({
-   type: z.literal(ProductListSectionType.ProductListSet),
-   id: z.string(),
-   title: z.string(),
-   productLists: z.array(ProductListPreviewSchema),
-});
-export type ProductListProductListSetSection = z.infer<
-   typeof ProductListProductListSetSectionSchema
->;
-
-const ProductListSectionSchema = z.union([
-   ProductListBannerSectionSchema,
-   ProductListRelatedPostsSectionSchema,
-   ProductListProductListSetSectionSchema,
-]);
-export type ProductListSection = z.infer<typeof ProductListSectionSchema>;
 
 const ProductListItemTypeOverrideSchema = z.object({
    itemType: z.string().nullable().optional(),
