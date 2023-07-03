@@ -10,7 +10,6 @@ import {
    ApiSolutionSection,
    SolutionSection,
 } from './hooks/useTroubleshootingProps';
-import { Guide } from './hooks/GuideModel';
 import Product from '@pages/api/nextjs/cache/product';
 import type { Product as ProductType } from '@models/product';
 import {
@@ -56,16 +55,6 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       async function fetchDataForSolution(
          solution: ApiSolutionSection
       ): Promise<SolutionSection> {
-         const guides = await Promise.all(
-            solution.guides.map((guideid: number) => {
-               return (
-                  client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
-               ).catch((error) => {
-                  rethrowUnless404(error);
-                  return null;
-               });
-            })
-         );
          const products: ('' | null | ProductType)[] = await Promise.all(
             solution.products.map((handle: string | null) => {
                return (
@@ -86,7 +75,6 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          );
          return {
             ...solution,
-            guides: guides.filter((guide): guide is Guide => Boolean(guide)),
             products: products.filter((product): product is ProductType =>
                Boolean(product)
             ),
@@ -96,7 +84,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       let troubleshootingData: TroubleshootingApiData;
       try {
          troubleshootingData = await client.get<TroubleshootingApiData>(
-            `Troubleshooting/${wikiname}?vulcan=1`,
+            `Troubleshooting/${wikiname}?vulcan=1&fullGuides=1`,
             'troubleshooting'
          );
       } catch (e) {
