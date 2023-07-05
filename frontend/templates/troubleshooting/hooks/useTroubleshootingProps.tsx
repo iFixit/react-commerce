@@ -39,6 +39,7 @@ export type SolutionSection = Omit<
 
 export type TroubleshootingApiData = {
    title: string;
+   id: number;
    toc: string;
    introduction: Section[];
    solutions: ApiSolutionSection[];

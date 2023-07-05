@@ -26,7 +26,7 @@ import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import * as React from 'react';
 import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
-import { PixelPing } from './components/PixelPing';
+import { ProductPixelPing } from './components/PixelPing';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import { useProductPageAdminLinks } from './hooks/useProductPageAdminLinks';
@@ -259,7 +259,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             })}
          </Box>
          {product.productcode && (
-            <PixelPing productcode={product.productcode} />
+            <ProductPixelPing productcode={parseInt(product.productcode)} />
          )}
       </React.Fragment>
    );
