@@ -107,15 +107,22 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       }
 
       const canonicalUrl = new URL(troubleshootingData.canonicalUrl);
-      canonicalUrl.protocol = /localhost/.test(context.req.headers.host || '')
-         ? 'http'
-         : 'https';
-      canonicalUrl.host = context.req.headers.host || canonicalUrl.host;
+      /*
+       * Since `resolvedUrl` doesn't include a hostname or protocol,
+       * we're providing a fake one. We never actually read it out,
+       * so it doesn't much matter what we use.
+       */
+      const currentUrl = new URL(
+         context.resolvedUrl,
+         'https://vulcan.ifixit.com'
+      );
 
-      if (context.resolvedUrl !== canonicalUrl.pathname.toString()) {
+      if (currentUrl.pathname.toString() !== canonicalUrl.pathname.toString()) {
          return {
             redirect: {
-               destination: canonicalUrl.toString(),
+               destination:
+                  canonicalUrl.pathname.toString() +
+                  currentUrl.search.toString(),
                permanent: true,
             },
          };
