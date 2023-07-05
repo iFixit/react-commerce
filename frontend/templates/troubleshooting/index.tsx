@@ -81,7 +81,8 @@ const Wiki: NextPageWithLayout<{
    );
 
    console.log(
-      'matomo live url: ' + process.env.MATOMO_TAG_MANAGER_CONTAINER_URL_LIVE
+      'matomo live url: ' +
+         process.env.NEXT_PUBLIC_MATOMO_TAG_MANAGER_CONTAINER_URL_LIVE
    );
 
    return (

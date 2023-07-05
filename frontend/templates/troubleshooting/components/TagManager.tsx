@@ -35,24 +35,23 @@ function GoogleNoScript() {
 }
 
 function MatomoScript() {
-   console.log('matomo script');
    const params = new URLSearchParams();
    const environment = params.get(GET_PARAM) || DEFAULT_ENV;
 
    const configUrl = (function () {
       switch (environment) {
          case 'Live':
-            return process.env.MATOMO_TAG_MANAGER_CONTAINER_URL_LIVE;
+            return process.env
+               .NEXT_PUBLIC_MATOMO_TAG_MANAGER_CONTAINER_URL_LIVE;
          case 'Staging':
-            return process.env.MATOMO_TAG_MANAGER_CONTAINER_URL_STAGING;
+            return process.env
+               .NEXT_PUBLIC_MATOMO_TAG_MANAGER_CONTAINER_URL_STAGING;
          case 'Dev':
-            return process.env.MATOMO_TAG_MANAGER_CONTAINER_URL_DEV;
+            return process.env.NEXT_PUBLIC_MATOMO_TAG_MANAGER_CONTAINER_URL_DEV;
          default:
             throw new Error(`Unknown environment: ${environment}`);
       }
    })();
-
-   console.log(`Matomo script: ${configUrl}`);
 
    const scriptTag = `
         var c = "${configUrl}";
