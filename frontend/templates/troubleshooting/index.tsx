@@ -80,6 +80,10 @@ const Wiki: NextPageWithLayout<{
       </>
    );
 
+   console.log(
+      'matomo live url: ' + process.env.MATOMO_TAG_MANAGER_CONTAINER_URL_LIVE
+   );
+
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
          <NavBar
