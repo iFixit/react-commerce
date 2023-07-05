@@ -52,6 +52,7 @@ import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
+import { TagManager } from './components/TagManager';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -75,6 +76,7 @@ const Wiki: NextPageWithLayout<{
          <meta name="keywords" content={metaKeywords} />
          <meta name="robots" content="noindex" />,
          <link rel="canonical" href={canonicalUrl} />
+         <TagManager />
       </>
    );
 
