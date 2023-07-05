@@ -53,6 +53,10 @@ function MatomoScript() {
       }
    })();
 
+   if (!configUrl) {
+      return null;
+   }
+
    const scriptTag = `
         var c = "${configUrl}";
 
