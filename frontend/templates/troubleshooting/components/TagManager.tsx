@@ -21,7 +21,7 @@ function GoogleScript() {
    return <script dangerouslySetInnerHTML={{ __html: scriptTag }} />;
 }
 
-function GoogleNoScript() {
+export function GoogleNoScript() {
    return (
       <noscript>
          <iframe
@@ -74,7 +74,6 @@ export function TagManager() {
    return (
       <>
          <GoogleScript />
-         <GoogleNoScript />
          <MatomoScript />
       </>
    );
