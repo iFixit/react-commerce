@@ -3,15 +3,9 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
-import { BrowserTracing } from '@sentry/tracing';
+import { BrowserTracing } from '@sentry/browser';
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
-
-const hydrationErrors = [
-   'Hydration failed because the initial UI does not match what was rendered on the server.',
-   'Text content does not match server-rendered HTML.',
-   'There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.',
-];
 
 Sentry.init({
    dsn: SENTRY_DSN,
@@ -39,14 +33,4 @@ Sentry.init({
       // Only happens on Macs, mostly Chrome, but some on safari
       'CustomEvent: Non-Error promise rejection captured with keys: currentTarget, detail, isTrusted, target',
    ],
-   beforeSend: (event, hint) => {
-      const ex = hint.originalException;
-      if (ex instanceof Error) {
-         // Sample hydration errors.
-         if (hydrationErrors.some((msg) => ex.message.match(msg))) {
-            return Math.random() < 0.05 ? event : null;
-         }
-      }
-      return event;
-   },
 });
