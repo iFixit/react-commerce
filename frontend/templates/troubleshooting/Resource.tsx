@@ -14,7 +14,6 @@ import {
    ThemingProps,
    useBreakpoint,
 } from '@chakra-ui/react';
-import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faClock } from '@fortawesome/pro-solid-svg-icons';
 import Prerendered from './prerendered';
@@ -24,8 +23,9 @@ import { useSelectedVariant } from '@templates/product/hooks/useSelectedVariant'
 import { useIsProductForSale } from '../product/hooks/useIsProductForSale';
 import { Rating } from '@components/ui';
 import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
+import { SectionGuide } from './hooks/useTroubleshootingProps';
 
-export function GuideResource({ guide }: { guide: Guide }) {
+export function GuideResource({ guide }: { guide: SectionGuide }) {
    return (
       <Resource
          href={guide.url}
