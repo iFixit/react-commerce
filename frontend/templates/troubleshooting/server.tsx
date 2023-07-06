@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       let troubleshootingData: TroubleshootingApiData;
       try {
          troubleshootingData = await client.get<TroubleshootingApiData>(
-            `Troubleshooting/${wikiname}?vulcan=1&fullGuides=1`,
+            `Troubleshooting/${wikiname}?vulcan=1`,
             'troubleshooting'
          );
       } catch (e) {
