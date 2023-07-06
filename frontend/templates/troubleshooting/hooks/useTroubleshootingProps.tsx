@@ -1,6 +1,5 @@
 import { WithProvidersProps } from '@components/common';
 import type { WithLayoutProps } from '@layouts/default/server';
-import { Product } from '@models/product';
 import { Guide } from './GuideModel';
 
 export type Section = {
