@@ -25,7 +25,7 @@ export type Problem = {
 };
 
 export type ApiSolutionSection = Section & {
-   guides: number[];
+   guides: Guide[];
    products: string[];
 };
 
