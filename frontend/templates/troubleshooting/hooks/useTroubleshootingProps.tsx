@@ -26,7 +26,22 @@ export type Problem = {
 
 export type ApiSolutionSection = Section & {
    guides: Guide[];
-   products: string[];
+   products: SectionProduct[];
+};
+
+export type SectionProduct = {
+   image: string;
+   thumbnailUrl: string;
+   url: string;
+   title: string;
+   price: {
+      amount: number;
+      currencyCode: string;
+   };
+   reviews: {
+      rating: number;
+      count: number;
+   };
 };
 
 export type SolutionSection = Omit<
@@ -34,7 +49,7 @@ export type SolutionSection = Omit<
    'guides' | 'products'
 > & {
    guides: Guide[];
-   products: Array<Product>;
+   products: Array<SectionProduct>;
 };
 
 export type TroubleshootingApiData = {
