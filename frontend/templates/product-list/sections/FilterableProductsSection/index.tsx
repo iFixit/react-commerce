@@ -23,7 +23,7 @@ import { filterFalsyItems } from '@helpers/application-helpers';
 import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
-import { useLocalPreference } from '@ifixit/ui';
+import { useLocalPreference, Wrapper } from '@ifixit/ui';
 import { productPreviewFromAlgoliaHit } from '@models/components/product-preview';
 import {
    ProductList as TProductList,
@@ -104,99 +104,101 @@ export function FilterableProductsSection({
          </Heading>
 
          <SearchQueryProvider>
-            <Flex align="flex-start">
-               <Box
-                  bg="white"
-                  borderWidth="1px"
-                  borderStyle="solid"
-                  borderColor="gray.300"
-                  borderRadius="base"
-                  px="3"
-                  py="1.5"
-                  mr="4"
-                  w="64"
-                  maxH="calc(100vh - var(--chakra-space-4) * 2)"
-                  overflow="auto"
-                  display={{
-                     base: 'none',
-                     md:
-                        hasAnyVisibleFacet || hasCurrentRefinements
-                           ? 'block'
-                           : 'none',
-                  }}
-                  position="sticky"
-                  top="4"
-                  flexGrow="0"
-               >
-                  <Collapse
-                     in={hasCurrentRefinements}
-                     animateOpacity
-                     data-testid="current-refinements"
-                  >
-                     <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
-                        <CurrentRefinements />
-                     </Flex>
-                     <Divider borderColor="gray.300" opacity="1" />
-                  </Collapse>
-                  <FacetsAccordion productList={productList} />
-               </Box>
-               <Flex direction="column" flex="1">
-                  <Toolbar
-                     viewType={viewType}
-                     productList={productList}
-                     onViewTypeChange={setViewType}
-                  />
-                  <Flex
+            <Wrapper>
+               <Flex align="flex-start">
+                  <Box
                      bg="white"
-                     direction="column"
-                     mt="2"
-                     overflow="hidden"
                      borderWidth="1px"
                      borderStyle="solid"
                      borderColor="gray.300"
                      borderRadius="base"
+                     px="3"
+                     py="1.5"
+                     mr="4"
+                     w="64"
+                     maxH="calc(100vh - var(--chakra-space-4) * 2)"
+                     overflow="auto"
+                     display={{
+                        base: 'none',
+                        md:
+                           hasAnyVisibleFacet || hasCurrentRefinements
+                              ? 'block'
+                              : 'none',
+                     }}
+                     position="sticky"
+                     top="4"
+                     flexGrow="0"
                   >
-                     <ProductListEmptyState
+                     <Collapse
+                        in={hasCurrentRefinements}
+                        animateOpacity
+                        data-testid="current-refinements"
+                     >
+                        <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
+                           <CurrentRefinements />
+                        </Flex>
+                        <Divider borderColor="gray.300" opacity="1" />
+                     </Collapse>
+                     <FacetsAccordion productList={productList} />
+                  </Box>
+                  <Flex direction="column" flex="1">
+                     <Toolbar
+                        viewType={viewType}
                         productList={productList}
-                        hidden={!isEmpty}
+                        onViewTypeChange={setViewType}
                      />
-                     {!isEmpty && viewType === ProductViewType.Grid && (
-                        <ProductGrid
-                           data-testid="grid-view-products"
-                           columns={{
-                              base: 2,
-                              sm: 3,
-                              md: 2,
-                              lg: 3,
-                              xl: 4,
-                           }}
-                        >
-                           {products.map((product) => {
-                              return (
-                                 <ProductGridItem
-                                    key={product.handle}
-                                    product={product}
-                                 />
-                              );
-                           })}
-                        </ProductGrid>
-                     )}
-                     {!isEmpty && viewType === ProductViewType.List && (
-                        <ProductList>
-                           {hits.map((hit) => {
-                              return (
-                                 <ProductListItem
-                                    key={hit.objectID}
-                                    product={hit}
-                                 />
-                              );
-                           })}
-                        </ProductList>
-                     )}
-                     <Pagination />
+                     <Flex
+                        bg="white"
+                        direction="column"
+                        mt="2"
+                        overflow="hidden"
+                        borderWidth="1px"
+                        borderStyle="solid"
+                        borderColor="gray.300"
+                        borderRadius="base"
+                     >
+                        <ProductListEmptyState
+                           productList={productList}
+                           hidden={!isEmpty}
+                        />
+                        {!isEmpty && viewType === ProductViewType.Grid && (
+                           <ProductGrid
+                              data-testid="grid-view-products"
+                              columns={{
+                                 base: 2,
+                                 sm: 3,
+                                 md: 2,
+                                 lg: 3,
+                                 xl: 4,
+                              }}
+                           >
+                              {products.map((product) => {
+                                 return (
+                                    <ProductGridItem
+                                       key={product.handle}
+                                       product={product}
+                                    />
+                                 );
+                              })}
+                           </ProductGrid>
+                        )}
+                        {!isEmpty && viewType === ProductViewType.List && (
+                           <ProductList>
+                              {hits.map((hit) => {
+                                 return (
+                                    <ProductListItem
+                                       key={hit.objectID}
+                                       product={hit}
+                                    />
+                                 );
+                              })}
+                           </ProductList>
+                        )}
+                        <Pagination />
+                     </Flex>
                   </Flex>
                </Flex>
-            </Flex>
+            </Wrapper>
          </SearchQueryProvider>
       </Flex>
    );

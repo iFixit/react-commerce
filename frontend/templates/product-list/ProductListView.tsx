@@ -1,9 +1,9 @@
 import { VStack } from '@chakra-ui/react';
+import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
 import {
    calculateProductListOverrides,
    computeProductListAlgoliaFilterPreset,
 } from '@helpers/product-list-helpers';
-import { Wrapper } from '@ifixit/ui';
 import type { ProductList } from '@models/product-list';
 import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
 import {
@@ -17,7 +17,6 @@ import {
    FeaturedProductListsSection,
    FilterableProductsSection,
    HeroSection,
-   LifetimeWarrantyBannerSection,
    ProductListChildrenSection,
    RelatedPostsSection,
 } from './sections';
@@ -64,74 +63,74 @@ export function ProductListView({
 
    return (
       <>
+         <Configure
+            filters={filters}
+            hitsPerPage={24}
+            facetingAfterDistinct={true}
+         />
+         <MetaTags productList={productListWithOverrides} />
          <SecondaryNavigation productList={productListWithOverrides} />
-         <Wrapper py={{ base: 4, md: 6 }}>
-            <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
-               <Configure
-                  filters={filters}
-                  hitsPerPage={24}
-                  facetingAfterDistinct={true}
-               />
-               <MetaTags productList={productListWithOverrides} />
-               {productListWithOverrides.heroImage ? (
-                  <HeroWithBackgroundSection
-                     productList={productListWithOverrides}
-                  />
-               ) : (
-                  <HeroSection productList={productListWithOverrides} />
-               )}
-               {productListWithOverrides.children.length > 0 && (
-                  <ProductListChildrenSection
-                     productList={productListWithOverrides}
-                  />
-               )}
-               <FilterableProductsSection
+         <VStack
+            align="stretch"
+            spacing={{ base: 4, md: 6 }}
+            py={{ base: 4, md: 6 }}
+         >
+            {productListWithOverrides.heroImage ? (
+               <HeroWithBackgroundSection
                   productList={productListWithOverrides}
                />
-               {productListWithOverrides.sections.map((section, index) => {
-                  switch (section.type) {
-                     case 'LifetimeWarranty': {
+            ) : (
+               <HeroSection productList={productListWithOverrides} />
+            )}
+            {productListWithOverrides.children.length > 0 && (
+               <ProductListChildrenSection
+                  productList={productListWithOverrides}
+               />
+            )}
+            <FilterableProductsSection productList={productListWithOverrides} />
+            {productListWithOverrides.sections.map((section, index) => {
+               switch (section.type) {
+                  case 'LifetimeWarranty': {
+                     return (
+                        <LifetimeWarrantySection
+                           key={index}
+                           variant="banner"
+                           title={section.title}
+                           description={section.description}
+                           callToAction={section.callToAction}
+                        />
+                     );
+                  }
+                  case 'RelatedPosts': {
+                     const tags = [productListWithOverrides.title].concat(
+                        section.tags?.split(',').map((tag) => tag.trim()) || []
+                     );
+                     return <RelatedPostsSection key={index} tags={tags} />;
+                  }
+                  case 'FeaturedProductLists': {
+                     const { title, productLists } = section;
+                     if (productLists.length > 0) {
                         return (
-                           <LifetimeWarrantyBannerSection
+                           <FeaturedProductListsSection
                               key={index}
-                              title={section.title}
-                              description={section.description}
-                              callToAction={section.callToAction}
+                              title={title}
+                              productLists={productLists}
                            />
                         );
                      }
-                     case 'RelatedPosts': {
-                        const tags = [productListWithOverrides.title].concat(
-                           section.tags?.split(',').map((tag) => tag.trim()) ||
-                              []
-                        );
-                        return <RelatedPostsSection key={index} tags={tags} />;
-                     }
-                     case 'FeaturedProductLists': {
-                        const { title, productLists } = section;
-                        if (productLists.length > 0) {
-                           return (
-                              <FeaturedProductListsSection
-                                 key={index}
-                                 title={title}
-                                 productLists={productLists}
-                              />
-                           );
-                        }
-                        return null;
-                     }
-                     default: {
-                        console.warn(
-                           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                           // @ts-ignore
-                           `Section ${section.__typename} not implemented`
-                        );
-                        return null;
-                     }
+                     return null;
                   }
-               })}
-            </VStack>
-         </Wrapper>
+                  default: {
+                     console.warn(
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        `Section ${section.__typename} not implemented`
+                     );
+                     return null;
+                  }
+               }
+            })}
+         </VStack>
       </>
    );
 }

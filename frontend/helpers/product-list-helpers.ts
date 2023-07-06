@@ -202,17 +202,7 @@ function getTitle(productList: ProductList, itemType?: string): string {
            productList.deviceTitle ?? productList.title
         )
       : null;
-   return (
-      overrideTitle ??
-      getProductListTitle(
-         {
-            title: productList.title,
-            type: productList.type,
-            h1: productList.h1,
-         },
-         itemType
-      )
-   );
+   return overrideTitle ?? getProductListTitle(productList, itemType);
 }
 
 function getMetaTitle(productList: ProductList, itemType?: string): string {
