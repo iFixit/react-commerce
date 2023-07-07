@@ -7,16 +7,8 @@ import {
    TroubleshootingProps,
    TroubleshootingData,
    TroubleshootingApiData,
-   ApiSolutionSection,
-   SolutionSection,
 } from './hooks/useTroubleshootingProps';
-import Product from '@pages/api/nextjs/cache/product';
-import type { Product as ProductType } from '@models/product';
-import {
-   hasDisableCacheGets,
-   withLogging,
-   withNoindexDevDomains,
-} from '@helpers/next-helpers';
+import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { withCacheLong } from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
 
@@ -52,39 +44,10 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
-      async function fetchDataForSolution(
-         solution: ApiSolutionSection
-      ): Promise<SolutionSection> {
-         const products: ('' | null | ProductType)[] = await Promise.all(
-            solution.products.map((handle: string | null) => {
-               return (
-                  handle &&
-                  Product.get(
-                     {
-                        handle,
-                        storeCode: DEFAULT_STORE_CODE,
-                        ifixitOrigin,
-                     },
-                     { forceMiss: hasDisableCacheGets(context) }
-                  ).catch((error) => {
-                     rethrowUnless404(error);
-                     return null;
-                  })
-               );
-            })
-         );
-         return {
-            ...solution,
-            products: products.filter((product): product is ProductType =>
-               Boolean(product)
-            ),
-         };
-      }
-
       let troubleshootingData: TroubleshootingApiData;
       try {
          troubleshootingData = await client.get<TroubleshootingApiData>(
-            `Troubleshooting/${wikiname}?vulcan=1`,
+            `Troubleshooting/${wikiname}?vulcan=1&fullProducts=1`,
             'troubleshooting'
          );
       } catch (e) {
@@ -116,13 +79,8 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
-      const solutions: SolutionSection[] = await Promise.all(
-         troubleshootingData.solutions.map(fetchDataForSolution)
-      );
-
       const wikiData: TroubleshootingData = {
          ...troubleshootingData,
-         solutions,
       };
 
       const pageProps: TroubleshootingProps = {

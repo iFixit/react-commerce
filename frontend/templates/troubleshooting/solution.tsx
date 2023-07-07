@@ -17,10 +17,13 @@ import {
    faSquareArrowUp,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { SectionGuide, SolutionSection } from './hooks/useTroubleshootingProps';
+import {
+   SectionGuide,
+   SectionProduct,
+   SolutionSection,
+} from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 import { GuideResource, ProductResource } from './Resource';
-import { Product } from '@models/product';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 
 const _SolutionFooter = () => (
@@ -235,22 +238,18 @@ function LinkCards({
    guides,
    products,
    ...props
-}: { guides: SectionGuide[]; products: Product[] } & BoxProps) {
+}: { guides: SectionGuide[]; products: SectionProduct[] } & BoxProps) {
    const uniqueGuides = guides.filter(
       (guide, index) =>
          guides.findIndex((g) => g.guideid === guide.guideid) === index
-   );
-   const uniqueProducts = products.filter(
-      (product, index) =>
-         products.findIndex((p) => p.id === product.id) === index
    );
    return (
       <VStack spacing="6px" {...props}>
          {uniqueGuides.map((guide: SectionGuide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
-         {uniqueProducts.map((product: Product) => (
-            <ProductResource key={product.id} product={product} />
+         {products.map((product: SectionProduct, index) => (
+            <ProductResource key={index} product={product} />
          ))}
       </VStack>
    );

@@ -1,6 +1,5 @@
 import { WithProvidersProps } from '@components/common';
 import type { WithLayoutProps } from '@layouts/default/server';
-import { Product } from '@models/product';
 
 export type Section = {
    heading: string;
@@ -25,7 +24,22 @@ export type Problem = {
 
 export type ApiSolutionSection = Section & {
    guides: SectionGuide[];
-   products: string[];
+   products: SectionProduct[];
+};
+
+export type SectionProduct = {
+   image: string;
+   thumbnailUrl: string;
+   url: string;
+   title: string;
+   price: {
+      amount: number;
+      currencyCode: string;
+   };
+   reviews: {
+      rating: number;
+      count: number;
+   };
 };
 
 export type SolutionSection = Omit<
@@ -33,7 +47,7 @@ export type SolutionSection = Omit<
    'guides' | 'products'
 > & {
    guides: SectionGuide[];
-   products: Array<Product>;
+   products: Array<SectionProduct>;
 };
 
 export type SectionGuide = {
