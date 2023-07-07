@@ -1,7 +1,5 @@
-FROM node:16-alpine3.14
-# Installing libvips for sharp compatibility
-RUN apk --update-cache add vips-dev \
-  && rm -rf /var/cache/apk/*
+FROM node:18-alpine3.18
+RUN apk update && apk add python3 build-base
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/
