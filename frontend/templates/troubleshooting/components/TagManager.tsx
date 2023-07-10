@@ -49,7 +49,9 @@ function MatomoScript() {
          case 'Dev':
             return process.env.NEXT_PUBLIC_MATOMO_TAG_MANAGER_CONTAINER_URL_DEV;
          default:
-            throw new Error(`Unknown environment: ${environment}\nPick from: Live, Staging, Dev`);
+            throw new Error(
+               `Unknown environment: ${environment}\nPick from: Live, Staging, Dev`
+            );
       }
    })();
 
