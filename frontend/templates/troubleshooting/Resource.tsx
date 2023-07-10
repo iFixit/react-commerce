@@ -14,18 +14,15 @@ import {
    ThemingProps,
    useBreakpoint,
 } from '@chakra-ui/react';
-import { Guide } from './hooks/GuideModel';
 import { FaIcon } from '@ifixit/icons';
 import { faClock } from '@fortawesome/pro-solid-svg-icons';
 import Prerendered from './prerendered';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
-import { Product } from '@models/product';
-import { useSelectedVariant } from '@templates/product/hooks/useSelectedVariant';
-import { useIsProductForSale } from '../product/hooks/useIsProductForSale';
 import { Rating } from '@components/ui';
 import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
+import { SectionProduct, SectionGuide } from './hooks/useTroubleshootingProps';
 
-export function GuideResource({ guide }: { guide: Guide }) {
+export function GuideResource({ guide }: { guide: SectionGuide }) {
    return (
       <Resource
          href={guide.url}
@@ -51,27 +48,25 @@ export function GuideResource({ guide }: { guide: Guide }) {
    );
 }
 
-export function ProductResource({ product }: { product: Product }) {
-   const [selectedVariant, _setSelectedVariant] = useSelectedVariant(product);
-   const isForSale = useIsProductForSale(product);
-   const productUrl = `/products/${product.handle}`;
+export function ProductResource({ product }: { product: SectionProduct }) {
+   const { image, url, title, price } = product;
 
    return (
       <Resource
-         href={productUrl}
-         title={product.title}
-         imageUrl={selectedVariant.image?.url}
+         href={url}
+         title={title}
+         imageUrl={image}
          spacing="4px"
-         showBuyButton={isForSale}
+         showBuyButton={true}
          openInNewTab={true}
       >
-         {isForSale && <ResourceProductRating product={product} />}
-         {isForSale && <ResourceProductPrice price={selectedVariant.price} />}
+         <ResourceProductRating product={product} />
+         <ResourceProductPrice price={price} />
       </Resource>
    );
 }
 
-function ResourceProductRating({ product }: { product: Product }) {
+function ResourceProductRating({ product }: { product: SectionProduct }) {
    if (!shouldShowProductRating(product.reviews)) {
       return null;
    }

@@ -10,7 +10,7 @@ import {
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
 import { usePrevious } from '@ifixit/ui';
-import { FacetWidgetType, ProductListType } from '@models/product-list';
+import { FacetWidgetType } from '@models/product-list';
 import { useFacets } from '@templates/product-list/sections/FilterableProductsSection/facets/useFacets';
 import algoliasearch from 'algoliasearch/lite';
 import singletonRouter from 'next/router';
@@ -29,7 +29,6 @@ type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 export type AlgoliaProps = {
    url: string;
    indexName: string;
-   productListType: ProductListType;
    serverState?: InstantSearchServerState;
    apiKey: string;
    logContextName: string;
@@ -47,7 +46,6 @@ export function InstantSearchProvider({
    children,
    url,
    indexName,
-   productListType,
    serverState,
    apiKey,
    logContextName,
@@ -62,7 +60,7 @@ export function InstantSearchProvider({
          algoliaApiKey,
          getClientOptions(logContextName)
       );
-   }, [algoliaApiKey]);
+   }, [algoliaApiKey, logContextName]);
 
    const facets = useFacets();
 
@@ -89,8 +87,7 @@ export function InstantSearchProvider({
             .filter((part) => part !== '');
          const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-         const isDevicePartsPage =
-            productListType === ProductListType.DeviceParts;
+         const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
 
          let path = `/${firstPathSegment}`;
          if (deviceHandle) {
@@ -141,9 +138,10 @@ export function InstantSearchProvider({
          const pathParts = location.pathname
             .split('/')
             .filter((part) => part !== '');
+         const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
+         const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const itemType = pathParts.length >= 3 ? pathParts[2] : '';
-         const isDevicePartsPage =
-            productListType === ProductListType.DeviceParts;
+         const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
 
          const { q, p, filter } = qsModule.parse(location.search, {
             ignoreQueryPrefix: true,

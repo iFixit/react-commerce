@@ -4110,14 +4110,13 @@ bcryptjs@2.4.3:
   resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
   integrity sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==
 
-better-sqlite3@7.4.6:
-  version "7.4.6"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-7.4.6.tgz#c5dc35c71bb9c9ef5d9e16019686371ff6a5f25e"
-  integrity sha512-LB/UxnMhcJY12bRCDXl2jTk0lsbXHCHOLn3cPjGhy3GCcVPGq45sCGJPUdfBZnfXGN14tYTJyq0ztUI3lGng8A==
+better-sqlite3@7.5.2:
+  version "7.5.2"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-7.5.2.tgz#830ba8f4083acb7d2fb20fe4c1c7d6e724ad3ef5"
+  integrity sha512-qJHsZRS3bo0zC/pBbhE7yuRMMLGVCGukqdWvs+EpcrT/ZDnvLiiCv+RNqu7YuiE3qpDqHdsm+IkwCU9dXZsh+Q==
   dependencies:
     bindings "^1.5.0"
-    prebuild-install "^7.0.0"
-    tar "^6.1.11"
+    prebuild-install "^7.1.0"
 
 big-integer@^1.6.16:
   version "1.6.51"
@@ -9192,7 +9191,7 @@ postgres-interval@^1.1.0:
   dependencies:
     xtend "^4.0.0"
 
-prebuild-install@^7.0.0, prebuild-install@^7.1.1:
+prebuild-install@^7.1.0, prebuild-install@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-7.1.1.tgz#de97d5b34a70a0c81334fd24641f2a1702352e45"
   integrity sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==
@@ -10742,18 +10741,6 @@ tar@6.1.13:
     chownr "^2.0.0"
     fs-minipass "^2.0.0"
     minipass "^4.0.0"
-    minizlib "^2.1.1"
-    mkdirp "^1.0.3"
-    yallist "^4.0.0"
-
-tar@^6.1.11:
-  version "6.1.11"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-6.1.11.tgz#6760a38f003afa1b2ffd0ffe9e9abbd0eab3d621"
-  integrity sha512-an/KZQzQUkZCkuoAA64hM92X0Urb6VpRhAFllDzz44U2mcD5scmT3zBc4VgVpkugF580+DQn8eAFSyoQt0tznA==
-  dependencies:
-    chownr "^2.0.0"
-    fs-minipass "^2.0.0"
-    minipass "^3.0.0"
     minizlib "^2.1.1"
     mkdirp "^1.0.3"
     yallist "^4.0.0"

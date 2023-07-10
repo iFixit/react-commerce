@@ -7,17 +7,8 @@ import {
    TroubleshootingProps,
    TroubleshootingData,
    TroubleshootingApiData,
-   ApiSolutionSection,
-   SolutionSection,
 } from './hooks/useTroubleshootingProps';
-import { Guide } from './hooks/GuideModel';
-import Product from '@pages/api/nextjs/cache/product';
-import type { Product as ProductType } from '@models/product';
-import {
-   hasDisableCacheGets,
-   withLogging,
-   withNoindexDevDomains,
-} from '@helpers/next-helpers';
+import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { withCacheLong } from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
 
@@ -53,50 +44,10 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
-      async function fetchDataForSolution(
-         solution: ApiSolutionSection
-      ): Promise<SolutionSection> {
-         const guides = await Promise.all(
-            solution.guides.map((guideid: number) => {
-               return (
-                  client.get(`guides/${guideid}`, 'guide') as Promise<Guide>
-               ).catch((error) => {
-                  rethrowUnless404(error);
-                  return null;
-               });
-            })
-         );
-         const products: ('' | null | ProductType)[] = await Promise.all(
-            solution.products.map((handle: string | null) => {
-               return (
-                  handle &&
-                  Product.get(
-                     {
-                        handle,
-                        storeCode: DEFAULT_STORE_CODE,
-                        ifixitOrigin,
-                     },
-                     { forceMiss: hasDisableCacheGets(context) }
-                  ).catch((error) => {
-                     rethrowUnless404(error);
-                     return null;
-                  })
-               );
-            })
-         );
-         return {
-            ...solution,
-            guides: guides.filter((guide): guide is Guide => Boolean(guide)),
-            products: products.filter((product): product is ProductType =>
-               Boolean(product)
-            ),
-         };
-      }
-
       let troubleshootingData: TroubleshootingApiData;
       try {
          troubleshootingData = await client.get<TroubleshootingApiData>(
-            `Troubleshooting/${wikiname}`,
+            `Troubleshooting/${wikiname}?vulcan=1`,
             'troubleshooting'
          );
       } catch (e) {
@@ -106,13 +57,30 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
-      const solutions: SolutionSection[] = await Promise.all(
-         troubleshootingData.solutions.map(fetchDataForSolution)
+      const canonicalUrl = new URL(troubleshootingData.canonicalUrl);
+      /*
+       * Since `resolvedUrl` doesn't include a hostname or protocol,
+       * we're providing a fake one. We never actually read it out,
+       * so it doesn't much matter what we use.
+       */
+      const currentUrl = new URL(
+         context.resolvedUrl,
+         'https://vulcan.ifixit.com'
       );
+
+      if (currentUrl.pathname.toString() !== canonicalUrl.pathname.toString()) {
+         return {
+            redirect: {
+               destination:
+                  canonicalUrl.pathname.toString() +
+                  currentUrl.search.toString(),
+               permanent: true,
+            },
+         };
+      }
 
       const wikiData: TroubleshootingData = {
          ...troubleshootingData,
-         solutions,
       };
 
       const pageProps: TroubleshootingProps = {

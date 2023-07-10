@@ -28,7 +28,7 @@
       "@strapi/plugin-users-permissions": "4.11.0",
       "@strapi/provider-upload-aws-s3": "4.11.0",
       "@strapi/strapi": "4.11.0",
-      "better-sqlite3": "7.4.6",
+      "better-sqlite3": "7.5.2",
       "pg": "8.7.1"
    },
    "author": {
@@ -38,7 +38,7 @@
       "uuid": "1507c704-0355-4721-86c7-ef3ac13332ab"
    },
    "engines": {
-      "node": ">=12.x.x <=16.x.x",
+      "node": ">=14.x.x <=18.x.x",
       "npm": ">=6.0.0"
    },
    "license": "MIT"

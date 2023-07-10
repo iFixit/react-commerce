@@ -7,21 +7,20 @@ import {
    SimpleGrid,
    VStack,
 } from '@chakra-ui/react';
-import { ProductListPreview } from '@models/product-list';
-import { ResponsiveImage } from '@ifixit/ui';
-import NextLink from 'next/link';
-import * as React from 'react';
 import { productListPath } from '@helpers/path-helpers';
+import { ResponsiveImage } from '@ifixit/ui';
+import type { ProductListPreview } from '@models/product-list';
+import NextLink from 'next/link';
 
-export type ProductListSetSectionProps = {
+export type FeaturedProductListsSectionProps = {
    title: string;
    productLists: ProductListPreview[];
 };
 
-export function ProductListSetSection({
+export function FeaturedProductListsSection({
    title,
    productLists,
-}: ProductListSetSectionProps) {
+}: FeaturedProductListsSectionProps) {
    return (
       <VStack spacing="6" align="stretch">
          <Heading size="lg">{title}</Heading>
@@ -68,16 +67,24 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
                   flexShrink={0}
                >
                   <ResponsiveImage
-                     src={productList.image.url}
+                     src={
+                        productList.image.thumbnailUrl ?? productList.image.url
+                     }
                      alt=""
-                     width="80px"
-                     height="60px"
-                     objectFit="contain"
+                     width={80}
+                     height={60}
+                     style={{
+                        objectFit: 'contain',
+                     }}
                   />
                </Flex>
             )}
             <Divider orientation="vertical" />
-            <NextLink href={productListPath(productList)} passHref>
+            <NextLink
+               href={productListPath(productList)}
+               passHref
+               legacyBehavior
+            >
                <LinkOverlay
                   px="3"
                   py="2"

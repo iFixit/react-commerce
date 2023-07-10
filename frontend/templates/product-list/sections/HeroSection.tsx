@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { useIsMounted } from '@ifixit/ui';
-import { ProductList } from '@models/product-list';
+import type { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';

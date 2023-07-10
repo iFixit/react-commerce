@@ -22,8 +22,10 @@ export function HeroSection({
                   src={image.url}
                   alt="store hero image"
                   priority
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{
+                     objectFit: 'cover',
+                  }}
                />
             </Box>
          )}

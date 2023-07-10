@@ -126,6 +126,7 @@ export async function getProductSections({
                   id: sectionId,
                   title: section.title ?? null,
                   description: section.description ?? null,
+                  callToAction: null,
                };
             case 'ComponentPageSplitWithImage':
                return splitWithImageSectionFromStrapi(section, sectionId);
@@ -225,6 +226,7 @@ export function getDefaultProductSections({
       }),
       title: null,
       description: null,
+      callToAction: null,
    });
 
    return sections;

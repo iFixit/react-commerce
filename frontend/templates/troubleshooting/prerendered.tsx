@@ -30,10 +30,10 @@ const renderStyles: SystemStyleObject = {
 
    p: {
       lineHeight: '1.38',
-      fontWeight: 'regular',
       color: 'gray.700',
       alignSelf: 'stretch',
       paddingBottom: 6,
+      marginTop: 4,
       '&:last-child': {
          paddingBottom: 0,
       },
@@ -44,7 +44,7 @@ const renderStyles: SystemStyleObject = {
       paddingLeft: 4,
    },
 
-   '>ul, >ol': {
+   '>ul:not(:last-child), >ol:not(:last-child)': {
       paddingBottom: 6,
    },
 
@@ -75,12 +75,42 @@ const renderStyles: SystemStyleObject = {
       borderLeftWidth: '5px',
       borderLeftStyle: 'solid',
       padding: '2px 8px 2px 12px',
+
+      '&.featured': {
+         borderColor: '#fe6f15',
+         borderTopWidth: '1px',
+         borderBottomWidth: '1px',
+      },
+
+      '& > p': {
+         marginBlock: '8px',
+      },
    },
 
    td: {
       border: '1px solid',
       borderColor: 'gray.300',
-      padding: '4px',
+      padding: 3,
+   },
+
+   '.table-overflow': {
+      overflowX: 'auto',
+   },
+
+   '.table-container': {
+      position: 'relative',
+   },
+
+   '.table-container::after': {
+      content: '""',
+      position: 'absolute',
+      top: '0',
+      right: '0',
+      bottom: '0',
+      width: '20px',
+      display: 'block',
+      background:
+         'linear-gradient(90deg, rgba(255,255,255, 0) 0%, rgb(255,255,255) 75%)',
    },
 
    'lite-youtube': {
@@ -108,11 +138,7 @@ const renderStyles: SystemStyleObject = {
 
    '.videoFrame': {
       maxWidth: '100%',
-      border: '1px solid #e5e7eb',
-      marginTop: '8px',
-      marginBottom: '8px',
-      padding: '1px',
-      borderRadius: 0,
+      marginBlock: '8px',
       height: 'auto',
 
       '@media only screen and (max-width: 575px)': {
@@ -149,11 +175,12 @@ const renderStyles: SystemStyleObject = {
 
    '.videoBox': {
       position: 'relative',
-      width: 'auto !important',
       overflow: 'hidden',
       maxWidth: '100%',
-      height: 0,
-      paddingBottom: '56.25%',
+      aspectRatio: '16 / 9',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
 
       video: {
          position: 'absolute',
@@ -167,8 +194,6 @@ const renderStyles: SystemStyleObject = {
    '.imageBox_left': {
       clear: 'left',
       float: 'left',
-      marginBottom: '8px',
-      marginTop: '8px',
       marginRight: '30px',
       '> img': {
          clear: 'left',
@@ -183,8 +208,6 @@ const renderStyles: SystemStyleObject = {
    '.imageBox_right': {
       clear: 'right',
       float: 'right',
-      marginBottom: '8px',
-      marginTop: '8px',
       marginLeft: '30px',
       '>img': {
          clear: 'right',
@@ -192,38 +215,51 @@ const renderStyles: SystemStyleObject = {
    },
 
    '.imageBox_center': {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      clear: 'both',
-      marginBottom: '8px',
-      marginTop: '8px',
       '>img': {
          clear: 'both',
       },
    },
+
+   '.fa-svg-icon': {
+      svg: {
+         width: '1em',
+         height: '1em',
+         display: 'inline-block',
+
+         path: {
+            fill: 'currentColor',
+         },
+      },
+
+      '&.xs svg': {
+         width: '0.5em',
+         height: '0.5em',
+      },
+
+      '&.sm svg': {
+         width: '0.75em',
+         height: '0.75em',
+      },
+   },
 };
 
-const Prerendered = chakra(
-   function Prerendered({
-      html,
-      className,
-   }: {
-      html: string;
-      className?: string;
-   }) {
-      useEffect(() => {
-         import('lite-youtube-embed');
-      }, []);
-      return (
-         <Box
-            className={className}
-            sx={renderStyles}
-            dangerouslySetInnerHTML={{ __html: html }}
-         />
-      );
-   },
-   { baseStyle: { fontSize: '16px' } }
-);
+const Prerendered = chakra(function Prerendered({
+   html,
+   className,
+}: {
+   html: string;
+   className?: string;
+}) {
+   useEffect(() => {
+      import('lite-youtube-embed');
+   }, []);
+   return (
+      <Box
+         className={className}
+         sx={renderStyles}
+         dangerouslySetInnerHTML={{ __html: html }}
+      />
+   );
+});
 
 export default Prerendered;

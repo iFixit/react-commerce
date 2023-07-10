@@ -2452,30 +2452,6 @@ export type FaqFieldsFragment = {
    attributes?: { __typename?: 'Faq'; question: string; answer: string } | null;
 };
 
-export type ProductListFieldsFragment = {
-   __typename?: 'ProductListEntity';
-   attributes?: {
-      __typename?: 'ProductList';
-      type?: Enum_Productlist_Type | null;
-      handle: string;
-      deviceTitle?: string | null;
-      title: string;
-      metaDescription?: string | null;
-      image?: {
-         __typename?: 'UploadFileEntityResponse';
-         data?: {
-            __typename?: 'UploadFileEntity';
-            attributes?: {
-               __typename?: 'UploadFile';
-               alternativeText?: string | null;
-               url: string;
-               formats?: any | null;
-            } | null;
-         } | null;
-      } | null;
-   } | null;
-};
-
 export type ImageFieldsFragment = {
    __typename?: 'UploadFileEntityResponse';
    data?: {
@@ -2495,6 +2471,29 @@ export type PersonFieldsFragment = {
    name?: string | null;
    role?: string | null;
    avatar?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type ProductListPreviewFieldsFragment = {
+   __typename?: 'ProductList';
+   type?: Enum_Productlist_Type | null;
+   handle: string;
+   deviceTitle?: string | null;
+   title: string;
+   description: string;
+   metaDescription?: string | null;
+   filters?: string | null;
+   image?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
          __typename?: 'UploadFileEntity';
@@ -2580,7 +2579,9 @@ export type FindPageQuery = {
                                 handle: string;
                                 deviceTitle?: string | null;
                                 title: string;
+                                description: string;
                                 metaDescription?: string | null;
+                                filters?: string | null;
                                 image?: {
                                    __typename?: 'UploadFileEntityResponse';
                                    data?: {
@@ -2989,6 +2990,476 @@ export type FindProductQuery = {
          } | null;
       }>;
    } | null;
+};
+
+export type FindProductListQueryVariables = Exact<{
+   filters?: InputMaybe<ProductListFiltersInput>;
+}>;
+
+export type FindProductListQuery = {
+   __typename?: 'Query';
+   productLists?: {
+      __typename?: 'ProductListEntityResponseCollection';
+      data: Array<{
+         __typename?: 'ProductListEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            handle: string;
+            deviceTitle?: string | null;
+            title: string;
+            h1?: string | null;
+            tagline?: string | null;
+            description: string;
+            metaDescription?: string | null;
+            metaTitle?: string | null;
+            defaultShowAllChildrenOnLgSizes?: boolean | null;
+            filters?: string | null;
+            forceNoindex?: boolean | null;
+            brandLogoWidth?: number | null;
+            heroImage?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            brandLogo?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+            parent?: {
+               __typename?: 'ProductListEntityResponse';
+               data?: {
+                  __typename?: 'ProductListEntity';
+                  attributes?: {
+                     __typename?: 'ProductList';
+                     type?: Enum_Productlist_Type | null;
+                     title: string;
+                     handle: string;
+                     deviceTitle?: string | null;
+                     parent?: {
+                        __typename?: 'ProductListEntityResponse';
+                        data?: {
+                           __typename?: 'ProductListEntity';
+                           attributes?: {
+                              __typename?: 'ProductList';
+                              type?: Enum_Productlist_Type | null;
+                              title: string;
+                              handle: string;
+                              deviceTitle?: string | null;
+                              parent?: {
+                                 __typename?: 'ProductListEntityResponse';
+                                 data?: {
+                                    __typename?: 'ProductListEntity';
+                                    attributes?: {
+                                       __typename?: 'ProductList';
+                                       type?: Enum_Productlist_Type | null;
+                                       title: string;
+                                       handle: string;
+                                       deviceTitle?: string | null;
+                                       parent?: {
+                                          __typename?: 'ProductListEntityResponse';
+                                          data?: {
+                                             __typename?: 'ProductListEntity';
+                                             attributes?: {
+                                                __typename?: 'ProductList';
+                                                type?: Enum_Productlist_Type | null;
+                                                title: string;
+                                                handle: string;
+                                                deviceTitle?: string | null;
+                                                parent?: {
+                                                   __typename?: 'ProductListEntityResponse';
+                                                   data?: {
+                                                      __typename?: 'ProductListEntity';
+                                                      attributes?: {
+                                                         __typename?: 'ProductList';
+                                                         type?: Enum_Productlist_Type | null;
+                                                         title: string;
+                                                         handle: string;
+                                                         deviceTitle?:
+                                                            | string
+                                                            | null;
+                                                         parent?: {
+                                                            __typename?: 'ProductListEntityResponse';
+                                                            data?: {
+                                                               __typename?: 'ProductListEntity';
+                                                               attributes?: {
+                                                                  __typename?: 'ProductList';
+                                                                  type?: Enum_Productlist_Type | null;
+                                                                  title: string;
+                                                                  handle: string;
+                                                                  deviceTitle?:
+                                                                     | string
+                                                                     | null;
+                                                               } | null;
+                                                            } | null;
+                                                         } | null;
+                                                      } | null;
+                                                   } | null;
+                                                } | null;
+                                             } | null;
+                                          } | null;
+                                       } | null;
+                                    } | null;
+                                 } | null;
+                              } | null;
+                           } | null;
+                        } | null;
+                     } | null;
+                  } | null;
+               } | null;
+            } | null;
+            children?: {
+               __typename?: 'ProductListRelationResponseCollection';
+               data: Array<{
+                  __typename?: 'ProductListEntity';
+                  attributes?: {
+                     __typename?: 'ProductList';
+                     type?: Enum_Productlist_Type | null;
+                     sortPriority?: number | null;
+                     handle: string;
+                     deviceTitle?: string | null;
+                     title: string;
+                     hideFromParent?: boolean | null;
+                     image?: {
+                        __typename?: 'UploadFileEntityResponse';
+                        data?: {
+                           __typename?: 'UploadFileEntity';
+                           attributes?: {
+                              __typename?: 'UploadFile';
+                              alternativeText?: string | null;
+                              url: string;
+                              formats?: any | null;
+                           } | null;
+                        } | null;
+                     } | null;
+                  } | null;
+               }>;
+            } | null;
+            sections: Array<
+               | {
+                    __typename: 'ComponentProductListBanner';
+                    id: string;
+                    title: string;
+                    description: string;
+                    callToActionLabel: string;
+                    url: string;
+                 }
+               | {
+                    __typename: 'ComponentProductListLinkedProductListSet';
+                    id: string;
+                    title: string;
+                    productLists?: {
+                       __typename?: 'ProductListRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'ProductListEntity';
+                          attributes?: {
+                             __typename?: 'ProductList';
+                             type?: Enum_Productlist_Type | null;
+                             handle: string;
+                             deviceTitle?: string | null;
+                             title: string;
+                             description: string;
+                             metaDescription?: string | null;
+                             filters?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentProductListRelatedPosts';
+                    id: string;
+                    tags?: string | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
+            itemOverrides: Array<
+               | {
+                    __typename: 'ComponentProductListItemTypeOverride';
+                    title?: string | null;
+                    metaTitle?: string | null;
+                    description?: string | null;
+                    metaDescription?: string | null;
+                    itemType?: string | null;
+                    tagline?: string | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
+         } | null;
+      }>;
+   } | null;
+};
+
+export type ProductListFieldsFragment = {
+   __typename?: 'ProductList';
+   type?: Enum_Productlist_Type | null;
+   handle: string;
+   deviceTitle?: string | null;
+   title: string;
+   h1?: string | null;
+   tagline?: string | null;
+   description: string;
+   metaDescription?: string | null;
+   metaTitle?: string | null;
+   defaultShowAllChildrenOnLgSizes?: boolean | null;
+   filters?: string | null;
+   forceNoindex?: boolean | null;
+   brandLogoWidth?: number | null;
+   heroImage?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+   image?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+   brandLogo?: {
+      __typename?: 'UploadFileEntityResponse';
+      data?: {
+         __typename?: 'UploadFileEntity';
+         attributes?: {
+            __typename?: 'UploadFile';
+            alternativeText?: string | null;
+            url: string;
+            formats?: any | null;
+         } | null;
+      } | null;
+   } | null;
+   parent?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            title: string;
+            handle: string;
+            deviceTitle?: string | null;
+            parent?: {
+               __typename?: 'ProductListEntityResponse';
+               data?: {
+                  __typename?: 'ProductListEntity';
+                  attributes?: {
+                     __typename?: 'ProductList';
+                     type?: Enum_Productlist_Type | null;
+                     title: string;
+                     handle: string;
+                     deviceTitle?: string | null;
+                     parent?: {
+                        __typename?: 'ProductListEntityResponse';
+                        data?: {
+                           __typename?: 'ProductListEntity';
+                           attributes?: {
+                              __typename?: 'ProductList';
+                              type?: Enum_Productlist_Type | null;
+                              title: string;
+                              handle: string;
+                              deviceTitle?: string | null;
+                              parent?: {
+                                 __typename?: 'ProductListEntityResponse';
+                                 data?: {
+                                    __typename?: 'ProductListEntity';
+                                    attributes?: {
+                                       __typename?: 'ProductList';
+                                       type?: Enum_Productlist_Type | null;
+                                       title: string;
+                                       handle: string;
+                                       deviceTitle?: string | null;
+                                       parent?: {
+                                          __typename?: 'ProductListEntityResponse';
+                                          data?: {
+                                             __typename?: 'ProductListEntity';
+                                             attributes?: {
+                                                __typename?: 'ProductList';
+                                                type?: Enum_Productlist_Type | null;
+                                                title: string;
+                                                handle: string;
+                                                deviceTitle?: string | null;
+                                                parent?: {
+                                                   __typename?: 'ProductListEntityResponse';
+                                                   data?: {
+                                                      __typename?: 'ProductListEntity';
+                                                      attributes?: {
+                                                         __typename?: 'ProductList';
+                                                         type?: Enum_Productlist_Type | null;
+                                                         title: string;
+                                                         handle: string;
+                                                         deviceTitle?:
+                                                            | string
+                                                            | null;
+                                                      } | null;
+                                                   } | null;
+                                                } | null;
+                                             } | null;
+                                          } | null;
+                                       } | null;
+                                    } | null;
+                                 } | null;
+                              } | null;
+                           } | null;
+                        } | null;
+                     } | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+   children?: {
+      __typename?: 'ProductListRelationResponseCollection';
+      data: Array<{
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            sortPriority?: number | null;
+            handle: string;
+            deviceTitle?: string | null;
+            title: string;
+            hideFromParent?: boolean | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+   sections: Array<
+      | {
+           __typename: 'ComponentProductListBanner';
+           id: string;
+           title: string;
+           description: string;
+           callToActionLabel: string;
+           url: string;
+        }
+      | {
+           __typename: 'ComponentProductListLinkedProductListSet';
+           id: string;
+           title: string;
+           productLists?: {
+              __typename?: 'ProductListRelationResponseCollection';
+              data: Array<{
+                 __typename?: 'ProductListEntity';
+                 attributes?: {
+                    __typename?: 'ProductList';
+                    type?: Enum_Productlist_Type | null;
+                    handle: string;
+                    deviceTitle?: string | null;
+                    title: string;
+                    description: string;
+                    metaDescription?: string | null;
+                    filters?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 } | null;
+              }>;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentProductListRelatedPosts';
+           id: string;
+           tags?: string | null;
+        }
+      | { __typename: 'Error' }
+      | null
+   >;
+   itemOverrides: Array<
+      | {
+           __typename: 'ComponentProductListItemTypeOverride';
+           title?: string | null;
+           metaTitle?: string | null;
+           description?: string | null;
+           metaDescription?: string | null;
+           itemType?: string | null;
+           tagline?: string | null;
+        }
+      | { __typename: 'Error' }
+      | null
+   >;
+};
+
+export type AncestorProductListFieldsFragment = {
+   __typename?: 'ProductList';
+   type?: Enum_Productlist_Type | null;
+   title: string;
+   handle: string;
+   deviceTitle?: string | null;
 };
 
 export type FindStoreQueryVariables = Exact<{
@@ -3936,244 +4407,6 @@ export type GetGlobalSettingsQuery = {
    } | null;
 };
 
-export type GetProductListQueryVariables = Exact<{
-   filters?: InputMaybe<ProductListFiltersInput>;
-}>;
-
-export type GetProductListQuery = {
-   __typename?: 'Query';
-   productLists?: {
-      __typename?: 'ProductListEntityResponseCollection';
-      data: Array<{
-         __typename?: 'ProductListEntity';
-         id?: string | null;
-         attributes?: {
-            __typename?: 'ProductList';
-            type?: Enum_Productlist_Type | null;
-            handle: string;
-            deviceTitle?: string | null;
-            title: string;
-            h1?: string | null;
-            tagline?: string | null;
-            description: string;
-            metaDescription?: string | null;
-            metaTitle?: string | null;
-            defaultShowAllChildrenOnLgSizes?: boolean | null;
-            filters?: string | null;
-            forceNoindex?: boolean | null;
-            brandLogoWidth?: number | null;
-            heroImage?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
-            image?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
-            brandLogo?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
-            parent?: {
-               __typename?: 'ProductListEntityResponse';
-               data?: {
-                  __typename?: 'ProductListEntity';
-                  attributes?: {
-                     __typename?: 'ProductList';
-                     type?: Enum_Productlist_Type | null;
-                     title: string;
-                     handle: string;
-                     deviceTitle?: string | null;
-                     parent?: {
-                        __typename?: 'ProductListEntityResponse';
-                        data?: {
-                           __typename?: 'ProductListEntity';
-                           attributes?: {
-                              __typename?: 'ProductList';
-                              type?: Enum_Productlist_Type | null;
-                              title: string;
-                              handle: string;
-                              deviceTitle?: string | null;
-                              parent?: {
-                                 __typename?: 'ProductListEntityResponse';
-                                 data?: {
-                                    __typename?: 'ProductListEntity';
-                                    attributes?: {
-                                       __typename?: 'ProductList';
-                                       type?: Enum_Productlist_Type | null;
-                                       title: string;
-                                       handle: string;
-                                       deviceTitle?: string | null;
-                                       parent?: {
-                                          __typename?: 'ProductListEntityResponse';
-                                          data?: {
-                                             __typename?: 'ProductListEntity';
-                                             attributes?: {
-                                                __typename?: 'ProductList';
-                                                type?: Enum_Productlist_Type | null;
-                                                title: string;
-                                                handle: string;
-                                                deviceTitle?: string | null;
-                                                parent?: {
-                                                   __typename?: 'ProductListEntityResponse';
-                                                   data?: {
-                                                      __typename?: 'ProductListEntity';
-                                                      attributes?: {
-                                                         __typename?: 'ProductList';
-                                                         type?: Enum_Productlist_Type | null;
-                                                         title: string;
-                                                         handle: string;
-                                                         deviceTitle?:
-                                                            | string
-                                                            | null;
-                                                         parent?: {
-                                                            __typename?: 'ProductListEntityResponse';
-                                                            data?: {
-                                                               __typename?: 'ProductListEntity';
-                                                               attributes?: {
-                                                                  __typename?: 'ProductList';
-                                                                  type?: Enum_Productlist_Type | null;
-                                                                  title: string;
-                                                                  handle: string;
-                                                                  deviceTitle?:
-                                                                     | string
-                                                                     | null;
-                                                               } | null;
-                                                            } | null;
-                                                         } | null;
-                                                      } | null;
-                                                   } | null;
-                                                } | null;
-                                             } | null;
-                                          } | null;
-                                       } | null;
-                                    } | null;
-                                 } | null;
-                              } | null;
-                           } | null;
-                        } | null;
-                     } | null;
-                  } | null;
-               } | null;
-            } | null;
-            children?: {
-               __typename?: 'ProductListRelationResponseCollection';
-               data: Array<{
-                  __typename?: 'ProductListEntity';
-                  attributes?: {
-                     __typename?: 'ProductList';
-                     type?: Enum_Productlist_Type | null;
-                     sortPriority?: number | null;
-                     handle: string;
-                     deviceTitle?: string | null;
-                     title: string;
-                     hideFromParent?: boolean | null;
-                     image?: {
-                        __typename?: 'UploadFileEntityResponse';
-                        data?: {
-                           __typename?: 'UploadFileEntity';
-                           attributes?: {
-                              __typename?: 'UploadFile';
-                              alternativeText?: string | null;
-                              url: string;
-                              formats?: any | null;
-                           } | null;
-                        } | null;
-                     } | null;
-                  } | null;
-               }>;
-            } | null;
-            sections: Array<
-               | {
-                    __typename: 'ComponentProductListBanner';
-                    id: string;
-                    title: string;
-                    description: string;
-                    callToActionLabel: string;
-                    url: string;
-                 }
-               | {
-                    __typename: 'ComponentProductListLinkedProductListSet';
-                    id: string;
-                    title: string;
-                    productLists?: {
-                       __typename?: 'ProductListRelationResponseCollection';
-                       data: Array<{
-                          __typename?: 'ProductListEntity';
-                          attributes?: {
-                             __typename?: 'ProductList';
-                             type?: Enum_Productlist_Type | null;
-                             handle: string;
-                             title: string;
-                             deviceTitle?: string | null;
-                             description: string;
-                             filters?: string | null;
-                             image?: {
-                                __typename?: 'UploadFileEntityResponse';
-                                data?: {
-                                   __typename?: 'UploadFileEntity';
-                                   attributes?: {
-                                      __typename?: 'UploadFile';
-                                      alternativeText?: string | null;
-                                      url: string;
-                                      formats?: any | null;
-                                   } | null;
-                                } | null;
-                             } | null;
-                          } | null;
-                       }>;
-                    } | null;
-                 }
-               | {
-                    __typename: 'ComponentProductListRelatedPosts';
-                    id: string;
-                    tags?: string | null;
-                 }
-               | { __typename: 'Error' }
-               | null
-            >;
-            itemOverrides: Array<
-               | {
-                    __typename: 'ComponentProductListItemTypeOverride';
-                    title?: string | null;
-                    metaTitle?: string | null;
-                    description?: string | null;
-                    metaDescription?: string | null;
-                    itemType?: string | null;
-                    tagline?: string | null;
-                 }
-               | { __typename: 'Error' }
-               | null
-            >;
-         } | null;
-      }>;
-   } | null;
-};
-
 export type GetStoreListQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetStoreListQuery = {
@@ -4259,7 +4492,9 @@ export type BrowseSectionFieldsFragment = {
                handle: string;
                deviceTitle?: string | null;
                title: string;
+               description: string;
                metaDescription?: string | null;
+               filters?: string | null;
                image?: {
                   __typename?: 'UploadFileEntityResponse';
                   data?: {
@@ -4292,7 +4527,9 @@ export type CategoryFieldsFragment = {
             handle: string;
             deviceTitle?: string | null;
             title: string;
+            description: string;
             metaDescription?: string | null;
+            filters?: string | null;
             image?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -4468,6 +4705,55 @@ export type ProductCustomerReviewsSectionFieldsFragment = {
    title?: string | null;
 };
 
+export type ProductListBannerSectionFieldsFragment = {
+   __typename?: 'ComponentProductListBanner';
+   id: string;
+   title: string;
+   description: string;
+   callToActionLabel: string;
+   url: string;
+};
+
+export type ProductListLinkedProductListSetSectionFieldsFragment = {
+   __typename?: 'ComponentProductListLinkedProductListSet';
+   id: string;
+   title: string;
+   productLists?: {
+      __typename?: 'ProductListRelationResponseCollection';
+      data: Array<{
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            type?: Enum_Productlist_Type | null;
+            handle: string;
+            deviceTitle?: string | null;
+            title: string;
+            description: string;
+            metaDescription?: string | null;
+            filters?: string | null;
+            image?: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+};
+
+export type ProductListRelatedPostsSectionFieldsFragment = {
+   __typename?: 'ComponentProductListRelatedPosts';
+   id: string;
+   tags?: string | null;
+};
+
 export type ProductOverviewSectionFieldsFragment = {
    __typename?: 'ComponentProductProduct';
    id: string;
@@ -4623,6 +4909,171 @@ export type StatsSectionFieldsFragment = {
    } | null>;
 };
 
+export const ImageFieldsFragmentDoc = `
+    fragment ImageFields on UploadFileEntityResponse {
+  data {
+    attributes {
+      alternativeText
+      url
+      formats
+    }
+  }
+}
+    `;
+export const AncestorProductListFieldsFragmentDoc = `
+    fragment AncestorProductListFields on ProductList {
+  type
+  title
+  handle
+  deviceTitle
+}
+    `;
+export const ProductListBannerSectionFieldsFragmentDoc = `
+    fragment ProductListBannerSectionFields on ComponentProductListBanner {
+  id
+  title
+  description
+  callToActionLabel
+  url
+}
+    `;
+export const ProductListRelatedPostsSectionFieldsFragmentDoc = `
+    fragment ProductListRelatedPostsSectionFields on ComponentProductListRelatedPosts {
+  id
+  tags
+}
+    `;
+export const ProductListPreviewFieldsFragmentDoc = `
+    fragment ProductListPreviewFields on ProductList {
+  type
+  handle
+  deviceTitle
+  title
+  description
+  metaDescription
+  filters
+  image {
+    ...ImageFields
+  }
+}
+    `;
+export const ProductListLinkedProductListSetSectionFieldsFragmentDoc = `
+    fragment ProductListLinkedProductListSetSectionFields on ComponentProductListLinkedProductListSet {
+  id
+  title
+  productLists(pagination: {limit: 3}) {
+    data {
+      attributes {
+        ...ProductListPreviewFields
+      }
+    }
+  }
+}
+    `;
+export const ProductListFieldsFragmentDoc = `
+    fragment ProductListFields on ProductList {
+  type
+  handle
+  deviceTitle
+  title
+  h1
+  tagline
+  description
+  metaDescription
+  metaTitle
+  defaultShowAllChildrenOnLgSizes
+  filters
+  forceNoindex
+  heroImage {
+    ...ImageFields
+  }
+  image {
+    ...ImageFields
+  }
+  brandLogo {
+    ...ImageFields
+  }
+  brandLogoWidth
+  parent {
+    data {
+      attributes {
+        ...AncestorProductListFields
+        parent {
+          data {
+            attributes {
+              ...AncestorProductListFields
+              parent {
+                data {
+                  attributes {
+                    ...AncestorProductListFields
+                    parent {
+                      data {
+                        attributes {
+                          ...AncestorProductListFields
+                          parent {
+                            data {
+                              attributes {
+                                ...AncestorProductListFields
+                                parent {
+                                  data {
+                                    attributes {
+                                      ...AncestorProductListFields
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  children(
+    publicationState: LIVE
+    pagination: {pageSize: 100}
+    sort: ["sortPriority:desc", "title:asc"]
+  ) {
+    data {
+      attributes {
+        type
+        sortPriority
+        handle
+        deviceTitle
+        title
+        image {
+          ...ImageFields
+        }
+        hideFromParent
+      }
+    }
+  }
+  sections {
+    __typename
+    ...ProductListBannerSectionFields
+    ...ProductListRelatedPostsSectionFields
+    ...ProductListLinkedProductListSetSectionFields
+  }
+  itemOverrides {
+    __typename
+    ... on ComponentProductListItemTypeOverride {
+      title
+      metaTitle
+      description
+      metaDescription
+      itemType
+      tagline
+    }
+  }
+}
+    `;
 export const MenuPropsFragmentDoc = `
     fragment MenuProps on Menu {
   title
@@ -4712,17 +5163,6 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     `;
-export const ImageFieldsFragmentDoc = `
-    fragment ImageFields on UploadFileEntityResponse {
-  data {
-    attributes {
-      alternativeText
-      url
-      formats
-    }
-  }
-}
-    `;
 export const CallToActionFieldsFragmentDoc = `
     fragment CallToActionFields on ComponentPageCallToAction {
   title
@@ -4755,27 +5195,15 @@ export const BannersSectionFieldsFragmentDoc = `
   }
 }
     `;
-export const ProductListFieldsFragmentDoc = `
-    fragment ProductListFields on ProductListEntity {
-  attributes {
-    type
-    handle
-    deviceTitle
-    title
-    metaDescription
-    image {
-      ...ImageFields
-    }
-  }
-}
-    `;
 export const CategoryFieldsFragmentDoc = `
     fragment CategoryFields on ComponentPageCategory {
   id
   description
   productList {
     data {
-      ...ProductListFields
+      attributes {
+        ...ProductListPreviewFields
+      }
     }
   }
 }
@@ -5043,7 +5471,7 @@ ${CallToActionFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${BrowseSectionFieldsFragmentDoc}
 ${CategoryFieldsFragmentDoc}
-${ProductListFieldsFragmentDoc}
+${ProductListPreviewFieldsFragmentDoc}
 ${StatsSectionFieldsFragmentDoc}
 ${SplitWithImageSectionFieldsFragmentDoc}
 ${PressQuotesSectionFieldsFragmentDoc}
@@ -5100,6 +5528,24 @@ ${QuoteSectionFieldsFragmentDoc}
 ${FaQsSectionFieldsFragmentDoc}
 ${FaqFieldsFragmentDoc}
 ${DeviceCompatibilitySectionFieldsFragmentDoc}`;
+export const FindProductListDocument = `
+    query findProductList($filters: ProductListFiltersInput) {
+  productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {
+    data {
+      id
+      attributes {
+        ...ProductListFields
+      }
+    }
+  }
+}
+    ${ProductListFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}
+${AncestorProductListFieldsFragmentDoc}
+${ProductListBannerSectionFieldsFragmentDoc}
+${ProductListRelatedPostsSectionFieldsFragmentDoc}
+${ProductListLinkedProductListSetSectionFieldsFragmentDoc}
+${ProductListPreviewFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -5162,192 +5608,6 @@ export const GetGlobalSettingsDocument = `
   }
 }
     `;
-export const GetProductListDocument = `
-    query getProductList($filters: ProductListFiltersInput) {
-  productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {
-    data {
-      id
-      attributes {
-        type
-        handle
-        deviceTitle
-        title
-        h1
-        tagline
-        description
-        metaDescription
-        metaTitle
-        defaultShowAllChildrenOnLgSizes
-        filters
-        forceNoindex
-        heroImage {
-          data {
-            attributes {
-              alternativeText
-              url
-              formats
-            }
-          }
-        }
-        image {
-          data {
-            attributes {
-              alternativeText
-              url
-              formats
-            }
-          }
-        }
-        brandLogo {
-          data {
-            attributes {
-              alternativeText
-              url
-              formats
-            }
-          }
-        }
-        brandLogoWidth
-        parent {
-          data {
-            attributes {
-              type
-              title
-              handle
-              deviceTitle
-              parent {
-                data {
-                  attributes {
-                    type
-                    title
-                    handle
-                    deviceTitle
-                    parent {
-                      data {
-                        attributes {
-                          type
-                          title
-                          handle
-                          deviceTitle
-                          parent {
-                            data {
-                              attributes {
-                                type
-                                title
-                                handle
-                                deviceTitle
-                                parent {
-                                  data {
-                                    attributes {
-                                      type
-                                      title
-                                      handle
-                                      deviceTitle
-                                      parent {
-                                        data {
-                                          attributes {
-                                            type
-                                            title
-                                            handle
-                                            deviceTitle
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        children(
-          publicationState: LIVE
-          pagination: {pageSize: 100}
-          sort: ["sortPriority:desc", "title:asc"]
-        ) {
-          data {
-            attributes {
-              type
-              sortPriority
-              handle
-              deviceTitle
-              title
-              image {
-                data {
-                  attributes {
-                    alternativeText
-                    url
-                    formats
-                  }
-                }
-              }
-              hideFromParent
-            }
-          }
-        }
-        sections {
-          __typename
-          ... on ComponentProductListBanner {
-            id
-            title
-            description
-            callToActionLabel
-            url
-          }
-          ... on ComponentProductListRelatedPosts {
-            id
-            tags
-          }
-          ... on ComponentProductListLinkedProductListSet {
-            id
-            title
-            productLists(pagination: {limit: 3}) {
-              data {
-                attributes {
-                  type
-                  handle
-                  title
-                  deviceTitle
-                  description
-                  filters
-                  image {
-                    data {
-                      attributes {
-                        alternativeText
-                        url
-                        formats
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        itemOverrides {
-          __typename
-          ... on ComponentProductListItemTypeOverride {
-            title
-            metaTitle
-            description
-            metaDescription
-            itemType
-            tagline
-          }
-        }
-      }
-    }
-  }
-}
-    `;
 export const GetStoreListDocument = `
     query getStoreList {
   stores(pagination: {pageSize: 100}) {
@@ -5389,6 +5649,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             options
          );
       },
+      findProductList(
+         variables?: FindProductListQueryVariables,
+         options?: C
+      ): Promise<FindProductListQuery> {
+         return requester<FindProductListQuery, FindProductListQueryVariables>(
+            FindProductListDocument,
+            variables,
+            options
+         );
+      },
       findStore(
          variables?: FindStoreQueryVariables,
          options?: C
@@ -5407,16 +5677,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             GetGlobalSettingsQuery,
             GetGlobalSettingsQueryVariables
          >(GetGlobalSettingsDocument, variables, options);
-      },
-      getProductList(
-         variables?: GetProductListQueryVariables,
-         options?: C
-      ): Promise<GetProductListQuery> {
-         return requester<GetProductListQuery, GetProductListQueryVariables>(
-            GetProductListDocument,
-            variables,
-            options
-         );
       },
       getStoreList(
          variables?: GetStoreListQueryVariables,

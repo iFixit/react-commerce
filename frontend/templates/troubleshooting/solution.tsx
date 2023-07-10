@@ -17,13 +17,14 @@ import {
    faSquareArrowUp,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { SolutionSection } from './hooks/useTroubleshootingProps';
+import {
+   SectionGuide,
+   SectionProduct,
+   SolutionSection,
+} from './hooks/useTroubleshootingProps';
 import Prerendered from './prerendered';
 import { GuideResource, ProductResource } from './Resource';
-import { Guide } from './hooks/GuideModel';
-import { Product } from '@models/product';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
-import { solutionHeadingToId } from './utils/solutionHeadingToId';
 
 const _SolutionFooter = () => (
    <Stack
@@ -44,12 +45,7 @@ const _SolutionFooter = () => (
          borderTopWidth="1px"
          alignSelf="stretch"
       >
-         <Text
-            fontWeight="regular"
-            fontSize="14px"
-            color="gray.900"
-            textAlign="center"
-         >
+         <Text fontSize="14px" color="gray.900" textAlign="center">
             This solution was suggested by
          </Text>
          <Avatar size="24x24">
@@ -62,7 +58,7 @@ const _SolutionFooter = () => (
             textAlign="center"
          >
             <span>Kyle Wiens</span>
-            <Box as="span" fontWeight="regular" color="gray.900">
+            <Box as="span" color="gray.900">
                {' '}
                in{' '}
             </Box>
@@ -139,10 +135,12 @@ const _SolutionFooter = () => (
 const SolutionHeader = ({
    index,
    title,
+   id,
    popularity,
 }: {
    index: number;
    title: string;
+   id: string;
    popularity?: number;
 }) => (
    <Stack
@@ -171,6 +169,7 @@ const SolutionHeader = ({
          fontSize="24px"
          color="brand.500"
          alignSelf="center"
+         id={id}
       >
          {title}
       </HeadingSelfLink>
@@ -195,9 +194,9 @@ const SolutionHeader = ({
 );
 
 const SolutionTexts = ({ body }: { body: string }) => (
-   <Stack justify="flex-start" align="flex-start">
+   <>
       <Prerendered html={body} />
-   </Stack>
+   </>
 );
 
 export default function SolutionCard({
@@ -208,21 +207,30 @@ export default function SolutionCard({
    solution: SolutionSection;
 }) {
    return (
-      <Flex
-         id={solutionHeadingToId(solution.heading)}
+      <Box
+         id={solution.id}
          background="white"
          borderRadius="4px"
          borderColor="gray.300"
          borderStyle="solid"
          borderWidth="1px"
-         padding="24px 24px 12px 24px"
+         padding="24px"
       >
          <Flex gap="24px" direction="column" flexGrow={1}>
-            <SolutionHeader index={index} title={solution.heading} />
+            <SolutionHeader
+               id={solution.id}
+               index={index}
+               title={solution.heading}
+            />
             <SolutionTexts body={solution.body} />
-            <LinkCards guides={solution.guides} products={solution.products} />
+            {(solution.guides.length > 0 || solution.products.length > 0) && (
+               <LinkCards
+                  guides={solution.guides}
+                  products={solution.products}
+               />
+            )}
          </Flex>
-      </Flex>
+      </Box>
    );
 }
 
@@ -230,14 +238,18 @@ function LinkCards({
    guides,
    products,
    ...props
-}: { guides: Guide[]; products: Product[] } & BoxProps) {
+}: { guides: SectionGuide[]; products: SectionProduct[] } & BoxProps) {
+   const uniqueGuides = guides.filter(
+      (guide, index) =>
+         guides.findIndex((g) => g.guideid === guide.guideid) === index
+   );
    return (
       <VStack spacing="6px" {...props}>
-         {guides.map((guide: Guide) => (
+         {uniqueGuides.map((guide: SectionGuide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
-         {products.map((product: Product) => (
-            <ProductResource key={product.id} product={product} />
+         {products.map((product: SectionProduct, index) => (
+            <ProductResource key={index} product={product} />
          ))}
       </VStack>
    );

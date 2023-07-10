@@ -70,6 +70,7 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                   id: sectionId,
                   title: section.title ?? null,
                   description: section.description ?? null,
+                  callToAction: null,
                };
             }
             case 'ComponentSectionBanner': {

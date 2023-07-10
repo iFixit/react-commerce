@@ -41,8 +41,10 @@ export function QuoteSection({ id, quote, author, image }: QuoteSectionProps) {
                <ResponsiveImage
                   src={image.url}
                   alt=""
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{
+                     objectFit: 'cover',
+                  }}
                />
             </Box>
          )}

@@ -9,7 +9,7 @@ import {
    Image,
 } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
-import { ProductList } from '@models/product-list';
+import type { ProductList } from '@models/product-list';
 import React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
 import snarkdown from 'snarkdown';
@@ -29,11 +29,13 @@ export function HeroWithBackgroundSection({ productList }: HeroSectionProps) {
       <Flex pos="relative" minH="96" borderRadius="base" overflow="hidden">
          <ResponsiveImage
             priority
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{
+               objectFit: 'cover',
+               zIndex: -1,
+            }}
             src={productList.heroImage!.url}
             alt={productList.heroImage!.alternativeText ?? ''}
-            style={{ zIndex: -1 }}
          />
 
          <Box
