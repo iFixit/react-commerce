@@ -15,7 +15,7 @@ runs:
         run: |
            echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
         env:
-           FONT_AWESOME_NPM_TOKEN: doesntmatter
+           VERDACCIO_AUTH_TOKEN: doesntmatter
 
       - uses: actions/cache@v3
         name: Setup pnpm cache

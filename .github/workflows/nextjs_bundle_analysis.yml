@@ -30,7 +30,7 @@ jobs:
          - name: pnpm install
            run: pnpm install
            env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
 
          - name: Restore next build
            uses: actions/cache@v3

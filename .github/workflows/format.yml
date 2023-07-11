@@ -23,7 +23,7 @@ jobs:
            uses: ./.github/actions/pnpm-setup
          - name: Install workspaces
            env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
            run: pnpm install
          - name: Run Prettier
            run: pnpm format
