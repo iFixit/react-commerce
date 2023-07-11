@@ -1,35 +1,10 @@
 import { test, expect } from '../test-fixtures';
-import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Disabled Product Behavior', () => {
-   test.skip('Disabled Product Page Visibility and Meta Tags Validation', async ({
+   test('Disabled Product Page Visibility and Meta Tags Validation', async ({
       productPage,
-      serverRequestInterceptor,
-      findProductQueryMock,
    }) => {
-      const disabledProduct = findProductQueryMock;
-
-      disabledProduct.product!.variants.nodes.forEach((variant) => {
-         variant.enabled = null;
-      });
-
-      serverRequestInterceptor.use(
-         createGraphQLHandler({
-            request: {
-               endpoint: 'findProduct',
-               method: 'query',
-            },
-            response: {
-               status: 200,
-               body: disabledProduct,
-            },
-         })
-      );
-
-      await productPage.gotoProduct(
-         'iphone-6s-plus-replacement-battery-disabled'
-      );
-
+      await productPage.gotoProduct('hp-tt03xl-replacement-battery');
       await expect(
          productPage.page.getByTestId('not-for-sale-alert')
       ).toBeVisible();

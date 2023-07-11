@@ -1,5 +1,4 @@
 import { test, expect } from '../test-fixtures';
-import { createGraphQLHandler } from '../msw/request-handler';
 
 test.describe('Product Variant Tests', () => {
    test('Product Variant Switch and Content Visibility', async ({
@@ -56,59 +55,11 @@ test.describe('Product Variant Tests', () => {
       ).not.toBeVisible();
    });
 
-   test.skip('Switch Variants and Add To Cart', async ({
+   test('Switch Variants and Add To Cart', async ({
       productPage,
       cartDrawer,
-      serverRequestInterceptor,
-      findProductQueryMock,
    }) => {
-      const productWithDifferentVariants = findProductQueryMock;
-      const values = [
-         'Repair Business Toolkit 2023',
-         'Repair Business Toolkit 2023 without Pro Tech Toolkit',
-      ];
-      productWithDifferentVariants.product!.options = [
-         {
-            id: 'gid://shopify/ProductOption/8799814352986',
-            name: 'Condition',
-            values: ['New'],
-         },
-         {
-            id: 'gid://shopify/ProductOption/8799814385754',
-            name: 'Style',
-            values: [...values],
-         },
-      ];
-
-      for (let i = 0; i < values.length; i++) {
-         const selectedOption = [
-            {
-               name: 'Condition',
-               value: 'New',
-            },
-            {
-               name: 'Style',
-               value: values[i],
-            },
-         ];
-         productWithDifferentVariants.product!.variants.nodes[
-            i
-         ].selectedOptions = selectedOption;
-      }
-
-      serverRequestInterceptor.use(
-         createGraphQLHandler({
-            request: {
-               endpoint: 'findProduct',
-               method: 'query',
-            },
-            response: {
-               status: 200,
-               body: productWithDifferentVariants,
-            },
-         })
-      );
-      await productPage.gotoProduct('product-with-different-variants');
+      await productPage.gotoProduct('detailing-brush');
       const productInfoSection = productPage.page.getByTestId(
          'product-info-section'
       );
