@@ -12,6 +12,9 @@ defaults:
       # change this if your nextjs app does not live at the root of the repo
       working-directory: ./frontend
 
+env:
+   VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
+
 jobs:
    analyze:
       runs-on: ubuntu-latest
@@ -29,8 +32,6 @@ jobs:
 
          - name: pnpm install
            run: pnpm install
-           env:
-              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
 
          - name: Restore next build
            uses: actions/cache@v3
