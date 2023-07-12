@@ -4,7 +4,7 @@ import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
 const renderStyles: SystemStyleObject = {
-   '& > :where(*:first-of-type)': {
+   '&': {
       marginTop: 6,
    },
 
