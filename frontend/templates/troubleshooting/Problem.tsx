@@ -19,13 +19,7 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
          borderRadius="md"
          backgroundColor="white"
          transition={`border-color var(--chakra-transition-duration-normal)`}
-         sx={{
-            '@media (hover: hover)': {
-               _hover: {
-                  borderColor: 'brand.500',
-               },
-            },
-         }}
+         _hover={{ borderColor: 'brand.500' }}
       >
          <Flex padding={3} alignSelf="stretch">
             <Image

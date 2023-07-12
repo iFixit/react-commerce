@@ -236,13 +236,9 @@ const renderStyles: SystemStyleObject = {
          display: 'flex',
          maxWidth: '282px',
          overflow: 'hidden',
-
-         '@media (hover: hover)': {
+         _hover: {
+            borderColor: 'brand.500',
             transition: 'border-color var(--chakra-transition-duration-normal)',
-
-            _hover: {
-               borderColor: 'brand.500',
-            },
          },
       },
 

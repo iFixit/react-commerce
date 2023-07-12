@@ -142,13 +142,7 @@ function ResourceBox({
          display="flex"
          width="100%"
          transition={`border-color var(--chakra-transition-duration-normal)`}
-         sx={{
-            '@media (hover: hover)': {
-               _hover: {
-                  borderColor: 'brand.500',
-               },
-            },
-         }}
+         _hover={{ borderColor: 'brand.500' }}
          {...props}
       >
          {children}

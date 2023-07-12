@@ -12,6 +12,7 @@ import {
    Container,
    Flex,
    FlexProps,
+   Hide,
    IconButton,
    Image,
    Link,
@@ -103,20 +104,21 @@ const Wiki: NextPageWithLayout<{
                   <HreflangUrls urls={wikiData.hreflangUrls} />
                </Head>
                <HStack spacing={0} mt={{ base: 3, sm: 8 }} align="start">
-                  <Image
-                     src={mainImageUrl}
-                     onClick={onOpen}
-                     cursor="pointer"
-                     alt={title}
-                     htmlWidth={120}
-                     htmlHeight={90}
-                     objectFit="contain"
-                     borderRadius="md"
-                     outline="1px solid"
-                     outlineColor="gray.300"
-                     marginRight={3}
-                     display={{ base: 'none', sm: 'block' }}
-                  />
+                  <Hide below="sm">
+                     <Image
+                        src={mainImageUrl}
+                        onClick={onOpen}
+                        cursor="pointer"
+                        alt={title}
+                        htmlWidth={120}
+                        htmlHeight={90}
+                        objectFit="contain"
+                        borderRadius="md"
+                        outline="1px solid"
+                        outlineColor="gray.300"
+                        marginRight={3}
+                     />
+                  </Hide>
                   <Modal isOpen={isOpen} onClose={onClose}>
                      <ModalOverlay />
                      <ModalContent
@@ -445,23 +447,19 @@ function NavTabs({
       borderColor: 'blue.500',
       color: 'gray.900',
       fontWeight: 'medium',
-      sx: {
-         '&:visited': {
-            color: 'gray.900',
-         },
-         '@media (hover: hover)': {
-            '&:hover': {
-               textDecoration: 'none',
-               background: 'gray.100',
-               '::after': {
-                  background: 'blue.700',
-               },
-            },
-         },
+      _visited: {
+         color: 'gray.900',
+      },
+      _hover: {
+         textDecoration: 'none',
+         background: 'gray.100',
          '::after': {
-            ...bottomFeedbackStyleProps,
-            background: 'blue.500',
+            background: 'blue.700',
          },
+      },
+      _after: {
+         ...bottomFeedbackStyleProps,
+         background: 'blue.500',
       },
    };
 
@@ -470,19 +468,16 @@ function NavTabs({
       borderColor: 'transparent',
       color: 'gray.500',
       fontWeight: 'normal',
+      _hover: {
+         textDecoration: 'none',
+      },
+      _visited: {
+         color: 'gray.500',
+      },
       sx: {
-         '&:visited': {
-            color: 'gray.500',
-         },
-         '@media (hover: hover)': {
-            '&:hover': {
-               textDecoration: 'none',
-            },
-            '&:hover:not(.isDisabled)': {
-               textDecoration: 'none',
-               color: 'gray.700',
-               background: 'gray.100',
-            },
+         '&:hover:not(.isDisabled)': {
+            color: 'gray.700',
+            background: 'gray.100',
          },
          '&.isDisabled': {
             opacity: 0.4,
