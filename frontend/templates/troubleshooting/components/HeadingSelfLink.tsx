@@ -15,7 +15,12 @@ export const HeadingSelfLink = forwardRef<
 >(({ children, id, selfLinked, ...props }, ref) => {
    return (
       <Heading
+         className="HeadingSelfLink"
          display="flex"
+         fontSize="24px"
+         fontWeight="medium"
+         lineHeight="normal"
+         mt={6}
          sx={{ _hover: { '& .heading_link-icon': { opacity: '1' } } }}
          {...(selfLinked === true && {
             id,
