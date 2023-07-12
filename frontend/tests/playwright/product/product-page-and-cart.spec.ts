@@ -1,8 +1,5 @@
 import { test, expect } from '../test-fixtures';
-import {
-   createGraphQLHandler,
-   createRestHandler,
-} from '../msw/request-handler';
+import { createRestHandler } from '../msw/request-handler';
 
 test.describe('Product Page and Cart Interactions', () => {
    test('Multiple Add To Cart Clicks with Quantity Check', async ({
@@ -96,32 +93,11 @@ test.describe('Product Page and Cart Interactions', () => {
    });
 
    test.describe('Product Stock Levels', () => {
-      test.skip('Low Stock Product Inventory Management Visibility', async ({
+      test('Low Stock Product Inventory Management Visibility', async ({
          productPage,
          cartDrawer,
-         serverRequestInterceptor,
-         findProductQueryMock,
       }) => {
-         const lowStockedProduct = findProductQueryMock;
-
-         lowStockedProduct.product!.variants.nodes[0].quantityAvailable = 3;
-
-         serverRequestInterceptor.use(
-            createGraphQLHandler({
-               request: {
-                  endpoint: 'findProduct',
-                  method: 'query',
-               },
-               response: {
-                  status: 200,
-                  body: lowStockedProduct,
-               },
-            })
-         );
-
-         await productPage.gotoProduct(
-            'iphone-6s-plus-replacement-battery-low-stocked'
-         );
+         await productPage.gotoProduct('mac-mini-dual-drive-kit');
 
          const firstOptionSku = await productPage.getSku();
 
@@ -165,12 +141,10 @@ test.describe('Product Page and Cart Interactions', () => {
          await productPage.assertInventoryMessage('Only 1 left');
       });
 
-      test.skip('Out of Stock Product Notifications and Variant Switching', async ({
+      test('Out of Stock Product Notifications and Variant Switching', async ({
          productPage,
          cartDrawer,
-         serverRequestInterceptor,
          clientRequestHandler,
-         findProductQueryMock,
       }) => {
          clientRequestHandler.use(
             createRestHandler({
@@ -184,25 +158,8 @@ test.describe('Product Page and Cart Interactions', () => {
             })
          );
 
-         const outOfStockProduct = findProductQueryMock;
-
-         outOfStockProduct.product!.variants.nodes[0].quantityAvailable = 0;
-
-         serverRequestInterceptor.use(
-            createGraphQLHandler({
-               request: {
-                  endpoint: 'findProduct',
-                  method: 'query',
-               },
-               response: {
-                  status: 200,
-                  body: outOfStockProduct,
-               },
-            })
-         );
-
          await productPage.gotoProduct(
-            'iphone-6s-plus-replacement-battery-out-of-stock'
+            'apple-watch-42-mm-original-and-series-1-replacement-battery'
          );
 
          await expect(
