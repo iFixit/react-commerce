@@ -43,6 +43,7 @@
       "@ifixit/helpers": "workspace:*",
       "@ifixit/icons": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
+      "@ifixit/local-storage": "workspace:*",
       "@ifixit/menu": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*",
       "@ifixit/sentry": "workspace:*",
