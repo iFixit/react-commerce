@@ -66,6 +66,7 @@ import { CartFooter } from './Footer';
 import type { DefaultLayoutProps } from './server';
 
 const DefaultLayoutComponent = function ({
+   title,
    stores,
    currentStore,
    shopifyCredentials,
@@ -85,7 +86,7 @@ const DefaultLayoutComponent = function ({
       >
          <Box>
             <Head>
-               <title>iFixit</title>
+               <title>{title || 'iFixit'}</title>
                <link
                   rel="apple-touch-icon"
                   sizes="57x57"
