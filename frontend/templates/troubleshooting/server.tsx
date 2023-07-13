@@ -2,7 +2,11 @@ import { DEFAULT_STORE_CODE } from '@config/env';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { getLayoutServerSideProps } from '@layouts/default/server';
-import { GetServerSideProps } from 'next';
+import {
+   GetServerSideProps,
+   GetServerSidePropsContext,
+   PreviewData,
+} from 'next';
 import {
    TroubleshootingProps,
    TroubleshootingData,
@@ -11,6 +15,7 @@ import {
 import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { withCacheLong } from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
+import { ParsedUrlQuery } from 'querystring';
 
 const withMiddleware = compose(
    withLogging<TroubleshootingProps>,
@@ -27,31 +32,38 @@ function rethrowUnless404(e: any) {
    throw e;
 }
 
+async function getTroubleshootingData(
+   context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
+): Promise<TroubleshootingApiData | null> {
+   const ifixitOrigin = ifixitOriginFromHost(context);
+   const client = new IFixitAPIClient({ origin: ifixitOrigin });
+
+   const wikiname = context.params?.wikiname;
+
+   if (!wikiname) {
+      return null;
+   }
+
+   try {
+      return await client.get<TroubleshootingApiData>(
+         `Troubleshooting/${wikiname}?vulcan=1`,
+         'troubleshooting'
+      );
+   } catch (e) {
+      rethrowUnless404(e);
+      return null;
+   }
+}
+
 export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
    withMiddleware(async (context) => {
       const layoutProps = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
       });
 
-      const ifixitOrigin = ifixitOriginFromHost(context);
-      const client = new IFixitAPIClient({ origin: ifixitOrigin });
+      const troubleshootingData = await getTroubleshootingData(context);
 
-      const wikiname = context.params?.wikiname;
-
-      if (!wikiname) {
-         return {
-            notFound: true,
-         };
-      }
-
-      let troubleshootingData: TroubleshootingApiData;
-      try {
-         troubleshootingData = await client.get<TroubleshootingApiData>(
-            `Troubleshooting/${wikiname}?vulcan=1`,
-            'troubleshooting'
-         );
-      } catch (e) {
-         rethrowUnless404(e);
+      if (!troubleshootingData) {
          return {
             notFound: true,
          };
@@ -83,6 +95,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          ...troubleshootingData,
       };
 
+      const ifixitOrigin = ifixitOriginFromHost(context);
       const pageProps: TroubleshootingProps = {
          wikiData,
          layoutProps,
