@@ -191,18 +191,20 @@ const renderStyles: SystemStyleObject = {
       position: 'relative',
       width: 'fit-content',
 
-      '&.imageBox_left': {
-         float: 'left',
-         marginRight: '30px',
-      },
-
       '&.imageBox_center': {
          marginInline: 'auto',
       },
 
-      '&.imageBox_right': {
-         float: 'right',
-         marginLeft: '30px',
+      '@media only screen and (min-width: 575px)': {
+         '&.imageBox_left': {
+            float: 'left',
+            marginRight: '30px',
+         },
+
+         '&.imageBox_right': {
+            float: 'right',
+            marginLeft: '30px',
+         },
       },
    },
 
