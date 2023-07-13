@@ -1,6 +1,7 @@
 import { Box, Button, SimpleGrid, Text } from '@chakra-ui/react';
 import { ProductListCard } from '@components/product-list/ProductListCard';
 import { productListPath } from '@helpers/path-helpers';
+import { Wrapper } from '@ifixit/ui';
 import type { ProductList } from '@models/product-list';
 import * as React from 'react';
 import {
@@ -37,91 +38,95 @@ export function ProductListChildrenSection({
       );
    }, [items, itemType, hits, query]);
 
-   return isUnfilteredItemTypeWithNoHits ? null : (
-      <Box>
-         <SimpleGrid
-            data-testid="product-list-children"
-            columns={{
-               base: 1,
-               sm: 2,
-               md: 3,
-               lg: 4,
-               xl: 5,
-            }}
-            spacing="2"
-         >
-            {productListChildren.map((child, index) => {
-               return (
-                  <Box
-                     key={child.handle}
-                     display={computeChildVisibility(
-                        index,
+   if (isUnfilteredItemTypeWithNoHits) return null;
+
+   return (
+      <Box as="section" id="product-list-children">
+         <Wrapper>
+            <SimpleGrid
+               data-testid="product-list-children"
+               columns={{
+                  base: 1,
+                  sm: 2,
+                  md: 3,
+                  lg: 4,
+                  xl: 5,
+               }}
+               spacing="2"
+            >
+               {productListChildren.map((child, index) => {
+                  return (
+                     <Box
+                        key={child.handle}
+                        display={computeChildVisibility(
+                           index,
+                           childrenCount,
+                           showAll,
+                           defaultShowAllChildrenOnLgSizes
+                        )}
+                     >
+                        <ProductListCard
+                           as="a"
+                           href={productListPath({
+                              deviceTitle: child.deviceTitle,
+                              handle: child.handle,
+                              type: child.type,
+                           })}
+                           productList={{
+                              title: child.title,
+                              imageUrl: child.image?.url,
+                           }}
+                        />
+                     </Box>
+                  );
+               })}
+               {!showAll && (
+                  <Button
+                     fontSize="sm"
+                     backgroundColor="transparent"
+                     transition="all 300ms"
+                     outline="none"
+                     overflow="hidden"
+                     _focus={{
+                        boxShadow: 'outline',
+                     }}
+                     _hover={{
+                        borderColor: 'brand.300',
+                        bgColor: 'brand.100',
+                     }}
+                     borderWidth="1px"
+                     borderColor="gray.300"
+                     borderRadius="base"
+                     borderStyle="solid"
+                     p="2"
+                     color="gray.500"
+                     display={computeButtonVisibility(
                         childrenCount,
-                        showAll,
                         defaultShowAllChildrenOnLgSizes
                      )}
+                     justifyContent={{ base: 'center', sm: 'flex-start' }}
+                     h="full"
+                     onClick={() => setShowAll(true)}
+                     fontWeight="semibold"
                   >
-                     <ProductListCard
-                        as="a"
-                        href={productListPath({
-                           deviceTitle: child.deviceTitle,
-                           handle: child.handle,
-                           type: child.type,
-                        })}
-                        productList={{
-                           title: child.title,
-                           imageUrl: child.image?.url,
+                     <Text
+                        _before={{
+                           color: 'gray.900',
+                           content: {
+                              base: `'+${childrenCount - 5} '`,
+                              sm: `'+${childrenCount - 7} '`,
+                              md: `'+${childrenCount - 8} '`,
+                              lg: `'+${childrenCount - 7} '`,
+                              xl: `'+${childrenCount - 9} '`,
+                           },
                         }}
-                     />
-                  </Box>
-               );
-            })}
-            {!showAll && (
-               <Button
-                  fontSize="sm"
-                  backgroundColor="transparent"
-                  transition="all 300ms"
-                  outline="none"
-                  overflow="hidden"
-                  _focus={{
-                     boxShadow: 'outline',
-                  }}
-                  _hover={{
-                     borderColor: 'brand.300',
-                     bgColor: 'brand.100',
-                  }}
-                  borderWidth="1px"
-                  borderColor="gray.300"
-                  borderRadius="base"
-                  borderStyle="solid"
-                  p="2"
-                  color="gray.500"
-                  display={computeButtonVisibility(
-                     childrenCount,
-                     defaultShowAllChildrenOnLgSizes
-                  )}
-                  justifyContent={{ base: 'center', sm: 'flex-start' }}
-                  h="full"
-                  onClick={() => setShowAll(true)}
-                  fontWeight="semibold"
-               >
-                  <Text
-                     _before={{
-                        color: 'gray.900',
-                        content: {
-                           base: `'+${childrenCount - 5} '`,
-                           sm: `'+${childrenCount - 7} '`,
-                           md: `'+${childrenCount - 8} '`,
-                           lg: `'+${childrenCount - 7} '`,
-                           xl: `'+${childrenCount - 9} '`,
-                        },
-                     }}
-                  >
-                     more
-                  </Text>
-               </Button>
-            )}
-         </SimpleGrid>
+                     >
+                        more
+                     </Text>
+                  </Button>
+               )}
+            </SimpleGrid>
+         </Wrapper>
       </Box>
    );
 }

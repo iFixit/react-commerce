@@ -10,7 +10,7 @@ import {
    useDisclosure,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
-import { useIsMounted } from '@ifixit/ui';
+import { useIsMounted, Wrapper } from '@ifixit/ui';
 import type { ProductList } from '@models/product-list';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
@@ -25,22 +25,24 @@ export function HeroSection({ productList }: HeroSectionProps) {
    const page = pagination.currentRefinement + 1;
 
    return (
-      <Flex direction="column">
-         <HeroTitle>
-            {productList.overrides?.title}
-            {page > 1 ? ` - Page ${page}` : ''}
-         </HeroTitle>
-         {productList.overrides?.tagline && (
-            <Text as="h2" fontWeight="medium" data-testid="hero-tagline">
-               {productList.overrides?.tagline}
-            </Text>
-         )}
-         {productList.overrides?.description && (
-            <HeroDescription>
-               {productList.overrides?.description}
-            </HeroDescription>
-         )}
-      </Flex>
+      <Wrapper as="section">
+         <Flex direction="column">
+            <HeroTitle>
+               {productList.overrides?.title}
+               {page > 1 ? ` - Page ${page}` : ''}
+            </HeroTitle>
+            {productList.overrides?.tagline && (
+               <Text as="h2" fontWeight="medium" data-testid="hero-tagline">
+                  {productList.overrides?.tagline}
+               </Text>
+            )}
+            {productList.overrides?.description && (
+               <HeroDescription>
+                  {productList.overrides?.description}
+               </HeroDescription>
+            )}
+         </Flex>
+      </Wrapper>
    );
 }
 

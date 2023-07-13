@@ -1,4 +1,5 @@
 import {
+   Box,
    Divider,
    Flex,
    Heading,
@@ -8,7 +9,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import { productListPath } from '@helpers/path-helpers';
-import { ResponsiveImage } from '@ifixit/ui';
+import { ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { ProductListPreview } from '@models/product-list';
 import NextLink from 'next/link';
 
@@ -22,21 +23,27 @@ export function FeaturedProductListsSection({
    productLists,
 }: FeaturedProductListsSectionProps) {
    return (
-      <VStack spacing="6" align="stretch">
-         <Heading size="lg">{title}</Heading>
-         <SimpleGrid
-            columns={{
-               base: 1,
-               sm: 2,
-               md: 3,
-            }}
-            spacing="4"
-         >
-            {productLists.map((list) => {
-               return <ProductListLink key={list.handle} productList={list} />;
-            })}
-         </SimpleGrid>
-      </VStack>
+      <Box as="section">
+         <Wrapper>
+            <VStack spacing="6" align="stretch">
+               <Heading size="lg">{title}</Heading>
+               <SimpleGrid
+                  columns={{
+                     base: 1,
+                     sm: 2,
+                     md: 3,
+                  }}
+                  spacing="4"
+               >
+                  {productLists.map((list) => {
+                     return (
+                        <ProductListLink key={list.handle} productList={list} />
+                     );
+                  })}
+               </SimpleGrid>
+            </VStack>
+         </Wrapper>
+      </Box>
    );
 }
 
