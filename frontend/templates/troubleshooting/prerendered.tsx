@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 const renderStyles: SystemStyleObject = {
    '&': {
-      marginTop: 6,
+      marginTop: { base: 4, sm: 6 },
    },
 
    '.clearer': {
@@ -23,7 +23,7 @@ const renderStyles: SystemStyleObject = {
       marginBottom: 2,
 
       '&:not(:first-of-type)': {
-         marginTop: 6,
+         marginTop: { base: 4, sm: 6 },
       },
 
       '&:hover .selfLink': {
@@ -63,7 +63,7 @@ const renderStyles: SystemStyleObject = {
    },
 
    'ul, ol': {
-      marginTop: 6,
+      marginTop: { base: 4, sm: 6 },
       marginInlineStart: '1em',
       paddingLeft: 4,
    },
@@ -184,7 +184,7 @@ const renderStyles: SystemStyleObject = {
 
    '.imageBox': {
       borderRadius: 'md',
-      marginTop: 6,
+      marginTop: { base: 4, sm: 6 },
       outline: '1px solid',
       outlineColor: 'gray.300',
       overflow: 'hidden',

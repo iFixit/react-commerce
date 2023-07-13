@@ -20,7 +20,7 @@ export const HeadingSelfLink = forwardRef<
          fontSize="24px"
          fontWeight="medium"
          lineHeight="normal"
-         mt={6}
+         mt={{ base: 4, sm: 6 }}
          sx={{ _hover: { '& .heading_link-icon': { opacity: '1' } } }}
          {...(selfLinked === true && {
             id,

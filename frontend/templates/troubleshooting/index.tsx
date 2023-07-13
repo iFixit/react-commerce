@@ -103,7 +103,14 @@ const Wiki: NextPageWithLayout<{
                   {metadata}
                   <HreflangUrls urls={wikiData.hreflangUrls} />
                </Head>
-               <HStack spacing={0} mt={{ base: 3, sm: 8 }} align="start">
+               <HStack
+                  spacing={0}
+                  mt={{ base: 3, sm: 8 }}
+                  align="start"
+                  pb={{ base: 4, sm: 6 }}
+                  borderBottom="1px"
+                  borderColor="gray.300"
+               >
                   <Hide below="sm">
                      <Image
                         src={mainImageUrl}
@@ -163,7 +170,11 @@ const Wiki: NextPageWithLayout<{
                   <IntroductionSection key={intro.heading} intro={intro} />
                ))}
                {wikiData.solutions.length > 0 && (
-                  <Box borderTop="1px" borderColor="gray.300" mt={6}>
+                  <Box
+                     borderTop="1px"
+                     borderColor="gray.300"
+                     mt={{ base: 4, sm: 6 }}
+                  >
                      <HeadingSelfLink
                         as="h2"
                         fontSize="20px"
@@ -177,7 +188,7 @@ const Wiki: NextPageWithLayout<{
                         solutions={wikiData.solutions}
                         problems={wikiData.linkedProblems}
                      />
-                     <Stack spacing={3} mt={10}>
+                     <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                         {wikiData.solutions.map((solution, index) => (
                            <SectionCard
                               key={solution.heading}
@@ -647,7 +658,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <>
-         <HeadingSelfLink selfLinked id={conclusion.id}>
+         <HeadingSelfLink selfLinked id={conclusion.id} pt={4}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
@@ -692,9 +703,9 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             as="h3"
             fontSize="24px"
             fontWeight="medium"
-            marginTop={10}
             id="related-problems"
             selfLinked
+            pt={4}
          >
             Related Problems
          </HeadingSelfLink>
