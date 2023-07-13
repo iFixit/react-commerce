@@ -9,7 +9,12 @@ const renderStyles: SystemStyleObject = {
    },
 
    '.clearer': {
-      display: 'none',
+      clear: 'both',
+      height: '0',
+      padding: '0',
+      margin: '0',
+      lineHeight: '0',
+      fontSize: '0',
    },
 
    '.headerContainer': {
