@@ -147,9 +147,9 @@ export function useExpiringLocalPreference<Data = any>(
    const [data, setData] = React.useState(defaultData);
 
    React.useEffect(() => {
-      const serializedData = localStorage.getItem(key);
-      if (serializedData != null) {
-         try {
+      try {
+         const serializedData = localStorage.getItem(key);
+         if (serializedData != null) {
             const data = JSON.parse(serializedData) as ExpiringData;
             const expiresAt = Number.isInteger(data?.expires)
                ? data.expires
@@ -158,10 +158,10 @@ export function useExpiringLocalPreference<Data = any>(
             if (validData !== null && expiresAt && Date.now() < expiresAt) {
                setData(validData);
             } else {
-               localStorage.deleteIem(key);
+               localStorage.removeItem(key);
             }
-         } catch (error) {}
-      }
+         }
+      } catch (error) {}
    }, []);
 
    const setAndSave = (data: Data) => {
