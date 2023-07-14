@@ -39,6 +39,7 @@ export function ExportSection() {
             type="button"
             variant="default"
             size="L"
+            disabled={!selectedCollectionTypeUid}
             loading={mutation.isLoading}
             onClick={mutation.mutate}
          >
