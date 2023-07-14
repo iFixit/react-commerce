@@ -85,7 +85,10 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
 
       const pageProps: TroubleshootingProps = {
          wikiData,
-         layoutProps,
+         layoutProps: {
+            ...layoutProps,
+            title: `${wikiname} - iFixit Troubleshooting`,
+         },
          appProps: {
             ifixitOrigin,
          },
