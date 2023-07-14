@@ -84,6 +84,9 @@ importers:
       '@ifixit/ifixit-api-client':
         specifier: workspace:*
         version: link:../packages/ifixit-api-client
+      '@ifixit/local-storage':
+        specifier: workspace:*
+        version: link:../packages/local-storage
       '@ifixit/menu':
         specifier: workspace:*
         version: link:../packages/menu
@@ -506,6 +509,9 @@ importers:
       '@ifixit/ifixit-api-client':
         specifier: workspace:*
         version: link:../ifixit-api-client
+      '@ifixit/local-storage':
+        specifier: workspace:*
+        version: link:../local-storage
       '@ifixit/shopify-storefront-client':
         specifier: workspace:*
         version: link:../shopify-storefront-client
@@ -664,6 +670,15 @@ importers:
         specifier: 4.8.4
         version: 4.8.4
 
+  packages/local-storage:
+    devDependencies:
+      '@ifixit/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 4.8.4
+        version: 4.8.4
+
   packages/menu:
     devDependencies:
       '@ifixit/tsconfig':
@@ -793,6 +808,9 @@ importers:
       '@ifixit/icons':
         specifier: workspace:*
         version: link:../icons
+      '@ifixit/local-storage':
+        specifier: workspace:*
+        version: link:../local-storage
       '@ifixit/newsletter-sdk':
         specifier: workspace:*
         version: link:../newsletter-sdk

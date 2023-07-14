@@ -1,0 +1,19 @@
+{
+   "name": "@ifixit/local-storage",
+   "version": "0.0.0",
+   "main": "./index.tsx",
+   "types": "./index.tsx",
+   "license": "MIT",
+   "exports": {
+      ".": "./index.tsx"
+   },
+   "devDependencies": {
+      "@ifixit/tsconfig": "workspace:*",
+      "typescript": "4.8.4"
+   },
+   "scripts": {
+      "build": "",
+      "clean": "",
+      "type-check": "tsc --pretty --noEmit"
+   }
+}
