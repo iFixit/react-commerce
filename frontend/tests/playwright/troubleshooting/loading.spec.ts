@@ -8,6 +8,13 @@ test.describe('Vulcan Page Content and SEO', () => {
       ).toBeVisible();
    });
 
+   test('Loads By Wikiid Successfully', async ({ page }) => {
+      await page.goto('/Troubleshooting/Dryer/Making%20Loud%20Noise/479415');
+      await expect(
+         page.getByRole('heading', { name: 'Dryer Making Loud Noise' })
+      ).toBeVisible();
+   });
+
    test('noindex Meta Tag Included', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       // check that the meta robots tag is set to noindex
