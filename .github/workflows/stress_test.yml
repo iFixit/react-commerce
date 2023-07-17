@@ -44,7 +44,7 @@ jobs:
       runs-on: ubuntu-latest
       needs: check-diff
       if: needs.check-diff.outputs.modified-playwright-tests != ''
-      timeout-minutes: 15
+      timeout-minutes: 20
       strategy:
          fail-fast: false
          matrix:
@@ -68,7 +68,7 @@ jobs:
            uses: ./.github/actions/pnpm-setup
          - name: Install workspaces
            env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
            run: pnpm install
 
          - name: Setup and cache playwright dependencies
@@ -111,7 +111,7 @@ jobs:
 
          - name: Install workspaces
            env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
            run: pnpm install:all
 
          - name: Run Jest tests

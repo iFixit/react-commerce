@@ -112,7 +112,10 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       const ifixitOrigin = ifixitOriginFromHost(context);
       const pageProps: TroubleshootingProps = {
          wikiData,
-         layoutProps,
+         layoutProps: {
+            ...layoutProps,
+            title: `${wikiname} - iFixit Troubleshooting`,
+         },
          appProps: {
             ifixitOrigin,
          },

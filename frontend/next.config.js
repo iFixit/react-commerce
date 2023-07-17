@@ -47,6 +47,7 @@ const moduleExports = {
       '@ifixit/helpers',
       '@ifixit/icons',
       '@ifixit/ifixit-api-client',
+      '@ifixit/local-storage',
       '@ifixit/newsletter-sdk',
       '@ifixit/sentry',
       '@ifixit/shopify-storefront-client',

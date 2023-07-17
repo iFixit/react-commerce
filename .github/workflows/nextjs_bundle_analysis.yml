@@ -12,6 +12,9 @@ defaults:
       # change this if your nextjs app does not live at the root of the repo
       working-directory: ./frontend
 
+env:
+   VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
+
 jobs:
    analyze:
       runs-on: ubuntu-latest
@@ -29,8 +32,6 @@ jobs:
 
          - name: pnpm install
            run: pnpm install
-           env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
 
          - name: Restore next build
            uses: actions/cache@v3
@@ -54,7 +55,7 @@ jobs:
          # Here's the first place where next-bundle-analysis' own script is used
          # This step pulls the raw bundle stats for the current bundle
          - name: Analyze bundle
-           run: npx -p nextjs-bundle-analysis@0.5.0 report
+           run: pnpm --package=nextjs-bundle-analysis@0.5.0 dlx report
 
          - name: Upload bundle
            uses: actions/upload-artifact@v3

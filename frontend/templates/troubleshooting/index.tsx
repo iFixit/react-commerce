@@ -52,6 +52,7 @@ import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
+import { TagManager, GoogleNoScript } from './components/TagManager';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -75,11 +76,13 @@ const Wiki: NextPageWithLayout<{
          <meta name="keywords" content={metaKeywords} />
          <meta name="robots" content="noindex" />,
          <link rel="canonical" href={canonicalUrl} />
+         <TagManager />
       </>
    );
 
    return (
       <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
+         <GoogleNoScript />
          <NavBar
             editUrl={wikiData.editUrl}
             historyUrl={wikiData.historyUrl}
