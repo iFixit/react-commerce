@@ -63,13 +63,13 @@ const renderStyles: SystemStyleObject = {
    },
 
    'ul, ol': {
-      marginTop: { base: 4, sm: 6 },
+      marginBlock: { base: 4, sm: 6 },
       marginInlineStart: '1em',
       paddingLeft: 4,
-   },
 
-   'ul ul, ol ol': {
-      marginTop: 0, // override nested list margin
+      'li:not(:first-of-type)': {
+         marginTop: '1em',
+      },
    },
 
    a: {
@@ -144,6 +144,14 @@ const renderStyles: SystemStyleObject = {
       maxWidth: '100%',
       height: 'auto',
 
+      '&.float-left': {
+         float: 'left',
+      },
+
+      '&.float-right': {
+         float: 'right',
+      },
+
       '&.mx-auto': {
          marginInline: 'auto',
       },
@@ -176,6 +184,20 @@ const renderStyles: SystemStyleObject = {
          marginInline: 'auto',
       },
 
+      '@media only screen and (min-width: 575px)': {
+         '&.videoBox_left': {
+            clear: 'left',
+            float: 'left',
+            marginRight: '30px',
+         },
+
+         '&.videoBox_right': {
+            clear: 'right',
+            float: 'right',
+            marginLeft: '30px',
+         },
+      },
+
       video: {
          position: 'absolute',
          inset: 0,
@@ -193,15 +215,21 @@ const renderStyles: SystemStyleObject = {
 
       '&.imageBox_center': {
          marginInline: 'auto',
+
+         '> img': {
+            clear: 'both',
+         },
       },
 
       '@media only screen and (min-width: 575px)': {
          '&.imageBox_left': {
+            clear: 'left',
             float: 'left',
             marginRight: '30px',
          },
 
          '&.imageBox_right': {
+            clear: 'right',
             float: 'right',
             marginLeft: '30px',
          },
@@ -224,10 +252,6 @@ const renderStyles: SystemStyleObject = {
       paddingBlock: 4,
       paddingInline: 3,
       width: 'unset !important', // override inline width
-   },
-
-   'table .imageBox img': {
-      width: '100%',
    },
 
    '.blurbListWide .grid': {
