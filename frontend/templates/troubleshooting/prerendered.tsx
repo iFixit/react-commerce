@@ -65,7 +65,8 @@ const renderStyles: SystemStyleObject = {
    'ul, ol': {
       marginBlock: { base: 4, sm: 6 },
       marginInlineStart: '1em',
-      paddingLeft: 4,
+      overflowX: 'auto', // clear child media floats
+      paddingLeft: '2em',
 
       'li:not(:first-of-type)': {
          marginTop: '1em',
