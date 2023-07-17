@@ -242,6 +242,12 @@ const renderStyles: SystemStyleObject = {
       height: '100%',
       marginTop: 0,
       maxWidth: '282px', // cap at child image inline width
+
+      img: {
+         minHeight: '225px',
+         objectFit: 'cover',
+         width: '100%',
+      },
    },
 
    '.imageBox p': {
