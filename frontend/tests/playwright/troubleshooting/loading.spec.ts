@@ -24,6 +24,11 @@ test.describe('Vulcan Page Content and SEO', () => {
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
 
+   test('Redirect to Canonical URL', async ({ page }) => {
+      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await expect(page.url()).toMatch(/Not%20Spinning/);
+   });
+
    test('Breadcrumbs Visible', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       const nav = page.getByRole('navigation', { name: 'breadcrumb' });
