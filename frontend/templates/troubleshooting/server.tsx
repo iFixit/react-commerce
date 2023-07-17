@@ -38,21 +38,35 @@ async function getTroubleshootingData(
    const ifixitOrigin = ifixitOriginFromHost(context);
    const client = new IFixitAPIClient({ origin: ifixitOrigin });
 
-   const wikiname = context.params?.wikiname;
-
-   if (!wikiname) {
+   const url = getTroubleshootingApiUrl(context);
+   if (!url) {
       return null;
    }
 
    try {
-      return await client.get<TroubleshootingApiData>(
-         `Troubleshooting/${wikiname}?vulcan=1`,
-         'troubleshooting'
-      );
+      return await client.get<TroubleshootingApiData>(url, 'troubleshooting');
    } catch (e) {
       rethrowUnless404(e);
       return null;
    }
+}
+
+function getTroubleshootingApiUrl(
+   context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
+): null | string {
+   const wikiname = context.params?.wikiname;
+
+   if (wikiname && typeof wikiname === 'string') {
+      return `Troubleshooting/${wikiname}?vulcan=1`;
+   }
+
+   const wikiid = context.params?.wikiid;
+
+   if (wikiid && typeof wikiid === 'string') {
+      return `Troubleshooting/wikiid/${wikiid}?vulcan=1`;
+   }
+
+   return null;
 }
 
 export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
