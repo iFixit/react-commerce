@@ -1,4 +1,5 @@
 import { useBreakpointValue } from '@chakra-ui/react';
+import { useSafeLocalStorage } from '@ifixit/local-storage';
 import * as React from 'react';
 
 export function useDebounce<Value = any>(value: Value, delay: number): Value {
@@ -147,20 +148,17 @@ export function useExpiringLocalPreference<Data = any>(
    const [data, setData] = React.useState(defaultData);
 
    React.useEffect(() => {
-      const serializedData = localStorage.getItem(key);
+      const safeLocalStorage = useSafeLocalStorage();
+      const serializedData = safeLocalStorage.getItem(key);
       if (serializedData != null) {
-         try {
-            const data = JSON.parse(serializedData) as ExpiringData;
-            const expiresAt = Number.isInteger(data?.expires)
-               ? data.expires
-               : 0;
-            const validData = validator(data?.value);
-            if (validData !== null && expiresAt && Date.now() < expiresAt) {
-               setData(validData);
-            } else {
-               localStorage.deleteIem(key);
-            }
-         } catch (error) {}
+         const data = JSON.parse(serializedData) as ExpiringData;
+         const expiresAt = Number.isInteger(data?.expires) ? data.expires : 0;
+         const validData = validator(data?.value);
+         if (validData !== null && expiresAt && Date.now() < expiresAt) {
+            setData(validData);
+         } else {
+            safeLocalStorage.removeItem(key);
+         }
       }
    }, []);
 
@@ -171,7 +169,8 @@ export function useExpiringLocalPreference<Data = any>(
          expires: Date.now() + expireInDays * 1000 * 86400,
       } as ExpiringData;
       const serializedData = JSON.stringify(expiringData);
-      localStorage.setItem(key, serializedData);
+      const safeLocalStorage = useSafeLocalStorage();
+      safeLocalStorage.setItem(key, serializedData);
    };
 
    return [data, setAndSave];
@@ -191,23 +190,24 @@ export function useLocalPreference<Data = any>(
    const [data, setData] = React.useState(defaultData);
 
    React.useEffect(() => {
-      try {
-         const serializedData = localStorage.getItem(key);
-         if (serializedData != null) {
-            const data = validator(JSON.parse(serializedData));
-            if (data !== null) {
-               setData(data);
-            }
+      const safeLocalStorage = useSafeLocalStorage();
+      const serializedData = safeLocalStorage.getItem(key);
+      if (serializedData != null) {
+         if (!serializedData) {
+            throw new Error('serializedData is null');
          }
-      } catch (error) {}
+         const data = validator(JSON.parse(serializedData));
+         if (data !== null) {
+            setData(data);
+         }
+      }
    }, []);
 
    const setAndSave = (data: Data) => {
       setData(data);
       const serializedData = JSON.stringify(data);
-      try {
-         localStorage.setItem(key, serializedData);
-      } catch (error) {}
+      const safeLocalStorage = useSafeLocalStorage();
+      safeLocalStorage.setItem(key, serializedData);
    };
 
    return [data, setAndSave];
