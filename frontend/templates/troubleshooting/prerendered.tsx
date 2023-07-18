@@ -4,14 +4,39 @@ import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
 const renderStyles: SystemStyleObject = {
+   '&': {
+      marginTop: { base: 4, sm: 6 },
+   },
+
+   '.clearer': {
+      clear: 'both',
+      height: '0',
+      padding: '0',
+      margin: '0',
+      lineHeight: '0',
+      fontSize: '0',
+   },
+
    '.headerContainer': {
       display: 'flex',
       alignItems: 'baseline',
       marginBottom: 2,
+
+      '&:not(:first-of-type)': {
+         marginTop: { base: 4, sm: 6 },
+      },
+
+      '&:hover .selfLink': {
+         opacity: '1',
+      },
    },
 
    '.selfLink': {
-      display: 'none',
+      color: 'gray.500',
+      order: '2', // swap the legacy order with flexbox
+      opacity: '0',
+      paddingLeft: 2,
+      transition: 'opacity var(--chakra-transition-duration-fast) ease-in-out',
    },
 
    h3: {
@@ -19,62 +44,65 @@ const renderStyles: SystemStyleObject = {
       lineHeight: '1.2',
    },
 
-   'h3,h4': {
-      fontWeight: 590,
+   'h3, h4': {
+      fontWeight: 600,
    },
 
-   'h4,h5': {
+   'h4, h5': {
       fontSize: 'md',
       lineHeight: '1.25',
    },
 
    p: {
       lineHeight: '1.38',
-      color: 'gray.700',
       alignSelf: 'stretch',
-      paddingBottom: 6,
-      marginTop: 4,
-      '&:last-child': {
-         paddingBottom: 0,
+
+      '&:not(:first-of-type)': {
+         marginTop: '1em',
       },
    },
 
-   'ul,ol': {
+   'ul, ol': {
+      marginBlock: { base: 4, sm: 6 },
       marginInlineStart: '1em',
-      paddingLeft: 4,
-   },
+      overflowX: 'auto', // clear child media floats
+      paddingLeft: '2em',
 
-   '>ul:not(:last-child), >ol:not(:last-child)': {
-      paddingBottom: 6,
+      'li:not(:first-of-type)': {
+         marginTop: '1em',
+      },
    },
 
    a: {
       color: 'brand.500',
-   },
 
-   'a:hover': {
-      textDecoration: 'underline',
+      '&:hover': {
+         textDecoration: 'underline',
+      },
    },
 
    'code, pre': {
       backgroundColor: 'gray.200',
-      borderRadius: '4px',
+      borderRadius: 'md',
       color: 'coolGray.600',
       borderStyle: 'none',
    },
 
    pre: {
-      padding: '2px 4px',
+      paddingBlock: 0.5,
+      paddingInline: 1,
       maxWidth: '100%',
       overflow: 'auto',
    },
 
    blockquote: {
-      margin: '20px 0px',
+      marginBlock: 5,
       borderLeftColor: 'gray.200',
-      borderLeftWidth: '5px',
+      borderLeftWidth: 1,
       borderLeftStyle: 'solid',
-      padding: '2px 8px 2px 12px',
+      paddingTop: 2,
+      paddingBlock: 0.5,
+      paddingBottom: 3,
 
       '&.featured': {
          borderColor: '#fe6f15',
@@ -83,93 +111,64 @@ const renderStyles: SystemStyleObject = {
       },
 
       '& > p': {
-         marginBlock: '8px',
+         marginBlock: 2,
       },
    },
 
-   td: {
-      border: '1px solid',
-      borderColor: 'gray.300',
-      padding: 3,
+   '.table-container': {
+      position: 'relative',
+      width: 'fit-content',
+      marginTop: 4,
    },
 
    '.table-overflow': {
       overflowX: 'auto',
    },
 
-   '.table-container': {
-      position: 'relative',
+   tr: {
+      display: 'flex',
    },
 
-   '.table-container::after': {
-      content: '""',
-      position: 'absolute',
-      top: '0',
-      right: '0',
-      bottom: '0',
-      width: '20px',
-      display: 'block',
-      background:
-         'linear-gradient(90deg, rgba(255,255,255, 0) 0%, rgb(255,255,255) 75%)',
+   'tr:not(:first-of-type) > td': {
+      paddingTop: 3,
+   },
+
+   'td:not(:last-child)': {
+      paddingRight: 3,
    },
 
    'lite-youtube': {
-      marginTop: '8px',
-      marginBottom: '8px',
-      clear: 'both',
+      marginBlock: 2,
       borderColor: 'gray.500',
       borderWidth: '1px',
       borderStyle: 'solid',
-      padding: '1px',
       maxWidth: '100%',
-      height: 'auto !important',
+      height: 'auto',
 
       '&.float-left': {
          float: 'left',
       },
+
       '&.float-right': {
          float: 'right',
       },
+
       '&.mx-auto': {
-         marginLeft: 'auto',
-         marginRight: 'auto',
+         marginInline: 'auto',
       },
    },
 
    '.videoFrame': {
       maxWidth: '100%',
-      marginBlock: '8px',
+      marginBlock: 2,
       height: 'auto',
 
       '@media only screen and (max-width: 575px)': {
-         width: 'auto !important',
+         width: 'auto',
       },
 
-      '&.videoBox_left': {
-         float: 'left',
-         clear: 'left',
-         marginRight: '30px',
-         position: 'relative',
-         width: 'fit-content',
-
-         '@media only screen and (max-width: 575px)': {
-            float: 'none',
-         },
-      },
       '&.videoBox_center': {
-         marginLeft: 'auto',
-         marginRight: 'auto',
-         clear: 'both',
-         display: 'block',
-      },
-      '&.videoBox_right': {
-         float: 'right',
-         clear: 'right',
-         marginLeft: '30px',
-
-         '@media only screen and (max-width: 575px)': {
-            float: 'none',
-         },
+         marginInline: 'auto',
       },
    },
 
@@ -182,41 +181,115 @@ const renderStyles: SystemStyleObject = {
       alignItems: 'center',
       justifyContent: 'center',
 
+      '&.videoBox_center': {
+         marginInline: 'auto',
+      },
+
+      '@media only screen and (min-width: 575px)': {
+         '&.videoBox_left': {
+            clear: 'left',
+            float: 'left',
+            marginRight: '30px',
+         },
+
+         '&.videoBox_right': {
+            clear: 'right',
+            float: 'right',
+            marginLeft: '30px',
+         },
+      },
+
       video: {
          position: 'absolute',
-         top: 0,
-         left: 0,
+         inset: 0,
+      },
+   },
+
+   '.imageBox': {
+      borderRadius: 'md',
+      marginTop: { base: 4, sm: 6 },
+      outline: '1px solid',
+      outlineColor: 'gray.300',
+      overflow: 'hidden',
+      position: 'relative',
+      width: 'fit-content',
+
+      '&.imageBox_center': {
+         marginInline: 'auto',
+
+         '> img': {
+            clear: 'both',
+         },
+      },
+
+      '@media only screen and (min-width: 575px)': {
+         '&.imageBox_left': {
+            clear: 'left',
+            float: 'left',
+            marginRight: '30px',
+         },
+
+         '&.imageBox_right': {
+            clear: 'right',
+            float: 'right',
+            marginLeft: '30px',
+         },
+      },
+   },
+
+   'table .imageBox': {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      marginTop: 0,
+      maxWidth: '282px', // cap at child image inline width
+
+      img: {
+         minHeight: '225px',
+         objectFit: 'cover',
          width: '100%',
-         height: '100%',
       },
    },
 
-   '.imageBox_left': {
-      clear: 'left',
-      float: 'left',
-      marginRight: '30px',
-      '> img': {
-         clear: 'left',
+   '.imageBox p': {
+      bgColor: 'gray.100',
+      borderTop: '1px solid',
+      borderColor: 'gray.300',
+      flex: 1,
+      paddingBlock: 4,
+      paddingInline: 3,
+      width: 'unset !important', // override inline width
+   },
+
+   '.blurbListWide .grid': {
+      display: 'grid',
+      gap: 4,
+      gridTemplateColumns: 'repeat(auto-fill, minmax(282px, 1fr) )',
+
+      '& .cell': {
+         bgColor: 'gray.100',
+         border: '1px solid',
+         borderColor: 'gray.300',
+         borderRadius: 'md',
+         display: 'flex',
+         maxWidth: '282px',
+         overflow: 'hidden',
+         _hover: {
+            borderColor: 'brand.500',
+            transition: 'border-color var(--chakra-transition-duration-normal)',
+         },
       },
-   },
 
-   'table .imageBox_left': {
-      // Special-case default image alignment for tables
-      marginRight: '0px',
-   },
-
-   '.imageBox_right': {
-      clear: 'right',
-      float: 'right',
-      marginLeft: '30px',
-      '>img': {
-         clear: 'right',
+      '& a, & a:hover': {
+         color: 'inherit',
+         textDecoration: 'none',
       },
-   },
 
-   '.imageBox_center': {
-      '>img': {
-         clear: 'both',
+      '.title-text': {
+         borderTop: '1px solid',
+         borderColor: 'gray.300',
+         paddingBlock: 2,
+         paddingInline: 3,
       },
    },
 
@@ -255,7 +328,7 @@ const Prerendered = chakra(function Prerendered({
    }, []);
    return (
       <Box
-         className={className}
+         className={`prerendered ${className}`}
          sx={renderStyles}
          dangerouslySetInnerHTML={{ __html: html }}
       />
