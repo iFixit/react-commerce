@@ -1,5 +1,4 @@
 import fs from 'fs/promises';
-import type { Strapi, ContentTypeSchema } from '@strapi/strapi';
 
 export function isStderrAnError(stderr: string) {
    const errorKeywords = ['error', 'failed', 'cannot', 'unable to'];
