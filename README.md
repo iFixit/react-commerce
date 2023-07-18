@@ -25,6 +25,13 @@ Here's one way you can get all the right versions installed and setup:
 
 We use [Verdaccio](https://verdaccio.org/) as our private npm registry. To install packages from Verdaccio, you will need to setup an authentication token.
 
+**You can retrieve the token from Slack** and then save it to `.env.local` as `VERDACCIO_AUTH_TOKEN`.
+
+Otherwise, you can follow the steps below to create a new token:
+
+<details>
+<summary>Verdaccio - Creating Personal Access Token </summary>
+
 ⚠️ **_You will need to be IP whitelisted to be able to access our Verdaccio registry._**
 
 <br/>
@@ -68,6 +75,8 @@ Once you've signed up, or logged in, the Verdaccio auth token will be saved to y
    pnpm logout --registry=https://verdaccio.ubreakit.com
    ```
    -  This will remove the Verdaccio auth token from your `~/.npmrc`, and so long as you've exported the token to `.env.local`, you will still be able to install packages from Verdaccio for this repo.
+
+</details>
 
 #### Setup strapi Env file
 
