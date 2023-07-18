@@ -13,7 +13,7 @@ import React from 'react';
 import { parseValidUrl } from '../../../../helpers/generic-helpers';
 import { useImportBackup, useRequestBackup } from '../../api/seed';
 
-function HomePage() {
+function BackupPage() {
    const showDangerousActions =
       process.env.STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS === 'true';
 
@@ -22,17 +22,12 @@ function HomePage() {
          <Layout>
             <>
                <HeaderLayout
-                  title="iFixit Addons"
-                  subtitle="This plugin provides additional tooling to manage content on Strapi."
+                  title="Backup"
+                  subtitle="Backup the Strapi instance or transfer data from another Strapi instance."
                   as="h2"
                />
                <ContentLayout>
                   <Stack spacing={8}>
-                     <Typography variant="omega">
-                        Welcome to iFixit addons. This plugin is a work in
-                        progress. The purpose of the plugin is to provide
-                        additional tooling to manage content on Strapi.
-                     </Typography>
                      <BackupSection />
                      {showDangerousActions && <ImportSection />}
                   </Stack>
@@ -148,4 +143,4 @@ function ImportSection() {
    );
 }
 
-export default HomePage;
+export default BackupPage;

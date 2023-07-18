@@ -2,13 +2,13 @@ import React from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import type { AxiosRequestConfig } from 'axios';
 
-type RequestState<Data = any> = {
+export type RequestState<Data = any> = {
    isLoading: boolean;
    error: string | null;
    data: Data;
 };
 
-type RequestFn<Data = any, Input = any> = {
+export type RequestFn<Data = any, Input = any> = {
    (input: Input): Promise<Data>;
 };
 

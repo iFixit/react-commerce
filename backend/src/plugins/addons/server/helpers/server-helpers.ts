@@ -10,3 +10,7 @@ export function isStderrAnError(stderr: string) {
 export async function ensureDirectoryExists(filePath: string): Promise<void> {
    await fs.mkdir(filePath, { recursive: true });
 }
+
+export function isBlank(value: unknown): boolean {
+   return value == null || (typeof value === 'string' && value.trim() === '');
+}

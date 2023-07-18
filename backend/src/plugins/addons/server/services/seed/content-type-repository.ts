@@ -6,12 +6,13 @@ import {
    omitBy,
    pickBy,
 } from 'lodash';
+// @ts-ignore
 import fetch from 'node-fetch';
 import qs from 'qs';
+import type { ContentTypeSchema } from '../content-types';
 import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
 import {
    ContentTypeItem,
-   ContentTypeSchema,
    MediaItem,
    PopulateInput,
    StrapiApiParams,
@@ -27,8 +28,8 @@ type FetchArgs = {
 };
 
 export abstract class ContentTypeRepository {
-   protected strapi: Strapi.Strapi;
-   protected schema: ContentTypeSchema;
+   protected strapi!: Strapi.Strapi;
+   protected schema!: ContentTypeSchema;
 
    abstract import(args: LoadArgs): Promise<void>;
 

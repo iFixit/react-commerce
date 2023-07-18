@@ -8,7 +8,7 @@ type ConstructorArgs = {
 };
 
 export class SingleTypeRepository extends ContentTypeRepository {
-   private item: ContentTypeItem;
+   private item!: ContentTypeItem;
 
    constructor({ strapi, uid }: ConstructorArgs) {
       super();
