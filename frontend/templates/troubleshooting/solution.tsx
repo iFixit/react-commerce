@@ -210,13 +210,13 @@ export default function SolutionCard({
       <Box
          id={solution.id}
          background="white"
-         borderRadius="4px"
+         borderRadius="md"
          borderColor="gray.300"
          borderStyle="solid"
          borderWidth="1px"
-         padding="24px"
+         padding={{ base: 4, sm: 6 }}
       >
-         <Flex gap="24px" direction="column" flexGrow={1}>
+         <Flex direction="column" flexGrow={1}>
             <SolutionHeader
                id={solution.id}
                index={index}

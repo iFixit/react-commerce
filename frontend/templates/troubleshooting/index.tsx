@@ -9,8 +9,10 @@ import {
    Box,
    BoxProps,
    Button,
+   Container,
    Flex,
    FlexProps,
+   Hide,
    IconButton,
    Image,
    Link,
@@ -25,7 +27,8 @@ import {
    ModalHeader,
    ModalBody,
    ModalCloseButton,
-   Spacer,
+   Stack,
+   Square,
    useDisclosure,
    VisuallyHidden,
    VStack,
@@ -45,6 +48,7 @@ import SectionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
    faAngleDown,
+   faCircleNodes,
    faClockRotateLeft,
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
@@ -81,7 +85,7 @@ const Wiki: NextPageWithLayout<{
    );
 
    return (
-      <Flex direction="column" alignItems="center" width="100%" fontSize="16px">
+      <>
          <GoogleNoScript />
          <NavBar
             editUrl={wikiData.editUrl}
@@ -90,134 +94,178 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <Flex
-            padding={{ base: '16px 16px 32px', sm: '32px 32px 32px' }}
-            gap="16px"
-            maxW="1280px"
-            w="100%"
-            flexShrink="1"
-            direction="column"
-            id="main"
-         >
-            <Head>
-               {metadata}
-               <HreflangUrls urls={wikiData.hreflangUrls} />
-            </Head>
-            <HStack spacing={0}>
-               <Image
-                  src={mainImageUrl}
-                  onClick={onOpen}
-                  cursor="pointer"
-                  alt={title}
-                  htmlWidth={120}
-                  htmlHeight={90}
-                  objectFit="contain"
-                  borderRadius="4px"
-                  outline="1px solid"
-                  outlineColor="gray.300"
-                  marginRight="12px"
-                  display={{ base: 'none', sm: 'block' }}
-               />
-               <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
-                  <ModalContent
-                     width="auto"
-                     maxWidth="calc(100% - 64px)"
-                     background="none"
+         <Container fontSize="md" maxW="1280px">
+            <Flex
+               direction="column"
+               paddingInline={{ base: 0, sm: 4 }}
+               paddingBottom={8}
+               flexShrink="1"
+               id="main"
+            >
+               <Head>
+                  {metadata}
+                  <HreflangUrls urls={wikiData.hreflangUrls} />
+               </Head>
+               <HStack
+                  spacing={0}
+                  mt={{ base: 3, sm: 8 }}
+                  align="start"
+                  pb={{ base: 4, sm: 6 }}
+                  borderBottom="1px"
+                  borderColor="gray.300"
+               >
+                  <Hide below="sm">
+                     <Image
+                        src={mainImageUrl}
+                        onClick={onOpen}
+                        cursor="pointer"
+                        alt={title}
+                        htmlWidth={120}
+                        htmlHeight={90}
+                        objectFit="contain"
+                        borderRadius="md"
+                        outline="1px solid"
+                        outlineColor="gray.300"
+                        marginRight={3}
+                     />
+                  </Hide>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                     <ModalOverlay />
+                     <ModalContent
+                        width="auto"
+                        maxWidth="calc(100% - 64px)"
+                        background="none"
+                     >
+                        <VisuallyHidden>
+                           <ModalHeader>{title}</ModalHeader>
+                        </VisuallyHidden>
+                        <ModalCloseButton />
+                        <VisuallyHidden></VisuallyHidden>
+                        <ModalBody padding={0}>
+                           <Image
+                              src={mainImageUrlLarge}
+                              width="100%"
+                              height="auto"
+                              alt={title}
+                           />
+                        </ModalBody>
+                     </ModalContent>
+                  </Modal>
+                  <VStack alignItems="flex-start" spacing={2}>
+                     <HeadingSelfLink
+                        as="h1"
+                        fontSize="3xl"
+                        fontWeight="medium"
+                        selfLinked
+                        id="top"
+                        mt={0}
+                     >
+                        {wikiData.title}
+                     </HeadingSelfLink>
+                     <AuthorInformation
+                        lastUpdatedDate={lastUpdatedDate}
+                        authors={wikiData.authors}
+                        historyUrl={wikiData.historyUrl}
+                     />
+                  </VStack>
+               </HStack>
+               {wikiData.introduction.map((intro) => (
+                  <IntroductionSection key={intro.heading} intro={intro} />
+               ))}
+               {wikiData.solutions.length > 0 && (
+                  <Box
+                     borderTop="1px"
+                     borderColor="gray.300"
+                     mt={{ base: 4, sm: 6 }}
                   >
-                     <VisuallyHidden>
-                        <ModalHeader>{title}</ModalHeader>
-                     </VisuallyHidden>
-                     <ModalCloseButton />
-                     <VisuallyHidden></VisuallyHidden>
-                     <ModalBody padding={0}>
-                        <Image
-                           src={mainImageUrlLarge}
-                           width="100%"
-                           height="auto"
-                           alt={title}
-                        />
-                     </ModalBody>
-                  </ModalContent>
-               </Modal>
-               <VStack alignItems="flex-start" spacing="0px">
-                  <HeadingSelfLink
-                     as="h1"
-                     fontSize="3xl"
-                     fontWeight="500"
-                     selfLinked
-                     id="top"
-                  >
-                     {wikiData.title}
-                  </HeadingSelfLink>
-                  <AuthorInformation
-                     lastUpdatedDate={lastUpdatedDate}
-                     authors={wikiData.authors}
-                     historyUrl={wikiData.historyUrl}
-                  />
-               </VStack>
-            </HStack>
-            <Spacer borderBottom="1px" borderColor="gray.300" marginTop="2px" />
-            {wikiData.introduction.map((intro) => (
-               <IntroductionSection key={intro.heading} intro={intro} />
-            ))}
-            {wikiData.introduction.length > 0 && (
-               <Spacer borderBottom="1px" borderColor="gray.300" />
-            )}
-            {wikiData.solutions.length > 0 && (
-               <>
-                  <HeadingSelfLink
-                     as="h2"
-                     fontSize="20px"
-                     fontWeight="600"
-                     selfLinked
-                     id="causes"
-                  >
-                     {'Causes'}
-                  </HeadingSelfLink>
-                  <TableOfContents solutions={wikiData.solutions} />
-               </>
-            )}
-            {wikiData.solutions.map((solution, index) => (
-               <SectionCard
-                  key={solution.heading}
-                  index={index + 1}
-                  solution={solution}
-               />
-            ))}
-            <Conclusion conclusion={wikiData.conclusion} />
-            <AnswersCTA answersUrl={wikiData.answersUrl} />
-            {wikiData.linkedProblems.length > 0 && (
-               <RelatedProblems problems={wikiData.linkedProblems} />
-            )}
-            <PixelPing id={id} type="wiki" />
-         </Flex>
-      </Flex>
+                     <HeadingSelfLink
+                        as="h2"
+                        fontSize="20px"
+                        fontWeight="semibold"
+                        selfLinked
+                        id="causes"
+                     >
+                        {'Causes'}
+                     </HeadingSelfLink>
+                     <TableOfContents
+                        solutions={wikiData.solutions}
+                        problems={wikiData.linkedProblems}
+                     />
+                     <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
+                        {wikiData.solutions.map((solution, index) => (
+                           <SectionCard
+                              key={solution.heading}
+                              index={index + 1}
+                              solution={solution}
+                           />
+                        ))}
+                     </Stack>
+                  </Box>
+               )}
+               <Conclusion conclusion={wikiData.conclusion} />
+               <AnswersCTA answersUrl={wikiData.answersUrl} />
+               {wikiData.linkedProblems.length > 0 && (
+                  <RelatedProblems problems={wikiData.linkedProblems} />
+               )}
+               <PixelPing id={id} type="wiki" />
+            </Flex>
+         </Container>
+      </>
    );
 };
 
-function TableOfContents({ solutions }: { solutions: Section[] }) {
+function TableOfContents({
+   solutions,
+   problems,
+}: {
+   solutions: Section[];
+   problems: Problem[];
+}) {
    return (
-      <VStack
-         as="nav"
-         align="flex-start"
-         color="brand.500"
-         marginBottom={6}
-         spacing={2}
-      >
+      <VStack as="nav" align="flex-start" color="brand.500" mt={4} spacing={2}>
          {solutions.map((solution, index) => (
-            <Link
-               key={solution.heading}
-               href={`#${solution.id}`}
-               fontWeight="medium"
-               display="flex"
-            >
-               <Box as="span" minWidth="3ch" textAlign="right">
-                  {`${index + 1}.`}&nbsp;
-               </Box>
-               <Box as="span">{solution.heading}</Box>
-            </Link>
+            <Stack key={solution.heading}>
+               <Link
+                  href={`#${solution.id}`}
+                  fontWeight="semibold"
+                  display="flex"
+               >
+                  <Square
+                     size={6}
+                     bgColor="brand.500"
+                     border="1px solid"
+                     borderColor="brand.700"
+                     borderRadius="md"
+                     color="white"
+                     mr={2}
+                     fontSize="sm"
+                  >
+                     {index + 1}
+                  </Square>
+                  <Box as="span">{solution.heading}</Box>
+               </Link>
+            </Stack>
          ))}
+         {problems.length > 0 && (
+            <Stack>
+               <Link
+                  href="#related-problems"
+                  fontWeight="semibold"
+                  display="flex"
+               >
+                  <Square
+                     size={6}
+                     border="1px solid"
+                     borderColor="brand.700"
+                     borderRadius="md"
+                     mr={2}
+                  >
+                     <FaIcon icon={faCircleNodes} color="brand.500" />
+                  </Square>
+                  <Box as="span">Related Problems</Box>
+               </Link>
+            </Stack>
+         )}
       </VStack>
    );
 }
@@ -293,7 +341,7 @@ function NavBar({
                   <NavTabs
                      overflowX="auto"
                      flexGrow="1"
-                     paddingInline={{ base: '16px', sm: '8px' }}
+                     paddingInline={{ base: 0, sm: 2 }}
                      deviceGuideUrl={deviceGuideUrl}
                      devicePartsUrl={devicePartsUrl}
                   />
@@ -319,11 +367,12 @@ function EditButton({ editUrl }: { editUrl: string }) {
          borderRightColor="gray.200"
          borderRightWidth="1px"
          borderRadius="0px"
-         padding="9px, 16px, 9px, 16px"
+         py="9px"
+         px={4}
          fontFamily="heading"
          lineHeight="1.29"
          fontWeight="semibold"
-         fontSize="14px"
+         fontSize="sm"
          color="brand.500"
          textAlign="center"
          href={editUrl}
@@ -411,22 +460,20 @@ function NavTabs({
       ...baseStyleProps,
       borderColor: 'blue.500',
       color: 'gray.900',
-      fontWeight: 500,
-      sx: {
-         '&:visited': {
-            color: 'gray.900',
-         },
-         '&:hover': {
-            textDecoration: 'none',
-            background: 'gray.100',
-            '::after': {
-               background: 'blue.700',
-            },
-         },
+      fontWeight: 'medium',
+      _visited: {
+         color: 'gray.900',
+      },
+      _hover: {
+         textDecoration: 'none',
+         background: 'gray.100',
          '::after': {
-            ...bottomFeedbackStyleProps,
-            background: 'blue.500',
+            background: 'blue.700',
          },
+      },
+      _after: {
+         ...bottomFeedbackStyleProps,
+         background: 'blue.500',
       },
    };
 
@@ -434,16 +481,15 @@ function NavTabs({
       ...baseStyleProps,
       borderColor: 'transparent',
       color: 'gray.500',
-      fontWeight: 400,
+      fontWeight: 'normal',
+      _hover: {
+         textDecoration: 'none',
+      },
+      _visited: {
+         color: 'gray.500',
+      },
       sx: {
-         '&:visited': {
-            color: 'gray.500',
-         },
-         '&:hover': {
-            textDecoration: 'none',
-         },
          '&:hover:not(.isDisabled)': {
-            textDecoration: 'none',
             color: 'gray.700',
             background: 'gray.100',
          },
@@ -457,7 +503,7 @@ function NavTabs({
    };
 
    return (
-      <Flex {...props} gap="6px" height="100%">
+      <Flex {...props} gap={1.5} height="100%">
          <Link
             className={devicePartsUrl ? '' : 'isDisabled'}
             {...notSelectedStyleProps}
@@ -500,7 +546,7 @@ function AuthorInformation({
    const primaryAuthor: Author | undefined = authors[0];
    const otherAuthors = authors.slice(1);
    return (
-      <Flex paddingTop="8px" align="center" gap="6px">
+      <Flex align="center" gap={1.5}>
          {primaryAuthor && <AuthorAvatar author={primaryAuthor} />}
          <Flex justify="center" direction="column">
             {primaryAuthor && (
@@ -524,8 +570,7 @@ function AuthorAvatar({ author }: { author: Author }) {
    return (
       <Avatar
          size="md"
-         width="40px"
-         height="40px"
+         boxSize={10}
          showBorder={true}
          borderColor="brand.500"
          name={author.username}
@@ -545,7 +590,7 @@ function LastUpdatedDate({
       <Link
          href={historyUrl}
          fontWeight="normal"
-         fontSize="14px"
+         fontSize="sm"
          color="gray.500"
       >
          {'Last updated on ' +
@@ -577,7 +622,7 @@ function AuthorListing({
       color: 'brand.500',
    };
    return (
-      <Box fontSize="14px">
+      <Box fontSize="sm">
          <Link href={authorProfileUrl} {...linkStyle}>
             {primaryAuthorName}
          </Link>
@@ -600,9 +645,8 @@ function IntroductionSection({ intro }: { intro: Section }) {
       <>
          {intro.heading && (
             <HeadingSelfLink
-               marginBottom={6}
                fontSize="2xl"
-               fontWeight="600"
+               fontWeight="semibold"
                selfLinked
                id={intro.id}
             >
@@ -617,7 +661,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
 function ConclusionSection({ conclusion }: { conclusion: Section }) {
    return (
       <>
-         <HeadingSelfLink marginBottom={6} selfLinked id={conclusion.id}>
+         <HeadingSelfLink selfLinked id={conclusion.id} pt={4}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
@@ -643,7 +687,7 @@ function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert>
+      <Alert p={3} mt={4}>
          <AlertIcon color="gray.500" />
          <chakra.span pr={3} mr="auto">
             Haven&apos;t found the solution to your problem?
@@ -661,13 +705,14 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
          <HeadingSelfLink
             as="h3"
             fontSize="24px"
-            fontWeight="500"
-            marginTop={4}
+            fontWeight="medium"
             id="related-problems"
+            selfLinked
+            pt={4}
          >
             Related Problems
          </HeadingSelfLink>
-         <SimpleGrid columns={{ base: 1, sm: 2 }} gap="12px">
+         <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
             {problems.map((problem) => (
                <ProblemCard problem={problem} key={problem.title} />
             ))}

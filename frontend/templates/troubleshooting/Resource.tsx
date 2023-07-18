@@ -3,7 +3,8 @@ import {
    Image,
    Badge,
    StackProps,
-   Link,
+   LinkBox,
+   LinkOverlay,
    Wrap,
    HStack,
    Text,
@@ -30,15 +31,13 @@ export function GuideResource({ guide }: { guide: SectionGuide }) {
          imageUrl={guide.image.thumbnail}
          timeRequired={guide.time_required}
          difficulty={guide.difficulty}
-         spacing="6px"
+         spacing={1.5}
       >
          {guide.introduction_rendered && (
             <Prerendered
                lineHeight="1.36"
-               fontWeight="regular"
                fontSize="12px"
                color="gray.600"
-               overflow="hidden"
                height="16px"
                noOfLines={1}
                html={guide.introduction_rendered}
@@ -56,7 +55,7 @@ export function ProductResource({ product }: { product: SectionProduct }) {
          href={url}
          title={title}
          imageUrl={image}
-         spacing="4px"
+         spacing={1}
          showBuyButton={true}
          openInNewTab={true}
       >
@@ -71,7 +70,7 @@ function ResourceProductRating({ product }: { product: SectionProduct }) {
       return null;
    }
    return (
-      <HStack spacing="6px" fontWeight={400}>
+      <HStack spacing={1.5} fontWeight="normal">
          <Rating value={product.reviews.rating} size={3} />
          <Text color="gray.600" fontSize="12px">
             {product.reviews.rating}
@@ -87,7 +86,7 @@ function ResourceProductRating({ product }: { product: SectionProduct }) {
 function ResourceProductPrice({ price }: { price: Money }) {
    return (
       <Box alignItems="center">
-         <Text fontSize="12px" color="gray.600" fontWeight={510}>
+         <Text fontSize="12px" color="gray.600" fontWeight="medium">
             {formatMoney(price)}
          </Text>
       </Box>
@@ -134,20 +133,20 @@ function ResourceBox({
    ...props
 }: React.PropsWithChildren<StackProps>) {
    return (
-      <Stack
-         alignSelf="stretch"
-         justify="flex-start"
-         align="flex-start"
-         spacing="0px"
-         overflow="hidden"
+      <LinkBox
          borderColor="gray.400"
          borderWidth="1px"
-         borderRadius="4px"
+         borderRadius="md"
          minHeight="88px"
+         padding={3}
+         display="flex"
+         width="100%"
+         transition={`border-color var(--chakra-transition-duration-normal)`}
+         _hover={{ borderColor: 'brand.500' }}
          {...props}
       >
          {children}
-      </Stack>
+      </LinkBox>
    );
 }
 
@@ -186,93 +185,76 @@ function Resource({
    const isMobile = breakpoint === 'base';
 
    return (
-      <ResourceBox>
+      <ResourceBox mt={6}>
+         {imageUrl && (
+            <Image
+               boxSize="64px"
+               outline="1px solid"
+               outlineColor="gray.300"
+               borderRadius="md"
+               objectFit="cover"
+               alt={title}
+               src={imageUrl}
+               mr={2}
+            />
+         )}
          <Stack
-            padding="12px"
-            direction="row"
             justify="flex-start"
-            align="center"
+            align="flex-start"
+            spacing={spacing}
             alignSelf="stretch"
-            spacing="8px"
+            flex="2"
          >
-            {imageUrl && (
-               <Link href={href} isExternal={openInNewTab}>
-                  <Image
-                     boxSize="64px"
-                     border="1px solid"
-                     borderColor="gray.300"
-                     borderRadius="4px"
-                     objectFit="cover"
-                     alt={title}
-                     src={imageUrl}
-                  />
-               </Link>
-            )}
-            <Stack
-               justify="center"
-               align="flex-start"
-               spacing={spacing}
-               flex="1"
-               overflow="hidden"
+            <LinkOverlay
+               href={href}
+               lineHeight="1.07"
+               fontWeight="semibold"
+               fontSize="sm"
+               color="gray.900"
+               isExternal={openInNewTab}
             >
-               <Stack
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing={spacing}
-                  alignSelf="stretch"
-               >
-                  <Link
-                     href={href}
-                     lineHeight="1.07"
-                     fontWeight="semibold"
-                     fontSize="14px"
-                     color="gray.900"
-                     isExternal={openInNewTab}
-                  >
-                     {title}
-                  </Link>
-                  {children}
-               </Stack>
-               {(timeRequired || difficulty) && (
-                  <Wrap spacing="4px">
-                     {timeRequired && (
-                        <Badge display="flex">
-                           <FaIcon icon={faClock} mr="4px" color="gray.500" />
-                           {timeRequired}
-                        </Badge>
-                     )}
-                     {difficulty && (
-                        <Badge display="flex" colorScheme={themeColor}>
-                           <FaIcon
-                              icon={icon}
-                              mr="4px"
-                              color={iconColor || `${themeColor}.500`}
-                           />
-                           {difficulty}
-                        </Badge>
-                     )}
-                  </Wrap>
-               )}
-               {isMobile && showBuyButton && (
-                  <BuyButton
-                     colorScheme="brand"
-                     buttonSize="xs"
-                     openInNewTab={false}
-                     url={href}
-                     buyButtonText="Buy"
-                  />
-               )}
-            </Stack>
-            {!isMobile && showBuyButton && (
-               <BuyButton
-                  colorScheme="brand"
-                  buttonSize="sm"
-                  openInNewTab={openInNewTab}
-                  url={href}
-                  buyButtonText="Buy"
-               />
+               {title}
+            </LinkOverlay>
+            {children}
+            {(timeRequired || difficulty) && (
+               <Wrap spacing={1}>
+                  {timeRequired && (
+                     <Badge display="flex">
+                        <FaIcon icon={faClock} mr={1} color="gray.500" />
+                        {timeRequired}
+                     </Badge>
+                  )}
+                  {difficulty && (
+                     <Badge display="flex" colorScheme={themeColor}>
+                        <FaIcon
+                           icon={icon}
+                           mr={1}
+                           color={iconColor || `${themeColor}.500`}
+                        />
+                        {difficulty}
+                     </Badge>
+                  )}
+               </Wrap>
             )}
          </Stack>
+         {isMobile && showBuyButton && (
+            <BuyButton
+               colorScheme="brand"
+               buttonSize="xs"
+               openInNewTab={false}
+               url={href}
+               buyButtonText="Buy"
+            />
+         )}
+         {!isMobile && showBuyButton && (
+            <BuyButton
+               colorScheme="brand"
+               buttonSize="sm"
+               openInNewTab={openInNewTab}
+               url={href}
+               buyButtonText="Buy"
+            />
+         )}
       </ResourceBox>
    );
 }
