@@ -105,9 +105,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
-      const wikiData: TroubleshootingData = {
-         ...troubleshootingData,
-      };
+      const wikiData: TroubleshootingData = troubleshootingData;
 
       const ifixitOrigin = ifixitOriginFromHost(context);
       const pageProps: TroubleshootingProps = {
