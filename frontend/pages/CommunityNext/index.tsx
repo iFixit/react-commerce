@@ -4,6 +4,7 @@ import InfoDisplay from '../../components/community/info';
 import NavigationDisplay from '../../components/community/navigation';
 import GuidePage from '../../components/page/guidePage';
 import { getLocale } from '../../lib/site';
+import { GetStaticPropsContext } from 'next';
 
 export const siteTitle = 'Community';
 
@@ -59,7 +60,8 @@ export default function LandingPage({
    );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+   console.log('locale', locale);
    const activities = await fetch('https://www.ifixit.com/api/2.0/community')
       .then((res) => res.json())
       .then((obj) => obj.activity);
@@ -72,6 +74,10 @@ export async function getStaticProps() {
       props: {
          activities,
          patrolEnabled,
+         // You can get the messages from anywhere you like. The recommended
+         // pattern is to put them in JSON files separated by locale and read
+         // the desired one based on the `locale` received from Next.js.
+         messages: (await import(`../../messages/${locale}.json`)).default,
       },
    };
 }

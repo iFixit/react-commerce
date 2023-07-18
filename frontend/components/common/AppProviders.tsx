@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-query';
 import * as React from 'react';
 import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
+import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 
 const customTheme = extendTheme(theme);
 
@@ -52,9 +53,11 @@ export type AppProvidersProps = {
    algolia?: AlgoliaProps;
    ifixitOrigin?: string;
    adminMessage?: string;
+   messages: AbstractIntlMessages;
 };
 
 export function AppProviders({
+   messages,
    children,
    algolia,
    ifixitOrigin,
@@ -64,22 +67,26 @@ export function AppProviders({
       <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
    );
 
+   console.log('messages: ', messages);
+
    return (
       <AppProvider
          ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}
          adminMessage={adminMessage}
       >
-         <CartDrawerProvider>
-            <QueryClientProvider client={queryClient}>
-               {algolia ? (
-                  <InstantSearchProvider {...algolia}>
-                     {markup}
-                  </InstantSearchProvider>
-               ) : (
-                  markup
-               )}
-            </QueryClientProvider>
-         </CartDrawerProvider>
+         <NextIntlClientProvider messages={messages}>
+            <CartDrawerProvider>
+               <QueryClientProvider client={queryClient}>
+                  {algolia ? (
+                     <InstantSearchProvider {...algolia}>
+                        {markup}
+                     </InstantSearchProvider>
+                  ) : (
+                     markup
+                  )}
+               </QueryClientProvider>
+            </CartDrawerProvider>
+         </NextIntlClientProvider>
       </AppProvider>
    );
 }
