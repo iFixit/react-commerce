@@ -4,7 +4,7 @@ import https from 'https';
 import path from 'path';
 import { getBackupPath } from './export';
 import type { Backup } from './types';
-import { ensureDirectoryExists } from './utils';
+import { ensureDirectoryExists } from '../../../helpers/server-helpers';
 
 export interface DownloadBackupOptions {
    strapiOrigin: string;

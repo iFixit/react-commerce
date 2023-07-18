@@ -1,5 +1,8 @@
 import { exec } from 'child_process';
-import { ensureDirectoryExists, isStderrAnError } from './utils';
+import {
+   ensureDirectoryExists,
+   isStderrAnError,
+} from '../../../helpers/server-helpers';
 
 export const BACKUP_FILE_NAME = 'export';
 

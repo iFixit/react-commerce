@@ -3,7 +3,7 @@ import { parseValidUrl } from '../../helpers/generic-helpers';
 import { getAddonsService } from '../services';
 
 export default ({ strapi }: { strapi: Strapi }) => ({
-   async importContentTypes(ctx) {
+   async importContentTypes(ctx: any) {
       const strapiOrigin = ctx.request.body?.strapiOrigin;
       if (typeof strapiOrigin === 'string') {
          const seedService = getAddonsService(strapi, 'seed');
@@ -21,7 +21,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
       try {
          const result = await seedService.exportBackup();
          ctx.body = result;
-      } catch (error) {
+      } catch (error: any) {
          ctx.status = 500;
          ctx.body = error.message;
       }
@@ -40,7 +40,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
          });
          await seedService.importBackup(backup);
          ctx.body = 'ok';
-      } catch (error) {
+      } catch (error: any) {
          ctx.status = 500;
          ctx.body = error.message;
       }
