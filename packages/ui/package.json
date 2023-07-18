@@ -16,6 +16,7 @@
       "@ifixit/cart-sdk": "workspace:*",
       "@ifixit/helpers": "workspace:*",
       "@ifixit/icons": "workspace:*",
+      "@ifixit/local-storage": "workspace:*",
       "@ifixit/newsletter-sdk": "workspace:*"
    },
    "peerDependencies": {
