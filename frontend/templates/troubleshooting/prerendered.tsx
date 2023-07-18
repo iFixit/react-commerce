@@ -71,6 +71,11 @@ const renderStyles: SystemStyleObject = {
       'li:not(:first-of-type)': {
          marginTop: '1em',
       },
+
+      // nested list spacing
+      ' ul, ol': {
+         marginBottom: '0',
+      },
    },
 
    a: {
@@ -125,12 +130,16 @@ const renderStyles: SystemStyleObject = {
       overflowX: 'auto',
    },
 
-   tr: {
-      display: 'flex',
+   th: {
+      textAlign: 'left',
    },
 
-   'tr:not(:first-of-type) > td': {
-      paddingTop: 3,
+   tr: {
+      verticalAlign: 'top',
+
+      '&:not(:first-of-type) > td': {
+         paddingTop: 3,
+      },
    },
 
    'td:not(:last-child)': {
