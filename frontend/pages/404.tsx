@@ -356,7 +356,7 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
                   </ListItem>
                   <ListItem>
                      Repeated tags Rich text (english key w/o period):
-                     <Text textColor="red.900">
+                     <Text textColor="green.400">
                         {t.rich(
                            'This is <bold>bold</bold> and <bold>bold</bold>',
                            {
