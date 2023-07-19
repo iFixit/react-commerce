@@ -167,7 +167,16 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
                      Select (female) (english key):
                      <Text textColor="red.900">
                         {t(
-                           '{gender, select, female {She is} male {He is} other {The are}} online.',
+                           '{gender, select, female {She is} male {He is} other {They are}} online.',
+                           { gender: 'female' }
+                        )}
+                     </Text>
+                  </ListItem>
+                  <ListItem>
+                     Select (female) (english key w/o period):
+                     <Text textColor="green.400">
+                        {t(
+                           '{gender, select, female {She is} male {He is} other {They are}} online',
                            { gender: 'female' }
                         )}
                      </Text>
@@ -237,18 +246,34 @@ export const Custom404: NextPageWithLayout<Custom404Props> = () => {
                   </ListItem>
                   <ListItem>
                      Escape ( {'}'} ) (english key escaped):
-                     <Text textColor="red.900">
+                     <Text textColor="green.400">
                         {t(
-                           "Escape curly braces with single quotes (e.g. '{name'})"
+                           "Escape curly braces with single quotes (eg: '{name'})"
                         )}
                      </Text>
                   </ListItem>
                   <ListItem>
                      Escape ( {'}'} ) (english key):
-                     <Text textColor="red.900">
+                     <Text textColor="green.400">
                         {t(
-                           'Escape curly braces with single quotes (e.g. {name})'
+                           'Escape curly braces with single quotes (eg: {name})'
                         )}
+                     </Text>
+                  </ListItem>
+                  <ListItem>
+                     Escape ( {'.'} ):
+                     <Text textColor="green.400">{t('escapePeriod')}</Text>
+                  </ListItem>
+                  <ListItem>
+                     Escape ( {'.'} ) (english key escaped):
+                     <Text textColor="red.900">
+                        {t('This period -> &period; is escaped')}
+                     </Text>
+                  </ListItem>
+                  <ListItem>
+                     Escape ( {'.'} ) (english key escaped):
+                     <Text textColor="green.400">
+                        {t('This translation has a normal &period; in it')}
                      </Text>
                   </ListItem>
                   <ListItem>
