@@ -84,10 +84,6 @@ const NewsletterForm = ({
    subscription: Subscription;
    subscribe: (email: string) => void;
 }) => {
-   if (isSubscribed) {
-      return null;
-   }
-
    const inputRef = React.useRef<HTMLInputElement>(null);
 
    const onSubscribe = React.useCallback(
@@ -100,6 +96,10 @@ const NewsletterForm = ({
       },
       [subscribe]
    );
+
+   if (isSubscribed) {
+      return null;
+   }
 
    return (
       <Stack
