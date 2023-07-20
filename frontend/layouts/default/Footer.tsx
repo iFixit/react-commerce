@@ -50,7 +50,7 @@ export function CartFooter({
    const { newsletterForm } = globalSettings;
    return (
       <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
-         <Footer mt={3}>
+         <Footer>
             <NavigationSection
                menu1={menu1}
                menu2={menu2}
