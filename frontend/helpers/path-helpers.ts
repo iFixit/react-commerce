@@ -1,12 +1,7 @@
-import { APP_ORIGIN, IFIXIT_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import type { Product } from '@models/product';
-import {
-   iFixitPageType,
-   ProductList,
-   ProductListType,
-   StorePage,
-} from '@models/product-list';
+import { ProductList, ProductListType } from '@models/product-list';
 import { GetServerSidePropsContext } from 'next';
 import { getProductIdFromGlobalId } from './product-helpers';
 import { stylizeDeviceTitle } from './product-list-helpers';
@@ -23,7 +18,7 @@ export function productPath(handle: string) {
 }
 
 type ProductListPathAttributes = Pick<
-   ProductList | StorePage,
+   ProductList,
    'type' | 'handle' | 'deviceTitle'
 >;
 
@@ -53,15 +48,15 @@ export function productListPath(
       case ProductListType.Marketing: {
          return `/Shop/${productList.handle}`;
       }
-      case iFixitPageType.Store: {
-         return `${APP_ORIGIN}/Store`;
-      }
       default: {
          throw new Error(`unknown product list type: ${productList.type}`);
       }
    }
 }
 
+export function storePath() {
+   return '/Store';
+}
 interface AkeneoProductUrlProps {
    product: Pick<Product, 'productcode'>;
 }
