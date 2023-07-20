@@ -54,10 +54,12 @@ export type AppProvidersProps = {
    ifixitOrigin?: string;
    adminMessage?: string;
    messages: AbstractIntlMessages;
+   locale?: string;
 };
 
 export function AppProviders({
    messages,
+   locale,
    children,
    algolia,
    ifixitOrigin,
@@ -74,7 +76,7 @@ export function AppProviders({
          ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}
          adminMessage={adminMessage}
       >
-         <NextIntlClientProvider messages={messages}>
+         <NextIntlClientProvider locale={locale} messages={messages}>
             <CartDrawerProvider>
                <QueryClientProvider client={queryClient}>
                   {algolia ? (

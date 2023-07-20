@@ -199,6 +199,9 @@ export const getProductListServerSideProps = ({
          };
       }
 
+      const messages = (await import(`../../messages/${context.locale}.json`))
+         .default;
+
       const appProps: AppProvidersProps = {
          algolia: {
             indexName,
@@ -207,6 +210,8 @@ export const getProductListServerSideProps = ({
             logContextName: 'algolia.getServerState',
          },
          ifixitOrigin,
+         messages: messages,
+         locale: context.locale,
       };
 
       const { serverState, adminMessage } = await getSafeServerState({
