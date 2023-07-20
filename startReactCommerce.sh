@@ -1,13 +1,6 @@
 #!/bin/bash
 
-if [ -n "${algoliaApiKey+set}" ]; then
-    echo "Starting react-commerce localdev"
-else
-    echo "You must set the algoliaApiKey variable in your environment."
-    echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \n./startReactCommerce.sh\n'
-    echo -e 'Or you can run it in one line with: \n\nalgoliaApiKey=xyz123 ./startReactCommerce.sh'
-    return 1
-fi
+echo "Starting react-commerce localdev"
 
 git checkout main
 git pull
@@ -77,6 +70,14 @@ apiKey=$(grep -o '^ALGOLIA_API_KEY=.*' "$envFilePath" | cut -d '=' -f 2)
 # Check if ALGOLIA_API_KEY value is empty
 if [ -z "$apiKey" ]; then
     echo "ALGOLIA_API_KEY is empty. Filling in the value..."
+    if [ -n "${algoliaApiKey+set}" ]; then
+        echo "Algolia api key successfully passed in."
+    else
+        echo "You must set the algoliaApiKey variable in your environment."
+        echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \n./startReactCommerce.sh\n'
+        echo -e 'Or you can run it in one line with: \n\nalgoliaApiKey=xyz123 ./startReactCommerce.sh'
+        return 1
+    fi
     awk -v placeholder="\"$algoliaApiKey\"" '/^ALGOLIA_API_KEY=/{gsub(/=.*/, "=" placeholder)} 1' "$envFilePath" > "$envFilePath.tmp" && mv "$envFilePath.tmp" "$envFilePath"
 fi
 
