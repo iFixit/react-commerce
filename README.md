@@ -20,6 +20,8 @@ git clone https://github.com/iFixit/react-commerce.git
 nvm use && algoliaApiKey=123xyz ./startReactCommerce.sh
 ```
 
+> **Not your first time?** If you have previously setup the algolia api key (i.e. it is still saved in `frontend/.env.local`), you don't need to specify it again.
+
 > **Note:** You _may_ use an alternative method of getting the correct node version instead of nvm.
 
 #### How to get Algolia API Key (two methods)
