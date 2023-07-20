@@ -7,11 +7,20 @@ New iFixit e-commerce site.
 ### Setup Script (Easiest Startup):
 
 1. Clone the repo, if not already done:
-   `git clone https://github.com/iFixit/react-commerce.git`
+
+```sh
+git clone https://github.com/iFixit/react-commerce.git
+```
+
 2. Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 3. `cd react-commerce`
-4. Run the script with your algolia API key set:
-   `algoliaApiKey=123xyz ./startReactCommerce.sh`
+4. Run the script with your algolia API key set and `nvm use`:
+
+```sh
+nvm use && algoliaApiKey=123xyz ./startReactCommerce.sh
+```
+
+> **Note:** You _may_ use an alternative method of getting the correct node version instead of nvm.
 
 #### How to get Algolia API Key (two methods)
 

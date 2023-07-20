@@ -6,7 +6,6 @@ git checkout main
 git pull
 git checkout -
 rm -rf node_modules
-nvm use
 npm install -g pnpm@8
 npm install -g yarn
 cp .env.local.example .env.local
@@ -74,8 +73,8 @@ if [ -z "$apiKey" ]; then
         echo "Algolia api key successfully passed in."
     else
         echo "You must set the algoliaApiKey variable in your environment."
-        echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \n./startReactCommerce.sh\n'
-        echo -e 'Or you can run it in one line with: \n\nalgoliaApiKey=xyz123 ./startReactCommerce.sh'
+        echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \nnvm use && ./startReactCommerce.sh\n'
+        echo -e 'Or you can run it in one line with: \n\nnvm use && algoliaApiKey=xyz123 ./startReactCommerce.sh'
         return 1
     fi
     awk -v placeholder="\"$algoliaApiKey\"" '/^ALGOLIA_API_KEY=/{gsub(/=.*/, "=" placeholder)} 1' "$envFilePath" > "$envFilePath.tmp" && mv "$envFilePath.tmp" "$envFilePath"
