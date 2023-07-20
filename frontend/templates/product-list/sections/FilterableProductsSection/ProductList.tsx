@@ -23,6 +23,7 @@ import {
 import { ProductSearchHit } from '@models/product-list';
 import * as React from 'react';
 import { useProductSearchHitPricing } from './useProductSearchHitPricing';
+import { useTranslations } from 'next-intl';
 
 export type ProductListProps = React.PropsWithChildren<unknown>;
 
@@ -52,6 +53,7 @@ export interface ProductListItemProps {
 }
 
 export function ProductListItem({ product }: ProductListItemProps) {
+   const t = useTranslations();
    const { price, compareAtPrice, isDiscounted, percentage, proPricesByTier } =
       useProductSearchHitPricing(product);
 
@@ -188,7 +190,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                                  colorScheme="blue"
                                  size={{ base: 'small', md: 'base' }}
                               >
-                                 Lifetime Guarantee
+                                 {t('Lifetime Guarantee')}
                               </IconBadge>
                            )}
                         </Flex>
