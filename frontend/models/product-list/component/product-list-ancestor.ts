@@ -44,7 +44,7 @@ function createProductListAncestorsFromStrapi(
          title: attributes.title,
          type,
       }),
-      type: productListTypeFromStrapi(attributes.type),
+      type,
       handle: attributes.handle,
    });
 }
@@ -67,19 +67,18 @@ function createProductListAncestorsFromDeviceWiki(
 }
 
 function createAncestorFromWikiTitle(title: string): ProductListAncestor {
-   let type = ProductListType.DeviceParts;
-   let handle = '';
-
    if (title === 'Root') {
-      type = ProductListType.AllParts;
-      title = 'All';
-      handle = 'Parts';
+      return {
+         deviceTitle: title,
+         title: 'All Parts',
+         type: ProductListType.AllParts,
+         handle: 'Parts',
+      };
    }
-
    return {
       deviceTitle: title,
       title: `${title} Parts`,
-      type,
-      handle,
+      type: ProductListType.DeviceParts,
+      handle: '',
    };
 }
