@@ -2,9 +2,8 @@ import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
-import type { ProductList, ProductListAncestor } from '@models/product-list';
+import type { ProductList } from '@models/product-list';
 import Head from 'next/head';
-import React from 'react';
 import {
    useCurrentRefinements,
    usePagination,
@@ -12,7 +11,7 @@ import {
 import { jsonLdScriptProps } from 'react-schemaorg';
 import { BreadcrumbList as SchemaBreadcrumbList } from 'schema-dts';
 import { useDevicePartsItemType } from './hooks/useDevicePartsItemType';
-import { useProductListAncestors } from './hooks/useProductListAncestors';
+import { useProductListBreadcrumbs } from './hooks/useProductListBreadcrumbs';
 
 export interface MetaTagsProps {
    productList: ProductList;
@@ -22,20 +21,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const appContext = useAppContext();
    const currentRefinements = useCurrentRefinements();
    const pagination = usePagination();
-   const { currentItemTitle, ancestors } = useProductListAncestors(productList);
-
-   const completeBreadcrumb = React.useMemo(() => {
-      if (ancestors == null) {
-         return null;
-      }
-      const lastBreadcrumb: ProductListAncestor = {
-         deviceTitle: null,
-         title: currentItemTitle,
-         type: ancestors[0].type,
-         handle: '#',
-      };
-      return ancestors.concat(lastBreadcrumb);
-   }, [ancestors, currentItemTitle]);
+   const breadcrumbs = useProductListBreadcrumbs(productList);
 
    const page = pagination.currentRefinement + 1;
    const refinementAttributes = currentRefinements.items.map(
@@ -91,24 +77,22 @@ export function MetaTags({ productList }: MetaTagsProps) {
          <meta property="og:url" content={canonicalUrl} />
          {imageUrl && <meta property="og:image" content={imageUrl} />}
 
-         <script
-            {...jsonLdScriptProps<SchemaBreadcrumbList>({
-               '@context': 'https://schema.org',
-               '@type': 'BreadcrumbList',
-               itemListElement:
-                  completeBreadcrumb?.map((item, index) => ({
+         {breadcrumbs.length > 0 && (
+            <script
+               {...jsonLdScriptProps<SchemaBreadcrumbList>({
+                  '@context': 'https://schema.org',
+                  '@type': 'BreadcrumbList',
+                  itemListElement: breadcrumbs.map((item, index) => ({
                      '@type': 'ListItem',
                      position: index + 1,
-                     name: item.title,
-                     item:
-                        item.handle && item.handle !== '#'
-                           ? `${appContext.ifixitOrigin}${productListPath(
-                                item
-                             )}`
-                           : undefined,
-                  })) || undefined,
-            })}
-         />
+                     name: item.label,
+                     item: item.url
+                        ? `${appContext.ifixitOrigin}${item.url}`
+                        : undefined,
+                  })),
+               })}
+            />
+         )}
       </Head>
    );
 }

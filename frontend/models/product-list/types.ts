@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { iFixitPageType, iFixitPageTypeSchema } from '.';
+import { ProductListAncestorSchema } from './component/product-list-ancestor';
 import {
    ProductListType,
    ProductListTypeSchema,
@@ -49,14 +49,6 @@ const ProductListImageSchema = z.object({
    url: z.string(),
 });
 export type ProductListImage = z.infer<typeof ProductListImageSchema>;
-
-const ProductListAncestorSchema = z.object({
-   deviceTitle: z.string().nullable(),
-   title: z.string(),
-   type: z.union([ProductListTypeSchema, iFixitPageTypeSchema]),
-   handle: z.string(),
-});
-export type ProductListAncestor = z.infer<typeof ProductListAncestorSchema>;
 
 const ProductListChildSchema = z.object({
    title: z.string(),
@@ -157,11 +149,6 @@ const MarketingProductListSchema = BaseProductListSchema.extend({
    type: z.literal(ProductListType.Marketing),
 });
 export type MarketingProductList = z.infer<typeof MarketingProductListSchema>;
-
-const StorePageSchema = BaseProductListSchema.extend({
-   type: z.literal(iFixitPageType.Store),
-});
-export type StorePage = z.infer<typeof StorePageSchema>;
 
 export const ProductListSchema = z.union([
    AllPartsProductListSchema,
