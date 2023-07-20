@@ -516,7 +516,7 @@ function NavTabs({
 
          {deviceGuideUrl ? (
             <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
-               Parts
+               Guides
             </Link>
          ) : (
             <Box className="isDisabled" {...notSelectedStyleProps}>
