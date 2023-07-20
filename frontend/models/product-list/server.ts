@@ -4,7 +4,7 @@ import {
    ALGOLIA_PRODUCT_INDEX_NAME,
 } from '@config/env';
 import { escapeFilterValue, getClientOptions } from '@helpers/algolia-helpers';
-import { Awaited, filterNullableItems } from '@helpers/application-helpers';
+import { filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { timeAsync } from '@ifixit/helpers';
@@ -14,16 +14,19 @@ import {
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
-import { ProductListFiltersInput, strapi } from '@lib/strapi-sdk';
+import {
+   ProductListFieldsFragment,
+   ProductListFiltersInput,
+   strapi,
+} from '@lib/strapi-sdk';
 import algoliasearch from 'algoliasearch';
-import { iFixitPageType } from '.';
+import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
 import { ProductListType } from './component/product-list-type';
 import { productListTypeFromStrapi } from './component/product-list-type.server';
 import { getProductListSection } from './sections';
 import {
    BaseProductList,
    ProductList,
-   ProductListAncestor,
    ProductListChild,
    ProductListImage,
    ProductListItemTypeOverride,
@@ -58,11 +61,6 @@ export async function findProductList(
    const deviceTitle =
       deviceWiki?.deviceTitle ?? productList?.deviceTitle ?? null;
    const handle = productList?.handle ?? '';
-   const parents =
-      productList?.parent ??
-      (deviceWiki?.ancestors
-         ? convertAncestorsToStrapiFormat(deviceWiki.ancestors)
-         : null);
    const title =
       productList?.title ??
       (deviceWiki?.deviceTitle ? deviceWiki?.deviceTitle + ' Parts' : '');
@@ -76,7 +74,10 @@ export async function findProductList(
    );
    const productListType = productListTypeFromStrapi(productList?.type);
 
-   const ancestors = createProductListAncestors(parents);
+   const ancestors = createProductListAncestorsFromStrapiOrDeviceWiki(
+      productList,
+      deviceWiki
+   );
    const isPartsList =
       productListType === ProductListType.AllParts ||
       productListType === ProductListType.DeviceParts;
@@ -233,71 +234,9 @@ function getChildDeviceImage(
    return null;
 }
 
-type StrapiProductListPageData = NonNullable<
-   NonNullable<Awaited<ReturnType<typeof strapi['findProductList']>>>
->;
-
-type ApiProductList = NonNullable<
-   NonNullable<
-      NonNullable<StrapiProductListPageData['productLists']>['data']
-   >[0]['attributes']
->;
-
-function convertAncestorsToStrapiFormat(
-   ancestors: any
-): ApiProductList['parent'] | null {
-   const ancestor: DeviceWiki = { title: ancestors.shift() };
-   if (ancestor['title'] == null) {
-      return null;
-   } else if (ancestor['title'] === 'Root') {
-      ancestor['type'] = 'all_parts';
-      ancestor['title'] = 'All';
-      ancestor['handle'] = 'Parts';
-   }
-
-   return {
-      data: {
-         attributes: {
-            type: ancestor.type,
-            title: ancestor.title + ' Parts',
-            handle: ancestor.handle ?? '',
-            deviceTitle: ancestor.title,
-            parent: convertAncestorsToStrapiFormat(ancestors),
-         },
-      },
-   };
-}
-
-function createProductListAncestors(
-   parent: ApiProductList['parent']
-): ProductListAncestor[] {
-   const attributes = parent?.data?.attributes;
-   if (attributes == null) {
-      return [
-         {
-            deviceTitle: '',
-            title: 'Store',
-            type: iFixitPageType.Store,
-            handle: 'Store',
-         },
-      ];
-   }
-   const ancestors = createProductListAncestors(attributes.parent);
-
-   const type = productListTypeFromStrapi(attributes.type);
-
-   return ancestors.concat({
-      deviceTitle: attributes.deviceTitle ?? null,
-      title: getProductListTitle({
-         title: attributes.title,
-         type,
-      }),
-      type: productListTypeFromStrapi(attributes.type),
-      handle: attributes.handle,
-   });
-}
-
-type ApiProductListChild = NonNullable<ApiProductList['children']>['data'][0];
+type ApiProductListChild = NonNullable<
+   ProductListFieldsFragment['children']
+>['data'][0];
 
 type CreateProductListChildOptions = {
    deviceWiki: DeviceWiki | null;
@@ -345,7 +284,7 @@ function sortProductListChildren(
 }
 
 type ApiProductListItemOverrides = NonNullable<
-   ApiProductList['itemOverrides']
+   ProductListFieldsFragment['itemOverrides']
 >[0];
 
 function formatItemTypeOverrides(

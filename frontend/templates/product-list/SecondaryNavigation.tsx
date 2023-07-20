@@ -3,12 +3,11 @@ import { PageEditMenu } from '@components/admin';
 import { SecondaryNavbar } from '@components/common';
 import { getAdminLinks } from '@helpers/product-list-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListType } from '@models/product-list';
 import { useMemo } from 'react';
-import { useProductListAncestors } from './hooks/useProductListAncestors';
-import { BreadCrumbs, BreadcrumbItem } from '@ifixit/breadcrumbs';
-import { productListPath } from '@helpers/path-helpers';
+import { useProductListBreadcrumbs } from './hooks/useProductListBreadcrumbs';
 import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
 
 interface SecondaryNavigationProps {
@@ -18,15 +17,7 @@ interface SecondaryNavigationProps {
 export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
    const hasDeviceNavigation = productList.type === ProductListType.DeviceParts;
-   const { currentItemTitle, ancestors } = useProductListAncestors(productList);
-   const breadCrumbs: BreadcrumbItem[] = ancestors.map((ancestor) => ({
-      label: ancestor.title,
-      url: productListPath(ancestor),
-   }));
-   breadCrumbs.push({
-      label: currentItemTitle,
-      url: undefined,
-   });
+   const breadcrumbs = useProductListBreadcrumbs(productList);
 
    const adminLinks = useMemo(
       () =>
@@ -55,7 +46,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                         base: 'none',
                         sm: 'flex',
                      }}
-                     breadCrumbs={breadCrumbs}
+                     breadCrumbs={breadcrumbs}
                      fontSize="sm"
                   />
                   <Flex
@@ -78,7 +69,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
          <SecondaryNavbar display={{ sm: 'none' }}>
             <Wrapper h="full">
                <Flex h="full" w="full" boxSizing="border-box">
-                  <BreadCrumbs breadCrumbs={breadCrumbs} fontSize="sm" />
+                  <BreadCrumbs breadCrumbs={breadcrumbs} fontSize="sm" />
                </Flex>
             </Wrapper>
          </SecondaryNavbar>
