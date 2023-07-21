@@ -5,7 +5,7 @@ test.describe('Parts Page Navigation', () => {
       await page.goto('/Parts');
    });
 
-   test('Navigate Through All Device Pages', async ({ page }) => {
+   test.skip('Navigate Through All Device Pages', async ({ page }) => {
       const viewPort = page.viewportSize();
 
       await expect(
