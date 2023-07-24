@@ -106,7 +106,6 @@ const BaseProductListSchema = z.object({
    filters: z.string().nullable(),
    forceNoindex: z.boolean().nullable(),
    heroImage: ImageSchema.nullable(),
-   image: ProductListImageSchema.nullable(),
    brandLogo: ImageSchema.nullable(),
    ancestors: z.array(ProductListAncestorSchema),
    children: z.array(ProductListChildSchema),

@@ -99,7 +99,6 @@ export async function findProductList(
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
       heroImage: imageFromStrapi(productList?.heroImage),
-      image: null,
       brandLogo: imageFromStrapi(productList?.brandLogo, {
          format: 'large',
          width: productList?.brandLogoWidth,
