@@ -13,18 +13,32 @@ export const ImageSchema = z.object({
 
 export type Image = z.infer<typeof ImageSchema>;
 
+interface ImageOptions {
+   format?: string;
+   width?: number | null;
+   height?: number | null;
+}
+
 export function imageFromStrapi(
-   imageFragment: ImageFieldsFragment | null | undefined
+   imageFragment: ImageFieldsFragment | null | undefined,
+   options?: ImageOptions
 ): Image | null {
    const attributes = imageFragment?.data?.attributes;
    if (attributes == null) {
       return null;
    }
    const thumbnailUrl = attributes.formats?.thumbnail?.url ?? null;
+   const format = options?.format;
+   const formatUrl = format ? attributes.formats?.[format]?.url : null;
+   const url = formatUrl ?? attributes.url;
+   const width = options?.width ?? null;
+   const height = options?.height ?? null;
    return {
-      url: attributes.url,
+      url,
       altText: attributes.alternativeText,
       thumbnailUrl,
+      width,
+      height,
    };
 }
 

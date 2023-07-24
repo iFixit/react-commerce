@@ -19,6 +19,7 @@ import {
    ProductListFiltersInput,
    strapi,
 } from '@lib/strapi-sdk';
+import { imageFromStrapi } from '@models/components/image';
 import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
 import { ProductListType } from './component/product-list-type';
@@ -96,17 +97,12 @@ export async function findProductList(
          productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
-      heroImage: productList?.heroImage?.data?.attributes
-         ? getImageFromStrapiImage(productList.heroImage.data.attributes)
-         : null,
+      heroImage: imageFromStrapi(productList?.heroImage),
       image: null,
-      brandLogo: productList?.brandLogo?.data?.attributes
-         ? getImageFromStrapiImage(
-              productList.brandLogo.data.attributes,
-              'large'
-           )
-         : null,
-      brandLogoWidth: productList?.brandLogoWidth ?? null,
+      brandLogo: imageFromStrapi(productList?.brandLogo, {
+         format: 'large',
+         width: productList?.brandLogoWidth,
+      }),
       ancestors,
       children: await getProductListChildren({
          apiChildren: productList?.children?.data,

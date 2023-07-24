@@ -20,7 +20,6 @@ import {
    ProductListChildrenSection,
    RelatedPostsSection,
 } from './sections';
-import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -75,13 +74,13 @@ export function ProductListView({
             spacing={{ base: 4, md: 6 }}
             py={{ base: 4, md: 6 }}
          >
-            {productListWithOverrides.heroImage ? (
-               <HeroWithBackgroundSection
-                  productList={productListWithOverrides}
-               />
-            ) : (
-               <HeroSection productList={productListWithOverrides} />
-            )}
+            <HeroSection
+               title={productListWithOverrides.title}
+               tagline={productListWithOverrides.tagline}
+               description={productListWithOverrides.description}
+               backgroundImage={productListWithOverrides.heroImage}
+               brandLogo={productListWithOverrides.brandLogo}
+            />
             {productListWithOverrides.children.length > 0 && (
                <ProductListChildrenSection
                   productList={productListWithOverrides}
