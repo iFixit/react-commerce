@@ -504,20 +504,26 @@ function NavTabs({
 
    return (
       <Flex {...props} gap={1.5} height="100%">
-         <Link
-            className={devicePartsUrl ? '' : 'isDisabled'}
-            {...notSelectedStyleProps}
-            href={devicePartsUrl}
-         >
-            Parts
-         </Link>
-         <Link
-            className={deviceGuideUrl ? '' : 'isDisabled'}
-            {...notSelectedStyleProps}
-            href={deviceGuideUrl}
-         >
-            Guides
-         </Link>
+         {devicePartsUrl ? (
+            <Link {...notSelectedStyleProps} href={devicePartsUrl}>
+               Parts
+            </Link>
+         ) : (
+            <Box className="isDisabled" {...notSelectedStyleProps}>
+               Parts
+            </Box>
+         )}
+
+         {deviceGuideUrl ? (
+            <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
+               Guides
+            </Link>
+         ) : (
+            <Box className="isDisabled" {...notSelectedStyleProps}>
+               Guides
+            </Box>
+         )}
+
          <Box {...selectedStyleProps}>Answers</Box>
       </Flex>
    );
