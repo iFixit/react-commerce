@@ -1,6 +1,7 @@
 import { PageEditMenuLink } from '@components/admin';
 import { STRAPI_ORIGIN } from '@config/env';
 import { faDatabase } from '@fortawesome/pro-solid-svg-icons';
+import { isPresent } from '@ifixit/helpers';
 import {
    FacetWidgetType,
    ProductList,
@@ -74,7 +75,7 @@ export function getProductListTitle(
    if (productList.type === ProductListType.DeviceParts && itemType) {
       return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
    }
-   return productList.h1 ?? productList.title;
+   return isPresent(productList.h1) ? productList.h1 : productList.title;
 }
 
 const facetWidgetTypeMap: Record<string, FacetWidgetType> = {
