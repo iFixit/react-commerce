@@ -24,7 +24,7 @@ import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
 import { ProductListType } from './component/product-list-type';
 import { productListTypeFromStrapi } from './component/product-list-type.server';
-import { getProductListSection } from './sections';
+import { productListSections } from './sections';
 import {
    BaseProductList,
    ProductList,
@@ -111,9 +111,9 @@ export async function findProductList(
          ifixitOrigin,
          isPartsList,
       }),
-      sections: filterNullableItems(
-         productList?.sections.map(getProductListSection)
-      ),
+      sections: productListSections({
+         strapiProductList: productList,
+      }),
       algolia: {
          apiKey: algoliaApiKey,
       },
