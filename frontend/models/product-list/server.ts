@@ -6,7 +6,6 @@ import {
 import { escapeFilterValue, getClientOptions } from '@helpers/algolia-helpers';
 import { filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
-import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
 import { presentOrNull, timeAsync } from '@ifixit/helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
@@ -19,17 +18,19 @@ import {
    ProductListFiltersInput,
    strapi,
 } from '@lib/strapi-sdk';
-import { imageFromStrapi } from '@models/components/image';
+import {
+   childImageFromDeviceWiki,
+   imageFromStrapi,
+} from '@models/components/image';
 import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
+import type { ProductListChild } from './component/product-list-child';
 import { ProductListType } from './component/product-list-type';
 import { productListTypeFromStrapi } from './component/product-list-type.server';
 import { getProductListSection } from './sections';
 import {
    BaseProductList,
    ProductList,
-   ProductListChild,
-   ProductListImage,
    ProductListItemTypeOverride,
    ProductListItemTypeOverrideIndexed,
 } from './types';
@@ -127,6 +128,10 @@ export async function findProductList(
    };
 }
 
+type ApiProductListChild = NonNullable<
+   ProductListFieldsFragment['children']
+>['data'][0];
+
 type GetProductListChildrenProps = {
    apiChildren: ApiProductListChild[] | undefined;
    deviceWiki: DeviceWiki | null;
@@ -214,26 +219,6 @@ async function fetchMissingImages(
    return images;
 }
 
-function getChildDeviceImage(
-   deviceWiki: DeviceWiki,
-   childDeviceTitle: string
-): ProductListImage | null {
-   const child = deviceWiki.children?.find(
-      (c: any) => c.title === childDeviceTitle
-   );
-   if (child?.image?.original) {
-      return {
-         url: child.image.original,
-         alternativeText: null,
-      };
-   }
-   return null;
-}
-
-type ApiProductListChild = NonNullable<
-   ProductListFieldsFragment['children']
->['data'][0];
-
 type CreateProductListChildOptions = {
    deviceWiki: DeviceWiki | null;
 };
@@ -244,7 +229,9 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
       if (attributes == null || attributes.hideFromParent) {
          return null;
       }
-      const imageAttributes = attributes.image?.data?.attributes;
+      const strapiImage = imageFromStrapi(attributes.image, {
+         format: 'medium',
+      });
       const type = productListTypeFromStrapi(attributes.type);
       return {
          title: getProductListTitle({
@@ -255,11 +242,10 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
          image:
-            imageAttributes == null
-               ? deviceWiki && attributes.deviceTitle
-                  ? getChildDeviceImage(deviceWiki, attributes.deviceTitle)
-                  : null
-               : getImageFromStrapiImage(imageAttributes, 'medium'),
+            strapiImage ??
+            (deviceWiki && attributes.deviceTitle
+               ? childImageFromDeviceWiki(deviceWiki, attributes.deviceTitle)
+               : null),
          sortPriority: attributes.sortPriority || null,
       };
    };
