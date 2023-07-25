@@ -7,7 +7,7 @@ import { escapeFilterValue, getClientOptions } from '@helpers/algolia-helpers';
 import { filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
-import { timeAsync } from '@ifixit/helpers';
+import { presentOrNull, timeAsync } from '@ifixit/helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
@@ -65,8 +65,7 @@ export async function findProductList(
    const title =
       productList?.title ??
       (deviceWiki?.deviceTitle ? deviceWiki?.deviceTitle + ' Parts' : '');
-   const h1 = productList?.h1 ?? null;
-   const description =
+   const description: string =
       productList?.description ?? deviceWiki?.description ?? '';
 
    const algoliaApiKey = createPublicAlgoliaKey(
@@ -86,13 +85,13 @@ export async function findProductList(
    const baseProductList: BaseProductList = {
       id,
       title,
-      h1,
+      h1: presentOrNull(productList?.h1),
       handle,
       deviceTitle,
-      tagline: productList?.tagline ?? null,
-      description: description,
-      metaDescription: productList?.metaDescription ?? null,
-      metaTitle: productList?.metaTitle ?? null,
+      tagline: presentOrNull(productList?.tagline),
+      description,
+      metaDescription: presentOrNull(productList?.metaDescription),
+      metaTitle: presentOrNull(productList?.metaTitle),
       defaultShowAllChildrenOnLgSizes:
          productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
