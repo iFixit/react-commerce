@@ -1,3 +1,4 @@
+import { ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import { ProductListAncestorSchema } from './component/product-list-ancestor';
 import {
@@ -104,10 +105,9 @@ const BaseProductListSchema = z.object({
    defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),
    filters: z.string().nullable(),
    forceNoindex: z.boolean().nullable(),
-   heroImage: ProductListImageSchema.nullable(),
+   heroImage: ImageSchema.nullable(),
    image: ProductListImageSchema.nullable(),
-   brandLogo: ProductListImageSchema.nullable(),
-   brandLogoWidth: z.number().nullable(),
+   brandLogo: ImageSchema.nullable(),
    ancestors: z.array(ProductListAncestorSchema),
    children: z.array(ProductListChildSchema),
    sections: z.array(ProductListSectionSchema),
