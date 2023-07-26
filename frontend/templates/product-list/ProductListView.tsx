@@ -75,9 +75,9 @@ export function ProductListView({
             py={{ base: 4, md: 6 }}
          >
             <HeroSection
-               title={productListWithOverrides.title}
+               title={productListWithOverrides.overrides!.title}
                tagline={productListWithOverrides.tagline}
-               description={productListWithOverrides.description}
+               description={productListWithOverrides.overrides?.description}
                backgroundImage={productListWithOverrides.heroImage}
                brandLogo={productListWithOverrides.brandLogo}
             />
