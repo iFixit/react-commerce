@@ -26,14 +26,14 @@ test.describe('Vulcan Page Content and SEO', () => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       // check that the canonical link is a resonable URL
       const canonical = page.locator('link[rel="canonical"]');
-      await expect(canonical).toHaveAttribute('href', /Not%20Spinning/);
+      await expect(canonical).toHaveAttribute('href', /Not.Spinning/);
       // Check that the canonical link is an absolute URL
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
 
    test('Redirect to Canonical URL', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      await expect(page.url()).toMatch(/Not%20Spinning/);
+      expect(page.url()).toMatch(/Not.Spinning/);
    });
 
    test('Breadcrumbs Visible', async ({ page }) => {
