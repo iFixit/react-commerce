@@ -12,7 +12,6 @@ import {
    Container,
    Flex,
    FlexProps,
-   Hide,
    IconButton,
    Image,
    Link,
@@ -35,6 +34,7 @@ import {
    chakra,
    HStack,
    SimpleGrid,
+   useToken,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import type {
@@ -73,6 +73,7 @@ const Wiki: NextPageWithLayout<{
       id,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
+   const smBreakpoint = useToken('breakpoints', 'sm');
    const metadata = (
       <>
          <meta name="description" content={metaDescription} />
@@ -83,6 +84,13 @@ const Wiki: NextPageWithLayout<{
          <TagManager />
       </>
    );
+
+   const imageSx: any = {
+      display: 'none',
+   };
+   imageSx[`@media (min-width: ${smBreakpoint})`] = {
+      display: 'block',
+   };
 
    return (
       <>
@@ -114,21 +122,20 @@ const Wiki: NextPageWithLayout<{
                   borderBottom="1px"
                   borderColor="gray.300"
                >
-                  <Hide below="sm">
-                     <Image
-                        src={mainImageUrl}
-                        onClick={onOpen}
-                        cursor="pointer"
-                        alt={title}
-                        htmlWidth={120}
-                        htmlHeight={90}
-                        objectFit="contain"
-                        borderRadius="md"
-                        outline="1px solid"
-                        outlineColor="gray.300"
-                        marginRight={3}
-                     />
-                  </Hide>
+                  <Image
+                     sx={imageSx}
+                     src={mainImageUrl}
+                     onClick={onOpen}
+                     cursor="pointer"
+                     alt={title}
+                     htmlWidth={120}
+                     htmlHeight={90}
+                     objectFit="contain"
+                     borderRadius="md"
+                     outline="1px solid"
+                     outlineColor="gray.300"
+                     marginRight={3}
+                  />
                   <Modal isOpen={isOpen} onClose={onClose}>
                      <ModalOverlay />
                      <ModalContent
