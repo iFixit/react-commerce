@@ -78,7 +78,7 @@ const Wiki: NextPageWithLayout<{
          <meta name="description" content={metaDescription} />
          <meta name="title" content={title} />
          <meta name="keywords" content={metaKeywords} />
-         <meta name="robots" content="noindex" />,
+         <meta name="robots" content="index, follow" />,
          <link rel="canonical" href={canonicalUrl} />
          <TagManager />
       </>
