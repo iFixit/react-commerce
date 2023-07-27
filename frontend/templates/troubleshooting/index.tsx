@@ -114,21 +114,26 @@ const Wiki: NextPageWithLayout<{
                   borderBottom="1px"
                   borderColor="gray.300"
                >
-                  <Hide below="sm">
-                     <Image
-                        src={mainImageUrl}
-                        onClick={onOpen}
-                        cursor="pointer"
-                        alt={title}
-                        htmlWidth={120}
-                        htmlHeight={90}
-                        objectFit="contain"
-                        borderRadius="md"
-                        outline="1px solid"
-                        outlineColor="gray.300"
-                        marginRight={3}
-                     />
-                  </Hide>
+                  <Image
+                     sx={{
+                        display: 'none',
+                        // sm breakpoint
+                        '@media (min-width: 576px)': {
+                           display: 'block',
+                        },
+                     }}
+                     src={mainImageUrl}
+                     onClick={onOpen}
+                     cursor="pointer"
+                     alt={title}
+                     htmlWidth={120}
+                     htmlHeight={90}
+                     objectFit="contain"
+                     borderRadius="md"
+                     outline="1px solid"
+                     outlineColor="gray.300"
+                     marginRight={3}
+                  />
                   <Modal isOpen={isOpen} onClose={onClose}>
                      <ModalOverlay />
                      <ModalContent
