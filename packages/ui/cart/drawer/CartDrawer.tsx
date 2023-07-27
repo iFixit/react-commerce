@@ -158,14 +158,16 @@ export function CartDrawer() {
                         </Box>
                         <Box as="ul" data-testid="cart-drawer-x-sell-items">
                            <AnimatePresence>
-                              {crossSellItems.map((crossSellItem) => {
-                                 return (
-                                    <ListItem key={crossSellItem.itemcode}>
-                                       <CrossSell item={crossSellItem} />
-                                       <Divider borderColor="gray.200" />
-                                    </ListItem>
-                                 );
-                              })}
+                              {cart.data != null &&
+                                 cart.data.hasItemsInCart &&
+                                 crossSellItems.map((crossSellItem) => {
+                                    return (
+                                       <ListItem key={crossSellItem.itemcode}>
+                                          <CrossSell item={crossSellItem} />
+                                          <Divider borderColor="gray.200" />
+                                       </ListItem>
+                                    );
+                                 })}
                            </AnimatePresence>
                         </Box>
                      </ScaleFade>
