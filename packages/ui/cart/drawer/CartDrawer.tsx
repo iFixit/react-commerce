@@ -56,15 +56,17 @@ export function CartDrawer() {
 
    const crossSellItems = React.useMemo(() => {
       const crossSells =
-         cart.data?.crossSellProducts.filter((item) => {
-            const isAlreadyInCart =
-               item &&
-               cart.data?.lineItems.find(
-                  (lineItem) => lineItem.itemcode === item.itemcode
-               );
-            if (isAlreadyInCart) return null;
-            return item;
-         }) ?? [];
+         cart.data?.crossSellProducts
+            .filter((item) => {
+               const isAlreadyInCart =
+                  item &&
+                  cart.data?.lineItems.find(
+                     (lineItem) => lineItem.itemcode === item.itemcode
+                  );
+               if (isAlreadyInCart) return null;
+               return item;
+            })
+            .sort((a, b) => a.handle.localeCompare(b.handle)) ?? [];
       return crossSells;
    }, [cart.data]);
 
