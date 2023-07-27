@@ -34,6 +34,7 @@ import {
    chakra,
    HStack,
    SimpleGrid,
+   useToken,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import type {
@@ -72,6 +73,7 @@ const Wiki: NextPageWithLayout<{
       id,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
+   const smBreakpoint = useToken('breakpoints', 'sm');
    const metadata = (
       <>
          <meta name="description" content={metaDescription} />
@@ -82,6 +84,13 @@ const Wiki: NextPageWithLayout<{
          <TagManager />
       </>
    );
+
+   const imageSx: any = {
+      display: 'none',
+   };
+   imageSx[`@media (min-width: ${smBreakpoint})`] = {
+      display: 'block',
+   };
 
    return (
       <>
@@ -114,13 +123,7 @@ const Wiki: NextPageWithLayout<{
                   borderColor="gray.300"
                >
                   <Image
-                     sx={{
-                        display: 'none',
-                        // sm breakpoint
-                        '@media (min-width: 576px)': {
-                           display: 'block',
-                        },
-                     }}
+                     sx={imageSx}
                      src={mainImageUrl}
                      onClick={onOpen}
                      cursor="pointer"
