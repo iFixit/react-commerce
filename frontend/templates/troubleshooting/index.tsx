@@ -12,7 +12,6 @@ import {
    Container,
    Flex,
    FlexProps,
-   Hide,
    IconButton,
    Image,
    Link,
