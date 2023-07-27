@@ -97,6 +97,11 @@ const moduleExports = {
             permanent: true,
          },
          {
+            source: '/Troubleshooting/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/troubleshooting.xml`,
+            permanent: true,
+         },
+         {
             source: '/products/pro-tech-toolkit',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Store/Tools/Pro-Tech-Toolkit/IF145-307`,
             permanent: false,
