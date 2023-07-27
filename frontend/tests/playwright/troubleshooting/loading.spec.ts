@@ -15,11 +15,11 @@ test.describe('Vulcan Page Content and SEO', () => {
       ).toBeVisible();
    });
 
-   test('noindex Meta Tag Included', async ({ page }) => {
+   test('index, follow Meta Tag Included', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      // check that the meta robots tag is set to noindex
+      // check that the meta robots tag is set to index, follow
       const meta = page.locator('meta[name="robots"]');
-      await expect(meta).toHaveAttribute('content', 'noindex');
+      await expect(meta).toHaveAttribute('content', 'index, follow');
    });
 
    test('Canonical Link Included', async ({ page }) => {
