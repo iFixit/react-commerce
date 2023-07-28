@@ -535,7 +535,12 @@ function HreflangUrls({ urls }: { urls: Record<string, string> }) {
    return (
       <Head>
          {hreflangs.map(([lang, url]) => (
-            <link rel="alternate" key={lang} hrefLang={lang} href={url} />
+            <link
+               rel="alternate"
+               key={`hreflang-${lang}`}
+               hrefLang={lang}
+               href={url}
+            />
          ))}
       </Head>
    );
@@ -554,11 +559,15 @@ function Metadata({
 }) {
    return (
       <Head>
-         <meta name="description" content={metaDescription} />
-         <meta name="title" content={title} />
-         <meta name="keywords" content={metaKeywords} />
-         <meta name="robots" content="index, follow" />,
-         <link rel="canonical" href={canonicalUrl} />
+         <meta
+            key="meta-description"
+            name="description"
+            content={metaDescription}
+         />
+         <meta key="meta-title" name="title" content={title} />
+         <meta key="meta-keywords" name="keywords" content={metaKeywords} />
+         <meta key="meta-robots" name="robots" content="index, follow" />,
+         <link key="canonical" rel="canonical" href={canonicalUrl} />
       </Head>
    );
 }

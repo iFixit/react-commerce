@@ -76,8 +76,8 @@ function MatomoScript() {
 export function TagManager() {
    return (
       <Head>
-         <GoogleScript />
-         <MatomoScript />
+         <GoogleScript key="GoogleScript" />
+         <MatomoScript key="MatomoScript" />
       </Head>
    );
 }
