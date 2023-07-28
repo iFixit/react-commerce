@@ -31,6 +31,40 @@ test.describe('Vulcan Page Content and SEO', () => {
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
 
+   test('HrefLangs are rendered', async ({ page }) => {
+      await page.goto(
+         '/Troubleshooting/Television/TV+Has+Sound+But+No+Picture/493422'
+      );
+      const langsToHrefs = [
+         {
+            lang: 'de',
+            href: 'https://de.www.cominor.com/Wiki/TV_Has_Sound_But_No_Picture',
+         },
+         {
+            lang: 'es',
+            href: 'https://es.www.cominor.com/Wiki/TV_Has_Sound_But_No_Picture',
+         },
+         {
+            lang: 'it',
+            href: 'https://it.www.cominor.com/Wiki/TV_Has_Sound_But_No_Picture',
+         },
+         {
+            lang: 'en',
+            href: 'https://www.cominor.com/Troubleshooting/Television/TV+Has+Sound+But+No+Picture/493422',
+         },
+         {
+            lang: 'x-default',
+            href: 'https://www.cominor.com/Troubleshooting/Television/TV+Has+Sound+But+No+Picture/493422',
+         },
+      ];
+
+      langsToHrefs.forEach(async (langToHref) => {
+         const hrefLang = page.locator(`link[hreflang="${langToHref.lang}"]`);
+         await expect(hrefLang).toHaveAttribute('hreflang', langToHref.lang);
+         await expect(hrefLang).toHaveAttribute('href', langToHref.href);
+      });
+   });
+
    test('Redirect to Canonical URL', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       expect(page.url()).toMatch(/Not.Spinning/);
