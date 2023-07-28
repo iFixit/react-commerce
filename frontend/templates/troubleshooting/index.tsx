@@ -100,6 +100,7 @@ const Wiki: NextPageWithLayout<{
                flexShrink="1"
                id="main"
             >
+               <TagManager />
                <Metadata
                   metaDescription={metaDescription}
                   metaKeywords={metaKeywords}
@@ -558,7 +559,6 @@ function Metadata({
          <meta name="keywords" content={metaKeywords} />
          <meta name="robots" content="index, follow" />,
          <link rel="canonical" href={canonicalUrl} />
-         <TagManager />
       </Head>
    );
 }
