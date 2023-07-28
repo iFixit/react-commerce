@@ -110,10 +110,8 @@ const Wiki: NextPageWithLayout<{
                flexShrink="1"
                id="main"
             >
-               <Head>
-                  {metadata}
-                  <HreflangUrls urls={wikiData.hreflangUrls} />
-               </Head>
+               <Head>{metadata}</Head>
+               <HreflangUrls urls={wikiData.hreflangUrls} />
                <HStack
                   spacing={0}
                   mt={{ base: 3, sm: 8 }}
@@ -539,11 +537,11 @@ function NavTabs({
 function HreflangUrls({ urls }: { urls: Record<string, string> }) {
    const hreflangs = Object.entries(urls);
    return (
-      <>
+      <Head>
          {hreflangs.map(([lang, url]) => (
             <link rel="alternate" key={lang} hrefLang={lang} href={url} />
          ))}
-      </>
+      </Head>
    );
 }
 
