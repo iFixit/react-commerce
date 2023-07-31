@@ -74,16 +74,6 @@ const Wiki: NextPageWithLayout<{
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const smBreakpoint = useToken('breakpoints', 'sm');
-   const metadata = (
-      <>
-         <meta name="description" content={metaDescription} />
-         <meta name="title" content={title} />
-         <meta name="keywords" content={metaKeywords} />
-         <meta name="robots" content="index, follow" />,
-         <link rel="canonical" href={canonicalUrl} />
-         <TagManager />
-      </>
-   );
 
    const imageSx: any = {
       display: 'none',
@@ -110,10 +100,14 @@ const Wiki: NextPageWithLayout<{
                flexShrink="1"
                id="main"
             >
-               <Head>
-                  {metadata}
-                  <HreflangUrls urls={wikiData.hreflangUrls} />
-               </Head>
+               <TagManager />
+               <Metadata
+                  metaDescription={metaDescription}
+                  metaKeywords={metaKeywords}
+                  canonicalUrl={canonicalUrl}
+                  title={title}
+               />
+               <HreflangUrls urls={wikiData.hreflangUrls} />
                <HStack
                   spacing={0}
                   mt={{ base: 3, sm: 8 }}
@@ -539,11 +533,42 @@ function NavTabs({
 function HreflangUrls({ urls }: { urls: Record<string, string> }) {
    const hreflangs = Object.entries(urls);
    return (
-      <>
+      <Head>
          {hreflangs.map(([lang, url]) => (
-            <link rel="alternate" key={lang} hrefLang={lang} href={url} />
+            <link
+               rel="alternate"
+               key={`hreflang-${lang}`}
+               hrefLang={lang}
+               href={url}
+            />
          ))}
-      </>
+      </Head>
+   );
+}
+
+function Metadata({
+   metaDescription,
+   title,
+   metaKeywords,
+   canonicalUrl,
+}: {
+   metaDescription: string;
+   title: string;
+   metaKeywords: string;
+   canonicalUrl: string;
+}) {
+   return (
+      <Head>
+         <meta
+            key="meta-description"
+            name="description"
+            content={metaDescription}
+         />
+         <meta key="meta-title" name="title" content={title} />
+         <meta key="meta-keywords" name="keywords" content={metaKeywords} />
+         <meta key="meta-robots" name="robots" content="index, follow" />,
+         <link key="canonical" rel="canonical" href={canonicalUrl} />
+      </Head>
    );
 }
 

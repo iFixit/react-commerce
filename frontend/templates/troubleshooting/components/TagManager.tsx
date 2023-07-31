@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React from 'react';
 
 // This is public so no need to hide.
@@ -74,9 +75,9 @@ function MatomoScript() {
 
 export function TagManager() {
    return (
-      <>
-         <GoogleScript />
-         <MatomoScript />
-      </>
+      <Head>
+         <GoogleScript key="GoogleScript" />
+         <MatomoScript key="MatomoScript" />
+      </Head>
    );
 }
