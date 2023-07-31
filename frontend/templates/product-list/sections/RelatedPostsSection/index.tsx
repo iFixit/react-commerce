@@ -21,7 +21,7 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    }
 
    return (
-      <Box as="section" id="related-posts">
+      <Box as="section" id="related-posts" my={{ base: 4, md: 6 }}>
          <Wrapper>
             <Heading
                as="h2"
