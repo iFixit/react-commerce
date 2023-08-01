@@ -101,13 +101,11 @@ const renderStyles: SystemStyleObject = {
    },
 
    blockquote: {
-      marginBlock: 5,
-      borderLeftColor: 'gray.200',
-      borderLeftWidth: 1,
-      borderLeftStyle: 'solid',
-      paddingTop: 2,
-      paddingBlock: 0.5,
-      paddingBottom: 3,
+      marginBlock: 6,
+      borderLeft: '1px solid',
+      borderLeftColor: 'gray.300',
+      paddingBlock: '0.25em',
+      paddingInline: '1em',
 
       '&.featured': {
          borderColor: '#fe6f15',
