@@ -5,20 +5,22 @@ import path from 'path';
 import { getBackupPath } from './export';
 import type { Backup } from './types';
 import { ensureDirectoryExists } from '../../../helpers/server-helpers';
+import { getDefaultBackupFilePath } from './utils';
 
 export interface DownloadBackupOptions {
    strapiOrigin: string;
+   backupFilePath?: string;
 }
 
 export async function downloadBackup({
    strapiOrigin,
+   backupFilePath = getDefaultBackupFilePath({ isEncrypted: false }),
 }: DownloadBackupOptions): Promise<Backup> {
    const exportURL = new URL(
       getBackupPath({ isEncrypted: false }),
       strapiOrigin
    );
    try {
-      const backupFilePath = getBackupFilePath({ isEncrypted: false });
       const backupDirectory = path.dirname(backupFilePath);
       ensureDirectoryExists(backupDirectory);
       strapi.log.info(
@@ -34,20 +36,6 @@ export async function downloadBackup({
       strapi.log.error(err);
       throw new Error(`Failed to download backup from: ${exportURL.href}`);
    }
-}
-
-interface GetImportPathInput {
-   isEncrypted: boolean;
-}
-
-export function getBackupFilePath({ isEncrypted }: GetImportPathInput) {
-   const directory = process.cwd() + '/.tmp';
-   const fileName = 'import.tar.gz';
-   let importPath = path.join(directory, fileName);
-   if (isEncrypted) {
-      importPath += '.enc';
-   }
-   return importPath;
 }
 
 function downloadFile(url: URL, dest: string) {

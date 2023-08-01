@@ -1,6 +1,8 @@
 import type { Strapi } from '@strapi/strapi';
 import { getAddonsService } from './services';
 
+const FALLBACK_STRAPI_ORIGIN = 'https://main.govinor.com';
+
 export default async ({ strapi }: { strapi: Strapi }) => {
    const isSeedingEnabled = process.env.SEED_DB === 'true';
    const shouldSeed = isSeedingEnabled;
@@ -9,12 +11,35 @@ export default async ({ strapi }: { strapi: Strapi }) => {
       try {
          const seedService = getAddonsService(strapi, 'seed');
          await seedService.createAdminUser();
-         await seedService.importContentTypes({
-            canDeleteExistingContent: false,
+         await seedService.downloadBackup({
+            strapiOrigin: FALLBACK_STRAPI_ORIGIN,
          });
+         backgroundImport({ strapi })
+            .then((logs) => {
+               strapi.log.info('🌱 Seeding completed!');
+               if (logs.length > 0) {
+                  strapi.log.info(`🌱 Seeding logs:\n${logs}`);
+               }
+            })
+            .catch((error) => {
+               strapi.log.error('💥 Error while importing from backup');
+               strapi.log.error(error.message);
+            });
       } catch (err: any) {
          strapi.log.error('💥 Error while seeding database');
          strapi.log.error(err.message);
       }
    }
 };
+
+interface BackgroundImportInput {
+   strapi: Strapi;
+}
+
+async function backgroundImport({ strapi }: BackgroundImportInput) {
+   await delay(50);
+   const seedService = getAddonsService(strapi, 'seed');
+   return seedService.importBackup();
+}
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
