@@ -3,7 +3,7 @@ import { faExclamationCircle } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
 import { useCartDrawer, useIsScrolledPast, useUserPrice } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { Product, ProductVariant } from '@models/product';
 import * as React from 'react';
 import { AddToCartBar } from './AddToCartBar';
 import { InventoryMessage } from './InventoryMessage';

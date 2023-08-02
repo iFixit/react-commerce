@@ -1,6 +1,6 @@
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import type { ProductPreview } from '@models/components/product-preview';
-import type { ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { ProductVariant } from '@models/product';
 import React from 'react';
 
 export function useAvailableForSaleVariants(

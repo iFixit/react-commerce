@@ -1,4 +1,4 @@
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { Product, ProductVariant } from '@models/product';
 import { mockedProduct } from './generic';
 import { mockedBatteryProduct } from './battery';
 import { mockedToolProduct } from './tool';

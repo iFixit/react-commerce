@@ -1,5 +1,5 @@
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import type { Product } from '@pages/api/nextjs/cache/product';
+import type { Product } from '@models/product';
 
 export function useIsProductForSale(product: Product): boolean {
    const user = useAuthenticatedUser();

@@ -1,6 +1,6 @@
 import { Box, Heading } from '@chakra-ui/react';
 import { Wrapper } from '@ifixit/ui';
-import type { Product } from '@pages/api/nextjs/cache/product';
+import type { Product } from '@models/product';
 
 export type CompatibilityNotesSectionProps = {
    compatibilityNotes?: Product['compatibilityNotes'];

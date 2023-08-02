@@ -2,7 +2,7 @@ import type {
    Product,
    ProductVariant,
    ProductVariantImage,
-} from '@pages/api/nextjs/cache/product';
+} from '@models/product';
 
 const productImages: ProductVariantImage[] = [
    {

@@ -24,7 +24,7 @@ import { useAppContext } from '@ifixit/app';
 import { isLifetimeWarranty } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductVariantPrice, Wrapper } from '@ifixit/ui';
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { Product, ProductVariant } from '@models/product';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';

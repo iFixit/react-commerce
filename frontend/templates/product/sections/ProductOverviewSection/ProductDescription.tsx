@@ -5,7 +5,7 @@ import {
    faTriangleExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import type { Product, ProductVariant } from '@models/product';
 
 export type ProductDescriptionProps = {
    product: Product;

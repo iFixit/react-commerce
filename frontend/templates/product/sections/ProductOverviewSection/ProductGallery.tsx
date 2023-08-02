@@ -7,7 +7,7 @@ import type {
    Product,
    ProductVariant,
    ProductVariantImage,
-} from '@pages/api/nextjs/cache/product';
+} from '@models/product';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 

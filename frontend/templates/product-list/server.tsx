@@ -18,7 +18,7 @@ import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ProductList, ProductListType } from '@models/product-list';
-import ProductListCache from '@pages/api/nextjs/cache/product-list';
+import ProductListCache from '@models/product-list';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';

@@ -14,7 +14,7 @@ import {
    Vive,
 } from '@assets/svg/files/partners';
 import { Flex, Link, Text, useTheme } from '@chakra-ui/react';
-import type { Product } from '@pages/api/nextjs/cache/product';
+import type { Product } from '@models/product';
 import React from 'react';
 import { faBadgeCheck } from '@fortawesome/pro-duotone-svg-icons';
 import { FaIcon } from '@ifixit/icons';

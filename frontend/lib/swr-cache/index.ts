@@ -10,7 +10,7 @@
  * 1) Define an operation endpoint in your API routes:
  *    e.g. `export default withCache({ ... })`
  * 2) Import the operation endpoint where you need to get the value:
- *    e.g. `import ProductList from '@pages/api/nextjs/cache/product-list';`
+ *    e.g. `import ProductList from '@models/product-list';`
  * 3) Use the get function to get the cached value:
  *   e.g. `const productList = await ProductList.get({ ... })`
  */

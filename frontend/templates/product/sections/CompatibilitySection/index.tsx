@@ -13,7 +13,7 @@ import { faMagnifyingGlass } from '@fortawesome/pro-solid-svg-icons';
 import { faMagnifyingGlass as faMagnifyingGlassDuotone } from '@fortawesome/pro-duotone-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
-import type { Product } from '@pages/api/nextjs/cache/product';
+import type { Product } from '@models/product';
 import React from 'react';
 
 export type CompatibilitySectionProps = {
