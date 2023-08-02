@@ -3,6 +3,8 @@ import { Box, chakra, SystemStyleObject } from '@chakra-ui/react';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
+const constrainStandardWidth = '282px'; // pulled from PHP app
+
 const renderStyles: SystemStyleObject = {
    '&': {
       marginTop: { base: 4, sm: 6 },
@@ -219,7 +221,7 @@ const renderStyles: SystemStyleObject = {
       outlineColor: 'gray.300',
       overflow: 'hidden',
       position: 'relative',
-      width: 'fit-content',
+      maxWidth: constrainStandardWidth, // overwritten if inlined image width is larger
 
       '&.imageBox_center': {
          marginInline: 'auto',
@@ -227,6 +229,10 @@ const renderStyles: SystemStyleObject = {
          '> img': {
             clear: 'both',
          },
+      },
+
+      img: {
+         marginInline: 'auto', // center image when container is wider
       },
 
       '@media only screen and (min-width: 575px)': {
@@ -249,7 +255,6 @@ const renderStyles: SystemStyleObject = {
       flexDirection: 'column',
       height: '100%',
       marginTop: 0,
-      maxWidth: '282px', // cap at child image inline width
 
       img: {
          minHeight: '225px',
@@ -265,13 +270,13 @@ const renderStyles: SystemStyleObject = {
       flex: 1,
       paddingBlock: 4,
       paddingInline: 3,
-      width: 'unset !important', // override inline width
+      width: 'unset !important', // override inherited width
    },
 
    '.blurbListWide .grid': {
       display: 'grid',
       gap: 4,
-      gridTemplateColumns: 'repeat(auto-fill, minmax(282px, 1fr) )',
+      gridTemplateColumns: `repeat(auto-fill, minmax(${constrainStandardWidth}, 1fr) )`,
 
       '& .cell': {
          bgColor: 'gray.100',
@@ -279,7 +284,7 @@ const renderStyles: SystemStyleObject = {
          borderColor: 'gray.300',
          borderRadius: 'md',
          display: 'flex',
-         maxWidth: '282px',
+         maxWidth: constrainStandardWidth,
          overflow: 'hidden',
          _hover: {
             borderColor: 'brand.500',
