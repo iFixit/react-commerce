@@ -21,39 +21,51 @@ export function useItemTypeOverrides(
    const overrides = productList.itemOverrides[itemType];
    const allItemTypesOverrides = productList.itemOverrides['*'];
 
-   const title = replacePlaceholders(
-      overrides?.title ?? allItemTypesOverrides?.title,
-      replacements
-   );
+   const hasItemTypeOverrides =
+      overrides != null || allItemTypesOverrides != null;
 
-   const metaTitle = replacePlaceholders(
-      overrides?.metaTitle ?? allItemTypesOverrides?.metaTitle,
-      replacements
-   );
+   if (hasItemTypeOverrides) {
+      const title = replacePlaceholders(
+         overrides?.title ?? allItemTypesOverrides?.title,
+         replacements
+      );
 
-   const description = replacePlaceholders(
-      overrides?.description ?? allItemTypesOverrides?.description,
-      replacements
-   );
+      const metaTitle = replacePlaceholders(
+         overrides?.metaTitle ?? allItemTypesOverrides?.metaTitle,
+         replacements
+      );
 
-   const metaDescription = replacePlaceholders(
-      overrides?.metaDescription ?? allItemTypesOverrides?.metaDescription,
-      replacements
-   );
+      const description = replacePlaceholders(
+         overrides?.description ?? allItemTypesOverrides?.description,
+         replacements
+      );
 
-   const tagline = replacePlaceholders(
-      overrides?.tagline ?? allItemTypesOverrides?.tagline,
-      replacements
-   );
+      const metaDescription = replacePlaceholders(
+         overrides?.metaDescription ?? allItemTypesOverrides?.metaDescription,
+         replacements
+      );
+
+      const tagline = replacePlaceholders(
+         overrides?.tagline ?? allItemTypesOverrides?.tagline,
+         replacements
+      );
+      return {
+         title:
+            presentOrNull(title) ??
+            getDefaultTitleOverride(productList, itemType),
+         metaTitle: presentOrNull(metaTitle),
+         description: presentOrNull(description),
+         metaDescription: presentOrNull(metaDescription),
+         tagline: presentOrNull(tagline),
+      };
+   }
 
    return {
-      title: presentOrNull(
-         title ?? getDefaultTitleOverride(productList, itemType)
-      ),
-      metaTitle: presentOrNull(metaTitle),
-      description: presentOrNull(description),
-      metaDescription: presentOrNull(metaDescription),
-      tagline: presentOrNull(tagline),
+      title: getDefaultTitleOverride(productList, itemType),
+      metaTitle: productList.metaTitle,
+      description: productList.description,
+      metaDescription: productList.metaDescription,
+      tagline: productList.tagline,
    };
 }
 
@@ -73,8 +85,9 @@ function replacePlaceholders(
 function getDefaultTitleOverride(
    productList: ProductList,
    itemType: string
-): string | null {
-   if (productList.type !== ProductListType.DeviceParts) return null;
+): string {
+   if (productList.type !== ProductListType.DeviceParts)
+      return productList.title;
 
    return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
 }
