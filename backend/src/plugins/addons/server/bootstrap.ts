@@ -37,6 +37,8 @@ interface BackgroundImportInput {
 }
 
 async function backgroundImport({ strapi }: BackgroundImportInput) {
+   // Wait for the Strapi server to start, since we need it for the Strapi import
+   // tool to work.
    await delay(50);
    const seedService = getAddonsService(strapi, 'seed');
    return seedService.importBackup();
