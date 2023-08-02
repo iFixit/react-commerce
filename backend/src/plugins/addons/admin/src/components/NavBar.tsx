@@ -6,10 +6,10 @@ import {
    SubNavLink,
    SubNavSections,
 } from '@strapi/design-system';
-import { Database, Stack } from '@strapi/icons';
+import { PaperPlane, Stack } from '@strapi/icons';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { backupPath, bulkOperationsPath } from '../utils/path-helpers';
+import { dataTransferPath, bulkOperationsPath } from '../utils/path-helpers';
 
 export function NavBar() {
    return (
@@ -25,10 +25,10 @@ export function NavBar() {
                <SubNavSections>
                   <SubNavLink
                      as={NavLink}
-                     to={backupPath()}
-                     icon={<Database />}
+                     to={dataTransferPath()}
+                     icon={<PaperPlane />}
                   >
-                     Backup
+                     Data Transfer
                   </SubNavLink>
                   <SubNavLink
                      as={NavLink}

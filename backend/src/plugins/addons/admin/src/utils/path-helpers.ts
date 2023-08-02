@@ -8,8 +8,8 @@ export function homePath() {
    return `${appBasePath()}/`;
 }
 
-export function backupPath() {
-   return `${appBasePath()}/backup`;
+export function dataTransferPath() {
+   return `${appBasePath()}/data-transfer`;
 }
 
 export function bulkOperationsPath() {

@@ -13,11 +13,11 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { queryClient } from '../../utils/react-query-client';
 import { NavBar } from '../../components/NavBar';
 import {
-   backupPath,
+   dataTransferPath,
    bulkOperationsPath,
    homePath,
 } from '../../utils/path-helpers';
-import BackupPage from '../Backup';
+import DataTransferPage from '../DataTransfer';
 import BulkOperationsPage from '../BulkOperations';
 
 const App = () => {
@@ -27,9 +27,13 @@ const App = () => {
             <Layout sideNav={<NavBar />}>
                <Switch>
                   <Route exact path={homePath()}>
-                     <Redirect to={backupPath()} />
+                     <Redirect to={dataTransferPath()} />
                   </Route>
-                  <Route path={backupPath()} component={BackupPage} exact />
+                  <Route
+                     path={dataTransferPath()}
+                     component={DataTransferPage}
+                     exact
+                  />
                   <Route
                      path={bulkOperationsPath()}
                      component={BulkOperationsPage}

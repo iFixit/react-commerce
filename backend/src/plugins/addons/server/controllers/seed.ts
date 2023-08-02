@@ -3,19 +3,6 @@ import { parseValidUrl } from '../../helpers/generic-helpers';
 import { getAddonsService } from '../services';
 
 export default ({ strapi }: { strapi: Strapi }) => ({
-   async importContentTypes(ctx: any) {
-      const strapiOrigin = ctx.request.body?.strapiOrigin;
-      if (typeof strapiOrigin === 'string') {
-         const seedService = getAddonsService(strapi, 'seed');
-         const result = await seedService.importContentTypes({
-            strapiOrigin,
-            canDeleteExistingContent: true,
-         });
-         ctx.body = result;
-      } else {
-         ctx.body = { error: 'invalid strapi origin' };
-      }
-   },
    async backup(ctx: any) {
       const seedService = getAddonsService(strapi, 'seed');
       try {

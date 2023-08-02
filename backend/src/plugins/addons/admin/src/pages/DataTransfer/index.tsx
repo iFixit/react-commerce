@@ -13,7 +13,7 @@ import React from 'react';
 import { parseValidUrl } from '../../../../helpers/generic-helpers';
 import { useImportBackup, useRequestBackup } from '../../api/seed';
 
-function BackupPage() {
+function DataTransferPage() {
    const showDangerousActions =
       process.env.STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS === 'true';
 
@@ -22,13 +22,13 @@ function BackupPage() {
          <Layout>
             <>
                <HeaderLayout
-                  title="Backup"
-                  subtitle="Backup the Strapi instance or transfer data from another Strapi instance."
+                  title="Data Transfer"
+                  subtitle="This section allows you to transfer data between Strapi instances."
                   as="h2"
                />
                <ContentLayout>
                   <Stack spacing={8}>
-                     <BackupSection />
+                     <ExportSection />
                      {showDangerousActions && <ImportSection />}
                   </Stack>
                </ContentLayout>
@@ -38,18 +38,18 @@ function BackupPage() {
    );
 }
 
-function BackupSection() {
+function ExportSection() {
    const [state, backup] = useRequestBackup();
    return (
       <Flex direction="column" alignItems="flex-start">
          <Box marginBottom={4}>
-            <Typography variant="beta">Update backup</Typography>
+            <Typography variant="beta">Export data</Typography>
          </Box>
          <Box marginBottom={4}>
             <Typography variant="omega">
-               This creates a new backup that can be used as a seed by other
-               Strapi instances. You should update the backup if you want it to
-               contain the latest data from this Strapi instance.
+               This creates a new data export that can be used as a seed by
+               other Strapi instances. You should update the export if you want
+               it to contain the latest data from this Strapi instance.
             </Typography>
          </Box>
          <Button
@@ -59,7 +59,7 @@ function BackupSection() {
             loading={state.isLoading}
             onClick={() => backup()}
          >
-            Update backup
+            Update exported data
          </Button>
          {state.error && (
             <Box marginTop={2}>
@@ -103,7 +103,7 @@ function ImportSection() {
    return (
       <Flex direction="column" alignItems="flex-start">
          <Box marginBottom={4}>
-            <Typography variant="beta">Import from backup</Typography>
+            <Typography variant="beta">Import data</Typography>
          </Box>
          <Box marginBottom={4}>
             <Typography variant="omega">
@@ -143,4 +143,4 @@ function ImportSection() {
    );
 }
 
-export default BackupPage;
+export default DataTransferPage;
