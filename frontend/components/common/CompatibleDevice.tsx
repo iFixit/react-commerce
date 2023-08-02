@@ -1,6 +1,6 @@
 import { chakra, Flex, FlexProps, Img, Link, Text } from '@chakra-ui/react';
 import { ConditionalWrapper } from '@ifixit/ui/misc';
-import type { Product } from '@models/product';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import React from 'react';
 import TextWithHighlight from './TextWithHighlight';
 

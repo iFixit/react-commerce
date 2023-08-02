@@ -1,5 +1,5 @@
 import { invariant } from '@ifixit/helpers';
-import type { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 

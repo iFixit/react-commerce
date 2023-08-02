@@ -3,7 +3,7 @@ import { CartLineItem, useAddToCart } from '@ifixit/cart-sdk';
 import { isPresent } from '@ifixit/helpers';
 import { useCartDrawer, useGetUserPrice } from '@ifixit/ui';
 import type { ProductPreview } from '@models/components/product-preview';
-import type { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 
 export interface UseOptimisticAddToCartProps {
    product: Product;

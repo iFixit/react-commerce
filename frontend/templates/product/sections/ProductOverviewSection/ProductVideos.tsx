@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import type { Product } from '@models/product';
+import type { Product } from '@pages/api/nextjs/cache/product';
 import { LiteYoutubeEmbed } from 'react-lite-yt-embed';
 
 export function ProductVideos({ product }: { product: Product }) {

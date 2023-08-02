@@ -9,7 +9,7 @@ import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getLayoutServerSideProps } from '@layouts/default/server';
-import Product from '@models/product';
+import Product from '@pages/api/nextjs/cache/product';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps } from 'next';
 import { ProductTemplateProps } from './hooks/useProductTemplateProps';

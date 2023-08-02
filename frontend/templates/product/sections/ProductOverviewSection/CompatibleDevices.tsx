@@ -1,6 +1,6 @@
 import { Link } from '@chakra-ui/react';
 import { CompatibleDevice } from '@components/common';
-import type { Product } from '@models/product';
+import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type CompatibleDevicesProps = {
    product: Product;

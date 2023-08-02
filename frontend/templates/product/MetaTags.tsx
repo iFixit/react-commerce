@@ -1,6 +1,6 @@
 import { useAppContext } from '@ifixit/app';
 import { parseItemcode, shouldShowProductRating } from '@ifixit/helpers';
-import type { Product, ProductVariant } from '@models/product';
+import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import Head from 'next/head';
 import React from 'react';
 import { jsonLdScriptProps } from 'react-schemaorg';
