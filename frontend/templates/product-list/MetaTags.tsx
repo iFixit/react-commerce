@@ -11,7 +11,6 @@ import {
 import { jsonLdScriptProps } from 'react-schemaorg';
 import { BreadcrumbList as SchemaBreadcrumbList } from 'schema-dts';
 import { useDevicePartsItemType } from './hooks/useDevicePartsItemType';
-import { useItemTypeOverrides } from './hooks/useItemTypeOverrides';
 import { useProductListBreadcrumbs } from './hooks/useProductListBreadcrumbs';
 
 export interface MetaTagsProps {
@@ -19,13 +18,9 @@ export interface MetaTagsProps {
 }
 
 export function MetaTags({ productList }: MetaTagsProps) {
-   const itemTypeOverrides = useItemTypeOverrides(productList);
    const metaTitle = useMetaTitle(productList);
    const metaDescription =
-      itemTypeOverrides?.metaDescription ??
-      productList.metaDescription ??
-      itemTypeOverrides?.description ??
-      productList.description;
+      productList.metaDescription ?? productList.description;
    const canonicalUrl = useCanonicalUrl(productList);
    const shouldNoIndex = useShouldNoIndex(productList);
    const structuredData = useStructuredData(productList);
@@ -37,12 +32,16 @@ export function MetaTags({ productList }: MetaTagsProps) {
          ) : (
             <>
                <link rel="canonical" href={canonicalUrl} />
-               <meta name="description" content={metaDescription} />
+               {metaDescription && (
+                  <meta name="description" content={metaDescription} />
+               )}
             </>
          )}
          <title>{metaTitle}</title>
          <meta property="og:title" content={metaTitle} />
-         <meta name="og:description" content={metaDescription} />
+         {metaDescription && (
+            <meta name="og:description" content={metaDescription} />
+         )}
          <meta property="og:type" content="website" />
          <meta property="og:url" content={canonicalUrl} />
          {productList.image?.url && (
@@ -57,17 +56,12 @@ const META_TITLE_SUFFIX = ' | iFixit';
 
 function useMetaTitle(productList: ProductList): string {
    const pagination = usePagination();
-   const itemTypeOverrides = useItemTypeOverrides(productList);
 
    const page = pagination.currentRefinement + 1;
 
    const isFiltered = useIsFilteredProductList();
 
-   let metaTitle =
-      itemTypeOverrides?.metaTitle ??
-      productList.metaTitle ??
-      itemTypeOverrides?.title ??
-      productList.title;
+   let metaTitle = productList.metaTitle ?? productList.title;
 
    if (!metaTitle.trim().endsWith(META_TITLE_SUFFIX)) {
       metaTitle += META_TITLE_SUFFIX;

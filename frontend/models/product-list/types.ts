@@ -99,7 +99,7 @@ const BaseProductListSchema = z.object({
    handle: z.string(),
    deviceTitle: z.string().nullable(),
    tagline: z.string().nullable(),
-   description: z.string(),
+   description: z.string().nullable(),
    metaDescription: z.string().nullable(),
    metaTitle: z.string().nullable(),
    defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),

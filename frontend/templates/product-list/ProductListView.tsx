@@ -3,7 +3,7 @@ import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySe
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
 import { Configure, useMenu } from 'react-instantsearch-hooks-web';
-import { useItemTypeOverrides } from './hooks/useItemTypeOverrides';
+import { useItemTypeProductList } from './hooks/useItemTypeProductList';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
@@ -30,7 +30,9 @@ export function ProductListView({
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
 
-   const itemTypeOverrides = useItemTypeOverrides(productList);
+   const itemTypeProductList = useItemTypeProductList(productList);
+
+   const currentProductList = itemTypeProductList ?? productList;
 
    if (algoliaSSR) {
       return (
@@ -41,7 +43,7 @@ export function ProductListView({
                facetingAfterDistinct
             />
             <FilterableProductsSection
-               productList={productList}
+               productList={currentProductList}
                algoliaSSR={algoliaSSR}
             />
          </>
@@ -55,7 +57,7 @@ export function ProductListView({
             hitsPerPage={HITS_PER_PAGE}
             facetingAfterDistinct
          />
-         <MetaTags productList={productList} />
+         <MetaTags productList={currentProductList} />
          <SecondaryNavigation productList={productList} />
          <VStack
             align="stretch"
@@ -63,29 +65,17 @@ export function ProductListView({
             py={{ base: 4, md: 6 }}
          >
             <HeroSection
-               title={
-                  itemTypeOverrides?.title ??
-                  productList.h1 ??
-                  productList.title
-               }
-               tagline={
-                  itemTypeOverrides
-                     ? itemTypeOverrides.tagline
-                     : productList.tagline
-               }
-               description={
-                  itemTypeOverrides
-                     ? itemTypeOverrides.description
-                     : productList.description
-               }
-               backgroundImage={productList.heroImage}
-               brandLogo={productList.brandLogo}
+               title={currentProductList.h1 ?? currentProductList.title}
+               tagline={currentProductList.tagline}
+               description={currentProductList.description}
+               backgroundImage={currentProductList.heroImage}
+               brandLogo={currentProductList.brandLogo}
             />
-            {productList.children.length > 0 && (
+            {currentProductList.children.length > 0 && (
                <ProductListChildrenSection productList={productList} />
             )}
             <FilterableProductsSection productList={productList} />
-            {productList.sections.map((section, index) => {
+            {currentProductList.sections.map((section, index) => {
                switch (section.type) {
                   case 'LifetimeWarranty': {
                      return (

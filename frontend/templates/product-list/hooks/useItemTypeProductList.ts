@@ -1,71 +1,75 @@
 import { presentOrNull } from '@ifixit/helpers';
-import { ProductListType } from '@models/product-list';
-import type {
-   ProductList,
-   ProductListItemTypeOverride,
-} from '@models/product-list/types';
+import { ProductList, ProductListType } from '@models/product-list';
 import { useDevicePartsItemType } from './useDevicePartsItemType';
 
-export function useItemTypeOverrides(
-   productList: ProductList
-): ProductListItemTypeOverride | null {
-   const itemType = useDevicePartsItemType(productList);
+export function useItemTypeProductList(productList: ProductList) {
+   const selectedItemType = useDevicePartsItemType(productList);
 
-   if (itemType == null) return null;
+   if (selectedItemType == null) return null;
 
    const replacements = {
       DEVICE: productList.deviceTitle ?? productList.title,
-      ITEM: itemType,
+      ITEM: selectedItemType,
    };
 
-   const overrides = productList.itemOverrides[itemType];
+   const overrides = productList.itemOverrides[selectedItemType];
    const allItemTypesOverrides = productList.itemOverrides['*'];
 
    const hasItemTypeOverrides =
       overrides != null || allItemTypesOverrides != null;
 
-   if (hasItemTypeOverrides) {
-      const title = replacePlaceholders(
-         overrides?.title ?? allItemTypesOverrides?.title,
-         replacements
-      );
-
-      const metaTitle = replacePlaceholders(
-         overrides?.metaTitle ?? allItemTypesOverrides?.metaTitle,
-         replacements
-      );
-
-      const description = replacePlaceholders(
-         overrides?.description ?? allItemTypesOverrides?.description,
-         replacements
-      );
-
-      const metaDescription = replacePlaceholders(
-         overrides?.metaDescription ?? allItemTypesOverrides?.metaDescription,
-         replacements
-      );
-
-      const tagline = replacePlaceholders(
-         overrides?.tagline ?? allItemTypesOverrides?.tagline,
-         replacements
-      );
+   if (!hasItemTypeOverrides) {
       return {
-         title:
-            presentOrNull(title) ??
-            getDefaultTitleOverride(productList, itemType),
-         metaTitle: presentOrNull(metaTitle),
-         description: presentOrNull(description),
-         metaDescription: presentOrNull(metaDescription),
-         tagline: presentOrNull(tagline),
+         ...productList,
+         title: getDefaultTitleOverride(productList, selectedItemType),
       };
    }
 
+   const overrideTitle = presentOrNull(
+      replacePlaceholders(
+         overrides?.title ?? allItemTypesOverrides?.title,
+         replacements
+      )
+   );
+
+   const overrideMetaTitle = presentOrNull(
+      replacePlaceholders(
+         overrides?.metaTitle ?? allItemTypesOverrides?.metaTitle,
+         replacements
+      )
+   );
+
+   const overrideDescription = presentOrNull(
+      replacePlaceholders(
+         overrides?.description ?? allItemTypesOverrides?.description,
+         replacements
+      )
+   );
+
+   const overrideMetaDescription = presentOrNull(
+      replacePlaceholders(
+         overrides?.metaDescription ?? allItemTypesOverrides?.metaDescription,
+         replacements
+      )
+   );
+
+   const overrideTagline = presentOrNull(
+      replacePlaceholders(
+         overrides?.tagline ?? allItemTypesOverrides?.tagline,
+         replacements
+      )
+   );
+
    return {
-      title: getDefaultTitleOverride(productList, itemType),
-      metaTitle: productList.metaTitle,
-      description: productList.description,
-      metaDescription: productList.metaDescription,
-      tagline: productList.tagline,
+      ...productList,
+      title:
+         overrideTitle ??
+         getDefaultTitleOverride(productList, selectedItemType),
+      metaTitle: overrideMetaTitle ?? productList.metaTitle,
+      h1: overrideTitle ?? productList.h1,
+      description: overrideDescription,
+      metaDescription: overrideMetaDescription,
+      tagline: overrideTagline,
    };
 }
 

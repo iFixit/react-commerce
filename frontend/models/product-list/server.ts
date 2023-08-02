@@ -65,8 +65,10 @@ export async function findProductList(
    const title =
       productList?.title ??
       (deviceWiki?.deviceTitle ? deviceWiki?.deviceTitle + ' Parts' : '');
-   const description: string =
-      productList?.description ?? deviceWiki?.description ?? '';
+   const description =
+      productList?.description ??
+      (deviceWiki?.description as string | null) ??
+      null;
 
    const algoliaApiKey = createPublicAlgoliaKey(
       ALGOLIA_APP_ID,
