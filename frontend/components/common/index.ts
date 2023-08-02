@@ -1,3 +1,5 @@
+'use client';
+
 export * from './AppProviders';
 export * from './ProductCard';
 export * from './SecondaryNavbar';

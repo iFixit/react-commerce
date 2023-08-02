@@ -15,7 +15,13 @@
          "@public/*": ["public/*"],
          "@pages/*": ["pages/*"]
       },
-      "preserveSymlinks": true
+      "preserveSymlinks": true,
+      "plugins": [
+         {
+            "name": "next"
+         }
+      ],
+      "strictNullChecks": true
    },
    "include": [
       "src",
@@ -24,7 +30,8 @@
       "**/*.tsx",
       "**/*.js",
       "@types/index.d.ts",
-      "./tests/jest-setup.ts"
+      "./tests/jest-setup.ts",
+      ".next/types/**/*.ts"
    ],
    "exclude": ["node_modules", ".next", "out"]
 }

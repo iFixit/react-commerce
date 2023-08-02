@@ -1,22 +1,20 @@
+'use client';
+
 import {
-   Box,
    Button,
    FormControl,
    FormErrorMessage,
-   Stack,
    Input,
-   Text,
-   Flex,
-   Link,
+   Stack,
 } from '@chakra-ui/react';
 import { faCircleCheck, faEye } from '@fortawesome/pro-solid-svg-icons';
-import type { Subscription } from '@ifixit/newsletter-sdk';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+   Subscription,
    SubscriptionStatus,
    useSubscribeToNewsletter,
 } from '@ifixit/newsletter-sdk';
 import React from 'react';
-import { FaIcon } from '@ifixit/icons';
 
 export type NewsletterFormProps = {
    title: string;
@@ -52,25 +50,6 @@ const NewsletterInput = ({
    );
 };
 
-const NewsletterHeader = ({
-   title,
-   subtitle,
-}: {
-   title: string;
-   subtitle: string;
-}) => {
-   return (
-      <Box textAlign="left">
-         <Text fontSize="sm" fontWeight="semibold" color="white">
-            {title}
-         </Text>
-         <Text color="gray.300" fontSize="sm" fontWeight="normal" mt={1.5}>
-            {subtitle}
-         </Text>
-      </Box>
-   );
-};
-
 const NewsletterForm = ({
    placeholder,
    buttonText,
@@ -84,10 +63,6 @@ const NewsletterForm = ({
    subscription: Subscription;
    subscribe: (email: string) => void;
 }) => {
-   if (isSubscribed) {
-      return null;
-   }
-
    const inputRef = React.useRef<HTMLInputElement>(null);
 
    const onSubscribe = React.useCallback(
@@ -100,6 +75,10 @@ const NewsletterForm = ({
       },
       [subscribe]
    );
+
+   if (isSubscribed) {
+      return null;
+   }
 
    return (
       <Stack
@@ -148,71 +127,39 @@ const NewsletterSubscribed = ({ isSubscribed }: { isSubscribed: boolean }) => {
       return null;
    }
    return (
-      <Flex
-         h="10"
-         flexDirection="row"
-         alignItems="center"
-         padding="3"
-         w="100%"
-         mt="3"
-         bg="brand.100"
-         border="1px"
-         borderColor="brand.300"
-         borderStyle="solid"
-         borderRadius="base"
+      <div
+         className={`flex h-10 flex-row items-center p-3 w-full mt-3 border-brand-300 bg-brand-100 border-solid border rounded`}
       >
-         <FaIcon icon={faCircleCheck} color="brand.500" />
-         <Text color="gray.900" ml="2">
-            Subscribed!
-         </Text>
-      </Flex>
+         <FontAwesomeIcon className="text-brand-500" icon={faCircleCheck} />
+         <span className="text-gray-900 ml-2">Subscribed!</span>
+      </div>
    );
 };
 
 const NewsletterLink = ({ isSubscribed }: { isSubscribed: boolean }) => {
    const message = isSubscribed ? 'Let me read it!' : 'Let me read it first!';
    return (
-      <Link
-         mt="3"
-         href="/Newsletter"
-         color="gray.300"
-         marginTop={2}
-         textDecoration="underline"
-         fontSize="sm"
-         width="fit-content"
-         _hover={{ color: 'white' }}
-         _visited={{ color: 'gray.300' }}
-      >
-         <FaIcon icon={faEye} display="inline" mr={1} height="1em" />
+      <a className=" text-gray-300 mt-2 underline text-sm w-fit hover:text-white visited:text-gray-300">
+         <FontAwesomeIcon className="inline mr-1 h-3.5" icon={faEye} />
          {message}
-      </Link>
+      </a>
    );
 };
 
 export function NewsletterComponent({
    newsletterForm,
+   NewsletterHeader,
 }: {
    newsletterForm: NewsletterFormProps;
+   NewsletterHeader: JSX.Element;
 }) {
-   const ref = React.useRef(null);
    const [subscription, subscribe] = useSubscribeToNewsletter();
 
    const isSubscribed = subscription.status === SubscriptionStatus.Subscribed;
 
    return (
-      <Flex
-         ref={ref}
-         direction="column"
-         mt={{
-            base: 4,
-            md: 0,
-         }}
-         w={{ base: 'full', md: '64', lg: '96' }}
-      >
-         <NewsletterHeader
-            title={newsletterForm.title}
-            subtitle={newsletterForm.subtitle}
-         />
+      <div className="flex flex-col mt-4 md:mt-0 w-full md:w-64 lg:w-96">
+         {NewsletterHeader}
          <NewsletterForm
             placeholder={newsletterForm.inputPlaceholder}
             buttonText={newsletterForm.callToActionButtonTitle}
@@ -222,6 +169,6 @@ export function NewsletterComponent({
          />
          <NewsletterSubscribed isSubscribed={isSubscribed} />
          <NewsletterLink isSubscribed={isSubscribed} />
-      </Flex>
+      </div>
    );
 }

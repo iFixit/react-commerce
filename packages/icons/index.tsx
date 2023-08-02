@@ -1,3 +1,5 @@
+'use client';
+
 export * from './misc/FaIcon';
 export { default as Globe } from './misc/Globe';
 export { default as Language } from './misc/Language';
