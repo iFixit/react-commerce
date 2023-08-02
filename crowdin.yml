@@ -1,6 +1,6 @@
-base_path: .
+base_path: frontend/messages
 base_url: 'https://api.crowdin.com'
 preserve_hierarchy: 1
 files:
-  - source: frontend/messages/en.json
-    translation: frontend/messages/%locale%.json
+   - source: /en.json
+     translation: /%locale%.json
