@@ -2,7 +2,7 @@ base_path: .
 pull_request_title: 'Ignore: Testing Crowdin GH Integration'
 commit_message: '[ci skip]'
 base_url: 'https://api.crowdin.com'
-preserve_hierarchy: true
+preserve_hierarchy: 1
 files:
-   - source: /frontend/messages/en.json
-     translation: /frontend/messages/'%locale%.json'
+  - source: /frontend/messages/en.json
+    translation: /frontend/messages/'%locale%.json'
