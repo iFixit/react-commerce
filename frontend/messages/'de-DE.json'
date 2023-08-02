@@ -1,5 +1,5 @@
 {
-   "description": "EN: This is the 404 page.",
+   "description": "This is the german translation made in crowdin!",
    "This is an english string": "EN: This is an english string",
    "Periods are not allowed in keys.": "EN: Periods are not allowed in keys.",
    "Car interpolation": "EN: I have a {color} car",
