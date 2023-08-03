@@ -16,7 +16,7 @@ type CacheControlOptions =
    | EnabledCacheControlOptions
    | DisabledCacheControlOptions;
 
-type withCacheProps = GetCacheControlOptions | CacheControlOptions;
+type WithCacheProps = GetCacheControlOptions | CacheControlOptions;
 
 const CACHE_CONTROL_DISABLED =
    'no-store, no-cache, must-revalidate, stale-if-error=0';
@@ -70,7 +70,7 @@ export const CacheLong: CacheControlOptions = {
    staleWhileRevalidate: Duration(1).day,
 };
 
-export function withCache(props: withCacheProps) {
+export function withCache(props: WithCacheProps) {
    const getCacheControlOptions =
       typeof props === 'function' ? props : () => props;
    return withCacheValue(getCacheControlOptions);
