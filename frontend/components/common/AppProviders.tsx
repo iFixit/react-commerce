@@ -9,10 +9,17 @@ import {
    QueryClient,
    QueryClientProvider,
 } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
-import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
+import type {
+   AlgoliaProps,
+   InstantSearchProviderProps,
+} from './InstantSearchProvider';
 
 const customTheme = extendTheme(theme);
+const InstantSearchProvider = dynamic<InstantSearchProviderProps>(() =>
+   import('./InstantSearchProvider').then((mod) => mod.InstantSearchProvider)
+);
 
 const shouldIgnoreUserAgent =
    typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);
