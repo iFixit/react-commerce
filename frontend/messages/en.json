@@ -21,7 +21,7 @@
    "escapeQuote": "EN: Escape quotes with backslashes (eg: \"this is a quote\")",
    "escapeApostrophe": "EN: We don't need to escape apostrophes (eg: don't)",
    "escapePeriod": "EN: We only need to escape periods in the key.",
-   "This period -> &period; is escaped": "EN: This period -> . is escaped",
+   "This period -> &period; is escaped": "EN: This period -> &period; is escaped",
    "This translation has a normal &period; in it": "EN: This translation has a normal . in it",
    "Escape curly braces with single quotes (eg: '{name'})": "EN: Escape curly braces with single quotes (eg: '{name'})",
    "Escape curly braces with single quotes (eg: {name})": "EN: Escape curly braces with single quotes (eg: '{name'})",
