@@ -6,7 +6,7 @@ interface CacheControlOptions {
    staleWhileRevalidate: number;
 }
 
-export const withCacheControl =
+const withCache =
    (options: CacheControlOptions): GetServerSidePropsMiddleware =>
    (next) =>
    (context) => {
