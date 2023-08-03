@@ -26,14 +26,7 @@ export function hasDisableCacheGets(context: GetServerSidePropsContext) {
       return true;
    }
 
-   const { disableCacheGets, revisionid } = context.query;
-
-   if (disableCacheGets !== undefined) {
-      return true;
-   }
-
-   const wantsHeadRevision = revisionid?.toString().toUpperCase() === 'HEAD';
-   return wantsHeadRevision;
+   return context.query.disableCacheGets !== undefined;
 }
 
 function getCacheString(options: CacheControlOptions) {
@@ -46,7 +39,7 @@ function getCacheString(options: CacheControlOptions) {
    return `public, s-maxage=${maxAgeSeconds}, max-age=${maxAgeSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`;
 }
 
-type GetCacheControlOptions = (
+export type GetCacheControlOptions = (
    context: GetServerSidePropsContext
 ) => CacheControlOptions;
 

@@ -13,13 +13,28 @@ import {
    TroubleshootingApiData,
 } from './hooks/useTroubleshootingProps';
 import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
-import { withCache, CacheLong } from '@helpers/cache-control-helpers';
+import {
+   withCache,
+   CacheLong,
+   GetCacheControlOptions,
+} from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
 import { ParsedUrlQuery } from 'querystring';
 
+const CacheOrDisableOnHeadRevision: GetCacheControlOptions = (context) => {
+   const wantsHeadRevision =
+      context.query.revisionid?.toString().toUpperCase() === 'HEAD';
+
+   if (wantsHeadRevision) {
+      return { disabled: true };
+   }
+
+   return CacheLong;
+};
+
 const withMiddleware = compose(
    withLogging<TroubleshootingProps>,
-   withCache(CacheLong)<TroubleshootingProps>,
+   withCache(CacheOrDisableOnHeadRevision)<TroubleshootingProps>,
    withNoindexDevDomains<TroubleshootingProps>
 );
 
