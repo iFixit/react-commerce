@@ -4,5 +4,5 @@ commit_message: '[ci skip]'
 base_url: 'https://api.crowdin.com'
 preserve_hierarchy: 1
 files:
-  - source: /frontend/messages/en.json
-    translation: /frontend/messages/%two_letters_code%.json
+   - source: /frontend/messages/en-source.json
+     translation: /frontend/messages/%two_letters_code%.json
