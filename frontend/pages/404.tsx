@@ -15,6 +15,7 @@ import type { WithLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { GetStaticProps } from 'next';
 import { useTranslations } from 'next-intl';
+import { mapLangidToLocale } from '@helpers/translation-helpers';
 
 type Messages = Record<string, any>;
 type Custom404Props = WithLayoutProps<{ messages: Messages }>;
@@ -417,8 +418,8 @@ Custom404.getLayout = function getLayout(page, pageProps) {
 export const getStaticProps: GetStaticProps<Custom404Props> = async (
    context
 ) => {
-   const messages = (await import(`../messages/${context.locale}.json`))
-      .default;
+   const locale = mapLangidToLocale(context.locale ?? '');
+   const messages = (await import(`../messages/${locale}.json`)).default;
 
    return {
       props: {

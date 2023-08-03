@@ -26,6 +26,7 @@ import { renderToString } from 'react-dom/server';
 import { getServerState } from 'react-instantsearch-hooks-server';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
+import { mapLangidToLocale } from '@helpers/translation-helpers';
 
 const withMiddleware = compose(
    withLogging<ProductListTemplateProps>,
@@ -199,8 +200,8 @@ export const getProductListServerSideProps = ({
          };
       }
 
-      const messages = (await import(`../../messages/${context.locale}.json`))
-         .default;
+      const locale = mapLangidToLocale(context.locale ?? '');
+      const messages = (await import(`../../messages/${locale}.json`)).default;
 
       const appProps: AppProvidersProps = {
          algolia: {
