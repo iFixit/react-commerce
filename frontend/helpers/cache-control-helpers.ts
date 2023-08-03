@@ -16,8 +16,14 @@ export function hasDisableCacheGets(context: GetServerSidePropsContext) {
       return true;
    }
 
-   const disableCacheGets = context.query.disableCacheGets !== undefined;
-   return disableCacheGets;
+   const { disableCacheGets, revisionid } = context.query;
+
+   if (disableCacheGets !== undefined) {
+      return true;
+   }
+
+   const wantsHeadRevision = revisionid?.toString().toUpperCase() === 'HEAD';
+   return wantsHeadRevision;
 }
 
 function getCacheString(options: CacheControlOptions) {
