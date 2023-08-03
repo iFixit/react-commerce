@@ -13,13 +13,13 @@ import {
    TroubleshootingApiData,
 } from './hooks/useTroubleshootingProps';
 import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
-import { withCacheLong } from '@helpers/cache-control-helpers';
+import { withCache, CacheLong } from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
 import { ParsedUrlQuery } from 'querystring';
 
 const withMiddleware = compose(
    withLogging<TroubleshootingProps>,
-   withCacheLong<TroubleshootingProps>,
+   withCache(CacheLong)<TroubleshootingProps>,
    withNoindexDevDomains<TroubleshootingProps>
 );
 

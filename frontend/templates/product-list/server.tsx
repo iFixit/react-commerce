@@ -1,8 +1,9 @@
 import { AppProviders, AppProvidersProps } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
 import {
+   CacheLong,
    hasDisableCacheGets,
-   withCacheLong,
+   withCache,
 } from '@helpers/cache-control-helpers';
 import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
@@ -28,7 +29,7 @@ import { ProductListView } from './ProductListView';
 
 const withMiddleware = compose(
    withLogging<ProductListTemplateProps>,
-   withCacheLong<ProductListTemplateProps>,
+   withCache(CacheLong)<ProductListTemplateProps>,
    withNoindexDevDomains<ProductListTemplateProps>
 );
 
