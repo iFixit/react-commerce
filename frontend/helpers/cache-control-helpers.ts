@@ -1,9 +1,23 @@
+import { CACHE_DISABLED } from '@config/env';
 import { GetServerSidePropsMiddleware } from '@lib/next-middleware';
 import { Duration } from '../lib/duration';
+import { GetServerSidePropsContext } from 'next';
 
 interface CacheControlOptions {
    sMaxAge: number;
    staleWhileRevalidate: number;
+}
+
+const CACHE_CONTROL_DISABLED =
+   'no-store, no-cache, must-revalidate, stale-if-error=0';
+
+export function hasDisableCacheGets(context: GetServerSidePropsContext) {
+   if (CACHE_DISABLED) {
+      return true;
+   }
+
+   const disableCacheGets = context.query.disableCacheGets !== undefined;
+   return disableCacheGets;
 }
 
 function getCacheString(options: CacheControlOptions) {
@@ -14,7 +28,12 @@ function getCacheString(options: CacheControlOptions) {
 
 function withCacheValue(cacheValue: string): GetServerSidePropsMiddleware {
    return (next) => (context) => {
-      context.res.setHeader('Cache-Control', cacheValue);
+      const isCacheDisabled = hasDisableCacheGets(context);
+      const cacheHeaderValue = isCacheDisabled
+         ? CACHE_CONTROL_DISABLED
+         : cacheValue;
+
+      context.res.setHeader('Cache-Control', cacheHeaderValue);
       return next(context);
    };
 }

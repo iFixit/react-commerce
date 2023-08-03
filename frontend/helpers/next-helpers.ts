@@ -1,5 +1,4 @@
 import { PROD_USER_AGENT } from '@config/constants';
-import { CACHE_DISABLED } from '@config/env';
 import { setSentryPageContext } from '@ifixit/sentry';
 import { withTiming } from '@ifixit/helpers';
 import type { GetServerSidePropsMiddleware } from '@lib/next-middleware';
@@ -18,21 +17,10 @@ export const withLogging: GetServerSidePropsMiddleware = (next) => {
          ...context.params,
          ...context.query,
       });
-      const isCacheDisabled = CACHE_DISABLED || hasDisableCacheGets(context);
-      return next(context)
-         .then((result) => {
-            if (isCacheDisabled) {
-               context.res.setHeader(
-                  'Cache-Control',
-                  'no-store, no-cache, must-revalidate, stale-if-error=0'
-               );
-            }
-            return result;
-         })
-         .catch((err) => {
-            setSentryPageContext(context);
-            throw err;
-         });
+      return next(context).catch((err) => {
+         setSentryPageContext(context);
+         throw err;
+      });
    });
 };
 
@@ -49,7 +37,3 @@ export const withNoindexDevDomains: GetServerSidePropsMiddleware = (next) => {
       return result;
    };
 };
-
-export function hasDisableCacheGets(context: GetServerSidePropsContext) {
-   return context.query.disableCacheGets !== undefined;
-}
