@@ -30,7 +30,7 @@ export function hasDisableCacheGets(context: GetServerSidePropsContext) {
 }
 
 function getCacheString(options: CacheControlOptions) {
-   if ('forceDisabled' in options && options.forceDisabled) {
+   if ('disabled' in options && options.disabled) {
       return CACHE_CONTROL_DISABLED;
    }
 
