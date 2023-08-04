@@ -8,7 +8,8 @@ export interface ClientOptions {
    headers?: HeadersInit;
 }
 
-export const VarnishBypassHeader = { 'Nextjs-Bypass-Varnish': '1' };
+const BypassHeaderName = 'Nextjs-Bypass-Varnish';
+export const VarnishBypassHeader = { BypassHeaderName: '1' };
 
 export class IFixitAPIClient {
    origin: string;
@@ -72,11 +73,11 @@ export class IFixitAPIClient {
          ? { Authorization: `PSK ${pskToken}` }
          : {};
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
-      const headers = {
+      const headers = new Headers({
          ...authHeader,
          ...this.headers,
          ...init?.headers,
-      };
+      });
       const response = await timeAsync(
          `ifixit-api.${init?.method?.toLowerCase() || 'get'}.${statName}`,
          () =>
@@ -99,15 +100,24 @@ export class IFixitAPIClient {
    }
 }
 
-function warnIfNotBypassed(headers: HeadersInit, response: Response): void {
-   const key = Object.keys(VarnishBypassHeader)[0];
-   const bypassed = headers.hasOwnProperty(key);
-   if (!bypassed) {
+function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
+   const wantsBypass = requestHeaders.has(BypassHeaderName);
+   if (!wantsBypass) {
       return;
    }
 
-   const responseReason = response.headers.get('X-varnish-reason');
-   const responseBypassed = responseReason === 'nextjs_bypass_varnish_header';
+   const cachedHeaderKey = 'x-debug-cache';
+
+   if (!response.headers.has(cachedHeaderKey)) {
+      console.warn(
+         'Varnish bypass requested, expected header not found!',
+         `Expected header: ${cachedHeaderKey}`
+      );
+      return;
+   }
+
+   const cached = response.headers.get(cachedHeaderKey);
+   const responseBypassed = cached === 'MISS';
    if (responseBypassed) {
       return;
    }
@@ -117,7 +127,7 @@ function warnIfNotBypassed(headers: HeadersInit, response: Response): void {
          response.url,
          100
       )}!`,
-      `${key}: ${responseReason}`
+      `${cachedHeaderKey}: ${cached}`
    );
 }
 
