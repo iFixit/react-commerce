@@ -194,17 +194,17 @@ const renderStyles: SystemStyleObject = {
          marginInline: 'auto',
       },
 
-      '@media only screen and (min-width: 575px)': {
+      '@media only screen and (min-width: 576px)': {
          '&.videoBox_left': {
             clear: 'left',
             float: 'left',
-            marginRight: '30px',
+            marginRight: 6,
          },
 
          '&.videoBox_right': {
             clear: 'right',
             float: 'right',
-            marginLeft: '30px',
+            marginLeft: 6,
          },
       },
 
@@ -221,7 +221,6 @@ const renderStyles: SystemStyleObject = {
       outlineColor: 'gray.300',
       overflow: 'hidden',
       position: 'relative',
-      maxWidth: constrainStandardWidth, // overwritten if inlined image width is larger
 
       '&.imageBox_center': {
          marginInline: 'auto',
@@ -235,17 +234,17 @@ const renderStyles: SystemStyleObject = {
          marginInline: 'auto', // center image when container is wider
       },
 
-      '@media only screen and (min-width: 575px)': {
+      '@media only screen and (min-width: 576px)': {
          '&.imageBox_left': {
             clear: 'left',
             float: 'left',
-            marginRight: '30px',
+            marginRight: 6,
          },
 
          '&.imageBox_right': {
             clear: 'right',
             float: 'right',
-            marginLeft: '30px',
+            marginLeft: 6,
          },
       },
    },
@@ -270,7 +269,6 @@ const renderStyles: SystemStyleObject = {
       flex: 1,
       paddingBlock: 4,
       paddingInline: 3,
-      width: 'unset !important', // override inherited width
    },
 
    '.blurbListWide .grid': {
