@@ -1,7 +1,8 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
+   CacheLong,
    hasDisableCacheGets,
-   withCacheLong,
+   withCache,
 } from '@helpers/cache-control-helpers';
 import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
@@ -15,7 +16,7 @@ import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
 const withMiddleware = compose(
    withLogging<ProductTemplateProps>,
-   withCacheLong<ProductTemplateProps>,
+   withCache(CacheLong)<ProductTemplateProps>,
    withNoindexDevDomains<ProductTemplateProps>
 );
 
