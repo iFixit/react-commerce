@@ -65,7 +65,7 @@ test.describe('Vulcan Page Content and SEO', () => {
          const hrefLang = page.locator(`link[hreflang="${langToHref.lang}"]`);
          await Promise.all([
             expect(hrefLang).toHaveAttribute('hreflang', langToHref.lang),
-            expect(hrefLang).toHaveAttribute('href', langToHref.href)
+            expect(hrefLang).toHaveAttribute('href', langToHref.href),
          ]);
       };
 
