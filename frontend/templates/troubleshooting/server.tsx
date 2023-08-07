@@ -1,6 +1,9 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import {
+   IFixitAPIClient,
+   VarnishBypassHeader,
+} from '@ifixit/ifixit-api-client';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import {
    GetServerSideProps,
@@ -51,7 +54,10 @@ async function getTroubleshootingData(
    context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
 ): Promise<TroubleshootingApiData | null> {
    const ifixitOrigin = ifixitOriginFromHost(context);
-   const client = new IFixitAPIClient({ origin: ifixitOrigin });
+   const client = new IFixitAPIClient({
+      origin: ifixitOrigin,
+      headers: VarnishBypassHeader,
+   });
 
    const url = getTroubleshootingApiUrl(context);
    if (!url) {
