@@ -18,7 +18,7 @@ type CacheControlOptions =
 
 type WithCacheProps = GetCacheControlOptions | CacheControlOptions;
 
-const CACHE_CONTROL_DISABLED =
+export const CACHE_CONTROL_DISABLED =
    'no-store, no-cache, must-revalidate, stale-if-error=0';
 
 export function hasDisableCacheGets(context: GetServerSidePropsContext) {
