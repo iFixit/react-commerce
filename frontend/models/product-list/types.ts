@@ -99,7 +99,7 @@ const BaseProductListSchema = z.object({
    handle: z.string(),
    deviceTitle: z.string().nullable(),
    tagline: z.string().nullable(),
-   description: z.string(),
+   description: z.string().nullable(),
    metaDescription: z.string().nullable(),
    metaTitle: z.string().nullable(),
    defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),
@@ -117,7 +117,6 @@ const BaseProductListSchema = z.object({
    wikiInfo: z.array(WikiInfoEntrySchema),
    isOnStrapi: z.boolean(),
    itemOverrides: ProductListItemTypeOverrideIndexedSchema,
-   overrides: ProductListOverridesSchema.optional(),
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 

@@ -1,16 +1,9 @@
 import { VStack } from '@chakra-ui/react';
 import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
-import {
-   calculateProductListOverrides,
-   computeProductListAlgoliaFilterPreset,
-} from '@helpers/product-list-helpers';
+import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
-import { useDevicePartsItemType } from '@templates/product-list/hooks/useDevicePartsItemType';
-import {
-   Configure,
-   useMenu,
-   usePagination,
-} from 'react-instantsearch-hooks-web';
+import { Configure, useMenu } from 'react-instantsearch-hooks-web';
+import { useItemTypeProductList } from './hooks/useItemTypeProductList';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
@@ -20,6 +13,8 @@ import {
    ProductListChildrenSection,
    RelatedPostsSection,
 } from './sections';
+
+const HITS_PER_PAGE = 24;
 
 export interface ProductListViewProps {
    productList: ProductList;
@@ -35,25 +30,20 @@ export function ProductListView({
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
 
-   const itemType = useDevicePartsItemType(productList);
-   const pagination = usePagination();
-   const page = pagination.currentRefinement + 1;
-   const productListWithOverrides = calculateProductListOverrides(
-      productList,
-      page,
-      itemType
-   );
+   const itemTypeProductList = useItemTypeProductList(productList);
+
+   const currentProductList = itemTypeProductList ?? productList;
 
    if (algoliaSSR) {
       return (
          <>
             <Configure
                filters={filters}
-               hitsPerPage={24}
-               facetingAfterDistinct={true}
+               hitsPerPage={HITS_PER_PAGE}
+               facetingAfterDistinct
             />
             <FilterableProductsSection
-               productList={productListWithOverrides}
+               productList={currentProductList}
                algoliaSSR={algoliaSSR}
             />
          </>
@@ -64,30 +54,28 @@ export function ProductListView({
       <>
          <Configure
             filters={filters}
-            hitsPerPage={24}
-            facetingAfterDistinct={true}
+            hitsPerPage={HITS_PER_PAGE}
+            facetingAfterDistinct
          />
-         <MetaTags productList={productListWithOverrides} />
-         <SecondaryNavigation productList={productListWithOverrides} />
+         <MetaTags productList={currentProductList} />
+         <SecondaryNavigation productList={productList} />
          <VStack
             align="stretch"
             spacing={{ base: 4, md: 6 }}
             py={{ base: 4, md: 6 }}
          >
             <HeroSection
-               title={productListWithOverrides.overrides!.title}
-               tagline={productListWithOverrides.tagline}
-               description={productListWithOverrides.overrides?.description}
-               backgroundImage={productListWithOverrides.heroImage}
-               brandLogo={productListWithOverrides.brandLogo}
+               title={currentProductList.h1 ?? currentProductList.title}
+               tagline={currentProductList.tagline}
+               description={currentProductList.description}
+               backgroundImage={currentProductList.heroImage}
+               brandLogo={currentProductList.brandLogo}
             />
-            {productListWithOverrides.children.length > 0 && (
-               <ProductListChildrenSection
-                  productList={productListWithOverrides}
-               />
+            {currentProductList.children.length > 0 && (
+               <ProductListChildrenSection productList={productList} />
             )}
-            <FilterableProductsSection productList={productListWithOverrides} />
-            {productListWithOverrides.sections.map((section, index) => {
+            <FilterableProductsSection productList={productList} />
+            {currentProductList.sections.map((section, index) => {
                switch (section.type) {
                   case 'LifetimeWarranty': {
                      return (
@@ -101,7 +89,7 @@ export function ProductListView({
                      );
                   }
                   case 'RelatedPosts': {
-                     const tags = [productListWithOverrides.title].concat(
+                     const tags = [productList.title].concat(
                         section.tags?.split(',').map((tag) => tag.trim()) || []
                      );
                      return <RelatedPostsSection key={index} tags={tags} />;
