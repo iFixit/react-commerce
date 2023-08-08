@@ -19,6 +19,8 @@ type CaptureWithContextFn = (
    context: Parameters<Scope['setContext']>[1]
 ) => void;
 
+type inputType = RequestInfo | URL;
+
 const isClientSide = typeof window !== 'undefined';
 
 const shouldIgnoreUserAgent =
@@ -41,14 +43,19 @@ const withSentry: FetchMiddleware =
       if (shouldSkipRequest?.(input, init)) {
          return fetcher(input, init);
       }
+      const bodyObj = init?.body ? JSON.parse(String(init?.body)) : undefined;
       const context = {
          // Underscore sorts the resource first in Sentry's UI
          _resource: input,
          headers: init?.headers,
          method: init?.method,
          // Parse to pretty print GraphQL queries
-         body: init?.body ? JSON.parse(String(init?.body)) : undefined,
+         body: bodyObj,
       };
+
+      if (init?.body) {
+         init.body = encodeNecessaryURIs(input, bodyObj);
+      }
       try {
          const response = await fetcher(input, init);
          if (
@@ -78,7 +85,7 @@ const shouldSkipReporting: SkipRequestFn = (input, init) => {
    return url.includes('/store/user/cart');
 };
 
-const getRequestUrl = (input: RequestInfo | URL) => {
+const getRequestUrl = (input: inputType) => {
    if (typeof input === 'string') {
       return input;
    }
@@ -86,4 +93,19 @@ const getRequestUrl = (input: RequestInfo | URL) => {
       return input.href;
    }
    return input.url;
+};
+
+const encodeNecessaryURIs = (
+   input: inputType,
+   bodyObj: Record<string, any>
+) => {
+   if (bodyObj?.o) {
+      const url = getRequestUrl(input);
+      // We have custom logic in place for encoding the url for vercel insights
+      if (url.includes('_vercel/insights/') || url.includes('/v1/vitals')) {
+         bodyObj.o = encodeURI(bodyObj.o);
+         return JSON.stringify(bodyObj);
+      }
+   }
+   return JSON.stringify(bodyObj);
 };
