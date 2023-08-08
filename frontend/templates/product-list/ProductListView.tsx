@@ -64,23 +64,44 @@ export function ProductListView({
             spacing={{ base: 4, md: 6 }}
             py={{ base: 4, md: 6 }}
          >
-            <HeroSection
-               title={currentProductList.h1 ?? currentProductList.title}
-               tagline={currentProductList.tagline}
-               description={currentProductList.description}
-               backgroundImage={currentProductList.heroImage}
-               brandLogo={currentProductList.brandLogo}
-            />
-            {currentProductList.children.length > 0 && (
-               <ProductListChildrenSection productList={productList} />
-            )}
-            <FilterableProductsSection productList={productList} />
-            {currentProductList.sections.map((section, index) => {
+            {currentProductList.sections.map((section) => {
                switch (section.type) {
+                  case 'Hero': {
+                     return (
+                        <HeroSection
+                           key={section.id}
+                           title={
+                              currentProductList.h1 ?? currentProductList.title
+                           }
+                           tagline={currentProductList.tagline}
+                           description={currentProductList.description}
+                           backgroundImage={currentProductList.heroImage}
+                           brandLogo={currentProductList.brandLogo}
+                        />
+                     );
+                  }
+                  case 'ProductsListChildren': {
+                     if (productList.children.length === 0) return null;
+
+                     return (
+                        <ProductListChildrenSection
+                           key={section.id}
+                           productList={productList}
+                        />
+                     );
+                  }
+                  case 'FilterableProducts': {
+                     return (
+                        <FilterableProductsSection
+                           key={section.id}
+                           productList={productList}
+                        />
+                     );
+                  }
                   case 'LifetimeWarranty': {
                      return (
                         <LifetimeWarrantySection
-                           key={index}
+                           key={section.id}
                            variant="banner"
                            title={section.title}
                            description={section.description}
@@ -92,14 +113,16 @@ export function ProductListView({
                      const tags = [productList.title].concat(
                         section.tags?.split(',').map((tag) => tag.trim()) || []
                      );
-                     return <RelatedPostsSection key={index} tags={tags} />;
+                     return (
+                        <RelatedPostsSection key={section.id} tags={tags} />
+                     );
                   }
                   case 'FeaturedProductLists': {
                      const { title, productLists } = section;
                      if (productLists.length > 0) {
                         return (
                            <FeaturedProductListsSection
-                              key={index}
+                              key={section.id}
                               title={title}
                               productLists={productLists}
                            />
