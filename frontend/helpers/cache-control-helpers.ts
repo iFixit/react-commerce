@@ -73,19 +73,16 @@ function setCache(
 type GetInitialProps<T> = (context: NextPageContext) => Promise<T>;
 
 export function withInitialCacheValue<T>(
-   func: GetInitialProps<T>,
-   props: WithCacheProps
+   props: WithCacheProps,
+   getInitialProps: GetInitialProps<T>
 ) {
    const getCacheControlOptions =
       typeof props === 'function' ? props : () => props;
 
-   const wrapped = async (context: NextPageContext) => {
+   return async (context: NextPageContext) => {
       setCache(context, getCacheControlOptions);
-
-      return func(context);
+      return getInitialProps(context);
    };
-
-   return wrapped;
 }
 
 export const CacheShort: CacheControlOptions = {

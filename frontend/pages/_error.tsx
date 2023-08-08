@@ -27,6 +27,7 @@ const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
 };
 
 CustomErrorComponent.getInitialProps = withInitialCacheValue<ErrorProps>(
+   { disabled: true },
    async (contextData) => {
       // In case this is running in a serverless function, await this in order to give Sentry
       // time to send the error before the lambda exits
@@ -34,8 +35,7 @@ CustomErrorComponent.getInitialProps = withInitialCacheValue<ErrorProps>(
 
       // This will contain the status code of the response
       return NextErrorComponent.getInitialProps(contextData);
-   },
-   { disabled: true }
+   }
 );
 
 export default CustomErrorComponent;
