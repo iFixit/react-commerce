@@ -1,4 +1,5 @@
 import { WithProvidersProps } from '@components/common';
+import { ViewStatsProps } from '@components/common/ViewStats';
 import type { WithLayoutProps } from '@layouts/default/server';
 
 export type Section = {
@@ -70,6 +71,7 @@ export type TroubleshootingApiData = {
    editUrl: string;
    historyUrl: string;
    answersUrl: string;
+   viewStats?: ViewStatsProps;
    deviceGuideUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
