@@ -99,13 +99,12 @@ const encodeNecessaryURIs = (
    input: inputType,
    bodyObj: Record<string, any>
 ) => {
-   if (bodyObj?.o) {
-      const url = getRequestUrl(input);
-      // We have custom logic in place for encoding the url for vercel insights
-      if (url.includes('_vercel/insights/') || url.includes('/v1/vitals')) {
-         bodyObj.o = encodeURI(bodyObj.o);
-         return JSON.stringify(bodyObj);
-      }
+   const url = getRequestUrl(input);
+   // We have custom logic in place for encoding the url for vercel insights
+   if (bodyObj?.o && url.includes('_vercel/insights/')) {
+      bodyObj.o = encodeURI(bodyObj.o);
+   } else if (bodyObj?.href && url.includes('/v1/vitals')) {
+      bodyObj.href = encodeURI(bodyObj.href);
    }
    return JSON.stringify(bodyObj);
 };
