@@ -23,6 +23,7 @@ import {
 } from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
 import { ParsedUrlQuery } from 'querystring';
+import { logger } from '@helpers/logger';
 
 const CacheOrDisableOnHeadRevision: GetCacheControlOptions = (context) => {
    const wantsHeadRevision =
@@ -97,6 +98,8 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
       });
 
       const troubleshootingData = await getTroubleshootingData(context);
+
+      logger.info('troubleshootingData', troubleshootingData);
 
       if (!troubleshootingData) {
          return {
