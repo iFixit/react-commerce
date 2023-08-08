@@ -12,8 +12,7 @@
  *  - https://nextjs.org/docs/api-reference/data-fetching/get-initial-props
  *  - https://reactjs.org/docs/error-boundaries.html
  */
-
-import { CACHE_CONTROL_DISABLED } from '@helpers/cache-control-helpers';
+import { withInitialCacheValue } from '@helpers/cache-control-helpers';
 import * as Sentry from '@sentry/nextjs';
 import type { NextPage } from 'next';
 import type { ErrorProps } from 'next/error';
@@ -27,15 +26,16 @@ const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
    return <NextErrorComponent statusCode={props.statusCode} />;
 };
 
-CustomErrorComponent.getInitialProps = async (contextData) => {
-   contextData.res?.setHeader('Cache-Control', CACHE_CONTROL_DISABLED);
+CustomErrorComponent.getInitialProps = withInitialCacheValue<ErrorProps>(
+   async (contextData) => {
+      // In case this is running in a serverless function, await this in order to give Sentry
+      // time to send the error before the lambda exits
+      await Sentry.captureUnderscoreErrorException(contextData);
 
-   // In case this is running in a serverless function, await this in order to give Sentry
-   // time to send the error before the lambda exits
-   await Sentry.captureUnderscoreErrorException(contextData);
-
-   // This will contain the status code of the response
-   return NextErrorComponent.getInitialProps(contextData);
-};
+      // This will contain the status code of the response
+      return NextErrorComponent.getInitialProps(contextData);
+   },
+   { disabled: true }
+);
 
 export default CustomErrorComponent;
