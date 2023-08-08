@@ -116,6 +116,8 @@ function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
       return;
    }
 
+   console.log(response.headers);
+
    const cached = response.headers.get(cachedHeaderKey);
    const responseBypassed = cached === 'MISS';
    if (responseBypassed) {

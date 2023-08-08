@@ -98,8 +98,6 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
 
       const troubleshootingData = await getTroubleshootingData(context);
 
-      console.log('troubleshootingData', troubleshootingData);
-
       if (!troubleshootingData) {
          return {
             notFound: true,
