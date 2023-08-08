@@ -104,6 +104,10 @@ const encodeNecessaryURIs = (
    if (bodyObj?.o && url.includes('_vercel/insights/')) {
       bodyObj.o = encodeURI(bodyObj.o);
    } else if (bodyObj?.href && url.includes('/v1/vitals')) {
+      console.log(
+         '############################### bodyObj.href:',
+         bodyObj.href
+      );
       bodyObj.href = encodeURI(bodyObj.href);
    }
    return JSON.stringify(bodyObj);
