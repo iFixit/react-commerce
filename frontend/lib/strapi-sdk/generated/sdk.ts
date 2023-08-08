@@ -3030,18 +3030,6 @@ export type FindProductListQuery = {
                   } | null;
                } | null;
             } | null;
-            image?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
             brandLogo?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3247,18 +3235,6 @@ export type ProductListFieldsFragment = {
    forceNoindex?: boolean | null;
    brandLogoWidth?: number | null;
    heroImage?: {
-      __typename?: 'UploadFileEntityResponse';
-      data?: {
-         __typename?: 'UploadFileEntity';
-         attributes?: {
-            __typename?: 'UploadFile';
-            alternativeText?: string | null;
-            url: string;
-            formats?: any | null;
-         } | null;
-      } | null;
-   } | null;
-   image?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
          __typename?: 'UploadFileEntity';
@@ -4985,9 +4961,6 @@ export const ProductListFieldsFragmentDoc = `
   filters
   forceNoindex
   heroImage {
-    ...ImageFields
-  }
-  image {
     ...ImageFields
   }
   brandLogo {
