@@ -29,9 +29,6 @@ fragment ProductListFields on ProductList {
    heroImage {
       ...ImageFields
    }
-   image {
-      ...ImageFields
-   }
    brandLogo {
       ...ImageFields
    }
