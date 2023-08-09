@@ -15,7 +15,11 @@ import {
    TroubleshootingData,
    TroubleshootingApiData,
 } from './hooks/useTroubleshootingProps';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   noindexDevDomains,
+   withLogging,
+   withRobotsHeader,
+} from '@helpers/next-helpers';
 import {
    withCache,
    CacheLong,
@@ -38,7 +42,7 @@ const CacheOrDisableOnHeadRevision: GetCacheControlOptions = (context) => {
 const withMiddleware = compose(
    withLogging<TroubleshootingProps>,
    withCache(CacheOrDisableOnHeadRevision)<TroubleshootingProps>,
-   withNoindexDevDomains<TroubleshootingProps>
+   withRobotsHeader(noindexDevDomains)<TroubleshootingProps>
 );
 
 function rethrowUnless404(e: any) {
