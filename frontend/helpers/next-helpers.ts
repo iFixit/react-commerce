@@ -58,6 +58,6 @@ function maybeSetRobotsHeader(
 
 export function noindexDevDomains(context: ContextType) {
    if (context.req.headers['user-agent'] !== PROD_USER_AGENT) {
-      return RestrictRobots.RESTRICT_ALL;
+      // return RestrictRobots.RESTRICT_ALL;
    }
 }
