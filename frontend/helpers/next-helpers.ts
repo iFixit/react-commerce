@@ -57,9 +57,11 @@ function maybeSetRobotsHeader(
 }
 
 export function noindexDevDomains(context: ContextType) {
-   if (context.req.headers['user-agent'] !== PROD_USER_AGENT) {
-      // return RestrictRobots.RESTRICT_ALL;
+   if (!requestFromCloudfront(context)) {
+      return RestrictRobots.RESTRICT_ALL;
    }
+}
 
-   return undefined;
+export function requestFromCloudfront(context: ContextType) {
+   return !!context.req.headers['x-amz-cf-id'];
 }
