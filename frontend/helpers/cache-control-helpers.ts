@@ -1,7 +1,7 @@
 import { CACHE_DISABLED } from '@config/env';
 import { GetServerSidePropsMiddleware } from '@lib/next-middleware';
 import { Duration } from '../lib/duration';
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, NextPageContext } from 'next';
 
 interface EnabledCacheControlOptions {
    sMaxAge: number;
@@ -21,7 +21,9 @@ type WithCacheProps = GetCacheControlOptions | CacheControlOptions;
 const CACHE_CONTROL_DISABLED =
    'no-store, no-cache, must-revalidate, stale-if-error=0';
 
-export function hasDisableCacheGets(context: GetServerSidePropsContext) {
+export function hasDisableCacheGets(
+   context: GetServerSidePropsContext | NextPageContext
+) {
    if (CACHE_DISABLED) {
       return true;
    }
@@ -39,24 +41,47 @@ function getCacheString(options: CacheControlOptions) {
    return `public, s-maxage=${maxAgeSeconds}, max-age=${maxAgeSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`;
 }
 
+type ContextType = GetServerSidePropsContext | NextPageContext;
+
 export type GetCacheControlOptions = (
-   context: GetServerSidePropsContext
+   context: ContextType
 ) => CacheControlOptions;
 
 function withCacheValue(
    getCacheControlOptions: GetCacheControlOptions
 ): GetServerSidePropsMiddleware {
    return (next) => (context) => {
-      const isCacheDisabled = hasDisableCacheGets(context);
-
-      const cacheOptions = isCacheDisabled
-         ? ({ disabled: true } as DisabledCacheControlOptions)
-         : getCacheControlOptions(context);
-
-      const cacheHeaderValue = getCacheString(cacheOptions);
-
-      context.res.setHeader('Cache-Control', cacheHeaderValue);
+      setCache(context, getCacheControlOptions);
       return next(context);
+   };
+}
+
+function setCache(
+   context: ContextType,
+   getCacheControlOptions: GetCacheControlOptions
+) {
+   const isCacheDisabled = hasDisableCacheGets(context);
+
+   const cacheOptions = isCacheDisabled
+      ? ({ disabled: true } as DisabledCacheControlOptions)
+      : getCacheControlOptions(context);
+
+   const cacheHeaderValue = getCacheString(cacheOptions);
+   context.res?.setHeader('Cache-Control', cacheHeaderValue);
+}
+
+type GetInitialProps<T> = (context: NextPageContext) => Promise<T>;
+
+export function withInitialCacheValue<T>(
+   props: WithCacheProps,
+   getInitialProps: GetInitialProps<T>
+) {
+   const getCacheControlOptions =
+      typeof props === 'function' ? props : () => props;
+
+   return async (context: NextPageContext) => {
+      setCache(context, getCacheControlOptions);
+      return getInitialProps(context);
    };
 }
 

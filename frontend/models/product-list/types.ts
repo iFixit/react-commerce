@@ -1,10 +1,8 @@
 import { ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import { ProductListAncestorSchema } from './component/product-list-ancestor';
-import {
-   ProductListType,
-   ProductListTypeSchema,
-} from './component/product-list-type';
+import { ProductListChildSchema } from './component/product-list-child';
+import { ProductListType } from './component/product-list-type';
 import { ProductListSectionSchema } from './sections';
 
 const PriceTierSchema = z.object({
@@ -44,22 +42,6 @@ const WikiInfoEntrySchema = z.object({
    inheritedFrom: z.string().nullable(),
 });
 export type WikiInfoEntry = z.infer<typeof WikiInfoEntrySchema>;
-
-const ProductListImageSchema = z.object({
-   alternativeText: z.string().nullable(),
-   url: z.string(),
-});
-export type ProductListImage = z.infer<typeof ProductListImageSchema>;
-
-const ProductListChildSchema = z.object({
-   title: z.string(),
-   deviceTitle: z.string().nullable(),
-   handle: z.string(),
-   image: ProductListImageSchema.nullable(),
-   sortPriority: z.number().nullable(),
-   type: ProductListTypeSchema,
-});
-export type ProductListChild = z.infer<typeof ProductListChildSchema>;
 
 const ProductListItemTypeOverrideSchema = z.object({
    itemType: z.string().nullable().optional(),
@@ -106,7 +88,6 @@ const BaseProductListSchema = z.object({
    filters: z.string().nullable(),
    forceNoindex: z.boolean().nullable(),
    heroImage: ImageSchema.nullable(),
-   image: ProductListImageSchema.nullable(),
    brandLogo: ImageSchema.nullable(),
    ancestors: z.array(ProductListAncestorSchema),
    children: z.array(ProductListChildSchema),

@@ -24,9 +24,6 @@ export const getProductListMock: FindProductListQuery = {
                heroImage: {
                   data: null,
                },
-               image: {
-                  data: null,
-               },
                brandLogo: {
                   data: null,
                },

@@ -9,7 +9,7 @@ export interface ClientOptions {
 }
 
 const BypassHeaderName = 'Nextjs-Bypass-Varnish';
-export const VarnishBypassHeader = { BypassHeaderName: '1' };
+export const VarnishBypassHeader = { [BypassHeaderName]: '1' };
 
 export class IFixitAPIClient {
    origin: string;

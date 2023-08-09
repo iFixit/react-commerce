@@ -734,7 +734,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             Haven&apos;t found the solution to your problem?
          </chakra.span>
          <Button href={answersUrl} as="a" colorScheme="brand">
-            Ask a question
+            Browse our forum
          </Button>
       </Alert>
    );
