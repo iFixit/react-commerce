@@ -85,7 +85,7 @@ export class IFixitAPIClient {
                credentials: 'include',
                ...init,
                headers: headers,
-               cache: 'default',
+               cache: 'no-cache',
             })
       );
       if (!response.ok) {
