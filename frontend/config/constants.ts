@@ -1,6 +1,5 @@
 export const PRODUCT_LIST_PAGE_PARAM = 'p';
 export const PRODUCT_LIST_QUERY_PARAM = 'q';
 export const DEFAULT_ANIMATION_DURATION_MS = 300;
-export const PROD_USER_AGENT = 'Amazon CloudFront';
 export const PRODUCT_LIST_MAX_FACET_VALUES_COUNT = 200;
 export const PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT = 10;
