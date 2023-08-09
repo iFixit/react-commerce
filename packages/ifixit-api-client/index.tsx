@@ -85,6 +85,7 @@ export class IFixitAPIClient {
                credentials: 'include',
                ...init,
                headers: headers,
+               cache: 'default',
             })
       );
       if (!response.ok) {
@@ -115,8 +116,6 @@ function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
       );
       return;
    }
-
-   console.log(response.headers);
 
    const cached = response.headers.get(cachedHeaderKey);
    const responseBypassed = cached === 'MISS';
