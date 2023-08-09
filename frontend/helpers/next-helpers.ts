@@ -1,9 +1,10 @@
-import { PROD_USER_AGENT } from '@config/constants';
 import { setSentryPageContext } from '@ifixit/sentry';
 import { withTiming } from '@ifixit/helpers';
 import type { GetServerSidePropsMiddleware } from '@lib/next-middleware';
 import * as Sentry from '@sentry/nextjs';
 import { GetServerSidePropsContext } from 'next';
+
+const headerAlwaysAddedByCloudfront = 'x-amz-cf-id';
 
 export const withLogging: GetServerSidePropsMiddleware = (next) => {
    return withTiming(`server_side_props`, async (context) => {
@@ -63,5 +64,5 @@ export function noindexDevDomains(context: ContextType) {
 }
 
 export function requestFromCloudfront(context: ContextType) {
-   return !!context.req.headers['x-amz-cf-id'];
+   return !!context.req.headers[headerAlwaysAddedByCloudfront];
 }
