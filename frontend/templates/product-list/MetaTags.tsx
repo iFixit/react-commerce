@@ -44,8 +44,8 @@ export function MetaTags({ productList }: MetaTagsProps) {
          )}
          <meta property="og:type" content="website" />
          <meta property="og:url" content={canonicalUrl} />
-         {productList.image?.url && (
-            <meta property="og:image" content={productList.image.url} />
+         {productList.heroImage?.url && (
+            <meta property="og:image" content={productList.heroImage.url} />
          )}
          <script {...structuredData} />
       </Head>
