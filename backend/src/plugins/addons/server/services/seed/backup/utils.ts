@@ -1,17 +1,34 @@
-import path from 'path';
+export const BACKUP_FILE_NAME = 'export';
+
+export const IMPORT_FILE_NAME = 'import.tar.gz';
+
+const BACKUP_FOLDER_NAME = 'backup';
+
+export const BACKUP_FOLDER_PATH = `public/${BACKUP_FOLDER_NAME}` as const;
+
+export const EXPORT_FILE_PATH =
+   `${BACKUP_FOLDER_PATH}/${BACKUP_FILE_NAME}` as const;
+
+const IMPORT_FILE_PATH = `${BACKUP_FOLDER_PATH}/${IMPORT_FILE_NAME}` as const;
 
 interface GetDefaultBackupFilePathInput {
    isEncrypted: boolean;
 }
 
-export function getDefaultBackupFilePath({
+export function getDefaultBackupDownloadFilePath({
    isEncrypted,
 }: GetDefaultBackupFilePathInput) {
-   const directory = process.cwd() + '/.tmp';
-   const fileName = 'import.tar.gz';
-   let importPath = path.join(directory, fileName);
    if (isEncrypted) {
-      importPath += '.enc';
+      return `${IMPORT_FILE_PATH}.enc`;
    }
-   return importPath;
+   return IMPORT_FILE_PATH;
+}
+
+interface GetBackupPathInput {
+   isEncrypted: boolean;
+}
+
+export function getBackupURLPath({ isEncrypted }: GetBackupPathInput) {
+   const exportFilePath = `${BACKUP_FOLDER_NAME}/${BACKUP_FILE_NAME}.tar.gz`;
+   return isEncrypted ? `${exportFilePath}.enc` : exportFilePath;
 }

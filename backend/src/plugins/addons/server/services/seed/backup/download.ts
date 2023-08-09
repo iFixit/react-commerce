@@ -2,10 +2,9 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 import path from 'path';
-import { getBackupPath } from './export';
-import type { Backup } from './types';
 import { ensureDirectoryExists } from '../../../helpers/server-helpers';
-import { getDefaultBackupFilePath } from './utils';
+import type { Backup } from './types';
+import { getBackupURLPath, getDefaultBackupDownloadFilePath } from './utils';
 
 export interface DownloadBackupOptions {
    strapiOrigin: string;
@@ -14,10 +13,10 @@ export interface DownloadBackupOptions {
 
 export async function downloadBackup({
    strapiOrigin,
-   backupFilePath = getDefaultBackupFilePath({ isEncrypted: false }),
+   backupFilePath = getDefaultBackupDownloadFilePath({ isEncrypted: false }),
 }: DownloadBackupOptions): Promise<Backup> {
    const exportURL = new URL(
-      getBackupPath({ isEncrypted: false }),
+      getBackupURLPath({ isEncrypted: false }),
       strapiOrigin
    );
    try {

@@ -1,11 +1,12 @@
 import { exec } from 'child_process';
 import type { Backup } from './types';
 import { isStderrAnError } from '../../../helpers/server-helpers';
-import { getDefaultBackupFilePath } from './utils';
+import { getDefaultBackupDownloadFilePath } from './utils';
 
 export function importBackup(backup?: Backup): Promise<string> {
    const filePath =
-      backup?.filePath ?? getDefaultBackupFilePath({ isEncrypted: false });
+      backup?.filePath ??
+      getDefaultBackupDownloadFilePath({ isEncrypted: false });
    strapi.log.info(`🌱 Importing data from ${filePath} ...`);
    return importFromFile({ filePath });
 }
