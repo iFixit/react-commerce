@@ -86,6 +86,7 @@ export type TroubleshootingApiData = {
 
 export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {
    solutions: SolutionSection[];
+   index: boolean;
 };
 
 export type BreadcrumbEntry = {

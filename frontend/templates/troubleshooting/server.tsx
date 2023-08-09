@@ -8,6 +8,7 @@ import { getLayoutServerSideProps } from '@layouts/default/server';
 import {
    GetServerSideProps,
    GetServerSidePropsContext,
+   NextPageContext,
    PreviewData,
 } from 'next';
 import {
@@ -25,15 +26,18 @@ import compose from 'lodash/flowRight';
 import { ParsedUrlQuery } from 'querystring';
 
 const CacheOrDisableOnHeadRevision: GetCacheControlOptions = (context) => {
-   const wantsHeadRevision =
-      context.query.revisionid?.toString().toUpperCase() === 'HEAD';
-
-   if (wantsHeadRevision) {
+   if (wantsHeadRevision(context)) {
       return { disabled: true };
    }
 
    return CacheLong;
 };
+
+function wantsHeadRevision(
+   context: GetServerSidePropsContext | NextPageContext
+) {
+   return context.query.revisionid?.toString().toUpperCase() === 'HEAD';
+}
 
 const withMiddleware = compose(
    withLogging<TroubleshootingProps>,
@@ -126,7 +130,10 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
          };
       }
 
-      const wikiData: TroubleshootingData = troubleshootingData;
+      const wikiData: TroubleshootingData = {
+         ...troubleshootingData,
+         index: !wantsHeadRevision(context),
+      };
 
       const ifixitOrigin = ifixitOriginFromHost(context);
       const pageProps: TroubleshootingProps = {

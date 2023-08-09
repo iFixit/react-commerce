@@ -106,6 +106,7 @@ const Wiki: NextPageWithLayout<{
                   metaKeywords={metaKeywords}
                   canonicalUrl={canonicalUrl}
                   title={title}
+                  index={wikiData.index}
                />
                <HreflangUrls urls={wikiData.hreflangUrls} />
                <HStack
@@ -551,12 +552,15 @@ function Metadata({
    title,
    metaKeywords,
    canonicalUrl,
+   index,
 }: {
    metaDescription: string;
    title: string;
    metaKeywords: string;
    canonicalUrl: string;
+   index: boolean;
 }) {
+   const robots = index ? 'index, follow' : 'noindex, nofollow';
    return (
       <Head>
          <meta
@@ -566,7 +570,7 @@ function Metadata({
          />
          <meta key="meta-title" name="title" content={title} />
          <meta key="meta-keywords" name="keywords" content={metaKeywords} />
-         <meta key="meta-robots" name="robots" content="index, follow" />,
+         <meta key="meta-robots" name="robots" content={robots} />,
          <link key="canonical" rel="canonical" href={canonicalUrl} />
       </Head>
    );
