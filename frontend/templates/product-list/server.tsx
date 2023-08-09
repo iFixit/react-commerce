@@ -5,7 +5,11 @@ import {
    hasDisableCacheGets,
    withCache,
 } from '@helpers/cache-control-helpers';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   noindexDevDomains,
+   withLogging,
+   withRobotsHeader,
+} from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
@@ -30,7 +34,7 @@ import { ProductListView } from './ProductListView';
 const withMiddleware = compose(
    withLogging<ProductListTemplateProps>,
    withCache(CacheLong)<ProductListTemplateProps>,
-   withNoindexDevDomains<ProductListTemplateProps>
+   withRobotsHeader(noindexDevDomains)<ProductListTemplateProps>
 );
 
 type GetProductListServerSidePropsOptions = {
