@@ -14,7 +14,7 @@ const links = {
    ABOUT_US: 'https://www.ifixit.com/Info/index',
    NEWSLETTER: 'https://www.ifixit.com/Newsletter',
    HELP: 'https://help.ifixit.com/',
-   CAREERS: 'https://www.ifixit.com/Info/jobs',
+   CAREERS: 'https://www.ifixit.com/about-us/careers',
    FEEDBACK: 'https://meta.ifixit.com/',
    API: 'https://www.ifixit.com/api/2.0/doc',
    PRESS: 'https://www.ifixit.com/Info/Media',
