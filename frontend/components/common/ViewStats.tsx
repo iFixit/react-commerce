@@ -1,5 +1,13 @@
 import React from 'react';
-import { Flex, PropsOf, Text, chakra, useToken } from '@chakra-ui/react';
+import {
+   Box,
+   Flex,
+   PropsOf,
+   SimpleGrid,
+   Text,
+   chakra,
+   Container,
+} from '@chakra-ui/react';
 
 export type ViewStatsProps = {
    today: number;
@@ -9,48 +17,64 @@ export type ViewStatsProps = {
 };
 
 export function ViewStats({ today, week, month, all }: ViewStatsProps) {
-   const spacing5 = useToken('space', 5);
    return (
-      <Flex
-         width="100%"
-         justifyContent="center"
-         alignItems={{ base: 'stretch', sm: 'center' }}
-         alignSelf={{ base: 'center', sm: 'stretch' }}
-         maxWidth={{ base: `calc(100% - ${spacing5})`, sm: 'initial' }}
+      <Box
          borderTop="1px solid"
          borderColor="coolGray.200"
-         paddingTop={2}
-         paddingBottom={2}
-         flexDirection={{ base: 'column', sm: 'row' }}
-         flexWrap={{ base: 'wrap' }}
+         color="coolGray.600"
+         fontSize="sm"
+         fontWeight="semibold"
       >
-         <Flex
-            marginRight={7}
-            alignItems="center"
-            flexBasis={{ base: '100%', lg: 'auto' }}
-            justifyContent={{ base: 'center', lg: 'flex-start' }}
-         >
-            <StatsIcon
-               width={5}
-               height={5}
-               color="coolGray.300"
-               marginRight={1.5}
-            />
-            <Text color="coolGray.600" fontSize="sm" fontWeight="semibold">
-               View statistics:
-            </Text>
-         </Flex>
-         <ViewStatSection
-            text="Past 24 Hours:"
-            stat={localizeAndFormat(today)}
-         />
-         <ViewStatSection text="Past 7 Days:" stat={localizeAndFormat(week)} />
-         <ViewStatSection
-            text="Past 30 Days:"
-            stat={localizeAndFormat(month)}
-         />
-         <ViewStatSection text="All Time:" stat={localizeAndFormat(all)} />
-      </Flex>
+         <Container maxWidth="xl">
+            <Flex
+               justifyContent={{ base: 'center', md: 'space-between' }}
+               paddingBlock={2}
+               paddingInline={{ base: 0, md: 4 }}
+               flexDirection={{ base: 'column', md: 'row' }}
+               flexWrap="wrap"
+               alignItems="center"
+            >
+               <Flex
+                  marginBlock={1}
+                  marginInline={{ base: 0, md: 'auto' }}
+                  flexBasis={{ base: '100%', md: 'auto' }}
+               >
+                  <StatsIcon
+                     boxSize={5}
+                     color="coolGray.300"
+                     marginRight={{ base: 0, sm: 1.5 }}
+                  />
+                  <Text>View statistics:</Text>
+               </Flex>
+               <SimpleGrid
+                  columns={{ base: 2, sm: 4 }}
+                  flex="auto"
+                  spacingX={{ base: 6, sm: 2 }}
+                  sx={{
+                     marginInline: { base: '-6', sm: 0 }, // offset base spacingX
+                  }}
+                  width={{ base: '100%', md: 'fit-content' }}
+               >
+                  <ViewStatSection
+                     text="Past 24 Hours:"
+                     stat={localizeAndFormat(today)}
+                  />
+                  <ViewStatSection
+                     text="Past 7 Days:"
+                     stat={localizeAndFormat(week)}
+                  />
+                  <ViewStatSection
+                     text="Past 30 Days:"
+                     stat={localizeAndFormat(month)}
+                  />
+                  <ViewStatSection
+                     text="All Time:"
+                     stat={localizeAndFormat(all)}
+                  />
+               </SimpleGrid>
+            </Flex>
+         </Container>
+      </Box>
    );
 }
 
@@ -83,37 +107,23 @@ function StatsIcon(props: PropsOf<typeof ChakraSVG>) {
 function ViewStatSection({ text, stat }: { text: string; stat: string }) {
    return (
       <Flex
-         direction={{ base: 'column', md: 'row' }}
-         borderRight={{ base: 'none', sm: '1px solid' }}
-         borderColor={{ base: 'initial', sm: 'coolGray.200' }}
-         paddingTop={1.5}
-         paddingBottom={1.5}
-         paddingLeft={7}
-         paddingRight={7}
-         flexWrap={{ base: 'nowrap', sm: 'wrap', md: 'nowrap' }}
-         _last={{ borderRight: 'none' }}
-         alignItems="center"
+         _notLast={{
+            borderRight: { base: 'none', sm: '1px solid' },
+            borderColor: { base: 'initial', sm: 'coolGray.200' },
+         }}
          flexDirection={{ base: 'row', sm: 'column', md: 'row' }}
-         flexShrink={0}
+         alignItems="center"
+         justifyContent={{ base: 'space-between', md: 'center' }}
       >
          <Text
-            color="coolGray.600"
             fontSize="xs"
             fontWeight="normal"
-            marginRight={{ base: 3, sm: 0, md: 3 }}
-            flexGrow={1}
+            marginRight={{ base: 0, md: 3 }}
             flexShrink={0}
          >
             {text}
          </Text>
-         <Text
-            color="coolGray.600"
-            fontSize="sm"
-            fontWeight="semibold"
-            marginRight={3}
-         >
-            {stat}
-         </Text>
+         <Text>{stat}</Text>
       </Flex>
    );
 }
