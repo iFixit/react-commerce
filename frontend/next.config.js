@@ -59,6 +59,23 @@ const moduleExports = {
    env: {
       NEXT_PUBLIC_STRAPI_ORIGIN: strapiOrigin,
    },
+   async headers() {
+      return [
+         {
+            // Nnoindex all responses. Requests to www.ifixit.com that go
+            // through cloudfront will have this header stripped off by a
+            // cloudfront function. This effectively noindexes all vercel urls
+            // that our pages are served from.
+            source: '/:path*',
+            headers: [
+               {
+                  key: 'x-robots-tag',
+                  value: 'noindex, nofollow, nosnippet, noarchive, noimageindex',
+               },
+            ],
+         },
+      ];
+   },
    async rewrites() {
       return [
          {
