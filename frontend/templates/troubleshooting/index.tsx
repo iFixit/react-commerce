@@ -57,6 +57,7 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
+import { ScrollPercent } from './scrollPercent';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -82,9 +83,12 @@ const Wiki: NextPageWithLayout<{
       display: 'block',
    };
 
+   const scrollContainerRef = React.useRef(null);
+
    return (
       <>
          <GoogleNoScript />
+         <ScrollPercent scrollContainerRef={scrollContainerRef} />
          <NavBar
             editUrl={wikiData.editUrl}
             historyUrl={wikiData.historyUrl}
@@ -92,7 +96,7 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <Container fontSize="md" maxW="1280px">
+         <Container fontSize="md" maxW="1280px" ref={scrollContainerRef}>
             <Flex
                direction="column"
                paddingInline={{ base: 0, sm: 4 }}
