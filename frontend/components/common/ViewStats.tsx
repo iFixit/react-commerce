@@ -25,7 +25,7 @@ export function ViewStats({ today, week, month, all }: ViewStatsProps) {
          fontSize="sm"
          fontWeight="semibold"
       >
-         <Container maxWidth="xl">
+         <Container maxWidth="1280px">
             <Flex
                justifyContent={{ base: 'center', md: 'space-between' }}
                paddingBlock={2}
