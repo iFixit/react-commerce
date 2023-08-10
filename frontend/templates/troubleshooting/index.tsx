@@ -88,7 +88,11 @@ const Wiki: NextPageWithLayout<{
    return (
       <>
          <GoogleNoScript />
-         <ScrollPercent scrollContainerRef={scrollContainerRef} />
+         <ScrollPercent
+            scrollContainerRef={scrollContainerRef}
+            hideOnZero={true}
+            hideOnScrollPast={true}
+         />
          <NavBar
             editUrl={wikiData.editUrl}
             historyUrl={wikiData.historyUrl}

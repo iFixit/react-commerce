@@ -3,10 +3,15 @@ import { useEffect, useState, RefObject } from 'react';
 
 export function ScrollPercent({
    scrollContainerRef,
+   hideOnZero = false,
+   hideOnScrollPast = false,
 }: {
    scrollContainerRef?: RefObject<HTMLElement>;
+   hideOnZero?: boolean;
+   hideOnScrollPast?: boolean;
 }) {
    const [scrollPercent, setScrollPercent] = useState(0);
+   const [scrolledPast, setScrolledPast] = useState(false);
 
    const getUpdateScrollPercent = (container: HTMLElement) => {
       return () => {
@@ -22,6 +27,10 @@ export function ScrollPercent({
                (container.offsetHeight - window.innerHeight)
          );
          setScrollPercent(scrollPercent);
+         setScrolledPast(
+            scrollPercent === 1 &&
+               window.scrollY > container.offsetTop + container.offsetHeight
+         );
       };
    };
 
@@ -36,6 +45,14 @@ export function ScrollPercent({
 
    const height = useToken('space', 2);
    const [blue200, blue500] = useToken('colors', ['blue.200', 'blue.500']);
+
+   if (hideOnZero && scrollPercent === 0) {
+      return null;
+   }
+
+   if (hideOnScrollPast && scrolledPast) {
+      return null;
+   }
 
    return (
       <Flex
