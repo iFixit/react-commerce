@@ -48,7 +48,10 @@ export function ScrollPercent({
    const height = useToken('space', 2);
    const [blue200, blue500] = useToken('colors', ['blue.200', 'blue.500']);
 
-   if (hideOnZero && scrollPercent === 0) {
+   const containerTop = scrollContainerRef?.current?.offsetTop;
+   const hasReachedScrollContainer =
+      containerTop && window.scrollY > containerTop;
+   if (hideOnZero && !hasReachedScrollContainer) {
       return null;
    }
 

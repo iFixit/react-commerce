@@ -103,13 +103,18 @@ const Wiki: NextPageWithLayout<{
             hideOnScrollPast={true}
          />
          <TOCContextProvider>
-            <Container fontSize="md" maxW="1280px" ref={scrollContainerRef}>
+            <Container
+               fontSize="md"
+               maxW="1280px"
+               ref={scrollContainerRef}
+               display="flex"
+            >
                <TOC />
                <Flex
                   direction="column"
                   paddingInline={{ base: 0, sm: 4 }}
                   paddingBottom={8}
-                  flexShrink="1"
+                  // flexShrink="1"
                   id="main"
                >
                   <TagManager />
