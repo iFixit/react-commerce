@@ -1,58 +1,32 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { TOCItems, useTOCContext } from './tocContext';
+import { TOCItem, useTOCContext } from './tocContext';
 
 export function TOC() {
    const tocContext = useTOCContext();
    const items = tocContext.getItems();
-   const activeEl = tocContext.activeEl;
 
    return (
       <Flex position="fixed" bottom={0}>
-         <TOCItems tocItems={items} activeEl={activeEl} />
+         <TOCItems tocItems={items} />
       </Flex>
    );
 }
 
-function TOCItems({
-   tocItems,
-   activeEl,
-}: {
-   tocItems: TOCItems;
-   activeEl: HTMLElement | null;
-}) {
-   const tocProps = Object.keys(tocItems).map((title) => {
-      const ref = tocItems[title];
-      const el = ref.current;
-
-      return {
-         title: title,
-         active: ref.current === activeEl,
-         referencedEl: el,
-      };
-   });
-
-   const items = tocProps.map((props, index) => {
+function TOCItems({ tocItems }: { tocItems: TOCItem[] }) {
+   const items = tocItems.map((props, index) => {
       return <TOCItem key={index} {...props} />;
    });
 
    return <>{items}</>;
 }
 
-function TOCItem({
-   title,
-   active,
-   referencedEl,
-}: {
-   title: string;
-   active: boolean;
-   referencedEl: HTMLElement | null;
-}) {
+function TOCItem({ title, visible, ref }: TOCItem) {
    const onClick = () => {
-      referencedEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
    };
 
    return (
-      <Text color={active ? 'blue.500' : 'gray.500'} onClick={onClick}>
+      <Text color={visible ? 'blue.500' : 'gray.500'} onClick={onClick}>
          {title}
       </Text>
    );
