@@ -59,6 +59,7 @@ import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
 import { AddToTOC, TOCContextProvider } from './tocContext';
+import { TOC } from './toc';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -103,6 +104,7 @@ const Wiki: NextPageWithLayout<{
          />
          <TOCContextProvider>
             <Container fontSize="md" maxW="1280px" ref={scrollContainerRef}>
+               <TOC />
                <Flex
                   direction="column"
                   paddingInline={{ base: 0, sm: 4 }}
