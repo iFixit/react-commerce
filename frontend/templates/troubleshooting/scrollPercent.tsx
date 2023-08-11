@@ -38,8 +38,10 @@ export function ScrollPercent({
       const el = scrollContainerRef?.current || document.documentElement;
       const handler = getUpdateScrollPercent(el);
       window.addEventListener('scroll', handler);
+      window.addEventListener('resize', handler);
       return () => {
          window.removeEventListener('scroll', handler);
+         window.removeEventListener('resize', handler);
       };
    }, [scrollContainerRef]);
 
