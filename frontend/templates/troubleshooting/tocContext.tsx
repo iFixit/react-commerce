@@ -33,7 +33,6 @@ export const TOCContext = createContext<TOCContext | null>(null);
 
 export const TOCContextProvider = ({ children }: PropsWithChildren) => {
    const [items, setItems] = useState<TOCItems>({});
-   const [cursorY, setCursorY] = useState<number | null>(null);
    const [closetItem, setClosestItem] = useState<TOCRecord | null>(null);
 
    const pushItem = useCallback(
@@ -94,16 +93,14 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
 
    const updateClosestItem = useCallback(() => {
       const verticallySortedItems = sortVertically(items);
-      const closestItem = cursorY
-         ? findActiveRecordByCursor(cursorY, verticallySortedItems)
-         : verticallySortedItems.find((item) => item.visible);
+      const closestItem = verticallySortedItems.find((item) => item.visible);
 
       if (!closestItem) {
          return;
       }
 
       setClosestItem(closestItem);
-   }, [cursorY, items]);
+   }, [items]);
 
    useEffect(() => {
       const observer = new IntersectionObserver(
@@ -131,12 +128,6 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
 
       const cleanup = observeItems(observer);
 
-      // Update active item on cursor movement
-      const cursorMoveHandler = (event: MouseEvent) => {
-         setCursorY(event.clientY);
-         updateClosestItem();
-      };
-
       // Update active item on scroll
       const scrollHandler = () => {
          updateClosestItem();
@@ -146,14 +137,12 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
       const resizeHandler = () => {
          updateClosestItem();
       };
-      window.addEventListener('mousemove', cursorMoveHandler);
       window.addEventListener('scroll', scrollHandler);
       window.addEventListener('resize', resizeHandler);
 
       return () => {
          observer.disconnect();
          cleanup();
-         window.removeEventListener('mousemove', cursorMoveHandler);
          window.removeEventListener('scroll', scrollHandler);
          window.removeEventListener('resize', resizeHandler);
       };
@@ -193,35 +182,6 @@ export function AddToTOC<T extends HTMLElement>(title?: string) {
       };
    }, [title, ref, pushItem, removeItem]);
    return { ref };
-}
-
-function findActiveRecordByCursor(
-   cursorY: number,
-   items: TOCRecord[]
-): TOCRecord | null {
-   let selectedActiveItem: TOCRecord | null = null;
-   let minDistanceFromCursor = Number.POSITIVE_INFINITY;
-
-   for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      const rect = item.ref.current?.getBoundingClientRect() || {
-         top: 0,
-         bottom: 0,
-      };
-
-      // Calculate the distance of the item's center from the cursor position
-      const distanceFromCursor = Math.abs(
-         (rect.top + rect.bottom) / 2 - cursorY
-      );
-
-      // Check if the item is visible and update the active item if it's closer to the cursor
-      if (item.visible && distanceFromCursor < minDistanceFromCursor) {
-         selectedActiveItem = item;
-         minDistanceFromCursor = distanceFromCursor;
-      }
-   }
-
-   return selectedActiveItem;
 }
 
 function sortVertically(items: TOCItems): TOCRecord[] {
