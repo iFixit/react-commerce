@@ -1,7 +1,7 @@
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React from 'react';
+import React, { useRef } from 'react';
 import {
    Avatar,
    Alert,
@@ -83,7 +83,7 @@ const Wiki: NextPageWithLayout<{
       display: 'block',
    };
 
-   const scrollContainerRef = React.useRef(null);
+   const scrollContainerRef = useRef(null);
 
    return (
       <>
