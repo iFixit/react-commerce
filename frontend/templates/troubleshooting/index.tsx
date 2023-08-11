@@ -58,6 +58,7 @@ import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
+import { TOCContextProvider } from './tocContext';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -100,6 +101,7 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
+         <TOCContextProvider>
          <Container fontSize="md" maxW="1280px" ref={scrollContainerRef}>
             <Flex
                direction="column"
@@ -219,6 +221,7 @@ const Wiki: NextPageWithLayout<{
                <PixelPing id={id} type="wiki" />
             </Flex>
          </Container>
+         </TOCContextProvider>
       </>
    );
 };
