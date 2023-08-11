@@ -115,6 +115,7 @@ const Wiki: NextPageWithLayout<{
                   flexShrink={0}
                   flexGrow={1}
                   paddingTop={1.5}
+                  maxWidth="250px"
                />
                <Flex
                   direction="column"

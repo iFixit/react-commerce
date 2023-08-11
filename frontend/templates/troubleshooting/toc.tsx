@@ -12,6 +12,7 @@ export function TOC(props: ListProps) {
          height="auto"
          position="sticky"
          top={0}
+         spacing={1.5}
       >
          <TOCItems tocItems={items} />
       </List>
@@ -35,7 +36,11 @@ function TOCItem({ title, elementRef, active }: TOCRecord) {
    };
    return (
       <ListItem>
-         <Text color={active ? 'blue.500' : 'gray.500'} onClick={onClick}>
+         <Text
+            color={active ? 'blue.500' : 'gray.500'}
+            fontWeight={active ? 'semibold' : 'normal'}
+            onClick={onClick}
+         >
             {title}
          </Text>
       </ListItem>
