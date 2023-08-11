@@ -192,28 +192,19 @@ function sortVertically(items: TOCItems): TOCRecord[] {
 }
 
 function getClosest(items: TOCItems) {
-   const verticallySortedItems = sortVertically(items).filter(
-      (item) => item.visible
-   );
+   const verticallySortedItems = sortVertically(items);
 
-   const scrollPercent =
-      window.scrollY / (document.body.scrollHeight - window.innerHeight);
+   const visibleItems = verticallySortedItems.filter((item) => item.visible);
 
-   const closest = verticallySortedItems.find((item, index) => {
-      const nextItem = verticallySortedItems[index + 1];
-      if (!nextItem) {
-         return item;
-      }
+   const scrollHeight = document.body.scrollHeight;
+   const scrollPercent = window.scrollY / (scrollHeight - window.innerHeight);
 
-      const itemTop = item.elementRef.current?.offsetTop || 0;
-      const nextItemTop = nextItem.elementRef.current?.offsetTop || 0;
-
-      const scrollHeight = document.body.scrollHeight;
+   const closest = visibleItems.findLast((visibleItem) => {
+      const itemTop = visibleItem.elementRef.current?.offsetTop || 0;
 
       const itemPercent = itemTop / scrollHeight;
-      const nextItemPercent = nextItemTop / scrollHeight;
-
-      return scrollPercent >= itemPercent && scrollPercent <= nextItemPercent;
+      const hasPassed = scrollPercent >= itemPercent;
+      return hasPassed;
    });
 
    return closest || null;
