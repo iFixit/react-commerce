@@ -9,26 +9,32 @@ import {
    useCallback,
 } from 'react';
 
-export type TOCItem = {
+type TOCRecord = {
    title: string;
    ref: RefObject<HTMLElement>;
    visible: boolean;
 };
 
-export type TOCItems = Record<string, TOCItem>;
-type PushItem = (title: string, ref: RefObject<HTMLElement>) => void;
-type GetItems = () => TOCItem[];
+export type TOCItem = {
+   title: string;
+   ref: RefObject<HTMLElement>;
+   active: boolean;
+};
+
+export type TOCItems = Record<string, TOCRecord>;
 
 export type TOCContext = {
-   pushItem: PushItem;
+   pushItem: (title: string, ref: RefObject<HTMLElement>) => void;
    removeItem: (title: string) => void;
-   getItems: GetItems;
+   getItems: () => TOCItem[];
 };
 
 export const TOCContext = createContext<TOCContext | null>(null);
 
 export const TOCContextProvider = ({ children }: PropsWithChildren) => {
    const [items, setItems] = useState<TOCItems>({});
+   const [cursorY, setCursorY] = useState<number | null>(null);
+   const [closetItem, setClosestItem] = useState<TOCRecord | null>(null);
 
    const pushItem = useCallback(
       (title: string, ref: RefObject<HTMLElement>) => {
@@ -46,8 +52,15 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
       [setItems]
    );
    const getItems = useCallback(() => {
-      return sortVertically(items);
-   }, [items]);
+      const sortedItems = sortVertically(items);
+      return sortedItems.map((item) => {
+         return {
+            title: item.title,
+            ref: item.ref,
+            active: item.title === closetItem?.title,
+         };
+      });
+   }, [items, closetItem]);
 
    const removeItem = useCallback(
       (title: string) => {
@@ -79,6 +92,19 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
       [items]
    );
 
+   const updateClosestItem = useCallback(() => {
+      const verticallySortedItems = sortVertically(items);
+      const closestItem = cursorY
+         ? findActiveRecordByCursor(cursorY, verticallySortedItems)
+         : verticallySortedItems.find((item) => item.visible);
+
+      if (!closestItem) {
+         return;
+      }
+
+      setClosestItem(closestItem);
+   }, [cursorY, items]);
+
    useEffect(() => {
       const observer = new IntersectionObserver(
          (entries) => {
@@ -105,11 +131,33 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
 
       const cleanup = observeItems(observer);
 
+      // Update active item on cursor movement
+      const cursorMoveHandler = (event: MouseEvent) => {
+         setCursorY(event.clientY);
+         updateClosestItem();
+      };
+
+      // Update active item on scroll
+      const scrollHandler = () => {
+         updateClosestItem();
+      };
+
+      // Update active item on resize
+      const resizeHandler = () => {
+         updateClosestItem();
+      };
+      window.addEventListener('mousemove', cursorMoveHandler);
+      window.addEventListener('scroll', scrollHandler);
+      window.addEventListener('resize', resizeHandler);
+
       return () => {
          observer.disconnect();
          cleanup();
+         window.removeEventListener('mousemove', cursorMoveHandler);
+         window.removeEventListener('scroll', scrollHandler);
+         window.removeEventListener('resize', resizeHandler);
       };
-   }, [items, observeItems]);
+   }, [items, observeItems, updateClosestItem]);
 
    const context = {
       pushItem,
@@ -147,7 +195,36 @@ export function AddToTOC<T extends HTMLElement>(title?: string) {
    return { ref };
 }
 
-function sortVertically(items: TOCItems): TOCItem[] {
+function findActiveRecordByCursor(
+   cursorY: number,
+   items: TOCRecord[]
+): TOCRecord | null {
+   let selectedActiveItem: TOCRecord | null = null;
+   let minDistanceFromCursor = Number.POSITIVE_INFINITY;
+
+   for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const rect = item.ref.current?.getBoundingClientRect() || {
+         top: 0,
+         bottom: 0,
+      };
+
+      // Calculate the distance of the item's center from the cursor position
+      const distanceFromCursor = Math.abs(
+         (rect.top + rect.bottom) / 2 - cursorY
+      );
+
+      // Check if the item is visible and update the active item if it's closer to the cursor
+      if (item.visible && distanceFromCursor < minDistanceFromCursor) {
+         selectedActiveItem = item;
+         minDistanceFromCursor = distanceFromCursor;
+      }
+   }
+
+   return selectedActiveItem;
+}
+
+function sortVertically(items: TOCItems): TOCRecord[] {
    const itemsArr = Object.values(items);
    return itemsArr.sort((a, b) => {
       const aTop = a.ref.current?.offsetTop || 0;
