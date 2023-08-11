@@ -221,6 +221,7 @@ const renderStyles: SystemStyleObject = {
       outlineColor: 'gray.300',
       overflow: 'hidden',
       position: 'relative',
+      minWidth: 'min-content', // narrow image text-wrap fix
 
       '&.imageBox_center': {
          marginInline: 'auto',
