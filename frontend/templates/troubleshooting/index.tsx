@@ -90,17 +90,17 @@ const Wiki: NextPageWithLayout<{
    return (
       <>
          <GoogleNoScript />
-         <ScrollPercent
-            scrollContainerRef={scrollContainerRef}
-            hideOnZero={true}
-            hideOnScrollPast={true}
-         />
          <NavBar
             editUrl={wikiData.editUrl}
             historyUrl={wikiData.historyUrl}
             deviceGuideUrl={wikiData.deviceGuideUrl}
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
+         />
+         <ScrollPercent
+            scrollContainerRef={scrollContainerRef}
+            hideOnZero={true}
+            hideOnScrollPast={true}
          />
          <TOCContextProvider>
             <Container fontSize="md" maxW="1280px" ref={scrollContainerRef}>
