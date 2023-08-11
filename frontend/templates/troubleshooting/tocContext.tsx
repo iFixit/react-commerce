@@ -9,15 +9,10 @@ import {
    useCallback,
 } from 'react';
 
-type TOCRecord = {
+export type TOCRecord = {
    title: string;
-   ref: RefObject<HTMLElement>;
+   elementRef: RefObject<HTMLElement>;
    visible: boolean;
-};
-
-export type TOCItem = {
-   title: string;
-   ref: RefObject<HTMLElement>;
    active: boolean;
 };
 
@@ -26,14 +21,13 @@ export type TOCItems = Record<string, TOCRecord>;
 export type TOCContext = {
    pushItem: (title: string, ref: RefObject<HTMLElement>) => void;
    removeItem: (title: string) => void;
-   getItems: () => TOCItem[];
+   getItems: () => TOCRecord[];
 };
 
 export const TOCContext = createContext<TOCContext | null>(null);
 
 export const TOCContextProvider = ({ children }: PropsWithChildren) => {
    const [items, setItems] = useState<TOCItems>({});
-   const [closetItem, setClosestItem] = useState<TOCRecord | null>(null);
 
    const pushItem = useCallback(
       (title: string, ref: RefObject<HTMLElement>) => {
@@ -42,8 +36,9 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
                ...items,
                [title]: {
                   title,
-                  ref,
+                  elementRef: ref,
                   visible: false,
+                  active: false,
                },
             };
          });
@@ -51,15 +46,8 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
       [setItems]
    );
    const getItems = useCallback(() => {
-      const sortedItems = sortVertically(items);
-      return sortedItems.map((item) => {
-         return {
-            title: item.title,
-            ref: item.ref,
-            active: item.title === closetItem?.title,
-         };
-      });
-   }, [items, closetItem]);
+      return sortVertically(items);
+   }, [items]);
 
    const removeItem = useCallback(
       (title: string) => {
@@ -75,15 +63,15 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
    const observeItems = useCallback(
       (observer: IntersectionObserver) => {
          Object.values(items).forEach((item) => {
-            if (item.ref.current) {
-               observer.observe(item.ref.current);
+            if (item.elementRef.current) {
+               observer.observe(item.elementRef.current);
             }
          });
 
          return () => {
             Object.values(items).forEach((item) => {
-               if (item.ref.current) {
-                  observer.unobserve(item.ref.current);
+               if (item.elementRef.current) {
+                  observer.unobserve(item.elementRef.current);
                }
             });
          };
@@ -91,59 +79,46 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
       [items]
    );
 
-   const updateClosestItem = useCallback(() => {
-      const verticallySortedItems = sortVertically(items).filter(
-         (item) => item.visible
-      );
-
-      const scrollPercent =
-         window.scrollY / (document.body.scrollHeight - window.innerHeight);
-
-      const closestItem = verticallySortedItems.find((item, index) => {
-         const nextItem = verticallySortedItems[index + 1];
-         if (!nextItem) {
-            return item;
-         }
-
-         const itemTop = item.ref.current?.offsetTop || 0;
-         const nextItemTop = nextItem.ref.current?.offsetTop || 0;
-
-         const scrollHeight = document.body.scrollHeight;
-
-         const itemPercent = itemTop / scrollHeight;
-         const nextItemPercent = nextItemTop / scrollHeight;
-
-         return (
-            scrollPercent >= itemPercent && scrollPercent <= nextItemPercent
-         );
+   const updateClosetItem = useCallback(() => {
+      setItems((items) => {
+         const closest = getClosest(items);
+         const newItems = { ...items };
+         Object.values(newItems).forEach((newItem) => {
+            newItem.active = newItem.title === closest?.title;
+         });
+         return newItems;
       });
+   }, []);
 
-      if (!closestItem) {
-         return;
-      }
+   const setVisible = useCallback((title: string, visible: boolean) => {
+      setItems((items) => {
+         items[title].visible = visible;
+         return items;
+      });
+   }, []);
 
-      setClosestItem(closestItem);
-   }, [items]);
+   const getTitleFromEl = useCallback(
+      (el: HTMLElement) => {
+         const title = Object.keys(items).find(
+            (key) => items[key].elementRef.current === el
+         );
+
+         return title;
+      },
+      [items]
+   );
 
    useEffect(() => {
       const observer = new IntersectionObserver(
          (entries) => {
             entries.forEach((entry) => {
-               const target = entry.target as HTMLElement;
-               const title = Object.keys(items).find(
-                  (key) => items[key].ref.current === target
-               );
+               const title = getTitleFromEl(entry.target as HTMLElement);
 
                if (!title) {
                   return;
                }
-               setItems((prevItems) => ({
-                  ...prevItems,
-                  [title]: {
-                     ...prevItems[title],
-                     visible: entry.isIntersecting,
-                  },
-               }));
+
+               setVisible(title, entry.isIntersecting);
             });
          },
          { threshold: 0 }
@@ -153,12 +128,12 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
 
       // Update active item on scroll
       const scrollHandler = () => {
-         updateClosestItem();
+         updateClosetItem();
       };
 
       // Update active item on resize
       const resizeHandler = () => {
-         updateClosestItem();
+         updateClosetItem();
       };
       window.addEventListener('scroll', scrollHandler);
       window.addEventListener('resize', resizeHandler);
@@ -169,7 +144,7 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
          window.removeEventListener('scroll', scrollHandler);
          window.removeEventListener('resize', resizeHandler);
       };
-   }, [items, observeItems, updateClosestItem]);
+   }, [setVisible, getTitleFromEl, observeItems, updateClosetItem]);
 
    const context = {
       pushItem,
@@ -210,8 +185,36 @@ export function AddToTOC<T extends HTMLElement>(title?: string) {
 function sortVertically(items: TOCItems): TOCRecord[] {
    const itemsArr = Object.values(items);
    return itemsArr.sort((a, b) => {
-      const aTop = a.ref.current?.offsetTop || 0;
-      const bTop = b.ref.current?.offsetTop || 0;
+      const aTop = a.elementRef.current?.offsetTop || 0;
+      const bTop = b.elementRef.current?.offsetTop || 0;
       return aTop - bTop;
    });
+}
+
+function getClosest(items: TOCItems) {
+   const verticallySortedItems = sortVertically(items).filter(
+      (item) => item.visible
+   );
+
+   const scrollPercent =
+      window.scrollY / (document.body.scrollHeight - window.innerHeight);
+
+   const closest = verticallySortedItems.find((item, index) => {
+      const nextItem = verticallySortedItems[index + 1];
+      if (!nextItem) {
+         return item;
+      }
+
+      const itemTop = item.elementRef.current?.offsetTop || 0;
+      const nextItemTop = nextItem.elementRef.current?.offsetTop || 0;
+
+      const scrollHeight = document.body.scrollHeight;
+
+      const itemPercent = itemTop / scrollHeight;
+      const nextItemPercent = nextItemTop / scrollHeight;
+
+      return scrollPercent >= itemPercent && scrollPercent <= nextItemPercent;
+   });
+
+   return closest || null;
 }

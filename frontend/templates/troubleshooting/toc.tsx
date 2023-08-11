@@ -1,18 +1,24 @@
-import { Flex, Text } from '@chakra-ui/react';
-import { TOCItem, useTOCContext } from './tocContext';
+import { List, ListItem, ListProps, Text } from '@chakra-ui/react';
+import { TOCRecord, useTOCContext } from './tocContext';
 
-export function TOC() {
+export function TOC(props: ListProps) {
    const { getItems } = useTOCContext();
    const items = getItems();
 
    return (
-      <Flex position="fixed" bottom={0}>
+      <List
+         {...props}
+         alignSelf="flex-start"
+         height="auto"
+         position="sticky"
+         top={0}
+      >
          <TOCItems tocItems={items} />
-      </Flex>
+      </List>
    );
 }
 
-function TOCItems({ tocItems }: { tocItems: TOCItem[] }) {
+function TOCItems({ tocItems }: { tocItems: TOCRecord[] }) {
    const items = tocItems.map((props, index) => {
       return <TOCItem key={index} {...props} />;
    });
@@ -20,13 +26,18 @@ function TOCItems({ tocItems }: { tocItems: TOCItem[] }) {
    return <>{items}</>;
 }
 
-function TOCItem({ title, ref, active }: TOCItem) {
+function TOCItem({ title, elementRef, active }: TOCRecord) {
    const onClick = () => {
-      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      elementRef.current?.scrollIntoView({
+         behavior: 'smooth',
+         block: 'nearest',
+      });
    };
    return (
-      <Text color={active ? 'blue.500' : 'gray.500'} onClick={onClick}>
-         {title}
-      </Text>
+      <ListItem>
+         <Text color={active ? 'blue.500' : 'gray.500'} onClick={onClick}>
+            {title}
+         </Text>
+      </ListItem>
    );
 }
