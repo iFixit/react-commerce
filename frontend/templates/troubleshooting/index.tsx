@@ -58,7 +58,7 @@ import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
-import { TOCContextProvider } from './tocContext';
+import { AddToTOC, TOCContextProvider } from './tocContext';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -690,6 +690,7 @@ function AuthorListing({
 }
 
 function IntroductionSection({ intro }: { intro: Section }) {
+   const { ref } = AddToTOC<HTMLHeadingElement>(intro.heading);
    return (
       <>
          {intro.heading && (
@@ -698,6 +699,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                fontWeight="semibold"
                selfLinked
                id={intro.id}
+               ref={ref}
             >
                {intro.heading}
             </HeadingSelfLink>
@@ -707,16 +709,21 @@ function IntroductionSection({ intro }: { intro: Section }) {
    );
 }
 
-function ConclusionSection({ conclusion }: { conclusion: Section }) {
+const ConclusionSection = function ConclusionSectionInner({
+   conclusion,
+}: {
+   conclusion: Section;
+}) {
+   const { ref } = AddToTOC<HTMLHeadingElement>(conclusion.heading);
    return (
       <>
-         <HeadingSelfLink selfLinked id={conclusion.id} pt={4}>
+         <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
       </>
    );
-}
+};
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
    const filteredConclusions = conclusions.filter(
@@ -749,6 +756,8 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
+   const title = 'Related Problems';
+   const { ref } = AddToTOC<HTMLHeadingElement>(title);
    return (
       <>
          <HeadingSelfLink
@@ -758,8 +767,9 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             id="related-problems"
             selfLinked
             pt={4}
+            ref={ref}
          >
-            Related Problems
+            {title}
          </HeadingSelfLink>
          <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
             {problems.map((problem) => (

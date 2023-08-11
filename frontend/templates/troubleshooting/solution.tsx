@@ -25,6 +25,7 @@ import {
 import Prerendered from './prerendered';
 import { GuideResource, ProductResource } from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
+import { AddToTOC } from './tocContext';
 
 const _SolutionFooter = () => (
    <Stack
@@ -206,6 +207,7 @@ export default function SolutionCard({
    index: number;
    solution: SolutionSection;
 }) {
+   const { ref } = AddToTOC<HTMLDivElement>(solution.heading);
    return (
       <Box
          id={solution.id}
@@ -215,6 +217,7 @@ export default function SolutionCard({
          borderStyle="solid"
          borderWidth="1px"
          padding={{ base: 4, sm: 6 }}
+         ref={ref}
       >
          <Flex direction="column" flexGrow={1}>
             <SolutionHeader
