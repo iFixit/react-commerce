@@ -1,6 +1,7 @@
 import type { ImageFieldsFragment } from '@lib/strapi-sdk';
 import type { ImageFieldsFragment as ShopifyImageFields } from '@lib/shopify-storefront-sdk';
 import { z } from 'zod';
+import type { DeviceWiki } from '@lib/ifixit-api/devices';
 
 export const ImageSchema = z.object({
    id: z.string().nullable().optional(),
@@ -58,4 +59,20 @@ export function imageFromShopify(
       width: imageFragment.width,
       url: imageFragment.url,
    };
+}
+
+export function childImageFromDeviceWiki(
+   deviceWiki: DeviceWiki,
+   childDeviceTitle: string
+): Image | null {
+   const child = deviceWiki.children?.find(
+      (c: any) => c.title === childDeviceTitle
+   );
+   if (child?.image?.original) {
+      return {
+         url: child.image.original,
+         altText: null,
+      };
+   }
+   return null;
 }

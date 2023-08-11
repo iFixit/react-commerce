@@ -58,11 +58,18 @@ test.describe('Vulcan Page Content and SEO', () => {
          },
       ];
 
-      langsToHrefs.forEach(async (langToHref) => {
+      const checkLang = async function (langToHref: {
+         lang: string;
+         href: string;
+      }): Promise<void> {
          const hrefLang = page.locator(`link[hreflang="${langToHref.lang}"]`);
-         await expect(hrefLang).toHaveAttribute('hreflang', langToHref.lang);
-         await expect(hrefLang).toHaveAttribute('href', langToHref.href);
-      });
+         await Promise.all([
+            expect(hrefLang).toHaveAttribute('hreflang', langToHref.lang),
+            expect(hrefLang).toHaveAttribute('href', langToHref.href),
+         ]);
+      };
+
+      await Promise.all(langsToHrefs.map(checkLang));
    });
 
    test('Redirect to Canonical URL', async ({ page }) => {

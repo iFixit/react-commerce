@@ -32,6 +32,9 @@ export function HeroSection({
    backgroundImage,
    brandLogo,
 }: HeroSectionProps) {
+   const pagination = usePagination();
+   const page = pagination.currentRefinement + 1;
+   const isFirstPage = page === 1;
    return (
       <Wrapper as="section">
          {backgroundImage ? (
@@ -78,29 +81,45 @@ export function HeroSection({
                         mb="4"
                      />
                   )}
-                  <HeroTitle>{title}</HeroTitle>
-                  {isPresent(tagline) && (
-                     <Text as="h2" fontWeight="medium">
-                        {tagline}
-                     </Text>
-                  )}
-                  {isPresent(description) && (
-                     <DescriptionRichText mt="4">
-                        {description}
-                     </DescriptionRichText>
+                  <HeroTitle page={page}>{title}</HeroTitle>
+                  {isFirstPage && (
+                     <>
+                        {isPresent(tagline) && (
+                           <Text
+                              as="h2"
+                              fontWeight="medium"
+                              data-testid="hero-tagline"
+                           >
+                              {tagline}
+                           </Text>
+                        )}
+                        {isPresent(description) && (
+                           <DescriptionRichText mt="4">
+                              {description}
+                           </DescriptionRichText>
+                        )}
+                     </>
                   )}
                </Flex>
             </Flex>
          ) : (
             <Flex direction="column">
-               <HeroTitle>{title}</HeroTitle>
-               {isPresent(tagline) && (
-                  <Text as="h2" fontWeight="medium" data-testid="hero-tagline">
-                     {tagline}
-                  </Text>
-               )}
-               {isPresent(description) && (
-                  <HeroDescription>{description}</HeroDescription>
+               <HeroTitle page={page}>{title}</HeroTitle>
+               {isFirstPage && (
+                  <>
+                     {isPresent(tagline) && (
+                        <Text
+                           as="h2"
+                           fontWeight="medium"
+                           data-testid="hero-tagline"
+                        >
+                           {tagline}
+                        </Text>
+                     )}
+                     {isPresent(description) && (
+                        <HeroDescription>{description}</HeroDescription>
+                     )}
+                  </>
                )}
             </Flex>
          )}
@@ -108,9 +127,10 @@ export function HeroSection({
    );
 }
 
-function HeroTitle({ children }: React.PropsWithChildren) {
-   const pagination = usePagination();
-   const page = pagination.currentRefinement + 1;
+function HeroTitle({
+   children,
+   page,
+}: React.PropsWithChildren<{ page: number }>) {
    return (
       <Heading
          as="h1"

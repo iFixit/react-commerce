@@ -57,6 +57,7 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
+import { ViewStats } from '@components/common/ViewStats';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -71,6 +72,7 @@ const Wiki: NextPageWithLayout<{
       mainImageUrl,
       mainImageUrlLarge,
       id,
+      viewStats,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const smBreakpoint = useToken('breakpoints', 'sm');
@@ -211,6 +213,7 @@ const Wiki: NextPageWithLayout<{
                <PixelPing id={id} type="wiki" />
             </Flex>
          </Container>
+         {viewStats && <ViewStats {...viewStats} />}
       </>
    );
 };
@@ -731,7 +734,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             Haven&apos;t found the solution to your problem?
          </chakra.span>
          <Button href={answersUrl} as="a" colorScheme="brand">
-            Ask a question
+            Browse our forum
          </Button>
       </Alert>
    );
