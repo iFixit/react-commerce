@@ -109,12 +109,18 @@ const Wiki: NextPageWithLayout<{
                ref={scrollContainerRef}
                display="flex"
             >
-               <TOC />
+               <TOC
+                  display="flex"
+                  flexDirection="column"
+                  flexShrink={0}
+                  flexGrow={1}
+                  paddingTop={1.5}
+               />
                <Flex
                   direction="column"
                   paddingInline={{ base: 0, sm: 4 }}
                   paddingBottom={8}
-                  // flexShrink="1"
+                  flexShrink="1"
                   id="main"
                >
                   <TagManager />
