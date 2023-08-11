@@ -92,8 +92,31 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
    );
 
    const updateClosestItem = useCallback(() => {
-      const verticallySortedItems = sortVertically(items);
-      const closestItem = verticallySortedItems.find((item) => item.visible);
+      const verticallySortedItems = sortVertically(items).filter(
+         (item) => item.visible
+      );
+
+      const scrollPercent =
+         window.scrollY / (document.body.scrollHeight - window.innerHeight);
+
+      const closestItem = verticallySortedItems.find((item, index) => {
+         const nextItem = verticallySortedItems[index + 1];
+         if (!nextItem) {
+            return item;
+         }
+
+         const itemTop = item.ref.current?.offsetTop || 0;
+         const nextItemTop = nextItem.ref.current?.offsetTop || 0;
+
+         const scrollHeight = document.body.scrollHeight;
+
+         const itemPercent = itemTop / scrollHeight;
+         const nextItemPercent = nextItemTop / scrollHeight;
+
+         return (
+            scrollPercent >= itemPercent && scrollPercent <= nextItemPercent
+         );
+      });
 
       if (!closestItem) {
          return;
