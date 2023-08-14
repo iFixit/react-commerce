@@ -45,7 +45,15 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                   );
                }
                case 'PressQuotes': {
-                  return <PressQuotesSection key={section.id} data={section} />;
+                  return (
+                     <PressQuotesSection
+                        key={section.id}
+                        title={section.title}
+                        description={section.description}
+                        callToAction={section.callToAction}
+                        quotes={section.quotes}
+                     />
+                  );
                }
                case 'FeaturedProducts': {
                   return (

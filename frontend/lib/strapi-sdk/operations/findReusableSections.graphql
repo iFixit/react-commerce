@@ -1,0 +1,29 @@
+query findReusableSections($filters: ReusableSectionFiltersInput) {
+   reusableSections(filters: $filters) {
+      data {
+         id
+         attributes {
+            ...ReusableSectionFields
+         }
+      }
+   }
+}
+
+fragment ReusableSectionFields on ReusableSection {
+   section {
+      __typename
+      ...BannersSectionFields
+      ...SplitWithImageSectionFields
+      ...PressQuotesSectionFields
+      ...QuoteGallerySectionFields
+   }
+   placement {
+      ...PlacementFields
+   }
+   priority
+   positionInProductList
+}
+
+fragment PlacementFields on ComponentMiscPlacement {
+   showInProductListPages
+}
