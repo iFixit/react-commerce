@@ -114,8 +114,14 @@ const Wiki: NextPageWithLayout<{
                   flexDirection="column"
                   flexShrink={0}
                   flexGrow={1}
-                  paddingTop={1.5}
-                  maxWidth="250px"
+                  paddingTop={6}
+                  borderRight="1px solid"
+                  borderColor="gray.300"
+                  maxWidth="240px"
+                  marginLeft={-4}
+                  listItemProps={{
+                     paddingLeft: 4,
+                  }}
                />
                <Flex
                   direction="column"

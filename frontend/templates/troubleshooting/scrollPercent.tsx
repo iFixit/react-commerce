@@ -45,7 +45,7 @@ export function ScrollPercent({
       };
    }, [scrollContainerRef]);
 
-   const height = useScrollPercentHeight(CssTokenOption.ThemeToken);
+   const height = useScrollPercentHeight(CssTokenOption.CssString);
    const [blue200, blue500] = useToken('colors', ['blue.200', 'blue.500']);
 
    const containerTop = scrollContainerRef?.current?.offsetTop;
@@ -66,6 +66,7 @@ export function ScrollPercent({
          left={0}
          width="100%"
          height={height}
+         marginTop={`-${height}`}
          background={`linear-gradient(to right, ${blue500} ${
             scrollPercent * 100
          }%, ${blue200} 0%)`}
@@ -82,7 +83,17 @@ export enum CssTokenOption {
    Number = 'Number',
 }
 
-export function useScrollPercentHeight(option: CssTokenOption) {
+export function useScrollPercentHeight(
+   option: CssTokenOption.ThemeToken
+): number;
+export function useScrollPercentHeight(
+   option: CssTokenOption.CssString
+): string;
+export function useScrollPercentHeight(option: CssTokenOption.Number): number;
+
+export function useScrollPercentHeight(
+   option: CssTokenOption
+): number | string {
    const space2 = useToken('space', 2);
    const theme = useTheme();
    if (option === CssTokenOption.ThemeToken) {
@@ -92,7 +103,7 @@ export function useScrollPercentHeight(option: CssTokenOption) {
       height: space2,
    });
 
-   const heightStr = cssThunk(theme).height;
+   const heightStr = cssThunk(theme).height as string;
    if (option === CssTokenOption.CssString) {
       return heightStr;
    }
