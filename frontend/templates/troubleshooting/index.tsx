@@ -113,7 +113,6 @@ const Wiki: NextPageWithLayout<{
                   display="flex"
                   flexShrink={0}
                   flexGrow={1}
-                  paddingTop={6}
                   borderRight="1px solid"
                   borderColor="gray.300"
                   maxWidth="240px"

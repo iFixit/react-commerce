@@ -32,9 +32,10 @@ export function TOC({
                   as: List,
                   flexDirection: 'column',
                   spacing: 2,
+                  paddingRight: 3,
+                  paddingTop: 6,
                } as FlexProps & ListProps
             }
-            paddingRight={3}
          >
             <TOCItems tocItems={items} listItemProps={listItemProps} />
          </FlexScrollGradient>

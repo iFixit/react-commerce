@@ -64,13 +64,13 @@ function getGradientsBaseStyle(
       before: {
          ...sharedStyle,
          [gradientSizeProp]: `${gradientSizePX}px`,
-         [beforeStart]: '-1px',
+         [beforeStart]: '0px',
          background: `linear-gradient(${beforeBackgroundDegrees}deg, rgba(249, 250, 251, 0) 0%, ${color} 106.41%)`,
       },
       after: {
          ...sharedStyle,
          [gradientSizeProp]: `${gradientSizePX}px`,
-         [afterStart]: '-1px',
+         [afterStart]: '0px',
          background: `linear-gradient(${afterBackgroundDegrees}deg, rgba(249, 250, 251, 0) 0%, ${color} 106.41%)`,
       },
    };
