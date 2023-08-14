@@ -82,23 +82,19 @@ export function HeroSection({
                      />
                   )}
                   <HeroTitle page={page}>{title}</HeroTitle>
-                  {isFirstPage && (
-                     <>
-                        {isPresent(tagline) && (
-                           <Text
-                              as="h2"
-                              fontWeight="medium"
-                              data-testid="hero-tagline"
-                           >
-                              {tagline}
-                           </Text>
-                        )}
-                        {isPresent(description) && (
-                           <DescriptionRichText mt="4">
-                              {description}
-                           </DescriptionRichText>
-                        )}
-                     </>
+                  {isPresent(tagline) && (
+                     <Text
+                        as="h2"
+                        fontWeight="medium"
+                        data-testid="hero-tagline"
+                     >
+                        {tagline}
+                     </Text>
+                  )}
+                  {isPresent(description) && (
+                     <DescriptionRichText mt="4">
+                        {description}
+                     </DescriptionRichText>
                   )}
                </Flex>
             </Flex>
