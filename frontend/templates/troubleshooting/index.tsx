@@ -58,6 +58,7 @@ import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ViewStats } from '@components/common/ViewStats';
+import { IntlDate } from '@components/ui/IntlDate';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -634,12 +635,15 @@ function LastUpdatedDate({
          fontSize="sm"
          color="gray.500"
       >
-         {'Last updated on ' +
-            lastUpdatedDate.toLocaleDateString(undefined, {
+         Last updated on{' '}
+         <IntlDate
+            value={lastUpdatedDate}
+            options={{
                year: 'numeric',
                month: 'long',
                day: 'numeric',
-            })}
+            }}
+         />
       </Link>
    );
 }
