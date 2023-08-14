@@ -1,4 +1,6 @@
 import {
+   Flex,
+   FlexProps,
    List,
    ListItem,
    ListItemProps,
@@ -7,27 +9,35 @@ import {
 } from '@chakra-ui/react';
 import { TOCRecord, useTOCContext } from './tocContext';
 import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
+import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
 
 export function TOC({
    listItemProps,
    ...props
-}: ListProps & { listItemProps?: ListItemProps }) {
+}: FlexProps & { listItemProps?: ListItemProps }) {
    const { getItems } = useTOCContext();
    const items = getItems();
-   // mobile view at 1024px breakpoint (lg == desktop)
-
    return (
-      <List
+      <Flex
+         {...props}
          alignSelf="flex-start"
-         height="auto"
+         height="100vh"
          position="sticky"
          top={0}
-         spacing={2}
-         paddingRight={3}
-         {...props}
       >
-         <TOCItems tocItems={items} listItemProps={listItemProps} />
-      </List>
+         <FlexScrollGradient
+            nestedFlexProps={
+               {
+                  as: List,
+                  flexDirection: 'column',
+                  spacing: 2,
+               } as FlexProps & ListProps
+            }
+            paddingRight={3}
+         >
+            <TOCItems tocItems={items} listItemProps={listItemProps} />
+         </FlexScrollGradient>
+      </Flex>
    );
 }
 

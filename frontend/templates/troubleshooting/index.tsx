@@ -111,7 +111,6 @@ const Wiki: NextPageWithLayout<{
             >
                <TOC
                   display="flex"
-                  flexDirection="column"
                   flexShrink={0}
                   flexGrow={1}
                   paddingTop={6}
