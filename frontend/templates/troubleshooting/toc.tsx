@@ -10,6 +10,7 @@ import {
 import { TOCRecord, useTOCContext } from './tocContext';
 import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
+import { RefObject, useEffect, useRef } from 'react';
 
 export function TOC({
    listItemProps,
@@ -55,6 +56,27 @@ function TOCItems({
    return <>{items}</>;
 }
 
+function useScrollToActiveEffect(
+   ref: RefObject<HTMLLIElement>,
+   active: boolean
+) {
+   useEffect(() => {
+      const el = ref.current;
+      if (!el) {
+         return;
+      }
+
+      if (!active) {
+         return;
+      }
+
+      el.parentElement?.scrollTo({
+         top: el.offsetTop - el.parentElement.clientHeight / 2,
+         behavior: 'instant',
+      });
+   }, [ref, active]);
+}
+
 function TOCItem({
    title,
    elementRef,
@@ -63,6 +85,8 @@ function TOCItem({
    ...props
 }: TOCRecord & ListItemProps) {
    const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
+
+   const ref = useRef<HTMLLIElement>(null);
 
    const onClick = () => {
       const el = elementRef.current;
@@ -74,6 +98,9 @@ function TOCItem({
          bufferPx: scrollIndicatorHeight,
       });
    };
+
+   useScrollToActiveEffect(ref, active);
+
    return (
       <ListItem
          paddingTop={1}
@@ -84,6 +111,7 @@ function TOCItem({
          background={active ? 'blue.100' : undefined}
          borderTopRightRadius={active ? 1 : undefined}
          borderBottomRightRadius={active ? 1 : undefined}
+         ref={ref}
          {...props}
       >
          <Text
