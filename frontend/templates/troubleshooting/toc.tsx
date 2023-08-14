@@ -1,5 +1,6 @@
 import { List, ListItem, ListProps, Text } from '@chakra-ui/react';
 import { TOCRecord, useTOCContext } from './tocContext';
+import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
 
 export function TOC(props: ListProps) {
    const { getItems } = useTOCContext();
@@ -27,11 +28,17 @@ function TOCItems({ tocItems }: { tocItems: TOCRecord[] }) {
    return <>{items}</>;
 }
 
-function TOCItem({ title, elementRef, active }: TOCRecord) {
+function TOCItem({ title, elementRef, active, scrollTo }: TOCRecord) {
+   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
+
    const onClick = () => {
-      elementRef.current?.scrollIntoView({
-         behavior: 'smooth',
-         block: 'nearest',
+      const el = elementRef.current;
+      if (!el) {
+         return;
+      }
+
+      scrollTo({
+         bufferPx: scrollIndicatorHeight,
       });
    };
    return (

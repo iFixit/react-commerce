@@ -1,4 +1,4 @@
-import { Flex, useToken } from '@chakra-ui/react';
+import { Flex, useToken, css, useTheme } from '@chakra-ui/react';
 import { useEffect, useState, RefObject } from 'react';
 
 export function ScrollPercent({
@@ -45,7 +45,7 @@ export function ScrollPercent({
       };
    }, [scrollContainerRef]);
 
-   const height = useToken('space', 2);
+   const height = useScrollPercentHeight(CssTokenOption.ThemeToken);
    const [blue200, blue500] = useToken('colors', ['blue.200', 'blue.500']);
 
    const containerTop = scrollContainerRef?.current?.offsetTop;
@@ -74,4 +74,29 @@ export function ScrollPercent({
          zIndex="1000"
       />
    );
+}
+
+export enum CssTokenOption {
+   ThemeToken = 'ThemeToken',
+   CssString = 'CssString',
+   Number = 'Number',
+}
+
+export function useScrollPercentHeight(option: CssTokenOption) {
+   const space2 = useToken('space', 2);
+   const theme = useTheme();
+   if (option === CssTokenOption.ThemeToken) {
+      return space2;
+   }
+   const cssThunk = css({
+      height: space2,
+   });
+
+   const heightStr = cssThunk(theme).height;
+   if (option === CssTokenOption.CssString) {
+      return heightStr;
+   }
+
+   const height = parseInt(heightStr, 10);
+   return height;
 }

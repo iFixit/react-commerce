@@ -14,6 +14,11 @@ export type TOCRecord = {
    elementRef: RefObject<HTMLElement>;
    visible: boolean;
    active: boolean;
+   scrollTo: (scrollToOptions?: ScrollToOptions) => void;
+};
+
+export type ScrollToOptions = {
+   bufferPx?: number;
 };
 
 export type TOCItems = Record<string, TOCRecord>;
@@ -25,6 +30,25 @@ export type TOCContext = {
 };
 
 export const TOCContext = createContext<TOCContext | null>(null);
+
+function scrollTo(
+   ref: RefObject<HTMLElement>,
+   scrollToOptions?: ScrollToOptions
+) {
+   const el = ref.current;
+   if (!el) {
+      return;
+   }
+
+   const scrollHeight = document.body.scrollHeight;
+   const scrollTop =
+      (el.offsetTop / scrollHeight) * (scrollHeight - window.innerHeight);
+
+   const bufferPx = scrollToOptions?.bufferPx || 0;
+   const scrollTo = scrollTop + bufferPx;
+
+   window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+}
 
 export const TOCContextProvider = ({ children }: PropsWithChildren) => {
    const [items, setItems] = useState<TOCItems>({});
@@ -39,6 +63,8 @@ export const TOCContextProvider = ({ children }: PropsWithChildren) => {
                   elementRef: ref,
                   visible: false,
                   active: false,
+                  scrollTo: (scrollToOptions?: ScrollToOptions) =>
+                     scrollTo(ref, scrollToOptions),
                },
             };
          });
