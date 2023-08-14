@@ -1,6 +1,10 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { withCacheLong } from '@helpers/cache-control-helpers';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   CacheLong,
+   hasDisableCacheGets,
+   withCache,
+} from '@helpers/cache-control-helpers';
+import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import compose from 'lodash/flowRight';
@@ -9,8 +13,7 @@ import { ViewCartTemplateProps } from './useViewCartProps';
 
 const withMiddleware = compose(
    withLogging<ViewCartTemplateProps>,
-   withCacheLong<ViewCartTemplateProps>,
-   withNoindexDevDomains<ViewCartTemplateProps>
+   withCache(CacheLong)<ViewCartTemplateProps>
 );
 
 export const getServerSideProps: GetServerSideProps<ViewCartTemplateProps> =
