@@ -1,0 +1,51 @@
+{
+   "kind": "collectionType",
+   "collectionName": "reusable_sections",
+   "info": {
+      "singularName": "reusable-section",
+      "pluralName": "reusable-sections",
+      "displayName": "Reusable Section",
+      "description": ""
+   },
+   "options": {
+      "draftAndPublish": true
+   },
+   "pluginOptions": {},
+   "attributes": {
+      "title": {
+         "type": "string",
+         "required": true,
+         "private": true
+      },
+      "placement": {
+         "displayName": "Placement",
+         "type": "component",
+         "repeatable": true,
+         "component": "misc.placement",
+         "required": true
+      },
+      "priority": {
+         "type": "integer",
+         "required": true,
+         "default": 0
+      },
+      "positionInProductList": {
+         "type": "enumeration",
+         "enum": ["top", "after products", "bottom"],
+         "default": "after products",
+         "required": true
+      },
+      "section": {
+         "type": "dynamiczone",
+         "components": [
+            "section.banner",
+            "page.split-with-image",
+            "page.press",
+            "section.quote-gallery"
+         ],
+         "required": true,
+         "max": 1,
+         "min": 1
+      }
+   }
+}

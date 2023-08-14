@@ -24,6 +24,7 @@ export type Scalars = {
    ProductListItemOverridesDynamicZoneInput: any;
    ProductListSectionsDynamicZoneInput: any;
    ProductSectionsDynamicZoneInput: any;
+   ReusableSectionSectionDynamicZoneInput: any;
    Upload: any;
 };
 
@@ -224,6 +225,34 @@ export type ComponentMenuSubmenu = {
    id: Scalars['ID'];
    name: Scalars['String'];
    submenu?: Maybe<MenuEntityResponse>;
+};
+
+export type ComponentMiscPlacement = {
+   __typename?: 'ComponentMiscPlacement';
+   id: Scalars['ID'];
+   productLists?: Maybe<ProductListRelationResponseCollection>;
+   showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+};
+
+export type ComponentMiscPlacementProductListsArgs = {
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ComponentMiscPlacementFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentMiscPlacementFiltersInput>>>;
+   not?: InputMaybe<ComponentMiscPlacementFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentMiscPlacementFiltersInput>>>;
+   productLists?: InputMaybe<ProductListFiltersInput>;
+   showInProductListPages?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentMiscPlacementInput = {
+   id?: InputMaybe<Scalars['ID']>;
+   productLists?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   showInProductListPages?: InputMaybe<Enum_Componentmiscplacement_Showinproductlistpages>;
 };
 
 export type ComponentPageBrowse = {
@@ -671,6 +700,13 @@ export type DateTimeFilterInput = {
    startsWith?: InputMaybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Componentmiscplacement_Showinproductlistpages {
+   None = 'none',
+   OnlyDescendants = 'only_descendants',
+   OnlySelected = 'only_selected',
+   SelectedAndDescendants = 'selected_and_descendants',
+}
+
 export enum Enum_Componentpagesplitwithimage_Imageposition {
    Left = 'Left',
    Right = 'Right',
@@ -687,6 +723,12 @@ export enum Enum_Productlist_Type {
    Marketing = 'marketing',
    Parts = 'parts',
    Tools = 'tools',
+}
+
+export enum Enum_Reusablesection_Positioninproductlist {
+   AfterProducts = 'after_products',
+   Bottom = 'bottom',
+   Top = 'top',
 }
 
 export enum Enum_Store_Currency {
@@ -792,6 +834,7 @@ export type GenericMorph =
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
    | ComponentMenuSubmenu
+   | ComponentMiscPlacement
    | ComponentPageBrowse
    | ComponentPageCallToAction
    | ComponentPageCategory
@@ -831,6 +874,7 @@ export type GenericMorph =
    | Page
    | Product
    | ProductList
+   | ReusableSection
    | SocialPost
    | Store
    | UploadFile
@@ -1067,6 +1111,7 @@ export type Mutation = {
    createProduct?: Maybe<ProductEntityResponse>;
    createProductList?: Maybe<ProductListEntityResponse>;
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
+   createReusableSection?: Maybe<ReusableSectionEntityResponse>;
    createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
    createUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1083,6 +1128,7 @@ export type Mutation = {
    deletePage?: Maybe<PageEntityResponse>;
    deleteProduct?: Maybe<ProductEntityResponse>;
    deleteProductList?: Maybe<ProductListEntityResponse>;
+   deleteReusableSection?: Maybe<ReusableSectionEntityResponse>;
    deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1111,6 +1157,7 @@ export type Mutation = {
    updatePage?: Maybe<PageEntityResponse>;
    updateProduct?: Maybe<ProductEntityResponse>;
    updateProductList?: Maybe<ProductListEntityResponse>;
+   updateReusableSection?: Maybe<ReusableSectionEntityResponse>;
    updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1190,6 +1237,10 @@ export type MutationCreateProductListLocalizationArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationCreateReusableSectionArgs = {
+   data: ReusableSectionInput;
+};
+
 export type MutationCreateSocialPostArgs = {
    data: SocialPostInput;
 };
@@ -1248,6 +1299,10 @@ export type MutationDeleteProductArgs = {
 export type MutationDeleteProductListArgs = {
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationDeleteReusableSectionArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteSocialPostArgs = {
@@ -1354,6 +1409,11 @@ export type MutationUpdateProductListArgs = {
    data: ProductListInput;
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationUpdateReusableSectionArgs = {
+   data: ReusableSectionInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateSocialPostArgs = {
@@ -1708,6 +1768,8 @@ export type Query = {
    productList?: Maybe<ProductListEntityResponse>;
    productLists?: Maybe<ProductListEntityResponseCollection>;
    products?: Maybe<ProductEntityResponseCollection>;
+   reusableSection?: Maybe<ReusableSectionEntityResponse>;
+   reusableSections?: Maybe<ReusableSectionEntityResponseCollection>;
    socialPost?: Maybe<SocialPostEntityResponse>;
    socialPosts?: Maybe<SocialPostEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
@@ -1822,6 +1884,17 @@ export type QueryProductsArgs = {
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type QueryReusableSectionArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryReusableSectionsArgs = {
+   filters?: InputMaybe<ReusableSectionFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type QuerySocialPostArgs = {
    id?: InputMaybe<Scalars['ID']>;
 };
@@ -1888,6 +1961,72 @@ export type ResponseCollectionMeta = {
    __typename?: 'ResponseCollectionMeta';
    pagination: Pagination;
 };
+
+export type ReusableSection = {
+   __typename?: 'ReusableSection';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   placement: Array<Maybe<ComponentMiscPlacement>>;
+   positionInProductList: Enum_Reusablesection_Positioninproductlist;
+   priority: Scalars['Int'];
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   section: Array<Maybe<ReusableSectionSectionDynamicZone>>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ReusableSectionPlacementArgs = {
+   filters?: InputMaybe<ComponentMiscPlacementFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ReusableSectionEntity = {
+   __typename?: 'ReusableSectionEntity';
+   attributes?: Maybe<ReusableSection>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ReusableSectionEntityResponse = {
+   __typename?: 'ReusableSectionEntityResponse';
+   data?: Maybe<ReusableSectionEntity>;
+};
+
+export type ReusableSectionEntityResponseCollection = {
+   __typename?: 'ReusableSectionEntityResponseCollection';
+   data: Array<ReusableSectionEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ReusableSectionFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ReusableSectionFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ReusableSectionFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ReusableSectionFiltersInput>>>;
+   placement?: InputMaybe<ComponentMiscPlacementFiltersInput>;
+   positionInProductList?: InputMaybe<StringFilterInput>;
+   priority?: InputMaybe<IntFilterInput>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ReusableSectionInput = {
+   placement?: InputMaybe<Array<InputMaybe<ComponentMiscPlacementInput>>>;
+   positionInProductList?: InputMaybe<Enum_Reusablesection_Positioninproductlist>;
+   priority?: InputMaybe<Scalars['Int']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   section?: InputMaybe<
+      Array<Scalars['ReusableSectionSectionDynamicZoneInput']>
+   >;
+   title?: InputMaybe<Scalars['String']>;
+};
+
+export type ReusableSectionSectionDynamicZone =
+   | ComponentPagePress
+   | ComponentPageSplitWithImage
+   | ComponentSectionBanner
+   | ComponentSectionQuoteGallery
+   | Error;
 
 export type SocialPost = {
    __typename?: 'SocialPost';
