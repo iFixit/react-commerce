@@ -15,25 +15,66 @@ test.describe('Vulcan Page Content and SEO', () => {
       ).toBeVisible();
    });
 
-   test('noindex Meta Tag Included', async ({ page }) => {
+   test('index, follow Meta Tag Included', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      // check that the meta robots tag is set to noindex
+      // check that the meta robots tag is set to index, follow
       const meta = page.locator('meta[name="robots"]');
-      await expect(meta).toHaveAttribute('content', 'noindex');
+      await expect(meta).toHaveAttribute('content', 'index, follow');
    });
 
    test('Canonical Link Included', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
       // check that the canonical link is a resonable URL
       const canonical = page.locator('link[rel="canonical"]');
-      await expect(canonical).toHaveAttribute('href', /Not%20Spinning/);
+      await expect(canonical).toHaveAttribute('href', /Not.Spinning/);
       // Check that the canonical link is an absolute URL
       await expect(canonical).toHaveAttribute('href', /^http/);
    });
 
+   test('HrefLangs are rendered', async ({ page }) => {
+      await page.goto(
+         '/Troubleshooting/Television/TV+Has+Sound+But+No+Picture/493422'
+      );
+      const langsToHrefs = [
+         {
+            lang: 'de',
+            href: 'https://de.www.cominor.com/Wiki/TV_Has_Sound_But_No_Picture',
+         },
+         {
+            lang: 'es',
+            href: 'https://es.www.cominor.com/Wiki/TV_Has_Sound_But_No_Picture',
+         },
+         {
+            lang: 'it',
+            href: 'https://it.www.cominor.com/Wiki/TV_Has_Sound_But_No_Picture',
+         },
+         {
+            lang: 'en',
+            href: 'https://www.cominor.com/Troubleshooting/Television/TV+Has+Sound+But+No+Picture/493422',
+         },
+         {
+            lang: 'x-default',
+            href: 'https://www.cominor.com/Troubleshooting/Television/TV+Has+Sound+But+No+Picture/493422',
+         },
+      ];
+
+      const checkLang = async function (langToHref: {
+         lang: string;
+         href: string;
+      }): Promise<void> {
+         const hrefLang = page.locator(`link[hreflang="${langToHref.lang}"]`);
+         await Promise.all([
+            expect(hrefLang).toHaveAttribute('hreflang', langToHref.lang),
+            expect(hrefLang).toHaveAttribute('href', langToHref.href),
+         ]);
+      };
+
+      await Promise.all(langsToHrefs.map(checkLang));
+   });
+
    test('Redirect to Canonical URL', async ({ page }) => {
       await page.goto('/Vulcan/Dryer_Not_Spinning');
-      await expect(page.url()).toMatch(/Not%20Spinning/);
+      expect(page.url()).toMatch(/Not.Spinning/);
    });
 
    test('Breadcrumbs Visible', async ({ page }) => {

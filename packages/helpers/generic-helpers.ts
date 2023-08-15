@@ -92,6 +92,10 @@ export function isPresent(text: string | null | undefined): text is string {
    return typeof text === 'string' && text.length > 0;
 }
 
+export function presentOrNull(text: string | null | undefined): string | null {
+   return isPresent(text) ? text : null;
+}
+
 export function filterNullableItems<I>(
    items?: I[] | undefined | null
 ): NonNullable<I>[] {

@@ -22,6 +22,10 @@ export function getProductVariantSku(itemcode: string): string {
    return itemcode.replace(/\D/g, '');
 }
 
+export function getItemCodeFromSku(sku: string): string {
+   return `IF${sku.replace(/(.{3})/g, '$1-')}`;
+}
+
 export function parseItemcode(itemcode: string) {
    let matches = itemcode.match(ITEMCODE_RE);
    return matches

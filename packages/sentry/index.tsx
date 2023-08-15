@@ -54,8 +54,7 @@ const withSentry: FetchMiddleware =
          if (
             !shouldIgnoreUserAgent &&
             response.status >= 400 &&
-            response.status !== 401 &&
-            response.status !== 404
+            ![401, 404, 499].includes(response.status)
          ) {
             const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
             Sentry.captureException(new Error(msg), (scope) => {

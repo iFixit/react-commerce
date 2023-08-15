@@ -1,9 +1,8 @@
+import { ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import { ProductListAncestorSchema } from './component/product-list-ancestor';
-import {
-   ProductListType,
-   ProductListTypeSchema,
-} from './component/product-list-type';
+import { ProductListChildSchema } from './component/product-list-child';
+import { ProductListType } from './component/product-list-type';
 import { ProductListSectionSchema } from './sections';
 
 const PriceTierSchema = z.object({
@@ -44,22 +43,6 @@ const WikiInfoEntrySchema = z.object({
 });
 export type WikiInfoEntry = z.infer<typeof WikiInfoEntrySchema>;
 
-const ProductListImageSchema = z.object({
-   alternativeText: z.string().nullable(),
-   url: z.string(),
-});
-export type ProductListImage = z.infer<typeof ProductListImageSchema>;
-
-const ProductListChildSchema = z.object({
-   title: z.string(),
-   deviceTitle: z.string().nullable(),
-   handle: z.string(),
-   image: ProductListImageSchema.nullable(),
-   sortPriority: z.number().nullable(),
-   type: ProductListTypeSchema,
-});
-export type ProductListChild = z.infer<typeof ProductListChildSchema>;
-
 const ProductListItemTypeOverrideSchema = z.object({
    itemType: z.string().nullable().optional(),
    title: z.string().nullable().optional(),
@@ -98,16 +81,14 @@ const BaseProductListSchema = z.object({
    handle: z.string(),
    deviceTitle: z.string().nullable(),
    tagline: z.string().nullable(),
-   description: z.string(),
+   description: z.string().nullable(),
    metaDescription: z.string().nullable(),
    metaTitle: z.string().nullable(),
    defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),
    filters: z.string().nullable(),
    forceNoindex: z.boolean().nullable(),
-   heroImage: ProductListImageSchema.nullable(),
-   image: ProductListImageSchema.nullable(),
-   brandLogo: ProductListImageSchema.nullable(),
-   brandLogoWidth: z.number().nullable(),
+   heroImage: ImageSchema.nullable(),
+   brandLogo: ImageSchema.nullable(),
    ancestors: z.array(ProductListAncestorSchema),
    children: z.array(ProductListChildSchema),
    sections: z.array(ProductListSectionSchema),
@@ -117,7 +98,6 @@ const BaseProductListSchema = z.object({
    wikiInfo: z.array(WikiInfoEntrySchema),
    isOnStrapi: z.boolean(),
    itemOverrides: ProductListItemTypeOverrideIndexedSchema,
-   overrides: ProductListOverridesSchema.optional(),
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 

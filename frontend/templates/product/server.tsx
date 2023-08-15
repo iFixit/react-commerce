@@ -1,10 +1,10 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { withCacheLong } from '@helpers/cache-control-helpers';
 import {
+   CacheLong,
    hasDisableCacheGets,
-   withLogging,
-   withNoindexDevDomains,
-} from '@helpers/next-helpers';
+   withCache,
+} from '@helpers/cache-control-helpers';
+import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -16,8 +16,7 @@ import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
 const withMiddleware = compose(
    withLogging<ProductTemplateProps>,
-   withCacheLong<ProductTemplateProps>,
-   withNoindexDevDomains<ProductTemplateProps>
+   withCache(CacheLong)<ProductTemplateProps>
 );
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =

@@ -12,7 +12,6 @@ import {
    Container,
    Flex,
    FlexProps,
-   Hide,
    IconButton,
    Image,
    Link,
@@ -35,6 +34,7 @@ import {
    chakra,
    HStack,
    SimpleGrid,
+   useToken,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import type {
@@ -57,6 +57,8 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
+import { ViewStats } from '@components/common/ViewStats';
+import { IntlDate } from '@components/ui/IntlDate';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -71,18 +73,17 @@ const Wiki: NextPageWithLayout<{
       mainImageUrl,
       mainImageUrlLarge,
       id,
+      viewStats,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
-   const metadata = (
-      <>
-         <meta name="description" content={metaDescription} />
-         <meta name="title" content={title} />
-         <meta name="keywords" content={metaKeywords} />
-         <meta name="robots" content="noindex" />,
-         <link rel="canonical" href={canonicalUrl} />
-         <TagManager />
-      </>
-   );
+   const smBreakpoint = useToken('breakpoints', 'sm');
+
+   const imageSx: any = {
+      display: 'none',
+   };
+   imageSx[`@media (min-width: ${smBreakpoint})`] = {
+      display: 'block',
+   };
 
    return (
       <>
@@ -102,10 +103,14 @@ const Wiki: NextPageWithLayout<{
                flexShrink="1"
                id="main"
             >
-               <Head>
-                  {metadata}
-                  <HreflangUrls urls={wikiData.hreflangUrls} />
-               </Head>
+               <TagManager />
+               <Metadata
+                  metaDescription={metaDescription}
+                  metaKeywords={metaKeywords}
+                  canonicalUrl={canonicalUrl}
+                  title={title}
+               />
+               <HreflangUrls urls={wikiData.hreflangUrls} />
                <HStack
                   spacing={0}
                   mt={{ base: 3, sm: 8 }}
@@ -114,21 +119,20 @@ const Wiki: NextPageWithLayout<{
                   borderBottom="1px"
                   borderColor="gray.300"
                >
-                  <Hide below="sm">
-                     <Image
-                        src={mainImageUrl}
-                        onClick={onOpen}
-                        cursor="pointer"
-                        alt={title}
-                        htmlWidth={120}
-                        htmlHeight={90}
-                        objectFit="contain"
-                        borderRadius="md"
-                        outline="1px solid"
-                        outlineColor="gray.300"
-                        marginRight={3}
-                     />
-                  </Hide>
+                  <Image
+                     sx={imageSx}
+                     src={mainImageUrl}
+                     onClick={onOpen}
+                     cursor="pointer"
+                     alt={title}
+                     htmlWidth={120}
+                     htmlHeight={90}
+                     objectFit="contain"
+                     borderRadius="md"
+                     outline="1px solid"
+                     outlineColor="gray.300"
+                     marginRight={3}
+                  />
                   <Modal isOpen={isOpen} onClose={onClose}>
                      <ModalOverlay />
                      <ModalContent
@@ -210,6 +214,7 @@ const Wiki: NextPageWithLayout<{
                <PixelPing id={id} type="wiki" />
             </Flex>
          </Container>
+         {viewStats && <ViewStats {...viewStats} />}
       </>
    );
 };
@@ -504,20 +509,26 @@ function NavTabs({
 
    return (
       <Flex {...props} gap={1.5} height="100%">
-         <Link
-            className={devicePartsUrl ? '' : 'isDisabled'}
-            {...notSelectedStyleProps}
-            href={devicePartsUrl}
-         >
-            Parts
-         </Link>
-         <Link
-            className={deviceGuideUrl ? '' : 'isDisabled'}
-            {...notSelectedStyleProps}
-            href={deviceGuideUrl}
-         >
-            Guides
-         </Link>
+         {devicePartsUrl ? (
+            <Link {...notSelectedStyleProps} href={devicePartsUrl}>
+               Parts
+            </Link>
+         ) : (
+            <Box className="isDisabled" {...notSelectedStyleProps}>
+               Parts
+            </Box>
+         )}
+
+         {deviceGuideUrl ? (
+            <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
+               Guides
+            </Link>
+         ) : (
+            <Box className="isDisabled" {...notSelectedStyleProps}>
+               Guides
+            </Box>
+         )}
+
          <Box {...selectedStyleProps}>Answers</Box>
       </Flex>
    );
@@ -526,11 +537,42 @@ function NavTabs({
 function HreflangUrls({ urls }: { urls: Record<string, string> }) {
    const hreflangs = Object.entries(urls);
    return (
-      <>
+      <Head>
          {hreflangs.map(([lang, url]) => (
-            <link rel="alternate" key={lang} hrefLang={lang} href={url} />
+            <link
+               rel="alternate"
+               key={`hreflang-${lang}`}
+               hrefLang={lang}
+               href={url}
+            />
          ))}
-      </>
+      </Head>
+   );
+}
+
+function Metadata({
+   metaDescription,
+   title,
+   metaKeywords,
+   canonicalUrl,
+}: {
+   metaDescription: string;
+   title: string;
+   metaKeywords: string;
+   canonicalUrl: string;
+}) {
+   return (
+      <Head>
+         <meta
+            key="meta-description"
+            name="description"
+            content={metaDescription}
+         />
+         <meta key="meta-title" name="title" content={title} />
+         <meta key="meta-keywords" name="keywords" content={metaKeywords} />
+         <meta key="meta-robots" name="robots" content="index, follow" />,
+         <link key="canonical" rel="canonical" href={canonicalUrl} />
+      </Head>
    );
 }
 
@@ -593,12 +635,15 @@ function LastUpdatedDate({
          fontSize="sm"
          color="gray.500"
       >
-         {'Last updated on ' +
-            lastUpdatedDate.toLocaleDateString(undefined, {
+         Last updated on{' '}
+         <IntlDate
+            value={lastUpdatedDate}
+            options={{
                year: 'numeric',
                month: 'long',
                day: 'numeric',
-            })}
+            }}
+         />
       </Link>
    );
 }
@@ -693,7 +738,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             Haven&apos;t found the solution to your problem?
          </chakra.span>
          <Button href={answersUrl} as="a" colorScheme="brand">
-            Ask a question
+            Browse our forum
          </Button>
       </Alert>
    );

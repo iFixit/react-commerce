@@ -56,15 +56,17 @@ export function CartDrawer() {
 
    const crossSellItems = React.useMemo(() => {
       const crossSells =
-         cart.data?.crossSellProducts.filter((item) => {
-            const isAlreadyInCart =
-               item &&
-               cart.data?.lineItems.find(
-                  (lineItem) => lineItem.itemcode === item.itemcode
-               );
-            if (isAlreadyInCart) return null;
-            return item;
-         }) ?? [];
+         cart.data?.crossSellProducts
+            .filter((item) => {
+               const isAlreadyInCart =
+                  item &&
+                  cart.data?.lineItems.find(
+                     (lineItem) => lineItem.itemcode === item.itemcode
+                  );
+               if (isAlreadyInCart) return null;
+               return item;
+            })
+            .sort((a, b) => a.handle.localeCompare(b.handle)) ?? [];
       return crossSells;
    }, [cart.data]);
 
@@ -158,14 +160,16 @@ export function CartDrawer() {
                         </Box>
                         <Box as="ul" data-testid="cart-drawer-x-sell-items">
                            <AnimatePresence>
-                              {crossSellItems.map((crossSellItem) => {
-                                 return (
-                                    <ListItem key={crossSellItem.itemcode}>
-                                       <CrossSell item={crossSellItem} />
-                                       <Divider borderColor="gray.200" />
-                                    </ListItem>
-                                 );
-                              })}
+                              {cart.data != null &&
+                                 cart.data.hasItemsInCart &&
+                                 crossSellItems.map((crossSellItem) => {
+                                    return (
+                                       <ListItem key={crossSellItem.itemcode}>
+                                          <CrossSell item={crossSellItem} />
+                                          <Divider borderColor="gray.200" />
+                                       </ListItem>
+                                    );
+                                 })}
                            </AnimatePresence>
                         </Box>
                      </ScaleFade>

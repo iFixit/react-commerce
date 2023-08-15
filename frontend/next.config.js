@@ -59,6 +59,23 @@ const moduleExports = {
    env: {
       NEXT_PUBLIC_STRAPI_ORIGIN: strapiOrigin,
    },
+   async headers() {
+      return [
+         {
+            // Nnoindex all responses. Requests to www.ifixit.com that go
+            // through cloudfront will have this header stripped off by a
+            // cloudfront function. This effectively noindexes all vercel urls
+            // that our pages are served from.
+            source: '/:path*',
+            headers: [
+               {
+                  key: 'x-robots-tag',
+                  value: 'noindex, nofollow, nosnippet, noarchive, noimageindex',
+               },
+            ],
+         },
+      ];
+   },
    async rewrites() {
       return [
          {
@@ -94,6 +111,11 @@ const moduleExports = {
          {
             source: '/Shop/sitemap.xml',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/marketing.xml`,
+            permanent: true,
+         },
+         {
+            source: '/Troubleshooting/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/troubleshooting.xml`,
             permanent: true,
          },
          {
@@ -150,6 +172,7 @@ const moduleExports = {
          disableClientWebpackPlugin: true,
       }),
    },
+   swcMinify: false,
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to

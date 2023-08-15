@@ -1,6 +1,9 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import {
+   IFixitAPIClient,
+   VarnishBypassHeader,
+} from '@ifixit/ifixit-api-client';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import {
    GetServerSideProps,
@@ -12,15 +15,29 @@ import {
    TroubleshootingData,
    TroubleshootingApiData,
 } from './hooks/useTroubleshootingProps';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
-import { withCacheLong } from '@helpers/cache-control-helpers';
+import { withLogging } from '@helpers/next-helpers';
+import {
+   withCache,
+   CacheLong,
+   GetCacheControlOptions,
+} from '@helpers/cache-control-helpers';
 import compose from 'lodash/flowRight';
 import { ParsedUrlQuery } from 'querystring';
 
+const CacheOrDisableOnHeadRevision: GetCacheControlOptions = (context) => {
+   const wantsHeadRevision =
+      context.query.revisionid?.toString().toUpperCase() === 'HEAD';
+
+   if (wantsHeadRevision) {
+      return { disabled: true };
+   }
+
+   return CacheLong;
+};
+
 const withMiddleware = compose(
    withLogging<TroubleshootingProps>,
-   withCacheLong<TroubleshootingProps>,
-   withNoindexDevDomains<TroubleshootingProps>
+   withCache(CacheOrDisableOnHeadRevision)<TroubleshootingProps>
 );
 
 function rethrowUnless404(e: any) {
@@ -36,7 +53,10 @@ async function getTroubleshootingData(
    context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
 ): Promise<TroubleshootingApiData | null> {
    const ifixitOrigin = ifixitOriginFromHost(context);
-   const client = new IFixitAPIClient({ origin: ifixitOrigin });
+   const client = new IFixitAPIClient({
+      origin: ifixitOrigin,
+      headers: VarnishBypassHeader,
+   });
 
    const url = getTroubleshootingApiUrl(context);
    if (!url) {
