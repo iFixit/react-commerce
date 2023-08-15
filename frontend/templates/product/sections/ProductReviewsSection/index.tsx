@@ -223,7 +223,8 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
    const appContext = useAppContext();
 
-   const reviewItemCode = getItemCodeFromSku(review.sku);
+   const sku = review.sku ?? '';
+   const reviewItemCode = getItemCodeFromSku(sku);
    return (
       <Box
          py="6"
@@ -231,7 +232,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
          borderColor="gray.200"
          data-testid="product-review-line-item"
       >
-         {isAdminUser && (
+         {isAdminUser && sku && (
             <Button
                variant="link"
                as={Link}
