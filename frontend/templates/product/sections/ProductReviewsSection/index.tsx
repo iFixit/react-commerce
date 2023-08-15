@@ -19,7 +19,7 @@ import { Rating } from '@components/ui';
 import { faStar } from '@fortawesome/pro-duotone-svg-icons';
 import { faPenToSquare, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
-import { isPresent } from '@ifixit/helpers';
+import { isPresent, getItemCodeFromSku } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@models/product';
@@ -223,6 +223,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
    const appContext = useAppContext();
 
+   const reviewItemCode = getItemCodeFromSku(review.sku);
    return (
       <Box
          py="6"
@@ -243,7 +244,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
                color="brand.500"
                textAlign="center"
                paddingBottom="10px"
-               href={`${appContext.ifixitOrigin}/User/Reviews/${review.sku}?userid=${review.author?.userid}`}
+               href={`${appContext.ifixitOrigin}/User/Reviews/${reviewItemCode}?userid=${review.author?.userid}`}
             >
                Edit
             </Button>
