@@ -73,7 +73,6 @@ function useScrollToActiveEffect(
 
       el.parentElement?.scrollTo({
          top: el.offsetTop - el.parentElement.clientHeight / 2,
-         behavior: 'instant',
       });
    }, [ref, active]);
 }
