@@ -3,6 +3,8 @@ import { Box, chakra, SystemStyleObject } from '@chakra-ui/react';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
+const constrainStandardWidth = '282px'; // pulled from PHP app
+
 const renderStyles: SystemStyleObject = {
    '&': {
       marginTop: { base: 4, sm: 6 },
@@ -192,17 +194,17 @@ const renderStyles: SystemStyleObject = {
          marginInline: 'auto',
       },
 
-      '@media only screen and (min-width: 575px)': {
+      '@media only screen and (min-width: 576px)': {
          '&.videoBox_left': {
             clear: 'left',
             float: 'left',
-            marginRight: '30px',
+            marginRight: 6,
          },
 
          '&.videoBox_right': {
             clear: 'right',
             float: 'right',
-            marginLeft: '30px',
+            marginLeft: 6,
          },
       },
 
@@ -219,7 +221,7 @@ const renderStyles: SystemStyleObject = {
       outlineColor: 'gray.300',
       overflow: 'hidden',
       position: 'relative',
-      width: 'fit-content',
+      minWidth: 'min-content', // narrow image text-wrap fix
 
       '&.imageBox_center': {
          marginInline: 'auto',
@@ -229,17 +231,21 @@ const renderStyles: SystemStyleObject = {
          },
       },
 
-      '@media only screen and (min-width: 575px)': {
+      img: {
+         marginInline: 'auto', // center image when container is wider
+      },
+
+      '@media only screen and (min-width: 576px)': {
          '&.imageBox_left': {
             clear: 'left',
             float: 'left',
-            marginRight: '30px',
+            marginRight: 6,
          },
 
          '&.imageBox_right': {
             clear: 'right',
             float: 'right',
-            marginLeft: '30px',
+            marginLeft: 6,
          },
       },
    },
@@ -249,7 +255,6 @@ const renderStyles: SystemStyleObject = {
       flexDirection: 'column',
       height: '100%',
       marginTop: 0,
-      maxWidth: '282px', // cap at child image inline width
 
       img: {
          minHeight: '225px',
@@ -265,13 +270,12 @@ const renderStyles: SystemStyleObject = {
       flex: 1,
       paddingBlock: 4,
       paddingInline: 3,
-      width: 'unset !important', // override inline width
    },
 
    '.blurbListWide .grid': {
       display: 'grid',
       gap: 4,
-      gridTemplateColumns: 'repeat(auto-fill, minmax(282px, 1fr) )',
+      gridTemplateColumns: `repeat(auto-fill, minmax(${constrainStandardWidth}, 1fr) )`,
 
       '& .cell': {
          bgColor: 'gray.100',
@@ -279,7 +283,7 @@ const renderStyles: SystemStyleObject = {
          borderColor: 'gray.300',
          borderRadius: 'md',
          display: 'flex',
-         maxWidth: '282px',
+         maxWidth: constrainStandardWidth,
          overflow: 'hidden',
          _hover: {
             borderColor: 'brand.500',
