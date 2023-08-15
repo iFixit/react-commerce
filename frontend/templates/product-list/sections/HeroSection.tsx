@@ -127,7 +127,7 @@ function HeroTitle({
    children,
    page,
 }: React.PropsWithChildren<{ page: number }>) {
-   // Non-breaking spaces added for all spaces in ` - Page <num>`
+   // Place non-breaking space between 'Page' and page number
    return (
       <Heading
          as="h1"
@@ -137,7 +137,15 @@ function HeroTitle({
          data-testid="hero-title"
       >
          {children}
-         {page > 1 ? ` - Page ${page}` : ''}
+         {page > 1 ? (
+            <>
+               {' - Page'}
+               <span dangerouslySetInnerHTML={{ __html: '&nbsp;' }} />
+               {page}
+            </>
+         ) : (
+            ''
+         )}
       </Heading>
    );
 }
