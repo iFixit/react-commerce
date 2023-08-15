@@ -7,6 +7,8 @@ import {
    PropsWithChildren,
    useRef,
    useCallback,
+   Dispatch,
+   SetStateAction,
 } from 'react';
 
 export type TOCRecord = {
@@ -69,49 +71,57 @@ function createTOCItems(titles: string[]) {
    return Object.fromEntries(records.map((record) => [record.title, record]));
 }
 
-export const TOCContextProvider = ({
-   children,
-   defaultTitles,
-}: PropsWithChildren<{
-   defaultTitles?: string[];
-}>) => {
-   const [items, setItems] = useState<TOCItems>(
-      createTOCItems(defaultTitles || [])
-   );
+function createTOCItem(
+   existingItems: TOCItems,
+   title: string,
+   ref?: RefObject<HTMLElement>
+) {
+   const record = createRecord(title, ref);
+   return {
+      ...existingItems,
+      [title]: record,
+   };
+}
 
+function removeTOCItem(existingItems: TOCItems, title: string) {
+   const newItems = { ...existingItems };
+   delete newItems[title];
+   return newItems;
+}
+
+function useCRUDFunctions(
+   items: TOCItems,
+   setItems: Dispatch<SetStateAction<TOCItems>>
+) {
    const pushItem = useCallback(
       (title: string, ref: RefObject<HTMLElement>) => {
-         setItems((items) => {
-            return {
-               ...items,
-               [title]: {
-                  title,
-                  elementRef: ref,
-                  visible: false,
-                  active: false,
-                  scrollTo: (scrollToOptions?: ScrollToOptions) =>
-                     scrollTo(ref, scrollToOptions),
-               },
-            };
-         });
+         setItems((items) => createTOCItem(items, title, ref));
       },
       [setItems]
    );
+
    const getItems = useCallback(() => {
       return sortVertically(items);
    }, [items]);
 
    const removeItem = useCallback(
       (title: string) => {
-         setItems((items) => {
-            const newItems = { ...items };
-            delete newItems[title];
-            return newItems;
-         });
+         setItems((items) => removeTOCItem(items, title));
       },
       [setItems]
    );
 
+   return {
+      pushItem,
+      getItems,
+      removeItem,
+   };
+}
+
+function useObserveItems(
+   items: TOCItems,
+   setItems: Dispatch<SetStateAction<TOCItems>>
+) {
    const observeItems = useCallback(
       (observer: IntersectionObserver) => {
          Object.values(items).forEach((item) => {
@@ -140,14 +150,17 @@ export const TOCContextProvider = ({
          });
          return newItems;
       });
-   }, []);
+   }, [setItems]);
 
-   const setVisible = useCallback((title: string, visible: boolean) => {
-      setItems((items) => {
-         items[title].visible = visible;
-         return items;
-      });
-   }, []);
+   const setVisible = useCallback(
+      (title: string, visible: boolean) => {
+         setItems((items) => {
+            items[title].visible = visible;
+            return items;
+         });
+      },
+      [setItems]
+   );
 
    const getTitleFromEl = useCallback(
       (el: HTMLElement) => {
@@ -160,6 +173,7 @@ export const TOCContextProvider = ({
       [items]
    );
 
+   // watch for elements entering / leaving the viewport and update the active element
    useEffect(() => {
       const observer = new IntersectionObserver(
          (entries) => {
@@ -197,6 +211,36 @@ export const TOCContextProvider = ({
          window.removeEventListener('resize', resizeHandler);
       };
    }, [setVisible, getTitleFromEl, observeItems, updateClosetItem]);
+
+   // Update the active element on nextjs hydration
+   useEffect(() => {
+      const observer = new MutationObserver(() => {
+         updateClosetItem();
+      });
+
+      observer.observe(document.body, {
+         childList: true,
+         subtree: true,
+      });
+
+      return () => {
+         observer.disconnect();
+      };
+   }, [updateClosetItem]);
+}
+
+export const TOCContextProvider = ({
+   children,
+   defaultTitles,
+}: PropsWithChildren<{
+   defaultTitles?: string[];
+}>) => {
+   const [items, setItems] = useState<TOCItems>(
+      createTOCItems(defaultTitles || [])
+   );
+
+   const { pushItem, getItems, removeItem } = useCRUDFunctions(items, setItems);
+   useObserveItems(items, setItems);
 
    const context = {
       pushItem,
