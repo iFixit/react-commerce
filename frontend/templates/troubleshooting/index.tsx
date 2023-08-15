@@ -61,6 +61,8 @@ import { ScrollPercent } from './scrollPercent';
 import { AddToTOC, TOCContextProvider } from './tocContext';
 import { TOC } from './toc';
 
+const RelatedProblemsTitle = 'Related Problems';
+
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
    layoutProps: DefaultLayoutProps;
@@ -87,6 +89,19 @@ const Wiki: NextPageWithLayout<{
 
    const scrollContainerRef = useRef(null);
 
+   const filteredConclusions = wikiData.conclusion.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
+
+   const sections = wikiData.introduction
+      .concat(wikiData.solutions)
+      .concat(filteredConclusions);
+
+   const sectionTitles = sections
+      .map((section) => section.heading)
+      .concat(RelatedProblemsTitle);
+   console.log(sectionTitles);
+
    return (
       <>
          <GoogleNoScript />
@@ -102,7 +117,7 @@ const Wiki: NextPageWithLayout<{
             hideOnZero={true}
             hideOnScrollPast={true}
          />
-         <TOCContextProvider>
+         <TOCContextProvider defaultTitles={sectionTitles}>
             <Container
                fontSize="md"
                maxW="1280px"
@@ -231,7 +246,7 @@ const Wiki: NextPageWithLayout<{
                         </Stack>
                      </Box>
                   )}
-                  <Conclusion conclusion={wikiData.conclusion} />
+                  <Conclusion conclusion={filteredConclusions} />
                   <AnswersCTA answersUrl={wikiData.answersUrl} />
                   {wikiData.linkedProblems.length > 0 && (
                      <RelatedProblems problems={wikiData.linkedProblems} />
@@ -744,12 +759,9 @@ const ConclusionSection = function ConclusionSectionInner({
 };
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
-   const filteredConclusions = conclusions.filter(
-      (conclusion) => conclusion.heading !== 'Related Pages'
-   );
    return (
       <>
-         {filteredConclusions.map((conclusion) => (
+         {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
@@ -774,8 +786,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
-   const title = 'Related Problems';
-   const { ref } = AddToTOC<HTMLHeadingElement>(title);
+   const { ref } = AddToTOC<HTMLHeadingElement>(RelatedProblemsTitle);
    return (
       <>
          <HeadingSelfLink
@@ -787,7 +798,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             pt={4}
             ref={ref}
          >
-            {title}
+            {RelatedProblemsTitle}
          </HeadingSelfLink>
          <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
             {problems.map((problem) => (

@@ -50,8 +50,34 @@ function scrollTo(
    window.scrollTo({ top: scrollTo, behavior: 'smooth' });
 }
 
-export const TOCContextProvider = ({ children }: PropsWithChildren) => {
-   const [items, setItems] = useState<TOCItems>({});
+function createRecord(title: string, ref?: RefObject<HTMLElement>) {
+   const elementRef = ref || { current: null };
+   return {
+      title,
+      elementRef: elementRef,
+      visible: false,
+      active: false,
+      scrollTo: (scrollToOptions?: ScrollToOptions) =>
+         scrollTo(elementRef, scrollToOptions),
+   };
+}
+
+function createTOCItems(titles: string[]) {
+   const records = titles.map((title) =>
+      createRecord(title, { current: null })
+   );
+   return Object.fromEntries(records.map((record) => [record.title, record]));
+}
+
+export const TOCContextProvider = ({
+   children,
+   defaultTitles,
+}: PropsWithChildren<{
+   defaultTitles?: string[];
+}>) => {
+   const [items, setItems] = useState<TOCItems>(
+      createTOCItems(defaultTitles || [])
+   );
 
    const pushItem = useCallback(
       (title: string, ref: RefObject<HTMLElement>) => {
