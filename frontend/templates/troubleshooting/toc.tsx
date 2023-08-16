@@ -11,6 +11,7 @@ import {
    MenuItem,
    MenuList,
    Text,
+   useDisclosure,
    useToken,
 } from '@chakra-ui/react';
 import { TOCRecord, useTOCContext } from './tocContext';
@@ -90,10 +91,23 @@ export function MobileTOC({
       CssTokenOption.CssString
    );
    const actualDisplay = activeItem ? display : 'none';
+   const { isOpen, onOpen, onClose } = useDisclosure();
+
+   useEffect(() => {
+      if (actualDisplay === 'none') {
+         onClose();
+      }
+   }, [actualDisplay, onClose]);
 
    return (
       <Flex {...props} display={actualDisplay}>
-         <Menu matchWidth={true} strategy="fixed">
+         <Menu
+            matchWidth={true}
+            strategy="fixed"
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+         >
             <MenuButton
                as={Button}
                flexGrow={1}
