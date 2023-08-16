@@ -109,6 +109,7 @@ export function MobileTOC({
             isOpen={isOpen}
             onOpen={onOpen}
             onClose={onClose}
+            autoSelect={false}
          >
             <MenuButton
                as={Button}
