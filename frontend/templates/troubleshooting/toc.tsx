@@ -11,6 +11,7 @@ import {
    MenuItem,
    MenuList,
    Text,
+   useToken,
 } from '@chakra-ui/react';
 import { TOCRecord, useTOCContext } from './tocContext';
 import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
@@ -146,10 +147,12 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
 
 function MobileTOCItem({ title, scrollTo }: TOCRecord) {
    const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
+   const blue100 = useToken('colors', 'blue.100');
 
    const onClick = () => {
       scrollTo({
          bufferPx: scrollIndicatorHeight,
+         highlightColor: blue100,
       });
    };
 
@@ -218,6 +221,8 @@ function TOCItem({
 
    const ref = useRef<HTMLLIElement>(null);
 
+   const blue100 = useToken('colors', 'blue.100');
+
    const onClick = () => {
       const el = elementRef.current;
       if (!el) {
@@ -226,6 +231,7 @@ function TOCItem({
 
       scrollTo({
          bufferPx: scrollIndicatorHeight,
+         highlightColor: blue100,
       });
    };
 

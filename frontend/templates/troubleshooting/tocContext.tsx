@@ -21,6 +21,7 @@ export type TOCRecord = {
 
 export type ScrollToOptions = {
    bufferPx?: number;
+   highlightColor?: string;
 };
 
 export type TOCItems = Record<string, TOCRecord>;
@@ -51,6 +52,28 @@ function scrollTo(
    const scrollTo = scrollTop + bufferPx;
 
    window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+   const highlightColor = scrollToOptions?.highlightColor;
+
+   if (!highlightColor) {
+      return;
+   }
+
+   highlightEl(el, highlightColor);
+}
+
+function highlightEl(el: HTMLElement, color: string) {
+   const originalBackgroundColor = el.style.backgroundColor;
+   const originalTransition = el.style.transition;
+
+   el.style.transition = 'background-color .5s ease-in-out';
+   el.style.backgroundColor = color;
+
+   setTimeout(() => {
+      el.style.backgroundColor = originalBackgroundColor;
+   }, 500);
+   setTimeout(() => {
+      el.style.transition = originalTransition;
+   }, 1000);
 }
 
 function createRecord(title: string, ref?: RefObject<HTMLElement>) {
