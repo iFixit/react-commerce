@@ -59,7 +59,7 @@ import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
 import { LinkToTOC, TOCContextProvider } from './tocContext';
-import { MobileTOC, TOC } from './toc';
+import { TOC } from './toc';
 
 const RelatedProblemsTitle = 'Related Problems';
 
