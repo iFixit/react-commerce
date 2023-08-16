@@ -225,7 +225,9 @@ export function ProductOverviewSection({
                               Compatibility Notes
                            </CustomAccordionButton>
                            <CustomAccordionPanel data-testid="product-compatibility-dropdown">
-                              <CompatibilityNotes product={product} />
+                              <CompatibilityNotes
+                                 compatibilityNotes={product.compatibilityNotes}
+                              />
                            </CustomAccordionPanel>
                         </>
                      ) : (

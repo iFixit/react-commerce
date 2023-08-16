@@ -1,34 +1,17 @@
 import { Box, Heading } from '@chakra-ui/react';
 import { Wrapper } from '@ifixit/ui';
-import type { Product } from '@pages/api/nextjs/cache/product';
 
 export type CompatibilityNotesSectionProps = {
-   compatibilityNotes?: Product['compatibilityNotes'];
+   compatibilityNotes: string[];
 };
 
-const MAX_DEFAULT_VISIBLE_DEVICES = 10;
-
-export function splitCompatibilityNotes({
-   compatibilityNotes,
-}: CompatibilityNotesSectionProps) {
-   let devices;
-   if (Array.isArray(compatibilityNotes)) {
-      devices = compatibilityNotes;
-   } else {
-      devices = compatibilityNotes?.trim().split(/\r?\n/) ?? [];
-      devices = devices.map((device) => device.trim()).filter(Boolean);
-   }
-   const visibleDevices = devices.slice(0, MAX_DEFAULT_VISIBLE_DEVICES);
-   const hiddenDevices = devices.slice(MAX_DEFAULT_VISIBLE_DEVICES);
-   return [visibleDevices, hiddenDevices];
-}
+export const MAX_VISIBLE_DEVICES = 10;
 
 export function CompatibilityNotesSection({
    compatibilityNotes,
 }: CompatibilityNotesSectionProps) {
-   const [visibleDevices, hiddenDevices] = splitCompatibilityNotes({
-      compatibilityNotes,
-   });
+   const visibleDevices = compatibilityNotes.slice(0, MAX_VISIBLE_DEVICES);
+   const hiddenDevices = compatibilityNotes.slice(MAX_VISIBLE_DEVICES);
    return compatibilityNotes && visibleDevices.length > 0 ? (
       <Box as="section" id="compatibility" py="16" fontSize="sm">
          <Wrapper>

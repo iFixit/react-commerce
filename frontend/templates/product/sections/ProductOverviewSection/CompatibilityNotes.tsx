@@ -5,19 +5,17 @@ import {
    AccordionPanel,
    Box,
 } from '@chakra-ui/react';
-import type { Product } from '@pages/api/nextjs/cache/product';
-import React from 'react';
-import { splitCompatibilityNotes } from '../CompatibilityNotesSection';
+import { MAX_VISIBLE_DEVICES } from '../CompatibilityNotesSection';
 
 export type CompatibilityNotesProps = {
-   product: Product;
+   compatibilityNotes: string[];
 };
 
-export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
-   const compatibilityNotes = product.compatibilityNotes;
-   const [visibleDevices, hiddenDevices] = splitCompatibilityNotes({
-      compatibilityNotes,
-   });
+export function CompatibilityNotes({
+   compatibilityNotes,
+}: CompatibilityNotesProps) {
+   const visibleDevices = compatibilityNotes.slice(0, MAX_VISIBLE_DEVICES);
+   const hiddenDevices = compatibilityNotes.slice(MAX_VISIBLE_DEVICES);
    return (
       <Box px={2}>
          <Box pb={5}>{visibleDevices.join(', ')}</Box>

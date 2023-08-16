@@ -72,7 +72,7 @@ export const ProductSchema = z.object({
    productVideos: z.string().nullable(),
    productVideosJson: ProductVideosSchema.nullable(),
    compatibility: ProductDeviceCompatibilitySchema.nullable(),
-   compatibilityNotes: z.union([z.string(), z.array(z.string())]).nullable(),
+   compatibilityNotes: z.array(z.string()).nullable(),
    metaTitle: z.string().nullable(),
    shortDescription: z.string().nullable(),
    reviews: ProductReviewsSchema.nullable(),
