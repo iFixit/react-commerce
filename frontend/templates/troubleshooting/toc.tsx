@@ -84,38 +84,73 @@ export function MobileTOC({
    const scrollIndicatorHeightCSS = useScrollPercentHeight(
       CssTokenOption.CssString
    );
-   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
    const actualDisplay = activeItem ? display : 'none';
 
    return (
       <Flex {...props} display={actualDisplay}>
-         <Menu matchWidth={true}>
+         <Menu matchWidth={true} strategy="fixed">
             <MenuButton
                as={Button}
                flexGrow={1}
                marginTop={scrollIndicatorHeightCSS}
                rightIcon={<FaIcon icon={faAngleDown} />}
+               fontWeight={510}
+               fontSize="sm"
+               borderBottom="1px solid"
+               borderColor="gray.300"
+               background="white"
+               borderRadius={0}
             >
                {activeItem?.title}
             </MenuButton>
-            <MenuList maxWidth="100vw">
-               {items.map((item, index) => {
-                  return (
-                     <MenuItem
-                        key={index}
-                        onClick={() => {
-                           item.scrollTo({
-                              bufferPx: scrollIndicatorHeight,
-                           });
-                        }}
-                     >
-                        {item.title}
-                     </MenuItem>
-                  );
-               })}
+            <MenuList
+               width="calc(100% - (2 * var(--chakra-space-8)))"
+               marginLeft={8}
+               marginRight={8}
+               boxShadow="md"
+               borderRadius={2}
+               height="100%"
+               sx={{
+                  minWidth: 'initial',
+               }}
+               overflowY="auto"
+               rootProps={{
+                  height: '100%',
+                  style: {
+                     minWidth: 'initial',
+                  },
+               }}
+            >
+               <MobileTOCItems items={items} />
             </MenuList>
          </Menu>
       </Flex>
+   );
+}
+
+function MobileTOCItems({ items }: { items: TOCRecord[] }) {
+   return (
+      <>
+         {items.map((item, index) => {
+            return <MobileTOCItem {...item} key={index} />;
+         })}
+      </>
+   );
+}
+
+function MobileTOCItem({ title, scrollTo }: TOCRecord) {
+   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
+
+   const onClick = () => {
+      scrollTo({
+         bufferPx: scrollIndicatorHeight,
+      });
+   };
+
+   return (
+      <MenuItem flexShrink={1} onClick={onClick}>
+         {title}
+      </MenuItem>
    );
 }
 
