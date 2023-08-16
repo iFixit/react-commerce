@@ -62,6 +62,8 @@ import { LinkToTOC, TOCContextProvider } from './tocContext';
 import { TOC } from './toc';
 
 const RelatedProblemsTitle = 'Related Problems';
+import { ViewStats } from '@components/common/ViewStats';
+import { IntlDate } from '@components/ui/IntlDate';
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -76,6 +78,7 @@ const Wiki: NextPageWithLayout<{
       mainImageUrl,
       mainImageUrlLarge,
       id,
+      viewStats,
    } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const smBreakpoint = useToken('breakpoints', 'sm');
@@ -259,6 +262,7 @@ const Wiki: NextPageWithLayout<{
                </Flex>
             </Container>
          </TOCContextProvider>
+         {viewStats && <ViewStats {...viewStats} />}
       </>
    );
 };
@@ -679,12 +683,15 @@ function LastUpdatedDate({
          fontSize="sm"
          color="gray.500"
       >
-         {'Last updated on ' +
-            lastUpdatedDate.toLocaleDateString(undefined, {
+         Last updated on{' '}
+         <IntlDate
+            value={lastUpdatedDate}
+            options={{
                year: 'numeric',
                month: 'long',
                day: 'numeric',
-            })}
+            }}
+         />
       </Link>
    );
 }

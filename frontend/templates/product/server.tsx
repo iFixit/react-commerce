@@ -4,11 +4,7 @@ import {
    hasDisableCacheGets,
    withCache,
 } from '@helpers/cache-control-helpers';
-import {
-   withLogging,
-   withRobotsHeader,
-   noindexDevDomains,
-} from '@helpers/next-helpers';
+import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -20,8 +16,7 @@ import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
 const withMiddleware = compose(
    withLogging<ProductTemplateProps>,
-   withCache(CacheLong)<ProductTemplateProps>,
-   withRobotsHeader(noindexDevDomains)<ProductTemplateProps>
+   withCache(CacheLong)<ProductTemplateProps>
 );
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =

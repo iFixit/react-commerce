@@ -20,7 +20,7 @@ export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
    });
    return (
       <Box px={2}>
-         <Box pb={5}>{visibleDevices}</Box>
+         <Box pb={5}>{visibleDevices.join(', ')}</Box>
          <AccordionItem hidden={!hiddenDevices.length}>
             <AccordionButton py="5" px="1.5">
                <Box
@@ -30,11 +30,11 @@ export function CompatibilityNotes({ product }: CompatibilityNotesProps) {
                   fontWeight="semibold"
                   fontSize="sm"
                >
-                  {'Show ' + hiddenDevices.length + ' more'}
+                  {`Show ${hiddenDevices.length} more`}
                </Box>
                <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel p={2}>{hiddenDevices}</AccordionPanel>
+            <AccordionPanel p={2}>{hiddenDevices.join(', ')}</AccordionPanel>
          </AccordionItem>
       </Box>
    );

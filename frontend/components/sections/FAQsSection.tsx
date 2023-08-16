@@ -2,16 +2,16 @@ import {
    Accordion,
    AccordionButton,
    AccordionItem,
-   AccordionItemProps,
    AccordionPanel,
    Box,
-   forwardRef,
 } from '@chakra-ui/react';
 import { faMinusCircle, faPlusCircle } from '@fortawesome/pro-solid-svg-icons';
+import { markdownToHTML } from '@helpers/ui-helpers';
 import { isPresent } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { Wrapper } from '@ifixit/ui';
 import type { FAQ } from '@models/components/faq';
+import { useMemo } from 'react';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
 
@@ -53,49 +53,7 @@ export function FAQsSection({
                   )}
                </Box>
                <Accordion defaultIndex={[0]} allowMultiple>
-                  {faqs.map((faq, index) => {
-                     return (
-                        <FAQAccordionItem key={index}>
-                           {({ isExpanded }) => {
-                              return (
-                                 <>
-                                    <h3>
-                                       <AccordionButton p="4">
-                                          <Box
-                                             flex="1"
-                                             textAlign="left"
-                                             fontWeight="medium"
-                                             color={
-                                                isExpanded
-                                                   ? 'brand.500'
-                                                   : 'gray.900'
-                                             }
-                                          >
-                                             {faq.question}
-                                          </Box>
-                                          <FaIcon
-                                             icon={
-                                                isExpanded
-                                                   ? faMinusCircle
-                                                   : faPlusCircle
-                                             }
-                                             color="gray.400"
-                                          />
-                                       </AccordionButton>
-                                    </h3>
-                                    <AccordionPanel
-                                       pb="5"
-                                       color="gray.700"
-                                       bg="white"
-                                    >
-                                       {faq.answer}
-                                    </AccordionPanel>
-                                 </>
-                              );
-                           }}
-                        </FAQAccordionItem>
-                     );
-                  })}
+                  {faqs.map((faq, index) => FAQAccordionItem({ faq, index }))}
                </Accordion>
             </Box>
          </Wrapper>
@@ -103,17 +61,44 @@ export function FAQsSection({
    );
 }
 
-const FAQAccordionItem = forwardRef<AccordionItemProps, 'div'>((props, ref) => {
+function FAQAccordionItem({ faq, index }: { faq: FAQ; index: number }) {
+   const answerHtml = useMemo(() => markdownToHTML(faq.answer), [faq.answer]);
    return (
       <AccordionItem
-         ref={ref}
+         key={index}
          borderWidth="1px"
          borderColor="gray.300"
          bg="gray.100"
          rounded="md"
          my="4"
          overflow="hidden"
-         {...props}
-      />
+      >
+         {({ isExpanded }) => (
+            <>
+               <h3>
+                  <AccordionButton p="4">
+                     <Box
+                        flex="1"
+                        textAlign="left"
+                        fontWeight="medium"
+                        color={isExpanded ? 'brand.500' : 'gray.900'}
+                     >
+                        {faq.question}
+                     </Box>
+                     <FaIcon
+                        icon={isExpanded ? faMinusCircle : faPlusCircle}
+                        color="gray.400"
+                     />
+                  </AccordionButton>
+               </h3>
+               <AccordionPanel
+                  pb="5"
+                  color="gray.700"
+                  bg="white"
+                  dangerouslySetInnerHTML={{ __html: answerHtml }}
+               />
+            </>
+         )}
+      </AccordionItem>
    );
-});
+}

@@ -1,0 +1,25 @@
+{
+   "collectionName": "components_misc_placements",
+   "info": {
+      "displayName": "Placement",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "productLists": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::product-list.product-list"
+      },
+      "showInProductListPages": {
+         "type": "enumeration",
+         "enum": [
+            "only selected",
+            "selected and descendants",
+            "only descendants",
+            "none"
+         ],
+         "required": true
+      }
+   }
+}
