@@ -248,6 +248,7 @@ function TOCItem({
          borderTopRightRadius={active ? 1 : undefined}
          borderBottomRightRadius={active ? 1 : undefined}
          ref={ref}
+         cursor="pointer"
          {...props}
       >
          <Text
