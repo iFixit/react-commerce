@@ -357,8 +357,7 @@ function getClosest(items: TOCItems) {
    const scrollHeight = document.body.scrollHeight;
    const scrollPercent = window.scrollY / (scrollHeight - window.innerHeight);
 
-   // @ts-ignore because findLast is not in the types?
-   const closest = visibleItems.findLast((visibleItem) => {
+   const closest = visibleItems.reverse().find((visibleItem) => {
       const itemTop = visibleItem.elementRef.current?.offsetTop || 0;
 
       const itemPercent = itemTop / scrollHeight;
