@@ -99,8 +99,8 @@ const Wiki: NextPageWithLayout<{
 
    const sectionTitles = sections
       .map((section) => section.heading)
-      .concat(RelatedProblemsTitle);
-   console.log(sectionTitles);
+      .concat(RelatedProblemsTitle)
+      .filter(Boolean);
 
    return (
       <>
