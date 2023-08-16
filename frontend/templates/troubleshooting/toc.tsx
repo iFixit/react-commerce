@@ -45,7 +45,10 @@ export function TOC({
          <MobileTOC
             listItemProps={listItemProps}
             flexGrow={1}
-            zIndex={999}
+            position="fixed"
+            top={0}
+            left={0}
+            width="100%"
             display={{ base: 'flex', lg: 'none' }}
          />
       </Flex>
