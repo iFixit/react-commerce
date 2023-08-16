@@ -5,6 +5,7 @@ import {
    Badge,
    Box,
    Button,
+   Card,
    CloseButton,
    Divider,
    Flex,
@@ -12,6 +13,7 @@ import {
    HStack,
    SimpleGrid,
    Skeleton,
+   Spacer,
    Spinner,
    Text,
 } from '@chakra-ui/react';
@@ -26,8 +28,22 @@ import { useIsMountedState } from '../../hooks';
 import { CartEmptyState } from './CartEmptyState';
 import { CartLineItem } from './CartLineItem';
 import { CrossSell } from '../drawer/CrossSell';
+import { ShoppingCartTotals } from './ShoppingCartTotals';
 
 export function ShoppingCart() {
+   return (
+      <Flex py="16" gap="80px" maxWidth="5xl" margin="auto">
+         <Box>
+            <ShoppingCartItems />
+         </Box>
+         <Box width="md">
+            <ShoppingCartTotals />
+         </Box>
+      </Flex>
+   );
+}
+
+export function ShoppingCartItems() {
    const appContext = useAppContext();
    const isMounted = useIsMountedState();
    const cart = useCart();
@@ -37,9 +53,7 @@ export function ShoppingCart() {
    return (
       <>
          <HStack align="center">
-            <Heading size="sm" lineHeight="normal">
-               Cart
-            </Heading>
+            <Heading size="xl">Shopping cart</Heading>
             {(cart.data != null || !cart.isError) && (
                <Badge
                   borderRadius="full"
@@ -71,23 +85,19 @@ export function ShoppingCart() {
                textAlign="center"
                height="200px"
             >
-               <FaIcon
-                  icon={faCircleExclamation}
-                  h="10"
-                  color="red.500"
-               />
+               <FaIcon icon={faCircleExclamation} h="10" color="red.500" />
                <AlertTitle mt={4} mb={1} fontSize="lg">
                   Unable to fetch the cart
                </AlertTitle>
                <AlertDescription maxWidth="sm">
-                  Please try to reload the page. If the problem
-                  persists, please contact us.
+                  Please try to reload the page. If the problem persists, please
+                  contact us.
                </AlertDescription>
             </Alert>
          )}
          {cart.data?.hasItemsInCart && (
             <>
-               <Box data-testid="cart-drawer-line-items">
+               <Card data-testid="cart-drawer-line-items">
                   {cart.data && (
                      <AnimatedList
                         debug="LINE ITEMS"
@@ -103,7 +113,7 @@ export function ShoppingCart() {
                         }}
                      />
                   )}
-               </Box>
+               </Card>
                <CrossSell />
             </>
          )}
@@ -119,10 +129,7 @@ export function ShoppingCart() {
          </Fade>
 
          <Slide show={cart.data?.hasItemsInCart}>
-            <CheckoutError
-               error={checkout.error}
-               onDismiss={checkout.reset}
-            />
+            <CheckoutError error={checkout.error} onDismiss={checkout.reset} />
             <Box w="full">
                <Collapse show={!cart.isError} mb="3">
                   <Flex w="full" justify="space-between">
@@ -138,18 +145,13 @@ export function ShoppingCart() {
                                  lineHeight="1em"
                                  fontWeight="bold"
                               >
-                                 {formatMoney(
-                                    cart.data.totals.price
-                                 )}
+                                 {formatMoney(cart.data.totals.price)}
                               </Text>
                               {cart.data.totals.discount &&
-                                 cart.data.totals.discount.amount >
-                                 0 && (
+                                 cart.data.totals.discount.amount > 0 && (
                                     <Text color="gray.500">
                                        You saved{' '}
-                                       {formatMoney(
-                                          cart.data.totals.discount
-                                       )}
+                                       {formatMoney(cart.data.totals.discount)}
                                     </Text>
                                  )}
                            </>
