@@ -219,7 +219,7 @@ export function ProductOverviewSection({
                         product.compatibility.devices.length <= 0
                      }
                   >
-                     {product.compatibilityNotes ? (
+                     {product.compatibilityNotes?.length ? (
                         <>
                            <CustomAccordionButton>
                               Compatibility Notes
