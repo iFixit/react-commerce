@@ -148,14 +148,26 @@ function getGradientStyleProps(
       gradientSizePX
    );
 
+   const { borderRadius } = window.getComputedStyle(el);
+
    const overflowX =
       flexScrollDirection === FlexScrollDirection.ROW ? 'auto' : undefined;
    const overflowY =
       flexScrollDirection === FlexScrollDirection.ROW ? undefined : 'auto';
 
    return {
-      _before: { ...before, opacity: beforeGradientOpacity, [sizeProp]: size },
-      _after: { ...after, opacity: afterGradientOpacity, [sizeProp]: size },
+      _before: {
+         ...before,
+         opacity: beforeGradientOpacity,
+         [sizeProp]: size,
+         borderRadius,
+      },
+      _after: {
+         ...after,
+         opacity: afterGradientOpacity,
+         [sizeProp]: size,
+         borderRadius,
+      },
       overflowX,
       overflowY,
    };
