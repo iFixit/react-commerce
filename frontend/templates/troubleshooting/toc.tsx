@@ -99,6 +99,8 @@ export function MobileTOC({
       }
    }, [actualDisplay, onClose]);
 
+   const title = activeItem?.title ?? 'Table of Contents';
+
    return (
       <Flex {...props} display={actualDisplay}>
          <Menu
@@ -124,7 +126,7 @@ export function MobileTOC({
                paddingRight={4}
                _active={{ background: 'white' }}
             >
-               {activeItem?.title}
+               {title}
             </MenuButton>
             <FlexScrollGradient
                as={MenuList}
@@ -166,10 +168,13 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
    );
 }
 
-function MobileTOCItem({ title, scrollTo, elementRef }: TOCRecord) {
+function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
+   const ref = useRef<HTMLLIElement>(null);
+
    const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
    const blue100 = useToken('colors', 'blue.100');
 
+   useScrollToActiveEffect(ref, active);
    const onClick = () => {
       const el = elementRef.current;
 
@@ -189,7 +194,8 @@ function MobileTOCItem({ title, scrollTo, elementRef }: TOCRecord) {
          flexShrink={1}
          flexGrow={1}
          onClick={onClick}
-         color="gray.500"
+         color={active ? 'blue.600' : 'gray.500'}
+         background={active ? 'blue.100' : undefined}
          _hover={{
             background: 'blue.100',
             color: 'brand.600',
@@ -198,6 +204,7 @@ function MobileTOCItem({ title, scrollTo, elementRef }: TOCRecord) {
          paddingRight={4}
          paddingTop={1.5}
          paddingBottom={1.5}
+         ref={ref}
       >
          {title}
       </MenuItem>
