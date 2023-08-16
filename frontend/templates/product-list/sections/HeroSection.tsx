@@ -10,12 +10,12 @@ import {
    useDisclosure,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
+import { markdownToHTML } from '@helpers/ui-helpers';
 import { isPresent } from '@ifixit/helpers';
 import { ResponsiveImage, useIsMounted, Wrapper } from '@ifixit/ui';
 import type { Image } from '@models/components/image';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
-import snarkdown from 'snarkdown';
 
 export interface HeroSectionProps {
    title: string;
@@ -200,10 +200,7 @@ type DescriptionRichTextProps = Omit<BoxProps, 'children'> & {
 
 const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
    ({ children, ...other }, ref) => {
-      const html = React.useMemo(() => {
-         const preserveNewlines = children.trim().replace(/\n/g, '<br />');
-         return snarkdown(preserveNewlines);
-      }, [children]);
+      const html = React.useMemo(() => markdownToHTML(children), [children]);
 
       return (
          <Box
