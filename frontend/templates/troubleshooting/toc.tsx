@@ -118,7 +118,7 @@ export function MobileTOC({
                marginRight={8}
                boxShadow="md"
                borderRadius={4}
-               maxHeight="calc(100% - 56px - (2 * var(--chakra-space-8)))"
+               maxHeight={48}
                paddingTop={1.5}
                paddingBottom={1.5}
                sx={{
