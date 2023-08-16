@@ -53,7 +53,9 @@ export function FAQsSection({
                   )}
                </Box>
                <Accordion defaultIndex={[0]} allowMultiple>
-                  {faqs.map((faq, index) => FAQAccordionItem({ faq, index }))}
+                  {faqs.map((faq, index) => (
+                     <FAQAccordionItem key={index} faq={faq} />
+                  ))}
                </Accordion>
             </Box>
          </Wrapper>
@@ -61,11 +63,10 @@ export function FAQsSection({
    );
 }
 
-function FAQAccordionItem({ faq, index }: { faq: FAQ; index: number }) {
+function FAQAccordionItem({ faq }: { faq: FAQ }) {
    const answerHtml = useMemo(() => markdownToHTML(faq.answer), [faq.answer]);
    return (
       <AccordionItem
-         key={index}
          borderWidth="1px"
          borderColor="gray.300"
          bg="gray.100"
