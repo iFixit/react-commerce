@@ -34,6 +34,7 @@ export function TOC({
          top={0}
          width={{ base: '100%', lg: 'auto' }}
          flexGrow={{ base: 1, lg: 0 }}
+         zIndex={{ base: 'docked', lg: 'initial' }}
          {...props}
       >
          <LargeTOC
