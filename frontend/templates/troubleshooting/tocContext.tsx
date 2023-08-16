@@ -22,6 +22,7 @@ export type TOCRecord = {
 export type ScrollToOptions = {
    bufferPx?: number;
    highlightColor?: string;
+   addIdToUrl?: boolean;
 };
 
 export type TOCItems = Record<string, TOCRecord>;
@@ -52,6 +53,14 @@ function scrollTo(
    const scrollTo = scrollTop + bufferPx;
 
    window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+
+   const addIdToUrl = scrollToOptions?.addIdToUrl || true;
+   const id = el.id;
+
+   if (addIdToUrl && id) {
+      window.history.pushState(null, '', `#${id}`);
+   }
+
    const highlightColor = scrollToOptions?.highlightColor;
 
    if (!highlightColor) {
