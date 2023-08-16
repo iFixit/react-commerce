@@ -94,12 +94,16 @@ export function MobileTOC({
                flexGrow={1}
                marginTop={scrollIndicatorHeightCSS}
                rightIcon={<FaIcon icon={faAngleDown} />}
+               color="gray.900"
                fontWeight={510}
                fontSize="sm"
                borderBottom="1px solid"
                borderColor="gray.300"
                background="white"
                borderRadius={0}
+               paddingLeft={4}
+               paddingRight={4}
+               _active={{ background: 'white' }}
             >
                {activeItem?.title}
             </MenuButton>
@@ -108,8 +112,10 @@ export function MobileTOC({
                marginLeft={8}
                marginRight={8}
                boxShadow="md"
-               borderRadius={2}
-               height="100%"
+               borderRadius={4}
+               maxHeight="calc(100% - 56px - (2 * var(--chakra-space-8)))"
+               paddingTop={1.5}
+               paddingBottom={1.5}
                sx={{
                   minWidth: 'initial',
                }}
@@ -148,7 +154,20 @@ function MobileTOCItem({ title, scrollTo }: TOCRecord) {
    };
 
    return (
-      <MenuItem flexShrink={1} onClick={onClick}>
+      <MenuItem
+         flexShrink={1}
+         flexGrow={1}
+         onClick={onClick}
+         color="gray.500"
+         _hover={{
+            background: 'blue.100',
+            color: 'brand.600',
+         }}
+         paddingLeft={4}
+         paddingRight={4}
+         paddingTop={1.5}
+         paddingBottom={1.5}
+      >
          {title}
       </MenuItem>
    );
