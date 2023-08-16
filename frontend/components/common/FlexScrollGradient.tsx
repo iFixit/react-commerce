@@ -126,7 +126,6 @@ function getGradientStyleProps(
    const afterStart = scrollSpace - gradientSizePX;
 
    const size = `${gradientSpace}px`;
-   console.log(size, gradientSizePX, sizeProp);
 
    const beforeGradientShownPercent =
       start < gradientSizePX ? start / gradientSizePX : 1;
