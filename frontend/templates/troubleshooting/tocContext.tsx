@@ -26,7 +26,8 @@ export type ScrollToOptions = {
 export type TOCItems = Record<string, TOCRecord>;
 
 export type TOCContext = {
-   pushItem: (title: string, ref: RefObject<HTMLElement>) => void;
+   addItem: (title: string, ref: RefObject<HTMLElement>) => void;
+   updateItemRef: (title: string, ref: RefObject<HTMLElement>) => void;
    removeItem: (title: string) => void;
    getItems: () => TOCRecord[];
 };
@@ -71,16 +72,27 @@ function createTOCItems(titles: string[]) {
    return Object.fromEntries(records.map((record) => [record.title, record]));
 }
 
-function createTOCItem(
+function updateTOCItemRef(
    existingItems: TOCItems,
    title: string,
    ref?: RefObject<HTMLElement>
 ) {
-   const record = createRecord(title, ref);
-   return {
-      ...existingItems,
-      [title]: record,
+   const existingItem = existingItems[title];
+
+   if (!existingItem) {
+      console.error(`No item with title ${title} exists in the TOC`);
+      return existingItems;
+   }
+
+   const newItems = { ...existingItems };
+   const newRef = ref || existingItem.elementRef;
+   newItems[title] = {
+      ...existingItem,
+      elementRef: newRef,
+      scrollTo: (scrollToOptions?: ScrollToOptions) =>
+         scrollTo(newRef, scrollToOptions),
    };
+   return newItems;
 }
 
 function removeTOCItem(existingItems: TOCItems, title: string) {
@@ -93,9 +105,26 @@ function useCRUDFunctions(
    items: TOCItems,
    setItems: Dispatch<SetStateAction<TOCItems>>
 ) {
-   const pushItem = useCallback(
+   const updateItemRef = useCallback(
       (title: string, ref: RefObject<HTMLElement>) => {
-         setItems((items) => createTOCItem(items, title, ref));
+         setItems((items) => updateTOCItemRef(items, title, ref));
+      },
+      [setItems]
+   );
+
+   const addItem = useCallback(
+      (title: string, ref: RefObject<HTMLElement>) => {
+         setItems((items) => {
+            const titleExists = Object.keys(items).includes(title);
+
+            if (titleExists) {
+               throw new Error(`Title ${title} already exists in the TOC`);
+            }
+
+            const newItems = { ...items };
+            newItems[title] = createRecord(title, ref);
+            return newItems;
+         });
       },
       [setItems]
    );
@@ -112,7 +141,8 @@ function useCRUDFunctions(
    );
 
    return {
-      pushItem,
+      addItem,
+      updateItemRef,
       getItems,
       removeItem,
    };
@@ -239,11 +269,15 @@ export const TOCContextProvider = ({
       createTOCItems(defaultTitles || [])
    );
 
-   const { pushItem, getItems, removeItem } = useCRUDFunctions(items, setItems);
+   const { addItem, updateItemRef, getItems, removeItem } = useCRUDFunctions(
+      items,
+      setItems
+   );
    useObserveItems(items, setItems);
 
    const context = {
-      pushItem,
+      addItem,
+      updateItemRef,
       removeItem,
       getItems,
    };
@@ -258,15 +292,15 @@ export const useTOCContext = () => {
    return context;
 };
 
-export function AddToTOC<T extends HTMLElement>(title?: string) {
-   const { pushItem, removeItem } = useTOCContext();
+export function AddToTOCClientSide<T extends HTMLElement>(title?: string) {
+   const { addItem, removeItem } = useTOCContext();
    const ref = useRef<T>(null);
 
    useEffect(() => {
       if (!title) {
          return;
       }
-      pushItem(title, ref);
+      addItem(title, ref);
 
       return () => {
          if (!title) {
@@ -274,7 +308,27 @@ export function AddToTOC<T extends HTMLElement>(title?: string) {
          }
          removeItem(title);
       };
-   }, [title, ref, pushItem, removeItem]);
+   }, [title, ref, addItem, removeItem]);
+   return { ref };
+}
+
+export function LinkToTOC<T extends HTMLElement>(title?: string) {
+   const { updateItemRef, removeItem } = useTOCContext();
+   const ref = useRef<T>(null);
+
+   useEffect(() => {
+      if (!title) {
+         return;
+      }
+      updateItemRef(title, ref);
+
+      return () => {
+         if (!title) {
+            return;
+         }
+         removeItem(title);
+      };
+   }, [title, ref, updateItemRef, removeItem]);
    return { ref };
 }
 

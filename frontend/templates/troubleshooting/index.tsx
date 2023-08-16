@@ -58,7 +58,7 @@ import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
-import { AddToTOC, TOCContextProvider } from './tocContext';
+import { LinkToTOC, TOCContextProvider } from './tocContext';
 import { TOC } from './toc';
 
 const RelatedProblemsTitle = 'Related Problems';
@@ -723,7 +723,7 @@ function AuthorListing({
 }
 
 function IntroductionSection({ intro }: { intro: Section }) {
-   const { ref } = AddToTOC<HTMLHeadingElement>(intro.heading);
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.heading);
    return (
       <>
          {intro.heading && (
@@ -747,7 +747,7 @@ const ConclusionSection = function ConclusionSectionInner({
 }: {
    conclusion: Section;
 }) {
-   const { ref } = AddToTOC<HTMLHeadingElement>(conclusion.heading);
+   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.heading);
    return (
       <>
          <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
@@ -786,7 +786,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
-   const { ref } = AddToTOC<HTMLHeadingElement>(RelatedProblemsTitle);
+   const { ref } = LinkToTOC<HTMLHeadingElement>(RelatedProblemsTitle);
    return (
       <>
          <HeadingSelfLink
