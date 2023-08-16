@@ -21,7 +21,6 @@ export type TOCRecord = {
 
 export type ScrollToOptions = {
    bufferPx?: number;
-   highlightColor?: string;
    addIdToUrl?: boolean;
 };
 
@@ -60,29 +59,6 @@ function scrollTo(
    if (addIdToUrl && id) {
       window.history.pushState(null, '', `#${id}`);
    }
-
-   const highlightColor = scrollToOptions?.highlightColor;
-
-   if (!highlightColor) {
-      return;
-   }
-
-   highlightEl(el, highlightColor);
-}
-
-function highlightEl(el: HTMLElement, color: string) {
-   const originalBackgroundColor = el.style.backgroundColor;
-   const originalTransition = el.style.transition;
-
-   el.style.transition = 'background-color .5s ease-in-out';
-   el.style.backgroundColor = color;
-
-   setTimeout(() => {
-      el.style.backgroundColor = originalBackgroundColor;
-   }, 500);
-   setTimeout(() => {
-      el.style.transition = originalTransition;
-   }, 1000);
 }
 
 function createRecord(title: string, ref?: RefObject<HTMLElement>) {

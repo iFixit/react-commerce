@@ -152,15 +152,22 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
    );
 }
 
-function MobileTOCItem({ title, scrollTo }: TOCRecord) {
+function MobileTOCItem({ title, scrollTo, elementRef }: TOCRecord) {
    const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
    const blue100 = useToken('colors', 'blue.100');
 
    const onClick = () => {
+      const el = elementRef.current;
+
+      if (!el) {
+         return;
+      }
+
       scrollTo({
          bufferPx: scrollIndicatorHeight,
-         highlightColor: blue100,
       });
+
+      highlightEl(el, blue100);
    };
 
    return (
@@ -238,8 +245,9 @@ function TOCItem({
 
       scrollTo({
          bufferPx: scrollIndicatorHeight,
-         highlightColor: blue100,
       });
+
+      highlightEl(el, blue100);
    };
 
    useScrollToActiveEffect(ref, active);
@@ -267,4 +275,19 @@ function TOCItem({
          </Text>
       </ListItem>
    );
+}
+
+function highlightEl(el: HTMLElement, color: string) {
+   const originalBackgroundColor = el.style.backgroundColor;
+   const originalTransition = el.style.transition;
+
+   el.style.transition = 'background-color .5s ease-in-out';
+   el.style.backgroundColor = color;
+
+   setTimeout(() => {
+      el.style.backgroundColor = originalBackgroundColor;
+   }, 500);
+   setTimeout(() => {
+      el.style.transition = originalTransition;
+   }, 1000);
 }
