@@ -1,16 +1,23 @@
 import {
+   Button,
    Flex,
    FlexProps,
    List,
    ListItem,
    ListItemProps,
    ListProps,
+   Menu,
+   MenuButton,
+   MenuItem,
+   MenuList,
    Text,
 } from '@chakra-ui/react';
 import { TOCRecord, useTOCContext } from './tocContext';
 import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
 import { RefObject, useEffect, useRef } from 'react';
+import { FaIcon } from '@ifixit/icons';
+import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 
 export function TOC({
    listItemProps,
@@ -20,25 +27,94 @@ export function TOC({
    const items = getItems();
    return (
       <Flex
-         {...props}
          alignSelf="flex-start"
-         height="100vh"
+         height={{ lg: '100vh' }}
          position="sticky"
          top={0}
+         width={{ base: '100%', lg: 'auto' }}
+         flexGrow={{ base: 1, lg: 0 }}
+         {...props}
       >
-         <FlexScrollGradient
-            nestedFlexProps={
-               {
-                  as: List,
-                  flexDirection: 'column',
-                  spacing: 2,
-                  paddingRight: 3,
-                  paddingTop: 6,
-               } as FlexProps & ListProps
-            }
-         >
-            <TOCItems tocItems={items} listItemProps={listItemProps} />
-         </FlexScrollGradient>
+         <LargeTOC
+            items={items}
+            listItemProps={listItemProps}
+            display={{ base: 'none', lg: 'flex' }}
+         />
+         <MobileTOC
+            listItemProps={listItemProps}
+            flexGrow={1}
+            zIndex={999}
+            display={{ base: 'flex', lg: 'none' }}
+         />
+      </Flex>
+   );
+}
+
+function LargeTOC({
+   items,
+   listItemProps,
+   ...props
+}: FlexProps & { listItemProps?: ListItemProps; items: TOCRecord[] }) {
+   return (
+      <FlexScrollGradient
+         nestedFlexProps={
+            {
+               as: List,
+               flexDirection: 'column',
+               spacing: 2,
+               paddingRight: 3,
+               paddingTop: 6,
+            } as FlexProps & ListProps
+         }
+         {...props}
+      >
+         <TOCItems tocItems={items} listItemProps={listItemProps} />
+      </FlexScrollGradient>
+   );
+}
+
+export function MobileTOC({
+   listItemProps,
+   display,
+   ...props
+}: FlexProps & { listItemProps?: ListItemProps }) {
+   const { getItems } = useTOCContext();
+   const items = getItems();
+   const activeItem = items.find((item) => item.active);
+   const scrollIndicatorHeightCSS = useScrollPercentHeight(
+      CssTokenOption.CssString
+   );
+   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
+   const actualDisplay = activeItem ? display : 'none';
+
+   return (
+      <Flex {...props} display={actualDisplay}>
+         <Menu matchWidth={true}>
+            <MenuButton
+               as={Button}
+               flexGrow={1}
+               marginTop={scrollIndicatorHeightCSS}
+               rightIcon={<FaIcon icon={faAngleDown} />}
+            >
+               {activeItem?.title}
+            </MenuButton>
+            <MenuList maxWidth="100vw">
+               {items.map((item, index) => {
+                  return (
+                     <MenuItem
+                        key={index}
+                        onClick={() => {
+                           item.scrollTo({
+                              bufferPx: scrollIndicatorHeight,
+                           });
+                        }}
+                     >
+                        {item.title}
+                     </MenuItem>
+                  );
+               })}
+            </MenuList>
+         </Menu>
       </Flex>
    );
 }

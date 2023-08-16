@@ -59,7 +59,7 @@ import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
 import { LinkToTOC, TOCContextProvider } from './tocContext';
-import { TOC } from './toc';
+import { MobileTOC, TOC } from './toc';
 
 const RelatedProblemsTitle = 'Related Problems';
 
@@ -123,17 +123,21 @@ const Wiki: NextPageWithLayout<{
                maxW="1280px"
                ref={scrollContainerRef}
                display="flex"
+               flexWrap={{ base: 'wrap', lg: 'nowrap' }}
             >
                <TOC
-                  display="flex"
-                  flexShrink={0}
+                  flexShrink={{ lg: 0 }}
                   flexGrow={1}
-                  borderRight="1px solid"
-                  borderColor="gray.300"
-                  maxWidth="240px"
+                  borderRight={{ lg: '1px solid' }}
+                  borderColor={{ lg: 'gray.300' }}
+                  maxWidth={{
+                     base: 'calc(100% + 2 * var(--chakra-space-4))',
+                     lg: '240px',
+                  }}
                   marginLeft={-4}
+                  marginRight={{ base: -4, lg: 0 }}
                   listItemProps={{
-                     paddingLeft: 4,
+                     paddingLeft: { lg: 4 },
                   }}
                />
                <Flex
