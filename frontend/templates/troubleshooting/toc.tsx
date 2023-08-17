@@ -170,7 +170,7 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
 }
 
 function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
-   const ref = useRef<HTMLLIElement>(null);
+   const ref = useRef<HTMLButtonElement>(null);
 
    const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
    const blue100 = useToken('colors', 'blue.100');
@@ -226,10 +226,7 @@ function TOCItems({
    return <>{items}</>;
 }
 
-function useScrollToActiveEffect(
-   ref: RefObject<HTMLLIElement>,
-   active: boolean
-) {
+function useScrollToActiveEffect(ref: RefObject<HTMLElement>, active: boolean) {
    useEffect(() => {
       const el = ref.current;
       if (!el) {
