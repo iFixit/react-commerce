@@ -14,7 +14,6 @@ import {
 export type TOCRecord = {
    title: string;
    elementRef: RefObject<HTMLElement>;
-   visible: boolean;
    active: boolean;
    scrollTo: (scrollToOptions?: ScrollToOptions) => void;
 };
@@ -66,7 +65,6 @@ function createRecord(title: string, ref?: RefObject<HTMLElement>) {
    return {
       title,
       elementRef: elementRef,
-      visible: false,
       active: false,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
          scrollTo(elementRef, scrollToOptions),
@@ -138,7 +136,7 @@ function useCRUDFunctions(
    );
 
    const getItems = useCallback(() => {
-      return sortVertically(items);
+      return sortVertically(Object.values(items));
    }, [items]);
 
    const removeItem = useCallback(
@@ -160,25 +158,6 @@ function useObserveItems(
    items: TOCItems,
    setItems: Dispatch<SetStateAction<TOCItems>>
 ) {
-   const observeItems = useCallback(
-      (observer: IntersectionObserver) => {
-         Object.values(items).forEach((item) => {
-            if (item.elementRef.current) {
-               observer.observe(item.elementRef.current);
-            }
-         });
-
-         return () => {
-            Object.values(items).forEach((item) => {
-               if (item.elementRef.current) {
-                  observer.unobserve(item.elementRef.current);
-               }
-            });
-         };
-      },
-      [items]
-   );
-
    const updateClosetItem = useCallback(() => {
       setItems((items) => {
          const closest = getClosest(items);
@@ -190,46 +169,8 @@ function useObserveItems(
       });
    }, [setItems]);
 
-   const setVisible = useCallback(
-      (title: string, visible: boolean) => {
-         setItems((items) => {
-            items[title].visible = visible;
-            return items;
-         });
-      },
-      [setItems]
-   );
-
-   const getTitleFromEl = useCallback(
-      (el: HTMLElement) => {
-         const title = Object.keys(items).find(
-            (key) => items[key].elementRef.current === el
-         );
-
-         return title;
-      },
-      [items]
-   );
-
    // watch for elements entering / leaving the viewport and update the active element
    useEffect(() => {
-      const observer = new IntersectionObserver(
-         (entries) => {
-            entries.forEach((entry) => {
-               const title = getTitleFromEl(entry.target as HTMLElement);
-
-               if (!title) {
-                  return;
-               }
-
-               setVisible(title, entry.isIntersecting);
-            });
-         },
-         { threshold: 0 }
-      );
-
-      const cleanup = observeItems(observer);
-
       // Update active item on scroll
       const scrollHandler = () => {
          updateClosetItem();
@@ -243,12 +184,10 @@ function useObserveItems(
       window.addEventListener('resize', resizeHandler);
 
       return () => {
-         observer.disconnect();
-         cleanup();
          window.removeEventListener('scroll', scrollHandler);
          window.removeEventListener('resize', resizeHandler);
       };
-   }, [setVisible, getTitleFromEl, observeItems, updateClosetItem]);
+   }, [updateClosetItem]);
 
    // Update the active element on nextjs hydration
    useEffect(() => {
@@ -340,9 +279,8 @@ export function LinkToTOC<T extends HTMLElement>(title?: string) {
    return { ref };
 }
 
-function sortVertically(items: TOCItems): TOCRecord[] {
-   const itemsArr = Object.values(items);
-   return itemsArr.sort((a, b) => {
+function sortVertically(records: TOCRecord[]): TOCRecord[] {
+   return records.sort((a, b) => {
       const aTop = a.elementRef.current?.offsetTop || 0;
       const bTop = b.elementRef.current?.offsetTop || 0;
       return aTop - bTop;
@@ -350,15 +288,26 @@ function sortVertically(items: TOCItems): TOCRecord[] {
 }
 
 function getClosest(items: TOCItems) {
-   const verticallySortedItems = sortVertically(items);
+   const visibleItems = Object.values(items).filter((record) => {
+      const el = record.elementRef.current;
+      if (!el) {
+         return false;
+      }
 
-   const visibleItems = verticallySortedItems.filter((item) => item.visible);
+      const elBottomScrollPastTopOfViewport =
+         el.offsetTop + el.clientHeight <= window.scrollY;
+
+      const isVisible = !elBottomScrollPastTopOfViewport;
+
+      return isVisible;
+   });
+   const verticallySortedItems = sortVertically(visibleItems);
 
    const scrollHeight = document.body.scrollHeight;
    const scrollPercent = window.scrollY / (scrollHeight - window.innerHeight);
 
-   const closest = visibleItems.reverse().find((visibleItem) => {
-      const itemTop = visibleItem.elementRef.current?.offsetTop || 0;
+   const closest = verticallySortedItems.reverse().find((record) => {
+      const itemTop = record.elementRef.current?.offsetTop || 0;
 
       const itemPercent = itemTop / scrollHeight;
       const hasPassed = scrollPercent >= itemPercent;
