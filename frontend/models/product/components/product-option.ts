@@ -15,7 +15,13 @@ export function productOptionFromShopify(
    variants: ProductVariant[],
    iFixitOptions?: string[]
 ): ProductOption {
-   const values = iFixitOptions?.length ? iFixitOptions : option.values;
+   // TODO: cleanup
+   const values = iFixitOptions?.length
+      ? iFixitOptions.map((option) =>
+           option === 'New-TEsstss' ? 'New' : option
+        )
+      : option.values;
+
    const valuesWithMatchingVariants = values.filter((value: string) =>
       valueHasMatchingVariant(value, option, variants)
    );

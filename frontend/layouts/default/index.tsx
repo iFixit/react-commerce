@@ -1,3 +1,5 @@
+'use client';
+
 import {
    Alert,
    AlertIcon,
@@ -5,11 +7,11 @@ import {
    Box,
    DrawerCloseButton,
    Flex,
+   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
    Portal,
-   Icon,
 } from '@chakra-ui/react';
 import { GoogleAnalytics, Matomo } from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
@@ -59,15 +61,14 @@ import {
    UserMenuLink,
    WordmarkLink,
 } from '@ifixit/ui';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
+import { Suspense } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const DefaultLayoutComponent = function ({
-   title,
    stores,
    currentStore,
    shopifyCredentials,
@@ -87,87 +88,6 @@ const DefaultLayoutComponent = function ({
             apiVersion="2020-01"
          >
             <Box>
-               <Head>
-                  <title>{title || 'iFixit'}</title>
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="57x57"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-57x57.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="60x60"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-60x60.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="72x72"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-72x72.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="76x76"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-76x76.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="114x114"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-114x114.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="120x120"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-120x120.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="144x144"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-144x144.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="152x152"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-152x152.png"
-                  />
-                  <link
-                     rel="apple-touch-icon"
-                     sizes="180x180"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/apple-touch-icon-180x180.png"
-                  />
-                  <link
-                     rel="icon"
-                     type="image/png"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/favicon-32x32.png"
-                     sizes="32x32"
-                  />
-                  <link
-                     rel="icon"
-                     type="image/png"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/android-chrome-192x192.png"
-                     sizes="192x192"
-                  />
-                  <link
-                     rel="icon"
-                     type="image/png"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/favicon-96x96.png"
-                     sizes="96x96"
-                  />
-                  <link
-                     rel="icon"
-                     type="image/png"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/favicon-16x16.png"
-                     sizes="16x16"
-                  />
-                  <link
-                     rel="manifest"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/manifest.json"
-                  />
-                  <link
-                     rel="mask-icon"
-                     href="https://assets.cdn.ifixit.com/static/icons/ifixit/safari-pinned-tab.svg"
-                     color="#5bbad5"
-                  />
-               </Head>
                <Flex direction="column" minH="100vh">
                   <Header>
                      <HeaderHiddenBar>
@@ -321,8 +241,10 @@ const DefaultLayoutComponent = function ({
                   />
                </Flex>
             </Box>
-            <Matomo />
-            <GoogleAnalytics />
+            <Suspense>
+               <Matomo />
+               <GoogleAnalytics />
+            </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
    );
@@ -334,12 +256,13 @@ interface LayoutNavigationDrawerProps {
 
 function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    const headerContext = useHeaderContext();
-   const router = useRouter();
+   const pathname = usePathname();
+   const searchParams = useSearchParams();
 
    React.useEffect(() => {
       headerContext.navigation.close();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [router.asPath]);
+   }, [pathname, searchParams]);
 
    return (
       <NavigationDrawer>

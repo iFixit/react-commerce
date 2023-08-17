@@ -1,3 +1,5 @@
+'use client';
+
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
@@ -60,10 +62,6 @@ export function AppProviders({
    ifixitOrigin,
    adminMessage,
 }: React.PropsWithChildren<AppProvidersProps>) {
-   const markup = (
-      <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
-   );
-
    return (
       <AppProvider
          ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}
@@ -71,13 +69,15 @@ export function AppProviders({
       >
          <CartDrawerProvider>
             <QueryClientProvider client={queryClient}>
-               {algolia ? (
-                  <InstantSearchProvider {...algolia}>
-                     {markup}
-                  </InstantSearchProvider>
-               ) : (
-                  markup
-               )}
+               <ChakraProvider theme={customTheme}>
+                  {algolia ? (
+                     <InstantSearchProvider {...algolia}>
+                        {children}
+                     </InstantSearchProvider>
+                  ) : (
+                     children
+                  )}
+               </ChakraProvider>
             </QueryClientProvider>
          </CartDrawerProvider>
       </AppProvider>

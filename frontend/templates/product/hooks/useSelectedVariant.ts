@@ -1,6 +1,6 @@
 import { invariant } from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 
 type SetVariantIdFn = (variantId: string) => void;
@@ -9,10 +9,13 @@ export function useSelectedVariant(
    product: Product
 ): [ProductVariant, SetVariantIdFn] {
    const router = useRouter();
+   const searchParams = useSearchParams();
+   const pathname = usePathname();
 
-   const defaultVariantId = useDefaultVariantId(product);
-   const searchParamVariantId = useSearchParamVariantId();
-
+   const defaultVariantId = getDefaultVariantId(product);
+   const searchParamVariantId = getSearchParamVariantId(
+      searchParams?.get('variant')
+   );
    const currentVariantId = searchParamVariantId ?? defaultVariantId;
 
    let variant = product.variants.find((v) => v.id === currentVariantId);
@@ -27,25 +30,20 @@ export function useSelectedVariant(
 
    const setVariantId = useCallback<SetVariantIdFn>(
       (variantId) => {
-         const { variant, ...newQuery } = router.query;
+         const newQuery = new URLSearchParams(searchParams as URLSearchParams);
+         newQuery.delete('variant');
          if (variantId !== defaultVariantId) {
-            newQuery.variant = encodeVariantId(variantId);
+            newQuery.append('variant', encodeVariantId(variantId));
          }
-         router.replace(
-            {
-               query: newQuery,
-            },
-            undefined,
-            { shallow: true }
-         );
+         router.replace(`${pathname}?${newQuery.toString()}`);
       },
-      [defaultVariantId, router]
+      [defaultVariantId, router, pathname, searchParams]
    );
 
    return [variant, setVariantId];
 }
 
-export function useDefaultVariantId(product: Product): string {
+export function getDefaultVariantId(product: Product): string {
    const variant =
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
@@ -53,11 +51,9 @@ export function useDefaultVariantId(product: Product): string {
    return variant.id;
 }
 
-function useSearchParamVariantId(): string | null {
-   const router = useRouter();
-
-   const searchParamVariantId = router.query?.variant;
-
+export function getSearchParamVariantId(
+   searchParamVariantId?: string | null
+): string | null {
    if (typeof searchParamVariantId !== 'string') {
       return null;
    }
