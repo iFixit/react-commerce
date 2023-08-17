@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * This lib is inspired by Remix's loader data pattern.
  * The purpose of this lib is to make it easy for components to reach for page wide data,

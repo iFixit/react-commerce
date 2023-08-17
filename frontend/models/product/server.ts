@@ -4,7 +4,7 @@ import { strapi } from '@lib/strapi-sdk';
 import { Product, getProduct } from '.';
 import { findStoreByCode } from '../store';
 import { fetchProductData } from '@lib/ifixit-api/productData';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client/index.server';
 
 export type FindProductArgs = {
    handle: string;

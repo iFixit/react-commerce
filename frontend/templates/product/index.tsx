@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Flex } from '@chakra-ui/react';
 import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
@@ -35,7 +37,6 @@ import {
    useProductTemplateProps,
 } from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
-import { MetaTags } from './MetaTags';
 import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
@@ -83,7 +84,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    return (
       <React.Fragment key={product.handle}>
-         <MetaTags product={product} selectedVariant={selectedVariant} />
          {isAdminUser && (
             <SecondaryNavigation
                display={{ lg: 'none' }}
