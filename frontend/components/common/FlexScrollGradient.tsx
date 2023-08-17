@@ -209,9 +209,9 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
 
       measure();
 
-      el.addEventListener('transitionend', measure);
-      el.addEventListener('scroll', measure);
-      window.addEventListener('resize', measure);
+      el.addEventListener('transitionend', measure, { passive: true });
+      el.addEventListener('scroll', measure, { passive: true });
+      window.addEventListener('resize', measure, { passive: true });
 
       return () => {
          el.removeEventListener('transitionend', measure);

@@ -180,8 +180,8 @@ function useObserveItems(
       const resizeHandler = () => {
          updateClosetItem();
       };
-      window.addEventListener('scroll', scrollHandler);
-      window.addEventListener('resize', resizeHandler);
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+      window.addEventListener('resize', resizeHandler, { passive: true });
 
       return () => {
          window.removeEventListener('scroll', scrollHandler);
