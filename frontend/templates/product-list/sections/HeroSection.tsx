@@ -82,23 +82,19 @@ export function HeroSection({
                      />
                   )}
                   <HeroTitle page={page}>{title}</HeroTitle>
-                  {isFirstPage && (
-                     <>
-                        {isPresent(tagline) && (
-                           <Text
-                              as="h2"
-                              fontWeight="medium"
-                              data-testid="hero-tagline"
-                           >
-                              {tagline}
-                           </Text>
-                        )}
-                        {isPresent(description) && (
-                           <DescriptionRichText mt="4">
-                              {description}
-                           </DescriptionRichText>
-                        )}
-                     </>
+                  {isPresent(tagline) && (
+                     <Text
+                        as="h2"
+                        fontWeight="medium"
+                        data-testid="hero-tagline"
+                     >
+                        {tagline}
+                     </Text>
+                  )}
+                  {isPresent(description) && (
+                     <DescriptionRichText mt="4">
+                        {description}
+                     </DescriptionRichText>
                   )}
                </Flex>
             </Flex>
@@ -131,6 +127,7 @@ function HeroTitle({
    children,
    page,
 }: React.PropsWithChildren<{ page: number }>) {
+   // Place non-breaking space between 'Page' and page number
    return (
       <Heading
          as="h1"
@@ -140,7 +137,15 @@ function HeroTitle({
          data-testid="hero-title"
       >
          {children}
-         {page > 1 ? ` - Page ${page}` : ''}
+         {page > 1 ? (
+            <>
+               {' - Page'}
+               <span dangerouslySetInnerHTML={{ __html: '&nbsp;' }} />
+               {page}
+            </>
+         ) : (
+            ''
+         )}
       </Heading>
    );
 }
