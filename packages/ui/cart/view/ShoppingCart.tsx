@@ -16,6 +16,7 @@ import {
    Spacer,
    Spinner,
    Text,
+   VStack,
 } from '@chakra-ui/react';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
@@ -32,8 +33,8 @@ import { ShoppingCartTotals } from './ShoppingCartTotals';
 
 export function ShoppingCart() {
    return (
-      <Flex py="16" gap="80px" maxWidth="5xl" margin="auto">
-         <Box>
+      <Flex py="16" maxWidth="5xl" margin="auto">
+         <Box pr="20">
             <ShoppingCartItems />
          </Box>
          <Box width="md">
@@ -51,7 +52,7 @@ export function ShoppingCartItems() {
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
 
    return (
-      <>
+      <VStack spacing="5">
          <HStack align="center">
             <Heading size="xl">Shopping cart</Heading>
             {(cart.data != null || !cart.isError) && (
@@ -173,7 +174,7 @@ export function ShoppingCartItems() {
                </SimpleGrid>
             </Box>
          </Slide>
-      </>
+      </VStack>
    );
 }
 
