@@ -1,3 +1,7 @@
+import {
+   hasCartDetails,
+   ProductPreviewWithCartDetails,
+} from '@helpers/product-preview-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import type { ProductPreview } from '@models/components/product-preview';
 import type { ProductVariant } from '@pages/api/nextjs/cache/product';
@@ -6,7 +10,7 @@ import React from 'react';
 export function useAvailableForSaleVariants(
    variant: ProductVariant,
    crossSellVariants: ProductPreview[]
-): ProductPreview[] {
+): ProductPreviewWithCartDetails[] {
    const getIsProductForSale = useGetIsProductAvailableForSale();
 
    return React.useMemo(() => {
@@ -14,7 +18,8 @@ export function useAvailableForSaleVariants(
          .filter((crossSellVariant) =>
             variant.crossSellVariantIds.includes(crossSellVariant.id)
          )
-         .filter((crossSellVariant) => getIsProductForSale(crossSellVariant));
+         .filter((crossSellVariant) => getIsProductForSale(crossSellVariant))
+         .filter(hasCartDetails);
    }, [getIsProductForSale, variant.crossSellVariantIds, crossSellVariants]);
 }
 

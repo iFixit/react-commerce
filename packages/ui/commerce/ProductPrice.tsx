@@ -22,7 +22,8 @@ import { FaIcon } from '@ifixit/icons';
 import { IconBadge } from '../misc';
 import { useUserPrice } from './hooks/useUserPrice';
 
-type ProductPriceSize = 'small' | 'medium' | 'large';
+type ProductPriceSize = 'extra-small' | 'small' | 'medium' | 'large';
+type ProductPriceVariant = 'normal' | 'subdued';
 
 export type ProductVariantPriceProps = Omit<BoxProps, 'children'> & {
    price: Money;
@@ -34,6 +35,7 @@ export type ProductVariantPriceProps = Omit<BoxProps, 'children'> & {
       | ProductPriceSize
       | Partial<Record<ThemeTypings['breakpoints'], ProductPriceSize>>;
    direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+   variant?: ProductPriceVariant;
 };
 
 export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
@@ -47,6 +49,7 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
             `${discountPercentage}% OFF`,
          size,
          direction,
+         variant = 'normal',
          ...other
       },
       ref
@@ -84,6 +87,7 @@ export const ProductVariantPrice = forwardRef<ProductVariantPriceProps, 'div'>(
             size={size}
             colorScheme={userPrice.isProPrice ? 'amber' : 'red'}
             direction={direction}
+            variant={variant}
             {...other}
          />
       );
@@ -102,6 +106,7 @@ type ProductPriceProps = {
       | Partial<Record<ThemeTypings['breakpoints'], ProductPriceSize>>;
    colorScheme?: ThemeTypings['colorSchemes'];
    direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+   variant: ProductPriceVariant;
 };
 
 const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
@@ -116,6 +121,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
          size = 'medium',
          colorScheme = 'red',
          direction = 'row',
+         variant,
          ...other
       },
       ref
@@ -133,7 +139,13 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
          >
             <Text
                sx={styles.price}
-               color={isDiscounted ? `${colorScheme}.600` : 'gray.900'}
+               color={
+                  isDiscounted
+                     ? `${colorScheme}.600`
+                     : variant === 'normal'
+                     ? 'gray.900'
+                     : 'gray.600'
+               }
                data-testid="price"
             >
                {showProBadge && !isHorizontal && (
