@@ -141,7 +141,7 @@ export function ShoppingCartItems() {
 
 function CartHeading({ cart }: { cart: CartQuery }) {
    return (
-      <HStack align="center">
+      <HStack align="center" w="full">
          <Heading size="xl">Shopping cart</Heading>
          {(cart.data != null || !cart.isError) && (
             <Badge
