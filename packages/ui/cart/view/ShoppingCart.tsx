@@ -56,26 +56,7 @@ export function ShoppingCartItems() {
    return (
       <VStack spacing="5">
          <CartHeading cart={cart} />
-         {cart.isError && (
-            <Alert
-               status="error"
-               variant="subtle"
-               flexDirection="column"
-               alignItems="center"
-               justifyContent="center"
-               textAlign="center"
-               height="200px"
-            >
-               <FaIcon icon={faCircleExclamation} h="10" color="red.500" />
-               <AlertTitle mt={4} mb={1} fontSize="lg">
-                  Unable to fetch the cart
-               </AlertTitle>
-               <AlertDescription maxWidth="sm">
-                  Please try to reload the page. If the problem persists, please
-                  contact us.
-               </AlertDescription>
-            </Alert>
-         )}
+         <CartAlert cart={cart} />
          {cart.data?.hasItemsInCart && (
             <>
                <Card data-testid="cart-drawer-line-items">
@@ -184,6 +165,29 @@ function CartHeading({ cart }: { cart: CartQuery }) {
          )}
       </HStack>
    );
+}
+
+function CartAlert({ cart }: { cart: CartQuery }) {
+   return cart.isError ? (
+      <Alert
+         status="error"
+         variant="subtle"
+         flexDirection="column"
+         alignItems="center"
+         justifyContent="center"
+         textAlign="center"
+         height="200px"
+      >
+         <FaIcon icon={faCircleExclamation} h="10" color="red.500" />
+         <AlertTitle mt={4} mb={1} fontSize="lg">
+            Unable to fetch the cart
+         </AlertTitle>
+         <AlertDescription maxWidth="sm">
+            Please try to reload the page. If the problem persists, please
+            contact us.
+         </AlertDescription>
+      </Alert>
+   ) : null;
 }
 
 interface CheckoutErrorProps {
