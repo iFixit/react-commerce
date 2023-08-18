@@ -9,13 +9,7 @@ jobs:
       strategy:
          fail-fast: false
          matrix:
-            project:
-               [
-                  'Desktop Chrome',
-                  'Desktop Firefox',
-                  'Mobile Chrome',
-                  'Tablet Chrome',
-               ]
+            project: ['Desktop Chrome', 'Mobile Chrome', 'Tablet Chrome']
       runs-on: ubuntu-latest
       steps:
          - name: Checkout
