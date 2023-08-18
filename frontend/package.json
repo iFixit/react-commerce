@@ -67,6 +67,7 @@
       "nextjs-progressbar": "0.0.14",
       "query-string": "7.0.1",
       "react": "18.2.0",
+      "react-cookie": "^5.0.0",
       "react-dom": "18.2.0",
       "react-error-boundary": "4.0.10",
       "react-instantsearch-hooks-router-nextjs": "6.42.0",
