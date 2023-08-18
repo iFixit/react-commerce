@@ -6,6 +6,7 @@ import {
 } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useIsMutating, useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import {
    APICart,
    Cart,
@@ -33,6 +34,26 @@ export function useCart() {
       enabled: !isMutating,
    });
    return query;
+}
+
+export function extractCrossSells(cart: Cart | null | undefined) {
+   return useMemo(
+      () =>
+         cart
+            ? cart.crossSellProducts
+                 .filter((item) => {
+                    const isAlreadyInCart =
+                       item &&
+                       cart.lineItems.find(
+                          (lineItem) => lineItem.itemcode === item.itemcode
+                       );
+                    if (isAlreadyInCart) return null;
+                    return item;
+                 })
+                 .sort((a, b) => a.handle.localeCompare(b.handle))
+            : [],
+      [cart]
+   );
 }
 
 function isValidCartPayload(data: any): data is CartAPIResponse {
