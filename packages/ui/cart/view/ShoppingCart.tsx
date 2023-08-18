@@ -31,6 +31,8 @@ import { CartLineItem } from './CartLineItem';
 import { CrossSell } from '../drawer/CrossSell';
 import { ShoppingCartTotals } from './ShoppingCartTotals';
 
+type CartQuery = ReturnType<typeof useCart>;
+
 export function ShoppingCart() {
    return (
       <Flex py="16" maxWidth="5xl" margin="auto">
@@ -53,29 +55,7 @@ export function ShoppingCartItems() {
 
    return (
       <VStack spacing="5">
-         <HStack align="center">
-            <Heading size="xl">Shopping cart</Heading>
-            {(cart.data != null || !cart.isError) && (
-               <Badge
-                  borderRadius="full"
-                  variant="subtle"
-                  colorScheme="gray"
-                  boxSize="6"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  bg="gray.100"
-                  color="gray.400"
-                  data-testid="cart-drawer-item-count"
-               >
-                  {cart.isLoading ? (
-                     <Spinner size="xs" />
-                  ) : (
-                     cart.data?.totals.itemsCount ?? 0
-                  )}
-               </Badge>
-            )}
-         </HStack>
+         <CartHeading cart={cart} />
          {cart.isError && (
             <Alert
                status="error"
@@ -175,6 +155,34 @@ export function ShoppingCartItems() {
             </Box>
          </Slide>
       </VStack>
+   );
+}
+
+function CartHeading({ cart }: { cart: CartQuery }) {
+   return (
+      <HStack align="center">
+         <Heading size="xl">Shopping cart</Heading>
+         {(cart.data != null || !cart.isError) && (
+            <Badge
+               borderRadius="full"
+               variant="subtle"
+               colorScheme="gray"
+               boxSize="6"
+               display="flex"
+               alignItems="center"
+               justifyContent="center"
+               bg="gray.100"
+               color="gray.400"
+               data-testid="cart-drawer-item-count"
+            >
+               {cart.isLoading ? (
+                  <Spinner size="xs" />
+               ) : (
+                  cart.data?.totals.itemsCount ?? 0
+               )}
+            </Badge>
+         )}
+      </HStack>
    );
 }
 
