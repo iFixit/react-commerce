@@ -35,6 +35,7 @@ import {
    HStack,
    SimpleGrid,
    useToken,
+   Heading,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import type {
@@ -50,6 +51,7 @@ import {
    faAngleDown,
    faCircleNodes,
    faClockRotateLeft,
+   faInfoCircle,
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
@@ -174,9 +176,16 @@ const Wiki: NextPageWithLayout<{
                   </VStack>
                </HStack>
                <TableOfContents
+                  introduction={wikiData.introduction}
                   solutions={wikiData.solutions}
                   problems={wikiData.linkedProblems}
                />
+               {wikiData.introduction.length > 0 && (
+                  <Heading
+                     id="introduction"
+                     aria-label="Introduction"
+                  ></Heading>
+               )}
                {wikiData.introduction.map((intro) => (
                   <IntroductionSection key={intro.heading} intro={intro} />
                ))}
@@ -220,14 +229,32 @@ const Wiki: NextPageWithLayout<{
 };
 
 function TableOfContents({
+   introduction,
    solutions,
    problems,
 }: {
+   introduction: Section[];
    solutions: Section[];
    problems: Problem[];
 }) {
    return (
       <VStack as="nav" align="flex-start" color="brand.500" mt={4} spacing={2}>
+         {introduction.length > 0 && (
+            <Stack>
+               <Link href="#introduction" fontWeight="semibold" display="flex">
+                  <Square
+                     size={6}
+                     border="1px solid"
+                     borderColor="brand.700"
+                     borderRadius="md"
+                     mr={2}
+                  >
+                     <FaIcon icon={faInfoCircle} color="brand.500" />
+                  </Square>
+                  <Box as="span">Introduction</Box>
+               </Link>
+            </Stack>
+         )}
          {solutions.map((solution, index) => (
             <Stack key={solution.heading}>
                <Link
