@@ -56,7 +56,7 @@ function withCacheValue(
    };
 }
 
-function setCache(
+export function setCache(
    context: ContextType,
    getCacheControlOptions: GetCacheControlOptions
 ) {

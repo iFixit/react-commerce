@@ -1,4 +1,5 @@
 import { Button, Flex, useToast, Text } from '@chakra-ui/react';
+import { setCache } from '@helpers/cache-control-helpers';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import {
@@ -51,6 +52,34 @@ function warn(message: string, color = 'orange') {
    console.log('%c' + message, 'color:' + color);
 }
 
+function withCacheDisabledIfFeatureCookie<P>(
+   getServerSideProps: (
+      context: GetServerSidePropsContext
+   ) => Promise<{ props: P }>
+): (context: GetServerSidePropsContext) => Promise<{ props: P }> {
+   return async (context: GetServerSidePropsContext) => {
+      const props = await getServerSideProps(context);
+      const cookies = Object.fromEntries(
+         Object.entries(context.req.cookies || {}).filter(
+            ([_key, value]) => value !== undefined
+         )
+      ) as Cookies;
+
+      const allFeatures = getAllFeatures();
+
+      const hasAnyFeatureCookie = allFeatures.some((feature) => {
+         return cookies[feature.toString()] !== undefined;
+      });
+
+      if (hasAnyFeatureCookie) {
+         setCache(context, () => ({ disabled: true }));
+      }
+
+      return {
+         props: props.props,
+      };
+   };
+}
 export function withSSRFeatureCookies<P>(
    getServerSideProps: (
       context: GetServerSidePropsContext
@@ -58,7 +87,7 @@ export function withSSRFeatureCookies<P>(
 ): (
    context: GetServerSidePropsContext
 ) => Promise<{ props: WithSSRFeatureCookies<P> }> {
-   return async (context: GetServerSidePropsContext) => {
+   const handleFeaturCookies = async (context: GetServerSidePropsContext) => {
       const props = await getServerSideProps(context);
 
       const cookies = Object.fromEntries(
@@ -67,7 +96,9 @@ export function withSSRFeatureCookies<P>(
          )
       ) as Cookies;
 
-      const enabledViaQueryParams = getAllFeatures().filter((feature) =>
+      const allFeatures = getAllFeatures();
+
+      const enabledViaQueryParams = allFeatures.filter((feature) =>
          getQueryBoolean(context.query[feature.toString()])
       );
 
@@ -87,6 +118,8 @@ export function withSSRFeatureCookies<P>(
          },
       };
    };
+
+   return withCacheDisabledIfFeatureCookie(handleFeaturCookies);
 }
 
 export function WithFeatureContextProvider<
