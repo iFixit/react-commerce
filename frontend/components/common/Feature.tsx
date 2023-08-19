@@ -21,6 +21,16 @@ export enum Features {
    ShowFeatureToasts = 'show-feature-toasts',
 }
 
+enum FeatureState {
+   DefaultOn = 'default-on',
+   DefaultOff = 'default-off',
+}
+
+const FeatureStatuses: Record<FeatureState, Features[]> = {
+   [FeatureState.DefaultOn]: [],
+   [FeatureState.DefaultOff]: [Features.ShowFeatureToasts],
+};
+
 export function getAllFeatures(): Features[] {
    return Object.values(Features);
 }
@@ -65,13 +75,23 @@ function withCacheDisabledIfFeatureCookie<P>(
          )
       ) as Cookies;
 
-      const allFeatures = getAllFeatures();
+      const defaultOffFeatues = FeatureStatuses[FeatureState.DefaultOff];
+      const defaultOnFeatures = FeatureStatuses[FeatureState.DefaultOn];
 
-      const hasAnyFeatureCookie = allFeatures.some((feature) => {
-         return cookies[feature.toString()] !== undefined;
+      const anyDefaultOnTurnedOff = defaultOnFeatures.some((feature) => {
+         const cookie = cookies[feature.toString()];
+         return cookie && cookie !== 'true';
       });
 
-      if (hasAnyFeatureCookie) {
+      const anyDefaultOffTurnedOn = defaultOffFeatues.some((feature) => {
+         const cookie = cookies[feature.toString()];
+         if (!cookie) {
+            return false;
+         }
+         return cookie && cookie !== 'false';
+      });
+
+      if (anyDefaultOnTurnedOff || anyDefaultOffTurnedOn) {
          setCache(context, () => ({ disabled: true }));
       }
 
@@ -109,6 +129,18 @@ export function withSSRFeatureCookies<P>(
             'Set-Cookie',
             `${feature.toString()}=true; Path=/`
          );
+      });
+
+      const defaultOnFeatues = FeatureStatuses[FeatureState.DefaultOn];
+      defaultOnFeatues.forEach((feature) => {
+         if (cookies[feature.toString()] === undefined) {
+            warn(`Feature '${feature}' is was ENABLED via default`);
+            cookies[feature.toString()] = 'true';
+            context.res.setHeader(
+               'Set-Cookie',
+               `${feature.toString()}=true; Path=/`
+            );
+         }
       });
 
       return {
@@ -189,7 +221,7 @@ export const FeatureProvider = withCookieProvider<FeatureProviderProps>(
       const setEnabled = useCallback(
          (feature: Features, enabled: boolean) => {
             if (!enabled) {
-               removeCookie(feature.toString(), {
+               setCookie(feature.toString(), enabled.toString(), {
                   path: '/',
                });
                return;
