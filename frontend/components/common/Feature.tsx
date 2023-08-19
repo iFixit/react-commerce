@@ -74,7 +74,10 @@ export function withSSRFeatureCookies<P>(
       enabledViaQueryParams.forEach((feature) => {
          warn(`Feature '${feature}' is was ENABLED via query param`);
          cookies[feature.toString()] = 'true';
-         context.res.setHeader('Set-Cookie', `${feature}=true`);
+         context.res.setHeader(
+            'Set-Cookie',
+            `${feature.toString()}=true; Path=/`
+         );
       });
 
       return {
@@ -153,7 +156,9 @@ export const FeatureProvider = withCookieProvider<FeatureProviderProps>(
       const setEnabled = useCallback(
          (feature: Features, enabled: boolean) => {
             if (!enabled) {
-               removeCookie(feature.toString());
+               removeCookie(feature.toString(), {
+                  path: '/',
+               });
                return;
             }
 
