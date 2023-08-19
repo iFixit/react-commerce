@@ -173,6 +173,10 @@ const Wiki: NextPageWithLayout<{
                      />
                   </VStack>
                </HStack>
+               <TableOfContents
+                  solutions={wikiData.solutions}
+                  problems={wikiData.linkedProblems}
+               />
                {wikiData.introduction.map((intro) => (
                   <IntroductionSection key={intro.heading} intro={intro} />
                ))}
@@ -191,10 +195,6 @@ const Wiki: NextPageWithLayout<{
                      >
                         {'Causes'}
                      </HeadingSelfLink>
-                     <TableOfContents
-                        solutions={wikiData.solutions}
-                        problems={wikiData.linkedProblems}
-                     />
                      <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                         {wikiData.solutions.map((solution, index) => (
                            <SectionCard
