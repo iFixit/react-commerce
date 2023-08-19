@@ -302,5 +302,7 @@ function getQueryBoolean(
       return query.some((q) => getQueryBoolean(q, options));
    }
 
-   return options.considerEmptyAsTrue ? query === '' : Boolean(query);
+   const boolValue = /true|0/i.test(query);
+
+   return options.considerEmptyAsTrue ? query === '' : boolValue;
 }
