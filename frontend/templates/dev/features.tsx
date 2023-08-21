@@ -2,6 +2,7 @@ import { DefaultLayout } from '@layouts/default';
 import {
    FeatureProvider,
    Features,
+   WithFeature,
    getAllFeatures,
    useFeatureContext,
 } from '@components/common/Feature';
@@ -11,6 +12,7 @@ import {
    FormLabel,
    SimpleGrid,
    Switch,
+   Text,
 } from '@chakra-ui/react';
 import { FeaturesSSRProps } from '@pages/dev/features';
 import Head from 'next/head';
@@ -26,6 +28,19 @@ const FeatureTemplate: NextPageWithLayout<FeaturesSSRProps> = ({ cookies }) => {
                   <FeatureSwitch key={feature} feature={feature} />
                ))}
             </FormControl>
+
+            <WithFeature enabled={Features.ShowFeatureToasts}>
+               <Text>
+                  Component enabled via{' '}
+                  <code>WithFeature enabled={Features.ShowFeatureToasts}</code>
+               </Text>
+            </WithFeature>
+            <WithFeature disabled={Features.ShowFeatureToasts}>
+               <Text>
+                  Component enabled via{' '}
+                  <code>WithFeature disabled={Features.ShowFeatureToasts}</code>
+               </Text>
+            </WithFeature>
          </Container>
       </FeatureProvider>
    );
