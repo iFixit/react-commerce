@@ -19,7 +19,7 @@ import {
 } from '@ifixit/ui';
 import type { Money } from '@models/components/money';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
-import { useAvailableForSaleVariants } from '../../CrossSellSection/useAvailableForSaleVariants';
+import { useAvailableForSaleVariants } from './useAvailableForSaleVariants';
 
 interface CrossSellProps {
    product: Product;

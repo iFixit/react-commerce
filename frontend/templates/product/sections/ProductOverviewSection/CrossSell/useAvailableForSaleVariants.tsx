@@ -11,21 +11,23 @@ export function useAvailableForSaleVariants(
    variant: ProductVariant,
    crossSellVariants: ProductPreview[]
 ): ProductPreviewWithCartDetails[] {
-   const getIsProductForSale = useGetIsProductAvailableForSale();
+   const isForSale = useGetIsProductPreviewAvailableForSale();
 
    return React.useMemo(() => {
       return crossSellVariants
-         .filter((crossSellVariant) =>
-            variant.crossSellVariantIds.includes(crossSellVariant.id)
-         )
-         .filter((crossSellVariant) => getIsProductForSale(crossSellVariant))
+         .filter(belongsToVariant(variant))
+         .filter(isForSale)
          .filter(hasCartDetails);
-   }, [getIsProductForSale, variant.crossSellVariantIds, crossSellVariants]);
+   }, [isForSale, variant, crossSellVariants]);
 }
 
-function useGetIsProductAvailableForSale() {
+const belongsToVariant =
+   (variant: ProductVariant) => (productPreview: ProductPreview) =>
+      variant.crossSellVariantIds.includes(productPreview.id);
+
+function useGetIsProductPreviewAvailableForSale() {
    const user = useAuthenticatedUser();
-   const getIsProductAvailableForSale = React.useCallback(
+   const isProductAvailableForSale = React.useCallback(
       (product: ProductPreview) => {
          const isProUser = user.data?.is_pro ?? false;
          const isAvailableForSale =
@@ -34,5 +36,5 @@ function useGetIsProductAvailableForSale() {
       },
       [user.data?.is_pro]
    );
-   return getIsProductAvailableForSale;
+   return isProductAvailableForSale;
 }
