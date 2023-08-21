@@ -1,15 +1,17 @@
 import { Flex, useToken, css, useTheme } from '@chakra-ui/react';
 import { useEffect, useState, RefObject } from 'react';
 
+export type ScrollPercentProps = {
+   scrollContainerRef?: RefObject<HTMLElement>;
+   hideOnZero?: boolean;
+   hideOnScrollPast?: boolean;
+};
+
 export function ScrollPercent({
    scrollContainerRef,
    hideOnZero = false,
    hideOnScrollPast = false,
-}: {
-   scrollContainerRef?: RefObject<HTMLElement>;
-   hideOnZero?: boolean;
-   hideOnScrollPast?: boolean;
-}) {
+}: ScrollPercentProps) {
    const [scrollPercent, setScrollPercent] = useState(0);
    const [scrolledPast, setScrolledPast] = useState(false);
 

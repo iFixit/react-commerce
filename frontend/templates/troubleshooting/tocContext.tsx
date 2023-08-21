@@ -206,12 +206,14 @@ function useObserveItems(
    }, [updateClosetItem]);
 }
 
+export type TOCContextProviderProps = PropsWithChildren<{
+   defaultTitles?: string[];
+}>;
+
 export const TOCContextProvider = ({
    children,
    defaultTitles,
-}: PropsWithChildren<{
-   defaultTitles?: string[];
-}>) => {
+}: TOCContextProviderProps) => {
    const [items, setItems] = useState<TOCItems>(
       createTOCItems(defaultTitles || [])
    );

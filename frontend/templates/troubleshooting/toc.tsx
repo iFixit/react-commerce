@@ -14,12 +14,19 @@ import {
    useDisclosure,
    useToken,
 } from '@chakra-ui/react';
-import { TOCRecord, useTOCContext } from './tocContext';
+import {
+   TOCContextProvider,
+   TOCContext,
+   TOCContextProviderProps,
+   TOCRecord,
+   useTOCContext,
+} from './tocContext';
 import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
-import { RefObject, useEffect, useRef } from 'react';
+import { PropsWithChildren, RefObject, useEffect, useRef } from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
+import { flags } from '@config/flags';
 
 export function TOC({
    listItemProps,
@@ -309,4 +316,38 @@ function highlightEl(el: HTMLElement, color: string) {
    setTimeout(() => {
       el.style.transition = originalTransition;
    }, 1000);
+}
+
+export function onlyShowIfTOCFlagEnabled<P>(
+   Component: React.ComponentType<PropsWithChildren<P>>
+) {
+   return (props: PropsWithChildren<P>) => {
+      if (!flags.TROUBLESHOOTING_TOC_ENABLED) {
+         return <>{props.children}</>;
+      }
+
+      return <Component {...props} />;
+   };
+}
+
+export function onlyShowIfTOCFlagEnabledProvider(
+   ExistingContext: typeof TOCContextProvider
+) {
+   return (props: TOCContextProviderProps) => {
+      if (!flags.TROUBLESHOOTING_TOC_ENABLED) {
+         const context = {
+            addItem: () => {},
+            updateItemRef: () => {},
+            removeItem: () => {},
+            getItems: () => [],
+         };
+         return (
+            <TOCContext.Provider value={context}>
+               {props.children}
+            </TOCContext.Provider>
+         );
+      }
+
+      return <ExistingContext {...props} />;
+   };
 }

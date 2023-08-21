@@ -59,11 +59,20 @@ import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { ScrollPercent } from './scrollPercent';
 import { LinkToTOC, TOCContextProvider } from './tocContext';
-import { TOC } from './toc';
-
-const RelatedProblemsTitle = 'Related Problems';
+import {
+   TOC,
+   onlyShowIfTOCFlagEnabled,
+   onlyShowIfTOCFlagEnabledProvider,
+} from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
+
+const RelatedProblemsTitle = 'Related Problems';
+
+const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
+const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(ScrollPercent);
+const FlaggedTOCContextProvider =
+   onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -115,12 +124,12 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <ScrollPercent
+         <FlaggedScrollPercent
             scrollContainerRef={scrollContainerRef}
             hideOnZero={true}
             hideOnScrollPast={true}
          />
-         <TOCContextProvider defaultTitles={sectionTitles}>
+         <FlaggedTOCContextProvider defaultTitles={sectionTitles}>
             <Container
                fontSize="md"
                maxW="1280px"
@@ -128,7 +137,7 @@ const Wiki: NextPageWithLayout<{
                display="flex"
                flexWrap={{ base: 'wrap', lg: 'nowrap' }}
             >
-               <TOC
+               <FlaggedTOC
                   flexShrink={{ lg: 0 }}
                   flexGrow={1}
                   borderRight={{ lg: '1px solid' }}
@@ -261,7 +270,7 @@ const Wiki: NextPageWithLayout<{
                   <PixelPing id={id} type="wiki" />
                </Flex>
             </Container>
-         </TOCContextProvider>
+         </FlaggedTOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
       </>
    );
