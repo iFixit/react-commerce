@@ -13,6 +13,8 @@ import {
    Switch,
 } from '@chakra-ui/react';
 import { FeaturesSSRProps } from '@pages/dev/features';
+import Head from 'next/head';
+import { RestrictRobots } from '@helpers/next-helpers';
 
 const FeatureTemplate: NextPageWithLayout<FeaturesSSRProps> = ({ cookies }) => {
    const features = getAllFeatures();
@@ -43,7 +45,17 @@ function FeatureSwitch({ feature }: { feature: Features }) {
 }
 
 FeatureTemplate.getLayout = function getLayout(page, pageProps) {
-   return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
+   return (
+      <>
+         <Head>
+            <meta
+               name="robots"
+               content={RestrictRobots.RESTRICT_ALL.toString()}
+            />
+         </Head>
+         <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>
+      </>
+   );
 };
 
 export default FeatureTemplate;
