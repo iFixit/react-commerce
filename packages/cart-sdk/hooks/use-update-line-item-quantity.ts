@@ -82,8 +82,8 @@ export function useUpdateLineItemQuantity() {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
             trackMatomoCartChange(cart?.lineItems ?? []);
          },
-         onSettled: () => {
-            client.invalidateQueries(cartKeys.cart);
+         onSettled: async () => {
+            await client.invalidateQueries(cartKeys.cart);
          },
       }
    );

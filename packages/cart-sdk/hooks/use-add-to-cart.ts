@@ -105,9 +105,9 @@ export function useAddToCart(analyticsMessage?: string) {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
             trackAddToCart(cart?.lineItems ?? [], variables, analyticsMessage);
          },
-         onSettled: () => {
+         onSettled: async () => {
             window.onbeforeunload = () => undefined;
-            client.invalidateQueries(cartKeys.cart);
+            await client.invalidateQueries(cartKeys.cart);
          },
       }
    );
