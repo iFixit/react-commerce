@@ -291,6 +291,7 @@ export const mockedProduct: Product = {
          quantityAvailable: 186,
          handle: 'anti-static-project-tray',
          title: 'Anti-Static Project Tray',
+         variantTitle: null,
          reviews: {
             rating: 4.8,
             count: 273,
@@ -329,6 +330,7 @@ export const mockedProduct: Product = {
          isPro: false,
          hasLifetimeWarranty: true,
          enabled: true,
+         shopifyVariantId: '32965720473690',
       },
       {
          id: 'gid://shopify/ProductVariant/32965720178778',
@@ -336,6 +338,7 @@ export const mockedProduct: Product = {
          quantityAvailable: 607,
          handle: 'pro-tech-toolkit',
          title: 'Pro Tech Toolkit',
+         variantTitle: null,
          reviews: {
             rating: 4.9,
             count: 1381,
@@ -374,6 +377,7 @@ export const mockedProduct: Product = {
          hasLifetimeWarranty: true,
          isPro: false,
          enabled: true,
+         shopifyVariantId: '32965720178778',
       },
       {
          id: 'gid://shopify/ProductVariant/39333786746970',
@@ -381,6 +385,7 @@ export const mockedProduct: Product = {
          quantityAvailable: 25,
          handle: 'iphone-6s-plus-screen',
          title: 'iPhone 6s Plus Screen',
+         variantTitle: null,
          reviews: {
             rating: 4.7,
             count: 27,
@@ -419,6 +424,7 @@ export const mockedProduct: Product = {
          hasLifetimeWarranty: true,
          isPro: false,
          enabled: true,
+         shopifyVariantId: '39333786746970',
       },
       {
          id: 'gid://shopify/ProductVariant/39333786583130',
@@ -426,6 +432,7 @@ export const mockedProduct: Product = {
          quantityAvailable: 46,
          handle: 'iphone-6s-plus-display-assembly-adhesive',
          title: 'iPhone 6s Plus Display Assembly Adhesive',
+         variantTitle: null,
          reviews: {
             rating: 4.7,
             count: 20,
@@ -464,6 +471,7 @@ export const mockedProduct: Product = {
          hasLifetimeWarranty: true,
          isPro: false,
          enabled: true,
+         shopifyVariantId: '39333786583130',
       },
    ],
    sections: [
