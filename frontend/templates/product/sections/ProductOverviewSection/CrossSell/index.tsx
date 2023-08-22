@@ -39,6 +39,7 @@ export function CrossSell({ product, selectedVariant }: CrossSellProps) {
          borderWidth="1px"
          borderColor="chakra-border-color"
          p="4"
+         data-testid="product-cross-sell"
       >
          <Text fontWeight="semibold">Frequently bought together</Text>
          <VStack
@@ -77,11 +78,22 @@ function CrossSellItem({ productPreview }: CrossSellItemProps) {
    };
 
    return (
-      <Flex key={productPreview.id} direction="column" w="full" p="2">
+      <Flex
+         key={productPreview.id}
+         data-testid="product-cross-sell-item"
+         direction="column"
+         w="full"
+         p="2"
+      >
          <Flex alignItems="center">
             <Thumbnail variant="small" image={productPreview.image} />
             <Flex direction="column">
-               <Text fontWeight="medium">{productPreview.title}</Text>
+               <Text
+                  fontWeight="medium"
+                  data-testid="product-cross-sell-item-title"
+               >
+                  {productPreview.title}
+               </Text>
                <ProductVariantPrice
                   price={productPreview.price}
                   compareAtPrice={productPreview.compareAtPrice}

@@ -1,92 +1,23 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Cross-Sell Tests', () => {
-   test('Add Selected Cross-Sell Item to Cart', async ({ productPage }) => {
+test.describe('Product Page Cross-Sell', () => {
+   test('should add item to cart', async ({ productPage, page }) => {
       await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
-      const products = await productPage.page.getByTestId('cross-sell-item');
 
-      let currentProductTitle = null;
-      let currentProductPrice = null;
-      const otherProductTitles = [];
+      const productCrossSell = page.getByTestId('product-cross-sell');
+      const items = productCrossSell.getByTestId('product-cross-sell-item');
+      const firstItem = items.first();
 
-      for (const product of await products.all()) {
-         const isCurrent = await product
-            .locator('span', { hasText: 'Current item' })
-            .isVisible();
-         if (isCurrent) {
-            currentProductPrice = await product
-               .getByTestId('price')
-               .textContent();
-            await expect(currentProductPrice).toMatch(/^\$[0-9]+(\.[0-9]{2})/);
-            currentProductTitle = await product
-               .getByTestId('cross-sell-item-title')
-               .textContent();
-            continue;
-         }
+      await firstItem.getByRole('button', { name: 'add to cart' }).click();
 
-         // Deselect other cross-sell products
-         otherProductTitles.push(
-            await product.getByTestId('cross-sell-item-title').textContent()
-         );
-         await product.getByTestId('cross-sell-item-select').click();
-      }
+      const firstItemTitle = await firstItem
+         .getByTestId('product-cross-sell-item-title')
+         .textContent();
 
-      // Assert total price matches price of product as it's the only one selected
-      expect(currentProductPrice).not.toBeNull();
-      expect(
-         await productPage.page
-            .getByTestId('cross-sell-total-price')
-            .textContent()
-      ).toContain(currentProductPrice!);
-
-      // Assert adding to cart only adds current product
-      await productPage.page
-         .getByTestId('cross-sell-add-to-cart-button')
-         .click();
-
-      const cartDrawerText = await productPage.page
+      const cartDrawerText = await page
          .getByTestId('cart-drawer-line-items')
          .textContent();
 
-      otherProductTitles.forEach((otherProductTitle) => {
-         expect(cartDrawerText).not.toContain(otherProductTitle);
-      });
-      expect(cartDrawerText).toContain(currentProductTitle);
-   });
-
-   test('Add All Cross-Sell Products to Cart', async ({ productPage }) => {
-      await productPage.gotoProduct('iphone-6s-plus-replacement-battery');
-      const products = productPage.page.getByTestId('cross-sell-item');
-
-      const allProductTitles = [];
-      let expectedTotalPrice = 0;
-
-      for (const product of await products.all()) {
-         allProductTitles.push(
-            await product.getByTestId('cross-sell-item-title').textContent()
-         );
-         const productPrice = await product.getByTestId('price').textContent();
-         expectedTotalPrice += parseFloat(productPrice!.slice(1));
-      }
-
-      // Assert total price matches the sum of all products
-      expect(
-         await productPage.page
-            .getByTestId('cross-sell-total-price')
-            .textContent()
-      ).toContain(expectedTotalPrice.toFixed(2));
-
-      // Assert adding to cart adds all products
-      await productPage.page
-         .getByTestId('cross-sell-add-to-cart-button')
-         .click();
-
-      const cartDrawerText = await productPage.page
-         .getByTestId('cart-drawer-line-items')
-         .textContent();
-
-      allProductTitles.forEach((productTitle) => {
-         expect(cartDrawerText).toContain(productTitle);
-      });
+      expect(cartDrawerText).toContain(firstItemTitle);
    });
 });
