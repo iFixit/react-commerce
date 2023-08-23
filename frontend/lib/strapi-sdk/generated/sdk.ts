@@ -3584,6 +3584,307 @@ export type AncestorProductListFieldsFragment = {
    deviceTitle?: string | null;
 };
 
+export type FindReusableSectionsQueryVariables = Exact<{
+   filters?: InputMaybe<ReusableSectionFiltersInput>;
+}>;
+
+export type FindReusableSectionsQuery = {
+   __typename?: 'Query';
+   reusableSections?: {
+      __typename?: 'ReusableSectionEntityResponseCollection';
+      data: Array<{
+         __typename?: 'ReusableSectionEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'ReusableSection';
+            priority: number;
+            positionInProductList: Enum_Reusablesection_Positioninproductlist;
+            section: Array<
+               | {
+                    __typename: 'ComponentPagePress';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentPagePressQuote';
+                       id: string;
+                       text: string;
+                       company?: {
+                          __typename?: 'CompanyEntityResponse';
+                          data?: {
+                             __typename?: 'CompanyEntity';
+                             id?: string | null;
+                             attributes?: {
+                                __typename?: 'Company';
+                                name: string;
+                                logo?: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    label?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionQuoteGallery';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentSectionQuoteCard';
+                       id: string;
+                       text: string;
+                       author?: {
+                          __typename?: 'ComponentGlobalPerson';
+                          id: string;
+                          name?: string | null;
+                          role?: string | null;
+                          avatar?: {
+                             __typename?: 'UploadFileEntityResponse';
+                             data?: {
+                                __typename?: 'UploadFileEntity';
+                                attributes?: {
+                                   __typename?: 'UploadFile';
+                                   alternativeText?: string | null;
+                                   url: string;
+                                   formats?: any | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
+            placement: Array<{
+               __typename?: 'ComponentMiscPlacement';
+               showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+            } | null>;
+         } | null;
+      }>;
+   } | null;
+};
+
+export type ReusableSectionFieldsFragment = {
+   __typename?: 'ReusableSection';
+   priority: number;
+   positionInProductList: Enum_Reusablesection_Positioninproductlist;
+   section: Array<
+      | {
+           __typename: 'ComponentPagePress';
+           id: string;
+           title?: string | null;
+           description?: string | null;
+           quotes?: Array<{
+              __typename?: 'ComponentPagePressQuote';
+              id: string;
+              text: string;
+              company?: {
+                 __typename?: 'CompanyEntityResponse';
+                 data?: {
+                    __typename?: 'CompanyEntity';
+                    id?: string | null;
+                    attributes?: {
+                       __typename?: 'Company';
+                       name: string;
+                       logo?: {
+                          __typename?: 'UploadFileEntityResponse';
+                          data?: {
+                             __typename?: 'UploadFileEntity';
+                             attributes?: {
+                                __typename?: 'UploadFile';
+                                alternativeText?: string | null;
+                                url: string;
+                                formats?: any | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 } | null;
+              } | null;
+           } | null> | null;
+           callToAction?: {
+              __typename?: 'ComponentPageCallToAction';
+              title: string;
+              url: string;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentPageSplitWithImage';
+           id: string;
+           title?: string | null;
+           label?: string | null;
+           description?: string | null;
+           imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+           callToAction?: {
+              __typename?: 'ComponentPageCallToAction';
+              title: string;
+              url: string;
+           } | null;
+           image?: {
+              __typename?: 'UploadFileEntityResponse';
+              data?: {
+                 __typename?: 'UploadFileEntity';
+                 attributes?: {
+                    __typename?: 'UploadFile';
+                    alternativeText?: string | null;
+                    url: string;
+                    formats?: any | null;
+                 } | null;
+              } | null;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentSectionBanner';
+           id: string;
+           banners?: {
+              __typename?: 'BannerRelationResponseCollection';
+              data: Array<{
+                 __typename?: 'BannerEntity';
+                 id?: string | null;
+                 attributes?: {
+                    __typename?: 'Banner';
+                    title?: string | null;
+                    label?: string | null;
+                    description?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                 } | null;
+              }>;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentSectionQuoteGallery';
+           id: string;
+           title?: string | null;
+           description?: string | null;
+           quotes?: Array<{
+              __typename?: 'ComponentSectionQuoteCard';
+              id: string;
+              text: string;
+              author?: {
+                 __typename?: 'ComponentGlobalPerson';
+                 id: string;
+                 name?: string | null;
+                 role?: string | null;
+                 avatar?: {
+                    __typename?: 'UploadFileEntityResponse';
+                    data?: {
+                       __typename?: 'UploadFileEntity';
+                       attributes?: {
+                          __typename?: 'UploadFile';
+                          alternativeText?: string | null;
+                          url: string;
+                          formats?: any | null;
+                       } | null;
+                    } | null;
+                 } | null;
+              } | null;
+           } | null> | null;
+        }
+      | { __typename: 'Error' }
+      | null
+   >;
+   placement: Array<{
+      __typename?: 'ComponentMiscPlacement';
+      showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+   } | null>;
+};
+
+export type PlacementFieldsFragment = {
+   __typename?: 'ComponentMiscPlacement';
+   showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+};
+
 export type FindStoreQueryVariables = Exact<{
    filters?: InputMaybe<StoreFiltersInput>;
 }>;
@@ -5193,6 +5494,138 @@ export const ProductListFieldsFragmentDoc = `
   }
 }
     `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const BannerFieldsFragmentDoc = `
+    fragment BannerFields on BannerEntity {
+  id
+  attributes {
+    title
+    label
+    description
+    image {
+      ...ImageFields
+    }
+    callToAction {
+      ...CallToActionFields
+    }
+  }
+}
+    `;
+export const BannersSectionFieldsFragmentDoc = `
+    fragment BannersSectionFields on ComponentSectionBanner {
+  id
+  banners {
+    data {
+      ...BannerFields
+    }
+  }
+}
+    `;
+export const SplitWithImageSectionFieldsFragmentDoc = `
+    fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
+  id
+  title
+  label
+  description
+  callToAction {
+    ...CallToActionFields
+  }
+  imagePosition
+  image {
+    ...ImageFields
+  }
+}
+    `;
+export const CompanyFieldsFragmentDoc = `
+    fragment CompanyFields on CompanyEntity {
+  id
+  attributes {
+    name
+    logo {
+      ...ImageFields
+    }
+  }
+}
+    `;
+export const PressQuoteFieldsFragmentDoc = `
+    fragment PressQuoteFields on ComponentPagePressQuote {
+  id
+  company {
+    data {
+      ...CompanyFields
+    }
+  }
+  text
+}
+    `;
+export const PressQuotesSectionFieldsFragmentDoc = `
+    fragment PressQuotesSectionFields on ComponentPagePress {
+  id
+  title
+  description
+  quotes {
+    ...PressQuoteFields
+  }
+  callToAction {
+    ...CallToActionFields
+  }
+}
+    `;
+export const PersonFieldsFragmentDoc = `
+    fragment PersonFields on ComponentGlobalPerson {
+  id
+  name
+  role
+  avatar {
+    ...ImageFields
+  }
+}
+    `;
+export const QuoteCardFieldsFragmentDoc = `
+    fragment QuoteCardFields on ComponentSectionQuoteCard {
+  id
+  text
+  author {
+    ...PersonFields
+  }
+}
+    `;
+export const QuoteGallerySectionFieldsFragmentDoc = `
+    fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
+  id
+  title
+  description
+  quotes {
+    ...QuoteCardFields
+  }
+}
+    `;
+export const PlacementFieldsFragmentDoc = `
+    fragment PlacementFields on ComponentMiscPlacement {
+  showInProductListPages
+}
+    `;
+export const ReusableSectionFieldsFragmentDoc = `
+    fragment ReusableSectionFields on ReusableSection {
+  section {
+    __typename
+    ...BannersSectionFields
+    ...SplitWithImageSectionFields
+    ...PressQuotesSectionFields
+    ...QuoteGallerySectionFields
+  }
+  placement {
+    ...PlacementFields
+  }
+  priority
+  positionInProductList
+}
+    `;
 export const MenuPropsFragmentDoc = `
     fragment MenuProps on Menu {
   title
@@ -5278,38 +5711,6 @@ export const MenuEntityResponsePropsFragmentDoc = `
   data {
     attributes {
       ...MenuProps
-    }
-  }
-}
-    `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
-}
-    `;
-export const BannerFieldsFragmentDoc = `
-    fragment BannerFields on BannerEntity {
-  id
-  attributes {
-    title
-    label
-    description
-    image {
-      ...ImageFields
-    }
-    callToAction {
-      ...CallToActionFields
-    }
-  }
-}
-    `;
-export const BannersSectionFieldsFragmentDoc = `
-    fragment BannersSectionFields on ComponentSectionBanner {
-  id
-  banners {
-    data {
-      ...BannerFields
     }
   }
 }
@@ -5405,41 +5806,6 @@ export const LifetimeWarrantySectionFieldsFragmentDoc = `
   description
 }
     `;
-export const CompanyFieldsFragmentDoc = `
-    fragment CompanyFields on CompanyEntity {
-  id
-  attributes {
-    name
-    logo {
-      ...ImageFields
-    }
-  }
-}
-    `;
-export const PressQuoteFieldsFragmentDoc = `
-    fragment PressQuoteFields on ComponentPagePressQuote {
-  id
-  company {
-    data {
-      ...CompanyFields
-    }
-  }
-  text
-}
-    `;
-export const PressQuotesSectionFieldsFragmentDoc = `
-    fragment PressQuotesSectionFields on ComponentPagePress {
-  id
-  title
-  description
-  quotes {
-    ...PressQuoteFields
-  }
-  callToAction {
-    ...CallToActionFields
-  }
-}
-    `;
 export const ProductCrossSellSectionFieldsFragmentDoc = `
     fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
   id
@@ -5461,35 +5827,6 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
     fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
   id
   title
-}
-    `;
-export const PersonFieldsFragmentDoc = `
-    fragment PersonFields on ComponentGlobalPerson {
-  id
-  name
-  role
-  avatar {
-    ...ImageFields
-  }
-}
-    `;
-export const QuoteCardFieldsFragmentDoc = `
-    fragment QuoteCardFields on ComponentSectionQuoteCard {
-  id
-  text
-  author {
-    ...PersonFields
-  }
-}
-    `;
-export const QuoteGallerySectionFieldsFragmentDoc = `
-    fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
-  id
-  title
-  description
-  quotes {
-    ...QuoteCardFields
-  }
 }
     `;
 export const QuoteSectionFieldsFragmentDoc = `
@@ -5528,21 +5865,6 @@ export const SocialGallerySectionFieldsFragmentDoc = `
     data {
       ...SocialPostFields
     }
-  }
-}
-    `;
-export const SplitWithImageSectionFieldsFragmentDoc = `
-    fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
-  id
-  title
-  label
-  description
-  callToAction {
-    ...CallToActionFields
-  }
-  imagePosition
-  image {
-    ...ImageFields
   }
 }
     `;
@@ -5665,6 +5987,30 @@ ${ProductListBannerSectionFieldsFragmentDoc}
 ${ProductListRelatedPostsSectionFieldsFragmentDoc}
 ${ProductListLinkedProductListSetSectionFieldsFragmentDoc}
 ${ProductListPreviewFieldsFragmentDoc}`;
+export const FindReusableSectionsDocument = `
+    query findReusableSections($filters: ReusableSectionFiltersInput) {
+  reusableSections(filters: $filters) {
+    data {
+      id
+      attributes {
+        ...ReusableSectionFields
+      }
+    }
+  }
+}
+    ${ReusableSectionFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}
+${CallToActionFieldsFragmentDoc}
+${SplitWithImageSectionFieldsFragmentDoc}
+${PressQuotesSectionFieldsFragmentDoc}
+${PressQuoteFieldsFragmentDoc}
+${CompanyFieldsFragmentDoc}
+${QuoteGallerySectionFieldsFragmentDoc}
+${QuoteCardFieldsFragmentDoc}
+${PersonFieldsFragmentDoc}
+${PlacementFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -5777,6 +6123,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             variables,
             options
          );
+      },
+      findReusableSections(
+         variables?: FindReusableSectionsQueryVariables,
+         options?: C
+      ): Promise<FindReusableSectionsQuery> {
+         return requester<
+            FindReusableSectionsQuery,
+            FindReusableSectionsQueryVariables
+         >(FindReusableSectionsDocument, variables, options);
       },
       findStore(
          variables?: FindStoreQueryVariables,

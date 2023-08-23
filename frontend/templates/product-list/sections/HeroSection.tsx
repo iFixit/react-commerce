@@ -36,7 +36,7 @@ export function HeroSection({
    const page = pagination.currentRefinement + 1;
    const isFirstPage = page === 1;
    return (
-      <Wrapper as="section">
+      <Wrapper as="section" my={{ base: 4, md: 6 }}>
          {backgroundImage ? (
             <Flex
                pos="relative"

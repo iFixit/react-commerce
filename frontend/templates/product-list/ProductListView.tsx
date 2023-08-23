@@ -1,7 +1,10 @@
-import { VStack } from '@chakra-ui/react';
+import { BannersSection } from '@components/sections/BannersSection';
 import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
+import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
+import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
+import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
 import { Configure, useMenu } from 'react-instantsearch-hooks-web';
 import { useItemTypeProductList } from './hooks/useItemTypeProductList';
 import { MetaTags } from './MetaTags';
@@ -59,11 +62,7 @@ export function ProductListView({
          />
          <MetaTags productList={currentProductList} />
          <SecondaryNavigation productList={productList} />
-         <VStack
-            align="stretch"
-            spacing={{ base: 4, md: 6 }}
-            py={{ base: 4, md: 6 }}
-         >
+         <div>
             {currentProductList.sections.map((section) => {
                switch (section.type) {
                   case 'Hero': {
@@ -130,6 +129,50 @@ export function ProductListView({
                      }
                      return null;
                   }
+                  case 'Banners': {
+                     return (
+                        <BannersSection
+                           key={section.id}
+                           id={section.id}
+                           banners={section.banners}
+                        />
+                     );
+                  }
+                  case 'SplitWithImage': {
+                     return (
+                        <SplitWithImageContentSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           image={section.image}
+                           imagePosition={section.imagePosition}
+                           callToAction={section.callToAction}
+                        />
+                     );
+                  }
+                  case 'QuoteGallery': {
+                     return (
+                        <QuoteGallerySection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           quotes={section.quotes}
+                        />
+                     );
+                  }
+                  case 'PressQuotes': {
+                     return (
+                        <PressQuotesSection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                           callToAction={section.callToAction}
+                           quotes={section.quotes}
+                        />
+                     );
+                  }
                   default: {
                      console.warn(
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -140,7 +183,7 @@ export function ProductListView({
                   }
                }
             })}
-         </VStack>
+         </div>
       </>
    );
 }
