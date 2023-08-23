@@ -1,7 +1,7 @@
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React from 'react';
+import React, { useRef } from 'react';
 import {
    Avatar,
    Alert,
@@ -57,8 +57,22 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
+import { ScrollPercent } from './scrollPercent';
+import { LinkToTOC, TOCContextProvider } from './tocContext';
+import {
+   TOC,
+   onlyShowIfTOCFlagEnabled,
+   onlyShowIfTOCFlagEnabledProvider,
+} from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
+
+const RelatedProblemsTitle = 'Related Problems';
+
+const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
+const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(ScrollPercent);
+const FlaggedTOCContextProvider =
+   onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -85,6 +99,21 @@ const Wiki: NextPageWithLayout<{
       display: 'block',
    };
 
+   const scrollContainerRef = useRef(null);
+
+   const filteredConclusions = wikiData.conclusion.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
+
+   const sections = wikiData.introduction
+      .concat(wikiData.solutions)
+      .concat(filteredConclusions);
+
+   const sectionTitles = sections
+      .map((section) => section.heading)
+      .concat(RelatedProblemsTitle)
+      .filter(Boolean);
+
    return (
       <>
          <GoogleNoScript />
@@ -95,125 +124,153 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <Container fontSize="md" maxW="1280px">
-            <Flex
-               direction="column"
-               paddingInline={{ base: 0, sm: 4 }}
-               paddingBottom={8}
-               flexShrink="1"
-               id="main"
+         <FlaggedScrollPercent
+            scrollContainerRef={scrollContainerRef}
+            hideOnZero={true}
+            hideOnScrollPast={true}
+         />
+         <FlaggedTOCContextProvider defaultTitles={sectionTitles}>
+            <Container
+               fontSize="md"
+               maxW="1280px"
+               ref={scrollContainerRef}
+               display="flex"
+               flexWrap={{ base: 'wrap', lg: 'nowrap' }}
             >
-               <TagManager />
-               <Metadata
-                  metaDescription={metaDescription}
-                  metaKeywords={metaKeywords}
-                  canonicalUrl={canonicalUrl}
-                  title={title}
+               <FlaggedTOC
+                  flexShrink={{ lg: 0 }}
+                  flexGrow={1}
+                  borderRight={{ lg: '1px solid' }}
+                  borderColor={{ lg: 'gray.300' }}
+                  maxWidth={{
+                     base: 'calc(100% + 2 * var(--chakra-space-4))',
+                     lg: '240px',
+                  }}
+                  marginLeft={-4}
+                  marginRight={{ base: -4, lg: 0 }}
+                  listItemProps={{
+                     paddingLeft: { lg: 4 },
+                  }}
                />
-               <HreflangUrls urls={wikiData.hreflangUrls} />
-               <HStack
-                  spacing={0}
-                  mt={{ base: 3, sm: 8 }}
-                  align="start"
-                  pb={{ base: 4, sm: 6 }}
-                  borderBottom="1px"
-                  borderColor="gray.300"
+               <Flex
+                  direction="column"
+                  paddingInline={{ base: 0, sm: 4 }}
+                  paddingBottom={8}
+                  flexShrink="1"
+                  id="main"
                >
-                  <Image
-                     sx={imageSx}
-                     src={mainImageUrl}
-                     onClick={onOpen}
-                     cursor="pointer"
-                     alt={title}
-                     htmlWidth={120}
-                     htmlHeight={90}
-                     objectFit="contain"
-                     borderRadius="md"
-                     outline="1px solid"
-                     outlineColor="gray.300"
-                     marginRight={3}
+                  <TagManager />
+                  <Metadata
+                     metaDescription={metaDescription}
+                     metaKeywords={metaKeywords}
+                     canonicalUrl={canonicalUrl}
+                     title={title}
                   />
-                  <Modal isOpen={isOpen} onClose={onClose}>
-                     <ModalOverlay />
-                     <ModalContent
-                        width="auto"
-                        maxWidth="calc(100% - 64px)"
-                        background="none"
-                     >
-                        <VisuallyHidden>
-                           <ModalHeader>{title}</ModalHeader>
-                        </VisuallyHidden>
-                        <ModalCloseButton />
-                        <VisuallyHidden></VisuallyHidden>
-                        <ModalBody padding={0}>
-                           <Image
-                              src={mainImageUrlLarge}
-                              width="100%"
-                              height="auto"
-                              alt={title}
-                           />
-                        </ModalBody>
-                     </ModalContent>
-                  </Modal>
-                  <VStack alignItems="flex-start" spacing={2}>
-                     <HeadingSelfLink
-                        as="h1"
-                        fontSize="3xl"
-                        fontWeight="medium"
-                        selfLinked
-                        id="top"
-                        mt={0}
-                     >
-                        {wikiData.title}
-                     </HeadingSelfLink>
-                     <AuthorInformation
-                        lastUpdatedDate={lastUpdatedDate}
-                        authors={wikiData.authors}
-                        historyUrl={wikiData.historyUrl}
-                     />
-                  </VStack>
-               </HStack>
-               {wikiData.introduction.map((intro) => (
-                  <IntroductionSection key={intro.heading} intro={intro} />
-               ))}
-               {wikiData.solutions.length > 0 && (
-                  <Box
-                     borderTop="1px"
+                  <HreflangUrls urls={wikiData.hreflangUrls} />
+                  <HStack
+                     spacing={0}
+                     mt={{ base: 3, sm: 8 }}
+                     align="start"
+                     pb={{ base: 4, sm: 6 }}
+                     borderBottom="1px"
                      borderColor="gray.300"
-                     mt={{ base: 4, sm: 6 }}
                   >
-                     <HeadingSelfLink
-                        as="h2"
-                        fontSize="20px"
-                        fontWeight="semibold"
-                        selfLinked
-                        id="causes"
-                     >
-                        {'Causes'}
-                     </HeadingSelfLink>
-                     <TableOfContents
-                        solutions={wikiData.solutions}
-                        problems={wikiData.linkedProblems}
+                     <Image
+                        sx={imageSx}
+                        src={mainImageUrl}
+                        onClick={onOpen}
+                        cursor="pointer"
+                        alt={title}
+                        htmlWidth={120}
+                        htmlHeight={90}
+                        objectFit="contain"
+                        borderRadius="md"
+                        outline="1px solid"
+                        outlineColor="gray.300"
+                        marginRight={3}
                      />
-                     <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
-                        {wikiData.solutions.map((solution, index) => (
-                           <SectionCard
-                              key={solution.heading}
-                              index={index + 1}
-                              solution={solution}
-                           />
-                        ))}
-                     </Stack>
-                  </Box>
-               )}
-               <Conclusion conclusion={wikiData.conclusion} />
-               <AnswersCTA answersUrl={wikiData.answersUrl} />
-               {wikiData.linkedProblems.length > 0 && (
-                  <RelatedProblems problems={wikiData.linkedProblems} />
-               )}
-               <PixelPing id={id} type="wiki" />
-            </Flex>
-         </Container>
+                     <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent
+                           width="auto"
+                           maxWidth="calc(100% - 64px)"
+                           background="none"
+                        >
+                           <VisuallyHidden>
+                              <ModalHeader>{title}</ModalHeader>
+                           </VisuallyHidden>
+                           <ModalCloseButton />
+                           <VisuallyHidden></VisuallyHidden>
+                           <ModalBody padding={0}>
+                              <Image
+                                 src={mainImageUrlLarge}
+                                 width="100%"
+                                 height="auto"
+                                 alt={title}
+                              />
+                           </ModalBody>
+                        </ModalContent>
+                     </Modal>
+                     <VStack alignItems="flex-start" spacing={2}>
+                        <HeadingSelfLink
+                           as="h1"
+                           fontSize="3xl"
+                           fontWeight="medium"
+                           selfLinked
+                           id="top"
+                           mt={0}
+                        >
+                           {wikiData.title}
+                        </HeadingSelfLink>
+                        <AuthorInformation
+                           lastUpdatedDate={lastUpdatedDate}
+                           authors={wikiData.authors}
+                           historyUrl={wikiData.historyUrl}
+                        />
+                     </VStack>
+                  </HStack>
+                  {wikiData.introduction.map((intro) => (
+                     <IntroductionSection key={intro.heading} intro={intro} />
+                  ))}
+                  {wikiData.solutions.length > 0 && (
+                     <Box
+                        borderTop="1px"
+                        borderColor="gray.300"
+                        mt={{ base: 4, sm: 6 }}
+                     >
+                        <HeadingSelfLink
+                           as="h2"
+                           fontSize="20px"
+                           fontWeight="semibold"
+                           selfLinked
+                           id="causes"
+                        >
+                           {'Causes'}
+                        </HeadingSelfLink>
+                        <TableOfContents
+                           solutions={wikiData.solutions}
+                           problems={wikiData.linkedProblems}
+                        />
+                        <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
+                           {wikiData.solutions.map((solution, index) => (
+                              <SectionCard
+                                 key={solution.heading}
+                                 index={index + 1}
+                                 solution={solution}
+                              />
+                           ))}
+                        </Stack>
+                     </Box>
+                  )}
+                  <Conclusion conclusion={filteredConclusions} />
+                  <AnswersCTA answersUrl={wikiData.answersUrl} />
+                  {wikiData.linkedProblems.length > 0 && (
+                     <RelatedProblems problems={wikiData.linkedProblems} />
+                  )}
+                  <PixelPing id={id} type="wiki" />
+               </Flex>
+            </Container>
+         </FlaggedTOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
       </>
    );
@@ -686,6 +743,7 @@ function AuthorListing({
 }
 
 function IntroductionSection({ intro }: { intro: Section }) {
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.heading);
    return (
       <>
          {intro.heading && (
@@ -694,6 +752,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                fontWeight="semibold"
                selfLinked
                id={intro.id}
+               ref={ref}
             >
                {intro.heading}
             </HeadingSelfLink>
@@ -703,24 +762,26 @@ function IntroductionSection({ intro }: { intro: Section }) {
    );
 }
 
-function ConclusionSection({ conclusion }: { conclusion: Section }) {
+const ConclusionSection = function ConclusionSectionInner({
+   conclusion,
+}: {
+   conclusion: Section;
+}) {
+   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.heading);
    return (
       <>
-         <HeadingSelfLink selfLinked id={conclusion.id} pt={4}>
+         <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
       </>
    );
-}
+};
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
-   const filteredConclusions = conclusions.filter(
-      (conclusion) => conclusion.heading !== 'Related Pages'
-   );
    return (
       <>
-         {filteredConclusions.map((conclusion) => (
+         {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
@@ -745,6 +806,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
+   const { ref } = LinkToTOC<HTMLHeadingElement>(RelatedProblemsTitle);
    return (
       <>
          <HeadingSelfLink
@@ -754,8 +816,9 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             id="related-problems"
             selfLinked
             pt={4}
+            ref={ref}
          >
-            Related Problems
+            {RelatedProblemsTitle}
          </HeadingSelfLink>
          <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
             {problems.map((problem) => (
