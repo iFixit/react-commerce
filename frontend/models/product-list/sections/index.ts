@@ -118,13 +118,13 @@ function getSectionsBucketByPosition(
    const sectionsByPosition = groupBy(
       reusableSections,
       'positionInProductList'
-   );
+   ) as Record<ReusableSection['positionInProductList'], ReusableSection[]>;
    const sortedReusableSectionsByPosition = mapValues(
       sectionsByPosition,
       (sections): ProductListSection[] =>
          orderBy(sections, 'priority', 'desc').map((section) => section.section)
    );
-   return sortedReusableSectionsByPosition as any;
+   return sortedReusableSectionsByPosition;
 }
 
 function productListSection(

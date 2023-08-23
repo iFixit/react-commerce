@@ -13,6 +13,7 @@ import {
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
+import type { ComponentMiscPlacementFiltersInput } from '@lib/strapi-sdk';
 import {
    ProductListFieldsFragment,
    ProductListFiltersInput,
@@ -22,6 +23,7 @@ import {
    childImageFromDeviceWiki,
    imageFromStrapi,
 } from '@models/components/image';
+import type { ReusableSection } from '@models/reusable-section';
 import { findReusableSections } from '@models/reusable-section/server';
 import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
@@ -35,8 +37,6 @@ import {
    ProductListItemTypeOverride,
    ProductListItemTypeOverrideIndexed,
 } from './types';
-import type { ComponentMiscPlacementFiltersInput } from '@lib/strapi-sdk';
-import type { ReusableSection } from '@models/reusable-section';
 
 /**
  * Get the product list data from the API
@@ -88,10 +88,18 @@ export async function findProductList(
       productListType === ProductListType.AllParts ||
       productListType === ProductListType.DeviceParts;
 
-   const reusableSections = await findProductListReusableSections({
-      strapiProductList: productList,
-      ancestorHandles: ancestors.map((a) => a.handle),
-   });
+   const [reusableSections, children] = await Promise.all([
+      findProductListReusableSections({
+         strapiProductList: productList,
+         ancestorHandles: ancestors.map((a) => a.handle),
+      }),
+      getProductListChildren({
+         apiChildren: productList?.children?.data,
+         deviceWiki,
+         ifixitOrigin,
+         isPartsList,
+      }),
+   ]);
 
    const baseProductList: BaseProductList = {
       id,
@@ -113,12 +121,7 @@ export async function findProductList(
          width: productList?.brandLogoWidth,
       }),
       ancestors,
-      children: await getProductListChildren({
-         apiChildren: productList?.children?.data,
-         deviceWiki,
-         ifixitOrigin,
-         isPartsList,
-      }),
+      children,
       sections: productListSections({
          strapiProductList: productList,
          reusableSections,
