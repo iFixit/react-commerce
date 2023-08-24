@@ -52,7 +52,7 @@ export default async function Page({ params, searchParams }: PageProps) {
          <ServerSidePropsProvider props={pageProps}>
             <AppProviders {...pageProps.appProps}>
                <DefaultLayout {...pageProps.layoutProps}>
-                  <ProductTemplate {...pageProps} />
+                  <ProductTemplate />
                </DefaultLayout>
             </AppProviders>
          </ServerSidePropsProvider>
