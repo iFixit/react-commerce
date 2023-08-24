@@ -129,17 +129,27 @@ export const getProductListServerSideProps = ({
 
             productList = await timeAsync('findProductList', () =>
                ProductListCache.get(
-                  { filters: { handle: { eqi: handle } }, ifixitOrigin },
+                  {
+                     filters: {
+                        handle: { eqi: handle },
+                        type: { in: ['marketing', 'tools'] },
+                     },
+                     ifixitOrigin,
+                  },
                   cacheOptions
                )
             );
 
-            shouldRedirectToCanonical =
+            const isMarketing = productList?.type === ProductListType.Marketing;
+            const isMiscapitalized =
                typeof productList?.handle === 'string' &&
                productList.handle !== handle;
+            shouldRedirectToCanonical = isMiscapitalized || isMarketing;
             canonicalPath =
                typeof productList?.handle === 'string'
-                  ? `/Tools/${productList.handle}`
+                  ? isMarketing
+                     ? `/Shop/${productList.handle}`
+                     : `/Tools/${productList.handle}`
                   : null;
 
             break;
@@ -155,12 +165,8 @@ export const getProductListServerSideProps = ({
                ProductListCache.get(
                   {
                      filters: {
-                        handle: {
-                           eqi: handle,
-                        },
-                        type: {
-                           eq: 'marketing',
-                        },
+                        handle: { eqi: handle },
+                        type: { eq: 'marketing' },
                      },
                      ifixitOrigin,
                   },
