@@ -6,7 +6,6 @@ import {
    Box,
    Button,
    CloseButton,
-   Collapse,
    Divider,
    Drawer,
    DrawerBody,
@@ -18,7 +17,6 @@ import {
    Flex,
    Heading,
    HStack,
-   ScaleFade,
    SimpleGrid,
    Skeleton,
    Spinner,
@@ -29,10 +27,9 @@ import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { formatMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { AnimatePresence } from 'framer-motion';
 import * as React from 'react';
-import { useIsMounted } from '../../hooks';
-import { AnimatedListItem } from './AnimatedListItem';
+import { AnimatedList, Collapse, Slide, Fade } from '../../animations';
+import { useIsMountedState } from '../../hooks';
 import { CartDrawerTrigger } from './CartDrawerTrigger';
 import { CartEmptyState } from './CartEmptyState';
 import { CartLineItem } from './CartLineItem';
@@ -42,9 +39,10 @@ import { useCartDrawer } from './hooks/useCartDrawer';
 export function CartDrawer() {
    const appContext = useAppContext();
    const { isOpen, onOpen, onClose, onViewCart } = useCartDrawer();
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const cart = useCart();
    const checkout = useCheckout();
+   const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
 
    return (
       <>
@@ -94,7 +92,11 @@ export function CartDrawer() {
                      </HStack>
                   </DrawerHeader>
 
-                  <DrawerBody p="0" data-testid="cart-drawer-body">
+                  <DrawerBody
+                     p="0"
+                     data-testid="cart-drawer-body"
+                     position="relative"
+                  >
                      {cart.isError && (
                         <Alert
                            status="error"
@@ -119,44 +121,49 @@ export function CartDrawer() {
                            </AlertDescription>
                         </Alert>
                      )}
-                     <ScaleFade
-                        in={cart.data != null && cart.data.hasItemsInCart}
-                     >
-                        <Box
-                           as="ul"
-                           listStyleType="none"
-                           data-testid="cart-drawer-line-items"
-                        >
-                           <AnimatePresence>
-                              {cart.data?.lineItems.map((lineItem) => {
-                                 return (
-                                    <AnimatedListItem key={lineItem.itemcode}>
-                                       <CartLineItem lineItem={lineItem} />
-                                       <Divider borderColor="borderColor" />
-                                    </AnimatedListItem>
-                                 );
-                              })}
-                           </AnimatePresence>
-                        </Box>
-                        <CrossSell />
-                     </ScaleFade>
-                     <Collapse
-                        animateOpacity
-                        in={cart.isFetched && !cart.data?.hasItemsInCart}
+                     {cart.data?.hasItemsInCart && (
+                        <>
+                           <Box data-testid="cart-drawer-line-items">
+                              {cart.data && (
+                                 <AnimatedList
+                                    debug="LINE ITEMS"
+                                    items={cart.data.lineItems}
+                                    getItemId={(item) => item.itemcode}
+                                    renderItem={(item) => {
+                                       return (
+                                          <>
+                                             <CartLineItem lineItem={item} />
+                                             <Divider borderColor="borderColor" />
+                                          </>
+                                       );
+                                    }}
+                                 />
+                              )}
+                           </Box>
+                           <CrossSell />
+                        </>
+                     )}
+                     <Fade
+                        show={isCartEmpty}
+                        disableExitAnimation
+                        position="absolute"
+                        w="full"
+                        top="0"
+                        left="0"
                      >
                         <CartEmptyState onClose={onClose} />
-                     </Collapse>
+                     </Fade>
                   </DrawerBody>
 
-                  <Collapse in={cart.data != null && cart.data.hasItemsInCart}>
+                  <Slide show={cart.data?.hasItemsInCart}>
                      <CheckoutError
                         error={checkout.error}
                         onDismiss={checkout.reset}
                      />
                      <DrawerFooter borderTopWidth="1px">
                         <Box w="full">
-                           <Collapse in={!cart.isError}>
-                              <Flex w="full" justify="space-between" mb="3">
+                           <Collapse show={!cart.isError} mb="3">
+                              <Flex w="full" justify="space-between">
                                  <Text fontSize="sm" fontWeight="bold">
                                     Total
                                  </Text>
@@ -210,7 +217,7 @@ export function CartDrawer() {
                            </SimpleGrid>
                         </Box>
                      </DrawerFooter>
-                  </Collapse>
+                  </Slide>
                </DrawerContent>
             </Drawer>
          )}
@@ -246,26 +253,28 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
    }, [checkoutError, onDismiss]);
 
    return (
-      <Collapse in={checkoutError != null}>
-         <Alert status="error">
-            <FaIcon
-               icon={faCircleExclamation}
-               h="4"
-               mt="0.5"
-               mr="2.5"
-               color="red.500"
-            />
-            <Box flexGrow={1}>
-               <AlertDescription>{checkoutError}</AlertDescription>
-            </Box>
-            <CloseButton
-               alignSelf="flex-start"
-               position="relative"
-               right={-1}
-               top={-1}
-               onClick={onDismiss}
-            />
-         </Alert>
+      <Collapse show={checkoutError != null}>
+         <Box p="3">
+            <Alert status="error">
+               <FaIcon
+                  icon={faCircleExclamation}
+                  h="4"
+                  mt="0.5"
+                  mr="2.5"
+                  color="red.500"
+               />
+               <Box flexGrow={1}>
+                  <AlertDescription>{checkoutError}</AlertDescription>
+               </Box>
+               <CloseButton
+                  alignSelf="flex-start"
+                  position="relative"
+                  right={-1}
+                  top={-1}
+                  onClick={onDismiss}
+               />
+            </Alert>
+         </Box>
       </Collapse>
    );
 }
