@@ -35,7 +35,9 @@ export function useSelectedVariant(
          if (variantId !== defaultVariantId) {
             newQuery.append('variant', encodeVariantId(variantId));
          }
-         router.replace(`${pathname}?${newQuery.toString()}`);
+         router.replace(`${pathname}?${newQuery.toString()}`, {
+            scroll: false,
+         });
       },
       [defaultVariantId, router, pathname, searchParams]
    );
