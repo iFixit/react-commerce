@@ -1,4 +1,5 @@
 import { AppProviders, AppProvidersProps } from '@components/common';
+import { InstantSearchProvider } from '@components/common/InstantSearchProvider';
 import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
 import {
    CacheLong,
@@ -245,7 +246,9 @@ async function getSafeServerState({
    const tryGetServerState = (productList: ProductList) => {
       const appMarkup = (
          <AppProviders {...appProps}>
-            <ProductListView productList={productList} algoliaSSR={true} />
+            <InstantSearchProvider {...appProps.algolia!}>
+               <ProductListView productList={productList} algoliaSSR={true} />
+            </InstantSearchProvider>
          </AppProviders>
       );
       return timeAsync('getServerState', () =>

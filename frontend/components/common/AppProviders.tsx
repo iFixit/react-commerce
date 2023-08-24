@@ -9,17 +9,10 @@ import {
    QueryClient,
    QueryClientProvider,
 } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
 import * as React from 'react';
-import type {
-   AlgoliaProps,
-   InstantSearchProviderProps,
-} from './InstantSearchProvider';
+import { AlgoliaProps } from './InstantSearchProvider';
 
 const customTheme = extendTheme(theme);
-const InstantSearchProvider = dynamic<InstantSearchProviderProps>(() =>
-   import('./InstantSearchProvider').then((mod) => mod.InstantSearchProvider)
-);
 
 const shouldIgnoreUserAgent =
    typeof window !== 'undefined' && /Yeti/.test(window.navigator.userAgent);
@@ -63,14 +56,9 @@ export type AppProvidersProps = {
 
 export function AppProviders({
    children,
-   algolia,
    ifixitOrigin,
    adminMessage,
 }: React.PropsWithChildren<AppProvidersProps>) {
-   const markup = (
-      <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
-   );
-
    return (
       <AppProvider
          ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}
@@ -78,13 +66,7 @@ export function AppProviders({
       >
          <CartDrawerProvider>
             <QueryClientProvider client={queryClient}>
-               {algolia ? (
-                  <InstantSearchProvider {...algolia}>
-                     {markup}
-                  </InstantSearchProvider>
-               ) : (
-                  markup
-               )}
+               <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
             </QueryClientProvider>
          </CartDrawerProvider>
       </AppProvider>
