@@ -24,6 +24,7 @@ export type Scalars = {
    ProductListItemOverridesDynamicZoneInput: any;
    ProductListSectionsDynamicZoneInput: any;
    ProductSectionsDynamicZoneInput: any;
+   ReusableSectionSectionDynamicZoneInput: any;
    Upload: any;
 };
 
@@ -109,6 +110,7 @@ export type BooleanFilterInput = {
    lt?: InputMaybe<Scalars['Boolean']>;
    lte?: InputMaybe<Scalars['Boolean']>;
    ne?: InputMaybe<Scalars['Boolean']>;
+   nei?: InputMaybe<Scalars['Boolean']>;
    not?: InputMaybe<BooleanFilterInput>;
    notContains?: InputMaybe<Scalars['Boolean']>;
    notContainsi?: InputMaybe<Scalars['Boolean']>;
@@ -223,6 +225,34 @@ export type ComponentMenuSubmenu = {
    id: Scalars['ID'];
    name: Scalars['String'];
    submenu?: Maybe<MenuEntityResponse>;
+};
+
+export type ComponentMiscPlacement = {
+   __typename?: 'ComponentMiscPlacement';
+   id: Scalars['ID'];
+   productLists?: Maybe<ProductListRelationResponseCollection>;
+   showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+};
+
+export type ComponentMiscPlacementProductListsArgs = {
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ComponentMiscPlacementFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ComponentMiscPlacementFiltersInput>>>;
+   not?: InputMaybe<ComponentMiscPlacementFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ComponentMiscPlacementFiltersInput>>>;
+   productLists?: InputMaybe<ProductListFiltersInput>;
+   showInProductListPages?: InputMaybe<StringFilterInput>;
+};
+
+export type ComponentMiscPlacementInput = {
+   id?: InputMaybe<Scalars['ID']>;
+   productLists?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   showInProductListPages?: InputMaybe<Enum_Componentmiscplacement_Showinproductlistpages>;
 };
 
 export type ComponentPageBrowse = {
@@ -659,6 +689,7 @@ export type DateTimeFilterInput = {
    lt?: InputMaybe<Scalars['DateTime']>;
    lte?: InputMaybe<Scalars['DateTime']>;
    ne?: InputMaybe<Scalars['DateTime']>;
+   nei?: InputMaybe<Scalars['DateTime']>;
    not?: InputMaybe<DateTimeFilterInput>;
    notContains?: InputMaybe<Scalars['DateTime']>;
    notContainsi?: InputMaybe<Scalars['DateTime']>;
@@ -668,6 +699,13 @@ export type DateTimeFilterInput = {
    or?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
    startsWith?: InputMaybe<Scalars['DateTime']>;
 };
+
+export enum Enum_Componentmiscplacement_Showinproductlistpages {
+   None = 'none',
+   OnlyDescendants = 'only_descendants',
+   OnlySelected = 'only_selected',
+   SelectedAndDescendants = 'selected_and_descendants',
+}
 
 export enum Enum_Componentpagesplitwithimage_Imageposition {
    Left = 'Left',
@@ -685,6 +723,12 @@ export enum Enum_Productlist_Type {
    Marketing = 'marketing',
    Parts = 'parts',
    Tools = 'tools',
+}
+
+export enum Enum_Reusablesection_Positioninproductlist {
+   AfterProducts = 'after_products',
+   Bottom = 'bottom',
+   Top = 'top',
 }
 
 export enum Enum_Store_Currency {
@@ -770,6 +814,7 @@ export type FloatFilterInput = {
    lt?: InputMaybe<Scalars['Float']>;
    lte?: InputMaybe<Scalars['Float']>;
    ne?: InputMaybe<Scalars['Float']>;
+   nei?: InputMaybe<Scalars['Float']>;
    not?: InputMaybe<FloatFilterInput>;
    notContains?: InputMaybe<Scalars['Float']>;
    notContainsi?: InputMaybe<Scalars['Float']>;
@@ -789,6 +834,7 @@ export type GenericMorph =
    | ComponentMenuLinkWithImage
    | ComponentMenuProductListLink
    | ComponentMenuSubmenu
+   | ComponentMiscPlacement
    | ComponentPageBrowse
    | ComponentPageCallToAction
    | ComponentPageCategory
@@ -828,6 +874,7 @@ export type GenericMorph =
    | Page
    | Product
    | ProductList
+   | ReusableSection
    | SocialPost
    | Store
    | UploadFile
@@ -921,6 +968,7 @@ export type IdFilterInput = {
    lt?: InputMaybe<Scalars['ID']>;
    lte?: InputMaybe<Scalars['ID']>;
    ne?: InputMaybe<Scalars['ID']>;
+   nei?: InputMaybe<Scalars['ID']>;
    not?: InputMaybe<IdFilterInput>;
    notContains?: InputMaybe<Scalars['ID']>;
    notContainsi?: InputMaybe<Scalars['ID']>;
@@ -945,6 +993,7 @@ export type IntFilterInput = {
    lt?: InputMaybe<Scalars['Int']>;
    lte?: InputMaybe<Scalars['Int']>;
    ne?: InputMaybe<Scalars['Int']>;
+   nei?: InputMaybe<Scalars['Int']>;
    not?: InputMaybe<IntFilterInput>;
    notContains?: InputMaybe<Scalars['Int']>;
    notContainsi?: InputMaybe<Scalars['Int']>;
@@ -969,6 +1018,7 @@ export type JsonFilterInput = {
    lt?: InputMaybe<Scalars['JSON']>;
    lte?: InputMaybe<Scalars['JSON']>;
    ne?: InputMaybe<Scalars['JSON']>;
+   nei?: InputMaybe<Scalars['JSON']>;
    not?: InputMaybe<JsonFilterInput>;
    notContains?: InputMaybe<Scalars['JSON']>;
    notContainsi?: InputMaybe<Scalars['JSON']>;
@@ -1061,6 +1111,7 @@ export type Mutation = {
    createProduct?: Maybe<ProductEntityResponse>;
    createProductList?: Maybe<ProductListEntityResponse>;
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
+   createReusableSection?: Maybe<ReusableSectionEntityResponse>;
    createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
    createUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1077,6 +1128,7 @@ export type Mutation = {
    deletePage?: Maybe<PageEntityResponse>;
    deleteProduct?: Maybe<ProductEntityResponse>;
    deleteProductList?: Maybe<ProductListEntityResponse>;
+   deleteReusableSection?: Maybe<ReusableSectionEntityResponse>;
    deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1105,6 +1157,7 @@ export type Mutation = {
    updatePage?: Maybe<PageEntityResponse>;
    updateProduct?: Maybe<ProductEntityResponse>;
    updateProductList?: Maybe<ProductListEntityResponse>;
+   updateReusableSection?: Maybe<ReusableSectionEntityResponse>;
    updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1184,6 +1237,10 @@ export type MutationCreateProductListLocalizationArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationCreateReusableSectionArgs = {
+   data: ReusableSectionInput;
+};
+
 export type MutationCreateSocialPostArgs = {
    data: SocialPostInput;
 };
@@ -1242,6 +1299,10 @@ export type MutationDeleteProductArgs = {
 export type MutationDeleteProductListArgs = {
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationDeleteReusableSectionArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteSocialPostArgs = {
@@ -1348,6 +1409,11 @@ export type MutationUpdateProductListArgs = {
    data: ProductListInput;
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationUpdateReusableSectionArgs = {
+   data: ReusableSectionInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateSocialPostArgs = {
@@ -1702,6 +1768,8 @@ export type Query = {
    productList?: Maybe<ProductListEntityResponse>;
    productLists?: Maybe<ProductListEntityResponseCollection>;
    products?: Maybe<ProductEntityResponseCollection>;
+   reusableSection?: Maybe<ReusableSectionEntityResponse>;
+   reusableSections?: Maybe<ReusableSectionEntityResponseCollection>;
    socialPost?: Maybe<SocialPostEntityResponse>;
    socialPosts?: Maybe<SocialPostEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
@@ -1816,6 +1884,17 @@ export type QueryProductsArgs = {
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type QueryReusableSectionArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryReusableSectionsArgs = {
+   filters?: InputMaybe<ReusableSectionFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type QuerySocialPostArgs = {
    id?: InputMaybe<Scalars['ID']>;
 };
@@ -1882,6 +1961,72 @@ export type ResponseCollectionMeta = {
    __typename?: 'ResponseCollectionMeta';
    pagination: Pagination;
 };
+
+export type ReusableSection = {
+   __typename?: 'ReusableSection';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   placement: Array<Maybe<ComponentMiscPlacement>>;
+   positionInProductList: Enum_Reusablesection_Positioninproductlist;
+   priority: Scalars['Int'];
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   section: Array<Maybe<ReusableSectionSectionDynamicZone>>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ReusableSectionPlacementArgs = {
+   filters?: InputMaybe<ComponentMiscPlacementFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ReusableSectionEntity = {
+   __typename?: 'ReusableSectionEntity';
+   attributes?: Maybe<ReusableSection>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ReusableSectionEntityResponse = {
+   __typename?: 'ReusableSectionEntityResponse';
+   data?: Maybe<ReusableSectionEntity>;
+};
+
+export type ReusableSectionEntityResponseCollection = {
+   __typename?: 'ReusableSectionEntityResponseCollection';
+   data: Array<ReusableSectionEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ReusableSectionFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ReusableSectionFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ReusableSectionFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ReusableSectionFiltersInput>>>;
+   placement?: InputMaybe<ComponentMiscPlacementFiltersInput>;
+   positionInProductList?: InputMaybe<StringFilterInput>;
+   priority?: InputMaybe<IntFilterInput>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ReusableSectionInput = {
+   placement?: InputMaybe<Array<InputMaybe<ComponentMiscPlacementInput>>>;
+   positionInProductList?: InputMaybe<Enum_Reusablesection_Positioninproductlist>;
+   priority?: InputMaybe<Scalars['Int']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+   section?: InputMaybe<
+      Array<Scalars['ReusableSectionSectionDynamicZoneInput']>
+   >;
+   title?: InputMaybe<Scalars['String']>;
+};
+
+export type ReusableSectionSectionDynamicZone =
+   | ComponentPagePress
+   | ComponentPageSplitWithImage
+   | ComponentSectionBanner
+   | ComponentSectionQuoteGallery
+   | Error;
 
 export type SocialPost = {
    __typename?: 'SocialPost';
@@ -2012,6 +2157,7 @@ export type StringFilterInput = {
    lt?: InputMaybe<Scalars['String']>;
    lte?: InputMaybe<Scalars['String']>;
    ne?: InputMaybe<Scalars['String']>;
+   nei?: InputMaybe<Scalars['String']>;
    not?: InputMaybe<StringFilterInput>;
    notContains?: InputMaybe<Scalars['String']>;
    notContainsi?: InputMaybe<Scalars['String']>;
@@ -3030,18 +3176,6 @@ export type FindProductListQuery = {
                   } | null;
                } | null;
             } | null;
-            image?: {
-               __typename?: 'UploadFileEntityResponse';
-               data?: {
-                  __typename?: 'UploadFileEntity';
-                  attributes?: {
-                     __typename?: 'UploadFile';
-                     alternativeText?: string | null;
-                     url: string;
-                     formats?: any | null;
-                  } | null;
-               } | null;
-            } | null;
             brandLogo?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3258,18 +3392,6 @@ export type ProductListFieldsFragment = {
          } | null;
       } | null;
    } | null;
-   image?: {
-      __typename?: 'UploadFileEntityResponse';
-      data?: {
-         __typename?: 'UploadFileEntity';
-         attributes?: {
-            __typename?: 'UploadFile';
-            alternativeText?: string | null;
-            url: string;
-            formats?: any | null;
-         } | null;
-      } | null;
-   } | null;
    brandLogo?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
@@ -3460,6 +3582,307 @@ export type AncestorProductListFieldsFragment = {
    title: string;
    handle: string;
    deviceTitle?: string | null;
+};
+
+export type FindReusableSectionsQueryVariables = Exact<{
+   filters?: InputMaybe<ReusableSectionFiltersInput>;
+}>;
+
+export type FindReusableSectionsQuery = {
+   __typename?: 'Query';
+   reusableSections?: {
+      __typename?: 'ReusableSectionEntityResponseCollection';
+      data: Array<{
+         __typename?: 'ReusableSectionEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'ReusableSection';
+            priority: number;
+            positionInProductList: Enum_Reusablesection_Positioninproductlist;
+            section: Array<
+               | {
+                    __typename: 'ComponentPagePress';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentPagePressQuote';
+                       id: string;
+                       text: string;
+                       company?: {
+                          __typename?: 'CompanyEntityResponse';
+                          data?: {
+                             __typename?: 'CompanyEntity';
+                             id?: string | null;
+                             attributes?: {
+                                __typename?: 'Company';
+                                name: string;
+                                logo?: {
+                                   __typename?: 'UploadFileEntityResponse';
+                                   data?: {
+                                      __typename?: 'UploadFileEntity';
+                                      attributes?: {
+                                         __typename?: 'UploadFile';
+                                         alternativeText?: string | null;
+                                         url: string;
+                                         formats?: any | null;
+                                      } | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentPageSplitWithImage';
+                    id: string;
+                    title?: string | null;
+                    label?: string | null;
+                    description?: string | null;
+                    imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionBanner';
+                    id: string;
+                    banners?: {
+                       __typename?: 'BannerRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'BannerEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Banner';
+                             title?: string | null;
+                             label?: string | null;
+                             description?: string | null;
+                             image?: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             } | null;
+                             callToAction?: {
+                                __typename?: 'ComponentPageCallToAction';
+                                title: string;
+                                url: string;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
+                    __typename: 'ComponentSectionQuoteGallery';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    quotes?: Array<{
+                       __typename?: 'ComponentSectionQuoteCard';
+                       id: string;
+                       text: string;
+                       author?: {
+                          __typename?: 'ComponentGlobalPerson';
+                          id: string;
+                          name?: string | null;
+                          role?: string | null;
+                          avatar?: {
+                             __typename?: 'UploadFileEntityResponse';
+                             data?: {
+                                __typename?: 'UploadFileEntity';
+                                attributes?: {
+                                   __typename?: 'UploadFile';
+                                   alternativeText?: string | null;
+                                   url: string;
+                                   formats?: any | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null> | null;
+                 }
+               | { __typename: 'Error' }
+               | null
+            >;
+            placement: Array<{
+               __typename?: 'ComponentMiscPlacement';
+               showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+            } | null>;
+         } | null;
+      }>;
+   } | null;
+};
+
+export type ReusableSectionFieldsFragment = {
+   __typename?: 'ReusableSection';
+   priority: number;
+   positionInProductList: Enum_Reusablesection_Positioninproductlist;
+   section: Array<
+      | {
+           __typename: 'ComponentPagePress';
+           id: string;
+           title?: string | null;
+           description?: string | null;
+           quotes?: Array<{
+              __typename?: 'ComponentPagePressQuote';
+              id: string;
+              text: string;
+              company?: {
+                 __typename?: 'CompanyEntityResponse';
+                 data?: {
+                    __typename?: 'CompanyEntity';
+                    id?: string | null;
+                    attributes?: {
+                       __typename?: 'Company';
+                       name: string;
+                       logo?: {
+                          __typename?: 'UploadFileEntityResponse';
+                          data?: {
+                             __typename?: 'UploadFileEntity';
+                             attributes?: {
+                                __typename?: 'UploadFile';
+                                alternativeText?: string | null;
+                                url: string;
+                                formats?: any | null;
+                             } | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                 } | null;
+              } | null;
+           } | null> | null;
+           callToAction?: {
+              __typename?: 'ComponentPageCallToAction';
+              title: string;
+              url: string;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentPageSplitWithImage';
+           id: string;
+           title?: string | null;
+           label?: string | null;
+           description?: string | null;
+           imagePosition?: Enum_Componentpagesplitwithimage_Imageposition | null;
+           callToAction?: {
+              __typename?: 'ComponentPageCallToAction';
+              title: string;
+              url: string;
+           } | null;
+           image?: {
+              __typename?: 'UploadFileEntityResponse';
+              data?: {
+                 __typename?: 'UploadFileEntity';
+                 attributes?: {
+                    __typename?: 'UploadFile';
+                    alternativeText?: string | null;
+                    url: string;
+                    formats?: any | null;
+                 } | null;
+              } | null;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentSectionBanner';
+           id: string;
+           banners?: {
+              __typename?: 'BannerRelationResponseCollection';
+              data: Array<{
+                 __typename?: 'BannerEntity';
+                 id?: string | null;
+                 attributes?: {
+                    __typename?: 'Banner';
+                    title?: string | null;
+                    label?: string | null;
+                    description?: string | null;
+                    image?: {
+                       __typename?: 'UploadFileEntityResponse';
+                       data?: {
+                          __typename?: 'UploadFileEntity';
+                          attributes?: {
+                             __typename?: 'UploadFile';
+                             alternativeText?: string | null;
+                             url: string;
+                             formats?: any | null;
+                          } | null;
+                       } | null;
+                    } | null;
+                    callToAction?: {
+                       __typename?: 'ComponentPageCallToAction';
+                       title: string;
+                       url: string;
+                    } | null;
+                 } | null;
+              }>;
+           } | null;
+        }
+      | {
+           __typename: 'ComponentSectionQuoteGallery';
+           id: string;
+           title?: string | null;
+           description?: string | null;
+           quotes?: Array<{
+              __typename?: 'ComponentSectionQuoteCard';
+              id: string;
+              text: string;
+              author?: {
+                 __typename?: 'ComponentGlobalPerson';
+                 id: string;
+                 name?: string | null;
+                 role?: string | null;
+                 avatar?: {
+                    __typename?: 'UploadFileEntityResponse';
+                    data?: {
+                       __typename?: 'UploadFileEntity';
+                       attributes?: {
+                          __typename?: 'UploadFile';
+                          alternativeText?: string | null;
+                          url: string;
+                          formats?: any | null;
+                       } | null;
+                    } | null;
+                 } | null;
+              } | null;
+           } | null> | null;
+        }
+      | { __typename: 'Error' }
+      | null
+   >;
+   placement: Array<{
+      __typename?: 'ComponentMiscPlacement';
+      showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
+   } | null>;
+};
+
+export type PlacementFieldsFragment = {
+   __typename?: 'ComponentMiscPlacement';
+   showInProductListPages: Enum_Componentmiscplacement_Showinproductlistpages;
 };
 
 export type FindStoreQueryVariables = Exact<{
@@ -4987,9 +5410,6 @@ export const ProductListFieldsFragmentDoc = `
   heroImage {
     ...ImageFields
   }
-  image {
-    ...ImageFields
-  }
   brandLogo {
     ...ImageFields
   }
@@ -5072,6 +5492,138 @@ export const ProductListFieldsFragmentDoc = `
       tagline
     }
   }
+}
+    `;
+export const CallToActionFieldsFragmentDoc = `
+    fragment CallToActionFields on ComponentPageCallToAction {
+  title
+  url
+}
+    `;
+export const BannerFieldsFragmentDoc = `
+    fragment BannerFields on BannerEntity {
+  id
+  attributes {
+    title
+    label
+    description
+    image {
+      ...ImageFields
+    }
+    callToAction {
+      ...CallToActionFields
+    }
+  }
+}
+    `;
+export const BannersSectionFieldsFragmentDoc = `
+    fragment BannersSectionFields on ComponentSectionBanner {
+  id
+  banners {
+    data {
+      ...BannerFields
+    }
+  }
+}
+    `;
+export const SplitWithImageSectionFieldsFragmentDoc = `
+    fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
+  id
+  title
+  label
+  description
+  callToAction {
+    ...CallToActionFields
+  }
+  imagePosition
+  image {
+    ...ImageFields
+  }
+}
+    `;
+export const CompanyFieldsFragmentDoc = `
+    fragment CompanyFields on CompanyEntity {
+  id
+  attributes {
+    name
+    logo {
+      ...ImageFields
+    }
+  }
+}
+    `;
+export const PressQuoteFieldsFragmentDoc = `
+    fragment PressQuoteFields on ComponentPagePressQuote {
+  id
+  company {
+    data {
+      ...CompanyFields
+    }
+  }
+  text
+}
+    `;
+export const PressQuotesSectionFieldsFragmentDoc = `
+    fragment PressQuotesSectionFields on ComponentPagePress {
+  id
+  title
+  description
+  quotes {
+    ...PressQuoteFields
+  }
+  callToAction {
+    ...CallToActionFields
+  }
+}
+    `;
+export const PersonFieldsFragmentDoc = `
+    fragment PersonFields on ComponentGlobalPerson {
+  id
+  name
+  role
+  avatar {
+    ...ImageFields
+  }
+}
+    `;
+export const QuoteCardFieldsFragmentDoc = `
+    fragment QuoteCardFields on ComponentSectionQuoteCard {
+  id
+  text
+  author {
+    ...PersonFields
+  }
+}
+    `;
+export const QuoteGallerySectionFieldsFragmentDoc = `
+    fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
+  id
+  title
+  description
+  quotes {
+    ...QuoteCardFields
+  }
+}
+    `;
+export const PlacementFieldsFragmentDoc = `
+    fragment PlacementFields on ComponentMiscPlacement {
+  showInProductListPages
+}
+    `;
+export const ReusableSectionFieldsFragmentDoc = `
+    fragment ReusableSectionFields on ReusableSection {
+  section {
+    __typename
+    ...BannersSectionFields
+    ...SplitWithImageSectionFields
+    ...PressQuotesSectionFields
+    ...QuoteGallerySectionFields
+  }
+  placement {
+    ...PlacementFields
+  }
+  priority
+  positionInProductList
 }
     `;
 export const MenuPropsFragmentDoc = `
@@ -5159,38 +5711,6 @@ export const MenuEntityResponsePropsFragmentDoc = `
   data {
     attributes {
       ...MenuProps
-    }
-  }
-}
-    `;
-export const CallToActionFieldsFragmentDoc = `
-    fragment CallToActionFields on ComponentPageCallToAction {
-  title
-  url
-}
-    `;
-export const BannerFieldsFragmentDoc = `
-    fragment BannerFields on BannerEntity {
-  id
-  attributes {
-    title
-    label
-    description
-    image {
-      ...ImageFields
-    }
-    callToAction {
-      ...CallToActionFields
-    }
-  }
-}
-    `;
-export const BannersSectionFieldsFragmentDoc = `
-    fragment BannersSectionFields on ComponentSectionBanner {
-  id
-  banners {
-    data {
-      ...BannerFields
     }
   }
 }
@@ -5286,41 +5806,6 @@ export const LifetimeWarrantySectionFieldsFragmentDoc = `
   description
 }
     `;
-export const CompanyFieldsFragmentDoc = `
-    fragment CompanyFields on CompanyEntity {
-  id
-  attributes {
-    name
-    logo {
-      ...ImageFields
-    }
-  }
-}
-    `;
-export const PressQuoteFieldsFragmentDoc = `
-    fragment PressQuoteFields on ComponentPagePressQuote {
-  id
-  company {
-    data {
-      ...CompanyFields
-    }
-  }
-  text
-}
-    `;
-export const PressQuotesSectionFieldsFragmentDoc = `
-    fragment PressQuotesSectionFields on ComponentPagePress {
-  id
-  title
-  description
-  quotes {
-    ...PressQuoteFields
-  }
-  callToAction {
-    ...CallToActionFields
-  }
-}
-    `;
 export const ProductCrossSellSectionFieldsFragmentDoc = `
     fragment ProductCrossSellSectionFields on ComponentProductCrossSell {
   id
@@ -5342,35 +5827,6 @@ export const ProductReplacementGuidesSectionFieldsFragmentDoc = `
     fragment ProductReplacementGuidesSectionFields on ComponentProductReplacementGuides {
   id
   title
-}
-    `;
-export const PersonFieldsFragmentDoc = `
-    fragment PersonFields on ComponentGlobalPerson {
-  id
-  name
-  role
-  avatar {
-    ...ImageFields
-  }
-}
-    `;
-export const QuoteCardFieldsFragmentDoc = `
-    fragment QuoteCardFields on ComponentSectionQuoteCard {
-  id
-  text
-  author {
-    ...PersonFields
-  }
-}
-    `;
-export const QuoteGallerySectionFieldsFragmentDoc = `
-    fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
-  id
-  title
-  description
-  quotes {
-    ...QuoteCardFields
-  }
 }
     `;
 export const QuoteSectionFieldsFragmentDoc = `
@@ -5409,21 +5865,6 @@ export const SocialGallerySectionFieldsFragmentDoc = `
     data {
       ...SocialPostFields
     }
-  }
-}
-    `;
-export const SplitWithImageSectionFieldsFragmentDoc = `
-    fragment SplitWithImageSectionFields on ComponentPageSplitWithImage {
-  id
-  title
-  label
-  description
-  callToAction {
-    ...CallToActionFields
-  }
-  imagePosition
-  image {
-    ...ImageFields
   }
 }
     `;
@@ -5546,6 +5987,30 @@ ${ProductListBannerSectionFieldsFragmentDoc}
 ${ProductListRelatedPostsSectionFieldsFragmentDoc}
 ${ProductListLinkedProductListSetSectionFieldsFragmentDoc}
 ${ProductListPreviewFieldsFragmentDoc}`;
+export const FindReusableSectionsDocument = `
+    query findReusableSections($filters: ReusableSectionFiltersInput) {
+  reusableSections(filters: $filters) {
+    data {
+      id
+      attributes {
+        ...ReusableSectionFields
+      }
+    }
+  }
+}
+    ${ReusableSectionFieldsFragmentDoc}
+${BannersSectionFieldsFragmentDoc}
+${BannerFieldsFragmentDoc}
+${ImageFieldsFragmentDoc}
+${CallToActionFieldsFragmentDoc}
+${SplitWithImageSectionFieldsFragmentDoc}
+${PressQuotesSectionFieldsFragmentDoc}
+${PressQuoteFieldsFragmentDoc}
+${CompanyFieldsFragmentDoc}
+${QuoteGallerySectionFieldsFragmentDoc}
+${QuoteCardFieldsFragmentDoc}
+${PersonFieldsFragmentDoc}
+${PlacementFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {
   store: stores(filters: $filters) {
@@ -5658,6 +6123,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
             variables,
             options
          );
+      },
+      findReusableSections(
+         variables?: FindReusableSectionsQueryVariables,
+         options?: C
+      ): Promise<FindReusableSectionsQuery> {
+         return requester<
+            FindReusableSectionsQuery,
+            FindReusableSectionsQueryVariables
+         >(FindReusableSectionsDocument, variables, options);
       },
       findStore(
          variables?: FindStoreQueryVariables,

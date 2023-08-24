@@ -5,14 +5,22 @@ import * as React from 'react';
 export interface ClientOptions {
    origin: string;
    version?: string;
+   headers?: HeadersInit;
 }
+
+const BypassHeaderName = 'Nextjs-Bypass-Varnish';
+export const VarnishBypassHeader = { [BypassHeaderName]: '1' };
+
 export class IFixitAPIClient {
    origin: string;
    version: string;
 
+   headers: HeadersInit;
+
    constructor(readonly options: ClientOptions) {
       this.origin = options.origin;
       this.version = options.version ?? '2.0';
+      this.headers = options.headers ?? {};
    }
 
    async get<Data = unknown>(
@@ -65,26 +73,62 @@ export class IFixitAPIClient {
          ? { Authorization: `PSK ${pskToken}` }
          : {};
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
+      const headers = new Headers({
+         ...authHeader,
+         ...this.headers,
+         ...init?.headers,
+      });
       const response = await timeAsync(
          `ifixit-api.${init?.method?.toLowerCase() || 'get'}.${statName}`,
          () =>
             fetch(url, {
                credentials: 'include',
                ...init,
-               headers: {
-                  ...authHeader,
-                  ...init?.headers,
-               },
+               headers: headers,
             })
       );
       if (!response.ok) {
          throw new Error(response.statusText);
       }
+
+      warnIfNotBypassed(headers, response);
+
       if (response.headers.get('Content-Type') === 'application/json') {
          return response.json();
       }
       return null;
    }
+}
+
+function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
+   const wantsBypass = requestHeaders.has(BypassHeaderName);
+   if (!wantsBypass) {
+      return;
+   }
+
+   const cachedHeaderKey = 'x-debug-cache';
+
+   if (!response.headers.has(cachedHeaderKey)) {
+      console.warn(
+         'Varnish bypass requested, expected header not found!',
+         `Expected header: ${cachedHeaderKey}`
+      );
+      return;
+   }
+
+   const cached = response.headers.get(cachedHeaderKey);
+   const responseBypassed = cached === 'MISS';
+   if (responseBypassed) {
+      return;
+   }
+
+   console.warn(
+      `Varnish bypass requested, but didn't bypass for ${truncate(
+         response.url,
+         100
+      )}!`,
+      `${cachedHeaderKey}: ${cached}`
+   );
 }
 
 /**

@@ -85,7 +85,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       });
 
    return (
-      <Flex direction="column" w="full" p="3">
+      <Flex direction="column" w="full" p="3" bgColor="white">
          <Flex w="full" justify="space-between" align="flex-start">
             <HStack spacing="3" align="flex-start">
                <CartLineItemImage src={lineItem.imageSrc} alt={lineItem.name} />

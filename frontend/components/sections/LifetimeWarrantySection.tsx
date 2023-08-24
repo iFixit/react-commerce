@@ -25,7 +25,7 @@ export function LifetimeWarrantySection({
    switch (variant) {
       case 'banner': {
          return (
-            <Box as="section" id={SECTION_ID}>
+            <Box as="section" id={SECTION_ID} my={{ base: 4, md: 6 }}>
                <Wrapper>
                   <Box
                      py="16"

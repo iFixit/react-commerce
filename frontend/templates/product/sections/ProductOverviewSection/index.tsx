@@ -219,13 +219,15 @@ export function ProductOverviewSection({
                         product.compatibility.devices.length <= 0
                      }
                   >
-                     {product.compatibilityNotes ? (
+                     {product.compatibilityNotes?.length ? (
                         <>
                            <CustomAccordionButton>
                               Compatibility Notes
                            </CustomAccordionButton>
                            <CustomAccordionPanel data-testid="product-compatibility-dropdown">
-                              <CompatibilityNotes product={product} />
+                              <CompatibilityNotes
+                                 compatibilityNotes={product.compatibilityNotes}
+                              />
                            </CustomAccordionPanel>
                         </>
                      ) : (

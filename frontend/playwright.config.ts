@@ -74,13 +74,6 @@ const config: PlaywrightTestConfig = {
             ...devices['Desktop Chrome'],
          },
       }),
-      generateBrowserConfig({
-         name: 'Desktop Firefox',
-         use: {
-            ...devices['Desktop Firefox'],
-         },
-      }),
-
       /* Test against mobile viewports. */
       generateBrowserConfig({
          name: 'Mobile Chrome',
@@ -94,20 +87,6 @@ const config: PlaywrightTestConfig = {
             ...devices['Galaxy Tab S4'],
          },
       }),
-
-      /* Test against branded browsers. */
-      // {
-      //   name: 'Microsoft Edge',
-      //   use: {
-      //     channel: 'msedge',
-      //   },
-      // },
-      // {
-      //   name: 'Google Chrome',
-      //   use: {
-      //     channel: 'chrome',
-      //   },
-      // },
    ],
 
    /* Folder for test artifacts such as screenshots, videos, traces, etc. */

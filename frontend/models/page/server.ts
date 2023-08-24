@@ -10,7 +10,7 @@ import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-ima
 import type { Page, PageSection } from '.';
 import { browseSectionFromStrapi } from './sections/browse-section';
 import { heroSectionFromStrapi } from './sections/hero-section';
-import { pressQuotesSectionFromStrapi } from './sections/press-quotes-section';
+import { pressQuotesSectionFromStrapi } from '../sections/press-quotes-section';
 import { timeAsync } from '@ifixit/helpers';
 
 interface FindPageArgs {
@@ -53,7 +53,7 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
                return splitWithImageSectionFromStrapi(section, sectionId);
             }
             case 'ComponentPagePress': {
-               return pressQuotesSectionFromStrapi(section, index);
+               return pressQuotesSectionFromStrapi(section, sectionId);
             }
             case 'ComponentSectionFeaturedProducts': {
                return featuredProductsSectionFromStrapi({

@@ -10,12 +10,12 @@ import {
    useDisclosure,
 } from '@chakra-ui/react';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
+import { markdownToHTML } from '@helpers/ui-helpers';
 import { isPresent } from '@ifixit/helpers';
 import { ResponsiveImage, useIsMounted, Wrapper } from '@ifixit/ui';
 import type { Image } from '@models/components/image';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
-import snarkdown from 'snarkdown';
 
 export interface HeroSectionProps {
    title: string;
@@ -32,8 +32,11 @@ export function HeroSection({
    backgroundImage,
    brandLogo,
 }: HeroSectionProps) {
+   const pagination = usePagination();
+   const page = pagination.currentRefinement + 1;
+   const isFirstPage = page === 1;
    return (
-      <Wrapper as="section">
+      <Wrapper as="section" my={{ base: 4, md: 6 }}>
          {backgroundImage ? (
             <Flex
                pos="relative"
@@ -78,9 +81,13 @@ export function HeroSection({
                         mb="4"
                      />
                   )}
-                  <HeroTitle>{title}</HeroTitle>
+                  <HeroTitle page={page}>{title}</HeroTitle>
                   {isPresent(tagline) && (
-                     <Text as="h2" fontWeight="medium">
+                     <Text
+                        as="h2"
+                        fontWeight="medium"
+                        data-testid="hero-tagline"
+                     >
                         {tagline}
                      </Text>
                   )}
@@ -93,14 +100,22 @@ export function HeroSection({
             </Flex>
          ) : (
             <Flex direction="column">
-               <HeroTitle>{title}</HeroTitle>
-               {isPresent(tagline) && (
-                  <Text as="h2" fontWeight="medium" data-testid="hero-tagline">
-                     {tagline}
-                  </Text>
-               )}
-               {isPresent(description) && (
-                  <HeroDescription>{description}</HeroDescription>
+               <HeroTitle page={page}>{title}</HeroTitle>
+               {isFirstPage && (
+                  <>
+                     {isPresent(tagline) && (
+                        <Text
+                           as="h2"
+                           fontWeight="medium"
+                           data-testid="hero-tagline"
+                        >
+                           {tagline}
+                        </Text>
+                     )}
+                     {isPresent(description) && (
+                        <HeroDescription>{description}</HeroDescription>
+                     )}
+                  </>
                )}
             </Flex>
          )}
@@ -108,9 +123,11 @@ export function HeroSection({
    );
 }
 
-function HeroTitle({ children }: React.PropsWithChildren) {
-   const pagination = usePagination();
-   const page = pagination.currentRefinement + 1;
+function HeroTitle({
+   children,
+   page,
+}: React.PropsWithChildren<{ page: number }>) {
+   // Place non-breaking space between 'Page' and page number
    return (
       <Heading
          as="h1"
@@ -120,7 +137,15 @@ function HeroTitle({ children }: React.PropsWithChildren) {
          data-testid="hero-title"
       >
          {children}
-         {page > 1 ? ` - Page ${page}` : ''}
+         {page > 1 ? (
+            <>
+               {' - Page'}
+               <span dangerouslySetInnerHTML={{ __html: '&nbsp;' }} />
+               {page}
+            </>
+         ) : (
+            ''
+         )}
       </Heading>
    );
 }
@@ -180,10 +205,7 @@ type DescriptionRichTextProps = Omit<BoxProps, 'children'> & {
 
 const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
    ({ children, ...other }, ref) => {
-      const html = React.useMemo(() => {
-         const preserveNewlines = children.trim().replace(/\n/g, '<br />');
-         return snarkdown(preserveNewlines);
-      }, [children]);
+      const html = React.useMemo(() => markdownToHTML(children), [children]);
 
       return (
          <Box

@@ -18,6 +18,8 @@
       "api::banner.banner.findOne",
       "api::banner.banner.find",
       "api::faq.faq.findOne",
-      "api::faq.faq.find"
+      "api::faq.faq.find",
+      "api::reusable-section.reusable-section.findOne",
+      "api::reusable-section.reusable-section.find"
    ]
 }

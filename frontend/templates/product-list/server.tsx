@@ -1,11 +1,11 @@
 import { AppProviders, AppProvidersProps } from '@components/common';
 import { ALGOLIA_PRODUCT_INDEX_NAME, DEFAULT_STORE_CODE } from '@config/env';
-import { withCacheLong } from '@helpers/cache-control-helpers';
 import {
+   CacheLong,
    hasDisableCacheGets,
-   withLogging,
-   withNoindexDevDomains,
-} from '@helpers/next-helpers';
+   withCache,
+} from '@helpers/cache-control-helpers';
+import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
@@ -29,8 +29,7 @@ import { ProductListView } from './ProductListView';
 
 const withMiddleware = compose(
    withLogging<ProductListTemplateProps>,
-   withCacheLong<ProductListTemplateProps>,
-   withNoindexDevDomains<ProductListTemplateProps>
+   withCache(CacheLong)<ProductListTemplateProps>
 );
 
 type GetProductListServerSidePropsOptions = {

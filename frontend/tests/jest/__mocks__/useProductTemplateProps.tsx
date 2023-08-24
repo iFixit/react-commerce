@@ -301,7 +301,7 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                   {
                      type: MenuItemType.Link,
                      name: 'Careers',
-                     url: 'https://www.ifixit.com/Info/jobs',
+                     url: 'https://www.ifixit.com/about-us/careers',
                      description: null,
                   },
                   {

@@ -8,7 +8,7 @@ import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-s
 import { z } from 'zod';
 import { BrowseSectionSchema } from './sections/browse-section';
 import { HeroSectionSchema } from './sections/hero-section';
-import { PressQuotesSectionSchema } from './sections/press-quotes-section';
+import { PressQuotesSectionSchema } from '../sections/press-quotes-section';
 
 export type PageSection = z.infer<typeof PageSectionSchema>;
 

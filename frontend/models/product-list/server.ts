@@ -6,30 +6,34 @@ import {
 import { escapeFilterValue, getClientOptions } from '@helpers/algolia-helpers';
 import { filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
-import { getImageFromStrapiImage } from '@helpers/strapi-helpers';
-import { timeAsync } from '@ifixit/helpers';
+import { presentOrNull, timeAsync } from '@ifixit/helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
+import type { ComponentMiscPlacementFiltersInput } from '@lib/strapi-sdk';
 import {
    ProductListFieldsFragment,
    ProductListFiltersInput,
    strapi,
 } from '@lib/strapi-sdk';
-import { imageFromStrapi } from '@models/components/image';
+import {
+   childImageFromDeviceWiki,
+   imageFromStrapi,
+} from '@models/components/image';
+import type { ReusableSection } from '@models/reusable-section';
+import { findReusableSections } from '@models/reusable-section/server';
 import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
+import type { ProductListChild } from './component/product-list-child';
 import { ProductListType } from './component/product-list-type';
 import { productListTypeFromStrapi } from './component/product-list-type.server';
-import { getProductListSection } from './sections';
+import { productListSections } from './sections';
 import {
    BaseProductList,
    ProductList,
-   ProductListChild,
-   ProductListImage,
    ProductListItemTypeOverride,
    ProductListItemTypeOverrideIndexed,
 } from './types';
@@ -65,9 +69,10 @@ export async function findProductList(
    const title =
       productList?.title ??
       (deviceWiki?.deviceTitle ? deviceWiki?.deviceTitle + ' Parts' : '');
-   const h1 = productList?.h1 ?? null;
    const description =
-      productList?.description ?? deviceWiki?.description ?? '';
+      productList?.description ??
+      (deviceWiki?.description as string | null) ??
+      null;
 
    const algoliaApiKey = createPublicAlgoliaKey(
       ALGOLIA_APP_ID,
@@ -83,36 +88,44 @@ export async function findProductList(
       productListType === ProductListType.AllParts ||
       productListType === ProductListType.DeviceParts;
 
-   const baseProductList: BaseProductList = {
-      id,
-      title,
-      h1,
-      handle,
-      deviceTitle,
-      tagline: productList?.tagline ?? null,
-      description: description,
-      metaDescription: productList?.metaDescription ?? null,
-      metaTitle: productList?.metaTitle ?? null,
-      defaultShowAllChildrenOnLgSizes:
-         productList?.defaultShowAllChildrenOnLgSizes ?? null,
-      filters: productList?.filters ?? null,
-      forceNoindex: productList?.forceNoindex ?? null,
-      heroImage: imageFromStrapi(productList?.heroImage),
-      image: null,
-      brandLogo: imageFromStrapi(productList?.brandLogo, {
-         format: 'large',
-         width: productList?.brandLogoWidth,
+   const [reusableSections, children] = await Promise.all([
+      findProductListReusableSections({
+         strapiProductList: productList,
+         ancestorHandles: ancestors.map((a) => a.handle),
       }),
-      ancestors,
-      children: await getProductListChildren({
+      getProductListChildren({
          apiChildren: productList?.children?.data,
          deviceWiki,
          ifixitOrigin,
          isPartsList,
       }),
-      sections: filterNullableItems(
-         productList?.sections.map(getProductListSection)
-      ),
+   ]);
+
+   const baseProductList: BaseProductList = {
+      id,
+      title,
+      h1: presentOrNull(productList?.h1),
+      handle,
+      deviceTitle,
+      tagline: presentOrNull(productList?.tagline),
+      description,
+      metaDescription: presentOrNull(productList?.metaDescription),
+      metaTitle: presentOrNull(productList?.metaTitle),
+      defaultShowAllChildrenOnLgSizes:
+         productList?.defaultShowAllChildrenOnLgSizes ?? null,
+      filters: productList?.filters ?? null,
+      forceNoindex: productList?.forceNoindex ?? null,
+      heroImage: imageFromStrapi(productList?.heroImage),
+      brandLogo: imageFromStrapi(productList?.brandLogo, {
+         format: 'large',
+         width: productList?.brandLogoWidth,
+      }),
+      ancestors,
+      children,
+      sections: productListSections({
+         strapiProductList: productList,
+         reusableSections,
+      }),
       algolia: {
          apiKey: algoliaApiKey,
       },
@@ -126,6 +139,10 @@ export async function findProductList(
       type: productListType,
    };
 }
+
+type ApiProductListChild = NonNullable<
+   ProductListFieldsFragment['children']
+>['data'][0];
 
 type GetProductListChildrenProps = {
    apiChildren: ApiProductListChild[] | undefined;
@@ -214,26 +231,6 @@ async function fetchMissingImages(
    return images;
 }
 
-function getChildDeviceImage(
-   deviceWiki: DeviceWiki,
-   childDeviceTitle: string
-): ProductListImage | null {
-   const child = deviceWiki.children?.find(
-      (c: any) => c.title === childDeviceTitle
-   );
-   if (child?.image?.original) {
-      return {
-         url: child.image.original,
-         alternativeText: null,
-      };
-   }
-   return null;
-}
-
-type ApiProductListChild = NonNullable<
-   ProductListFieldsFragment['children']
->['data'][0];
-
 type CreateProductListChildOptions = {
    deviceWiki: DeviceWiki | null;
 };
@@ -244,7 +241,9 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
       if (attributes == null || attributes.hideFromParent) {
          return null;
       }
-      const imageAttributes = attributes.image?.data?.attributes;
+      const strapiImage = imageFromStrapi(attributes.image, {
+         format: 'medium',
+      });
       const type = productListTypeFromStrapi(attributes.type);
       return {
          title: getProductListTitle({
@@ -255,11 +254,10 @@ function createProductListChild({ deviceWiki }: CreateProductListChildOptions) {
          deviceTitle: attributes.deviceTitle || null,
          handle: attributes.handle,
          image:
-            imageAttributes == null
-               ? deviceWiki && attributes.deviceTitle
-                  ? getChildDeviceImage(deviceWiki, attributes.deviceTitle)
-                  : null
-               : getImageFromStrapiImage(imageAttributes, 'medium'),
+            strapiImage ??
+            (deviceWiki && attributes.deviceTitle
+               ? childImageFromDeviceWiki(deviceWiki, attributes.deviceTitle)
+               : null),
          sortPriority: attributes.sortPriority || null,
       };
    };
@@ -351,4 +349,51 @@ async function findDevicesWithProducts(devices: string[]) {
       });
       return facets?.device ? facets?.device : {};
    });
+}
+
+interface FindProductListReusableSectionsArgs {
+   strapiProductList: ProductListFieldsFragment | null | undefined;
+   ancestorHandles: string[];
+}
+
+async function findProductListReusableSections({
+   strapiProductList,
+   ancestorHandles,
+}: FindProductListReusableSectionsArgs): Promise<ReusableSection[]> {
+   const conditions: ComponentMiscPlacementFiltersInput[] = [
+      {
+         showInProductListPages: {
+            eq: 'only descendants',
+         },
+         productLists: {
+            handle: {
+               in: ancestorHandles,
+            },
+         },
+      },
+   ];
+   if (strapiProductList) {
+      conditions.push({
+         showInProductListPages: {
+            eq: 'only selected',
+         },
+         productLists: {
+            handle: {
+               eq: strapiProductList.handle,
+            },
+         },
+      });
+
+      conditions.push({
+         showInProductListPages: {
+            eq: 'selected and descendants',
+         },
+         productLists: {
+            handle: {
+               in: ancestorHandles.concat(strapiProductList.handle),
+            },
+         },
+      });
+   }
+   return findReusableSections({ filters: { placement: { or: conditions } } });
 }

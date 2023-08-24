@@ -59,6 +59,23 @@ const moduleExports = {
    env: {
       NEXT_PUBLIC_STRAPI_ORIGIN: strapiOrigin,
    },
+   async headers() {
+      return [
+         {
+            // Nnoindex all responses. Requests to www.ifixit.com that go
+            // through cloudfront will have this header stripped off by a
+            // cloudfront function. This effectively noindexes all vercel urls
+            // that our pages are served from.
+            source: '/:path*',
+            headers: [
+               {
+                  key: 'x-robots-tag',
+                  value: 'noindex, nofollow, nosnippet, noarchive, noimageindex',
+               },
+            ],
+         },
+      ];
+   },
    async rewrites() {
       return [
          {
@@ -100,16 +117,6 @@ const moduleExports = {
             source: '/Troubleshooting/sitemap.xml',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/troubleshooting.xml`,
             permanent: true,
-         },
-         {
-            source: '/products/pro-tech-toolkit',
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Store/Tools/Pro-Tech-Toolkit/IF145-307`,
-            permanent: false,
-         },
-         {
-            source: '/products/manta-driver-kit-112-bit-driver-kit',
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Store/Tools/Manta-Driver-Kit--112-Bit-Driver-Kit/IF145-392`,
-            permanent: false,
          },
          {
             source: '/Parts/Over-Ear_Headphone',
@@ -165,6 +172,7 @@ const moduleExports = {
          disableClientWebpackPlugin: true,
       }),
    },
+   swcMinify: false,
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to

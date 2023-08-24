@@ -7,6 +7,8 @@ import {
    CompanyInput,
    ComponentGlobalNewsletterFormInput,
    ComponentGlobalPersonFiltersInput,
+   ComponentMiscPlacementFiltersInput,
+   ComponentMiscPlacementInput,
    ComponentPageCallToActionFiltersInput,
    ComponentPageCallToActionInput,
    ComponentPageCategoryFiltersInput,
@@ -22,9 +24,11 @@ import {
    ComponentStoreSocialMediaAccountsFiltersInput,
    ComponentStoreSocialMediaAccountsInput,
    DateTimeFilterInput,
+   Enum_Componentmiscplacement_Showinproductlistpages,
    Enum_Componentpagesplitwithimage_Imageposition,
    Enum_Componentsectionfeaturedproducts_Background,
    Enum_Productlist_Type,
+   Enum_Reusablesection_Positioninproductlist,
    Enum_Store_Currency,
    FaqFiltersInput,
    FaqInput,
@@ -45,6 +49,8 @@ import {
    ProductListFiltersInput,
    ProductListInput,
    PublicationState,
+   ReusableSectionFiltersInput,
+   ReusableSectionInput,
    SocialPostFiltersInput,
    SocialPostInput,
    StoreFiltersInput,
@@ -110,7 +116,7 @@ export function BannerInputSchema(): z.ZodObject<Properties<BannerInput>> {
       description: z.string().nullish(),
       image: z.string().nullish(),
       label: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      publishedAt: z.unknown().nullish(),
       title: z.string().nullish(),
    });
 }
@@ -132,6 +138,7 @@ export function BooleanFilterInputSchema(): z.ZodObject<
       lt: z.boolean().nullish(),
       lte: z.boolean().nullish(),
       ne: z.boolean().nullish(),
+      nei: z.boolean().nullish(),
       not: z.lazy(() => BooleanFilterInputSchema().nullish()),
       notContains: z.boolean().nullish(),
       notContainsi: z.boolean().nullish(),
@@ -166,7 +173,7 @@ export function CompanyInputSchema(): z.ZodObject<Properties<CompanyInput>> {
    return z.object<Properties<CompanyInput>>({
       logo: z.string().nullish(),
       name: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      publishedAt: z.unknown().nullish(),
    });
 }
 
@@ -199,6 +206,37 @@ export function ComponentGlobalPersonFiltersInputSchema(): z.ZodObject<
          )
          .nullish(),
       role: z.lazy(() => StringFilterInputSchema().nullish()),
+   });
+}
+
+export function ComponentMiscPlacementFiltersInputSchema(): z.ZodObject<
+   Properties<ComponentMiscPlacementFiltersInput>
+> {
+   return z.object<Properties<ComponentMiscPlacementFiltersInput>>({
+      and: z
+         .array(
+            z.lazy(() => ComponentMiscPlacementFiltersInputSchema().nullable())
+         )
+         .nullish(),
+      not: z.lazy(() => ComponentMiscPlacementFiltersInputSchema().nullish()),
+      or: z
+         .array(
+            z.lazy(() => ComponentMiscPlacementFiltersInputSchema().nullable())
+         )
+         .nullish(),
+      productLists: z.lazy(() => ProductListFiltersInputSchema().nullish()),
+      showInProductListPages: z.lazy(() => StringFilterInputSchema().nullish()),
+   });
+}
+
+export function ComponentMiscPlacementInputSchema(): z.ZodObject<
+   Properties<ComponentMiscPlacementInput>
+> {
+   return z.object<Properties<ComponentMiscPlacementInput>>({
+      id: z.string().nullish(),
+      productLists: z.array(z.string().nullable()).nullish(),
+      showInProductListPages:
+         Enum_Componentmiscplacement_ShowinproductlistpagesSchema.nullish(),
    });
 }
 
@@ -474,29 +512,33 @@ export function DateTimeFilterInputSchema(): z.ZodObject<
    Properties<DateTimeFilterInput>
 > {
    return z.object<Properties<DateTimeFilterInput>>({
-      and: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      between: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      contains: definedNonNullAnySchema.nullish(),
-      containsi: definedNonNullAnySchema.nullish(),
-      endsWith: definedNonNullAnySchema.nullish(),
-      eq: definedNonNullAnySchema.nullish(),
-      eqi: definedNonNullAnySchema.nullish(),
-      gt: definedNonNullAnySchema.nullish(),
-      gte: definedNonNullAnySchema.nullish(),
-      in: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      lt: definedNonNullAnySchema.nullish(),
-      lte: definedNonNullAnySchema.nullish(),
-      ne: definedNonNullAnySchema.nullish(),
+      and: z.array(z.unknown().nullable()).nullish(),
+      between: z.array(z.unknown().nullable()).nullish(),
+      contains: z.unknown().nullish(),
+      containsi: z.unknown().nullish(),
+      endsWith: z.unknown().nullish(),
+      eq: z.unknown().nullish(),
+      eqi: z.unknown().nullish(),
+      gt: z.unknown().nullish(),
+      gte: z.unknown().nullish(),
+      in: z.array(z.unknown().nullable()).nullish(),
+      lt: z.unknown().nullish(),
+      lte: z.unknown().nullish(),
+      ne: z.unknown().nullish(),
+      nei: z.unknown().nullish(),
       not: z.lazy(() => DateTimeFilterInputSchema().nullish()),
-      notContains: definedNonNullAnySchema.nullish(),
-      notContainsi: definedNonNullAnySchema.nullish(),
-      notIn: z.array(definedNonNullAnySchema.nullable()).nullish(),
+      notContains: z.unknown().nullish(),
+      notContainsi: z.unknown().nullish(),
+      notIn: z.array(z.unknown().nullable()).nullish(),
       notNull: z.boolean().nullish(),
       null: z.boolean().nullish(),
-      or: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      startsWith: definedNonNullAnySchema.nullish(),
+      or: z.array(z.unknown().nullable()).nullish(),
+      startsWith: z.unknown().nullish(),
    });
 }
+
+export const Enum_Componentmiscplacement_ShowinproductlistpagesSchema =
+   z.nativeEnum(Enum_Componentmiscplacement_Showinproductlistpages);
 
 export const Enum_Componentpagesplitwithimage_ImagepositionSchema =
    z.nativeEnum(Enum_Componentpagesplitwithimage_Imageposition);
@@ -505,6 +547,10 @@ export const Enum_Componentsectionfeaturedproducts_BackgroundSchema =
    z.nativeEnum(Enum_Componentsectionfeaturedproducts_Background);
 
 export const Enum_Productlist_TypeSchema = z.nativeEnum(Enum_Productlist_Type);
+
+export const Enum_Reusablesection_PositioninproductlistSchema = z.nativeEnum(
+   Enum_Reusablesection_Positioninproductlist
+);
 
 export const Enum_Store_CurrencySchema = z.nativeEnum(Enum_Store_Currency);
 
@@ -527,7 +573,7 @@ export function FaqFiltersInputSchema(): z.ZodObject<
 export function FaqInputSchema(): z.ZodObject<Properties<FaqInput>> {
    return z.object<Properties<FaqInput>>({
       answer: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      publishedAt: z.unknown().nullish(),
       question: z.string().nullish(),
    });
 }
@@ -557,6 +603,7 @@ export function FloatFilterInputSchema(): z.ZodObject<
       lt: z.number().nullish(),
       lte: z.number().nullish(),
       ne: z.number().nullish(),
+      nei: z.number().nullish(),
       not: z.lazy(() => FloatFilterInputSchema().nullish()),
       notContains: z.number().nullish(),
       notContainsi: z.number().nullish(),
@@ -573,7 +620,7 @@ export function GlobalInputSchema(): z.ZodObject<Properties<GlobalInput>> {
       newsletterForm: z.lazy(() =>
          ComponentGlobalNewsletterFormInputSchema().nullish()
       ),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      publishedAt: z.unknown().nullish(),
    });
 }
 
@@ -611,6 +658,7 @@ export function IdFilterInputSchema(): z.ZodObject<Properties<IdFilterInput>> {
       lt: z.string().nullish(),
       lte: z.string().nullish(),
       ne: z.string().nullish(),
+      nei: z.string().nullish(),
       not: z.lazy(() => IdFilterInputSchema().nullish()),
       notContains: z.string().nullish(),
       notContainsi: z.string().nullish(),
@@ -639,6 +687,7 @@ export function IntFilterInputSchema(): z.ZodObject<
       lt: z.number().nullish(),
       lte: z.number().nullish(),
       ne: z.number().nullish(),
+      nei: z.number().nullish(),
       not: z.lazy(() => IntFilterInputSchema().nullish()),
       notContains: z.number().nullish(),
       notContainsi: z.number().nullish(),
@@ -654,27 +703,28 @@ export function JsonFilterInputSchema(): z.ZodObject<
    Properties<JsonFilterInput>
 > {
    return z.object<Properties<JsonFilterInput>>({
-      and: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      between: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      contains: definedNonNullAnySchema.nullish(),
-      containsi: definedNonNullAnySchema.nullish(),
-      endsWith: definedNonNullAnySchema.nullish(),
-      eq: definedNonNullAnySchema.nullish(),
-      eqi: definedNonNullAnySchema.nullish(),
-      gt: definedNonNullAnySchema.nullish(),
-      gte: definedNonNullAnySchema.nullish(),
-      in: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      lt: definedNonNullAnySchema.nullish(),
-      lte: definedNonNullAnySchema.nullish(),
-      ne: definedNonNullAnySchema.nullish(),
+      and: z.array(z.unknown().nullable()).nullish(),
+      between: z.array(z.unknown().nullable()).nullish(),
+      contains: z.unknown().nullish(),
+      containsi: z.unknown().nullish(),
+      endsWith: z.unknown().nullish(),
+      eq: z.unknown().nullish(),
+      eqi: z.unknown().nullish(),
+      gt: z.unknown().nullish(),
+      gte: z.unknown().nullish(),
+      in: z.array(z.unknown().nullable()).nullish(),
+      lt: z.unknown().nullish(),
+      lte: z.unknown().nullish(),
+      ne: z.unknown().nullish(),
+      nei: z.unknown().nullish(),
       not: z.lazy(() => JsonFilterInputSchema().nullish()),
-      notContains: definedNonNullAnySchema.nullish(),
-      notContainsi: definedNonNullAnySchema.nullish(),
-      notIn: z.array(definedNonNullAnySchema.nullable()).nullish(),
+      notContains: z.unknown().nullish(),
+      notContainsi: z.unknown().nullish(),
+      notIn: z.array(z.unknown().nullable()).nullish(),
       notNull: z.boolean().nullish(),
       null: z.boolean().nullish(),
-      or: z.array(definedNonNullAnySchema.nullable()).nullish(),
-      startsWith: definedNonNullAnySchema.nullish(),
+      or: z.array(z.unknown().nullable()).nullish(),
+      startsWith: z.unknown().nullish(),
    });
 }
 
@@ -697,8 +747,8 @@ export function MenuFiltersInputSchema(): z.ZodObject<
 
 export function MenuInputSchema(): z.ZodObject<Properties<MenuInput>> {
    return z.object<Properties<MenuInput>>({
-      items: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      items: z.array(z.lazy(() => z.unknown())).nullish(),
+      publishedAt: z.unknown().nullish(),
       title: z.string().nullish(),
    });
 }
@@ -724,8 +774,8 @@ export function PageFiltersInputSchema(): z.ZodObject<
 export function PageInputSchema(): z.ZodObject<Properties<PageInput>> {
    return z.object<Properties<PageInput>>({
       path: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
-      sections: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
+      publishedAt: z.unknown().nullish(),
+      sections: z.array(z.lazy(() => z.unknown())).nullish(),
       title: z.string().nullish(),
    });
 }
@@ -761,8 +811,8 @@ export function ProductFiltersInputSchema(): z.ZodObject<
 export function ProductInputSchema(): z.ZodObject<Properties<ProductInput>> {
    return z.object<Properties<ProductInput>>({
       handle: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
-      sections: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
+      publishedAt: z.unknown().nullish(),
+      sections: z.array(z.lazy(() => z.unknown())).nullish(),
    });
 }
 
@@ -824,14 +874,14 @@ export function ProductListInputSchema(): z.ZodObject<
       heroImage: z.string().nullish(),
       hideFromParent: z.boolean().nullish(),
       image: z.string().nullish(),
-      itemOverrides: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
+      itemOverrides: z.array(z.lazy(() => z.unknown())).nullish(),
       legacyDescription: z.string().nullish(),
       legacyPageId: z.number().nullish(),
       metaDescription: z.string().nullish(),
       metaTitle: z.string().nullish(),
       parent: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
-      sections: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
+      publishedAt: z.unknown().nullish(),
+      sections: z.array(z.lazy(() => z.unknown())).nullish(),
       sortPriority: z.number().nullish(),
       tagline: z.string().nullish(),
       title: z.string().nullish(),
@@ -840,6 +890,46 @@ export function ProductListInputSchema(): z.ZodObject<
 }
 
 export const PublicationStateSchema = z.nativeEnum(PublicationState);
+
+export function ReusableSectionFiltersInputSchema(): z.ZodObject<
+   Properties<ReusableSectionFiltersInput>
+> {
+   return z.object<Properties<ReusableSectionFiltersInput>>({
+      and: z
+         .array(z.lazy(() => ReusableSectionFiltersInputSchema().nullable()))
+         .nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      not: z.lazy(() => ReusableSectionFiltersInputSchema().nullish()),
+      or: z
+         .array(z.lazy(() => ReusableSectionFiltersInputSchema().nullable()))
+         .nullish(),
+      placement: z.lazy(() =>
+         ComponentMiscPlacementFiltersInputSchema().nullish()
+      ),
+      positionInProductList: z.lazy(() => StringFilterInputSchema().nullish()),
+      priority: z.lazy(() => IntFilterInputSchema().nullish()),
+      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      title: z.lazy(() => StringFilterInputSchema().nullish()),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function ReusableSectionInputSchema(): z.ZodObject<
+   Properties<ReusableSectionInput>
+> {
+   return z.object<Properties<ReusableSectionInput>>({
+      placement: z
+         .array(z.lazy(() => ComponentMiscPlacementInputSchema().nullable()))
+         .nullish(),
+      positionInProductList:
+         Enum_Reusablesection_PositioninproductlistSchema.nullish(),
+      priority: z.number().nullish(),
+      publishedAt: z.unknown().nullish(),
+      section: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
+      title: z.string().nullish(),
+   });
+}
 
 export function SocialPostFiltersInputSchema(): z.ZodObject<
    Properties<SocialPostFiltersInput>
@@ -868,7 +958,7 @@ export function SocialPostInputSchema(): z.ZodObject<
    return z.object<Properties<SocialPostInput>>({
       author: z.string().nullish(),
       image: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      publishedAt: z.unknown().nullish(),
       title: z.string().nullish(),
       url: z.string().nullish(),
    });
@@ -909,7 +999,7 @@ export function StoreInputSchema(): z.ZodObject<Properties<StoreInput>> {
       footer: z.lazy(() => ComponentStoreFooterInputSchema().nullish()),
       header: z.lazy(() => ComponentStoreHeaderInputSchema().nullish()),
       name: z.string().nullish(),
-      publishedAt: definedNonNullAnySchema.nullish(),
+      publishedAt: z.unknown().nullish(),
       shopifySettings: z.lazy(() =>
          ComponentStoreShopifySettingsInputSchema().nullish()
       ),
@@ -937,6 +1027,7 @@ export function StringFilterInputSchema(): z.ZodObject<
       lt: z.string().nullish(),
       lte: z.string().nullish(),
       ne: z.string().nullish(),
+      nei: z.string().nullish(),
       not: z.lazy(() => StringFilterInputSchema().nullish()),
       notContains: z.string().nullish(),
       notContainsi: z.string().nullish(),
@@ -990,14 +1081,14 @@ export function UploadFileInputSchema(): z.ZodObject<
       ext: z.string().nullish(),
       folder: z.string().nullish(),
       folderPath: z.string().nullish(),
-      formats: definedNonNullAnySchema.nullish(),
+      formats: z.unknown().nullish(),
       hash: z.string().nullish(),
       height: z.number().nullish(),
       mime: z.string().nullish(),
       name: z.string().nullish(),
       previewUrl: z.string().nullish(),
       provider: z.string().nullish(),
-      provider_metadata: definedNonNullAnySchema.nullish(),
+      provider_metadata: z.unknown().nullish(),
       size: z.number().nullish(),
       url: z.string().nullish(),
       width: z.number().nullish(),

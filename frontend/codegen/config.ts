@@ -28,6 +28,15 @@ const config: CodegenConfig = {
          config: {
             importFrom: './sdk',
             schema: 'zod',
+            scalarSchemas: {
+               JSON: 'z.unknown()',
+               DateTime: 'z.unknown()',
+               MenuItemsDynamicZoneInput: 'z.unknown()',
+               PageSectionsDynamicZoneInput: 'z.unknown()',
+               ProductSectionsDynamicZoneInput: 'z.unknown()',
+               ProductListItemOverridesDynamicZoneInput: 'z.unknown()',
+               ProductListSectionsDynamicZoneInput: 'z.unknown()',
+            },
          },
       },
       'lib/shopify-storefront-sdk/generated/sdk.ts': {

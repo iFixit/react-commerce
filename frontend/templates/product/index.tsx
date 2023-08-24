@@ -185,7 +185,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'DeviceCompatibility':
-                     return product.compatibilityNotes ? (
+                     return product.compatibilityNotes?.length ? (
                         <CompatibilityNotesSection
                            key={section.id}
                            compatibilityNotes={product.compatibilityNotes}
