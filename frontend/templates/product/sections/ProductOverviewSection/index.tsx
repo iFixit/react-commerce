@@ -29,9 +29,10 @@ import { useInternationalBuyBox } from '@templates/product/hooks/useInternationa
 import { useIsProductForSale } from '@templates/product/hooks/useIsProductForSale';
 import * as React from 'react';
 import { AddToCart, isVariantWithSku } from './AddToCart';
-import { CompatibleDevices } from './CompatibleDevices';
 import { CompatibilityNotes } from './CompatibilityNotes';
+import { CompatibleDevices } from './CompatibleDevices';
 import { PRODUCT_OVERVIEW_SECTION_ID } from './constants';
+import { CrossSell } from './CrossSell';
 import { GenuinePartBanner } from './GenuinePartBanner';
 import { InternationalBuyBox } from './InternationalBuyBox';
 import { ProductDescription } from './ProductDescription';
@@ -166,10 +167,16 @@ export function ProductOverviewSection({
                   (internationalBuyBox ? (
                      <InternationalBuyBox {...internationalBuyBox} />
                   ) : (
-                     <AddToCart
-                        product={product}
-                        selectedVariant={selectedVariant}
-                     />
+                     <>
+                        <AddToCart
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                        <CrossSell
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                     </>
                   ))
                ) : product.isEnabled ? (
                   <ProOnlyAlert mt="4" />

@@ -1,3 +1,7 @@
+import {
+   hasCartDetails,
+   ProductPreviewWithCartDetails,
+} from '@helpers/product-preview-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import type { ProductPreview } from '@models/components/product-preview';
 import type { ProductVariant } from '@pages/api/nextjs/cache/product';
@@ -6,21 +10,24 @@ import React from 'react';
 export function useAvailableForSaleVariants(
    variant: ProductVariant,
    crossSellVariants: ProductPreview[]
-): ProductPreview[] {
-   const getIsProductForSale = useGetIsProductAvailableForSale();
+): ProductPreviewWithCartDetails[] {
+   const isForSale = useGetIsProductPreviewAvailableForSale();
 
    return React.useMemo(() => {
       return crossSellVariants
-         .filter((crossSellVariant) =>
-            variant.crossSellVariantIds.includes(crossSellVariant.id)
-         )
-         .filter((crossSellVariant) => getIsProductForSale(crossSellVariant));
-   }, [getIsProductForSale, variant.crossSellVariantIds, crossSellVariants]);
+         .filter(belongsToVariant(variant))
+         .filter(isForSale)
+         .filter(hasCartDetails);
+   }, [isForSale, variant, crossSellVariants]);
 }
 
-function useGetIsProductAvailableForSale() {
+const belongsToVariant =
+   (variant: ProductVariant) => (productPreview: ProductPreview) =>
+      variant.crossSellVariantIds.includes(productPreview.id);
+
+function useGetIsProductPreviewAvailableForSale() {
    const user = useAuthenticatedUser();
-   const getIsProductAvailableForSale = React.useCallback(
+   const isProductAvailableForSale = React.useCallback(
       (product: ProductPreview) => {
          const isProUser = user.data?.is_pro ?? false;
          const isAvailableForSale =
@@ -29,5 +36,5 @@ function useGetIsProductAvailableForSale() {
       },
       [user.data?.is_pro]
    );
-   return getIsProductAvailableForSale;
+   return isProductAvailableForSale;
 }

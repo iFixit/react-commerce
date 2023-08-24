@@ -27,9 +27,8 @@ import {
    SplitWithImageSectionSchema,
 } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
-import { DeviceCompatibilitySectionSchema } from './compatibility-section';
-import { CrossSellSectionSchema } from './cross-sell-section';
 import { LifetimeWarrantySectionSchema } from '../../sections/lifetime-warranty-section';
+import { DeviceCompatibilitySectionSchema } from './compatibility-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
 import { ProductReviewsSectionSchema } from './product-reviews-section';
 
@@ -39,7 +38,6 @@ export const ProductSectionSchema = z.union([
    ProductOverviewSectionSchema,
    SplitWithImageSectionSchema,
    ReplacementGuidesSectionSchema,
-   CrossSellSectionSchema,
    ProductReviewsSectionSchema,
    DeviceCompatibilitySectionSchema,
    FeaturedProductsSectionSchema,
@@ -93,12 +91,6 @@ export async function getProductSections({
                return {
                   type: 'ServiceValueProposition',
                   id: sectionId,
-               };
-            case 'ComponentProductCrossSell':
-               return {
-                  type: 'CrossSell',
-                  id: sectionId,
-                  title: section.title ?? null,
                };
             case 'ComponentProductProductCustomerReviews':
                return {
@@ -181,14 +173,6 @@ export function getDefaultProductSections({
          __typename: 'ServiceValuePropositionSection',
          id: sections.length.toString(),
       }),
-   });
-   sections.push({
-      type: 'CrossSell',
-      id: createSectionId({
-         __typename: 'CrossSellSection',
-         id: sections.length.toString(),
-      }),
-      title: null,
    });
    sections.push({
       type: 'ProductReviews',

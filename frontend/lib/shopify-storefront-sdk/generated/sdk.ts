@@ -6374,6 +6374,7 @@ export type ProductVariantFieldsFragment = {
             | {
                  __typename: 'ProductVariant';
                  id: string;
+                 title: string;
                  sku?: string | null;
                  quantityAvailable?: number | null;
                  product: {
@@ -6461,6 +6462,7 @@ export type FindProductQuery = {
                | {
                     __typename: 'ProductVariant';
                     id: string;
+                    title: string;
                     sku?: string | null;
                     quantityAvailable?: number | null;
                     product: {
@@ -6599,6 +6601,7 @@ export type FindProductQuery = {
                      | {
                           __typename: 'ProductVariant';
                           id: string;
+                          title: string;
                           sku?: string | null;
                           quantityAvailable?: number | null;
                           product: {
@@ -6677,6 +6680,7 @@ export type ProductOptionFieldsFragment = {
 export type ProductPreviewFieldsFragment = {
    __typename?: 'ProductVariant';
    id: string;
+   title: string;
    sku?: string | null;
    quantityAvailable?: number | null;
    product: {
@@ -6723,6 +6727,7 @@ export const ImageFieldsFragmentDoc = `
 export const ProductPreviewFieldsFragmentDoc = `
     fragment ProductPreviewFields on ProductVariant {
   id
+  title
   sku
   quantityAvailable
   product {
