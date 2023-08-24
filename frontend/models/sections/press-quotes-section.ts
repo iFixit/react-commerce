@@ -1,5 +1,4 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
-import { createSectionId } from '@helpers/strapi-helpers';
 import type { PressQuotesSectionFieldsFragment } from '@lib/strapi-sdk';
 import {
    callToActionFromStrapi,
@@ -24,16 +23,21 @@ export const PressQuotesSectionSchema = z.object({
 
 export function pressQuotesSectionFromStrapi(
    fragment: PressQuotesSectionFieldsFragment | null | undefined,
-   _index: number
+   sectionId: string
 ): PressQuotesSection | null {
-   const id = createSectionId(fragment);
    const title = fragment?.title;
    const description = fragment?.description;
    const quotes = filterFalsyItems(fragment?.quotes?.map(pressQuoteFromStrapi));
    const callToAction = callToActionFromStrapi(fragment?.callToAction);
 
-   if (id == null || title == null || description == null || quotes == null)
-      return null;
+   if (title == null || description == null || quotes == null) return null;
 
-   return { type: 'PressQuotes', id, title, description, quotes, callToAction };
+   return {
+      type: 'PressQuotes',
+      id: sectionId,
+      title,
+      description,
+      quotes,
+      callToAction,
+   };
 }

@@ -35,6 +35,7 @@ export const ProductPreviewSchema = z.object({
    handle: z.string(),
    sku: z.string().nullable(),
    title: z.string(),
+   variantTitle: z.string().nullable(),
    image: ImageSchema.nullable(),
    price: MoneySchema,
    compareAtPrice: MoneySchema.nullable(),
@@ -45,6 +46,7 @@ export const ProductPreviewSchema = z.object({
    hasLifetimeWarranty: z.boolean(),
    quantityAvailable: z.number().nullable(),
    enabled: z.boolean().nullable().optional(),
+   shopifyVariantId: z.string().nullable(),
 });
 
 export function productPreviewFromAlgoliaHit(
@@ -65,6 +67,7 @@ export function productPreviewFromAlgoliaHit(
       handle: product.handle,
       sku: null,
       title: product.title,
+      variantTitle: null,
       image: imageFromUrl(product.image_url),
       price: moneyFromAmount(product.price_float, 'USD'),
       compareAtPrice: moneyFromAmount(product.compare_at_price, 'USD'),
@@ -74,6 +77,7 @@ export function productPreviewFromAlgoliaHit(
       oemPartnership: product.oem_partnership ?? null,
       hasLifetimeWarranty: product.lifetime_warranty ?? false,
       quantityAvailable: product.quantity_available ?? null,
+      shopifyVariantId: null,
    };
 }
 
@@ -90,6 +94,7 @@ export function productPreviewFromShopify(
       handle: fields.product.handle,
       sku: fields.sku ?? null,
       title: fields.product.title,
+      variantTitle: fields.title,
       image: imageFromShopify(fields.image),
       price,
       compareAtPrice: moneyFromShopify(fields.compareAtPrice),
@@ -111,6 +116,7 @@ export function productPreviewFromShopify(
          isLifetimeWarranty(fields.warranty.value),
       quantityAvailable: fields.quantityAvailable ?? null,
       enabled: fields.enabled?.value === 'true',
+      shopifyVariantId: fields.id,
    };
 }
 

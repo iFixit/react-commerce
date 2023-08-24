@@ -41,7 +41,7 @@ export function ProductListChildrenSection({
    if (isUnfilteredItemTypeWithNoHits) return null;
 
    return (
-      <Box as="section" id="product-list-children">
+      <Box as="section" id="product-list-children" my={{ base: 4, md: 6 }}>
          <Wrapper>
             <SimpleGrid
                data-testid="product-list-children"

@@ -4,15 +4,21 @@ import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper'
 import { SectionHeading } from '@components/sections/SectionHeading';
 import { SmartLink } from '@components/ui/SmartLink';
 import { ResponsiveImage, Slider } from '@ifixit/ui';
-import type { PressQuote } from '@models/page/components/press-quote';
-import type { PressQuotesSection } from '@models/page/sections/press-quotes-section';
+import type { CallToAction } from '@models/components/call-to-action';
+import type { PressQuote } from '@models/components/press-quote';
 
 export interface PressQuotesSectionProps {
-   data: PressQuotesSection;
+   title: string | null;
+   description: string | null;
+   callToAction: CallToAction | null;
+   quotes: PressQuote[];
 }
 
 export function PressQuotesSection({
-   data: { title, description, callToAction, quotes },
+   title,
+   description,
+   callToAction,
+   quotes,
 }: PressQuotesSectionProps) {
    if (quotes.length === 0) return null;
 

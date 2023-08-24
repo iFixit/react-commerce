@@ -1,7 +1,7 @@
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React from 'react';
+import React, { useRef } from 'react';
 import {
    Avatar,
    Alert,
@@ -59,8 +59,22 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
+import { ScrollPercent } from './scrollPercent';
+import { LinkToTOC, TOCContextProvider } from './tocContext';
+import {
+   TOC,
+   onlyShowIfTOCFlagEnabled,
+   onlyShowIfTOCFlagEnabledProvider,
+} from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
+
+const RelatedProblemsTitle = 'Related Problems';
+
+const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
+const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(ScrollPercent);
+const FlaggedTOCContextProvider =
+   onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -87,6 +101,21 @@ const Wiki: NextPageWithLayout<{
       display: 'block',
    };
 
+   const scrollContainerRef = useRef(null);
+
+   const filteredConclusions = wikiData.conclusion.filter(
+      (conclusion) => conclusion.heading !== 'Related Pages'
+   );
+
+   const sections = wikiData.introduction
+      .concat(wikiData.solutions)
+      .concat(filteredConclusions);
+
+   const sectionTitles = sections
+      .map((section) => section.heading)
+      .concat(RelatedProblemsTitle)
+      .filter(Boolean);
+
    return (
       <>
          <GoogleNoScript />
@@ -97,7 +126,34 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <Container fontSize="md" maxW="1280px">
+         <FlaggedScrollPercent
+            scrollContainerRef={scrollContainerRef}
+            hideOnZero={true}
+            hideOnScrollPast={true}
+         />
+         <FlaggedTOCContextProvider defaultTitles={sectionTitles}>
+            <Container
+               fontSize="md"
+               maxW="1280px"
+               ref={scrollContainerRef}
+               display="flex"
+               flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+            >
+               <FlaggedTOC
+                  flexShrink={{ lg: 0 }}
+                  flexGrow={1}
+                  borderRight={{ lg: '1px solid' }}
+                  borderColor={{ lg: 'gray.300' }}
+                  maxWidth={{
+                     base: 'calc(100% + 2 * var(--chakra-space-4))',
+                     lg: '240px',
+                  }}
+                  marginLeft={-4}
+                  marginRight={{ base: -4, lg: 0 }}
+                  listItemProps={{
+                     paddingLeft: { lg: 4 },
+                  }}
+               />
             <Flex
                direction="column"
                paddingInline={{ base: 0, sm: 4 }}
@@ -215,7 +271,7 @@ const Wiki: NextPageWithLayout<{
                      ))}
                   </Stack>
                )}
-               <Conclusion conclusion={wikiData.conclusion} />
+                  <Conclusion conclusion={filteredConclusions} />
                <AnswersCTA answersUrl={wikiData.answersUrl} />
                {wikiData.linkedProblems.length > 0 && (
                   <RelatedProblems problems={wikiData.linkedProblems} />
@@ -223,6 +279,7 @@ const Wiki: NextPageWithLayout<{
                <PixelPing id={id} type="wiki" />
             </Flex>
          </Container>
+         </FlaggedTOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
       </>
    );
@@ -713,6 +770,7 @@ function AuthorListing({
 }
 
 function IntroductionSection({ intro }: { intro: Section }) {
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.heading);
    return (
       <>
          {intro.heading && (
@@ -721,6 +779,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                fontWeight="semibold"
                selfLinked
                id={intro.id}
+               ref={ref}
             >
                {intro.heading}
             </HeadingSelfLink>
@@ -730,24 +789,26 @@ function IntroductionSection({ intro }: { intro: Section }) {
    );
 }
 
-function ConclusionSection({ conclusion }: { conclusion: Section }) {
+const ConclusionSection = function ConclusionSectionInner({
+   conclusion,
+}: {
+   conclusion: Section;
+}) {
+   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.heading);
    return (
       <>
-         <HeadingSelfLink selfLinked id={conclusion.id} pt={4}>
+         <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
             {conclusion.heading}
          </HeadingSelfLink>
          <Prerendered html={conclusion.body} />
       </>
    );
-}
+};
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
-   const filteredConclusions = conclusions.filter(
-      (conclusion) => conclusion.heading !== 'Related Pages'
-   );
    return (
       <>
-         {filteredConclusions.map((conclusion) => (
+         {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
@@ -772,6 +833,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
+   const { ref } = LinkToTOC<HTMLHeadingElement>(RelatedProblemsTitle);
    return (
       <>
          <HeadingSelfLink
@@ -781,8 +843,9 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             id="related-problems"
             selfLinked
             pt={4}
+            ref={ref}
          >
-            Related Problems
+            {RelatedProblemsTitle}
          </HeadingSelfLink>
          <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
             {problems.map((problem) => (

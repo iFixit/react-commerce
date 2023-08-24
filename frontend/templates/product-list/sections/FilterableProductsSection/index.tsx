@@ -95,9 +95,9 @@ export function FilterableProductsSection({
          as="section"
          direction="column"
          align="stretch"
-         mb="4"
          data-testid="filterable-products-section"
          aria-labelledby="filterable-products-section-heading"
+         my={{ base: 4, md: 6 }}
       >
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products

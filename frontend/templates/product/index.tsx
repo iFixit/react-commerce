@@ -38,7 +38,6 @@ import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { MetaTags } from './MetaTags';
 import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 import { CompatibilitySection } from './sections/CompatibilitySection';
-import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
 
@@ -147,20 +146,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            callToAction={section.callToAction}
                         />
                      );
-                  case 'CrossSell': {
-                     if (!isProductForSale || internationalBuyBox != null)
-                        return null;
-
-                     return (
-                        <CrossSellSection
-                           key={section.id}
-                           id={section.id}
-                           title={section.title}
-                           product={product}
-                           selectedVariant={selectedVariant}
-                        />
-                     );
-                  }
                   case 'ServiceValueProposition': {
                      if (!product.isEnabled) return null;
 

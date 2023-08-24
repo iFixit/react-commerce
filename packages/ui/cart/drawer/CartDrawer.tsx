@@ -4,7 +4,6 @@ import {
    AlertTitle,
    Badge,
    Box,
-   BoxProps,
    Button,
    CloseButton,
    Collapse,
@@ -30,22 +29,15 @@ import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
 import { formatMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { AnimatePresence, motion, usePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import * as React from 'react';
 import { useIsMounted } from '../../hooks';
+import { AnimatedListItem } from './AnimatedListItem';
 import { CartDrawerTrigger } from './CartDrawerTrigger';
 import { CartEmptyState } from './CartEmptyState';
 import { CartLineItem } from './CartLineItem';
-import { useCartDrawer } from './hooks/useCartDrawer';
 import { CrossSell } from './CrossSell';
-
-// This is a temporary type fix for Framer Motion since
-// React 18 typings breaks FC which Framer Motion relies on.
-declare module 'framer-motion' {
-   export interface AnimatePresenceProps {
-      children?: React.ReactNode;
-   }
-}
+import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
@@ -53,22 +45,6 @@ export function CartDrawer() {
    const isMounted = useIsMounted();
    const cart = useCart();
    const checkout = useCheckout();
-
-   const crossSellItems = React.useMemo(() => {
-      const crossSells =
-         cart.data?.crossSellProducts
-            .filter((item) => {
-               const isAlreadyInCart =
-                  item &&
-                  cart.data?.lineItems.find(
-                     (lineItem) => lineItem.itemcode === item.itemcode
-                  );
-               if (isAlreadyInCart) return null;
-               return item;
-            })
-            .sort((a, b) => a.handle.localeCompare(b.handle)) ?? [];
-      return crossSells;
-   }, [cart.data]);
 
    return (
       <>
@@ -146,32 +122,23 @@ export function CartDrawer() {
                      <ScaleFade
                         in={cart.data != null && cart.data.hasItemsInCart}
                      >
-                        <Box as="ul" data-testid="cart-drawer-line-items">
+                        <Box
+                           as="ul"
+                           listStyleType="none"
+                           data-testid="cart-drawer-line-items"
+                        >
                            <AnimatePresence>
                               {cart.data?.lineItems.map((lineItem) => {
                                  return (
-                                    <ListItem key={lineItem.itemcode}>
+                                    <AnimatedListItem key={lineItem.itemcode}>
                                        <CartLineItem lineItem={lineItem} />
-                                       <Divider borderColor="gray.200" />
-                                    </ListItem>
+                                       <Divider borderColor="chakra-border-color" />
+                                    </AnimatedListItem>
                                  );
                               })}
                            </AnimatePresence>
                         </Box>
-                        <Box as="ul" data-testid="cart-drawer-x-sell-items">
-                           <AnimatePresence>
-                              {cart.data != null &&
-                                 cart.data.hasItemsInCart &&
-                                 crossSellItems.map((crossSellItem) => {
-                                    return (
-                                       <ListItem key={crossSellItem.itemcode}>
-                                          <CrossSell item={crossSellItem} />
-                                          <Divider borderColor="gray.200" />
-                                       </ListItem>
-                                    );
-                                 })}
-                           </AnimatePresence>
-                        </Box>
+                        <CrossSell />
                      </ScaleFade>
                      <Collapse
                         animateOpacity
@@ -248,42 +215,6 @@ export function CartDrawer() {
             </Drawer>
          )}
       </>
-   );
-}
-
-const MotionBox = motion<Omit<BoxProps, 'transition'>>(Box);
-
-function ListItem({ children }: React.PropsWithChildren<{}>) {
-   const [isPresent, safeToRemove] = usePresence();
-
-   return (
-      <MotionBox
-         as="li"
-         w="full"
-         layout
-         style={{ position: isPresent ? 'static' : 'absolute' }}
-         initial="in"
-         animate={isPresent ? 'in' : 'out'}
-         variants={{
-            in: {
-               height: 'auto',
-            },
-            out: {
-               height: 0,
-               zIndex: -1,
-               overflow: 'hidden',
-            },
-         }}
-         onAnimationComplete={() => !isPresent && safeToRemove?.()}
-         transition={{
-            type: 'spring',
-            stiffness: 500,
-            damping: 50,
-            mass: 1,
-         }}
-      >
-         {children}
-      </MotionBox>
    );
 }
 

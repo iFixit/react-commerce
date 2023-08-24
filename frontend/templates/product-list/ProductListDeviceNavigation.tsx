@@ -2,8 +2,8 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { stylizeDeviceTitle } from '@helpers/product-list-helpers';
-import { ProductListType } from '@models/product-list';
 import type { ProductList } from '@models/product-list';
+import { ProductListType } from '@models/product-list';
 
 type ProductListDeviceNavigationProps = FlexProps & {
    productList: ProductList;

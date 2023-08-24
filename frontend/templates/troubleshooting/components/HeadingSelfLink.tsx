@@ -26,7 +26,7 @@ export const HeadingSelfLink = forwardRef<
             id,
          })}
          {...props}
-         {...ref}
+         ref={ref}
       >
          {children}
          <Link

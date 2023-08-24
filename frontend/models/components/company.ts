@@ -15,7 +15,10 @@ export function companyFromStrapi(
    const name = fragment?.attributes?.name;
    const logo = imageFromStrapi(fragment?.attributes?.logo);
 
-   if (name == null || logo == null) return null;
+   if (name == null || logo == null) {
+      console.warn('company name and/or logo missing!');
+      return null;
+   }
 
    return { name, logo };
 }

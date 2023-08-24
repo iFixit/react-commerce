@@ -1,5 +1,6 @@
 fragment ProductPreviewFields on ProductVariant {
    id
+   title
    sku
    quantityAvailable
    product {

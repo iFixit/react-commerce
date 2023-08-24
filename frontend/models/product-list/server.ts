@@ -13,6 +13,7 @@ import {
    fetchDeviceWiki,
    fetchMultipleDeviceImages,
 } from '@lib/ifixit-api/devices';
+import type { ComponentMiscPlacementFiltersInput } from '@lib/strapi-sdk';
 import {
    ProductListFieldsFragment,
    ProductListFiltersInput,
@@ -22,6 +23,8 @@ import {
    childImageFromDeviceWiki,
    imageFromStrapi,
 } from '@models/components/image';
+import type { ReusableSection } from '@models/reusable-section';
+import { findReusableSections } from '@models/reusable-section/server';
 import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
 import type { ProductListChild } from './component/product-list-child';
@@ -85,6 +88,19 @@ export async function findProductList(
       productListType === ProductListType.AllParts ||
       productListType === ProductListType.DeviceParts;
 
+   const [reusableSections, children] = await Promise.all([
+      findProductListReusableSections({
+         strapiProductList: productList,
+         ancestorHandles: ancestors.map((a) => a.handle),
+      }),
+      getProductListChildren({
+         apiChildren: productList?.children?.data,
+         deviceWiki,
+         ifixitOrigin,
+         isPartsList,
+      }),
+   ]);
+
    const baseProductList: BaseProductList = {
       id,
       title,
@@ -105,14 +121,10 @@ export async function findProductList(
          width: productList?.brandLogoWidth,
       }),
       ancestors,
-      children: await getProductListChildren({
-         apiChildren: productList?.children?.data,
-         deviceWiki,
-         ifixitOrigin,
-         isPartsList,
-      }),
+      children,
       sections: productListSections({
          strapiProductList: productList,
+         reusableSections,
       }),
       algolia: {
          apiKey: algoliaApiKey,
@@ -337,4 +349,51 @@ async function findDevicesWithProducts(devices: string[]) {
       });
       return facets?.device ? facets?.device : {};
    });
+}
+
+interface FindProductListReusableSectionsArgs {
+   strapiProductList: ProductListFieldsFragment | null | undefined;
+   ancestorHandles: string[];
+}
+
+async function findProductListReusableSections({
+   strapiProductList,
+   ancestorHandles,
+}: FindProductListReusableSectionsArgs): Promise<ReusableSection[]> {
+   const conditions: ComponentMiscPlacementFiltersInput[] = [
+      {
+         showInProductListPages: {
+            eq: 'only descendants',
+         },
+         productLists: {
+            handle: {
+               in: ancestorHandles,
+            },
+         },
+      },
+   ];
+   if (strapiProductList) {
+      conditions.push({
+         showInProductListPages: {
+            eq: 'only selected',
+         },
+         productLists: {
+            handle: {
+               eq: strapiProductList.handle,
+            },
+         },
+      });
+
+      conditions.push({
+         showInProductListPages: {
+            eq: 'selected and descendants',
+         },
+         productLists: {
+            handle: {
+               in: ancestorHandles.concat(strapiProductList.handle),
+            },
+         },
+      });
+   }
+   return findReusableSections({ filters: { placement: { or: conditions } } });
 }
