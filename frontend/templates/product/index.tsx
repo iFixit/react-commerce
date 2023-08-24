@@ -23,7 +23,6 @@ import {
    moneyToNumber,
    parseItemcode,
 } from '@ifixit/helpers';
-import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import * as React from 'react';
@@ -32,10 +31,7 @@ import { ProductPixelPing } from './components/PixelPing';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
 import { useProductPageAdminLinks } from './hooks/useProductPageAdminLinks';
-import {
-   ProductTemplateProps,
-   useProductTemplateProps,
-} from './hooks/useProductTemplateProps';
+import { useProductTemplateProps } from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 import { CompatibilitySection } from './sections/CompatibilitySection';
@@ -43,7 +39,7 @@ import { CrossSellSection } from './sections/CrossSellSection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
 
-const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
+const ProductTemplate = () => {
    const { product } = useProductTemplateProps();
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
@@ -263,10 +259,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          )}
       </React.Fragment>
    );
-};
-
-ProductTemplate.getLayout = function getLayout(page, pageProps) {
-   return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;
 };
 
 export default ProductTemplate;
