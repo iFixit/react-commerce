@@ -175,45 +175,45 @@ const Wiki: NextPageWithLayout<{
                      />
                   </VStack>
                </HStack>
+               <HeadingSelfLink
+                  as="h2"
+                  fontSize="20px"
+                  fontWeight="semibold"
+                  selfLinked
+                  id="causes"
+               >
+                  {'Causes'}
+               </HeadingSelfLink>
                <TableOfContents
                   introduction={wikiData.introduction}
                   solutions={wikiData.solutions}
                   problems={wikiData.linkedProblems}
                />
-               {wikiData.introduction.length > 0 && (
-                  <Heading
-                     id="introduction"
-                     aria-label="Introduction"
-                  ></Heading>
-               )}
-               {wikiData.introduction.map((intro) => (
-                  <IntroductionSection key={intro.heading} intro={intro} />
-               ))}
+               <Box
+                  borderTop="1px"
+                  borderColor="gray.300"
+                  mt={{ base: 4, sm: 6 }}
+               >
+                  {wikiData.introduction.length > 0 && (
+                     <Heading
+                        id="introduction"
+                        aria-label="Introduction"
+                     ></Heading>
+                  )}
+                  {wikiData.introduction.map((intro) => (
+                     <IntroductionSection key={intro.heading} intro={intro} />
+                  ))}
+               </Box>
                {wikiData.solutions.length > 0 && (
-                  <Box
-                     borderTop="1px"
-                     borderColor="gray.300"
-                     mt={{ base: 4, sm: 6 }}
-                  >
-                     <HeadingSelfLink
-                        as="h2"
-                        fontSize="20px"
-                        fontWeight="semibold"
-                        selfLinked
-                        id="causes"
-                     >
-                        {'Causes'}
-                     </HeadingSelfLink>
-                     <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
-                        {wikiData.solutions.map((solution, index) => (
-                           <SectionCard
-                              key={solution.heading}
-                              index={index + 1}
-                              solution={solution}
-                           />
-                        ))}
-                     </Stack>
-                  </Box>
+                  <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
+                     {wikiData.solutions.map((solution, index) => (
+                        <SectionCard
+                           key={solution.heading}
+                           index={index + 1}
+                           solution={solution}
+                        />
+                     ))}
+                  </Stack>
                )}
                <Conclusion conclusion={wikiData.conclusion} />
                <AnswersCTA answersUrl={wikiData.answersUrl} />
