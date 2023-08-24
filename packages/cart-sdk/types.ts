@@ -92,6 +92,7 @@ export interface APICartProduct {
    maxToAdd: number;
    name: string;
    quantity: number;
+   retailDiscount: string;
    subPrice: string;
    subPriceStr: string;
    subTotal: string;

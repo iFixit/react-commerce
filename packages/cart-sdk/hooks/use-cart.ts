@@ -37,8 +37,8 @@ function isValidCartPayload(data: any): data is CartAPIResponse {
 function createCart(input: APICart): Cart {
    const lineItems = input.products.map<CartLineItem>((product) => {
       const priceAmount = parseFloat(product.subPrice);
-      const singleItemDiscount = product.discount
-         ? parseFloat(product.discount)
+      const singleItemDiscount = product.retailDiscount
+         ? parseFloat(product.retailDiscount)
          : 0;
       const price: Money = {
          amount: priceAmount,
