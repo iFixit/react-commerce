@@ -2,11 +2,14 @@ import {
    Box,
    Button,
    Flex,
+   LinkBox,
+   LinkOverlay,
    StackDivider,
    Text,
    VStack,
 } from '@chakra-ui/react';
 import { Thumbnail } from '@components/ui/Thumbnail';
+import { productPath } from '@helpers/path-helpers';
 import {
    createCartLineItem,
    ProductPreviewWithCartDetails,
@@ -19,6 +22,7 @@ import {
 } from '@ifixit/ui';
 import type { Money } from '@models/components/money';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import NextLink from 'next/link';
 import { useAvailableForSaleVariants } from './useAvailableForSaleVariants';
 
 interface CrossSellProps {
@@ -85,25 +89,32 @@ function CrossSellItem({ productPreview }: CrossSellItemProps) {
          w="full"
          p="2"
       >
-         <Flex alignItems="center">
-            <Thumbnail variant="small" image={productPreview.image} />
-            <Flex direction="column">
-               <Text
-                  fontWeight="medium"
-                  data-testid="product-cross-sell-item-title"
-               >
-                  {productPreview.title}
-               </Text>
-               <ProductVariantPrice
-                  price={productPreview.price}
-                  compareAtPrice={productPreview.compareAtPrice}
-                  proPricesByTier={productPreview.proPricesByTier}
-                  direction="column-reverse"
-                  size="extra-small"
-                  variant="subdued"
-               />
+         <LinkBox role="group">
+            <Flex alignItems="center">
+               <Thumbnail variant="small" image={productPreview.image} />
+               <Flex direction="column">
+                  <LinkOverlay
+                     as={NextLink}
+                     href={productPath(productPreview.handle)}
+                     fontWeight="medium"
+                     data-testid="product-cross-sell-item-title"
+                     _groupHover={{
+                        textDecoration: 'underline',
+                     }}
+                  >
+                     {productPreview.title}
+                  </LinkOverlay>
+                  <ProductVariantPrice
+                     price={productPreview.price}
+                     compareAtPrice={productPreview.compareAtPrice}
+                     proPricesByTier={productPreview.proPricesByTier}
+                     direction="column-reverse"
+                     size="extra-small"
+                     variant="subdued"
+                  />
+               </Flex>
             </Flex>
-         </Flex>
+         </LinkBox>
          <Button
             size={{
                base: 'xs',
