@@ -180,28 +180,15 @@ function useObserveItems(
       const resizeHandler = () => {
          updateClosetItem();
       };
+
+      updateClosetItem();
+
       window.addEventListener('scroll', scrollHandler, { passive: true });
       window.addEventListener('resize', resizeHandler, { passive: true });
 
       return () => {
          window.removeEventListener('scroll', scrollHandler);
          window.removeEventListener('resize', resizeHandler);
-      };
-   }, [updateClosetItem]);
-
-   // Update the active element on nextjs hydration
-   useEffect(() => {
-      const observer = new MutationObserver(() => {
-         updateClosetItem();
-      });
-
-      observer.observe(document.body, {
-         childList: true,
-         subtree: true,
-      });
-
-      return () => {
-         observer.disconnect();
       };
    }, [updateClosetItem]);
 }
