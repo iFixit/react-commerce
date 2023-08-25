@@ -5,7 +5,8 @@ import {
    useBreakpointValue,
    useMergeRefs,
 } from '@chakra-ui/react';
-import { useRef, useLayoutEffect, forwardRef, useState } from 'react';
+import { useRef, forwardRef, useState } from 'react';
+import { useIsomorphicLayoutEffect } from '@ifixit/ui';
 
 type InnerFlexStyling = {
    _after: SystemStyleObject;
@@ -192,7 +193,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
 
    const gradientSizePX = useBreakpointValue(gradientWidths) as number;
 
-   useLayoutEffect(() => {
+   useIsomorphicLayoutEffect(() => {
       const el = internalRef.current;
       if (!el) {
          return;
