@@ -145,11 +145,18 @@ export const styles: SystemStyleObject = {
 
    'lite-youtube': {
       marginBlock: 2,
-      borderColor: 'gray.500',
+      borderRadius: 'md',
+      overflow: 'hidden',
+      borderColor: 'gray.300',
       borderWidth: '1px',
       borderStyle: 'solid',
       maxWidth: '100%',
-      height: 'auto',
+
+      // override lite-youtube inline styles on mobile
+      '@media only screen and (max-width: 575px)': {
+         height: 'auto !important',
+         width: '100% !important',
+      },
 
       '&.float-left': {
          float: 'left',
