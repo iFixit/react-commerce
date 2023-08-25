@@ -136,31 +136,29 @@ export function MobileTOC({
             >
                {title}
             </MenuButton>
-            <FlexScrollGradient
-               as={MenuList}
-               nestedFlexProps={
-                  {
-                     flexDirection: 'column',
-                     flexGrow: 1,
-                     maxHeight: 48,
-                     sx: {
-                        overflowY: 'auto',
-                     },
-                     paddingTop: 1.5,
-                     paddingBottom: 1.5,
-                     borderRadius: 4,
-                  } as FlexProps & ListProps
-               }
+            <MenuList
                width="calc(100% - (2 * var(--chakra-space-8)))"
                marginLeft={8}
                marginRight={8}
-               boxShadow="md"
-               borderRadius={4}
                paddingTop={0}
                paddingBottom={0}
+               borderRadius={4}
+               boxShadow="md"
             >
-               <MobileTOCItems items={items} />
-            </FlexScrollGradient>
+               <FlexScrollGradient
+                  nestedFlexProps={
+                     {
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        maxHeight: 48,
+                        paddingTop: 1.5,
+                        paddingBottom: 1.5,
+                     } as FlexProps & ListProps
+                  }
+               >
+                  <MobileTOCItems items={items} />
+               </FlexScrollGradient>
+            </MenuList>
          </Menu>
       </Flex>
    );
