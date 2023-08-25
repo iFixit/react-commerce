@@ -2,7 +2,6 @@ import {
    Flex,
    FlexProps,
    SystemStyleObject,
-   useBreakpointValue,
    useMergeRefs,
 } from '@chakra-ui/react';
 import { useRef, forwardRef, useState } from 'react';
@@ -15,7 +14,7 @@ type InnerFlexStyling = {
    overflowY?: FlexProps['overflowY'];
 };
 
-const gradientWidths = { base: 40, sm: 50, md: 70, lg: 100 };
+const gradientSizes = { base: 50, sm: 75, md: 90, lg: 100 };
 
 const sharedStyle: SystemStyleObject = {
    content: '""',
@@ -77,10 +76,7 @@ function getGradientsBaseStyle(
    };
 }
 
-function getGradientStyleProps(
-   el: HTMLElement,
-   gradientSizePX: number
-): InnerFlexStyling {
+function getGradientStyleProps(el: HTMLElement): InnerFlexStyling {
    const flexScrollDirection = getScrollDirection(el);
    const {
       // Used for both calcs
@@ -124,6 +120,7 @@ function getGradientStyleProps(
       flexScrollDirection === FlexScrollDirection.ROW ? 'height' : 'width';
 
    const scrollPosition = start + windowSpace;
+   const gradientSizePX = getGradientSize(windowSpace);
    const afterStart = scrollSpace - gradientSizePX;
 
    const size = `${gradientSpace}px`;
@@ -174,6 +171,18 @@ function getGradientStyleProps(
    };
 }
 
+function getGradientSize(elSize: number): number {
+   if (elSize < 576) {
+      return gradientSizes.base;
+   } else if (elSize < 768) {
+      return gradientSizes.sm;
+   } else if (elSize < 1028) {
+      return gradientSizes.md;
+   } else {
+      return gradientSizes.lg;
+   }
+}
+
 export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
    {
       nestedFlexProps,
@@ -191,8 +200,6 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
       _after: { opacity: 0 },
    });
 
-   const gradientSizePX = useBreakpointValue(gradientWidths) as number;
-
    useIsomorphicLayoutEffect(() => {
       const el = internalRef.current;
       if (!el) {
@@ -200,7 +207,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
       }
 
       const doMeasure = (el: HTMLElement) => {
-         const state = getGradientStyleProps(el, gradientSizePX);
+         const state = getGradientStyleProps(el);
          setFlexScrollState(() => state);
       };
 
@@ -219,7 +226,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
          el.removeEventListener('scroll', measure);
          window.removeEventListener('resize', measure);
       };
-   }, [internalRef, gradientSizePX]);
+   }, [internalRef]);
 
    if (props.position) {
       throw new Error(
