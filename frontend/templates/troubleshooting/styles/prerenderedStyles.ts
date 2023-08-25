@@ -226,6 +226,7 @@ export const styles: SystemStyleObject = {
       overflow: 'hidden',
       position: 'relative',
       minWidth: 'min-content', // narrow image text-wrap fix
+      width: 'fit-content',
 
       '&.imageBox_center': {
          marginInline: 'auto',
