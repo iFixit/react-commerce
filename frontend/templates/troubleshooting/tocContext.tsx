@@ -158,7 +158,7 @@ function useObserveItems(
    items: TOCItems,
    setItems: Dispatch<SetStateAction<TOCItems>>
 ) {
-   const updateClosetItem = useCallback(() => {
+   const updateClosestItem = useCallback(() => {
       setItems((items) => {
          const closest = getClosest(items);
          const newItems = { ...items };
@@ -173,15 +173,15 @@ function useObserveItems(
    useEffect(() => {
       // Update active item on scroll
       const scrollHandler = () => {
-         updateClosetItem();
+         updateClosestItem();
       };
 
       // Update active item on resize
       const resizeHandler = () => {
-         updateClosetItem();
+         updateClosestItem();
       };
 
-      updateClosetItem();
+      updateClosestItem();
 
       window.addEventListener('scroll', scrollHandler, { passive: true });
       window.addEventListener('resize', resizeHandler, { passive: true });
@@ -190,7 +190,7 @@ function useObserveItems(
          window.removeEventListener('scroll', scrollHandler);
          window.removeEventListener('resize', resizeHandler);
       };
-   }, [updateClosetItem]);
+   }, [updateClosestItem]);
 }
 
 export type TOCContextProviderProps = PropsWithChildren<{
