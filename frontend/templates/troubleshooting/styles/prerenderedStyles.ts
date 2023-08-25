@@ -239,6 +239,11 @@ export const styles: SystemStyleObject = {
          marginInline: 'auto', // center image when container is wider
       },
 
+      '@media only screen and (max-width: 575px)': {
+         width: 'fit-content',
+         marginInline: 'auto',
+      },
+
       '@media only screen and (min-width: 576px)': {
          '&.imageBox_left': {
             clear: 'left',
