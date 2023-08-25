@@ -13,6 +13,7 @@ import {
 
 export type TOCRecord = {
    title: string;
+   uniqueId: string;
    elementRef: RefObject<HTMLElement>;
    active: boolean;
    scrollTo: (scrollToOptions?: ScrollToOptions) => void;
@@ -24,11 +25,14 @@ export type ScrollToOptions = {
 };
 
 export type TOCItems = Record<string, TOCRecord>;
-
+export type MinimalTOCRecord = { title: string; uniqueId: string };
 export type TOCContext = {
-   addItem: (title: string, ref: RefObject<HTMLElement>) => void;
-   updateItemRef: (title: string, ref: RefObject<HTMLElement>) => void;
-   removeItem: (title: string) => void;
+   addItem: (
+      minimalTOCRecord: MinimalTOCRecord,
+      ref: RefObject<HTMLElement>
+   ) => void;
+   updateItemRef: (uniqueId: string, ref: RefObject<HTMLElement>) => void;
+   removeItem: (uniqueId: string) => void;
    getItems: () => TOCRecord[];
 };
 
@@ -60,10 +64,13 @@ function scrollTo(
    }
 }
 
-function createRecord(title: string, ref?: RefObject<HTMLElement>) {
+function createRecord(
+   minimalTOCRecord: MinimalTOCRecord,
+   ref?: RefObject<HTMLElement>
+) {
    const elementRef = ref || { current: null };
    return {
-      title,
+      ...minimalTOCRecord,
       elementRef: elementRef,
       active: false,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
@@ -71,28 +78,30 @@ function createRecord(title: string, ref?: RefObject<HTMLElement>) {
    };
 }
 
-function createTOCItems(titles: string[]) {
-   const records = titles.map((title) =>
-      createRecord(title, { current: null })
+function createTOCItems(minimalTOCRecords: MinimalTOCRecord[]) {
+   const records = minimalTOCRecords.map((minimalTOCRecord) =>
+      createRecord(minimalTOCRecord, { current: null })
    );
-   return Object.fromEntries(records.map((record) => [record.title, record]));
+   return Object.fromEntries(
+      records.map((record) => [record.uniqueId, record])
+   );
 }
 
 function updateTOCItemRef(
    existingItems: TOCItems,
-   title: string,
+   uniqueId: string,
    ref?: RefObject<HTMLElement>
 ) {
-   const existingItem = existingItems[title];
+   const existingItem = existingItems[uniqueId];
 
    if (!existingItem) {
-      console.error(`No item with title ${title} exists in the TOC`);
+      console.error(`No item with uniqueId ${uniqueId} exists in the TOC`);
       return existingItems;
    }
 
    const newItems = { ...existingItems };
    const newRef = ref || existingItem.elementRef;
-   newItems[title] = {
+   newItems[uniqueId] = {
       ...existingItem,
       elementRef: newRef,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
@@ -101,9 +110,9 @@ function updateTOCItemRef(
    return newItems;
 }
 
-function removeTOCItem(existingItems: TOCItems, title: string) {
+function removeTOCItem(existingItems: TOCItems, uniqueId: string) {
    const newItems = { ...existingItems };
-   delete newItems[title];
+   delete newItems[uniqueId];
    return newItems;
 }
 
@@ -112,23 +121,30 @@ function useCRUDFunctions(
    setItems: Dispatch<SetStateAction<TOCItems>>
 ) {
    const updateItemRef = useCallback(
-      (title: string, ref: RefObject<HTMLElement>) => {
-         setItems((items) => updateTOCItemRef(items, title, ref));
+      (uniqueId: string, ref: RefObject<HTMLElement>) => {
+         setItems((items) => updateTOCItemRef(items, uniqueId, ref));
       },
       [setItems]
    );
 
    const addItem = useCallback(
-      (title: string, ref: RefObject<HTMLElement>) => {
+      (minimalTOCRecord: MinimalTOCRecord, ref: RefObject<HTMLElement>) => {
          setItems((items) => {
-            const titleExists = Object.keys(items).includes(title);
+            const exists = Object.keys(items).includes(
+               minimalTOCRecord.uniqueId
+            );
 
-            if (titleExists) {
-               throw new Error(`Title ${title} already exists in the TOC`);
+            if (exists) {
+               throw new Error(
+                  `UniqueId ${minimalTOCRecord.uniqueId} already exists in the TOC`
+               );
             }
 
             const newItems = { ...items };
-            newItems[title] = createRecord(title, ref);
+            newItems[minimalTOCRecord.uniqueId] = createRecord(
+               minimalTOCRecord,
+               ref
+            );
             return newItems;
          });
       },
@@ -140,8 +156,8 @@ function useCRUDFunctions(
    }, [items]);
 
    const removeItem = useCallback(
-      (title: string) => {
-         setItems((items) => removeTOCItem(items, title));
+      (uniqueId: string) => {
+         setItems((items) => removeTOCItem(items, uniqueId));
       },
       [setItems]
    );
@@ -163,7 +179,7 @@ function useObserveItems(
          const closest = getClosest(items);
          const newItems = { ...items };
          Object.values(newItems).forEach((newItem) => {
-            newItem.active = newItem.title === closest?.title;
+            newItem.active = newItem.uniqueId === closest?.uniqueId;
          });
          return newItems;
       });
@@ -194,15 +210,15 @@ function useObserveItems(
 }
 
 export type TOCContextProviderProps = PropsWithChildren<{
-   defaultTitles?: string[];
+   defaultItems?: MinimalTOCRecord[];
 }>;
 
 export const TOCContextProvider = ({
    children,
-   defaultTitles,
+   defaultItems,
 }: TOCContextProviderProps) => {
    const [items, setItems] = useState<TOCItems>(
-      createTOCItems(defaultTitles || [])
+      createTOCItems(defaultItems || [])
    );
 
    const { addItem, updateItemRef, getItems, removeItem } = useCRUDFunctions(
@@ -228,43 +244,45 @@ export const useTOCContext = () => {
    return context;
 };
 
-export function AddToTOCClientSide<T extends HTMLElement>(title?: string) {
+export function AddToTOCClientSide<T extends HTMLElement>(
+   minimalTOCRecord: MinimalTOCRecord
+) {
    const { addItem, removeItem } = useTOCContext();
    const ref = useRef<T>(null);
 
    useEffect(() => {
-      if (!title) {
+      if (!minimalTOCRecord.title || !minimalTOCRecord.uniqueId) {
          return;
       }
-      addItem(title, ref);
+      addItem(minimalTOCRecord, ref);
 
       return () => {
-         if (!title) {
+         if (!minimalTOCRecord.title || !minimalTOCRecord.uniqueId) {
             return;
          }
-         removeItem(title);
+         removeItem(minimalTOCRecord.uniqueId);
       };
-   }, [title, ref, addItem, removeItem]);
+   }, [minimalTOCRecord, ref, addItem, removeItem]);
    return { ref };
 }
 
-export function LinkToTOC<T extends HTMLElement>(title?: string) {
+export function LinkToTOC<T extends HTMLElement>(uniqueId?: string) {
    const { updateItemRef, removeItem } = useTOCContext();
    const ref = useRef<T>(null);
 
    useEffect(() => {
-      if (!title) {
+      if (!uniqueId) {
          return;
       }
-      updateItemRef(title, ref);
+      updateItemRef(uniqueId, ref);
 
       return () => {
-         if (!title) {
+         if (!uniqueId) {
             return;
          }
-         removeItem(title);
+         removeItem(uniqueId);
       };
-   }, [title, ref, updateItemRef, removeItem]);
+   }, [uniqueId, ref, updateItemRef, removeItem]);
    return { ref };
 }
 

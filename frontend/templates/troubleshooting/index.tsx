@@ -67,7 +67,10 @@ import {
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
 
-const RelatedProblemsTitle = 'Related Problems';
+const RelatedProblemsRecord = {
+   title: 'Related Problems',
+   uniqueId: 'related-problems',
+};
 
 const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
 const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(ScrollPercent);
@@ -109,10 +112,10 @@ const Wiki: NextPageWithLayout<{
       .concat(wikiData.solutions)
       .concat(filteredConclusions);
 
-   const sectionTitles = sections
-      .map((section) => section.heading)
-      .concat(RelatedProblemsTitle)
-      .filter(Boolean);
+   const tocItems = sections
+      .map((section) => ({ title: section.heading, uniqueId: section.id }))
+      .concat(RelatedProblemsRecord)
+      .filter((tocItem) => tocItem.title);
 
    return (
       <>
@@ -129,7 +132,7 @@ const Wiki: NextPageWithLayout<{
             hideOnZero={true}
             hideOnScrollPast={true}
          />
-         <FlaggedTOCContextProvider defaultTitles={sectionTitles}>
+         <FlaggedTOCContextProvider defaultItems={tocItems}>
             <Container
                fontSize="md"
                maxW="1280px"
@@ -743,7 +746,7 @@ function AuthorListing({
 }
 
 function IntroductionSection({ intro }: { intro: Section }) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.heading);
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id);
    return (
       <>
          {intro.heading && (
@@ -767,7 +770,7 @@ const ConclusionSection = function ConclusionSectionInner({
 }: {
    conclusion: Section;
 }) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.heading);
+   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id);
    return (
       <>
          <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
@@ -806,7 +809,9 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(RelatedProblemsTitle);
+   const { ref } = LinkToTOC<HTMLHeadingElement>(
+      RelatedProblemsRecord.uniqueId
+   );
    return (
       <>
          <HeadingSelfLink
@@ -818,7 +823,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             pt={4}
             ref={ref}
          >
-            {RelatedProblemsTitle}
+            {RelatedProblemsRecord.title}
          </HeadingSelfLink>
          <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
             {problems.map((problem) => (

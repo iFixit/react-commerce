@@ -207,7 +207,7 @@ export default function SolutionCard({
    index: number;
    solution: SolutionSection;
 }) {
-   const { ref } = LinkToTOC<HTMLDivElement>(solution.heading);
+   const { ref } = LinkToTOC<HTMLDivElement>(solution.id);
    return (
       <Box
          id={solution.id}

@@ -254,6 +254,7 @@ function TOCItem({
    title,
    elementRef,
    active,
+   uniqueId,
    scrollTo,
    ...props
 }: TOCRecord & ListItemProps) {
