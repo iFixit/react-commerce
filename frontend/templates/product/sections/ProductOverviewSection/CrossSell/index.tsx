@@ -35,6 +35,11 @@ export function CrossSell({ product, selectedVariant }: CrossSellProps) {
       selectedVariant,
       product.crossSellVariants
    );
+
+   if (availableForSaleVariants.length === 0) {
+      return null;
+   }
+
    return (
       <Box
          bg="white"
@@ -45,7 +50,7 @@ export function CrossSell({ product, selectedVariant }: CrossSellProps) {
          p="4"
          data-testid="product-cross-sell"
       >
-         <Text fontWeight="semibold">Frequently bought together</Text>
+         <Text fontWeight="semibold">Frequently Bought Together</Text>
          <VStack
             spacing="0"
             borderColor="chakra-border-color"
