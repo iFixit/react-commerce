@@ -223,6 +223,8 @@ function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
          paddingTop={1.5}
          paddingBottom={1.5}
          ref={ref}
+         fontSize="sm"
+         fontWeight={510}
       >
          {title}
       </MenuItem>
@@ -303,11 +305,7 @@ function TOCItem({
          cursor="pointer"
          {...props}
       >
-         <Text
-            fontWeight={active ? 510 : 'normal'}
-            fontSize="sm"
-            onClick={onClick}
-         >
+         <Text fontWeight={510} fontSize="sm" onClick={onClick}>
             {title}
          </Text>
       </ListItem>
