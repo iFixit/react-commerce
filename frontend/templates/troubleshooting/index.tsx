@@ -57,10 +57,10 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
-import { ScrollPercent } from './scrollPercent';
 import { LinkToTOC, TOCContextProvider } from './tocContext';
 import {
    TOC,
+   TOCBasedScrollPercent,
    onlyShowIfTOCFlagEnabled,
    onlyShowIfTOCFlagEnabledProvider,
 } from './toc';
@@ -73,7 +73,7 @@ const RelatedProblemsRecord = {
 };
 
 const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
-const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(ScrollPercent);
+const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(TOCBasedScrollPercent);
 const FlaggedTOCContextProvider =
    onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
@@ -127,12 +127,8 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <FlaggedScrollPercent
-            scrollContainerRef={scrollContainerRef}
-            hideOnZero={true}
-            hideOnScrollPast={true}
-         />
          <FlaggedTOCContextProvider defaultItems={tocItems}>
+            <FlaggedScrollPercent scrollContainerRef={scrollContainerRef} />
             <Container
                fontSize="md"
                maxW="1280px"

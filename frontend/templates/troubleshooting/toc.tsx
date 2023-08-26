@@ -21,9 +21,21 @@ import {
    TOCRecord,
    useTOCContext,
 } from './tocContext';
-import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
+import {
+   CssTokenOption,
+   ScrollPercent,
+   ScrollPercentProps,
+   useScrollPercentHeight,
+} from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
-import { PropsWithChildren, RefObject, useEffect, useRef } from 'react';
+import {
+   PropsWithChildren,
+   RefObject,
+   useCallback,
+   useEffect,
+   useRef,
+   useState,
+} from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { flags } from '@config/flags';
@@ -315,6 +327,59 @@ function highlightEl(el: HTMLElement, color: string) {
    setTimeout(() => {
       el.style.transition = originalTransition;
    }, 1000);
+}
+
+export function TOCBasedScrollPercent({
+   scrollContainerRef,
+}: ScrollPercentProps) {
+   const [hidden, setHidden] = useState(true);
+   const { getItems } = useTOCContext();
+   const items = getItems();
+   const hasActiveItem = items.some((item) => item.active);
+
+   const onChange = useCallback(
+      (scrollPercent: number, container: HTMLElement) => {
+         const atContainer = container.offsetTop < window.scrollY;
+         if (!atContainer) {
+            setHidden(true);
+            return;
+         }
+
+         const scrolledPast =
+            scrollPercent === 1 &&
+            window.scrollY > container.offsetTop + container.offsetHeight;
+
+         if (scrolledPast) {
+            setHidden(true);
+            return;
+         }
+
+         const hasPastAnyTOCItem = items.some((item) => {
+            const el = item.elementRef.current;
+            if (!el) {
+               return false;
+            }
+
+            return el.offsetTop < window.scrollY;
+         });
+
+         if (!hasActiveItem && hasPastAnyTOCItem) {
+            setHidden(true);
+            return;
+         }
+
+         setHidden(false);
+      },
+      [hasActiveItem, items]
+   );
+
+   return (
+      <ScrollPercent
+         scrollContainerRef={scrollContainerRef}
+         onChange={onChange}
+         hidden={hidden}
+      />
+   );
 }
 
 export function onlyShowIfTOCFlagEnabled<P>(

@@ -1,44 +1,48 @@
-import { Flex, useToken, css, useTheme } from '@chakra-ui/react';
-import { useEffect, useState, RefObject } from 'react';
+import { Flex, useToken, css, useTheme, forwardRef } from '@chakra-ui/react';
+import { useEffect, useState, RefObject, useCallback } from 'react';
 
 export type ScrollPercentProps = {
    scrollContainerRef?: RefObject<HTMLElement>;
-   hideOnZero?: boolean;
-   hideOnScrollPast?: boolean;
+   onChange?: (percent: number, el: HTMLElement) => void;
+   hidden?: boolean;
 };
 
-export function ScrollPercent({
-   scrollContainerRef,
-   hideOnZero = false,
-   hideOnScrollPast = false,
-}: ScrollPercentProps) {
+function getEl(scrollContainerRef?: RefObject<HTMLElement>): HTMLElement {
+   return scrollContainerRef?.current || document.documentElement;
+}
+
+export const ScrollPercent = forwardRef(function ScrollPercent(
+   { scrollContainerRef, onChange, hidden }: ScrollPercentProps,
+   ref
+) {
    const [scrollPercent, setScrollPercent] = useState(0);
-   const [scrolledPast, setScrolledPast] = useState(false);
 
-   const getUpdateScrollPercent = (container: HTMLElement) => {
-      return () => {
-         const atContainer = container.offsetTop < window.scrollY;
-         if (!atContainer) {
-            setScrollPercent(0);
-            return;
-         }
+   const updateScrollPercent = useCallback((container: HTMLElement) => {
+      const atContainer = container.offsetTop < window.scrollY;
+      if (!atContainer) {
+         setScrollPercent(0);
+         return;
+      }
 
-         const scrollPercent = Math.min(
-            1,
-            (window.scrollY - container.offsetTop) /
-               (container.offsetHeight - window.innerHeight)
-         );
-         setScrollPercent(scrollPercent);
-         setScrolledPast(
-            scrollPercent === 1 &&
-               window.scrollY > container.offsetTop + container.offsetHeight
-         );
-      };
-   };
+      const scrollPercent = Math.min(
+         1,
+         (window.scrollY - container.offsetTop) /
+            (container.offsetHeight - window.innerHeight)
+      );
+      setScrollPercent(scrollPercent);
+   }, []);
 
    useEffect(() => {
-      const el = scrollContainerRef?.current || document.documentElement;
-      const handler = getUpdateScrollPercent(el);
+      const el = getEl(scrollContainerRef);
+      onChange?.(scrollPercent, el);
+   }, [scrollContainerRef, onChange, scrollPercent]);
+
+   useEffect(() => {
+      const el = getEl(scrollContainerRef);
+      const handler = () => {
+         updateScrollPercent(el);
+      };
+
       window.addEventListener('scroll', handler);
       window.addEventListener('resize', handler);
 
@@ -48,19 +52,12 @@ export function ScrollPercent({
          window.removeEventListener('scroll', handler);
          window.removeEventListener('resize', handler);
       };
-   }, [scrollContainerRef]);
+   }, [scrollContainerRef, updateScrollPercent]);
 
    const height = useScrollPercentHeight(CssTokenOption.CssString);
    const [blue200, blue500] = useToken('colors', ['blue.200', 'blue.500']);
 
-   const containerTop = scrollContainerRef?.current?.offsetTop;
-   const hasReachedScrollContainer =
-      containerTop && window.scrollY > containerTop;
-   if (hideOnZero && !hasReachedScrollContainer) {
-      return null;
-   }
-
-   if (hideOnScrollPast && scrolledPast) {
+   if (hidden) {
       return null;
    }
 
@@ -78,9 +75,10 @@ export function ScrollPercent({
          // ensure the progress bar is always on top
          isolation="isolate"
          zIndex="1000"
+         ref={ref}
       />
    );
-}
+});
 
 export enum CssTokenOption {
    ThemeToken = 'ThemeToken',
