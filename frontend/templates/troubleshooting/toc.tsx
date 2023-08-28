@@ -86,7 +86,7 @@ function LargeTOC({
             {
                as: List,
                flexDirection: 'column',
-               spacing: 2,
+               spacing: 1,
                paddingRight: 3,
                paddingTop: 6,
             } as FlexProps & ListProps
