@@ -87,8 +87,7 @@ function LargeTOC({
                as: List,
                flexDirection: 'column',
                spacing: 1,
-               paddingLeft: 3,
-               paddingRight: 3,
+               paddingX: 3,
                paddingTop: 6,
             } as FlexProps & ListProps
          }
@@ -143,18 +142,15 @@ export function MobileTOC({
                borderColor="gray.300"
                background="white"
                borderRadius={0}
-               paddingLeft={4}
-               paddingRight={4}
+               paddingX={4}
                _active={{ background: 'white' }}
             >
                {title}
             </MenuButton>
             <MenuList
                width="calc(100% - (2 * var(--chakra-space-8)))"
-               marginLeft={8}
-               marginRight={8}
-               paddingTop={0}
-               paddingBottom={0}
+               marginX={8}
+               paddingY={0}
                borderRadius={4}
                boxShadow="md"
             >
@@ -164,8 +160,7 @@ export function MobileTOC({
                         flexDirection: 'column',
                         flexGrow: 1,
                         maxHeight: 48,
-                        paddingTop: 1.5,
-                        paddingBottom: 1.5,
+                        paddingY: 1.5,
                      } as FlexProps & ListProps
                   }
                >
@@ -219,10 +214,8 @@ function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
             background: 'blue.100',
             color: active ? undefined : 'gray.800',
          }}
-         paddingLeft={4}
-         paddingRight={4}
-         paddingTop={1.5}
-         paddingBottom={1.5}
+         paddingX={4}
+         paddingY={1.5}
          ref={ref}
          fontSize="sm"
          fontWeight={510}
@@ -294,10 +287,8 @@ function TOCItem({
 
    return (
       <ListItem
-         paddingTop={1}
-         paddingBottom={1}
-         paddingLeft={3}
-         paddingRight={3}
+         paddingY={1}
+         paddingX={3}
          color={active ? 'brand.600' : 'gray.500'}
          background={active ? 'blue.100' : undefined}
          borderTopRightRadius={active ? 'md' : undefined}
