@@ -173,7 +173,7 @@ const Wiki: NextPageWithLayout<{
                      spacing={0}
                      mt={{ base: 3, sm: 8 }}
                      align="start"
-                     pb={{ base: 4, sm: 6 }}
+                     pb="12px"
                      borderBottom="1px"
                      borderColor="gray.300"
                   >
@@ -231,30 +231,40 @@ const Wiki: NextPageWithLayout<{
                         />
                      </VStack>
                   </HStack>
-                  <HeadingSelfLink
-                     as="h2"
-                     fontSize="20px"
-                     fontWeight="semibold"
-                     selfLinked
-                     id="causes"
-                  >
-                     {'Causes'}
-                  </HeadingSelfLink>
-                  <TableOfContents
-                     introduction={wikiData.introduction}
-                     solutions={wikiData.solutions}
-                     problems={wikiData.linkedProblems}
-                  />
                   <Box
-                     borderTop="1px"
+                     display={{ base: 'default', md: 'none' }}
+                     mt="8px"
+                     borderBottom="1px"
                      borderColor="gray.300"
-                     mt={{ base: 4, sm: 6 }}
+                     padding="6px 0px 16px 0px"
                   >
+                     <HeadingSelfLink
+                        as="h2"
+                        fontSize="20px"
+                        mt="0px"
+                        fontWeight="semibold"
+                        selfLinked
+                        id="causes"
+                     >
+                        {'Causes'}
+                     </HeadingSelfLink>
+                     <TableOfContents
+                        introduction={wikiData.introduction}
+                        solutions={wikiData.solutions}
+                        problems={wikiData.linkedProblems}
+                     />
+                  </Box>
+                  <Box id="introduction" mt={{ base: '0px', md: '28px' }}>
                      {wikiData.introduction.length > 0 && (
-                        <Heading
+                        <HeadingSelfLink
+                           as="h2"
                            id="introduction"
                            aria-label="Introduction"
-                        ></Heading>
+                           selfLinked={false}
+                           display={{ base: 'none', md: 'block' }}
+                        >
+                           Introduction
+                        </HeadingSelfLink>
                      )}
                      {wikiData.introduction.map((intro) => (
                         <IntroductionSection
