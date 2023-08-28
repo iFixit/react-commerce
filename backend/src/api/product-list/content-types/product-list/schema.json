@@ -235,6 +235,12 @@
          "type": "dynamiczone",
          "components": ["product-list.item-type-override"],
          "required": true
+      },
+      "faqs": {
+         "type": "relation",
+         "relation": "manyToMany",
+         "target": "api::faq.faq",
+         "inversedBy": "product_lists"
       }
    }
 }

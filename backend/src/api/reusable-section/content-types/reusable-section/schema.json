@@ -41,7 +41,8 @@
             "section.banner",
             "page.split-with-image",
             "page.press",
-            "section.quote-gallery"
+            "section.quote-gallery",
+            "section.faqs"
          ],
          "required": true,
          "max": 1,

@@ -4,7 +4,8 @@
    "info": {
       "singularName": "faq",
       "pluralName": "faqs",
-      "displayName": "FAQ"
+      "displayName": "FAQ",
+      "description": ""
    },
    "options": {
       "draftAndPublish": true
@@ -18,6 +19,16 @@
       "answer": {
          "type": "richtext",
          "required": true
+      },
+      "category": {
+         "type": "string",
+         "required": false
+      },
+      "product_lists": {
+         "type": "relation",
+         "relation": "manyToMany",
+         "target": "api::product-list.product-list",
+         "mappedBy": "faqs"
       }
    }
 }
