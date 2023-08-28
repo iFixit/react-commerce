@@ -7,7 +7,7 @@ import { CrossSellItem } from './CrossSellItem';
 export function CrossSell() {
    const cart = useCart();
 
-   const crossSellItems = extractCrossSells(cart);
+   const crossSellItems = extractCrossSells(cart.data);
    const hasItemsInCart = cart.data?.hasItemsInCart ?? false;
 
    return (
