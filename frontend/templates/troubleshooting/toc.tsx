@@ -299,8 +299,8 @@ function TOCItem({
          paddingRight={3}
          color={active ? 'brand.600' : 'gray.500'}
          background={active ? 'blue.100' : undefined}
-         borderTopRightRadius={active ? 1 : undefined}
-         borderBottomRightRadius={active ? 1 : undefined}
+         borderTopRightRadius={active ? 'md' : undefined}
+         borderBottomRightRadius={active ? 'md' : undefined}
          ref={ref}
          _hover={{
             color: active ? undefined : 'gray.800',
