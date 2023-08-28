@@ -52,7 +52,7 @@ export function TOC({
          height={{ lg: '100vh' }}
          position="sticky"
          top={0}
-         width={{ base: '100%', lg: 'auto' }}
+         width="auto"
          flexGrow={{ base: 1, lg: 0 }}
          zIndex={{ base: 'docked', lg: 'initial' }}
          {...props}
@@ -87,6 +87,7 @@ function LargeTOC({
                as: List,
                flexDirection: 'column',
                spacing: 1,
+               paddingLeft: 3,
                paddingRight: 3,
                paddingTop: 6,
             } as FlexProps & ListProps
