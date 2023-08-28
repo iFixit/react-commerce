@@ -216,7 +216,7 @@ function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
          background={active ? 'blue.100' : undefined}
          _hover={{
             background: 'blue.100',
-            color: 'brand.600',
+            color: active ? undefined : 'gray.800',
          }}
          paddingLeft={4}
          paddingRight={4}
@@ -302,6 +302,9 @@ function TOCItem({
          borderTopRightRadius={active ? 1 : undefined}
          borderBottomRightRadius={active ? 1 : undefined}
          ref={ref}
+         _hover={{
+            color: active ? undefined : 'gray.800',
+         }}
          cursor="pointer"
          {...props}
       >
