@@ -24,11 +24,9 @@ export const ScrollPercent = forwardRef(function ScrollPercent(
          return;
       }
 
-      const scrollPercent = Math.min(
-         1,
+      const scrollPercent =
          (window.scrollY - container.offsetTop) /
-            (container.offsetHeight - window.innerHeight)
-      );
+         (container.offsetHeight - window.innerHeight);
       setScrollPercent(scrollPercent);
    }, []);
 
@@ -61,6 +59,8 @@ export const ScrollPercent = forwardRef(function ScrollPercent(
       return null;
    }
 
+   const scrollPercentNormalized = Math.min(1, scrollPercent) * 100;
+
    return (
       <Flex
          position="sticky"
@@ -69,9 +69,7 @@ export const ScrollPercent = forwardRef(function ScrollPercent(
          width="100%"
          height={height}
          marginTop={`-${height}`}
-         background={`linear-gradient(to right, ${blue500} ${
-            scrollPercent * 100
-         }%, ${blue200} 0%)`}
+         background={`linear-gradient(to right, ${blue500} ${scrollPercentNormalized}%, ${blue200} 0%)`}
          // ensure the progress bar is always on top
          isolation="isolate"
          zIndex="1000"

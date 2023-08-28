@@ -328,7 +328,7 @@ export function TOCBasedScrollPercent({
    const [hidden, setHidden] = useState(true);
    const { getItems } = useTOCContext();
    const items = getItems();
-   const hasActiveItem = items.some((item) => item.active);
+   const lastItem = items[items.length - 1];
 
    const onChange = useCallback(
       (scrollPercent: number, container: HTMLElement) => {
@@ -338,32 +338,18 @@ export function TOCBasedScrollPercent({
             return;
          }
 
-         const scrolledPast =
-            scrollPercent === 1 &&
-            window.scrollY > container.offsetTop + container.offsetHeight;
+         const lastItemEl = lastItem.elementRef.current;
+         const scrolledPastLastItem =
+            lastItemEl && window.scrollY >= lastItemEl.offsetTop;
 
-         if (scrolledPast) {
-            setHidden(true);
-            return;
-         }
-
-         const hasPastAnyTOCItem = items.some((item) => {
-            const el = item.elementRef.current;
-            if (!el) {
-               return false;
-            }
-
-            return el.offsetTop < window.scrollY;
-         });
-
-         if (!hasActiveItem && hasPastAnyTOCItem) {
+         if (!lastItem.active && scrolledPastLastItem) {
             setHidden(true);
             return;
          }
 
          setHidden(false);
       },
-      [hasActiveItem, items]
+      [lastItem]
    );
 
    return (
