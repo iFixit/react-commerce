@@ -111,6 +111,11 @@ fragment ProductListFields on ProductList {
          tagline
       }
    }
+   faqs {
+      data {
+         ...FAQFields
+      }
+   }
 }
 
 fragment AncestorProductListFields on ProductList {
@@ -118,4 +123,9 @@ fragment AncestorProductListFields on ProductList {
    title
    handle
    deviceTitle
+   faqs {
+      data {
+         ...FAQFields
+      }
+   }
 }

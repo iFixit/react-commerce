@@ -2625,7 +2625,12 @@ export type CompanyFieldsFragment = {
 export type FaqFieldsFragment = {
    __typename?: 'FaqEntity';
    id?: string | null;
-   attributes?: { __typename?: 'Faq'; question: string; answer: string } | null;
+   attributes?: {
+      __typename?: 'Faq';
+      category?: string | null;
+      question: string;
+      answer: string;
+   } | null;
 };
 
 export type ImageFieldsFragment = {
@@ -3106,6 +3111,7 @@ export type FindProductQuery = {
                           id?: string | null;
                           attributes?: {
                              __typename?: 'Faq';
+                             category?: string | null;
                              question: string;
                              answer: string;
                           } | null;
@@ -3282,20 +3288,108 @@ export type FindProductListQuery = {
                                                                   deviceTitle?:
                                                                      | string
                                                                      | null;
+                                                                  faqs?: {
+                                                                     __typename?: 'FaqRelationResponseCollection';
+                                                                     data: Array<{
+                                                                        __typename?: 'FaqEntity';
+                                                                        id?:
+                                                                           | string
+                                                                           | null;
+                                                                        attributes?: {
+                                                                           __typename?: 'Faq';
+                                                                           category?:
+                                                                              | string
+                                                                              | null;
+                                                                           question: string;
+                                                                           answer: string;
+                                                                        } | null;
+                                                                     }>;
+                                                                  } | null;
                                                                } | null;
                                                             } | null;
+                                                         } | null;
+                                                         faqs?: {
+                                                            __typename?: 'FaqRelationResponseCollection';
+                                                            data: Array<{
+                                                               __typename?: 'FaqEntity';
+                                                               id?:
+                                                                  | string
+                                                                  | null;
+                                                               attributes?: {
+                                                                  __typename?: 'Faq';
+                                                                  category?:
+                                                                     | string
+                                                                     | null;
+                                                                  question: string;
+                                                                  answer: string;
+                                                               } | null;
+                                                            }>;
                                                          } | null;
                                                       } | null;
                                                    } | null;
                                                 } | null;
+                                                faqs?: {
+                                                   __typename?: 'FaqRelationResponseCollection';
+                                                   data: Array<{
+                                                      __typename?: 'FaqEntity';
+                                                      id?: string | null;
+                                                      attributes?: {
+                                                         __typename?: 'Faq';
+                                                         category?:
+                                                            | string
+                                                            | null;
+                                                         question: string;
+                                                         answer: string;
+                                                      } | null;
+                                                   }>;
+                                                } | null;
                                              } | null;
                                           } | null;
+                                       } | null;
+                                       faqs?: {
+                                          __typename?: 'FaqRelationResponseCollection';
+                                          data: Array<{
+                                             __typename?: 'FaqEntity';
+                                             id?: string | null;
+                                             attributes?: {
+                                                __typename?: 'Faq';
+                                                category?: string | null;
+                                                question: string;
+                                                answer: string;
+                                             } | null;
+                                          }>;
                                        } | null;
                                     } | null;
                                  } | null;
                               } | null;
+                              faqs?: {
+                                 __typename?: 'FaqRelationResponseCollection';
+                                 data: Array<{
+                                    __typename?: 'FaqEntity';
+                                    id?: string | null;
+                                    attributes?: {
+                                       __typename?: 'Faq';
+                                       category?: string | null;
+                                       question: string;
+                                       answer: string;
+                                    } | null;
+                                 }>;
+                              } | null;
                            } | null;
                         } | null;
+                     } | null;
+                     faqs?: {
+                        __typename?: 'FaqRelationResponseCollection';
+                        data: Array<{
+                           __typename?: 'FaqEntity';
+                           id?: string | null;
+                           attributes?: {
+                              __typename?: 'Faq';
+                              category?: string | null;
+                              question: string;
+                              answer: string;
+                           } | null;
+                        }>;
                      } | null;
                   } | null;
                } | null;
@@ -3390,6 +3484,19 @@ export type FindProductListQuery = {
                | { __typename: 'Error' }
                | null
             >;
+            faqs?: {
+               __typename?: 'FaqRelationResponseCollection';
+               data: Array<{
+                  __typename?: 'FaqEntity';
+                  id?: string | null;
+                  attributes?: {
+                     __typename?: 'Faq';
+                     category?: string | null;
+                     question: string;
+                     answer: string;
+                  } | null;
+               }>;
+            } | null;
          } | null;
       }>;
    } | null;
@@ -3496,20 +3603,104 @@ export type ProductListFieldsFragment = {
                                                          deviceTitle?:
                                                             | string
                                                             | null;
+                                                         faqs?: {
+                                                            __typename?: 'FaqRelationResponseCollection';
+                                                            data: Array<{
+                                                               __typename?: 'FaqEntity';
+                                                               id?:
+                                                                  | string
+                                                                  | null;
+                                                               attributes?: {
+                                                                  __typename?: 'Faq';
+                                                                  category?:
+                                                                     | string
+                                                                     | null;
+                                                                  question: string;
+                                                                  answer: string;
+                                                               } | null;
+                                                            }>;
+                                                         } | null;
                                                       } | null;
                                                    } | null;
+                                                } | null;
+                                                faqs?: {
+                                                   __typename?: 'FaqRelationResponseCollection';
+                                                   data: Array<{
+                                                      __typename?: 'FaqEntity';
+                                                      id?: string | null;
+                                                      attributes?: {
+                                                         __typename?: 'Faq';
+                                                         category?:
+                                                            | string
+                                                            | null;
+                                                         question: string;
+                                                         answer: string;
+                                                      } | null;
+                                                   }>;
                                                 } | null;
                                              } | null;
                                           } | null;
                                        } | null;
+                                       faqs?: {
+                                          __typename?: 'FaqRelationResponseCollection';
+                                          data: Array<{
+                                             __typename?: 'FaqEntity';
+                                             id?: string | null;
+                                             attributes?: {
+                                                __typename?: 'Faq';
+                                                category?: string | null;
+                                                question: string;
+                                                answer: string;
+                                             } | null;
+                                          }>;
+                                       } | null;
                                     } | null;
                                  } | null;
+                              } | null;
+                              faqs?: {
+                                 __typename?: 'FaqRelationResponseCollection';
+                                 data: Array<{
+                                    __typename?: 'FaqEntity';
+                                    id?: string | null;
+                                    attributes?: {
+                                       __typename?: 'Faq';
+                                       category?: string | null;
+                                       question: string;
+                                       answer: string;
+                                    } | null;
+                                 }>;
                               } | null;
                            } | null;
                         } | null;
                      } | null;
+                     faqs?: {
+                        __typename?: 'FaqRelationResponseCollection';
+                        data: Array<{
+                           __typename?: 'FaqEntity';
+                           id?: string | null;
+                           attributes?: {
+                              __typename?: 'Faq';
+                              category?: string | null;
+                              question: string;
+                              answer: string;
+                           } | null;
+                        }>;
+                     } | null;
                   } | null;
                } | null;
+            } | null;
+            faqs?: {
+               __typename?: 'FaqRelationResponseCollection';
+               data: Array<{
+                  __typename?: 'FaqEntity';
+                  id?: string | null;
+                  attributes?: {
+                     __typename?: 'Faq';
+                     category?: string | null;
+                     question: string;
+                     answer: string;
+                  } | null;
+               }>;
             } | null;
          } | null;
       } | null;
@@ -3604,6 +3795,19 @@ export type ProductListFieldsFragment = {
       | { __typename: 'Error' }
       | null
    >;
+   faqs?: {
+      __typename?: 'FaqRelationResponseCollection';
+      data: Array<{
+         __typename?: 'FaqEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Faq';
+            category?: string | null;
+            question: string;
+            answer: string;
+         } | null;
+      }>;
+   } | null;
 };
 
 export type AncestorProductListFieldsFragment = {
@@ -3612,6 +3816,19 @@ export type AncestorProductListFieldsFragment = {
    title: string;
    handle: string;
    deviceTitle?: string | null;
+   faqs?: {
+      __typename?: 'FaqRelationResponseCollection';
+      data: Array<{
+         __typename?: 'FaqEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Faq';
+            category?: string | null;
+            question: string;
+            answer: string;
+         } | null;
+      }>;
+   } | null;
 };
 
 export type FindReusableSectionsQueryVariables = Exact<{
@@ -3728,7 +3945,25 @@ export type FindReusableSectionsQuery = {
                        }>;
                     } | null;
                  }
-               | { __typename: 'ComponentSectionFaqs' }
+               | {
+                    __typename: 'ComponentSectionFaqs';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    faqs?: {
+                       __typename?: 'FaqRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'FaqEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Faq';
+                             category?: string | null;
+                             question: string;
+                             answer: string;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
                | {
                     __typename: 'ComponentSectionQuoteGallery';
                     id: string;
@@ -3873,7 +4108,25 @@ export type ReusableSectionFieldsFragment = {
               }>;
            } | null;
         }
-      | { __typename: 'ComponentSectionFaqs' }
+      | {
+           __typename: 'ComponentSectionFaqs';
+           id: string;
+           title?: string | null;
+           description?: string | null;
+           faqs?: {
+              __typename?: 'FaqRelationResponseCollection';
+              data: Array<{
+                 __typename?: 'FaqEntity';
+                 id?: string | null;
+                 attributes?: {
+                    __typename?: 'Faq';
+                    category?: string | null;
+                    question: string;
+                    answer: string;
+                 } | null;
+              }>;
+           } | null;
+        }
       | {
            __typename: 'ComponentSectionQuoteGallery';
            id: string;
@@ -5021,6 +5274,7 @@ export type FaQsSectionFieldsFragment = {
          id?: string | null;
          attributes?: {
             __typename?: 'Faq';
+            category?: string | null;
             question: string;
             answer: string;
          } | null;
@@ -5375,12 +5629,27 @@ export const ImageFieldsFragmentDoc = `
   }
 }
     `;
+export const FaqFieldsFragmentDoc = `
+    fragment FAQFields on FaqEntity {
+  id
+  attributes {
+    category
+    question
+    answer
+  }
+}
+    `;
 export const AncestorProductListFieldsFragmentDoc = `
     fragment AncestorProductListFields on ProductList {
   type
   title
   handle
   deviceTitle
+  faqs {
+    data {
+      ...FAQFields
+    }
+  }
 }
     `;
 export const ProductListBannerSectionFieldsFragmentDoc = `
@@ -5524,6 +5793,11 @@ export const ProductListFieldsFragmentDoc = `
       tagline
     }
   }
+  faqs {
+    data {
+      ...FAQFields
+    }
+  }
 }
     `;
 export const CallToActionFieldsFragmentDoc = `
@@ -5637,6 +5911,18 @@ export const QuoteGallerySectionFieldsFragmentDoc = `
   }
 }
     `;
+export const FaQsSectionFieldsFragmentDoc = `
+    fragment FAQsSectionFields on ComponentSectionFaqs {
+  id
+  title
+  description
+  faqs {
+    data {
+      ...FAQFields
+    }
+  }
+}
+    `;
 export const PlacementFieldsFragmentDoc = `
     fragment PlacementFields on ComponentMiscPlacement {
   showInProductListPages
@@ -5650,6 +5936,7 @@ export const ReusableSectionFieldsFragmentDoc = `
     ...SplitWithImageSectionFields
     ...PressQuotesSectionFields
     ...QuoteGallerySectionFields
+    ...FAQsSectionFields
   }
   placement {
     ...PlacementFields
@@ -5778,27 +6065,6 @@ export const DeviceCompatibilitySectionFieldsFragmentDoc = `
   id
   title
   description
-}
-    `;
-export const FaqFieldsFragmentDoc = `
-    fragment FAQFields on FaqEntity {
-  id
-  attributes {
-    question
-    answer
-  }
-}
-    `;
-export const FaQsSectionFieldsFragmentDoc = `
-    fragment FAQsSectionFields on ComponentSectionFaqs {
-  id
-  title
-  description
-  faqs {
-    data {
-      ...FAQFields
-    }
-  }
 }
     `;
 export const FeaturedProductsSectionFieldsFragmentDoc = `
@@ -6015,6 +6281,7 @@ export const FindProductListDocument = `
     ${ProductListFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${AncestorProductListFieldsFragmentDoc}
+${FaqFieldsFragmentDoc}
 ${ProductListBannerSectionFieldsFragmentDoc}
 ${ProductListRelatedPostsSectionFieldsFragmentDoc}
 ${ProductListLinkedProductListSetSectionFieldsFragmentDoc}
@@ -6042,6 +6309,8 @@ ${CompanyFieldsFragmentDoc}
 ${QuoteGallerySectionFieldsFragmentDoc}
 ${QuoteCardFieldsFragmentDoc}
 ${PersonFieldsFragmentDoc}
+${FaQsSectionFieldsFragmentDoc}
+${FaqFieldsFragmentDoc}
 ${PlacementFieldsFragmentDoc}`;
 export const FindStoreDocument = `
     query findStore($filters: StoreFiltersInput) {

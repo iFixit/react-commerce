@@ -1,6 +1,7 @@
 fragment FAQFields on FaqEntity {
    id
    attributes {
+      category
       question
       answer
    }

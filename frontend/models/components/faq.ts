@@ -5,6 +5,7 @@ import { z } from 'zod';
 export type FAQ = z.infer<typeof FAQSchema>;
 
 export const FAQSchema = z.object({
+   category: z.string().nullable(),
    question: z.string(),
    answer: z.string(),
 });
@@ -17,7 +18,9 @@ export function faqFromStrapi(
 
    if (!isPresent(question) || !isPresent(answer)) return null;
 
+   const category = fragment?.attributes?.category;
    return {
+      category: isPresent(category) ? category : null,
       question,
       answer,
    };

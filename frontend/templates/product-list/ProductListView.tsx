@@ -1,4 +1,5 @@
 import { BannersSection } from '@components/sections/BannersSection';
+import { FAQsSection } from '@components/sections/FAQsSection';
 import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
 import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
@@ -170,6 +171,17 @@ export function ProductListView({
                            description={section.description}
                            callToAction={section.callToAction}
                            quotes={section.quotes}
+                        />
+                     );
+                  }
+                  case 'FAQs': {
+                     return (
+                        <FAQsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           faqs={section.faqs}
                         />
                      );
                   }

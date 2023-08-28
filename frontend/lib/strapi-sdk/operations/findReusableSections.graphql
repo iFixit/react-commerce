@@ -16,6 +16,7 @@ fragment ReusableSectionFields on ReusableSection {
       ...SplitWithImageSectionFields
       ...PressQuotesSectionFields
       ...QuoteGallerySectionFields
+      ...FAQsSectionFields
    }
    placement {
       ...PlacementFields
