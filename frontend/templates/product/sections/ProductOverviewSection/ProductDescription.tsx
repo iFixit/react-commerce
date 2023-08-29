@@ -1,4 +1,4 @@
-import { Alert, Box, ThemeTypings } from '@chakra-ui/react';
+import { Alert, ThemeTypings } from '@chakra-ui/react';
 import {
    faCircleExclamation,
    faCircleInfo,
