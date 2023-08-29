@@ -24,7 +24,7 @@ import {
 } from 'react-instantsearch-hooks-web';
 import { useSearchCache } from './useSearchCache';
 
-type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
+export type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 
 export type AlgoliaProps = {
    url: string;
