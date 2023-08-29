@@ -16,8 +16,9 @@ export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
       };
    }
 
-   const slug = context.params?.slug;
+   const slug = context.params?.slug || [];
    invariant(Array.isArray(slug), 'page slug param is missing');
+   slug.unshift('Store');
    const path = `/${slug.join('/')}`;
 
    const layoutProps = await getLayoutServerSideProps({
