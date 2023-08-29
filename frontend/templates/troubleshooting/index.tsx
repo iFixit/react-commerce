@@ -36,7 +36,7 @@ import {
    SimpleGrid,
    useToken,
 } from '@chakra-ui/react';
-import Prerendered from './prerendered';
+import { PrerenderedHTML } from '@components/common';
 import type {
    Author,
    BreadcrumbEntry,
@@ -757,7 +757,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                {intro.heading}
             </HeadingSelfLink>
          )}
-         <Prerendered html={intro.body} />
+         <PrerenderedHTML html={intro.body} />
       </>
    );
 }
@@ -773,7 +773,7 @@ const ConclusionSection = function ConclusionSectionInner({
          <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
             {conclusion.heading}
          </HeadingSelfLink>
-         <Prerendered html={conclusion.body} />
+         <PrerenderedHTML html={conclusion.body} />
       </>
    );
 };

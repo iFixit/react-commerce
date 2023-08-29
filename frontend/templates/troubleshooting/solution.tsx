@@ -22,7 +22,7 @@ import {
    SectionProduct,
    SolutionSection,
 } from './hooks/useTroubleshootingProps';
-import Prerendered from './prerendered';
+import { PrerenderedHTML } from '@components/common';
 import { GuideResource, ProductResource } from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { LinkToTOC } from './tocContext';
@@ -196,7 +196,7 @@ const SolutionHeader = ({
 
 const SolutionTexts = ({ body }: { body: string }) => (
    <>
-      <Prerendered html={body} />
+      <PrerenderedHTML html={body} />
    </>
 );
 

@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { FaIcon } from '@ifixit/icons';
 import { faClock } from '@fortawesome/pro-solid-svg-icons';
-import Prerendered from './prerendered';
+import { PrerenderedHTML } from '@components/common';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 import { Rating } from '@components/ui';
 import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
@@ -34,13 +34,13 @@ export function GuideResource({ guide }: { guide: SectionGuide }) {
          spacing={1.5}
       >
          {guide.introduction_rendered && (
-            <Prerendered
+            <PrerenderedHTML
+               html={guide.introduction_rendered}
                lineHeight="1.36"
                fontSize="12px"
                color="gray.600"
                height="16px"
                noOfLines={1}
-               html={guide.introduction_rendered}
             />
          )}
       </Resource>
