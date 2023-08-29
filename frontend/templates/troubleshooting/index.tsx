@@ -35,7 +35,6 @@ import {
    HStack,
    SimpleGrid,
    useToken,
-   Heading,
 } from '@chakra-ui/react';
 import Prerendered from './prerendered';
 import type {
