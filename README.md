@@ -163,6 +163,32 @@ After running the dev server, you can access the Strapi admin panel at `http://l
 
 The local Strapi dev server will allow you to make changes to the schema of content types. When you're satisfied with the changes, you can push into a new branch to get a preview url from [govinor](https://govinor.com/).
 
+## Dev Notes
+
+Next.js's dev server automatically listens to `localhost:3000` as well as your local IP address and the same port. This means that you can access the dev server from other devices on your network. This is useful for testing on mobile devices.
+
+EX: `http://192.168.1.123:3000`
+
+However, if you are using a firewall, you may need to allow incoming connections to port 3000.
+
+### Firewall
+
+#### Ubuntu
+
+The running firewall is mostlikely `ufw`.
+
+To allow incoming connections to port 3000, run:
+
+```sh
+sudo ufw allow 3000
+```
+
+To remove the rule, run:
+
+```sh
+sudo ufw delete allow 3000
+```
+
 ## Project structure
 
 The project contains a `backend` folder with Strapi config and a `frontend` with Next.js.
