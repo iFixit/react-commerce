@@ -5,3 +5,4 @@ export * from './PageBreadcrumb';
 export * from './useSearchCache';
 export * from './ProductRating';
 export * from './CompatibleDevice';
+export * from './PrerenderedHTML';
