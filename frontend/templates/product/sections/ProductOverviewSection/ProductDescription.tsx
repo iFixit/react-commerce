@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import { PrerenderedHTML } from '@components/common';
 
 export type ProductDescriptionProps = {
    product: Product;
@@ -95,27 +96,12 @@ type VariantDescriptionProps = {
 
 function VariantDescription({ children }: VariantDescriptionProps) {
    return (
-      <Box
-         dangerouslySetInnerHTML={{
-            __html: children,
-         }}
+      <PrerenderedHTML
+         html={children}
          fontSize="sm"
          sx={{
-            ul: {
-               my: 3,
-               pl: 5,
-            },
-            p: {
+            'p:not(:last-of-type)': {
                mb: 3,
-               _last: {
-                  mb: 0,
-               },
-            },
-            a: {
-               color: 'brand.500',
-            },
-            'a:hover': {
-               textDecoration: 'underline',
             },
          }}
       />
@@ -129,7 +115,8 @@ type AlertTextProps = {
 
 function AlertText({ children, colorScheme }: AlertTextProps) {
    return (
-      <Box
+      <PrerenderedHTML
+         html={children}
          fontSize="sm"
          sx={{
             a: {
@@ -143,9 +130,6 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
             'p:not(:first-of-type)': {
                mt: 2,
             },
-         }}
-         dangerouslySetInnerHTML={{
-            __html: children,
          }}
       />
    );
