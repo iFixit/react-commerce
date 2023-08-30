@@ -141,6 +141,7 @@ export const mockedToolProduct: Product = {
          quantityAvailable: 31,
          handle: 'hakko-3-sa-tweezers',
          title: 'Hakko 3 SA Tweezers',
+         variantTitle: null,
          reviews: {
             rating: 5,
             count: 3,
@@ -179,6 +180,7 @@ export const mockedToolProduct: Product = {
          hasLifetimeWarranty: true,
          isPro: false,
          enabled: true,
+         shopifyVariantId: '39333789794394',
       },
    ],
    sections: [

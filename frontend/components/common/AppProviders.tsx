@@ -12,7 +12,7 @@ import {
    QueryClientProvider,
 } from '@tanstack/react-query';
 import * as React from 'react';
-import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
+import { AlgoliaProps } from './InstantSearchProvider';
 
 const customTheme = extendTheme(theme);
 
@@ -58,7 +58,6 @@ export type AppProvidersProps = {
 
 export function AppProviders({
    children,
-   algolia,
    ifixitOrigin,
    adminMessage,
 }: React.PropsWithChildren<AppProvidersProps>) {
@@ -69,15 +68,7 @@ export function AppProviders({
       >
          <CartDrawerProvider>
             <QueryClientProvider client={queryClient}>
-               <ChakraProvider theme={customTheme}>
-                  {algolia ? (
-                     <InstantSearchProvider {...algolia}>
-                        {children}
-                     </InstantSearchProvider>
-                  ) : (
-                     children
-                  )}
-               </ChakraProvider>
+               <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
             </QueryClientProvider>
          </CartDrawerProvider>
       </AppProvider>

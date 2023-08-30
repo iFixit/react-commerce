@@ -59,6 +59,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965714182234',
                   sku: 'IF145-299-4',
+                  title: 'New / Fix Kit',
                   quantityAvailable: 3536,
                   product: {
                      handle: 'mako-driver-kit-64-precision-bits',
@@ -130,6 +131,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965720178778',
                   sku: 'IF145-307-4',
+                  title: 'New / Fix Kit',
                   quantityAvailable: 1002,
                   product: {
                      handle: 'pro-tech-toolkit',
@@ -198,6 +200,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/39443942670426',
                   sku: 'IF145-348-5',
+                  title: 'New / Fix Kit',
                   quantityAvailable: 676,
                   product: {
                      handle: 'essential-electronics-toolkit',
@@ -239,6 +242,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965709070426',
                   sku: 'IF145-474-1',
+                  title: 'New / Fix Kit',
                   quantityAvailable: 354,
                   product: {
                      handle: 'minnow-driver-kit',
@@ -296,6 +300,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965709037658',
                   sku: 'IF145-475-1',
+                  title: 'New / Fix Kit',
                   quantityAvailable: 3742,
                   product: {
                      handle: 'moray-driver-kit',
@@ -357,6 +362,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965719359578',
                   sku: 'IF315-001-10',
+                  title: 'New',
                   quantityAvailable: 24,
                   product: {
                      handle:
@@ -420,6 +426,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965718147162',
                   sku: 'IF315-007-10',
+                  title: 'New',
                   quantityAvailable: 67,
                   product: {
                      handle: 'iphone-6s-plus-replacement-battery',
@@ -483,6 +490,7 @@ export const findProductQueryMock: FindProductQuery = {
                   __typename: 'ProductVariant',
                   id: 'gid://shopify/ProductVariant/32965713363034',
                   sku: 'IF315-038-5',
+                  title: 'New',
                   quantityAvailable: 20,
                   product: {
                      handle: 'iphone-6s-plus-screen',
@@ -658,6 +666,7 @@ export const findProductQueryMock: FindProductQuery = {
                            __typename: 'ProductVariant',
                            id: 'gid://shopify/ProductVariant/32965720473690',
                            sku: 'IF145-257-1',
+                           title: 'New / Fix Kit',
                            quantityAvailable: 261,
                            product: {
                               handle: 'anti-static-project-tray',
@@ -707,6 +716,7 @@ export const findProductQueryMock: FindProductQuery = {
                            __typename: 'ProductVariant',
                            id: 'gid://shopify/ProductVariant/32965720178778',
                            sku: 'IF145-307-4',
+                           title: 'New / Fix Kit',
                            quantityAvailable: 1002,
                            product: {
                               handle: 'pro-tech-toolkit',
@@ -844,6 +854,7 @@ export const findProductQueryMock: FindProductQuery = {
                            __typename: 'ProductVariant',
                            id: 'gid://shopify/ProductVariant/39333786746970',
                            sku: 'IF315-038-1',
+                           title: 'New',
                            quantityAvailable: 25,
                            product: {
                               handle: 'iphone-6s-plus-screen',
@@ -903,6 +914,7 @@ export const findProductQueryMock: FindProductQuery = {
                            __typename: 'ProductVariant',
                            id: 'gid://shopify/ProductVariant/39333786583130',
                            sku: 'IF315-049-2',
+                           title: 'New',
                            quantityAvailable: 46,
                            product: {
                               handle:

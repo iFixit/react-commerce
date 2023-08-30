@@ -29,6 +29,22 @@ const ProductPrice: ComponentStyleConfig = {
       },
    },
    sizes: {
+      'extra-small': {
+         price: {
+            fontSize: 'xs',
+         },
+         compareAtPrice: {
+            fontSize: 'xs',
+         },
+         proBadgeHorizontal: {
+            py: '3px',
+            fontSize: '10px',
+            lineHeight: '4',
+         },
+         proBadgeVertical: {
+            h: 4,
+         },
+      },
       small: {
          price: {
             fontSize: 'sm',
