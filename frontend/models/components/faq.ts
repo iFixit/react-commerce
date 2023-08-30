@@ -5,10 +5,11 @@ import { z } from 'zod';
 export type FAQ = z.infer<typeof FAQSchema>;
 
 export const FAQSchema = z.object({
-   category: z.string().nullable(),
-   itemType: z.string().nullable(),
    question: z.string(),
    answer: z.string(),
+   category: z.string().nullable(),
+   itemType: z.string().nullable(),
+   priority: z.number(),
 });
 
 export function faqFromStrapi(
@@ -25,7 +26,13 @@ export function faqFromStrapi(
    return {
       category: isPresent(category) ? category : null,
       itemType: isPresent(itemType) ? itemType : null,
+      priority: fragment?.attributes?.priority ?? 0,
       question,
       answer,
    };
+}
+
+// This sorts FAQs by priority, from highest to lowest.
+export function compareFAQs(a: FAQ, b: FAQ): number {
+   return b.priority - a.priority;
 }

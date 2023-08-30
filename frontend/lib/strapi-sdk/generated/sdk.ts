@@ -2627,10 +2627,11 @@ export type FaqFieldsFragment = {
    id?: string | null;
    attributes?: {
       __typename?: 'Faq';
-      category?: string | null;
-      item_type?: string | null;
       question: string;
       answer: string;
+      category?: string | null;
+      item_type?: string | null;
+      priority?: number | null;
    } | null;
 };
 
@@ -3112,10 +3113,11 @@ export type FindProductQuery = {
                           id?: string | null;
                           attributes?: {
                              __typename?: 'Faq';
-                             category?: string | null;
-                             item_type?: string | null;
                              question: string;
                              answer: string;
+                             category?: string | null;
+                             item_type?: string | null;
+                             priority?: number | null;
                           } | null;
                        }>;
                     } | null;
@@ -3299,14 +3301,17 @@ export type FindProductListQuery = {
                                                                            | null;
                                                                         attributes?: {
                                                                            __typename?: 'Faq';
+                                                                           question: string;
+                                                                           answer: string;
                                                                            category?:
                                                                               | string
                                                                               | null;
                                                                            item_type?:
                                                                               | string
                                                                               | null;
-                                                                           question: string;
-                                                                           answer: string;
+                                                                           priority?:
+                                                                              | number
+                                                                              | null;
                                                                         } | null;
                                                                      }>;
                                                                   } | null;
@@ -3322,14 +3327,17 @@ export type FindProductListQuery = {
                                                                   | null;
                                                                attributes?: {
                                                                   __typename?: 'Faq';
+                                                                  question: string;
+                                                                  answer: string;
                                                                   category?:
                                                                      | string
                                                                      | null;
                                                                   item_type?:
                                                                      | string
                                                                      | null;
-                                                                  question: string;
-                                                                  answer: string;
+                                                                  priority?:
+                                                                     | number
+                                                                     | null;
                                                                } | null;
                                                             }>;
                                                          } | null;
@@ -3343,14 +3351,17 @@ export type FindProductListQuery = {
                                                       id?: string | null;
                                                       attributes?: {
                                                          __typename?: 'Faq';
+                                                         question: string;
+                                                         answer: string;
                                                          category?:
                                                             | string
                                                             | null;
                                                          item_type?:
                                                             | string
                                                             | null;
-                                                         question: string;
-                                                         answer: string;
+                                                         priority?:
+                                                            | number
+                                                            | null;
                                                       } | null;
                                                    }>;
                                                 } | null;
@@ -3364,10 +3375,11 @@ export type FindProductListQuery = {
                                              id?: string | null;
                                              attributes?: {
                                                 __typename?: 'Faq';
-                                                category?: string | null;
-                                                item_type?: string | null;
                                                 question: string;
                                                 answer: string;
+                                                category?: string | null;
+                                                item_type?: string | null;
+                                                priority?: number | null;
                                              } | null;
                                           }>;
                                        } | null;
@@ -3381,10 +3393,11 @@ export type FindProductListQuery = {
                                     id?: string | null;
                                     attributes?: {
                                        __typename?: 'Faq';
-                                       category?: string | null;
-                                       item_type?: string | null;
                                        question: string;
                                        answer: string;
+                                       category?: string | null;
+                                       item_type?: string | null;
+                                       priority?: number | null;
                                     } | null;
                                  }>;
                               } | null;
@@ -3398,10 +3411,11 @@ export type FindProductListQuery = {
                            id?: string | null;
                            attributes?: {
                               __typename?: 'Faq';
-                              category?: string | null;
-                              item_type?: string | null;
                               question: string;
                               answer: string;
+                              category?: string | null;
+                              item_type?: string | null;
+                              priority?: number | null;
                            } | null;
                         }>;
                      } | null;
@@ -3505,10 +3519,11 @@ export type FindProductListQuery = {
                   id?: string | null;
                   attributes?: {
                      __typename?: 'Faq';
-                     category?: string | null;
-                     item_type?: string | null;
                      question: string;
                      answer: string;
+                     category?: string | null;
+                     item_type?: string | null;
+                     priority?: number | null;
                   } | null;
                }>;
             } | null;
@@ -3627,14 +3642,17 @@ export type ProductListFieldsFragment = {
                                                                   | null;
                                                                attributes?: {
                                                                   __typename?: 'Faq';
+                                                                  question: string;
+                                                                  answer: string;
                                                                   category?:
                                                                      | string
                                                                      | null;
                                                                   item_type?:
                                                                      | string
                                                                      | null;
-                                                                  question: string;
-                                                                  answer: string;
+                                                                  priority?:
+                                                                     | number
+                                                                     | null;
                                                                } | null;
                                                             }>;
                                                          } | null;
@@ -3648,14 +3666,17 @@ export type ProductListFieldsFragment = {
                                                       id?: string | null;
                                                       attributes?: {
                                                          __typename?: 'Faq';
+                                                         question: string;
+                                                         answer: string;
                                                          category?:
                                                             | string
                                                             | null;
                                                          item_type?:
                                                             | string
                                                             | null;
-                                                         question: string;
-                                                         answer: string;
+                                                         priority?:
+                                                            | number
+                                                            | null;
                                                       } | null;
                                                    }>;
                                                 } | null;
@@ -3669,10 +3690,11 @@ export type ProductListFieldsFragment = {
                                              id?: string | null;
                                              attributes?: {
                                                 __typename?: 'Faq';
-                                                category?: string | null;
-                                                item_type?: string | null;
                                                 question: string;
                                                 answer: string;
+                                                category?: string | null;
+                                                item_type?: string | null;
+                                                priority?: number | null;
                                              } | null;
                                           }>;
                                        } | null;
@@ -3686,10 +3708,11 @@ export type ProductListFieldsFragment = {
                                     id?: string | null;
                                     attributes?: {
                                        __typename?: 'Faq';
-                                       category?: string | null;
-                                       item_type?: string | null;
                                        question: string;
                                        answer: string;
+                                       category?: string | null;
+                                       item_type?: string | null;
+                                       priority?: number | null;
                                     } | null;
                                  }>;
                               } | null;
@@ -3703,10 +3726,11 @@ export type ProductListFieldsFragment = {
                            id?: string | null;
                            attributes?: {
                               __typename?: 'Faq';
-                              category?: string | null;
-                              item_type?: string | null;
                               question: string;
                               answer: string;
+                              category?: string | null;
+                              item_type?: string | null;
+                              priority?: number | null;
                            } | null;
                         }>;
                      } | null;
@@ -3720,10 +3744,11 @@ export type ProductListFieldsFragment = {
                   id?: string | null;
                   attributes?: {
                      __typename?: 'Faq';
-                     category?: string | null;
-                     item_type?: string | null;
                      question: string;
                      answer: string;
+                     category?: string | null;
+                     item_type?: string | null;
+                     priority?: number | null;
                   } | null;
                }>;
             } | null;
@@ -3827,10 +3852,11 @@ export type ProductListFieldsFragment = {
          id?: string | null;
          attributes?: {
             __typename?: 'Faq';
-            category?: string | null;
-            item_type?: string | null;
             question: string;
             answer: string;
+            category?: string | null;
+            item_type?: string | null;
+            priority?: number | null;
          } | null;
       }>;
    } | null;
@@ -3849,10 +3875,11 @@ export type AncestorProductListFieldsFragment = {
          id?: string | null;
          attributes?: {
             __typename?: 'Faq';
-            category?: string | null;
-            item_type?: string | null;
             question: string;
             answer: string;
+            category?: string | null;
+            item_type?: string | null;
+            priority?: number | null;
          } | null;
       }>;
    } | null;
@@ -3984,10 +4011,11 @@ export type FindReusableSectionsQuery = {
                           id?: string | null;
                           attributes?: {
                              __typename?: 'Faq';
-                             category?: string | null;
-                             item_type?: string | null;
                              question: string;
                              answer: string;
+                             category?: string | null;
+                             item_type?: string | null;
+                             priority?: number | null;
                           } | null;
                        }>;
                     } | null;
@@ -4148,10 +4176,11 @@ export type ReusableSectionFieldsFragment = {
                  id?: string | null;
                  attributes?: {
                     __typename?: 'Faq';
-                    category?: string | null;
-                    item_type?: string | null;
                     question: string;
                     answer: string;
+                    category?: string | null;
+                    item_type?: string | null;
+                    priority?: number | null;
                  } | null;
               }>;
            } | null;
@@ -5303,10 +5332,11 @@ export type FaQsSectionFieldsFragment = {
          id?: string | null;
          attributes?: {
             __typename?: 'Faq';
-            category?: string | null;
-            item_type?: string | null;
             question: string;
             answer: string;
+            category?: string | null;
+            item_type?: string | null;
+            priority?: number | null;
          } | null;
       }>;
    } | null;
@@ -5663,10 +5693,11 @@ export const FaqFieldsFragmentDoc = `
     fragment FAQFields on FaqEntity {
   id
   attributes {
-    category
-    item_type
     question
     answer
+    category
+    item_type
+    priority
   }
 }
     `;

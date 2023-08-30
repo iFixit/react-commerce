@@ -1,7 +1,7 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
 import type { ComponentMiscPlacementFiltersInput } from '@lib/strapi-sdk';
 import { ProductListFieldsFragment } from '@lib/strapi-sdk';
-import { FAQ, faqFromStrapi } from '@models/components/faq';
+import { compareFAQs, FAQ, faqFromStrapi } from '@models/components/faq';
 import type { ReusableSection } from '@models/reusable-section';
 import { findReusableSections } from '@models/reusable-section/server';
 import type { Dictionary } from 'lodash';
@@ -52,7 +52,7 @@ export async function findProductListReusableSections({
                ...ancestryFaqsWithoutCategory,
                ...sectionFaqsWithoutCategory,
                ...Object.values(allFaqsByCategory),
-            ];
+            ].sort(compareFAQs);
             return reusableSection;
          }
          default:
