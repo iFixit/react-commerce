@@ -261,6 +261,7 @@ const Wiki: NextPageWithLayout<{
                            id="introduction"
                            aria-label="Introduction"
                            selfLinked={false}
+                           mt={0}
                            display={{ base: 'none', md: 'block' }}
                         >
                            Introduction
