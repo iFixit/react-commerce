@@ -1,8 +1,8 @@
 import { test, expect } from '../test-fixtures';
 
-test.describe('Vulcan Page Content and SEO', () => {
+test.describe('Troubleshooting Page Content and SEO', () => {
    test('Loads Successfully', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       await expect(
          page.getByRole('heading', { name: 'Dryer Not Spinning' })
       ).toBeVisible();
@@ -16,14 +16,14 @@ test.describe('Vulcan Page Content and SEO', () => {
    });
 
    test('index, follow Meta Tag Included', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       // check that the meta robots tag is set to index, follow
       const meta = page.locator('meta[name="robots"]');
       await expect(meta).toHaveAttribute('content', 'index, follow');
    });
 
    test('Canonical Link Included', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       // check that the canonical link is a resonable URL
       const canonical = page.locator('link[rel="canonical"]');
       await expect(canonical).toHaveAttribute('href', /Not.Spinning/);
@@ -73,12 +73,12 @@ test.describe('Vulcan Page Content and SEO', () => {
    });
 
    test('Redirect to Canonical URL', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       expect(page.url()).toMatch(/Not.Spinning/);
    });
 
    test('Breadcrumbs Visible', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       const nav = page.getByRole('navigation', { name: 'breadcrumb' });
       await expect(nav).toBeVisible();
 
@@ -89,14 +89,14 @@ test.describe('Vulcan Page Content and SEO', () => {
    });
 
    test('Edit Page Link Visibile', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       // check that the edit link is a resonable URL
       const editLink = page.getByRole('link', { name: 'Edit' });
       await expect(editLink).toBeVisible();
    });
 
    test('History Page Link in Dropdown', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       const dropdown = page.getByRole('button', { name: 'Options' });
       dropdown.click();
       const historyLink = page.getByRole('menuitem', { name: 'History' });
@@ -104,12 +104,12 @@ test.describe('Vulcan Page Content and SEO', () => {
    });
 
    test('Last Updated Date Visible', async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       await expect(page.getByText('Last updated')).toBeVisible();
    });
 
    test("Author's Name Visible", async ({ page }) => {
-      await page.goto('/Vulcan/Dryer_Not_Spinning');
+      await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
       await expect(page.getByText(/and \d+ contributors/)).toBeVisible();
    });
 });
