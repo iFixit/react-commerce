@@ -29,6 +29,9 @@
          "relation": "manyToMany",
          "target": "api::product-list.product-list",
          "mappedBy": "faqs"
+      },
+      "item_type": {
+         "type": "string"
       }
    }
 }
