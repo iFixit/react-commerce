@@ -115,6 +115,9 @@ const Wiki: NextPageWithLayout<{
       .concat(RelatedProblemsTitle)
       .filter(Boolean);
 
+   const includeIntroductionHeading =
+      wikiData.introduction.length > 0 && !wikiData.introduction[0].heading;
+
    return (
       <>
          <GoogleNoScript />
@@ -255,7 +258,7 @@ const Wiki: NextPageWithLayout<{
                      />
                   </Box>
                   <Box id="introduction" mt={{ base: '0px', md: '28px' }}>
-                     {wikiData.introduction.length > 0 && (
+                     {includeIntroductionHeading && (
                         <HeadingSelfLink
                            as="h2"
                            id="introduction"
