@@ -93,36 +93,6 @@ export function ShoppingCartItems() {
          <Slide show={cart.data?.hasItemsInCart}>
             <CheckoutError error={checkout.error} onDismiss={checkout.reset} />
             <Box w="full">
-               <Collapse show={!cart.isError} mb="3">
-                  <Flex w="full" justify="space-between">
-                     <Text fontSize="sm" fontWeight="bold">
-                        Total
-                     </Text>
-                     <Flex direction="column" align="flex-end">
-                        {cart.data && !cart.isRefetching ? (
-                           <>
-                              <Text
-                                 color="brand.500"
-                                 fontSize="xl"
-                                 lineHeight="1em"
-                                 fontWeight="bold"
-                              >
-                                 {formatMoney(cart.data.totals.price)}
-                              </Text>
-                              {cart.data.totals.discount &&
-                                 cart.data.totals.discount.amount > 0 && (
-                                    <Text color="gray.500">
-                                       You saved{' '}
-                                       {formatMoney(cart.data.totals.discount)}
-                                    </Text>
-                                 )}
-                           </>
-                        ) : (
-                           <Skeleton h="20px" w="80px" />
-                        )}
-                     </Flex>
-                  </Flex>
-               </Collapse>
                <SimpleGrid columns={2} spacing="2.5" w="full">
                   <Button
                      colorScheme="blue"
