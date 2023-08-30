@@ -2628,6 +2628,7 @@ export type FaqFieldsFragment = {
    attributes?: {
       __typename?: 'Faq';
       category?: string | null;
+      item_type?: string | null;
       question: string;
       answer: string;
    } | null;
@@ -3112,6 +3113,7 @@ export type FindProductQuery = {
                           attributes?: {
                              __typename?: 'Faq';
                              category?: string | null;
+                             item_type?: string | null;
                              question: string;
                              answer: string;
                           } | null;
@@ -3300,6 +3302,9 @@ export type FindProductListQuery = {
                                                                            category?:
                                                                               | string
                                                                               | null;
+                                                                           item_type?:
+                                                                              | string
+                                                                              | null;
                                                                            question: string;
                                                                            answer: string;
                                                                         } | null;
@@ -3320,6 +3325,9 @@ export type FindProductListQuery = {
                                                                   category?:
                                                                      | string
                                                                      | null;
+                                                                  item_type?:
+                                                                     | string
+                                                                     | null;
                                                                   question: string;
                                                                   answer: string;
                                                                } | null;
@@ -3338,6 +3346,9 @@ export type FindProductListQuery = {
                                                          category?:
                                                             | string
                                                             | null;
+                                                         item_type?:
+                                                            | string
+                                                            | null;
                                                          question: string;
                                                          answer: string;
                                                       } | null;
@@ -3354,6 +3365,7 @@ export type FindProductListQuery = {
                                              attributes?: {
                                                 __typename?: 'Faq';
                                                 category?: string | null;
+                                                item_type?: string | null;
                                                 question: string;
                                                 answer: string;
                                              } | null;
@@ -3370,6 +3382,7 @@ export type FindProductListQuery = {
                                     attributes?: {
                                        __typename?: 'Faq';
                                        category?: string | null;
+                                       item_type?: string | null;
                                        question: string;
                                        answer: string;
                                     } | null;
@@ -3386,6 +3399,7 @@ export type FindProductListQuery = {
                            attributes?: {
                               __typename?: 'Faq';
                               category?: string | null;
+                              item_type?: string | null;
                               question: string;
                               answer: string;
                            } | null;
@@ -3492,6 +3506,7 @@ export type FindProductListQuery = {
                   attributes?: {
                      __typename?: 'Faq';
                      category?: string | null;
+                     item_type?: string | null;
                      question: string;
                      answer: string;
                   } | null;
@@ -3615,6 +3630,9 @@ export type ProductListFieldsFragment = {
                                                                   category?:
                                                                      | string
                                                                      | null;
+                                                                  item_type?:
+                                                                     | string
+                                                                     | null;
                                                                   question: string;
                                                                   answer: string;
                                                                } | null;
@@ -3633,6 +3651,9 @@ export type ProductListFieldsFragment = {
                                                          category?:
                                                             | string
                                                             | null;
+                                                         item_type?:
+                                                            | string
+                                                            | null;
                                                          question: string;
                                                          answer: string;
                                                       } | null;
@@ -3649,6 +3670,7 @@ export type ProductListFieldsFragment = {
                                              attributes?: {
                                                 __typename?: 'Faq';
                                                 category?: string | null;
+                                                item_type?: string | null;
                                                 question: string;
                                                 answer: string;
                                              } | null;
@@ -3665,6 +3687,7 @@ export type ProductListFieldsFragment = {
                                     attributes?: {
                                        __typename?: 'Faq';
                                        category?: string | null;
+                                       item_type?: string | null;
                                        question: string;
                                        answer: string;
                                     } | null;
@@ -3681,6 +3704,7 @@ export type ProductListFieldsFragment = {
                            attributes?: {
                               __typename?: 'Faq';
                               category?: string | null;
+                              item_type?: string | null;
                               question: string;
                               answer: string;
                            } | null;
@@ -3697,6 +3721,7 @@ export type ProductListFieldsFragment = {
                   attributes?: {
                      __typename?: 'Faq';
                      category?: string | null;
+                     item_type?: string | null;
                      question: string;
                      answer: string;
                   } | null;
@@ -3803,6 +3828,7 @@ export type ProductListFieldsFragment = {
          attributes?: {
             __typename?: 'Faq';
             category?: string | null;
+            item_type?: string | null;
             question: string;
             answer: string;
          } | null;
@@ -3824,6 +3850,7 @@ export type AncestorProductListFieldsFragment = {
          attributes?: {
             __typename?: 'Faq';
             category?: string | null;
+            item_type?: string | null;
             question: string;
             answer: string;
          } | null;
@@ -3958,6 +3985,7 @@ export type FindReusableSectionsQuery = {
                           attributes?: {
                              __typename?: 'Faq';
                              category?: string | null;
+                             item_type?: string | null;
                              question: string;
                              answer: string;
                           } | null;
@@ -4121,6 +4149,7 @@ export type ReusableSectionFieldsFragment = {
                  attributes?: {
                     __typename?: 'Faq';
                     category?: string | null;
+                    item_type?: string | null;
                     question: string;
                     answer: string;
                  } | null;
@@ -5275,6 +5304,7 @@ export type FaQsSectionFieldsFragment = {
          attributes?: {
             __typename?: 'Faq';
             category?: string | null;
+            item_type?: string | null;
             question: string;
             answer: string;
          } | null;
@@ -5634,6 +5664,7 @@ export const FaqFieldsFragmentDoc = `
   id
   attributes {
     category
+    item_type
     question
     answer
   }
