@@ -159,6 +159,7 @@ const Wiki: NextPageWithLayout<{
                   paddingBottom={8}
                   flexShrink="1"
                   id="main"
+                  minW={0}
                >
                   <TagManager />
                   <Metadata
