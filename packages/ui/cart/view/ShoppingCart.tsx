@@ -39,7 +39,7 @@ export function ShoppingCart() {
          <Box pr="20">
             <ShoppingCartItems />
          </Box>
-         <Box width="md">
+         <Box width="lg">
             <ShoppingCartTotals />
          </Box>
       </Flex>
