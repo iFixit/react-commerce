@@ -32,6 +32,9 @@
       },
       "item_type": {
          "type": "string"
+      },
+      "priority": {
+         "type": "integer"
       }
    }
 }
