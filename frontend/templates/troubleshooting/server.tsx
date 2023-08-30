@@ -77,13 +77,13 @@ function getTroubleshootingApiUrl(
    const wikiname = context.params?.wikiname;
 
    if (wikiname && typeof wikiname === 'string') {
-      return `Troubleshooting/${wikiname}?vulcan=1`;
+      return `Troubleshooting/${wikiname}`;
    }
 
    const wikiid = context.params?.wikiid;
 
    if (wikiid && typeof wikiid === 'string') {
-      return `Troubleshooting/wikiid/${wikiid}?vulcan=1`;
+      return `Troubleshooting/wikiid/${wikiid}`;
    }
 
    return null;

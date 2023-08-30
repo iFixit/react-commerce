@@ -200,7 +200,6 @@ const Wiki: NextPageWithLayout<{
                                  <ModalHeader>{title}</ModalHeader>
                               </VisuallyHidden>
                               <ModalCloseButton />
-                              <VisuallyHidden></VisuallyHidden>
                               <ModalBody padding={0}>
                                  <Image
                                     src={mainImageUrlLarge}
