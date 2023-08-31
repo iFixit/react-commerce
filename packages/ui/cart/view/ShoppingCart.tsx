@@ -12,16 +12,12 @@ import {
    Heading,
    HStack,
    SimpleGrid,
-   Skeleton,
-   Spacer,
    Spinner,
-   Text,
    VStack,
 } from '@chakra-ui/react';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
 import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
-import { formatMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
 import { AnimatedList, Collapse, Slide, Fade } from '../../animations';
@@ -54,7 +50,7 @@ export function ShoppingCartItems() {
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
 
    return (
-      <VStack spacing="5">
+      <Flex direction="column" spacing="5">
          <CartHeading cart={cart} />
          <CartAlert cart={cart} />
          {cart.data?.hasItemsInCart && (
@@ -105,7 +101,7 @@ export function ShoppingCartItems() {
                </SimpleGrid>
             </Box>
          </Slide>
-      </VStack>
+      </Flex>
    );
 }
 
