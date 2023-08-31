@@ -110,7 +110,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
        * so it doesn't much matter what we use.
        */
       const currentUrl = new URL(
-         context.resolvedUrl,
+         decodeURIComponent(context.resolvedUrl),
          'https://vulcan.ifixit.com'
       );
 
