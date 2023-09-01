@@ -14,7 +14,10 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { GoogleAnalytics, Matomo } from '@components/analytics';
+import {
+   AppRouterGoogleAnalytics,
+   AppRouterMatomo,
+} from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -325,8 +328,8 @@ export default function DefaultLayout({
                </Flex>
             </Box>
             <Suspense>
-               <Matomo />
-               <GoogleAnalytics />
+               <AppRouterMatomo />
+               <AppRouterGoogleAnalytics />
             </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
