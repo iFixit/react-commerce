@@ -1,5 +1,3 @@
-'use client';
-
 import {
    Alert,
    AlertIcon,
@@ -7,11 +5,11 @@ import {
    Box,
    DrawerCloseButton,
    Flex,
-   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
    Portal,
+   Icon,
 } from '@chakra-ui/react';
 import { GoogleAnalytics, Matomo } from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
@@ -62,12 +60,11 @@ import {
    WordmarkLink,
 } from '@ifixit/ui';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
-import { Suspense } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
 
 const DefaultLayoutComponent = function ({
    title,
@@ -324,10 +321,8 @@ const DefaultLayoutComponent = function ({
                   />
                </Flex>
             </Box>
-            <Suspense>
-               <Matomo />
-               <GoogleAnalytics />
-            </Suspense>
+            <Matomo />
+            <GoogleAnalytics />
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
    );
@@ -339,13 +334,12 @@ interface LayoutNavigationDrawerProps {
 
 function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    const headerContext = useHeaderContext();
-   const pathname = usePathname();
-   const searchParams = useSearchParams();
+   const router = useRouter();
 
    React.useEffect(() => {
       headerContext.navigation.close();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [pathname, searchParams]);
+   }, [router.asPath]);
 
    return (
       <NavigationDrawer>
