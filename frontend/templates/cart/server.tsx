@@ -1,9 +1,5 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
-import {
-   CacheLong,
-   hasDisableCacheGets,
-   withCache,
-} from '@helpers/cache-control-helpers';
+import { CacheLong, withCache } from '@helpers/cache-control-helpers';
 import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { getLayoutServerSideProps } from '@layouts/default/server';
