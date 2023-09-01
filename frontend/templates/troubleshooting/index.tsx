@@ -756,7 +756,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                {intro.heading}
             </HeadingSelfLink>
          )}
-         <PrerenderedHTML html={intro.body} />
+         <PrerenderedHTML html={intro.body} styles="troubleshooting" />
       </>
    );
 }
@@ -772,7 +772,7 @@ const ConclusionSection = function ConclusionSectionInner({
          <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
             {conclusion.heading}
          </HeadingSelfLink>
-         <PrerenderedHTML html={conclusion.body} />
+         <PrerenderedHTML html={conclusion.body} styles="troubleshooting" />
       </>
    );
 };

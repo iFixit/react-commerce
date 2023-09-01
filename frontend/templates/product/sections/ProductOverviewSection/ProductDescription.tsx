@@ -98,6 +98,7 @@ function VariantDescription({ children }: VariantDescriptionProps) {
    return (
       <PrerenderedHTML
          html={children}
+         styles="commerce"
          fontSize="sm"
          sx={{
             'p:not(:last-of-type)': {
@@ -117,6 +118,7 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
    return (
       <PrerenderedHTML
          html={children}
+         styles="commerce"
          fontSize="sm"
          sx={{
             a: {
