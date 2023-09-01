@@ -11,16 +11,15 @@ export function CrossSell() {
    const hasItemsInCart = cart.data?.hasItemsInCart ?? false;
 
    return (
-      <Box px="3" py="1.5" data-testid="cart-drawer-x-sell-items">
-         {hasItemsInCart && (
-            <AnimatedList
-               items={crossSellItems}
-               getItemId={(item) => item.itemcode}
-               renderItem={(item) => {
-                  return <CrossSellItem item={item} my="1.5" />;
-               }}
-            />
-         )}
-      </Box>
+      (hasItemsInCart && (
+         <AnimatedList
+            items={crossSellItems}
+            getItemId={(item) => item.itemcode}
+            renderItem={(item) => {
+               return <CrossSellItem item={item} my="1.5" />;
+            }}
+         />
+      )) ||
+      null
    );
 }

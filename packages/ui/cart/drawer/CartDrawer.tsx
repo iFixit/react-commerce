@@ -139,7 +139,13 @@ export function CartDrawer() {
                                  />
                               )}
                            </Box>
-                           <CrossSell />
+                           <Box
+                              px="3"
+                              py="1.5"
+                              data-testid="cart-drawer-x-sell-items"
+                           >
+                              <CrossSell />
+                           </Box>
                         </>
                      )}
                      <Fade
