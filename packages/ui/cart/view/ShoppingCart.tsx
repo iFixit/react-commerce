@@ -32,11 +32,17 @@ type CartQuery = ReturnType<typeof useCart>;
 export function ShoppingCart() {
    const checkout = useCheckout();
    return (
-      <Flex py="16" width="full" maxWidth="6xl" margin="auto">
-         <Box pr="20" flexGrow="1">
+      <Flex
+         direction={{ base: 'column', lg: 'row' }}
+         p={{ base: 3, md: 10, lg: 16 }}
+         width="full"
+         maxWidth="6xl"
+         margin="auto"
+      >
+         <Box pr={{ base: '0', lg: '20' }} flexGrow="1">
             <ShoppingCartItems />
          </Box>
-         <Flex direction="column" width="sm" gap="5">
+         <Flex direction="column" width={{ base: 'full', lg: 'sm' }} gap="5">
             <ShoppingCartTotals />
             <CheckoutError error={checkout.error} onDismiss={checkout.reset} />
             <CompleteOrderButton checkout={checkout} />
@@ -107,7 +113,7 @@ function CompleteOrderButton({
          isLoading={checkout.isRedirecting}
          onClick={checkout.redirectToCheckout}
       >
-         Complete Order
+         Complete order
       </Button>
    );
 }
