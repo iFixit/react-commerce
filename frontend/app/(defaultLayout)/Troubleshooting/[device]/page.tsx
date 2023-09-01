@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import PageTemplate from './pageTemplate';
 import { RestrictRobots } from '@helpers/next-helpers';
+import { notFound } from 'next/navigation';
+import { flags } from '@config/flags';
 
 export type PageParams = {
    device: string;
@@ -12,8 +14,16 @@ export type PageProps = {
 };
 
 export default function Page({ params, searchParams }: PageProps) {
+   ensureFlag();
+
    const pageProps = getPageProps({ params, searchParams });
    return <PageTemplate {...pageProps} />;
+}
+
+function ensureFlag() {
+   if (!flags.TROUBLESHOOTING_COLLECTIONS_ENABLED) {
+      notFound();
+   }
 }
 
 function getPageProps({
