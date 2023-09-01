@@ -30,14 +30,17 @@ import { ShoppingCartTotals } from './ShoppingCartTotals';
 type CartQuery = ReturnType<typeof useCart>;
 
 export function ShoppingCart() {
+   const checkout = useCheckout();
    return (
       <Flex py="16" width="full" maxWidth="6xl" margin="auto">
          <Box pr="20" flexGrow="1">
             <ShoppingCartItems />
          </Box>
-         <Box width="sm">
+         <Flex direction="column" width="sm" gap="5">
             <ShoppingCartTotals />
-         </Box>
+            <CheckoutError error={checkout.error} onDismiss={checkout.reset} />
+            <CompleteOrderButton checkout={checkout} />
+         </Flex>
       </Flex>
    );
 }
@@ -46,7 +49,6 @@ export function ShoppingCartItems() {
    const appContext = useAppContext();
    const isMounted = useIsMountedState();
    const cart = useCart();
-   const checkout = useCheckout();
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
 
    return (
@@ -85,23 +87,26 @@ export function ShoppingCartItems() {
          >
             <CartEmptyState />
          </Fade>
-
-         <Slide show={cart.data?.hasItemsInCart}>
-            <CheckoutError error={checkout.error} onDismiss={checkout.reset} />
-            <Box w="full">
-               <SimpleGrid columns={2} spacing="2.5" w="full">
-                  <Button
-                     colorScheme="blue"
-                     disabled={!cart.data?.hasItemsInCart}
-                     isLoading={checkout.isRedirecting}
-                     onClick={checkout.redirectToCheckout}
-                  >
-                     Checkout
-                  </Button>
-               </SimpleGrid>
-            </Box>
-         </Slide>
       </VStack>
+   );
+}
+
+function CompleteOrderButton({
+   checkout,
+}: {
+   checkout: ReturnType<typeof useCheckout>;
+}) {
+   const cart = useCart();
+   return (
+      <Button
+         w="full"
+         colorScheme="blue"
+         disabled={!cart.data?.hasItemsInCart}
+         isLoading={checkout.isRedirecting}
+         onClick={checkout.redirectToCheckout}
+      >
+         Complete Order
+      </Button>
    );
 }
 
