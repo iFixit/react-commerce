@@ -101,6 +101,8 @@ function CompleteOrderButton({
       <Button
          w="full"
          colorScheme="blue"
+         py="4"
+         height="auto"
          disabled={!cart.data?.hasItemsInCart}
          isLoading={checkout.isRedirecting}
          onClick={checkout.redirectToCheckout}
