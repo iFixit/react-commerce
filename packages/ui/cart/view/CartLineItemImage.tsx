@@ -11,7 +11,7 @@ interface CartLineItemImageProps {
 export function CartLineItemImage({ src, alt }: CartLineItemImageProps) {
    return (
       <Box
-         boxSize="16"
+         boxSize="74px"
          position="relative"
          borderColor="gray.300"
          borderWidth="1px"
@@ -24,8 +24,8 @@ export function CartLineItemImage({ src, alt }: CartLineItemImageProps) {
                src={src}
                alt={alt || ''}
                priority
-               height={62}
-               width={62}
+               height={72}
+               width={72}
                style={{
                   objectFit: 'cover',
                }}
