@@ -23,8 +23,10 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    withMiddleware(async (context) => {
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
+      const forceMiss = hasDisableCacheGets(context);
       const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
+         forceMiss,
       });
       const ifixitOrigin = ifixitOriginFromHost(context);
       const product = await Product.get(
@@ -33,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             storeCode: DEFAULT_STORE_CODE,
             ifixitOrigin,
          },
-         { forceMiss: hasDisableCacheGets(context) }
+         { forceMiss }
       );
 
       if (product == null) {

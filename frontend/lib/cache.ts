@@ -3,14 +3,21 @@ import { timeAsync } from '@ifixit/helpers';
 
 const cacheStore = new LRU({ max: 100 });
 
+type CacheOptions = {
+   ttl: number;
+   forceMiss?: boolean;
+};
+
 export function cache<T>(
    key: string,
    getValue: () => Promise<T>,
-   ttl: number
+   { ttl, forceMiss = false }: CacheOptions
 ): Promise<T> {
-   const fromCache = cacheStore.get(key) as Promise<T> | undefined;
-   if (fromCache !== undefined) {
-      return fromCache;
+   if (!forceMiss) {
+      const fromCache = cacheStore.get(key) as Promise<T> | undefined;
+      if (fromCache !== undefined) {
+         return fromCache;
+      }
    }
    const result = timeAsync(`Cache miss for '${key}'`, getValue);
    cacheStore.set(key, result, { ttl: ttl * 1000 });

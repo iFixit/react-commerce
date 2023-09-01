@@ -50,6 +50,7 @@ import {
    faAngleDown,
    faCircleNodes,
    faClockRotateLeft,
+   faInfoCircle,
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
@@ -114,6 +115,9 @@ const Wiki: NextPageWithLayout<{
       .concat(RelatedProblemsTitle)
       .filter(Boolean);
 
+   const includeIntroductionHeading =
+      wikiData.introduction.length > 0 && !wikiData.introduction[0].heading;
+
    return (
       <>
          <GoogleNoScript />
@@ -158,6 +162,7 @@ const Wiki: NextPageWithLayout<{
                   paddingBottom={8}
                   flexShrink="1"
                   id="main"
+                  minW={0}
                >
                   <TagManager />
                   <Metadata
@@ -171,7 +176,7 @@ const Wiki: NextPageWithLayout<{
                      spacing={0}
                      mt={{ base: 3, sm: 8 }}
                      align="start"
-                     pb={{ base: 4, sm: 6 }}
+                     pb="12px"
                      borderBottom="1px"
                      borderColor="gray.300"
                   >
@@ -228,38 +233,59 @@ const Wiki: NextPageWithLayout<{
                         />
                      </VStack>
                   </HStack>
-                  {wikiData.introduction.map((intro) => (
-                     <IntroductionSection key={intro.heading} intro={intro} />
-                  ))}
-                  {wikiData.solutions.length > 0 && (
-                     <Box
-                        borderTop="1px"
-                        borderColor="gray.300"
-                        mt={{ base: 4, sm: 6 }}
+                  <Box
+                     display={{ base: 'default', md: 'none' }}
+                     mt="8px"
+                     borderBottom="1px"
+                     borderColor="gray.300"
+                     padding="6px 0px 16px 0px"
+                  >
+                     <HeadingSelfLink
+                        as="h2"
+                        fontSize="20px"
+                        mt="0px"
+                        fontWeight="semibold"
+                        selfLinked
+                        id="causes"
                      >
+                        {'Causes'}
+                     </HeadingSelfLink>
+                     <TableOfContents
+                        introduction={wikiData.introduction}
+                        solutions={wikiData.solutions}
+                        problems={wikiData.linkedProblems}
+                     />
+                  </Box>
+                  <Box id="introduction" mt={{ base: '0px', md: '28px' }}>
+                     {includeIntroductionHeading && (
                         <HeadingSelfLink
                            as="h2"
-                           fontSize="20px"
-                           fontWeight="semibold"
-                           selfLinked
-                           id="causes"
+                           id="introduction"
+                           aria-label="Introduction"
+                           selfLinked={false}
+                           mt={0}
+                           display={{ base: 'none', md: 'block' }}
                         >
-                           {'Causes'}
+                           Introduction
                         </HeadingSelfLink>
-                        <TableOfContents
-                           solutions={wikiData.solutions}
-                           problems={wikiData.linkedProblems}
+                     )}
+                     {wikiData.introduction.map((intro) => (
+                        <IntroductionSection
+                           key={intro.heading}
+                           intro={intro}
                         />
-                        <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
-                           {wikiData.solutions.map((solution, index) => (
-                              <SectionCard
-                                 key={solution.heading}
-                                 index={index + 1}
-                                 solution={solution}
-                              />
-                           ))}
-                        </Stack>
-                     </Box>
+                     ))}
+                  </Box>
+                  {wikiData.solutions.length > 0 && (
+                     <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
+                        {wikiData.solutions.map((solution, index) => (
+                           <SectionCard
+                              key={solution.heading}
+                              index={index + 1}
+                              solution={solution}
+                           />
+                        ))}
+                     </Stack>
                   )}
                   <Conclusion conclusion={filteredConclusions} />
                   <AnswersCTA answersUrl={wikiData.answersUrl} />
@@ -276,14 +302,32 @@ const Wiki: NextPageWithLayout<{
 };
 
 function TableOfContents({
+   introduction,
    solutions,
    problems,
 }: {
+   introduction: Section[];
    solutions: Section[];
    problems: Problem[];
 }) {
    return (
       <VStack as="nav" align="flex-start" color="brand.500" mt={4} spacing={2}>
+         {introduction.length > 0 && (
+            <Stack>
+               <Link href="#introduction" fontWeight="semibold" display="flex">
+                  <Square
+                     size={6}
+                     border="1px solid"
+                     borderColor="brand.700"
+                     borderRadius="md"
+                     mr={2}
+                  >
+                     <FaIcon icon={faInfoCircle} color="brand.500" />
+                  </Square>
+                  <Box as="span">Introduction</Box>
+               </Link>
+            </Stack>
+         )}
          {solutions.map((solution, index) => (
             <Stack key={solution.heading}>
                <Link
