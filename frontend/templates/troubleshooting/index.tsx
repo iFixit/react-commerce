@@ -234,7 +234,6 @@ const Wiki: NextPageWithLayout<{
                      </VStack>
                   </HStack>
                   <Box
-                     display={{ base: 'default', md: 'none' }}
                      mt="8px"
                      borderBottom="1px"
                      borderColor="gray.300"
