@@ -31,11 +31,11 @@ type CartQuery = ReturnType<typeof useCart>;
 
 export function ShoppingCart() {
    return (
-      <Flex py="16" maxWidth="5xl" margin="auto">
-         <Box pr="20">
+      <Flex py="16" width="full" maxWidth="5xl" margin="auto">
+         <Box pr="20" flexGrow="1">
             <ShoppingCartItems />
          </Box>
-         <Box width="lg">
+         <Box width="sm">
             <ShoppingCartTotals />
          </Box>
       </Flex>
@@ -50,7 +50,7 @@ export function ShoppingCartItems() {
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
 
    return (
-      <Flex direction="column" spacing="5">
+      <VStack w="full" align="left" spacing="5">
          <CartHeading cart={cart} />
          <CartAlert cart={cart} />
          {cart.data?.hasItemsInCart && (
@@ -101,7 +101,7 @@ export function ShoppingCartItems() {
                </SimpleGrid>
             </Box>
          </Slide>
-      </Flex>
+      </VStack>
    );
 }
 
