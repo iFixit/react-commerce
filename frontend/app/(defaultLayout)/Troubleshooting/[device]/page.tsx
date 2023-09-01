@@ -3,7 +3,7 @@ import PageTemplate from './pageTemplate';
 import { RestrictRobots } from '@helpers/next-helpers';
 
 export type PageParams = {
-   text: string;
+   device: string;
 };
 
 export type PageProps = {
@@ -20,9 +20,9 @@ function getPageProps({
    params,
    searchParams: _searchParams,
 }: PageProps): PageParams {
-   const { text } = params;
+   const { device } = params;
    return {
-      text: `Hello ${text}!`,
+      device,
    };
 }
 
@@ -30,12 +30,12 @@ export async function generateMetadata({
    params,
    searchParams: _searchParams,
 }: PageProps): Promise<Metadata> {
-   const { text } = params;
+   const { device } = params;
 
    const ifixitOrigin = 'https://www.ifixit.com';
-   const canonicalUrl = `${ifixitOrigin}/HelloWorld/${text}`;
+   const canonicalUrl = `${ifixitOrigin}/Troubleshooting/${device}`;
 
-   const metaTitle = 'HelloWorld';
+   const metaTitle = `Troubleshooting Collection for ${device} - iFixit`;
    const metaDescription =
       'Uses the App Router to render a page with a dynamic path.';
 
