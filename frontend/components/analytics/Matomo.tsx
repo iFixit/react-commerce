@@ -1,17 +1,19 @@
 import { MATOMO_URL } from '@config/env';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import Script from 'next/script';
 import { trackMatomoPageView } from '@ifixit/analytics';
-import { usePathname, useSearchParams } from 'next/navigation';
 
 export function Matomo() {
-   const pathname = usePathname();
-   const searchParams = useSearchParams();
-
+   const router = useRouter();
    React.useEffect(() => {
-      const url = `${pathname}?${searchParams}`;
-      trackMatomoPageView(url);
-   }, [pathname, searchParams]);
+      router.events.on('routeChangeComplete', trackMatomoPageView);
+      router.events.on('hashChangeComplete', trackMatomoPageView);
+      return () => {
+         router.events.off('routeChangeComplete', trackMatomoPageView);
+         router.events.off('hashChangeComplete', trackMatomoPageView);
+      };
+   }, [router?.events]);
 
    return MATOMO_URL ? (
       <Script id="matomo-analytics" strategy="afterInteractive">
