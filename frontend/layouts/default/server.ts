@@ -4,6 +4,7 @@ import { findStoreByCode, getStoreList } from '@models/store';
 
 type GetLayoutServerSidePropsArgs = {
    storeCode: string;
+   forceMiss?: boolean;
 };
 
 export type DefaultLayoutProps = Awaited<
@@ -14,13 +15,14 @@ export type WithLayoutProps<T> = T & { layoutProps: DefaultLayoutProps };
 
 export async function getLayoutServerSideProps({
    storeCode,
+   forceMiss,
 }: GetLayoutServerSidePropsArgs) {
    const [globalSettings, stores, { shopify, ...currentStore }] =
       await timeAsync('layoutProps', () =>
          Promise.all([
-            getGlobalSettings(),
-            getStoreList(),
-            findStoreByCode(storeCode),
+            getGlobalSettings({ forceMiss }),
+            getStoreList({ forceMiss }),
+            findStoreByCode(storeCode, { forceMiss }),
          ])
       );
    return {
