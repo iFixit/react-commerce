@@ -361,18 +361,22 @@ export const PrerenderedHTML = chakra(function Prerendered({
       import('lite-youtube-embed');
    }, []);
 
-   const applyStyles = () => {
-      if (styles === 'troubleshooting') {
-         return troubleshootingStyles;
-      } else if (styles === 'commerce') {
-         return commerceStyles;
-      }
-   };
+   let sx;
+   switch (styles) {
+      case 'troubleshooting':
+         sx = troubleshootingStyles;
+         break;
+      case 'commerce':
+         sx = commerceStyles;
+         break;
+      default:
+         sx = {};
+   }
 
    return (
       <Box
          className={`prerendered ${className}`}
-         sx={applyStyles()}
+         sx={sx}
          dangerouslySetInnerHTML={{ __html: html }}
       />
    );
