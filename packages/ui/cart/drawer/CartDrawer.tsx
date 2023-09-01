@@ -132,7 +132,7 @@ export function CartDrawer() {
                                  return (
                                     <AnimatedListItem key={lineItem.itemcode}>
                                        <CartLineItem lineItem={lineItem} />
-                                       <Divider borderColor="chakra-border-color" />
+                                       <Divider borderColor="borderColor" />
                                     </AnimatedListItem>
                                  );
                               })}

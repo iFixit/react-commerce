@@ -8,13 +8,6 @@ class MyDocument extends Document {
       return (
          <Html>
             <Head>
-               <style
-                  dangerouslySetInnerHTML={{
-                     __html: `:root {
-                        --chakra-colors-chakra-border-color: #e5e7eb;
-                     }`,
-                  }}
-               />
                <link
                   rel="prefetch"
                   href={`${IFIXIT_ORIGIN}/api/2.0/user`}
