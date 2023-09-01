@@ -83,14 +83,7 @@ export function ShoppingCartItems() {
                <CrossSell />
             </>
          )}
-         <Fade
-            show={isCartEmpty}
-            disableExitAnimation
-            position="absolute"
-            w="full"
-            top="0"
-            left="0"
-         >
+         <Fade show={isCartEmpty} disableExitAnimation w="full">
             <CartEmptyState />
          </Fade>
       </VStack>
@@ -122,26 +115,27 @@ function CartHeading({ cart }: { cart: CartQuery }) {
    return (
       <HStack align="center" w="full">
          <Heading size="xl">Shopping cart</Heading>
-         {(cart.data != null || !cart.isError) && (
-            <Badge
-               borderRadius="full"
-               variant="subtle"
-               colorScheme="gray"
-               boxSize="6"
-               display="flex"
-               alignItems="center"
-               justifyContent="center"
-               bg="gray.100"
-               color="gray.400"
-               data-testid="cart-drawer-item-count"
-            >
-               {cart.isLoading ? (
-                  <Spinner size="xs" />
-               ) : (
-                  cart.data?.totals.itemsCount ?? 0
-               )}
-            </Badge>
-         )}
+         {(cart.data != null || !cart.isError) &&
+            cart.data?.totals.itemsCount !== 0 && (
+               <Badge
+                  borderRadius="full"
+                  variant="subtle"
+                  colorScheme="gray"
+                  boxSize="6"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  bg="gray.100"
+                  color="gray.400"
+                  data-testid="cart-drawer-item-count"
+               >
+                  {cart.isLoading ? (
+                     <Spinner size="xs" />
+                  ) : (
+                     cart.data?.totals.itemsCount ?? 0
+                  )}
+               </Badge>
+            )}
       </HStack>
    );
 }
