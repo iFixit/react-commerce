@@ -101,8 +101,15 @@ function VariantDescription({ children }: VariantDescriptionProps) {
          styles="commerce"
          fontSize="sm"
          sx={{
-            'p:not(:last-of-type)': {
+            ul: {
+               my: 3,
+               pl: 5,
+            },
+            p: {
                mb: 3,
+               _last: {
+                  mb: 0,
+               },
             },
          }}
       />
