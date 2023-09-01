@@ -2,7 +2,7 @@
 
 import { AppProviders } from '@components/common';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { DefaultLayout } from '@layouts/default';
+import DefaultLayout from './iFixitHeaderFooter';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ReactNode } from 'react';
 
