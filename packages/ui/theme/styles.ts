@@ -2,6 +2,9 @@ import { ThemeOverride } from '@chakra-ui/react';
 
 export const styles: ThemeOverride['styles'] = {
    global: {
+      '*, *::before, &::after': {
+         borderColor: 'gray.200', // Overwrite chakra global
+      },
       html: {
          scrollBehavior: 'smooth',
       },
