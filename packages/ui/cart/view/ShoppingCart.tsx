@@ -31,7 +31,7 @@ type CartQuery = ReturnType<typeof useCart>;
 
 export function ShoppingCart() {
    return (
-      <Flex py="16" width="full" maxWidth="5xl" margin="auto">
+      <Flex py="16" width="full" maxWidth="6xl" margin="auto">
          <Box pr="20" flexGrow="1">
             <ShoppingCartItems />
          </Box>

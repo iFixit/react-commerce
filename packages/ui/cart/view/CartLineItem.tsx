@@ -102,10 +102,10 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
             >
                {lineItem.name}
             </Link>
-            <Text color="gray.500" fontSize="sm">
+            <Text color="gray.500" fontSize="sm" fontFamily="mono">
                {lineItem.itemcode}
             </Text>
-            <Text color="gray.500" fontSize="sm">
+            <Text pb="2" pt="1" color="gray.500" fontSize="sm">
                {lineItem.variantTitle}
             </Text>
             <HStack borderColor="gray.300" borderWidth="1px" borderRadius="md">
