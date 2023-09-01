@@ -8,7 +8,6 @@ interface AnimatedListProps<T = any> {
    items: T[];
    renderItem: (item: T) => React.ReactNode;
    getItemId?: (item: T) => string;
-   debug?: string;
 }
 
 export function AnimatedList<T = any>({
