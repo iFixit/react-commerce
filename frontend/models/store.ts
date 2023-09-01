@@ -20,17 +20,23 @@ export type SocialMediaAccounts = Store['socialMediaAccounts'];
 
 export type ShopifySettings = Store['shopify'];
 
+type FindStoreByCodeOptions = {
+   forceMiss?: boolean;
+};
+
 /**
  * Get the store data (header menus, footer menus, etc) from the API.
  * @param {string} code The code of the store
  * @returns The store data.
  */
-export function findStoreByCode(code: string) {
-   return cache(
-      `store-${code}`,
-      () => findStoreByCodeFromStrapi(code),
-      60 * 60
-   );
+export function findStoreByCode(
+   code: string,
+   { forceMiss }: FindStoreByCodeOptions = {}
+) {
+   return cache(`store-${code}`, () => findStoreByCodeFromStrapi(code), {
+      ttl: 60 * 60,
+      forceMiss,
+   });
 }
 
 async function findStoreByCodeFromStrapi(code: string) {
@@ -81,12 +87,21 @@ export interface StoreListItem {
    currency: string;
 }
 
+type GetStoreListOptions = {
+   forceMiss?: boolean;
+};
+
 /**
  * Get the list of stores from the API.
  * @returns A list of store items.
  */
-export function getStoreList(): Promise<StoreListItem[]> {
-   return cache('storeList', getStoreListFromStrapi, 60 * 10);
+export function getStoreList({ forceMiss }: GetStoreListOptions = {}): Promise<
+   StoreListItem[]
+> {
+   return cache('storeList', getStoreListFromStrapi, {
+      ttl: 60 * 10,
+      forceMiss,
+   });
 }
 
 async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
