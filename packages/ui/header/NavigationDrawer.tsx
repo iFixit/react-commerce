@@ -22,7 +22,7 @@ import {
    IconButtonProps,
    useMergeRefs,
 } from '@chakra-ui/react';
-import { useIsMounted } from '../hooks';
+import { useIsMountedState } from '../hooks';
 import { useHeaderContext } from './context';
 
 export const NavigationDrawer = ({
@@ -30,7 +30,7 @@ export const NavigationDrawer = ({
    ...otherProps
 }: Omit<DrawerProps, 'isOpen' | 'onClose' | 'finalFocusRef'>) => {
    const context = useHeaderContext();
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    if (!isMounted) {
       return null;
    }

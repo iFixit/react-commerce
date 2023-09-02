@@ -10,7 +10,7 @@ import {
    Pagination as BasePagination,
    PaginationItem,
    PaginationLink,
-   useIsMounted,
+   useIsMountedState,
 } from '@ifixit/ui';
 import {
    usePagination,
@@ -27,7 +27,7 @@ export function Pagination(props: PaginationProps) {
       sm: 5,
       lg: 7,
    });
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const visibleNumberOfPages = isMounted ? responsiveVisibleNumberOfPages : 3;
 
    const createPageUrl = (page: number) => {

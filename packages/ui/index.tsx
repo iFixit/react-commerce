@@ -6,3 +6,4 @@ export * from './theme';
 export * from './cart';
 export * from './commerce';
 export * from './slider';
+export * from './animations';
