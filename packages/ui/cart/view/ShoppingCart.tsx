@@ -66,7 +66,6 @@ export function ShoppingCartItems() {
                <Card data-testid="cart-drawer-line-items">
                   {cart.data && (
                      <AnimatedList
-                        debug="LINE ITEMS"
                         items={cart.data.lineItems}
                         getItemId={(item) => item.itemcode}
                         renderItem={(item) => {
