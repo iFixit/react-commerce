@@ -77,12 +77,20 @@ const moduleExports = {
       ];
    },
    async rewrites() {
-      return [
-         {
-            source: '/uploads/:name',
-            destination: `${strapiOrigin}/uploads/:name`,
-         },
-      ];
+      return {
+         afterFiles: [
+            {
+               source: '/uploads/:name',
+               destination: `${strapiOrigin}/uploads/:name`,
+            },
+         ],
+         fallback: [
+            {
+               source: '/:path*',
+               destination: `https://proxy.ifixit.com/:path*`,
+            },
+         ],
+      };
    },
    async redirects() {
       return [
