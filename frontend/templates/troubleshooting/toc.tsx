@@ -82,6 +82,7 @@ function LargeTOC({
 }: FlexProps & { listItemProps?: ListItemProps; items: TOCRecord[] }) {
    return (
       <FlexScrollGradient
+         gradientPX={96}
          nestedFlexProps={
             {
                as: List,

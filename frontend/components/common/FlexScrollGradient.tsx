@@ -14,8 +14,6 @@ type InnerFlexStyling = {
    overflowY?: FlexProps['overflowY'];
 };
 
-const gradientSizes = { base: 50, sm: 75, md: 90, lg: 100 };
-
 const sharedStyle: SystemStyleObject = {
    content: '""',
    position: 'absolute',
@@ -76,7 +74,10 @@ function getGradientsBaseStyle(
    };
 }
 
-function getGradientStyleProps(el: HTMLElement): InnerFlexStyling {
+function getGradientStyleProps(
+   el: HTMLElement,
+   gradientSizePX: number
+): InnerFlexStyling {
    const flexScrollDirection = getScrollDirection(el);
    const {
       // Used for both calcs
@@ -120,7 +121,6 @@ function getGradientStyleProps(el: HTMLElement): InnerFlexStyling {
       flexScrollDirection === FlexScrollDirection.ROW ? 'height' : 'width';
 
    const scrollPosition = start + windowSpace;
-   const gradientSizePX = getGradientSize(windowSpace);
    const afterStart = scrollSpace - gradientSizePX;
 
    const size = `${gradientSpace}px`;
@@ -171,23 +171,13 @@ function getGradientStyleProps(el: HTMLElement): InnerFlexStyling {
    };
 }
 
-function getGradientSize(elSize: number): number {
-   if (elSize < 576) {
-      return gradientSizes.base;
-   } else if (elSize < 768) {
-      return gradientSizes.sm;
-   } else if (elSize < 1028) {
-      return gradientSizes.md;
-   } else {
-      return gradientSizes.lg;
-   }
-}
-
 export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
    {
       nestedFlexProps,
+      gradientPX,
       ...props
    }: FlexProps & {
+      gradientPX: number;
       nestedFlexProps?: FlexProps;
    },
    ref
@@ -207,7 +197,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
       }
 
       const doMeasure = (el: HTMLElement) => {
-         const state = getGradientStyleProps(el);
+         const state = getGradientStyleProps(el, gradientPX);
          setFlexScrollState(() => state);
       };
 
@@ -226,7 +216,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
          el.removeEventListener('scroll', measure);
          window.removeEventListener('resize', measure);
       };
-   }, [internalRef]);
+   }, [internalRef, gradientPX]);
 
    if (props.position) {
       throw new Error(
