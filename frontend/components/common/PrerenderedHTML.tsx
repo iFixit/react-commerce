@@ -7,8 +7,10 @@ const constrainStandardWidth = '282px'; // pulled from PHP app for legacy image 
 const sharedStyles: SystemStyleObject = {
    a: {
       color: 'brand.500',
+      transition: 'color 300ms',
 
       '&:hover': {
+         color: 'brand.600',
          textDecoration: 'underline',
       },
    },
