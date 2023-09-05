@@ -3,6 +3,8 @@ import PageTemplate from './components/pageTemplate';
 import { RestrictRobots } from '@helpers/next-helpers';
 import { notFound } from 'next/navigation';
 import { flags } from '@config/flags';
+import { getiFixitOrigin } from '@helpers/path-helpers';
+import { headers } from 'next/headers';
 
 export type PageParams = {
    device: string;
@@ -42,7 +44,8 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
    const { device } = params;
 
-   const ifixitOrigin = 'https://www.ifixit.com';
+   const nextHeaders = headers();
+   const ifixitOrigin = getiFixitOrigin(nextHeaders);
    const canonicalUrl = `${ifixitOrigin}/Troubleshooting/${device}`;
 
    const metaTitle = `Troubleshooting Collection for ${device} - iFixit`;

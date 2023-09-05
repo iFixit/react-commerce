@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import type { Product } from '@models/product';
@@ -5,6 +6,7 @@ import { ProductList, ProductListType } from '@models/product-list';
 import { GetServerSidePropsContext } from 'next';
 import { getProductIdFromGlobalId } from './product-helpers';
 import { stylizeDeviceTitle } from './product-list-helpers';
+import { IncomingHttpHeaders } from 'http';
 
 export function productPath(handle: string) {
    return `/products/${handle}`;
@@ -123,9 +125,20 @@ export function shopifyStoreOriginUrl({
 export function ifixitOriginFromHost(
    context: GetServerSidePropsContext
 ): string {
-   const headers = context.req.headers;
-   const host = (headers['x-ifixit-forwarded-host'] ||
-      headers['x-forwarded-host']) as string | undefined;
+   const incomingHttpHeaders = context.req.headers;
+   return getiFixitOrigin(incomingHttpHeaders);
+}
+
+export function getiFixitOrigin(obj: Headers | IncomingHttpHeaders): string {
+   const headers =
+      obj instanceof Headers ? obj : new Headers(obj as HeadersInit);
+
+   return getiFixitOriginFromHost(headers);
+}
+
+export function getiFixitOriginFromHost(headers: Headers) {
+   const host =
+      headers.get('x-ifixit-forwarded-host') || headers.get('x-forwarded-host');
    const isDevProxy = !!host?.match(
       /^(?!react-commerce).*(\.cominor\.com|\.ubreakit\.com)$/
    );
