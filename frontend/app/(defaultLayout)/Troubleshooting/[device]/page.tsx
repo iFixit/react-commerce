@@ -57,7 +57,9 @@ export async function generateMetadata({
       alternates: {
          canonical: canonicalUrl,
       },
-      robots: RestrictRobots.RESTRICT_ALL,
+      robots: flags.TROUBLESHOOTING_COLLECTIONS_ENABLED
+         ? RestrictRobots.ALLOW_ALL
+         : RestrictRobots.RESTRICT_ALL,
       title: metaTitle,
       description: metaDescription,
       openGraph: {
