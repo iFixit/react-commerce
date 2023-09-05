@@ -1,6 +1,7 @@
-import { Box, Flex, forwardRef, Heading } from '@chakra-ui/react';
+import { Flex, forwardRef, Heading } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
 import { ImageProps } from 'next/image';
+import { PrerenderedHTML } from '@components/common';
 
 interface ProductListCardProps {
    variant?: 'small' | 'medium';
@@ -83,14 +84,13 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   {productList.title}
                </Heading>
                {variant === 'medium' && productList.description && (
-                  <Box
+                  <PrerenderedHTML
+                     html={productList.description}
+                     styles="commerce"
                      mt="1"
                      color="gray.600"
                      fontSize="sm"
                      lineHeight="shorter"
-                     dangerouslySetInnerHTML={{
-                        __html: productList.description,
-                     }}
                   />
                )}
             </Flex>

@@ -14,6 +14,7 @@ import type { FAQ } from '@models/components/faq';
 import { useMemo } from 'react';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
+import { PrerenderedHTML } from '@components/common';
 
 export type FAQsSectionProps = {
    id: string;
@@ -92,12 +93,9 @@ function FAQAccordionItem({ faq }: { faq: FAQ }) {
                      />
                   </AccordionButton>
                </h3>
-               <AccordionPanel
-                  pb="5"
-                  color="gray.700"
-                  bg="white"
-                  dangerouslySetInnerHTML={{ __html: answerHtml }}
-               />
+               <AccordionPanel pb="5" color="gray.700" bg="white">
+                  <PrerenderedHTML html={answerHtml} styles="commerce" />
+               </AccordionPanel>
             </>
          )}
       </AccordionItem>

@@ -1,5 +1,6 @@
 import { QualityGuarantee } from '@assets/svg/files';
 import { Box, Button, Flex, Heading, Icon } from '@chakra-ui/react';
+import { PrerenderedHTML } from '@components/common';
 import { useAppContext } from '@ifixit/app';
 import { isPresent } from '@ifixit/helpers';
 import { Wrapper } from '@ifixit/ui';
@@ -131,11 +132,10 @@ function Content({ title, description, callToAction }: ContentProps) {
             >
                {sectionTitle}
             </Heading>
-            <Box
+            <PrerenderedHTML
+               html={sectionDescription}
+               styles="commerce"
                color="white"
-               dangerouslySetInnerHTML={{
-                  __html: sectionDescription,
-               }}
             />
             <Button as="a" mt="8" minW="200px" href={callToActionUrl}>
                {callToActionText}

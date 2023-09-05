@@ -16,6 +16,7 @@ import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
+import { PrerenderedHTML } from '@components/common';
 
 export interface QuoteGallerySectionProps {
    id: string;
@@ -164,7 +165,7 @@ function QuoteCard({ quote, isActive }: QuoteCardProps) {
          transition="opacity 300ms"
          opacity={isActive ? 1 : 0.5}
       >
-         <Box dangerouslySetInnerHTML={{ __html: quote.text }}></Box>
+         <PrerenderedHTML html={quote.text} styles="commerce" />
          {author && (
             <HStack
                mt={{

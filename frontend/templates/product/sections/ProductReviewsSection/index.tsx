@@ -27,6 +27,7 @@ import type { ProductReview } from '@models/product/reviews';
 import { useProductReviews } from '@templates/product/hooks/useProductReviews';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import React from 'react';
+import { PrerenderedHTML } from '@components/common';
 
 const INITIAL_VISIBILE_REVIEWS = 3;
 
@@ -285,11 +286,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
             {review.productName} | {review.productVariantName}
          </Text>
          {review.body && (
-            <Box
-               dangerouslySetInnerHTML={{
-                  __html: review.body,
-               }}
-            />
+            <PrerenderedHTML html={review.body} styles="commerce" />
          )}
       </Box>
    );

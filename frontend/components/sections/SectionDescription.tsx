@@ -1,4 +1,5 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { BoxProps } from '@chakra-ui/react';
+import { PrerenderedHTML } from '@components/common';
 
 export type SectionDescriptionProps = Omit<BoxProps, 'children'> & {
    richText: string;
@@ -8,12 +9,11 @@ export function SectionDescription({
    ...otherProps
 }: SectionDescriptionProps) {
    return (
-      <Box
+      <PrerenderedHTML
+         html={richText}
+         styles="commerce"
          color="gray.700"
          {...otherProps}
-         dangerouslySetInnerHTML={{
-            __html: richText,
-         }}
       />
    );
 }
