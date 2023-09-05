@@ -20,7 +20,7 @@ export interface FAQsSectionProps {
    title?: string | null;
    description?: string | null;
    faqs: FAQ[];
-   itemType?: string | null;
+   relevantItemTypes?: string[];
 }
 
 const FALLBACK_SECTION_TITLE = 'FAQs';
@@ -30,16 +30,17 @@ export function FAQsSection({
    title,
    description,
    faqs,
-   itemType,
+   relevantItemTypes = [],
 }: FAQsSectionProps) {
    const sectionTitle = isPresent(title) ? title : FALLBACK_SECTION_TITLE;
    const sectionDescription = isPresent(description) ? description : null;
 
-   const filteredFaqs = faqs.filter(
-      (faq) => faq.itemType == null || isSameItemType(faq.itemType, itemType)
-   );
+   const relevantFaqs = useRelevantFaqs({
+      faqs,
+      relevantItemTypes,
+   });
 
-   if (filteredFaqs.length === 0) {
+   if (relevantFaqs.length === 0) {
       return null;
    }
 
@@ -59,7 +60,7 @@ export function FAQsSection({
                   )}
                </Box>
                <Accordion defaultIndex={[0]} allowMultiple>
-                  {filteredFaqs.map((faq, index) => (
+                  {relevantFaqs.map((faq, index) => (
                      <FAQAccordionItem key={index} faq={faq} />
                   ))}
                </Accordion>
@@ -68,16 +69,6 @@ export function FAQsSection({
       </Box>
    );
 }
-
-const isSameItemType = (
-   a: string | null | undefined,
-   b: string | null | undefined
-) => {
-   if (a == null || b == null) {
-      return a == b;
-   }
-   return a.toLowerCase() === b.toLowerCase();
-};
 
 function FAQAccordionItem({ faq }: { faq: FAQ }) {
    const answerHtml = useMemo(() => markdownToHTML(faq.answer), [faq.answer]);
@@ -117,5 +108,16 @@ function FAQAccordionItem({ faq }: { faq: FAQ }) {
             </>
          )}
       </AccordionItem>
+   );
+}
+
+interface UseRelevantFaqsProps {
+   faqs: FAQ[];
+   relevantItemTypes: string[];
+}
+
+function useRelevantFaqs({ faqs, relevantItemTypes }: UseRelevantFaqsProps) {
+   return faqs.filter(
+      (faq) => faq.itemType == null || relevantItemTypes.includes(faq.itemType)
    );
 }

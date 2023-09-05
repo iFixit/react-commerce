@@ -7,7 +7,7 @@ import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-hel
 import type { ProductList } from '@models/product-list';
 import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
 import { Configure, useMenu } from 'react-instantsearch';
-import { useDevicePartsItemType } from './hooks/useDevicePartsItemType';
+import { useAvailableItemTypes } from './hooks/useAvailableItemTypes';
 import { useItemTypeProductList } from './hooks/useItemTypeProductList';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
@@ -36,7 +36,7 @@ export function ProductListView({
    const filters = computeProductListAlgoliaFilterPreset(productList);
 
    const itemTypeProductList = useItemTypeProductList(productList);
-   const selectedItemType = useDevicePartsItemType(productList);
+   const availableItemTypes = useAvailableItemTypes();
 
    const currentProductList = itemTypeProductList ?? productList;
 
@@ -184,7 +184,7 @@ export function ProductListView({
                            title={section.title}
                            description={section.description}
                            faqs={section.faqs}
-                           itemType={selectedItemType}
+                           relevantItemTypes={availableItemTypes}
                         />
                      );
                   }
