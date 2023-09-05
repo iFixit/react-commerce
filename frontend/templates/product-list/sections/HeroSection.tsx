@@ -13,7 +13,7 @@ import { PrerenderedHTML } from '@components/common';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { markdownToHTML } from '@helpers/ui-helpers';
 import { isPresent } from '@ifixit/helpers';
-import { ResponsiveImage, useIsMounted, Wrapper } from '@ifixit/ui';
+import { ResponsiveImage, useIsMountedState, Wrapper } from '@ifixit/ui';
 import type { Image } from '@models/components/image';
 import * as React from 'react';
 import { usePagination } from 'react-instantsearch-hooks-web';
@@ -153,7 +153,7 @@ interface HeroDescriptionProps {
 
 function HeroDescription({ children }: HeroDescriptionProps) {
    const { isOpen, onToggle } = useDisclosure();
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const textRef = React.useRef<HTMLParagraphElement | null>(null);
    const textHeight = React.useMemo(() => {
       if (isMounted && textRef.current) {

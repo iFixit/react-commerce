@@ -5,7 +5,6 @@ import {
    Flex,
    HStack,
    IconButton,
-   IconButtonProps,
    Link,
    Text,
    useToast,
@@ -25,7 +24,6 @@ import {
 } from '@ifixit/cart-sdk';
 import { multiplyMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { motion } from 'framer-motion';
 import * as React from 'react';
 import { ProductVariantPrice } from '../../commerce';
 import { CartLineItemImage } from './CartLineItemImage';
@@ -79,10 +77,11 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       });
    };
 
-   const handleRemoveLineItem = () =>
+   const handleRemoveLineItem = () => {
       removeLineItem.mutate({
          itemcode: lineItem.itemcode,
       });
+   };
 
    return (
       <Flex direction="column" w="full" p="3" bgColor="white">
@@ -113,7 +112,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                         borderWidth="1px"
                         borderRadius="md"
                      >
-                        <MotionIconButton
+                        <IconButton
                            aria-label="Decrease quantity by one"
                            variant="ghost"
                            color="gray.500"
@@ -125,9 +124,6 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               />
                            }
                            size="xs"
-                           whileTap={{
-                              scale: 0.9,
-                           }}
                            disabled={lineItem.quantity <= 1}
                            onClick={decrementQuantity}
                            data-testid="cart-drawer-decrease-quantity"
@@ -139,7 +135,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                         >
                            {lineItem.quantity}
                         </Text>
-                        <MotionIconButton
+                        <IconButton
                            aria-label="Increase quantity by one"
                            variant="ghost"
                            color="gray.500"
@@ -151,9 +147,6 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               />
                            }
                            size="xs"
-                           whileTap={{
-                              scale: 0.9,
-                           }}
                            disabled={
                               lineItem.maxToAdd != null &&
                               lineItem.quantity >= lineItem.maxToAdd
@@ -214,5 +207,3 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       </Flex>
    );
 }
-
-const MotionIconButton = motion<IconButtonProps>(IconButton);

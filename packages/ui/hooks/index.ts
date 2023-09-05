@@ -65,7 +65,7 @@ export function usePrevious<T>(value: T): T | undefined {
 export const useIsomorphicLayoutEffect =
    typeof document !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
-export function useIsMounted() {
+export function useIsMountedState() {
    const [isMounted, setIsMounted] = React.useState(false);
 
    React.useEffect(() => {
@@ -73,6 +73,19 @@ export function useIsMounted() {
    }, []);
 
    return isMounted;
+}
+
+export function useIsMounted() {
+   const isMountedRef = React.useRef(false);
+
+   React.useEffect(() => {
+      isMountedRef.current = true;
+      return () => {
+         isMountedRef.current = false;
+      };
+   }, []);
+
+   return isMountedRef.current;
 }
 
 interface UsePreloadImage {
@@ -124,7 +137,7 @@ export function useSSRBreakpointValue<Value>(
    values: Value[] | Partial<Record<string, Value>>,
    defaultBreakpoint?: string | undefined
 ) {
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const breakpointValue = useBreakpointValue(values, defaultBreakpoint);
    return isMounted ? breakpointValue : defaultBreakpoint;
 }
