@@ -94,8 +94,8 @@ const moduleExports = {
                destination: `https://proxy-us-east.ifixit.com/health-check/proxy-us-east/:path*`,
             },
             {
-               source: '/:path*',
-               destination: `https://proxy.ifixit.com/health-check/fallback/:path*`,
+               source: '/proxy-nextjs-test/:path*',
+               destination: `/api/php-app/:path*`,
             },
          ],
       };
