@@ -4,10 +4,7 @@ import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import type { ProductList } from '@models/product-list';
 import Head from 'next/head';
-import {
-   useCurrentRefinements,
-   usePagination,
-} from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements, usePagination } from 'react-instantsearch';
 import { jsonLdScriptProps } from 'react-schemaorg';
 import { BreadcrumbList as SchemaBreadcrumbList } from 'schema-dts';
 import { useDevicePartsItemType } from './hooks/useDevicePartsItemType';

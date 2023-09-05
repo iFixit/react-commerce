@@ -24,7 +24,7 @@ import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { renderToString } from 'react-dom/server';
-import { getServerState } from 'react-instantsearch-hooks-server';
+import { getServerState } from 'react-instantsearch';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
 

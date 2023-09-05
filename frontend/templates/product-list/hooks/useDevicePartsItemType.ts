@@ -1,6 +1,6 @@
 import { ProductListType } from '@models/product-list';
 import * as React from 'react';
-import { useCurrentRefinements } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements } from 'react-instantsearch';
 
 type ProductListAttributes = {
    type?: ProductListType | null;

@@ -5,7 +5,7 @@ import { SplitWithImageContentSection } from '@components/sections/SplitWithImag
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
 import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
-import { Configure, useMenu } from 'react-instantsearch-hooks-web';
+import { Configure, useMenu } from 'react-instantsearch';
 import { useItemTypeProductList } from './hooks/useItemTypeProductList';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';

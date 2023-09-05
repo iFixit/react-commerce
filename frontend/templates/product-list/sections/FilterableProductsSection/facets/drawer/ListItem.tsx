@@ -2,10 +2,7 @@ import { Box, Button, Divider, Flex, HStack, Text } from '@chakra-ui/react';
 import { faChevronRight, faClose } from '@fortawesome/pro-solid-svg-icons';
 import { formatFacetName } from '@helpers/algolia-helpers';
 import { FaIcon } from '@ifixit/icons';
-import {
-   useCurrentRefinements,
-   usePagination,
-} from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements, usePagination } from 'react-instantsearch';
 
 type ListItemProps = {
    attribute: string;
