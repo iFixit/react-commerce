@@ -58,6 +58,11 @@ export const CACHE_DISABLED = process.env.NEXT_PUBLIC_CACHE_DISABLED === 'true';
 
 export const REDIS_URL = process.env.REDIS_URL;
 
+export const VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
+
+export const VERCEL_GIT_COMMIT_SHA =
+   process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
+
 export const VERCEL_HOST =
    process.env.VERCEL_STABLE_HOST || process.env.VERCEL_URL;
 

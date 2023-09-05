@@ -2,12 +2,18 @@
 // The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import * as Sentry from '@sentry/nextjs';
 import { BrowserTracing } from '@sentry/browser';
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 Sentry.init({
+   async beforeSend(event) {
+      const current_production = await isCurrentProductionDeployment();
+      event.tags = { ...event.tags, current_production };
+      return event;
+   },
    dsn: SENTRY_DSN,
    integrations: [new BrowserTracing()],
    sampleRate: 1.0,

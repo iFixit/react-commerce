@@ -2,6 +2,7 @@
 // The config you add here will be used whenever the server handles a request.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import * as Sentry from '@sentry/nextjs';
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
@@ -19,7 +20,7 @@ Sentry.init({
          'next.runtime': 'server',
       },
    },
-   beforeSend(event, hint) {
+   async beforeSend(event, hint) {
       const ex = hint.originalException;
       if (ex instanceof Error) {
          // Happens when receiving a bad url that fails to decode
@@ -27,6 +28,8 @@ Sentry.init({
             return null;
          }
       }
+      const current_production = await isCurrentProductionDeployment();
+      event.tags = { ...event.tags, current_production };
       return event;
    },
 });
