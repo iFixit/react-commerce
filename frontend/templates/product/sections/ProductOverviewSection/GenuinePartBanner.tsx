@@ -1,5 +1,6 @@
 import {
    Crucial,
+   Google,
    Hp,
    Lenovo,
    Logitech,
@@ -24,8 +25,7 @@ export type GenuinePartBannerProps = {
 };
 
 const partnerCodeToComponentMap: { [key: string]: React.FC } = {
-   // Don't have permission yet
-   // google_pixel: Google,
+   google_pixel: Google,
    crucial: () => <Crucial px="2" />,
    hp: () => <Hp py="2" />,
    htc_vive: Vive,
