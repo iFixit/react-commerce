@@ -1,4 +1,3 @@
-import { headers } from 'next/headers';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import type { Product } from '@models/product';
