@@ -56,10 +56,6 @@ export async function generateMetadata({
       metadataBase: new URL(ifixitOrigin),
       alternates: {
          canonical: canonicalUrl,
-         languages: {
-            'en-US': canonicalUrl,
-            'de-DE': canonicalUrl,
-         },
       },
       robots: RestrictRobots.RESTRICT_ALL,
       title: metaTitle,
