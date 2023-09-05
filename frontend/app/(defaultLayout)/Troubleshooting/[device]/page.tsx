@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import PageTemplate from './pageTemplate';
+import PageTemplate from './components/pageTemplate';
 import { RestrictRobots } from '@helpers/next-helpers';
 import { notFound } from 'next/navigation';
 import { flags } from '@config/flags';
