@@ -114,6 +114,9 @@ importers:
       '@tanstack/react-query':
         specifier: 4.14.5
         version: 4.14.5(react-dom@18.2.0)(react@18.2.0)
+      '@types/http-proxy':
+        specifier: ^1.17.11
+        version: 1.17.11
       '@vercel/analytics':
         specifier: 1.0.1
         version: 1.0.1
@@ -7906,6 +7909,12 @@ packages:
 
   /@types/hogan.js@3.0.1:
     resolution: {integrity: sha512-D03i/2OY7kGyMq9wdQ7oD8roE49z/ZCZThe/nbahtvuqCNZY9T2MfedOWyeBdbEpY2W8Gnh/dyJLdFtUCOkYbg==}
+    dev: false
+
+  /@types/http-proxy@1.17.11:
+    resolution: {integrity: sha512-HC8G7c1WmaF2ekqpnFq626xd3Zz0uvaqFmBJNRZCGEZCXkvSdJoNFn/8Ygbd9fKNQj8UzLdCETaI0UWPAjK7IA==}
+    dependencies:
+      '@types/node': 18.11.5
     dev: false
 
   /@types/istanbul-lib-coverage@2.0.4:
