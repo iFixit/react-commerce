@@ -5,7 +5,7 @@ import {
    parseMoney,
 } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useQuery } from '@tanstack/react-query';
+import { useIsMutating, useQuery } from '@tanstack/react-query';
 import {
    APICart,
    Cart,
@@ -20,12 +20,17 @@ import { cartKeys } from '../utils';
  */
 export function useCart() {
    const client = useIFixitApiClient();
-   const query = useQuery(cartKeys.cart, async (): Promise<Cart | null> => {
-      const result = await client.get('store/user/cart', 'cart');
-      if (!isValidCartPayload(result)) {
-         return null;
-      }
-      return createCart(result.cart);
+   const isMutating = useIsMutating();
+   const query = useQuery({
+      queryKey: cartKeys.cart,
+      queryFn: async (): Promise<Cart | null> => {
+         const result = await client.get('store/user/cart', 'cart');
+         if (!isValidCartPayload(result)) {
+            return null;
+         }
+         return createCart(result.cart);
+      },
+      enabled: !isMutating,
    });
    return query;
 }

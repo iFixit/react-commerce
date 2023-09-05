@@ -46,16 +46,16 @@ export function CrossSell({ product, selectedVariant }: CrossSellProps) {
          rounded="md"
          my="4"
          borderWidth="1px"
-         borderColor="chakra-border-color"
+         borderColor="borderColor"
          p="4"
          data-testid="product-cross-sell"
       >
          <Text fontWeight="semibold">Frequently Bought Together</Text>
          <VStack
             spacing="0"
-            borderColor="chakra-border-color"
+            borderColor="borderColor"
             borderWidth="1px"
-            divider={<StackDivider borderColor="chakra-border-color" />}
+            divider={<StackDivider borderColor="borderColor" />}
             rounded="md"
             mt="4"
          >

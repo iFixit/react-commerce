@@ -42,16 +42,18 @@ export const getProductListServerSideProps = ({
 }: GetProductListServerSidePropsOptions): GetServerSideProps<ProductListTemplateProps> =>
    withMiddleware(async (context) => {
       const indexName = ALGOLIA_PRODUCT_INDEX_NAME;
+      const forceMiss = hasDisableCacheGets(context);
       const layoutProps: Promise<DefaultLayoutProps> = getLayoutServerSideProps(
          {
             storeCode: DEFAULT_STORE_CODE,
+            forceMiss,
          }
       );
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
       const ifixitOrigin = ifixitOriginFromHost(context);
-      const cacheOptions = { forceMiss: hasDisableCacheGets(context) };
+      const cacheOptions = { forceMiss };
 
       switch (productListType) {
          case ProductListType.AllParts: {

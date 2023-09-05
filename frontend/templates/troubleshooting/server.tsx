@@ -17,6 +17,7 @@ import {
 } from './hooks/useTroubleshootingProps';
 import { withLogging } from '@helpers/next-helpers';
 import {
+   hasDisableCacheGets,
    withCache,
    CacheLong,
    GetCacheControlOptions,
@@ -93,6 +94,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
    withMiddleware(async (context) => {
       const layoutProps = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
+         forceMiss: hasDisableCacheGets(context),
       });
 
       const troubleshootingData = await getTroubleshootingData(context);
@@ -110,7 +112,7 @@ export const getServerSideProps: GetServerSideProps<TroubleshootingProps> =
        * so it doesn't much matter what we use.
        */
       const currentUrl = new URL(
-         context.resolvedUrl,
+         decodeURIComponent(context.resolvedUrl),
          'https://vulcan.ifixit.com'
       );
 

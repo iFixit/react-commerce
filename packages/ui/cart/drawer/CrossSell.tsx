@@ -1,8 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { useCart } from '@ifixit/cart-sdk';
-import { AnimatePresence } from 'framer-motion';
 import * as React from 'react';
-import { AnimatedListItem } from './AnimatedListItem';
+import { AnimatedList } from '../../animations';
 import { CrossSellItem } from './CrossSellItem';
 
 export function CrossSell() {
@@ -27,22 +26,16 @@ export function CrossSell() {
    const hasItemsInCart = cart.data?.hasItemsInCart ?? false;
 
    return (
-      <Box
-         as="ul"
-         px="3"
-         listStyleType="none"
-         data-testid="cart-drawer-x-sell-items"
-      >
-         <AnimatePresence>
-            {hasItemsInCart &&
-               crossSellItems.map((crossSellItem) => {
-                  return (
-                     <AnimatedListItem key={crossSellItem.itemcode}>
-                        <CrossSellItem item={crossSellItem} my="3" />
-                     </AnimatedListItem>
-                  );
-               })}
-         </AnimatePresence>
+      <Box px="3" py="1.5" data-testid="cart-drawer-x-sell-items">
+         {hasItemsInCart && (
+            <AnimatedList
+               items={crossSellItems}
+               getItemId={(item) => item.itemcode}
+               renderItem={(item) => {
+                  return <CrossSellItem item={item} my="1.5" />;
+               }}
+            />
+         )}
       </Box>
    );
 }

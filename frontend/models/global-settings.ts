@@ -11,8 +11,17 @@ export interface GlobalSettings {
    };
 }
 
-export async function getGlobalSettings(): Promise<GlobalSettings> {
-   return cache('globalSettings', getGlobalSettingsFromStrapi, 60 * 60);
+type GetGlobalSettingsOptions = {
+   forceMiss?: boolean;
+};
+
+export async function getGlobalSettings({
+   forceMiss,
+}: GetGlobalSettingsOptions = {}): Promise<GlobalSettings> {
+   return cache('globalSettings', getGlobalSettingsFromStrapi, {
+      ttl: 60 * 60,
+      forceMiss,
+   });
 }
 
 async function getGlobalSettingsFromStrapi(): Promise<GlobalSettings> {
