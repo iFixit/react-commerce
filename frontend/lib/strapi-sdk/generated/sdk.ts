@@ -748,10 +748,21 @@ export type Error = {
 export type Faq = {
    __typename?: 'Faq';
    answer: Scalars['String'];
+   category?: Maybe<Scalars['String']>;
    createdAt?: Maybe<Scalars['DateTime']>;
+   item_type?: Maybe<Scalars['String']>;
+   priority?: Maybe<Scalars['Int']>;
+   product_lists?: Maybe<ProductListRelationResponseCollection>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    question: Scalars['String'];
    updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type FaqProduct_ListsArgs = {
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type FaqEntity = {
@@ -774,10 +785,14 @@ export type FaqEntityResponseCollection = {
 export type FaqFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<FaqFiltersInput>>>;
    answer?: InputMaybe<StringFilterInput>;
+   category?: InputMaybe<StringFilterInput>;
    createdAt?: InputMaybe<DateTimeFilterInput>;
    id?: InputMaybe<IdFilterInput>;
+   item_type?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<FaqFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<FaqFiltersInput>>>;
+   priority?: InputMaybe<IntFilterInput>;
+   product_lists?: InputMaybe<ProductListFiltersInput>;
    publishedAt?: InputMaybe<DateTimeFilterInput>;
    question?: InputMaybe<StringFilterInput>;
    updatedAt?: InputMaybe<DateTimeFilterInput>;
@@ -785,6 +800,10 @@ export type FaqFiltersInput = {
 
 export type FaqInput = {
    answer?: InputMaybe<Scalars['String']>;
+   category?: InputMaybe<Scalars['String']>;
+   item_type?: InputMaybe<Scalars['String']>;
+   priority?: InputMaybe<Scalars['Int']>;
+   product_lists?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    question?: InputMaybe<Scalars['String']>;
 };
@@ -1596,6 +1615,7 @@ export type ProductList = {
    defaultShowAllChildrenOnLgSizes?: Maybe<Scalars['Boolean']>;
    description: Scalars['String'];
    deviceTitle?: Maybe<Scalars['String']>;
+   faqs?: Maybe<FaqRelationResponseCollection>;
    filters?: Maybe<Scalars['String']>;
    forceNoindex?: Maybe<Scalars['Boolean']>;
    h1?: Maybe<Scalars['String']>;
@@ -1622,6 +1642,13 @@ export type ProductList = {
 
 export type ProductListChildrenArgs = {
    filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ProductListFaqsArgs = {
+   filters?: InputMaybe<FaqFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
    publicationState?: InputMaybe<PublicationState>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -1659,6 +1686,7 @@ export type ProductListFiltersInput = {
    defaultShowAllChildrenOnLgSizes?: InputMaybe<BooleanFilterInput>;
    description?: InputMaybe<StringFilterInput>;
    deviceTitle?: InputMaybe<StringFilterInput>;
+   faqs?: InputMaybe<FaqFiltersInput>;
    filters?: InputMaybe<StringFilterInput>;
    forceNoindex?: InputMaybe<BooleanFilterInput>;
    h1?: InputMaybe<StringFilterInput>;
@@ -1689,6 +1717,7 @@ export type ProductListInput = {
    defaultShowAllChildrenOnLgSizes?: InputMaybe<Scalars['Boolean']>;
    description?: InputMaybe<Scalars['String']>;
    deviceTitle?: InputMaybe<Scalars['String']>;
+   faqs?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
    filters?: InputMaybe<Scalars['String']>;
    forceNoindex?: InputMaybe<Scalars['Boolean']>;
    h1?: InputMaybe<Scalars['String']>;
@@ -2025,6 +2054,7 @@ export type ReusableSectionSectionDynamicZone =
    | ComponentPagePress
    | ComponentPageSplitWithImage
    | ComponentSectionBanner
+   | ComponentSectionFaqs
    | ComponentSectionQuoteGallery
    | Error;
 
@@ -3698,6 +3728,7 @@ export type FindReusableSectionsQuery = {
                        }>;
                     } | null;
                  }
+               | { __typename: 'ComponentSectionFaqs' }
                | {
                     __typename: 'ComponentSectionQuoteGallery';
                     id: string;
@@ -3842,6 +3873,7 @@ export type ReusableSectionFieldsFragment = {
               }>;
            } | null;
         }
+      | { __typename: 'ComponentSectionFaqs' }
       | {
            __typename: 'ComponentSectionQuoteGallery';
            id: string;
