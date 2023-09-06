@@ -356,19 +356,21 @@ const commerceStyles: SystemStyleObject = {
 
 export const PrerenderedHTML = chakra(function Prerendered({
    html,
-   styles,
+   template,
    className,
 }: {
    html: string;
-   styles: 'troubleshooting' | 'commerce';
+   template: 'troubleshooting' | 'commerce';
    className?: string;
 }) {
    useEffect(() => {
-      import('lite-youtube-embed');
-   }, []);
+      if (template === 'troubleshooting') {
+         import('lite-youtube-embed');
+      }
+   }, [template]);
 
    let sx;
-   switch (styles) {
+   switch (template) {
       case 'troubleshooting':
          sx = troubleshootingStyles;
          break;
