@@ -1,9 +1,11 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import httpProxy from 'http-proxy';
+import { HttpsAgent } from 'agentkeepalive';
 
 const proxy = httpProxy.createProxyServer({
    secure: true,
    changeOrigin: true,
+   agent: new HttpsAgent(),
 });
 
 const handler: NextApiHandler = async (
@@ -16,6 +18,7 @@ const handler: NextApiHandler = async (
 
 export const config = {
    api: {
+      bodyParser: false,
       externalResolver: true,
    },
 };
