@@ -28,8 +28,15 @@ Sentry.init({
             return null;
          }
       }
-      const current_production = await isCurrentProductionDeployment();
-      event.tags = { ...event.tags, current_production };
+      try {
+         const current_production = await isCurrentProductionDeployment();
+         event.tags = { ...event.tags, current_production };
+      } catch (e) {
+         event.extra = {
+            ...event.extra,
+            'Exception Checking Production Deployment': e,
+         };
+      }
       return event;
    },
 });
