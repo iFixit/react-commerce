@@ -36,7 +36,9 @@ export function useCart() {
    return query;
 }
 
-export function extractCrossSells(cart: Cart | null | undefined) {
+export function useCrossSells() {
+   const cartQuery = useCart();
+   const cart = cartQuery.data;
    return useMemo(
       () =>
          cart

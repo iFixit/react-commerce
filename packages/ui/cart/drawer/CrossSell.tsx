@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { useCart, extractCrossSells } from '@ifixit/cart-sdk';
+import { useCart, useCrossSells } from '@ifixit/cart-sdk';
 import * as React from 'react';
 import { AnimatedList } from '../../animations';
 import { CrossSellItem } from './CrossSellItem';
@@ -7,7 +7,7 @@ import { CrossSellItem } from './CrossSellItem';
 export function CrossSell() {
    const cart = useCart();
 
-   const crossSellItems = extractCrossSells(cart.data);
+   const crossSellItems = useCrossSells();
    const hasItemsInCart = cart.data?.hasItemsInCart ?? false;
 
    return (
