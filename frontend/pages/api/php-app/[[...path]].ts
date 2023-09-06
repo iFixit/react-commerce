@@ -14,4 +14,10 @@ const handler: NextApiHandler = async (
    proxy.web(req, res, { target: dest });
 };
 
+export const config = {
+   api: {
+      externalResolver: true,
+   },
+};
+
 export default handler;
