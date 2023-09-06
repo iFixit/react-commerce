@@ -129,6 +129,10 @@ const troubleshootingStyles: SystemStyleObject = {
    p: {
       lineHeight: '1.38',
       alignSelf: 'stretch',
+
+      _notFirst: {
+         marginTop: '1em',
+      },
    },
 
    'ul, ol': {
