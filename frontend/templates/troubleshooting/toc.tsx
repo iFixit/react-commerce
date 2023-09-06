@@ -21,9 +21,21 @@ import {
    TOCRecord,
    useTOCContext,
 } from './tocContext';
-import { CssTokenOption, useScrollPercentHeight } from './scrollPercent';
+import {
+   CssTokenOption,
+   ScrollPercent,
+   ScrollPercentProps,
+   useScrollPercentHeight,
+} from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
-import { PropsWithChildren, RefObject, useEffect, useRef } from 'react';
+import {
+   PropsWithChildren,
+   RefObject,
+   useCallback,
+   useEffect,
+   useRef,
+   useState,
+} from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { flags } from '@config/flags';
@@ -40,7 +52,7 @@ export function TOC({
          height={{ lg: '100vh' }}
          position="sticky"
          top={0}
-         width={{ base: '100%', lg: 'auto' }}
+         width="auto"
          flexGrow={{ base: 1, lg: 0 }}
          zIndex={{ base: 'docked', lg: 'initial' }}
          {...props}
@@ -70,12 +82,13 @@ function LargeTOC({
 }: FlexProps & { listItemProps?: ListItemProps; items: TOCRecord[] }) {
    return (
       <FlexScrollGradient
+         gradientPX={96}
          nestedFlexProps={
             {
                as: List,
                flexDirection: 'column',
-               spacing: 2,
-               paddingRight: 3,
+               spacing: 1,
+               paddingX: 3,
                paddingTop: 6,
             } as FlexProps & ListProps
          }
@@ -130,37 +143,24 @@ export function MobileTOC({
                borderColor="gray.300"
                background="white"
                borderRadius={0}
-               paddingLeft={4}
-               paddingRight={4}
+               paddingX={4}
                _active={{ background: 'white' }}
             >
                {title}
             </MenuButton>
-            <FlexScrollGradient
-               as={MenuList}
-               nestedFlexProps={
-                  {
-                     flexDirection: 'column',
-                     flexGrow: 1,
-                     maxHeight: 48,
-                     sx: {
-                        overflowY: 'auto',
-                     },
-                     paddingTop: 1.5,
-                     paddingBottom: 1.5,
-                     borderRadius: 4,
-                  } as FlexProps & ListProps
-               }
+            <MenuList
                width="calc(100% - (2 * var(--chakra-space-8)))"
-               marginLeft={8}
-               marginRight={8}
-               boxShadow="md"
+               marginX={8}
+               paddingY={1.5}
                borderRadius={4}
-               paddingTop={0}
-               paddingBottom={0}
+               boxShadow="md"
+               sx={{
+                  maxHeight: 48,
+               }}
+               overflowY="auto"
             >
                <MobileTOCItems items={items} />
-            </FlexScrollGradient>
+            </MenuList>
          </Menu>
       </Flex>
    );
@@ -206,13 +206,13 @@ function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
          background={active ? 'blue.100' : undefined}
          _hover={{
             background: 'blue.100',
-            color: 'brand.600',
+            color: active ? undefined : 'gray.800',
          }}
-         paddingLeft={4}
-         paddingRight={4}
-         paddingTop={1.5}
-         paddingBottom={1.5}
+         paddingX={4}
+         paddingY={1.5}
          ref={ref}
+         fontSize="sm"
+         fontWeight={510}
       >
          {title}
       </MenuItem>
@@ -254,6 +254,7 @@ function TOCItem({
    title,
    elementRef,
    active,
+   uniqueId,
    scrollTo,
    ...props
 }: TOCRecord & ListItemProps) {
@@ -280,23 +281,20 @@ function TOCItem({
 
    return (
       <ListItem
-         paddingTop={1}
-         paddingBottom={1}
-         paddingLeft={3}
-         paddingRight={3}
+         paddingY={1}
+         paddingX={3}
          color={active ? 'brand.600' : 'gray.500'}
          background={active ? 'blue.100' : undefined}
-         borderTopRightRadius={active ? 1 : undefined}
-         borderBottomRightRadius={active ? 1 : undefined}
+         borderTopRightRadius={active ? 'md' : undefined}
+         borderBottomRightRadius={active ? 'md' : undefined}
          ref={ref}
+         _hover={{
+            color: active ? undefined : 'gray.800',
+         }}
          cursor="pointer"
          {...props}
       >
-         <Text
-            fontWeight={active ? 510 : 'normal'}
-            fontSize="sm"
-            onClick={onClick}
-         >
+         <Text fontWeight={510} fontSize="sm" onClick={onClick}>
             {title}
          </Text>
       </ListItem>
@@ -316,6 +314,45 @@ function highlightEl(el: HTMLElement, color: string) {
    setTimeout(() => {
       el.style.transition = originalTransition;
    }, 1000);
+}
+
+export function TOCBasedScrollPercent({
+   scrollContainerRef,
+}: ScrollPercentProps) {
+   const [hidden, setHidden] = useState(true);
+   const { getItems } = useTOCContext();
+   const items = getItems();
+   const lastItem = items[items.length - 1];
+
+   const onChange = useCallback(
+      (scrollPercent: number, container: HTMLElement) => {
+         const atContainer = container.offsetTop < window.scrollY;
+         if (!atContainer) {
+            setHidden(true);
+            return;
+         }
+
+         const lastItemEl = lastItem.elementRef.current;
+         const scrolledPastLastItem =
+            lastItemEl && window.scrollY >= lastItemEl.offsetTop;
+
+         if (!lastItem.active && scrolledPastLastItem) {
+            setHidden(true);
+            return;
+         }
+
+         setHidden(false);
+      },
+      [lastItem]
+   );
+
+   return (
+      <ScrollPercent
+         scrollContainerRef={scrollContainerRef}
+         onChange={onChange}
+         hidden={hidden}
+      />
+   );
 }
 
 export function onlyShowIfTOCFlagEnabled<P>(

@@ -2,10 +2,10 @@ import {
    Flex,
    FlexProps,
    SystemStyleObject,
-   useBreakpointValue,
    useMergeRefs,
 } from '@chakra-ui/react';
-import { useRef, useLayoutEffect, forwardRef, useState } from 'react';
+import { useRef, forwardRef, useState } from 'react';
+import { useIsomorphicLayoutEffect } from '@ifixit/ui';
 
 type InnerFlexStyling = {
    _after: SystemStyleObject;
@@ -13,8 +13,6 @@ type InnerFlexStyling = {
    overflowX?: FlexProps['overflowX'];
    overflowY?: FlexProps['overflowY'];
 };
-
-const gradientWidths = { base: 40, sm: 50, md: 70, lg: 100 };
 
 const sharedStyle: SystemStyleObject = {
    content: '""',
@@ -176,8 +174,10 @@ function getGradientStyleProps(
 export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
    {
       nestedFlexProps,
+      gradientPX,
       ...props
    }: FlexProps & {
+      gradientPX: number;
       nestedFlexProps?: FlexProps;
    },
    ref
@@ -190,16 +190,14 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
       _after: { opacity: 0 },
    });
 
-   const gradientSizePX = useBreakpointValue(gradientWidths) as number;
-
-   useLayoutEffect(() => {
+   useIsomorphicLayoutEffect(() => {
       const el = internalRef.current;
       if (!el) {
          return;
       }
 
       const doMeasure = (el: HTMLElement) => {
-         const state = getGradientStyleProps(el, gradientSizePX);
+         const state = getGradientStyleProps(el, gradientPX);
          setFlexScrollState(() => state);
       };
 
@@ -218,7 +216,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
          el.removeEventListener('scroll', measure);
          window.removeEventListener('resize', measure);
       };
-   }, [internalRef, gradientSizePX]);
+   }, [internalRef, gradientPX]);
 
    if (props.position) {
       throw new Error(
