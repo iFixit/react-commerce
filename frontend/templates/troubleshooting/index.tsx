@@ -50,7 +50,7 @@ import {
    faAngleDown,
    faCircleNodes,
    faClockRotateLeft,
-   faInfoCircle,
+   faList,
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
@@ -322,7 +322,7 @@ function TableOfContents({
                      borderRadius="md"
                      mr={2}
                   >
-                     <FaIcon icon={faInfoCircle} color="brand.500" />
+                     <FaIcon icon={faList} color="brand.500" />
                   </Square>
                   <Box as="span">Introduction</Box>
                </Link>
