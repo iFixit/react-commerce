@@ -250,14 +250,14 @@ const Wiki: NextPageWithLayout<{
                            problems={wikiData.linkedProblems}
                         />
                      </Box>
-                     {includeIntroductionHeading && (
-                        <Box
-                           id="introduction"
-                           mt={{ base: 4, md: 7 }}
-                           pt={{ md: 4 }}
-                           borderTop="1px"
-                           borderColor="gray.300"
-                        >
+                     <Box
+                        id="introduction"
+                        mt={{ base: 4, md: 7 }}
+                        pt={{ md: 4 }}
+                        borderTop="1px"
+                        borderColor="gray.300"
+                     >
+                        {includeIntroductionHeading && (
                            <HeadingSelfLink
                               as="h2"
                               id="introduction"
@@ -268,14 +268,14 @@ const Wiki: NextPageWithLayout<{
                            >
                               Introduction
                            </HeadingSelfLink>
-                           {wikiData.introduction.map((intro) => (
-                              <IntroductionSection
-                                 key={intro.heading}
-                                 intro={intro}
-                              />
-                           ))}
-                        </Box>
-                     )}
+                        )}
+                        {wikiData.introduction.map((intro) => (
+                           <IntroductionSection
+                              key={intro.heading}
+                              intro={intro}
+                           />
+                        ))}
+                     </Box>
                      {wikiData.solutions.length > 0 && (
                         <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                            {wikiData.solutions.map((solution, index) => (
