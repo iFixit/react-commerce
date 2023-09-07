@@ -1,5 +1,5 @@
 import { ProductList, ProductListType } from '@models/product-list';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useHits } from 'react-instantsearch';
 
 export type UseFacetAccordionItemProps = {
    attribute: string;

@@ -15,7 +15,7 @@ import { isPresent } from '@ifixit/helpers';
 import { ResponsiveImage, useIsMountedState, Wrapper } from '@ifixit/ui';
 import type { Image } from '@models/components/image';
 import * as React from 'react';
-import { usePagination } from 'react-instantsearch-hooks-web';
+import { usePagination } from 'react-instantsearch';
 
 export interface HeroSectionProps {
    title: string;

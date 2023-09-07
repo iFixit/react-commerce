@@ -16,12 +16,12 @@ import algoliasearch from 'algoliasearch/lite';
 import singletonRouter from 'next/router';
 import qs from 'qs';
 import * as React from 'react';
-import { createInstantSearchRouterNext } from 'react-instantsearch-hooks-router-nextjs';
+import { createInstantSearchRouterNext } from 'react-instantsearch-router-nextjs';
 import {
    InstantSearch,
    InstantSearchServerState,
    InstantSearchSSRProvider,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { useSearchCache } from './useSearchCache';
 
 export type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;

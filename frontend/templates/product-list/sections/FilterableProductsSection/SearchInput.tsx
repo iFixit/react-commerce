@@ -16,7 +16,7 @@ import { FaIcon } from '@ifixit/icons';
 import { useSearchQuery } from '@templates/product-list/hooks/useSearchQuery';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
-import { useSearchBox } from 'react-instantsearch-hooks-web';
+import { useSearchBox } from 'react-instantsearch';
 
 type SearchInputProps = InputGroupProps;
 

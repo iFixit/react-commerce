@@ -12,10 +12,7 @@ import {
    PaginationLink,
    useIsMountedState,
 } from '@ifixit/ui';
-import {
-   usePagination,
-   UsePaginationProps,
-} from 'react-instantsearch-hooks-web';
+import { usePagination, UsePaginationProps } from 'react-instantsearch';
 
 type PaginationProps = UsePaginationProps;
 

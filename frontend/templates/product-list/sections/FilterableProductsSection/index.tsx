@@ -39,7 +39,7 @@ import {
    useCurrentRefinements,
    useHits,
    useSearchBox,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsAccordion } from './facets/accordion';

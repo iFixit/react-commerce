@@ -8,7 +8,7 @@ import {
    useClearRefinements,
    useCurrentRefinements,
    usePagination,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 
 export function CurrentRefinements() {
    const { setSearchQuery } = useSearchQuery();
