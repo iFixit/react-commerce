@@ -136,10 +136,10 @@ const troubleshootingStyles: SystemStyleObject = {
    },
 
    'ul, ol': {
-      marginTop: '1em',
-      marginLeft: '1em',
+      marginBlock: { base: 4, sm: 6 },
+      marginInlineStart: '1em',
       overflowX: 'auto', // clear child media floats
-      paddingLeft: '1em',
+      paddingLeft: '2em',
 
       li: {
          _notFirst: {
@@ -149,7 +149,6 @@ const troubleshootingStyles: SystemStyleObject = {
 
       // nested list spacing
       'ul, ol': {
-         marginTop: '1em',
          marginBottom: 0,
       },
    },
