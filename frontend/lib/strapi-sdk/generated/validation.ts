@@ -560,10 +560,14 @@ export function FaqFiltersInputSchema(): z.ZodObject<
    return z.object<Properties<FaqFiltersInput>>({
       and: z.array(z.lazy(() => FaqFiltersInputSchema().nullable())).nullish(),
       answer: z.lazy(() => StringFilterInputSchema().nullish()),
+      category: z.lazy(() => StringFilterInputSchema().nullish()),
       createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
       id: z.lazy(() => IdFilterInputSchema().nullish()),
+      item_type: z.lazy(() => StringFilterInputSchema().nullish()),
       not: z.lazy(() => FaqFiltersInputSchema().nullish()),
       or: z.array(z.lazy(() => FaqFiltersInputSchema().nullable())).nullish(),
+      priority: z.lazy(() => IntFilterInputSchema().nullish()),
+      product_lists: z.lazy(() => ProductListFiltersInputSchema().nullish()),
       publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
       question: z.lazy(() => StringFilterInputSchema().nullish()),
       updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
@@ -573,6 +577,10 @@ export function FaqFiltersInputSchema(): z.ZodObject<
 export function FaqInputSchema(): z.ZodObject<Properties<FaqInput>> {
    return z.object<Properties<FaqInput>>({
       answer: z.string().nullish(),
+      category: z.string().nullish(),
+      item_type: z.string().nullish(),
+      priority: z.number().nullish(),
+      product_lists: z.array(z.string().nullable()).nullish(),
       publishedAt: z.unknown().nullish(),
       question: z.string().nullish(),
    });
@@ -831,6 +839,7 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       ),
       description: z.lazy(() => StringFilterInputSchema().nullish()),
       deviceTitle: z.lazy(() => StringFilterInputSchema().nullish()),
+      faqs: z.lazy(() => FaqFiltersInputSchema().nullish()),
       filters: z.lazy(() => StringFilterInputSchema().nullish()),
       forceNoindex: z.lazy(() => BooleanFilterInputSchema().nullish()),
       h1: z.lazy(() => StringFilterInputSchema().nullish()),
@@ -867,6 +876,7 @@ export function ProductListInputSchema(): z.ZodObject<
       defaultShowAllChildrenOnLgSizes: z.boolean().nullish(),
       description: z.string().nullish(),
       deviceTitle: z.string().nullish(),
+      faqs: z.array(z.string().nullable()).nullish(),
       filters: z.string().nullish(),
       forceNoindex: z.boolean().nullish(),
       h1: z.string().nullish(),
