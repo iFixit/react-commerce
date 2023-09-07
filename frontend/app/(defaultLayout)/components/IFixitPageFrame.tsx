@@ -14,8 +14,8 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { Matomo } from './components/Matomo';
-import { GoogleAnalytics } from './components/GoogleAnalytics';
+import { Matomo } from './Matomo';
+import { GoogleAnalytics } from './GoogleAnalytics';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -69,7 +69,7 @@ import { LayoutErrorBoundary } from '@layouts/default/LayoutErrorBoundary';
 import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-export default function DefaultLayout({
+export default function IFixitPageFrame({
    stores,
    currentStore,
    shopifyCredentials,

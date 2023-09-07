@@ -1,12 +1,10 @@
-'use client';
-
-import { AppProviders } from '@components/common';
+import { AppProviders } from '@components/common/AppProviders';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import DefaultLayout from './iFixitHeaderFooter';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ReactNode } from 'react';
+import IFixitPageFrame from './components/IFixitPageFrame';
 
-export default async function iFixitHeaderFooterLayout({
+export default async function DefaultLayout({
    children,
 }: {
    children: ReactNode;
@@ -19,7 +17,7 @@ export default async function iFixitHeaderFooterLayout({
 
    return (
       <AppProviders>
-         <DefaultLayout {...layoutProps}>{children}</DefaultLayout>
+         <IFixitPageFrame {...layoutProps}>{children}</IFixitPageFrame>
       </AppProviders>
    );
 }
