@@ -1,11 +1,9 @@
-import { AppProviders } from '@components/common/AppProviders';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
    invariant,
    parseItemcode,
    shouldShowProductRating,
 } from '@ifixit/helpers';
-import { DefaultLayout } from '@layouts/default';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ServerSidePropsProvider } from '@lib/server-side-props';
 import Product from '@pages/api/nextjs/cache/product';
@@ -50,11 +48,7 @@ export default async function Page({ params, searchParams }: PageProps) {
    return (
       <>
          <ServerSidePropsProvider props={pageProps}>
-            <AppProviders {...pageProps.appProps}>
-               <DefaultLayout {...pageProps.layoutProps}>
-                  <ProductTemplate />
-               </DefaultLayout>
-            </AppProviders>
+            <ProductTemplate />
          </ServerSidePropsProvider>
          <Script
             {...jsonLdScriptProps<SchemaBreadcrumbList>({
