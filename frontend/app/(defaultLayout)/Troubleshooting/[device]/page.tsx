@@ -1,10 +1,11 @@
-import { Metadata } from 'next';
-import PageTemplate from './components/pageTemplate';
-import { RestrictRobots } from '@helpers/next-helpers';
-import { notFound } from 'next/navigation';
 import { flags } from '@config/flags';
+import { RestrictRobots } from '@helpers/next-helpers';
 import { getiFixitOrigin } from '@helpers/path-helpers';
+import { Metadata } from 'next';
 import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
+import Header from './components/Header';
+import ServerHeader from './components/ServerHeader';
 
 export type PageParams = {
    device: string;
@@ -19,7 +20,12 @@ export default function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
    const pageProps = getPageProps({ params, searchParams });
-   return <PageTemplate {...pageProps} />;
+   return (
+      <>
+         <Header {...pageProps} />
+         <ServerHeader {...pageProps} />
+      </>
+   );
 }
 
 function ensureFlag() {

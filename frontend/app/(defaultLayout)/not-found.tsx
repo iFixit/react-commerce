@@ -1,10 +1,10 @@
 'use client';
 
 import { Center, Divider, Heading, Text, VStack } from '@chakra-ui/react';
-import DefaultLayout from './iFixitHeaderFooter';
-import { DEFAULT_STORE_CODE } from '@config/env';
 import { AppProviders } from '@components/common/AppProviders';
+import { DEFAULT_STORE_CODE } from '@config/env';
 import { getLayoutServerSideProps } from '@layouts/default/server';
+import IFixitPageFrame from './components/IFixitPageFrame';
 
 export default async function NotFound() {
    const layoutPropsPromise = getLayoutServerSideProps({
@@ -15,7 +15,7 @@ export default async function NotFound() {
 
    return (
       <AppProviders>
-         <DefaultLayout {...layoutProps}>
+         <IFixitPageFrame {...layoutProps}>
             <Center
                flexGrow={1}
                paddingTop="16px"
@@ -50,7 +50,7 @@ export default async function NotFound() {
                   </Text>
                </VStack>
             </Center>
-         </DefaultLayout>
+         </IFixitPageFrame>
       </AppProviders>
    );
 }
