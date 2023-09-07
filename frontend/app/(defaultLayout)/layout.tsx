@@ -3,7 +3,7 @@ import { DEFAULT_STORE_CODE } from '@config/env';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ReactNode } from 'react';
 import IFixitPageFrame from './components/IFixitPageFrame';
-import { ifixitOriginFromHostWrapper } from './products/[handle]/helpers';
+import { ifixitOriginFromHostWrapper } from './helpers';
 
 export default async function DefaultLayout({
    children,

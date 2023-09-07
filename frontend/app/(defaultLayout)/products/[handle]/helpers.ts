@@ -1,6 +1,5 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { hasDisableCacheGets } from '@helpers/cache-control-helpers';
-import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { StoreListItem } from '@models/store';
 import type { Product } from '@pages/api/nextjs/cache/product';
@@ -8,34 +7,13 @@ import {
    getDefaultVariantId,
    getSearchParamVariantId,
 } from '@templates/product/hooks/useSelectedVariant';
+import { ifixitOriginFromHostWrapper } from 'app/(defaultLayout)/helpers';
 import { GetServerSidePropsContext } from 'next';
-import { headers } from 'next/headers';
 import {
    ItemAvailability as SchemaItemAvailability,
    OfferItemCondition as SchemaOfferItemCondition,
 } from 'schema-dts';
 import { PageProps } from './page';
-
-export function iterableToObj(
-   iterator: IterableIterator<[string, string]>
-): Record<string, string> {
-   const result: Record<string, string> = {};
-   let item = iterator.next();
-   while (!item.done) {
-      const [key, value] = item.value;
-      result[key] = value;
-      item = iterator.next();
-   }
-   return result;
-}
-
-export function ifixitOriginFromHostWrapper(): string {
-   const readonlyHeaders = headers();
-   const headersObj = iterableToObj(readonlyHeaders.entries());
-   return ifixitOriginFromHost({
-      req: { headers: headersObj },
-   } as GetServerSidePropsContext);
-}
 
 export function hasDisableCacheGetsWrapper(
    searchParams: Record<string, string>

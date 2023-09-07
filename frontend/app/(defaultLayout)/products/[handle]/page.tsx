@@ -9,6 +9,7 @@ import { ServerSidePropsProvider } from '@lib/server-side-props';
 import Product from '@pages/api/nextjs/cache/product';
 import ProductTemplate from '@templates/product';
 import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
+import { ifixitOriginFromHostWrapper } from 'app/(defaultLayout)/helpers';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import Script from 'next/script';
@@ -22,7 +23,6 @@ import {
    createMetadataSupport,
    hasDisableCacheGetsWrapper,
    identifyStoresWithProduct,
-   ifixitOriginFromHostWrapper,
 } from './helpers';
 
 export type PageProps = {
