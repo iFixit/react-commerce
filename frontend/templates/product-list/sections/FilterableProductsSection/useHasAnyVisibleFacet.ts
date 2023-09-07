@@ -2,7 +2,7 @@ import {
    ProductList as TProductList,
    ProductSearchHit,
 } from '@models/product-list';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useHits } from 'react-instantsearch';
 import { SearchResults } from 'algoliasearch-helper';
 import { useFilteredFacets } from './facets/useFacets';
 

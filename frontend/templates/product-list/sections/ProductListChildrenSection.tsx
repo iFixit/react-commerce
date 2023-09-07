@@ -8,7 +8,7 @@ import {
    useCurrentRefinements,
    useHits,
    useSearchBox,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {

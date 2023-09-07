@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchBox } from 'react-instantsearch-hooks-web';
+import { useSearchBox } from 'react-instantsearch';
 
 type SearchQueryContext = {
    searchQuery: string;

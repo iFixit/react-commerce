@@ -20,7 +20,7 @@ import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { useCountRefinements } from '../useCountRefinements';
 import { useFilteredFacets } from '../useFacets';
 import { FacetListItem } from './FacetListItem';

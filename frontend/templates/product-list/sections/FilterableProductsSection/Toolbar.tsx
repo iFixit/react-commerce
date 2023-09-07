@@ -17,7 +17,7 @@ import { getProductListTitle } from '@helpers/product-list-helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductList } from '@models/product-list';
 import * as React from 'react';
-import { useCurrentRefinements, useHits } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements, useHits } from 'react-instantsearch';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsDrawer } from './facets/drawer';
 import { SearchInput } from './SearchInput';

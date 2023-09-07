@@ -2,7 +2,7 @@ import {
    PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT,
    PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
 } from '@config/constants';
-import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
+import { useHits, useRefinementList } from 'react-instantsearch';
 import { useSortBy } from './useSortBy';
 
 export type RefinementListFacetState = ReturnType<
