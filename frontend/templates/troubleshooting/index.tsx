@@ -233,12 +233,7 @@ const Wiki: NextPageWithLayout<{
                         />
                      </VStack>
                   </HStack>
-                  <Box
-                     mt="8px"
-                     borderBottom="1px"
-                     borderColor="gray.300"
-                     padding="6px 0px 16px 0px"
-                  >
+                  <Box mt="8px" pt="6px">
                      <HeadingSelfLink
                         as="h2"
                         fontSize="20px"
@@ -255,8 +250,14 @@ const Wiki: NextPageWithLayout<{
                         problems={wikiData.linkedProblems}
                      />
                   </Box>
-                  <Box id="introduction" mt={{ base: '0px', md: '28px' }}>
-                     {includeIntroductionHeading && (
+                  {includeIntroductionHeading && (
+                     <Box
+                        id="introduction"
+                        mt={{ md: 7 }}
+                        pt={4}
+                        borderTop="1px"
+                        borderColor="gray.300"
+                     >
                         <HeadingSelfLink
                            as="h2"
                            id="introduction"
@@ -267,14 +268,14 @@ const Wiki: NextPageWithLayout<{
                         >
                            Introduction
                         </HeadingSelfLink>
-                     )}
-                     {wikiData.introduction.map((intro) => (
-                        <IntroductionSection
-                           key={intro.heading}
-                           intro={intro}
-                        />
-                     ))}
-                  </Box>
+                        {wikiData.introduction.map((intro) => (
+                           <IntroductionSection
+                              key={intro.heading}
+                              intro={intro}
+                           />
+                        ))}
+                     </Box>
+                  )}
                   {wikiData.solutions.length > 0 && (
                      <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                         {wikiData.solutions.map((solution, index) => (
