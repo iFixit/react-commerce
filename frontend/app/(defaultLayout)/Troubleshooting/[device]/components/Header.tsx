@@ -2,11 +2,10 @@
 
 import { Heading } from '@chakra-ui/react';
 
-export type TemplateProps = {
+export type HeaderProps = {
    device: string;
 };
 
-export default function PageTemplate(props: TemplateProps) {
-   const { device } = props;
+export default function Header({ device }: HeaderProps) {
    return <Heading>Device: {device}</Heading>;
 }

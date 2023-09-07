@@ -1,7 +1,7 @@
-import { GA_URL, GA_KEY, GA_DEBUG, GTAG_ID } from '@config/env';
-import * as React from 'react';
-import Script from 'next/script';
+import { GA_DEBUG, GA_KEY, GA_URL, GTAG_ID } from '@config/env';
 import { usePathname, useSearchParams } from 'next/navigation';
+import Script from 'next/script';
+import * as React from 'react';
 
 declare const ga: (command: string, hitType: string, url?: string) => void;
 
