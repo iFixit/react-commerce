@@ -194,33 +194,46 @@ const Wiki: NextPageWithLayout<{
                            outlineColor="gray.300"
                            marginRight={3}
                         />
-                     </VStack>
-                  </HStack>
-                  <Box mt="8px" pt="6px">
-                     <HeadingSelfLink
-                        as="h2"
-                        fontSize="20px"
-                        mt="0px"
-                        fontWeight="semibold"
-                        selfLinked
-                        id="causes"
-                     >
-                        {'Causes'}
-                     </HeadingSelfLink>
-                     <TableOfContents
-                        introduction={wikiData.introduction}
-                        solutions={wikiData.solutions}
-                        problems={wikiData.linkedProblems}
-                     />
-                  </Box>
-                  {includeIntroductionHeading && (
-                     <Box
-                        id="introduction"
-                        mt={{ md: 7 }}
-                        pt={4}
-                        borderTop="1px"
-                        borderColor="gray.300"
-                     >
+                        <Modal isOpen={isOpen} onClose={onClose}>
+                           <ModalOverlay />
+                           <ModalContent
+                              width="auto"
+                              maxWidth="calc(100% - 64px)"
+                              background="none"
+                           >
+                              <VisuallyHidden>
+                                 <ModalHeader>{title}</ModalHeader>
+                              </VisuallyHidden>
+                              <ModalCloseButton />
+                              <ModalBody padding={0}>
+                                 <Image
+                                    src={mainImageUrlLarge}
+                                    width="100%"
+                                    height="auto"
+                                    alt={title}
+                                 />
+                              </ModalBody>
+                           </ModalContent>
+                        </Modal>
+                        <VStack alignItems="flex-start" spacing={2}>
+                           <HeadingSelfLink
+                              as="h1"
+                              fontSize="3xl"
+                              fontWeight="medium"
+                              selfLinked
+                              id="top"
+                              mt={0}
+                           >
+                              {wikiData.title}
+                           </HeadingSelfLink>
+                           <AuthorInformation
+                              lastUpdatedDate={lastUpdatedDate}
+                              authors={wikiData.authors}
+                              historyUrl={wikiData.historyUrl}
+                           />
+                        </VStack>
+                     </HStack>
+                     <Box mt="8px" pt="6px">
                         <HeadingSelfLink
                            as="h2"
                            fontSize="20px"
@@ -231,24 +244,38 @@ const Wiki: NextPageWithLayout<{
                         >
                            {'Causes'}
                         </HeadingSelfLink>
-                        {wikiData.introduction.map((intro) => (
-                           <IntroductionSection
-                              key={intro.heading}
-                              intro={intro}
-                           />
-                        ))}
+                        <TableOfContents
+                           introduction={wikiData.introduction}
+                           solutions={wikiData.solutions}
+                           problems={wikiData.linkedProblems}
+                        />
                      </Box>
-                  )}
-                  {wikiData.solutions.length > 0 && (
-                     <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
-                        {wikiData.solutions.map((solution, index) => (
-                           <SectionCard
-                              key={solution.heading}
-                              index={index + 1}
-                              solution={solution}
-                           />
-                        ))}
-                     </Box>
+                     {includeIntroductionHeading && (
+                        <Box
+                           id="introduction"
+                           mt={{ base: 4, md: 7 }}
+                           pt={{ md: 4 }}
+                           borderTop="1px"
+                           borderColor="gray.300"
+                        >
+                           <HeadingSelfLink
+                              as="h2"
+                              id="introduction"
+                              aria-label="Introduction"
+                              selfLinked={false}
+                              mt={0}
+                              display={{ base: 'none', md: 'block' }}
+                           >
+                              Introduction
+                           </HeadingSelfLink>
+                           {wikiData.introduction.map((intro) => (
+                              <IntroductionSection
+                                 key={intro.heading}
+                                 intro={intro}
+                              />
+                           ))}
+                        </Box>
+                     )}
                      {wikiData.solutions.length > 0 && (
                         <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                            {wikiData.solutions.map((solution, index) => (
