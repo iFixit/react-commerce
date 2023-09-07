@@ -354,6 +354,11 @@ const commerceStyles: SystemStyleObject = {
    ...sharedStyles,
 };
 
+const styleMap = {
+   troubleshooting: troubleshootingStyles,
+   commerce: commerceStyles,
+};
+
 export const PrerenderedHTML = chakra(function Prerendered({
    html,
    template,
@@ -369,22 +374,10 @@ export const PrerenderedHTML = chakra(function Prerendered({
       }
    }, [template]);
 
-   let sx;
-   switch (template) {
-      case 'troubleshooting':
-         sx = troubleshootingStyles;
-         break;
-      case 'commerce':
-         sx = commerceStyles;
-         break;
-      default:
-         sx = {};
-   }
-
    return (
       <Box
          className={`prerendered ${className}`}
-         sx={sx}
+         sx={styleMap[template]}
          dangerouslySetInnerHTML={{ __html: html }}
       />
    );
