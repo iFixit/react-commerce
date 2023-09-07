@@ -20,8 +20,6 @@ export function faqsSectionFromStrapi(
    const strapiFaqs = fragment?.faqs?.data ?? [];
    const faqs = filterFalsyItems(strapiFaqs.map(faqFromStrapi));
 
-   if (faqs.length === 0) return null;
-
    const title = fragment?.title ?? null;
    const description = fragment?.description ?? null;
 
