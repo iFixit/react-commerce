@@ -419,7 +419,7 @@ function WikiHtmlAccordianItem({
             {children && (
                <PrerenderedHTML
                   html={children}
-                  styles="commerce"
+                  template="commerce"
                   fontSize="sm"
                   sx={{
                      ul: {

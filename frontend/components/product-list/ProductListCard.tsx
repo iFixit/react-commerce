@@ -86,7 +86,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                {variant === 'medium' && productList.description && (
                   <PrerenderedHTML
                      html={productList.description}
-                     styles="commerce"
+                     template="commerce"
                      mt="1"
                      color="gray.600"
                      fontSize="sm"

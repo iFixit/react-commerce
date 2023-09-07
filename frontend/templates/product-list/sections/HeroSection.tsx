@@ -201,7 +201,12 @@ const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
       const html = React.useMemo(() => markdownToHTML(children), [children]);
 
       return (
-         <PrerenderedHTML html={html} styles="commerce" ref={ref} {...other} />
+         <PrerenderedHTML
+            html={html}
+            template="commerce"
+            ref={ref}
+            {...other}
+         />
       );
    }
 );

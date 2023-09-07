@@ -83,7 +83,7 @@ const SolutionHeader = ({
 
 const SolutionTexts = ({ body }: { body: string }) => (
    <>
-      <PrerenderedHTML html={body} styles="troubleshooting" />
+      <PrerenderedHTML html={body} template="troubleshooting" />
    </>
 );
 

@@ -11,7 +11,7 @@ export function SectionDescription({
    return (
       <PrerenderedHTML
          html={richText}
-         styles="commerce"
+         template="commerce"
          color="gray.700"
          {...otherProps}
       />

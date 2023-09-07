@@ -116,7 +116,7 @@ function Quote({ quote, isActive, isFarFromView, isLooping }: QuoteProps) {
          </Box>
          <PrerenderedHTML
             html={quote.text}
-            styles="commerce"
+            template="commerce"
             color="gray.800"
             textAlign="center"
          />

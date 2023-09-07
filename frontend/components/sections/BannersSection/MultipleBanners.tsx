@@ -78,7 +78,7 @@ function BannerGridItem({ banner }: BannerProps) {
             {banner.description && (
                <PrerenderedHTML
                   html={banner.description}
-                  styles="commerce"
+                  template="commerce"
                   color="gray.700"
                />
             )}

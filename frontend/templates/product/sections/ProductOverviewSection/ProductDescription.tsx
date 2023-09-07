@@ -98,7 +98,7 @@ function VariantDescription({ children }: VariantDescriptionProps) {
    return (
       <PrerenderedHTML
          html={children}
-         styles="commerce"
+         template="commerce"
          fontSize="sm"
          sx={{
             ul: {
@@ -125,7 +125,7 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
    return (
       <PrerenderedHTML
          html={children}
-         styles="commerce"
+         template="commerce"
          fontSize="sm"
          sx={{
             a: {

@@ -94,7 +94,7 @@ function FAQAccordionItem({ faq }: { faq: FAQ }) {
                   </AccordionButton>
                </h3>
                <AccordionPanel pb="5" color="gray.700" bg="white">
-                  <PrerenderedHTML html={answerHtml} styles="commerce" />
+                  <PrerenderedHTML html={answerHtml} template="commerce" />
                </AccordionPanel>
             </>
          )}

@@ -36,7 +36,7 @@ export function GuideResource({ guide }: { guide: SectionGuide }) {
          {guide.introduction_rendered && (
             <PrerenderedHTML
                html={guide.introduction_rendered}
-               styles="troubleshooting"
+               template="troubleshooting"
                lineHeight="1.36"
                fontSize="12px"
                color="gray.600"

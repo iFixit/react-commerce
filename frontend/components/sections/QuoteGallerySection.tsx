@@ -165,7 +165,7 @@ function QuoteCard({ quote, isActive }: QuoteCardProps) {
          transition="opacity 300ms"
          opacity={isActive ? 1 : 0.5}
       >
-         <PrerenderedHTML html={quote.text} styles="commerce" />
+         <PrerenderedHTML html={quote.text} template="commerce" />
          {author && (
             <HStack
                mt={{

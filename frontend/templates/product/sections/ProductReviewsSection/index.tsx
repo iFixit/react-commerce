@@ -286,7 +286,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
             {review.productName} | {review.productVariantName}
          </Text>
          {review.body && (
-            <PrerenderedHTML html={review.body} styles="commerce" />
+            <PrerenderedHTML html={review.body} template="commerce" />
          )}
       </Box>
    );

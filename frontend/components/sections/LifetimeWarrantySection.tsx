@@ -134,7 +134,7 @@ function Content({ title, description, callToAction }: ContentProps) {
             </Heading>
             <PrerenderedHTML
                html={sectionDescription}
-               styles="commerce"
+               template="commerce"
                color="white"
             />
             <Button as="a" mt="8" minW="200px" href={callToActionUrl}>
