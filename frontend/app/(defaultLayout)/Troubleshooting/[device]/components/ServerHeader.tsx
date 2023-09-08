@@ -3,5 +3,5 @@ export type ServerHeaderProps = {
 };
 
 export default function ServerHeader({ device }: ServerHeaderProps) {
-   return <span>Device: {device}</span>;
+   return <h2 className="text-4xl font-bold">Device: {device}</h2>;
 }

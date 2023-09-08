@@ -1,11 +1,13 @@
 import { IFIXIT_ORIGIN, POLYFILL_DOMAIN } from '@config/env';
-import { Analytics } from '@vercel/analytics/react';
-import Script from 'next/script';
-import React from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
+import Script from 'next/script';
+import React from 'react';
 config.autoAddCss = false;
+
+import '../globals.css';
 
 const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';
 
