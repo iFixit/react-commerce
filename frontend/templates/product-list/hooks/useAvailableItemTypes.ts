@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useHits } from 'react-instantsearch';
 
 export function useAvailableItemTypes() {
    const { results } = useHits();

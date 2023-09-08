@@ -6,6 +6,7 @@ import type { ReusableSection } from '@models/reusable-section';
 import { findReusableSections } from '@models/reusable-section/server';
 import type { Dictionary } from 'lodash';
 import keyBy from 'lodash/keyBy';
+import uniqBy from 'lodash/uniqBy';
 
 interface FindProductListReusableSectionsArgs {
    strapiProductList: ProductListFieldsFragment | null | undefined;
@@ -34,6 +35,7 @@ export async function findProductListReusableSections({
                getAncestryFAQsByCategory(strapiProductList);
             const ancestryFaqsWithoutCategory =
                getAncestryFAQsWithoutCategory(strapiProductList);
+
             const sectionFaqsByCategory = keyBy(
                reusableSection.section.faqs.filter(
                   (faq) => faq.category != null
@@ -44,15 +46,21 @@ export async function findProductListReusableSections({
                reusableSection.section.faqs.filter(
                   (faq) => faq.category == null
                );
+
             const allFaqsByCategory = {
                ...ancestryFaqsByCategory,
                ...sectionFaqsByCategory,
             };
-            reusableSection.section.faqs = [
-               ...ancestryFaqsWithoutCategory,
-               ...sectionFaqsWithoutCategory,
-               ...Object.values(allFaqsByCategory),
-            ].sort(compareFAQs);
+
+            reusableSection.section.faqs = uniqBy(
+               [
+                  ...ancestryFaqsWithoutCategory,
+                  ...sectionFaqsWithoutCategory,
+                  ...Object.values(allFaqsByCategory),
+               ],
+               'id'
+            ).sort(compareFAQs);
+
             return reusableSection;
          }
          default:
