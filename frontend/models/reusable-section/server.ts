@@ -12,6 +12,7 @@ import { quoteGallerySectionFromStrapi } from '@models/sections/quote-gallery-se
 import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import { ReusableSection } from '.';
 import { getPlacementFromStrapi } from './components/placement';
+import { faqsSectionFromStrapi } from '@models/sections/faqs-section';
 
 export interface FindReusableSectionArgs {
    filters: ReusableSectionFiltersInput;
@@ -61,6 +62,10 @@ function createReusableSectionFromStrapiSection(
       }
       case 'ComponentPagePress': {
          section = pressQuotesSectionFromStrapi(strapiSection, sectionId);
+         break;
+      }
+      case 'ComponentSectionFaqs': {
+         section = faqsSectionFromStrapi(strapiSection, sectionId);
          break;
       }
    }

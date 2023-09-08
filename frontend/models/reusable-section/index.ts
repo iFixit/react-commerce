@@ -4,6 +4,7 @@ import { QuoteGallerySectionSchema } from '@models/sections/quote-gallery-sectio
 import { SplitWithImageSectionSchema } from '@models/sections/split-with-image-section';
 import { z } from 'zod';
 import { SectionPlacementSchema } from './components/placement';
+import { FAQsSectionSchema } from '@models/sections/faqs-section';
 
 export type ReusableSection = z.infer<typeof ReusableSectionSchema>;
 
@@ -13,6 +14,7 @@ export const ReusableSectionSchema = z.object({
       SplitWithImageSectionSchema,
       QuoteGallerySectionSchema,
       PressQuotesSectionSchema,
+      FAQsSectionSchema,
    ]),
    placements: z.array(SectionPlacementSchema),
    priority: z.number(),
