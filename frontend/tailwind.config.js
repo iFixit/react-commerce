@@ -11,7 +11,6 @@ module.exports = {
       spacing: space,
       borderRadius: applyTailwindDefault(radii, ['md', 'base']),
       boxShadow: applyTailwindDefault(shadows, 'md'),
-      // dropShadow: applyTailwindDefault(shadows, 'md'),
       extend: {
          fontFamily: fonts,
          zIndex: zIndices,
