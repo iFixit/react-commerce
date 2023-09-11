@@ -51,6 +51,10 @@ function gtag(...args: GTagArg) {
    }
 }
 
+export function trackGA4ViewItem(event: EventObj) {
+   gtag('event', 'view_item', event);
+}
+
 export function trackGoogleProductView(product: GAProductType) {
    const ga = useGa();
    if (!ga) {

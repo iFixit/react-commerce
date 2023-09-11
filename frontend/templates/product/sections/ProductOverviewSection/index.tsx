@@ -41,11 +41,12 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
+import { trackGA4ViewItem } from '@ifixit/analytics';
 
 export interface ProductOverviewSectionProps {
    product: Product;
    selectedVariant: ProductVariant;
-   onVariantChange: (variantId: string) => void;
+   onVariantChange: (variantId: string) => ProductVariant | null;
    internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 }
 
@@ -61,8 +62,23 @@ export function ProductOverviewSection({
 
    const handleVariantChange = React.useCallback(
       (variantId: string) => {
-         onVariantChange(variantId);
+         const newVariant = onVariantChange(variantId);
          setSelectedImageId(null);
+         if (newVariant) {
+            trackGA4ViewItem({
+               currency: newVariant.price.currencyCode,
+               value: newVariant.price.amount,
+               items: [
+                  {
+                     item_id: newVariant.sku,
+                     item_name: newVariant.internalDisplayName,
+                     item_variant: newVariant.id.split('/').pop(),
+                     price: newVariant.price.amount,
+                     quantity: newVariant.quantityAvailable,
+                  },
+               ],
+            });
+         }
       },
       [onVariantChange]
    );

@@ -3,7 +3,7 @@ import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
-type SetVariantIdFn = (variantId: string) => void;
+type SetVariantIdFn = (variantId: string) => ProductVariant | null;
 
 export function useSelectedVariant(
    product: Product
@@ -38,6 +38,7 @@ export function useSelectedVariant(
             undefined,
             { shallow: true }
          );
+         return product.variants.find((v) => v.id === variantId) ?? null;
       },
       [defaultVariantId, router]
    );
