@@ -83,7 +83,7 @@ function CrossSellItem({ productPreview }: CrossSellItemProps) {
          type: 'product',
          product: createCartLineItem(withUserPrice(productPreview)),
       });
-      drawer.onOpen();
+      drawer.onOpen(event, true);
    };
 
    return (

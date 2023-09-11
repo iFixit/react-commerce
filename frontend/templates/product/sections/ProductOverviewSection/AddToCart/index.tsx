@@ -156,7 +156,7 @@ function useOptimisticAddToCart(
             compareAtPrice: userPrice.compareAtPrice,
          },
       });
-      onOpen();
+      onOpen(event, true);
    }, [
       selectedVariant.sku,
       selectedVariant.title,

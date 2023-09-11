@@ -55,6 +55,10 @@ export function trackGA4ViewItem(event: EventObj) {
    gtag('event', 'view_item', event);
 }
 
+export function trackGA4ViewCart(event: EventObj) {
+   gtag('event', 'view_cart', event);
+}
+
 export function trackGoogleProductView(product: GAProductType) {
    const ga = useGa();
    if (!ga) {
