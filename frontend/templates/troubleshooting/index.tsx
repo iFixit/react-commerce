@@ -36,7 +36,7 @@ import {
    SimpleGrid,
    useToken,
 } from '@chakra-ui/react';
-import Prerendered from './prerendered';
+import { PrerenderedHTML } from '@components/common';
 import type {
    Author,
    BreadcrumbEntry,
@@ -233,12 +233,7 @@ const Wiki: NextPageWithLayout<{
                            />
                         </VStack>
                      </HStack>
-                     <Box
-                        mt="8px"
-                        borderBottom="1px"
-                        borderColor="gray.300"
-                        padding="6px 0px 16px 0px"
-                     >
+                     <Box mt="8px" pt="6px">
                         <HeadingSelfLink
                            as="h2"
                            fontSize="20px"
@@ -255,7 +250,13 @@ const Wiki: NextPageWithLayout<{
                            problems={wikiData.linkedProblems}
                         />
                      </Box>
-                     <Box id="introduction" mt={{ base: '0px', md: '28px' }}>
+                     <Box
+                        id="introduction"
+                        mt={{ base: 4, md: 7 }}
+                        pt={{ md: 4 }}
+                        borderTop="1px"
+                        borderColor="gray.300"
+                     >
                         {includeIntroductionHeading && (
                            <HeadingSelfLink
                               as="h2"
@@ -800,7 +801,7 @@ function IntroductionSection({ intro }: { intro: Section }) {
                {intro.heading}
             </HeadingSelfLink>
          )}
-         <Prerendered html={intro.body} />
+         <PrerenderedHTML html={intro.body} template="troubleshooting" />
       </>
    );
 }
@@ -816,7 +817,7 @@ const ConclusionSection = function ConclusionSectionInner({
          <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
             {conclusion.heading}
          </HeadingSelfLink>
-         <Prerendered html={conclusion.body} />
+         <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
       </>
    );
 };

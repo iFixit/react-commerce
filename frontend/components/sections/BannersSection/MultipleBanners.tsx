@@ -6,6 +6,7 @@ import {
    Link,
    SimpleGrid,
 } from '@chakra-ui/react';
+import { PrerenderedHTML } from '@components/common';
 import { faArrowRight } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { ResponsiveImage } from '@ifixit/ui';
@@ -75,11 +76,10 @@ function BannerGridItem({ banner }: BannerProps) {
                </Heading>
             )}
             {banner.description && (
-               <Box
+               <PrerenderedHTML
+                  html={banner.description}
+                  template="commerce"
                   color="gray.700"
-                  dangerouslySetInnerHTML={{
-                     __html: banner.description,
-                  }}
                />
             )}
             {banner.callToAction && (

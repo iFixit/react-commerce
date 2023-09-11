@@ -1,4 +1,5 @@
 import { Box, Flex, Link } from '@chakra-ui/react';
+import { PrerenderedHTML } from '@components/common';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeaderWrapper } from '@components/sections/SectionHeaderWrapper';
 import { SectionHeading } from '@components/sections/SectionHeading';
@@ -113,12 +114,11 @@ function Quote({ quote, isActive, isFarFromView, isLooping }: QuoteProps) {
                fill
             />
          </Box>
-         <Box
+         <PrerenderedHTML
+            html={quote.text}
+            template="commerce"
             color="gray.800"
             textAlign="center"
-            dangerouslySetInnerHTML={{
-               __html: quote.text,
-            }}
          />
       </Flex>
    );

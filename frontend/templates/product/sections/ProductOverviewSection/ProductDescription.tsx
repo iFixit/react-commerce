@@ -1,4 +1,4 @@
-import { Alert, Box, ThemeTypings } from '@chakra-ui/react';
+import { Alert, ThemeTypings } from '@chakra-ui/react';
 import {
    faCircleExclamation,
    faCircleInfo,
@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import { PrerenderedHTML } from '@components/common';
 
 export type ProductDescriptionProps = {
    product: Product;
@@ -95,10 +96,9 @@ type VariantDescriptionProps = {
 
 function VariantDescription({ children }: VariantDescriptionProps) {
    return (
-      <Box
-         dangerouslySetInnerHTML={{
-            __html: children,
-         }}
+      <PrerenderedHTML
+         html={children}
+         template="commerce"
          fontSize="sm"
          sx={{
             ul: {
@@ -110,12 +110,6 @@ function VariantDescription({ children }: VariantDescriptionProps) {
                _last: {
                   mb: 0,
                },
-            },
-            a: {
-               color: 'brand.500',
-            },
-            'a:hover': {
-               textDecoration: 'underline',
             },
          }}
       />
@@ -129,7 +123,9 @@ type AlertTextProps = {
 
 function AlertText({ children, colorScheme }: AlertTextProps) {
    return (
-      <Box
+      <PrerenderedHTML
+         html={children}
+         template="commerce"
          fontSize="sm"
          sx={{
             a: {
@@ -143,9 +139,6 @@ function AlertText({ children, colorScheme }: AlertTextProps) {
             'p:not(:first-of-type)': {
                mt: 2,
             },
-         }}
-         dangerouslySetInnerHTML={{
-            __html: children,
          }}
       />
    );
