@@ -20,6 +20,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
+import { trackGoogleProductView, trackGA4AddToCart } from '@ifixit/analytics';
 import type { Money } from '@models/components/money';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';
@@ -84,6 +85,20 @@ function CrossSellItem({ productPreview }: CrossSellItemProps) {
          product: createCartLineItem(withUserPrice(productPreview)),
       });
       drawer.onOpen(event, true);
+      trackGA4AddToCart({
+         currency: productPreview.price.currencyCode,
+         value: Number(productPreview.price.amount),
+         items: [
+            {
+               item_id: productPreview.sku,
+               item_name:
+                  productPreview.title + ' ' + productPreview.variantTitle,
+               item_variant: productPreview.shopifyVariantId.split('/').pop(),
+               price: productPreview.price.amount,
+               quantity: 1,
+            },
+         ],
+      });
    };
 
    return (

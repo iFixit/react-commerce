@@ -9,6 +9,7 @@ import { AddToCartBar } from './AddToCartBar';
 import { InventoryMessage } from './InventoryMessage';
 import { NotifyMeForm } from './NotifyMeForm';
 import { ShippingRestrictions } from './ShippingRestrictions';
+import { trackGA4AddToCart } from '@ifixit/analytics';
 
 type AddToCartProps = {
    product: Product;
@@ -157,6 +158,19 @@ function useOptimisticAddToCart(
          },
       });
       onOpen(event, true);
+      trackGA4AddToCart({
+         currency: userPrice.price.currencyCode,
+         value: userPrice.price.amount,
+         items: [
+            {
+               item_id: selectedVariant.sku,
+               item_name: selectedVariant.internalDisplayName,
+               item_variant: selectedVariant.id.split('/').pop(),
+               price: userPrice.price.amount,
+               quantity: 1,
+            },
+         ],
+      });
    }, [
       selectedVariant.sku,
       selectedVariant.title,
