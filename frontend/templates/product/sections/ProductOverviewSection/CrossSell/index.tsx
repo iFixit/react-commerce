@@ -20,7 +20,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
-import { trackGoogleProductView, trackGA4AddToCart } from '@ifixit/analytics';
+import { trackGA4AddToCart } from '@ifixit/analytics';
 import type { Money } from '@models/components/money';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';

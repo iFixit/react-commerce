@@ -39,7 +39,7 @@ export function useCartDrawer() {
    const cartQuery = useCart();
    // we only want to track the analytics when the cart drawer is opened by the user
    const onOpenWithAnalytics = React.useCallback(
-      (event: Event | undefined, autoOpened: boolean = false) => {
+      (event?: Event, autoOpened?: boolean) => {
          // Make sure the cart data is loaded and successful
          if (cartQuery.isSuccess && cartQuery.data && !autoOpened) {
             if (cartQuery.data.lineItems.length) {
