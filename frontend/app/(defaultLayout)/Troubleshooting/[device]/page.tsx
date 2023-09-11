@@ -5,7 +5,6 @@ import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import Header from './components/Header';
-import ServerHeader from './components/ServerHeader';
 
 export type PageParams = {
    device: string;
@@ -20,12 +19,7 @@ export default function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
    const pageProps = getPageProps({ params, searchParams });
-   return (
-      <>
-         <Header {...pageProps} />
-         <ServerHeader {...pageProps} />
-      </>
-   );
+   return <Header {...pageProps} />;
 }
 
 function ensureFlag() {
