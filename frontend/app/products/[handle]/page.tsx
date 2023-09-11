@@ -25,7 +25,7 @@ import {
    hasDisableCacheGetsWrapper,
    identifyStoresWithProduct,
    ifixitOriginFromHostWrapper,
-} from './helpers';
+} from '../../helpers';
 
 export type PageProps = {
    params: { handle: string };

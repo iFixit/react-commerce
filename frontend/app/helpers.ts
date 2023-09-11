@@ -14,7 +14,7 @@ import {
    ItemAvailability as SchemaItemAvailability,
    OfferItemCondition as SchemaOfferItemCondition,
 } from 'schema-dts';
-import { PageProps } from './page';
+import { PageProps } from './products/[handle]/page';
 
 export function iterableToObj(
    iterator: IterableIterator<[string, string]>

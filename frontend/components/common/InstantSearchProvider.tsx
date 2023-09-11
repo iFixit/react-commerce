@@ -27,7 +27,7 @@ import { useSearchCache } from './useSearchCache';
 export type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 
 export type AlgoliaProps = {
-   url: string;
+   serverUrl: string;
    indexName: string;
    serverState?: InstantSearchServerState;
    apiKey: string;
@@ -44,7 +44,7 @@ type IndexUiState = Record<string, any>;
 
 export function InstantSearchProvider({
    children,
-   url,
+   serverUrl,
    indexName,
    serverState,
    apiKey,
@@ -67,7 +67,7 @@ export function InstantSearchProvider({
    const routerOptions = {
       getLocation() {
          if (typeof window === 'undefined') {
-            return new URL(url) as unknown as Location;
+            return new URL(serverUrl) as unknown as Location;
          }
 
          return window.location;
@@ -260,7 +260,7 @@ export function InstantSearchProvider({
             indexName={indexName}
             routing={{
                router: createInstantSearchRouterNext<RouteState>({
-                  serverUrl: url,
+                  serverUrl,
                   singletonRouter,
                   routerOptions,
                }),
