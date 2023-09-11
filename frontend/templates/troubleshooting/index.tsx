@@ -109,13 +109,17 @@ const Wiki: NextPageWithLayout<{
       (conclusion) => conclusion.heading !== 'Related Pages'
    );
 
+   const hasRelatedPages = wikiData.conclusion.some(
+      (conclusion) => conclusion.heading === 'Related Pages'
+   );
+
    const sections = wikiData.introduction
       .concat(wikiData.solutions)
       .concat(filteredConclusions);
 
    const tocItems = sections
       .map((section) => ({ title: section.heading, uniqueId: section.id }))
-      .concat(RelatedProblemsRecord)
+      .concat(hasRelatedPages ? RelatedProblemsRecord : [])
       .filter((tocItem) => tocItem.title);
 
    const includeIntroductionHeading =
