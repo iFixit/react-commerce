@@ -4,7 +4,7 @@ import { getiFixitOrigin } from '@helpers/path-helpers';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import Header from './components/Header';
+import TroubleshootingList from './components/troubleshootingList';
 
 export type PageParams = {
    device: string;
@@ -19,7 +19,7 @@ export default function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
    const pageProps = getPageProps({ params, searchParams });
-   return <Header {...pageProps} />;
+   return <TroubleshootingList {...pageProps} />;
 }
 
 function ensureFlag() {

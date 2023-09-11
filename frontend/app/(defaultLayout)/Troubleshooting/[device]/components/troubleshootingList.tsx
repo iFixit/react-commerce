@@ -2,10 +2,12 @@
 
 import { Heading } from '@chakra-ui/react';
 
-export type HeaderProps = {
+export type TroubleshootingListProps = {
    device: string;
 };
 
-export default function Header({ device }: HeaderProps) {
+export default function TroubleshootingList({
+   device,
+}: TroubleshootingListProps) {
    return <Heading>Device: {device}</Heading>;
 }
