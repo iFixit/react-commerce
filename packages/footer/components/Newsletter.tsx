@@ -37,6 +37,7 @@ const NewsletterInput = ({
    return (
       <FormControl w="full" isInvalid={subscription.error != null}>
          <Input
+            id="newsletter-input"
             ref={inputRef}
             type="email"
             disabled={subscription.status !== SubscriptionStatus.Idle}

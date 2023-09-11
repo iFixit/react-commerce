@@ -63,7 +63,11 @@ export function CartFooter({
             <FooterSettingsSection>
                <FooterSettings>
                   {stores.length > 0 && (
-                     <Menu isLazy lazyBehavior="keepMounted">
+                     <Menu
+                        isLazy
+                        lazyBehavior="keepMounted"
+                        id="store-selection-menu"
+                     >
                         <StoreMenuButton
                            icon={<Flag code={FlagCountryCode.US} />}
                            color="white"
