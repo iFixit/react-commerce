@@ -34,6 +34,23 @@ type GATrackEvent = {
    name?: string;
 };
 
+type GTagArg = Array<any>;
+type EventObj = { [key: string]: any };
+export type GTag = (...args: GTagArg) => void;
+
+declare global {
+   interface Window {
+      gtag?: GTag;
+      dataLayer?: GTagArg;
+   }
+}
+
+function gtag(...args: GTagArg) {
+   if (window.gtag) {
+      window.gtag(...args);
+   }
+}
+
 export function trackGoogleProductView(product: GAProductType) {
    const ga = useGa();
    if (!ga) {
