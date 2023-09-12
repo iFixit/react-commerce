@@ -1,5 +1,7 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import { debounce } from 'lodash';
+import React from 'react';
 
 type GAType = (metric: string, ...args: any) => void;
 type GAProductType = {
@@ -66,6 +68,14 @@ export function trackGA4AddToCart(event: EventObj) {
 export function trackGA4RemoveFromCart(event: EventObj) {
    gtag('event', 'remove_from_cart', event);
 }
+
+export function trackGA4ViewItemList(event: EventObj) {
+   gtag('event', 'view_item_list', event);
+}
+
+export const debouncedTrackGA4ViewItemList = debounce((event: EventObj) => {
+   trackGA4ViewItemList(event);
+}, 500);
 
 export function trackGoogleProductView(product: GAProductType) {
    const ga = useGa();

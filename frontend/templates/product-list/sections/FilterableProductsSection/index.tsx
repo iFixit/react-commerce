@@ -47,6 +47,7 @@ import { Pagination } from './Pagination';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
 import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
+import { debouncedTrackGA4ViewItemList } from '@ifixit/analytics/google';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -60,11 +61,37 @@ export function FilterableProductsSection({
    algoliaSSR,
 }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
+   //console.log("FilterableProductsSection");
    const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
    const products = React.useMemo(
       () => filterFalsyItems(hits.map(productPreviewFromAlgoliaHit)),
       [hits]
    );
+
+   const [prevProductIds, setPrevProductIds] = React.useState<string[]>([]);
+
+   React.useEffect(() => {
+      const currentProductIds = products.map((product) => product.id);
+      if (
+         JSON.stringify(currentProductIds) !== JSON.stringify(prevProductIds)
+      ) {
+         if (currentProductIds.length > 0) {
+            debouncedTrackGA4ViewItemList({
+               item_list_id: productList.handle,
+               item_list_name: productList.title,
+               items: products.map((product) => ({
+                  item_id: product.sku,
+                  item_name: product.title,
+                  item_variant: product.id,
+                  quantity: product.quantityAvailable,
+                  price: product.price.amount,
+               })),
+            });
+         }
+      }
+      setPrevProductIds(currentProductIds);
+   }, [products]);
+
    const currentRefinements = useCurrentRefinements();
    const hasCurrentRefinements = currentRefinements.items.length > 0;
    const [viewType, setViewType] = useLocalPreference(

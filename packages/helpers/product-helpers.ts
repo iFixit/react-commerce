@@ -23,7 +23,8 @@ export function getProductVariantSku(itemcode: string): string {
 }
 
 export function getItemCodeFromSku(sku: string): string {
-   return `IF${sku.replace(/(.{3})/g, '$1-')}`;
+   const itemCode = `IF${sku.replace(/(.{3})/g, '$1-')}`;
+   return itemCode.endsWith('-') ? itemCode.slice(0, -1) : itemCode;
 }
 
 export function parseItemcode(itemcode: string) {
