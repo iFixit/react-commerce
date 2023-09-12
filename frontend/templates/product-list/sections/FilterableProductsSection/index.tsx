@@ -61,7 +61,6 @@ export function FilterableProductsSection({
    algoliaSSR,
 }: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
-   //console.log("FilterableProductsSection");
    const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
    const products = React.useMemo(
       () => filterFalsyItems(hits.map(productPreviewFromAlgoliaHit)),
