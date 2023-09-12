@@ -4,7 +4,7 @@ services:
       build: .
       environment:
          NODE_ENV: production
-         STRAPI_VERSION: 4.13.3
+         STRAPI_VERSION: 4.13.4
          SEED_DB: 'true'
          STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS: '${STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS}'
          DATABASE_CLIENT: postgres
