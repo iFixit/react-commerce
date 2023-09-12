@@ -16,7 +16,7 @@ module.exports = {
          zIndex: zIndices,
       },
    },
-   plugins: [],
+   plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };
 
 function applyTailwindDefault(themePropertyMap, defaultKeys) {
