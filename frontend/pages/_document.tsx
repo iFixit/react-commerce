@@ -5,7 +5,6 @@ import Script from 'next/script';
 const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';
 class MyDocument extends Document {
    render() {
-      const wantsGA4 = Boolean(GTAG_ID);
       return (
          <Html>
             <Head>
@@ -18,22 +17,18 @@ class MyDocument extends Document {
                   src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en,Object.fromEntries,ResizeObserver`}
                   strategy="beforeInteractive"
                />
-               {wantsGA4 && (
-                  <>
-                     <Script
-                        strategy="afterInteractive"
-                        src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
-                     ></Script>
-                     <Script id="gtag-ga4" strategy="beforeInteractive">
-                        {`
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
-                     `}
-                     </Script>
-                  </>
-               )}
+               <Script
+                  strategy="beforeInteractive"
+                  src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+               ></Script>
+               <Script id="gtag-ga4" strategy="beforeInteractive">
+                  {`
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
+               `}
+               </Script>
             </Head>
             <body>
                <Main />
