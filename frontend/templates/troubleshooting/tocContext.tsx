@@ -51,7 +51,7 @@ function scrollTo(
    const scrollTop =
       (el.offsetTop / scrollHeight) * (scrollHeight - window.innerHeight);
 
-   const bufferPx = scrollToOptions?.bufferPx || 0;
+   const bufferPx = scrollToOptions?.bufferPx || 1;
    const scrollTo = scrollTop + bufferPx;
 
    window.scrollTo({ top: scrollTo, behavior: 'smooth' });
