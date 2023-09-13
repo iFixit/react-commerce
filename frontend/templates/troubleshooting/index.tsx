@@ -35,6 +35,7 @@ import {
    HStack,
    SimpleGrid,
    useToken,
+   HeadingProps,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import type {
@@ -113,7 +114,16 @@ const Wiki: NextPageWithLayout<{
       (conclusion) => conclusion.heading === 'Related Pages'
    );
 
-   const sections = wikiData.introduction
+   const firstIntroSection = wikiData.introduction[0];
+   const otherIntroSections = wikiData.introduction.slice(1);
+   const cleanFirstIntroSection = {
+      ...firstIntroSection,
+      heading: firstIntroSection.heading || 'Introduction',
+      id: firstIntroSection.id || 'introduction',
+   };
+   const introSections = [cleanFirstIntroSection, ...otherIntroSections];
+
+   const sections = introSections
       .concat(wikiData.solutions)
       .concat(filteredConclusions);
 
@@ -121,9 +131,6 @@ const Wiki: NextPageWithLayout<{
       .map((section) => ({ title: section.heading, uniqueId: section.id }))
       .concat(hasRelatedPages ? RelatedProblemsRecord : [])
       .filter((tocItem) => tocItem.title);
-
-   const includeIntroductionHeading =
-      wikiData.introduction.length > 0 && !wikiData.introduction[0].heading;
 
    return (
       <>
@@ -249,37 +256,12 @@ const Wiki: NextPageWithLayout<{
                            {'Causes'}
                         </HeadingSelfLink>
                         <TableOfContents
-                           introduction={wikiData.introduction}
+                           introduction={introSections}
                            solutions={wikiData.solutions}
                            problems={wikiData.linkedProblems}
                         />
                      </Box>
-                     <Box
-                        id="introduction"
-                        mt={{ base: 4, md: 7 }}
-                        pt={{ md: 4 }}
-                        borderTop="1px"
-                        borderColor="gray.300"
-                     >
-                        {includeIntroductionHeading && (
-                           <HeadingSelfLink
-                              as="h2"
-                              id="introduction"
-                              aria-label="Introduction"
-                              selfLinked={false}
-                              mt={0}
-                              display={{ base: 'none', md: 'block' }}
-                           >
-                              Introduction
-                           </HeadingSelfLink>
-                        )}
-                        {wikiData.introduction.map((intro) => (
-                           <IntroductionSection
-                              key={intro.heading}
-                              intro={intro}
-                           />
-                        ))}
-                     </Box>
+                     <IntroductionSections introduction={introSections} />
                      {wikiData.solutions.length > 0 && (
                         <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                            {wikiData.solutions.map((solution, index) => (
@@ -790,23 +772,46 @@ function AuthorListing({
    );
 }
 
-function IntroductionSection({ intro }: { intro: Section }) {
+function IntroductionSections({
+   introduction,
+   ...boxProps
+}: { introduction: Section[] } & BoxProps) {
+   return (
+      <Box
+         mt={{ base: 4, md: 7 }}
+         pt={{ md: 4 }}
+         borderTop="1px"
+         borderColor="gray.300"
+         {...boxProps}
+      >
+         {introduction.map((intro) => (
+            <IntroductionSection key={intro.heading} intro={intro} mt={0} />
+         ))}
+      </Box>
+   );
+}
+
+function IntroductionSection({
+   intro,
+   ...headingProps
+}: { intro: Section } & HeadingProps) {
    const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id);
    return (
-      <>
+      <Box ref={ref} id={intro.id}>
          {intro.heading && (
             <HeadingSelfLink
                fontSize="2xl"
                fontWeight="semibold"
+               aria-label={intro.heading}
                selfLinked
                id={intro.id}
-               ref={ref}
+               {...headingProps}
             >
                {intro.heading}
             </HeadingSelfLink>
          )}
          <PrerenderedHTML html={intro.body} template="troubleshooting" />
-      </>
+      </Box>
    );
 }
 
