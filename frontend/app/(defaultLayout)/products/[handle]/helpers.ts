@@ -1,5 +1,6 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { hasDisableCacheGets } from '@helpers/cache-control-helpers';
+import { getiFixitOrigin } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { StoreListItem } from '@models/store';
 import type { Product } from '@pages/api/nextjs/cache/product';
@@ -7,8 +8,8 @@ import {
    getDefaultVariantId,
    getSearchParamVariantId,
 } from '@templates/product/hooks/useSelectedVariant';
-import { ifixitOriginFromHostWrapper } from 'app/(defaultLayout)/helpers';
 import { GetServerSidePropsContext } from 'next';
+import { headers } from 'next/headers';
 import {
    ItemAvailability as SchemaItemAvailability,
    OfferItemCondition as SchemaOfferItemCondition,
@@ -101,7 +102,8 @@ export function createLdJsonSupport(
    const { metaTitle, shortDescription, genericImages, selectedVariantImages } =
       createMetadataSupport({ params, searchParams, product });
 
-   const ifixitOrigin = ifixitOriginFromHostWrapper();
+   const readonlyHeaders = headers();
+   const ifixitOrigin = getiFixitOrigin(readonlyHeaders);
 
    const defaultVariantId = getDefaultVariantId(product);
    const searchParamVariantId = getSearchParamVariantId(searchParams.variant);

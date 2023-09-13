@@ -1,4 +1,5 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
+import { getiFixitOrigin } from '@helpers/path-helpers';
 import {
    invariant,
    parseItemcode,
@@ -9,8 +10,8 @@ import { ServerSidePropsProvider } from '@lib/server-side-props';
 import Product from '@pages/api/nextjs/cache/product';
 import ProductTemplate from '@templates/product';
 import { ProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
-import { ifixitOriginFromHostWrapper } from 'app/(defaultLayout)/helpers';
 import { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import Script from 'next/script';
 import { jsonLdScriptProps } from 'react-schemaorg';
@@ -112,7 +113,8 @@ async function getPageProps({
    const { handle } = params;
    invariant(typeof handle === 'string', 'handle param is missing');
 
-   const ifixitOrigin = ifixitOriginFromHostWrapper();
+   const readonlyHeaders = headers();
+   const ifixitOrigin = getiFixitOrigin(readonlyHeaders);
 
    const layoutPropsPromise = getLayoutServerSideProps({
       storeCode: DEFAULT_STORE_CODE,
@@ -160,7 +162,8 @@ export async function generateMetadata({
    const { handle } = params;
    invariant(typeof handle === 'string', 'handle param is missing');
 
-   const ifixitOrigin = ifixitOriginFromHostWrapper();
+   const readonlyHeaders = headers();
+   const ifixitOrigin = getiFixitOrigin(readonlyHeaders);
 
    const product = await Product.get(
       {
