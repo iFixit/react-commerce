@@ -344,7 +344,7 @@ function Causes({
             {problems.length > 0 && (
                <Stack>
                   <Link
-                     href="#related-problems"
+                     href={`#${RelatedProblemsRecord.uniqueId}`}
                      fontWeight="semibold"
                      display="flex"
                   >
@@ -872,7 +872,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             as="h3"
             fontSize="24px"
             fontWeight="medium"
-            id="related-problems"
+            id={RelatedProblemsRecord.uniqueId}
             selfLinked
             pt={4}
             ref={ref}
