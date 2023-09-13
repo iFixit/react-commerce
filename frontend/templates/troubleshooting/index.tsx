@@ -62,7 +62,6 @@ import { TagManager, GoogleNoScript } from './components/TagManager';
 import { LinkToTOC, TOCContextProvider } from './tocContext';
 import {
    TOC,
-   TOCBasedScrollPercent,
    onlyShowIfTOCFlagEnabled,
    onlyShowIfTOCFlagEnabledProvider,
 } from './toc';
@@ -75,7 +74,6 @@ const RelatedProblemsRecord = {
 };
 
 const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
-const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(TOCBasedScrollPercent);
 const FlaggedTOCContextProvider =
    onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
@@ -103,8 +101,6 @@ const Wiki: NextPageWithLayout<{
    imageSx[`@media (min-width: ${smBreakpoint})`] = {
       display: 'block',
    };
-
-   const scrollContainerRef = useRef(null);
 
    const filteredConclusions = wikiData.conclusion.filter(
       (conclusion) => conclusion.heading !== 'Related Pages'
@@ -143,7 +139,6 @@ const Wiki: NextPageWithLayout<{
             breadcrumbs={wikiData.breadcrumbs}
          />
          <FlaggedTOCContextProvider defaultItems={tocItems}>
-            <FlaggedScrollPercent scrollContainerRef={scrollContainerRef} />
             <Flex>
                <FlaggedTOC
                   flexShrink={{ lg: 0 }}
@@ -163,7 +158,6 @@ const Wiki: NextPageWithLayout<{
                <Container
                   fontSize="md"
                   maxW="1280px"
-                  ref={scrollContainerRef}
                   display="flex"
                   flexWrap={{ base: 'wrap', lg: 'nowrap' }}
                >

@@ -21,21 +21,8 @@ import {
    TOCRecord,
    useTOCContext,
 } from './tocContext';
-import {
-   CssTokenOption,
-   ScrollPercent,
-   ScrollPercentProps,
-   useScrollPercentHeight,
-} from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
-import {
-   PropsWithChildren,
-   RefObject,
-   useCallback,
-   useEffect,
-   useRef,
-   useState,
-} from 'react';
+import { PropsWithChildren, RefObject, useEffect, useRef } from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { flags } from '@config/flags';
@@ -107,9 +94,6 @@ export function MobileTOC({
    const { getItems } = useTOCContext();
    const items = getItems();
    const activeItem = items.find((item) => item.active);
-   const scrollIndicatorHeightCSS = useScrollPercentHeight(
-      CssTokenOption.CssString
-   );
    const actualDisplay = activeItem ? display : 'none';
    const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -134,7 +118,6 @@ export function MobileTOC({
             <MenuButton
                as={Button}
                flexGrow={1}
-               marginTop={scrollIndicatorHeightCSS}
                rightIcon={<FaIcon icon={faAngleDown} />}
                color="gray.900"
                fontWeight={510}
@@ -179,7 +162,6 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
 function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
    const ref = useRef<HTMLButtonElement>(null);
 
-   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
    const blue100 = useToken('colors', 'blue.100');
 
    useScrollToActiveEffect(ref, active);
@@ -190,9 +172,7 @@ function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
          return;
       }
 
-      scrollTo({
-         bufferPx: scrollIndicatorHeight,
-      });
+      scrollTo();
 
       highlightEl(el, blue100);
    };
@@ -258,8 +238,6 @@ function TOCItem({
    scrollTo,
    ...props
 }: TOCRecord & ListItemProps) {
-   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
-
    const ref = useRef<HTMLLIElement>(null);
 
    const blue100 = useToken('colors', 'blue.100');
@@ -270,9 +248,7 @@ function TOCItem({
          return;
       }
 
-      scrollTo({
-         bufferPx: scrollIndicatorHeight,
-      });
+      scrollTo();
 
       highlightEl(el, blue100);
    };
@@ -314,45 +290,6 @@ function highlightEl(el: HTMLElement, color: string) {
    setTimeout(() => {
       el.style.transition = originalTransition;
    }, 1000);
-}
-
-export function TOCBasedScrollPercent({
-   scrollContainerRef,
-}: ScrollPercentProps) {
-   const [hidden, setHidden] = useState(true);
-   const { getItems } = useTOCContext();
-   const items = getItems();
-   const lastItem = items[items.length - 1];
-
-   const onChange = useCallback(
-      (scrollPercent: number, container: HTMLElement) => {
-         const atContainer = container.offsetTop < window.scrollY;
-         if (!atContainer) {
-            setHidden(true);
-            return;
-         }
-
-         const lastItemEl = lastItem.elementRef.current;
-         const scrolledPastLastItem =
-            lastItemEl && window.scrollY >= lastItemEl.offsetTop;
-
-         if (!lastItem.active && scrolledPastLastItem) {
-            setHidden(true);
-            return;
-         }
-
-         setHidden(false);
-      },
-      [lastItem]
-   );
-
-   return (
-      <ScrollPercent
-         scrollContainerRef={scrollContainerRef}
-         onChange={onChange}
-         hidden={hidden}
-      />
-   );
 }
 
 export function onlyShowIfTOCFlagEnabled<P>(
