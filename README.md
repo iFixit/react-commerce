@@ -288,6 +288,58 @@ pnpm playwright:run --project="Mobile Chrome" --headed fix_kit
 ⚠️ **For more Playwright specific information such as Mocking API Requests and
 debugging tips, check out the [testing-doc](frontend/tests/playwright/testing-doc.md)**
 
+## Using Feature Flags
+
+To create feature flags the project uses an approach based on environment variables.
+
+### Premises
+
+-  We have two Vercel projects for `react-commerce`: One is essentially a staging project (`react-commerce`), and the other is for production (`react-commerce-prod`).
+-  Each Vercel project has preview deployments for each branch in the repo.
+
+### Steps to Add a Feature Flag
+
+1. **Setup a flag key**: In the `frontend/config/flags.ts` file, add a new flag key to the flags dictionary. For example:
+
+   ```ts
+   export const flags = {
+      // ...
+      STORE_HOME_PAGE_ENABLED:
+         process.env.NEXT_PUBLIC_FLAG__STORE_HOME_PAGE_ENABLED === 'true',
+   };
+   ```
+
+1. **Local Development**: Set the flag to `true` in your `frontend/.env.development` file. This lets you access the feature during local development. For example:
+
+   ```
+   NEXT_PUBLIC_FLAG__STORE_HOME_PAGE_ENABLED=true
+   ```
+
+   > Note: If you need to override the flag in your local development environment, you can set the flag to `false` in your `frontend/.env.local` file.
+
+1. **Staging**: Go to Vercel [`react-commerce` project settings](https://vercel.com/ifixit/react-commerce/settings/environment-variables), and add the environment variable for the flag, setting it to `true`. You don't need to select any branch or environment — just leave all the checkboxes checked.
+1. **Production**: Finally, when you're ready to roll out the feature, set the environment variable to `true` in the Vercel [`react-commerce-prod` project settings](https://vercel.com/ifixit/react-commerce-prod/settings/environment-variables).
+   > Note: It's not necessary to set the flag to `false` while developing the feature. If the flag is not set, it will default to `false`.
+
+### Use the Flag
+
+To use the flag, you can just import the flags dictionary from `frontend/config/flags.ts` and use it in your code. For example:
+
+```tsx
+import { flags } from '@config/flags';
+
+function Page() {
+   // ...
+   if (!flags.STORE_HOME_PAGE_ENABLED) return notFound();
+   // ...
+}
+```
+
+### Notes
+
+-  This approach allows QA devs to see new features by using `react-commerce` previews, without needing to know about the feature flags.
+-  The `react-commerce` preview can be use to QA the changes with feature flags enabled, and the `react-commerce-prod` preview can be used to QA the changes with feature flags disabled.
+
 ## Using SVG
 
 If you want to use an svg as a React component, add it to `frontend/assets/svg/files` and run
