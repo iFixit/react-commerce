@@ -1,25 +1,26 @@
 import { GA_URL, GA_KEY, GA_DEBUG, GTAG_ID } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 declare const ga: (command: string, hitType: string, url?: string) => void;
 
-const handleRouteChange = (url: string) => {
-   if (typeof ga !== 'undefined') {
-      ga('ifixit.set', 'page', url);
-      ga('ifixit.send', 'pageview');
-   }
-};
-
 export function GoogleAnalytics() {
-   const pathname = usePathname();
-   const searchParams = useSearchParams();
-
+   const router = useRouter();
    React.useEffect(() => {
-      const url = `${pathname}?${searchParams}`;
-      handleRouteChange(url);
-   }, [pathname, searchParams]);
+      const handleRouteChange = (url: string) => {
+         if (typeof ga !== 'undefined') {
+            ga('ifixit.set', 'page', url);
+            ga('ifixit.send', 'pageview');
+         }
+      };
+      router.events.on('routeChangeComplete', handleRouteChange);
+      router.events.on('hashChangeComplete', handleRouteChange);
+      return () => {
+         router.events.off('routeChangeComplete', handleRouteChange);
+         router.events.off('hashChangeComplete', handleRouteChange);
+      };
+   }, [router?.events]);
 
    const wantsUA = GA_URL && GA_KEY;
    const wantsGA4 = Boolean(GTAG_ID);
