@@ -238,23 +238,11 @@ const Wiki: NextPageWithLayout<{
                            />
                         </VStack>
                      </HStack>
-                     <Box mt="8px" pt="6px">
-                        <HeadingSelfLink
-                           as="h2"
-                           fontSize="20px"
-                           mt="0px"
-                           fontWeight="semibold"
-                           selfLinked
-                           id="causes"
-                        >
-                           {'Causes'}
-                        </HeadingSelfLink>
-                        <TableOfContents
-                           introduction={introSections}
-                           solutions={wikiData.solutions}
-                           problems={wikiData.linkedProblems}
-                        />
-                     </Box>
+                     <Causes
+                        introduction={introSections}
+                        solutions={wikiData.solutions}
+                        problems={wikiData.linkedProblems}
+                     />
                      <IntroductionSections introduction={introSections} />
                      {wikiData.solutions.length > 0 && (
                         <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
@@ -282,7 +270,7 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function TableOfContents({
+function Causes({
    introduction,
    solutions,
    problems,
@@ -292,67 +280,89 @@ function TableOfContents({
    problems: Problem[];
 }) {
    return (
-      <VStack as="nav" align="flex-start" color="brand.500" mt={4} spacing={2}>
-         {introduction.length > 0 && (
-            <Stack>
-               <Link href="#introduction" fontWeight="semibold" display="flex">
-                  <Square
-                     size={6}
-                     border="1px solid"
-                     borderColor="brand.700"
-                     borderRadius="md"
-                     mr={2}
+      <Box mt="8px" pt="6px">
+         <HeadingSelfLink
+            as="h2"
+            fontSize="20px"
+            mt="0px"
+            fontWeight="semibold"
+            selfLinked
+            id="causes"
+         >
+            {'Causes'}
+         </HeadingSelfLink>
+         <VStack
+            as="nav"
+            align="flex-start"
+            color="brand.500"
+            mt={4}
+            spacing={2}
+         >
+            {introduction.map((intro) => (
+               <Stack key={intro.heading}>
+                  <Link
+                     href={`#${intro.id}`}
+                     fontWeight="semibold"
+                     display="flex"
                   >
-                     <FaIcon icon={faList} color="brand.500" />
-                  </Square>
-                  <Box as="span">Introduction</Box>
-               </Link>
-            </Stack>
-         )}
-         {solutions.map((solution, index) => (
-            <Stack key={solution.heading}>
-               <Link
-                  href={`#${solution.id}`}
-                  fontWeight="semibold"
-                  display="flex"
-               >
-                  <Square
-                     size={6}
-                     bgColor="brand.500"
-                     border="1px solid"
-                     borderColor="brand.700"
-                     borderRadius="md"
-                     color="white"
-                     mr={2}
-                     fontSize="sm"
+                     <Square
+                        size={6}
+                        border="1px solid"
+                        borderColor="brand.700"
+                        borderRadius="md"
+                        mr={2}
+                     >
+                        <FaIcon icon={faList} color="brand.500" />
+                     </Square>
+                     <Box as="span">{intro.heading}</Box>
+                  </Link>
+               </Stack>
+            ))}
+            {solutions.map((solution, index) => (
+               <Stack key={solution.heading}>
+                  <Link
+                     href={`#${solution.id}`}
+                     fontWeight="semibold"
+                     display="flex"
                   >
-                     {index + 1}
-                  </Square>
-                  <Box as="span">{solution.heading}</Box>
-               </Link>
-            </Stack>
-         ))}
-         {problems.length > 0 && (
-            <Stack>
-               <Link
-                  href="#related-problems"
-                  fontWeight="semibold"
-                  display="flex"
-               >
-                  <Square
-                     size={6}
-                     border="1px solid"
-                     borderColor="brand.700"
-                     borderRadius="md"
-                     mr={2}
+                     <Square
+                        size={6}
+                        bgColor="brand.500"
+                        border="1px solid"
+                        borderColor="brand.700"
+                        borderRadius="md"
+                        color="white"
+                        mr={2}
+                        fontSize="sm"
+                     >
+                        {index + 1}
+                     </Square>
+                     <Box as="span">{solution.heading}</Box>
+                  </Link>
+               </Stack>
+            ))}
+            {problems.length > 0 && (
+               <Stack>
+                  <Link
+                     href="#related-problems"
+                     fontWeight="semibold"
+                     display="flex"
                   >
-                     <FaIcon icon={faCircleNodes} color="brand.500" />
-                  </Square>
-                  <Box as="span">Related Problems</Box>
-               </Link>
-            </Stack>
-         )}
-      </VStack>
+                     <Square
+                        size={6}
+                        border="1px solid"
+                        borderColor="brand.700"
+                        borderRadius="md"
+                        mr={2}
+                     >
+                        <FaIcon icon={faCircleNodes} color="brand.500" />
+                     </Square>
+                     <Box as="span">Related Problems</Box>
+                  </Link>
+               </Stack>
+            )}
+         </VStack>
+      </Box>
    );
 }
 
