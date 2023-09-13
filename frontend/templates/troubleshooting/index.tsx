@@ -1,7 +1,7 @@
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React, { useRef } from 'react';
+import React from 'react';
 import {
    Avatar,
    Alert,
@@ -62,6 +62,7 @@ import { TagManager, GoogleNoScript } from './components/TagManager';
 import { LinkToTOC, TOCContextProvider } from './tocContext';
 import {
    TOC,
+   TOCEnabled,
    onlyShowIfTOCFlagEnabled,
    onlyShowIfTOCFlagEnabledProvider,
 } from './toc';
@@ -180,6 +181,7 @@ const Wiki: NextPageWithLayout<{
                      <HStack
                         spacing={0}
                         mt={{ base: 3, sm: 8 }}
+                        mb={4}
                         align="start"
                         pb="12px"
                         borderBottom="1px"
@@ -279,8 +281,21 @@ function Causes({
    solutions: Section[];
    problems: Problem[];
 }) {
+   const lgBreakpoint = useToken('breakpoints', 'lg');
+
    return (
-      <Box mt="8px" pt="6px">
+      <Box
+         mb={{ base: 4, md: 7 }}
+         pb={4}
+         borderBottom="1px"
+         borderColor="gray.300"
+         sx={{
+            display: 'none',
+            [`@media (max-width: ${lgBreakpoint})`]: {
+               display: TOCEnabled() ? 'block' : 'none',
+            },
+         }}
+      >
          <HeadingSelfLink
             as="h2"
             fontSize="20px"
@@ -776,22 +791,13 @@ function AuthorListing({
    );
 }
 
-function IntroductionSections({
-   introduction,
-   ...boxProps
-}: { introduction: Section[] } & BoxProps) {
+function IntroductionSections({ introduction }: { introduction: Section[] }) {
    return (
-      <Box
-         mt={{ base: 4, md: 7 }}
-         pt={{ md: 4 }}
-         borderTop="1px"
-         borderColor="gray.300"
-         {...boxProps}
-      >
+      <>
          {introduction.map((intro) => (
             <IntroductionSection key={intro.heading} intro={intro} mt={0} />
          ))}
-      </Box>
+      </>
    );
 }
 

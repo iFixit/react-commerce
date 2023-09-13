@@ -325,3 +325,7 @@ export function onlyShowIfTOCFlagEnabledProvider(
       return <ExistingContext {...props} />;
    };
 }
+
+export function TOCEnabled() {
+   return flags.TROUBLESHOOTING_TOC_ENABLED;
+}
