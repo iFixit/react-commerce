@@ -9,6 +9,7 @@ import {
    Text,
    useDisclosure,
 } from '@chakra-ui/react';
+import { PrerenderedHTML } from '@components/common';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { markdownToHTML } from '@helpers/ui-helpers';
 import { isPresent } from '@ifixit/helpers';
@@ -127,25 +128,17 @@ function HeroTitle({
    children,
    page,
 }: React.PropsWithChildren<{ page: number }>) {
-   // Place non-breaking space between 'Page' and page number
    return (
       <Heading
          as="h1"
          size="xl"
          fontSize={{ base: '2xl', md: '3xl' }}
          fontWeight="medium"
+         whiteSpace="nowrap"
          data-testid="hero-title"
       >
          {children}
-         {page > 1 ? (
-            <>
-               {' - Page'}
-               <span dangerouslySetInnerHTML={{ __html: '&nbsp;' }} />
-               {page}
-            </>
-         ) : (
-            ''
-         )}
+         {page > 1 ? <Box as="span">{` - Page ${page}`}</Box> : ''}
       </Heading>
    );
 }
@@ -208,18 +201,10 @@ const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
       const html = React.useMemo(() => markdownToHTML(children), [children]);
 
       return (
-         <Box
-            sx={{
-               a: {
-                  color: 'brand.500',
-                  transition: 'color 300ms',
-                  '&:hover': {
-                     color: 'brand.600',
-                  },
-               },
-            }}
+         <PrerenderedHTML
+            html={html}
+            template="commerce"
             ref={ref}
-            dangerouslySetInnerHTML={{ __html: html }}
             {...other}
          />
       );

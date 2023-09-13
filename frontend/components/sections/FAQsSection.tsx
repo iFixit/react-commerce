@@ -14,13 +14,15 @@ import type { FAQ } from '@models/components/faq';
 import { useMemo } from 'react';
 import { SectionDescription } from './SectionDescription';
 import { SectionHeading } from './SectionHeading';
+import { PrerenderedHTML } from '@components/common';
 
-export type FAQsSectionProps = {
+export interface FAQsSectionProps {
    id: string;
    title?: string | null;
    description?: string | null;
    faqs: FAQ[];
-};
+   relevantItemTypes?: string[];
+}
 
 const FALLBACK_SECTION_TITLE = 'FAQs';
 
@@ -29,11 +31,17 @@ export function FAQsSection({
    title,
    description,
    faqs,
+   relevantItemTypes = [],
 }: FAQsSectionProps) {
    const sectionTitle = isPresent(title) ? title : FALLBACK_SECTION_TITLE;
    const sectionDescription = isPresent(description) ? description : null;
 
-   if (faqs.length === 0) {
+   const relevantFaqs = useRelevantFaqs({
+      faqs,
+      relevantItemTypes,
+   });
+
+   if (relevantFaqs.length === 0) {
       return null;
    }
 
@@ -53,7 +61,7 @@ export function FAQsSection({
                   )}
                </Box>
                <Accordion defaultIndex={[0]} allowMultiple>
-                  {faqs.map((faq, index) => (
+                  {relevantFaqs.map((faq, index) => (
                      <FAQAccordionItem key={index} faq={faq} />
                   ))}
                </Accordion>
@@ -92,14 +100,22 @@ function FAQAccordionItem({ faq }: { faq: FAQ }) {
                      />
                   </AccordionButton>
                </h3>
-               <AccordionPanel
-                  pb="5"
-                  color="gray.700"
-                  bg="white"
-                  dangerouslySetInnerHTML={{ __html: answerHtml }}
-               />
+               <AccordionPanel pb="5" color="gray.700" bg="white">
+                  <PrerenderedHTML html={answerHtml} template="commerce" />
+               </AccordionPanel>
             </>
          )}
       </AccordionItem>
+   );
+}
+
+interface UseRelevantFaqsProps {
+   faqs: FAQ[];
+   relevantItemTypes: string[];
+}
+
+function useRelevantFaqs({ faqs, relevantItemTypes }: UseRelevantFaqsProps) {
+   return faqs.filter(
+      (faq) => faq.itemType == null || relevantItemTypes.includes(faq.itemType)
    );
 }

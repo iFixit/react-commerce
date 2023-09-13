@@ -31,6 +31,7 @@ import {
    productListChildrenSection,
    ProductListChildrenSectionSchema,
 } from './product-list-children-section';
+import { FAQsSectionSchema } from '@models/sections/faqs-section';
 
 export type ProductListSection = z.infer<typeof ProductListSectionSchema>;
 
@@ -45,6 +46,7 @@ export const ProductListSectionSchema = z.union([
    SplitWithImageSectionSchema,
    QuoteGallerySectionSchema,
    PressQuotesSectionSchema,
+   FAQsSectionSchema,
 ]);
 
 interface ProductListSectionsArgs {

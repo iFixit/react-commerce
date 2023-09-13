@@ -42,6 +42,7 @@ import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 import { trackGA4ViewItem } from '@ifixit/analytics';
+import { PrerenderedHTML } from '@components/common';
 
 export interface ProductOverviewSectionProps {
    product: Product;
@@ -432,7 +433,9 @@ function WikiHtmlAccordianItem({
          <CustomAccordionButton>{title}</CustomAccordionButton>
          <CustomAccordionPanel>
             {children && (
-               <Box
+               <PrerenderedHTML
+                  html={children}
+                  template="commerce"
                   fontSize="sm"
                   sx={{
                      ul: {
@@ -450,7 +453,6 @@ function WikiHtmlAccordianItem({
                      a: {
                         fontWeight: 'medium',
                         transition: 'all 300ms',
-                        color: 'brand.500',
                      },
                      'a:hover': {
                         color: 'brand.600',
@@ -469,14 +471,8 @@ function WikiHtmlAccordianItem({
                         borderTopColor: 'gray.200',
                         py: 2,
                      },
-                     th: {
-                        textAlign: 'left',
-                     },
                   }}
-                  dangerouslySetInnerHTML={{
-                     __html: children,
-                  }}
-               ></Box>
+               />
             )}
          </CustomAccordionPanel>
       </AccordionItem>

@@ -3,5 +3,8 @@ fragment FAQFields on FaqEntity {
    attributes {
       question
       answer
+      category
+      item_type
+      priority
    }
 }
