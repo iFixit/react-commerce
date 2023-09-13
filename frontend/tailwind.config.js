@@ -1,6 +1,6 @@
 import { theme } from '@ifixit/ui/theme';
 
-const { colors, breakpoints, space, radii, shadows, fonts, zIndices } = theme;
+const { colors, breakpoints, space, shadows, fonts, zIndices } = theme;
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -9,7 +9,6 @@ module.exports = {
       colors,
       screens: breakpoints,
       spacing: space,
-      borderRadius: applyTailwindDefault(radii, ['md', 'base']),
       boxShadow: applyTailwindDefault(shadows, 'md'),
       extend: {
          fontFamily: fonts,
@@ -19,12 +18,9 @@ module.exports = {
    plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };
 
-function applyTailwindDefault(themePropertyMap, defaultKeys) {
-   const keySet = new Set(
-      Array.isArray(defaultKeys) ? defaultKeys : [defaultKeys]
-   );
+function applyTailwindDefault(themePropertyMap, defaultKey) {
    return Object.keys(themePropertyMap).reduce((acc, key) => {
-      if (keySet.has(key)) {
+      if (key === defaultKey) {
          acc['DEFAULT'] = themePropertyMap[key];
       } else {
          acc[key] = themePropertyMap[key];
