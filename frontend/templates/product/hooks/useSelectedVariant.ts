@@ -40,7 +40,7 @@ export function useSelectedVariant(
          );
          return product.variants.find((v) => v.id === variantId) ?? null;
       },
-      [defaultVariantId, router]
+      [defaultVariantId, router, product.variants]
    );
 
    return [variant, setVariantId];

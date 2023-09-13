@@ -87,9 +87,9 @@ export function FilterableProductsSection({
                })),
             });
          }
+         setPrevProductIds(currentProductIds);
       }
-      setPrevProductIds(currentProductIds);
-   }, [products]);
+   }, [prevProductIds, products, productList.handle, productList.title]);
 
    const currentRefinements = useCurrentRefinements();
    const hasCurrentRefinements = currentRefinements.items.length > 0;
