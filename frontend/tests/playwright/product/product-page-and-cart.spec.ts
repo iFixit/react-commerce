@@ -93,11 +93,11 @@ test.describe('Product Page and Cart Interactions', () => {
    });
 
    test.describe('Product Stock Levels', () => {
-      test.skip('Low Stock Product Inventory Management Visibility', async ({
+      test('Low Stock Product Inventory Management Visibility', async ({
          productPage,
          cartDrawer,
       }) => {
-         await productPage.gotoProduct('mac-mini-dual-drive-kit');
+         await productPage.gotoProduct('playwright-low-stock-product');
 
          const firstOptionSku = await productPage.getSku();
 
@@ -141,7 +141,7 @@ test.describe('Product Page and Cart Interactions', () => {
          await productPage.assertInventoryMessage('Only 1 left');
       });
 
-      test.skip('Out of Stock Product Notifications and Variant Switching', async ({
+      test('Out of Stock Product Notifications and Variant Switching', async ({
          productPage,
          cartDrawer,
          clientRequestHandler,
@@ -158,16 +158,7 @@ test.describe('Product Page and Cart Interactions', () => {
             })
          );
 
-         await productPage.gotoProduct(
-            'apple-watch-42-mm-original-and-series-1-replacement-battery'
-         );
-
-         await expect(
-            productPage.page.getByRole('img', { name: 'Fix Kit' })
-         ).not.toBeVisible();
-         await expect(
-            productPage.page.getByRole('img', { name: 'Part Only' }).first()
-         ).toBeVisible();
+         await productPage.gotoProduct('playwright-out-of-stock-product');
 
          await productPage.switchSelectedVariant();
 
