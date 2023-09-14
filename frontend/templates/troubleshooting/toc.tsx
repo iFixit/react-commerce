@@ -134,15 +134,23 @@ export function MobileTOC({
             <MenuList
                width="calc(100% - (2 * var(--chakra-space-8)))"
                marginX={8}
-               paddingY={1.5}
+               paddingY={0}
                borderRadius={4}
                boxShadow="md"
-               sx={{
-                  maxHeight: 48,
-               }}
-               overflowY="auto"
             >
-               <MobileTOCItems items={items} />
+               <FlexScrollGradient
+                  gradientPX={45}
+                  nestedFlexProps={
+                     {
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        maxHeight: 48,
+                        paddingY: 1.5,
+                     } as FlexProps & ListProps
+                  }
+               >
+                  <MobileTOCItems items={items} />
+               </FlexScrollGradient>
             </MenuList>
          </Menu>
       </Flex>
