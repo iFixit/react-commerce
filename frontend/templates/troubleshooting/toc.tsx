@@ -89,7 +89,6 @@ function LargeTOC({
 
 export function MobileTOC({
    listItemProps,
-   display,
    ...props
 }: FlexProps & { listItemProps?: ListItemProps }) {
    const { getItems } = useTOCContext();
