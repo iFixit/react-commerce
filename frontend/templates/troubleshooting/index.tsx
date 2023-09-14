@@ -283,18 +283,22 @@ function Causes({
 }) {
    const lgBreakpoint = useToken('breakpoints', 'lg');
 
+   const sx = TOCEnabled()
+      ? {
+           display: 'none',
+           [`@media (min-width: ${lgBreakpoint})`]: {
+              display: 'block',
+           },
+        }
+      : {};
+
    return (
       <Box
          mb={{ base: 4, md: 7 }}
          pb={4}
          borderBottom="1px"
          borderColor="gray.300"
-         sx={{
-            display: 'none',
-            [`@media (max-width: ${lgBreakpoint})`]: {
-               display: TOCEnabled() ? 'block' : 'none',
-            },
-         }}
+         sx={sx}
       >
          <HeadingSelfLink
             as="h2"
