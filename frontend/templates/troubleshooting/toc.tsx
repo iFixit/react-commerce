@@ -30,8 +30,9 @@ import { flags } from '@config/flags';
 
 export function TOC({
    listItemProps,
+   showMobileTOC,
    ...props
-}: FlexProps & { listItemProps?: ListItemProps }) {
+}: FlexProps & { listItemProps?: ListItemProps; showMobileTOC: boolean }) {
    const { getItems } = useTOCContext();
    const items = getItems();
    return (
@@ -51,6 +52,7 @@ export function TOC({
             display={{ base: 'none', lg: 'flex' }}
          />
          <MobileTOC
+            showMobileTOC={showMobileTOC}
             listItemProps={listItemProps}
             flexGrow={1}
             position="fixed"
@@ -89,8 +91,9 @@ function LargeTOC({
 
 export function MobileTOC({
    listItemProps,
+   showMobileTOC,
    ...props
-}: FlexProps & { listItemProps?: ListItemProps }) {
+}: FlexProps & { listItemProps?: ListItemProps; showMobileTOC: boolean }) {
    const { getItems } = useTOCContext();
    const items = getItems();
    const activeItem = items.find((item) => item.active);
@@ -98,7 +101,7 @@ export function MobileTOC({
    const title = activeItem?.title ?? 'Table of Contents';
 
    return (
-      <Collapse in={Boolean(activeItem)} unmountOnExit={true}>
+      <Collapse in={Boolean(showMobileTOC && activeItem)} unmountOnExit={true}>
          <Flex {...props}>
             <Menu
                matchWidth={true}

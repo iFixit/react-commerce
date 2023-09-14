@@ -1,7 +1,7 @@
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
    Avatar,
    Alert,
@@ -129,6 +129,18 @@ const Wiki: NextPageWithLayout<{
       .concat(hasRelatedPages ? RelatedProblemsRecord : [])
       .filter((tocItem) => tocItem.title);
 
+   const contentContainerRef = useRef<HTMLDivElement>(null);
+   const [showMobileTOC, setShowMobileTOC] = React.useState(false);
+   useEffect(() => {
+      const handleScroll = () => {
+         const scrolledIntoContent =
+            (contentContainerRef.current?.offsetTop || 0) <= window.scrollY;
+         setShowMobileTOC(scrolledIntoContent);
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+   }, []);
+
    return (
       <>
          <GoogleNoScript />
@@ -142,6 +154,7 @@ const Wiki: NextPageWithLayout<{
          <FlaggedTOCContextProvider defaultItems={tocItems}>
             <Flex>
                <FlaggedTOC
+                  showMobileTOC={showMobileTOC}
                   flexShrink={{ lg: 0 }}
                   flexGrow={1}
                   borderRight={{ lg: '1px solid' }}
@@ -161,6 +174,7 @@ const Wiki: NextPageWithLayout<{
                   maxW="1280px"
                   display="flex"
                   flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+                  ref={contentContainerRef}
                >
                   <Flex
                      direction="column"
