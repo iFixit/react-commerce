@@ -1,5 +1,6 @@
 import {
    Button,
+   Collapse,
    Flex,
    FlexProps,
    List,
@@ -94,66 +95,60 @@ export function MobileTOC({
    const { getItems } = useTOCContext();
    const items = getItems();
    const activeItem = items.find((item) => item.active);
-   const actualDisplay = activeItem ? display : 'none';
    const { isOpen, onOpen, onClose } = useDisclosure();
-
-   useEffect(() => {
-      if (actualDisplay === 'none') {
-         onClose();
-      }
-   }, [actualDisplay, onClose]);
-
    const title = activeItem?.title ?? 'Table of Contents';
 
    return (
-      <Flex {...props} display={actualDisplay}>
-         <Menu
-            matchWidth={true}
-            strategy="fixed"
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            autoSelect={false}
-         >
-            <MenuButton
-               as={Button}
-               flexGrow={1}
-               rightIcon={<FaIcon icon={faAngleDown} />}
-               color="gray.900"
-               fontWeight={510}
-               fontSize="sm"
-               borderBottom="1px solid"
-               borderColor="gray.300"
-               background="white"
-               borderRadius={0}
-               paddingX={4}
-               _active={{ background: 'white' }}
+      <Collapse in={Boolean(activeItem)} unmountOnExit={true}>
+         <Flex {...props}>
+            <Menu
+               matchWidth={true}
+               strategy="fixed"
+               isOpen={isOpen}
+               onOpen={onOpen}
+               onClose={onClose}
+               autoSelect={false}
             >
-               {title}
-            </MenuButton>
-            <MenuList
-               width="calc(100% - (2 * var(--chakra-space-8)))"
-               marginX={8}
-               paddingY={0}
-               borderRadius={4}
-               boxShadow="md"
-            >
-               <FlexScrollGradient
-                  gradientPX={45}
-                  nestedFlexProps={
-                     {
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        maxHeight: 48,
-                        paddingY: 1.5,
-                     } as FlexProps & ListProps
-                  }
+               <MenuButton
+                  as={Button}
+                  flexGrow={1}
+                  rightIcon={<FaIcon icon={faAngleDown} />}
+                  color="gray.900"
+                  fontWeight={510}
+                  fontSize="sm"
+                  borderBottom="1px solid"
+                  borderColor="gray.300"
+                  background="white"
+                  borderRadius={0}
+                  paddingX={4}
+                  _active={{ background: 'white' }}
                >
-                  <MobileTOCItems items={items} />
-               </FlexScrollGradient>
-            </MenuList>
-         </Menu>
-      </Flex>
+                  {title}
+               </MenuButton>
+               <MenuList
+                  width="calc(100% - (2 * var(--chakra-space-8)))"
+                  marginX={8}
+                  paddingY={0}
+                  borderRadius={4}
+                  boxShadow="md"
+               >
+                  <FlexScrollGradient
+                     gradientPX={45}
+                     nestedFlexProps={
+                        {
+                           flexDirection: 'column',
+                           flexGrow: 1,
+                           maxHeight: 48,
+                           paddingY: 1.5,
+                        } as FlexProps & ListProps
+                     }
+                  >
+                     <MobileTOCItems items={items} />
+                  </FlexScrollGradient>
+               </MenuList>
+            </Menu>
+         </Flex>
+      </Collapse>
    );
 }
 
