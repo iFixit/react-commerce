@@ -143,13 +143,17 @@ async function saveRecord(
    const input = prepareRecordInput(record, context.schema);
    const isNewRecord = isBlank(record.id);
    if (isNewRecord) {
-      await strapi.entityService.create(context.schema.uid, {
+      await strapi.entityService.create(context.schema.uid as any, {
          data: input,
       });
    } else {
-      await strapi.entityService.update(context.schema.uid, record.id, {
-         data: input,
-      });
+      await strapi.entityService.update(
+         context.schema.uid as any,
+         record.id as any,
+         {
+            data: input,
+         }
+      );
    }
 }
 
