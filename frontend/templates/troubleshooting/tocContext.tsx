@@ -46,15 +46,8 @@ function scrollTo(
    if (!el) {
       return;
    }
-
-   const scrollHeight = document.body.scrollHeight;
-   const scrollTop =
-      (el.offsetTop / scrollHeight) * (scrollHeight - window.innerHeight);
-
-   const bufferPx = scrollToOptions?.bufferPx || 1;
-   const scrollTo = scrollTop + bufferPx;
-
-   window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+   const bufferPx = scrollToOptions?.bufferPx || 0;
+   window.scrollTo({ top: el.offsetTop + bufferPx, behavior: 'smooth' });
 
    const addIdToUrl = scrollToOptions?.addIdToUrl || true;
    const id = el.id;
@@ -301,25 +294,16 @@ function getClosest(items: TOCItems) {
          return false;
       }
 
-      const elBottomScrollPastTopOfViewport =
-         el.offsetTop + el.clientHeight <= window.scrollY;
+      const elTopScrollPastTopOfViewport =
+         el.offsetTop <= window.scrollY;
 
-      const isVisible = !elBottomScrollPastTopOfViewport;
+      const isVisible = !elTopScrollPastTopOfViewport;
 
       return isVisible;
    });
    const verticallySortedItems = sortVertically(visibleItems);
 
-   const scrollHeight = document.body.scrollHeight;
-   const scrollPercent = window.scrollY / (scrollHeight - window.innerHeight);
-
-   const closest = verticallySortedItems.reverse().find((record) => {
-      const itemTop = record.elementRef.current?.offsetTop || 0;
-
-      const itemPercent = itemTop / scrollHeight;
-      const hasPassed = scrollPercent >= itemPercent;
-      return hasPassed;
-   });
+   const closest = verticallySortedItems.length > 0 ? verticallySortedItems[0] : null;
 
    return closest || null;
 }
