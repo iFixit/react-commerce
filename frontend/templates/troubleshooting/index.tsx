@@ -832,12 +832,12 @@ const ConclusionSection = function ConclusionSectionInner({
 }) {
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id);
    return (
-      <>
-         <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
+      <Box id={conclusion.id} ref={ref}>
+         <HeadingSelfLink pt={4} id={conclusion.id}>
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </>
+      </Box>
    );
 };
 
@@ -873,15 +873,13 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
       RelatedProblemsRecord.uniqueId
    );
    return (
-      <>
+      <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
          <HeadingSelfLink
             as="h3"
             fontSize="24px"
             fontWeight="medium"
             id={RelatedProblemsRecord.uniqueId}
-            selfLinked
             pt={4}
-            ref={ref}
          >
             {RelatedProblemsRecord.title}
          </HeadingSelfLink>
@@ -890,7 +888,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
                <ProblemCard problem={problem} key={problem.title} />
             ))}
          </SimpleGrid>
-      </>
+      </Box>
    );
 }
 
