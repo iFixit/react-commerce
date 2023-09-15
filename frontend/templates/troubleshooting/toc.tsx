@@ -377,6 +377,7 @@ export function onlyShowIfTOCFlagEnabledProvider(
             updateItemRef: () => {},
             removeItem: () => {},
             getItems: () => [],
+            getItem: () => undefined,
          };
          return (
             <TOCContext.Provider value={context}>

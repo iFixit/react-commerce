@@ -60,7 +60,7 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
-import { LinkToTOC, TOCContextProvider } from './tocContext';
+import { LinkToTOC, TOCContextProvider, useTOCContext } from './tocContext';
 import {
    TOC,
    TOCEnabled,
@@ -816,6 +816,9 @@ function IntroductionSection({
 }: { intro: Section } & HeadingProps) {
    const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
+   const { getItem } = useTOCContext();
+   const item = getItem(intro.id);
+
    return (
       <Box ref={ref} id={intro.id}>
          {intro.heading && (
@@ -825,6 +828,14 @@ function IntroductionSection({
                aria-label={intro.heading}
                selfLinked
                id={intro.id}
+               onClick={(event) => {
+                  if (!item) {
+                     return;
+                  }
+
+                  event.preventDefault();
+                  item.scrollTo();
+               }}
                {...headingProps}
             >
                {intro.heading}
@@ -842,9 +853,22 @@ const ConclusionSection = function ConclusionSectionInner({
 }) {
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
+   const { getItem } = useTOCContext();
+   const item = getItem(conclusion.id);
    return (
       <Box id={conclusion.id} ref={ref}>
-         <HeadingSelfLink pt={4} id={conclusion.id}>
+         <HeadingSelfLink
+            pt={4}
+            id={conclusion.id}
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
+         >
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
@@ -885,6 +909,8 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
       RelatedProblemsRecord.uniqueId,
       bufferPx
    );
+   const { getItem } = useTOCContext();
+   const item = getItem(RelatedProblemsRecord.uniqueId);
    return (
       <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
          <HeadingSelfLink
@@ -893,6 +919,14 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             fontWeight="medium"
             id={RelatedProblemsRecord.uniqueId}
             pt={4}
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
          >
             {RelatedProblemsRecord.title}
          </HeadingSelfLink>

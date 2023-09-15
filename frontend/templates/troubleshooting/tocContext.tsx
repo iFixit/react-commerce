@@ -39,6 +39,7 @@ export type TOCContext = {
    ) => void;
    removeItem: (uniqueId: string) => void;
    getItems: () => TOCRecord[];
+   getItem: (uniqueId: string) => TOCRecord | undefined;
 };
 
 export const TOCContext = createContext<TOCContext | null>(null);
@@ -172,11 +173,19 @@ function useCRUDFunctions(
       [setItems]
    );
 
+   const getItem = useCallback(
+      (uniqueId: string) => {
+         return items[uniqueId];
+      },
+      [items]
+   );
+
    return {
       addItem,
       updateItemRef,
       getItems,
       removeItem,
+      getItem,
    };
 }
 
@@ -231,10 +240,8 @@ export const TOCContextProvider = ({
       createTOCItems(defaultItems || [])
    );
 
-   const { addItem, updateItemRef, getItems, removeItem } = useCRUDFunctions(
-      items,
-      setItems
-   );
+   const { addItem, updateItemRef, getItems, removeItem, getItem } =
+      useCRUDFunctions(items, setItems);
    useObserveItems(items, setItems);
 
    const context = {
@@ -242,6 +249,7 @@ export const TOCContextProvider = ({
       updateItemRef,
       removeItem,
       getItems,
+      getItem,
    };
    return <TOCContext.Provider value={context}>{children}</TOCContext.Provider>;
 };
