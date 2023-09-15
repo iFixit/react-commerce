@@ -36,8 +36,7 @@ export const getExportCSV =
       if (!schema)
          throw new Error(`Collection type "${collectionTypeUid}" not found`);
 
-      let records = await strapi.entityService.findMany(collectionTypeUid);
-      records = records.map(processRecord);
+      const records = await findRecords(strapi, collectionTypeUid);
 
       const filename = `export-${schema.collectionName}-${Date.now()}.csv`;
 
@@ -63,6 +62,14 @@ export const getExportCSV =
          });
       });
    };
+
+async function findRecords<T = any>(
+   strapi: Strapi,
+   uid: string
+): Promise<Array<T>> {
+   let records = await strapi.entityService.findMany(uid as any);
+   return Array.isArray(records) ? records.map(processRecord) : [];
+}
 
 function processRecord(record: any) {
    let exportedRecord = omit(record, ['createdAt', 'updatedAt', 'publishedAt']);
