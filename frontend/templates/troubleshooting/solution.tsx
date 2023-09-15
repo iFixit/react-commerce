@@ -7,6 +7,7 @@ import {
    Flex,
    BoxProps,
    VStack,
+   useBreakpointValue,
 } from '@chakra-ui/react';
 import { faCircleCheck } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
@@ -19,6 +20,7 @@ import { PrerenderedHTML } from '@components/common';
 import { GuideResource, ProductResource } from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { LinkToTOC } from './tocContext';
+import { useRef } from 'react';
 
 const SolutionHeader = ({
    index,
@@ -94,7 +96,9 @@ export default function SolutionCard({
    index: number;
    solution: SolutionSection;
 }) {
-   const { ref } = LinkToTOC<HTMLDivElement>(solution.id);
+   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
+   const { ref } = LinkToTOC<HTMLDivElement>(solution.id, bufferPx);
+
    return (
       <Box
          id={solution.id}

@@ -16,6 +16,7 @@ export type TOCRecord = {
    uniqueId: string;
    elementRef: RefObject<HTMLElement>;
    active: boolean;
+   scrollToBufferPx?: number;
    scrollTo: (scrollToOptions?: ScrollToOptions) => void;
 };
 
@@ -31,7 +32,12 @@ export type TOCContext = {
       minimalTOCRecord: MinimalTOCRecord,
       ref: RefObject<HTMLElement>
    ) => void;
-   updateItemRef: (uniqueId: string, ref: RefObject<HTMLElement>) => void;
+   updateItemRef: (
+      uniqueId: string,
+      ref: RefObject<HTMLElement>,
+      scrollToBufferPx?: number
+   ) => void;
+   hasItem: (uniqueId: string) => boolean;
    removeItem: (uniqueId: string) => void;
    getItems: () => TOCRecord[];
 };
@@ -40,13 +46,14 @@ export const TOCContext = createContext<TOCContext | null>(null);
 
 function scrollTo(
    ref: RefObject<HTMLElement>,
+   scrollToBufferPx?: number,
    scrollToOptions?: ScrollToOptions
 ) {
    const el = ref.current;
    if (!el) {
       return;
    }
-   const bufferPx = scrollToOptions?.bufferPx || 0;
+   const bufferPx = scrollToBufferPx || 0;
    window.scrollTo({ top: el.offsetTop + bufferPx, behavior: 'smooth' });
 
    const addIdToUrl = scrollToOptions?.addIdToUrl || true;
@@ -67,7 +74,7 @@ function createRecord(
       elementRef: elementRef,
       active: false,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
-         scrollTo(elementRef, scrollToOptions),
+         scrollTo(elementRef, 0, scrollToOptions),
    };
 }
 
@@ -83,12 +90,16 @@ function createTOCItems(minimalTOCRecords: MinimalTOCRecord[]) {
 function updateTOCItemRef(
    existingItems: TOCItems,
    uniqueId: string,
-   ref?: RefObject<HTMLElement>
+   ref?: RefObject<HTMLElement>,
+   scrollToBufferPx?: number
 ) {
    const existingItem = existingItems[uniqueId];
 
    if (!existingItem) {
-      console.error(`No item with uniqueId ${uniqueId} exists in the TOC`);
+      console.error(
+         `No item with uniqueId ${uniqueId} exists in the TOC`,
+         existingItems
+      );
       return existingItems;
    }
 
@@ -97,8 +108,9 @@ function updateTOCItemRef(
    newItems[uniqueId] = {
       ...existingItem,
       elementRef: newRef,
+      scrollToBufferPx,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
-         scrollTo(newRef, scrollToOptions),
+         scrollTo(newRef, scrollToBufferPx, scrollToOptions),
    };
    return newItems;
 }
@@ -114,8 +126,14 @@ function useCRUDFunctions(
    setItems: Dispatch<SetStateAction<TOCItems>>
 ) {
    const updateItemRef = useCallback(
-      (uniqueId: string, ref: RefObject<HTMLElement>) => {
-         setItems((items) => updateTOCItemRef(items, uniqueId, ref));
+      (
+         uniqueId: string,
+         ref: RefObject<HTMLElement>,
+         scrollToBufferPx?: number
+      ) => {
+         setItems((items) =>
+            updateTOCItemRef(items, uniqueId, ref, scrollToBufferPx)
+         );
       },
       [setItems]
    );
@@ -155,11 +173,19 @@ function useCRUDFunctions(
       [setItems]
    );
 
+   const hasItem = useCallback(
+      (uniqueId: string) => {
+         return Object.keys(items).includes(uniqueId);
+      },
+      [items]
+   );
+
    return {
       addItem,
       updateItemRef,
       getItems,
       removeItem,
+      hasItem,
    };
 }
 
@@ -214,10 +240,8 @@ export const TOCContextProvider = ({
       createTOCItems(defaultItems || [])
    );
 
-   const { addItem, updateItemRef, getItems, removeItem } = useCRUDFunctions(
-      items,
-      setItems
-   );
+   const { addItem, updateItemRef, getItems, removeItem, hasItem } =
+      useCRUDFunctions(items, setItems);
    useObserveItems(items, setItems);
 
    const context = {
@@ -225,6 +249,7 @@ export const TOCContextProvider = ({
       updateItemRef,
       removeItem,
       getItems,
+      hasItem,
    };
    return <TOCContext.Provider value={context}>{children}</TOCContext.Provider>;
 };
@@ -259,23 +284,20 @@ export function AddToTOCClientSide<T extends HTMLElement>(
    return { ref };
 }
 
-export function LinkToTOC<T extends HTMLElement>(uniqueId?: string) {
-   const { updateItemRef, removeItem } = useTOCContext();
+export function LinkToTOC<T extends HTMLElement>(
+   uniqueId?: string,
+   scrollToBufferPx?: number
+) {
+   const { updateItemRef, removeItem, addItem } = useTOCContext();
    const ref = useRef<T>(null);
 
    useEffect(() => {
       if (!uniqueId) {
          return;
       }
-      updateItemRef(uniqueId, ref);
 
-      return () => {
-         if (!uniqueId) {
-            return;
-         }
-         removeItem(uniqueId);
-      };
-   }, [uniqueId, ref, updateItemRef, removeItem]);
+      updateItemRef(uniqueId, ref, scrollToBufferPx);
+   }, [uniqueId, ref, addItem, updateItemRef, removeItem, scrollToBufferPx]);
    return { ref };
 }
 
@@ -294,8 +316,7 @@ function getClosest(items: TOCItems) {
          return false;
       }
 
-      const elTopScrollPastTopOfViewport =
-         el.offsetTop <= window.scrollY;
+      const elTopScrollPastTopOfViewport = el.offsetTop <= window.scrollY;
 
       const isVisible = !elTopScrollPastTopOfViewport;
 
@@ -303,7 +324,8 @@ function getClosest(items: TOCItems) {
    });
    const verticallySortedItems = sortVertically(visibleItems);
 
-   const closest = verticallySortedItems.length > 0 ? verticallySortedItems[0] : null;
+   const closest =
+      verticallySortedItems.length > 0 ? verticallySortedItems[0] : null;
 
    return closest || null;
 }

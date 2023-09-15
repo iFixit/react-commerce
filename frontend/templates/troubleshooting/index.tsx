@@ -36,6 +36,7 @@ import {
    SimpleGrid,
    useToken,
    HeadingProps,
+   useBreakpointValue,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import type {
@@ -823,7 +824,8 @@ function IntroductionSection({
    intro,
    ...headingProps
 }: { intro: Section } & HeadingProps) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id);
+   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
    return (
       <Box ref={ref} id={intro.id}>
          {intro.heading && (
@@ -848,7 +850,8 @@ const ConclusionSection = function ConclusionSectionInner({
 }: {
    conclusion: Section;
 }) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id);
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
    return (
       <Box id={conclusion.id} ref={ref}>
          <HeadingSelfLink pt={4} id={conclusion.id}>
@@ -887,8 +890,10 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
-      RelatedProblemsRecord.uniqueId
+      RelatedProblemsRecord.uniqueId,
+      bufferPx
    );
    return (
       <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
