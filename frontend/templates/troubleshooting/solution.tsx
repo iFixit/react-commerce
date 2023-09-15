@@ -20,7 +20,6 @@ import { PrerenderedHTML } from '@components/common';
 import { GuideResource, ProductResource } from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { LinkToTOC } from './tocContext';
-import { useRef } from 'react';
 
 const SolutionHeader = ({
    index,
