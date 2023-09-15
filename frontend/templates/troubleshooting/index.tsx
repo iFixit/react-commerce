@@ -290,12 +290,14 @@ function Causes({
 
    const sx = TOCEnabled()
       ? {
-           display: 'none',
+           display: 'block',
            [`@media (min-width: ${lgBreakpoint})`]: {
-              display: 'block',
+              display: 'none',
            },
         }
-      : {};
+      : {
+           display: 'block',
+        };
 
    return (
       <Box
