@@ -315,10 +315,26 @@ function getClosest(items: TOCItems) {
       if (!el) {
          return false;
       }
+      const buffer = 0.1;
 
-      const elTopScrollPastTopOfViewport = el.offsetTop <= window.scrollY;
+      const elTopIsScrolledPast = el.offsetTop <= window.scrollY;
+      const elBottom = el.offsetTop + el.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const isElBiggerThanViewport = el.offsetHeight > viewportHeight;
+      const TenPercentOfViewportHeight = viewportHeight * buffer;
+      const elBottomIsAboveViewportBottomWithBuffer =
+         elBottom + TenPercentOfViewportHeight <=
+         window.scrollY + viewportHeight;
 
-      const isVisible = !elTopScrollPastTopOfViewport;
+      if (
+         elTopIsScrolledPast &&
+         isElBiggerThanViewport &&
+         !elBottomIsAboveViewportBottomWithBuffer
+      ) {
+         return true;
+      }
+
+      const isVisible = !elTopIsScrolledPast;
 
       return isVisible;
    });
