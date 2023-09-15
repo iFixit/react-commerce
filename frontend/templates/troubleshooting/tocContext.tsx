@@ -37,7 +37,6 @@ export type TOCContext = {
       ref: RefObject<HTMLElement>,
       scrollToBufferPx?: number
    ) => void;
-   hasItem: (uniqueId: string) => boolean;
    removeItem: (uniqueId: string) => void;
    getItems: () => TOCRecord[];
 };
@@ -173,19 +172,11 @@ function useCRUDFunctions(
       [setItems]
    );
 
-   const hasItem = useCallback(
-      (uniqueId: string) => {
-         return Object.keys(items).includes(uniqueId);
-      },
-      [items]
-   );
-
    return {
       addItem,
       updateItemRef,
       getItems,
       removeItem,
-      hasItem,
    };
 }
 
@@ -240,8 +231,10 @@ export const TOCContextProvider = ({
       createTOCItems(defaultItems || [])
    );
 
-   const { addItem, updateItemRef, getItems, removeItem, hasItem } =
-      useCRUDFunctions(items, setItems);
+   const { addItem, updateItemRef, getItems, removeItem } = useCRUDFunctions(
+      items,
+      setItems
+   );
    useObserveItems(items, setItems);
 
    const context = {
@@ -249,7 +242,6 @@ export const TOCContextProvider = ({
       updateItemRef,
       removeItem,
       getItems,
-      hasItem,
    };
    return <TOCContext.Provider value={context}>{children}</TOCContext.Provider>;
 };
