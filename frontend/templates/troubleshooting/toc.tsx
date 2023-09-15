@@ -238,7 +238,7 @@ function MobileTOCItem({
 
       scrollTo();
 
-      highlightEl(el, blue100);
+      debouncedHighlightEl(el, blue100);
    };
 
    return (
@@ -315,7 +315,7 @@ function TOCItem({
 
       scrollTo();
 
-      highlightEl(el, blue100);
+      debouncedHighlightEl(el, blue100);
    };
 
    useScrollToActiveEffect(ref, active);
@@ -341,6 +341,12 @@ function TOCItem({
       </ListItem>
    );
 }
+
+const debouncedHighlightEl = debounce(highlightEl, 1000, {
+   leading: true,
+   trailing: false,
+   maxWait: 0,
+});
 
 function highlightEl(el: HTMLElement, color: string) {
    const originalBackgroundColor = el.style.backgroundColor;
