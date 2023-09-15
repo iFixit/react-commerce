@@ -1,7 +1,7 @@
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
    Avatar,
    Alert,
@@ -131,16 +131,6 @@ const Wiki: NextPageWithLayout<{
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
-   const [showMobileTOC, setShowMobileTOC] = React.useState(false);
-   useEffect(() => {
-      const handleScroll = () => {
-         const scrolledIntoContent =
-            (contentContainerRef.current?.offsetTop || 0) <= window.scrollY;
-         setShowMobileTOC(scrolledIntoContent);
-      };
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-   }, []);
 
    return (
       <>
@@ -155,7 +145,7 @@ const Wiki: NextPageWithLayout<{
          <FlaggedTOCContextProvider defaultItems={tocItems}>
             <Flex>
                <FlaggedTOC
-                  showMobileTOC={showMobileTOC}
+                  contentRef={contentContainerRef}
                   flexShrink={{ lg: 0 }}
                   flexGrow={1}
                   borderRight={{ lg: '1px solid' }}

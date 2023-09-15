@@ -23,16 +23,26 @@ import {
    useTOCContext,
 } from './tocContext';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
-import { PropsWithChildren, RefObject, useEffect, useRef } from 'react';
+import {
+   PropsWithChildren,
+   RefObject,
+   useEffect,
+   useRef,
+   useState,
+} from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { flags } from '@config/flags';
+import { debounce } from 'lodash';
 
 export function TOC({
    listItemProps,
-   showMobileTOC,
+   contentRef,
    ...props
-}: FlexProps & { listItemProps?: ListItemProps; showMobileTOC: boolean }) {
+}: FlexProps & {
+   listItemProps?: ListItemProps;
+   contentRef: RefObject<HTMLElement>;
+}) {
    const { getItems } = useTOCContext();
    const items = getItems();
    return (
@@ -52,7 +62,7 @@ export function TOC({
             display={{ base: 'none', lg: 'flex' }}
          />
          <MobileTOC
-            showMobileTOC={showMobileTOC}
+            contentRef={contentRef}
             listItemProps={listItemProps}
             flexGrow={1}
             position="fixed"
@@ -91,14 +101,57 @@ function LargeTOC({
 
 export function MobileTOC({
    listItemProps,
-   showMobileTOC,
+   contentRef,
    ...props
-}: FlexProps & { listItemProps?: ListItemProps; showMobileTOC: boolean }) {
+}: FlexProps & {
+   listItemProps?: ListItemProps;
+   contentRef: RefObject<HTMLElement>;
+}) {
    const { getItems } = useTOCContext();
    const items = getItems();
    const activeItem = items.find((item) => item.active);
    const { isOpen, onOpen, onClose } = useDisclosure();
    const title = activeItem?.title ?? 'Table of Contents';
+
+   const [showMobileTOC, setShowMobileTOC] = useState(false);
+
+   useEffect(() => {
+      if (!contentRef.current) {
+         return;
+      }
+
+      // There is no easy way to detect a scroll is finished
+      // if we are smooth scrolling, a set state will re-render
+      // and cause the scroll to stop abruptly
+      // so we have to wait until the scroll is stable
+      const waitUntilScrollStable = () => {
+         return new Promise((resolve) => {
+            let lastScrollY = window.scrollY;
+
+            const interval = setInterval(() => {
+               if (lastScrollY === window.scrollY) {
+                  clearInterval(interval);
+                  resolve(window.scrollY);
+               }
+               lastScrollY = window.scrollY;
+            }, 20);
+         });
+      };
+
+      const onScroll = () => {
+         waitUntilScrollStable().then(() => {
+            const scrolledIntoContent =
+               (contentRef.current?.offsetTop || 0) <= window.scrollY;
+
+            setShowMobileTOC((_prev) => {
+               return scrolledIntoContent;
+            });
+         });
+      };
+
+      window.addEventListener('scroll', onScroll);
+      return () => window.removeEventListener('scroll', onScroll);
+   }, [contentRef]);
 
    return (
       <Collapse in={Boolean(showMobileTOC && activeItem)} unmountOnExit={true}>
@@ -164,7 +217,13 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
    );
 }
 
-function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
+function MobileTOCItem({
+   title,
+   scrollTo,
+   scrollToBufferPx: _scrollToBufferPx,
+   elementRef,
+   active,
+}: TOCRecord) {
    const ref = useRef<HTMLButtonElement>(null);
 
    const blue100 = useToken('colors', 'blue.100');
@@ -240,6 +299,7 @@ function TOCItem({
    elementRef,
    active,
    uniqueId,
+   scrollToBufferPx: _scrollToBufferPx,
    scrollTo,
    ...props
 }: TOCRecord & ListItemProps) {
@@ -285,10 +345,8 @@ function TOCItem({
 function highlightEl(el: HTMLElement, color: string) {
    const originalBackgroundColor = el.style.backgroundColor;
    const originalTransition = el.style.transition;
-
    el.style.transition = 'background-color .5s ease-in-out';
    el.style.backgroundColor = color;
-
    setTimeout(() => {
       el.style.backgroundColor = originalBackgroundColor;
    }, 500);
