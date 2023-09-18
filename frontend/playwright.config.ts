@@ -1,20 +1,4 @@
-import {
-   PlaywrightTestConfig,
-   PlaywrightTestOptions,
-   PlaywrightWorkerOptions,
-   Project,
-   devices,
-} from '@playwright/test';
-import * as dotenv from 'dotenv';
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-dotenv.config({ path: '.env.test' });
-dotenv.config({ path: '.env.local' });
-
-const targetUrl = new URL(process.env.NEXT_PUBLIC_IFIXIT_ORIGIN || '');
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -68,25 +52,25 @@ const config: PlaywrightTestConfig = {
 
    /* Configure projects for major browsers */
    projects: [
-      generateBrowserConfig({
+      {
          name: 'Desktop Chrome',
          use: {
             ...devices['Desktop Chrome'],
          },
-      }),
+      },
       /* Test against mobile viewports. */
-      generateBrowserConfig({
+      {
          name: 'Mobile Chrome',
          use: {
             ...devices['Pixel 5'],
          },
-      }),
-      generateBrowserConfig({
+      },
+      {
          name: 'Tablet Chrome',
          use: {
             ...devices['Galaxy Tab S4'],
          },
-      }),
+      },
    ],
 
    /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -102,33 +86,5 @@ const config: PlaywrightTestConfig = {
       reuseExistingServer: !process.env.CI,
    },
 };
-
-function generateBrowserConfig(
-   config: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>
-): Project<PlaywrightTestOptions, PlaywrightWorkerOptions> {
-   return {
-      ...config,
-      use: {
-         ...config.use,
-         storageState: {
-            cookies: [
-               {
-                  name: 'dev-api-psk',
-                  value: process.env.DEV_API_AUTH_TOKEN || 'filler-token',
-                  sameSite: 'None',
-                  expires:
-                     Math.floor(Date.now().valueOf() / 1000) +
-                     60 * 60 * 24 * 365,
-                  httpOnly: false,
-                  domain: targetUrl.hostname,
-                  path: targetUrl.pathname,
-                  secure: false,
-               },
-            ],
-            origins: [],
-         },
-      },
-   };
-}
 
 export default config;
