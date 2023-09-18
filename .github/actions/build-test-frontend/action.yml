@@ -23,7 +23,7 @@ runs:
         env:
            NODE_ENV: test
            NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-           ALGOLIA_API_KEY: ${{ inputs.ALGOLIA_API_KEY }}
-           DEV_API_AUTH_TOKEN: ${{ inputs.DEV_API_AUTH_TOKEN }}
+           ALGOLIA_API_KEY: ${{ inputs.algolia-api-key }}
+           DEV_API_AUTH_TOKEN: ${{ inputs.dev-api-auth-token }}
         run: cd frontend && pnpm build
         shell: bash
