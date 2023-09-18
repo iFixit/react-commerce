@@ -61,12 +61,7 @@ import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
 import { LinkToTOC, TOCContextProvider, useTOCContext } from './tocContext';
-import {
-   TOC,
-   TOCEnabled,
-   onlyShowIfTOCFlagEnabled,
-   onlyShowIfTOCFlagEnabledProvider,
-} from './toc';
+import { TOC } from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
 
@@ -74,10 +69,6 @@ const RelatedProblemsRecord = {
    title: 'Related Problems',
    uniqueId: 'related-problems',
 };
-
-const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
-const FlaggedTOCContextProvider =
-   onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -142,9 +133,9 @@ const Wiki: NextPageWithLayout<{
             devicePartsUrl={wikiData.devicePartsUrl}
             breadcrumbs={wikiData.breadcrumbs}
          />
-         <FlaggedTOCContextProvider defaultItems={tocItems}>
+         <TOCContextProvider defaultItems={tocItems}>
             <Flex>
-               <FlaggedTOC
+               <TOC
                   contentRef={contentContainerRef}
                   flexShrink={{ lg: 0 }}
                   flexGrow={1}
@@ -271,7 +262,7 @@ const Wiki: NextPageWithLayout<{
                   </Flex>
                </Container>
             </Flex>
-         </FlaggedTOCContextProvider>
+         </TOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
       </>
    );
@@ -288,16 +279,12 @@ function Causes({
 }) {
    const lgBreakpoint = useToken('breakpoints', 'lg');
 
-   const sx = TOCEnabled()
-      ? {
-           display: 'block',
-           [`@media (min-width: ${lgBreakpoint})`]: {
-              display: 'none',
-           },
-        }
-      : {
-           display: 'block',
-        };
+   const sx = {
+      display: 'block',
+      [`@media (min-width: ${lgBreakpoint})`]: {
+         display: 'none',
+      },
+   };
 
    return (
       <Box

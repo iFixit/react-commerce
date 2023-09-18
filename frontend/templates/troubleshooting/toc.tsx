@@ -15,24 +15,11 @@ import {
    useDisclosure,
    useToken,
 } from '@chakra-ui/react';
-import {
-   TOCContextProvider,
-   TOCContext,
-   TOCContextProviderProps,
-   TOCRecord,
-   useTOCContext,
-} from './tocContext';
+import { TOCRecord, useTOCContext } from './tocContext';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
-import {
-   PropsWithChildren,
-   RefObject,
-   useEffect,
-   useRef,
-   useState,
-} from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
-import { flags } from '@config/flags';
 import { debounce } from 'lodash';
 
 export function TOC({
@@ -359,43 +346,4 @@ function highlightEl(el: HTMLElement, color: string) {
    setTimeout(() => {
       el.style.transition = originalTransition;
    }, 1000);
-}
-
-export function onlyShowIfTOCFlagEnabled<P>(
-   Component: React.ComponentType<PropsWithChildren<P>>
-) {
-   return (props: PropsWithChildren<P>) => {
-      if (!flags.TROUBLESHOOTING_TOC_ENABLED) {
-         return <>{props.children}</>;
-      }
-
-      return <Component {...props} />;
-   };
-}
-
-export function onlyShowIfTOCFlagEnabledProvider(
-   ExistingContext: typeof TOCContextProvider
-) {
-   return (props: TOCContextProviderProps) => {
-      if (!flags.TROUBLESHOOTING_TOC_ENABLED) {
-         const context = {
-            addItem: () => {},
-            updateItemRef: () => {},
-            removeItem: () => {},
-            getItems: () => [],
-            getItem: () => undefined,
-         };
-         return (
-            <TOCContext.Provider value={context}>
-               {props.children}
-            </TOCContext.Provider>
-         );
-      }
-
-      return <ExistingContext {...props} />;
-   };
-}
-
-export function TOCEnabled() {
-   return flags.TROUBLESHOOTING_TOC_ENABLED;
 }
