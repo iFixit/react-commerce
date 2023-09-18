@@ -84,6 +84,7 @@ jobs:
               NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+              DEV_API_AUTH_TOKEN: ${{ secrets.DEV_API_AUTH_TOKEN }}
            run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}" ${{ needs.check-diff.outputs.modified-playwright-tests }} --repeat-each=5
 
          - uses: actions/upload-artifact@v3
