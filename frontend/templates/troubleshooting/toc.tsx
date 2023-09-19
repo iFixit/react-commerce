@@ -12,6 +12,7 @@ import {
    MenuItem,
    MenuList,
    Text,
+   useBreakpointValue,
    useDisclosure,
    useToken,
 } from '@chakra-ui/react';
@@ -69,7 +70,6 @@ export function TOC({
             top={0}
             left={0}
             width="100%"
-            display={{ base: 'flex', lg: 'none' }}
          />
       </Flex>
    );
@@ -109,6 +109,7 @@ export function MobileTOC({
 }) {
    const { getItems } = useTOCContext();
    const items = getItems();
+   const display = useBreakpointValue({ base: 'flex', lg: 'none' });
    const activeItem = items.find((item) => item.active);
    const { isOpen, onOpen, onClose } = useDisclosure();
    const title = activeItem?.title ?? 'Table of Contents';
@@ -117,6 +118,13 @@ export function MobileTOC({
 
    useEffect(() => {
       if (!contentRef.current) {
+         return;
+      }
+
+      const hidden = display === 'none';
+
+      if (hidden) {
+         setShowMobileTOC(false);
          return;
       }
 
@@ -151,11 +159,11 @@ export function MobileTOC({
 
       window.addEventListener('scroll', onScroll);
       return () => window.removeEventListener('scroll', onScroll);
-   }, [contentRef]);
+   }, [contentRef, display]);
 
    return (
       <Collapse in={Boolean(showMobileTOC && activeItem)} unmountOnExit={true}>
-         <Flex {...props}>
+         <Flex {...props} display={display}>
             <Menu
                matchWidth={true}
                strategy="fixed"
