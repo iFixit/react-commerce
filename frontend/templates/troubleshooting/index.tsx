@@ -35,6 +35,8 @@ import {
    HStack,
    SimpleGrid,
    useToken,
+   HeadingProps,
+   useBreakpointValue,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import type {
@@ -58,10 +60,10 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
-import { LinkToTOC, TOCContextProvider } from './tocContext';
+import { LinkToTOC, TOCContextProvider, useTOCContext } from './tocContext';
 import {
    TOC,
-   TOCBasedScrollPercent,
+   TOCEnabled,
    onlyShowIfTOCFlagEnabled,
    onlyShowIfTOCFlagEnabledProvider,
 } from './toc';
@@ -74,7 +76,6 @@ const RelatedProblemsRecord = {
 };
 
 const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
-const FlaggedScrollPercent = onlyShowIfTOCFlagEnabled(TOCBasedScrollPercent);
 const FlaggedTOCContextProvider =
    onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
@@ -103,23 +104,31 @@ const Wiki: NextPageWithLayout<{
       display: 'block',
    };
 
-   const scrollContainerRef = useRef(null);
-
    const filteredConclusions = wikiData.conclusion.filter(
       (conclusion) => conclusion.heading !== 'Related Pages'
    );
 
-   const sections = wikiData.introduction
+   const hasRelatedPages = wikiData.linkedProblems.length > 0;
+
+   const firstIntroSection = wikiData.introduction[0];
+   const otherIntroSections = wikiData.introduction.slice(1);
+   const cleanFirstIntroSection = {
+      ...firstIntroSection,
+      heading: firstIntroSection.heading || 'Introduction',
+      id: firstIntroSection.id || 'introduction',
+   };
+   const introSections = [cleanFirstIntroSection, ...otherIntroSections];
+
+   const sections = introSections
       .concat(wikiData.solutions)
       .concat(filteredConclusions);
 
    const tocItems = sections
       .map((section) => ({ title: section.heading, uniqueId: section.id }))
-      .concat(RelatedProblemsRecord)
+      .concat(hasRelatedPages ? RelatedProblemsRecord : [])
       .filter((tocItem) => tocItem.title);
 
-   const includeIntroductionHeading =
-      wikiData.introduction.length > 0 && !wikiData.introduction[0].heading;
+   const contentContainerRef = useRef<HTMLDivElement>(null);
 
    return (
       <>
@@ -132,9 +141,9 @@ const Wiki: NextPageWithLayout<{
             breadcrumbs={wikiData.breadcrumbs}
          />
          <FlaggedTOCContextProvider defaultItems={tocItems}>
-            <FlaggedScrollPercent scrollContainerRef={scrollContainerRef} />
             <Flex>
                <FlaggedTOC
+                  contentRef={contentContainerRef}
                   flexShrink={{ lg: 0 }}
                   flexGrow={1}
                   borderRight={{ lg: '1px solid' }}
@@ -152,9 +161,9 @@ const Wiki: NextPageWithLayout<{
                <Container
                   fontSize="md"
                   maxW="1280px"
-                  ref={scrollContainerRef}
                   display="flex"
                   flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+                  ref={contentContainerRef}
                >
                   <Flex
                      direction="column"
@@ -175,6 +184,7 @@ const Wiki: NextPageWithLayout<{
                      <HStack
                         spacing={0}
                         mt={{ base: 3, sm: 8 }}
+                        mb={4}
                         align="start"
                         pb="12px"
                         borderBottom="1px"
@@ -233,49 +243,12 @@ const Wiki: NextPageWithLayout<{
                            />
                         </VStack>
                      </HStack>
-                     <Box mt="8px" pt="6px">
-                        <HeadingSelfLink
-                           as="h2"
-                           fontSize="20px"
-                           mt="0px"
-                           fontWeight="semibold"
-                           selfLinked
-                           id="causes"
-                        >
-                           {'Causes'}
-                        </HeadingSelfLink>
-                        <TableOfContents
-                           introduction={wikiData.introduction}
-                           solutions={wikiData.solutions}
-                           problems={wikiData.linkedProblems}
-                        />
-                     </Box>
-                     <Box
-                        id="introduction"
-                        mt={{ base: 4, md: 7 }}
-                        pt={{ md: 4 }}
-                        borderTop="1px"
-                        borderColor="gray.300"
-                     >
-                        {includeIntroductionHeading && (
-                           <HeadingSelfLink
-                              as="h2"
-                              id="introduction"
-                              aria-label="Introduction"
-                              selfLinked={false}
-                              mt={0}
-                              display={{ base: 'none', md: 'block' }}
-                           >
-                              Introduction
-                           </HeadingSelfLink>
-                        )}
-                        {wikiData.introduction.map((intro) => (
-                           <IntroductionSection
-                              key={intro.heading}
-                              intro={intro}
-                           />
-                        ))}
-                     </Box>
+                     <Causes
+                        introduction={introSections}
+                        solutions={wikiData.solutions}
+                        problems={wikiData.linkedProblems}
+                     />
+                     <IntroductionSections introduction={introSections} />
                      {wikiData.solutions.length > 0 && (
                         <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                            {wikiData.solutions.map((solution, index) => (
@@ -302,7 +275,7 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function TableOfContents({
+function Causes({
    introduction,
    solutions,
    problems,
@@ -311,68 +284,109 @@ function TableOfContents({
    solutions: Section[];
    problems: Problem[];
 }) {
+   const lgBreakpoint = useToken('breakpoints', 'lg');
+
+   const sx = TOCEnabled()
+      ? {
+           display: 'block',
+           [`@media (min-width: ${lgBreakpoint})`]: {
+              display: 'none',
+           },
+        }
+      : {
+           display: 'block',
+        };
+
    return (
-      <VStack as="nav" align="flex-start" color="brand.500" mt={4} spacing={2}>
-         {introduction.length > 0 && (
-            <Stack>
-               <Link href="#introduction" fontWeight="semibold" display="flex">
-                  <Square
-                     size={6}
-                     border="1px solid"
-                     borderColor="brand.700"
-                     borderRadius="md"
-                     mr={2}
+      <Box
+         mb={{ base: 4, md: 7 }}
+         pb={4}
+         borderBottom="1px"
+         borderColor="gray.300"
+         sx={sx}
+      >
+         <HeadingSelfLink
+            as="h2"
+            fontSize="20px"
+            mt="0px"
+            fontWeight="semibold"
+            selfLinked
+            id="causes"
+         >
+            {'Causes'}
+         </HeadingSelfLink>
+         <VStack
+            as="nav"
+            align="flex-start"
+            color="brand.500"
+            mt={4}
+            spacing={2}
+         >
+            {introduction.map((intro) => (
+               <Stack key={intro.heading}>
+                  <Link
+                     href={`#${intro.id}`}
+                     fontWeight="semibold"
+                     display="flex"
                   >
-                     <FaIcon icon={faList} color="brand.500" />
-                  </Square>
-                  <Box as="span">Introduction</Box>
-               </Link>
-            </Stack>
-         )}
-         {solutions.map((solution, index) => (
-            <Stack key={solution.heading}>
-               <Link
-                  href={`#${solution.id}`}
-                  fontWeight="semibold"
-                  display="flex"
-               >
-                  <Square
-                     size={6}
-                     bgColor="brand.500"
-                     border="1px solid"
-                     borderColor="brand.700"
-                     borderRadius="md"
-                     color="white"
-                     mr={2}
-                     fontSize="sm"
+                     <Square
+                        size={6}
+                        border="1px solid"
+                        borderColor="brand.700"
+                        borderRadius="md"
+                        mr={2}
+                     >
+                        <FaIcon icon={faList} color="brand.500" />
+                     </Square>
+                     <Box as="span">{intro.heading}</Box>
+                  </Link>
+               </Stack>
+            ))}
+            {solutions.map((solution, index) => (
+               <Stack key={solution.heading}>
+                  <Link
+                     href={`#${solution.id}`}
+                     fontWeight="semibold"
+                     display="flex"
                   >
-                     {index + 1}
-                  </Square>
-                  <Box as="span">{solution.heading}</Box>
-               </Link>
-            </Stack>
-         ))}
-         {problems.length > 0 && (
-            <Stack>
-               <Link
-                  href="#related-problems"
-                  fontWeight="semibold"
-                  display="flex"
-               >
-                  <Square
-                     size={6}
-                     border="1px solid"
-                     borderColor="brand.700"
-                     borderRadius="md"
-                     mr={2}
+                     <Square
+                        size={6}
+                        bgColor="brand.500"
+                        border="1px solid"
+                        borderColor="brand.700"
+                        borderRadius="md"
+                        color="white"
+                        mr={2}
+                        fontSize="sm"
+                     >
+                        {index + 1}
+                     </Square>
+                     <Box as="span">{solution.heading}</Box>
+                  </Link>
+               </Stack>
+            ))}
+            {problems.length > 0 && (
+               <Stack>
+                  <Link
+                     href={`#${RelatedProblemsRecord.uniqueId}`}
+                     fontWeight="semibold"
+                     display="flex"
                   >
-                     <FaIcon icon={faCircleNodes} color="brand.500" />
-                  </Square>
-                  <Box as="span">Related Problems</Box>
-               </Link>
-            </Stack>
-         )}
-      </VStack>
+                     <Square
+                        size={6}
+                        border="1px solid"
+                        borderColor="brand.700"
+                        borderRadius="md"
+                        mr={2}
+                     >
+                        <FaIcon icon={faCircleNodes} color="brand.500" />
+                     </Square>
+                     <Box as="span">Related Problems</Box>
+                  </Link>
+               </Stack>
+            )}
+         </VStack>
+      </Box>
    );
 }
 
@@ -786,23 +800,49 @@ function AuthorListing({
    );
 }
 
-function IntroductionSection({ intro }: { intro: Section }) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id);
+function IntroductionSections({ introduction }: { introduction: Section[] }) {
    return (
       <>
+         {introduction.map((intro) => (
+            <IntroductionSection key={intro.heading} intro={intro} mt={0} />
+         ))}
+      </>
+   );
+}
+
+function IntroductionSection({
+   intro,
+   ...headingProps
+}: { intro: Section } & HeadingProps) {
+   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
+   const { getItem } = useTOCContext();
+   const item = getItem(intro.id);
+
+   return (
+      <Box ref={ref} id={intro.id}>
          {intro.heading && (
             <HeadingSelfLink
                fontSize="2xl"
                fontWeight="semibold"
+               aria-label={intro.heading}
                selfLinked
                id={intro.id}
-               ref={ref}
+               onClick={(event) => {
+                  if (!item) {
+                     return;
+                  }
+
+                  event.preventDefault();
+                  item.scrollTo();
+               }}
+               {...headingProps}
             >
                {intro.heading}
             </HeadingSelfLink>
          )}
          <PrerenderedHTML html={intro.body} template="troubleshooting" />
-      </>
+      </Box>
    );
 }
 
@@ -811,14 +851,28 @@ const ConclusionSection = function ConclusionSectionInner({
 }: {
    conclusion: Section;
 }) {
-   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id);
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
+   const { getItem } = useTOCContext();
+   const item = getItem(conclusion.id);
    return (
-      <>
-         <HeadingSelfLink selfLinked id={conclusion.id} pt={4} ref={ref}>
+      <Box id={conclusion.id} ref={ref}>
+         <HeadingSelfLink
+            pt={4}
+            id={conclusion.id}
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
+         >
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </>
+      </Box>
    );
 };
 
@@ -850,19 +904,29 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
-      RelatedProblemsRecord.uniqueId
+      RelatedProblemsRecord.uniqueId,
+      bufferPx
    );
+   const { getItem } = useTOCContext();
+   const item = getItem(RelatedProblemsRecord.uniqueId);
    return (
-      <>
+      <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
          <HeadingSelfLink
             as="h3"
             fontSize="24px"
             fontWeight="medium"
-            id="related-problems"
-            selfLinked
+            id={RelatedProblemsRecord.uniqueId}
             pt={4}
-            ref={ref}
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
          >
             {RelatedProblemsRecord.title}
          </HeadingSelfLink>
@@ -871,7 +935,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
                <ProblemCard problem={problem} key={problem.title} />
             ))}
          </SimpleGrid>
-      </>
+      </Box>
    );
 }
 

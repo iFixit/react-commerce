@@ -16,6 +16,7 @@ export type TOCRecord = {
    uniqueId: string;
    elementRef: RefObject<HTMLElement>;
    active: boolean;
+   scrollToBufferPx?: number;
    scrollTo: (scrollToOptions?: ScrollToOptions) => void;
 };
 
@@ -31,30 +32,29 @@ export type TOCContext = {
       minimalTOCRecord: MinimalTOCRecord,
       ref: RefObject<HTMLElement>
    ) => void;
-   updateItemRef: (uniqueId: string, ref: RefObject<HTMLElement>) => void;
+   updateItemRef: (
+      uniqueId: string,
+      ref: RefObject<HTMLElement>,
+      scrollToBufferPx?: number
+   ) => void;
    removeItem: (uniqueId: string) => void;
    getItems: () => TOCRecord[];
+   getItem: (uniqueId: string) => TOCRecord | undefined;
 };
 
 export const TOCContext = createContext<TOCContext | null>(null);
 
 function scrollTo(
    ref: RefObject<HTMLElement>,
+   scrollToBufferPx?: number,
    scrollToOptions?: ScrollToOptions
 ) {
    const el = ref.current;
    if (!el) {
       return;
    }
-
-   const scrollHeight = document.body.scrollHeight;
-   const scrollTop =
-      (el.offsetTop / scrollHeight) * (scrollHeight - window.innerHeight);
-
-   const bufferPx = scrollToOptions?.bufferPx || 0;
-   const scrollTo = scrollTop + bufferPx;
-
-   window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+   const bufferPx = scrollToBufferPx || 0;
+   window.scrollTo({ top: el.offsetTop + bufferPx, behavior: 'smooth' });
 
    const addIdToUrl = scrollToOptions?.addIdToUrl || true;
    const id = el.id;
@@ -74,7 +74,7 @@ function createRecord(
       elementRef: elementRef,
       active: false,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
-         scrollTo(elementRef, scrollToOptions),
+         scrollTo(elementRef, 0, scrollToOptions),
    };
 }
 
@@ -90,12 +90,16 @@ function createTOCItems(minimalTOCRecords: MinimalTOCRecord[]) {
 function updateTOCItemRef(
    existingItems: TOCItems,
    uniqueId: string,
-   ref?: RefObject<HTMLElement>
+   ref?: RefObject<HTMLElement>,
+   scrollToBufferPx?: number
 ) {
    const existingItem = existingItems[uniqueId];
 
    if (!existingItem) {
-      console.error(`No item with uniqueId ${uniqueId} exists in the TOC`);
+      console.error(
+         `No item with uniqueId ${uniqueId} exists in the TOC`,
+         existingItems
+      );
       return existingItems;
    }
 
@@ -104,8 +108,9 @@ function updateTOCItemRef(
    newItems[uniqueId] = {
       ...existingItem,
       elementRef: newRef,
+      scrollToBufferPx,
       scrollTo: (scrollToOptions?: ScrollToOptions) =>
-         scrollTo(newRef, scrollToOptions),
+         scrollTo(newRef, scrollToBufferPx, scrollToOptions),
    };
    return newItems;
 }
@@ -121,8 +126,14 @@ function useCRUDFunctions(
    setItems: Dispatch<SetStateAction<TOCItems>>
 ) {
    const updateItemRef = useCallback(
-      (uniqueId: string, ref: RefObject<HTMLElement>) => {
-         setItems((items) => updateTOCItemRef(items, uniqueId, ref));
+      (
+         uniqueId: string,
+         ref: RefObject<HTMLElement>,
+         scrollToBufferPx?: number
+      ) => {
+         setItems((items) =>
+            updateTOCItemRef(items, uniqueId, ref, scrollToBufferPx)
+         );
       },
       [setItems]
    );
@@ -162,11 +173,19 @@ function useCRUDFunctions(
       [setItems]
    );
 
+   const getItem = useCallback(
+      (uniqueId: string) => {
+         return items[uniqueId];
+      },
+      [items]
+   );
+
    return {
       addItem,
       updateItemRef,
       getItems,
       removeItem,
+      getItem,
    };
 }
 
@@ -221,10 +240,8 @@ export const TOCContextProvider = ({
       createTOCItems(defaultItems || [])
    );
 
-   const { addItem, updateItemRef, getItems, removeItem } = useCRUDFunctions(
-      items,
-      setItems
-   );
+   const { addItem, updateItemRef, getItems, removeItem, getItem } =
+      useCRUDFunctions(items, setItems);
    useObserveItems(items, setItems);
 
    const context = {
@@ -232,6 +249,7 @@ export const TOCContextProvider = ({
       updateItemRef,
       removeItem,
       getItems,
+      getItem,
    };
    return <TOCContext.Provider value={context}>{children}</TOCContext.Provider>;
 };
@@ -266,23 +284,20 @@ export function AddToTOCClientSide<T extends HTMLElement>(
    return { ref };
 }
 
-export function LinkToTOC<T extends HTMLElement>(uniqueId?: string) {
-   const { updateItemRef, removeItem } = useTOCContext();
+export function LinkToTOC<T extends HTMLElement>(
+   uniqueId?: string,
+   scrollToBufferPx?: number
+) {
+   const { updateItemRef, removeItem, addItem } = useTOCContext();
    const ref = useRef<T>(null);
 
    useEffect(() => {
       if (!uniqueId) {
          return;
       }
-      updateItemRef(uniqueId, ref);
 
-      return () => {
-         if (!uniqueId) {
-            return;
-         }
-         removeItem(uniqueId);
-      };
-   }, [uniqueId, ref, updateItemRef, removeItem]);
+      updateItemRef(uniqueId, ref, scrollToBufferPx);
+   }, [uniqueId, ref, addItem, updateItemRef, removeItem, scrollToBufferPx]);
    return { ref };
 }
 
@@ -300,26 +315,33 @@ function getClosest(items: TOCItems) {
       if (!el) {
          return false;
       }
+      const buffer = 0.1;
 
-      const elBottomScrollPastTopOfViewport =
-         el.offsetTop + el.clientHeight <= window.scrollY;
+      const elTopIsScrolledPast = el.offsetTop <= window.scrollY;
+      const elBottom = el.offsetTop + el.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const isElBiggerThanViewport = el.offsetHeight > viewportHeight;
+      const TenPercentOfViewportHeight = viewportHeight * buffer;
+      const elBottomIsAboveViewportBottomWithBuffer =
+         elBottom + TenPercentOfViewportHeight <=
+         window.scrollY + viewportHeight;
 
-      const isVisible = !elBottomScrollPastTopOfViewport;
+      if (
+         elTopIsScrolledPast &&
+         isElBiggerThanViewport &&
+         !elBottomIsAboveViewportBottomWithBuffer
+      ) {
+         return true;
+      }
+
+      const isVisible = !elTopIsScrolledPast;
 
       return isVisible;
    });
    const verticallySortedItems = sortVertically(visibleItems);
 
-   const scrollHeight = document.body.scrollHeight;
-   const scrollPercent = window.scrollY / (scrollHeight - window.innerHeight);
-
-   const closest = verticallySortedItems.reverse().find((record) => {
-      const itemTop = record.elementRef.current?.offsetTop || 0;
-
-      const itemPercent = itemTop / scrollHeight;
-      const hasPassed = scrollPercent >= itemPercent;
-      return hasPassed;
-   });
+   const closest =
+      verticallySortedItems.length > 0 ? verticallySortedItems[0] : null;
 
    return closest || null;
 }

@@ -1,5 +1,6 @@
 import {
    Button,
+   Collapse,
    Flex,
    FlexProps,
    List,
@@ -11,6 +12,7 @@ import {
    MenuItem,
    MenuList,
    Text,
+   useBreakpointValue,
    useDisclosure,
    useToken,
 } from '@chakra-ui/react';
@@ -21,17 +23,10 @@ import {
    TOCRecord,
    useTOCContext,
 } from './tocContext';
-import {
-   CssTokenOption,
-   ScrollPercent,
-   ScrollPercentProps,
-   useScrollPercentHeight,
-} from './scrollPercent';
 import { FlexScrollGradient } from '@components/common/FlexScrollGradient';
 import {
    PropsWithChildren,
    RefObject,
-   useCallback,
    useEffect,
    useRef,
    useState,
@@ -39,11 +34,16 @@ import {
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { flags } from '@config/flags';
+import { debounce } from 'lodash';
 
 export function TOC({
    listItemProps,
+   contentRef,
    ...props
-}: FlexProps & { listItemProps?: ListItemProps }) {
+}: FlexProps & {
+   listItemProps?: ListItemProps;
+   contentRef: RefObject<HTMLElement>;
+}) {
    const { getItems } = useTOCContext();
    const items = getItems();
    return (
@@ -63,13 +63,13 @@ export function TOC({
             display={{ base: 'none', lg: 'flex' }}
          />
          <MobileTOC
+            contentRef={contentRef}
             listItemProps={listItemProps}
             flexGrow={1}
             position="fixed"
             top={0}
             left={0}
             width="100%"
-            display={{ base: 'flex', lg: 'none' }}
          />
       </Flex>
    );
@@ -101,68 +101,117 @@ function LargeTOC({
 
 export function MobileTOC({
    listItemProps,
-   display,
+   contentRef,
    ...props
-}: FlexProps & { listItemProps?: ListItemProps }) {
+}: FlexProps & {
+   listItemProps?: ListItemProps;
+   contentRef: RefObject<HTMLElement>;
+}) {
    const { getItems } = useTOCContext();
    const items = getItems();
+   const display = useBreakpointValue({ base: 'flex', lg: 'none' });
    const activeItem = items.find((item) => item.active);
-   const scrollIndicatorHeightCSS = useScrollPercentHeight(
-      CssTokenOption.CssString
-   );
-   const actualDisplay = activeItem ? display : 'none';
    const { isOpen, onOpen, onClose } = useDisclosure();
-
-   useEffect(() => {
-      if (actualDisplay === 'none') {
-         onClose();
-      }
-   }, [actualDisplay, onClose]);
-
    const title = activeItem?.title ?? 'Table of Contents';
 
+   const [showMobileTOC, setShowMobileTOC] = useState(false);
+
+   useEffect(() => {
+      if (!contentRef.current) {
+         return;
+      }
+
+      const hidden = display === 'none';
+
+      if (hidden) {
+         setShowMobileTOC(false);
+         return;
+      }
+
+      // There is no easy way to detect a scroll is finished
+      // if we are smooth scrolling, a set state will re-render
+      // and cause the scroll to stop abruptly
+      // so we have to wait until the scroll is stable
+      const waitUntilScrollStable = () => {
+         return new Promise((resolve) => {
+            let lastScrollY = window.scrollY;
+
+            const interval = setInterval(() => {
+               if (lastScrollY === window.scrollY) {
+                  clearInterval(interval);
+                  resolve(window.scrollY);
+               }
+               lastScrollY = window.scrollY;
+            }, 20);
+         });
+      };
+
+      const onScroll = () => {
+         waitUntilScrollStable().then(() => {
+            const scrolledIntoContent =
+               (contentRef.current?.offsetTop || 0) <= window.scrollY;
+
+            setShowMobileTOC((_prev) => {
+               return scrolledIntoContent;
+            });
+         });
+      };
+
+      window.addEventListener('scroll', onScroll);
+      return () => window.removeEventListener('scroll', onScroll);
+   }, [contentRef, display]);
+
    return (
-      <Flex {...props} display={actualDisplay}>
-         <Menu
-            matchWidth={true}
-            strategy="fixed"
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            autoSelect={false}
-         >
-            <MenuButton
-               as={Button}
-               flexGrow={1}
-               marginTop={scrollIndicatorHeightCSS}
-               rightIcon={<FaIcon icon={faAngleDown} />}
-               color="gray.900"
-               fontWeight={510}
-               fontSize="sm"
-               borderBottom="1px solid"
-               borderColor="gray.300"
-               background="white"
-               borderRadius={0}
-               paddingX={4}
-               _active={{ background: 'white' }}
+      <Collapse in={Boolean(showMobileTOC && activeItem)} unmountOnExit={true}>
+         <Flex {...props} display={display}>
+            <Menu
+               matchWidth={true}
+               strategy="fixed"
+               isOpen={isOpen}
+               onOpen={onOpen}
+               onClose={onClose}
+               autoSelect={false}
             >
-               {title}
-            </MenuButton>
-            <MenuList
-               width="calc(100% - (2 * var(--chakra-space-8)))"
-               marginX={8}
-               paddingY={1.5}
-               borderRadius={4}
-               boxShadow="md"
-               sx={{
-                  maxHeight: 48,
-               }}
-               overflowY="auto"
-            >
-               <MobileTOCItems items={items} />
-            </MenuList>
-         </Menu>
-      </Flex>
+               <MenuButton
+                  as={Button}
+                  flexGrow={1}
+                  rightIcon={<FaIcon icon={faAngleDown} />}
+                  color="gray.900"
+                  fontWeight={510}
+                  fontSize="sm"
+                  borderBottom="1px solid"
+                  borderColor="gray.300"
+                  background="white"
+                  borderRadius={0}
+                  paddingX={4}
+                  _active={{ background: 'white' }}
+               >
+                  {title}
+               </MenuButton>
+               <MenuList
+                  width="calc(100% - (2 * var(--chakra-space-8)))"
+                  marginX={8}
+                  paddingY={0}
+                  borderRadius={4}
+                  boxShadow="md"
+               >
+                  <FlexScrollGradient
+                     gradientPX={45}
+                     nestedFlexProps={
+                        {
+                           flexDirection: 'column',
+                           flexGrow: 1,
+                           maxHeight: 48,
+                           paddingY: 1.5,
+                        } as FlexProps & ListProps
+                     }
+                  >
+                     <MobileTOCItems items={items} />
+                  </FlexScrollGradient>
+               </MenuList>
+            </Menu>
+         </Flex>
+      </Collapse>
    );
 }
 
@@ -176,10 +225,15 @@ function MobileTOCItems({ items }: { items: TOCRecord[] }) {
    );
 }
 
-function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
+function MobileTOCItem({
+   title,
+   scrollTo,
+   scrollToBufferPx: _scrollToBufferPx,
+   elementRef,
+   active,
+}: TOCRecord) {
    const ref = useRef<HTMLButtonElement>(null);
 
-   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
    const blue100 = useToken('colors', 'blue.100');
 
    useScrollToActiveEffect(ref, active);
@@ -190,11 +244,9 @@ function MobileTOCItem({ title, scrollTo, elementRef, active }: TOCRecord) {
          return;
       }
 
-      scrollTo({
-         bufferPx: scrollIndicatorHeight,
-      });
+      scrollTo();
 
-      highlightEl(el, blue100);
+      debouncedHighlightEl(el, blue100);
    };
 
    return (
@@ -255,11 +307,10 @@ function TOCItem({
    elementRef,
    active,
    uniqueId,
+   scrollToBufferPx: _scrollToBufferPx,
    scrollTo,
    ...props
 }: TOCRecord & ListItemProps) {
-   const scrollIndicatorHeight = useScrollPercentHeight(CssTokenOption.Number);
-
    const ref = useRef<HTMLLIElement>(null);
 
    const blue100 = useToken('colors', 'blue.100');
@@ -270,11 +321,9 @@ function TOCItem({
          return;
       }
 
-      scrollTo({
-         bufferPx: scrollIndicatorHeight,
-      });
+      scrollTo();
 
-      highlightEl(el, blue100);
+      debouncedHighlightEl(el, blue100);
    };
 
    useScrollToActiveEffect(ref, active);
@@ -301,58 +350,23 @@ function TOCItem({
    );
 }
 
+const debouncedHighlightEl = debounce(highlightEl, 1000, {
+   leading: true,
+   trailing: false,
+   maxWait: 0,
+});
+
 function highlightEl(el: HTMLElement, color: string) {
    const originalBackgroundColor = el.style.backgroundColor;
    const originalTransition = el.style.transition;
-
    el.style.transition = 'background-color .5s ease-in-out';
    el.style.backgroundColor = color;
-
    setTimeout(() => {
       el.style.backgroundColor = originalBackgroundColor;
    }, 500);
    setTimeout(() => {
       el.style.transition = originalTransition;
    }, 1000);
-}
-
-export function TOCBasedScrollPercent({
-   scrollContainerRef,
-}: ScrollPercentProps) {
-   const [hidden, setHidden] = useState(true);
-   const { getItems } = useTOCContext();
-   const items = getItems();
-   const lastItem = items[items.length - 1];
-
-   const onChange = useCallback(
-      (scrollPercent: number, container: HTMLElement) => {
-         const atContainer = container.offsetTop < window.scrollY;
-         if (!atContainer) {
-            setHidden(true);
-            return;
-         }
-
-         const lastItemEl = lastItem.elementRef.current;
-         const scrolledPastLastItem =
-            lastItemEl && window.scrollY >= lastItemEl.offsetTop;
-
-         if (!lastItem.active && scrolledPastLastItem) {
-            setHidden(true);
-            return;
-         }
-
-         setHidden(false);
-      },
-      [lastItem]
-   );
-
-   return (
-      <ScrollPercent
-         scrollContainerRef={scrollContainerRef}
-         onChange={onChange}
-         hidden={hidden}
-      />
-   );
 }
 
 export function onlyShowIfTOCFlagEnabled<P>(
@@ -377,6 +391,7 @@ export function onlyShowIfTOCFlagEnabledProvider(
             updateItemRef: () => {},
             removeItem: () => {},
             getItems: () => [],
+            getItem: () => undefined,
          };
          return (
             <TOCContext.Provider value={context}>
@@ -387,4 +402,8 @@ export function onlyShowIfTOCFlagEnabledProvider(
 
       return <ExistingContext {...props} />;
    };
+}
+
+export function TOCEnabled() {
+   return flags.TROUBLESHOOTING_TOC_ENABLED;
 }
