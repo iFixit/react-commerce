@@ -108,9 +108,7 @@ const Wiki: NextPageWithLayout<{
       (conclusion) => conclusion.heading !== 'Related Pages'
    );
 
-   const hasRelatedPages = wikiData.conclusion.some(
-      (conclusion) => conclusion.heading === 'Related Pages'
-   );
+   const hasRelatedPages = wikiData.linkedProblems.length > 0;
 
    const firstIntroSection = wikiData.introduction[0];
    const otherIntroSections = wikiData.introduction.slice(1);
