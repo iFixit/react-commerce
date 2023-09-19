@@ -78,6 +78,7 @@ jobs:
            uses: ./.github/actions/build-test-frontend
            with:
               algolia-api-key: ${{ secrets.ALGOLIA_API_KEY }}
+              dev-api-auth-token: ${{ secrets.DEV_API_AUTH_TOKEN }}
 
          - name: Run Playwright Tests
            env:
