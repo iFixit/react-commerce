@@ -77,15 +77,15 @@ jobs:
          - name: Build and cache frontend for with test setup
            uses: ./.github/actions/build-test-frontend
            with:
-              algolia-api-key: ${{ secrets.ALGOLIA_API_KEY }}
-              dev-api-auth-token: ${{ secrets.DEV_API_AUTH_TOKEN }}
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+              NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
 
          - name: Run Playwright Tests
            env:
               NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-              DEV_API_AUTH_TOKEN: ${{ secrets.DEV_API_AUTH_TOKEN }}
+              NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
            run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}" ${{ needs.check-diff.outputs.modified-playwright-tests }} --repeat-each=5
 
          - uses: actions/upload-artifact@v3
