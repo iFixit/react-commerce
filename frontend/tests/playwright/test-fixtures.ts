@@ -117,7 +117,7 @@ test.beforeEach(async ({ context }) => {
    await context.addCookies([
       {
          name: 'dev-api-psk',
-         value: process.env.DEV_API_AUTH_TOKEN || 'filler-token',
+         value: process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN || 'filler-token',
          path: '/',
          domain: '.cominor.com',
       },

@@ -1,10 +1,10 @@
 name: Build test frontend
 description: Builds the test frontend, and caches the next.js cache directory
 inputs:
-   algolia-api-key:
+   ALGOLIA_API_KEY:
       description: 'Algolia api key'
       required: true
-   dev-api-auth-token:
+   NEXT_PUBLIC_DEV_API_AUTH_TOKEN:
       description: 'Dev api auth token'
       required: true
 
@@ -23,7 +23,7 @@ runs:
         env:
            NODE_ENV: test
            NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
-           ALGOLIA_API_KEY: ${{ inputs.algolia-api-key }}
-           DEV_API_AUTH_TOKEN: ${{ inputs.dev-api-auth-token }}
+           ALGOLIA_API_KEY: ${{ inputs.ALGOLIA_API_KEY }}
+           NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ inputs.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
         run: cd frontend && pnpm build
         shell: bash
