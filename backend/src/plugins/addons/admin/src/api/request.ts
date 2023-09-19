@@ -36,7 +36,7 @@ export function useRequest<Data = any, Input = any>(
             };
          });
          return result.data;
-      } catch (error) {
+      } catch (error: any) {
          setState((current) => ({
             ...current,
             isLoading: false,

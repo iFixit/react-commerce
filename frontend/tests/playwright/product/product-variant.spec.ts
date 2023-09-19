@@ -55,11 +55,11 @@ test.describe('Product Variant Tests', () => {
       ).not.toBeVisible();
    });
 
-   test.skip('Switch Variants and Add To Cart', async ({
+   test('Switch Variants and Add To Cart', async ({
       productPage,
       cartDrawer,
    }) => {
-      await productPage.gotoProduct('detailing-brush');
+      await productPage.gotoProduct('playwright-in-stock-product');
       const productInfoSection = productPage.page.getByTestId(
          'product-info-section'
       );

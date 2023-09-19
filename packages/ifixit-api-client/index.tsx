@@ -67,7 +67,7 @@ export class IFixitAPIClient {
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
-      const pskToken = process.env.DEV_API_AUTH_TOKEN;
+      const pskToken = process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN;
       const authHeader: { Authorization?: string } = pskToken
          ? { Authorization: `PSK ${pskToken}` }
          : {};
