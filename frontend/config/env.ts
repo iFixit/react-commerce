@@ -68,6 +68,9 @@ export const VERCEL_HOST =
 
 export const COLORLESS_LOGS = process.env.COLORLESS_LOGS;
 
+export const NEXT_PUBLIC_DEV_API_AUTH_TOKEN =
+   process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN;
+
 function requireEnvVariable(
    env: string | null | undefined,
    envName: string
