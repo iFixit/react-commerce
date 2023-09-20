@@ -24,7 +24,7 @@ export function GoogleAnalytics() {
    }, [router?.events]);
 
    const wantsUA = GA_URL && GA_KEY;
-   return wantsUA && <UA />;
+   return wantsUA ? <UA /> : null;
 }
 
 function UA() {
