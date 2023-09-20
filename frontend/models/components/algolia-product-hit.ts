@@ -15,7 +15,7 @@ export type AlgoliaProductHit = z.infer<typeof AlgoliaProductHitSchema>;
 export const AlgoliaProductHitSchema = z.object({
    objectID: z.string(),
    productid: z.number().or(z.string()),
-   productcode: z.string(),
+   productcode: z.number(),
    title: z.string(),
    handle: z.string(),
    image_url: z.string().nullable().optional(),

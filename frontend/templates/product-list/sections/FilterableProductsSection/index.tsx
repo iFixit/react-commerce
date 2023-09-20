@@ -67,29 +67,21 @@ export function FilterableProductsSection({
       [hits]
    );
 
-   const [prevProductIds, setPrevProductIds] = React.useState<string[]>([]);
-
    React.useEffect(() => {
-      const currentProductIds = products.map((product) => product.id);
-      if (
-         JSON.stringify(currentProductIds) !== JSON.stringify(prevProductIds)
-      ) {
-         if (currentProductIds.length > 0) {
-            debouncedTrackGA4ViewItemList({
-               item_list_id: productList.handle,
-               item_list_name: productList.title,
-               items: products.map((product) => ({
-                  item_id: product.sku,
-                  item_name: product.title,
-                  item_variant: product.id,
-                  quantity: product.quantityAvailable,
-                  price: product.price.amount,
-               })),
-            });
-         }
-         setPrevProductIds(currentProductIds);
+      if (products.length > 0) {
+         debouncedTrackGA4ViewItemList({
+            item_list_id: productList.handle,
+            item_list_name: productList.title,
+            items: products.map((product) => ({
+               item_id: product.sku,
+               item_name: product.title,
+               item_variant: product.id,
+               quantity: product.quantityAvailable,
+               price: product.price.amount,
+            })),
+         });
       }
-   }, [prevProductIds, products, productList.handle, productList.title]);
+   }, [products, productList.handle, productList.title]);
 
    const currentRefinements = useCurrentRefinements();
    const hasCurrentRefinements = currentRefinements.items.length > 0;
