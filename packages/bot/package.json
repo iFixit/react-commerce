@@ -8,7 +8,7 @@
       "@types/prompts": "2.4.1",
       "@types/yargs": "17.0.13",
       "ts-node": "10.9.1",
-      "typescript": "4.8.4"
+      "typescript": "5.2.2"
    },
    "dependencies": {
       "@shopify/shopify-api": "5.2.0",

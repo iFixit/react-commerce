@@ -10,7 +10,7 @@
    },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
-      "typescript": "4.8.4"
+      "typescript": "5.2.2"
    },
    "scripts": {
       "build": "",
