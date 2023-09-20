@@ -47,7 +47,7 @@ import { PrerenderedHTML } from '@components/common';
 export interface ProductOverviewSectionProps {
    product: Product;
    selectedVariant: ProductVariant;
-   onVariantChange: (variantId: string) => ProductVariant | null;
+   onVariantChange: (variantId: string) => void;
    internationalBuyBox: ReturnType<typeof useInternationalBuyBox>;
 }
 
@@ -63,8 +63,11 @@ export function ProductOverviewSection({
 
    const handleVariantChange = React.useCallback(
       (variantId: string) => {
-         const newVariant = onVariantChange(variantId);
+         onVariantChange(variantId);
          setSelectedImageId(null);
+         const newVariant = product.variants.find(
+            (variant) => variant.id === variantId
+         );
          if (newVariant) {
             trackGA4ViewItem({
                currency: newVariant.price.currencyCode,
