@@ -35,10 +35,26 @@ type GATrackEvent = {
    name?: string;
 };
 
+type GTagItem = {
+   item_id: string | null | undefined;
+   item_name: string | null;
+   item_variant: string | null;
+   quantity: number | null | undefined;
+   price: number;
+};
+type GTagItemsEvent = {
+   items: GTagItem[];
+   value: number;
+   currency: string;
+};
+type GTagViewItemsListEvent = {
+   items: GTagItem[];
+   item_list_id: string;
+   item_list_name: string;
+};
 type GTagArg = Array<any>;
-type EventObj = { [key: string]: any };
-export type GTag = (...args: GTagArg) => void;
 
+export type GTag = (...args: GTagArg) => void;
 declare global {
    interface Window {
       gtag?: GTag;
@@ -52,29 +68,32 @@ function gtag(...args: GTagArg) {
    }
 }
 
-export function trackGA4ViewItem(event: EventObj) {
+export function trackGA4ViewItem(event: GTagItemsEvent) {
    gtag('event', 'view_item', event);
 }
 
-export function trackGA4ViewCart(event: EventObj) {
+export function trackGA4ViewCart(event: GTagItemsEvent) {
    gtag('event', 'view_cart', event);
 }
 
-export function trackGA4AddToCart(event: EventObj) {
+export function trackGA4AddToCart(event: GTagItemsEvent) {
    gtag('event', 'add_to_cart', event);
 }
 
-export function trackGA4RemoveFromCart(event: EventObj) {
+export function trackGA4RemoveFromCart(event: GTagItemsEvent) {
    gtag('event', 'remove_from_cart', event);
 }
 
-export function trackGA4ViewItemList(event: EventObj) {
+export function trackGA4ViewItemList(event: GTagViewItemsListEvent) {
    gtag('event', 'view_item_list', event);
 }
 
-export const debouncedTrackGA4ViewItemList = debounce((event: EventObj) => {
-   trackGA4ViewItemList(event);
-}, 500);
+export const debouncedTrackGA4ViewItemList = debounce(
+   (event: GTagViewItemsListEvent) => {
+      trackGA4ViewItemList(event);
+   },
+   500
+);
 
 export function trackGoogleProductView(product: GAProductType) {
    const ga = useGa();
