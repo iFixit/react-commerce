@@ -18,7 +18,7 @@ class MyDocument extends Document {
                   strategy="beforeInteractive"
                />
                <Script
-                  strategy="beforeInteractive"
+                  strategy="afterInteractive"
                   src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
                ></Script>
                <Script id="gtag-ga4" strategy="beforeInteractive">
