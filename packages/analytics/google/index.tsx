@@ -88,7 +88,7 @@ export function trackGA4ViewItemList(event: GTagViewItemsListEvent) {
    gtag('event', 'view_item_list', event);
 }
 
-export const debouncedTrackGA4ViewItemList = debounce(
+export const debouncedTrackGA4ViewItemList: GTag = debounce(
    (event: GTagViewItemsListEvent) => {
       trackGA4ViewItemList(event);
    },
