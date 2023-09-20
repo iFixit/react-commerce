@@ -1,7 +1,6 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
-import { debounce } from 'lodash';
-import React from 'react';
+import debounce from 'lodash/debounce';
 
 type GAType = (metric: string, ...args: any) => void;
 type GAProductType = {

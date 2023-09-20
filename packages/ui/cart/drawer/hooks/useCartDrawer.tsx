@@ -69,9 +69,5 @@ export function useCartDrawer() {
       [context.onOpen, cartQuery?.isSuccess, cartQuery?.data]
    );
 
-   const contextValue = {
-      ...context,
-      onOpen: onOpenWithAnalytics,
-   };
-   return { ...contextValue, onViewCart };
+   return { ...context, onOpen: onOpenWithAnalytics, onViewCart };
 }
