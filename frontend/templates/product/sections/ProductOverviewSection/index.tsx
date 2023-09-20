@@ -21,7 +21,10 @@ import {
 import { BuyBoxPropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
-import { isLifetimeWarranty } from '@ifixit/helpers';
+import {
+   isLifetimeWarranty,
+   getVariantIdFromVariantURI,
+} from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductVariantPrice, Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
@@ -76,7 +79,7 @@ export function ProductOverviewSection({
                   {
                      item_id: newVariant.sku,
                      item_name: newVariant.internalDisplayName,
-                     item_variant: newVariant.id.split('/').pop(),
+                     item_variant: getVariantIdFromVariantURI(newVariant.id),
                      price: newVariant.price.amount,
                      quantity: newVariant.quantityAvailable,
                   },

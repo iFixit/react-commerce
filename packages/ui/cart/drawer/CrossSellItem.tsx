@@ -11,6 +11,7 @@ import {
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { CrossSellProduct } from '@ifixit/cart-sdk/types';
 import { trackGA4AddToCart } from '@ifixit/analytics';
+import { getVariantIdFromEncodedVariantURI } from '@ifixit/helpers';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { ProductVariantPrice, useUserPrice } from '../../commerce';
@@ -43,10 +44,6 @@ export function CrossSellItem({ item, ...otherProps }: CrossSellItemProps) {
             compareAtPrice: userPrice.compareAtPrice,
          },
       });
-      const shopifyVariantDecoded = Buffer.from(
-         item.shopifyVariantId,
-         'base64'
-      );
       trackGA4AddToCart({
          currency: item.price.currencyCode,
          value: Number(userPrice.price),
@@ -54,8 +51,10 @@ export function CrossSellItem({ item, ...otherProps }: CrossSellItemProps) {
             {
                item_id: item.itemcode,
                item_name: item.name,
-               item_variant: shopifyVariantDecoded.toString().split('/').pop(),
-               price: userPrice.price,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  item.shopifyVariantId
+               ),
+               price: Number(userPrice.price),
                quantity: 1,
             },
          ],

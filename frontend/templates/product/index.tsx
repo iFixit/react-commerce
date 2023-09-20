@@ -21,6 +21,7 @@ import {
    isLifetimeWarranty,
    moneyToNumber,
    parseItemcode,
+   getVariantIdFromVariantURI,
 } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
@@ -71,7 +72,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
             {
                item_id: selectedVariant.sku,
                item_name: selectedVariant.internalDisplayName,
-               item_variant: selectedVariant.id.split('/').pop(),
+               item_variant: getVariantIdFromVariantURI(selectedVariant.id),
                price: selectedVariant.price.amount,
                quantity: selectedVariant.quantityAvailable,
             },

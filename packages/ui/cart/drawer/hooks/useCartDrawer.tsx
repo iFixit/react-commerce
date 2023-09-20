@@ -1,5 +1,6 @@
 import { useDisclosure } from '@chakra-ui/react';
 import { trackGA4ViewCart, trackInMatomoAndGA } from '@ifixit/analytics';
+import { getVariantIdFromEncodedVariantURI } from '@ifixit/helpers';
 import { useCart } from '@ifixit/cart-sdk';
 
 import * as React from 'react';
@@ -54,10 +55,9 @@ export function useCartDrawer() {
                   items: cartQuery.data.lineItems.map((item) => ({
                      item_id: item.itemcode,
                      item_name: item.name + ' ' + item.variantTitle,
-                     item_variant: Buffer.from(item.shopifyVariantId, 'base64')
-                        .toString()
-                        .split('/')
-                        .pop(),
+                     item_variant: getVariantIdFromEncodedVariantURI(
+                        item.shopifyVariantId
+                     ),
                      price: Number(item.price.amount),
                      quantity: item.quantity,
                   })),

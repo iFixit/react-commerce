@@ -20,6 +20,7 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
+import { getVariantIdFromVariantURI } from '@ifixit/helpers';
 import { trackGA4AddToCart } from '@ifixit/analytics';
 import type { Money } from '@models/components/money';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
@@ -93,7 +94,9 @@ function CrossSellItem({ productPreview }: CrossSellItemProps) {
                item_id: productPreview.sku,
                item_name:
                   productPreview.title + ' ' + productPreview.variantTitle,
-               item_variant: productPreview.shopifyVariantId.split('/').pop(),
+               item_variant: getVariantIdFromVariantURI(
+                  productPreview.shopifyVariantId
+               ),
                price: productPreview.price.amount,
                quantity: 1,
             },

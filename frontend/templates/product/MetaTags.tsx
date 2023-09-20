@@ -1,5 +1,9 @@
 import { useAppContext } from '@ifixit/app';
-import { parseItemcode, shouldShowProductRating } from '@ifixit/helpers';
+import {
+   parseItemcode,
+   shouldShowProductRating,
+   getVariantIdFromVariantURI,
+} from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import Head from 'next/head';
 import React from 'react';
@@ -10,10 +14,7 @@ import {
    OfferItemCondition as SchemaOfferItemCondition,
    Product as SchemaProduct,
 } from 'schema-dts';
-import {
-   encodeVariantId,
-   useDefaultVariantId,
-} from './hooks/useSelectedVariant';
+import { useDefaultVariantId } from './hooks/useSelectedVariant';
 export interface MetaTagsProps {
    product: Product;
    selectedVariant: ProductVariant;
@@ -27,7 +28,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
    const canonicalUrl = `${appContext.ifixitOrigin}/products/${product.handle}`;
    const urlParams =
       selectedVariant.id !== defaultVariantId
-         ? `?variant=${encodeVariantId(selectedVariant.id)}`
+         ? `?variant=${getVariantIdFromVariantURI(selectedVariant.id)}`
          : '';
    const selectedVariantUrl = `${appContext.ifixitOrigin}/products/${product.handle}${urlParams}`;
 
