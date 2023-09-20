@@ -209,9 +209,7 @@ export function ProductOverviewSection({
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
 
-               {isForSale && (
-                  <BuyBoxPropositionSection selectedVariant={selectedVariant} />
-               )}
+               {isForSale && <BuyBoxPropositionSection />}
 
                <Accordion
                   defaultIndex={product.isEnabled ? [0, 1] : undefined}

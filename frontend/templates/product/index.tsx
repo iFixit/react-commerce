@@ -168,7 +168,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                         <ServiceValuePropositionSection
                            key={section.id}
                            id={section.id}
-                           selectedVariant={selectedVariant}
                         />
                      );
                   }
