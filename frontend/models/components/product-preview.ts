@@ -63,7 +63,7 @@ export function productPreviewFromAlgoliaHit(hit: any): ProductPreview | null {
    return {
       id: String(product.productid),
       handle: product.handle,
-      sku: getItemCodeFromSku(hit.productcode.toString()),
+      sku: getItemCodeFromSku(product.productcode.toString()),
       title: product.title,
       variantTitle: null,
       image: imageFromUrl(product.image_url),
