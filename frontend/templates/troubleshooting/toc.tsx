@@ -1,6 +1,5 @@
 import {
    Button,
-   Collapse,
    Flex,
    FlexProps,
    List,
@@ -12,6 +11,7 @@ import {
    MenuItem,
    MenuList,
    Text,
+   useBreakpointValue,
    useDisclosure,
    useToken,
 } from '@chakra-ui/react';
@@ -57,7 +57,6 @@ export function TOC({
             top={0}
             left={0}
             width="100%"
-            display={{ base: 'flex', lg: 'none' }}
          />
       </Flex>
    );
@@ -97,12 +96,18 @@ export function MobileTOC({
 }) {
    const { getItems } = useTOCContext();
    const items = getItems();
+   const wantsMobile = useBreakpointValue({ base: true, lg: false });
    const activeItem = items.find((item) => item.active);
 
    const [showMobileTOC, setShowMobileTOC] = useState(false);
 
    useEffect(() => {
       if (!contentRef.current) {
+         return;
+      }
+
+      if (!wantsMobile) {
+         setShowMobileTOC(false);
          return;
       }
 
@@ -117,9 +122,9 @@ export function MobileTOC({
 
       window.addEventListener('scroll', onScroll);
       return () => window.removeEventListener('scroll', onScroll);
-   }, [contentRef]);
+   }, [contentRef, wantsMobile]);
 
-   const isVisible = showMobileTOC && activeItem;
+   const isVisible = wantsMobile && showMobileTOC && activeItem;
 
    return (
       <AnimatePresence>

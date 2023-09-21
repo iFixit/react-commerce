@@ -33,7 +33,7 @@ import { handlers } from './msw/handlers';
 import { exec } from 'node:child_process';
 import { cloneDeep } from 'lodash';
 
-export const test = base.extend<
+const test = base.extend<
    ProductFixtures &
       CustomNextjsServer & {
          clientRequestHandler: MockServiceWorker;
@@ -111,6 +111,19 @@ export const test = base.extend<
    ],
 });
 
+test.beforeEach(async ({ context }) => {
+   // Add dev-api-psk cookie to context so that we can make authenticated
+   // requests to the dev API from the playwright tests in gh action runners.
+   await context.addCookies([
+      {
+         name: 'dev-api-psk',
+         value: process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN || 'filler-token',
+         path: '/',
+         domain: '.cominor.com',
+      },
+   ]);
+});
+
 expect.extend({
    async toBeWithinViewport(
       element: Locator,
@@ -159,4 +172,4 @@ expect.extend({
    },
 });
 
-export { expect };
+export { test, expect };

@@ -4,8 +4,13 @@ import { getiFixitOrigin } from '@helpers/path-helpers';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import Header from './components/Header';
-import ServerHeader from './components/ServerHeader';
+import TroubleshootingList, {
+   TroubleshootingListProps,
+} from './components/troubleshootingList';
+import {
+   IFixitAPIClient,
+   VarnishBypassHeader,
+} from '@ifixit/ifixit-api-client';
 
 export type PageParams = {
    device: string;
@@ -16,16 +21,11 @@ export type PageProps = {
    searchParams: Record<string, string>;
 };
 
-export default function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
-   const pageProps = getPageProps({ params, searchParams });
-   return (
-      <>
-         <Header {...pageProps} />
-         <ServerHeader {...pageProps} />
-      </>
-   );
+   const pageProps = await getPageProps({ params, searchParams });
+   return <TroubleshootingList {...pageProps} />;
 }
 
 function ensureFlag() {
@@ -34,14 +34,36 @@ function ensureFlag() {
    }
 }
 
-function getPageProps({
+async function getPageProps({
    params,
    searchParams: _searchParams,
-}: PageProps): PageParams {
+}: PageProps): Promise<TroubleshootingListProps> {
    const { device } = params;
-   return {
-      device,
-   };
+   const data = await getTroubleshootingListData(device);
+   return data;
+}
+
+async function getTroubleshootingListData(
+   device: string
+): Promise<TroubleshootingListProps> {
+   const nextHeaders = headers();
+   const ifixitOrigin = getiFixitOrigin(nextHeaders);
+
+   const client = new IFixitAPIClient({
+      origin: ifixitOrigin,
+      headers: VarnishBypassHeader,
+   });
+
+   const url = `Troubleshooting/Collection/${device}`;
+
+   try {
+      return await client.get<TroubleshootingListProps>(
+         url,
+         'troubleshootingList'
+      );
+   } catch (e) {
+      notFound();
+   }
 }
 
 export async function generateMetadata({
