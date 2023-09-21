@@ -110,7 +110,7 @@ const Wiki: NextPageWithLayout<{
 
    const hasRelatedPages = wikiData.linkedProblems.length > 0;
 
-   const firstIntroSection = wikiData.introduction[0];
+   const firstIntroSection = wikiData.introduction[0] || {};
    const otherIntroSections = wikiData.introduction.slice(1);
    const cleanFirstIntroSection = {
       ...firstIntroSection,
