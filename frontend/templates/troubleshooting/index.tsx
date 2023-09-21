@@ -805,11 +805,11 @@ function AuthorListing({
 
 function IntroductionSections({ introduction }: { introduction: Section[] }) {
    return (
-      <>
+      <Stack spacing={6}>
          {introduction.map((intro) => (
             <IntroductionSection key={intro.heading} intro={intro} mt={0} />
          ))}
-      </>
+      </Stack>
    );
 }
 
