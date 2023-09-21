@@ -21,7 +21,10 @@ import {
 import { BuyBoxPropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
-import { isLifetimeWarranty } from '@ifixit/helpers';
+import {
+   isLifetimeWarranty,
+   getVariantIdFromVariantURI,
+} from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductVariantPrice, Wrapper } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
@@ -41,6 +44,7 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
+import { trackGA4ViewItem } from '@ifixit/analytics';
 import { PrerenderedHTML } from '@components/common';
 
 export interface ProductOverviewSectionProps {
@@ -64,6 +68,24 @@ export function ProductOverviewSection({
       (variantId: string) => {
          onVariantChange(variantId);
          setSelectedImageId(null);
+         const newVariant = product.variants.find(
+            (variant) => variant.id === variantId
+         );
+         if (newVariant) {
+            trackGA4ViewItem({
+               currency: newVariant.price.currencyCode,
+               value: newVariant.price.amount,
+               items: [
+                  {
+                     item_id: newVariant.sku,
+                     item_name: newVariant.internalDisplayName,
+                     item_variant: getVariantIdFromVariantURI(newVariant.id),
+                     price: newVariant.price.amount,
+                     quantity: newVariant.quantityAvailable,
+                  },
+               ],
+            });
+         }
       },
       [onVariantChange]
    );
