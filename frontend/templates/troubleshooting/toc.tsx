@@ -144,6 +144,27 @@ export function MobileTOC({
    );
 }
 
+function useScrollToOnloadEffect() {
+   const { getItem } = useTOCContext();
+
+   const hash = window.location.hash;
+   const id = hash.replace('#', '');
+   const record = getItem(id);
+
+   const scrollTo = record?.scrollTo;
+   const [isMounted, setIsMounted] = useState(false);
+
+   useEffect(() => {
+      if (isMounted) {
+         return;
+      }
+
+      scrollTo && scrollTo();
+
+      setIsMounted(true);
+   }, [isMounted, scrollTo]);
+}
+
 function MobileTOCMenu({
    activeItem,
    items,
@@ -153,6 +174,8 @@ function MobileTOCMenu({
 }) {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const title = activeItem?.title ?? 'Table of Contents';
+
+   useScrollToOnloadEffect();
 
    return (
       <Menu
