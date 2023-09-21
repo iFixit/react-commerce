@@ -21,6 +21,7 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { debounce } from 'lodash';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export function TOC({
    listItemProps,
@@ -105,32 +106,12 @@ export function MobileTOC({
          return;
       }
 
-      // There is no easy way to detect a scroll is finished
-      // if we are smooth scrolling, a set state will re-render
-      // and cause the scroll to stop abruptly
-      // so we have to wait until the scroll is stable
-      const waitUntilScrollStable = () => {
-         return new Promise((resolve) => {
-            let lastScrollY = window.scrollY;
-
-            const interval = setInterval(() => {
-               if (lastScrollY === window.scrollY) {
-                  clearInterval(interval);
-                  resolve(window.scrollY);
-               }
-               lastScrollY = window.scrollY;
-            }, 20);
-         });
-      };
-
       const onScroll = () => {
-         waitUntilScrollStable().then(() => {
-            const scrolledIntoContent =
-               (contentRef.current?.offsetTop || 0) <= window.scrollY;
+         const scrolledIntoContent =
+            (contentRef.current?.offsetTop || 0) <= window.scrollY;
 
-            setShowMobileTOC((_prev) => {
-               return scrolledIntoContent;
-            });
+         setShowMobileTOC((_prev) => {
+            return scrolledIntoContent;
          });
       };
 
@@ -138,12 +119,23 @@ export function MobileTOC({
       return () => window.removeEventListener('scroll', onScroll);
    }, [contentRef]);
 
+   const isVisible = showMobileTOC && activeItem;
+
    return (
-      <Collapse in={Boolean(showMobileTOC && activeItem)} unmountOnExit={true}>
-         <Flex {...props}>
-            <MobileTOCMenu activeItem={activeItem} items={items} />
-         </Flex>
-      </Collapse>
+      <AnimatePresence>
+         {isVisible && (
+            <Flex
+               {...props}
+               as={motion.div}
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               exit={{ opacity: 0 }}
+               transition="0.4s ease"
+            >
+               <MobileTOCMenu activeItem={activeItem} items={items} />
+            </Flex>
+         )}
+      </AnimatePresence>
    );
 }
 
