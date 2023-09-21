@@ -803,7 +803,7 @@ function AuthorListing({
 }
 
 function IntroductionSections({ introduction }: { introduction: Section[] }) {
-   if (introduction.length < 0) {
+   if (!introduction.length) {
       return null;
    }
 
