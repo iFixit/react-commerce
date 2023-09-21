@@ -110,14 +110,16 @@ const Wiki: NextPageWithLayout<{
 
    const hasRelatedPages = wikiData.linkedProblems.length > 0;
 
-   const firstIntroSection = wikiData.introduction[0];
+   const firstIntroSection = wikiData.introduction[0] || {};
    const otherIntroSections = wikiData.introduction.slice(1);
    const cleanFirstIntroSection = {
       ...firstIntroSection,
       heading: firstIntroSection.heading || 'Introduction',
       id: firstIntroSection.id || 'introduction',
    };
-   const introSections = [cleanFirstIntroSection, ...otherIntroSections];
+   const introSections = firstIntroSection.body
+      ? [cleanFirstIntroSection, ...otherIntroSections]
+      : wikiData.introduction;
 
    const sections = introSections
       .concat(wikiData.solutions)
@@ -801,12 +803,16 @@ function AuthorListing({
 }
 
 function IntroductionSections({ introduction }: { introduction: Section[] }) {
+   if (!introduction.length) {
+      return null;
+   }
+
    return (
-      <>
+      <Stack spacing={6}>
          {introduction.map((intro) => (
             <IntroductionSection key={intro.heading} intro={intro} mt={0} />
          ))}
-      </>
+      </Stack>
    );
 }
 
