@@ -117,7 +117,9 @@ const Wiki: NextPageWithLayout<{
       heading: firstIntroSection.heading || 'Introduction',
       id: firstIntroSection.id || 'introduction',
    };
-   const introSections = [cleanFirstIntroSection, ...otherIntroSections];
+   const introSections = firstIntroSection.body
+      ? [cleanFirstIntroSection, ...otherIntroSections]
+      : wikiData.introduction;
 
    const sections = introSections
       .concat(wikiData.solutions)
@@ -801,6 +803,10 @@ function AuthorListing({
 }
 
 function IntroductionSections({ introduction }: { introduction: Section[] }) {
+   if (introduction.length < 0) {
+      return null;
+   }
+
    return (
       <Stack spacing={6}>
          {introduction.map((intro) => (
