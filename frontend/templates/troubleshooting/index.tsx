@@ -109,6 +109,7 @@ const Wiki: NextPageWithLayout<{
    );
 
    const hasRelatedPages = wikiData.linkedProblems.length > 0;
+   const hasIntroSection = wikiData.introduction.length > 0;
 
    const firstIntroSection = wikiData.introduction[0];
    const otherIntroSections = wikiData.introduction.slice(1);
@@ -248,7 +249,9 @@ const Wiki: NextPageWithLayout<{
                         solutions={wikiData.solutions}
                         problems={wikiData.linkedProblems}
                      />
-                     <IntroductionSections introduction={introSections} />
+                     {hasIntroSection && (
+                        <IntroductionSections introduction={introSections} />
+                     )}
                      {wikiData.solutions.length > 0 && (
                         <Stack spacing={3} mt={{ base: 7, sm: 10 }}>
                            {wikiData.solutions.map((solution, index) => (
