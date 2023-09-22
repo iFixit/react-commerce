@@ -495,6 +495,7 @@ function EditButton({ editUrl }: { editUrl: string }) {
          fontFamily="heading"
          lineHeight="1.29"
          fontWeight="semibold"
+         fontSize="sm"
          color="brand.500"
          textAlign="center"
          href={editUrl}
