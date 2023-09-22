@@ -5,7 +5,7 @@ import {
 } from '@config/env';
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { printZodError } from '@helpers/zod-helpers';
-import { isLifetimeWarranty } from '@ifixit/helpers';
+import { getItemCodeFromSku, isLifetimeWarranty } from '@ifixit/helpers';
 import type { ProductPreviewFieldsFragment } from '@lib/shopify-storefront-sdk';
 import algoliasearch from 'algoliasearch/lite';
 import { z } from 'zod';
@@ -49,12 +49,10 @@ export const ProductPreviewSchema = z.object({
    shopifyVariantId: z.string().nullable(),
 });
 
-export function productPreviewFromAlgoliaHit(
-   hit: unknown
-): ProductPreview | null {
+export function productPreviewFromAlgoliaHit(hit: any): ProductPreview | null {
    const validation = AlgoliaProductHitSchema.safeParse(hit);
    if (!validation.success) {
-      const hitId = (hit as any)?.objectID;
+      const hitId = hit.objectID;
       console.error(
          `Invalid Algolia product hit with object id "${hitId}":`,
          printZodError(validation.error)
@@ -65,7 +63,7 @@ export function productPreviewFromAlgoliaHit(
    return {
       id: String(product.productid),
       handle: product.handle,
-      sku: null,
+      sku: getItemCodeFromSku(product.productcode.toString()),
       title: product.title,
       variantTitle: null,
       image: imageFromUrl(product.image_url),

@@ -1,10 +1,11 @@
-import { GA_URL, GA_KEY, GA_DEBUG, GTAG_ID } from '@config/env';
+import { GA_URL, GA_KEY, GA_DEBUG } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
 
 declare const ga: (command: string, hitType: string, url?: string) => void;
 
+// NOTE: GA4 is setup in _document.tsx
 export function GoogleAnalytics() {
    const router = useRouter();
    React.useEffect(() => {
@@ -23,34 +24,7 @@ export function GoogleAnalytics() {
    }, [router?.events]);
 
    const wantsUA = GA_URL && GA_KEY;
-   const wantsGA4 = Boolean(GTAG_ID);
-
-   return (
-      <>
-         {wantsUA && <UA />}
-         {wantsGA4 && <GA4 />}
-      </>
-   );
-}
-
-function GA4() {
-   return (
-      <>
-         <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
-         ></Script>
-         <Script id="gtag-ga4">
-            {`
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
-
-         gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
-      `}
-         </Script>
-      </>
-   );
+   return wantsUA ? <UA /> : null;
 }
 
 function UA() {

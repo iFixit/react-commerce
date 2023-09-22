@@ -22,6 +22,8 @@ import {
    useRemoveLineItem,
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
+import { trackGA4AddToCart, trackGA4RemoveFromCart } from '@ifixit/analytics';
+import { getVariantIdFromEncodedVariantURI } from '@ifixit/helpers';
 import { multiplyMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
@@ -68,6 +70,21 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
          itemcode: lineItem.itemcode,
          quantity: 1,
       });
+      trackGA4AddToCart({
+         currency: lineItem.price.currencyCode,
+         value: Number(lineItem.price.amount),
+         items: [
+            {
+               item_id: lineItem.itemcode,
+               item_name: lineItem.name + ' ' + lineItem.variantTitle,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  lineItem.shopifyVariantId
+               ),
+               price: Number(lineItem.price.amount),
+               quantity: 1,
+            },
+         ],
+      });
    };
 
    const decrementQuantity = () => {
@@ -75,11 +92,41 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
          itemcode: lineItem.itemcode,
          quantity: -1,
       });
+      trackGA4RemoveFromCart({
+         currency: lineItem.price.currencyCode,
+         value: Number(lineItem.price.amount),
+         items: [
+            {
+               item_id: lineItem.itemcode,
+               item_name: lineItem.name + ' ' + lineItem.variantTitle,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  lineItem.shopifyVariantId
+               ),
+               price: Number(lineItem.price.amount),
+               quantity: 1,
+            },
+         ],
+      });
    };
 
    const handleRemoveLineItem = () => {
       removeLineItem.mutate({
          itemcode: lineItem.itemcode,
+      });
+      trackGA4RemoveFromCart({
+         currency: lineItem.price.currencyCode,
+         value: Number(lineItem.price.amount) * lineItem.quantity,
+         items: [
+            {
+               item_id: lineItem.itemcode,
+               item_name: lineItem.name + ' ' + lineItem.variantTitle,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  lineItem.shopifyVariantId
+               ),
+               price: Number(lineItem.price.amount),
+               quantity: lineItem.quantity,
+            },
+         ],
       });
    };
 
