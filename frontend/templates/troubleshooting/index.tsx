@@ -161,7 +161,6 @@ const Wiki: NextPageWithLayout<{
                   }}
                />
                <Container
-                  fontSize="md"
                   maxW="1280px"
                   display="flex"
                   flexWrap={{ base: 'wrap', lg: 'nowrap' }}
@@ -411,12 +410,14 @@ function NavBar({
    const breadcrumbMinHeight = '48px';
    return (
       <Flex
+         className="NavBar"
          w="100%"
          backgroundColor="white"
          borderBottomColor="gray.200"
          borderBottomWidth={{ base: '0', sm: '1px' }}
          justify="center"
          minHeight={breadcrumbMinHeight}
+         fontSize={{ base: '13px', md: '14px' }}
       >
          <Flex
             maxW="1280px"
@@ -494,7 +495,6 @@ function EditButton({ editUrl }: { editUrl: string }) {
          fontFamily="heading"
          lineHeight="1.29"
          fontWeight="semibold"
-         fontSize="sm"
          color="brand.500"
          textAlign="center"
          href={editUrl}
@@ -560,7 +560,6 @@ function NavTabs({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 'md',
       paddingTop: 2,
       paddingBottom: 2,
       paddingInlineStart: 4,
