@@ -23,7 +23,8 @@ export function getProductVariantSku(itemcode: string): string {
 }
 
 export function getItemCodeFromSku(sku: string): string {
-   return `IF${sku.replace(/(.{3})/g, '$1-')}`;
+   const itemCode = `IF${sku.replace(/(.{3})/g, '$1-')}`;
+   return itemCode.endsWith('-') ? itemCode.slice(0, -1) : itemCode;
 }
 
 export function parseItemcode(itemcode: string) {
@@ -42,4 +43,28 @@ export function isLifetimeWarranty(
 ): boolean {
    if (!warranty) return false;
    return /lifetime/i.test(warranty);
+}
+
+export function getEncodedVariantURI(variantId: string | number): string {
+   return window.btoa(getProductVariantURI(variantId));
+}
+
+export function getVariantIdFromEncodedVariantURI(
+   encodedShopifyVariantURI: string
+): string {
+   const shopifyVariantURIDecoded = window.atob(encodedShopifyVariantURI);
+   return getVariantIdFromVariantURI(shopifyVariantURIDecoded);
+}
+
+export function getVariantIdFromVariantURI(variantURI: string): string {
+   if (!variantURI.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return variantURI.replace(/^gid:\/\/shopify\/ProductVariant\//, '');
+}
+
+export function getProductVariantURI(variantId: string | number): string {
+   return `gid://shopify/ProductVariant/${variantId}`;
 }

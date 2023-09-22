@@ -13,6 +13,7 @@ import {
    trackGoogleProductView,
    trackInMatomoAndGA,
    trackMatomoEcommerceView,
+   trackGA4ViewItem,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import {
@@ -20,6 +21,7 @@ import {
    isLifetimeWarranty,
    moneyToNumber,
    parseItemcode,
+   getVariantIdFromVariantURI,
 } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
 import { ProductPreview } from '@models/components/product-preview';
@@ -62,6 +64,19 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          variant: selectedVariant.internalDisplayName ?? undefined,
          category: parseItemcode(selectedVariant.sku ?? '')?.category,
          price: moneyToNumber(selectedVariant.price).toFixed(2),
+      });
+      trackGA4ViewItem({
+         currency: selectedVariant.price.currencyCode,
+         value: selectedVariant.price.amount,
+         items: [
+            {
+               item_id: selectedVariant.sku,
+               item_name: selectedVariant.internalDisplayName,
+               item_variant: getVariantIdFromVariantURI(selectedVariant.id),
+               price: selectedVariant.price.amount,
+               quantity: selectedVariant.quantityAvailable,
+            },
+         ],
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);

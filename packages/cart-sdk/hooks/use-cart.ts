@@ -1,6 +1,7 @@
 import {
    filterNullableItems,
    getProductVariantSku,
+   getEncodedVariantURI,
    Money,
    parseMoney,
 } from '@ifixit/helpers';
@@ -102,13 +103,12 @@ function createCart(input: APICart): Cart {
             if (apiProduct.subPrice == null) {
                return null;
             }
-            const variantId = `gid://shopify/ProductVariant/${apiProduct.variant_id}`;
             return {
                marketingHeading: apiProduct.marketing_heading,
                marketingTitle: apiProduct.marketing_title,
                marketingBlurb: apiProduct.product_blurb,
                itemcode: apiProduct.itemcode,
-               shopifyVariantId: btoa(variantId),
+               shopifyVariantId: getEncodedVariantURI(apiProduct.variant_id),
                name: apiProduct.name,
                imageSrc: apiProduct.imageSrc,
                price: parseMoney(apiProduct.subPrice),

@@ -400,7 +400,7 @@ function HeaderUserMenu() {
    const appContext = useAppContext();
 
    if (user.data == null) {
-      return <NoUserLink href={`${appContext.ifixitOrigin}/login`} />;
+      return <NoUserLink href={`${appContext.ifixitOrigin}/Login`} />;
    }
 
    return (

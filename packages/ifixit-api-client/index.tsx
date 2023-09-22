@@ -1,6 +1,5 @@
-import { useAppContext } from '@ifixit/app';
 import { timeAsync } from '@ifixit/helpers';
-import * as React from 'react';
+export * from './client';
 
 export interface ClientOptions {
    origin: string;
@@ -129,21 +128,6 @@ function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
       )}!`,
       `${cachedHeaderKey}: ${cached}`
    );
-}
-
-/**
- * Get the iFixit API client.
- */
-export function useIFixitApiClient() {
-   const appContext = useAppContext();
-
-   const client = React.useMemo(() => {
-      return new IFixitAPIClient({
-         origin: appContext.ifixitOrigin,
-      });
-   }, [appContext.ifixitOrigin]);
-
-   return client;
 }
 
 function truncate(str: string, length: number) {
