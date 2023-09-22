@@ -115,10 +115,10 @@ export function MobileTOC({
          const scrolledIntoContent =
             (contentRef.current?.offsetTop || 0) <= window.scrollY;
 
-         setShowMobileTOC((_prev) => {
-            return scrolledIntoContent;
-         });
+         setShowMobileTOC(scrolledIntoContent);
       };
+
+      onScroll();
 
       window.addEventListener('scroll', onScroll);
       return () => window.removeEventListener('scroll', onScroll);
