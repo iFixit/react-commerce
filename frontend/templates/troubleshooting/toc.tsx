@@ -135,7 +135,6 @@ export function MobileTOC({
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
-               transition="0.4s ease"
             >
                <MobileTOCMenu activeItem={activeItem} items={items} />
             </Flex>
