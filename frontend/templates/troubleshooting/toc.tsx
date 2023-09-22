@@ -151,18 +151,12 @@ function useScrollToOnloadEffect() {
    const id = hash.replace('#', '');
    const record = getItem(id);
 
-   const scrollTo = record?.scrollTo;
-   const [isMounted, setIsMounted] = useState(false);
-
+   // We only ever want to scroll to the record on first page load. i.e onMount
+   // any changes to the record should not trigger a scroll
    useEffect(() => {
-      if (isMounted) {
-         return;
-      }
-
-      scrollTo && scrollTo();
-
-      setIsMounted(true);
-   }, [isMounted, scrollTo]);
+      record?.scrollTo();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
 }
 
 function MobileTOCMenu({
