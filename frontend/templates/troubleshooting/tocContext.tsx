@@ -9,6 +9,7 @@ import {
    useCallback,
    Dispatch,
    SetStateAction,
+   MouseEventHandler,
 } from 'react';
 
 export type TOCRecord = {
@@ -299,6 +300,26 @@ export function LinkToTOC<T extends HTMLElement>(
       updateItemRef(uniqueId, ref, scrollToBufferPx);
    }, [uniqueId, ref, addItem, updateItemRef, removeItem, scrollToBufferPx]);
    return { ref };
+}
+
+export function useTOCBufferPxScrollOnClick(id: string) {
+   const { getItem } = useTOCContext();
+   const onClick = useCallback<MouseEventHandler>(
+      (event) => {
+         const item = getItem(id);
+         if (!item) {
+            return;
+         }
+
+         event.preventDefault();
+         item.scrollTo();
+      },
+      [id, getItem]
+   );
+
+   return {
+      onClick,
+   };
 }
 
 function sortVertically(records: TOCRecord[]): TOCRecord[] {
