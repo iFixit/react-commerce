@@ -137,6 +137,7 @@ const Wiki: NextPageWithLayout<{
                className="layout-grid"
                display="grid"
                sx={{
+                  gridTemplateAreas: '"toc" "wrapper"',
                   gridTemplateColumns: { base: 'none 1fr', lg: '221px 1fr' },
                }}
                ref={contentContainerRef}
@@ -148,6 +149,7 @@ const Wiki: NextPageWithLayout<{
                   borderColor={{ lg: 'gray.300' }}
                   maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
                   listItemProps={{ paddingLeft: { lg: 4 } }}
+                  gridArea="toc"
                />
                <Stack
                   className="wrapper"
@@ -161,6 +163,7 @@ const Wiki: NextPageWithLayout<{
                   marginInline="auto"
                   spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
+                  gridArea="wrapper"
                >
                   <Stack id="main" spacing={4}>
                      <Heading wikiData={wikiData} />
