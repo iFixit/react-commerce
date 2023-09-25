@@ -201,7 +201,7 @@ function ClearFacetButton({ attribute, isVisible }: ClearFacetButtonProps) {
          w="50%"
          variant="outline"
          fontWeight="normal"
-         disabled={refinedCount === 0}
+         isDisabled={refinedCount === 0}
          onClick={() => refine()}
       >
          {refinedCount > 1
