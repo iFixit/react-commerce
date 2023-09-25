@@ -58,13 +58,12 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
-import { LinkToTOC, TOCContextProvider, useTOCContext } from './tocContext';
 import {
-   TOC,
-   TOCEnabled,
-   onlyShowIfTOCFlagEnabled,
-   onlyShowIfTOCFlagEnabledProvider,
-} from './toc';
+   LinkToTOC,
+   TOCContextProvider,
+   useTOCBufferPxScrollOnClick,
+} from './tocContext';
+import { TOC } from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
 
@@ -72,10 +71,6 @@ const RelatedProblemsRecord = {
    title: 'Related Problems',
    uniqueId: 'related-problems',
 };
-
-const FlaggedTOC = onlyShowIfTOCFlagEnabled(TOC);
-const FlaggedTOCContextProvider =
-   onlyShowIfTOCFlagEnabledProvider(TOCContextProvider);
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -132,7 +127,7 @@ const Wiki: NextPageWithLayout<{
             breadcrumbs={wikiData.breadcrumbs}
          />
 
-         <FlaggedTOCContextProvider defaultItems={tocItems}>
+         <TOCContextProvider defaultItems={tocItems}>
             <Box
                className="layout-grid"
                display="grid"
@@ -144,7 +139,7 @@ const Wiki: NextPageWithLayout<{
                }}
                ref={contentContainerRef}
             >
-               <FlaggedTOC
+               <TOC
                   className="summary"
                   contentRef={contentContainerRef}
                   borderRight={{ lg: '1px solid' }}
@@ -194,11 +189,11 @@ const Wiki: NextPageWithLayout<{
                      {wikiData.linkedProblems.length > 0 && (
                         <RelatedProblems problems={wikiData.linkedProblems} />
                      )}
+                     <PixelPing id={id} type="wiki" />
                   </Stack>
                </Stack>
             </Box>
-         </FlaggedTOCContextProvider>
-
+         </TOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
          <PixelPing id={id} type="wiki" />
       </>
@@ -285,16 +280,12 @@ function Causes({
 }) {
    const lgBreakpoint = useToken('breakpoints', 'lg');
 
-   const sx = TOCEnabled()
-      ? {
-           display: 'block',
-           [`@media (min-width: ${lgBreakpoint})`]: {
-              display: 'none',
-           },
-        }
-      : {
-           display: 'block',
-        };
+   const sx = {
+      display: 'block',
+      [`@media (min-width: ${lgBreakpoint})`]: {
+         display: 'none',
+      },
+   };
 
    return (
       <Box
@@ -321,70 +312,101 @@ function Causes({
             spacing={2}
          >
             {introduction.map((intro) => (
-               <Stack key={intro.heading}>
-                  <Link
-                     href={`#${intro.id}`}
-                     fontWeight="semibold"
-                     display="flex"
-                  >
-                     <Square
-                        size={6}
-                        border="1px solid"
-                        borderColor="brand.700"
-                        borderRadius="md"
-                        mr={2}
-                     >
-                        <FaIcon icon={faList} color="brand.500" />
-                     </Square>
-                     <Box as="span">{intro.heading}</Box>
-                  </Link>
-               </Stack>
+               <CausesIntro key={intro.heading} {...intro} />
             ))}
             {solutions.map((solution, index) => (
-               <Stack key={solution.heading}>
-                  <Link
-                     href={`#${solution.id}`}
-                     fontWeight="semibold"
-                     display="flex"
-                  >
-                     <Square
-                        size={6}
-                        bgColor="brand.500"
-                        border="1px solid"
-                        borderColor="brand.700"
-                        borderRadius="md"
-                        color="white"
-                        mr={2}
-                        fontSize="sm"
-                     >
-                        {index + 1}
-                     </Square>
-                     <Box as="span">{solution.heading}</Box>
-                  </Link>
-               </Stack>
+               <CausesSolution
+                  key={solution.heading}
+                  {...solution}
+                  index={index}
+               />
             ))}
-            {problems.length > 0 && (
-               <Stack>
-                  <Link
-                     href={`#${RelatedProblemsRecord.uniqueId}`}
-                     fontWeight="semibold"
-                     display="flex"
-                  >
-                     <Square
-                        size={6}
-                        border="1px solid"
-                        borderColor="brand.700"
-                        borderRadius="md"
-                        mr={2}
-                     >
-                        <FaIcon icon={faCircleNodes} color="brand.500" />
-                     </Square>
-                     <Box as="span">Related Problems</Box>
-                  </Link>
-               </Stack>
-            )}
+            {problems.length > 0 && <CausesRelatedProblem />}
          </Stack>
       </Box>
+   );
+}
+
+function CausesIntro({ heading, id }: Section) {
+   const { onClick } = useTOCBufferPxScrollOnClick(id);
+
+   return (
+      <Stack>
+         <Link
+            href={`#${id}`}
+            fontWeight="semibold"
+            display="flex"
+            onClick={onClick}
+         >
+            <Square
+               size={6}
+               border="1px solid"
+               borderColor="brand.700"
+               borderRadius="md"
+               mr={2}
+            >
+               <FaIcon icon={faList} color="brand.500" />
+            </Square>
+            <Box as="span">{heading}</Box>
+         </Link>
+      </Stack>
+   );
+}
+
+function CausesSolution({ heading, id, index }: Section & { index: number }) {
+   const { onClick } = useTOCBufferPxScrollOnClick(id);
+
+   return (
+      <Stack>
+         <Link
+            href={`#${id}`}
+            fontWeight="semibold"
+            display="flex"
+            onClick={onClick}
+         >
+            <Square
+               size={6}
+               bgColor="brand.500"
+               border="1px solid"
+               borderColor="brand.700"
+               borderRadius="md"
+               color="white"
+               mr={2}
+               fontSize="sm"
+            >
+               {index + 1}
+            </Square>
+            <Box as="span">{heading}</Box>
+         </Link>
+      </Stack>
+   );
+}
+
+function CausesRelatedProblem() {
+   const { onClick } = useTOCBufferPxScrollOnClick(
+      RelatedProblemsRecord.uniqueId
+   );
+
+   return (
+      <Stack>
+         <Link
+            href={`#${RelatedProblemsRecord.uniqueId}`}
+            fontWeight="semibold"
+            display="flex"
+            onClick={onClick}
+         >
+            <Square
+               size={6}
+               border="1px solid"
+               borderColor="brand.700"
+               borderRadius="md"
+               mr={2}
+            >
+               <FaIcon icon={faCircleNodes} color="brand.500" />
+            </Square>
+            <Box as="span">Related Problems</Box>
+         </Link>
+      </Stack>
    );
 }
 
@@ -816,10 +838,9 @@ function IntroductionSection({
    intro,
    ...headingProps
 }: { intro: Section } & HeadingProps) {
-   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
+   const bufferPx = useBreakpointValue({ base: -46, lg: -6 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
-   const { getItem } = useTOCContext();
-   const item = getItem(intro.id);
+   const { onClick } = useTOCBufferPxScrollOnClick(intro.id);
 
    return (
       <Box ref={ref} id={intro.id}>
@@ -829,14 +850,7 @@ function IntroductionSection({
                aria-label={intro.heading}
                selfLinked
                id={intro.id}
-               onClick={(event) => {
-                  if (!item) {
-                     return;
-                  }
-
-                  event.preventDefault();
-                  item.scrollTo();
-               }}
+               onClick={onClick}
                {...headingProps}
             >
                {intro.heading}
@@ -852,24 +866,13 @@ const ConclusionSection = function ConclusionSectionInner({
 }: {
    conclusion: Section;
 }) {
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
-   const { getItem } = useTOCContext();
-   const item = getItem(conclusion.id);
+   const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
+
    return (
       <Box id={conclusion.id} ref={ref}>
-         <HeadingSelfLink
-            pt={4}
-            id={conclusion.id}
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
-         >
+         <HeadingSelfLink pt={4} id={conclusion.id} onClick={onClick}>
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
@@ -905,13 +908,15 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
       bufferPx
    );
-   const { getItem } = useTOCContext();
-   const item = getItem(RelatedProblemsRecord.uniqueId);
+   const { onClick } = useTOCBufferPxScrollOnClick(
+      RelatedProblemsRecord.uniqueId
+   );
+
    return (
       <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
          <HeadingSelfLink
@@ -919,14 +924,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             fontWeight="medium"
             id={RelatedProblemsRecord.uniqueId}
             pt={4}
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
+            onClick={onClick}
          >
             {RelatedProblemsRecord.title}
          </HeadingSelfLink>
