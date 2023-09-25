@@ -207,7 +207,7 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
    const imageSx: any = {
       display: 'none',
       [`@media (min-width: ${smBreakpoint})`]: {
-         display: 'block'
+         display: 'block',
       },
    };
 
