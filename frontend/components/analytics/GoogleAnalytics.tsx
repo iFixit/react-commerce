@@ -1,8 +1,8 @@
 import { GA_URL, GTAG_ID, GA_KEY, GA_DEBUG } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 declare const ga: (command: string, hitType: string, url?: string) => void;
 
@@ -40,24 +40,26 @@ function GA4() {
 
    const debugMode = GA_DEBUG || query.ga4_debug === 'true';
    return (
-      <Head>
-         <script
+      <>
+         <Head>
+            <script
+               id="gtag-ga4"
+               dangerouslySetInnerHTML={{
+                  __html: `
+               window.dataLayer = window.dataLayer || [];
+               function gtag(){dataLayer.push(arguments);}
+               gtag('js', new Date());
+               gtag('config', '${GTAG_ID}', ${debugMode} ? '{ debug_mode: true }' : '{}'
+                  );
+               `,
+               }}
+            />
+         </Head>
+         <Script
+            strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
-         ></script>
-         <script
-            id="gtag-ga4"
-            dangerouslySetInnerHTML={{
-               __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GTAG_ID}', ${
-                  debugMode ? '{ debug_mode: true }' : '{}'
-               });
-            `,
-            }}
-         />
-      </Head>
+         ></Script>
+      </>
    );
 }
 
