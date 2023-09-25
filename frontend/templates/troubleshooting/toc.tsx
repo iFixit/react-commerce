@@ -22,6 +22,7 @@ import { FaIcon } from '@ifixit/icons';
 import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { debounce } from 'lodash';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 export function TOC({
    listItemProps,
@@ -33,6 +34,9 @@ export function TOC({
 }) {
    const { getItems } = useTOCContext();
    const items = getItems();
+
+   useScrollToOnloadEffect();
+
    return (
       <Flex
          alignSelf="flex-start"
@@ -146,16 +150,26 @@ export function MobileTOC({
 function useScrollToOnloadEffect() {
    const { getItem } = useTOCContext();
 
-   const hash = window.location.hash;
-   const id = hash.replace('#', '');
-   const record = getItem(id);
+   const [ranEffect, setRanEffect] = useState(false);
 
-   // We only ever want to scroll to the record on first page load. i.e onMount
-   // any changes to the record should not trigger a scroll
+   const { asPath } = useRouter();
+   const id = asPath.split('#')[1];
+   const record = getItem(id);
+   const el = record?.elementRef.current;
+   const scrollTo = record?.scrollTo;
+
    useEffect(() => {
-      record?.scrollTo();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, []);
+      if (ranEffect) {
+         return;
+      }
+
+      if (!el || !scrollTo) {
+         return;
+      }
+
+      scrollTo();
+      setRanEffect(true);
+   }, [el, scrollTo, ranEffect]);
 }
 
 function MobileTOCMenu({
@@ -167,8 +181,6 @@ function MobileTOCMenu({
 }) {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const title = activeItem?.title ?? 'Table of Contents';
-
-   useScrollToOnloadEffect();
 
    return (
       <Menu
