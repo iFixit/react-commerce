@@ -152,7 +152,7 @@ const Wiki: NextPageWithLayout<{
                   maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
                   listItemProps={{ paddingLeft: { lg: 4 } }}
                   gridArea="toc"
-                  width="221px"
+                  width="220px"
                />
                <Stack
                   className="wrapper"
