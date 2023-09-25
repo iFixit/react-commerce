@@ -157,19 +157,20 @@ function useScrollToOnloadEffect() {
    const record = getItem(id);
    const el = record?.elementRef.current;
    const scrollTo = record?.scrollTo;
+   const scrollToBufferPx = record?.scrollToBufferPx;
 
    useEffect(() => {
       if (ranEffect) {
          return;
       }
 
-      if (!el || !scrollTo) {
+      if (!el || !scrollTo || !scrollToBufferPx) {
          return;
       }
 
       scrollTo();
       setRanEffect(true);
-   }, [el, scrollTo, ranEffect]);
+   }, [el, scrollTo, scrollToBufferPx, ranEffect]);
 }
 
 function MobileTOCMenu({
