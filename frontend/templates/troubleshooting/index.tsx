@@ -417,7 +417,6 @@ function NavBar({
          borderBottomWidth={{ base: '0', sm: '1px' }}
          justify="center"
          minHeight={breadcrumbMinHeight}
-         fontSize={{ base: '13px', md: '14px' }}
       >
          <Flex
             maxW="1280px"
@@ -432,8 +431,9 @@ function NavBar({
                borderTop={{ base: '1px', sm: '0' }}
                borderTopColor="gray.200"
                bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
+               fontSize={{ base: '13px', md: '14px' }}
             />
-            <Flex flexShrink="1">
+            <Flex flexShrink="1" fontSize="14px">
                <Box
                   sx={{
                      '::before, ::after': {
