@@ -60,7 +60,11 @@ import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
 import { TagManager, GoogleNoScript } from './components/TagManager';
-import { LinkToTOC, TOCContextProvider, useTOCContext } from './tocContext';
+import {
+   LinkToTOC,
+   TOCContextProvider,
+   useTOCBufferPxScrollOnClick,
+} from './tocContext';
 import { TOC } from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
@@ -328,8 +332,7 @@ function Causes({
 }
 
 function CausesIntro({ heading, id }: Section) {
-   const { getItem } = useTOCContext();
-   const item = getItem(id);
+   const { onClick } = useTOCBufferPxScrollOnClick(id);
 
    return (
       <Stack>
@@ -337,14 +340,7 @@ function CausesIntro({ heading, id }: Section) {
             href={`#${id}`}
             fontWeight="semibold"
             display="flex"
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
+            onClick={onClick}
          >
             <Square
                size={6}
@@ -362,8 +358,7 @@ function CausesIntro({ heading, id }: Section) {
 }
 
 function CausesSolution({ heading, id, index }: Section & { index: number }) {
-   const { getItem } = useTOCContext();
-   const item = getItem(id);
+   const { onClick } = useTOCBufferPxScrollOnClick(id);
 
    return (
       <Stack>
@@ -371,14 +366,7 @@ function CausesSolution({ heading, id, index }: Section & { index: number }) {
             href={`#${id}`}
             fontWeight="semibold"
             display="flex"
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
+            onClick={onClick}
          >
             <Square
                size={6}
@@ -399,8 +387,9 @@ function CausesSolution({ heading, id, index }: Section & { index: number }) {
 }
 
 function CausesRelatedProblem() {
-   const { getItem } = useTOCContext();
-   const item = getItem(RelatedProblemsRecord.uniqueId);
+   const { onClick } = useTOCBufferPxScrollOnClick(
+      RelatedProblemsRecord.uniqueId
+   );
 
    return (
       <Stack>
@@ -408,14 +397,7 @@ function CausesRelatedProblem() {
             href={`#${RelatedProblemsRecord.uniqueId}`}
             fontWeight="semibold"
             display="flex"
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
+            onClick={onClick}
          >
             <Square
                size={6}
@@ -862,8 +844,7 @@ function IntroductionSection({
 }: { intro: Section } & HeadingProps) {
    const bufferPx = useBreakpointValue({ base: -46, lg: -6 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
-   const { getItem } = useTOCContext();
-   const item = getItem(intro.id);
+   const { onClick } = useTOCBufferPxScrollOnClick(intro.id);
 
    return (
       <Box ref={ref} id={intro.id}>
@@ -874,14 +855,7 @@ function IntroductionSection({
                aria-label={intro.heading}
                selfLinked
                id={intro.id}
-               onClick={(event) => {
-                  if (!item) {
-                     return;
-                  }
-
-                  event.preventDefault();
-                  item.scrollTo();
-               }}
+               onClick={onClick}
                {...headingProps}
             >
                {intro.heading}
@@ -899,22 +873,11 @@ const ConclusionSection = function ConclusionSectionInner({
 }) {
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
-   const { getItem } = useTOCContext();
-   const item = getItem(conclusion.id);
+   const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
+
    return (
       <Box id={conclusion.id} ref={ref}>
-         <HeadingSelfLink
-            pt={4}
-            id={conclusion.id}
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
-         >
+         <HeadingSelfLink pt={4} id={conclusion.id} onClick={onClick}>
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
@@ -955,8 +918,10 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
       RelatedProblemsRecord.uniqueId,
       bufferPx
    );
-   const { getItem } = useTOCContext();
-   const item = getItem(RelatedProblemsRecord.uniqueId);
+   const { onClick } = useTOCBufferPxScrollOnClick(
+      RelatedProblemsRecord.uniqueId
+   );
+
    return (
       <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
          <HeadingSelfLink
@@ -965,14 +930,7 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
             fontWeight="medium"
             id={RelatedProblemsRecord.uniqueId}
             pt={4}
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
+            onClick={onClick}
          >
             {RelatedProblemsRecord.title}
          </HeadingSelfLink>

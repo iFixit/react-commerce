@@ -19,7 +19,7 @@ import {
 import { PrerenderedHTML } from '@components/common';
 import { GuideResource, ProductResource } from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
-import { LinkToTOC, useTOCContext } from './tocContext';
+import { LinkToTOC, useTOCBufferPxScrollOnClick } from './tocContext';
 
 function SolutionHeader({
    index,
@@ -32,8 +32,7 @@ function SolutionHeader({
    id: string;
    popularity?: number;
 }) {
-   const { getItem } = useTOCContext();
-   const item = getItem(id);
+   const { onClick } = useTOCBufferPxScrollOnClick(id);
 
    return (
       <Stack
@@ -68,14 +67,7 @@ function SolutionHeader({
             color="brand.500"
             alignSelf="center"
             id={id}
-            onClick={(event) => {
-               if (!item) {
-                  return;
-               }
-
-               event.preventDefault();
-               item.scrollTo();
-            }}
+            onClick={onClick}
          >
             {title}
          </HeadingSelfLink>
