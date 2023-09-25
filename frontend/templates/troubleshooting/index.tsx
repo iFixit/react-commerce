@@ -206,9 +206,9 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
    const smBreakpoint = useToken('breakpoints', 'sm');
    const imageSx: any = {
       display: 'none',
-   };
-   imageSx[`@media (min-width: ${smBreakpoint})`] = {
-      display: 'block',
+      [`@media (min-width: ${smBreakpoint})`]: {
+         display: 'block'
+      },
    };
 
    return (
