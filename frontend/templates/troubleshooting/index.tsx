@@ -328,9 +328,24 @@ function Causes({
 }
 
 function CausesIntro({ heading, id }: Section) {
+   const { getItem } = useTOCContext();
+   const item = getItem(id);
+
    return (
       <Stack>
-         <Link href={`#${id}`} fontWeight="semibold" display="flex">
+         <Link
+            href={`#${id}`}
+            fontWeight="semibold"
+            display="flex"
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
+         >
             <Square
                size={6}
                border="1px solid"
@@ -347,9 +362,24 @@ function CausesIntro({ heading, id }: Section) {
 }
 
 function CausesSolution({ heading, id, index }: Section & { index: number }) {
+   const { getItem } = useTOCContext();
+   const item = getItem(id);
+
    return (
       <Stack>
-         <Link href={`#${id}`} fontWeight="semibold" display="flex">
+         <Link
+            href={`#${id}`}
+            fontWeight="semibold"
+            display="flex"
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
+         >
             <Square
                size={6}
                bgColor="brand.500"
@@ -369,12 +399,23 @@ function CausesSolution({ heading, id, index }: Section & { index: number }) {
 }
 
 function CausesRelatedProblem() {
+   const { getItem } = useTOCContext();
+   const item = getItem(RelatedProblemsRecord.uniqueId);
+
    return (
       <Stack>
          <Link
             href={`#${RelatedProblemsRecord.uniqueId}`}
             fontWeight="semibold"
             display="flex"
+            onClick={(event) => {
+               if (!item) {
+                  return;
+               }
+
+               event.preventDefault();
+               item.scrollTo();
+            }}
          >
             <Square
                size={6}
