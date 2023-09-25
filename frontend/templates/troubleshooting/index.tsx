@@ -137,8 +137,10 @@ const Wiki: NextPageWithLayout<{
                className="layout-grid"
                display="grid"
                sx={{
-                  gridTemplateAreas: '"toc" "wrapper"',
-                  gridTemplateColumns: { base: 'none 1fr', lg: '221px 1fr' },
+                  gridTemplateColumns: {
+                     base: '[toc] none [wrapper] 1fr',
+                     lg: '[toc] auto [wrapper] 1fr',
+                  },
                }}
                ref={contentContainerRef}
             >
@@ -150,6 +152,7 @@ const Wiki: NextPageWithLayout<{
                   maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
                   listItemProps={{ paddingLeft: { lg: 4 } }}
                   gridArea="toc"
+                  width="221px"
                />
                <Stack
                   className="wrapper"
