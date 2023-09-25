@@ -312,70 +312,82 @@ function Causes({
             spacing={2}
          >
             {introduction.map((intro) => (
-               <Stack key={intro.heading}>
-                  <Link
-                     href={`#${intro.id}`}
-                     fontWeight="semibold"
-                     display="flex"
-                  >
-                     <Square
-                        size={6}
-                        border="1px solid"
-                        borderColor="brand.700"
-                        borderRadius="md"
-                        mr={2}
-                     >
-                        <FaIcon icon={faList} color="brand.500" />
-                     </Square>
-                     <Box as="span">{intro.heading}</Box>
-                  </Link>
-               </Stack>
+               <CausesIntro key={intro.heading} {...intro} />
             ))}
             {solutions.map((solution, index) => (
-               <Stack key={solution.heading}>
-                  <Link
-                     href={`#${solution.id}`}
-                     fontWeight="semibold"
-                     display="flex"
-                  >
-                     <Square
-                        size={6}
-                        bgColor="brand.500"
-                        border="1px solid"
-                        borderColor="brand.700"
-                        borderRadius="md"
-                        color="white"
-                        mr={2}
-                        fontSize="sm"
-                     >
-                        {index + 1}
-                     </Square>
-                     <Box as="span">{solution.heading}</Box>
-                  </Link>
-               </Stack>
+               <CausesSolution
+                  key={solution.heading}
+                  {...solution}
+                  index={index}
+               />
             ))}
-            {problems.length > 0 && (
-               <Stack>
-                  <Link
-                     href={`#${RelatedProblemsRecord.uniqueId}`}
-                     fontWeight="semibold"
-                     display="flex"
-                  >
-                     <Square
-                        size={6}
-                        border="1px solid"
-                        borderColor="brand.700"
-                        borderRadius="md"
-                        mr={2}
-                     >
-                        <FaIcon icon={faCircleNodes} color="brand.500" />
-                     </Square>
-                     <Box as="span">Related Problems</Box>
-                  </Link>
-               </Stack>
-            )}
+            {problems.length > 0 && <CausesRelatedProblem />}
          </VStack>
       </Box>
+   );
+}
+
+function CausesIntro({ heading, id }: Section) {
+   return (
+      <Stack>
+         <Link href={`#${id}`} fontWeight="semibold" display="flex">
+            <Square
+               size={6}
+               border="1px solid"
+               borderColor="brand.700"
+               borderRadius="md"
+               mr={2}
+            >
+               <FaIcon icon={faList} color="brand.500" />
+            </Square>
+            <Box as="span">{heading}</Box>
+         </Link>
+      </Stack>
+   );
+}
+
+function CausesSolution({ heading, id, index }: Section & { index: number }) {
+   return (
+      <Stack>
+         <Link href={`#${id}`} fontWeight="semibold" display="flex">
+            <Square
+               size={6}
+               bgColor="brand.500"
+               border="1px solid"
+               borderColor="brand.700"
+               borderRadius="md"
+               color="white"
+               mr={2}
+               fontSize="sm"
+            >
+               {index + 1}
+            </Square>
+            <Box as="span">{heading}</Box>
+         </Link>
+      </Stack>
+   );
+}
+
+function CausesRelatedProblem() {
+   return (
+      <Stack>
+         <Link
+            href={`#${RelatedProblemsRecord.uniqueId}`}
+            fontWeight="semibold"
+            display="flex"
+         >
+            <Square
+               size={6}
+               border="1px solid"
+               borderColor="brand.700"
+               borderRadius="md"
+               mr={2}
+            >
+               <FaIcon icon={faCircleNodes} color="brand.500" />
+            </Square>
+            <Box as="span">Related Problems</Box>
+         </Link>
+      </Stack>
    );
 }
 
