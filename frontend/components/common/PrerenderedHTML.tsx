@@ -144,7 +144,7 @@ const troubleshootingStyles: SystemStyleObject = {
       marginTop: '1em',
       marginInlineStart: '1em',
       overflowX: 'auto', // clear child media floats
-      paddingLeft: '1em',
+      paddingInlineStart: 'calc(1em + 2px)',
 
       li: {
          _notFirst: {
