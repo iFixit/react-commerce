@@ -59,7 +59,8 @@ import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import ProblemCard from './Problem';
 import { PixelPing } from '@components/analytics/PixelPing';
-import { TagManager, GoogleNoScript } from './components/TagManager';
+import { TagManager } from './components/TagManager';
+import { GoogleNoScript } from '@components/analytics/GoogleTagManager';
 import {
    LinkToTOC,
    TOCContextProvider,
