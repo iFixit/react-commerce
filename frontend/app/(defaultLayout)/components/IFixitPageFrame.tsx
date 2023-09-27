@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Matomo } from './Matomo';
 import { GoogleAnalytics } from './GoogleAnalytics';
+import { GoogleTagManager } from './GoogleTagManager';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -245,6 +246,7 @@ export default function IFixitPageFrame({
             <Suspense>
                <Matomo />
                <GoogleAnalytics />
+               <GoogleTagManager />
             </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
