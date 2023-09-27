@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Head from 'next/head';
-
-const API_KEY = '59NVBFN';
+import { GTM_KEY } from '@config/env';
 
 export function GoogleTagManger() {
-   return (
+   return !!GTM_KEY ? (
       <Head>
          <script
             dangerouslySetInnerHTML={{
@@ -17,22 +16,22 @@ export function GoogleTagManger() {
                j.async=true;
                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
                f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-${API_KEY}');`,
+            })(window,document,'script','dataLayer',${GTM_KEY});`,
             }}
          />
       </Head>
-   );
+   ) : null;
 }
 
 export function GoogleNoScript() {
-   return (
+   return !!GTM_KEY ? (
       <noscript>
          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=GTM-${API_KEY}`}
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_KEY}`}
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
          />
       </noscript>
-   );
+   ) : null;
 }

@@ -33,6 +33,8 @@ export const GA_URL = process.env.NEXT_PUBLIC_GA_URL;
 
 export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
 
+export const GTM_KEY = process.env.NEXT_PUBLIC_GTM_KEY;
+
 export const GA_DEBUG = process.env.NEXT_PUBLIC_GA_DEBUG;
 
 export const GTAG_ID = process.env.NEXT_PUBLIC_GTAG_ID;
