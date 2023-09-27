@@ -11,7 +11,11 @@ import {
    Portal,
    Icon,
 } from '@chakra-ui/react';
-import { GoogleAnalytics, Matomo } from '@components/analytics';
+import {
+   GoogleAnalytics,
+   GoogleTagManager,
+   Matomo,
+} from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -65,6 +69,7 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
+import { GoogleTagManger } from '@components/analytics/GoogleTagManager';
 
 const DefaultLayoutComponent = function ({
    title,
@@ -323,6 +328,7 @@ const DefaultLayoutComponent = function ({
             </Box>
             <Matomo />
             <GoogleAnalytics />
+            <GoogleTagManger />
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
    );
