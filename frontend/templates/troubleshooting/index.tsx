@@ -34,6 +34,7 @@ import {
    SimpleGrid,
    useToken,
    HeadingProps,
+   useBreakpoint,
    useBreakpointValue,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
@@ -106,6 +107,8 @@ const Wiki: NextPageWithLayout<{
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
+   const breakpoint = useBreakpoint();
+   const isDesktop = breakpoint === 'lg';
 
    return (
       <>
@@ -133,22 +136,26 @@ const Wiki: NextPageWithLayout<{
                display="grid"
                sx={{
                   gridTemplateColumns: {
-                     base: '[toc] none [wrapper] 1fr',
+                     base: '[toc] 0 [wrapper] 1fr',
                      lg: '[toc] auto [wrapper] 1fr',
                   },
                }}
                ref={contentContainerRef}
             >
-               <TOC
-                  className="summary"
-                  contentRef={contentContainerRef}
-                  borderRight={{ lg: '1px solid' }}
-                  borderColor={{ lg: 'gray.300' }}
-                  maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
-                  listItemProps={{ paddingLeft: { lg: 4 } }}
-                  gridArea="toc"
-                  width="220px"
-               />
+               {isDesktop && (
+                  <TOC
+                     className="summary"
+                     contentRef={contentContainerRef}
+                     borderRight={{ lg: '1px solid' }}
+                     borderColor={{ lg: 'gray.300' }}
+                     maxWidth={{
+                        base: 'calc(100% + 2 * var(--chakra-space-4))',
+                     }}
+                     listItemProps={{ paddingLeft: { lg: 4 } }}
+                     gridArea="toc"
+                     width="220px"
+                  />
+               )}
                <Stack
                   className="wrapper"
                   direction={{ base: 'column', xl: 'row' }}
@@ -206,9 +213,9 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
    const smBreakpoint = useToken('breakpoints', 'sm');
    const imageSx: any = {
       display: 'none',
-      [`@media (min-width: ${smBreakpoint})`]: {
-         display: 'block',
-      },
+   };
+   imageSx[`@media (min-width: ${smBreakpoint})`] = {
+      display: 'block',
    };
 
    return (
@@ -255,7 +262,12 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
             </ModalContent>
          </Modal>
          <Stack alignItems="flex-start" spacing={2}>
-            <HeadingSelfLink as="h1" id="top" selfLinked>
+            <HeadingSelfLink
+               as="h1"
+               id="top"
+               selfLinked
+               fontSize={{ base: '24px', md: '30px' }}
+            >
                {wikiData.title}
             </HeadingSelfLink>
             <AuthorInformation
@@ -294,13 +306,7 @@ function Causes({
          borderColor="gray.300"
          sx={sx}
       >
-         <HeadingSelfLink
-            as="h2"
-            fontSize={{ base: '18px', md: '20px' }}
-            fontWeight="semibold"
-            selfLinked
-            id="causes"
-         >
+         <HeadingSelfLink as="h2" fontWeight="semibold" selfLinked id="causes">
             {'Causes'}
          </HeadingSelfLink>
          <Stack
@@ -428,7 +434,6 @@ function NavBar({
    const breadcrumbMinHeight = '48px';
    return (
       <Flex
-         className="NavBar"
          w="100%"
          backgroundColor="white"
          borderBottomColor="gray.200"
@@ -449,9 +454,8 @@ function NavBar({
                borderTop={{ base: '1px', sm: '0' }}
                borderTopColor="gray.200"
                bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
-               fontSize={{ base: '13px', md: '14px' }}
             />
-            <Flex flexShrink="1" fontSize="14px">
+            <Flex flexShrink="1">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -579,6 +583,7 @@ function NavTabs({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      fontSize: 'md',
       paddingTop: 2,
       paddingBottom: 2,
       paddingInlineStart: 4,
@@ -921,7 +926,6 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
       <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
          <HeadingSelfLink
             as="h3"
-            fontWeight="medium"
             id={RelatedProblemsRecord.uniqueId}
             pt={4}
             onClick={onClick}
