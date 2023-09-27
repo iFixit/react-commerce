@@ -69,7 +69,6 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
-import { GoogleTagManger } from '@components/analytics/GoogleTagManager';
 
 const DefaultLayoutComponent = function ({
    title,
@@ -328,7 +327,7 @@ const DefaultLayoutComponent = function ({
             </Box>
             <Matomo />
             <GoogleAnalytics />
-            <GoogleTagManger />
+            <GoogleTagManager />
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
    );

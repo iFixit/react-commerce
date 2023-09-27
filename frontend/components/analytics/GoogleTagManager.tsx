@@ -1,9 +1,8 @@
-import * as React from 'react';
 import Head from 'next/head';
 import { GTM_KEY } from '@config/env';
 
-export function GoogleTagManger() {
-   return !!GTM_KEY ? (
+export function GoogleTagManager() {
+   return GTM_KEY ? (
       <Head>
          <script
             dangerouslySetInnerHTML={{
@@ -24,7 +23,7 @@ export function GoogleTagManger() {
 }
 
 export function GoogleNoScript() {
-   return !!GTM_KEY ? (
+   return GTM_KEY ? (
       <noscript>
          <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_KEY}`}
