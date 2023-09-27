@@ -34,7 +34,6 @@ import {
    SimpleGrid,
    useToken,
    HeadingProps,
-   useBreakpoint,
    useBreakpointValue,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
@@ -107,8 +106,6 @@ const Wiki: NextPageWithLayout<{
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
-   const breakpoint = useBreakpoint();
-   const isDesktop = breakpoint === 'lg';
 
    return (
       <>
@@ -137,25 +134,20 @@ const Wiki: NextPageWithLayout<{
                sx={{
                   gridTemplateColumns: {
                      base: '[toc] 0 [wrapper] 1fr',
-                     lg: '[toc] auto [wrapper] 1fr',
+                     lg: '[toc] 220px [wrapper] 1fr',
                   },
                }}
                ref={contentContainerRef}
             >
-               {isDesktop && (
-                  <TOC
-                     className="summary"
-                     contentRef={contentContainerRef}
-                     borderRight={{ lg: '1px solid' }}
-                     borderColor={{ lg: 'gray.300' }}
-                     maxWidth={{
-                        base: 'calc(100% + 2 * var(--chakra-space-4))',
-                     }}
-                     listItemProps={{ paddingLeft: { lg: 4 } }}
-                     gridArea="toc"
-                     width="220px"
-                  />
-               )}
+               <TOC
+                  className="summary"
+                  contentRef={contentContainerRef}
+                  borderRight={{ lg: '1px solid' }}
+                  borderColor={{ lg: 'gray.300' }}
+                  maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
+                  listItemProps={{ paddingLeft: { lg: 4 } }}
+                  gridArea="toc"
+               />
                <Stack
                   className="wrapper"
                   direction={{ base: 'column', xl: 'row' }}
@@ -213,9 +205,9 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
    const smBreakpoint = useToken('breakpoints', 'sm');
    const imageSx: any = {
       display: 'none',
-   };
-   imageSx[`@media (min-width: ${smBreakpoint})`] = {
-      display: 'block',
+      [`@media (min-width: ${smBreakpoint})`]: {
+         display: 'block',
+      },
    };
 
    return (
@@ -442,6 +434,7 @@ function NavBar({
          minHeight={breadcrumbMinHeight}
       >
          <Flex
+            className="NavBar"
             maxW="1280px"
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
@@ -454,8 +447,9 @@ function NavBar({
                borderTop={{ base: '1px', sm: '0' }}
                borderTopColor="gray.200"
                bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
+               fontSize={{ base: '13px', md: '14px' }}
             />
-            <Flex flexShrink="1">
+            <Flex flexShrink="1" fontSize="14px">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -583,7 +577,6 @@ function NavTabs({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 'md',
       paddingTop: 2,
       paddingBottom: 2,
       paddingInlineStart: 4,
