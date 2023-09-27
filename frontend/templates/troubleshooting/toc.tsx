@@ -1,4 +1,5 @@
 import {
+   Box,
    Button,
    Flex,
    FlexProps,
@@ -38,13 +39,10 @@ export function TOC({
    useScrollToOnloadEffect();
 
    return (
-      <Flex
-         alignSelf="flex-start"
+      <Box
          height={{ lg: '100vh' }}
          position="sticky"
          top={0}
-         width="auto"
-         flexGrow={{ base: 1, lg: 0 }}
          zIndex={{ base: 'docked', lg: 'initial' }}
          {...props}
       >
@@ -62,7 +60,7 @@ export function TOC({
             left={0}
             width="100%"
          />
-      </Flex>
+      </Box>
    );
 }
 
@@ -79,8 +77,9 @@ function LargeTOC({
                as: List,
                flexDirection: 'column',
                spacing: 1,
-               paddingX: 3,
-               paddingTop: 6,
+               paddingBlock: 6,
+               paddingRight: 3,
+               flex: 'auto',
             } as FlexProps & ListProps
          }
          {...props}
@@ -349,7 +348,8 @@ function TOCItem({
    return (
       <ListItem
          paddingY={1}
-         paddingX={3}
+         paddingLeft={4}
+         paddingRight={3}
          color={active ? 'brand.600' : 'gray.500'}
          background={active ? 'blue.100' : undefined}
          borderTopRightRadius={active ? 'md' : undefined}
@@ -361,7 +361,7 @@ function TOCItem({
          cursor="pointer"
          {...props}
       >
-         <Text fontWeight={510} fontSize="sm" onClick={onClick}>
+         <Text fontWeight={500} fontSize="sm" onClick={onClick}>
             {title}
          </Text>
       </ListItem>

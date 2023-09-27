@@ -118,7 +118,7 @@ function BuyButton({
          as="a"
          href={url}
          {...openSettings}
-         alignSelf={{ md: 'flex-start', sm: 'flex-start', base: 'flex-end' }}
+         alignSelf={{ base: 'flex-end', sm: 'flex-start' }}
          flexShrink={0}
          size={buttonSize}
          colorScheme={colorScheme}
@@ -186,7 +186,7 @@ function Resource({
    const isMobile = breakpoint === 'base';
 
    return (
-      <ResourceBox mt={6}>
+      <ResourceBox>
          {imageUrl && (
             <Image
                boxSize="64px"
