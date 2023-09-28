@@ -27,6 +27,7 @@ import {
    ModalCloseButton,
    Stack,
    Square,
+   Text,
    useDisclosure,
    VisuallyHidden,
    chakra,
@@ -185,10 +186,10 @@ const Wiki: NextPageWithLayout<{
                      )}
                      <Conclusion conclusion={filteredConclusions} />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
-                     {wikiData.linkedProblems.length > 0 && (
-                        <RelatedProblems problems={wikiData.linkedProblems} />
-                     )}
                   </Stack>
+                  {wikiData.linkedProblems.length > 0 && (
+                     <RelatedProblems wikiData={wikiData} />
+                  )}
                </Stack>
             </Box>
          </TOCContextProvider>
@@ -905,7 +906,10 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    );
 }
 
-function RelatedProblems({ problems }: { problems: Problem[] }) {
+function RelatedProblems({ wikiData }: { wikiData: TroubleshootingData }) {
+   const { title, linkedProblems, mainImageUrl } = wikiData;
+
+   const isMobile = useBreakpointValue({ base: true, sm: false });
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
@@ -916,21 +920,85 @@ function RelatedProblems({ problems }: { problems: Problem[] }) {
    );
 
    return (
-      <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
-         <HeadingSelfLink
-            as="h3"
+      <>
+         {isMobile && (
+            <HeadingSelfLink
+               as="h3"
+               id={RelatedProblemsRecord.uniqueId}
+               pt={4}
+               onClick={onClick}
+            >
+               {RelatedProblemsRecord.title}
+            </HeadingSelfLink>
+         )}
+         <Stack
             id={RelatedProblemsRecord.uniqueId}
-            pt={4}
-            onClick={onClick}
+            ref={ref}
+            className="sidebar"
+            as="aside"
+            spacing={{ base: 3, md: 8 }}
+            width={{ base: '100%' }}
+            alignSelf="start"
+            fontSize="14px"
+            minWidth="320px"
+            mt={{ base: 3, md: 0 }}
          >
-            {RelatedProblemsRecord.title}
-         </HeadingSelfLink>
-         <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
-            {problems.map((problem) => (
-               <ProblemCard problem={problem} key={problem.title} />
-            ))}
-         </SimpleGrid>
-      </Box>
+            <Stack className="question" spacing={1.5}>
+               <Stack
+                  spacing={1.5}
+                  bgColor="white"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="md"
+               >
+                  <Flex gap={2} padding={3}>
+                     <Image
+                        src={mainImageUrl}
+                        alt={title}
+                        boxSize="96px"
+                        htmlWidth={96}
+                        htmlHeight={96}
+                        objectFit="cover"
+                        borderRadius="md"
+                        outline="1px solid"
+                        outlineColor="gray.300"
+                     />
+                     <Box>
+                        {/* https://github.com/iFixit/react-commerce/issues/1999 */}
+                        <Box fontWeight="semibold">{title}</Box>
+                        {/* https://github.com/iFixit/react-commerce/issues/2000 */}
+                        <Text mt={3}>
+                           Samsung&apos;s tenth flagship Galaxy phone, released
+                           in March of 2019. Shipped with Android 9.0 (Pie).
+                        </Text>
+                     </Box>
+                  </Flex>
+                  <Flex
+                     justifyContent="space-between"
+                     padding={3}
+                     bgColor="gray.100"
+                     borderTop="1px solid"
+                     borderColor="gray.300"
+                     borderBottomRadius="md"
+                  >
+                     {/* https://github.com/iFixit/react-commerce/issues/2001 */}
+                     <Box>222 Problems</Box>
+                     {/* https://github.com/iFixit/react-commerce/issues/2002 */}
+                     <Link color="blue.500">View All</Link>
+                  </Flex>
+               </Stack>
+            </Stack>
+            <SimpleGrid
+               className="list"
+               columns={{ base: 1, sm: 2, xl: 1 }}
+               spacing={3}
+            >
+               {linkedProblems.map((problem) => (
+                  <ProblemCard problem={problem} key={problem.title} />
+               ))}
+            </SimpleGrid>
+         </Stack>
+      </>
    );
 }
 

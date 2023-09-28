@@ -20,28 +20,29 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
          backgroundColor="white"
          transition={`border-color var(--chakra-transition-duration-normal)`}
          _hover={{ borderColor: 'brand.500' }}
+         padding={3}
+         fontWeight="semibold"
       >
-         <Flex padding={3} alignSelf="stretch">
+         <Flex align="center">
             <Image
-               boxSize="48px"
-               htmlWidth={48}
-               htmlHeight={48}
+               boxSize="32px"
+               htmlWidth={32}
+               htmlHeight={32}
                objectFit="cover"
                src={imageUrl}
                alt={deviceTitle}
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
-               loading="lazy"
                mr={2}
             />
-            <Stack spacing="0" fontWeight="semibold" fontSize="sm">
-               <Text color="gray.900">{deviceTitle}</Text>
-               <LinkOverlay href={url} color="brand.500" alignSelf="stretch">
-                  {title}
-               </LinkOverlay>
-            </Stack>
+            <Text>{deviceTitle}</Text>
          </Flex>
+         <Stack spacing={2} mt={2}>
+            <LinkOverlay href={url} color="brand.500">
+               {title}
+            </LinkOverlay>
+         </Stack>
       </LinkBox>
    );
 }
