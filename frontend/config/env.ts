@@ -29,6 +29,8 @@ export const PIXEL_PING_URL = process.env.NEXT_PUBLIC_PIXEL_PING_URL;
 
 export const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL;
 
+export const PIWIK_ID = process.env.NEXT_PUBLIC_PIWIK_ID;
+
 export const GA_URL = process.env.NEXT_PUBLIC_GA_URL;
 
 export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
