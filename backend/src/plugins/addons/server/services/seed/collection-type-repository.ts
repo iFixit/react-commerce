@@ -12,7 +12,7 @@ type ConstructorArgs = {
 };
 
 export class CollectionTypeRepository extends ContentTypeRepository {
-   private items: ContentTypeItem[];
+   private items: ContentTypeItem[] = [];
 
    constructor({ strapi, uid }: ConstructorArgs) {
       super();
@@ -75,7 +75,7 @@ export class CollectionTypeRepository extends ContentTypeRepository {
          const nestedAttributes = this.keepNestedAttributes(attributes);
 
          try {
-            await this.strapi.entityService.update(this.schema.uid, id, {
+            await this.strapi.entityService.update(this.schema.uid as any, id, {
                data: nestedAttributes,
             });
          } catch (error) {

@@ -1,4 +1,4 @@
-import { useCurrentRefinements } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements } from 'react-instantsearch';
 
 export function useCountRefinements() {
    const currentRefinements = useCurrentRefinements();

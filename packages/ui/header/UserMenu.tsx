@@ -111,6 +111,7 @@ export const NoUserLink = forwardRef<Omit<LinkProps, 'children'>, 'a'>(
             w={8}
             _hover={{ opacity: '0.7' }}
             transition="0.3s"
+            aria-label="Login"
          >
             <FaIcon icon={faUser} h="5" color="white" />
          </Link>

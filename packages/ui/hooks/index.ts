@@ -1,4 +1,5 @@
 import { useBreakpointValue } from '@chakra-ui/react';
+import { useSafeLocalStorage } from '@ifixit/local-storage';
 import * as React from 'react';
 
 export function useDebounce<Value = any>(value: Value, delay: number): Value {
@@ -64,7 +65,7 @@ export function usePrevious<T>(value: T): T | undefined {
 export const useIsomorphicLayoutEffect =
    typeof document !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
-export function useIsMounted() {
+export function useIsMountedState() {
    const [isMounted, setIsMounted] = React.useState(false);
 
    React.useEffect(() => {
@@ -72,6 +73,19 @@ export function useIsMounted() {
    }, []);
 
    return isMounted;
+}
+
+export function useIsMounted() {
+   const isMountedRef = React.useRef(false);
+
+   React.useEffect(() => {
+      isMountedRef.current = true;
+      return () => {
+         isMountedRef.current = false;
+      };
+   }, []);
+
+   return isMountedRef.current;
 }
 
 interface UsePreloadImage {
@@ -123,7 +137,7 @@ export function useSSRBreakpointValue<Value>(
    values: Value[] | Partial<Record<string, Value>>,
    defaultBreakpoint?: string | undefined
 ) {
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const breakpointValue = useBreakpointValue(values, defaultBreakpoint);
    return isMounted ? breakpointValue : defaultBreakpoint;
 }
@@ -136,7 +150,8 @@ export function useSSRBreakpointValue<Value>(
 export function useExpiringLocalPreference<Data = any>(
    key: string,
    defaultData: Data,
-   expireInDays: number
+   expireInDays: number,
+   validator: (data: any) => Data | null
 ): [Data, (data: Data) => void] {
    type ExpiringData = {
       value: Data;
@@ -146,19 +161,17 @@ export function useExpiringLocalPreference<Data = any>(
    const [data, setData] = React.useState(defaultData);
 
    React.useEffect(() => {
-      const serializedData = localStorage.getItem(key);
+      const safeLocalStorage = useSafeLocalStorage();
+      const serializedData = safeLocalStorage.getItem(key);
       if (serializedData != null) {
-         try {
-            const data = JSON.parse(serializedData) as ExpiringData;
-            const expiresAt = Number.isInteger(data?.expires)
-               ? data.expires
-               : 0;
-            if (expiresAt && Date.now() < expiresAt) {
-               setData(data?.value);
-            } else {
-               localStorage.deleteIem(key);
-            }
-         } catch (error) {}
+         const data = JSON.parse(serializedData) as ExpiringData;
+         const expiresAt = Number.isInteger(data?.expires) ? data.expires : 0;
+         const validData = validator(data?.value);
+         if (validData !== null && expiresAt && Date.now() < expiresAt) {
+            setData(validData);
+         } else {
+            safeLocalStorage.removeItem(key);
+         }
       }
    }, []);
 
@@ -169,7 +182,8 @@ export function useExpiringLocalPreference<Data = any>(
          expires: Date.now() + expireInDays * 1000 * 86400,
       } as ExpiringData;
       const serializedData = JSON.stringify(expiringData);
-      localStorage.setItem(key, serializedData);
+      const safeLocalStorage = useSafeLocalStorage();
+      safeLocalStorage.setItem(key, serializedData);
    };
 
    return [data, setAndSave];
@@ -183,26 +197,30 @@ export function useExpiringLocalPreference<Data = any>(
  */
 export function useLocalPreference<Data = any>(
    key: string,
-   defaultData: Data
+   defaultData: Data,
+   validator: (data: any) => Data | null
 ): [Data, (data: Data) => void] {
    const [data, setData] = React.useState(defaultData);
 
    React.useEffect(() => {
-      try {
-         const serializedData = localStorage.getItem(key);
-         if (serializedData != null) {
-            const data = JSON.parse(serializedData);
-            setData(data as Data);
+      const safeLocalStorage = useSafeLocalStorage();
+      const serializedData = safeLocalStorage.getItem(key);
+      if (serializedData != null) {
+         if (!serializedData) {
+            throw new Error('serializedData is null');
          }
-      } catch (error) {}
+         const data = validator(JSON.parse(serializedData));
+         if (data !== null) {
+            setData(data);
+         }
+      }
    }, []);
 
    const setAndSave = (data: Data) => {
       setData(data);
       const serializedData = JSON.stringify(data);
-      try {
-         localStorage.setItem(key, serializedData);
-      } catch (error) {}
+      const safeLocalStorage = useSafeLocalStorage();
+      safeLocalStorage.setItem(key, serializedData);
    };
 
    return [data, setAndSave];
@@ -251,4 +269,57 @@ export function useDecoupledState<Type = any>(
    }, [state]);
 
    return [decoupledState, setDecoupledState];
+}
+
+interface UseOnScreenOptions {
+   rootMargin?: string;
+   initialOnScreen?: boolean;
+}
+
+export function useOnScreen(
+   ref: React.RefObject<HTMLElement>,
+   options?: UseOnScreenOptions
+) {
+   const [isIntersecting, setIntersecting] = React.useState(
+      options?.initialOnScreen ?? false
+   );
+   React.useEffect(() => {
+      const observer = new IntersectionObserver(
+         ([entry]) => {
+            setIntersecting(entry.isIntersecting);
+         },
+         {
+            rootMargin: options?.rootMargin || '0px',
+         }
+      );
+      if (ref.current) {
+         observer.observe(ref.current);
+      }
+      return () => {
+         if (ref.current) observer.unobserve(ref.current);
+      };
+   }, []);
+   return isIntersecting;
+}
+
+export function useIsScrolledPast(ref: React.RefObject<HTMLElement>) {
+   const [isScrolledPast, setIsScrolledPast] = React.useState(false);
+
+   React.useEffect(() => {
+      const handleScroll = () => {
+         if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            setIsScrolledPast(rect.bottom < 0);
+         }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+
+      return () => {
+         window.removeEventListener('scroll', handleScroll);
+      };
+   }, [ref]);
+
+   return isScrolledPast;
 }

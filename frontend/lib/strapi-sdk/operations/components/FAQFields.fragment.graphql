@@ -1,0 +1,10 @@
+fragment FAQFields on FaqEntity {
+   id
+   attributes {
+      question
+      answer
+      category
+      item_type
+      priority
+   }
+}

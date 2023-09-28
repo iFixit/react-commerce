@@ -2,10 +2,21 @@
    "collectionName": "components_store_footers",
    "info": {
       "displayName": "footer",
-      "icon": "shoe-prints"
+      "icon": "shoe-prints",
+      "description": ""
    },
    "options": {},
    "attributes": {
+      "bottomMenu": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::menu.menu"
+      },
+      "partners": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::menu.menu"
+      },
       "menu1": {
          "type": "relation",
          "relation": "oneToOne",
@@ -16,12 +27,7 @@
          "relation": "oneToOne",
          "target": "api::menu.menu"
       },
-      "bottomMenu": {
-         "type": "relation",
-         "relation": "oneToOne",
-         "target": "api::menu.menu"
-      },
-      "partners": {
+      "menu3": {
          "type": "relation",
          "relation": "oneToOne",
          "target": "api::menu.menu"

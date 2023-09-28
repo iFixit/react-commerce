@@ -1,17 +1,20 @@
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import {
    mockMatchMedia,
    renderWithAppContext,
+   mockResizeObserver,
+   mockIntersectionObserver,
+} from '../utils';
+import { ProductOverviewSection } from '@templates/product/sections/ProductOverviewSection/index';
+import {
    getMockProduct,
    getMockProductVariant,
-   getNonDiscountedProduct,
    getDiscountedProduct,
+   getNonDiscountedProduct,
    getProductOfType,
    getProductWithWarranty,
-   mockResizeObserver,
-} from '../utils';
-import { ProductSection } from '@templates/product/sections/ProductSection/index';
-import { mockedLayoutProps } from '../__mocks__/products';
+} from '../__mocks__/products';
+import { mockedLayoutProps } from '../__mocks__/useProductTemplateProps';
 
 jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
    ...jest.requireActual('@templates/product/hooks/useIsProductForSale'),
@@ -26,13 +29,14 @@ describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
       mockResizeObserver();
+      mockIntersectionObserver();
    });
 
    describe('Product Description Tests', () => {
       test('renders product description', async () => {
          // @ts-ignore
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={getMockProductVariant({
                   description: 'Mocked Product Description',
@@ -52,7 +56,7 @@ describe('ProductSection Tests', () => {
          const productVariant = getMockProductVariant({ note: 'Mocked Note' });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={productVariant}
                onVariantChange={jest.fn()}
@@ -71,7 +75,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={productVariant}
                onVariantChange={jest.fn()}
@@ -90,7 +94,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={productVariant}
                onVariantChange={jest.fn()}
@@ -111,7 +115,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={productVariant}
                onVariantChange={jest.fn()}
@@ -130,7 +134,7 @@ describe('ProductSection Tests', () => {
 
       test('compatibility renders', async () => {
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={getMockProductVariant()}
                onVariantChange={jest.fn()}
@@ -161,7 +165,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={mockProduct}
                selectedVariant={getMockProductVariant()}
                onVariantChange={jest.fn()}
@@ -185,7 +189,7 @@ describe('ProductSection Tests', () => {
          const nonDiscountedProduct = getNonDiscountedProduct(29.99);
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={nonDiscountedProduct}
                selectedVariant={nonDiscountedProduct.variants[0]}
                onVariantChange={jest.fn()}
@@ -193,10 +197,13 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const price = await screen.findByTestId('current-price');
+         const productPrice = await screen.findByTestId(
+            'product-price-section'
+         );
+         const price = within(productPrice).getByTestId('price');
 
-         (expect(price) as any).toBeInTheDocument();
-         (expect(price.textContent) as any).toBe('$29.99');
+         expect(price).toBeInTheDocument();
+         expect(price.textContent).toBe('$29.99');
       });
 
       test('Discounted Price Renders', async () => {
@@ -210,7 +217,7 @@ describe('ProductSection Tests', () => {
          const discountedProduct = getDiscountedProduct(29.99, 10);
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={discountedProduct}
                selectedVariant={discountedProduct.variants[0]}
                onVariantChange={jest.fn()}
@@ -218,9 +225,13 @@ describe('ProductSection Tests', () => {
             />
          );
 
-         const price = await screen.findByTestId('current-price');
-         (expect(price) as any).toBeInTheDocument();
-         (expect(price.textContent) as any).toBe('$' + discountPrice);
+         const productPrice = await screen.findByTestId(
+            'product-price-section'
+         );
+         const price = within(productPrice).getByTestId('price');
+
+         expect(price).toBeInTheDocument();
+         expect(price.textContent).toBe('$' + discountPrice);
 
          // Get the parent element of the element
          const parentElement = price.parentElement;
@@ -239,7 +250,7 @@ describe('ProductSection Tests', () => {
          const priceTexts = [discountPercentage + '% OFF', '$' + originalPrice];
 
          siblings.forEach((sibling: HTMLElement) => {
-            (expect(priceTexts) as any).toContain(sibling.textContent);
+            expect(priceTexts).toContain(sibling.textContent);
          });
       });
    });
@@ -247,7 +258,7 @@ describe('ProductSection Tests', () => {
    describe('Product Specification Tests', () => {
       test('renders product specifications', async () => {
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={getMockProductVariant({
                   specifications: 'Mocked Product Specification',
@@ -265,7 +276,7 @@ describe('ProductSection Tests', () => {
 
       test('specifications accordion is hidden if no specifications', async () => {
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={getMockProduct()}
                selectedVariant={getMockProductVariant({
                   specifications: null,
@@ -286,7 +297,7 @@ describe('ProductSection Tests', () => {
       test('renders shipping restrictions', async () => {
          const battery = getProductOfType('battery');
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={battery}
                selectedVariant={battery.variants[0]}
                onVariantChange={jest.fn()}
@@ -307,7 +318,7 @@ describe('ProductSection Tests', () => {
       test('does not render shipping restrictions', async () => {
          const tool = getProductOfType('tool');
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={tool}
                selectedVariant={tool.variants[0]}
                onVariantChange={jest.fn()}
@@ -326,7 +337,7 @@ describe('ProductSection Tests', () => {
          const battery = getProductOfType('battery');
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={battery}
                selectedVariant={battery.variants[0]}
                onVariantChange={jest.fn()}
@@ -341,7 +352,7 @@ describe('ProductSection Tests', () => {
          const tool = getProductOfType('tool');
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={tool}
                selectedVariant={tool.variants[0]}
                onVariantChange={jest.fn()}
@@ -357,7 +368,7 @@ describe('ProductSection Tests', () => {
          const battery = getProductOfType('battery');
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={battery}
                selectedVariant={battery.variants[0]}
                onVariantChange={jest.fn()}
@@ -386,7 +397,7 @@ describe('ProductSection Tests', () => {
          const fullWarrantyProduct = getProductWithWarranty('full');
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={fullWarrantyProduct}
                selectedVariant={fullWarrantyProduct.variants[0]}
                onVariantChange={jest.fn()}
@@ -414,7 +425,7 @@ describe('ProductSection Tests', () => {
          const limitedWarrantyProduct = getProductWithWarranty('limited');
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={limitedWarrantyProduct}
                selectedVariant={limitedWarrantyProduct.variants[0]}
                onVariantChange={jest.fn()}
@@ -434,7 +445,7 @@ describe('ProductSection Tests', () => {
          const asIsWarrantyProduct = getProductWithWarranty('as-is');
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={asIsWarrantyProduct}
                selectedVariant={asIsWarrantyProduct.variants[0]}
                onVariantChange={jest.fn()}
@@ -466,7 +477,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={product}
                selectedVariant={product.variants[0]}
                onVariantChange={jest.fn()}
@@ -491,7 +502,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={product}
                selectedVariant={product.variants[0]}
                onVariantChange={jest.fn()}
@@ -518,7 +529,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={product}
                selectedVariant={product.variants[0]}
                onVariantChange={jest.fn()}
@@ -549,7 +560,7 @@ describe('ProductSection Tests', () => {
          });
 
          renderWithAppContext(
-            <ProductSection
+            <ProductOverviewSection
                product={product}
                selectedVariant={product.variants[0]}
                onVariantChange={jest.fn()}

@@ -1,0 +1,40 @@
+fragment ProductPreviewFields on ProductVariant {
+   id
+   title
+   sku
+   quantityAvailable
+   product {
+      handle
+      title
+      tags
+      rating: metafield(namespace: "reviews", key: "rating") {
+         value
+      }
+      reviewsCount: metafield(namespace: "reviews", key: "rating_count") {
+         value
+      }
+      oemPartnership: metafield(namespace: "ifixit", key: "oem_partnership") {
+         value
+      }
+   }
+   image {
+      ...ImageFields
+   }
+   price {
+      amount
+      currencyCode
+   }
+   compareAtPrice {
+      amount
+      currencyCode
+   }
+   proPricesByTier: metafield(namespace: "ifixit", key: "price_tiers") {
+      value
+   }
+   warranty: metafield(namespace: "ifixit", key: "warranty") {
+      value
+   }
+   enabled: metafield(namespace: "ifixit", key: "enabled2") {
+      value
+   }
+}

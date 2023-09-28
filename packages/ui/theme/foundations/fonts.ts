@@ -1,8 +1,8 @@
 import type { ThemeOverride } from '@chakra-ui/react';
-import primitives from '@core-ds/primitives';
+import { fontFamily as primitiveFontFamily } from '@core-ds/primitives';
 
 export const fonts: ThemeOverride['fonts'] = {
-   body: primitives.fontFamily.sansSystem,
-   heading: primitives.fontFamily.sansSystem,
-   mono: primitives.fontFamily.monoSystem,
+   body: primitiveFontFamily.sansSystem,
+   heading: primitiveFontFamily.sansSystem,
+   mono: primitiveFontFamily.monoSystem,
 };

@@ -7,9 +7,10 @@
    "dependencies": {
       "@ifixit/analytics": "workspace:*",
       "@ifixit/app": "workspace:*",
+      "@ifixit/auth-sdk": "workspace:*",
       "@ifixit/helpers": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
-      "@ifixit/auth-sdk": "workspace:*",
+      "@ifixit/local-storage": "workspace:*",
       "@ifixit/shopify-storefront-client": "workspace:*"
    },
    "peerDependencies": {

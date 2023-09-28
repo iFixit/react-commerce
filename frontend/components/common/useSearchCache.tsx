@@ -4,7 +4,7 @@
  * Eventually this widget will make it into the official react-instantsearch
  * package, and we can drop this implementation in favor of the official one.
  */
-import { useConnector } from 'react-instantsearch-hooks-web';
+import { useConnector } from 'react-instantsearch';
 
 type UseSearchCacheState = {
    refresh: () => void;

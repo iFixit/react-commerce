@@ -3,8 +3,8 @@ import type { HeroSectionFieldsFragment } from '@lib/strapi-sdk';
 import {
    callToActionFromStrapi,
    CallToActionSchema,
-} from '@models/shared/components/call-to-action';
-import { imageFromStrapi, ImageSchema } from '@models/shared/components/image';
+} from '@models/components/call-to-action';
+import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 
 export type HeroSection = z.infer<typeof HeroSectionSchema>;
@@ -20,9 +20,9 @@ export const HeroSectionSchema = z.object({
 
 export function heroSectionFromStrapi(
    fragment: HeroSectionFieldsFragment | null | undefined,
-   index: number
+   _index: number
 ): HeroSection | null {
-   const id = createSectionId(fragment, index);
+   const id = createSectionId(fragment);
    const title = fragment?.title ?? null;
    const description = fragment?.description ?? null;
 

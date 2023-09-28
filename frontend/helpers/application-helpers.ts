@@ -25,7 +25,7 @@ export function getResizedImage({ src, width }: GetResizedImageInput) {
    if (match == null) {
       return src;
    }
-   const [fullSrc, baseSrc, extension, query] = match;
+   const [_fullSrc, baseSrc, extension, query] = match;
    return `${baseSrc}_${width}x.${extension}?${query}`;
 }
 

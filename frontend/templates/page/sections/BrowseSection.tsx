@@ -75,9 +75,11 @@ function HeadingBackground({ image }: HeadingBackgroundProps) {
                   src={image.url}
                   alt="store search image"
                   priority
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="center"
+                  fill
+                  style={{
+                     objectFit: 'cover',
+                     objectPosition: 'center',
+                  }}
                />
             </Box>
          )}
@@ -95,6 +97,7 @@ function SearchBox() {
          w="full"
          justify="center"
       >
+         <input type="hidden" name="doctype" value="product" />
          <InputGroup
             transform="translateY(-50%)"
             size="lg"
@@ -153,14 +156,18 @@ function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                      lg: isBigger ? 6 : 3,
                   }}
                >
-                  <NextLink href={productListPath(category)} passHref>
+                  <NextLink
+                     href={productListPath(category)}
+                     passHref
+                     legacyBehavior
+                  >
                      <ProductListCard
                         as="a"
                         variant={isBigger ? 'medium' : 'small'}
                         productList={{
                            title: category.title,
                            imageUrl: category.image?.url,
-                           description: category.metaDescription,
+                           description: category.description,
                         }}
                      />
                   </NextLink>

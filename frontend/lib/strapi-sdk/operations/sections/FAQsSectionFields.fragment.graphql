@@ -1,0 +1,10 @@
+fragment FAQsSectionFields on ComponentSectionFaqs {
+   id
+   title
+   description
+   faqs {
+      data {
+         ...FAQFields
+      }
+   }
+}

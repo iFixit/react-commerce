@@ -1,5 +1,9 @@
 import { useAppContext } from '@ifixit/app';
-import { parseItemcode } from '@ifixit/helpers';
+import {
+   parseItemcode,
+   shouldShowProductRating,
+   getVariantIdFromVariantURI,
+} from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import Head from 'next/head';
 import React from 'react';
@@ -10,10 +14,7 @@ import {
    OfferItemCondition as SchemaOfferItemCondition,
    Product as SchemaProduct,
 } from 'schema-dts';
-import {
-   encodeVariantId,
-   useDefaultVariantId,
-} from './hooks/useSelectedVariant';
+import { useDefaultVariantId } from './hooks/useSelectedVariant';
 export interface MetaTagsProps {
    product: Product;
    selectedVariant: ProductVariant;
@@ -27,27 +28,21 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
    const canonicalUrl = `${appContext.ifixitOrigin}/products/${product.handle}`;
    const urlParams =
       selectedVariant.id !== defaultVariantId
-         ? `?variant=${encodeVariantId(selectedVariant.id)}`
+         ? `?variant=${getVariantIdFromVariantURI(selectedVariant.id)}`
          : '';
    const selectedVariantUrl = `${appContext.ifixitOrigin}/products/${product.handle}${urlParams}`;
 
    const genericImages = React.useMemo(() => {
       return product.images.filter((image) => {
-         return (
-            image.altText == null ||
-            !product.variants.find((variant) => variant.sku === image.altText)
-         );
+         return image.variantId === null;
       });
-   }, [product.images, product.variants]);
+   }, [product.images]);
 
    const selectedVariantImages = React.useMemo(() => {
       return product.images.filter((image) => {
-         const variant = product.variants.find(
-            (variant) => variant.sku === image.altText
-         );
-         return image.altText != null && variant?.id === selectedVariant.id;
+         return image.variantId === selectedVariant.id;
       });
-   }, [product.images, product.variants, selectedVariant.id]);
+   }, [product.images, selectedVariant.id]);
 
    const priceValidUntil = new Date();
    priceValidUntil.setFullYear(priceValidUntil.getFullYear() + 1);
@@ -122,7 +117,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                '@context': 'https://schema.org',
                '@type': 'BreadcrumbList',
                itemListElement:
-                  product.breadcrumbs?.map((item, index) => ({
+                  product.breadcrumbs.map((item, index) => ({
                      '@type': 'ListItem',
                      position: index + 1,
                      name: item.label,
@@ -140,16 +135,13 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                '@type': 'Product',
                name: metaTitle || undefined,
                url: selectedVariantUrl,
-               aggregateRating:
-                  product.rating?.value &&
-                  product.reviewsCount &&
-                  (product.rating.value >= 4 || product.reviewsCount > 10)
-                     ? {
-                          '@type': 'AggregateRating',
-                          ratingValue: product.rating.value,
-                          reviewCount: product.reviewsCount,
-                       }
-                     : undefined,
+               aggregateRating: shouldShowProductRating(product.reviews)
+                  ? {
+                       '@type': 'AggregateRating',
+                       ratingValue: product.reviews.rating,
+                       reviewCount: product.reviews.count,
+                    }
+                  : undefined,
                brand: {
                   '@type': 'Brand',
                   name: product.vendor || 'iFixit',

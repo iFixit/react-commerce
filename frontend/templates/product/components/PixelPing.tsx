@@ -1,12 +1,5 @@
-import { PIXEL_PING_URL } from '@config/env';
+import { PixelPing } from '@components/analytics/PixelPing';
 
-export const PixelPing = ({ productcode }: { productcode: string }) => {
-   if (!PIXEL_PING_URL) {
-      return null;
-   }
-   const key = `ifixit/product/${productcode}/en`;
-   const url = `${PIXEL_PING_URL}?key=${encodeURIComponent(key)}`;
-   return (
-      <img src={url} width="1" height="1" alt="" style={{ display: 'none' }} />
-   );
+export const ProductPixelPing = ({ productcode }: { productcode: number }) => {
+   return <PixelPing id={productcode} type="product" />;
 };

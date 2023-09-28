@@ -1,3 +1,5 @@
+'use client';
+
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { AppProvider } from '@ifixit/app';
@@ -10,7 +12,7 @@ import {
    QueryClientProvider,
 } from '@tanstack/react-query';
 import * as React from 'react';
-import { AlgoliaProps, InstantSearchProvider } from './InstantSearchProvider';
+import { AlgoliaProps } from './InstantSearchProvider';
 
 const customTheme = extendTheme(theme);
 
@@ -51,28 +53,22 @@ export type WithProvidersProps<T> = T & { appProps: AppProvidersProps };
 export type AppProvidersProps = {
    algolia?: AlgoliaProps;
    ifixitOrigin?: string;
+   adminMessage?: string;
 };
 
 export function AppProviders({
    children,
-   algolia,
    ifixitOrigin,
+   adminMessage,
 }: React.PropsWithChildren<AppProvidersProps>) {
-   const markup = (
-      <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
-   );
-
    return (
-      <AppProvider ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}>
+      <AppProvider
+         ifixitOrigin={ifixitOrigin ?? IFIXIT_ORIGIN}
+         adminMessage={adminMessage}
+      >
          <CartDrawerProvider>
             <QueryClientProvider client={queryClient}>
-               {algolia ? (
-                  <InstantSearchProvider {...algolia}>
-                     {markup}
-                  </InstantSearchProvider>
-               ) : (
-                  markup
-               )}
+               <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
             </QueryClientProvider>
          </CartDrawerProvider>
       </AppProvider>

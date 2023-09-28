@@ -10,6 +10,16 @@
       "api::page.page.findOne",
       "api::page.page.find",
       "api::company.company.findOne",
-      "api::company.company.find"
+      "api::company.company.find",
+      "api::product.product.findOne",
+      "api::product.product.find",
+      "api::social-post.social-post.findOne",
+      "api::social-post.social-post.find",
+      "api::banner.banner.findOne",
+      "api::banner.banner.find",
+      "api::faq.faq.findOne",
+      "api::faq.faq.find",
+      "api::reusable-section.reusable-section.findOne",
+      "api::reusable-section.reusable-section.find"
    ]
 }

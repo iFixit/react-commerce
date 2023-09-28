@@ -1,6 +1,7 @@
-import { renderWithAppContext, getMockProductSearchHit } from '../utils';
+import { renderWithAppContext } from '../utils';
 import { screen } from '@testing-library/react';
 import { ProductListItem } from '@templates/product-list/sections/FilterableProductsSection/ProductList';
+import { getMockProductSearchHit } from '../__mocks__/product-list';
 
 jest.mock(
    '@templates/product-list/sections/FilterableProductsSection/useProductSearchHitPricing',

@@ -1,0 +1,5 @@
+fragment DeviceCompatibilitySectionFields on ComponentProductDeviceCompatibility {
+   id
+   title
+   description
+}

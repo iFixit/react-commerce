@@ -16,148 +16,207 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
+import { ProductGrid } from '@components/common/ProductGrid';
+import { ProductGridItem } from '@components/common/ProductGridItem';
 import { Card } from '@components/ui';
+import { filterFalsyItems } from '@helpers/application-helpers';
 import { productListPath } from '@helpers/path-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
-import { useLocalPreference } from '@ifixit/ui';
+import { useLocalPreference, Wrapper } from '@ifixit/ui';
+import { productPreviewFromAlgoliaHit } from '@models/components/product-preview';
 import {
    ProductList as TProductList,
    ProductSearchHit,
 } from '@models/product-list';
+import {
+   SearchQueryProvider,
+   useSearchQuery,
+} from '@templates/product-list/hooks/useSearchQuery';
 import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
    useHits,
    useSearchBox,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
-import { ProductGrid, ProductGridItem } from './ProductGrid';
 import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
-import {
-   SearchQueryProvider,
-   useSearchQueryContext,
-} from '@templates/product-list/hooks/useSearchQuery';
+import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
+import { debouncedTrackGA4ViewItemList } from '@ifixit/analytics/google';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
 type SectionProps = {
    productList: TProductList;
+   algoliaSSR?: boolean;
 };
 
-export function FilterableProductsSection({ productList }: SectionProps) {
+export function FilterableProductsSection({
+   productList,
+   algoliaSSR,
+}: SectionProps) {
    const { hits } = useHits<ProductSearchHit>();
+   const hasAnyVisibleFacet = useHasAnyVisibleFacet(productList);
+   const products = React.useMemo(
+      () => filterFalsyItems(hits.map(productPreviewFromAlgoliaHit)),
+      [hits]
+   );
+
+   React.useEffect(() => {
+      if (products.length > 0) {
+         debouncedTrackGA4ViewItemList({
+            item_list_id: productList.handle,
+            item_list_name: productList.title,
+            items: products.map((product) => ({
+               item_id: product.sku,
+               item_name: product.title,
+               item_variant: product.id,
+               quantity: product.quantityAvailable,
+               price: product.price.amount,
+            })),
+         });
+      }
+   }, [products, productList.handle, productList.title]);
+
    const currentRefinements = useCurrentRefinements();
+   const hasCurrentRefinements = currentRefinements.items.length > 0;
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
-      ProductViewType.List
+      ProductViewType.List,
+      (data) =>
+         data === ProductViewType.List || data === ProductViewType.Grid
+            ? data
+            : null
    );
 
    const productsContainerScrollRef = useScrollIntoViewEffect([hits]);
 
    const isEmpty = hits.length === 0;
 
+   if (algoliaSSR) {
+      return (
+         <SearchQueryProvider>
+            <CurrentRefinements />
+            <FacetsAccordion productList={productList} />
+         </SearchQueryProvider>
+      );
+   }
    return (
       <Flex
          ref={productsContainerScrollRef}
+         id="products"
          as="section"
          direction="column"
          align="stretch"
-         mb="4"
          data-testid="filterable-products-section"
          aria-labelledby="filterable-products-section-heading"
+         my={{ base: 4, md: 6 }}
       >
          <Heading as="h2" id="filterable-products-section-heading" srOnly>
             Products
          </Heading>
 
          <SearchQueryProvider>
-            <Flex align="flex-start">
-               <Flex
-                  bg="white"
-                  borderWidth="1px"
-                  borderStyle="solid"
-                  borderColor="gray.300"
-                  borderRadius="base"
-                  px="3"
-                  py="1.5"
-                  mr="4"
-                  w="64"
-                  maxH="calc(100vh - var(--chakra-space-4) * 2)"
-                  overflow="auto"
-                  display={{
-                     base: 'none',
-                     md: 'block',
-                  }}
-                  position="sticky"
-                  top="4"
-                  flexGrow="0"
-               >
-                  <Collapse
-                     in={currentRefinements.items.length > 0}
-                     animateOpacity
-                     data-testid="current-refinements"
-                  >
-                     <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
-                        <CurrentRefinements />
-                     </Flex>
-                     <Divider borderColor="gray.300" opacity="1" />
-                  </Collapse>
-                  <FacetsAccordion productList={productList} />
-               </Flex>
-               <Flex direction="column" flex="1">
-                  <Toolbar
-                     viewType={viewType}
-                     productList={productList}
-                     onViewTypeChange={setViewType}
-                  />
-                  <Flex
+            <Wrapper>
+               <Flex align="flex-start">
+                  <Box
                      bg="white"
-                     direction="column"
-                     mt="2"
-                     overflow="hidden"
                      borderWidth="1px"
                      borderStyle="solid"
                      borderColor="gray.300"
                      borderRadius="base"
+                     px="3"
+                     py="1.5"
+                     mr="4"
+                     w="64"
+                     maxH="calc(100vh - var(--chakra-space-4) * 2)"
+                     overflow="auto"
+                     display={{
+                        base: 'none',
+                        md:
+                           hasAnyVisibleFacet || hasCurrentRefinements
+                              ? 'block'
+                              : 'none',
+                     }}
+                     position="sticky"
+                     top="4"
+                     flexGrow="0"
                   >
-                     <ProductListEmptyState
+                     <Collapse
+                        in={hasCurrentRefinements}
+                        animateOpacity
+                        data-testid="current-refinements"
+                     >
+                        <Flex mt="1.5" mb="3" wrap="wrap" align="flex-start">
+                           <CurrentRefinements />
+                        </Flex>
+                        <Divider borderColor="gray.300" opacity="1" />
+                     </Collapse>
+                     <FacetsAccordion productList={productList} />
+                  </Box>
+                  <Flex direction="column" flex="1">
+                     <Toolbar
+                        viewType={viewType}
                         productList={productList}
-                        hidden={!isEmpty}
+                        onViewTypeChange={setViewType}
                      />
-                     {!isEmpty && viewType === ProductViewType.Grid && (
-                        <ProductGrid>
-                           {hits.map((hit) => {
-                              return (
-                                 <ProductGridItem
-                                    key={hit.handle}
-                                    product={hit}
-                                 />
-                              );
-                           })}
-                        </ProductGrid>
-                     )}
-                     {!isEmpty && viewType === ProductViewType.List && (
-                        <ProductList>
-                           {hits.map((hit) => {
-                              return (
-                                 <ProductListItem
-                                    key={hit.objectID}
-                                    product={hit}
-                                 />
-                              );
-                           })}
-                        </ProductList>
-                     )}
-                     <Pagination />
+                     <Flex
+                        bg="white"
+                        direction="column"
+                        mt="2"
+                        overflow="hidden"
+                        borderWidth="1px"
+                        borderStyle="solid"
+                        borderColor="gray.300"
+                        borderRadius="base"
+                     >
+                        <ProductListEmptyState
+                           productList={productList}
+                           hidden={!isEmpty}
+                        />
+                        {!isEmpty && viewType === ProductViewType.Grid && (
+                           <ProductGrid
+                              data-testid="grid-view-products"
+                              columns={{
+                                 base: 2,
+                                 sm: 3,
+                                 md: 2,
+                                 lg: 3,
+                                 xl: 4,
+                              }}
+                           >
+                              {products.map((product) => {
+                                 return (
+                                    <ProductGridItem
+                                       key={product.handle}
+                                       product={product}
+                                    />
+                                 );
+                              })}
+                           </ProductGrid>
+                        )}
+                        {!isEmpty && viewType === ProductViewType.List && (
+                           <ProductList>
+                              {hits.map((hit) => {
+                                 return (
+                                    <ProductListItem
+                                       key={hit.objectID}
+                                       product={hit}
+                                    />
+                                 );
+                              })}
+                           </ProductList>
+                        )}
+                        <Pagination />
+                     </Flex>
                   </Flex>
                </Flex>
-            </Flex>
+            </Wrapper>
          </SearchQueryProvider>
       </Flex>
    );
@@ -182,7 +241,7 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
-      const { setSearchQuery } = useSearchQueryContext();
+      const { setSearchQuery } = useSearchQuery();
       const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
       const currentRefinements = useCurrentRefinements();
@@ -194,7 +253,13 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
       const isFiltered = hasRefinements || hasSearchQuery;
 
       const itemType = useDevicePartsItemType(productList);
-      const title = getProductListTitle(productList, itemType);
+      const title = getProductListTitle(
+         {
+            title: productList.title,
+            type: productList.type,
+         },
+         itemType
+      );
       const encodedQuery = encodeURIComponent(searchBox.query);
 
       const ancestors = productList.ancestors;

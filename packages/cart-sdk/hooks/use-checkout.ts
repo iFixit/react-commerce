@@ -3,6 +3,7 @@ import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever, isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
+import { useSafeLocalStorage } from '@ifixit/local-storage';
 import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
 import * as React from 'react';
 import z from 'zod';
@@ -116,7 +117,10 @@ function useDraftOrderCheckout() {
    const shopifyClient = useShopifyStorefrontClient();
    const ssoRoute = `${appContext.ifixitOrigin}/User/sso/shopify/${shopifyClient.shopDomain}?checkout=1`;
    return async () => {
-      const result = await client.post('cart/order/draftOrder');
+      const result = await client.post(
+         'cart/order/draftOrder',
+         'create-draft-order'
+      );
       const draftOrder = DraftOrderResponseSchema.parse(result);
       const returnToUrl = new URL(draftOrder.invoiceUrl);
       const ssoUrl = new URL(ssoRoute);
@@ -242,24 +246,20 @@ interface LocalCheckout {
 }
 
 function getLocalCheckout(): LocalCheckout | null {
-   try {
-      const session = localStorage.getItem(LOCAL_CHECKOUT_STORAGE_KEY);
-      if (session == null) {
-         return null;
-      }
-      return JSON.parse(session);
-   } catch (error) {
+   const safeLocalStorage = useSafeLocalStorage();
+   const session = safeLocalStorage.getItem(LOCAL_CHECKOUT_STORAGE_KEY);
+   if (session == null) {
       return null;
    }
+   return JSON.parse(session);
 }
 
 function setLocalCheckout(checkout: LocalCheckout) {
-   try {
-      localStorage.setItem(
-         LOCAL_CHECKOUT_STORAGE_KEY,
-         JSON.stringify(checkout)
-      );
-   } catch (error) {}
+   const safeLocalStorage = useSafeLocalStorage();
+   safeLocalStorage.setItem(
+      LOCAL_CHECKOUT_STORAGE_KEY,
+      JSON.stringify(checkout)
+   );
 }
 
 const checkoutCreateMutation = /* GraphQL */ `

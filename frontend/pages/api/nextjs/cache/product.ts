@@ -1,15 +1,14 @@
 import { Duration } from '@lib/duration';
 import { withCache } from '@lib/swr-cache';
-import { ProductSchema } from '@models/product/schema';
+import { ProductSchema } from '@models/product';
 import { findProduct } from '@models/product/server';
 import { z } from 'zod';
 
 export type {
    Product,
-   ProductImage,
    ProductVariant,
    ProductVariantImage,
-} from '@models/product/schema';
+} from '@models/product';
 
 export default withCache({
    endpoint: 'api/nextjs/cache/product',
@@ -17,12 +16,14 @@ export default withCache({
    variablesSchema: z.object({
       handle: z.string(),
       storeCode: z.string(),
+      ifixitOrigin: z.string(),
    }),
    valueSchema: ProductSchema.nullable(),
-   async getFreshValue({ handle, storeCode }) {
+   async getFreshValue({ handle, storeCode, ifixitOrigin }) {
       return findProduct({
          handle,
          storeCode,
+         ifixitOrigin,
       });
    },
    ttl: Duration(1).minute,

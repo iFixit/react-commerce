@@ -13,21 +13,21 @@ import {
    faMagnifyingGlass,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
-import { useSearchQueryContext } from '@templates/product-list/hooks/useSearchQuery';
+import { useSearchQuery } from '@templates/product-list/hooks/useSearchQuery';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
-import { useSearchBox } from 'react-instantsearch-hooks-web';
+import { useSearchBox } from 'react-instantsearch';
 
 type SearchInputProps = InputGroupProps;
 
 const MAX_SEARCH_QUERY_LENGTH = 100;
-const DEBOUNCE_INTERVAL_MILLIS = 300;
+const DEBOUNCE_INTERVAL_MILLIS = 50;
 
 export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
    const { query, refine, clear } = useSearchBox({
       queryHook: debouncedQueryHook,
    });
-   const { searchQuery, setSearchQuery } = useSearchQueryContext();
+   const { searchQuery, setSearchQuery } = useSearchQuery();
 
    const inputRef = React.useRef<HTMLInputElement>(null);
 

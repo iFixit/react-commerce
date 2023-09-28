@@ -1,30 +1,32 @@
-import {
-   Divider,
-   DividerProps,
-   Flex,
-   FlexProps,
-   forwardRef,
-   HStack,
-   Icon,
-   StackProps,
-   Text,
-} from '@chakra-ui/react';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
-import { PageContentWrapper } from './PageContentWrapper';
+import { Divider, Box, forwardRef, HStack, Icon, Text } from '@chakra-ui/react';
+import type { DividerProps, FlexProps, StackProps } from '@chakra-ui/react';
+import type { Menu } from '@ifixit/menu';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
+
+export interface FooterType {
+   menu1: Menu | null;
+   menu2: Menu | null;
+   menu3: Menu | null;
+   partners: Menu | null;
+   bottomMenu: Menu | null;
+}
 
 export const Footer = forwardRef<FlexProps, 'footer'>(
    ({ children, ...otherProps }, ref) => {
       return (
-         <Flex
-            ref={ref}
-            as="footer"
-            direction="column"
-            bg="black"
-            color="white"
-            {...otherProps}
-         >
-            <PageContentWrapper>{children}</PageContentWrapper>
-         </Flex>
+         <Box ref={ref} as="footer" bg="black" py="12" {...otherProps}>
+            <Box
+               maxW="80rem"
+               mx="auto"
+               px={{
+                  base: 4,
+                  md: 6,
+                  lg: 8,
+               }}
+            >
+               {children}
+            </Box>
+         </Box>
       );
    }
 );
@@ -33,6 +35,7 @@ type FooterLinkProps = StackProps & {
    icon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
    eventCategory?: string;
    eventAction?: string;
+   customColor?: string;
 };
 
 export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
@@ -45,6 +48,7 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
          onClick,
          eventCategory,
          eventAction,
+         customColor = 'white',
          ...otherProps
       },
       ref
@@ -60,18 +64,18 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             ref={ref}
             as="a"
             align="center"
-            color="gray.300"
+            color={customColor}
             transition="color 300ms"
-            _visited={{ color: 'gray.300' }}
+            _visited={{ color: customColor }}
             _hover={{ color: 'white', textDecoration: 'none' }}
             href={href}
             onClick={trackedOnClick}
             {...otherProps}
          >
-            <Text fontSize={fontSize} lineHeight="1em" color="gray.300">
+            <Text fontSize={fontSize} lineHeight="1em">
                {children}
             </Text>
-            {icon && <Icon as={icon} boxSize="8" filter="opacity(0.5)" />}
+            {icon && <Icon as={icon} boxSize="6" />}
          </HStack>
       );
    }

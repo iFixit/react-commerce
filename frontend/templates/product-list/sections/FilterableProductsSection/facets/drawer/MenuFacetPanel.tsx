@@ -45,6 +45,7 @@ export function MenuFacetPanel({
          data-testid={`facet-panel${isOpen ? '-open' : ''}`}
       >
          <MenuFacet
+            attribute={attribute}
             items={menuFacet.items}
             limit={PRODUCT_LIST_DEFAULT_FACET_VALUES_COUNT}
             canToggleShowMore={

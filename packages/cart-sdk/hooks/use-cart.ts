@@ -1,17 +1,18 @@
 import {
    filterNullableItems,
    getProductVariantSku,
+   getEncodedVariantURI,
    Money,
    parseMoney,
 } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useQuery } from '@tanstack/react-query';
+import { useIsMutating, useQuery } from '@tanstack/react-query';
 import {
    APICart,
    Cart,
    CartAPIResponse,
    CartLineItem,
-   UpsellProduct,
+   CrossSellProduct,
 } from '../types';
 import { cartKeys } from '../utils';
 
@@ -20,12 +21,17 @@ import { cartKeys } from '../utils';
  */
 export function useCart() {
    const client = useIFixitApiClient();
-   const query = useQuery(cartKeys.cart, async (): Promise<Cart | null> => {
-      const result = await client.get('store/user/cart');
-      if (!isValidCartPayload(result)) {
-         return null;
-      }
-      return createCart(result.cart);
+   const isMutating = useIsMutating();
+   const query = useQuery({
+      queryKey: cartKeys.cart,
+      queryFn: async (): Promise<Cart | null> => {
+         const result = await client.get('store/user/cart', 'cart');
+         if (!isValidCartPayload(result)) {
+            return null;
+         }
+         return createCart(result.cart);
+      },
+      enabled: !isMutating,
    });
    return query;
 }
@@ -37,8 +43,8 @@ function isValidCartPayload(data: any): data is CartAPIResponse {
 function createCart(input: APICart): Cart {
    const lineItems = input.products.map<CartLineItem>((product) => {
       const priceAmount = parseFloat(product.subPrice);
-      const singleItemDiscount = product.discount
-         ? parseFloat(product.discount)
+      const singleItemDiscount = product.retailDiscount
+         ? parseFloat(product.retailDiscount)
          : 0;
       const price: Money = {
          amount: priceAmount,
@@ -82,6 +88,7 @@ function createCart(input: APICart): Cart {
            }
          : null;
 
+   const crossSellProducts = input.crossSellProducts;
    return {
       hasItemsInCart: input.totalNumItems > 0,
       lineItems,
@@ -91,17 +98,17 @@ function createCart(input: APICart): Cart {
          price: totalPrice,
          compareAtPrice: totalCompareAtPrice,
       },
-      upsellProducts: filterNullableItems(
-         input.upsellProducts.map<UpsellProduct | null>((apiProduct) => {
+      crossSellProducts: filterNullableItems(
+         crossSellProducts.map<CrossSellProduct | null>((apiProduct) => {
             if (apiProduct.subPrice == null) {
                return null;
             }
-            const variantId = `gid://shopify/ProductVariant/${apiProduct.variant_id}`;
             return {
+               marketingHeading: apiProduct.marketing_heading,
                marketingTitle: apiProduct.marketing_title,
                marketingBlurb: apiProduct.product_blurb,
                itemcode: apiProduct.itemcode,
-               shopifyVariantId: btoa(variantId),
+               shopifyVariantId: getEncodedVariantURI(apiProduct.variant_id),
                name: apiProduct.name,
                imageSrc: apiProduct.imageSrc,
                price: parseMoney(apiProduct.subPrice),

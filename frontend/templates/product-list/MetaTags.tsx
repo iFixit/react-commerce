@@ -1,78 +1,27 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import { productListPath } from '@helpers/path-helpers';
-import {
-   getProductListTitle,
-   stylizeDeviceItemType,
-} from '@helpers/product-list-helpers';
+import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
-import { ProductList, ProductListAncestor } from '@models/product-list';
+import type { ProductList } from '@models/product-list';
 import Head from 'next/head';
-import React from 'react';
-import {
-   useCurrentRefinements,
-   usePagination,
-} from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements, usePagination } from 'react-instantsearch';
 import { jsonLdScriptProps } from 'react-schemaorg';
 import { BreadcrumbList as SchemaBreadcrumbList } from 'schema-dts';
 import { useDevicePartsItemType } from './hooks/useDevicePartsItemType';
-import { useProductListAncestors } from './hooks/useProductListAncestors';
+import { useProductListBreadcrumbs } from './hooks/useProductListBreadcrumbs';
 
 export interface MetaTagsProps {
    productList: ProductList;
 }
 
 export function MetaTags({ productList }: MetaTagsProps) {
-   const appContext = useAppContext();
-   const currentRefinements = useCurrentRefinements();
-   const pagination = usePagination();
-   const { currentItemTitle, ancestors } = useProductListAncestors(productList);
+   const metaTitle = useMetaTitle(productList);
+   const metaDescription =
+      productList.metaDescription ?? productList.description;
+   const canonicalUrl = useCanonicalUrl(productList);
+   const shouldNoIndex = useShouldNoIndex(productList);
+   const structuredData = useStructuredData(productList);
 
-   const completeBreadcrumb = React.useMemo(() => {
-      if (ancestors == null) {
-         return null;
-      }
-      const lastBreadcrumb: ProductListAncestor = {
-         deviceTitle: null,
-         title: currentItemTitle,
-         type: ancestors[0].type,
-         handle: '#',
-      };
-      return ancestors.concat(lastBreadcrumb);
-   }, [ancestors, currentItemTitle]);
-
-   const page = pagination.currentRefinement + 1;
-   const refinementAttributes = currentRefinements.items.map(
-      (item) => item.attribute
-   );
-   const isItemTypeFilter =
-      refinementAttributes.length === 1 &&
-      refinementAttributes[0] === 'facet_tags.Item Type';
-   const isFiltered = currentRefinements.items.length > 0 && !isItemTypeFilter;
-   const itemType = useDevicePartsItemType(productList);
-   let title =
-      productList.metaTitle ||
-      getProductListTitle(productList, itemType) + ' | iFixit';
-   if (!isFiltered && page > 1) {
-      title += ` - Page ${page}`;
-   }
-   const itemTypeHandle = itemType
-      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
-      : '';
-   const canonicalUrl = `${appContext.ifixitOrigin}${productListPath(
-      productList
-   )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
-   const imageUrl = productList.image?.url;
-   const productListExemptions =
-      noIndexExemptions[productList.deviceTitle ?? ''];
-   const isNoIndexExempt = itemType
-      ? productListExemptions?.itemTypes?.includes(itemType)
-      : productListExemptions?.root;
-   const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
-   const shouldNoIndex =
-      isFiltered ||
-      !hasResults ||
-      productList.forceNoindex ||
-      !productList.isOnStrapi;
    return (
       <Head>
          {shouldNoIndex ? (
@@ -80,44 +29,112 @@ export function MetaTags({ productList }: MetaTagsProps) {
          ) : (
             <>
                <link rel="canonical" href={canonicalUrl} />
-               <meta
-                  name="description"
-                  content={
-                     productList.metaDescription || productList.description
-                  }
-               />
+               {metaDescription && (
+                  <meta name="description" content={metaDescription} />
+               )}
             </>
          )}
-         <title>{title}</title>
-         <meta property="og:title" content={title} />
-         <meta
-            name="og:description"
-            content={productList.metaDescription || productList.description}
-         />
+         <title>{metaTitle}</title>
+         <meta property="og:title" content={metaTitle} />
+         {metaDescription && (
+            <meta name="og:description" content={metaDescription} />
+         )}
          <meta property="og:type" content="website" />
          <meta property="og:url" content={canonicalUrl} />
-         {imageUrl && <meta property="og:image" content={imageUrl} />}
-
-         <script
-            {...jsonLdScriptProps<SchemaBreadcrumbList>({
-               '@context': 'https://schema.org',
-               '@type': 'BreadcrumbList',
-               itemListElement:
-                  completeBreadcrumb?.map((item, index) => ({
-                     '@type': 'ListItem',
-                     position: index + 1,
-                     name: item.title,
-                     item:
-                        item.handle && item.handle !== '#'
-                           ? `${appContext.ifixitOrigin}${productListPath(
-                                item
-                             )}`
-                           : undefined,
-                  })) || undefined,
-            })}
-         />
+         {productList.heroImage?.url && (
+            <meta property="og:image" content={productList.heroImage.url} />
+         )}
+         <script {...structuredData} />
       </Head>
    );
+}
+
+const META_TITLE_SUFFIX = ' | iFixit';
+
+function useMetaTitle(productList: ProductList): string {
+   const pagination = usePagination();
+
+   const page = pagination.currentRefinement + 1;
+
+   const isFiltered = useIsFilteredProductList();
+
+   let metaTitle = productList.metaTitle ?? productList.title;
+
+   if (!metaTitle.trim().endsWith(META_TITLE_SUFFIX)) {
+      metaTitle += META_TITLE_SUFFIX;
+   }
+
+   if (metaTitle && !isFiltered && page > 1) {
+      metaTitle += ` - Page ${page}`;
+   }
+   return metaTitle;
+}
+
+function useIsFilteredProductList(): boolean {
+   const currentRefinements = useCurrentRefinements();
+
+   const refinementAttributes = currentRefinements.items.map(
+      (item) => item.attribute
+   );
+   const isItemTypeFilter =
+      refinementAttributes.length === 1 &&
+      refinementAttributes[0] === 'facet_tags.Item Type';
+
+   return currentRefinements.items.length > 0 && !isItemTypeFilter;
+}
+
+function useCanonicalUrl(productList: ProductList): string {
+   const appContext = useAppContext();
+   const pagination = usePagination();
+
+   const page = pagination.currentRefinement + 1;
+
+   const itemType = useDevicePartsItemType(productList);
+
+   const itemTypeHandle = itemType
+      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
+      : '';
+
+   return `${appContext.ifixitOrigin}${productListPath(
+      productList
+   )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
+}
+
+function useShouldNoIndex(productList: ProductList): boolean {
+   const pagination = usePagination();
+   const isFiltered = useIsFilteredProductList();
+   const itemType = useDevicePartsItemType(productList);
+
+   const productListExemptions =
+      noIndexExemptions[productList.deviceTitle ?? ''];
+
+   const isNoIndexExempt = itemType
+      ? productListExemptions?.itemTypes?.includes(itemType)
+      : productListExemptions?.root;
+
+   const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
+
+   return (
+      isFiltered ||
+      !hasResults ||
+      productList.forceNoindex ||
+      !productList.isOnStrapi
+   );
+}
+
+function useStructuredData(productList: ProductList) {
+   const appContext = useAppContext();
+   const breadcrumbs = useProductListBreadcrumbs(productList);
+   return jsonLdScriptProps<SchemaBreadcrumbList>({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((item, index) => ({
+         '@type': 'ListItem',
+         position: index + 1,
+         name: item.label,
+         item: item.url ? `${appContext.ifixitOrigin}${item.url}` : undefined,
+      })),
+   });
 }
 
 type NoIndexExemptionsType = {

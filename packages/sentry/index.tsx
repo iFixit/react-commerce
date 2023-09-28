@@ -36,11 +36,15 @@ export const applySentryFetchMiddleware = () => {
    }
 };
 
-export const reportException: CaptureWithContextFn = (e, context) => {
-   Sentry.captureException(e, (scope) => {
-      scope.setContext('request', context);
-      return scope;
-   });
+export const applySentryUnhandledRejectionListener = () => {
+   if (isClientSide) {
+      window.addEventListener('unhandledrejection', (event) => {
+         Sentry.withScope((scope) => {
+            scope.setExtra('promise', event.promise);
+            Sentry.captureException(event.reason);
+         });
+      });
+   }
 };
 
 const withSentry: FetchMiddleware =
@@ -61,8 +65,7 @@ const withSentry: FetchMiddleware =
          if (
             !shouldIgnoreUserAgent &&
             response.status >= 400 &&
-            response.status !== 401 &&
-            response.status !== 404
+            ![401, 404, 499].includes(response.status)
          ) {
             const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
             Sentry.captureException(new Error(msg), (scope) => {

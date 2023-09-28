@@ -15,7 +15,10 @@ export async function fetchDeviceWiki(
          deviceHandle.length > 0,
          'deviceHandle cannot be a blank string'
       );
-      return await client.get(`cart/part_collections/devices/${deviceHandle}`);
+      return await client.get(
+         `cart/part_collections/devices/${deviceHandle}`,
+         'device-wiki'
+      );
    } catch (error: any) {
       return null;
    }
@@ -52,7 +55,8 @@ export async function fetchMultipleDeviceImages(
    });
    try {
       const result = await client.get(
-         `wikis/topic_images?` + params.toString()
+         `wikis/topic_images?` + params.toString(),
+         'device-images'
       );
       return MultipleDeviceApiResponseSchema.parse(result);
    } catch (error) {

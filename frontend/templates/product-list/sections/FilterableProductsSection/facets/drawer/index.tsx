@@ -20,7 +20,7 @@ import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { useCountRefinements } from '../useCountRefinements';
 import { useFilteredFacets } from '../useFacets';
 import { FacetListItem } from './FacetListItem';
@@ -158,7 +158,7 @@ export function FacetsDrawer({
                      })}
                      <ClearAllButton isVisible={currentFacet == null} />
                      <Button
-                        w="50%"
+                        flex={1}
                         colorScheme="blue"
                         onClick={() => {
                            if (currentFacet == null) {
@@ -223,7 +223,7 @@ function ClearAllButton({ isVisible }: ClearAllButtonProps) {
       return null;
    }
    return (
-      <Button w="50%" variant="outline" onClick={() => refine()}>
+      <Button flex={1} variant="outline" onClick={() => refine()}>
          Clear all
       </Button>
    );

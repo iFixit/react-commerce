@@ -1,193 +1,140 @@
-export interface ProductSearchHit {
-   objectID: string;
-   title: string;
-   handle: string;
-   price_float: number;
-   compare_at_price?: number;
-   price_tiers?: Record<string, PriceTier>;
-   sku: string;
-   image_url: string;
-   short_description?: string;
-   quantity_available: number;
-   lifetime_warranty: boolean;
-   oem_partnership: string | null;
-   rating: number;
-   rating_count: number;
-   url: string;
-   is_pro: number;
+import { ImageSchema } from '@models/components/image';
+import { z } from 'zod';
+import { ProductListAncestorSchema } from './component/product-list-ancestor';
+import { ProductListChildSchema } from './component/product-list-child';
+import { ProductListType } from './component/product-list-type';
+import { ProductListSectionSchema } from './sections';
+
+const PriceTierSchema = z.object({
+   default_variant_price: z.union([z.string(), z.number()]),
+   min: z.union([z.string(), z.number()]),
+   max: z.union([z.string(), z.number()]),
+});
+export type PriceTier = z.infer<typeof PriceTierSchema>;
+
+const ProductSearchHitSchema = z
+   .object({
+      objectID: z.string(),
+      title: z.string(),
+      handle: z.string(),
+      price_float: z.number(),
+      compare_at_price: z.number().optional(),
+      price_tiers: z.record(PriceTierSchema).optional(),
+      sku: z.string(),
+      image_url: z.string(),
+      short_description: z.string().optional(),
+      quantity_available: z.number(),
+      lifetime_warranty: z.boolean(),
+      oem_partnership: z.string().nullable(),
+      rating: z.number(),
+      rating_count: z.number(),
+      url: z.string(),
+      is_pro: z.number(),
+   })
+   .passthrough();
+export type ProductSearchHit = z.infer<typeof ProductSearchHitSchema> & {
    [attribute: string]: unknown;
-}
-
-export type PriceTier = {
-   default_variant_price: string | number;
-   min: string | number;
-   max: string | number;
 };
 
-export type WikiInfoEntry = {
-   name: string;
-   value: string;
-   inheritedFrom: string | null;
-};
+const WikiInfoEntrySchema = z.object({
+   name: z.string(),
+   value: z.string(),
+   inheritedFrom: z.string().nullable(),
+});
+export type WikiInfoEntry = z.infer<typeof WikiInfoEntrySchema>;
 
-export enum ProductListType {
-   AllParts = 'parts',
-   DeviceParts = 'device-parts',
-   AllTools = 'tools',
-   ToolsCategory = 'tools-category',
-   Marketing = 'marketing',
-}
+const ProductListItemTypeOverrideSchema = z.object({
+   itemType: z.string().nullable().optional(),
+   title: z.string().nullable().optional(),
+   description: z.string().nullable().optional(),
+   metaDescription: z.string().nullable().optional(),
+   metaTitle: z.string().nullable().optional(),
+   tagline: z.string().nullable().optional(),
+});
 
-export enum iFixitPageType {
-   Store = 'store',
-}
+const ProductListItemTypeOverrideIndexedSchema = z.record(
+   ProductListItemTypeOverrideSchema
+);
 
-export enum FacetWidgetType {
-   RefinementList = 'refinement-list',
-   Menu = 'menu',
-}
+export type ProductListItemTypeOverride = z.infer<
+   typeof ProductListItemTypeOverrideSchema
+>;
 
-export type ProductList =
-   | AllPartsProductList
-   | DevicePartsProductList
-   | AllToolsProductList
-   | ToolsCategoryProductList
-   | MarketingProductList;
+export type ProductListItemTypeOverrideIndexed = z.infer<
+   typeof ProductListItemTypeOverrideIndexedSchema
+>;
 
-export type iFixitPage = StorePage;
+const ProductListOverridesSchema = z.object({
+   title: z.string(),
+   description: z.string(),
+   metaDescription: z.string(),
+   metaTitle: z.string(),
+   tagline: z.string().nullable(),
+});
 
-export interface BaseProductList {
-   title: string;
-   handle: string;
-   deviceTitle: string | null;
-   deviceItemType: string | null;
-   tagline: string | null;
-   description: string;
-   metaDescription: string | null;
-   metaTitle: string | null;
-   defaultShowAllChildrenOnLgSizes: boolean | null;
-   filters: string | null;
-   forceNoindex: boolean | null;
-   heroImage: ProductListImage | null;
-   image: ProductListImage | null;
-   brandLogo: ProductListImage | null;
-   brandLogoWidth: number | null;
-   ancestors: ProductListAncestor[];
-   children: ProductListChild[];
-   sections: ProductListSection[];
-   algolia: {
-      apiKey: string;
-   };
-   wikiInfo: WikiInfoEntry[];
-   isOnStrapi: boolean;
-}
+export type ProductListOverrides = z.infer<typeof ProductListOverridesSchema>;
 
-interface AllPartsProductList extends BaseProductList {
-   type: ProductListType.AllParts;
-}
+const BaseProductListSchema = z.object({
+   id: z.string().nullable(),
+   title: z.string(),
+   h1: z.string().nullable(),
+   handle: z.string(),
+   deviceTitle: z.string().nullable(),
+   tagline: z.string().nullable(),
+   description: z.string().nullable(),
+   metaDescription: z.string().nullable(),
+   metaTitle: z.string().nullable(),
+   defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),
+   filters: z.string().nullable(),
+   forceNoindex: z.boolean().nullable(),
+   heroImage: ImageSchema.nullable(),
+   brandLogo: ImageSchema.nullable(),
+   ancestors: z.array(ProductListAncestorSchema),
+   children: z.array(ProductListChildSchema),
+   sections: z.array(ProductListSectionSchema),
+   algolia: z.object({
+      apiKey: z.string(),
+   }),
+   wikiInfo: z.array(WikiInfoEntrySchema),
+   isOnStrapi: z.boolean(),
+   itemOverrides: ProductListItemTypeOverrideIndexedSchema,
+});
+export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 
-interface DevicePartsProductList extends BaseProductList {
-   type: ProductListType.DeviceParts;
-}
+const AllPartsProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.AllParts),
+});
+export type AllPartsProductList = z.infer<typeof AllPartsProductListSchema>;
 
-interface AllToolsProductList extends BaseProductList {
-   type: ProductListType.AllTools;
-}
+const DevicePartsProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.DeviceParts),
+});
+export type DevicePartsProductList = z.infer<
+   typeof DevicePartsProductListSchema
+>;
 
-interface ToolsCategoryProductList extends BaseProductList {
-   type: ProductListType.ToolsCategory;
-}
+const AllToolsProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.AllTools),
+});
+export type AllToolsProductList = z.infer<typeof AllToolsProductListSchema>;
 
-interface MarketingProductList extends BaseProductList {
-   type: ProductListType.Marketing;
-}
+const ToolsCategoryProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.ToolsCategory),
+});
+export type ToolsCategoryProductList = z.infer<
+   typeof ToolsCategoryProductListSchema
+>;
 
-interface StorePage extends BaseProductList {
-   type: iFixitPageType.Store;
-}
+const MarketingProductListSchema = BaseProductListSchema.extend({
+   type: z.literal(ProductListType.Marketing),
+});
+export type MarketingProductList = z.infer<typeof MarketingProductListSchema>;
 
-export interface ProductListAncestor {
-   deviceTitle: string | null;
-   title: string;
-   type: ProductListType | iFixitPageType;
-   handle: string;
-}
-
-export interface ProductListChild {
-   title: string;
-   deviceTitle: string | null;
-   handle: string;
-   image: ProductListImage | null;
-   sortPriority: number | null;
-   type: ProductListType;
-}
-
-export interface ProductListImage {
-   alternativeText: string | null;
-   url: string;
-}
-
-export enum ProductListSectionType {
-   Banner = 'banner',
-   RelatedPosts = 'related-posts',
-   FeaturedProductList = 'featured-product-list',
-   ProductListSet = 'product-list-set',
-}
-
-export type ProductListSection =
-   | ProductListBannerSection
-   | ProductListRelatedPostsSection
-   | ProductListFeaturedProductListSection
-   | ProductListProductListSetSection;
-
-export interface ProductListBannerSection {
-   type: ProductListSectionType.Banner;
-   id: string;
-   title: string;
-   description: string;
-   callToActionLabel: string;
-   url: string;
-}
-
-export interface ProductListRelatedPostsSection {
-   type: ProductListSectionType.RelatedPosts;
-   id: string;
-   tags: string | null;
-}
-
-export interface ProductListFeaturedProductListSection {
-   type: ProductListSectionType.FeaturedProductList;
-   id: string;
-   productList: FeaturedProductList;
-}
-
-export interface FeaturedProductList {
-   algolia: {
-      apiKey: string;
-      indexName: string;
-   };
-   handle: string;
-   title: string;
-   type: ProductListType;
-   deviceTitle: string | null;
-   description: string;
-   image: ProductListImage | null;
-   filters: string | null;
-}
-
-export interface ProductListProductListSetSection {
-   type: ProductListSectionType.ProductListSet;
-   id: string;
-   title: string;
-   productLists: ProductListPreview[];
-}
-
-export interface ProductListPreview {
-   handle: string;
-   title: string;
-   type: ProductListType;
-   deviceTitle: string | null;
-   description: string;
-   image: ProductListImage | null;
-   filters: string | null;
-}
+export const ProductListSchema = z.union([
+   AllPartsProductListSchema,
+   DevicePartsProductListSchema,
+   AllToolsProductListSchema,
+   ToolsCategoryProductListSchema,
+   MarketingProductListSchema,
+]);
+export type ProductList = z.infer<typeof ProductListSchema>;

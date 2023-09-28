@@ -2,8 +2,8 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { stylizeDeviceTitle } from '@helpers/product-list-helpers';
-import { ProductList } from '@models/product-list';
-import NextLink from 'next/link';
+import type { ProductList } from '@models/product-list';
+import { ProductListType } from '@models/product-list';
 
 type ProductListDeviceNavigationProps = FlexProps & {
    productList: ProductList;
@@ -13,13 +13,12 @@ export function ProductListDeviceNavigation({
    productList,
    ...flexProps
 }: ProductListDeviceNavigationProps) {
-   const isRootProductList = productList.ancestors.length === 0;
    let guideUrl: string | undefined;
    let answersUrl: string | undefined;
-   if (isRootProductList) {
-      guideUrl = `${IFIXIT_ORIGIN}/Guide`;
-      answersUrl = `${IFIXIT_ORIGIN}/Answers`;
-   } else if (productList.deviceTitle && productList.deviceTitle.length > 0) {
+   if (
+      productList.type === ProductListType.DeviceParts &&
+      productList.deviceTitle
+   ) {
       const deviceHandle = encodeURIComponent(
          stylizeDeviceTitle(productList.deviceTitle)
       );
@@ -45,14 +44,10 @@ export function ProductListDeviceNavigation({
       >
          <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={guideUrl} passHref>
-               <SecondaryNavbarLink>Guides</SecondaryNavbarLink>
-            </NextLink>
+            <SecondaryNavbarLink href={guideUrl}>Guides</SecondaryNavbarLink>
          </SecondaryNavbarItem>
          <SecondaryNavbarItem>
-            <NextLink href={answersUrl} passHref>
-               <SecondaryNavbarLink>Answers</SecondaryNavbarLink>
-            </NextLink>
+            <SecondaryNavbarLink href={answersUrl}>Answers</SecondaryNavbarLink>
          </SecondaryNavbarItem>
       </Flex>
    );

@@ -8,7 +8,7 @@ type ConstructorArgs = {
 };
 
 export class SingleTypeRepository extends ContentTypeRepository {
-   private item: ContentTypeItem;
+   private item!: ContentTypeItem;
 
    constructor({ strapi, uid }: ConstructorArgs) {
       super();
@@ -48,14 +48,9 @@ export class SingleTypeRepository extends ContentTypeRepository {
       const { id, attributes } = this.item;
       const nestedAttributes = this.keepNestedAttributes(attributes);
       try {
-         const entry = await this.strapi.entityService.update(
-            this.schema.uid,
-            id,
-            {
-               data: nestedAttributes,
-            }
-         );
-         return entry;
+         await this.strapi.entityService.update(this.schema.uid as any, id, {
+            data: nestedAttributes,
+         });
       } catch (error) {
          console.log(
             'Ops! Something went wrong while adding nested fields to item!'

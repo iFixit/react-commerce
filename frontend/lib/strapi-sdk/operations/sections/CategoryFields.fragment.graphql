@@ -1,0 +1,11 @@
+fragment CategoryFields on ComponentPageCategory {
+   id
+   description
+   productList {
+      data {
+         attributes {
+            ...ProductListPreviewFields
+         }
+      }
+   }
+}

@@ -1,10 +1,9 @@
 import { ProductListType } from '@models/product-list';
 import * as React from 'react';
-import { useCurrentRefinements } from 'react-instantsearch-hooks-web';
+import { useCurrentRefinements } from 'react-instantsearch';
 
 type ProductListAttributes = {
    type?: ProductListType | null;
-   deviceItemType?: string | null;
 };
 
 export function useDevicePartsItemType<T extends ProductListAttributes>(
@@ -18,9 +17,7 @@ export function useDevicePartsItemType<T extends ProductListAttributes>(
       // `Item Type` is a single select, so just use the first value if it exists.
       return itemTypeRefinement?.refinements[0]?.value;
    }, [items]);
-   const productListItemType =
-      productList.type === ProductListType.DeviceParts &&
-      productList.deviceItemType;
-   const itemType = algoliaItemType || productListItemType;
+   const itemType =
+      productList.type === ProductListType.DeviceParts && algoliaItemType;
    return itemType ? String(itemType) : undefined;
 }

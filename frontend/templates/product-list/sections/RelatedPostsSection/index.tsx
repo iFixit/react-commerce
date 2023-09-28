@@ -1,5 +1,6 @@
-import { Heading, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
 import { useAppContext } from '@ifixit/app';
+import { Wrapper } from '@ifixit/ui';
 import { fetchPosts, Post } from '@models/posts';
 import { useQuery } from '@tanstack/react-query';
 import { PostCard } from './PostCard';
@@ -20,29 +21,32 @@ export function RelatedPostsSection({ tags = [] }: RelatedPostsSectionProps) {
    }
 
    return (
-      <VStack align="stretch" spacing="4">
-         <Heading
-            as="h2"
-            color="gray.700"
-            fontSize={{ base: '2xl', md: '3xl' }}
-            fontWeight="medium"
-         >
-            Related News Stories
-         </Heading>
-         <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
-            {posts.map((post) => (
-               <PostCard
-                  key={post.id}
-                  title={post.title}
-                  category={post.category}
-                  imageSrc={post.image?.url}
-                  imageAlt=""
-                  link={post.permalink || ''}
-                  date={post.date}
-               />
-            ))}
-         </SimpleGrid>
-      </VStack>
+      <Box as="section" id="related-posts" my={{ base: 4, md: 6 }}>
+         <Wrapper>
+            <Heading
+               as="h2"
+               color="gray.900"
+               fontSize={{ base: '2xl', md: '3xl' }}
+               fontWeight="medium"
+               mb="4"
+            >
+               Related News Stories
+            </Heading>
+            <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="6">
+               {posts.map((post) => (
+                  <PostCard
+                     key={post.id}
+                     title={post.title}
+                     category={post.category}
+                     imageSrc={post.image?.url}
+                     imageAlt=""
+                     link={post.permalink || ''}
+                     date={post.date}
+                  />
+               ))}
+            </SimpleGrid>
+         </Wrapper>
+      </Box>
    );
 }
 

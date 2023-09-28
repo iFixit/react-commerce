@@ -1,0 +1,21 @@
+{
+   "collectionName": "components_section_quote_galleries",
+   "info": {
+      "displayName": "quote gallery"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "quotes": {
+         "displayName": "quote card",
+         "type": "component",
+         "repeatable": true,
+         "component": "section.quote-card"
+      }
+   }
+}

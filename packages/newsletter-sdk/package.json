@@ -5,20 +5,20 @@
    "types": "./index.tsx",
    "license": "MIT",
    "dependencies": {
-      "@ifixit/analytics": "workspace:*",
-      "@ifixit/app": "workspace:*",
+      "@ifixit/tracking-hooks": "workspace:*",
       "@ifixit/helpers": "workspace:*",
-      "@ifixit/sentry": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*"
    },
    "peerDependencies": {
-      "@tanstack/react-query": "4.x"
+      "@tanstack/react-query": "4.x",
+      "react": "18.2.0"
    },
    "devDependencies": {
       "@types/react": "18.0.24",
       "@types/react-dom": "18.0.8",
       "@ifixit/tsconfig": "workspace:*",
-      "typescript": "4.8.4"
+      "typescript": "4.8.4",
+      "react": "18.2.0"
    },
    "scripts": {
       "build": "",

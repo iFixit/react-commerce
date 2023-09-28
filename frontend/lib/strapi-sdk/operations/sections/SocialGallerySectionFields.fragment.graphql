@@ -1,0 +1,21 @@
+fragment SocialGallerySectionFields on ComponentSectionSocialGallery {
+   id
+   title
+   description
+   posts(publicationState: LIVE) {
+      data {
+         ...SocialPostFields
+      }
+   }
+}
+
+fragment SocialPostFields on SocialPostEntity {
+   id
+   attributes {
+      image {
+         ...ImageFields
+      }
+      author
+      url
+   }
+}

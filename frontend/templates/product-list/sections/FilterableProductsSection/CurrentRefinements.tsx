@@ -1,17 +1,17 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { faClose } from '@fortawesome/pro-solid-svg-icons';
 import { formatFacetName } from '@helpers/algolia-helpers';
-import { useSearchQueryContext } from '@templates/product-list/hooks/useSearchQuery';
+import { useSearchQuery } from '@templates/product-list/hooks/useSearchQuery';
 import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
 import {
    useClearRefinements,
    useCurrentRefinements,
    usePagination,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 
 export function CurrentRefinements() {
-   const { setSearchQuery } = useSearchQueryContext();
+   const { setSearchQuery } = useSearchQuery();
    const currentRefinements = useCurrentRefinements();
    const clearRefinements = useClearRefinements({
       excludedAttributes: [],
@@ -34,13 +34,13 @@ export function CurrentRefinements() {
                            bgColor="brand.100"
                            borderColor="brand.300"
                            borderWidth="1px"
-                           py="1"
+                           py="3px"
                            px="1.5"
                            mr="1.5"
                            mb="1.5"
                            fontWeight="semibold"
-                           fontSize="sm"
-                           lineHeight="1em"
+                           fontSize={{ base: '13px', md: 'sm' }}
+                           lineHeight={{ base: '4', md: '5' }}
                            color="brand.700"
                            alignItems="center"
                            borderRadius="base"

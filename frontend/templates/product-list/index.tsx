@@ -1,12 +1,17 @@
+import { InstantSearchProvider } from '@components/common/InstantSearchProvider';
 import { DefaultLayout } from '@layouts/default';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
 
 const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> = ({
+   appProps,
    productList,
-   indexName,
 }) => {
-   return <ProductListView productList={productList} indexName={indexName} />;
+   return (
+      <InstantSearchProvider {...appProps.algolia!}>
+         <ProductListView productList={productList} />
+      </InstantSearchProvider>
+   );
 };
 
 ProductListTemplate.getLayout = function getLayout(page, pageProps) {

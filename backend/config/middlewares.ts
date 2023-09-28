@@ -6,7 +6,12 @@ export default ({ env }) => {
       'strapi::poweredBy',
       'strapi::logger',
       'strapi::query',
-      'strapi::body',
+      {
+         name: 'strapi::body',
+         config: {
+            jsonLimit: '50mb',
+         },
+      },
       // 'strapi::session',
       'strapi::favicon',
       'strapi::public',

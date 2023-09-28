@@ -37,3 +37,6 @@ yarn-error.log*
 .sentryclirc
 tests/playwright/test-results/
 /playwright/.cache/
+
+# codegen
+lib/strapi-sdk/generated/schema.graphql

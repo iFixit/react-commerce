@@ -1,29 +1,17 @@
-type Value = string | number;
-
-type ReviewableProduct<T extends Value> = {
-   rating: T;
-   reviewsCount: T;
-};
-
-type NullablePartial<T> = { [P in keyof T]?: T[P] | null };
+interface Reviewable {
+   rating: number;
+   count: number;
+}
 
 const ITEMCODE_RE = /IF(\d{3})-(\d{3})-(\d{1,2})/;
 
-export function shouldShowProductRating<T extends Value>(
-   product: NullablePartial<ReviewableProduct<T>>
-): product is ReviewableProduct<T> {
-   if (product.rating == null || product.reviewsCount == null) {
+export function shouldShowProductRating<R extends Reviewable>(
+   reviewable: R | null | undefined
+): reviewable is R {
+   if (reviewable?.rating == null || reviewable?.count == null) {
       return false;
    }
-   const rating =
-      typeof product.rating === 'string'
-         ? parseFloat(product.rating)
-         : product.rating;
-   const ratingCount =
-      typeof product.reviewsCount === 'string'
-         ? parseFloat(product.reviewsCount)
-         : product.reviewsCount;
-   return rating >= 4 || ratingCount > 10;
+   return reviewable.rating >= 4 || reviewable.count > 10;
 }
 
 /**
@@ -32,6 +20,11 @@ export function shouldShowProductRating<T extends Value>(
  */
 export function getProductVariantSku(itemcode: string): string {
    return itemcode.replace(/\D/g, '');
+}
+
+export function getItemCodeFromSku(sku: string): string {
+   const itemCode = `IF${sku.replace(/(.{3})/g, '$1-')}`;
+   return itemCode.endsWith('-') ? itemCode.slice(0, -1) : itemCode;
 }
 
 export function parseItemcode(itemcode: string) {
@@ -45,6 +38,33 @@ export function parseItemcode(itemcode: string) {
       : {};
 }
 
-export function isLifetimeWarranty(warranty: string): boolean {
+export function isLifetimeWarranty(
+   warranty: string | undefined | null
+): boolean {
+   if (!warranty) return false;
    return /lifetime/i.test(warranty);
+}
+
+export function getEncodedVariantURI(variantId: string | number): string {
+   return window.btoa(getProductVariantURI(variantId));
+}
+
+export function getVariantIdFromEncodedVariantURI(
+   encodedShopifyVariantURI: string
+): string {
+   const shopifyVariantURIDecoded = window.atob(encodedShopifyVariantURI);
+   return getVariantIdFromVariantURI(shopifyVariantURIDecoded);
+}
+
+export function getVariantIdFromVariantURI(variantURI: string): string {
+   if (!variantURI.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return variantURI.replace(/^gid:\/\/shopify\/ProductVariant\//, '');
+}
+
+export function getProductVariantURI(variantId: string | number): string {
+   return `gid://shopify/ProductVariant/${variantId}`;
 }

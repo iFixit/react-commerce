@@ -1,6 +1,7 @@
-import { Box, Flex, forwardRef, Heading } from '@chakra-ui/react';
+import { Flex, forwardRef, Heading } from '@chakra-ui/react';
 import { ResponsiveImage } from '@ifixit/ui';
 import { ImageProps } from 'next/image';
+import { PrerenderedHTML } from '@components/common';
 
 interface ProductListCardProps {
    variant?: 'small' | 'medium';
@@ -18,13 +19,10 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
             ? {
                  height: 48,
                  width: 48,
-                 layout: 'fixed',
-                 objectFit: 'contain',
               }
             : {
-                 sizes: '20vw',
-                 layout: 'fill',
-                 objectFit: 'cover',
+                 height: 80,
+                 width: 80,
               };
       return (
          <Flex
@@ -45,13 +43,13 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
             borderRadius="base"
             borderStyle="solid"
             p="2"
-            align="center"
+            align="flex-start"
             h="full"
             minH="16"
             {...other}
          >
             {productList.imageUrl && (
-               <Box
+               <Flex
                   w={Number(imageSizeProps.width) / 4}
                   h={Number(imageSizeProps.height) / 4}
                   position="relative"
@@ -60,19 +58,24 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   borderRadius="base"
                   borderStyle="solid"
                   boxSizing="content-box"
+                  alignItems="center"
                   bgColor="white"
                   mr="2"
+                  flexShrink={0}
+                  overflow="hidden"
                >
                   <ResponsiveImage
                      src={productList.imageUrl}
                      alt=""
+                     style={{ objectFit: 'contain' }}
                      priority
                      {...imageSizeProps}
                   />
-               </Box>
+               </Flex>
             )}
             <Flex
                boxSizing="border-box"
+               h="full"
                justify="center"
                direction="column"
                flexGrow={1}
@@ -81,14 +84,13 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                   {productList.title}
                </Heading>
                {variant === 'medium' && productList.description && (
-                  <Box
+                  <PrerenderedHTML
+                     html={productList.description}
+                     template="commerce"
                      mt="1"
-                     display={{ base: 'none', md: 'block' }}
                      color="gray.600"
                      fontSize="sm"
-                     dangerouslySetInnerHTML={{
-                        __html: productList.description,
-                     }}
+                     lineHeight="shorter"
                   />
                )}
             </Flex>

@@ -15,22 +15,28 @@
  * @see https://playwright.dev/docs/test-fixtures
  */
 
-import { test as base, expect, Page, Locator } from '@playwright/test';
-import { graphql, rest } from 'msw';
-import type { ProductFixtures, CustomNextjsServer } from './fixtures';
-import { ProductPage, CartDrawer, Server } from './fixtures';
+import { test as base, expect, Locator } from '@playwright/test';
+import { ProductFixtures, CustomNextjsServer } from './fixtures';
+import {
+   PartsPage,
+   ProductPage,
+   CartDrawer,
+   Server,
+   findProductQueryMock,
+   getProductListMock,
+   traceOutputDirTemplate,
+} from './fixtures';
 import type { MockServiceWorker } from 'playwright-msw';
 import { createWorkerFixture } from 'playwright-msw';
 import { format } from 'util';
 import { handlers } from './msw/handlers';
 import { exec } from 'node:child_process';
+import { cloneDeep } from 'lodash';
 
-export const test = base.extend<
+const test = base.extend<
    ProductFixtures &
       CustomNextjsServer & {
          clientRequestHandler: MockServiceWorker;
-         graphql: typeof graphql;
-         rest: typeof rest;
       }, // Test Fixture types are passed as the first template parameter
    { customServer: CustomNextjsServer } // Worker Fixture types are passed as the second template parameter
 >({
@@ -62,11 +68,25 @@ export const test = base.extend<
    productPage: async ({ page, baseURL }, use) => {
       await use(new ProductPage(page, baseURL ?? 'http://localhost:3000'));
    },
+   partsPage: async ({ page, baseURL }, use) => {
+      await use(new PartsPage(page, baseURL ?? 'http://localhost:3000'));
+   },
    cartDrawer: async ({ page }, use) => {
       await use(new CartDrawer(page));
    },
-   graphql,
-   rest,
+   testInfo: [
+      // eslint-disable-next-line no-empty-pattern
+      async ({}, use, testInfo) => {
+         testInfo.outputDir = traceOutputDirTemplate(testInfo);
+         await use(testInfo);
+      },
+      { scope: 'test', auto: true },
+   ],
+   // eslint-disable-next-line no-empty-pattern
+   findProductQueryMock: async ({}, use) => {
+      await use(cloneDeep(findProductQueryMock));
+   },
+   getProductListMock,
    clientRequestHandler: createWorkerFixture(handlers),
    /**
     * The following fixtures are dependent on the customServer fixture. By being
@@ -76,8 +96,9 @@ export const test = base.extend<
     * test to ensure the custom server is booted.
     */
    serverRequestInterceptor: [
-      async ({ customServer, productPage }, use) => {
+      async ({ customServer, productPage, partsPage }, use) => {
          productPage.updateBaseURL(`http://localhost:${customServer.port}`);
+         partsPage.updateBaseURL(`http://localhost:${customServer.port}`);
          await use(customServer.serverRequestInterceptor);
       },
       { scope: 'test' },
@@ -88,6 +109,19 @@ export const test = base.extend<
       },
       { scope: 'test' },
    ],
+});
+
+test.beforeEach(async ({ context }) => {
+   // Add dev-api-psk cookie to context so that we can make authenticated
+   // requests to the dev API from the playwright tests in gh action runners.
+   await context.addCookies([
+      {
+         name: 'dev-api-psk',
+         value: process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN || 'filler-token',
+         path: '/',
+         domain: '.cominor.com',
+      },
+   ]);
 });
 
 expect.extend({
@@ -138,4 +172,4 @@ expect.extend({
    },
 });
 
-export { expect };
+export { test, expect };

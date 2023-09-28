@@ -1,25 +1,11 @@
+/** @type {import('next').NextConfig} */
+
 const {
    getLegacyPartItemTypeRedirects,
 } = require('./next-config/redirects/part-collections');
 const {
    getLegacyToolRedirects,
 } = require('./next-config/redirects/tool-collections');
-
-const withTM = require('next-transpile-modules')([
-   '@ifixit/analytics',
-   '@ifixit/app',
-   '@ifixit/auth-sdk',
-   '@ifixit/breadcrumbs',
-   '@ifixit/cart-sdk',
-   '@ifixit/footer',
-   '@ifixit/helpers',
-   '@ifixit/icons',
-   '@ifixit/ifixit-api-client',
-   '@ifixit/newsletter-sdk',
-   '@ifixit/sentry',
-   '@ifixit/shopify-storefront-client',
-   '@ifixit/ui',
-]);
 
 const { withSentryConfig } = require('@sentry/nextjs');
 
@@ -51,9 +37,44 @@ console.log('Strapi API: ' + strapiOrigin);
 console.log('iFixit API: ' + process.env.NEXT_PUBLIC_IFIXIT_ORIGIN);
 
 const moduleExports = {
+   transpilePackages: [
+      '@ifixit/analytics',
+      '@ifixit/app',
+      '@ifixit/auth-sdk',
+      '@ifixit/breadcrumbs',
+      '@ifixit/cart-sdk',
+      '@ifixit/footer',
+      '@ifixit/helpers',
+      '@ifixit/icons',
+      '@ifixit/ifixit-api-client',
+      '@ifixit/local-storage',
+      '@ifixit/newsletter-sdk',
+      '@ifixit/sentry',
+      '@ifixit/shopify-storefront-client',
+      '@ifixit/ui',
+      '@ifixit/menu',
+      '@ifixit/tracking-hooks',
+   ],
    distDir: process.env.NEXT_DIST_DIR ?? '.next',
    env: {
       NEXT_PUBLIC_STRAPI_ORIGIN: strapiOrigin,
+   },
+   async headers() {
+      return [
+         {
+            // Nnoindex all responses. Requests to www.ifixit.com that go
+            // through cloudfront will have this header stripped off by a
+            // cloudfront function. This effectively noindexes all vercel urls
+            // that our pages are served from.
+            source: '/:path*',
+            headers: [
+               {
+                  key: 'x-robots-tag',
+                  value: 'noindex, nofollow, nosnippet, noarchive, noimageindex',
+               },
+            ],
+         },
+      ];
    },
    async rewrites() {
       return [
@@ -93,18 +114,23 @@ const moduleExports = {
             permanent: true,
          },
          {
-            source: '/products/pro-tech-toolkit',
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Store/Tools/Pro-Tech-Toolkit/IF145-307`,
-            permanent: false,
-         },
-         {
-            source: '/products/manta-driver-kit-112-bit-driver-kit',
-            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Store/Tools/Manta-Driver-Kit--112-Bit-Driver-Kit/IF145-392`,
-            permanent: false,
+            source: '/Troubleshooting/sitemap.xml',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/troubleshooting.xml`,
+            permanent: true,
          },
          {
             source: '/Parts/Over-Ear_Headphone',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Headphone`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/Wii',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/Nintendo_Wii`,
+            permanent: true,
+         },
+         {
+            source: '/Tools/Computer',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/PC`,
             permanent: true,
          },
       ];
@@ -123,6 +149,7 @@ const moduleExports = {
          'guide-images.cdn.ifixit.com',
          process.env.STRAPI_IMAGE_DOMAIN,
       ].filter((domain) => domain),
+      minimumCacheTTL: 3600,
    },
    i18n: {
       locales: ['en-US'],
@@ -137,7 +164,6 @@ const moduleExports = {
       return config;
    },
    sentry: {
-      autoInstrumentServerFunctions: false,
       // Upload artifacts in dist/framework as well; this includes sourcemaps
       // for react and other next.js code
       widenClientFileUpload: true,
@@ -146,12 +172,13 @@ const moduleExports = {
          disableClientWebpackPlugin: true,
       }),
    },
+   swcMinify: false,
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(
-   withBundleStats(withBundleAnalyzer(withTM(moduleExports))),
+   withBundleStats(withBundleAnalyzer(moduleExports)),
    SENTRY_AUTH_TOKEN ? sentryWebpackPluginOptions : undefined
 );
 

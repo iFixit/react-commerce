@@ -14,7 +14,7 @@ export default function LandingPage({
    activities: Activity[];
    patrolEnabled: boolean;
 }) {
-   const [user, setUser] = useState({});
+   const [user, _setUser] = useState({});
    const [privileges, setPrivileges] = useState({
       isLoggedIn: false,
       isMod: false,
@@ -51,7 +51,6 @@ export default function LandingPage({
          <NavigationDisplay
             title={siteTitle}
             privileges={privileges}
-            setUser={setUser}
             patrolEnabled={patrolEnabled}
          />
          <InfoDisplay userLang={lang ? lang : getLocale()} />

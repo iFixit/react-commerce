@@ -4,7 +4,7 @@ services:
       build: .
       environment:
          NODE_ENV: production
-         STRAPI_VERSION: 4.6.2
+         STRAPI_VERSION: 4.13.6
          SEED_DB: 'true'
          STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS: '${STRAPI_ADMIN_ENABLE_ADDONS_DANGEROUS_ACTIONS}'
          DATABASE_CLIENT: postgres
@@ -18,12 +18,7 @@ services:
       ports:
          - '${HOST_PORT:-1337}:1337'
       volumes:
-         - uploads:/opt/app/public/uploads
-         - ./config:/opt/app/config
-         - ./src:/opt/app/src
-         - ./package.json:/opt/package.json
-         - ./yarn.lock:/opt/yarn.lock
-         - ./.env:/opt/app/.env
+         - ./public:/opt/public
       depends_on:
          - postgres
       command: 'strapi start'
@@ -39,4 +34,3 @@ services:
 
 volumes:
    db_data:
-   uploads:

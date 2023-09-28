@@ -13,7 +13,7 @@ export interface Cart {
       price: Money;
       compareAtPrice?: Money | null | undefined;
    };
-   upsellProducts: UpsellProduct[];
+   crossSellProducts: CrossSellProduct[];
 }
 
 export interface CartLineItem {
@@ -48,9 +48,10 @@ export interface APICart {
    miniCart: {
       products: MiniCartProduct[];
    };
-   upsellProducts: APIUpsellProduct[];
+   crossSellProducts: APICrossSellProduct[];
 }
-export interface UpsellProduct {
+export interface CrossSellProduct {
+   marketingHeading: string | null;
    marketingTitle: string | null;
    marketingBlurb: string | null;
    itemcode: string;
@@ -63,7 +64,7 @@ export interface UpsellProduct {
    handle: string;
 }
 
-interface APIUpsellProduct {
+interface APICrossSellProduct {
    compare_at_price: string | null;
    handle: string;
    imageSrc: string | null;
@@ -91,6 +92,7 @@ export interface APICartProduct {
    maxToAdd: number;
    name: string;
    quantity: number;
+   retailDiscount: string;
    subPrice: string;
    subPriceStr: string;
    subTotal: string;

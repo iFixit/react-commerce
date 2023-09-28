@@ -1,0 +1,8 @@
+fragment QuoteGallerySectionFields on ComponentSectionQuoteGallery {
+   id
+   title
+   description
+   quotes {
+      ...QuoteCardFields
+   }
+}

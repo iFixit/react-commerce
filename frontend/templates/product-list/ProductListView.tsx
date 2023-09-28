@@ -1,108 +1,204 @@
-import { VStack } from '@chakra-ui/react';
+import { BannersSection } from '@components/sections/BannersSection';
+import { FAQsSection } from '@components/sections/FAQsSection';
+import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
+import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
+import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
-import { Wrapper } from '@ifixit/ui';
-import { ProductList, ProductListSectionType } from '@models/product-list';
-import { Configure, Index } from 'react-instantsearch-hooks-web';
+import type { ProductList } from '@models/product-list';
+import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
+import { Configure, useMenu } from 'react-instantsearch';
+import { useAvailableItemTypes } from './hooks/useAvailableItemTypes';
+import { useItemTypeProductList } from './hooks/useItemTypeProductList';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
-   BannerSection,
-   FeaturedProductListSection,
+   FeaturedProductListsSection,
    FilterableProductsSection,
    HeroSection,
    ProductListChildrenSection,
-   ProductListSetSection,
    RelatedPostsSection,
 } from './sections';
-import { HeroWithBackgroundSection } from './sections/HeroWithBackgroundSection';
+
+const HITS_PER_PAGE = 24;
 
 export interface ProductListViewProps {
    productList: ProductList;
-   indexName: string;
+   algoliaSSR?: boolean;
 }
 
 export function ProductListView({
    productList,
-   indexName,
+   algoliaSSR,
 }: ProductListViewProps) {
+   // This temporary hack allows to correctly populate the itemType facet during SSR
+   // see: https://github.com/algolia/instantsearch/issues/5571
+   const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
+
+   const itemTypeProductList = useItemTypeProductList(productList);
+   const availableItemTypes = useAvailableItemTypes();
+
+   const currentProductList = itemTypeProductList ?? productList;
+
+   if (algoliaSSR) {
+      return (
+         <>
+            <Configure
+               filters={filters}
+               hitsPerPage={HITS_PER_PAGE}
+               facetingAfterDistinct
+            />
+            <FilterableProductsSection
+               productList={currentProductList}
+               algoliaSSR={algoliaSSR}
+            />
+         </>
+      );
+   }
 
    return (
       <>
+         <Configure
+            filters={filters}
+            hitsPerPage={HITS_PER_PAGE}
+            facetingAfterDistinct
+         />
+         <MetaTags productList={currentProductList} />
          <SecondaryNavigation productList={productList} />
-         <Wrapper py={{ base: 4, md: 6 }}>
-            <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
-               <Index indexName={indexName} indexId="main-product-list-index">
-                  <Configure filters={filters} hitsPerPage={24} />
-                  <MetaTags productList={productList} />
-                  {productList.heroImage ? (
-                     <HeroWithBackgroundSection productList={productList} />
-                  ) : (
-                     <HeroSection productList={productList} />
-                  )}
-                  {productList.children.length > 0 && (
-                     <ProductListChildrenSection productList={productList} />
-                  )}
-                  <FilterableProductsSection productList={productList} />
-               </Index>
-               {productList.sections.map((section, index) => {
-                  switch (section.type) {
-                     case ProductListSectionType.Banner: {
+         <div>
+            {currentProductList.sections.map((section) => {
+               switch (section.type) {
+                  case 'Hero': {
+                     return (
+                        <HeroSection
+                           key={section.id}
+                           title={
+                              currentProductList.h1 ?? currentProductList.title
+                           }
+                           tagline={currentProductList.tagline}
+                           description={currentProductList.description}
+                           backgroundImage={currentProductList.heroImage}
+                           brandLogo={currentProductList.brandLogo}
+                        />
+                     );
+                  }
+                  case 'ProductsListChildren': {
+                     if (productList.children.length === 0) return null;
+
+                     return (
+                        <ProductListChildrenSection
+                           key={section.id}
+                           productList={productList}
+                        />
+                     );
+                  }
+                  case 'FilterableProducts': {
+                     return (
+                        <FilterableProductsSection
+                           key={section.id}
+                           productList={productList}
+                        />
+                     );
+                  }
+                  case 'LifetimeWarranty': {
+                     return (
+                        <LifetimeWarrantySection
+                           key={section.id}
+                           variant="banner"
+                           title={section.title}
+                           description={section.description}
+                           callToAction={section.callToAction}
+                        />
+                     );
+                  }
+                  case 'RelatedPosts': {
+                     const tags = [productList.title].concat(
+                        section.tags?.split(',').map((tag) => tag.trim()) || []
+                     );
+                     return (
+                        <RelatedPostsSection key={section.id} tags={tags} />
+                     );
+                  }
+                  case 'FeaturedProductLists': {
+                     const { title, productLists } = section;
+                     if (productLists.length > 0) {
                         return (
-                           <BannerSection
-                              key={index}
-                              title={section.title}
-                              description={section.description}
-                              callToActionLabel={section.callToActionLabel}
-                              url={section.url}
+                           <FeaturedProductListsSection
+                              key={section.id}
+                              title={title}
+                              productLists={productLists}
                            />
                         );
                      }
-                     case ProductListSectionType.RelatedPosts: {
-                        const tags = [productList.title].concat(
-                           section.tags?.split(',').map((tag) => tag.trim()) ||
-                              []
-                        );
-                        return <RelatedPostsSection key={index} tags={tags} />;
-                     }
-                     case ProductListSectionType.FeaturedProductList: {
-                        const { productList } = section;
-                        if (productList) {
-                           return (
-                              <FeaturedProductListSection
-                                 key={index}
-                                 productList={productList}
-                                 index={index}
-                              />
-                           );
-                        }
-                        return null;
-                     }
-                     case ProductListSectionType.ProductListSet: {
-                        const { title, productLists } = section;
-                        if (productLists.length > 0) {
-                           return (
-                              <ProductListSetSection
-                                 key={index}
-                                 title={title}
-                                 productLists={productLists}
-                              />
-                           );
-                        }
-                        return null;
-                     }
-                     default: {
-                        console.warn(
-                           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                           // @ts-ignore
-                           `Section ${section.__typename} not implemented`
-                        );
-                        return null;
-                     }
+                     return null;
                   }
-               })}
-            </VStack>
-         </Wrapper>
+                  case 'Banners': {
+                     return (
+                        <BannersSection
+                           key={section.id}
+                           id={section.id}
+                           banners={section.banners}
+                        />
+                     );
+                  }
+                  case 'SplitWithImage': {
+                     return (
+                        <SplitWithImageContentSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           image={section.image}
+                           imagePosition={section.imagePosition}
+                           callToAction={section.callToAction}
+                        />
+                     );
+                  }
+                  case 'QuoteGallery': {
+                     return (
+                        <QuoteGallerySection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           quotes={section.quotes}
+                        />
+                     );
+                  }
+                  case 'PressQuotes': {
+                     return (
+                        <PressQuotesSection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                           callToAction={section.callToAction}
+                           quotes={section.quotes}
+                        />
+                     );
+                  }
+                  case 'FAQs': {
+                     return (
+                        <FAQsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           faqs={section.faqs}
+                           relevantItemTypes={availableItemTypes}
+                        />
+                     );
+                  }
+                  default: {
+                     console.warn(
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        `Section ${section.__typename} not implemented`
+                     );
+                     return null;
+                  }
+               }
+            })}
+         </div>
       </>
    );
 }

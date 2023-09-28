@@ -9,12 +9,3 @@ fragment BrowseSectionFields on ComponentPageBrowse {
       ...CategoryFields
    }
 }
-
-fragment CategoryFields on ComponentPageCategory {
-   id
-   productList {
-      data {
-         ...ProductListFields
-      }
-   }
-}

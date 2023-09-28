@@ -60,6 +60,18 @@ export function withTiming<ARGS extends Array<any>, RETURN>(
    };
 }
 
+export function withSyncTiming<ARGS extends Array<any>, RETURN>(
+   name: string,
+   syncFunction: (...args: ARGS) => RETURN
+) {
+   return (...args: ARGS) => {
+      const done = time(name);
+      const ret = syncFunction(...args);
+      done();
+      return ret;
+   };
+}
+
 function noOp() {}
 const silentTimer = function (timerName: string) {
    return noOp;
@@ -78,6 +90,10 @@ const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
 
 export function isPresent(text: string | null | undefined): text is string {
    return typeof text === 'string' && text.length > 0;
+}
+
+export function presentOrNull(text: string | null | undefined): string | null {
+   return isPresent(text) ? text : null;
 }
 
 export function filterNullableItems<I>(

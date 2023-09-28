@@ -1,0 +1,74 @@
+fragment ProductVariantFields on ProductVariant {
+   id
+   title
+   sku
+   quantityAvailable
+   image {
+      ...ImageFields
+   }
+   price {
+      amount
+      currencyCode
+   }
+   compareAtPrice {
+      amount
+      currencyCode
+   }
+   proPricesByTier: metafield(namespace: "ifixit", key: "price_tiers") {
+      value
+   }
+   selectedOptions {
+      name
+      value
+   }
+   description: metafield(namespace: "ifixit", key: "description") {
+      value
+   }
+   kitContents: metafield(namespace: "ifixit", key: "kit_contents") {
+      value
+   }
+   assemblyContents: metafield(namespace: "ifixit", key: "assembly_contents") {
+      value
+   }
+   note: metafield(namespace: "ifixit", key: "note") {
+      value
+   }
+   disclaimer: metafield(namespace: "ifixit", key: "disclaimer") {
+      value
+   }
+   warning: metafield(namespace: "ifixit", key: "warning") {
+      value
+   }
+   specifications: metafield(namespace: "ifixit", key: "specifications") {
+      value
+   }
+   warranty: metafield(namespace: "ifixit", key: "warranty") {
+      value
+   }
+   enabled: metafield(namespace: "ifixit", key: "enabled2") {
+      value
+   }
+   disableWhenOOS: metafield(namespace: "ifixit", key: "disable_when_oos") {
+      value
+   }
+   crossSell: metafield(namespace: "ifixit", key: "cross_sell_ref") {
+      references(first: 2) {
+         nodes {
+            __typename
+            ...ProductPreviewFields
+         }
+      }
+   }
+   internalDisplayName: metafield(
+      namespace: "ifixit"
+      key: "internal_display_name"
+   ) {
+      value
+   }
+   shippingRestrictions: metafield(
+      namespace: "ifixit"
+      key: "shipping_restrictions"
+   ) {
+      value
+   }
+}

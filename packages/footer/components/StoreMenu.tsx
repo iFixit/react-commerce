@@ -11,7 +11,7 @@ import {
    MenuItemProps,
    Text,
 } from '@chakra-ui/react';
-import { useTrackedOnClick } from '../hooks/useTrackedOnClick';
+import { useTrackedOnClick } from '@ifixit/tracking-hooks';
 
 type StoreMenuButtonProps = MenuButtonProps & {
    icon?: React.ReactNode;
@@ -22,6 +22,7 @@ export const StoreMenuButton = forwardRef<StoreMenuButtonProps, 'button'>(
       return (
          <MenuButton
             ref={ref}
+            fontSize="sm"
             color="gray.300"
             _hover={{ color: 'white' }}
             {...otherProps}

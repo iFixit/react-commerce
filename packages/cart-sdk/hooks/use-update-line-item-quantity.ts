@@ -19,6 +19,7 @@ export function useUpdateLineItemQuantity() {
       async (input) => {
          return iFixitApiClient.post(
             `store/user/cart/product/${input.itemcode}`,
+            'update-line-item-quantity',
             {
                body: JSON.stringify({
                   quantity: input.quantity,

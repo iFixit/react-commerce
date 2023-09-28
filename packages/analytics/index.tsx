@@ -42,7 +42,10 @@ export function trackAddToCart(
    const itemcodes =
       addToCartInput.type === 'product'
          ? addToCartInput.product.itemcode
-         : addToCartInput.bundle.items.map((item) => item.itemcode).join(', ');
+         : `${addToCartInput.bundle.currentItemCode}/` +
+           `${addToCartInput.bundle.items
+              .map((item) => item.itemcode)
+              .join(', ')}`;
    trackInMatomoAndGA({
       eventCategory: event,
       eventAction: `${event} - ${itemcodes}`,

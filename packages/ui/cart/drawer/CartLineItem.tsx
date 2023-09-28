@@ -5,7 +5,6 @@ import {
    Flex,
    HStack,
    IconButton,
-   IconButtonProps,
    Link,
    Text,
    useToast,
@@ -23,9 +22,10 @@ import {
    useRemoveLineItem,
    useUpdateLineItemQuantity,
 } from '@ifixit/cart-sdk';
+import { trackGA4AddToCart, trackGA4RemoveFromCart } from '@ifixit/analytics';
+import { getVariantIdFromEncodedVariantURI } from '@ifixit/helpers';
 import { multiplyMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
-import { motion } from 'framer-motion';
 import * as React from 'react';
 import { ProductVariantPrice } from '../../commerce';
 import { CartLineItemImage } from './CartLineItemImage';
@@ -70,6 +70,21 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
          itemcode: lineItem.itemcode,
          quantity: 1,
       });
+      trackGA4AddToCart({
+         currency: lineItem.price.currencyCode,
+         value: Number(lineItem.price.amount),
+         items: [
+            {
+               item_id: lineItem.itemcode,
+               item_name: lineItem.name + ' ' + lineItem.variantTitle,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  lineItem.shopifyVariantId
+               ),
+               price: Number(lineItem.price.amount),
+               quantity: 1,
+            },
+         ],
+      });
    };
 
    const decrementQuantity = () => {
@@ -77,15 +92,46 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
          itemcode: lineItem.itemcode,
          quantity: -1,
       });
+      trackGA4RemoveFromCart({
+         currency: lineItem.price.currencyCode,
+         value: Number(lineItem.price.amount),
+         items: [
+            {
+               item_id: lineItem.itemcode,
+               item_name: lineItem.name + ' ' + lineItem.variantTitle,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  lineItem.shopifyVariantId
+               ),
+               price: Number(lineItem.price.amount),
+               quantity: 1,
+            },
+         ],
+      });
    };
 
-   const handleRemoveLineItem = () =>
+   const handleRemoveLineItem = () => {
       removeLineItem.mutate({
          itemcode: lineItem.itemcode,
       });
+      trackGA4RemoveFromCart({
+         currency: lineItem.price.currencyCode,
+         value: Number(lineItem.price.amount) * lineItem.quantity,
+         items: [
+            {
+               item_id: lineItem.itemcode,
+               item_name: lineItem.name + ' ' + lineItem.variantTitle,
+               item_variant: getVariantIdFromEncodedVariantURI(
+                  lineItem.shopifyVariantId
+               ),
+               price: Number(lineItem.price.amount),
+               quantity: lineItem.quantity,
+            },
+         ],
+      });
+   };
 
    return (
-      <Flex direction="column" w="full" p="3">
+      <Flex direction="column" w="full" p="3" bgColor="white">
          <Flex w="full" justify="space-between" align="flex-start">
             <HStack spacing="3" align="flex-start">
                <CartLineItemImage src={lineItem.imageSrc} alt={lineItem.name} />
@@ -113,7 +159,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                         borderWidth="1px"
                         borderRadius="md"
                      >
-                        <MotionIconButton
+                        <IconButton
                            aria-label="Decrease quantity by one"
                            variant="ghost"
                            color="gray.500"
@@ -125,9 +171,6 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               />
                            }
                            size="xs"
-                           whileTap={{
-                              scale: 0.9,
-                           }}
                            disabled={lineItem.quantity <= 1}
                            onClick={decrementQuantity}
                            data-testid="cart-drawer-decrease-quantity"
@@ -139,7 +182,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                         >
                            {lineItem.quantity}
                         </Text>
-                        <MotionIconButton
+                        <IconButton
                            aria-label="Increase quantity by one"
                            variant="ghost"
                            color="gray.500"
@@ -151,9 +194,6 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               />
                            }
                            size="xs"
-                           whileTap={{
-                              scale: 0.9,
-                           }}
                            disabled={
                               lineItem.maxToAdd != null &&
                               lineItem.quantity >= lineItem.maxToAdd
@@ -214,5 +254,3 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
       </Flex>
    );
 }
-
-const MotionIconButton = motion<IconButtonProps>(IconButton);

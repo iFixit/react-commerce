@@ -1,6 +1,10 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { withCacheLong } from '@helpers/cache-control-helpers';
-import { withLogging, withNoindexDevDomains } from '@helpers/next-helpers';
+import {
+   CacheLong,
+   hasDisableCacheGets,
+   withCache,
+} from '@helpers/cache-control-helpers';
+import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
@@ -12,21 +16,27 @@ import { ProductTemplateProps } from './hooks/useProductTemplateProps';
 
 const withMiddleware = compose(
    withLogging<ProductTemplateProps>,
-   withCacheLong<ProductTemplateProps>,
-   withNoindexDevDomains<ProductTemplateProps>
+   withCache(CacheLong)<ProductTemplateProps>
 );
 
 export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
    withMiddleware(async (context) => {
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
+      const forceMiss = hasDisableCacheGets(context);
       const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
+         forceMiss,
       });
-      const product = await Product.get({
-         handle,
-         storeCode: DEFAULT_STORE_CODE,
-      });
+      const ifixitOrigin = ifixitOriginFromHost(context);
+      const product = await Product.get(
+         {
+            handle,
+            storeCode: DEFAULT_STORE_CODE,
+            ifixitOrigin,
+         },
+         { forceMiss }
+      );
 
       if (product == null) {
          return {
@@ -71,7 +81,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
             stores: storesWithProductUrls,
          },
          appProps: {
-            ifixitOrigin: ifixitOriginFromHost(context),
+            ifixitOrigin: ifixitOrigin,
          },
          product,
       };

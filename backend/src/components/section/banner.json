@@ -1,0 +1,14 @@
+{
+   "collectionName": "components_section_banners",
+   "info": {
+      "displayName": "banner"
+   },
+   "options": {},
+   "attributes": {
+      "banners": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::banner.banner"
+      }
+   }
+}

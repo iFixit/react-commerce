@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchBox } from 'react-instantsearch-hooks-web';
+import { useSearchBox } from 'react-instantsearch';
 
 type SearchQueryContext = {
    searchQuery: string;
@@ -10,8 +10,8 @@ export const SearchQueryContext =
    React.createContext<SearchQueryContext | null>(null);
 
 export const SearchQueryProvider = ({ children }: React.PropsWithChildren) => {
-   const { query } = useSearchBox();
-   const [searchQuery, setSearchQuery] = React.useState(query);
+   const { query: initialQuery } = useSearchBox();
+   const [searchQuery, setSearchQuery] = React.useState(initialQuery);
    return (
       <SearchQueryContext.Provider value={{ searchQuery, setSearchQuery }}>
          {children}
@@ -19,7 +19,7 @@ export const SearchQueryProvider = ({ children }: React.PropsWithChildren) => {
    );
 };
 
-export const useSearchQueryContext = () => {
+export const useSearchQuery = () => {
    const context = React.useContext(SearchQueryContext);
    if (!context) {
       throw new Error(

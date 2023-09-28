@@ -4,9 +4,9 @@ runs:
    using: 'composite'
    steps:
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v2.2.4
         with:
-           version: 7
+           version: 8
            run_install: false
 
       - name: Get pnpm store directory
@@ -15,7 +15,7 @@ runs:
         run: |
            echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
         env:
-           FONT_AWESOME_NPM_TOKEN: doesntmatter
+           VERDACCIO_AUTH_TOKEN: doesntmatter
 
       - uses: actions/cache@v3
         name: Setup pnpm cache

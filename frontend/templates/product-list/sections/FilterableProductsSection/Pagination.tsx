@@ -10,12 +10,9 @@ import {
    Pagination as BasePagination,
    PaginationItem,
    PaginationLink,
-   useIsMounted,
+   useIsMountedState,
 } from '@ifixit/ui';
-import {
-   usePagination,
-   UsePaginationProps,
-} from 'react-instantsearch-hooks-web';
+import { usePagination, UsePaginationProps } from 'react-instantsearch';
 
 type PaginationProps = UsePaginationProps;
 
@@ -27,7 +24,7 @@ export function Pagination(props: PaginationProps) {
       sm: 5,
       lg: 7,
    });
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const visibleNumberOfPages = isMounted ? responsiveVisibleNumberOfPages : 3;
 
    const createPageUrl = (page: number) => {
@@ -41,7 +38,7 @@ export function Pagination(props: PaginationProps) {
    }
 
    return (
-      <HStack justify="center">
+      <HStack justify="center" borderTopWidth="1px">
          <BasePagination
             numberOfPages={nbPages}
             page={currentRefinement + 1}

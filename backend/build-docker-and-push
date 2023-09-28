@@ -5,12 +5,16 @@ set -eu
 GIT_REF=$(git rev-parse HEAD)
 DOCKER_TAG="strapi:$GIT_REF"
 # iFixit AWS ECR for strapi
-ECR_TAG="884681002735.dkr.ecr.us-east-1.amazonaws.com/$DOCKER_TAG"
+REGISTRY="884681002735.dkr.ecr.us-east-1.amazonaws.com"
 
 echo "Building docker image"
 docker build -t "$DOCKER_TAG" .
-docker tag "$DOCKER_TAG" "$ECR_TAG"
+docker tag "$DOCKER_TAG" "$REGISTRY/$DOCKER_TAG"
+docker tag "$DOCKER_TAG" "$REGISTRY/strapi:latest"
 
 echo "Logging into ECR..."
 $(aws ecr get-login --no-include-email --region us-east-1)
-docker push "$ECR_TAG"
+
+echo "Pushing image..."
+docker push "$REGISTRY/$DOCKER_TAG"
+docker push "$REGISTRY/strapi:latest"

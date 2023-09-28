@@ -1,1 +1,1 @@
-export * from './ProductEditMenu';
+export * from './PageEditMenu';

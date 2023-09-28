@@ -1,11 +1,13 @@
+import { PageEditMenuLink } from '@components/admin';
+import { STRAPI_ORIGIN } from '@config/env';
+import { faDatabase } from '@fortawesome/pro-solid-svg-icons';
+import { isPresent } from '@ifixit/helpers';
 import { FacetWidgetType, ProductListType } from '@models/product-list';
 import { z } from 'zod';
 
 type ProductListAttributes = {
    filters?: string | null;
    deviceTitle?: string | null;
-   type?: ProductListType | null;
-   itemType?: string | null;
 };
 
 export function computeProductListAlgoliaFilterPreset<
@@ -55,6 +57,7 @@ export function stylizeDeviceTitle(deviceTitle: string): string {
 type ProductListTitleAttributes = {
    type: ProductListType;
    title: string;
+   h1?: string | null;
 };
 
 export function getProductListTitle(
@@ -64,7 +67,7 @@ export function getProductListTitle(
    if (productList.type === ProductListType.DeviceParts && itemType) {
       return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
    }
-   return productList.title;
+   return isPresent(productList.h1) ? productList.h1 : productList.title;
 }
 
 const facetWidgetTypeMap: Record<string, FacetWidgetType> = {
@@ -89,4 +92,21 @@ export function isPartsProductList<
       productList.type === ProductListType.AllParts ||
       productList.type === ProductListType.DeviceParts
    );
+}
+
+type GetAdminLinksProps = {
+   productListId: string | null;
+};
+
+export function getAdminLinks({
+   productListId,
+}: GetAdminLinksProps): PageEditMenuLink[] {
+   if (!productListId) return [];
+   return [
+      {
+         icon: faDatabase,
+         label: 'Strapi',
+         url: `${STRAPI_ORIGIN}/admin/content-manager/collectionType/api::product-list.product-list/${productListId}`,
+      },
+   ];
 }

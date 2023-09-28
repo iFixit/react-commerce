@@ -47,7 +47,12 @@
             "page.browse",
             "page.stats",
             "page.split-with-image",
-            "page.press"
+            "page.press",
+            "section.featured-products",
+            "section.social-gallery",
+            "section.lifetime-warranty",
+            "section.banner",
+            "section.quote-gallery"
          ],
          "required": true
       }

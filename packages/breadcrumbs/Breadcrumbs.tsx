@@ -24,7 +24,7 @@ import { HiddenWrapEffect, useHiddenWrap } from './FlexHiddenWrap';
 
 export type BreadcrumbItem = {
    label: string;
-   url: string;
+   url?: string;
 };
 
 export interface BreadCrumbsProps {
@@ -142,7 +142,8 @@ const IFixitBreadcrumb = memo(function IFixitBreadcrumb({
             ...hiddenWrapProps,
             flexDirection: 'row-reverse',
             justifyContent: 'flex-end',
-            height: '20px',
+            height: '1.5em',
+            minHeight: '20px',
          }}
       >
          {BreadCrumbItems}
@@ -165,7 +166,7 @@ const IFixitBreadcrumbItem = function IFixitBreadcrumbItem({
          data-name={name}
       >
          <Text
-            as={Link}
+            as={url ? Link : undefined}
             noOfLines={1}
             href={url}
             fontWeight={isLast ? 500 : 400}
@@ -203,7 +204,7 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
          <Menu>
             <MenuButton
                as={IconButton}
-               aria-label="Options"
+               aria-label="More breadcrumbs"
                colorScheme="gray"
                background="gray.300"
                variant="solid"
@@ -233,7 +234,7 @@ function IFixitCollapsedBreadcrumbItem({
 }: BreadcrumbItem & MenuItemProps & LinkProps) {
    return (
       <MenuItem
-         as={Link}
+         as={url ? Link : undefined}
          color="gray.900"
          _visited={{ color: menuItemProps.color || 'gray.900' }}
          _hover={{ textDecoration: 'none' }}

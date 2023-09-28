@@ -1,0 +1,8 @@
+fragment PersonFields on ComponentGlobalPerson {
+   id
+   name
+   role
+   avatar {
+      ...ImageFields
+   }
+}

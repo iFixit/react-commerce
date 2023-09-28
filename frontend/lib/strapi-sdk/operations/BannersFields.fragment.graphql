@@ -1,0 +1,14 @@
+fragment BannerFields on BannerEntity {
+   id
+   attributes {
+      title
+      label
+      description
+      image {
+         ...ImageFields
+      }
+      callToAction {
+         ...CallToActionFields
+      }
+   }
+}

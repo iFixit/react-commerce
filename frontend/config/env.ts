@@ -35,6 +35,8 @@ export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
 
 export const GA_DEBUG = process.env.NEXT_PUBLIC_GA_DEBUG;
 
+export const GTAG_ID = process.env.NEXT_PUBLIC_GTAG_ID;
+
 export const ALGOLIA_PRODUCT_INDEX_NAME = requireEnvVariable(
    process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME,
    'NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME'
@@ -56,7 +58,18 @@ export const CACHE_DISABLED = process.env.NEXT_PUBLIC_CACHE_DISABLED === 'true';
 
 export const REDIS_URL = process.env.REDIS_URL;
 
+export const VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
+
+export const VERCEL_GIT_COMMIT_SHA =
+   process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
+
+export const VERCEL_HOST =
+   process.env.VERCEL_STABLE_HOST || process.env.VERCEL_URL;
+
 export const COLORLESS_LOGS = process.env.COLORLESS_LOGS;
+
+export const NEXT_PUBLIC_DEV_API_AUTH_TOKEN =
+   process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN;
 
 function requireEnvVariable(
    env: string | null | undefined,

@@ -1,8 +1,13 @@
 import { Flex } from '@chakra-ui/react';
+import { PageEditMenu } from '@components/admin';
 import { SecondaryNavbar } from '@components/common';
+import { getAdminLinks } from '@helpers/product-list-helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import { Wrapper } from '@ifixit/ui';
 import { ProductList, ProductListType } from '@models/product-list';
-import { ProductListBreadcrumb } from './ProductListBreadcrumb';
+import { useMemo } from 'react';
+import { useProductListBreadcrumbs } from './hooks/useProductListBreadcrumbs';
 import { ProductListDeviceNavigation } from './ProductListDeviceNavigation';
 
 interface SecondaryNavigationProps {
@@ -10,16 +15,22 @@ interface SecondaryNavigationProps {
 }
 
 export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
-   const isToolsProductList =
-      productList.type === ProductListType.AllTools ||
-      productList.type === ProductListType.ToolsCategory;
-   const hasDeviceNavigation =
-      productList.type !== ProductListType.AllParts && !isToolsProductList;
+   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const hasDeviceNavigation = productList.type === ProductListType.DeviceParts;
+   const breadcrumbs = useProductListBreadcrumbs(productList);
+
+   const adminLinks = useMemo(
+      () =>
+         getAdminLinks({
+            productListId: productList.id,
+         }),
+      [productList.id]
+   );
    return (
       <>
          <SecondaryNavbar
             display={{
-               base: hasDeviceNavigation ? 'initial' : 'none',
+               base: hasDeviceNavigation || isAdminUser ? 'initial' : 'none',
                sm: 'initial',
             }}
          >
@@ -30,14 +41,27 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                   boxSizing="border-box"
                   justify="space-between"
                >
-                  <ProductListBreadcrumb
+                  <BreadCrumbs
                      display={{
                         base: 'none',
                         sm: 'flex',
                      }}
-                     productList={productList}
+                     breadCrumbs={breadcrumbs}
+                     fontSize="sm"
                   />
-                  <ProductListDeviceNavigation productList={productList} />
+                  <Flex
+                     h="full"
+                     w={{ base: 'full', sm: 'min-content' }}
+                     boxSizing="border-box"
+                     justify="space-between"
+                     direction={{
+                        base: hasDeviceNavigation ? 'row' : 'row-reverse',
+                        sm: 'row',
+                     }}
+                  >
+                     <ProductListDeviceNavigation productList={productList} />
+                     {isAdminUser && <PageEditMenu links={adminLinks} />}
+                  </Flex>
                </Flex>
             </Wrapper>
          </SecondaryNavbar>
@@ -45,7 +69,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
          <SecondaryNavbar display={{ sm: 'none' }}>
             <Wrapper h="full">
                <Flex h="full" w="full" boxSizing="border-box">
-                  <ProductListBreadcrumb productList={productList} />
+                  <BreadCrumbs breadCrumbs={breadcrumbs} fontSize="sm" />
                </Flex>
             </Wrapper>
          </SecondaryNavbar>

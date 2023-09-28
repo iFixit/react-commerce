@@ -5,17 +5,11 @@ env:
    npm_config_userconfig: './.npmrc'
 jobs:
    playwright-run:
-      timeout-minutes: 15
+      timeout-minutes: 20
       strategy:
          fail-fast: false
          matrix:
-            project:
-               [
-                  'Desktop Chrome',
-                  'Desktop Firefox',
-                  'Mobile Chrome',
-                  'Tablet Chrome',
-               ]
+            project: ['Desktop Chrome', 'Mobile Chrome', 'Tablet Chrome']
       runs-on: ubuntu-latest
       steps:
          - name: Checkout
@@ -24,7 +18,7 @@ jobs:
          - name: Install Node.js
            uses: actions/setup-node@v3
            with:
-              node-version: 16
+              node-version: 18
 
          - name: Start strapi server
            run: cd backend && docker-compose up -d
@@ -35,49 +29,27 @@ jobs:
            uses: ./.github/actions/pnpm-setup
          - name: Install workspaces
            env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
            run: pnpm install
 
-         - name: Get installed Playwright version
-           id: playwright-version
-           run: echo "PLAYWRIGHT_VERSION=$(pnpm list -r "@playwright/test" | grep "@playwright/test" | tr -dc 1-9.)" >> $GITHUB_ENV
+         - name: Setup and cache playwright dependencies
+           uses: ./.github/actions/playwright-setup
 
-         - name: Cache playwright binaries
-           uses: actions/cache@v3
-           id: playwright-cache
+         - name: Build and cache frontend for with test setup
+           uses: ./.github/actions/build-test-frontend
            with:
-              path: ~/.cache/ms-playwright
-              key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-
-         - name: Install Playwright Dependencies
-           if: steps.playwright-cache.outputs.cache-hit != 'true'
-           run: cd frontend && npx playwright install
-
-         - name: Cache Next.js cache directory
-           uses: actions/cache@v3
-           with:
-              path: frontend/.next/cache
-              # Generate a new cache whenever packages or source files change.
-              key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-              # If source files changed but packages didn't, rebuild from a prior cache.
-              restore-keys: |
-                 ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
-         - name: Build Next.js
-           env:
-              NODE_ENV: test
-              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-           run: cd frontend && pnpm build
+              NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
 
          - name: Run Playwright Tests
            env:
               NODE_ENV: test
               NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+              NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
            run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}"
 
-         - uses: actions/upload-artifact@v2
+         - uses: actions/upload-artifact@v3
            if: failure()
            with:
               name: playwright-artifacts

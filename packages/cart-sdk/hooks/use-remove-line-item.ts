@@ -17,7 +17,8 @@ export function useRemoveLineItem() {
    const mutation = useMutation(
       async (input) => {
          await iFixitApiClient.delete(
-            `store/user/cart/product/${input.itemcode}`
+            `store/user/cart/product/${input.itemcode}`,
+            'remove-line-item'
          );
          return true;
       },

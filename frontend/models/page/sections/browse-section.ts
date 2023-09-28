@@ -1,7 +1,7 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
 import { BrowseSectionFieldsFragment } from '@lib/strapi-sdk';
-import { imageFromStrapi, ImageSchema } from '@models/shared/components/image';
+import { imageFromStrapi, ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import {
    BrowseCategory,
@@ -22,9 +22,9 @@ export const BrowseSectionSchema = z.object({
 
 export function browseSectionFromStrapi(
    fragment: BrowseSectionFieldsFragment | null | undefined,
-   index: number
+   _index: number
 ): BrowseSection | null {
-   const id = createSectionId(fragment, index);
+   const id = createSectionId(fragment);
    const title = fragment?.title ?? null;
    const description = fragment?.description ?? null;
    const categories: BrowseCategory[] = filterFalsyItems(

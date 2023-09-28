@@ -1,4 +1,4 @@
-import { usePaq } from './usePaq';
+import { matomoPush } from './matomoPush';
 
 /**
  * @see https://matomo.org/docs/event-tracking/
@@ -45,17 +45,13 @@ export type TrackEventMatomo = {
  * }
  */
 export const trackInMatomo = (trackData: TrackEventMatomo) => {
-   const _paq = usePaq();
-   if (!_paq) {
-      return;
-   }
    const dataWithEventName = {
       ...trackData,
       eventName:
          trackData.eventName ||
          `${window.location.origin}${window.location.pathname}`,
    };
-   _paq.push([
+   matomoPush([
       'trackEvent',
       dataWithEventName.eventCategory,
       dataWithEventName.eventAction,

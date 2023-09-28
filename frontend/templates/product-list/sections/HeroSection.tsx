@@ -2,92 +2,158 @@ import {
    Box,
    BoxProps,
    Button,
-   chakra,
    Flex,
    forwardRef,
    Heading,
+   Image as ChakraImage,
    Text,
    useDisclosure,
-   VStack,
 } from '@chakra-ui/react';
+import { PrerenderedHTML } from '@components/common';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
-import { getProductListTitle } from '@helpers/product-list-helpers';
-import { useIsMounted } from '@ifixit/ui';
-import { ProductList } from '@models/product-list';
+import { markdownToHTML } from '@helpers/ui-helpers';
+import { isPresent } from '@ifixit/helpers';
+import { ResponsiveImage, useIsMountedState, Wrapper } from '@ifixit/ui';
+import type { Image } from '@models/components/image';
 import * as React from 'react';
-import { usePagination } from 'react-instantsearch-hooks-web';
-import snarkdown from 'snarkdown';
-import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
+import { usePagination } from 'react-instantsearch';
 
 export interface HeroSectionProps {
-   productList: ProductList;
+   title: string;
+   tagline?: string | null;
+   description?: string | null;
+   backgroundImage?: Image | null;
+   brandLogo?: Image | null;
 }
 
-export function HeroSection({ productList }: HeroSectionProps) {
+export function HeroSection({
+   title,
+   tagline,
+   description,
+   backgroundImage,
+   brandLogo,
+}: HeroSectionProps) {
    const pagination = usePagination();
    const page = pagination.currentRefinement + 1;
-   const itemType = useDevicePartsItemType(productList);
-   const hasDescription =
-      productList.description != null &&
-      productList.description.length > 0 &&
-      page === 1 &&
-      !itemType;
-   const hasTagline =
-      productList.tagline != null &&
-      productList.tagline.length > 0 &&
-      page === 1 &&
-      !itemType;
-
-   const title = getProductListTitle(productList, itemType);
-
+   const isFirstPage = page === 1;
    return (
-      <Flex direction="column">
-         <HeroTitle>
-            {title}
-            {page > 1 ? ` - Page ${page}` : ''}
-         </HeroTitle>
-         {hasTagline && (
-            <Text as="h2" fontWeight="medium">
-               {productList.tagline}
-            </Text>
+      <Wrapper as="section" my={{ base: 4, md: 6 }}>
+         {backgroundImage ? (
+            <Flex
+               pos="relative"
+               minH="96"
+               borderRadius="base"
+               overflow="hidden"
+            >
+               <ResponsiveImage
+                  priority
+                  fill
+                  style={{
+                     objectFit: 'cover',
+                     zIndex: -1,
+                  }}
+                  src={backgroundImage.url}
+                  alt={backgroundImage.altText ?? ''}
+               />
+
+               <Box
+                  zIndex={-1}
+                  position="absolute"
+                  top="0"
+                  left="0"
+                  w="full"
+                  h="full"
+                  bgGradient="linear-gradient(90deg, rgba(0, 0, 0, 0.6) 28.7%, rgba(0, 0, 0, 0.1) 86.8%);"
+               />
+
+               <Flex
+                  alignSelf="flex-end"
+                  direction="column"
+                  color="white"
+                  maxW={{ base: 'full', md: '50%', lg: '40%' }}
+                  pt="24"
+                  m={{ base: 4, md: 8 }}
+               >
+                  {brandLogo && brandLogo.width && (
+                     <ChakraImage
+                        src={brandLogo.url}
+                        alt={brandLogo.altText ?? ''}
+                        width={brandLogo.width}
+                        mb="4"
+                     />
+                  )}
+                  <HeroTitle page={page}>{title}</HeroTitle>
+                  {isPresent(tagline) && (
+                     <Text
+                        as="h2"
+                        fontWeight="medium"
+                        data-testid="hero-tagline"
+                     >
+                        {tagline}
+                     </Text>
+                  )}
+                  {isPresent(description) && (
+                     <DescriptionRichText mt="4">
+                        {description}
+                     </DescriptionRichText>
+                  )}
+               </Flex>
+            </Flex>
+         ) : (
+            <Flex direction="column">
+               <HeroTitle page={page}>{title}</HeroTitle>
+               {isFirstPage && (
+                  <>
+                     {isPresent(tagline) && (
+                        <Text
+                           as="h2"
+                           fontWeight="medium"
+                           data-testid="hero-tagline"
+                        >
+                           {tagline}
+                        </Text>
+                     )}
+                     {isPresent(description) && (
+                        <HeroDescription>{description}</HeroDescription>
+                     )}
+                  </>
+               )}
+            </Flex>
          )}
-         {hasDescription && (
-            <HeroDescription>{productList.description}</HeroDescription>
-         )}
-      </Flex>
+      </Wrapper>
    );
 }
 
-const HeroTitle = chakra(
-   ({
-      children,
-      className,
-   }: React.PropsWithChildren<{ className?: string }>) => {
-      return (
-         <Heading
-            as="h1"
-            className={className}
-            size="xl"
-            fontSize={{ base: '2xl', md: '3xl' }}
-            fontWeight="medium"
-         >
-            {children}
-         </Heading>
-      );
-   }
-);
+function HeroTitle({
+   children,
+   page,
+}: React.PropsWithChildren<{ page: number }>) {
+   return (
+      <Heading
+         as="h1"
+         size="xl"
+         fontSize={{ base: '2xl', md: '3xl' }}
+         fontWeight="medium"
+         whiteSpace="nowrap"
+         data-testid="hero-title"
+      >
+         {children}
+         {page > 1 ? <Box as="span">{` - Page ${page}`}</Box> : ''}
+      </Heading>
+   );
+}
 
 const NUMBER_OF_LINES = 5;
 const LINE_HEIGHT = 25;
 const VISIBLE_HEIGHT = NUMBER_OF_LINES * LINE_HEIGHT;
 
-type HeroDescriptionProps = {
+interface HeroDescriptionProps {
    children: string;
-};
+}
 
 function HeroDescription({ children }: HeroDescriptionProps) {
    const { isOpen, onToggle } = useDisclosure();
-   const isMounted = useIsMounted();
+   const isMounted = useIsMountedState();
    const textRef = React.useRef<HTMLParagraphElement | null>(null);
    const textHeight = React.useMemo(() => {
       if (isMounted && textRef.current) {
@@ -98,7 +164,7 @@ function HeroDescription({ children }: HeroDescriptionProps) {
    const isShowMoreVisible = textHeight > VISIBLE_HEIGHT;
 
    return (
-      <Box mt="4">
+      <Box mt="4" data-testid="hero-description">
          <Box
             maxH={isOpen ? textHeight : VISIBLE_HEIGHT}
             overflow="hidden"
@@ -132,24 +198,13 @@ type DescriptionRichTextProps = Omit<BoxProps, 'children'> & {
 
 const DescriptionRichText = forwardRef<DescriptionRichTextProps, 'div'>(
    ({ children, ...other }, ref) => {
-      const html = React.useMemo(() => {
-         const preserveNewlines = children.trim().replace(/\n/g, '<br />');
-         return snarkdown(preserveNewlines);
-      }, [children]);
+      const html = React.useMemo(() => markdownToHTML(children), [children]);
 
       return (
-         <Box
-            sx={{
-               a: {
-                  color: 'brand.500',
-                  transition: 'color 300ms',
-                  '&:hover': {
-                     color: 'brand.600',
-                  },
-               },
-            }}
+         <PrerenderedHTML
+            html={html}
+            template="commerce"
             ref={ref}
-            dangerouslySetInnerHTML={{ __html: html }}
             {...other}
          />
       );

@@ -1,0 +1,12 @@
+fragment ProductListPreviewFields on ProductList {
+   type
+   handle
+   deviceTitle
+   title
+   description
+   metaDescription
+   filters
+   image {
+      ...ImageFields
+   }
+}

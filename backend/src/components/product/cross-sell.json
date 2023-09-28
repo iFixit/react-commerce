@@ -1,0 +1,12 @@
+{
+   "collectionName": "components_product_cross_sells",
+   "info": {
+      "displayName": "cross sell"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      }
+   }
+}

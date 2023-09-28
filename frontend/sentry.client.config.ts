@@ -2,18 +2,26 @@
 // The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import * as Sentry from '@sentry/nextjs';
-import { BrowserTracing } from '@sentry/tracing';
+import { BrowserTracing } from '@sentry/browser';
 
-const SENTRY_DSN = process.env.SENTRY_DSN;
-
-const hydrationErrors = [
-   'Hydration failed because the initial UI does not match what was rendered on the server.',
-   'Text content does not match server-rendered HTML.',
-   'There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.',
-];
+const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 Sentry.init({
+   async beforeSend(event) {
+      try {
+         const current_production = await isCurrentProductionDeployment();
+         event.tags = { ...event.tags, current_production };
+      } catch (e) {
+         event.tags = { ...event.tags, before_send_error: true };
+         event.extra = {
+            ...event.extra,
+            'Exception Checking Production Deployment': e,
+         };
+      }
+      return event;
+   },
    dsn: SENTRY_DSN,
    integrations: [new BrowserTracing()],
    sampleRate: 1.0,
@@ -39,14 +47,4 @@ Sentry.init({
       // Only happens on Macs, mostly Chrome, but some on safari
       'CustomEvent: Non-Error promise rejection captured with keys: currentTarget, detail, isTrusted, target',
    ],
-   beforeSend: (event, hint) => {
-      const ex = hint.originalException;
-      if (ex && typeof ex == 'object' && ex.message) {
-         // Sample hydration errors.
-         if (hydrationErrors.some((msg) => ex.message.match(msg))) {
-            return Math.random() < 0.05 ? event : null;
-         }
-      }
-      return event;
-   },
 });

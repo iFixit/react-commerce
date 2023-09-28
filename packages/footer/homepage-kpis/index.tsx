@@ -1,6 +1,4 @@
-import React from 'react';
 import { Box, SimpleGrid, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
-import { PageContentWrapper } from '../components/PageContentWrapper';
 
 interface Stat {
    value: string;
@@ -28,7 +26,15 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
          borderColor="blue.100"
          mb={-10}
       >
-         <PageContentWrapper>
+         <Box
+            maxW="80rem"
+            mx="auto"
+            px={{
+               base: 4,
+               md: 6,
+               lg: 8,
+            }}
+         >
             <SimpleGrid
                columns={{
                   base: 1,
@@ -46,7 +52,7 @@ export function StatsSection({ data: { stats } }: StatsSectionProps) {
                   />
                ))}
             </SimpleGrid>
-         </PageContentWrapper>
+         </Box>
       </Box>
    );
 }

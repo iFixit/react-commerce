@@ -1,0 +1,13 @@
+{
+   "collectionName": "components_product_products",
+   "info": {
+      "displayName": "product overview"
+   },
+   "options": {},
+   "attributes": {
+      "addToCartBar": {
+         "type": "boolean",
+         "default": true
+      }
+   }
+}

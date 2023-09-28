@@ -8,16 +8,19 @@ query findStore($filters: StoreFiltersInput) {
                }
             }
             footer {
+               partners {
+                  ...MenuEntityResponseProps
+               }
+               bottomMenu {
+                  ...MenuEntityResponseProps
+               }
                menu1 {
                   ...MenuEntityResponseProps
                }
                menu2 {
                   ...MenuEntityResponseProps
                }
-               partners {
-                  ...MenuEntityResponseProps
-               }
-               bottomMenu {
+               menu3 {
                   ...MenuEntityResponseProps
                }
             }

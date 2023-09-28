@@ -1,4 +1,4 @@
-import { trackInMatomoAndGA } from '@ifixit/analytics';
+import { TrackingContext } from '@ifixit/tracking-hooks';
 import { isError } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import * as React from 'react';
@@ -29,6 +29,8 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
       status: SubscriptionStatus.Idle,
    });
 
+   const { trackClick } = React.useContext(TrackingContext);
+
    const subscribe = React.useCallback<SubscribeFn>(async (email) => {
       if (EMAIL_VALIDATION_REGEX.test(email)) {
          setState((current) => ({
@@ -36,14 +38,18 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             status: SubscriptionStatus.Subscribing,
          }));
          try {
-            await client.post('cart/newsletter/subscribe', {
-               body: JSON.stringify({ email }),
-            });
+            await client.post(
+               'cart/newsletter/subscribe',
+               'subscribe-to-newsletter',
+               {
+                  body: JSON.stringify({ email }),
+               }
+            );
             setState(() => ({
                status: SubscriptionStatus.Subscribed,
                error: undefined,
             }));
-            trackInMatomoAndGA({
+            trackClick({
                eventCategory: 'Newsletter',
                eventAction: 'Subscribe Form - Submit',
             });

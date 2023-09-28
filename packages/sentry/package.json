@@ -6,16 +6,16 @@
    "license": "MIT",
    "dependencies": {
       "@ifixit/helpers": "workspace:*",
-      "@sentry/nextjs": "^7.29.0"
+      "@sentry/nextjs": "^7.53.1"
    },
    "peerDependencies": {
-      "next": "12.2.3",
+      "next": "*",
       "react": "18.2.0"
    },
    "devDependencies": {
       "@babel/core": ">=7.0.0 <8.0.0",
       "@ifixit/tsconfig": "workspace:*",
-      "next": "^10.0.8 || ^11.0 || ^12.0",
+      "next": "^10.0.8 || ^11.0 || ^12.0 || ^13.0",
       "react": ">=18.2.0",
       "react-dom": ">=18.2.0",
       "typescript": "4.8.4"

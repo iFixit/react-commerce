@@ -12,28 +12,29 @@ defaults:
       # change this if your nextjs app does not live at the root of the repo
       working-directory: ./frontend
 
+env:
+   VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
+
 jobs:
    analyze:
       runs-on: ubuntu-latest
       steps:
          - name: Checkout
-           uses: actions/checkout@v2
+           uses: actions/checkout@v3
 
          - name: Install Node.js
            uses: actions/setup-node@v3
            with:
-              node-version: 16
+              node-version: 18
 
          - name: Setup and cache pnpm
            uses: ./.github/actions/pnpm-setup
 
          - name: pnpm install
            run: pnpm install
-           env:
-              FONT_AWESOME_NPM_TOKEN: ${{ secrets.FONT_AWESOME_NPM_TOKEN }}
 
          - name: Restore next build
-           uses: actions/cache@v2
+           uses: actions/cache@v3
            id: restore-build-cache
            env:
               cache-name: cache-next-build
@@ -54,10 +55,10 @@ jobs:
          # Here's the first place where next-bundle-analysis' own script is used
          # This step pulls the raw bundle stats for the current bundle
          - name: Analyze bundle
-           run: npx -p nextjs-bundle-analysis report
+           run: pnpm --package=nextjs-bundle-analysis@0.5.0 dlx report
 
          - name: Upload bundle
-           uses: actions/upload-artifact@v2
+           uses: actions/upload-artifact@v3
            with:
               name: bundle
               path: frontend/.next/analyze/__bundle_analysis.json
@@ -85,17 +86,15 @@ jobs:
          # entry in your package.json file.
          - name: Compare with base branch bundle
            if: success() && github.event.number
-           run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
+           run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis@0.5.0 compare
 
          - name: Get comment body
            id: get-comment-body
            if: success() && github.event.number
            run: |
-              body=$(cat .next/analyze/__bundle_analysis_comment.txt)
-              body="${body//'%'/'%25'}"
-              body="${body//$'\n'/'%0A'}"
-              body="${body//$'\r'/'%0D'}"
-              echo ::set-output name=body::$body
+              echo "body<<EOF" >> $GITHUB_OUTPUT
+              echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
+              echo EOF >> $GITHUB_OUTPUT
 
          - name: Find Comment
            uses: peter-evans/find-comment@v2
@@ -103,7 +102,8 @@ jobs:
            id: fc
            with:
               issue-number: ${{ github.event.number }}
-              body-includes: '<!-- __NEXTJS_BUNDLE -->'
+              comment-author: 'github-actions[bot]'
+              body-includes: 'Next.js Bundle Analysis'
 
          - name: Create or Update comment
            uses: peter-evans/create-or-update-comment@v2

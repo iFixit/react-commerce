@@ -1,0 +1,7 @@
+fragment ProductListBannerSectionFields on ComponentProductListBanner {
+   id
+   title
+   description
+   callToActionLabel
+   url
+}

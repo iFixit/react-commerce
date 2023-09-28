@@ -1,0 +1,123 @@
+name: Stress-test
+
+on: [pull_request]
+env:
+   npm_config_userconfig: './.npmrc'
+jobs:
+   check-diff:
+      name: check-diff
+      runs-on: ubuntu-latest
+      outputs:
+         modified-playwright-tests: ${{ steps.git-diff.outputs.modified-playwright-tests }}
+         modified-jest-tests: ${{ steps.git-diff.outputs.modified-jest-tests }}
+      steps:
+         - name: Checkout ifixit
+           uses: actions/checkout@v3
+           with:
+              fetch-depth: 0
+
+         - name: Get head commit message
+           run: |
+              echo "headCommitMsg=$(git log -s -1 --format=%B ${{ github.event.pull_request.head.sha }} | tr '\n' ' ')" >> $GITHUB_ENV
+
+         - name: Get base branch commit sha when the pull request was created
+           run: |
+              BASE_COMMIT_SHA=$(gh api repos/iFixit/react-commerce/compare/${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} --jq '.merge_base_commit.sha')
+              echo "The base branch commit sha: $BASE_COMMIT_SHA"
+              echo "baseCommitSha=$BASE_COMMIT_SHA" >> $GITHUB_ENV
+           env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+         - name: Get and log modified test names
+           id: git-diff
+           if: "!contains(env.headCommitMsg, '[skip stress-test]')"
+           run: |
+              MODIFIED_PLAYWRIGHT_TESTS=$(git diff ${{ env.baseCommitSha }}...${{ github.event.pull_request.head.sha }} --name-only --diff-filter=d -- 'frontend/tests/playwright/*.spec.ts' | tr '\n' ' ')
+              MODIFIED_JEST_TESTS=$(git diff ${{ env.baseCommitSha }}...${{ github.event.pull_request.head.sha }} --name-only --diff-filter=d -- 'frontend/tests/jest/tests/*.test.tsx' | tr '\n' ' ')
+              echo "modified-playwright-tests=$(echo $MODIFIED_PLAYWRIGHT_TESTS)" >> $GITHUB_OUTPUT
+              echo "modified-jest-tests=$(echo $MODIFIED_JEST_TESTS)" >> $GITHUB_OUTPUT
+              echo "Modified playwright tests: $MODIFIED_PLAYWRIGHT_TESTS"
+              echo "Modified jest tests: $MODIFIED_JEST_TESTS"
+
+   playwright-run:
+      name: playwright-stress-test
+      runs-on: ubuntu-latest
+      needs: check-diff
+      if: needs.check-diff.outputs.modified-playwright-tests != ''
+      timeout-minutes: 20
+      strategy:
+         fail-fast: false
+         matrix:
+            project: ['Desktop Chrome', 'Mobile Chrome']
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+
+         - name: Install Node.js
+           uses: actions/setup-node@v3
+           with:
+              node-version: 18
+
+         - name: Start strapi server
+           run: cd backend && docker-compose up -d
+           env:
+              JWT_SECRET: 'ci-secret'
+              API_TOKEN_SALT: 'Not_A-s3Cr3t-/Qr5iGP0g=='
+
+         - name: Setup and cache pnpm
+           uses: ./.github/actions/pnpm-setup
+         - name: Install workspaces
+           env:
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
+           run: pnpm install
+
+         - name: Setup and cache playwright dependencies
+           uses: ./.github/actions/playwright-setup
+
+         - name: Build and cache frontend for with test setup
+           uses: ./.github/actions/build-test-frontend
+           with:
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+              NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
+
+         - name: Run Playwright Tests
+           env:
+              NODE_ENV: test
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+              NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
+           run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}" ${{ needs.check-diff.outputs.modified-playwright-tests }} --repeat-each=5
+
+         - uses: actions/upload-artifact@v3
+           if: failure()
+           with:
+              name: playwright-artifacts
+              path: frontend/tests/playwright/test-results/artifacts
+              retention-days: 7
+
+   jest:
+      name: jest-stress-test
+      runs-on: ubuntu-latest
+      needs: check-diff
+      if: needs.check-diff.outputs.modified-jest-tests != ''
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v2
+
+         - uses: actions/setup-node@v3
+           with:
+              node-version: 18
+
+         - name: Setup and cache pnpm
+           uses: ./.github/actions/pnpm-setup
+
+         - name: Install workspaces
+           env:
+              VERDACCIO_AUTH_TOKEN: ${{ secrets.VERDACCIO_AUTH_TOKEN }}
+           run: pnpm install:all
+
+         - name: Run Jest tests
+           run: for i in {1..5}; do pnpm test -- ${{ needs.check-diff.outputs.modified-jest-tests }}; done
+           env:
+              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
+              ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

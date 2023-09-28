@@ -1,0 +1,20 @@
+{
+   "collectionName": "components_global_people",
+   "info": {
+      "displayName": "Person"
+   },
+   "options": {},
+   "attributes": {
+      "name": {
+         "type": "string"
+      },
+      "role": {
+         "type": "string"
+      },
+      "avatar": {
+         "allowedTypes": ["images"],
+         "type": "media",
+         "multiple": false
+      }
+   }
+}

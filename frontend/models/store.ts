@@ -1,15 +1,18 @@
-import { filterNullableItems, Awaited } from '@helpers/application-helpers';
+import { filterNullableItems } from '@helpers/application-helpers';
+import type { Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
-import { FindStoreQuery, strapi } from '@lib/strapi-sdk';
-import {
+import type { FindStoreQuery } from '@lib/strapi-sdk';
+import { strapi } from '@lib/strapi-sdk';
+import { timeAsync } from '@ifixit/helpers';
+import type {
    ImageLinkMenuItem,
    LinkMenuItem,
    Menu,
    MenuItem,
-   MenuItemType,
    ProductListLinkMenuItem,
    SubmenuMenuItem,
-} from './menu';
+} from '@ifixit/menu';
+import { MenuItemType } from '@ifixit/menu';
 
 export type Store = Awaited<ReturnType<typeof findStoreByCode>>;
 
@@ -17,23 +20,31 @@ export type SocialMediaAccounts = Store['socialMediaAccounts'];
 
 export type ShopifySettings = Store['shopify'];
 
+type FindStoreByCodeOptions = {
+   forceMiss?: boolean;
+};
+
 /**
  * Get the store data (header menus, footer menus, etc) from the API.
  * @param {string} code The code of the store
  * @returns The store data.
  */
-export function findStoreByCode(code: string) {
-   return cache(
-      `store-${code}`,
-      () => findStoreByCodeFromStrapi(code),
-      60 * 60
-   );
+export function findStoreByCode(
+   code: string,
+   { forceMiss }: FindStoreByCodeOptions = {}
+) {
+   return cache(`store-${code}`, () => findStoreByCodeFromStrapi(code), {
+      ttl: 60 * 60,
+      forceMiss,
+   });
 }
 
 async function findStoreByCodeFromStrapi(code: string) {
-   const result = await strapi.findStore({
-      filters: { code: { eq: code } },
-   });
+   const result = await timeAsync('strapi.findStore', () =>
+      strapi.findStore({
+         filters: { code: { eq: code } },
+      })
+   );
    const store = result.store?.data?.[0]?.attributes;
    if (store == null) {
       throw new Error('Store not found');
@@ -46,10 +57,11 @@ async function findStoreByCodeFromStrapi(code: string) {
          menu: createMenu(store.header.menu),
       },
       footer: {
-         menu1: createMenu(store.footer.menu1),
-         menu2: createMenu(store.footer.menu2),
          partners: createMenu(store.footer.partners),
          bottomMenu: createMenu(store.footer.bottomMenu),
+         menu1: createMenu(store.footer.menu1),
+         menu2: createMenu(store.footer.menu2),
+         menu3: createMenu(store.footer.menu3),
       },
       socialMediaAccounts: {
          twitter: store.socialMediaAccounts.twitter || null,
@@ -75,16 +87,25 @@ export interface StoreListItem {
    currency: string;
 }
 
+type GetStoreListOptions = {
+   forceMiss?: boolean;
+};
+
 /**
  * Get the list of stores from the API.
  * @returns A list of store items.
  */
-export function getStoreList(): Promise<StoreListItem[]> {
-   return cache('storeList', getStoreListFromStrapi, 60 * 10);
+export function getStoreList({ forceMiss }: GetStoreListOptions = {}): Promise<
+   StoreListItem[]
+> {
+   return cache('storeList', getStoreListFromStrapi, {
+      ttl: 60 * 10,
+      forceMiss,
+   });
 }
 
 async function getStoreListFromStrapi(): Promise<StoreListItem[]> {
-   const result = await strapi.getStoreList();
+   const result = await timeAsync('strapi.getStoreList', strapi.getStoreList);
    const stores = result.stores?.data || [];
    return filterNullableItems(
       stores.map((store) => {

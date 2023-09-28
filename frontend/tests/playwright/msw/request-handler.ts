@@ -167,10 +167,20 @@ export const createGraphQLHandler = ({
       '*',
       customResolver ??
          ((req, res, ctx) => {
+            const delayAmount = 2000; // 2 seconds
             if (passthrough) return req.passthrough();
-            if (once) return res.once(ctx.status(status), ctx.data(body));
+            if (once)
+               return res.once(
+                  ctx.delay(delayAmount),
+                  ctx.status(status),
+                  ctx.data(body)
+               );
 
-            return res(ctx.status(status), ctx.data(body));
+            return res(
+               ctx.delay(delayAmount),
+               ctx.status(status),
+               ctx.data(body)
+            );
          })
    );
 };
@@ -202,7 +212,8 @@ export const createRestHandler = ({
          ((req, res, ctx) => {
             if (passthrough) return req.passthrough();
 
-            const transformers = [ctx.status(status)];
+            const delayAmount = 2000; // 2 seconds
+            const transformers = [ctx.delay(delayAmount), ctx.status(status)];
 
             if (headers) {
                transformers.push(ctx.set(headers));

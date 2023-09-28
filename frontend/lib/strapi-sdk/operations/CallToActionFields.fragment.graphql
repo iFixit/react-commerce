@@ -1,0 +1,4 @@
+fragment CallToActionFields on ComponentPageCallToAction {
+   title
+   url
+}

@@ -51,7 +51,7 @@ export class ProductPage {
    async getCurrentPrice(): Promise<number> {
       const price = await this.page
          .getByTestId('product-price-section')
-         .getByTestId('current-price')
+         .getByTestId('price')
          .textContent();
       expect(price).not.toEqual('');
       expect(price).toMatch(/\$[0-9]+(\.[0-9]{1,2})?$/);

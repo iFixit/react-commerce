@@ -12,8 +12,6 @@ import {
 import { getShopifyImageLoader, isShopifyImage } from './shopifyUtils';
 
 export function ResponsiveImage(props: ImageProps) {
-   const alt = props.alt ?? '';
-
    let loader: ImageLoader | undefined;
    let unoptimized: boolean | undefined;
 
@@ -34,12 +32,17 @@ export function ResponsiveImage(props: ImageProps) {
       } else if (isGuideImage(props.src)) {
          loader = getIFixitImageLoader(guideImageSizeMap, 'huge', props.width);
       } else if (isStrapiImage(props.src)) {
-         unoptimized = true;
+         unoptimized = false; // let next handle optimization cache resizing
       }
    }
 
    return (
-      <Image alt={alt} loader={loader} unoptimized={unoptimized} {...props} />
+      <Image
+         loader={loader}
+         unoptimized={unoptimized}
+         style={{ maxWidth: '100%' }}
+         {...props}
+      />
    );
 }
 

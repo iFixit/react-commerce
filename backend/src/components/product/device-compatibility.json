@@ -1,0 +1,15 @@
+{
+   "collectionName": "components_product_device_compatibilities",
+   "info": {
+      "displayName": "device compatibility"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      }
+   }
+}

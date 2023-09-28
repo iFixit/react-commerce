@@ -3,7 +3,7 @@ import {
    PRODUCT_LIST_MAX_FACET_VALUES_COUNT,
 } from '@config/constants';
 import { ProductList, ProductListType } from '@models/product-list';
-import { useHits, useMenu, UseMenuProps } from 'react-instantsearch-hooks-web';
+import { useHits, useMenu, UseMenuProps } from 'react-instantsearch';
 import { useSortBy } from './useSortBy';
 
 export type MenuFacetState = ReturnType<typeof useMenuFacet>;

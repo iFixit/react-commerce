@@ -4,13 +4,14 @@
    "description": "Monorepo for iFixit e-commerce",
    "main": "N/A",
    "engines": {
-      "node": ">= 16.14.2"
+      "node": ">= 18.x.x",
+      "pnpm": ">= 8.5.0"
    },
    "scripts": {
       "install:all": "export $(cat .env.local) && pnpm install && npm run install:backend",
       "install:backend": "cd backend && yarn install:all",
       "dev:backend": "cd backend && pnpm run dev",
-      "dev:frontend": "wait-on http://localhost:1337/_health && cd frontend && npm run dev",
+      "dev:frontend": "NODE_OPTIONS=\"--dns-result-order ipv4first\" wait-on http://localhost:1337/_health && cd frontend && npm run dev",
       "dev": "cross-env FORCE_COLOR=1 npm-run-all -l -p dev:*",
       "build:backend": "cd backend && pnpm run build",
       "build:frontend": "cd frontend && pnpm run build",
@@ -27,7 +28,7 @@
       "playwright:debug": "cd frontend && pnpm playwright:debug",
       "type-check": "cross-env FORCE_COLOR=1 npm-run-all -l -p -c type-check:*",
       "type-check:backend": "cd backend && pnpm run type-check",
-      "type-check:frontend": "pnpm run -r type-check",
+      "type-check:frontend": "pnpm -r --parallel --no-bail type-check",
       "codegen:download-shopify-storefront-schema": "cd frontend && pnpm run codegen:download-shopify-storefront-schema",
       "prepare": "husky install",
       "bot": "./packages/bot/cli.ts"
@@ -42,6 +43,7 @@
    "devDependencies": {
       "cross-env": "7.0.3",
       "husky": "8.0.1",
+      "lint-staged": "13.2.0",
       "npm-run-all": "4.1.5",
       "prettier": "2.7.1",
       "wait-on": "6.0.0"
@@ -50,5 +52,8 @@
       "patchedDependencies": {
          "react-lite-yt-embed@1.2.7": "patches/react-lite-yt-embed@1.2.7.patch"
       }
+   },
+   "lint-staged": {
+      "*": "prettier --write --ignore-unknown"
    }
 }

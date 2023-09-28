@@ -1,0 +1,29 @@
+{
+   "collectionName": "components_product_list_item_type_overrides",
+   "info": {
+      "displayName": "ItemTypeOverride",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "itemType": {
+         "type": "string",
+         "required": false
+      },
+      "title": {
+         "type": "string"
+      },
+      "metaTitle": {
+         "type": "string"
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "metaDescription": {
+         "type": "string"
+      },
+      "tagline": {
+         "type": "string"
+      }
+   }
+}

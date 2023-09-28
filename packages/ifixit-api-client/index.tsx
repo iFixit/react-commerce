@@ -1,25 +1,33 @@
-import { useAppContext } from '@ifixit/app';
 import { timeAsync } from '@ifixit/helpers';
-import * as React from 'react';
+export * from './client';
 
 export interface ClientOptions {
    origin: string;
    version?: string;
+   headers?: HeadersInit;
 }
+
+const BypassHeaderName = 'Nextjs-Bypass-Varnish';
+export const VarnishBypassHeader = { [BypassHeaderName]: '1' };
+
 export class IFixitAPIClient {
    origin: string;
    version: string;
 
+   headers: HeadersInit;
+
    constructor(readonly options: ClientOptions) {
       this.origin = options.origin;
       this.version = options.version ?? '2.0';
+      this.headers = options.headers ?? {};
    }
 
    async get<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'GET',
       });
@@ -27,9 +35,10 @@ export class IFixitAPIClient {
 
    async post<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'POST',
       });
@@ -37,9 +46,10 @@ export class IFixitAPIClient {
 
    async put<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'PUT',
       });
@@ -47,27 +57,41 @@ export class IFixitAPIClient {
 
    async delete<Data = unknown>(
       endpoint: string,
+      statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, {
+      return this.fetch(endpoint, statName, {
          ...init,
          method: 'DELETE',
       });
    }
 
-   async fetch(endpoint: string, init?: RequestInit) {
+   async fetch(endpoint: string, statName: string, init?: RequestInit) {
+      const pskToken = process.env.NEXT_PUBLIC_DEV_API_AUTH_TOKEN;
+      const authHeader: { Authorization?: string } = pskToken
+         ? { Authorization: `PSK ${pskToken}` }
+         : {};
       const url = `${this.origin}/api/${this.version}/${endpoint}`;
+      const headers = new Headers({
+         ...authHeader,
+         ...this.headers,
+         ...init?.headers,
+      });
       const response = await timeAsync(
-         `iFixit API ${init?.method || 'GET'}:${truncate(endpoint, 70)}`,
+         `ifixit-api.${init?.method?.toLowerCase() || 'get'}.${statName}`,
          () =>
             fetch(url, {
                credentials: 'include',
                ...init,
+               headers: headers,
             })
       );
       if (!response.ok) {
          throw new Error(response.statusText);
       }
+
+      warnIfNotBypassed(headers, response);
+
       if (response.headers.get('Content-Type') === 'application/json') {
          return response.json();
       }
@@ -75,19 +99,35 @@ export class IFixitAPIClient {
    }
 }
 
-/**
- * Get the iFixit API client.
- */
-export function useIFixitApiClient() {
-   const appContext = useAppContext();
+function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
+   const wantsBypass = requestHeaders.has(BypassHeaderName);
+   if (!wantsBypass) {
+      return;
+   }
 
-   const client = React.useMemo(() => {
-      return new IFixitAPIClient({
-         origin: appContext.ifixitOrigin,
-      });
-   }, [appContext.ifixitOrigin]);
+   const cachedHeaderKey = 'x-debug-cache';
 
-   return client;
+   if (!response.headers.has(cachedHeaderKey)) {
+      console.warn(
+         'Varnish bypass requested, expected header not found!',
+         `Expected header: ${cachedHeaderKey}`
+      );
+      return;
+   }
+
+   const cached = response.headers.get(cachedHeaderKey);
+   const responseBypassed = cached === 'MISS';
+   if (responseBypassed) {
+      return;
+   }
+
+   console.warn(
+      `Varnish bypass requested, but didn't bypass for ${truncate(
+         response.url,
+         100
+      )}!`,
+      `${cachedHeaderKey}: ${cached}`
+   );
 }
 
 function truncate(str: string, length: number) {

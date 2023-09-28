@@ -1,13 +1,10 @@
 import { screen } from '@testing-library/react';
-import {
-   renderWithAppContext,
-   getMockProduct,
-   getMockProductVariant,
-   getReviewsResponse,
-} from '../utils';
-import { ReviewsSection } from '@templates/product/sections/ReviewsSection/index';
-import { ProductRating } from '@templates/product/sections/ProductSection/ProductRating';
+import { renderWithAppContext } from '../utils';
+import { ProductReviewsSection } from '@templates/product/sections/ProductReviewsSection/index';
+import { ProductRating } from '@templates/product/sections/ProductOverviewSection/ProductRating';
 import { useProductReviews } from 'templates/product/hooks/useProductReviews';
+import { getMockProduct, getMockProductVariant } from '../__mocks__/products';
+import { getReviewsResponse } from '../__mocks__/reviews';
 
 jest.mock('@templates/product/hooks/useProductReviews', () => ({
    useProductReviews: jest.fn(),
@@ -23,7 +20,7 @@ describe('Product Reviews Tests', () => {
          data: getReviewsResponse('empty'),
       }));
       renderWithAppContext(
-         <ReviewsSection
+         <ProductReviewsSection
             product={getMockProduct()}
             selectedVariant={getMockProductVariant()}
          />
@@ -39,7 +36,7 @@ describe('Product Reviews Tests', () => {
          data: reviewResponse,
       }));
       renderWithAppContext(
-         <ReviewsSection
+         <ProductReviewsSection
             product={getMockProduct()}
             selectedVariant={getMockProductVariant()}
          />
@@ -51,7 +48,7 @@ describe('Product Reviews Tests', () => {
       (expect(expectedReviewAverage) as any).toBeVisible();
 
       const expectedReviewCount = screen.getByText(
-         `${reviewResponse.count} reviews`
+         `${reviewResponse.count} ratings`
       );
       (expect(expectedReviewCount) as any).toBeVisible();
 
@@ -77,8 +74,10 @@ describe('Product Reviews Tests', () => {
       renderWithAppContext(
          <ProductRating
             product={getMockProduct({
-               rating: { value: ratingValue, scale_min: 1, scale_max: 5 },
-               reviewsCount: reviewsCount,
+               reviews: {
+                  rating: ratingValue,
+                  count: reviewsCount ?? 0,
+               },
             })}
          />
       );
@@ -87,7 +86,7 @@ describe('Product Reviews Tests', () => {
          data: reviewsResponseWithReviews,
       }));
       renderWithAppContext(
-         <ReviewsSection
+         <ProductReviewsSection
             product={getMockProduct()}
             selectedVariant={getMockProductVariant()}
          />
@@ -99,9 +98,13 @@ describe('Product Reviews Tests', () => {
       );
       (expect(reviewAverageValue.length) as any).toBe(2);
 
-      const expectedReviewCount = screen.getAllByText(
+      const expectedRatingCountText = screen.getAllByText(
+         `${reviewsResponseWithReviews.count} ratings`
+      );
+      (expect(expectedRatingCountText.length) as any).toBe(1);
+      const expectedReviewCountText = screen.getAllByText(
          `${reviewsResponseWithReviews.count} reviews`
       );
-      (expect(expectedReviewCount.length) as any).toBe(2);
+      (expect(expectedReviewCountText.length) as any).toBe(1);
    });
 });

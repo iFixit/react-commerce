@@ -1,0 +1,131 @@
+query findProductList($filters: ProductListFiltersInput) {
+   productLists(
+      pagination: { limit: 1 }
+      filters: $filters
+      publicationState: LIVE
+   ) {
+      data {
+         id
+         attributes {
+            ...ProductListFields
+         }
+      }
+   }
+}
+
+fragment ProductListFields on ProductList {
+   type
+   handle
+   deviceTitle
+   title
+   h1
+   tagline
+   description
+   metaDescription
+   metaTitle
+   defaultShowAllChildrenOnLgSizes
+   filters
+   forceNoindex
+   heroImage {
+      ...ImageFields
+   }
+   brandLogo {
+      ...ImageFields
+   }
+   brandLogoWidth
+   parent {
+      data {
+         attributes {
+            ...AncestorProductListFields
+            parent {
+               data {
+                  attributes {
+                     ...AncestorProductListFields
+                     parent {
+                        data {
+                           attributes {
+                              ...AncestorProductListFields
+                              parent {
+                                 data {
+                                    attributes {
+                                       ...AncestorProductListFields
+                                       parent {
+                                          data {
+                                             attributes {
+                                                ...AncestorProductListFields
+                                                parent {
+                                                   data {
+                                                      attributes {
+                                                         ...AncestorProductListFields
+                                                      }
+                                                   }
+                                                }
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+   children(
+      publicationState: LIVE
+      pagination: { pageSize: 100 }
+      sort: ["sortPriority:desc", "title:asc"]
+   ) {
+      data {
+         attributes {
+            type
+            sortPriority
+            handle
+            deviceTitle
+            title
+            image {
+               ...ImageFields
+            }
+            hideFromParent
+         }
+      }
+   }
+   sections {
+      __typename
+      ...ProductListBannerSectionFields
+      ...ProductListRelatedPostsSectionFields
+      ...ProductListLinkedProductListSetSectionFields
+   }
+   itemOverrides {
+      __typename
+      ... on ComponentProductListItemTypeOverride {
+         title
+         metaTitle
+         description
+         metaDescription
+         itemType
+         tagline
+      }
+   }
+   faqs {
+      data {
+         ...FAQFields
+      }
+   }
+}
+
+fragment AncestorProductListFields on ProductList {
+   type
+   title
+   handle
+   deviceTitle
+   faqs {
+      data {
+         ...FAQFields
+      }
+   }
+}

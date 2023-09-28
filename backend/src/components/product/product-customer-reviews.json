@@ -1,0 +1,12 @@
+{
+   "collectionName": "components_product_product_customer_reviews",
+   "info": {
+      "displayName": "product customer reviews"
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string"
+      }
+   }
+}

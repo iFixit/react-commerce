@@ -45,9 +45,8 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
             scope.setExtra('query', doc);
             scope.setExtra('variables', variables);
             scope.setExtra('errors', result.errors);
-            Sentry.captureException(new Error(errorMessage));
+            throw new Error(errorMessage);
          });
-         throw new Error(errorMessage);
       }
       return result.data;
    };

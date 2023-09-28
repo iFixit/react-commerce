@@ -86,18 +86,18 @@ async function resetAndCheckRefinements(buttonText: string, page: Page) {
    ).toBe(0);
 }
 
-test.describe('product list filters', () => {
-   test.beforeEach(async ({ page }) => {
-      await page.goto('/Parts');
-   });
+const SHOP_PAGE_URL = '/Shop/Samsung_Repair_Kits';
 
-   test.describe('Desktop', () => {
+test.describe('Product List Filtering', () => {
+   test.describe('Desktop Filters', () => {
       test.skip(({ page }) => {
          const viewPort = page.viewportSize();
          return !viewPort || viewPort.width < 768;
       }, 'Only run on desktop.');
 
-      test('Should help user filter', async ({ page }) => {
+      test('Filter Products on /Parts Page', async ({ page }) => {
+         await page.goto('/Parts');
+
          const facetList = page
             .getByTestId('facets-accordion')
             .locator('[data-testid^=collapsed-facet-accordion-item-]');
@@ -165,15 +165,89 @@ test.describe('product list filters', () => {
          );
          await resetAndCheckRefinements('Clear all filters', page);
       });
+
+      test('Filter Products on /Shop Page', async ({ page }) => {
+         await page.goto(SHOP_PAGE_URL);
+
+         const facetList = page
+            .getByTestId('facets-accordion')
+            .locator('[data-testid^=collapsed-facet-accordion-item-]');
+
+         // Get the visible facet
+         let visibleFacet = null;
+         for (const element of await facetList.all()) {
+            if (await element.isVisible()) {
+               visibleFacet = element;
+               break;
+            }
+         }
+
+         if (!visibleFacet) {
+            throw new Error('Could not find a visible facet');
+         }
+
+         const firstCollapsedAccordionItem = await visibleFacet.elementHandle();
+
+         // Check current url path and search params.
+         const url = new URL(page.url());
+         expect(url.pathname).toEqual(SHOP_PAGE_URL);
+         expect(url.search).toEqual('');
+
+         // Click the first facet accordion item.
+         if (!firstCollapsedAccordionItem) {
+            throw new Error('Could not find first collapsed accordion item');
+         }
+         await firstCollapsedAccordionItem.click();
+
+         // Define a Promise to wait for the search to be triggered and let the UI update.
+         const queryResponse = waitForAlgoliaSearch(page);
+
+         // Click the first facet item
+         const firstFacetOption = await firstCollapsedAccordionItem.$(
+            'button[role="option"]'
+         );
+         await firstFacetOption?.click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await checkRefinementValue(firstFacetOptionValue, page, 'desktop');
+
+         // Check that the refinement value is in the search results.
+         const firstFacetName = await firstCollapsedAccordionItem.getAttribute(
+            'data-facet-name'
+         );
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue!,
+            results
+         );
+
+         // Check that url pathname is still /Shop/Samsung_Repair_Kits
+         // after clicking on a facet button.
+         const urlAfterApplyingFilters = new URL(page.url());
+         expect(urlAfterApplyingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterApplyingFilters.search).not.toEqual('');
+
+         await resetAndCheckRefinements('Clear all filters', page);
+
+         const urlAfterClearingFilters = new URL(page.url());
+         expect(urlAfterClearingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterClearingFilters.search).toEqual('');
+      });
    });
 
-   test.describe('Mobile and Tablet', () => {
+   test.describe('Mobile and Tablet Filters', () => {
       test.skip(({ page }) => {
          const viewPort = page.viewportSize();
          return !viewPort || viewPort.width > 768;
       }, 'Only run on mobile and tablet.');
 
-      test('Should help user filter', async ({ page }) => {
+      test('Filter Products on /Parts Page', async ({ page }) => {
+         await page.goto('/Parts');
+
          // Select the first filter and close the drawer
          await page
             .getByRole('button', { name: 'Filters', exact: true })
@@ -232,9 +306,62 @@ test.describe('product list filters', () => {
          await resetAndCheckRefinements('Clear all filters', page);
       });
 
-      test('Apply and Clear all buttons work in Facet Drawer', async ({
-         page,
-      }) => {
+      test('Filter Products on /Shop Page', async ({ page }) => {
+         await page.goto(SHOP_PAGE_URL);
+
+         // Check current url path and search params.
+         const url = new URL(page.url());
+         expect(url.pathname).toEqual(SHOP_PAGE_URL);
+         expect(url.search).toEqual('');
+
+         // Select the first filter and close the drawer
+         await page
+            .getByRole('button', { name: 'Filters', exact: true })
+            .click();
+         const firstFacet = page.getByTestId('facets-drawer-list-item').nth(1);
+         const firstFacetName = await firstFacet?.getAttribute(
+            'data-drawer-list-item-name'
+         );
+         await firstFacet.click();
+
+         const queryResponse = waitForAlgoliaSearch(page);
+         const firstFacetOption = page
+            .getByTestId('facet-panel-open')
+            .getByRole('option')
+            .first();
+         const firstFacetOptionValue = await firstFacetOption?.getAttribute(
+            'data-value'
+         );
+         await firstFacetOption.click();
+         await page.getByRole('button', { name: 'Close' }).click();
+         const { results } = await (await queryResponse).json();
+
+         // Check that the refinement value is in the current refinements.
+         await checkRefinementValue(firstFacetOptionValue, page, 'mobile');
+
+         // Check that the refinement value is in the search results.
+         await checkRefinementInSearchResult(
+            firstFacetName,
+            firstFacetOptionValue!,
+            results
+         );
+
+         // Check that url pathname is still /Shop/Samsung_Repair_Kits
+         // after clicking on a facet button.
+         const urlAfterApplyingFilters = new URL(page.url());
+         expect(urlAfterApplyingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterApplyingFilters.search).not.toEqual('');
+
+         await resetAndCheckRefinements('Clear all filters', page);
+
+         const urlAfterClearingFilters = new URL(page.url());
+         expect(urlAfterClearingFilters.pathname).toEqual(SHOP_PAGE_URL);
+         expect(urlAfterClearingFilters.search).toEqual('');
+      });
+
+      test('Facet Drawer Apply and Clear All Buttons', async ({ page }) => {
+         await page.goto('/Parts');
+
          // Select the first filter and click Apply button
          await page
             .getByRole('button', { name: 'Filters', exact: true })

@@ -19,13 +19,13 @@ query findPage(
                ...StatsSectionFields
                ...SplitWithImageSectionFields
                ...PressQuotesSectionFields
+               ...FeaturedProductsSectionFields
+               ...SocialGallerySectionFields
+               ...LifetimeWarrantySectionFields
+               ...BannersSectionFields
+               ...QuoteGallerySectionFields
             }
          }
       }
    }
-}
-
-fragment CallToActionFields on ComponentPageCallToAction {
-   title
-   url
 }

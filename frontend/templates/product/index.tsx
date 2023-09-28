@@ -1,34 +1,47 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { ProductEditMenu } from '@components/admin';
+import { PageEditMenu } from '@components/admin';
 import { PageBreadcrumb } from '@components/common';
+import { BannersSection } from '@components/sections/BannersSection';
+import { FAQsSection } from '@components/sections/FAQsSection';
+import { FeaturedProductsSection } from '@components/sections/FeaturedProductsSection';
+import { QuoteSection } from '@components/sections/QuoteSection';
+import { ReplacementGuidesSection } from '@components/sections/ReplacementGuidesSection';
+import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
+import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { getAdminLinks } from '@helpers/product-helpers';
 import {
    trackGoogleProductView,
+   trackInMatomoAndGA,
    trackMatomoEcommerceView,
+   trackGA4ViewItem,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
-import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
+import {
+   assertNever,
+   isLifetimeWarranty,
+   moneyToNumber,
+   parseItemcode,
+   getVariantIdFromVariantURI,
+} from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
+import { ProductPreview } from '@models/components/product-preview';
 import { useInternationalBuyBox } from '@templates/product/hooks/useInternationalBuyBox';
 import * as React from 'react';
-import { PixelPing } from './components/PixelPing';
+import { LifetimeWarrantySection } from '../../components/sections/LifetimeWarrantySection';
+import { ProductPixelPing } from './components/PixelPing';
 import { SecondaryNavigation } from './components/SecondaryNavigation';
 import { useIsProductForSale } from './hooks/useIsProductForSale';
+import { useProductPageAdminLinks } from './hooks/useProductPageAdminLinks';
 import {
    ProductTemplateProps,
    useProductTemplateProps,
 } from './hooks/useProductTemplateProps';
 import { useSelectedVariant } from './hooks/useSelectedVariant';
 import { MetaTags } from './MetaTags';
+import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection';
 import { CompatibilitySection } from './sections/CompatibilitySection';
-import { CrossSellSection } from './sections/CrossSellSection';
-import { FeaturedProductsSection } from './sections/FeaturedProductsSection';
-import { LifetimeWarrantySection } from './sections/LifetimeWarrantySection';
-import { ProductSection } from './sections/ProductSection';
-import { ReplacementGuidesSection } from './sections/ReplacementGuidesSection';
-import { ReviewsSection } from './sections/ReviewsSection';
-import { ServiceValuePropositionSection } from './sections/ServiceValuePropositionSection';
+import { ProductOverviewSection } from './sections/ProductOverviewSection';
+import { ProductReviewsSection } from './sections/ProductReviewsSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -52,18 +65,36 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
          category: parseItemcode(selectedVariant.sku ?? '')?.category,
          price: moneyToNumber(selectedVariant.price).toFixed(2),
       });
+      trackGA4ViewItem({
+         currency: selectedVariant.price.currencyCode,
+         value: selectedVariant.price.amount,
+         items: [
+            {
+               item_id: selectedVariant.sku,
+               item_name: selectedVariant.internalDisplayName,
+               item_variant: getVariantIdFromVariantURI(selectedVariant.id),
+               price: selectedVariant.price.amount,
+               quantity: selectedVariant.quantityAvailable,
+            },
+         ],
+      });
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
-   const adminLinks = React.useMemo(
-      () =>
-         getAdminLinks({
-            productcode: product.productcode,
-            productId: product.id,
-            storeCode: DEFAULT_STORE_CODE,
-         }),
-      [product.productcode, product.id]
+   const trackFeaturedProductClick = React.useCallback(
+      (product: ProductPreview) => {
+         trackInMatomoAndGA({
+            eventCategory: 'Featured Products - Product Page',
+            eventAction: `Featured on Product Page - ${product.handle}`,
+         });
+      },
+      []
    );
+
+   const adminLinks = useProductPageAdminLinks({
+      product,
+      storeCode: DEFAULT_STORE_CODE,
+   });
 
    return (
       <React.Fragment key={product.handle}>
@@ -75,7 +106,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                borderBottomWidth="thin"
             >
                <Flex w="full" direction="row-reverse">
-                  <ProductEditMenu links={adminLinks} />
+                  <PageEditMenu links={adminLinks} />
                </Flex>
             </SecondaryNavigation>
          )}
@@ -84,7 +115,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                <Flex w="full" justify="space-between">
                   <PageBreadcrumb items={product.breadcrumbs} w="full" />
                   {isAdminUser && (
-                     <ProductEditMenu
+                     <PageEditMenu
                         links={adminLinks}
                         display={{
                            base: 'none',
@@ -95,39 +126,139 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                </Flex>
             </SecondaryNavigation>
          )}
-         <Box pt="6">
-            <ProductSection
-               product={product}
-               selectedVariant={selectedVariant}
-               onVariantChange={setSelectedVariantId}
-               internationalBuyBox={internationalBuyBox}
-            />
-            <ReplacementGuidesSection product={product} />
-            {product.isEnabled && (
-               <ServiceValuePropositionSection
-                  selectedVariant={selectedVariant}
-               />
-            )}
-            {isProductForSale && !internationalBuyBox && (
-               <CrossSellSection
-                  key={selectedVariant.id}
-                  product={product}
-                  selectedVariant={selectedVariant}
-               />
-            )}
-            {isProductForSale && (
-               <ReviewsSection
-                  product={product}
-                  selectedVariant={selectedVariant}
-               />
-            )}
+         <Box>
+            {product.sections.map((section) => {
+               switch (section.type) {
+                  case 'ProductOverview':
+                     return (
+                        <ProductOverviewSection
+                           key={section.id}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                           onVariantChange={setSelectedVariantId}
+                           internationalBuyBox={internationalBuyBox}
+                        />
+                     );
+                  case 'ReplacementGuides':
+                     return (
+                        <ReplacementGuidesSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           guides={section.guides}
+                        />
+                     );
+                  case 'SplitWithImage':
+                     return (
+                        <SplitWithImageContentSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           label={section.label}
+                           description={section.description}
+                           image={section.image}
+                           imagePosition={section.imagePosition}
+                           callToAction={section.callToAction}
+                        />
+                     );
+                  case 'ServiceValueProposition': {
+                     if (!product.isEnabled) return null;
 
-            <CompatibilitySection compatibility={product.compatibility} />
-            <FeaturedProductsSection product={product} />
-            <LifetimeWarrantySection variant={selectedVariant} />
+                     return (
+                        <ServiceValuePropositionSection
+                           key={section.id}
+                           id={section.id}
+                        />
+                     );
+                  }
+                  case 'ProductReviews': {
+                     if (!isProductForSale) return null;
+
+                     return (
+                        <ProductReviewsSection
+                           key={section.id}
+                           title={section.title}
+                           product={product}
+                           selectedVariant={selectedVariant}
+                        />
+                     );
+                  }
+                  case 'DeviceCompatibility':
+                     return product.compatibilityNotes?.length ? (
+                        <CompatibilityNotesSection
+                           key={section.id}
+                           compatibilityNotes={product.compatibilityNotes}
+                        />
+                     ) : (
+                        <CompatibilitySection
+                           key={section.id}
+                           compatibility={product.compatibility}
+                        />
+                     );
+                  case 'FeaturedProducts': {
+                     return (
+                        <FeaturedProductsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           background={section.background}
+                           products={section.products}
+                           onProductClick={trackFeaturedProductClick}
+                        />
+                     );
+                  }
+                  case 'LifetimeWarranty': {
+                     if (!isLifetimeWarranty(selectedVariant.warranty))
+                        return null;
+
+                     return (
+                        <LifetimeWarrantySection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                        />
+                     );
+                  }
+                  case 'Banners': {
+                     return (
+                        <BannersSection
+                           key={section.id}
+                           id={section.id}
+                           banners={section.banners}
+                        />
+                     );
+                  }
+                  case 'Quote': {
+                     return (
+                        <QuoteSection
+                           key={section.id}
+                           id={section.id}
+                           quote={section.text}
+                           author={section.author}
+                           image={section.image}
+                        />
+                     );
+                  }
+                  case 'FAQs': {
+                     return (
+                        <FAQsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           faqs={section.faqs}
+                        />
+                     );
+                  }
+
+                  default:
+                     return assertNever(section);
+               }
+            })}
          </Box>
          {product.productcode && (
-            <PixelPing productcode={product.productcode} />
+            <ProductPixelPing productcode={parseInt(product.productcode)} />
          )}
       </React.Fragment>
    );

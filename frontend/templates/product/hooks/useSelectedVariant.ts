@@ -1,4 +1,8 @@
-import { invariant } from '@ifixit/helpers';
+import {
+   invariant,
+   getVariantIdFromVariantURI,
+   getProductVariantURI,
+} from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
@@ -17,7 +21,7 @@ export function useSelectedVariant(
 
    let variant = product.variants.find((v) => v.id === currentVariantId);
    if (variant == null) {
-      variant = product.allVariants.find((v) => v.id === defaultVariantId);
+      variant = product.variants.find((v) => v.id === defaultVariantId);
    }
 
    invariant(
@@ -29,7 +33,7 @@ export function useSelectedVariant(
       (variantId) => {
          const { variant, ...newQuery } = router.query;
          if (variantId !== defaultVariantId) {
-            newQuery.variant = encodeVariantId(variantId);
+            newQuery.variant = getVariantIdFromVariantURI(variantId);
          }
          router.replace(
             {
@@ -49,9 +53,7 @@ export function useDefaultVariantId(product: Product): string {
    const variant =
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
-      ) ??
-      product.variants[0] ??
-      product.allVariants[0];
+      ) ?? product.variants[0];
    return variant.id;
 }
 
@@ -63,17 +65,6 @@ function useSearchParamVariantId(): string | null {
    if (typeof searchParamVariantId !== 'string') {
       return null;
    }
-   const decodedVariantId = decodeVariantId(searchParamVariantId);
+   const decodedVariantId = getProductVariantURI(searchParamVariantId);
    return decodedVariantId;
-}
-
-export function encodeVariantId(variantId: string) {
-   if (!variantId.startsWith('gid://')) {
-      throw new Error('Variant id must be a global shopify product variant id');
-   }
-   return variantId.replace(/^gid:\/\/shopify\/ProductVariant\//, '');
-}
-
-function decodeVariantId(variantId: string) {
-   return `gid://shopify/ProductVariant/${variantId}`;
 }
