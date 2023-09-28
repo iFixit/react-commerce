@@ -20,6 +20,7 @@ Sentry.init({
          'next.runtime': 'server',
       },
    },
+   environment: process.env.NODE_ENV,
    async beforeSend(event, hint) {
       const ex = hint.originalException;
       if (ex instanceof Error) {
