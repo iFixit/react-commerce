@@ -4,7 +4,6 @@ import {
    Text,
    Badge,
    Square,
-   Flex,
    BoxProps,
    VStack,
    useBreakpointValue,
@@ -40,7 +39,7 @@ function SolutionHeader({
          justify="flex-start"
          align="flex-start"
          alignContent="center"
-         spacing="16px"
+         spacing={3}
       >
          <Stack
             direction="row"
@@ -52,18 +51,16 @@ function SolutionHeader({
                borderRadius="4px"
                borderColor="brand.700"
                borderWidth="1px"
-               size="40px"
+               size={{ base: '32px', md: '40px' }}
                bg="brand.500"
                fontWeight="semibold"
-               fontSize="18px"
+               fontSize={{ base: '16px', md: '18px' }}
                color="white"
             >
                {index}
             </Square>
          </Stack>
          <HeadingSelfLink
-            fontWeight="medium"
-            fontSize="24px"
             color="brand.500"
             alignSelf="center"
             id={id}
@@ -123,7 +120,7 @@ export default function SolutionCard({
          padding={{ base: 4, sm: 6 }}
          ref={ref}
       >
-         <Flex direction="column" flexGrow={1}>
+         <Stack spacing={{ base: 4, md: 6 }}>
             <SolutionHeader
                id={solution.id}
                index={index}
@@ -136,7 +133,7 @@ export default function SolutionCard({
                   products={solution.products}
                />
             )}
-         </Flex>
+         </Stack>
       </Box>
    );
 }
