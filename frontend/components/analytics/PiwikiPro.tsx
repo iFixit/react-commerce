@@ -2,7 +2,7 @@ import { PIWIK_ID } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
 
-const PiwikDataLayer = 'PPRODataLayer';
+const PiwikDataLayer = 'pproDataLayer';
 
 export function PiwikPro() {
    return PIWIK_ID ? <PPRO /> : null;
