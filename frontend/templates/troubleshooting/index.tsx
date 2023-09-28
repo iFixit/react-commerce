@@ -156,7 +156,6 @@ const Wiki: NextPageWithLayout<{
                   }}
                />
                <Container
-                  fontSize="md"
                   maxW="1280px"
                   display="flex"
                   flexWrap={{ base: 'wrap', lg: 'nowrap' }}
@@ -433,6 +432,7 @@ function NavBar({
    const breadcrumbMinHeight = '48px';
    return (
       <Flex
+         className="NavBar"
          w="100%"
          backgroundColor="white"
          borderBottomColor="gray.200"
@@ -453,8 +453,9 @@ function NavBar({
                borderTop={{ base: '1px', sm: '0' }}
                borderTopColor="gray.200"
                bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
+               fontSize={{ base: '13px', md: '14px' }}
             />
-            <Flex flexShrink="1">
+            <Flex flexShrink="1" fontSize="14px">
                <Box
                   sx={{
                      '::before, ::after': {
@@ -582,7 +583,6 @@ function NavTabs({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 'md',
       paddingTop: 2,
       paddingBottom: 2,
       paddingInlineStart: 4,
