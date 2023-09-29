@@ -70,7 +70,7 @@ export function InstantSearchProvider({
             try {
                return new URL(url) as unknown as Location;
             } catch (e) {
-               return new URL(IFIXIT_ORIGIN);
+               return new URL(IFIXIT_ORIGIN) as unknown as Location;
             }
          }
 
