@@ -33,19 +33,8 @@ export function GoogleAnalytics() {
 }
 
 function GA4() {
-   const params = useSearchParams();
-
-   const debugMode = GA_DEBUG || params?.get('ga4_debug') === 'true';
    return (
       <>
-         <Script id="gtag-ga4">
-            {`
-               window.dataLayer = window.dataLayer || [];
-               function gtag(){dataLayer.push(arguments);}
-               gtag('js', new Date());
-               gtag('config', '${GTAG_ID}', ${debugMode} ? '{ debug_mode: true }' : '{}');
-            `}
-         </Script>
          <Script
             strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}

@@ -63,8 +63,20 @@ declare global {
 }
 
 function gtag(...args: GTagArg) {
-   if (window.gtag) {
+   if (typeof window !== 'undefined' && window.gtag) {
       window.gtag(...args);
+   }
+}
+
+export function setupMinimumGA4(GtagID: string, debugMode: boolean) {
+   if (typeof window !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+         window?.dataLayer?.push(arguments);
+      }
+      window.gtag = gtag;
+      window.gtag('js', new Date());
+      window.gtag('config', GtagID, debugMode ? { debug_mode: true } : {});
    }
 }
 
