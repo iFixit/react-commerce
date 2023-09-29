@@ -84,7 +84,7 @@ export default function IFixitPageFrame({
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
    const params = useSearchParams();
 
-   const debugMode = GA_DEBUG || params?.get('ga4_debug') === 'true';
+   const debugMode = Boolean(GA_DEBUG || params?.get('ga4_debug') === 'true');
    setupMinimumGA4(GTAG_ID, debugMode);
 
    return (
