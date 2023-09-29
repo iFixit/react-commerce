@@ -67,7 +67,11 @@ export function InstantSearchProvider({
    const routerOptions = {
       getLocation() {
          if (typeof window === 'undefined') {
-            return new URL(url) as unknown as Location;
+            try {
+               return new URL(url) as unknown as Location;
+            } catch (e) {
+               return new URL(IFIXIT_ORIGIN) as unknown as Location;
+            }
          }
 
          return window.location;
