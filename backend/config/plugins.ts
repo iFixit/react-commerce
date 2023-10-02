@@ -21,6 +21,11 @@ export default ({ env }) => {
          enabled: true,
          // See: https://market.strapi.io/plugins/strapi-plugin-publisher
          config: {
+            components: {
+               dateTimePicker: {
+                  step: 15,
+               },
+            },
             hooks: {
                beforePublish: async ({ strapi, uid, entity }) => {},
                afterPublish: async ({ strapi, uid, entity }) => {},
