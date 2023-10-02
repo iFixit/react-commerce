@@ -70,6 +70,7 @@ import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { setupMinimumGA4 } from '@ifixit/analytics';
 import { GA_DEBUG, GTAG_ID } from '@config/env';
+import { PiwikPro } from '@components/analytics';
 
 export default function IFixitPageFrame({
    stores,
@@ -251,6 +252,7 @@ export default function IFixitPageFrame({
             <Suspense>
                <Matomo />
                <GoogleAnalytics />
+               <PiwikPro />
             </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
