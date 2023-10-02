@@ -949,7 +949,7 @@ function RelatedProblems({
             width={{ base: '100%' }}
             alignSelf="start"
             fontSize="14px"
-            minWidth="320px"
+            flex="1 0 320px"
             mt={{ base: 3, md: 0 }}
          >
             <Stack className="question" spacing={1.5}>
