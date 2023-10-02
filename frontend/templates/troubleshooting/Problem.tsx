@@ -1,6 +1,6 @@
 import {
-   Flex,
-   Stack,
+   Grid,
+   GridItem,
    Image,
    LinkBox,
    LinkOverlay,
@@ -23,26 +23,45 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
          padding={3}
          fontWeight="semibold"
       >
-         <Flex align="center">
-            <Image
-               boxSize="32px"
-               htmlWidth={32}
-               htmlHeight={32}
-               objectFit="cover"
-               src={imageUrl}
-               alt={deviceTitle}
+         <Grid
+            templateAreas={{
+               base: `
+                  "image title"
+                  "image link"
+               `,
+               md: `
+                  "image title"
+                  "image title"
+                  "link link"
+               `,
+            }}
+            gridTemplateColumns={{ base: 'auto auto 1fr', md: 'auto 1fr' }}
+         >
+            <GridItem
+               area="image"
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
+               boxSize={{ base: '56px', md: '32px' }}
                mr={2}
-            />
-            <Text>{deviceTitle}</Text>
-         </Flex>
-         <Stack spacing={2} mt={2}>
-            <LinkOverlay href={url} color="brand.500">
-               {title}
-            </LinkOverlay>
-         </Stack>
+            >
+               <Image
+                  htmlWidth={56}
+                  htmlHeight={56}
+                  objectFit="cover"
+                  src={imageUrl}
+                  alt={deviceTitle}
+               />
+            </GridItem>
+            <GridItem area="title" display={{ base: 'initial', md: 'flex' }}>
+               <Text my="auto">{deviceTitle}</Text>
+            </GridItem>
+            <GridItem area="link" lineHeight="initial" mt={{ base: 0, md: 2 }}>
+               <LinkOverlay href={url} color="brand.500" my="auto">
+                  {title}
+               </LinkOverlay>
+            </GridItem>
+         </Grid>
       </LinkBox>
    );
 }
