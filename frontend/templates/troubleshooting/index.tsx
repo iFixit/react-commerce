@@ -972,14 +972,17 @@ function RelatedProblems({
                         outline="1px solid"
                         outlineColor="gray.300"
                      />
-                     <Box display={{ base: 'flex', md: 'block' }}>
+                     <Box
+                        display={{ base: 'flex', md: 'block' }}
+                        lineHeight="normal"
+                     >
                         {/* https://github.com/iFixit/react-commerce/issues/1999 */}
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
                         {/* https://github.com/iFixit/react-commerce/issues/2000 */}
                         {!isMobile && (
-                           <Text mt={3} noOfLines={5}>
+                           <Text mt={3} noOfLines={4}>
                               {description}
                            </Text>
                         )}
