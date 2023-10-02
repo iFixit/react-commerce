@@ -976,11 +976,9 @@ function RelatedProblems({
                         display={{ base: 'flex', md: 'block' }}
                         lineHeight="normal"
                      >
-                        {/* https://github.com/iFixit/react-commerce/issues/1999 */}
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        {/* https://github.com/iFixit/react-commerce/issues/2000 */}
                         {!isMobile && (
                            <Text mt={3} noOfLines={4}>
                               {description}
@@ -996,11 +994,9 @@ function RelatedProblems({
                      borderColor="gray.300"
                      borderBottomRadius="md"
                   >
-                     {/* https://github.com/iFixit/react-commerce/issues/2001 */}
                      {hasRelatedPages && (
                         <Box>{problemCount} Common Problems</Box>
                      )}
-                     {/* https://github.com/iFixit/react-commerce/issues/2002 */}
                      <Link
                         href={viewUrl}
                         color="blue.500"
