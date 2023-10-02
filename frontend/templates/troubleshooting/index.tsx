@@ -187,9 +187,10 @@ const Wiki: NextPageWithLayout<{
                      <Conclusion conclusion={filteredConclusions} />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
                   </Stack>
-                  {wikiData.linkedProblems.length > 0 && (
-                     <RelatedProblems wikiData={wikiData} />
-                  )}
+                  <RelatedProblems
+                     hasRelatedPages={hasRelatedPages}
+                     wikiData={wikiData}
+                  />
                </Stack>
             </Box>
          </TOCContextProvider>
@@ -906,9 +907,17 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    );
 }
 
-function RelatedProblems({ wikiData }: { wikiData: TroubleshootingData }) {
-   const { title, linkedProblems, mainImageUrl } = wikiData;
+function RelatedProblems({
+   wikiData,
+   hasRelatedPages,
+}: {
+   wikiData: TroubleshootingData;
+   hasRelatedPages?: boolean;
+}) {
+   const { linkedProblems } = wikiData;
+   const { displayTitle, imageUrl, viewUrl, description } = wikiData.category;
 
+   const problemCount = linkedProblems.length;
    const isMobile = useBreakpointValue({ base: true, sm: false });
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
@@ -953,9 +962,9 @@ function RelatedProblems({ wikiData }: { wikiData: TroubleshootingData }) {
                >
                   <Flex gap={2} padding={3}>
                      <Image
-                        src={mainImageUrl}
-                        alt={title}
-                        boxSize="96px"
+                        src={imageUrl}
+                        alt={displayTitle}
+                        boxSize={{ base: '56px', md: '96px' }}
                         htmlWidth={96}
                         htmlHeight={96}
                         objectFit="cover"
@@ -963,14 +972,17 @@ function RelatedProblems({ wikiData }: { wikiData: TroubleshootingData }) {
                         outline="1px solid"
                         outlineColor="gray.300"
                      />
-                     <Box>
+                     <Box display={{ base: 'flex', md: 'block' }}>
                         {/* https://github.com/iFixit/react-commerce/issues/1999 */}
-                        <Box fontWeight="semibold">{title}</Box>
+                        <Box fontWeight="semibold" my="auto">
+                           {displayTitle}
+                        </Box>
                         {/* https://github.com/iFixit/react-commerce/issues/2000 */}
-                        <Text mt={3}>
-                           Samsung&apos;s tenth flagship Galaxy phone, released
-                           in March of 2019. Shipped with Android 9.0 (Pie).
-                        </Text>
+                        {!isMobile && (
+                           <Text mt={3} noOfLines={5}>
+                              {description}
+                           </Text>
+                        )}
                      </Box>
                   </Flex>
                   <Flex
@@ -982,21 +994,34 @@ function RelatedProblems({ wikiData }: { wikiData: TroubleshootingData }) {
                      borderBottomRadius="md"
                   >
                      {/* https://github.com/iFixit/react-commerce/issues/2001 */}
-                     <Box>222 Problems</Box>
+                     {hasRelatedPages && (
+                        <Box>{problemCount} Common Problems</Box>
+                     )}
                      {/* https://github.com/iFixit/react-commerce/issues/2002 */}
-                     <Link color="blue.500">View All</Link>
+                     <Link
+                        href={viewUrl}
+                        color="blue.500"
+                        ml="auto"
+                        sx={{
+                           _hover: { textDecoration: 'none' },
+                        }}
+                     >
+                        View All
+                     </Link>
                   </Flex>
                </Stack>
             </Stack>
-            <SimpleGrid
-               className="list"
-               columns={{ base: 1, sm: 2, xl: 1 }}
-               spacing={3}
-            >
-               {linkedProblems.map((problem) => (
-                  <ProblemCard problem={problem} key={problem.title} />
-               ))}
-            </SimpleGrid>
+            {hasRelatedPages && (
+               <SimpleGrid
+                  className="list"
+                  columns={{ base: 1, sm: 2, xl: 1 }}
+                  spacing={3}
+               >
+                  {linkedProblems.map((problem) => (
+                     <ProblemCard problem={problem} key={problem.title} />
+                  ))}
+               </SimpleGrid>
+            )}
          </Stack>
       </>
    );
