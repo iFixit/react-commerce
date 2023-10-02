@@ -46,6 +46,7 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                mr={2}
             >
                <Image
+                  height="100%"
                   htmlWidth={56}
                   htmlHeight={56}
                   objectFit="cover"
