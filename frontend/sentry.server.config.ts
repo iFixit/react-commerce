@@ -1,15 +1,13 @@
-// This file configures the initialization of Sentry on the server.
-// The config you add here will be used whenever the server handles a request.
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
+import { VERCEL_ENV } from '@config/env';
 import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import * as Sentry from '@sentry/nextjs';
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
+const sampleRate = VERCEL_ENV === 'production' ? 1.0 : 0;
 
 Sentry.init({
    dsn: SENTRY_DSN,
-   sampleRate: 1.0,
+   sampleRate,
    normalizeDepth: 5,
    // ...
    // Note: if you want to override the automatic release value, do not set a
