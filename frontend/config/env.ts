@@ -29,6 +29,8 @@ export const PIXEL_PING_URL = process.env.NEXT_PUBLIC_PIXEL_PING_URL;
 
 export const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL;
 
+export const PIWIK_ID = getPiwikIDForEnv(process.env.NEXT_PUBLIC_PIWIK_ENV);
+
 export const GA_URL = process.env.NEXT_PUBLIC_GA_URL;
 
 export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
@@ -85,4 +87,15 @@ function requireEnvVariable(
       throw new Error(`environment variable "${envName}" is not defined`);
    }
    return env;
+}
+
+function getPiwikIDForEnv(env: string | null | undefined): string {
+   switch (env) {
+      case 'prod':
+         return '6bf6bc54-82ca-4321-8620-b12d5c9b57b6';
+      case 'dev':
+         return '748e3baf-bedc-4685-9f32-6b72ec349fd4';
+      default:
+         return '';
+   }
 }

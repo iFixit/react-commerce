@@ -68,6 +68,7 @@ import { CartFooter } from '@layouts/default/Footer';
 import { LayoutErrorBoundary } from '@layouts/default/LayoutErrorBoundary';
 import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { PiwikPro } from '@components/analytics';
 
 export default function IFixitPageFrame({
    stores,
@@ -245,6 +246,7 @@ export default function IFixitPageFrame({
             <Suspense>
                <Matomo />
                <GoogleAnalytics />
+               <PiwikPro />
             </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>

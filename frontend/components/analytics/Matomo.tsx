@@ -1,4 +1,4 @@
-import { MATOMO_URL } from '@config/env';
+import { MATOMO_URL, PIWIK_ID } from '@config/env';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Script from 'next/script';
@@ -15,7 +15,7 @@ export function Matomo() {
       };
    }, [router?.events]);
 
-   return MATOMO_URL ? (
+   return MATOMO_URL && !PIWIK_ID ? (
       <Script id="matomo-analytics" strategy="afterInteractive">
          {`
             var _paq = window._paq = window._paq || [];
