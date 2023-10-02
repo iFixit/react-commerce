@@ -17,6 +17,18 @@ export default ({ env }) => {
             },
          },
       },
+      publisher: {
+         enabled: true,
+         // See: https://market.strapi.io/plugins/strapi-plugin-publisher
+         config: {
+            hooks: {
+               beforePublish: async ({ strapi, uid, entity }) => {},
+               afterPublish: async ({ strapi, uid, entity }) => {},
+               beforeUnpublish: async ({ strapi, uid, entity }) => {},
+               afterUnpublish: async ({ strapi, uid, entity }) => {},
+            },
+         },
+      },
       addons: {
          enabled: true,
          resolve: './src/plugins/addons',
