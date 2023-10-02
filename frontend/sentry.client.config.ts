@@ -2,6 +2,7 @@
 // The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import { VERCEL_ENV } from '@config/env';
 import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import * as Sentry from '@sentry/nextjs';
 import { BrowserTracing } from '@sentry/browser';
@@ -24,7 +25,7 @@ Sentry.init({
    },
    dsn: SENTRY_DSN,
    integrations: [new BrowserTracing()],
-   sampleRate: 1.0,
+   sampleRate: VERCEL_ENV === 'production' ? 0.05 : 1.0,
    normalizeDepth: 5,
    tracesSampleRate: 0.05,
    environment: process.env.NODE_ENV,
