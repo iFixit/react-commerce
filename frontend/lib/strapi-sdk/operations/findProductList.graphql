@@ -111,6 +111,12 @@ fragment ProductListFields on ProductList {
          tagline
       }
    }
+   boostedSearchSkus {
+      __typename
+      ... on ComponentProductListBoostedSearchSkus {
+         Sku
+      }
+   }
    faqs {
       data {
          ...FAQFields

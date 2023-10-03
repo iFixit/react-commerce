@@ -3624,6 +3624,10 @@ export type FindProductListQuery = {
                | { __typename: 'Error' }
                | null
             >;
+            boostedSearchSkus?: Array<{
+               __typename: 'ComponentProductListBoostedSearchSkus';
+               Sku: string;
+            } | null> | null;
             faqs?: {
                __typename?: 'FaqRelationResponseCollection';
                data: Array<{
@@ -3957,6 +3961,10 @@ export type ProductListFieldsFragment = {
       | { __typename: 'Error' }
       | null
    >;
+   boostedSearchSkus?: Array<{
+      __typename: 'ComponentProductListBoostedSearchSkus';
+      Sku: string;
+   } | null> | null;
    faqs?: {
       __typename?: 'FaqRelationResponseCollection';
       data: Array<{
@@ -5965,6 +5973,12 @@ export const ProductListFieldsFragmentDoc = `
       metaDescription
       itemType
       tagline
+    }
+  }
+  boostedSearchSkus {
+    __typename
+    ... on ComponentProductListBoostedSearchSkus {
+      Sku
     }
   }
   faqs {
