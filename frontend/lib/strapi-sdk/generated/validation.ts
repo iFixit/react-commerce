@@ -14,6 +14,8 @@ import {
    ComponentPageCategoryFiltersInput,
    ComponentPagePressQuoteFiltersInput,
    ComponentPageStatItemFiltersInput,
+   ComponentProductListBoostedSearchSkusFiltersInput,
+   ComponentProductListBoostedSearchSkusInput,
    ComponentSectionQuoteCardFiltersInput,
    ComponentStoreFooterFiltersInput,
    ComponentStoreFooterInput,
@@ -335,6 +337,42 @@ export function ComponentPageStatItemFiltersInputSchema(): z.ZodObject<
          )
          .nullish(),
       value: z.lazy(() => StringFilterInputSchema().nullish()),
+   });
+}
+
+export function ComponentProductListBoostedSearchSkusFiltersInputSchema(): z.ZodObject<
+   Properties<ComponentProductListBoostedSearchSkusFiltersInput>
+> {
+   return z.object<
+      Properties<ComponentProductListBoostedSearchSkusFiltersInput>
+   >({
+      Sku: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z
+         .array(
+            z.lazy(() =>
+               ComponentProductListBoostedSearchSkusFiltersInputSchema().nullable()
+            )
+         )
+         .nullish(),
+      not: z.lazy(() =>
+         ComponentProductListBoostedSearchSkusFiltersInputSchema().nullish()
+      ),
+      or: z
+         .array(
+            z.lazy(() =>
+               ComponentProductListBoostedSearchSkusFiltersInputSchema().nullable()
+            )
+         )
+         .nullish(),
+   });
+}
+
+export function ComponentProductListBoostedSearchSkusInputSchema(): z.ZodObject<
+   Properties<ComponentProductListBoostedSearchSkusInput>
+> {
+   return z.object<Properties<ComponentProductListBoostedSearchSkusInput>>({
+      Sku: z.string().nullish(),
+      id: z.string().nullish(),
    });
 }
 
@@ -833,6 +871,9 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       and: z
          .array(z.lazy(() => ProductListFiltersInputSchema().nullable()))
          .nullish(),
+      boostedSearchSkus: z.lazy(() =>
+         ComponentProductListBoostedSearchSkusFiltersInputSchema().nullish()
+      ),
       brandLogoWidth: z.lazy(() => IntFilterInputSchema().nullish()),
       children: z.lazy(() => ProductListFiltersInputSchema().nullish()),
       createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
@@ -872,6 +913,13 @@ export function ProductListInputSchema(): z.ZodObject<
    Properties<ProductListInput>
 > {
    return z.object<Properties<ProductListInput>>({
+      boostedSearchSkus: z
+         .array(
+            z.lazy(() =>
+               ComponentProductListBoostedSearchSkusInputSchema().nullable()
+            )
+         )
+         .nullish(),
       brandLogo: z.string().nullish(),
       brandLogoWidth: z.number().nullish(),
       children: z.array(z.string().nullable()).nullish(),

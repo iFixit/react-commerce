@@ -405,6 +405,28 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
+export type ComponentProductListBoostedSearchSkus = {
+   __typename?: 'ComponentProductListBoostedSearchSkus';
+   Sku: Scalars['String'];
+   id: Scalars['ID'];
+};
+
+export type ComponentProductListBoostedSearchSkusFiltersInput = {
+   Sku?: InputMaybe<StringFilterInput>;
+   and?: InputMaybe<
+      Array<InputMaybe<ComponentProductListBoostedSearchSkusFiltersInput>>
+   >;
+   not?: InputMaybe<ComponentProductListBoostedSearchSkusFiltersInput>;
+   or?: InputMaybe<
+      Array<InputMaybe<ComponentProductListBoostedSearchSkusFiltersInput>>
+   >;
+};
+
+export type ComponentProductListBoostedSearchSkusInput = {
+   Sku?: InputMaybe<Scalars['String']>;
+   id?: InputMaybe<Scalars['ID']>;
+};
+
 export type ComponentProductListItemTypeOverride = {
    __typename?: 'ComponentProductListItemTypeOverride';
    description?: Maybe<Scalars['String']>;
@@ -866,6 +888,7 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
+   | ComponentProductListBoostedSearchSkus
    | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
@@ -1625,6 +1648,9 @@ export type ProductInput = {
 
 export type ProductList = {
    __typename?: 'ProductList';
+   boostedSearchSkus?: Maybe<
+      Array<Maybe<ComponentProductListBoostedSearchSkus>>
+   >;
    brandLogo?: Maybe<UploadFileEntityResponse>;
    brandLogoWidth?: Maybe<Scalars['Int']>;
    children?: Maybe<ProductListRelationResponseCollection>;
@@ -1655,6 +1681,12 @@ export type ProductList = {
    title: Scalars['String'];
    type?: Maybe<Enum_Productlist_Type>;
    updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ProductListBoostedSearchSkusArgs = {
+   filters?: InputMaybe<ComponentProductListBoostedSearchSkusFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ProductListChildrenArgs = {
@@ -1697,6 +1729,7 @@ export type ProductListEntityResponseCollection = {
 
 export type ProductListFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
+   boostedSearchSkus?: InputMaybe<ComponentProductListBoostedSearchSkusFiltersInput>;
    brandLogoWidth?: InputMaybe<IntFilterInput>;
    children?: InputMaybe<ProductListFiltersInput>;
    createdAt?: InputMaybe<DateTimeFilterInput>;
@@ -1728,6 +1761,9 @@ export type ProductListFiltersInput = {
 };
 
 export type ProductListInput = {
+   boostedSearchSkus?: InputMaybe<
+      Array<InputMaybe<ComponentProductListBoostedSearchSkusInput>>
+   >;
    brandLogo?: InputMaybe<Scalars['ID']>;
    brandLogoWidth?: InputMaybe<Scalars['Int']>;
    children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
