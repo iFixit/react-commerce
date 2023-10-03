@@ -40,6 +40,20 @@ export default ({ env }) => {
       },
    };
 
+   if (env('SENDGRID_API_KEY')) {
+      exports.email = {
+         config: {
+            provider: 'sendgrid',
+            providerOptions: {
+               apiKey: env('SENDGRID_API_KEY'),
+            },
+            settings: {
+               defaultFrom: 'no-reply@strapi.ifixit.com',
+            },
+         },
+      };
+   }
+
    if (env('S3_BUCKET')) {
       exports.upload = {
          config: {
