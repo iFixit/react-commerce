@@ -31,6 +31,9 @@ export const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL;
 
 export const PIWIK_ID = getPiwikIDForEnv(process.env.NEXT_PUBLIC_PIWIK_ENV);
 
+export const DISABLE_SENTRY_SAMPLING =
+   process.env.DISABLE_SENTRY_SAMPLING === 'true';
+
 export const GA_URL = process.env.NEXT_PUBLIC_GA_URL;
 
 export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
