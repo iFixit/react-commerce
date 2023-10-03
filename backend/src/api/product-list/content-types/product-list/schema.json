@@ -241,6 +241,16 @@
          "relation": "manyToMany",
          "target": "api::faq.faq",
          "inversedBy": "product_lists"
+      },
+      "boostedSearchSkus": {
+         "type": "component",
+         "repeatable": true,
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "component": "product-list.boosted-search-skus"
       }
    }
 }

@@ -1,0 +1,15 @@
+{
+   "collectionName": "components_product_list_boosted_search_skuses",
+   "info": {
+      "displayName": "BoostedSearchSkus",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "Sku": {
+         "type": "string",
+         "required": true,
+         "unique": true
+      }
+   }
+}
