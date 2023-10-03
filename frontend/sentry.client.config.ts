@@ -1,14 +1,14 @@
-import { DISABLE_SENTRY_SAMPLING, VERCEL_ENV } from '@config/env';
+import { SENTRY_SAMPLING_ENABLED, VERCEL_ENV } from '@config/env';
 import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
-import * as Sentry from '@sentry/nextjs';
 import { BrowserTracing } from '@sentry/browser';
+import * as Sentry from '@sentry/nextjs';
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
-const sampleRate = DISABLE_SENTRY_SAMPLING
-   ? 1.0
-   : VERCEL_ENV === 'production'
-   ? 0.05
-   : 0;
+const sampleRate = SENTRY_SAMPLING_ENABLED
+   ? VERCEL_ENV === 'production'
+      ? 0.05
+      : 0
+   : 1.0;
 
 Sentry.init({
    async beforeSend(event) {
