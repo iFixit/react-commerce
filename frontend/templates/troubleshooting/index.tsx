@@ -36,6 +36,7 @@ import {
    useToken,
    HeadingProps,
    useBreakpointValue,
+   useMediaQuery,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import type {
@@ -916,9 +917,14 @@ function RelatedProblems({
 }) {
    const { linkedProblems } = wikiData;
    const { displayTitle, imageUrl, viewUrl, description } = wikiData.category;
-
    const problemCount = linkedProblems.length;
-   const isMobile = useBreakpointValue({ base: true, sm: false });
+
+   const xlBreakpoint = useToken('breakpoints', 'xl');
+   const [isXlBreakpoint] = useMediaQuery(`(max-width: ${xlBreakpoint})`, {
+      ssr: true,
+      fallback: false,
+   });
+
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
@@ -930,7 +936,7 @@ function RelatedProblems({
 
    return (
       <>
-         {isMobile && (
+         {isXlBreakpoint && (
             <HeadingSelfLink
                as="h3"
                id={RelatedProblemsRecord.uniqueId}
@@ -979,7 +985,7 @@ function RelatedProblems({
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        {!isMobile && (
+                        {!isXlBreakpoint && (
                            <Text mt={3} noOfLines={4}>
                               {description}
                            </Text>
