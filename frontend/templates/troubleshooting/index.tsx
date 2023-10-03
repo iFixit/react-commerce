@@ -936,31 +936,29 @@ function RelatedProblems({
 
    return (
       <>
-         {isXlBreakpoint && (
-            <HeadingSelfLink
-               as="h3"
-               id={RelatedProblemsRecord.uniqueId}
-               pt={4}
-               onClick={onClick}
-            >
-               {RelatedProblemsRecord.title}
-            </HeadingSelfLink>
-         )}
          <Stack
             id={RelatedProblemsRecord.uniqueId}
             ref={ref}
             className="sidebar"
-            as="aside"
-            spacing={{ base: 3, md: 8 }}
+            spacing={{ base: 3, xl: 8 }}
             width={{ base: '100%' }}
             alignSelf="start"
             fontSize="14px"
             flex="1 0 320px"
             mt={{ base: 3, md: 0 }}
          >
+            {isXlBreakpoint && (
+               <HeadingSelfLink
+                  as="h3"
+                  id={RelatedProblemsRecord.uniqueId}
+                  onClick={onClick}
+                  pt={4}
+               >
+                  {RelatedProblemsRecord.title}
+               </HeadingSelfLink>
+            )}
             <Stack className="question" spacing={1.5}>
-               <Stack
-                  spacing={1.5}
+               <Box
                   bgColor="white"
                   border="1px solid"
                   borderColor="gray.300"
@@ -979,7 +977,7 @@ function RelatedProblems({
                         outlineColor="gray.300"
                      />
                      <Box
-                        display={{ base: 'flex', md: 'block' }}
+                        display={{ base: 'flex', xl: 'block' }}
                         lineHeight="normal"
                      >
                         <Box fontWeight="semibold" my="auto">
@@ -1003,18 +1001,11 @@ function RelatedProblems({
                      {hasRelatedPages && (
                         <Box>{problemCount} Common Problems</Box>
                      )}
-                     <Link
-                        href={viewUrl}
-                        color="blue.500"
-                        ml="auto"
-                        sx={{
-                           _hover: { textDecoration: 'none' },
-                        }}
-                     >
+                     <Link href={viewUrl} color="blue.500" ml="auto">
                         View All
                      </Link>
                   </Flex>
-               </Stack>
+               </Box>
             </Stack>
             {hasRelatedPages && (
                <SimpleGrid
