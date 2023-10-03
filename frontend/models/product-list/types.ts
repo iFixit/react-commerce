@@ -98,6 +98,7 @@ const BaseProductListSchema = z.object({
    wikiInfo: z.array(WikiInfoEntrySchema),
    isOnStrapi: z.boolean(),
    itemOverrides: ProductListItemTypeOverrideIndexedSchema,
+   boostedSearchSkus: z.array(z.string()),
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 

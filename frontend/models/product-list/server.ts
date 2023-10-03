@@ -130,6 +130,9 @@ export async function findProductList(
       wikiInfo: deviceWiki?.info || [],
       isOnStrapi: !!productList,
       itemOverrides: formatItemTypeOverrides(productList?.itemOverrides),
+      boostedSearchSkus: formatBoostedSearchSkus(
+         productList?.boostedSearchSkus
+      ),
    };
 
    return {
@@ -314,6 +317,24 @@ function convertToProductListItemTypeOverrides(
       }
    );
    return filterNullableItems(formatedOverrides);
+}
+
+type ApiProductListBoostedSkus = NonNullable<
+   ProductListFieldsFragment['boostedSearchSkus']
+>[0];
+
+function formatBoostedSearchSkus(
+   boostedSkus: ApiProductListBoostedSkus[] | null | undefined
+): string[] {
+   const formatedBoostedSkus = boostedSkus?.map((boostedSearch) => {
+      if (
+         boostedSearch?.__typename !== 'ComponentProductListBoostedSearchSkus'
+      ) {
+         return null;
+      }
+      return boostedSearch.Sku;
+   });
+   return filterNullableItems(formatedBoostedSkus);
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {
