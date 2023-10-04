@@ -112,6 +112,7 @@ export async function findProductList(
       defaultShowAllChildrenOnLgSizes:
          productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
+      optionalFilters: productList?.optionalFilters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
       heroImage: imageFromStrapi(productList?.heroImage),
       brandLogo: imageFromStrapi(productList?.brandLogo, {
