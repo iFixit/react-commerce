@@ -405,6 +405,12 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
+export type ComponentProductListBoostedSearchSkus2 = {
+   __typename?: 'ComponentProductListBoostedSearchSkus2';
+   Sku: Scalars['String'];
+   id: Scalars['ID'];
+};
+
 export type ComponentProductListItemTypeOverride = {
    __typename?: 'ComponentProductListItemTypeOverride';
    description?: Maybe<Scalars['String']>;
@@ -866,6 +872,7 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
+   | ComponentProductListBoostedSearchSkus2
    | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
@@ -1647,6 +1654,7 @@ export type ProductList = {
    localizations?: Maybe<ProductListRelationResponseCollection>;
    metaDescription?: Maybe<Scalars['String']>;
    metaTitle?: Maybe<Scalars['String']>;
+   optionalFilters?: Maybe<Scalars['String']>;
    parent?: Maybe<ProductListEntityResponse>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
@@ -1717,6 +1725,7 @@ export type ProductListFiltersInput = {
    metaDescription?: InputMaybe<StringFilterInput>;
    metaTitle?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<ProductListFiltersInput>;
+   optionalFilters?: InputMaybe<StringFilterInput>;
    or?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
    parent?: InputMaybe<ProductListFiltersInput>;
    publishedAt?: InputMaybe<DateTimeFilterInput>;
@@ -1749,6 +1758,7 @@ export type ProductListInput = {
    legacyPageId?: InputMaybe<Scalars['Int']>;
    metaDescription?: InputMaybe<Scalars['String']>;
    metaTitle?: InputMaybe<Scalars['String']>;
+   optionalFilters?: InputMaybe<Scalars['String']>;
    parent?: InputMaybe<Scalars['ID']>;
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    sections?: InputMaybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
@@ -3280,6 +3290,7 @@ export type FindProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             brandLogoWidth?: number | null;
+            optionalFilters?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3623,6 +3634,7 @@ export type ProductListFieldsFragment = {
    filters?: string | null;
    forceNoindex?: boolean | null;
    brandLogoWidth?: number | null;
+   optionalFilters?: string | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
@@ -5936,6 +5948,7 @@ export const ProductListFieldsFragmentDoc = `
       ...FAQFields
     }
   }
+  optionalFilters
 }
     `;
 export const CallToActionFieldsFragmentDoc = `
