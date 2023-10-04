@@ -40,6 +40,10 @@ export function ProductListView({
 
    const currentProductList = itemTypeProductList ?? productList;
 
+   const { boostedSearchSkus } = currentProductList;
+   const optionalFilters = boostedSearchSkus?.map(
+      (sku) => `identifiers:${sku}`
+   );
    if (algoliaSSR) {
       return (
          <>
@@ -47,6 +51,7 @@ export function ProductListView({
                filters={filters}
                hitsPerPage={HITS_PER_PAGE}
                facetingAfterDistinct
+               optionalFilters={optionalFilters}
             />
             <FilterableProductsSection
                productList={currentProductList}
@@ -62,6 +67,7 @@ export function ProductListView({
             filters={filters}
             hitsPerPage={HITS_PER_PAGE}
             facetingAfterDistinct
+            optionalFilters={optionalFilters}
          />
          <MetaTags productList={currentProductList} />
          <SecondaryNavigation productList={productList} />
