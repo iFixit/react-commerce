@@ -3,7 +3,10 @@ import { FAQsSection } from '@components/sections/FAQsSection';
 import { LifetimeWarrantySection } from '@components/sections/LifetimeWarrantySection';
 import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
-import { computeProductListAlgoliaFilterPreset } from '@helpers/product-list-helpers';
+import {
+   computeProductListAlgoliaFilterPreset,
+   computeProductListAlgoliaOptionalFilters,
+} from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
 import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
 import { Configure, useMenu } from 'react-instantsearch';
@@ -34,7 +37,8 @@ export function ProductListView({
    // see: https://github.com/algolia/instantsearch/issues/5571
    const _ = useMenu({ attribute: 'facet_tags.Item Type' });
    const filters = computeProductListAlgoliaFilterPreset(productList);
-
+   const optionalFilters =
+      computeProductListAlgoliaOptionalFilters(productList);
    const itemTypeProductList = useItemTypeProductList(productList);
    const availableItemTypes = useAvailableItemTypes();
 
@@ -45,6 +49,7 @@ export function ProductListView({
          <>
             <Configure
                filters={filters}
+               optionalFilters={optionalFilters}
                hitsPerPage={HITS_PER_PAGE}
                facetingAfterDistinct
             />
@@ -60,6 +65,7 @@ export function ProductListView({
       <>
          <Configure
             filters={filters}
+            optionalFilters={optionalFilters}
             hitsPerPage={HITS_PER_PAGE}
             facetingAfterDistinct
          />

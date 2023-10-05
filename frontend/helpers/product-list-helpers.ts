@@ -8,24 +8,39 @@ import { z } from 'zod';
 type ProductListAttributes = {
    filters?: string | null;
    deviceTitle?: string | null;
+   optionalFilters?: string | null;
 };
 
 export function computeProductListAlgoliaFilterPreset<
    T extends ProductListAttributes
 >(productList: T): string | undefined {
    const { filters, deviceTitle } = productList;
-   const conditions: string[] = [];
 
    if (filters && filters.length > 0) {
       // Algolia can't handle newlines in the filter, so replace with space.
-      conditions.push(filters.replace(/(\n|\r)+/g, ' '));
+      return filters.replace(/(\n|\r)+/g, ' ');
    } else if (deviceTitle && deviceTitle.length > 0) {
-      conditions.push(`device:${JSON.stringify(deviceTitle)}`);
+      return `device:${JSON.stringify(deviceTitle)}`;
+   } else {
+      return undefined;
    }
-
-   return conditions.length ? conditions.join(' AND ') : undefined;
 }
 
+export function computeProductListAlgoliaOptionalFilters<
+   T extends ProductListAttributes
+>(productList: T): (string | string[])[] | undefined {
+   const { optionalFilters } = productList;
+   const filters: (string | string[])[] = [];
+   optionalFilters?.split('\n').forEach((filterLine) => {
+      if (filterLine) {
+         const innerFilters = filterLine
+            .split('||')
+            .map((filter) => filter.trim());
+         filters.push(innerFilters.length > 1 ? innerFilters : innerFilters[0]);
+      }
+   });
+   return filters && filters.length ? filters : undefined;
+}
 /**
  * Convert '_' in URL slug to spaces for product list device Item Types
  */
