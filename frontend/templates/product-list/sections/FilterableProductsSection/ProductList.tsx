@@ -135,6 +135,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                            lineHeight="shorter"
                            mb="1.5"
                            _groupHover={{ color: 'brand.500' }}
+                           data-testid="heading-product-title"
                         >
                            {product.title}
                         </Heading>
