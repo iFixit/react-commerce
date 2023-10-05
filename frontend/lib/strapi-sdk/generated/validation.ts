@@ -855,6 +855,7 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       metaDescription: z.lazy(() => StringFilterInputSchema().nullish()),
       metaTitle: z.lazy(() => StringFilterInputSchema().nullish()),
       not: z.lazy(() => ProductListFiltersInputSchema().nullish()),
+      optionalFilters: z.lazy(() => StringFilterInputSchema().nullish()),
       or: z
          .array(z.lazy(() => ProductListFiltersInputSchema().nullable()))
          .nullish(),
@@ -891,6 +892,7 @@ export function ProductListInputSchema(): z.ZodObject<
       legacyPageId: z.number().nullish(),
       metaDescription: z.string().nullish(),
       metaTitle: z.string().nullish(),
+      optionalFilters: z.string().nullish(),
       parent: z.string().nullish(),
       publishedAt: z.unknown().nullish(),
       sections: z.array(z.lazy(() => z.unknown())).nullish(),

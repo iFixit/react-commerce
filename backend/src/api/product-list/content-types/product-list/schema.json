@@ -241,6 +241,14 @@
          "relation": "manyToMany",
          "target": "api::faq.faq",
          "inversedBy": "product_lists"
+      },
+      "optionalFilters": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "text"
       }
    }
 }
