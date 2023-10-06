@@ -405,6 +405,12 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
+export type ComponentProductListBoostedSearchSkus2 = {
+   __typename?: 'ComponentProductListBoostedSearchSkus2';
+   Sku: Scalars['String'];
+   id: Scalars['ID'];
+};
+
 export type ComponentProductListItemTypeOverride = {
    __typename?: 'ComponentProductListItemTypeOverride';
    description?: Maybe<Scalars['String']>;
@@ -866,6 +872,7 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
+   | ComponentProductListBoostedSearchSkus2
    | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
@@ -3283,6 +3290,7 @@ export type FindProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             brandLogoWidth?: number | null;
+            optionalFilters?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3626,6 +3634,7 @@ export type ProductListFieldsFragment = {
    filters?: string | null;
    forceNoindex?: boolean | null;
    brandLogoWidth?: number | null;
+   optionalFilters?: string | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
@@ -5939,6 +5948,7 @@ export const ProductListFieldsFragmentDoc = `
       ...FAQFields
     }
   }
+  optionalFilters
 }
     `;
 export const CallToActionFieldsFragmentDoc = `

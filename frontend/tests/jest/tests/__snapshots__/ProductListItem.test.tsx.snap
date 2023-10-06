@@ -39,6 +39,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             >
               <h3
                 class="chakra-heading css-10ht6wa"
+                data-testid="heading-product-title"
                 id="product-heading-galaxy-s9-plus-replacement-battery"
               >
                 Galaxy S9+ Battery

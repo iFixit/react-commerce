@@ -86,6 +86,7 @@ const BaseProductListSchema = z.object({
    metaTitle: z.string().nullable(),
    defaultShowAllChildrenOnLgSizes: z.boolean().nullable(),
    filters: z.string().nullable(),
+   optionalFilters: z.string().nullable(),
    forceNoindex: z.boolean().nullable(),
    heroImage: ImageSchema.nullable(),
    brandLogo: ImageSchema.nullable(),
