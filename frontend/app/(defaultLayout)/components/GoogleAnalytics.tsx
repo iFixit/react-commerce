@@ -39,15 +39,6 @@ function GA4() {
             strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
          ></Script>
-         <Script id="gtag-ga4">
-            {`
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
-
-         gtag('config', '${GTAG_ID}', ${GA_DEBUG} ? { debug_mode: true } : {});
-      `}
-         </Script>
       </>
    );
 }
