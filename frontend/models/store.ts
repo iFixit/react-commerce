@@ -40,6 +40,7 @@ export function findStoreByCode(
 }
 
 async function findStoreByCodeFromStrapi(code: string) {
+   console.log('FIND STORE BY CODE', code);
    const result = await timeAsync('strapi.findStore', () =>
       strapi.findStore({
          filters: { code: { eq: code } },
