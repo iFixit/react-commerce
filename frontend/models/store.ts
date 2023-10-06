@@ -46,6 +46,7 @@ async function findStoreByCodeFromStrapi(code: string) {
          filters: { code: { eq: code } },
       })
    );
+   console.log('FIND STORE RESULT:\n', JSON.stringify(result, null, 2));
    const store = result.store?.data?.[0]?.attributes;
    if (store == null) {
       throw new Error('Store not found');
