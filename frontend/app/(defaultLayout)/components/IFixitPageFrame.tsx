@@ -71,6 +71,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { setupMinimumGA4 } from '@ifixit/analytics';
 import { GA_DEBUG, GTAG_ID } from '@config/env';
 import { PiwikPro } from '@components/analytics';
+import { GoAffPro } from '@components/analytics/GoAffPro';
 
 export default function IFixitPageFrame({
    stores,
@@ -253,6 +254,7 @@ export default function IFixitPageFrame({
                <Matomo />
                <GoogleAnalytics />
                <PiwikPro />
+               <GoAffPro />
             </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>

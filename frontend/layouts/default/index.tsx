@@ -65,6 +65,7 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
+import { GoAffPro } from '@components/analytics/GoAffPro';
 
 const DefaultLayoutComponent = function ({
    title,
@@ -324,6 +325,7 @@ const DefaultLayoutComponent = function ({
             <Matomo />
             <GoogleAnalytics />
             <PiwikPro />
+            <GoAffPro />
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>
    );
