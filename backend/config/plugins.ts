@@ -38,6 +38,11 @@ export default ({ env }) => {
          enabled: true,
          resolve: './src/plugins/addons',
       },
+      graphql: {
+         config: {
+            playgroundAlways: true,
+         },
+      },
    };
 
    if (env('SENDGRID_API_KEY')) {
