@@ -36,17 +36,6 @@ export const applySentryFetchMiddleware = () => {
    }
 };
 
-export const applySentryUnhandledRejectionListener = () => {
-   if (isClientSide) {
-      window.addEventListener('unhandledrejection', (event) => {
-         Sentry.withScope((scope) => {
-            scope.setExtra('promise', event.promise);
-            Sentry.captureException(event.reason);
-         });
-      });
-   }
-};
-
 const withSentry: FetchMiddleware =
    (fetcher, shouldSkipRequest) => async (input, init) => {
       if (shouldSkipRequest?.(input, init)) {
