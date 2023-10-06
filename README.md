@@ -1,6 +1,6 @@
 # [iFixit React Commerce](https://react-commerce.vercel.app)
 
-New iFixit e-commerce site.
+New iFixit e-commerce site. TEST
 
 ## Development
 
