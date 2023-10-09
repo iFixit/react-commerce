@@ -975,29 +975,10 @@ function RelatedProblems({
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        <Text
-                           mt={3}
-                           noOfLines={4}
-                           display={{ base: 'none', xl: 'block' }}
-                        >
-                           {description}
+                        <Text display={{ base: 'none', xl: 'flex' }} mt={3}>
+                           <Box noOfLines={4}>{description}</Box>
                         </Text>
                      </Box>
-                  </Flex>
-                  <Flex
-                     justifyContent="space-between"
-                     padding={3}
-                     bgColor="gray.100"
-                     borderTop="1px solid"
-                     borderColor="gray.300"
-                     borderBottomRadius="md"
-                  >
-                     {hasRelatedPages && (
-                        <Box>{problemCount} Common Problems</Box>
-                     )}
-                     <Link href={viewUrl} color="blue.500" ml="auto">
-                        View All
-                     </Link>
                   </Flex>
                </Box>
             </Stack>
