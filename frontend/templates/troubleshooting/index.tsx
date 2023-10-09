@@ -915,8 +915,7 @@ function RelatedProblems({
    hasRelatedPages?: boolean;
 }) {
    const { linkedProblems } = wikiData;
-   const { displayTitle, imageUrl, viewUrl, description } = wikiData.category;
-   const problemCount = linkedProblems.length;
+   const { displayTitle, imageUrl, description } = wikiData.category;
 
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
