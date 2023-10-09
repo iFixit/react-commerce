@@ -405,6 +405,12 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
+export type ComponentProductListBoostedSearchSkus2 = {
+   __typename?: 'ComponentProductListBoostedSearchSkus2';
+   Sku: Scalars['String'];
+   id: Scalars['ID'];
+};
+
 export type ComponentProductListItemTypeOverride = {
    __typename?: 'ComponentProductListItemTypeOverride';
    description?: Maybe<Scalars['String']>;
@@ -866,6 +872,7 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
+   | ComponentProductListBoostedSearchSkus2
    | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
@@ -893,6 +900,7 @@ export type GenericMorph =
    | Page
    | Product
    | ProductList
+   | PublisherAction
    | ReusableSection
    | SocialPost
    | Store
@@ -1130,6 +1138,7 @@ export type Mutation = {
    createProduct?: Maybe<ProductEntityResponse>;
    createProductList?: Maybe<ProductListEntityResponse>;
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
+   createPublisherAction?: Maybe<PublisherActionEntityResponse>;
    createReusableSection?: Maybe<ReusableSectionEntityResponse>;
    createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
@@ -1147,6 +1156,7 @@ export type Mutation = {
    deletePage?: Maybe<PageEntityResponse>;
    deleteProduct?: Maybe<ProductEntityResponse>;
    deleteProductList?: Maybe<ProductListEntityResponse>;
+   deletePublisherAction?: Maybe<PublisherActionEntityResponse>;
    deleteReusableSection?: Maybe<ReusableSectionEntityResponse>;
    deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
@@ -1176,6 +1186,7 @@ export type Mutation = {
    updatePage?: Maybe<PageEntityResponse>;
    updateProduct?: Maybe<ProductEntityResponse>;
    updateProductList?: Maybe<ProductListEntityResponse>;
+   updatePublisherAction?: Maybe<PublisherActionEntityResponse>;
    updateReusableSection?: Maybe<ReusableSectionEntityResponse>;
    updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
@@ -1256,6 +1267,10 @@ export type MutationCreateProductListLocalizationArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationCreatePublisherActionArgs = {
+   data: PublisherActionInput;
+};
+
 export type MutationCreateReusableSectionArgs = {
    data: ReusableSectionInput;
 };
@@ -1318,6 +1333,10 @@ export type MutationDeleteProductArgs = {
 export type MutationDeleteProductListArgs = {
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationDeletePublisherActionArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteReusableSectionArgs = {
@@ -1428,6 +1447,11 @@ export type MutationUpdateProductListArgs = {
    data: ProductListInput;
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationUpdatePublisherActionArgs = {
+   data: PublisherActionInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateReusableSectionArgs = {
@@ -1630,6 +1654,7 @@ export type ProductList = {
    localizations?: Maybe<ProductListRelationResponseCollection>;
    metaDescription?: Maybe<Scalars['String']>;
    metaTitle?: Maybe<Scalars['String']>;
+   optionalFilters?: Maybe<Scalars['String']>;
    parent?: Maybe<ProductListEntityResponse>;
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
@@ -1700,6 +1725,7 @@ export type ProductListFiltersInput = {
    metaDescription?: InputMaybe<StringFilterInput>;
    metaTitle?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<ProductListFiltersInput>;
+   optionalFilters?: InputMaybe<StringFilterInput>;
    or?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
    parent?: InputMaybe<ProductListFiltersInput>;
    publishedAt?: InputMaybe<DateTimeFilterInput>;
@@ -1732,6 +1758,7 @@ export type ProductListInput = {
    legacyPageId?: InputMaybe<Scalars['Int']>;
    metaDescription?: InputMaybe<Scalars['String']>;
    metaTitle?: InputMaybe<Scalars['String']>;
+   optionalFilters?: InputMaybe<Scalars['String']>;
    parent?: InputMaybe<Scalars['ID']>;
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    sections?: InputMaybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
@@ -1777,6 +1804,53 @@ export enum PublicationState {
    Preview = 'PREVIEW',
 }
 
+export type PublisherAction = {
+   __typename?: 'PublisherAction';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   entityId?: Maybe<Scalars['Int']>;
+   entitySlug?: Maybe<Scalars['String']>;
+   executeAt?: Maybe<Scalars['DateTime']>;
+   mode?: Maybe<Scalars['String']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type PublisherActionEntity = {
+   __typename?: 'PublisherActionEntity';
+   attributes?: Maybe<PublisherAction>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type PublisherActionEntityResponse = {
+   __typename?: 'PublisherActionEntityResponse';
+   data?: Maybe<PublisherActionEntity>;
+};
+
+export type PublisherActionEntityResponseCollection = {
+   __typename?: 'PublisherActionEntityResponseCollection';
+   data: Array<PublisherActionEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type PublisherActionFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<PublisherActionFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   entityId?: InputMaybe<IntFilterInput>;
+   entitySlug?: InputMaybe<StringFilterInput>;
+   executeAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   mode?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<PublisherActionFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<PublisherActionFiltersInput>>>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type PublisherActionInput = {
+   entityId?: InputMaybe<Scalars['Int']>;
+   entitySlug?: InputMaybe<Scalars['String']>;
+   executeAt?: InputMaybe<Scalars['DateTime']>;
+   mode?: InputMaybe<Scalars['String']>;
+};
+
 export type Query = {
    __typename?: 'Query';
    banner?: Maybe<BannerEntityResponse>;
@@ -1797,6 +1871,8 @@ export type Query = {
    productList?: Maybe<ProductListEntityResponse>;
    productLists?: Maybe<ProductListEntityResponseCollection>;
    products?: Maybe<ProductEntityResponseCollection>;
+   publisherAction?: Maybe<PublisherActionEntityResponse>;
+   publisherActions?: Maybe<PublisherActionEntityResponseCollection>;
    reusableSection?: Maybe<ReusableSectionEntityResponse>;
    reusableSections?: Maybe<ReusableSectionEntityResponseCollection>;
    socialPost?: Maybe<SocialPostEntityResponse>;
@@ -1910,6 +1986,16 @@ export type QueryProductsArgs = {
    filters?: InputMaybe<ProductFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
    publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryPublisherActionArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryPublisherActionsArgs = {
+   filters?: InputMaybe<PublisherActionFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -3204,6 +3290,7 @@ export type FindProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             brandLogoWidth?: number | null;
+            optionalFilters?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3547,6 +3634,7 @@ export type ProductListFieldsFragment = {
    filters?: string | null;
    forceNoindex?: boolean | null;
    brandLogoWidth?: number | null;
+   optionalFilters?: string | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
@@ -5860,6 +5948,7 @@ export const ProductListFieldsFragmentDoc = `
       ...FAQFields
     }
   }
+  optionalFilters
 }
     `;
 export const CallToActionFieldsFragmentDoc = `

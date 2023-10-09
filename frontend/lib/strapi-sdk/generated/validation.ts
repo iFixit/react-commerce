@@ -49,6 +49,8 @@ import {
    ProductListFiltersInput,
    ProductListInput,
    PublicationState,
+   PublisherActionFiltersInput,
+   PublisherActionInput,
    ReusableSectionFiltersInput,
    ReusableSectionInput,
    SocialPostFiltersInput,
@@ -853,6 +855,7 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       metaDescription: z.lazy(() => StringFilterInputSchema().nullish()),
       metaTitle: z.lazy(() => StringFilterInputSchema().nullish()),
       not: z.lazy(() => ProductListFiltersInputSchema().nullish()),
+      optionalFilters: z.lazy(() => StringFilterInputSchema().nullish()),
       or: z
          .array(z.lazy(() => ProductListFiltersInputSchema().nullable()))
          .nullish(),
@@ -889,6 +892,7 @@ export function ProductListInputSchema(): z.ZodObject<
       legacyPageId: z.number().nullish(),
       metaDescription: z.string().nullish(),
       metaTitle: z.string().nullish(),
+      optionalFilters: z.string().nullish(),
       parent: z.string().nullish(),
       publishedAt: z.unknown().nullish(),
       sections: z.array(z.lazy(() => z.unknown())).nullish(),
@@ -900,6 +904,38 @@ export function ProductListInputSchema(): z.ZodObject<
 }
 
 export const PublicationStateSchema = z.nativeEnum(PublicationState);
+
+export function PublisherActionFiltersInputSchema(): z.ZodObject<
+   Properties<PublisherActionFiltersInput>
+> {
+   return z.object<Properties<PublisherActionFiltersInput>>({
+      and: z
+         .array(z.lazy(() => PublisherActionFiltersInputSchema().nullable()))
+         .nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      entityId: z.lazy(() => IntFilterInputSchema().nullish()),
+      entitySlug: z.lazy(() => StringFilterInputSchema().nullish()),
+      executeAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      mode: z.lazy(() => StringFilterInputSchema().nullish()),
+      not: z.lazy(() => PublisherActionFiltersInputSchema().nullish()),
+      or: z
+         .array(z.lazy(() => PublisherActionFiltersInputSchema().nullable()))
+         .nullish(),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function PublisherActionInputSchema(): z.ZodObject<
+   Properties<PublisherActionInput>
+> {
+   return z.object<Properties<PublisherActionInput>>({
+      entityId: z.number().nullish(),
+      entitySlug: z.string().nullish(),
+      executeAt: z.unknown().nullish(),
+      mode: z.string().nullish(),
+   });
+}
 
 export function ReusableSectionFiltersInputSchema(): z.ZodObject<
    Properties<ReusableSectionFiltersInput>

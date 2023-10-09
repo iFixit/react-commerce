@@ -17,11 +17,42 @@ export default ({ env }) => {
             },
          },
       },
+      publisher: {
+         enabled: true,
+         // See: https://market.strapi.io/plugins/strapi-plugin-publisher
+         config: {
+            components: {
+               dateTimePicker: {
+                  step: 15,
+               },
+            },
+            hooks: {
+               beforePublish: async ({ strapi, uid, entity }) => {},
+               afterPublish: async ({ strapi, uid, entity }) => {},
+               beforeUnpublish: async ({ strapi, uid, entity }) => {},
+               afterUnpublish: async ({ strapi, uid, entity }) => {},
+            },
+         },
+      },
       addons: {
          enabled: true,
          resolve: './src/plugins/addons',
       },
    };
+
+   if (env('SENDGRID_API_KEY')) {
+      exports.email = {
+         config: {
+            provider: 'sendgrid',
+            providerOptions: {
+               apiKey: env('SENDGRID_API_KEY'),
+            },
+            settings: {
+               defaultFrom: 'no-reply@strapi.ifixit.com',
+            },
+         },
+      };
+   }
 
    if (env('S3_BUCKET')) {
       exports.upload = {

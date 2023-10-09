@@ -31,11 +31,15 @@ export const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL;
 
 export const PIWIK_ID = getPiwikIDForEnv(process.env.NEXT_PUBLIC_PIWIK_ENV);
 
+export const SENTRY_SAMPLING_ENABLED =
+   process.env.SENTRY_SAMPLING_ENABLED === 'true';
+
 export const GA_URL = process.env.NEXT_PUBLIC_GA_URL;
 
 export const GA_KEY = process.env.NEXT_PUBLIC_GA_KEY;
 
-export const GA_DEBUG = process.env.NEXT_PUBLIC_GA_DEBUG;
+export const GA_DEBUG =
+   process.env.NEXT_PUBLIC_GA_DEBUG?.toLowerCase() === 'true';
 
 export const GTAG_ID = process.env.NEXT_PUBLIC_GTAG_ID;
 

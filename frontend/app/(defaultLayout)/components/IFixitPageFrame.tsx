@@ -68,6 +68,8 @@ import { CartFooter } from '@layouts/default/Footer';
 import { LayoutErrorBoundary } from '@layouts/default/LayoutErrorBoundary';
 import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { setupMinimumGA4 } from '@ifixit/analytics';
+import { GA_DEBUG, GTAG_ID } from '@config/env';
 import { PiwikPro } from '@components/analytics';
 
 export default function IFixitPageFrame({
@@ -81,6 +83,10 @@ export default function IFixitPageFrame({
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
    const { adminMessage } = useAppContext();
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const params = useSearchParams();
+
+   const debugMode = Boolean(GA_DEBUG || params?.get('ga4_debug') === 'true');
+   setupMinimumGA4(GTAG_ID, debugMode);
 
    return (
       <LayoutErrorBoundary>

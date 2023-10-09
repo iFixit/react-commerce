@@ -116,6 +116,7 @@ fragment ProductListFields on ProductList {
          ...FAQFields
       }
    }
+   optionalFilters
 }
 
 fragment AncestorProductListFields on ProductList {

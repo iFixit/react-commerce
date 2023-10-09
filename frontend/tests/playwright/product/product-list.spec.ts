@@ -204,4 +204,82 @@ test.describe('Product List Data', () => {
       const metaTitle = partsPage.page.locator('meta[property="og:title"]');
       await expect(metaTitle).toHaveAttribute('content', 'Fallback metatitle');
    });
+   test('Product List test Boosted Search Skus', async ({
+      partsPage,
+      serverRequestInterceptor,
+      getProductListMock,
+   }) => {
+      const productList = getProductListMock;
+      serverRequestInterceptor.use(
+         createGraphQLHandler({
+            request: {
+               endpoint: 'getProductList',
+               method: 'query',
+            },
+            response: {
+               status: 200,
+               body: productList,
+            },
+         })
+      );
+
+      await partsPage.goToProductParts('Microsoft_Surface_Laptop_2');
+
+      await partsPage.page.waitForSelector(
+         '[data-testid="list-view-products"]'
+      );
+
+      const lastProduct = partsPage.page
+         .getByTestId('list-view-products')
+         .getByRole('group')
+         .last();
+
+      expect(lastProduct).toBeTruthy();
+
+      const lastProductTitle = await lastProduct
+         .getByTestId('heading-product-title')
+         .textContent();
+      expect(lastProductTitle).toBeTruthy();
+      if (!lastProductTitle) throw new Error('lastProductName is undefined');
+
+      const productsToSku: { [key: string]: string } = {
+         'Surface Laptop 2 13.5" Screen': 'IF413-007-1',
+         'Surface Laptop 1/2 Battery': 'IF413-000-1',
+      };
+
+      const skuToProducts: { [key: string]: string } = {};
+
+      for (const [product, sku] of Object.entries(productsToSku)) {
+         skuToProducts[sku] = product;
+      }
+
+      const lastSku = productsToSku[lastProductTitle];
+      productList.productLists!.data[0].attributes!.optionalFilters = `identifier:${lastSku}`;
+
+      serverRequestInterceptor.use(
+         createGraphQLHandler({
+            request: {
+               endpoint: 'getProductList',
+               method: 'query',
+            },
+            response: {
+               status: 200,
+               body: productList,
+            },
+         })
+      );
+
+      await partsPage.goToProductParts('Microsoft_Surface_Laptop_2');
+
+      const firstProductAfterBoost = partsPage.page
+         .getByTestId('list-view-products')
+         .getByRole('group')
+         .first();
+
+      const productBoosted = firstProductAfterBoost.first();
+      const firstTitle = await productBoosted
+         .getByTestId('heading-product-title')
+         .textContent();
+      expect(firstTitle).toEqual(skuToProducts[lastSku]);
+   });
 });
