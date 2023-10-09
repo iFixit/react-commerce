@@ -36,7 +36,6 @@ import {
    useToken,
    HeadingProps,
    useBreakpointValue,
-   useMediaQuery,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import type {
@@ -919,12 +918,6 @@ function RelatedProblems({
    const { displayTitle, imageUrl, viewUrl, description } = wikiData.category;
    const problemCount = linkedProblems.length;
 
-   const xlBreakpoint = useToken('breakpoints', 'xl');
-   const [isXlBreakpoint] = useMediaQuery(`(max-width: ${xlBreakpoint})`, {
-      ssr: true,
-      fallback: false,
-   });
-
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
@@ -947,16 +940,15 @@ function RelatedProblems({
             flex="1 0 320px"
             mt={{ base: 3, md: 0 }}
          >
-            {isXlBreakpoint && (
-               <HeadingSelfLink
-                  as="h3"
-                  id={RelatedProblemsRecord.uniqueId}
-                  onClick={onClick}
-                  pt={4}
-               >
-                  {RelatedProblemsRecord.title}
-               </HeadingSelfLink>
-            )}
+            <HeadingSelfLink
+               as="h3"
+               id={RelatedProblemsRecord.uniqueId}
+               onClick={onClick}
+               pt={4}
+               display={{ base: 'block', xl: 'none' }}
+            >
+               {RelatedProblemsRecord.title}
+            </HeadingSelfLink>
             <Stack className="question" spacing={1.5}>
                <Box
                   bgColor="white"
@@ -983,11 +975,13 @@ function RelatedProblems({
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        {!isXlBreakpoint && (
-                           <Text mt={3} noOfLines={4}>
-                              {description}
-                           </Text>
-                        )}
+                        <Text
+                           mt={3}
+                           noOfLines={4}
+                           display={{ base: 'none', xl: 'block' }}
+                        >
+                           {description}
+                        </Text>
                      </Box>
                   </Flex>
                   <Flex
