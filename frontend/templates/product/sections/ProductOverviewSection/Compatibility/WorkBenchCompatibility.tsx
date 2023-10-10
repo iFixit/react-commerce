@@ -1,18 +1,25 @@
-import { Flex, HStack, Text, TextProps, chakra } from '@chakra-ui/react';
+import { Box, Flex, HStack, Text, chakra } from '@chakra-ui/react';
+import { WorkbenchCompatibilityProvider } from '@templates/product/hooks/useWorkbenchCompatibility';
 import { SVGProps } from 'react';
 
 export type WorkbenchCompatibilityProps = {
    status: 'unknown' | 'compatible' | 'incompatible' | 'mightFit';
 };
 
-export function WorkbenchCompatibilityAll() {
+export function WorkbenchCompatibilityAll({
+   productid,
+}: {
+   productid: string;
+}) {
    return (
-      <Flex flexDirection="column" gap={4}>
-         <WorkbenchCompatibility status="unknown" />
-         <WorkbenchCompatibility status="compatible" />
-         <WorkbenchCompatibility status="incompatible" />
-         <WorkbenchCompatibility status="mightFit" />
-      </Flex>
+      <WorkbenchCompatibilityProvider productid={productid}>
+         <Flex flexDirection="column" gap={4}>
+            <WorkbenchCompatibility status="unknown" />
+            <WorkbenchCompatibility status="compatible" />
+            <WorkbenchCompatibility status="incompatible" />
+            <WorkbenchCompatibility status="mightFit" />
+         </Flex>
+      </WorkbenchCompatibilityProvider>
    );
 }
 
@@ -32,7 +39,7 @@ export function WorkbenchCompatibility({
    );
 }
 
-function CompatibleText() {
+function CompatibleText({ device }: Device) {
    return (
       <HStack align="center">
          <WorkbenchIcon color="green.500" />
@@ -63,7 +70,11 @@ function MightFitText() {
                This part might fit your device
             </Text>
             <Text color="orange.500" fontSize="md">
-               We need a little more information on 1 of your devices
+               We need a little more information on{' '}
+               <Text as="span" fontWeight="bold">
+                  1
+               </Text>{' '}
+               of your devices
             </Text>
          </Flex>
       </HStack>

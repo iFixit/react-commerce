@@ -199,7 +199,9 @@ export function ProductOverviewSection({
                            product={product}
                            selectedVariant={selectedVariant}
                         />
-                        <WorkbenchCompatibilityAll />
+                        <WorkbenchCompatibilityAll
+                           productid={product.productcode}
+                        />
                         <CrossSell
                            product={product}
                            selectedVariant={selectedVariant}
