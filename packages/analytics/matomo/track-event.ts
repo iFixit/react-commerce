@@ -1,10 +1,10 @@
-import { matomoPush } from './matomoPush';
+import { piwikPush } from './matomoPush';
 
 /**
  * @see https://matomo.org/docs/event-tracking/
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  */
-export type TrackEventMatomo = {
+export type TrackEventPiwik = {
    /**
     * Describes the type of events you want to track.
     * For example, Link Clicks, Videos, Outbound Links, and Form Events.
@@ -44,14 +44,14 @@ export type TrackEventMatomo = {
  *   EventValue: 10
  * }
  */
-export const trackInMatomo = (trackData: TrackEventMatomo) => {
+export const trackInPiwik = (trackData: TrackEventPiwik) => {
    const dataWithEventName = {
       ...trackData,
       eventName:
          trackData.eventName ||
          `${window.location.origin}${window.location.pathname}`,
    };
-   matomoPush([
+   piwikPush([
       'trackEvent',
       dataWithEventName.eventCategory,
       dataWithEventName.eventAction,

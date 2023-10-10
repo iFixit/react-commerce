@@ -4,7 +4,7 @@ declare global {
    }
 }
 
-export function matomoPush(data: any[]) {
+export function piwikPush(data: any[]) {
    if (typeof window === 'undefined') {
       return;
    }
