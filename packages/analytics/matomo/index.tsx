@@ -1,5 +1,9 @@
 import { CartLineItem } from '@ifixit/cart-sdk';
-import { Money, sumMoney } from '@ifixit/helpers';
+import {
+   Money,
+   getShopifyStoreDomainFromCurrentURL,
+   sumMoney,
+} from '@ifixit/helpers';
 import { matomoPush } from './matomoPush';
 
 /**
@@ -9,6 +13,14 @@ export function trackMatomoPageView(url: string) {
    matomoPush(['setCustomUrl', url]);
    matomoPush(['setDocumentTitle', document.title]);
    matomoPush(['trackPageView']);
+}
+
+export function trackPiwikPreferredStore() {
+   if (typeof window !== 'undefined') {
+      const host = getShopifyStoreDomainFromCurrentURL();
+      console.log('host', host);
+      matomoPush(['setCustomDimension', 1, host]);
+   }
 }
 
 /**
