@@ -1,4 +1,4 @@
-import { trackMatomoCartChange } from '@ifixit/analytics';
+import { trackPiwikCartChange } from '@ifixit/analytics';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Cart } from '../types';
@@ -80,7 +80,7 @@ export function useUpdateLineItemQuantity() {
          },
          onSuccess: () => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackMatomoCartChange(cart?.lineItems ?? []);
+            trackPiwikCartChange(cart?.lineItems ?? []);
          },
          onSettled: () => {
             client.invalidateQueries(cartKeys.cart);

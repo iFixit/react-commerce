@@ -19,7 +19,7 @@ export function trackPiwikPreferredStore() {
    if (typeof window !== 'undefined') {
       const host = getShopifyStoreDomainFromCurrentURL();
       console.log('host', host);
-      matomoPush(['setCustomDimension', 1, host]);
+      piwikPush(['setCustomDimension', 1, host]);
    }
 }
 
@@ -48,7 +48,7 @@ export function trackPiwikEcommerceView(product: ProductData) {
    ]);
 }
 
-export function trackMatomoCartChange(items: CartLineItem[]) {
+export function trackPiwikCartChange(items: CartLineItem[]) {
    trackClearCart();
    if (items.length === 0) {
       return;
@@ -90,7 +90,7 @@ type AddToCartData = {
  * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
  */
 function trackAddToCart(product: AddToCartData) {
-   matomoPush([
+   piwikPush([
       'addEcommerceItem',
       product.productSku,
       product.productName,
@@ -101,9 +101,9 @@ function trackAddToCart(product: AddToCartData) {
 }
 
 function trackClearCart() {
-   matomoPush(['clearEcommerceCart']);
+   piwikPush(['clearEcommerceCart']);
 }
 
 function trackCartUpdated(grandTotal: Money) {
-   matomoPush(['trackEcommerceCartUpdate', grandTotal.amount]);
+   piwikPush(['trackEcommerceCartUpdate', grandTotal.amount]);
 }

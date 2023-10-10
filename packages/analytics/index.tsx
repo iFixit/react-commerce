@@ -1,7 +1,7 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { gaSendEvent, trackGoogleAddToCart } from './google';
-import { trackMatomoCartChange } from './matomo';
-import { TrackEventMatomo, trackInMatomo } from './matomo/track-event';
+import { trackPiwikCartChange } from './matomo';
+import { TrackEventPiwik, trackInPiwik } from './matomo/track-event';
 
 export * from './google';
 export * from './matomo';
@@ -35,7 +35,7 @@ export function trackAddToCart(
    if (typeof window === 'undefined') {
       return;
    }
-   trackMatomoCartChange(cart);
+   trackPiwikCartChange(cart);
    trackGoogleAddToCart(addToCartInput);
    const event =
       `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
