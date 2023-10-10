@@ -16,73 +16,80 @@ export function WorkbenchCompatibility({
          borderColor="gray.300"
          alignItems="center"
       >
-         <CompatibilityMessage status={status} />
+         <Compatibility status={status} />
       </Flex>
    );
 }
 
-function CompatibilityMessage({
-   status,
-}: {
-   status: WorkbenchCompatibilityProps['status'];
-}) {
-   const color = getColor(status);
+function CompatibleText() {
    return (
       <HStack align="center">
-         <WorkbenchIcon color={color} />
-         <CompatibilityText
-            status={status}
-            textProps={{
-               color: color,
-               fontSize: 'md',
-            }}
-            subTextProps={{
-               color: 'brand.500',
-               fontSize: 'md',
-            }}
-         />
+         <WorkbenchIcon color="green.500" />
+         <Text color="green.500" fontSize="md">
+            This part fits your device
+         </Text>
       </HStack>
    );
 }
 
-function getColor(status: WorkbenchCompatibilityProps['status']) {
-   switch (true) {
-      case status === 'compatible':
-         return 'green.500';
-      case status === 'incompatible':
-         return 'red.500';
-      case status === 'mightFit':
-         return 'orange.500';
-      default:
-      case status === 'unknown':
-         return 'gray.900';
-   }
+function IncompatibleText() {
+   return (
+      <HStack align="center">
+         <WorkbenchIcon color="red.500" />
+         <Text color="red.500" fontSize="md">
+            This part does not fit your device
+         </Text>
+      </HStack>
+   );
 }
 
-function CompatibilityText({
+function MightFitText() {
+   return (
+      <HStack align="center">
+         <WorkbenchIcon color="orange.500" />
+         <Flex flexDirection="column">
+            <Text color="orange.500" fontSize="md">
+               This part might fit your device
+            </Text>
+            <Text color="orange.500" fontSize="md">
+               We need a little more information on 1 of your devices
+            </Text>
+         </Flex>
+      </HStack>
+   );
+}
+
+function UnknownText() {
+   return (
+      <HStack align="center">
+         <WorkbenchIcon color="gray.900" />
+         <Flex flexDirection="column">
+            <Text color="gray.900" fontSize="md">
+               Does it compatible with your device?
+            </Text>
+            <Text color="brand.500" fontSize="md">
+               Add device to your workbench
+            </Text>
+         </Flex>
+      </HStack>
+   );
+}
+
+function Compatibility({
    status,
-   textProps,
-   subTextProps,
 }: {
    status: WorkbenchCompatibilityProps['status'];
-   textProps: TextProps;
-   subTextProps: TextProps;
 }) {
    switch (true) {
       case status === 'compatible':
-         return <Text {...textProps}>This part fits your device</Text>;
+         return <CompatibleText />;
       case status === 'incompatible':
-         return <Text {...textProps}>This part does not fit your device</Text>;
+         return <IncompatibleText />;
       case status === 'mightFit':
-         return <Text {...textProps}>This part might fit your device</Text>;
+         return <MightFitText />;
       default:
       case status === 'unknown':
-         return (
-            <Flex flexDirection="column">
-               <Text {...textProps}>Does it compatible with your device?</Text>
-               <Text {...subTextProps}>Add device to your workbench</Text>
-            </Flex>
-         );
+         return <UnknownText />;
    }
 }
 
