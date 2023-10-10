@@ -38,8 +38,8 @@ type ProductData = {
    price: Money;
 };
 
-export function trackMatomoEcommerceView(product: ProductData) {
-   matomoPush([
+export function trackPiwikEcommerceView(product: ProductData) {
+   piwikPush([
       'setEcommerceView',
       product.productSku,
       product.productName,

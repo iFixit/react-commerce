@@ -12,7 +12,7 @@ import { DEFAULT_STORE_CODE } from '@config/env';
 import {
    trackGoogleProductView,
    trackInPiwikAndGA,
-   trackMatomoEcommerceView,
+   trackPiwikEcommerceView,
    trackGA4ViewItem,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
@@ -53,7 +53,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
-      trackMatomoEcommerceView({
+      trackPiwikEcommerceView({
          productSku: selectedVariant.sku ?? selectedVariant.id,
          productName: selectedVariant.internalDisplayName ?? product.title,
          price: selectedVariant.price,
