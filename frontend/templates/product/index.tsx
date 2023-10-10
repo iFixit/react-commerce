@@ -11,7 +11,7 @@ import { SplitWithImageContentSection } from '@components/sections/SplitWithImag
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
    trackGoogleProductView,
-   trackInMatomoAndGA,
+   trackInPiwikAndGA,
    trackMatomoEcommerceView,
    trackGA4ViewItem,
 } from '@ifixit/analytics';
@@ -83,7 +83,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    const trackFeaturedProductClick = React.useCallback(
       (product: ProductPreview) => {
-         trackInMatomoAndGA({
+         trackInPiwikAndGA({
             eventCategory: 'Featured Products - Product Page',
             eventAction: `Featured on Product Page - ${product.handle}`,
          });

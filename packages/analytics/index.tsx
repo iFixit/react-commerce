@@ -9,14 +9,14 @@ export * from './matomo';
 /**
  * @param trackData trackData.eventName will default to the page path if not provided
  */
-export const trackInMatomoAndGA = (trackData: TrackEventMatomo) => {
+export const trackInPiwikAndGA = (trackData: TrackEventPiwik) => {
    if (typeof window === 'undefined') {
       return;
    }
    const eventName =
       trackData.eventName ||
       `${window.location.origin}${window.location.pathname}`;
-   trackInMatomo({
+   trackInPiwik({
       ...trackData,
       eventName,
    });
@@ -46,7 +46,7 @@ export function trackAddToCart(
            `${addToCartInput.bundle.items
               .map((item) => item.itemcode)
               .join(', ')}`;
-   trackInMatomoAndGA({
+   trackInPiwikAndGA({
       eventCategory: event,
       eventAction: `${event} - ${itemcodes}`,
       eventName: `${window.location.origin}${window.location.pathname}`,

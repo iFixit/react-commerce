@@ -1,5 +1,5 @@
 import { useDisclosure } from '@chakra-ui/react';
-import { trackGA4ViewCart, trackInMatomoAndGA } from '@ifixit/analytics';
+import { trackGA4ViewCart, trackInPiwikAndGA } from '@ifixit/analytics';
 import { getVariantIdFromEncodedVariantURI } from '@ifixit/helpers';
 import { useCart } from '@ifixit/cart-sdk';
 
@@ -30,7 +30,7 @@ export function useCartDrawer() {
       throw new Error('useCartDrawer must be used within a CartDrawerProvider');
    }
    const onViewCart = React.useCallback(() => {
-      trackInMatomoAndGA({
+      trackInPiwikAndGA({
          eventCategory: 'Mini Cart',
          eventAction: 'Btn "View Cart" - Click',
       });
