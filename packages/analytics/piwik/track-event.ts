@@ -1,9 +1,5 @@
-import { piwikPush } from './matomoPush';
+import { piwikPush } from './piwikPush';
 
-/**
- * @see https://matomo.org/docs/event-tracking/
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- */
 export type TrackEventPiwik = {
    /**
     * Describes the type of events you want to track.
@@ -29,8 +25,6 @@ export type TrackEventPiwik = {
 };
 
 /**
- * @see https://matomo.org/docs/event-tracking/
- * @see https://developer.matomo.org/api-reference/tracking-javascript
  * @example
  * const TrackingBrochureDownloads = {
  *   EventCategory: 'Downloads',
@@ -40,7 +34,7 @@ export type TrackEventPiwik = {
  * @example
  * const TrackingUserReviews = {
  *   EventCategory: 'Reviews'
- *   EventAction: 'Published Matomo Review'
+ *   EventAction: 'Published Piwik Review'
  *   EventValue: 10
  * }
  */

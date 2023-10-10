@@ -1,10 +1,10 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { gaSendEvent, trackGoogleAddToCart } from './google';
-import { trackPiwikCartChange } from './matomo';
-import { TrackEventPiwik, trackInPiwik } from './matomo/track-event';
+import { trackPiwikCartChange } from './piwik';
+import { TrackEventPiwik, trackInPiwik } from './piwik/track-event';
 
 export * from './google';
-export * from './matomo';
+export * from './piwik';
 
 /**
  * @param trackData trackData.eventName will default to the page path if not provided

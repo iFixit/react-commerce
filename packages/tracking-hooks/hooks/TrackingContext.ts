@@ -1,10 +1,6 @@
 import { createContext } from 'react';
 
-/**
- * @see https://matomo.org/docs/event-tracking/
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- */
-export type TrackEventMatomo = {
+export type TrackEventPiwik = {
    /**
     * Describes the type of events you want to track.
     * For example, Link Clicks, Videos, Outbound Links, and Form Events.
@@ -28,13 +24,13 @@ export type TrackEventMatomo = {
    eventValue?: number;
 };
 
-type Track = (trackData: TrackEventMatomo) => void;
+type Track = (trackData: TrackEventPiwik) => void;
 type TrackContext = {
    trackClick: Track;
 };
 
 const defaultTracker: TrackContext = {
-   trackClick: (_trackData: TrackEventMatomo) => {},
+   trackClick: (_trackData: TrackEventPiwik) => {},
 };
 
 export const TrackingContext = createContext(defaultTracker);

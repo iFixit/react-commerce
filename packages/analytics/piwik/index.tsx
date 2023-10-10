@@ -4,7 +4,7 @@ import {
    getShopifyStoreDomainFromCurrentURL,
    sumMoney,
 } from '@ifixit/helpers';
-import { piwikPush } from './matomoPush';
+import { piwikPush } from './piwikPush';
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
