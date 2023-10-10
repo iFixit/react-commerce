@@ -4,15 +4,15 @@ import {
    getShopifyStoreDomainFromCurrentURL,
    sumMoney,
 } from '@ifixit/helpers';
-import { matomoPush } from './matomoPush';
+import { piwikPush } from './matomoPush';
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  */
-export function trackMatomoPageView(url: string) {
-   matomoPush(['setCustomUrl', url]);
-   matomoPush(['setDocumentTitle', document.title]);
-   matomoPush(['trackPageView']);
+export function trackPiwikPageView(url: string) {
+   piwikPush(['setCustomUrl', url]);
+   piwikPush(['setDocumentTitle', document.title]);
+   piwikPush(['trackPageView']);
 }
 
 export function trackPiwikPreferredStore() {
