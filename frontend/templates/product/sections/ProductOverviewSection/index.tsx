@@ -46,7 +46,10 @@ import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
 import { trackGA4ViewItem } from '@ifixit/analytics';
 import { PrerenderedHTML } from '@components/common';
-import { WorkbenchCompatibility } from './Compatibility/WorkBenchCompatibility';
+import {
+   WorkbenchCompatibility,
+   WorkbenchCompatibilityAll,
+} from './Compatibility/WorkBenchCompatibility';
 
 export interface ProductOverviewSectionProps {
    product: Product;
@@ -196,7 +199,7 @@ export function ProductOverviewSection({
                            product={product}
                            selectedVariant={selectedVariant}
                         />
-                        <WorkbenchCompatibility status="unknown" />
+                        <WorkbenchCompatibilityAll />
                         <CrossSell
                            product={product}
                            selectedVariant={selectedVariant}

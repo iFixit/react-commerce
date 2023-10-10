@@ -5,6 +5,17 @@ export type WorkbenchCompatibilityProps = {
    status: 'unknown' | 'compatible' | 'incompatible' | 'mightFit';
 };
 
+export function WorkbenchCompatibilityAll() {
+   return (
+      <Flex flexDirection="column" gap={4}>
+         <WorkbenchCompatibility status="unknown" />
+         <WorkbenchCompatibility status="compatible" />
+         <WorkbenchCompatibility status="incompatible" />
+         <WorkbenchCompatibility status="mightFit" />
+      </Flex>
+   );
+}
+
 export function WorkbenchCompatibility({
    status,
 }: WorkbenchCompatibilityProps) {
