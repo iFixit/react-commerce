@@ -932,23 +932,18 @@ function RelatedProblems({
             id={RelatedProblemsRecord.uniqueId}
             ref={ref}
             className="sidebar"
-            spacing={{ base: 3, xl: 8 }}
+            spacing={{ base: 3, xl: 6 }}
             width={{ base: '100%' }}
             alignSelf="start"
             fontSize="14px"
             flex="1 0 320px"
             mt={{ base: 3, md: 0 }}
          >
-            <HeadingSelfLink
-               as="h3"
-               id={RelatedProblemsRecord.uniqueId}
-               onClick={onClick}
-               pt={4}
-               display={{ base: 'block', xl: 'none' }}
+            <Stack
+               className="question"
+               spacing={1.5}
+               display={{ base: 'none', xl: 'flex' }}
             >
-               {RelatedProblemsRecord.title}
-            </HeadingSelfLink>
-            <Stack className="question" spacing={1.5}>
                <Box
                   bgColor="white"
                   border="1px solid"
@@ -982,15 +977,24 @@ function RelatedProblems({
                </Box>
             </Stack>
             {hasRelatedPages && (
-               <SimpleGrid
-                  className="list"
-                  columns={{ base: 1, sm: 2, xl: 1 }}
-                  spacing={3}
-               >
-                  {linkedProblems.map((problem) => (
-                     <ProblemCard problem={problem} key={problem.title} />
-                  ))}
-               </SimpleGrid>
+               <>
+                  <HeadingSelfLink
+                     as="h3"
+                     id={RelatedProblemsRecord.uniqueId}
+                     onClick={onClick}
+                  >
+                     {RelatedProblemsRecord.title}
+                  </HeadingSelfLink>
+                  <SimpleGrid
+                     className="list"
+                     columns={{ base: 1, sm: 2, xl: 1 }}
+                     spacing={3}
+                  >
+                     {linkedProblems.map((problem) => (
+                        <ProblemCard problem={problem} key={problem.title} />
+                     ))}
+                  </SimpleGrid>
+               </>
             )}
          </Stack>
       </>
