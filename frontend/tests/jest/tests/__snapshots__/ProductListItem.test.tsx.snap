@@ -26,13 +26,13 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
         />
       </div>
       <div
-        class="chakra-stack css-1ryy1c1"
+        class="chakra-stack css-l76j94"
       >
         <div
           class="css-1c6uy1d"
         >
           <div
-            class="chakra-stack css-16syxvt"
+            class="chakra-stack css-1w1mqfw"
           >
             <div
               class="css-j7qwjs"
@@ -51,11 +51,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               </p>
             </div>
             <div
-              class="chakra-stack css-84zodg"
+              class="chakra-stack css-1igwmid"
               data-testid="reviewStars"
             >
               <div
-                class="chakra-stack css-134p2gk"
+                class="chakra-stack css-fqllj7"
               >
                 <svg
                   aria-hidden="true"
@@ -165,7 +165,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
           </div>
         </div>
         <div
-          class="chakra-stack css-f4fjr9"
+          class="chakra-stack css-1rtna6l"
         >
           <div
             class="css-oazic6"
@@ -178,7 +178,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
             </p>
           </div>
           <div
-            class="chakra-stack css-15cy0v5"
+            class="chakra-stack css-1pxbt0w"
           >
             <a
               class="chakra-linkbox__overlay css-1hnz6hu"

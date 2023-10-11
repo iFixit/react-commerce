@@ -12,7 +12,6 @@
    "dependencies": {},
    "peerDependencies": {
       "@chakra-ui/react": ">=2",
-      "@chakra-ui/system": "2.3.0",
       "@emotion/react": ">=11.0.0 <12.0.0",
       "framer-motion": ">=4.0.0 <11.0.0",
       "@emotion/styled": ">=11.0.0 <12.0.0",
@@ -22,10 +21,10 @@
       "@fortawesome/react-fontawesome": "*"
    },
    "devDependencies": {
-      "@types/react": "18.0.24",
-      "@types/react-dom": "18.0.8",
+      "@types/react": "18.2.0",
+      "@types/react-dom": "18.2.7",
       "@ifixit/tsconfig": "workspace:*",
-      "typescript": "4.8.4",
+      "typescript": "5.2.2",
       "react": ">=18.2.0",
       "react-dom": ">=18.2.0",
       "@emotion/react": ">=11.0.0 <12.0.0",

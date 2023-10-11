@@ -184,10 +184,7 @@ const IFixitCollapsedBreadcrumb = function IFixitCollapsedBreadcrumb({
    breadCrumbs,
    breadcrumbIcon,
 }: Pick<BreadCrumbsProps, 'breadCrumbs' | 'breadcrumbIcon'>) {
-   const iconSize = useBreakpointValue(
-      { base: '14px', sm: '16px' },
-      { ssr: false }
-   );
+   const iconSize = useBreakpointValue({ base: '14px', sm: '16px' });
 
    if (!breadCrumbs.length) {
       return null;
