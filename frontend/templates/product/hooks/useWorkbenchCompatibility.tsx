@@ -9,6 +9,12 @@ import {
    useState,
 } from 'react';
 
+export type WorkbenchCompatibilityStatus =
+   | 'unknown'
+   | 'compatible'
+   | 'incompatible'
+   | 'mightFit';
+
 export interface CompatibilityData {
    dropdownTopicVariants: any[];
    activeTopicWikiid: number;
@@ -19,6 +25,10 @@ export interface DropdownTopic {
    label: string;
    value: string;
    isCompatible: string;
+}
+
+export interface DropdownTopicWithStatus extends DropdownTopic {
+   status: WorkbenchCompatibilityStatus;
 }
 
 const emptyCompatibilityData: CompatibilityData = {
@@ -59,8 +69,8 @@ export function useWorkbenchCompatibility({
 }
 
 type WorkbenchCompatibilityContextValue = CompatibilityData & {
-   selectedTopic: DropdownTopic | null;
-   setSelectedTopic: (topic: DropdownTopic | null) => void;
+   selectedTopic: DropdownTopicWithStatus | null;
+   setSelectedTopic: (topic: DropdownTopicWithStatus | null) => void;
 };
 
 const WorkbenchCompatibilityContext =
@@ -80,9 +90,8 @@ export function WorkbenchCompatibilityProvider({
    children,
 }: PropsWithChildren<{ productid: string }>) {
    const compatData = useWorkbenchCompatibility({ productid });
-   const [selectedTopic, setSelectedTopic] = useState<DropdownTopic | null>(
-      null
-   );
+   const [selectedTopic, setSelectedTopic] =
+      useState<DropdownTopicWithStatus | null>(null);
    useEffect(() => {
       if (compatData.dropdownTopics.length === 0) {
          return;
@@ -92,7 +101,14 @@ export function WorkbenchCompatibilityProvider({
          (topic) => topic.isCompatible === 'true'
       );
 
-      setSelectedTopic(firstCompatibleTopic || compatData.dropdownTopics[0]);
+      const topic = firstCompatibleTopic || compatData.dropdownTopics[0];
+
+      setSelectedTopic({
+         ...topic,
+         // TODO: How do we map to the other statuses?
+         // i.e. 'mightFit'
+         status: firstCompatibleTopic ? 'compatible' : 'incompatible',
+      });
    }, [compatData]);
 
    const context = {

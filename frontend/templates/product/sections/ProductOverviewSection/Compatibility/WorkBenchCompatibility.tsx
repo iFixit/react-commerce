@@ -1,52 +1,46 @@
-import { Box, Flex, HStack, Text, chakra } from '@chakra-ui/react';
-import { WorkbenchCompatibilityProvider } from '@templates/product/hooks/useWorkbenchCompatibility';
+import { Flex, HStack, Text, chakra } from '@chakra-ui/react';
+import {
+   WorkbenchCompatibilityProvider,
+   useWorkbenchCompatibilityContext,
+} from '@templates/product/hooks/useWorkbenchCompatibility';
 import { SVGProps } from 'react';
 
 export type WorkbenchCompatibilityProps = {
    status: 'unknown' | 'compatible' | 'incompatible' | 'mightFit';
 };
-
-export function WorkbenchCompatibilityAll({
-   productid,
-}: {
-   productid: string;
-}) {
+export function WorkbenchCompatibility({ productid }: { productid: string }) {
    return (
       <WorkbenchCompatibilityProvider productid={productid}>
-         <Flex flexDirection="column" gap={4}>
-            <WorkbenchCompatibility status="unknown" />
-            <WorkbenchCompatibility status="compatible" />
-            <WorkbenchCompatibility status="incompatible" />
-            <WorkbenchCompatibility status="mightFit" />
+         <Flex
+            padding={4}
+            border="1px solid"
+            borderRadius="md"
+            borderColor="gray.300"
+            alignItems="center"
+         >
+            <Compatibility />
          </Flex>
       </WorkbenchCompatibilityProvider>
    );
 }
 
-export function WorkbenchCompatibility({
-   status,
-}: WorkbenchCompatibilityProps) {
+function CompatibleText() {
+   const workbenchContext = useWorkbenchCompatibilityContext();
+   const { selectedTopic } = workbenchContext;
    return (
-      <Flex
-         padding={4}
-         border="1px solid"
-         borderRadius="md"
-         borderColor="gray.300"
-         alignItems="center"
-      >
-         <Compatibility status={status} />
+      <Flex flexDirection="column" flexGrow={1}>
+         <HStack align="center">
+            <WorkbenchIcon color="green.500" />
+            <Text color="green.500" fontSize="md">
+               This part fits your device
+            </Text>
+         </HStack>
+         <Flex paddingTop={3} borderTop="1px solid" borderColor="gray.200">
+            <Text fontSize="sm" color="gray.900">
+               {selectedTopic?.label}
+            </Text>
+         </Flex>
       </Flex>
-   );
-}
-
-function CompatibleText({ device }: Device) {
-   return (
-      <HStack align="center">
-         <WorkbenchIcon color="green.500" />
-         <Text color="green.500" fontSize="md">
-            This part fits your device
-         </Text>
-      </HStack>
    );
 }
 
@@ -97,11 +91,11 @@ function UnknownText() {
    );
 }
 
-function Compatibility({
-   status,
-}: {
-   status: WorkbenchCompatibilityProps['status'];
-}) {
+function Compatibility() {
+   const workbenchContext = useWorkbenchCompatibilityContext();
+   const { selectedTopic } = workbenchContext;
+   const status = selectedTopic?.status ?? 'unknown';
+
    switch (true) {
       case status === 'compatible':
          return <CompatibleText />;
