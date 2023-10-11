@@ -936,7 +936,7 @@ function RelatedProblems({
             width={{ base: '100%' }}
             alignSelf="start"
             fontSize="14px"
-            flex="1 0 320px"
+            flex={{ xl: '1 0 320px' }}
             mt={{ base: 3, md: 0 }}
          >
             <Stack
