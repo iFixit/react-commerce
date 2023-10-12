@@ -128,7 +128,7 @@ const NewsletterForm = ({
             type="submit"
             data-testid="footer-newsletter-subscribe-button"
             isLoading={subscription.status === SubscriptionStatus.Subscribing}
-            disabled={subscription.status !== SubscriptionStatus.Idle}
+            isDisabled={subscription.status !== SubscriptionStatus.Idle}
             colorScheme="brand"
             color="white"
             border="none"

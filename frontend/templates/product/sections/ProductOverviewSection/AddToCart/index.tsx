@@ -54,7 +54,7 @@ export function AddToCart({ product, selectedVariant }: AddToCartProps) {
                   w="full"
                   colorScheme="brand"
                   isLoading={isAddingToCart}
-                  disabled={inventory.remaining === 0}
+                  isDisabled={inventory.remaining === 0}
                   onClick={addToCart}
                   data-testid="product-add-to-cart-button"
                >

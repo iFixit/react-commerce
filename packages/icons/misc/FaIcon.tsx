@@ -1,12 +1,14 @@
-import { chakra, forwardRef } from '@chakra-ui/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ChakraComponent, ChakraProps, chakra } from '@chakra-ui/react';
+import {
+   FontAwesomeIcon,
+   FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome';
 
-const FactoryFaIcon = chakra(FontAwesomeIcon);
+export type FaIconProps = ChakraProps & FontAwesomeIconProps;
 
-export type FaIconProps = React.ComponentProps<typeof FactoryFaIcon>;
-
-export const FaIcon = forwardRef<FaIconProps, 'svg'>((props, ref) => {
-   return (
-      <FactoryFaIcon display="flex" alignItems="center" {...props} ref={ref} />
-   );
-});
+export const FaIcon = chakra(FontAwesomeIcon, {
+   baseStyle: {
+      display: 'flex',
+      alignItems: 'center',
+   },
+}) as ChakraComponent<typeof FontAwesomeIcon, FontAwesomeIconProps>;

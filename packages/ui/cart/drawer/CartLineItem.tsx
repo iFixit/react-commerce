@@ -171,7 +171,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               />
                            }
                            size="xs"
-                           disabled={lineItem.quantity <= 1}
+                           isDisabled={lineItem.quantity <= 1}
                            onClick={decrementQuantity}
                            data-testid="cart-drawer-decrease-quantity"
                         />
@@ -194,7 +194,7 @@ export function CartLineItem({ lineItem }: CartLineItemProps) {
                               />
                            }
                            size="xs"
-                           disabled={
+                           isDisabled={
                               lineItem.maxToAdd != null &&
                               lineItem.quantity >= lineItem.maxToAdd
                            }

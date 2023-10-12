@@ -32,7 +32,7 @@ export function Rating(props: RatingProps) {
    );
 }
 
-type RatingStarProps = Omit<FaIconProps, 'icon'> & {
+type RatingStarProps = Omit<FaIconProps, 'icon' | 'appearance' | 'size'> & {
    appearance: RatingStarAppearance;
    size?: ResponsiveValue<string | number>;
 };

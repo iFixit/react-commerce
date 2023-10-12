@@ -13,9 +13,9 @@
       "type-check": "tsc --pretty --noEmit"
    },
    "devDependencies": {
-      "@types/react": "18.0.24",
+      "@types/react": "18.2.0",
       "@ifixit/tsconfig": "workspace:*",
-      "typescript": "4.8.4",
+      "typescript": "5.2.2",
       "react": "18.2.0"
    },
    "peerDependencies": {

@@ -18,7 +18,8 @@
    },
    "compilerOptions": {
       "isolatedModules": false,
-      "target": "ESNext"
+      "target": "ESNext",
+      "moduleResolution": "Node16"
    },
    "include": ["."],
    "exclude": ["dist", "build", "node_modules"]

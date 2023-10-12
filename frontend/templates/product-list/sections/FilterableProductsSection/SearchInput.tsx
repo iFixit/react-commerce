@@ -65,7 +65,7 @@ export const SearchInput = forwardRef<SearchInputProps, 'div'>((props, ref) => {
             pointerEvents={query.length > 0 ? 'initial' : 'none'}
          >
             <IconButton
-               disabled={query.length === 0}
+               isDisabled={query.length === 0}
                variant="ghost"
                aria-label="clear search"
                onClick={clearSearch}
