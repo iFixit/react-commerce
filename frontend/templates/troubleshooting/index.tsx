@@ -917,7 +917,7 @@ function RelatedProblems({
    const { linkedProblems } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
       bufferPx
