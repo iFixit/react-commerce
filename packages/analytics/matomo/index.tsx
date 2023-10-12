@@ -15,10 +15,11 @@ export function trackMatomoPageView(url: string) {
    matomoPush(['trackPageView']);
 }
 
-export function trackPiwikPreferredStore() {
-   if (typeof window !== 'undefined') {
+export function trackPiwikPreferredStore(piwikEnv: string | undefined): void {
+   const dimensionId = getPiwikCustomDimensionsForEnv(piwikEnv);
+   if (typeof window !== 'undefined' && dimensionId) {
       const host = getShopifyStoreDomainFromCurrentURL();
-      matomoPush(['setCustomDimension', 1, host]);
+      matomoPush(['setCustomDimension', dimensionId, host]);
    }
 }
 
@@ -105,4 +106,25 @@ function trackClearCart() {
 
 function trackCartUpdated(grandTotal: Money) {
    matomoPush(['trackEcommerceCartUpdate', grandTotal.amount]);
+}
+
+type PiwikCustomDimensions = {
+   preferredStore: number;
+};
+
+function getPiwikCustomDimensionsForEnv(
+   env: string | undefined
+): PiwikCustomDimensions | null {
+   switch (env) {
+      case 'prod':
+         return {
+            preferredStore: 1,
+         };
+      case 'dev':
+         return {
+            preferredStore: 1,
+         };
+      default:
+         return null;
+   }
 }

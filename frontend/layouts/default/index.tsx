@@ -66,6 +66,7 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
+import { PIWIK_ENV } from '@config/env';
 
 const DefaultLayoutComponent = function ({
    title,
@@ -75,7 +76,7 @@ const DefaultLayoutComponent = function ({
    globalSettings,
    children,
 }: React.PropsWithChildren<DefaultLayoutProps>) {
-   trackPiwikPreferredStore();
+   trackPiwikPreferredStore(PIWIK_ENV);
    const { menu } = currentStore.header;
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
    const { adminMessage } = useAppContext();
