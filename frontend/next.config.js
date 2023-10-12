@@ -173,6 +173,9 @@ const moduleExports = {
       }),
    },
    swcMinify: false,
+   experimental: {
+      scrollRestoration: true,
+   },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
