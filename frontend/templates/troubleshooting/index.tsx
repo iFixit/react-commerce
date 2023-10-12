@@ -11,6 +11,7 @@ import {
    Button,
    Flex,
    FlexProps,
+   Heading,
    IconButton,
    Image,
    Link,
@@ -41,7 +42,6 @@ import { PrerenderedHTML } from '@components/common';
 import type {
    Author,
    BreadcrumbEntry,
-   Problem,
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
@@ -49,7 +49,6 @@ import SolutionCard from './solution';
 import { FaIcon } from '@ifixit/icons';
 import {
    faAngleDown,
-   faCircleNodes,
    faClockRotateLeft,
    faList,
    faPenToSquare,
@@ -67,11 +66,6 @@ import {
 import { TOC } from './toc';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
-
-const RelatedProblemsRecord = {
-   title: 'Related Problems',
-   uniqueId: 'related-problems',
-};
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -103,7 +97,6 @@ const Wiki: NextPageWithLayout<{
 
    const tocItems = sections
       .map((section) => ({ title: section.heading, uniqueId: section.id }))
-      .concat(hasRelatedPages ? RelatedProblemsRecord : [])
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
@@ -164,11 +157,10 @@ const Wiki: NextPageWithLayout<{
                   gridArea="wrapper"
                >
                   <Stack id="main" spacing={4}>
-                     <Heading wikiData={wikiData} />
+                     <TroubleshootingHeading wikiData={wikiData} />
                      <Causes
                         introduction={introSections}
                         solutions={wikiData.solutions}
-                        problems={wikiData.linkedProblems}
                      />
                      <Stack className="intro" spacing={6} pt={3}>
                         <IntroductionSections introduction={introSections} />
@@ -200,7 +192,11 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
+function TroubleshootingHeading({
+   wikiData,
+}: {
+   wikiData: TroubleshootingData;
+}) {
    const { title, mainImageUrl, mainImageUrlLarge } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
@@ -216,7 +212,7 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
       <HStack
          spacing={0}
          align="start"
-         pb="12px"
+         pb={3}
          borderBottom="1px"
          borderColor="gray.300"
       >
@@ -277,11 +273,9 @@ function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
 function Causes({
    introduction,
    solutions,
-   problems,
 }: {
    introduction: Section[];
    solutions: Section[];
-   problems: Problem[];
 }) {
    const lgBreakpoint = useToken('breakpoints', 'lg');
 
@@ -320,7 +314,6 @@ function Causes({
                   index={index}
                />
             ))}
-            {problems.length > 0 && <CausesRelatedProblem />}
          </Stack>
       </Box>
    );
@@ -376,34 +369,6 @@ function CausesSolution({ heading, id, index }: Section & { index: number }) {
                {index + 1}
             </Square>
             <Box as="span">{heading}</Box>
-         </Link>
-      </Stack>
-   );
-}
-
-function CausesRelatedProblem() {
-   const { onClick } = useTOCBufferPxScrollOnClick(
-      RelatedProblemsRecord.uniqueId
-   );
-
-   return (
-      <Stack>
-         <Link
-            href={`#${RelatedProblemsRecord.uniqueId}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               mr={2}
-            >
-               <FaIcon icon={faCircleNodes} color="brand.500" />
-            </Square>
-            <Box as="span">Related Problems</Box>
          </Link>
       </Stack>
    );
@@ -917,20 +882,9 @@ function RelatedProblems({
    const { linkedProblems } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
-   const { ref } = LinkToTOC<HTMLHeadingElement>(
-      RelatedProblemsRecord.uniqueId,
-      bufferPx
-   );
-   const { onClick } = useTOCBufferPxScrollOnClick(
-      RelatedProblemsRecord.uniqueId
-   );
-
    return (
       <>
          <Stack
-            id={RelatedProblemsRecord.uniqueId}
-            ref={ref}
             className="sidebar"
             spacing={{ base: 3, xl: 6 }}
             width={{ base: '100%' }}
@@ -978,13 +932,14 @@ function RelatedProblems({
             </Stack>
             {hasRelatedPages && (
                <>
-                  <HeadingSelfLink
+                  <Heading
                      as="h3"
-                     id={RelatedProblemsRecord.uniqueId}
-                     onClick={onClick}
+                     fontSize={{ base: '20px', md: '24px' }}
+                     fontWeight="medium"
+                     lineHeight="normal"
                   >
-                     {RelatedProblemsRecord.title}
-                  </HeadingSelfLink>
+                     Related Problems
+                  </Heading>
                   <SimpleGrid
                      className="list"
                      columns={{ base: 1, sm: 2, xl: 1 }}
