@@ -15,11 +15,15 @@ export function trackPiwikPageView(url: string) {
    piwikPush(['trackPageView']);
 }
 
-export function trackPiwikPreferredStore() {
-   if (typeof window !== 'undefined') {
+export function trackPiwikPreferredStore(piwikEnv: string | undefined): void {
+   const customDimensions = getPiwikCustomDimensionsForEnv(piwikEnv);
+   if (typeof window !== 'undefined' && customDimensions) {
       const host = getShopifyStoreDomainFromCurrentURL();
-      console.log('host', host);
-      piwikPush(['setCustomDimension', 1, host]);
+      piwikPush([
+         'setCustomDimension',
+         customDimensions['preferredStore'],
+         host,
+      ]);
    }
 }
 
@@ -106,4 +110,25 @@ function trackClearCart() {
 
 function trackCartUpdated(grandTotal: Money) {
    piwikPush(['trackEcommerceCartUpdate', grandTotal.amount]);
+}
+
+type PiwikCustomDimensions = {
+   preferredStore: number;
+};
+
+function getPiwikCustomDimensionsForEnv(
+   env: string | undefined
+): PiwikCustomDimensions | null {
+   switch (env) {
+      case 'prod':
+         return {
+            preferredStore: 1,
+         };
+      case 'dev':
+         return {
+            preferredStore: 1,
+         };
+      default:
+         return null;
+   }
 }
