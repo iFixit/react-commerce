@@ -238,7 +238,7 @@ function NavigationNextButton({
 function SlideControlButton({ disabled, ...others }: IconButtonProps) {
    return (
       <IconButton
-         disabled={disabled}
+         isDisabled={disabled}
          variant={disabled ? 'outline' : 'solid'}
          colorScheme="brand"
          borderRadius="full"

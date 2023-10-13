@@ -836,7 +836,7 @@ function IntroductionSection({
    intro,
    ...headingProps
 }: { intro: Section } & HeadingProps) {
-   const bufferPx = useBreakpointValue({ base: -46, lg: -6 }, { ssr: false });
+   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
    const { onClick } = useTOCBufferPxScrollOnClick(intro.id);
 
@@ -864,7 +864,7 @@ const ConclusionSection = function ConclusionSectionInner({
 }: {
    conclusion: Section;
 }) {
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
@@ -906,7 +906,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
 }
 
 function RelatedProblems({ problems }: { problems: Problem[] }) {
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 }, { ssr: false });
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
       bufferPx

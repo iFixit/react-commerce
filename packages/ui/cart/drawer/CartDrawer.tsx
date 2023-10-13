@@ -207,7 +207,7 @@ export function CartDrawer() {
                               </Button>
                               <Button
                                  colorScheme="blue"
-                                 disabled={!cart.data?.hasItemsInCart}
+                                 isDisabled={!cart.data?.hasItemsInCart}
                                  isLoading={checkout.isRedirecting}
                                  onClick={checkout.redirectToCheckout}
                               >

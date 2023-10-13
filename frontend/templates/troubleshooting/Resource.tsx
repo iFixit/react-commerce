@@ -152,7 +152,7 @@ function ResourceBox({
 }
 
 // https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
-function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
+function hasKey<O extends Object>(obj: O, key: PropertyKey): key is keyof O {
    return key in obj;
 }
 
@@ -230,7 +230,7 @@ function Resource({
                         <FaIcon
                            icon={icon}
                            mr={1}
-                           color={iconColor || `${themeColor}.500`}
+                           color={(iconColor as string) || `${themeColor}.500`}
                         />
                         {difficulty}
                      </Badge>

@@ -5,10 +5,10 @@
    "types": "./index.tsx",
    "license": "MIT",
    "devDependencies": {
-      "@types/react": "18.0.24",
-      "@types/react-dom": "18.0.8",
+      "@types/react": "18.2.0",
+      "@types/react-dom": "18.2.7",
       "@ifixit/tsconfig": "workspace:*",
-      "typescript": "4.8.4"
+      "typescript": "5.2.2"
    },
    "scripts": {
       "build": "",
