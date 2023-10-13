@@ -11,6 +11,7 @@ import {
    Button,
    Flex,
    FlexProps,
+   Heading,
    IconButton,
    Image,
    Link,
@@ -27,6 +28,7 @@ import {
    ModalCloseButton,
    Stack,
    Square,
+   Text,
    useDisclosure,
    VisuallyHidden,
    chakra,
@@ -163,7 +165,7 @@ const Wiki: NextPageWithLayout<{
                   gridArea="wrapper"
                >
                   <Stack id="main" spacing={4}>
-                     <Heading wikiData={wikiData} />
+                     <TroubleshootingHeading wikiData={wikiData} />
                      <Causes
                         introduction={introSections}
                         solutions={wikiData.solutions}
@@ -185,10 +187,11 @@ const Wiki: NextPageWithLayout<{
                      )}
                      <Conclusion conclusion={filteredConclusions} />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
-                     {wikiData.linkedProblems.length > 0 && (
-                        <RelatedProblems problems={wikiData.linkedProblems} />
-                     )}
                   </Stack>
+                  <RelatedProblems
+                     hasRelatedPages={hasRelatedPages}
+                     wikiData={wikiData}
+                  />
                </Stack>
             </Box>
          </TOCContextProvider>
@@ -198,7 +201,11 @@ const Wiki: NextPageWithLayout<{
    );
 };
 
-function Heading({ wikiData }: { wikiData: TroubleshootingData }) {
+function TroubleshootingHeading({
+   wikiData,
+}: {
+   wikiData: TroubleshootingData;
+}) {
    const { title, mainImageUrl, mainImageUrlLarge } = wikiData;
    const { isOpen, onOpen, onClose } = useDisclosure();
    const lastUpdatedDate = new Date(wikiData.lastUpdatedDate * 1000);
@@ -905,32 +912,95 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    );
 }
 
-function RelatedProblems({ problems }: { problems: Problem[] }) {
+function RelatedProblems({
+   wikiData,
+   hasRelatedPages,
+}: {
+   wikiData: TroubleshootingData;
+   hasRelatedPages?: boolean;
+}) {
+   const { linkedProblems } = wikiData;
+   const { displayTitle, imageUrl, description } = wikiData.category;
+
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
       bufferPx
    );
-   const { onClick } = useTOCBufferPxScrollOnClick(
-      RelatedProblemsRecord.uniqueId
-   );
 
    return (
-      <Box id={RelatedProblemsRecord.uniqueId} ref={ref}>
-         <HeadingSelfLink
-            as="h3"
+      <>
+         <Stack
             id={RelatedProblemsRecord.uniqueId}
-            pt={4}
-            onClick={onClick}
+            ref={ref}
+            className="sidebar"
+            spacing={{ base: 3, xl: 6 }}
+            width={{ base: '100%' }}
+            alignSelf="start"
+            fontSize="14px"
+            flex={{ xl: '1 0 320px' }}
+            mt={{ base: 3, md: 0 }}
          >
-            {RelatedProblemsRecord.title}
-         </HeadingSelfLink>
-         <SimpleGrid columns={{ base: 1, sm: 2 }} gap={3} mt={4}>
-            {problems.map((problem) => (
-               <ProblemCard problem={problem} key={problem.title} />
-            ))}
-         </SimpleGrid>
-      </Box>
+            <Stack
+               className="question"
+               spacing={1.5}
+               display={{ base: 'none', xl: 'flex' }}
+            >
+               <Box
+                  bgColor="white"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="md"
+               >
+                  <Flex gap={2} padding={3}>
+                     <Image
+                        src={imageUrl}
+                        alt={displayTitle}
+                        boxSize={{ base: '56px', md: '96px' }}
+                        htmlWidth={96}
+                        htmlHeight={96}
+                        objectFit="cover"
+                        borderRadius="md"
+                        outline="1px solid"
+                        outlineColor="gray.300"
+                     />
+                     <Box
+                        display={{ base: 'flex', xl: 'block' }}
+                        lineHeight="normal"
+                     >
+                        <Box fontWeight="semibold" my="auto">
+                           {displayTitle}
+                        </Box>
+                        <Text display={{ base: 'none', xl: 'flex' }} mt={3}>
+                           <Box noOfLines={4}>{description}</Box>
+                        </Text>
+                     </Box>
+                  </Flex>
+               </Box>
+            </Stack>
+            {hasRelatedPages && (
+               <>
+                  <Heading
+                     as="h3"
+                     fontSize={{ base: '20px', md: '24px' }}
+                     fontWeight="medium"
+                     lineHeight="normal"
+                  >
+                     {RelatedProblemsRecord.title}
+                  </Heading>
+                  <SimpleGrid
+                     className="list"
+                     columns={{ base: 1, sm: 2, xl: 1 }}
+                     spacing={3}
+                  >
+                     {linkedProblems.map((problem) => (
+                        <ProblemCard problem={problem} key={problem.title} />
+                     ))}
+                  </SimpleGrid>
+               </>
+            )}
+         </Stack>
+      </>
    );
 }
 

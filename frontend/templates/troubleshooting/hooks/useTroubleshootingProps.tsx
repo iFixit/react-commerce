@@ -61,6 +61,13 @@ export type SectionGuide = {
    introduction_rendered: string;
 };
 
+export type CategoryInfo = {
+   displayTitle: string;
+   imageUrl: string;
+   viewUrl: string;
+   description: string;
+};
+
 export type TroubleshootingApiData = {
    title: string;
    id: number;
@@ -84,6 +91,7 @@ export type TroubleshootingApiData = {
    linkedProblems: Problem[];
    mainImageUrl: string;
    mainImageUrlLarge: string;
+   category: CategoryInfo;
 };
 
 export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {
