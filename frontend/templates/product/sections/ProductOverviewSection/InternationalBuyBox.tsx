@@ -5,7 +5,7 @@ import {
    BuyBoxVariant,
 } from '@lib/ifixit-api/international-buy-box';
 import { Flag, FlagCountryCode } from '@ifixit/icons';
-import { trackInMatomoAndGA } from '@ifixit/analytics';
+import { trackInPiwikAndGA } from '@ifixit/analytics';
 
 type InternationalBuyBoxProps = {
    store: BuyBoxResponse;
@@ -20,7 +20,7 @@ export function InternationalBuyBox({
 }: InternationalBuyBoxProps) {
    const trackClick = useCallback(() => {
       const category = `${store.salesChannel} Store Buy Box`;
-      trackInMatomoAndGA({
+      trackInPiwikAndGA({
          eventCategory: category,
          eventAction: `${category} - Click - ${selectedVariant.gaSku}`,
       });

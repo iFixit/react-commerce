@@ -1,14 +1,30 @@
 import { CartLineItem } from '@ifixit/cart-sdk';
-import { Money, sumMoney } from '@ifixit/helpers';
-import { matomoPush } from './matomoPush';
+import {
+   Money,
+   getShopifyStoreDomainFromCurrentURL,
+   sumMoney,
+} from '@ifixit/helpers';
+import { piwikPush } from './piwikPush';
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  */
-export function trackMatomoPageView(url: string) {
-   matomoPush(['setCustomUrl', url]);
-   matomoPush(['setDocumentTitle', document.title]);
-   matomoPush(['trackPageView']);
+export function trackPiwikPageView(url: string) {
+   piwikPush(['setCustomUrl', url]);
+   piwikPush(['setDocumentTitle', document.title]);
+   piwikPush(['trackPageView']);
+}
+
+export function trackPiwikPreferredStore(piwikEnv: string | undefined): void {
+   const customDimensions = getPiwikCustomDimensionsForEnv(piwikEnv);
+   if (typeof window !== 'undefined' && customDimensions) {
+      const host = getShopifyStoreDomainFromCurrentURL();
+      piwikPush([
+         'setCustomDimensionValue',
+         customDimensions['preferredStore'],
+         host,
+      ]);
+   }
 }
 
 /**
@@ -26,8 +42,8 @@ type ProductData = {
    price: Money;
 };
 
-export function trackMatomoEcommerceView(product: ProductData) {
-   matomoPush([
+export function trackPiwikEcommerceView(product: ProductData) {
+   piwikPush([
       'setEcommerceView',
       product.productSku,
       product.productName,
@@ -36,7 +52,7 @@ export function trackMatomoEcommerceView(product: ProductData) {
    ]);
 }
 
-export function trackMatomoCartChange(items: CartLineItem[]) {
+export function trackPiwikCartChange(items: CartLineItem[]) {
    trackClearCart();
    if (items.length === 0) {
       return;
@@ -78,7 +94,7 @@ type AddToCartData = {
  * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
  */
 function trackAddToCart(product: AddToCartData) {
-   matomoPush([
+   piwikPush([
       'addEcommerceItem',
       product.productSku,
       product.productName,
@@ -89,9 +105,30 @@ function trackAddToCart(product: AddToCartData) {
 }
 
 function trackClearCart() {
-   matomoPush(['clearEcommerceCart']);
+   piwikPush(['clearEcommerceCart']);
 }
 
 function trackCartUpdated(grandTotal: Money) {
-   matomoPush(['trackEcommerceCartUpdate', grandTotal.amount]);
+   piwikPush(['trackEcommerceCartUpdate', grandTotal.amount]);
+}
+
+type PiwikCustomDimensions = {
+   preferredStore: number;
+};
+
+function getPiwikCustomDimensionsForEnv(
+   env: string | undefined
+): PiwikCustomDimensions | null {
+   switch (env) {
+      case 'prod':
+         return {
+            preferredStore: 1,
+         };
+      case 'dev':
+         return {
+            preferredStore: 1,
+         };
+      default:
+         return null;
+   }
 }

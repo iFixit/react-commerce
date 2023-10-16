@@ -1,4 +1,4 @@
-import { trackInMatomoAndGA } from '@ifixit/analytics';
+import { trackInPiwikAndGA } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever, isError } from '@ifixit/helpers';
@@ -52,7 +52,7 @@ export function useCheckout(): UseCheckout {
                } else {
                   url = await standardCheckout();
                }
-               trackInMatomoAndGA({
+               trackInPiwikAndGA({
                   eventCategory: 'Mini Cart',
                   eventAction: 'Btn "Check Out" - Click',
                });
