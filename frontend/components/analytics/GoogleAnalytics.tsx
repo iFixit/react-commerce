@@ -52,6 +52,7 @@ function GA4() {
                function gtag(){dataLayer.push(arguments);}
                gtag('js', new Date());
                gtag('config', '${GTAG_ID}', ${debugMode} ? { debug_mode: true } : {});
+               gtag('set', 'user_properties', ${getGACustomDimensions()});
                `,
                }}
             />

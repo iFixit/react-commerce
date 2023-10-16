@@ -1,6 +1,7 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import debounce from 'lodash/debounce';
+import { getShopifyStoreDomainFromCurrentURL } from '@ifixit/helpers';
 
 type GAType = (metric: string, ...args: any) => void;
 type GAProductType = {
@@ -81,6 +82,7 @@ export function setupMinimumGA4(
       window.gtag = windowGtag;
       window.gtag('js', new Date());
       window.gtag('config', GtagID, debugMode ? { debug_mode: true } : {});
+      window.gtag('set', 'user_properties', getGACustomDimensions());
    }
 }
 
@@ -164,4 +166,17 @@ function useGa(): GAType | undefined {
       return undefined;
    }
    return (window as any).ga;
+}
+
+type GACustomDimensions = {
+   preferred_store: string;
+   preferred_language: string;
+};
+
+export function getGACustomDimensions(): GACustomDimensions {
+   return {
+      preferred_store:
+         getShopifyStoreDomainFromCurrentURL() || 'no-store-found',
+      preferred_language: 'DE',
+   };
 }
