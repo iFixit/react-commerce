@@ -3,6 +3,7 @@ import * as React from 'react';
 import Script from 'next/script';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { getGACustomDimensions, setupMinimumGA4 } from '@ifixit/analytics';
 
 declare const ga: (command: string, hitType: string, url?: string) => void;
 
@@ -39,6 +40,7 @@ function GA4() {
    const { query } = router;
 
    const debugMode = GA_DEBUG || query.ga4_debug === 'true';
+   setupMinimumGA4(GTAG_ID, debugMode);
    return (
       <>
          <Head>
