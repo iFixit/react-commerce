@@ -979,7 +979,7 @@ function RelatedProblems({
                </Box>
             </Stack>
             {hasRelatedPages && (
-               <>
+               <Stack spacing={3}>
                   <Heading
                      as="h3"
                      fontSize={{ base: '20px', md: '24px' }}
@@ -997,7 +997,7 @@ function RelatedProblems({
                         <ProblemCard problem={problem} key={problem.title} />
                      ))}
                   </SimpleGrid>
-               </>
+               </Stack>
             )}
          </Stack>
       </>
