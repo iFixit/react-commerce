@@ -177,6 +177,6 @@ export function getGACustomDimensions(): GACustomDimensions {
    return {
       preferred_store:
          getShopifyStoreDomainFromCurrentURL() || 'no-store-found',
-      preferred_language: 'DE',
+      preferred_language: 'EN',
    };
 }
