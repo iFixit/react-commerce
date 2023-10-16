@@ -20,7 +20,7 @@ export function trackPiwikPreferredStore(piwikEnv: string | undefined): void {
    if (typeof window !== 'undefined' && customDimensions) {
       const host = getShopifyStoreDomainFromCurrentURL();
       piwikPush([
-         'setCustomDimension',
+         'setCustomDimensionValue',
          customDimensions['preferredStore'],
          host,
       ]);
