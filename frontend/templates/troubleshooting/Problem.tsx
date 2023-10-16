@@ -1,6 +1,6 @@
 import {
-   Flex,
-   Stack,
+   Grid,
+   GridItem,
    Image,
    LinkBox,
    LinkOverlay,
@@ -20,28 +20,49 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
          backgroundColor="white"
          transition={`border-color var(--chakra-transition-duration-normal)`}
          _hover={{ borderColor: 'brand.500' }}
+         padding={3}
+         fontWeight="semibold"
       >
-         <Flex padding={3} alignSelf="stretch">
-            <Image
-               boxSize="48px"
-               htmlWidth={48}
-               htmlHeight={48}
-               objectFit="cover"
-               src={imageUrl}
-               alt={deviceTitle}
+         <Grid
+            templateAreas={{
+               base: `
+                  "image title"
+                  "image link"
+               `,
+               md: `
+                  "image title"
+                  "image title"
+                  "link link"
+               `,
+            }}
+            gridTemplateColumns={{ base: 'auto auto 1fr', md: 'auto 1fr' }}
+         >
+            <GridItem
+               area="image"
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
-               loading="lazy"
+               boxSize={{ base: '56px', md: '32px' }}
                mr={2}
-            />
-            <Stack spacing="0" fontWeight="semibold" fontSize="sm">
-               <Text color="gray.900">{deviceTitle}</Text>
-               <LinkOverlay href={url} color="brand.500" alignSelf="stretch">
+            >
+               <Image
+                  height="100%"
+                  htmlWidth={56}
+                  htmlHeight={56}
+                  objectFit="cover"
+                  src={imageUrl}
+                  alt={deviceTitle}
+               />
+            </GridItem>
+            <GridItem area="title" display={{ base: 'initial', md: 'flex' }}>
+               <Text my="auto">{deviceTitle}</Text>
+            </GridItem>
+            <GridItem area="link" lineHeight="initial" mt={{ base: 0, md: 2 }}>
+               <LinkOverlay href={url} color="brand.500" my="auto">
                   {title}
                </LinkOverlay>
-            </Stack>
-         </Flex>
+            </GridItem>
+         </Grid>
       </LinkBox>
    );
 }

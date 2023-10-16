@@ -34,7 +34,7 @@ export function TOC({
    contentRef: RefObject<HTMLElement>;
 }) {
    const { getItems } = useTOCContext();
-   const items = getItems();
+   const items = getItems().filter((item) => item.title !== 'Related Problems');
 
    useScrollToOnloadEffect();
 
