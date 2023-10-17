@@ -37,7 +37,7 @@ export class IFixitAPIClient {
       endpoint: string,
       statName: string,
       init?: RequestInit,
-      processRequest = this.processResponse
+      processRequest = this.getJsonFromResponse
    ): Promise<Data> {
       return this.get(endpoint, statName, init).then(processRequest);
    }
@@ -58,7 +58,7 @@ export class IFixitAPIClient {
       statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.post(endpoint, statName, init).then(this.processResponse);
+      return this.post(endpoint, statName, init).then(this.getJsonFromResponse);
    }
 
    async put(
@@ -77,7 +77,7 @@ export class IFixitAPIClient {
       statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.put(endpoint, statName, init).then(this.processResponse);
+      return this.put(endpoint, statName, init).then(this.getJsonFromResponse);
    }
 
    async delete(
@@ -96,7 +96,9 @@ export class IFixitAPIClient {
       statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.delete(endpoint, statName, init).then(this.processResponse);
+      return this.delete(endpoint, statName, init).then(
+         this.getJsonFromResponse
+      );
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
@@ -124,15 +126,11 @@ export class IFixitAPIClient {
       return response;
    }
 
-   processResponse = (response: Response) => {
+   getJsonFromResponse = (response: Response) => {
       if (!response.ok) {
          throw new Error(response.statusText);
       }
 
-      return this.jsonOrNull(response);
-   };
-
-   jsonOrNull = (response: Response) => {
       if (response.headers.get('Content-Type') === 'application/json') {
          return response.json();
       }
