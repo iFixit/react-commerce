@@ -920,7 +920,8 @@ function RelatedProblems({
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
 }) {
-   const { linkedProblems } = wikiData;
+   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
+      wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
@@ -952,6 +953,7 @@ function RelatedProblems({
                   border="1px solid"
                   borderColor="gray.300"
                   borderRadius="md"
+                  overflow="hidden"
                >
                   <Flex gap={2} padding={3}>
                      <Image
@@ -977,6 +979,29 @@ function RelatedProblems({
                         </Text>
                      </Box>
                   </Flex>
+                  {countOfAssociatedProblems && (
+                     <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        w="100%"
+                        h="42px"
+                        padding="12px"
+                        bg="gray.100"
+                        borderTop="1px solid"
+                        borderColor="gray.300"
+                     >
+                        <Text>
+                           {countOfAssociatedProblems === 1
+                              ? '1 Problem'
+                              : countOfAssociatedProblems + ' Problems'}
+                        </Text>
+                        <Link href={deviceGuideUrl} textColor="brand.500">
+                           {countOfAssociatedProblems === 1
+                              ? 'view problem'
+                              : 'view all'}
+                        </Link>
+                     </Flex>
+                  )}
                </Box>
             </Stack>
             {hasRelatedPages && (
