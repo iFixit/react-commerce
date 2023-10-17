@@ -41,15 +41,6 @@ const withMiddleware = compose(
    withCache(CacheOrDisableOnHeadRevision)<TroubleshootingProps>
 );
 
-function rethrowUnless404(e: any) {
-   // If e is from IFixitAPIClient and fetch() didn't error,
-   // e.message is the response's statusText
-   if (typeof e === 'object' && (e as Error)?.message === 'Not Found') {
-      return;
-   }
-   throw e;
-}
-
 async function getTroubleshootingData(
    context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
 ): Promise<TroubleshootingApiData | null> {
@@ -64,15 +55,17 @@ async function getTroubleshootingData(
       return null;
    }
 
-   try {
-      return await client.getJson<TroubleshootingApiData>(
-         url,
-         'troubleshooting'
-      );
-   } catch (e) {
-      rethrowUnless404(e);
+   const resp = await client.get(url, 'troubleshooting');
+
+   if (resp.status === 404) {
       return null;
    }
+
+   if (!resp.ok) {
+      throw new Error(resp.statusText);
+   }
+
+   return await resp.json();
 }
 
 function getTroubleshootingApiUrl(
