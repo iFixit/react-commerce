@@ -1,5 +1,5 @@
 import { MATOMO_URL } from '@config/env';
-import { trackMatomoPageView } from '@ifixit/analytics';
+import { trackPiwikPageView } from '@ifixit/analytics';
 import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import * as React from 'react';
@@ -10,7 +10,7 @@ export function Matomo() {
 
    React.useEffect(() => {
       const url = `${pathname}?${searchParams}`;
-      trackMatomoPageView(url);
+      trackPiwikPageView(url);
    }, [pathname, searchParams]);
 
    return MATOMO_URL ? (

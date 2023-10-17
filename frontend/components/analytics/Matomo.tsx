@@ -2,16 +2,16 @@ import { MATOMO_URL, PIWIK_ID } from '@config/env';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Script from 'next/script';
-import { trackMatomoPageView } from '@ifixit/analytics';
+import { trackPiwikPageView } from '@ifixit/analytics';
 
 export function Matomo() {
    const router = useRouter();
    React.useEffect(() => {
-      router.events.on('routeChangeComplete', trackMatomoPageView);
-      router.events.on('hashChangeComplete', trackMatomoPageView);
+      router.events.on('routeChangeComplete', trackPiwikPageView);
+      router.events.on('hashChangeComplete', trackPiwikPageView);
       return () => {
-         router.events.off('routeChangeComplete', trackMatomoPageView);
-         router.events.off('hashChangeComplete', trackMatomoPageView);
+         router.events.off('routeChangeComplete', trackPiwikPageView);
+         router.events.off('hashChangeComplete', trackPiwikPageView);
       };
    }, [router?.events]);
 

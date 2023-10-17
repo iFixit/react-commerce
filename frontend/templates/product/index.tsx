@@ -11,8 +11,8 @@ import { SplitWithImageContentSection } from '@components/sections/SplitWithImag
 import { DEFAULT_STORE_CODE } from '@config/env';
 import {
    trackGoogleProductView,
-   trackInMatomoAndGA,
-   trackMatomoEcommerceView,
+   trackInPiwikAndGA,
+   trackPiwikEcommerceView,
    trackGA4ViewItem,
 } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
@@ -53,7 +53,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
-      trackMatomoEcommerceView({
+      trackPiwikEcommerceView({
          productSku: selectedVariant.sku ?? selectedVariant.id,
          productName: selectedVariant.internalDisplayName ?? product.title,
          price: selectedVariant.price,
@@ -83,7 +83,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    const trackFeaturedProductClick = React.useCallback(
       (product: ProductPreview) => {
-         trackInMatomoAndGA({
+         trackInPiwikAndGA({
             eventCategory: 'Featured Products - Product Page',
             eventAction: `Featured on Product Page - ${product.handle}`,
          });

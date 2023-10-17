@@ -1,22 +1,22 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { gaSendEvent, trackGoogleAddToCart } from './google';
-import { trackMatomoCartChange } from './matomo';
-import { TrackEventMatomo, trackInMatomo } from './matomo/track-event';
+import { trackPiwikCartChange } from './piwik';
+import { TrackEventPiwik, trackInPiwik } from './piwik/track-event';
 
 export * from './google';
-export * from './matomo';
+export * from './piwik';
 
 /**
  * @param trackData trackData.eventName will default to the page path if not provided
  */
-export const trackInMatomoAndGA = (trackData: TrackEventMatomo) => {
+export const trackInPiwikAndGA = (trackData: TrackEventPiwik) => {
    if (typeof window === 'undefined') {
       return;
    }
    const eventName =
       trackData.eventName ||
       `${window.location.origin}${window.location.pathname}`;
-   trackInMatomo({
+   trackInPiwik({
       ...trackData,
       eventName,
    });
@@ -35,7 +35,7 @@ export function trackAddToCart(
    if (typeof window === 'undefined') {
       return;
    }
-   trackMatomoCartChange(cart);
+   trackPiwikCartChange(cart);
    trackGoogleAddToCart(addToCartInput);
    const event =
       `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
@@ -46,7 +46,7 @@ export function trackAddToCart(
            `${addToCartInput.bundle.items
               .map((item) => item.itemcode)
               .join(', ')}`;
-   trackInMatomoAndGA({
+   trackInPiwikAndGA({
       eventCategory: event,
       eventAction: `${event} - ${itemcodes}`,
       eventName: `${window.location.origin}${window.location.pathname}`,

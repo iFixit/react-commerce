@@ -1,6 +1,6 @@
 import noImageFixie from '@assets/images/no-image-fixie.jpeg';
 import { Menu, MenuList } from '@chakra-ui/react';
-import { trackInMatomoAndGA } from '@ifixit/analytics';
+import { trackInPiwikAndGA } from '@ifixit/analytics';
 import {
    Footer,
    FooterCopyright,
@@ -49,7 +49,7 @@ export function CartFooter({
 }: FooterProps) {
    const { newsletterForm } = globalSettings;
    return (
-      <EventTracker value={{ trackClick: trackInMatomoAndGA }}>
+      <EventTracker value={{ trackClick: trackInPiwikAndGA }}>
          <Footer>
             <NavigationSection
                menu1={menu1}
