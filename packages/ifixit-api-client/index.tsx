@@ -26,7 +26,7 @@ export class IFixitAPIClient {
       endpoint: string,
       statName: string,
       init?: RequestInit,
-      processRequest = this.processRequest
+      processRequest = this.processResponse
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
@@ -38,36 +38,36 @@ export class IFixitAPIClient {
       endpoint: string,
       statName: string,
       init?: RequestInit,
-      processRequest = this.processRequest
+      processResponse = this.processResponse
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'POST',
-      }).then(processRequest);
+      }).then(processResponse);
    }
 
    async put<Data = unknown>(
       endpoint: string,
       statName: string,
       init?: RequestInit,
-      processRequest = this.processRequest
+      processResponse = this.processResponse
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'PUT',
-      }).then(processRequest);
+      }).then(processResponse);
    }
 
    async delete<Data = unknown>(
       endpoint: string,
       statName: string,
       init?: RequestInit,
-      processRequest = this.processRequest
+      processResponse = this.processResponse
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'DELETE',
-      }).then(processRequest);
+      }).then(processResponse);
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
@@ -95,7 +95,7 @@ export class IFixitAPIClient {
       return response;
    }
 
-   processRequest = (response: Response) => {
+   processResponse = (response: Response) => {
       if (!response.ok) {
          throw new Error(response.statusText);
       }
