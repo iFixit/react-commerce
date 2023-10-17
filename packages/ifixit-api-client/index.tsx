@@ -25,45 +25,49 @@ export class IFixitAPIClient {
    async get<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit
+      init?: RequestInit,
+      processRequest = this.processRequest
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'GET',
-      });
+      }).then(processRequest);
    }
 
    async post<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit
+      init?: RequestInit,
+      processRequest = this.processRequest
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'POST',
-      });
+      }).then(processRequest);
    }
 
    async put<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit
+      init?: RequestInit,
+      processRequest = this.processRequest
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'PUT',
-      });
+      }).then(processRequest);
    }
 
    async delete<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit
+      init?: RequestInit,
+      processRequest = this.processRequest
    ): Promise<Data> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'DELETE',
-      });
+      }).then(processRequest);
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
@@ -86,17 +90,26 @@ export class IFixitAPIClient {
                headers: headers,
             })
       );
+
+      warnIfNotBypassed(headers, response);
+      return response;
+   }
+
+   processRequest = (response: Response) => {
       if (!response.ok) {
          throw new Error(response.statusText);
       }
 
-      warnIfNotBypassed(headers, response);
+      return this.jsonOrNull(response);
+   };
 
+   jsonOrNull = (response: Response) => {
       if (response.headers.get('Content-Type') === 'application/json') {
          return response.json();
       }
+
       return null;
-   }
+   };
 }
 
 function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
