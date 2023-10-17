@@ -2,6 +2,7 @@ import { CartLineItem } from '@ifixit/cart-sdk';
 import {
    Money,
    getShopifyStoreDomainFromCurrentURL,
+   getShopifyLanguageFromCurrentURL,
    sumMoney,
 } from '@ifixit/helpers';
 import { piwikPush } from './piwikPush';
@@ -23,6 +24,22 @@ export function trackPiwikPreferredStore(piwikEnv: string | undefined): void {
          'setCustomDimensionValue',
          customDimensions['preferredStore'],
          host,
+      ]);
+   }
+}
+
+export function trackPiwikPreferredLanguage(
+   piwikEnv: string | undefined,
+   preferredLang: string | null
+): void {
+   const customDimensions = getPiwikCustomDimensionsForEnv(piwikEnv);
+   if (typeof window !== 'undefined' && customDimensions) {
+      const lang =
+         preferredLang?.toUpperCase() ?? getShopifyLanguageFromCurrentURL();
+      piwikPush([
+         'setCustomDimensionValue',
+         customDimensions['preferredLanguage'],
+         lang,
       ]);
    }
 }
@@ -114,6 +131,7 @@ function trackCartUpdated(grandTotal: Money) {
 
 type PiwikCustomDimensions = {
    preferredStore: number;
+   preferredLanguage: number;
 };
 
 function getPiwikCustomDimensionsForEnv(
@@ -123,10 +141,12 @@ function getPiwikCustomDimensionsForEnv(
       case 'prod':
          return {
             preferredStore: 1,
+            preferredLanguage: 2,
          };
       case 'dev':
          return {
             preferredStore: 1,
+            preferredLanguage: 2,
          };
       default:
          return null;
