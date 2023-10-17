@@ -112,9 +112,10 @@ const troubleshootingStyles: SystemStyleObject = {
    },
 
    blockquote: {
-      borderColor: 'gray.800',
+      borderColor: 'gray.300',
       borderLeftWidth: '4px',
       marginTop: '1em',
+      paddingLeft: '1em',
 
       '&.featured': {
          borderColor: 'gray.300',
