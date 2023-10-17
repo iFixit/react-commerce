@@ -65,7 +65,10 @@ async function getTroubleshootingData(
    }
 
    try {
-      return await client.get<TroubleshootingApiData>(url, 'troubleshooting');
+      return await client.getJson<TroubleshootingApiData>(
+         url,
+         'troubleshooting'
+      );
    } catch (e) {
       rethrowUnless404(e);
       return null;

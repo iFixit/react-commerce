@@ -57,7 +57,7 @@ async function getTroubleshootingListData(
    const url = `Troubleshooting/Collection/${device}`;
 
    try {
-      return await client.get<TroubleshootingListProps>(
+      return await client.getJson<TroubleshootingListProps>(
          url,
          'troubleshootingList'
       );

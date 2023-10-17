@@ -22,52 +22,81 @@ export class IFixitAPIClient {
       this.headers = options.headers ?? {};
    }
 
-   async get<Data = unknown>(
+   async get(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Response> {
+      return this.fetch(endpoint, statName, {
+         ...init,
+         method: 'GET',
+      });
+   }
+
+   async getJson<Data = unknown>(
       endpoint: string,
       statName: string,
       init?: RequestInit,
       processRequest = this.processResponse
    ): Promise<Data> {
-      return this.fetch(endpoint, statName, {
-         ...init,
-         method: 'GET',
-      }).then(processRequest);
+      return this.get(endpoint, statName, init).then(processRequest);
    }
 
-   async post<Data = unknown>(
+   async post(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processResponse = this.processResponse
-   ): Promise<Data> {
+      init?: RequestInit
+   ): Promise<Response> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'POST',
-      }).then(processResponse);
+      });
    }
 
-   async put<Data = unknown>(
+   async postJson<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processResponse = this.processResponse
+      init?: RequestInit
    ): Promise<Data> {
+      return this.post(endpoint, statName, init).then(this.processResponse);
+   }
+
+   async put(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Response> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'PUT',
-      }).then(processResponse);
+      });
    }
 
-   async delete<Data = unknown>(
+   async putJson<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processResponse = this.processResponse
+      init?: RequestInit
    ): Promise<Data> {
+      return this.put(endpoint, statName, init).then(this.processResponse);
+   }
+
+   async delete(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Response> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'DELETE',
-      }).then(processResponse);
+      });
+   }
+
+   async deleteJson<Data = unknown>(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Data> {
+      return this.delete(endpoint, statName, init).then(this.processResponse);
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
