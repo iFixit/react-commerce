@@ -41,6 +41,7 @@ const sharedStyles: SystemStyleObject = {
    },
 
    pre: {
+      marginTop: '1em',
       paddingInline: 1,
       maxWidth: '100%',
       overflow: 'auto',
