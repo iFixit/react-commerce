@@ -1,7 +1,11 @@
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { moneyToNumber, parseItemcode } from '@ifixit/helpers';
 import debounce from 'lodash/debounce';
-import { getShopifyStoreDomainFromCurrentURL } from '@ifixit/helpers';
+import {
+   getShopifyStoreDomainFromCurrentURL,
+   getShopifyLanguageFromCurrentURL,
+} from '@ifixit/helpers';
+import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 
 type GAType = (metric: string, ...args: any) => void;
 type GAProductType = {
@@ -174,9 +178,14 @@ type GACustomDimensions = {
 };
 
 export function getGACustomDimensions(): GACustomDimensions {
+   const preferredLang = useAuthenticatedUser().data?.langid;
+
    return {
       preferred_store:
          getShopifyStoreDomainFromCurrentURL() || 'no-store-found',
-      preferred_language: 'EN',
+      preferred_language:
+         preferredLang?.toUpperCase() ||
+         getShopifyLanguageFromCurrentURL() ||
+         'no-language-found',
    };
 }
