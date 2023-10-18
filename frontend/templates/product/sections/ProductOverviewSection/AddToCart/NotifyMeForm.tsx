@@ -45,7 +45,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
          setStatus(NotifyMeStatus.Error);
          return;
       }
-      const response = await ifixitAPI.post(
+      const response = await ifixitAPI.postRaw(
          'cart/product/notifyWhenSkuInStock',
          'notify-when-sku-in-stock',
          {

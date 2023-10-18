@@ -36,7 +36,7 @@ export async function fetchProductReviews(
    apiClient: IFixitAPIClient,
    productId: string
 ): Promise<ProductReviewData | null> {
-   const response = await apiClient.getJson(
+   const response = await apiClient.get(
       // TODO: get store code from user session or fall back to default
       `reviews/${productId}?storeCode=${DEFAULT_STORE_CODE}`,
       'product-reviews'

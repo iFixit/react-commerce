@@ -55,7 +55,7 @@ async function getTroubleshootingData(
       return null;
    }
 
-   const resp = await client.get(url, 'troubleshooting');
+   const resp = await client.getRaw(url, 'troubleshooting');
 
    if (resp.status === 404) {
       return null;

@@ -28,7 +28,7 @@ export class IFixitAPIClient {
       this.headers = options.headers ?? {};
    }
 
-   async get(
+   async getRaw(
       endpoint: string,
       statName: string,
       init?: RequestInit
@@ -39,17 +39,17 @@ export class IFixitAPIClient {
       });
    }
 
-   async getJson<Data = unknown>(
+   async get<Data = unknown>(
       endpoint: string,
       statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.get(endpoint, statName, init).then((resp) => {
+      return this.getRaw(endpoint, statName, init).then((resp) => {
          return this.getJsonFromResponse(resp, { input: endpoint, init });
       });
    }
 
-   async post(
+   async postRaw(
       endpoint: string,
       statName: string,
       init?: RequestInit
@@ -60,7 +60,17 @@ export class IFixitAPIClient {
       });
    }
 
-   async put(
+   async post<Data = unknown>(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Data> {
+      return this.postRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
+   }
+
+   async putRaw(
       endpoint: string,
       statName: string,
       init?: RequestInit
@@ -71,7 +81,17 @@ export class IFixitAPIClient {
       });
    }
 
-   async delete(
+   async put<Data = unknown>(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Data> {
+      return this.putRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
+   }
+
+   async deleteRaw(
       endpoint: string,
       statName: string,
       init?: RequestInit
@@ -79,6 +99,16 @@ export class IFixitAPIClient {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'DELETE',
+      });
+   }
+
+   async delete<Data = unknown>(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Data> {
+      return this.deleteRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
       });
    }
 

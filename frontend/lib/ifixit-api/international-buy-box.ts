@@ -26,7 +26,7 @@ export function getBuyBoxForProduct(
    productcode: string
 ): Promise<BuyBoxResponse | null> {
    // TODO pull country override from browser url
-   return client.getJson(
+   return client.get(
       `internal/international_store_promotion/buybox?productcode=${productcode}`,
       'international-store-promotion-buybox'
    );
