@@ -30,45 +30,54 @@ export const setSentryPageContext = (context: GetServerSidePropsContext) => {
 
 export const applySentryFetchMiddleware = () => {
    if (isClientSide) {
-      window.fetch = withSentry(window.fetch, shouldSkipReporting);
+      window.fetch = withSentry(window.fetch);
    } else {
-      global.fetch = withSentry(global.fetch, shouldSkipReporting);
+      global.fetch = withSentry(global.fetch);
    }
 };
 
-const withSentry: FetchMiddleware =
-   (fetcher, shouldSkipRequest) => async (input, init) => {
-      if (shouldSkipRequest?.(input, init)) {
-         return fetcher(input, init);
-      }
-      const context = {
-         // Underscore sorts the resource first in Sentry's UI
-         _resource: input,
-         headers: init?.headers,
-         method: init?.method,
-         // Parse to pretty print GraphQL queries
-         body: init?.body ? JSON.parse(String(init?.body)) : undefined,
-      };
-      try {
-         const response = await fetcher(input, init);
-         if (
-            !shouldIgnoreUserAgent &&
-            response.status >= 400 &&
-            ![401, 404, 499].includes(response.status)
-         ) {
-            const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
-            captureException(new Error(msg), {
-               contexts: [['request', context]],
-            });
-            console.error(msg, context);
-         }
-         return response;
-      } catch (error) {
-         // We don't want to hear about network errors in Sentry
-         console.error(error, context);
-         throw error;
-      }
+export const iFixitAPIRequestHeaderName = 'X-iFixit-API-Request';
+
+const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
+   const headers = new Headers(init?.headers);
+   const shouldSkipRequest = headers.has(iFixitAPIRequestHeaderName);
+   if (shouldSkipRequest) {
+      headers.delete(iFixitAPIRequestHeaderName);
+
+      return fetcher(input, {
+         ...init,
+         headers,
+      });
+   }
+
+   const context = {
+      // Underscore sorts the resource first in Sentry's UI
+      _resource: input,
+      headers: init?.headers,
+      method: init?.method,
+      // Parse to pretty print GraphQL queries
+      body: init?.body ? JSON.parse(String(init?.body)) : undefined,
    };
+   try {
+      const response = await fetcher(input, init);
+      if (
+         !shouldIgnoreUserAgent &&
+         response.status >= 400 &&
+         ![401, 404, 499].includes(response.status)
+      ) {
+         const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
+         captureException(new Error(msg), {
+            contexts: [['request', context]],
+         });
+         console.error(msg, context);
+      }
+      return response;
+   } catch (error) {
+      // We don't want to hear about network errors in Sentry
+      console.error(error, context);
+      throw error;
+   }
+};
 
 type SentryDetails = {
    contexts?: [string, any][];
@@ -100,10 +109,3 @@ export function captureException(e: any, sentryDetails: SentryDetails) {
       return scope;
    });
 }
-
-export const iFixitAPIRequestHeaderName = 'X-iFixit-API-Request';
-
-const shouldSkipReporting: SkipRequestFn = (input, init) => {
-   const headers = new Headers(init?.headers);
-   return headers.has(iFixitAPIRequestHeaderName);
-};
