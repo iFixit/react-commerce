@@ -22,7 +22,7 @@ const AuthenticatedUserSchema = z.object({
    isAdmin: z.boolean(),
    teams: z.array(z.number()),
    links: z.record(z.any()),
-   langid: z.string().nullable(),
+   langid: z.string().optional().nullable(),
 });
 
 export function useAuthenticatedUser() {
