@@ -1,5 +1,6 @@
 import { timeAsync } from '@ifixit/helpers';
 export * from './client';
+import { setSentryDetails } from '@ifixit/sentry';
 
 export interface ClientOptions {
    origin: string;
@@ -127,16 +128,41 @@ export class IFixitAPIClient {
    }
 
    getJsonFromResponse = (response: Response) => {
+      const isJson =
+         response.headers.get('Content-Type') === 'application/json';
+
       if (!response.ok) {
-         throw new Error(response.statusText);
+         const body = isJson ? await response.json() : await response.text();
+         const body_key = isJson ? 'response_json' : 'response_text';
+         const message = response.statusText;
+         throw new FetchError(message, { response, body, body_key });
       }
 
-      if (response.headers.get('Content-Type') === 'application/json') {
+      if (isJson) {
          return response.json();
       }
 
       return null;
    };
+}
+
+export class FetchError extends Error {
+   constructor(
+      message: string,
+      readonly responseData: {
+         response: Response;
+         body: string;
+         body_key: string;
+      }
+   ) {
+      super(message);
+      setSentryDetails({
+         contexts: [
+            ['response', this.responseData.response],
+            [this.responseData.body_key, this.responseData.body],
+         ],
+      });
+   }
 }
 
 function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {
