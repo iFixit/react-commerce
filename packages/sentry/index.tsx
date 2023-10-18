@@ -101,19 +101,9 @@ export function captureException(e: any, sentryDetails: SentryDetails) {
    });
 }
 
-const shouldSkipReporting: SkipRequestFn = (input, init) => {
-   const url = getRequestUrl(input);
-   // We have custom logic in place for reporting errors only after React Query retries have failed,
-   // so we don't want to report errors for the cart API here.
-   return url.includes('/store/user/cart');
-};
+export const iFixitAPIRequestHeaderName = 'X-iFixit-API-Request';
 
-const getRequestUrl = (input: RequestInfo | URL) => {
-   if (typeof input === 'string') {
-      return input;
-   }
-   if (input instanceof URL) {
-      return input.href;
-   }
-   return input.url;
+const shouldSkipReporting: SkipRequestFn = (input, init) => {
+   const headers = new Headers(init?.headers);
+   return headers.has(iFixitAPIRequestHeaderName);
 };

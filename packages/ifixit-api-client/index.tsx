@@ -1,6 +1,6 @@
 import { timeAsync } from '@ifixit/helpers';
 export * from './client';
-import { setSentryDetails } from '@ifixit/sentry';
+import { iFixitAPIRequestHeaderName, setSentryDetails } from '@ifixit/sentry';
 
 export interface ClientOptions {
    origin: string;
@@ -10,6 +10,8 @@ export interface ClientOptions {
 
 const BypassHeaderName = 'Nextjs-Bypass-Varnish';
 export const VarnishBypassHeader = { [BypassHeaderName]: '1' };
+
+export const iFixitAPIRequestHeader = { [iFixitAPIRequestHeaderName]: '1' };
 
 export class IFixitAPIClient {
    origin: string;
@@ -112,6 +114,7 @@ export class IFixitAPIClient {
          ...authHeader,
          ...this.headers,
          ...init?.headers,
+         ...iFixitAPIRequestHeader,
       });
       const response = await timeAsync(
          `ifixit-api.${init?.method?.toLowerCase() || 'get'}.${statName}`,
