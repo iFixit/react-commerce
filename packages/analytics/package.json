@@ -6,7 +6,8 @@
    "license": "MIT",
    "dependencies": {
       "@ifixit/cart-sdk": "workspace:*",
-      "@ifixit/helpers": "workspace:*"
+      "@ifixit/helpers": "workspace:*",
+      "@ifixit/auth-sdk": "workspace:*"
    },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
