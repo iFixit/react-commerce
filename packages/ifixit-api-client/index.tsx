@@ -39,10 +39,9 @@ export class IFixitAPIClient {
    async getJson<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processRequest = this.getJsonFromResponse
+      init?: RequestInit
    ): Promise<Data> {
-      return this.get(endpoint, statName, init).then(processRequest);
+      return this.get(endpoint, statName, init).then(this.getJsonFromResponse);
    }
 
    async post(
@@ -56,14 +55,6 @@ export class IFixitAPIClient {
       });
    }
 
-   async postJson<Data = unknown>(
-      endpoint: string,
-      statName: string,
-      init?: RequestInit
-   ): Promise<Data> {
-      return this.post(endpoint, statName, init).then(this.getJsonFromResponse);
-   }
-
    async put(
       endpoint: string,
       statName: string,
@@ -75,14 +66,6 @@ export class IFixitAPIClient {
       });
    }
 
-   async putJson<Data = unknown>(
-      endpoint: string,
-      statName: string,
-      init?: RequestInit
-   ): Promise<Data> {
-      return this.put(endpoint, statName, init).then(this.getJsonFromResponse);
-   }
-
    async delete(
       endpoint: string,
       statName: string,
@@ -92,16 +75,6 @@ export class IFixitAPIClient {
          ...init,
          method: 'DELETE',
       });
-   }
-
-   async deleteJson<Data = unknown>(
-      endpoint: string,
-      statName: string,
-      init?: RequestInit
-   ): Promise<Data> {
-      return this.delete(endpoint, statName, init).then(
-         this.getJsonFromResponse
-      );
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
