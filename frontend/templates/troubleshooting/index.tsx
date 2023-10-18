@@ -973,7 +973,7 @@ function RelatedProblems({
                            {displayTitle}
                         </Box>
                         <Text display={{ base: 'none', xl: 'flex' }} mt={3}>
-                           <Box noOfLines={4}>{description}</Box>
+                           <PrerenderedHTML noOfLines={4} html={description} />
                         </Text>
                      </Box>
                   </Flex>
