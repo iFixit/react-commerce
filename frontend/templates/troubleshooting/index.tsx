@@ -997,8 +997,8 @@ function RelatedProblems({
                         </Text>
                         <Link href={deviceGuideUrl} textColor="brand.500">
                            {countOfAssociatedProblems === 1
-                              ? 'view problem'
-                              : 'view all'}
+                              ? 'View problem'
+                              : 'View all'}
                         </Link>
                      </Flex>
                   )}
