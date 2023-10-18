@@ -1,6 +1,9 @@
 import { timeAsync } from '@ifixit/helpers';
 export * from './client';
-import { iFixitAPIRequestHeaderName, setSentryDetails } from '@ifixit/sentry';
+import {
+   iFixitAPIRequestHeaderName,
+   throwErrorWithSentryDetails,
+} from '@ifixit/sentry';
 
 export interface ClientOptions {
    origin: string;
@@ -41,7 +44,9 @@ export class IFixitAPIClient {
       statName: string,
       init?: RequestInit
    ): Promise<Data> {
-      return this.get(endpoint, statName, init).then(this.getJsonFromResponse);
+      return this.get(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
    }
 
    async post(
@@ -103,43 +108,74 @@ export class IFixitAPIClient {
       return response;
    }
 
-   getJsonFromResponse = async (response: Response) => {
-      const isJson =
-         response.headers.get('Content-Type') === 'application/json';
+   isJson = (response: Response) => {
+      return response.headers.get('Content-Type') === 'application/json';
+   };
 
+   getJsonFromResponse = async (
+      response: Response,
+      request?: {
+         input: RequestInfo | URL;
+         init?: RequestInit;
+      }
+   ) => {
       if (!response.ok) {
-         const message = response.statusText;
-         throw new FetchError(message, response);
+         await this.throwFetchError(response, request);
       }
 
-      if (isJson) {
+      if (this.isJson(response)) {
          return response.json();
       }
 
       return null;
    };
+
+   throwFetchError = async (
+      response: Response,
+      request?: {
+         input: RequestInfo | URL;
+         init?: RequestInit;
+      }
+   ) => {
+      const isJson = this.isJson(response);
+
+      const message = response.statusText;
+      const error = new FetchError(message, response, request);
+
+      let body = null;
+
+      try {
+         body = isJson ? await response.json() : await response.text();
+      } catch (e) {
+         body = response.body;
+      }
+      const body_key = isJson ? 'response_json' : 'response_text';
+
+      throwErrorWithSentryDetails(error, {
+         contexts: [
+            ['request', request],
+            ['response', response],
+            [body_key, body],
+         ],
+         tags: [
+            ['request_url', response.url],
+            ['response_status_code', response.status.toString()],
+            ['response_status_text', response.statusText],
+         ],
+      });
+   };
 }
 
 export class FetchError extends Error {
-   constructor(message: string, readonly response: Response) {
+   constructor(
+      message: string,
+      readonly response: Response,
+      readonly request?: {
+         input: RequestInfo | URL;
+         init?: RequestInit;
+      }
+   ) {
       super(message);
-      this.setSentryDetails();
-   }
-
-   async setSentryDetails() {
-      const isJson =
-         this.response.headers.get('Content-Type') === 'application/json';
-      const body = isJson
-         ? await this.response.json()
-         : await this.response.text();
-      const body_key = isJson ? 'response_json' : 'response_text';
-
-      setSentryDetails({
-         contexts: [
-            ['response', this.response],
-            [body_key, body],
-         ],
-      });
    }
 }
 

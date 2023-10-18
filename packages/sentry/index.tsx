@@ -5,19 +5,7 @@ import { Scope } from '@sentry/nextjs';
 
 type Fetcher = typeof fetch;
 
-type FetchMiddleware = (
-   fetcher: Fetcher,
-   shouldSkipRequest?: SkipRequestFn
-) => Fetcher;
-
-type FetcherParams = Parameters<Fetcher>;
-
-type SkipRequestFn = (...args: FetcherParams) => boolean;
-
-type CaptureWithContextFn = (
-   e: Error,
-   context: Parameters<Scope['setContext']>[1]
-) => void;
+type FetchMiddleware = (fetcher: Fetcher) => Fetcher;
 
 const isClientSide = typeof window !== 'undefined';
 
@@ -67,7 +55,15 @@ const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
       ) {
          const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
          captureException(new Error(msg), {
-            contexts: [['request', context]],
+            contexts: [
+               ['request', context],
+               ['response', response],
+            ],
+            tags: [
+               ['request_url', input.toString()],
+               ['response_status_code', response.status.toString()],
+               ['response_status_text', response.statusText],
+            ],
          });
          console.error(msg, context);
       }
@@ -79,7 +75,7 @@ const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
    }
 };
 
-type SentryDetails = {
+export type SentryDetails = {
    contexts?: [string, any][];
    tags?: [string, string][];
    extra?: [string, any][];
@@ -100,6 +96,16 @@ export function setSentryDetails(
 
    extra?.forEach(([key, value]) => {
       sentryScope.setExtra(key, value);
+   });
+}
+
+export function throwErrorWithSentryDetails(
+   error: Error,
+   sentryDetails: SentryDetails
+) {
+   Sentry.withScope((scope) => {
+      setSentryDetails(sentryDetails, scope);
+      throw error;
    });
 }
 
