@@ -130,15 +130,13 @@ export class IFixitAPIClient {
       return response;
    }
 
-   getJsonFromResponse = (response: Response) => {
+   getJsonFromResponse = async (response: Response) => {
       const isJson =
          response.headers.get('Content-Type') === 'application/json';
 
       if (!response.ok) {
-         const body = isJson ? await response.json() : await response.text();
-         const body_key = isJson ? 'response_json' : 'response_text';
          const message = response.statusText;
-         throw new FetchError(message, { response, body, body_key });
+         throw new FetchError(message, response);
       }
 
       if (isJson) {
@@ -150,19 +148,23 @@ export class IFixitAPIClient {
 }
 
 export class FetchError extends Error {
-   constructor(
-      message: string,
-      readonly responseData: {
-         response: Response;
-         body: string;
-         body_key: string;
-      }
-   ) {
+   constructor(message: string, readonly response: Response) {
       super(message);
+      this.setSentryDetails();
+   }
+
+   async setSentryDetails() {
+      const isJson =
+         this.response.headers.get('Content-Type') === 'application/json';
+      const body = isJson
+         ? await this.response.json()
+         : await this.response.text();
+      const body_key = isJson ? 'response_json' : 'response_text';
+
       setSentryDetails({
          contexts: [
-            ['response', this.responseData.response],
-            [this.responseData.body_key, this.responseData.body],
+            ['response', this.response],
+            [body_key, body],
          ],
       });
    }
