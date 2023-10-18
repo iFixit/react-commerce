@@ -936,18 +936,14 @@ function RelatedProblems({
             id={RelatedProblemsRecord.uniqueId}
             ref={ref}
             className="sidebar"
-            spacing={{ base: 3, xl: 6 }}
+            spacing={{ base: 4, xl: 6 }}
             width={{ base: '100%' }}
             alignSelf="start"
             fontSize="14px"
             flex={{ xl: '1 0 320px' }}
             mt={{ base: 3, md: 0 }}
          >
-            <Stack
-               className="question"
-               spacing={1.5}
-               display={{ base: 'none', xl: 'flex' }}
-            >
+            <Stack className="question" spacing={1.5} display="flex">
                <Box
                   bgColor="white"
                   border="1px solid"
