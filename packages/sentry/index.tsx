@@ -57,9 +57,8 @@ const withSentry: FetchMiddleware =
             ![401, 404, 499].includes(response.status)
          ) {
             const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
-            Sentry.captureException(new Error(msg), (scope) => {
-               scope.setContext('request', context);
-               return scope;
+            captureException(new Error(msg), {
+               contexts: [['request', context]],
             });
             console.error(msg, context);
          }
@@ -70,6 +69,37 @@ const withSentry: FetchMiddleware =
          throw error;
       }
    };
+
+type SentryDetails = {
+   contexts?: [string, any][];
+   tags?: [string, string][];
+   extra?: [string, any][];
+};
+
+export function setSentryDetails(
+   { contexts, tags, extra }: SentryDetails,
+   scope?: Scope
+) {
+   const sentryScope = scope || Sentry.getCurrentHub().getScope();
+   contexts?.forEach(([key, value]) => {
+      sentryScope.setContext(key, value);
+   });
+
+   tags?.forEach(([key, value]) => {
+      sentryScope.setTag(key, value);
+   });
+
+   extra?.forEach(([key, value]) => {
+      sentryScope.setExtra(key, value);
+   });
+}
+
+export function captureException(e: any, sentryDetails: SentryDetails) {
+   Sentry.captureException(e, (scope) => {
+      setSentryDetails(sentryDetails, scope as Scope);
+      return scope;
+   });
+}
 
 const shouldSkipReporting: SkipRequestFn = (input, init) => {
    const url = getRequestUrl(input);
