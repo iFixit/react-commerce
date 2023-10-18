@@ -206,12 +206,13 @@ export function useLocalPreference<Data = any>(
       const safeLocalStorage = useSafeLocalStorage();
       const serializedData = safeLocalStorage.getItem(key);
       if (serializedData != null) {
-         if (!serializedData) {
-            throw new Error('serializedData is null');
-         }
-         const data = validator(JSON.parse(serializedData));
-         if (data !== null) {
-            setData(data);
+         try {
+            const parsedData = validator(JSON.parse(serializedData));
+            if (parsedData !== null) {
+               setData(parsedData);
+            }
+         } catch (e) {
+            safeLocalStorage.removeItem(key);
          }
       }
    }, []);

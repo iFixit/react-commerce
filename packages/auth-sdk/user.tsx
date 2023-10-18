@@ -2,6 +2,7 @@ import { IFixitAPIClient, useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useLocalPreference } from '@ifixit/ui';
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
+import * as Sentry from '@sentry/nextjs';
 
 export type User = z.infer<typeof AuthenticatedUserSchema>;
 
@@ -36,7 +37,10 @@ export function useAuthenticatedUser() {
       userKeys.user,
       () => {
          const responsePromise = fetchAuthenticatedUser(apiClient).catch(
-            () => null
+            (e) => {
+               Sentry.captureException(e);
+               return null;
+            }
          );
          responsePromise
             .then((response) => {
