@@ -59,7 +59,10 @@ import {
    UserMenuLink,
    WordmarkLink,
 } from '@ifixit/ui';
-import { trackPiwikPreferredStore } from '@ifixit/analytics';
+import {
+   trackPiwikPreferredStore,
+   trackPiwikPreferredLanguage,
+} from '@ifixit/analytics';
 import { PIWIK_ENV } from '@config/env';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -76,12 +79,14 @@ const DefaultLayoutComponent = function ({
    globalSettings,
    children,
 }: React.PropsWithChildren<DefaultLayoutProps>) {
-   trackPiwikPreferredStore(PIWIK_ENV);
    const { menu } = currentStore.header;
    const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
    const { adminMessage } = useAppContext();
-   const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
+   const userData = useAuthenticatedUser().data;
+   const isAdminUser = userData?.isAdmin ?? false;
 
+   trackPiwikPreferredStore(PIWIK_ENV);
+   trackPiwikPreferredLanguage(PIWIK_ENV, userData?.langid ?? null);
    return (
       <LayoutErrorBoundary>
          <ShopifyStorefrontProvider

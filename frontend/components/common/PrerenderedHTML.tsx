@@ -41,6 +41,7 @@ const sharedStyles: SystemStyleObject = {
    },
 
    pre: {
+      marginTop: '1em',
       paddingInline: 1,
       maxWidth: '100%',
       overflow: 'auto',
@@ -112,14 +113,23 @@ const troubleshootingStyles: SystemStyleObject = {
    },
 
    blockquote: {
+      borderColor: 'gray.300',
+      borderLeftWidth: '4px',
+      marginTop: '1em',
+      paddingLeft: '1em',
+
       '&.featured': {
-         borderColor: '#fe6f15',
-         borderTopWidth: '1px',
-         borderBottomWidth: '1px',
+         borderColor: 'gray.300',
+         borderWidth: '1px',
+         borderLeftWidth: '4px',
+         borderRadius: 'md',
+         padding: 2,
+         color: 'orange.500',
+         bgColor: 'white',
       },
 
-      '& > p': {
-         marginTop: 2,
+      '& > p:not(:first-of-type)': {
+         marginTop: '1em',
       },
    },
 

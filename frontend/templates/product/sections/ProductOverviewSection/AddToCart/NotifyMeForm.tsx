@@ -31,6 +31,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
    const [status, setStatus] = React.useState<NotifyMeStatus>(
       NotifyMeStatus.Idle
    );
+   const [error, setError] = React.useState<string | null>(null);
 
    const ifixitAPI = useIFixitApiClient();
 
@@ -56,9 +57,23 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
                   shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
                   email,
                }),
+            },
+            (response: Response) => {
+               if (!response.ok) {
+                  const message =
+                     response.status === 422
+                        ? `Email: '${email}' is invalid.`
+                        : response.statusText;
+                  setError(message || 'Request failed');
+                  setStatus(NotifyMeStatus.Error);
+                  return null;
+               }
+
+               const value = ifixitAPI.jsonOrNull(response);
+               setStatus(NotifyMeStatus.Submitted);
+               return value;
             }
          );
-         setStatus(NotifyMeStatus.Submitted);
       } catch (error) {
          setStatus(NotifyMeStatus.Error);
       }
@@ -113,7 +128,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
                      _focus={{ bg: 'white', boxShadow: 'outline' }}
                   />
                   {status === NotifyMeStatus.Error && (
-                     <FormErrorMessage>Request failed</FormErrorMessage>
+                     <FormErrorMessage>{error}</FormErrorMessage>
                   )}
                </FormControl>
                <Button

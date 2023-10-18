@@ -152,6 +152,8 @@ const Wiki: NextPageWithLayout<{
                />
                <Stack
                   className="wrapper"
+                  gridArea="wrapper"
+                  display={{ base: 'block', sm: 'flex' }}
                   direction={{ base: 'column', xl: 'row' }}
                   fontSize="md"
                   maxW="1280px"
@@ -159,10 +161,9 @@ const Wiki: NextPageWithLayout<{
                   paddingX={{ base: 4, sm: 8 }}
                   paddingBottom={8}
                   minW={0}
-                  marginInline="auto"
+                  marginInline={{ sm: 'auto' }}
                   spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
-                  gridArea="wrapper"
                >
                   <Stack id="main" spacing={4}>
                      <TroubleshootingHeading wikiData={wikiData} />
@@ -171,7 +172,7 @@ const Wiki: NextPageWithLayout<{
                         solutions={wikiData.solutions}
                         problems={wikiData.linkedProblems}
                      />
-                     <Stack className="intro" spacing={6} pt={3}>
+                     <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
                         <IntroductionSections introduction={introSections} />
                      </Stack>
                      {wikiData.solutions.length > 0 && (
@@ -979,7 +980,7 @@ function RelatedProblems({
                </Box>
             </Stack>
             {hasRelatedPages && (
-               <>
+               <Stack spacing={3}>
                   <Heading
                      as="h3"
                      fontSize={{ base: '20px', md: '24px' }}
@@ -997,7 +998,7 @@ function RelatedProblems({
                         <ProblemCard problem={problem} key={problem.title} />
                      ))}
                   </SimpleGrid>
-               </>
+               </Stack>
             )}
          </Stack>
       </>
