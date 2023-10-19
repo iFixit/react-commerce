@@ -1965,7 +1965,7 @@
   resolved "https://registry.yarnpkg.com/@strapi/provider-audit-logs-local/-/provider-audit-logs-local-4.13.6.tgz#9b9a15b6ed1f22e2ede90b5ea53251461d859498"
   integrity sha512-4EmnrKI3U74M+IUxxF/wyEltAUb9C7Dw2MMuZ8UiO9Dd+mdJ7CqB05PAj4elXHnVQdYoFLNuDoV7CI4cRU9zpw==
 
-"@strapi/provider-email-sendgrid@^4.14.2":
+"@strapi/provider-email-sendgrid@4.14.2":
   version "4.14.2"
   resolved "https://registry.yarnpkg.com/@strapi/provider-email-sendgrid/-/provider-email-sendgrid-4.14.2.tgz#96103b3d30c70b0beecf58f8df91c88ae4a36267"
   integrity sha512-TvdTrYeLI5YTLSn6zB5/tEQzgHX+drwAS6vfKYWa10YByLCg2dzg0Lzqz89esyxl+qmv3eyQFseKqWcADmZfcg==
@@ -9339,7 +9339,7 @@ std-env@^3.0.1:
   resolved "https://registry.yarnpkg.com/std-env/-/std-env-3.4.3.tgz#326f11db518db751c83fd58574f449b7c3060910"
   integrity sha512-f9aPhy8fYBuMN+sNfakZV18U39PbalgjXG3lLB9WkaYTxijru61wb57V9wxxNthXM5Sd88ETBWi29qLAsHO52Q==
 
-strapi-plugin-publisher@^1.4.1:
+strapi-plugin-publisher@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/strapi-plugin-publisher/-/strapi-plugin-publisher-1.4.1.tgz#0ecc470904d40bac755e68c43f43740341d4c399"
   integrity sha512-V+5tq8MneGIOIbnnA6DRlB9OWU2RlZggIzgnQvMWurTHrJQFhsvigXnJLct9ojZchtju08v0yb5BjIQaZGBd+g==
