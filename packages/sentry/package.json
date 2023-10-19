@@ -6,7 +6,7 @@
    "license": "MIT",
    "dependencies": {
       "@ifixit/helpers": "workspace:*",
-      "@sentry/nextjs": "^7.53.1"
+      "@sentry/nextjs": "7.53.1"
    },
    "peerDependencies": {
       "next": "*",
