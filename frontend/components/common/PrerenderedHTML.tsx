@@ -78,7 +78,7 @@ const troubleshootingStyles: SystemStyleObject = {
    ...sharedStyles,
 
    '&': {
-      marginTop: { base: 4, sm: 6 },
+      gap: '1em',
    },
 
    '.clearer': {
@@ -90,13 +90,14 @@ const troubleshootingStyles: SystemStyleObject = {
       fontSize: '0',
    },
 
+   // handle the first-child header, which gets .clearer appended
+   '.clearer:not(:first-child) + .headerContainer': {
+      marginTop: { base: 4, sm: 6 },
+   },
+
    '.headerContainer': {
       display: 'flex',
       alignItems: 'baseline',
-
-      _notFirst: {
-         marginTop: { base: 4, sm: 6 },
-      },
 
       '&:hover .selfLink': {
          opacity: '1',
@@ -128,7 +129,7 @@ const troubleshootingStyles: SystemStyleObject = {
          bgColor: 'white',
       },
 
-      '& > p:not(:first-of-type)': {
+      '& > p:not(:first-child)': {
          marginTop: '1em',
       },
    },
@@ -144,7 +145,7 @@ const troubleshootingStyles: SystemStyleObject = {
       lineHeight: '1.38',
       alignSelf: 'stretch',
 
-      _notFirst: {
+      '&:not(:first-child)': {
          marginTop: '1em',
       },
    },

@@ -1,0 +1,27 @@
+{
+   "rules": {
+      "prefer-absolute-version-dependencies": [
+         "error",
+         {
+            "exceptions": [
+               "@ifixit/analytics",
+               "@ifixit/app",
+               "@ifixit/auth-sdk",
+               "@ifixit/breadcrumbs",
+               "@ifixit/cart-sdk",
+               "@ifixit/footer",
+               "@ifixit/helpers",
+               "@ifixit/icons",
+               "@ifixit/ifixit-api-client",
+               "@ifixit/local-storage",
+               "@ifixit/menu",
+               "@ifixit/newsletter-sdk",
+               "@ifixit/sentry",
+               "@ifixit/shopify-storefront-client",
+               "@ifixit/tracking-hooks",
+               "@ifixit/ui"
+            ]
+         }
+      ]
+   }
+}
