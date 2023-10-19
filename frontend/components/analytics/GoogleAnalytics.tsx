@@ -39,8 +39,6 @@ function GA4() {
    const { query } = router;
    const dimensions = useGACustomDimensions();
 
-   console.log('dimensions', dimensions);
-
    const debugMode = GA_DEBUG || query.ga4_debug === 'true';
    React.useEffect(() => {
       setupMinimumGA4(GTAG_ID, debugMode, dimensions);
