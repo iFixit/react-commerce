@@ -79,14 +79,15 @@ function windowGtag() {
 
 export function setupMinimumGA4(
    GtagID: string | undefined,
-   debugMode: boolean
+   debugMode: boolean,
+   dimensions: GACustomDimensions
 ) {
    if (typeof window !== 'undefined' && GtagID) {
       window.dataLayer = window.dataLayer || [];
       window.gtag = windowGtag;
       window.gtag('js', new Date());
       window.gtag('config', GtagID, debugMode ? { debug_mode: true } : {});
-      window.gtag('set', 'user_properties', getGACustomDimensions());
+      window.gtag('set', 'user_properties', dimensions);
    }
 }
 
@@ -177,7 +178,7 @@ type GACustomDimensions = {
    preferred_language: string;
 };
 
-export function getGACustomDimensions(): GACustomDimensions {
+export function useGACustomDimensions(): GACustomDimensions {
    const preferredLang = useAuthenticatedUser().data?.langid;
 
    return {
