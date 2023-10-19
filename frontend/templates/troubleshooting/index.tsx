@@ -977,11 +977,6 @@ function RelatedProblems({
                               html={description}
                               template="troubleshooting"
                               noOfLines={4}
-                              styleOverrides={{
-                                 '&': {
-                                    marginTop: 0,
-                                 },
-                              }}
                            />
                         </Text>
                      </Box>

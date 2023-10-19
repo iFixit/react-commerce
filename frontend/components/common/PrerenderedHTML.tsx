@@ -377,12 +377,10 @@ export const PrerenderedHTML = chakra(function Prerendered({
    html,
    template,
    className,
-   styleOverrides,
 }: {
    html: string;
    template: 'troubleshooting' | 'commerce';
    className?: string;
-   styleOverrides?: SystemStyleObject;
 }) {
    useEffect(() => {
       if (template === 'troubleshooting') {
@@ -393,7 +391,7 @@ export const PrerenderedHTML = chakra(function Prerendered({
    return (
       <Box
          className={`prerendered ${className}`}
-         sx={{ ...styleMap[template], ...styleOverrides }}
+         sx={styleMap[template]}
          dangerouslySetInnerHTML={{ __html: html }}
       />
    );
