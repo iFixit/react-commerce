@@ -971,7 +971,7 @@ function RelatedProblems({
                            {displayTitle}
                         </Box>
                         <Text
-                           display={{ base: 'none', xl: 'flex' }}
+                           display={{ base: 'none', xl: '-webkit-box' }}
                            mt={3}
                            noOfLines={4}
                         >
