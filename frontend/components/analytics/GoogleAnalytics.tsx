@@ -1,7 +1,6 @@
 import { GA_URL, GTAG_ID, GA_KEY, GA_DEBUG } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useGACustomDimensions, setupMinimumGA4 } from '@ifixit/analytics';
 
@@ -45,7 +44,7 @@ function GA4() {
    const debugMode = GA_DEBUG || query.ga4_debug === 'true';
    React.useEffect(() => {
       setupMinimumGA4(GTAG_ID, debugMode, dimensions);
-   }, [dimensions]);
+   }, [debugMode, dimensions]);
    return (
       <Script
          strategy="afterInteractive"
