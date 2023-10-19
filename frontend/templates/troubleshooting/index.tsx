@@ -849,7 +849,7 @@ function IntroductionSection({
    const { onClick } = useTOCBufferPxScrollOnClick(intro.id);
 
    return (
-      <Box ref={ref} id={intro.id}>
+      <Stack spacing={3} ref={ref} id={intro.id}>
          {intro.heading && (
             <HeadingSelfLink
                fontWeight="semibold"
@@ -863,7 +863,7 @@ function IntroductionSection({
             </HeadingSelfLink>
          )}
          <PrerenderedHTML html={intro.body} template="troubleshooting" />
-      </Box>
+      </Stack>
    );
 }
 
@@ -877,12 +877,12 @@ const ConclusionSection = function ConclusionSectionInner({
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
    return (
-      <Box id={conclusion.id} ref={ref}>
+      <Stack spacing={3} id={conclusion.id} ref={ref}>
          <HeadingSelfLink pt={4} id={conclusion.id} onClick={onClick}>
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </Box>
+      </Stack>
    );
 };
 
