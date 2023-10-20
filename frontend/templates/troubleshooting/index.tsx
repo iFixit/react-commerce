@@ -970,8 +970,12 @@ function RelatedProblems({
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        <Text display={{ base: 'none', xl: 'flex' }} mt={3}>
-                           <Box noOfLines={4}>{description}</Box>
+                        <Text
+                           display={{ base: 'none', xl: '-webkit-box' }}
+                           mt={3}
+                           noOfLines={4}
+                        >
+                           {description}
                         </Text>
                      </Box>
                   </Flex>
