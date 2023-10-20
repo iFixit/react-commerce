@@ -971,8 +971,11 @@ function RelatedProblems({
                            display={{ base: 'none', sm: '-webkit-box' }}
                            mt={3}
                         >
-                           <PrerenderedHTML noOfLines={4} template="troubleshooting"
-                           html={description} />
+                           <PrerenderedHTML
+                              noOfLines={4}
+                              template="troubleshooting"
+                              html={description}
+                           />
                         </Box>
                      </Box>
                   </Flex>
