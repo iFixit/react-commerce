@@ -967,13 +967,12 @@ function RelatedProblems({
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        <Text
-                           display={{ base: 'none', xl: '-webkit-box' }}
+                        <Box
+                           display={{ base: 'none', sm: '-webkit-box' }}
                            mt={3}
-                           noOfLines={4}
                         >
-                           {description}
-                        </Text>
+                           <Text noOfLines={4}>{description}</Text>
+                        </Box>
                      </Box>
                   </Flex>
                   {countOfAssociatedProblems && (
