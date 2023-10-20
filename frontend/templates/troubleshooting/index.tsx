@@ -920,7 +920,8 @@ function RelatedProblems({
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
 }) {
-   const { linkedProblems } = wikiData;
+   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
+      wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
@@ -935,23 +936,20 @@ function RelatedProblems({
             id={RelatedProblemsRecord.uniqueId}
             ref={ref}
             className="sidebar"
-            spacing={{ base: 3, xl: 6 }}
+            spacing={{ base: 4, xl: 6 }}
             width={{ base: '100%' }}
             alignSelf="start"
             fontSize="14px"
             flex={{ xl: '1 0 320px' }}
             mt={{ base: 3, md: 0 }}
          >
-            <Stack
-               className="question"
-               spacing={1.5}
-               display={{ base: 'none', xl: 'flex' }}
-            >
+            <Stack className="question" spacing={1.5} display="flex">
                <Box
                   bgColor="white"
                   border="1px solid"
                   borderColor="gray.300"
                   borderRadius="md"
+                  overflow="hidden"
                >
                   <Flex gap={2} padding={3}>
                      <Image
@@ -972,15 +970,38 @@ function RelatedProblems({
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        <Text display={{ base: 'none', xl: 'flex' }} mt={3}>
-                           <PrerenderedHTML
-                              html={description}
-                              template="troubleshooting"
-                              noOfLines={4}
-                           />
-                        </Text>
+                        <PrerenderedHTML
+                           display={{ base: 'none', xl: '-webkit-box' }}
+                           mt={3}
+                           noOfLines={4}
+                           template="troubleshooting"
+                           html={description}
+                        />
                      </Box>
                   </Flex>
+                  {countOfAssociatedProblems && (
+                     <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        w="100%"
+                        h="42px"
+                        padding="12px"
+                        bg="gray.100"
+                        borderTop="1px solid"
+                        borderColor="gray.300"
+                     >
+                        <Text>
+                           {countOfAssociatedProblems === 1
+                              ? '1 Problem'
+                              : countOfAssociatedProblems + ' Problems'}
+                        </Text>
+                        <Link href={deviceGuideUrl} textColor="brand.500">
+                           {countOfAssociatedProblems === 1
+                              ? 'View problem'
+                              : 'View all'}
+                        </Link>
+                     </Flex>
+                  )}
                </Box>
             </Stack>
             {hasRelatedPages && (
