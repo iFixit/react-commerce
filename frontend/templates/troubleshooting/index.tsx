@@ -951,7 +951,7 @@ function RelatedProblems({
                   borderRadius="md"
                   overflow="hidden"
                >
-                  <Flex gap={2} padding={3}>
+                  <Flex gap={2} padding={3} align="center">
                      <Image
                         src={imageUrl}
                         alt={displayTitle}
@@ -963,20 +963,17 @@ function RelatedProblems({
                         outline="1px solid"
                         outlineColor="gray.300"
                      />
-                     <Box
-                        display={{ base: 'flex', xl: 'block' }}
-                        lineHeight="normal"
-                     >
+                     <Box display="block" lineHeight="normal">
                         <Box fontWeight="semibold" my="auto">
                            {displayTitle}
                         </Box>
-                        <PrerenderedHTML
-                           display={{ base: 'none', xl: '-webkit-box' }}
+                        <Box
+                           display={{ base: 'none', sm: '-webkit-box' }}
                            mt={3}
-                           noOfLines={4}
-                           template="troubleshooting"
-                           html={description}
-                        />
+                        >
+                           <PrerenderedHTML noOfLines={4} template="troubleshooting"
+                           html={description} />
+                        </Box>
                      </Box>
                   </Flex>
                   {countOfAssociatedProblems && (
@@ -984,8 +981,7 @@ function RelatedProblems({
                         justifyContent="space-between"
                         alignItems="center"
                         w="100%"
-                        h="42px"
-                        padding="12px"
+                        padding={3}
                         bg="gray.100"
                         borderTop="1px solid"
                         borderColor="gray.300"
