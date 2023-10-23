@@ -8,15 +8,16 @@ const requester: Requester = async <R, V>(
    doc: string,
    variables: V
 ): Promise<R> => {
+   const body = {
+      query: doc,
+      variables,
+   };
    const response = await fetch(`${STRAPI_ORIGIN}/graphql`, {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-         query: doc,
-         variables,
-      }),
+      body: JSON.stringify(body),
    });
    let result: any;
    try {
@@ -37,10 +38,15 @@ const requester: Requester = async <R, V>(
          console.error(`\t[${code}]`, error.message);
       });
       const sentryDetails: SentryDetails = {
-         extra: [
-            ['query', doc],
-            ['variables', variables],
+         contexts: [
+            ['graphql_response', result],
+            ['body', body],
             ['errors', result.errors],
+         ],
+         tags: [
+            ['request_url', response.url],
+            ['request_status', response.status.toString()],
+            ['request_status_text', response.statusText],
          ],
       };
       throw new SentryError(

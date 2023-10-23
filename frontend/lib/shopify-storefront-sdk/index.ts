@@ -14,6 +14,10 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
       doc: string,
       variables: V
    ): Promise<R> => {
+      const body = {
+         query: doc,
+         variables,
+      };
       const response = await fetch(
          `https://${shop.shopDomain}/api/${SHOPIFY_STOREFRONT_VERSION}/graphql.json`,
          {
@@ -22,10 +26,7 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
                'Content-Type': 'application/json',
                'Shopify-Storefront-Private-Token': shop.storefrontDelegateToken,
             },
-            body: JSON.stringify({
-               query: doc,
-               variables,
-            }),
+            body: JSON.stringify(body),
          }
       );
       const result = await getResult(response);
@@ -42,10 +43,15 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
          }
          console.log(errorMessage);
          const sentryDetails: SentryDetails = {
-            extra: [
-               ['query', doc],
-               ['variables', variables],
+            contexts: [
+               ['graphql_response', result],
+               ['body', body],
                ['errors', result.errors],
+            ],
+            tags: [
+               ['request_url', response.url],
+               ['request_status', response.status.toString()],
+               ['request_status_text', response.statusText],
             ],
          };
          throw new SentryError(errorMessage, sentryDetails);
