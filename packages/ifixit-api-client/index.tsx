@@ -1,8 +1,9 @@
 import { timeAsync } from '@ifixit/helpers';
 export * from './client';
 import {
+   SentryDetails,
+   SentryError,
    iFixitAPIRequestHeaderName,
-   throwErrorWithSentryDetails,
 } from '@ifixit/sentry';
 
 export interface ClientOptions {
@@ -170,7 +171,6 @@ export class IFixitAPIClient {
       const isJson = this.isJson(response);
 
       const message = response.statusText;
-      const error = new FetchError(message, response, request);
 
       let body = null;
 
@@ -181,7 +181,7 @@ export class IFixitAPIClient {
       }
       const body_key = isJson ? 'response_json' : 'response_text';
 
-      throwErrorWithSentryDetails(error, {
+      const sentryDetails: SentryDetails = {
          contexts: [
             ['request', request],
             ['response', response],
@@ -192,20 +192,23 @@ export class IFixitAPIClient {
             ['response_status_code', response.status.toString()],
             ['response_status_text', response.statusText],
          ],
-      });
+      };
+
+      throw new FetchError(message, sentryDetails, response, request);
    };
 }
 
-export class FetchError extends Error {
+export class FetchError extends SentryError {
    constructor(
       message: string,
+      readonly sentryDetails: SentryDetails,
       readonly response: Response,
       readonly request?: {
          input: RequestInfo | URL;
          init?: RequestInit;
       }
    ) {
-      super(message);
+      super(message, sentryDetails);
    }
 }
 

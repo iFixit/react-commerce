@@ -1,7 +1,7 @@
 import { SHOPIFY_STOREFRONT_VERSION } from '@config/env';
-import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { getSdk, Requester } from './generated/sdk';
+import { SentryError, SentryDetails } from '@ifixit/sentry';
 export * from './generated/sdk';
 
 export type ShopCredentials = {
@@ -41,12 +41,14 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
             errorMessage += errorMessages[0];
          }
          console.log(errorMessage);
-         Sentry.withScope((scope) => {
-            scope.setExtra('query', doc);
-            scope.setExtra('variables', variables);
-            scope.setExtra('errors', result.errors);
-            throw new Error(errorMessage);
-         });
+         const sentryDetails: SentryDetails = {
+            extra: [
+               ['query', doc],
+               ['variables', variables],
+               ['errors', result.errors],
+            ],
+         };
+         throw new SentryError(errorMessage, sentryDetails);
       }
       return result.data;
    };
