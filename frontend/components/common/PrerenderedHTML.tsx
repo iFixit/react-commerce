@@ -2,9 +2,34 @@
 // is broken up into `shared`, `troubleshooting`, and `commerce` variables to control what
 // is included, and where via the styleMap.
 
-import { useEffect } from 'react';
-import { Box, chakra, SystemStyleObject } from '@chakra-ui/react';
+import { Box, SystemStyleObject, forwardRef } from '@chakra-ui/react';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
+import { useEffect } from 'react';
+
+interface PrerenderedHTMLProps {
+   html: string;
+   template: 'troubleshooting' | 'commerce';
+   className?: string;
+}
+
+export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
+   function PrerenderedHTML({ html, template, className }, ref) {
+      useEffect(() => {
+         if (template === 'troubleshooting') {
+            import('lite-youtube-embed');
+         }
+      }, [template]);
+
+      return (
+         <Box
+            ref={ref}
+            className={`prerendered ${className}`}
+            sx={styleMap[template]}
+            dangerouslySetInnerHTML={{ __html: html }}
+         />
+      );
+   }
+);
 
 const constrainStandardWidth = '282px'; // pulled from PHP app for legacy image sizing
 
@@ -372,27 +397,3 @@ const styleMap = {
    troubleshooting: troubleshootingStyles,
    commerce: commerceStyles,
 };
-
-export const PrerenderedHTML = chakra(function Prerendered({
-   html,
-   template,
-   className,
-}: {
-   html: string;
-   template: 'troubleshooting' | 'commerce';
-   className?: string;
-}) {
-   useEffect(() => {
-      if (template === 'troubleshooting') {
-         import('lite-youtube-embed');
-      }
-   }, [template]);
-
-   return (
-      <Box
-         className={`prerendered ${className}`}
-         sx={styleMap[template]}
-         dangerouslySetInnerHTML={{ __html: html }}
-      />
-   );
-});
