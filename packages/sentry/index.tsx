@@ -81,6 +81,27 @@ export type SentryDetails = {
    extra?: [string, any][];
 };
 
+export class SentryError extends Error {
+   constructor(message: string, readonly sentryDetails: SentryDetails) {
+      super(message);
+   }
+}
+
+export function injectSentryErrorHandler() {
+   Sentry.addGlobalEventProcessor((event, hint) => {
+      const exception = hint.originalException;
+
+      if (exception instanceof SentryError) {
+         const currentScope = Sentry.getCurrentHub().getScope();
+         const newScope = Scope.clone(currentScope);
+         setSentryDetails(exception.sentryDetails, newScope);
+         newScope.applyToEvent(event, hint);
+      }
+
+      return event;
+   });
+}
+
 export function setSentryDetails(
    { contexts, tags, extra }: SentryDetails,
    scope?: Scope
@@ -96,16 +117,6 @@ export function setSentryDetails(
 
    extra?.forEach(([key, value]) => {
       sentryScope.setExtra(key, value);
-   });
-}
-
-export function throwErrorWithSentryDetails(
-   error: Error,
-   sentryDetails: SentryDetails
-) {
-   Sentry.withScope((scope) => {
-      setSentryDetails(sentryDetails, scope);
-      throw error;
    });
 }
 
