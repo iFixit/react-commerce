@@ -42,7 +42,8 @@ function GA4() {
    const debugMode = GA_DEBUG || query.ga4_debug === 'true';
    React.useEffect(() => {
       setupMinimumGA4(GTAG_ID, debugMode, dimensions);
-   }, [debugMode, dimensions]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [dimensions]);
    return (
       <Script
          strategy="afterInteractive"

@@ -89,7 +89,8 @@ export default function IFixitPageFrame({
    const debugMode = Boolean(GA_DEBUG || params?.get('ga4_debug') === 'true');
    React.useEffect(() => {
       setupMinimumGA4(GTAG_ID, debugMode, dimensions);
-   }, [debugMode, dimensions]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [dimensions]);
 
    return (
       <LayoutErrorBoundary>
