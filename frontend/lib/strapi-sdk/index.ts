@@ -38,16 +38,16 @@ const requester: Requester = async <R, V>(
          console.error(`\t[${code}]`, error.message);
       });
       const sentryDetails: SentryDetails = {
-         contexts: [
-            ['graphql_response', result],
-            ['body', body],
-            ['errors', result.errors],
-         ],
-         tags: [
-            ['request_url', response.url],
-            ['request_status', response.status.toString()],
-            ['request_status_text', response.statusText],
-         ],
+         contexts: {
+            graphql_response: result,
+            body: body,
+            errors: result.errors,
+         },
+         tags: {
+            request_url: response.url,
+            request_status: response.status.toString(),
+            request_status_text: response.statusText,
+         },
       };
       throw new SentryError(
          'Strapi SDK GraphQL query failed with errors',
