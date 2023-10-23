@@ -2,18 +2,17 @@
 // is broken up into `shared`, `troubleshooting`, and `commerce` variables to control what
 // is included, and where via the styleMap.
 
-import { Box, SystemStyleObject, forwardRef } from '@chakra-ui/react';
+import { Box, SystemStyleObject, forwardRef, BoxProps } from '@chakra-ui/react';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
-interface PrerenderedHTMLProps {
+type PrerenderedHTMLProps = BoxProps & {
    html: string;
    template: 'troubleshooting' | 'commerce';
-   className?: string;
-}
+};
 
 export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
-   function PrerenderedHTML({ html, template, className }, ref) {
+   function PrerenderedHTML({ html, template, className, ...others }, ref) {
       useEffect(() => {
          if (template === 'troubleshooting') {
             import('lite-youtube-embed');
@@ -26,6 +25,7 @@ export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
             className={`prerendered ${className}`}
             sx={styleMap[template]}
             dangerouslySetInnerHTML={{ __html: html }}
+            {...others}
          />
       );
    }
