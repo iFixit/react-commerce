@@ -405,12 +405,6 @@ export type ComponentProductListBanner = {
    url: Scalars['String'];
 };
 
-export type ComponentProductListBoostedSearchSkus2 = {
-   __typename?: 'ComponentProductListBoostedSearchSkus2';
-   Sku: Scalars['String'];
-   id: Scalars['ID'];
-};
-
 export type ComponentProductListItemTypeOverride = {
    __typename?: 'ComponentProductListItemTypeOverride';
    description?: Maybe<Scalars['String']>;
@@ -872,7 +866,6 @@ export type GenericMorph =
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
-   | ComponentProductListBoostedSearchSkus2
    | ComponentProductListItemTypeOverride
    | ComponentProductListLinkedProductListSet
    | ComponentProductListRelatedPosts
