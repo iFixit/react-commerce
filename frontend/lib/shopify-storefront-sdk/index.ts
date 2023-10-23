@@ -43,16 +43,15 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
          }
          console.log(errorMessage);
          const sentryDetails: SentryDetails = {
-            contexts: [
-               ['graphql_response', result],
-               ['body', body],
-               ['errors', result.errors],
-            ],
-            tags: [
-               ['request_url', response.url],
-               ['request_status', response.status.toString()],
-               ['request_status_text', response.statusText],
-            ],
+            contexts: {
+               graphql_response: result,
+               body: body,
+            },
+            tags: {
+               request_url: response.url,
+               request_status: response.status.toString(),
+               request_status_text: response.statusText,
+            },
          };
          throw new SentryError(errorMessage, sentryDetails);
       }
