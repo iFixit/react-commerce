@@ -182,16 +182,19 @@ export class IFixitAPIClient {
       const body_key = isJson ? 'response_json' : 'response_text';
 
       const sentryDetails: SentryDetails = {
-         contexts: [
-            ['request', request],
-            ['response', response],
-            [body_key, body],
-         ],
-         tags: [
-            ['request_url', response.url],
-            ['response_status_code', response.status.toString()],
-            ['response_status_text', response.statusText],
-         ],
+         contexts: {
+            request: request,
+            response: {
+               status: response.status,
+               statusText: response.statusText,
+            },
+            [body_key]: body,
+         },
+         tags: {
+            request_url: response.url,
+            response_status_code: response.status.toString(),
+            response_status_text: response.statusText,
+         },
       };
 
       throw new FetchError(message, sentryDetails, response, request);

@@ -55,18 +55,22 @@ const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
       ) {
          const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
          captureException(new Error(msg), {
-            contexts: [
-               ['request', context],
-               ['response', response],
-            ],
-            tags: [
-               ['request_url', input.toString()],
-               ['response_status_code', response.status.toString()],
-               ['response_status_text', response.statusText],
-            ],
+            contexts: {
+               request: context,
+               response: {
+                  status: response.status,
+                  statusText: response.statusText,
+               },
+            },
+            tags: {
+               request_url: input.toString(),
+               response_status_code: response.status.toString(),
+               response_status_text: response.statusText,
+            },
          });
          console.error(msg, context);
       }
+
       return response;
    } catch (error) {
       // We don't want to hear about network errors in Sentry
@@ -75,11 +79,7 @@ const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
    }
 };
 
-export type SentryDetails = {
-   contexts?: [string, any][];
-   tags?: [string, string][];
-   extra?: [string, any][];
-};
+export type SentryDetails = Exclude<Parameters<Scope['update']>[0], undefined>;
 
 export class SentryError extends Error {
    constructor(message: string, readonly sentryDetails: SentryDetails) {
@@ -94,7 +94,8 @@ export function injectSentryErrorHandler() {
       if (exception instanceof SentryError) {
          const currentScope = Sentry.getCurrentHub().getScope();
          const newScope = Scope.clone(currentScope);
-         setSentryDetails(exception.sentryDetails, newScope);
+
+         newScope.update(exception.sentryDetails);
          newScope.applyToEvent(event, hint);
       }
 
@@ -102,27 +103,6 @@ export function injectSentryErrorHandler() {
    });
 }
 
-export function setSentryDetails(
-   { contexts, tags, extra }: SentryDetails,
-   scope?: Scope
-) {
-   const sentryScope = scope || Sentry.getCurrentHub().getScope();
-   contexts?.forEach(([key, value]) => {
-      sentryScope.setContext(key, value);
-   });
-
-   tags?.forEach(([key, value]) => {
-      sentryScope.setTag(key, value);
-   });
-
-   extra?.forEach(([key, value]) => {
-      sentryScope.setExtra(key, value);
-   });
-}
-
 export function captureException(e: any, sentryDetails: SentryDetails) {
-   Sentry.captureException(e, (scope) => {
-      setSentryDetails(sentryDetails, scope as Scope);
-      return scope;
-   });
+   Sentry.captureException(e, sentryDetails);
 }
