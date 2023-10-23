@@ -334,6 +334,9 @@ importers:
 
   packages/analytics:
     dependencies:
+      '@ifixit/auth-sdk':
+        specifier: workspace:*
+        version: link:../auth-sdk
       '@ifixit/cart-sdk':
         specifier: workspace:*
         version: link:../cart-sdk

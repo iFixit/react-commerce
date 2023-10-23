@@ -68,7 +68,7 @@ import { CartFooter } from '@layouts/default/Footer';
 import { LayoutErrorBoundary } from '@layouts/default/LayoutErrorBoundary';
 import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { setupMinimumGA4 } from '@ifixit/analytics';
+import { setupMinimumGA4, useGACustomDimensions } from '@ifixit/analytics';
 import { GA_DEBUG, GTAG_ID } from '@config/env';
 import { PiwikPro } from '@components/analytics';
 
@@ -84,9 +84,13 @@ export default function IFixitPageFrame({
    const { adminMessage } = useAppContext();
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
    const params = useSearchParams();
+   const dimensions = useGACustomDimensions();
 
    const debugMode = Boolean(GA_DEBUG || params?.get('ga4_debug') === 'true');
-   setupMinimumGA4(GTAG_ID, debugMode);
+   React.useEffect(() => {
+      setupMinimumGA4(GTAG_ID, debugMode, dimensions);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [dimensions]);
 
    return (
       <LayoutErrorBoundary>
