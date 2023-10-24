@@ -20,6 +20,7 @@
    "rules": {
       "jest/no-focused-tests": "error",
       "@ifixit/no-new-error": "error",
+      "@ifixit/no-throw-in-sentry-scope": "error",
       "no-console": "off",
       "react/display-name": 0,
       "@typescript-eslint/explicit-function-return-type": 0,
