@@ -185,8 +185,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       zod:
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.22.4
+        version: 3.22.4
     devDependencies:
       '@babel/core':
         specifier: 7.17.9
@@ -391,8 +391,8 @@ importers:
         specifier: '*'
         version: 13.4.1(@babel/core@7.17.9)(react-dom@18.2.0)(react@18.2.0)
       zod:
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.22.4
+        version: 3.22.4
     devDependencies:
       '@ifixit/tsconfig':
         specifier: workspace:*
@@ -17230,9 +17230,9 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zod@3.18.0:
-    resolution: {integrity: sha512-gwTm8RfUCe8l9rDwN5r2A17DkAa8Ez4Yl4yXqc5VqeGaXaJahzYYXbTwvhroZi0SNBqTwh/bKm2N0mpCzuw4bA==}
-    dev: false
-
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
