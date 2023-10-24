@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 /**
  * Playwright test fixtures are very powerful and can be used to create a custom
  * test environment.
@@ -130,7 +131,7 @@ expect.extend({
       viewportSize: { width: number; height: number } | null
    ) {
       if (!viewportSize) {
-         throw new Error('Viewport size was null.');
+         throw new SentryError('Viewport size was null.');
       }
 
       const boundingBox = await element.boundingBox();

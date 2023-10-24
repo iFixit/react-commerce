@@ -23,13 +23,13 @@ const requester: Requester = async <R, V>(
    try {
       result = await response.json();
    } catch (error) {
-      throw new Error(`Response is not a json: ${response.statusText}`);
+      throw new SentryError(`Response is not a json: ${response.statusText}`);
    }
    if (response.ok) {
       if (result?.data) {
          return result.data;
       }
-      throw new Error('Data not available in GraphQL response');
+      throw new SentryError('Data not available in GraphQL response');
    }
    if (Array.isArray(result.errors)) {
       console.error('GraphQL query failed with errors:');
@@ -54,7 +54,9 @@ const requester: Requester = async <R, V>(
          sentryDetails
       );
    }
-   throw new Error(`GraphQL query failed to execute: ${response.statusText}`);
+   throw new SentryError(
+      `GraphQL query failed to execute: ${response.statusText}`
+   );
 };
 
 export const strapi = getSdk(requester);

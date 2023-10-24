@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
 import type { Product } from '@models/product';
@@ -43,7 +44,9 @@ export function productListPath(
          return `/Shop/${productList.handle}`;
       }
       default: {
-         throw new Error(`unknown product list type: ${productList.type}`);
+         throw new SentryError(
+            `unknown product list type: ${productList.type}`
+         );
       }
    }
 }

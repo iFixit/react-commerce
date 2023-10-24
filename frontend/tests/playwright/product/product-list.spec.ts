@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { test, expect } from '../test-fixtures';
 import { createGraphQLHandler } from '../msw/request-handler';
 
@@ -240,7 +241,8 @@ test.describe('Product List Data', () => {
          .getByTestId('heading-product-title')
          .textContent();
       expect(lastProductTitle).toBeTruthy();
-      if (!lastProductTitle) throw new Error('lastProductName is undefined');
+      if (!lastProductTitle)
+         throw new SentryError('lastProductName is undefined');
 
       const productsToSku: { [key: string]: string } = {
          'Surface Laptop 2 13.5" Screen': 'IF413-007-1',

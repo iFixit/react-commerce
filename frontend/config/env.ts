@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 export const ALGOLIA_APP_ID = requireEnvVariable(
    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
    'NEXT_PUBLIC_ALGOLIA_APP_ID'
@@ -90,7 +91,7 @@ function requireEnvVariable(
          }
          return env as any;
       }
-      throw new Error(`environment variable "${envName}" is not defined`);
+      throw new SentryError(`environment variable "${envName}" is not defined`);
    }
    return env;
 }

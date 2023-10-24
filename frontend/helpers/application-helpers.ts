@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 export type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
 export type ObjectLiteral = { [key: string]: any };
 
@@ -58,12 +59,12 @@ export function invariant(
    }
 
    if (isProduction) {
-      throw new Error(prefix);
+      throw new SentryError(prefix);
    }
 
    const provided: string | undefined =
       typeof message === 'function' ? message() : message;
 
    const value: string = provided ? `${prefix}: ${provided}` : prefix;
-   throw new Error(value);
+   throw new SentryError(value);
 }

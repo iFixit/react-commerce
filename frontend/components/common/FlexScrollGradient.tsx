@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import {
    Flex,
    FlexProps,
@@ -219,7 +220,7 @@ export const FlexScrollGradient = forwardRef(function FlexScrollGradient(
    }, [internalRef, gradientPX]);
 
    if (props.position) {
-      throw new Error(
+      throw new SentryError(
          'FlexScrollGradient: position prop is not allowed. To get the gradient working we must use position relative. Wrap your component in another layer to handle positioning.'
       );
    }
