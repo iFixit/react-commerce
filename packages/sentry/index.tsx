@@ -82,7 +82,7 @@ const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
 export type SentryDetails = Exclude<Parameters<Scope['update']>[0], undefined>;
 
 export class SentryError extends Error {
-   constructor(message: string, readonly sentryDetails: SentryDetails) {
+   constructor(message: string, readonly sentryDetails: SentryDetails = {}) {
       super(message);
    }
 }
