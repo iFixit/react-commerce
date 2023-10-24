@@ -1,4 +1,3 @@
-import { CartLineItem } from '@ifixit/cart-sdk';
 import {
    Money,
    getShopifyStoreDomainFromCurrentURL,
@@ -6,6 +5,8 @@ import {
    sumMoney,
 } from '@ifixit/helpers';
 import { piwikPush } from './piwikPush';
+import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
+import { trackInPiwik } from './track-event';
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
@@ -75,7 +76,7 @@ export function trackPiwikCartChange(items: CartLineItem[]) {
       return;
    }
    items.forEach((item) => {
-      trackAddToCart({
+      trackAddItemToCart({
          productSku: item.itemcode,
          productName: item.internalDisplayName,
          price: item.price,
@@ -106,11 +107,33 @@ type AddToCartData = {
    quantity?: number;
 };
 
+export function trackPiwikAddToCart(
+   cart: CartLineItem[],
+   addToCartInput: AddToCartInput,
+   eventSpecification?: string
+) {
+   trackPiwikCartChange(cart);
+   const event =
+      `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
+   const itemcodes =
+      addToCartInput.type === 'product'
+         ? addToCartInput.product.itemcode
+         : `${addToCartInput.bundle.currentItemCode}/` +
+           `${addToCartInput.bundle.items
+              .map((item) => item.itemcode)
+              .join(', ')}`;
+   trackInPiwik({
+      eventCategory: event,
+      eventAction: `${event} - ${itemcodes}`,
+      eventName: `${window.location.origin}${window.location.pathname}`,
+   });
+}
+
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
  * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
  */
-function trackAddToCart(product: AddToCartData) {
+function trackAddItemToCart(product: AddToCartData) {
    piwikPush([
       'addEcommerceItem',
       product.productSku,
