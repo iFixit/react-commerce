@@ -8,7 +8,7 @@
       "@ifixit/ui": "workspace:*",
       "@ifixit/app": "workspace:*",
       "@ifixit/ifixit-api-client": "workspace:*",
-      "zod": "3.18.0"
+      "zod": "3.22.4"
    },
    "peerDependencies": {
       "@tanstack/react-query": "4.x",
