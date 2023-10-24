@@ -1,6 +1,6 @@
 {
    "parser": "@typescript-eslint/parser",
-   "plugins": ["@typescript-eslint", "jest"],
+   "plugins": ["@typescript-eslint", "jest", "@ifixit/eslint-plugin"],
    "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
@@ -19,6 +19,7 @@
    },
    "rules": {
       "jest/no-focused-tests": "error",
+      "@ifixit/no-new-error": "error",
       "no-console": "off",
       "react/display-name": 0,
       "@typescript-eslint/explicit-function-return-type": 0,

@@ -1,3 +1,5 @@
 module.exports = {
-   rules: {},
+   rules: {
+      'no-new-error': require('./rules/no-new-error'),
+   },
 };
