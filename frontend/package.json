@@ -13,7 +13,6 @@
       "dev:codegen": "pnpm run codegen:download-strapi-schema && pnpm run codegen:watch",
       "codegen:watch": "cross-env NODE_OPTIONS=\"--dns-result-order ipv4first\" DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen/config.ts --watch",
       "codegen:download-strapi-schema": "cross-env NODE_OPTIONS=\"--dns-result-order ipv4first\" DOTENV_CONFIG_PATH=./.env.development graphql-codegen -r dotenv/config --config codegen/strapi-schema-config.ts",
-      "codegen:download-shopify-storefront-schema": "NODE_OPTIONS=\"--dns-result-order ipv4first\" node ./lib/shopify-storefront-sdk/generate-schema.js",
       "build": "NODE_OPTIONS=\"--dns-result-order ipv4first\" next build",
       "start": "NODE_OPTIONS=\"--dns-result-order ipv4first\" next start",
       "type-check": "tsc --pretty --noEmit",

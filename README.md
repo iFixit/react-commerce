@@ -358,12 +358,12 @@ import { LifetimeWarrantyIcon } from '@assets/svg';
 
 ## Miscellaenous
 
-### Update Storefront graphql schema
+### Update Storefront SDK version
 
-When you need to update the Shopify storefront GraphQL schema version, follow these steps:
+When you need to update the Shopify Storefront SDK version, follow these steps:
 
-1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env.development` and `frontend/.env.production`
-2. Run `pnpm codegen:download-shopify-storefront-schema`
+1. Update `NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION` in `frontend/.env`
+2. Restart the dev server so that the SDK is generated using the new version (`pnpm dev`)
 
 ### Generate Shopify storefront delegate access token
 
