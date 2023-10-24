@@ -1,4 +1,4 @@
-import { SentryError } from '@ifixit/sentry';
+/* eslint-disable @ifixit/no-new-error */
 /** @type {import('next').NextConfig} */
 
 const {
@@ -189,7 +189,7 @@ function requireStrapiOrigin() {
    }
    const branch = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF;
    if (typeof branch !== 'string' || branch.trim().length === 0) {
-      throw new SentryError(
+      throw new Error(
          'NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF environment variable is not set'
       );
    }
