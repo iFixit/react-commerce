@@ -82,7 +82,7 @@ const GraphQLResultSchema = z.object({
 
 async function getResult(response: Response) {
    if (!response.ok) {
-      throw new Error(
+      throw new SentryError(
          `GraphQL query failed to execute: ${response.statusText}`
       );
    }
@@ -95,6 +95,6 @@ async function getResult(response: Response) {
       if (error instanceof z.ZodError) {
          throw error;
       }
-      throw new Error(`Response is not a json: ${response.statusText}`);
+      throw new SentryError(`Response is not a json: ${response.statusText}`);
    }
 }

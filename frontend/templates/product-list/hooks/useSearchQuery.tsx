@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import React from 'react';
 import { useSearchBox } from 'react-instantsearch';
 
@@ -22,7 +23,7 @@ export const SearchQueryProvider = ({ children }: React.PropsWithChildren) => {
 export const useSearchQuery = () => {
    const context = React.useContext(SearchQueryContext);
    if (!context) {
-      throw new Error(
+      throw new SentryError(
          'useSearchQueryContext must be used within a SearchQueryContext'
       );
    }

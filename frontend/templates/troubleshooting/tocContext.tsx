@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import {
    useEffect,
    useState,
@@ -147,7 +148,7 @@ function useCRUDFunctions(
             );
 
             if (exists) {
-               throw new Error(
+               throw new SentryError(
                   `UniqueId ${minimalTOCRecord.uniqueId} already exists in the TOC`
                );
             }
@@ -258,7 +259,7 @@ export const TOCContextProvider = ({
 export const useTOCContext = () => {
    const context = useContext(TOCContext);
    if (!context) {
-      throw new Error('useTOCContext must be used within a TOCContext');
+      throw new SentryError('useTOCContext must be used within a TOCContext');
    }
    return context;
 };

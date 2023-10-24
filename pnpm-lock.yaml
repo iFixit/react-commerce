@@ -79,6 +79,9 @@ importers:
       '@ifixit/cart-sdk':
         specifier: workspace:*
         version: link:../packages/cart-sdk
+      '@ifixit/eslint-plugin':
+        specifier: workspace:^
+        version: link:../packages/eslint
       '@ifixit/footer':
         specifier: workspace:*
         version: link:../packages/footer
@@ -532,6 +535,8 @@ importers:
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+
+  packages/eslint: {}
 
   packages/footer:
     dependencies:

@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
@@ -62,7 +63,7 @@ async function getTroubleshootingData(
    }
 
    if (!resp.ok) {
-      throw new Error(resp.statusText);
+      throw new SentryError(resp.statusText);
    }
 
    return await resp.json();

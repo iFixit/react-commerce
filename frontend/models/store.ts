@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { filterNullableItems } from '@helpers/application-helpers';
 import type { Awaited } from '@helpers/application-helpers';
 import { cache } from '@lib/cache';
@@ -47,10 +48,10 @@ async function findStoreByCodeFromStrapi(code: string) {
    );
    const store = result.store?.data?.[0]?.attributes;
    if (store == null) {
-      throw new Error('Store not found');
+      throw new SentryError('Store not found');
    }
    if (store.shopifySettings == null) {
-      throw new Error('Shopify settings not found');
+      throw new SentryError('Shopify settings not found');
    }
    return {
       header: {

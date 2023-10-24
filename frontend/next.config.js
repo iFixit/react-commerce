@@ -1,3 +1,4 @@
+/* eslint-disable @ifixit/no-new-error */
 /** @type {import('next').NextConfig} */
 
 const {

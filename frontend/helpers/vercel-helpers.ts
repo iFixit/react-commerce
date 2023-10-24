@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { VERCEL_ENV, VERCEL_GIT_COMMIT_SHA } from '@config/env';
 import { cache } from '@lib/cache';
 
@@ -16,7 +17,7 @@ async function getMainCommitSha(): Promise<string> {
       'https://api.github.com/repos/iFixit/react-commerce/branches/main'
    );
    if (!res.ok) {
-      throw new Error(
+      throw new SentryError(
          `Failed to fetch main branch data: ${res.status} ${res.statusText}`
       );
    }
