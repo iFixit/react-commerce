@@ -1,7 +1,7 @@
 import { SHOPIFY_STOREFRONT_VERSION } from '@config/env';
-import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { getSdk, Requester } from './generated/sdk';
+import { SentryError, SentryDetails } from '@ifixit/sentry';
 export * from './generated/sdk';
 
 export type ShopCredentials = {
@@ -14,6 +14,10 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
       doc: string,
       variables: V
    ): Promise<R> => {
+      const body = {
+         query: doc,
+         variables,
+      };
       const response = await fetch(
          `https://${shop.shopDomain}/api/${SHOPIFY_STOREFRONT_VERSION}/graphql.json`,
          {
@@ -22,10 +26,7 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
                'Content-Type': 'application/json',
                'Shopify-Storefront-Private-Token': shop.storefrontDelegateToken,
             },
-            body: JSON.stringify({
-               query: doc,
-               variables,
-            }),
+            body: JSON.stringify(body),
          }
       );
       const result = await getResult(response);
@@ -41,12 +42,18 @@ export function getServerShopifyStorefrontSdk(shop: ShopCredentials) {
             errorMessage += errorMessages[0];
          }
          console.log(errorMessage);
-         Sentry.withScope((scope) => {
-            scope.setExtra('query', doc);
-            scope.setExtra('variables', variables);
-            scope.setExtra('errors', result.errors);
-            throw new Error(errorMessage);
-         });
+         const sentryDetails: SentryDetails = {
+            contexts: {
+               graphql_response: result,
+               body: body,
+            },
+            tags: {
+               request_url: response.url,
+               request_status: response.status.toString(),
+               request_status_text: response.statusText,
+            },
+         };
+         throw new SentryError(errorMessage, sentryDetails);
       }
       return result.data;
    };

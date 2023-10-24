@@ -1,5 +1,10 @@
 import { timeAsync } from '@ifixit/helpers';
 export * from './client';
+import {
+   SentryDetails,
+   SentryError,
+   iFixitAPIRequestHeaderName,
+} from '@ifixit/sentry';
 
 export interface ClientOptions {
    origin: string;
@@ -9,6 +14,8 @@ export interface ClientOptions {
 
 const BypassHeaderName = 'Nextjs-Bypass-Varnish';
 export const VarnishBypassHeader = { [BypassHeaderName]: '1' };
+
+export const iFixitAPIRequestHeader = { [iFixitAPIRequestHeaderName]: '1' };
 
 export class IFixitAPIClient {
    origin: string;
@@ -22,52 +29,88 @@ export class IFixitAPIClient {
       this.headers = options.headers ?? {};
    }
 
-   async get<Data = unknown>(
+   async getRaw(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processRequest = this.processRequest
-   ): Promise<Data> {
+      init?: RequestInit
+   ): Promise<Response> {
       return this.fetch(endpoint, statName, {
          ...init,
          method: 'GET',
-      }).then(processRequest);
+      });
+   }
+
+   async get<Data = unknown>(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Data> {
+      return this.getRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
+   }
+
+   async postRaw(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Response> {
+      return this.fetch(endpoint, statName, {
+         ...init,
+         method: 'POST',
+      });
    }
 
    async post<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processRequest = this.processRequest
+      init?: RequestInit
    ): Promise<Data> {
+      return this.postRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
+   }
+
+   async putRaw(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Response> {
       return this.fetch(endpoint, statName, {
          ...init,
-         method: 'POST',
-      }).then(processRequest);
+         method: 'PUT',
+      });
    }
 
    async put<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processRequest = this.processRequest
+      init?: RequestInit
    ): Promise<Data> {
+      return this.putRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
+   }
+
+   async deleteRaw(
+      endpoint: string,
+      statName: string,
+      init?: RequestInit
+   ): Promise<Response> {
       return this.fetch(endpoint, statName, {
          ...init,
-         method: 'PUT',
-      }).then(processRequest);
+         method: 'DELETE',
+      });
    }
 
    async delete<Data = unknown>(
       endpoint: string,
       statName: string,
-      init?: RequestInit,
-      processRequest = this.processRequest
+      init?: RequestInit
    ): Promise<Data> {
-      return this.fetch(endpoint, statName, {
-         ...init,
-         method: 'DELETE',
-      }).then(processRequest);
+      return this.deleteRaw(endpoint, statName, init).then((resp) => {
+         return this.getJsonFromResponse(resp, { input: endpoint, init });
+      });
    }
 
    async fetch(endpoint: string, statName: string, init?: RequestInit) {
@@ -80,6 +123,7 @@ export class IFixitAPIClient {
          ...authHeader,
          ...this.headers,
          ...init?.headers,
+         ...iFixitAPIRequestHeader,
       });
       const response = await timeAsync(
          `ifixit-api.${init?.method?.toLowerCase() || 'get'}.${statName}`,
@@ -95,21 +139,80 @@ export class IFixitAPIClient {
       return response;
    }
 
-   processRequest = (response: Response) => {
-      if (!response.ok) {
-         throw new Error(response.statusText);
-      }
-
-      return this.jsonOrNull(response);
+   isJson = (response: Response) => {
+      return response.headers.get('Content-Type') === 'application/json';
    };
 
-   jsonOrNull = (response: Response) => {
-      if (response.headers.get('Content-Type') === 'application/json') {
+   getJsonFromResponse = async (
+      response: Response,
+      request?: {
+         input: RequestInfo | URL;
+         init?: RequestInit;
+      }
+   ) => {
+      if (!response.ok) {
+         await this.throwFetchError(response, request);
+      }
+
+      if (this.isJson(response)) {
          return response.json();
       }
 
       return null;
    };
+
+   throwFetchError = async (
+      response: Response,
+      request?: {
+         input: RequestInfo | URL;
+         init?: RequestInit;
+      }
+   ) => {
+      const isJson = this.isJson(response);
+
+      const message = response.statusText;
+
+      let body = null;
+
+      try {
+         body = isJson ? await response.json() : await response.text();
+      } catch (e) {
+         body = response.body;
+      }
+      const body_key = isJson ? 'response_json' : 'response_text';
+
+      const sentryDetails: SentryDetails = {
+         contexts: {
+            request: request,
+            response: {
+               status: response.status,
+               statusText: response.statusText,
+            },
+            [body_key]: body,
+         },
+         tags: {
+            request_url: response.url,
+            response_status_code: response.status.toString(),
+            response_status_text: response.statusText,
+         },
+      };
+
+      throw new FetchError(message, sentryDetails, response, request);
+   };
+}
+
+export class FetchError extends SentryError {
+   constructor(
+      message: string,
+      readonly sentryDetails: SentryDetails,
+      readonly response: Response,
+      readonly request?: {
+         input: RequestInfo | URL;
+         init?: RequestInit;
+      }
+   ) {
+      super(message, sentryDetails);
+   }
 }
 
 function warnIfNotBypassed(requestHeaders: Headers, response: Response): void {

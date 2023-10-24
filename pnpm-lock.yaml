@@ -651,6 +651,9 @@ importers:
       '@ifixit/helpers':
         specifier: workspace:*
         version: link:../helpers
+      '@ifixit/sentry':
+        specifier: workspace:*
+        version: link:../sentry
     devDependencies:
       '@ifixit/tsconfig':
         specifier: workspace:*
