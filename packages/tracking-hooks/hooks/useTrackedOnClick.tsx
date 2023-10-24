@@ -29,6 +29,7 @@ export function useTrackedOnClick<T>({
                `Footer ${linkType} Link - \"${
                   clickName || href || 'undefined'
                }\" - Click`,
+            eventName: `${window.location.origin}${window.location.pathname}`,
          });
          onClick?.(e);
       },

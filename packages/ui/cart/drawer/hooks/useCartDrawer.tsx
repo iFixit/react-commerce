@@ -1,9 +1,10 @@
 import { useDisclosure } from '@chakra-ui/react';
-import { trackGA4ViewCart, trackInPiwikAndGA } from '@ifixit/analytics';
+import { trackGA4ViewCart } from '@ifixit/analytics';
 import { getVariantIdFromEncodedVariantURI } from '@ifixit/helpers';
 import { useCart } from '@ifixit/cart-sdk';
 
 import * as React from 'react';
+import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
 
 export type CartDrawerContext = ReturnType<typeof useDisclosure> & {};
 
@@ -30,9 +31,10 @@ export function useCartDrawer() {
       throw new Error('useCartDrawer must be used within a CartDrawerProvider');
    }
    const onViewCart = React.useCallback(() => {
-      trackInPiwikAndGA({
+      trackInPiwik({
          eventCategory: 'Mini Cart',
          eventAction: 'Btn "View Cart" - Click',
+         eventName: `${window.location.origin}${window.location.pathname}`,
       });
       context.onClose();
    }, [context.onClose]);
