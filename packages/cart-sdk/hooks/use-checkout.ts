@@ -1,4 +1,3 @@
-import { trackInPiwikAndGA } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever, isError } from '@ifixit/helpers';
@@ -9,6 +8,7 @@ import * as React from 'react';
 import z from 'zod';
 import { CartError } from '../utils';
 import { useCart } from './use-cart';
+import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
 
 const LOCAL_CHECKOUT_STORAGE_KEY = 'checkout';
 
@@ -52,9 +52,10 @@ export function useCheckout(): UseCheckout {
                } else {
                   url = await standardCheckout();
                }
-               trackInPiwikAndGA({
+               trackInPiwik({
                   eventCategory: 'Mini Cart',
                   eventAction: 'Btn "Check Out" - Click',
+                  eventName: `${window.location.origin}${window.location.pathname}`,
                });
                window.location.href = url;
             } catch (error) {

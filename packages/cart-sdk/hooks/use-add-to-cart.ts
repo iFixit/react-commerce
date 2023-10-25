@@ -1,4 +1,4 @@
-import { trackAddToCart } from '@ifixit/analytics';
+import { trackPiwikAddToCart } from '@ifixit/analytics';
 import { assertNever, getProductVariantSku } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -103,7 +103,11 @@ export function useAddToCart(analyticsMessage?: string) {
          },
          onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackAddToCart(cart?.lineItems ?? [], variables, analyticsMessage);
+            trackPiwikAddToCart(
+               cart?.lineItems ?? [],
+               variables,
+               analyticsMessage
+            ); // here fr
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;

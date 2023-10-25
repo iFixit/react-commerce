@@ -52,6 +52,7 @@ export function useSubscribeToNewsletter(): [Subscription, SubscribeFn] {
             trackClick({
                eventCategory: 'Newsletter',
                eventAction: 'Subscribe Form - Submit',
+               eventName: `${window.location.origin}${window.location.pathname}`,
             });
          } catch (error) {
             let message: string;
