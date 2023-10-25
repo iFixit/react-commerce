@@ -164,12 +164,18 @@ export function useExpiringLocalPreference<Data = any>(
       const safeLocalStorage = useSafeLocalStorage();
       const serializedData = safeLocalStorage.getItem(key);
       if (serializedData != null) {
-         const data = JSON.parse(serializedData) as ExpiringData;
-         const expiresAt = Number.isInteger(data?.expires) ? data.expires : 0;
-         const validData = validator(data?.value);
-         if (validData !== null && expiresAt && Date.now() < expiresAt) {
-            setData(validData);
-         } else {
+         try {
+            const data = JSON.parse(serializedData) as ExpiringData;
+            const expiresAt = Number.isInteger(data?.expires)
+               ? data.expires
+               : 0;
+            const validData = validator(data?.value);
+            if (validData !== null && expiresAt && Date.now() < expiresAt) {
+               setData(validData);
+            } else {
+               safeLocalStorage.removeItem(key);
+            }
+         } catch (e) {
             safeLocalStorage.removeItem(key);
          }
       }
@@ -206,12 +212,13 @@ export function useLocalPreference<Data = any>(
       const safeLocalStorage = useSafeLocalStorage();
       const serializedData = safeLocalStorage.getItem(key);
       if (serializedData != null) {
-         if (!serializedData) {
-            throw new Error('serializedData is null');
-         }
-         const data = validator(JSON.parse(serializedData));
-         if (data !== null) {
-            setData(data);
+         try {
+            const parsedData = validator(JSON.parse(serializedData));
+            if (parsedData !== null) {
+               setData(parsedData);
+            }
+         } catch (e) {
+            safeLocalStorage.removeItem(key);
          }
       }
    }, []);
