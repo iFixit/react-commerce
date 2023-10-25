@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import {
@@ -41,15 +42,6 @@ const withMiddleware = compose(
    withCache(CacheOrDisableOnHeadRevision)<TroubleshootingProps>
 );
 
-function rethrowUnless404(e: any) {
-   // If e is from IFixitAPIClient and fetch() didn't error,
-   // e.message is the response's statusText
-   if (typeof e === 'object' && (e as Error)?.message === 'Not Found') {
-      return;
-   }
-   throw e;
-}
-
 async function getTroubleshootingData(
    context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
 ): Promise<TroubleshootingApiData | null> {
@@ -64,12 +56,17 @@ async function getTroubleshootingData(
       return null;
    }
 
-   try {
-      return await client.get<TroubleshootingApiData>(url, 'troubleshooting');
-   } catch (e) {
-      rethrowUnless404(e);
+   const resp = await client.getRaw(url, 'troubleshooting');
+
+   if (resp.status === 404) {
       return null;
    }
+
+   if (!resp.ok) {
+      throw new SentryError(resp.statusText);
+   }
+
+   return await resp.json();
 }
 
 function getTroubleshootingApiUrl(

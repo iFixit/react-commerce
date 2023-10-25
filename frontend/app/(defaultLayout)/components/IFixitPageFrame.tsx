@@ -69,7 +69,7 @@ import { LayoutErrorBoundary } from '@layouts/default/LayoutErrorBoundary';
 import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { setupMinimumGA4, useGACustomDimensions } from '@ifixit/analytics';
-import { GA_DEBUG, GTAG_ID } from '@config/env';
+import { GA_DEBUG, GTAG_ID, SHOPIFY_STOREFRONT_VERSION } from '@config/env';
 import { PiwikPro } from '@components/analytics';
 
 export default function IFixitPageFrame({
@@ -97,7 +97,7 @@ export default function IFixitPageFrame({
          <ShopifyStorefrontProvider
             shopDomain={shopifyCredentials.storefrontDomain}
             storefrontAccessToken={shopifyCredentials.storefrontAccessToken}
-            apiVersion="2020-01"
+            apiVersion={SHOPIFY_STOREFRONT_VERSION}
          >
             <Box>
                <Flex direction="column" minH="100vh">

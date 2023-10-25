@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import Head from 'next/head';
 import React from 'react';
 
@@ -50,7 +51,7 @@ function MatomoScript() {
          case 'Dev':
             return process.env.NEXT_PUBLIC_MATOMO_TAG_MANAGER_CONTAINER_URL_DEV;
          default:
-            throw new Error(
+            throw new SentryError(
                `Unknown environment: ${environment}\nPick from: Live, Staging, Dev`
             );
       }

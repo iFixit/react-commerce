@@ -1,10 +1,9 @@
 import { IFIXIT_ORIGIN, POLYFILL_DOMAIN } from '@config/env';
-import { Analytics } from '@vercel/analytics/react';
-import Script from 'next/script';
-import React from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Metadata } from 'next';
+import Script from 'next/script';
+import React from 'react';
 config.autoAddCss = false;
 
 const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';
@@ -106,10 +105,7 @@ export default function RootLayout({
                strategy="beforeInteractive"
             />
          </head>
-         <body>
-            {children}
-            <Analytics />
-         </body>
+         <body>{children}</body>
       </html>
    );
 }

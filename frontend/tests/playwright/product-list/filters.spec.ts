@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { Page } from '@playwright/test';
 import { test, expect } from '../test-fixtures';
 import { waitForAlgoliaSearch, resolvePath } from '../utils';
@@ -9,7 +10,7 @@ async function checkRefinementValue(
    layout: 'desktop' | 'mobile'
 ) {
    if (!value) {
-      throw new Error('Could not find ' + value);
+      throw new SentryError('Could not find ' + value);
    }
    if (layout === 'desktop') {
       await expect(
@@ -29,7 +30,7 @@ async function checkRefinementInSearchResult(
    results: Array<any>
 ) {
    if (!facetName) {
-      throw new Error('Could not find first facet name');
+      throw new SentryError('Could not find first facet name');
    }
 
    let filteredProducts: any = [];
@@ -39,7 +40,7 @@ async function checkRefinementInSearchResult(
 
       if (decodedParams.includes(facetOptionValue)) {
          if (filteredProducts.length) {
-            throw new Error(
+            throw new SentryError(
                `Found multiple associated results for "${facetOptionValue}".\n\nThe Algolia search results may have changed in a way that is no longer compatible with this test.\nDouble check the search results structure and update the test accordingly if necessary.`
             );
          }
@@ -49,7 +50,7 @@ async function checkRefinementInSearchResult(
    });
 
    if (!filteredProducts.length) {
-      throw new Error(
+      throw new SentryError(
          `Could not find associated results where facet option "${facetOptionValue}" is included in the params.`
       );
    }
@@ -111,7 +112,9 @@ test.describe('Product List Filtering', () => {
 
          // Click the first facet accordion item.
          if (!firstCollapsedAccordionItem) {
-            throw new Error('Could not find first collapsed accordion item');
+            throw new SentryError(
+               'Could not find first collapsed accordion item'
+            );
          }
          await firstCollapsedAccordionItem.click();
 
@@ -143,7 +146,9 @@ test.describe('Product List Filtering', () => {
 
          // Click the second facet accordion item.
          if (!secondCollapsedAccordionItem) {
-            throw new Error('Could not find second collapsed accordion item');
+            throw new SentryError(
+               'Could not find second collapsed accordion item'
+            );
          }
          await secondCollapsedAccordionItem.click();
 
@@ -183,7 +188,7 @@ test.describe('Product List Filtering', () => {
          }
 
          if (!visibleFacet) {
-            throw new Error('Could not find a visible facet');
+            throw new SentryError('Could not find a visible facet');
          }
 
          const firstCollapsedAccordionItem = await visibleFacet.elementHandle();
@@ -195,7 +200,9 @@ test.describe('Product List Filtering', () => {
 
          // Click the first facet accordion item.
          if (!firstCollapsedAccordionItem) {
-            throw new Error('Could not find first collapsed accordion item');
+            throw new SentryError(
+               'Could not find first collapsed accordion item'
+            );
          }
          await firstCollapsedAccordionItem.click();
 
