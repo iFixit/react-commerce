@@ -70,6 +70,7 @@ import * as React from 'react';
 import { CartFooter } from './Footer';
 import { LayoutErrorBoundary } from './LayoutErrorBoundary';
 import type { DefaultLayoutProps } from './server';
+import { GoAffProComponent } from '@components/analytics/GoAffPro';
 
 const DefaultLayoutComponent = function ({
    title,
@@ -329,6 +330,7 @@ const DefaultLayoutComponent = function ({
                   />
                </Flex>
             </Box>
+            <GoAffProComponent />
             <Matomo />
             <GoogleAnalytics />
             <PiwikPro />
