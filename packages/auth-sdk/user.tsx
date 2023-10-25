@@ -38,7 +38,6 @@ export function useAuthenticatedUser() {
       () => {
          const responsePromise = fetchAuthenticatedUser(apiClient).catch(
             (e) => {
-               Sentry.captureException(e);
                return null;
             }
          );
@@ -81,18 +80,29 @@ async function fetchAuthenticatedUser(
    apiClient: IFixitAPIClient
 ): Promise<User | null> {
    const payload = await apiClient.get('user', 'user');
-   const userSchema = UserApiResponseSchema.parse(payload);
+   const userSchema = UserApiResponseSchema.safeParse(payload);
+   if (!userSchema.success) {
+      Sentry.captureMessage('User schema parsing failed', {
+         level: 'debug',
+         extra: {
+            schema: userSchema,
+            payload: payload,
+            error: userSchema.error,
+         },
+      });
+      return null;
+   }
    return {
-      id: userSchema.userid,
-      username: userSchema.username,
-      handle: userSchema.unique_username ?? null,
-      thumbnail: userSchema.image?.thumbnail ?? null,
-      is_pro: userSchema.discount_tier != null,
-      algoliaApiKeyProducts: userSchema.algoliaApiKeyProducts ?? null,
-      discountTier: userSchema.discount_tier ?? null,
-      isAdmin: userSchema.privileges.includes('Admin'),
-      teams: userSchema.teams,
-      links: userSchema.links,
-      langid: userSchema?.langid ?? null,
+      id: userSchema.data.userid,
+      username: userSchema.data.username,
+      handle: userSchema.data.unique_username ?? null,
+      thumbnail: userSchema.data.image?.thumbnail ?? null,
+      is_pro: userSchema.data.discount_tier != null,
+      algoliaApiKeyProducts: userSchema.data.algoliaApiKeyProducts ?? null,
+      discountTier: userSchema.data.discount_tier ?? null,
+      isAdmin: userSchema.data.privileges.includes('Admin'),
+      teams: userSchema.data.teams,
+      links: userSchema.data.links,
+      langid: userSchema.data?.langid ?? null,
    };
 }
