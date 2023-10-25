@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs';
+import { useEffect } from 'react';
 
 type VisitorAPIResponse = {
    id: string;
@@ -25,7 +26,7 @@ const PossibleUrlParams = ['ref', 'click_id', 'sub_id', 'wpam_id', 'aff'];
 const PublicAPIToken =
    '45574e7055bd43ae4d79dee013c6fa14a4635144d876557ee23fd1de53d82491';
 
-export class GoAffPro {
+class GoAffPro {
    private goAffProPublicToken: string | null;
 
    constructor() {
@@ -153,4 +154,11 @@ function setRefCodeIfRequired() {
    }
 
    setCookie(RefCodeCookieName, ref_code);
+}
+
+export function GoAffProComponent() {
+   useEffect(() => {
+      GoAffPro.trackVisitIfRequired();
+   }, []);
+   return null;
 }
