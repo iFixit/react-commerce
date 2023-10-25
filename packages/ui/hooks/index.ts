@@ -164,12 +164,18 @@ export function useExpiringLocalPreference<Data = any>(
       const safeLocalStorage = useSafeLocalStorage();
       const serializedData = safeLocalStorage.getItem(key);
       if (serializedData != null) {
-         const data = JSON.parse(serializedData) as ExpiringData;
-         const expiresAt = Number.isInteger(data?.expires) ? data.expires : 0;
-         const validData = validator(data?.value);
-         if (validData !== null && expiresAt && Date.now() < expiresAt) {
-            setData(validData);
-         } else {
+         try {
+            const data = JSON.parse(serializedData) as ExpiringData;
+            const expiresAt = Number.isInteger(data?.expires)
+               ? data.expires
+               : 0;
+            const validData = validator(data?.value);
+            if (validData !== null && expiresAt && Date.now() < expiresAt) {
+               setData(validData);
+            } else {
+               safeLocalStorage.removeItem(key);
+            }
+         } catch (e) {
             safeLocalStorage.removeItem(key);
          }
       }
