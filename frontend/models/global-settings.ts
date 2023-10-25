@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 import { strapi } from '@lib/strapi-sdk';
 import { cache } from '@lib/cache';
 import { timeAsync } from '@ifixit/helpers';
@@ -32,7 +33,7 @@ async function getGlobalSettingsFromStrapi(): Promise<GlobalSettings> {
    const newsletterForm =
       result.global?.data?.attributes?.newsletterForm || null;
    if (newsletterForm == null) {
-      throw new Error('Global settings not found');
+      throw new SentryError('Global settings not found');
    }
    return {
       newsletterForm,

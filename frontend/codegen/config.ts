@@ -1,5 +1,14 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
 
+require('dotenv').config({
+   path: '.env',
+});
+
+const STOREFRONT_API_VERSION =
+   process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_VERSION;
+
+console.log('🛒 STOREFRONT_API_VERSION:', STOREFRONT_API_VERSION);
+
 const config: CodegenConfig = {
    overwrite: true,
    generates: {
@@ -40,7 +49,7 @@ const config: CodegenConfig = {
          },
       },
       'lib/shopify-storefront-sdk/generated/sdk.ts': {
-         schema: 'lib/shopify-storefront-sdk/schema.graphql',
+         schema: `https://mock.shop/api/${STOREFRONT_API_VERSION}/graphql.json`,
          documents: 'lib/shopify-storefront-sdk/operations/**/*.graphql',
          plugins: [
             'typescript',
@@ -57,6 +66,9 @@ const config: CodegenConfig = {
                HTML: 'string',
                URL: 'string',
                Decimal: 'string',
+               Color: 'string',
+               DateTime: 'string',
+               UnsignedInt64: 'string',
             },
          },
       },

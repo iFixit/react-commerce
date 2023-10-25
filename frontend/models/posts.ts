@@ -1,3 +1,4 @@
+import { SentryError } from '@ifixit/sentry';
 export interface Post {
    id: number;
    title: string;
@@ -35,7 +36,7 @@ export async function fetchPosts(
          };
       });
    }
-   throw new Error(`failed with status "${response.statusText}"`);
+   throw new SentryError(`failed with status "${response.statusText}"`);
 }
 
 interface RawPost {

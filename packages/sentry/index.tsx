@@ -5,19 +5,7 @@ import { Scope } from '@sentry/nextjs';
 
 type Fetcher = typeof fetch;
 
-type FetchMiddleware = (
-   fetcher: Fetcher,
-   shouldSkipRequest?: SkipRequestFn
-) => Fetcher;
-
-type FetcherParams = Parameters<Fetcher>;
-
-type SkipRequestFn = (...args: FetcherParams) => boolean;
-
-type CaptureWithContextFn = (
-   e: Error,
-   context: Parameters<Scope['setContext']>[1]
-) => void;
+type FetchMiddleware = (fetcher: Fetcher) => Fetcher;
 
 const isClientSide = typeof window !== 'undefined';
 
@@ -30,60 +18,91 @@ export const setSentryPageContext = (context: GetServerSidePropsContext) => {
 
 export const applySentryFetchMiddleware = () => {
    if (isClientSide) {
-      window.fetch = withSentry(window.fetch, shouldSkipReporting);
+      window.fetch = withSentry(window.fetch);
    } else {
-      global.fetch = withSentry(global.fetch, shouldSkipReporting);
+      global.fetch = withSentry(global.fetch);
    }
 };
 
-const withSentry: FetchMiddleware =
-   (fetcher, shouldSkipRequest) => async (input, init) => {
-      if (shouldSkipRequest?.(input, init)) {
-         return fetcher(input, init);
-      }
-      const context = {
-         // Underscore sorts the resource first in Sentry's UI
-         _resource: input,
-         headers: init?.headers,
-         method: init?.method,
-         // Parse to pretty print GraphQL queries
-         body: init?.body ? JSON.parse(String(init?.body)) : undefined,
-      };
-      try {
-         const response = await fetcher(input, init);
-         if (
-            !shouldIgnoreUserAgent &&
-            response.status >= 400 &&
-            ![401, 404, 499].includes(response.status)
-         ) {
-            const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
-            Sentry.captureException(new Error(msg), (scope) => {
-               scope.setContext('request', context);
-               return scope;
-            });
-            console.error(msg, context);
-         }
-         return response;
-      } catch (error) {
-         // We don't want to hear about network errors in Sentry
-         console.error(error, context);
-         throw error;
-      }
+export const iFixitAPIRequestHeaderName = 'X-iFixit-API-Request';
+
+const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
+   const headers = new Headers(init?.headers);
+   const shouldSkipRequest = headers.has(iFixitAPIRequestHeaderName);
+   if (shouldSkipRequest) {
+      headers.delete(iFixitAPIRequestHeaderName);
+
+      return fetcher(input, {
+         ...init,
+         headers,
+      });
+   }
+
+   const context = {
+      // Underscore sorts the resource first in Sentry's UI
+      _resource: input,
+      headers: init?.headers,
+      method: init?.method,
+      // Parse to pretty print GraphQL queries
+      body: init?.body ? JSON.parse(String(init?.body)) : undefined,
    };
+   try {
+      const response = await fetcher(input, init);
+      if (
+         !shouldIgnoreUserAgent &&
+         response.status >= 400 &&
+         ![401, 404, 499].includes(response.status)
+      ) {
+         const msg = `fetch() HTTP error: ${response.status} ${response.statusText}`;
+         captureException(new Error(msg), {
+            contexts: {
+               request: context,
+               response: {
+                  status: response.status,
+                  statusText: response.statusText,
+               },
+            },
+            tags: {
+               request_url: input.toString(),
+               response_status_code: response.status.toString(),
+               response_status_text: response.statusText,
+            },
+         });
+         console.error(msg, context);
+      }
 
-const shouldSkipReporting: SkipRequestFn = (input, init) => {
-   const url = getRequestUrl(input);
-   // We have custom logic in place for reporting errors only after React Query retries have failed,
-   // so we don't want to report errors for the cart API here.
-   return url.includes('/store/user/cart');
+      return response;
+   } catch (error) {
+      // We don't want to hear about network errors in Sentry
+      console.error(error, context);
+      throw error;
+   }
 };
 
-const getRequestUrl = (input: RequestInfo | URL) => {
-   if (typeof input === 'string') {
-      return input;
+export type SentryDetails = Exclude<Parameters<Scope['update']>[0], undefined>;
+
+export class SentryError extends Error {
+   constructor(message: string, readonly sentryDetails: SentryDetails = {}) {
+      super(message);
    }
-   if (input instanceof URL) {
-      return input.href;
-   }
-   return input.url;
-};
+}
+
+export function injectSentryErrorHandler() {
+   Sentry.addGlobalEventProcessor((event, hint) => {
+      const exception = hint.originalException;
+
+      if (exception instanceof SentryError) {
+         const currentScope = Sentry.getCurrentHub().getScope();
+         const newScope = Scope.clone(currentScope);
+
+         newScope.update(exception.sentryDetails);
+         newScope.applyToEvent(event, hint);
+      }
+
+      return event;
+   });
+}
+
+export function captureException(e: any, sentryDetails: SentryDetails) {
+   Sentry.captureException(e, sentryDetails);
+}

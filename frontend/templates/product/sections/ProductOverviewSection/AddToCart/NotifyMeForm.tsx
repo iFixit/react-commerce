@@ -38,45 +38,40 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
    const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setStatus(NotifyMeStatus.Submitting);
-      try {
-         const formData = new FormData(event.currentTarget);
-         const email = formData.get('email');
-         if (typeof email != 'string') {
-            throw new Error('email is required');
-         }
-         await ifixitAPI.post(
-            'cart/product/notifyWhenSkuInStock',
-            'notify-when-sku-in-stock',
-            {
-               credentials: 'same-origin',
-               headers: {
-                  'Content-Type': 'application/json',
-               },
-               body: JSON.stringify({
-                  sku,
-                  shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
-                  email,
-               }),
-            },
-            (response: Response) => {
-               if (!response.ok) {
-                  const message =
-                     response.status === 422
-                        ? `Email: '${email}' is invalid.`
-                        : response.statusText;
-                  setError(message || 'Request failed');
-                  setStatus(NotifyMeStatus.Error);
-                  return null;
-               }
-
-               const value = ifixitAPI.jsonOrNull(response);
-               setStatus(NotifyMeStatus.Submitted);
-               return value;
-            }
-         );
-      } catch (error) {
+      const formData = new FormData(event.currentTarget);
+      const email = formData.get('email');
+      if (typeof email != 'string') {
+         setError('email is required');
          setStatus(NotifyMeStatus.Error);
+         return;
       }
+      const response = await ifixitAPI.postRaw(
+         'cart/product/notifyWhenSkuInStock',
+         'notify-when-sku-in-stock',
+         {
+            credentials: 'same-origin',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               sku,
+               shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
+               email,
+            }),
+         }
+      );
+
+      if (!response.ok) {
+         const message =
+            response.status === 422
+               ? `Email: '${email}' is invalid.`
+               : response.statusText;
+         setError(message || 'Request failed');
+         setStatus(NotifyMeStatus.Error);
+         return;
+      }
+
+      setStatus(NotifyMeStatus.Submitted);
    };
 
    if (status === NotifyMeStatus.Submitted) {

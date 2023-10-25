@@ -1,8 +1,8 @@
 import { GA_URL, GTAG_ID, GA_KEY, GA_DEBUG } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useGACustomDimensions, setupMinimumGA4 } from '@ifixit/analytics';
 
 declare const ga: (command: string, hitType: string, url?: string) => void;
 
@@ -37,28 +37,18 @@ export function GoogleAnalytics() {
 function GA4() {
    const router = useRouter();
    const { query } = router;
+   const dimensions = useGACustomDimensions();
 
    const debugMode = GA_DEBUG || query.ga4_debug === 'true';
+   React.useEffect(() => {
+      setupMinimumGA4(GTAG_ID, debugMode, dimensions);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [dimensions]);
    return (
-      <>
-         <Head>
-            <script
-               id="gtag-ga4"
-               dangerouslySetInnerHTML={{
-                  __html: `
-               window.dataLayer = window.dataLayer || [];
-               function gtag(){dataLayer.push(arguments);}
-               gtag('js', new Date());
-               gtag('config', '${GTAG_ID}', ${debugMode} ? { debug_mode: true } : {});
-               `,
-               }}
-            />
-         </Head>
-         <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
-         ></Script>
-      </>
+      <Script
+         strategy="afterInteractive"
+         src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+      ></Script>
    );
 }
 

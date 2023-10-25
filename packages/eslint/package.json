@@ -1,0 +1,10 @@
+{
+   "name": "@ifixit/eslint-plugin",
+   "version": "0.0.0",
+   "main": "index.js",
+   "scripts": {},
+   "keywords": [
+      "eslint-plugin"
+   ],
+   "license": "MIT"
+}

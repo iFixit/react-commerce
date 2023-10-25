@@ -63,7 +63,7 @@ import {
    trackPiwikPreferredStore,
    trackPiwikPreferredLanguage,
 } from '@ifixit/analytics';
-import { PIWIK_ENV } from '@config/env';
+import { PIWIK_ENV, SHOPIFY_STOREFRONT_VERSION } from '@config/env';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -92,7 +92,7 @@ const DefaultLayoutComponent = function ({
          <ShopifyStorefrontProvider
             shopDomain={shopifyCredentials.storefrontDomain}
             storefrontAccessToken={shopifyCredentials.storefrontAccessToken}
-            apiVersion="2020-01"
+            apiVersion={SHOPIFY_STOREFRONT_VERSION}
          >
             <Box>
                <Head>
