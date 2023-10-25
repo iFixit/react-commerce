@@ -134,7 +134,6 @@ function HeroTitle({
          size="xl"
          fontSize={{ base: '2xl', md: '3xl' }}
          fontWeight="medium"
-         whiteSpace="nowrap"
          data-testid="hero-title"
       >
          {children}
