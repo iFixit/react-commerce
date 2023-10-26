@@ -80,6 +80,9 @@ async function fetchAuthenticatedUser(
    apiClient: IFixitAPIClient
 ): Promise<User | null> {
    const payload = await apiClient.get('user', 'user');
+   if (payload == null) {
+      return null;
+   }
    const userSchema = UserApiResponseSchema.safeParse(payload);
    if (!userSchema.success) {
       Sentry.captureMessage('User schema parsing failed', {
