@@ -63,7 +63,11 @@ export function CrossSell({ product, selectedVariant }: CrossSellProps) {
          >
             {availableForSaleVariants.map((variant) => {
                return (
-                  <CrossSellItem key={variant.id} productPreview={variant} />
+                  <CrossSellItem
+                     key={variant.id}
+                     productPreview={variant}
+                     selectedVariant={selectedVariant}
+                  />
                );
             })}
          </VStack>
@@ -73,17 +77,29 @@ export function CrossSell({ product, selectedVariant }: CrossSellProps) {
 
 interface CrossSellItemProps {
    productPreview: ProductPreviewWithCartDetails;
+   selectedVariant: ProductVariant;
 }
 
-function CrossSellItem({ productPreview }: CrossSellItemProps) {
+function CrossSellItem({
+   productPreview,
+   selectedVariant,
+}: CrossSellItemProps) {
    const addToCart = useAddToCart('Frequently Bought Together');
    const withUserPrice = useWithUserPrice();
    const drawer = useCartDrawer();
 
    const handleAddToCart = () => {
+      if (selectedVariant.sku == null) {
+         console.error(`Variant ${selectedVariant.id} has no SKU`);
+         return;
+      }
+
       addToCart.mutate({
-         type: 'product',
-         product: createCartLineItem(withUserPrice(productPreview)),
+         type: 'bundle',
+         bundle: {
+            currentItemCode: selectedVariant.sku,
+            items: [createCartLineItem(withUserPrice(productPreview))],
+         },
       });
       drawer.onOpen(event, true);
       trackGA4AddToCart({
