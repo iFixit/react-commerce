@@ -30,7 +30,14 @@ export function Pagination(props: PaginationProps) {
    const createPageUrl = (page: number) => {
       const fullUrl = createURL(page - 1);
       const url = new URL(fullUrl);
-      return url.pathname + url.search;
+      const searchParams = new URLSearchParams(url.search);
+      if (page === 1) {
+         searchParams.delete('p');
+      }
+      const search = searchParams.toString()
+         ? `?${searchParams.toString()}`
+         : '';
+      return url.pathname + search;
    };
 
    if (nbPages <= 1) {
