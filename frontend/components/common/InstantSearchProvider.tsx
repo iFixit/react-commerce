@@ -3,6 +3,7 @@ import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { getClientOptions } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
+   destylizeDeviceTitle,
    destylizeDeviceTitleAndWorksIn,
    getFacetWidgetType,
    isValidRefinementListValue,
@@ -93,12 +94,15 @@ export function InstantSearchProvider({
          const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
-         const deviceHandleIsWorksIn =
-            isDevicePartsPage && deviceHandle.includes(':');
+         const devicePath = isDevicePartsPage
+            ? getDevicePath(deviceHandle, routeState)
+            : deviceHandle;
+         const devicePathIsWorksIn =
+            isDevicePartsPage && devicePath.includes(':');
 
          let path = `/${firstPathSegment}`;
-         if (deviceHandle) {
-            path += `/${deviceHandle}`;
+         if (devicePath) {
+            path += `/${devicePath}`;
             const raw: string | string[] | undefined =
                routeState.filter?.['facet_tags.Item Type'];
             const itemType = Array.isArray(raw) ? raw[0] : raw;
@@ -115,7 +119,7 @@ export function InstantSearchProvider({
             // Item Type is the slug on device pages, not in the query.
             delete filterCopy['facet_tags.Item Type'];
          }
-         if (deviceHandleIsWorksIn) {
+         if (devicePathIsWorksIn) {
             delete filterCopy['worksin'];
          }
          const { q, p, filter, ...otherParams } = qsModule.parse(
@@ -327,4 +331,21 @@ function getBaseOrigin(location: Location): string {
       return publicOrigin.origin;
    }
    return location.origin;
+}
+
+function getDevicePath(handle: string, routeState: RouteState): string {
+   const [_device, worksin] = handle.split(':');
+   if (worksin) {
+      return handle;
+   }
+
+   const worksinFromRouteState = routeState.filter?.['worksin'];
+
+   if (worksinFromRouteState) {
+      const title = destylizeDeviceTitle(handle);
+      const newWorksin = worksinFromRouteState.replace(title, '').trim();
+      return `${handle}:${newWorksin}`;
+   }
+
+   return handle;
 }
