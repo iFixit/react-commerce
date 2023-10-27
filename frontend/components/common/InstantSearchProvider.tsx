@@ -334,14 +334,14 @@ function getBaseOrigin(location: Location): string {
 }
 
 function getDevicePath(handle: string, routeState: RouteState): string {
-   const [_device, worksin] = handle.split(':');
-   if (worksin) {
-      return handle;
-   }
-
+   const [device, worksin] = handle.split(':');
    const worksinFromRouteState = routeState.filter?.['worksin'];
 
-   if (worksinFromRouteState) {
+   if (worksin && !worksinFromRouteState) {
+      return device;
+   }
+
+   if (!worksin && worksinFromRouteState) {
       const title = destylizeDeviceTitle(handle);
       const newWorksin = worksinFromRouteState.replace(title, '').trim();
       return `${handle}:${newWorksin}`;
