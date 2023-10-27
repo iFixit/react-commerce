@@ -42,6 +42,24 @@ const partnerCodeToComponentMap: { [key: string]: React.FC } = {
    valve: Valve,
 };
 
+const netsuitePartnerToComponentMap: { [key: string]: React.FC } = {
+   'Genuine Google Pixel Part': Google,
+   'Genuine Crucial Drive': () => <Crucial px="2" />,
+   'Genuine HP Part': () => <Hp py="2" />,
+   'Genuine HTC Vive Part': Vive,
+   'Genuine Lenovo Part': Lenovo,
+   'Genuine Logitech Part': Logitech,
+   'Genuine Micron Drive': () => <Micron px="2" />,
+   'Genuine Microsoft Surface Part': Microsoft,
+   'Genuine Microsoft Surface Tool': Microsoft,
+   'Genuine Motorola Part': Motorola,
+   'Genuine Nokia Part': Nokia,
+   'Genuine Samsung Galaxy Part': Samsung,
+   'Genuine Steam Deck Part': Steam,
+   'Genuine Teenage Engineering Part': TeenageEngineering,
+   'Genuine Valve Index Part': Valve,
+};
+
 export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
    const { code, text, url } = oemPartnership;
    // This text is designed to be used as a badge, here we
@@ -51,8 +69,9 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
    );
    const theme = useTheme();
 
-   const hasPartnerLogo = partnerCodeToComponentMap[code] !== undefined;
-   const PartnerLogo = partnerCodeToComponentMap[code];
+   const PartnerLogo =
+      partnerCodeToComponentMap[code] ?? netsuitePartnerToComponentMap[code];
+   const hasPartnerLogo = PartnerLogo !== undefined;
 
    return (
       <Flex
