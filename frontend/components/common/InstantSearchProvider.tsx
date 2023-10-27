@@ -3,6 +3,7 @@ import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { getClientOptions } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
+   destylizeDeviceTitleAndWorksIn,
    getFacetWidgetType,
    isValidRefinementListValue,
    stylizeDeviceItemType,
@@ -92,6 +93,8 @@ export function InstantSearchProvider({
          const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
+         const deviceHandleIsWorksIn =
+            isDevicePartsPage && deviceHandle.includes(':');
 
          let path = `/${firstPathSegment}`;
          if (deviceHandle) {
@@ -111,6 +114,9 @@ export function InstantSearchProvider({
          if (isDevicePartsPage) {
             // Item Type is the slug on device pages, not in the query.
             delete filterCopy['facet_tags.Item Type'];
+         }
+         if (deviceHandleIsWorksIn) {
+            delete filterCopy['worksin'];
          }
          const { q, p, filter, ...otherParams } = qsModule.parse(
             location.search,
@@ -146,6 +152,8 @@ export function InstantSearchProvider({
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const itemType = pathParts.length >= 3 ? pathParts[2] : '';
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
+         const deviceHandleIsWorksIn =
+            isDevicePartsPage && deviceHandle.includes(':');
 
          const { q, p, filter } = qsModule.parse(location.search, {
             ignoreQueryPrefix: true,
@@ -185,6 +193,11 @@ export function InstantSearchProvider({
             filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
                decodeURIComponent(itemType)
             ).trim();
+         }
+
+         if (deviceHandleIsWorksIn) {
+            filterObject['worksin'] =
+               destylizeDeviceTitleAndWorksIn(deviceHandle);
          }
 
          return {

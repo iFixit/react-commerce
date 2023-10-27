@@ -57,16 +57,35 @@ export function stylizeDeviceItemType(itemType: string): string {
 
 /**
  * Convert '_' in URL slug to spaces for product list device title
+ * If the handle has a : character everything after it is removed.
+ * This is to remove the device's worksin from the handle.
+ * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4"
  */
 export function destylizeDeviceTitle(handle: string): string {
-   return handle.replace(/_/g, ' ');
+   const [device, _worksin] = handle.split(':');
+   return device.replace(/_/g, ' ');
+}
+
+/**
+ * Keeping the device's worksin in the handle.
+ * Convert '_' in URL slug to spaces for product list device title
+ * Convert ':' in URL slug to spaces for the worksin separator
+ * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4 CUH-11XXA"
+ */
+export function destylizeDeviceTitleAndWorksIn(handle: string): string {
+   return handle.replace(/_|:/g, ' ');
 }
 
 /**
  * Convert to spaces in product list device Title to '_' for URL slug
  */
-export function stylizeDeviceTitle(deviceTitle: string): string {
-   return deviceTitle.replace(/\s/g, '_');
+export function stylizeDeviceTitle(
+   deviceTitle: string,
+   worksin?: string
+): string {
+   const urlTitle = deviceTitle.replace(/\s/g, '_');
+   const urlWorksIn = worksin ? `:${worksin}` : '';
+   return urlTitle + urlWorksIn;
 }
 
 type ProductListTitleAttributes = {
