@@ -4,7 +4,7 @@ import { getClientOptions } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
    destylizeDeviceTitle,
-   destylizeDeviceTitleAndWorksIn,
+   destylizeDeviceTitleAndVariant,
    getFacetWidgetType,
    isValidRefinementListValue,
    stylizeDeviceItemType,
@@ -97,7 +97,7 @@ export function InstantSearchProvider({
          const devicePath = isDevicePartsPage
             ? getDevicePath(deviceHandle, routeState)
             : deviceHandle;
-         const devicePathIsWorksIn =
+         const devicePathHasVariant =
             isDevicePartsPage && devicePath.includes(':');
 
          let path = `/${firstPathSegment}`;
@@ -119,7 +119,7 @@ export function InstantSearchProvider({
             // Item Type is the slug on device pages, not in the query.
             delete filterCopy['facet_tags.Item Type'];
          }
-         if (devicePathIsWorksIn) {
+         if (devicePathHasVariant) {
             delete filterCopy['worksin'];
          }
          const { q, p, filter, ...otherParams } = qsModule.parse(
@@ -156,7 +156,7 @@ export function InstantSearchProvider({
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const itemType = pathParts.length >= 3 ? pathParts[2] : '';
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
-         const deviceHandleIsWorksIn =
+         const devicePathHasVariant =
             isDevicePartsPage && deviceHandle.includes(':');
 
          const { q, p, filter } = qsModule.parse(location.search, {
@@ -199,9 +199,9 @@ export function InstantSearchProvider({
             ).trim();
          }
 
-         if (deviceHandleIsWorksIn) {
+         if (devicePathHasVariant) {
             filterObject['worksin'] =
-               destylizeDeviceTitleAndWorksIn(deviceHandle);
+               destylizeDeviceTitleAndVariant(deviceHandle);
          }
 
          return {
@@ -334,17 +334,17 @@ function getBaseOrigin(location: Location): string {
 }
 
 function getDevicePath(handle: string, routeState: RouteState): string {
-   const [device, worksin] = handle.split(':');
-   const worksinFromRouteState = routeState.filter?.['worksin'];
+   const [device, variant] = handle.split(':');
+   const variantFromRouteState = routeState.filter?.['worksin'];
 
-   if (worksin && !worksinFromRouteState) {
+   if (variant && !variantFromRouteState) {
       return device;
    }
 
-   if (!worksin && worksinFromRouteState) {
+   if (!variant && variantFromRouteState) {
       const title = destylizeDeviceTitle(handle);
-      const newWorksin = worksinFromRouteState.replace(title, '').trim();
-      return `${handle}:${newWorksin}`;
+      const varaintToAdd = variantFromRouteState.replace(title, '').trim();
+      return `${handle}:${varaintToAdd}`;
    }
 
    return handle;

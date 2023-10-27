@@ -58,21 +58,21 @@ export function stylizeDeviceItemType(itemType: string): string {
 /**
  * Convert '_' in URL slug to spaces for product list device title
  * If the handle has a : character everything after it is removed.
- * This is to remove the device's worksin from the handle.
+ * This is to remove the device's variant from the handle.
  * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4"
  */
 export function destylizeDeviceTitle(handle: string): string {
-   const [device, _worksin] = handle.split(':');
+   const [device, _variant] = handle.split(':');
    return device.replace(/_/g, ' ');
 }
 
 /**
- * Keeping the device's worksin in the handle.
+ * Keeping the device's variant in the handle.
  * Convert '_' in URL slug to spaces for product list device title
- * Convert ':' in URL slug to spaces for the worksin separator
+ * Convert ':' in URL slug to spaces for the variant separator
  * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4 CUH-11XXA"
  */
-export function destylizeDeviceTitleAndWorksIn(handle: string): string {
+export function destylizeDeviceTitleAndVariant(handle: string): string {
    return handle.replace(/_|:/g, ' ');
 }
 
@@ -81,11 +81,11 @@ export function destylizeDeviceTitleAndWorksIn(handle: string): string {
  */
 export function stylizeDeviceTitle(
    deviceTitle: string,
-   worksin?: string
+   variant?: string
 ): string {
    const urlTitle = deviceTitle.replace(/\s/g, '_');
-   const urlWorksIn = worksin ? `:${worksin}` : '';
-   return urlTitle + urlWorksIn;
+   const urlVariant = variant ? `:${variant}` : '';
+   return urlTitle + urlVariant;
 }
 
 type ProductListTitleAttributes = {
