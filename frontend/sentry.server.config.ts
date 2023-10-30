@@ -10,6 +10,7 @@ const sampleRate = SENTRY_SAMPLING_ENABLED
    : 1.0;
 
 Sentry.init({
+   debug: true,
    dsn: SENTRY_DSN,
    sampleRate,
    normalizeDepth: 5,

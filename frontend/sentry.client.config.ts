@@ -25,6 +25,7 @@ Sentry.init({
       }
       return event;
    },
+   debug: true,
    dsn: SENTRY_DSN,
    integrations: [new BrowserTracing()],
    sampleRate,

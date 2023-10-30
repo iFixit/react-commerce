@@ -24,6 +24,7 @@ Sentry.init({
       }
       return event;
    },
+   debug: true,
    dsn: SENTRY_DSN,
    initialScope: {
       tags: {
