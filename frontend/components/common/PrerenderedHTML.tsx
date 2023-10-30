@@ -2,7 +2,7 @@
 // is broken up into `shared`, `troubleshooting`, and `commerce` variables to control what
 // is included, and where via the styleMap.
 
-import { Box, SystemStyleObject, forwardRef, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, SystemStyleObject, forwardRef } from '@chakra-ui/react';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
@@ -179,7 +179,6 @@ const troubleshootingStyles: SystemStyleObject = {
    'ul, ol': {
       marginTop: '1em',
       marginInlineStart: '1em',
-      overflowX: 'auto', // clear child media floats
       paddingInlineStart: 'calc(1em + 2px)',
 
       li: {
@@ -300,6 +299,10 @@ const troubleshootingStyles: SystemStyleObject = {
       marginTop: { base: 4, sm: 6 },
       minWidth: 'min-content', // narrow image text-wrap fix
       width: 'fit-content',
+
+      '& + ul, & + ol': {
+         overflowX: 'auto', // clear sibling lists
+      },
 
       '&.imageBox_center': {
          marginInline: 'auto',
