@@ -125,6 +125,26 @@ const moduleExports = {
             permanent: true,
          },
          {
+            source: '/Parts/Microsoft_Game_Console_Accessory',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Xbox_Controller`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Microsoft_Game_Console_Accessory/:slug',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Xbox_Controller/:slug`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Sony_Game_Console_Accessory',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/PlayStation_Controller`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Sony_Game_Console_Accessory/:slug',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/PlayStation_Controller/:slug`,
+            permanent: true,
+         },
+         {
             source: '/Tools/Wii',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Tools/Nintendo_Wii`,
             permanent: true,
