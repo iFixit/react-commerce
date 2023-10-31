@@ -1,17 +1,15 @@
-import { DefaultLayout } from '@layouts/default';
-import { DefaultLayoutProps } from '@layouts/default/server';
-import Head from 'next/head';
-import React, { useRef } from 'react';
 import {
-   Avatar,
    Alert,
    AlertIcon,
+   Avatar,
    Box,
    BoxProps,
    Button,
    Flex,
    FlexProps,
+   HStack,
    Heading,
+   HeadingProps,
    IconButton,
    Image,
    Link,
@@ -21,33 +19,25 @@ import {
    MenuItem,
    MenuList,
    Modal,
-   ModalOverlay,
-   ModalContent,
-   ModalHeader,
    ModalBody,
    ModalCloseButton,
-   Stack,
+   ModalContent,
+   ModalHeader,
+   ModalOverlay,
+   SimpleGrid,
    Square,
+   Stack,
    Text,
-   useDisclosure,
    VisuallyHidden,
    chakra,
-   HStack,
-   SimpleGrid,
-   useToken,
-   HeadingProps,
    useBreakpointValue,
+   useDisclosure,
+   useToken,
 } from '@chakra-ui/react';
+import { PixelPing } from '@components/analytics/PixelPing';
 import { PrerenderedHTML } from '@components/common';
-import type {
-   Author,
-   BreadcrumbEntry,
-   Problem,
-   Section,
-   TroubleshootingData,
-} from './hooks/useTroubleshootingProps';
-import SolutionCard from './solution';
-import { FaIcon } from '@ifixit/icons';
+import { ViewStats } from '@components/common/ViewStats';
+import { IntlDate } from '@components/ui/IntlDate';
 import {
    faAngleDown,
    faCircleNodes,
@@ -56,18 +46,28 @@ import {
    faPenToSquare,
 } from '@fortawesome/pro-solid-svg-icons';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
-import { HeadingSelfLink } from './components/HeadingSelfLink';
+import { FaIcon } from '@ifixit/icons';
+import { DefaultLayout } from '@layouts/default';
+import { DefaultLayoutProps } from '@layouts/default/server';
+import Head from 'next/head';
+import { useRef } from 'react';
 import ProblemCard from './Problem';
-import { PixelPing } from '@components/analytics/PixelPing';
-import { TagManager, GoogleNoScript } from './components/TagManager';
+import { HeadingSelfLink } from './components/HeadingSelfLink';
+import { GoogleNoScript, TagManager } from './components/TagManager';
+import type {
+   Author,
+   BreadcrumbEntry,
+   Problem,
+   Section,
+   TroubleshootingData,
+} from './hooks/useTroubleshootingProps';
+import SolutionCard from './solution';
+import { TOC } from './toc';
 import {
    LinkToTOC,
    TOCContextProvider,
    useTOCBufferPxScrollOnClick,
 } from './tocContext';
-import { TOC } from './toc';
-import { ViewStats } from '@components/common/ViewStats';
-import { IntlDate } from '@components/ui/IntlDate';
 
 const RelatedProblemsRecord = {
    title: 'Related Problems',
