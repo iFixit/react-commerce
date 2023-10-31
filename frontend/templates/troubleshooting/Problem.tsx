@@ -42,12 +42,14 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
-               boxSize={{ base: '56px', md: '32px' }}
+               width={{ base: '75px', md: '43px' }}
+               height={{ base: '56px', md: '32px' }}
                mr={2}
+               aspectRatio="4 / 3"
             >
                <Image
                   height="100%"
-                  htmlWidth={56}
+                  htmlWidth={75}
                   htmlHeight={56}
                   objectFit="cover"
                   src={imageUrl}

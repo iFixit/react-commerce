@@ -955,13 +955,15 @@ function RelatedProblems({
                      <Image
                         src={imageUrl}
                         alt={displayTitle}
-                        boxSize={{ base: '56px', md: '96px' }}
-                        htmlWidth={96}
-                        htmlHeight={96}
+                        width={{ base: '75px', md: '104px' }}
+                        height={{ base: '56px', md: '78px' }}
+                        htmlWidth={104}
+                        htmlHeight={78}
                         objectFit="cover"
                         borderRadius="md"
                         outline="1px solid"
                         outlineColor="gray.300"
+                        aspectRatio="4 / 3"
                      />
                      <Box display="block" lineHeight="normal">
                         <Box fontWeight="semibold" my="auto">
@@ -972,7 +974,7 @@ function RelatedProblems({
                            mt={3}
                         >
                            <PrerenderedHTML
-                              noOfLines={4}
+                              noOfLines={3}
                               template="troubleshooting"
                               html={description}
                            />
