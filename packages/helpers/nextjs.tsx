@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from 'next';
+import type { GetServerSidePropsContext } from 'next';
 
 export function urlFromContext(context: GetServerSidePropsContext): string {
    const protocol = context.req.headers.referer?.split('://')[0] || 'https';
