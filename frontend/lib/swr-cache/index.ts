@@ -111,6 +111,12 @@ export const withCache = <
          req.write(postData);
          req.end(() => {
             const elapsed = performance.now() - start;
+            logger.info('revalidation request end', {
+               path: req.path,
+               method: req.method,
+               postData,
+               elapsed,
+            });
             logger.success.event(`${statName}.revalidation.request_end`);
             logger.success.timing(
                `${statName}.revalidation.request_end`,
