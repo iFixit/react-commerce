@@ -8,6 +8,7 @@ import {
    getFacetWidgetType,
    isValidRefinementListValue,
    stylizeDeviceItemType,
+   stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
@@ -336,16 +337,14 @@ function getBaseOrigin(location: Location): string {
 
 function getDevicePath(handle: string, routeState: RouteState): string {
    const [device, variant] = handle.split(':');
-   const variantFromRouteState = routeState.filter?.['worksin'];
+   const variantFromRouteState = routeState.filter?.worksin;
 
    if (variant && !variantFromRouteState) {
       return device;
    }
 
    if (!variant && variantFromRouteState) {
-      const title = destylizeDeviceTitle(handle);
-      const varaintToAdd = variantFromRouteState.replace(title, '').trim();
-      return `${handle}:${varaintToAdd}`;
+      return stylizeDeviceTitle(handle, variantFromRouteState);
    }
 
    return handle;

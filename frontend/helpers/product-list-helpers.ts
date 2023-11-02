@@ -84,8 +84,9 @@ export function stylizeDeviceTitle(
    variant?: string
 ): string {
    const urlTitle = deviceTitle.replace(/\s/g, '_');
-   const urlVariant = variant ? `:${variant}` : '';
-   return urlTitle + urlVariant;
+   const urlVariant = variant?.replace(/\s/g, '_') ?? '';
+   const shortenedVariant = urlVariant.replace(`${urlTitle}_`, '');
+   return shortenedVariant ? `${urlTitle}:${shortenedVariant}` : urlTitle;
 }
 
 type ProductListTitleAttributes = {
